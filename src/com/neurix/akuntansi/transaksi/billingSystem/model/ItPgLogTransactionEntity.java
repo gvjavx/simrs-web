@@ -1,10 +1,12 @@
-package com.neurix.simrs.transaksi.logtransaction.model;
+package com.neurix.akuntansi.transaksi.billingSystem.model;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Objects;
 
-public class LogTransaction {
+public class ItPgLogTransactionEntity {
     private BigInteger pgLogTrxId;
     private String trxId;
     private String tipeTrx;
@@ -19,9 +21,7 @@ public class LogTransaction {
     private String status;
     private String message;
     private Timestamp sentDate;
-    private String stSentDate;
     private Timestamp receivedDate;
-    private String stReceivedDate;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
@@ -29,59 +29,41 @@ public class LogTransaction {
     private String action;
     private String flag;
 
-    //RAKA-untuk search berdasarkan tanggal
-    private Timestamp DateStr;
-    private String stDateStr;
-    private Timestamp DateEnd;
-    private String stDateEnd;
+    private String statusBank;
+    private String channel;
+    private Date invoiceDate;
+    private BigInteger invoiceNumber;
 
-
-    public Timestamp getDateStr() {
-        return DateStr;
+    public String getStatusBank() {
+        return statusBank;
     }
 
-    public void setDateStr(Timestamp dateStr) {
-        DateStr = dateStr;
+    public void setStatusBank(String statusBank) {
+        this.statusBank = statusBank;
     }
 
-    public String getStDateStr() {
-        return stDateStr;
+    public String getChannel() {
+        return channel;
     }
 
-    public void setStDateStr(String stDateStr) {
-        this.stDateStr = stDateStr;
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 
-    public Timestamp getDateEnd() {
-        return DateEnd;
+    public Date getInvoiceDate() {
+        return invoiceDate;
     }
 
-    public void setDateEnd(Timestamp dateEnd) {
-        DateEnd = dateEnd;
+    public void setInvoiceDate(Date invoiceDate) {
+        this.invoiceDate = invoiceDate;
     }
 
-    public String getStDateEnd() {
-        return stDateEnd;
+    public BigInteger getInvoiceNumber() {
+        return invoiceNumber;
     }
 
-    public void setStDateEnd(String stDateEnd) {
-        this.stDateEnd = stDateEnd;
-    }
-
-    public String getStSentDate() {
-        return stSentDate;
-    }
-
-    public void setStSentDate(String stSentDate) {
-        this.stSentDate = stSentDate;
-    }
-
-    public String getStReceivedDate() {
-        return stReceivedDate;
-    }
-
-    public void setStReceivedDate(String stReceivedDate) {
-        this.stReceivedDate = stReceivedDate;
+    public void setInvoiceNumber(BigInteger invoiceNumber) {
+        this.invoiceNumber = invoiceNumber;
     }
 
     public BigInteger getPgLogTrxId() {
@@ -250,5 +232,38 @@ public class LogTransaction {
 
     public void setFlag(String flag) {
         this.flag = flag;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ItPgLogTransactionEntity that = (ItPgLogTransactionEntity) o;
+        return pgLogTrxId == that.pgLogTrxId &&
+                Objects.equals(trxId, that.trxId) &&
+                Objects.equals(tipeTrx, that.tipeTrx) &&
+                Objects.equals(bankName, that.bankName) &&
+                Objects.equals(noVirtualAccount, that.noVirtualAccount) &&
+                Objects.equals(noRekamMedik, that.noRekamMedik) &&
+                Objects.equals(trxAmount, that.trxAmount) &&
+                Objects.equals(namePerson, that.namePerson) &&
+                Objects.equals(addressPerson, that.addressPerson) &&
+                Objects.equals(phonePerson, that.phonePerson) &&
+                Objects.equals(emailPerson, that.emailPerson) &&
+                Objects.equals(status, that.status) &&
+                Objects.equals(message, that.message) &&
+                Objects.equals(sentDate, that.sentDate) &&
+                Objects.equals(receivedDate, that.receivedDate) &&
+                Objects.equals(createdDate, that.createdDate) &&
+                Objects.equals(createdWho, that.createdWho) &&
+                Objects.equals(lastUpdate, that.lastUpdate) &&
+                Objects.equals(lastUpdateWho, that.lastUpdateWho) &&
+                Objects.equals(action, that.action) &&
+                Objects.equals(flag, that.flag);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pgLogTrxId, trxId, tipeTrx, bankName, noVirtualAccount, noRekamMedik, trxAmount, namePerson, addressPerson, phonePerson, emailPerson, status, message, sentDate, receivedDate, createdDate, createdWho, lastUpdate, lastUpdateWho, action, flag);
     }
 }

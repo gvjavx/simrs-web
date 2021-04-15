@@ -70,7 +70,7 @@
         </global-exception-mappings>
 
         <action name="*_logtransaction"
-                class="com.neurix.simrs.transaksi.logtransaction.action.LogTransactionAction" method="{1}">
+                class="com.neurix.akuntansi.transaksi.billingSystem.action.LogTrxAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
             <result name="input">/pages/com/neurix/simrs/transaksi/logtransaction/searchLogTransaction.jsp</result>
             <result name="success">/pages/com/neurix/simrs/transaksi/logtransaction/searchLogTransaction.jsp</result>
@@ -80,7 +80,7 @@
 
 
         <action name="paging_displaytag_logtransaction"
-                class="com.neurix.simrs.transaksi.logtransaction.action.LogTransactionAction" method="pagingLogTransaction">
+                class="com.neurix.akuntansi.transaksi.billingSystem.action.LogTrxAction" method="pagingLogTransaction">
             <interceptor-ref name="defaultStack"/>
             <result name="success">/pages/com/neurix/simrs/transaksi/logtransaction/searchLogTransaction.jsp</result>
         </action>

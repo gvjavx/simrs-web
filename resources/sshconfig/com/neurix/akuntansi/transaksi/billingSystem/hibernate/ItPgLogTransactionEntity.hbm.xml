@@ -4,8 +4,8 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="com.neurix.simrs.transaksi.logtransaction.model.ItPgLogTransactionEntity" dynamic-update="true"
-        table="it_pg_log_transaction" select-before-update="true" schema="public">
+    <class name="com.neurix.akuntansi.transaksi.billingSystem.model.ItPgLogTransactionEntity" dynamic-update="true"
+           table="it_pg_log_transaction" select-before-update="true" schema="public">
             <id name="pgLogTrxId">
                 <column name="pg_log_trx_id"/>
             </id>

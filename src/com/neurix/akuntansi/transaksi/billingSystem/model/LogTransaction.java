@@ -1,11 +1,11 @@
-package com.neurix.simrs.transaksi.logtransaction.model;
+package com.neurix.akuntansi.transaksi.billingSystem.model;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.Objects;
+import java.util.Date;
 
-public class ItPgLogTransactionEntity {
+public class LogTransaction {
     private BigInteger pgLogTrxId;
     private String trxId;
     private String tipeTrx;
@@ -20,13 +20,117 @@ public class ItPgLogTransactionEntity {
     private String status;
     private String message;
     private Timestamp sentDate;
+    private String stSentDate;
     private Timestamp receivedDate;
+    private String stReceivedDate;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String action;
     private String flag;
+
+    private String statusBank;
+    private String channel;
+    private Date invoiceDate;
+    private BigInteger invoiceNumber;
+
+    private Timestamp receivedDateFrom;
+    private String stReceivedDateFrom;
+    private Timestamp receivedDateTo;
+    private String stReceivedDateTo;
+
+    private Timestamp sentDateFrom;
+    private String stSentDateFrom;
+    private Timestamp sentDateTo;
+    private String stSentDateTo;
+
+    //RAKA-untuk search berdasarkan tanggal
+//    private Timestamp DateStr;
+//    private String stDateStr;
+//    private Timestamp DateEnd;
+//    private String stDateEnd;
+
+
+    public Timestamp getReceivedDateFrom() {
+        return receivedDateFrom;
+    }
+
+    public void setReceivedDateFrom(Timestamp receivedDateFrom) {
+        this.receivedDateFrom = receivedDateFrom;
+    }
+
+    public String getStReceivedDateFrom() {
+        return stReceivedDateFrom;
+    }
+
+    public void setStReceivedDateFrom(String stReceivedDateFrom) {
+        this.stReceivedDateFrom = stReceivedDateFrom;
+    }
+
+    public Timestamp getReceivedDateTo() {
+        return receivedDateTo;
+    }
+
+    public void setReceivedDateTo(Timestamp receivedDateTo) {
+        this.receivedDateTo = receivedDateTo;
+    }
+
+    public String getStReceivedDateTo() {
+        return stReceivedDateTo;
+    }
+
+    public void setStReceivedDateTo(String stReceivedDateTo) {
+        this.stReceivedDateTo = stReceivedDateTo;
+    }
+
+    public Timestamp getSentDateFrom() {
+        return sentDateFrom;
+    }
+
+    public void setSentDateFrom(Timestamp sentDateFrom) {
+        this.sentDateFrom = sentDateFrom;
+    }
+
+    public String getStSentDateFrom() {
+        return stSentDateFrom;
+    }
+
+    public void setStSentDateFrom(String stSentDateFrom) {
+        this.stSentDateFrom = stSentDateFrom;
+    }
+
+    public Timestamp getSentDateTo() {
+        return sentDateTo;
+    }
+
+    public void setSentDateTo(Timestamp sentDateTo) {
+        this.sentDateTo = sentDateTo;
+    }
+
+    public String getStSentDateTo() {
+        return stSentDateTo;
+    }
+
+    public void setStSentDateTo(String stSentDateTo) {
+        this.stSentDateTo = stSentDateTo;
+    }
+
+    public String getStSentDate() {
+        return stSentDate;
+    }
+
+    public void setStSentDate(String stSentDate) {
+        this.stSentDate = stSentDate;
+    }
+
+    public String getStReceivedDate() {
+        return stReceivedDate;
+    }
+
+    public void setStReceivedDate(String stReceivedDate) {
+        this.stReceivedDate = stReceivedDate;
+    }
 
     public BigInteger getPgLogTrxId() {
         return pgLogTrxId;
@@ -196,36 +300,35 @@ public class ItPgLogTransactionEntity {
         this.flag = flag;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ItPgLogTransactionEntity that = (ItPgLogTransactionEntity) o;
-        return pgLogTrxId == that.pgLogTrxId &&
-                Objects.equals(trxId, that.trxId) &&
-                Objects.equals(tipeTrx, that.tipeTrx) &&
-                Objects.equals(bankName, that.bankName) &&
-                Objects.equals(noVirtualAccount, that.noVirtualAccount) &&
-                Objects.equals(noRekamMedik, that.noRekamMedik) &&
-                Objects.equals(trxAmount, that.trxAmount) &&
-                Objects.equals(namePerson, that.namePerson) &&
-                Objects.equals(addressPerson, that.addressPerson) &&
-                Objects.equals(phonePerson, that.phonePerson) &&
-                Objects.equals(emailPerson, that.emailPerson) &&
-                Objects.equals(status, that.status) &&
-                Objects.equals(message, that.message) &&
-                Objects.equals(sentDate, that.sentDate) &&
-                Objects.equals(receivedDate, that.receivedDate) &&
-                Objects.equals(createdDate, that.createdDate) &&
-                Objects.equals(createdWho, that.createdWho) &&
-                Objects.equals(lastUpdate, that.lastUpdate) &&
-                Objects.equals(lastUpdateWho, that.lastUpdateWho) &&
-                Objects.equals(action, that.action) &&
-                Objects.equals(flag, that.flag);
+    public String getStatusBank() {
+        return statusBank;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(pgLogTrxId, trxId, tipeTrx, bankName, noVirtualAccount, noRekamMedik, trxAmount, namePerson, addressPerson, phonePerson, emailPerson, status, message, sentDate, receivedDate, createdDate, createdWho, lastUpdate, lastUpdateWho, action, flag);
+    public void setStatusBank(String statusBank) {
+        this.statusBank = statusBank;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
+
+    public Date getInvoiceDate() {
+        return invoiceDate;
+    }
+
+    public void setInvoiceDate(Date invoiceDate) {
+        this.invoiceDate = invoiceDate;
+    }
+
+    public BigInteger getInvoiceNumber() {
+        return invoiceNumber;
+    }
+
+    public void setInvoiceNumber(BigInteger invoiceNumber) {
+        this.invoiceNumber = invoiceNumber;
     }
 }

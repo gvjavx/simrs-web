@@ -206,7 +206,6 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/verifikatorasuransi/spring/VerifikatorAsuransiBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/notifikasiadmin/spring/NotifikasiAdminBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/antriantelemedic/spring/AntrianTelemedicBean.xml"/>
-    <import resource="sshconfig/com/neurix/simrs/transaksi/logtransaction/spring/LogTransactionBean.xml"/>
 
 
     <!--BEAN AKUNTANSI HERE-->
@@ -230,6 +229,7 @@
 
     <import resource="sshconfig/com/neurix/akuntansi/master/parameterbudgeting/spring/ParameterBudgetingRekeningBean.xml"/>
 
+    <import resource="sshconfig/com/neurix/akuntansi/transaksi/billingSystem/spring/LogTransactionBean.xml"/>
 
     <import resource="sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/spring/ReportKeuanganKonsolDetailBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/budgeting/spring/BudgetingBean.xml"/>
