@@ -21,6 +21,17 @@
         .treegrid-indent {width:16px; height: 16px; display: inline-block; position: relative;}
 
         .treegrid-expander { width:16px; height: 16px; display: inline-block; position: relative; cursor: pointer;}
+
+        .bold{
+            font-weight: bold;
+            color: black;
+        }
+        .tab-bulan{
+            color: grey;
+        }
+        .tab-bulan:hover{
+            cursor: pointer;
+        }
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/BranchAction.js"/>'></script>
@@ -109,12 +120,34 @@
                     </div>
 
                     <div class="box-header with-border"></div>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i>
-                            <%--List Tutup Period <strong><span id="label-tahun"></span> - <span id="label-bulan"></span></strong> --%>
-                        </h3>
-                    </div>
                     <div class="box-body">
+
+                        List Periode :
+
+                        <div class="list-bulan">
+                            <table class="table" width="100%" style="font-size: 13px;">
+                                <tr style="border-bottom: solid 1px grey;">
+                                    <td><span class="tab-bulan" onclick="changePeriode('januari')">Januari</span></td>
+                                    <td><span class="tab-bulan" onclick="changePeriode('februari')">Februari</span></td>
+                                    <td><span class="tab-bulan" onclick="changePeriode('maret')">Maret</span></td>
+                                    <td><span class="tab-bulan" onclick="changePeriode('april')">April</span></td>
+                                    <td><span class="tab-bulan" onclick="changePeriode('mei')">Mei</span></td>
+                                    <td><span class="tab-bulan" onclick="changePeriode('juni')">Juni</span></td>
+                                    <td><span class="tab-bulan" onclick="changePeriode('juli')">Juli</span></td>
+                                    <td><span class="tab-bulan" onclick="changePeriode('agustus')">Agustus</span></td>
+                                    <td><span class="tab-bulan" onclick="changePeriode('september')">September</span></td>
+                                    <td><span class="tab-bulan" onclick="changePeriode('oktober')">Oktober</span></td>
+                                    <td><span class="tab-bulan" onclick="changePeriode('november')">November</span></td>
+                                    <td><span class="tab-bulan" onclick="changePeriode('desember')">Desember</span></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <%--<div class="box-header with-border">--%>
+                            <%--<h3 class="box-title"><i class="fa fa-th-list"></i> Periode Januari--%>
+                            <%--</h3>--%>
+                        <%--</div>--%>
+
 
                         <%--<div class="alert alert-info alert-dismissable" id="alert-info">--%>
                         <%--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>--%>
@@ -131,22 +164,24 @@
                             <strong>Error!</strong><span id="error-msg"></span>
                         </div>
 
-                            <div class="row">
-                                <div class="col-md-8 col-md-offset-2">
-                                    <table class="table table-bordered table-striped">
-                                        <thead bgcolor="#90ee90">
-                                            <tr>
-                                                <td>Master</td>
-                                                <td align="center">Nilai</td>
-                                                <td align="center">Action</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="list-body-budgeting">
+                        Periode <span id="nama-periode"></span>
+                        <input type="hidden" id="sel-periode"/>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped" style="font-size: 13px">
+                                    <thead>
+                                        <tr>
+                                            <td>Unit / Pelayanan / Cost Center</td>
+                                            <td align="center">Nilai</td>
+                                            <td align="center">Action</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="list-body-budgeting">
 
-                                        </tbody>
-                                    </table>
-                                </div>
+                                    </tbody>
+                                </table>
                             </div>
+                        </div>
                         <%--<div class="row">--%>
                             <%--<div class="col-md-8 col-md-offset-2">--%>
                                 <%--<h4>Nama Parameter</h4>--%>
@@ -178,78 +213,8 @@
     <!-- /.content -->
 </div>
 
-<div class="modal fade" id="modal-add-coa">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-plus"></i> Add COA
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <div class="row">
-                    <label class="col-md-2 col-md-offset-1">Jenis Investasi</label>
-                    <div class="col-md-6">
-                    <input type="text" class="form-control" id="nama-coa">
-                        <script>
-                            $(document).ready(function() {
-                                var tipe = $("#add-coa-tipe").val();
-                                var functions, mapped;
-                                $('#nama-coa').typeahead({
-                                    minLength: 1,
-                                    source: function (query, process) {
-                                        functions = [];
-                                        mapped = {};
-                                        var data = [];
-                                        dwr.engine.setAsync(false);
-                                        BudgetingAction.getListKodeRekeningByLevel(query, tipe, function (listdata) {
-                                            data = listdata;
-                                        });
-                                        $.each(data, function (i, item) {
-                                            var labelItem = item.namaKodeRekening;
-                                            mapped[labelItem] = {
-                                                id: item.rekeningId,
-                                                nama: item.namaKodeRekening,
-                                                kode : item.kodeRekening,
-                                                parent :item.parentId
-                                            };
-                                            functions.push(labelItem);
-                                        });
-                                        process(functions);
-                                    },
-                                    updater: function (item) {
-                                        var selectedObj = mapped[item];
-                                        $('#rekeningid').val(selectedObj.id);
-                                        $('#namacoa').val(selectedObj.nama);
-                                        $('#parentid').val(selectedObj.parent);
-                                        $('#coa').val(selectedObj.kode);
-                                        return selectedObj.nama;
-                                    }
-                                });
-                            });
-                        </script>
-
-                    <input type="hidden" id="rekeningid">
-                    <input type="hidden" id="namacoa">
-                    <input type="hidden" id="parentid">
-                    <input type="hidden" id="coa">
-                    </div>
-                    </div>
-
-
-                </div>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <div class="modal fade" id="modal-add">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -260,53 +225,9 @@
             <div class="modal-body">
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-md-8 col-md-offset-3">
-                            <div id="form-master">
-                                <%--<strong>Master</strong> <hr style="width: 80%;">--%>
-                                <div class="row">
-                                    <label class="control-label col-sm-2"> <strong>Master</strong> </label>
-                                    <div class="col-sm-6">
-                                        <h5 id="master-name"></h5>
-                                        <input type="hidden" class="form-control" id="masterid" readonly/>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <br>
-                            <div id="form-divisi">
-                                <%--<strong>Divisi</strong> <hr style="width: 80%;">--%>
-                                <div class="row">
-                                    <label class="control-label col-sm-2"><strong>Divisi</strong></label>
-                                    <div class="col-sm-6">
-                                        <h5 id="divisi-name"></h5>
-                                        <input type="hidden" class="form-control" id="divisiid" readonly/>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <br>
-                            <div id="form-periode">
-                                <%--<strong>Periode</strong> <hr style="width: 80%;">--%>
-                                <div class="row">
-                                    <label class="control-label col-sm-2"><strong>Periode</strong></label>
-                                    <div class="col-sm-6">
-                                        <select class="form-control" id="sel-periode">
-                                            <option value="januari">Januari</option>
-                                            <option value="februari">Februari</option>
-                                            <option value="maret">Maret</option>
-                                            <option value="april">April</option>
-                                            <option value="mei">Mei</option>
-                                            <option value="juni">Juni</option>
-                                            <option value="juli">Juli</option>
-                                            <option value="agustus">Agustus</option>
-                                            <option value="september">September</option>
-                                            <option value="oktober">Oktober</option>
-                                            <option value="november">November</option>
-                                            <option value="desember">Desember</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="col-md-12">
+                            <input type="hidden" class="form-control" id="masterid" readonly/>
+                            <input type="hidden" class="form-control" id="divisiid" readonly/>
 
                             <br>
                             <strong>Refrensi</strong><hr style="width: 100%;">
@@ -320,17 +241,9 @@
                             <button class="btn btn-sm btn-warning" onclick="addPerhitungan()" style="float: right;"><i class="fa fa-plus"></i></button>
                             <hr style="width: 100%;">
                             <div id="body-nilai">
-                                <%--<div class="row">--%>
-                                <%--<label class="control-label col-sm-4">Nilai Pendapatan</label>--%>
-                                <%--<div class="col-sm-6">--%>
-                                <%--<input type="number" value="0" class="form-control" id="total-pendapatan" onchange="hitungSubTotal('divisi')"/>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
                             </div>
-
                             <br>
                             <div class="row">
-                                <%--<div class="col-md-4"></div>--%>
                                 <div class="col-md-12" id="display-hitung">
 
                                 </div>
@@ -339,10 +252,6 @@
                         <input type="hidden" id="id-param"/>
                         <input type="hidden" id="ed-unit"/>
                         <input type="hidden" id="ed-tahun"/>
-
-                        <%--<label class="col-md-2 col-md-offset-1">Jenis Investasi</label>--%>
-                        <%--<div class="col-md-6">--%>
-                        <%--</div>--%>
                     </div>
 
                     <div class="alert alert-warning alert-dismissable" id="alert-error-modal" style="display: none">
@@ -471,50 +380,6 @@
             if (res == true){
                 flagNilaiDasar = "";
             }
-        });
-    }
-
-    function showListParameter() {
-        BgPendapatanAction.getListParameterByIdKategori(idKategori, function (list) {
-            var str = "";
-            $.each(list, function (i, item) {
-                str += '<div class="row">' +
-                    '<div class="col-md-8 col-md-offset-2">' +
-                    '<h4 id="label-head-'+item.id+'">' + item.nama +'</h4>' + addButton(item.id) +
-//                    '<button class="btn btn-sm btn-primary" style="float: right;" onclick="showAdd(\''+item.id+'\')"><i class="fa fa-plus"></i> Tambah</button>' +
-                    '<table class="table table-bordered table-striped tree">' +
-                    '<thead id="head-budgeting">' +
-                    '<tr bgcolor="#90ee90">' +
-                    '<td>Periode</td>' +
-                    '<td>Master</td>' +
-                    '<td>Divisi</td>' +
-                    '<td>Nilai</td>' +
-//                    '<td align="center">Action</td>' +
-                    '</tr>' +
-                    '</thead>' +
-                    '<tbody id="body-budgeting-'+ item.id +'">';
-
-                BgPendapatanAction.getListDataParam(item.id, function (listDatas) {
-
-                    $.each(listDatas, function (n, data) {
-                        str += '<tr>' +
-                            '<td>'+data.periode+'</td>' +
-                            '<td>'+data.namaMaster+'</td>' +
-                            '<td>'+data.namaDivisi+'</td>' +
-                            '<td align="right">'+ formatRupiah( data.nilaiTotal )+'</td>' +
-                            '</tr>';
-                    });
-                });
-
-
-                str += '</tbody>' +
-                    '</table>' +
-                    '</div>' +
-                    '</div>' +
-                    '<br/>' ;
-            });
-            $("#list-body-budgeting").html(str);
-
         });
     }
 

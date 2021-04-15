@@ -1,6 +1,7 @@
 package com.neurix.akuntansi.transaksi.budgetingperhitungan.bo.impl;
 
 import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.master.dao.MasterDao;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.master.parameterbudgeting.dao.JenisBudgetingDao;
@@ -14,6 +15,7 @@ import com.neurix.akuntansi.transaksi.budgetingperhitungan.dao.*;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.*;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
+import com.neurix.authorization.position.model.Position;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import org.apache.log4j.Logger;
@@ -670,6 +672,40 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
 
         logger.info("[BudgetingPerhitunganBoImpl.getListEntityNilaiParameterPengadaan] END <<< ");
         return results;
+    }
+
+    @Override
+    public List<ParameterBudgeting> getListPositionInParemeterBudgeting(String jenisBudgeting, String rekeningId) {
+        logger.info("[BudgetingPerhitunganBoImpl.getListPositionInParemeterBudgeting] START >>> ");
+
+        List<ParameterBudgeting> positionList = new ArrayList<>();
+
+        try {
+            positionList = perhitunganBudgetingDao.getPositionFromParameterBudgeting(jenisBudgeting, rekeningId);
+        } catch (HibernateException e){
+            logger.error("[BudgetingPerhitunganBoImpl.getListPositionInParemeterBudgeting] ERROR. ", e);
+            throw new GeneralBOException("[BudgetingPerhitunganBoImpl.getListPositionInParemeterBudgeting] ERROR. ", e);
+        }
+
+        logger.info("[BudgetingPerhitunganBoImpl.getListPositionInParemeterBudgeting] END <<< ");
+        return positionList;
+    }
+
+    @Override
+    public List<ParameterBudgeting> getListKodeRekeningInParameterBudgeting(String jenisBudgeting) {
+        logger.info("[BudgetingPerhitunganBoImpl.getListKodeRekeningInParameterBudgeting] START >>> ");
+
+        List<ParameterBudgeting> kodeRekenings = new ArrayList<>();
+
+        try {
+            kodeRekenings = perhitunganBudgetingDao.getListKodeRekeningInParameterBudgeting(jenisBudgeting);
+        } catch (HibernateException e){
+            logger.error("[BudgetingPerhitunganBoImpl.getListKodeRekeningInParameterBudgeting] ERROR. ", e);
+            throw new GeneralBOException("[BudgetingPerhitunganBoImpl.getListKodeRekeningInParameterBudgeting] ERROR. ", e);
+        }
+
+        logger.info("[BudgetingPerhitunganBoImpl.getListKodeRekeningInParameterBudgeting] END <<< ");
+        return kodeRekenings;
     }
 
     private String getNextIdNilaiPengadaaan(String tahun){

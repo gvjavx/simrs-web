@@ -1,9 +1,11 @@
 package com.neurix.akuntansi.transaksi.budgetingperhitungan.dao;
 
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ItAkunPerhitunganBudgetingEntity;
 import com.neurix.akuntansi.master.parameterbudgeting.model.ParameterBudgeting;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.PerhitunganBudgeting;
+import com.neurix.authorization.position.model.Position;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -679,6 +681,77 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
         }
 
         return listOfResults;
+    }
+
+    public List<ParameterBudgeting> getPositionFromParameterBudgeting(String jenisBudgeting, String rekeningId){
+
+        String SQL = "SELECT \n" +
+                "pb.position_id, \n" +
+                "ps.position_name,\n" +
+                "ps.kodering\n" +
+                "FROM im_akun_parameter_budgeting pb\n" +
+                "INNER JOIN im_position ps ON ps.position_id = pb.position_id\n" +
+                "INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = pb.rekening_id\n" +
+                "WHERE pb.id_jenis_budgeting = :jenisBudgeting\n" +
+                "AND pb.rekening_id = :rekeningId\n" +
+                "AND pb.flag = 'Y' \n" +
+                "GROUP BY\n" +
+                "pb.position_id, \n" +
+                "ps.position_name,\n" +
+                "ps.kodering";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("jenisBudgeting", jenisBudgeting)
+                .setParameter("rekeningId", rekeningId)
+                .list();
+
+        List<ParameterBudgeting> positionList = new ArrayList<>();
+
+        if (list.size() > 0){
+            for (Object[] obj : list){
+                ParameterBudgeting position = new ParameterBudgeting();
+                position.setPositionId(obj[0].toString());
+                position.setNamaDivisi(obj[1].toString());
+                position.setDivisiId(obj[2].toString());
+                positionList.add(position);
+
+            }
+        }
+
+        return positionList;
+    }
+
+    public List<ParameterBudgeting> getListKodeRekeningInParameterBudgeting(String jenisBudgeting){
+
+        String SQL = "SELECT \n" +
+                "pb.rekening_id,\n" +
+                "kd.nama_kode_rekening\n" +
+                "FROM im_akun_parameter_budgeting pb\n" +
+                "INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = pb.rekening_id\n" +
+                "WHERE pb.flag = 'Y'\n" +
+                "AND pb.id_jenis_budgeting = :jenisBudgeting \n" +
+                "GROUP BY\n" +
+                "pb.rekening_id,\n" +
+                "kd.nama_kode_rekening";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("jenisBudgeting", jenisBudgeting)
+                .list();
+
+        List<ParameterBudgeting> kodeRekenings = new ArrayList<>();
+
+        if (list.size() > 0){
+
+            for (Object[] obj : list){
+                ParameterBudgeting kodeRekening = new ParameterBudgeting();
+                kodeRekening.setRekeningId(obj[0].toString());
+                kodeRekening.setNamaKodeRekening(obj[1].toString());
+                kodeRekenings.add(kodeRekening);
+            }
+        }
+
+        return kodeRekenings;
+
     }
 
 }

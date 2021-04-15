@@ -7,12 +7,14 @@ import com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunParameterBudge
 import com.neurix.akuntansi.master.parameterbudgeting.model.ParameterBudgeting;
 import com.neurix.akuntansi.transaksi.budgeting.action.BudgetingAction;
 import com.neurix.akuntansi.transaksi.budgeting.bo.BudgetingBo;
-import com.neurix.akuntansi.transaksi.budgeting.model.*;
+import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.bo.BudgetingPerhitunganBo;
-import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.*;
+import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ItAkunNilaiParameterBudgetingEntity;
+import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ItAkunPerhitunganBudgetingEntity;
+import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.KategoriParameter;
+import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.PerhitunganBudgeting;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
-import com.neurix.authorization.position.model.Position;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -36,8 +38,8 @@ import java.util.stream.Collectors;
 /**
  * Created by reza on 11/08/20.
  */
-public class BgPendapatanAction {
-    private static transient Logger logger = Logger.getLogger(BgPendapatanAction.class);
+public class BgPendapatanActionRev {
+    private static transient Logger logger = Logger.getLogger(BgPendapatanActionRev.class);
     private Budgeting budgeting;
     private String status;
     private String tipe;
@@ -768,39 +770,5 @@ public class BgPendapatanAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
         return budgetingPerhitunganBo.getListPendapatan(brancid, tahun, master, divisi);
-    }
-
-    public List<ParameterBudgeting> getListPositionInParameterBudgeting(String jenisBudgeting, String rekeningId){
-        logger.info("[BgPendapatanAction.getListPositionFromParameterBudgeting] START >>>");
-
-        List<ParameterBudgeting> positionList = new ArrayList<>();
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
-
-        try {
-            positionList = budgetingPerhitunganBo.getListPositionInParemeterBudgeting(jenisBudgeting, rekeningId);
-        } catch (GeneralBOException e){
-            logger.info("[BgPendapatanAction.getListPositionFromParameterBudgeting] ERROR. ", e);
-        }
-
-        logger.info("[BgPendapatanAction.getListPositionFromParameterBudgeting] END <<<");
-        return positionList;
-    }
-
-    public List<ParameterBudgeting> getListKodeRekeningInParameterBudgeting(String jenisBudgeting){
-        logger.info("[BgPendapatanAction.getListPositionFromParameterBudgeting] START >>>");
-
-        List<ParameterBudgeting> positionList = new ArrayList<>();
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
-
-        try {
-            positionList = budgetingPerhitunganBo.getListKodeRekeningInParameterBudgeting(jenisBudgeting);
-        } catch (GeneralBOException e){
-            logger.info("[BgPendapatanAction.getListKodeRekeningInParameterBudgeting] ERROR. ", e);
-        }
-
-        logger.info("[BgPendapatanAction.getListKodeRekeningInParameterBudgeting] END <<<");
-        return positionList;
     }
 }
