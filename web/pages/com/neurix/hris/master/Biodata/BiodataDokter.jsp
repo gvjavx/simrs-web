@@ -1204,6 +1204,10 @@
                                 <s:param name="flag"><s:property value="biodata.flag" /></s:param>
                                 <i class="fa fa-user"></i>  Jadikan Karyawan Kantor
                             </s:a>
+                            <s:a action="berhentikanKso_biodata.action" cssClass="btn btn-warning" id="berhentikanKso">
+                                <s:param name="id"><s:property value="biodata.nip" /></s:param>
+                                <i class="fa fa-user"></i>  Berhentikan Dokter KSO
+                            </s:a>
                         </s:if>
                     </s:if>
 

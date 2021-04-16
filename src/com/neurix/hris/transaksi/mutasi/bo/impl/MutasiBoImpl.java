@@ -1634,8 +1634,6 @@ public class MutasiBoImpl implements MutasiBo {
                 pengalamanLama.setJabatanFlag("N");
                 historyJabatanPegawaiDao.updateAndSave(pengalamanLama);
             }
-
-
         } catch (HibernateException e) {
             logger.error("[PengalamanKerjaBoImpl.saveEdit] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data Pengalaman by Kode Pengalaman, please inform to your admin...," + e.getMessage());
@@ -1672,7 +1670,7 @@ public class MutasiBoImpl implements MutasiBo {
             historyJabatanPegawai.setGolonganId(golonganId);
         }catch (HibernateException e) {
             logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
-            throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data [mutasi] Golongan by NIP, please inform to your admin...," + e.getMessage());
         }
 
         historyJabatanPegawai.setFlag(bean.getFlag());
@@ -1696,7 +1694,11 @@ public class MutasiBoImpl implements MutasiBo {
             historyJabatanPegawai.setPositionName(positionname);
             divisiName = historyJabatanPegawaiDao.getDivisiById(mutasi.getDivisiBaruId());
             historyJabatanPegawai.setDivisiName(divisiName);
-            golonganName = historyJabatanPegawaiDao.getGolonganById(golonganId);
+            if(golonganId != null) {
+                golonganName = historyJabatanPegawaiDao.getGolonganById(golonganId);
+            }else{
+                golonganName = "-";
+            }
             historyJabatanPegawai.setGolonganName(golonganName);
             historyJabatanPegawai.setTanggal(bean.getStTanggalEfektif());
 

@@ -1887,6 +1887,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "INNER JOIN im_position c ON c.position_id = a.position_id\n" +
                 "WHERE a.branch_id ILIKE :unit \n" +
                 "AND b.nama_pegawai ILIKE :nama \n" +
+                "AND b.flag_dokter_kso = 'N' \n" +
                 "AND a.flag = 'Y' \n" +
                 "AND b.flag = 'Y' \n" +
                 "LIMIT 8";
