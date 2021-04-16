@@ -144,14 +144,22 @@ public class LogTrxBoImpl implements LogTrxBo {
                 hsCriteria.put("sent_date_to", sentDateTo);
             }
 
-//            if (searchBean.getStDateStr() != null && !"".equalsIgnoreCase(searchBean.getStDateStr())) {
-//                Timestamp date_str = CommonUtil.convertToTimestamp(searchBean.getStDateStr());
-//                hsCriteria.put("dateStr", date_str);
-//            }
-//            if (searchBean.getStDateEnd() != null && !"".equalsIgnoreCase(searchBean.getStDateEnd())) {
-//                Timestamp date_end = CommonUtil.convertToTimestamp(searchBean.getStDateEnd());
-//                hsCriteria.put("dateEnd", date_end);
-//            }
+            if (searchBean.getStDateStr() != null && !"".equalsIgnoreCase(searchBean.getStDateStr())) {
+                Timestamp date_str = CommonUtil.convertToTimestamp(searchBean.getStDateStr());
+                if("in".equalsIgnoreCase(searchBean.getStatus())) {
+                    hsCriteria.put("received_date_from", date_str);
+                }else if ("out".equalsIgnoreCase(searchBean.getStatus())){
+                    hsCriteria.put("sent_date_from", date_str);
+                }
+            }
+            if (searchBean.getStDateEnd() != null && !"".equalsIgnoreCase(searchBean.getStDateEnd())) {
+                Timestamp date_str = CommonUtil.convertToTimestamp(searchBean.getStDateStr());
+                if("in".equalsIgnoreCase(searchBean.getStatus())) {
+                    hsCriteria.put("received_date_to", date_str);
+                }else if ("out".equalsIgnoreCase(searchBean.getStatus())){
+                    hsCriteria.put("sent_date_to", date_str);
+                }
+            }
 
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBean.getFlag())) {

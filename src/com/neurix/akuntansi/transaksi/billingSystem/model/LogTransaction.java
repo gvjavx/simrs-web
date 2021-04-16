@@ -46,11 +46,43 @@ public class LogTransaction {
     private String stSentDateTo;
 
     //RAKA-untuk search berdasarkan tanggal
-//    private Timestamp DateStr;
-//    private String stDateStr;
-//    private Timestamp DateEnd;
-//    private String stDateEnd;
+    private Timestamp DateStr;
+    private String stDateStr;
+    private Timestamp DateEnd;
+    private String stDateEnd;
 
+    public Timestamp getDateStr() {
+        return DateStr;
+    }
+
+    public void setDateStr(Timestamp dateStr) {
+        DateStr = dateStr;
+    }
+
+    public String getStDateStr() {
+        return stDateStr;
+    }
+
+    public void setStDateStr(String stDateStr) {
+        this.stDateStr = stDateStr;
+    }
+
+    public Timestamp getDateEnd() {
+        return DateEnd;
+    }
+
+    public void setDateEnd(Timestamp dateEnd) {
+        DateEnd = dateEnd;
+    }
+
+    public String getStDateEnd() {
+        return stDateEnd;
+    }
+
+    public void setStDateEnd(String stDateEnd) {
+        this.stDateEnd = stDateEnd;
+    }
+    //RAKA-end
 
     public Timestamp getReceivedDateFrom() {
         return receivedDateFrom;

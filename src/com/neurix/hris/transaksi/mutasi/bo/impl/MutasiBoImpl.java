@@ -908,6 +908,7 @@ public class MutasiBoImpl implements MutasiBo {
                     }
 
 
+                    returnMutasi.setStatus(itMutasiEntity.getStatus());
                     returnMutasi.setCreatedWho(itMutasiEntity.getCreatedWho());
                     returnMutasi.setCreatedDate(itMutasiEntity.getCreatedDate());
                     returnMutasi.setLastUpdate(itMutasiEntity.getLastUpdate());
@@ -1064,23 +1065,44 @@ public class MutasiBoImpl implements MutasiBo {
         Mutasi resultMutasi = new Mutasi();
         List<Mutasi> mutasiList = null;
 
-        try {
-            mutasiList = mutasiDao.getDataReportMutasi(mutasiId);
-        } catch (HibernateException e){
+//        try {
+//            mutasiList = mutasiDao.getDataReportMutasi(mutasiId);
+//        } catch (HibernateException e){
+//            logger.error("[MutasiBoImpl.getDataReportMutasi] Error, " + e.getMessage());
+//            throw new GeneralBOException("Found problem when get data mutasi, please info to your admin..." + e.getMessage());
+//        }
+//        if(mutasiList != null){
+//            for(Mutasi mutasi : mutasiList){
+//                resultMutasi.setNama(mutasi.getNama());
+//                resultMutasi.setPositionLamaName(mutasi.getPositionLamaName());
+//                resultMutasi.setBranchLamaName(mutasi.getBranchLamaName());
+//                resultMutasi.setBranchBaruName(mutasi.getBranchBaruName());
+//                resultMutasi.setPositionBaruName(mutasi.getPositionBaruName());
+//                resultMutasi.setStTanggalEfektif(mutasi.getStTanggalEfektif());
+//                resultMutasi.setNoSk(mutasi.getNoSk());
+//            }
+//        }
+
+        ItMutasiEntity mutasiEntity = new ItMutasiEntity();
+        try{
+            mutasiEntity = mutasiDao.getById("mutasiId", mutasiId);
+        }catch (HibernateException e){
             logger.error("[MutasiBoImpl.getDataReportMutasi] Error, " + e.getMessage());
-            throw new GeneralBOException("Found problem when get data mutasi, please info to your admin..." + e.getMessage());
+            throw new GeneralBOException("Error when retrieving Mutasi by ID, " + e.getMessage());
         }
-        if(mutasiList != null){
-            for(Mutasi mutasi : mutasiList){
-                resultMutasi.setNama(mutasi.getNama());
-                resultMutasi.setPositionLamaName(mutasi.getPositionLamaName());
-                resultMutasi.setBranchLamaName(mutasi.getBranchLamaName());
-                resultMutasi.setBranchBaruName(mutasi.getBranchBaruName());
-                resultMutasi.setPositionBaruName(mutasi.getPositionBaruName());
-                resultMutasi.setStTanggalEfektif(mutasi.getStTanggalEfektif());
-                resultMutasi.setNoSk(mutasi.getNoSk());
-            }
-        }
+
+        resultMutasi.setMutasiId(mutasiEntity.getMutasiId());
+        resultMutasi.setNip(mutasiEntity.getNip());
+        resultMutasi.setNoSk(mutasiEntity.getNoSk());
+        resultMutasi.setTanggalEfektif(mutasiEntity.getTanggalEfektif());
+        resultMutasi.setBranchLamaId(mutasiEntity.getBranchLamaId());
+        resultMutasi.setBranchBaruId(mutasiEntity.getBranchBaruId());
+        resultMutasi.setDivisiLamaId(mutasiEntity.getDivisiLamaId());
+        resultMutasi.setDivisiBaruId(mutasiEntity.getDivisiBaruId());
+        resultMutasi.setPositionLamaId(mutasiEntity.getPositionLamaId());
+        resultMutasi.setPositionBaruId(mutasiEntity.getPositionBaruId());
+        resultMutasi.setStatus(mutasiEntity.getStatus());
+
 
         logger.info("[MutasiBoImpl.getDataReportMutasi] start process <<<");
         return resultMutasi;

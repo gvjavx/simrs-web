@@ -480,18 +480,20 @@ public class MutasiAction extends BaseMasterAction{
             String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
             reportParams.put("alamatUni", branch.getAlamatSurat()+","+stTanggal);
             reportParams.put("branchName", branch.getBranchName());
-            reportParams.put("titleReport", "Surat Mutasi");
-            reportParams.put("noSurat", noSurat);
-            reportParams.put("tanggalSk", searchMutasi.getStTanggalEfektif());
+//            reportParams.put("titleReport", "Surat Mutasi");
+//            reportParams.put("noSurat", noSurat);
+//            reportParams.put("tanggalSk", searchMutasi.getStTanggalEfektif());
 
-            reportParams.put("namaPegawai", searchMutasi.getNama());
-            reportParams.put("jabatanLama", searchMutasi.getPositionLamaName());
-            reportParams.put("unitLama", searchMutasi.getBranchLamaName());
-            reportParams.put("jabatanBaru", searchMutasi.getPositionBaruName());
-            reportParams.put("unitBaru", searchMutasi.getBranchBaruName());
-            reportParams.put("gajiBaru","Rp. "+ stGajiPegawai);
+//            reportParams.put("namaPegawai", searchMutasi.getNama());
+//            reportParams.put("jabatanLama", searchMutasi.getPositionLamaName());
+//            reportParams.put("unitLama", searchMutasi.getBranchLamaName());
+//            reportParams.put("jabatanBaru", searchMutasi.getPositionBaruName());
+//            reportParams.put("unitBaru", searchMutasi.getBranchBaruName());
+//            reportParams.put("gajiBaru","Rp. "+ stGajiPegawai);
             stTanggal = CommonUtil.convertDateToString( new java.util.Date());
             reportParams.put("date", stTanggal);
+
+            reportParams.put("mutasiId", searchMutasi.getMutasiId());
             try {
                 preDownload();
             } catch (SQLException e) {

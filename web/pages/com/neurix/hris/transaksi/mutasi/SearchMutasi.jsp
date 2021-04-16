@@ -256,9 +256,11 @@ To change this template use File | Settings | File Templates.
                                             <td><s:property value="positionBaruName"/></td>
                                             <td><s:property value="stTanggalEfektif"/></td>
                                             <td align="center">
+                                                <s:if test='#row.statusName == "Mutasi" || #row.statusName == "Rotasi"'>
                                                 <a href="javascript:;" data="<s:property value="%{#row.mutasiId}"/>" class="item-print" id="<s:property value="%{#row.mutasiId}"/>">
                                                     <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_edit">
                                                 </a>
+                                                </s:if>
                                             </td>
                                         </tr>
                                     </s:iterator>

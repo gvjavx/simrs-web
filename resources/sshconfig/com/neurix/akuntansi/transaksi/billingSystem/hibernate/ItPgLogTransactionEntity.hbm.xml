@@ -6,68 +6,80 @@
 <hibernate-mapping>
     <class name="com.neurix.akuntansi.transaksi.billingSystem.model.ItPgLogTransactionEntity" dynamic-update="true"
            table="it_pg_log_transaction" select-before-update="true" schema="public">
-            <id name="pgLogTrxId">
-                <column name="pg_log_trx_id"/>
-            </id>
-            <property name="trxId">
-                <column name="trx_id"/>
-            </property>
-            <property name="tipeTrx">
-                <column name="tipe_trx"/>
-            </property>
-            <property name="bankName">
-                <column name="bank_name"/>
-            </property>
-            <property name="noVirtualAccount">
-                <column name="no_virtual_account"/>
-            </property>
-            <property name="noRekamMedik">
-                <column name="no_rekam_medik"/>
-            </property>
-            <property name="trxAmount">
-                <column name="trx_amount"/>
-            </property>
-            <property name="namePerson">
-                <column name="name_person"/>
-            </property>
-            <property name="addressPerson">
-                <column name="address_person"/>
-            </property>
-            <property name="phonePerson">
-                <column name="phone_person"/>
-            </property>
-            <property name="emailPerson">
-                <column name="email_person"/>
-            </property>
-            <property name="status">
-                <column name="status"/>
-            </property>
-            <property name="message">
-                <column name="message"/>
-            </property>
-            <property name="sentDate">
-                <column name="sent_date"/>
-            </property>
-            <property name="receivedDate">
-                <column name="received_date"/>
-            </property>
-            <property name="createdDate">
-                <column name="created_date"/>
-            </property>
-            <property name="createdWho">
-                <column name="created_who"/>
-            </property>
-            <property name="lastUpdate">
-                <column name="last_update"/>
-            </property>
-            <property name="lastUpdateWho">
-                <column name="last_update_who"/>
-            </property>
-            <property name="action">
-                <column name="action"/>
-            </property>
-            <property name="flag">
-                <column name="flag"/>
-            </property>
+        <id name="pgLogTrxId">
+            <column name="pg_log_trx_id"/>
+        </id>
+        <property name="trxId">
+            <column name="trx_id"/>
+        </property>
+        <property name="tipeTrx">
+            <column name="tipe_trx"/>
+        </property>
+        <property name="bankName">
+            <column name="bank_name"/>
+        </property>
+        <property name="noVirtualAccount">
+            <column name="no_virtual_account"/>
+        </property>
+        <property name="noRekamMedik">
+            <column name="no_rekam_medik"/>
+        </property>
+        <property name="trxAmount">
+            <column name="trx_amount"/>
+        </property>
+        <property name="namePerson">
+            <column name="name_person"/>
+        </property>
+        <property name="addressPerson">
+            <column name="address_person"/>
+        </property>
+        <property name="phonePerson">
+            <column name="phone_person"/>
+        </property>
+        <property name="emailPerson">
+            <column name="email_person"/>
+        </property>
+        <property name="status">
+            <column name="status"/>
+        </property>
+        <property name="statusBank">
+            <column name="status_bank"/>
+        </property>
+        <property name="message">
+            <column name="message"/>
+        </property>
+        <property name="channel">
+            <column name="channel"/>
+        </property>
+        <property name="invoiceDate">
+            <column name="invoice_date"/>
+        </property>
+        <property name="invoiceNumber">
+            <column name="invoice_number"/>
+        </property>
+        <property name="sentDate">
+            <column name="sent_date"/>
+        </property>
+        <property name="receivedDate">
+            <column name="received_date"/>
+        </property>
+        <property name="createdDate">
+            <column name="created_date"/>
+        </property>
+        <property name="createdWho">
+            <column name="created_who"/>
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update"/>
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who"/>
+        </property>
+        <property name="action">
+            <column name="action"/>
+        </property>
+        <property name="flag">
+            <column name="flag"/>
+        </property>
     </class>
 </hibernate-mapping>
