@@ -151,18 +151,18 @@ public class LaporanOpsAction extends BaseTransactionAction {
 
     public List<Ruangan> listRuangan(String idKelas, String branchId) {
 
-        logger.info("[TindakanRawatAction.listTindakanRawat] start process >>>");
+        logger.info("[LaporanOpsAction.listRuangan] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
         List<Ruangan> ruanganList = new ArrayList<>();
         try {
             ruanganList = ruanganBo.getJustListRuangan(idKelas, branchId);
         } catch (GeneralBOException e) {
-            logger.error("[TindakanRawatAction.listTindakanRawat] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+            logger.error("[LaporanOpsAction.listRuangan] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
         }
 
-        logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
+        logger.info("[LaporanOpsAction.listRuangan] start process >>>");
         return ruanganList;
     }
 
