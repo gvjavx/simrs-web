@@ -771,7 +771,7 @@ public class BgPendapatanAction {
         return budgetingPerhitunganBo.getListPendapatan(brancid, tahun, master, divisi);
     }
 
-    public List<ParameterBudgeting> getListPositionInParameterBudgeting(String jenisBudgeting, String rekeningId, String periode, String tahun){
+    public List<ParameterBudgeting> getListPositionInParameterBudgeting(String jenisBudgeting, String rekeningId, String periode, String tahun, String branchId){
         logger.info("[BgPendapatanAction.getListPositionFromParameterBudgeting] START >>>");
 
         List<ParameterBudgeting> positionList = new ArrayList<>();
@@ -779,7 +779,7 @@ public class BgPendapatanAction {
         BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
 
         try {
-            positionList = budgetingPerhitunganBo.getListPositionInParemeterBudgeting(jenisBudgeting, rekeningId, periode, tahun);
+            positionList = budgetingPerhitunganBo.getListPositionInParemeterBudgeting(jenisBudgeting, rekeningId, periode, tahun, branchId);
         } catch (GeneralBOException e){
             logger.info("[BgPendapatanAction.getListPositionFromParameterBudgeting] ERROR. ", e);
         }
@@ -788,7 +788,7 @@ public class BgPendapatanAction {
         return positionList;
     }
 
-    public List<ParameterBudgeting> getListKodeRekeningInParameterBudgeting(String jenisBudgeting, String tahun){
+    public List<ParameterBudgeting> getListKodeRekeningInParameterBudgeting(String jenisBudgeting, String tahun, String branchId){
         logger.info("[BgPendapatanAction.getListPositionFromParameterBudgeting] START >>>");
 
         List<ParameterBudgeting> positionList = new ArrayList<>();
@@ -796,7 +796,7 @@ public class BgPendapatanAction {
         BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
 
         try {
-            positionList = budgetingPerhitunganBo.getListKodeRekeningInParameterBudgeting(jenisBudgeting, tahun);
+            positionList = budgetingPerhitunganBo.getListKodeRekeningInParameterBudgeting(jenisBudgeting, tahun, branchId);
         } catch (GeneralBOException e){
             logger.info("[BgPendapatanAction.getListKodeRekeningInParameterBudgeting] ERROR. ", e);
         }
@@ -805,7 +805,7 @@ public class BgPendapatanAction {
         return positionList;
     }
 
-    public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId, String periode, String tahun){
+    public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId, String periode, String tahun, String branchId){
         logger.info("[BgPendapatanAction.getListMasterInParameterBudgeting] START >>>");
 
         List<ParameterBudgeting> masterList = new ArrayList<>();
@@ -813,7 +813,7 @@ public class BgPendapatanAction {
         BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
 
         try {
-            masterList = budgetingPerhitunganBo.getListMasterInParameterBudgeting(rekeningId, positionId, periode, tahun);
+            masterList = budgetingPerhitunganBo.getListMasterInParameterBudgeting(rekeningId, positionId, periode, tahun, branchId);
         } catch (GeneralBOException e){
             logger.info("[BgPendapatanAction.getListMasterInParameterBudgeting] ERROR. ", e);
         }

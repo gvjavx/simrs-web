@@ -47,9 +47,9 @@ public interface BudgetingPerhitunganBo {
     public List<ParameterBudgeting> getListPendapatan(String branchId, String tahun, String master, String divisi) throws GeneralBOException;
     public String getNextIdBiayaRutin() throws GeneralBOException;
 
-    public List<ParameterBudgeting> getListPositionInParemeterBudgeting(String jenisBudgeting, String rekeningId, String periode, String tahun);
-    public List<ParameterBudgeting> getListKodeRekeningInParameterBudgeting(String jenisBudgeting, String tahun);
-    public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId, String periode, String tahun);
+    public List<ParameterBudgeting> getListPositionInParemeterBudgeting(String jenisBudgeting, String rekeningId, String periode, String tahun, String branchId);
+    public List<ParameterBudgeting> getListKodeRekeningInParameterBudgeting(String jenisBudgeting, String tahun, String branchId);
+    public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId, String periode, String tahun, String branchId);
 
     public void saveAddDrafPendapatan(ItAkunNilaiParameterBudgetingEntity nilaiParameterEntity, List<ItAkunPerhitunganBudgetingEntity> listPerhitunganEntity, PerhitunganBudgeting bean) throws GeneralBOException;
 }

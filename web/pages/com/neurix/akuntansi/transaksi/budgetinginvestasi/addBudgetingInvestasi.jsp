@@ -21,6 +21,20 @@
         .treegrid-indent {width:16px; height: 16px; display: inline-block; position: relative;}
 
         .treegrid-expander { width:16px; height: 16px; display: inline-block; position: relative; cursor: pointer;}
+
+        .bold{
+            font-weight: bold;
+            color: black;
+        }
+        .tab-bulan{
+            color: grey;
+        }
+        .tab-bulan:hover{
+            cursor: pointer;
+        }
+        .expand:hover{
+            cursor: pointer;
+        }
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/BranchAction.js"/>'></script>
@@ -80,21 +94,22 @@
                     <div class="box-body">
                         <%--<s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">--%>
                         <div class="form-group form-horizontal">
+
+
+                            <div class="row">
+                                <div class="col-md-6 col-md-offset-3">
+                                    <table class="table table-bordered table-striped">
+                                        <tbody id="body-nilai-dasar">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="col-md-12">
                                     <h4>
                                         <s:property value="budgeting.namaKategori"/> - <s:property value="budgeting.branchName"/> <s:property value="budgeting.tahun"/>
                                     </h4>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6 col-md-offset-3">
-                                    <%--<h4>Nilai Dasar : </h4>--%>
-                                    <table class="table table-bordered table-striped">
-                                        <tbody id="body-nilai-dasar">
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
 
@@ -109,12 +124,33 @@
                     </div>
 
                     <div class="box-header with-border"></div>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i>
-                            <%--List Tutup Period <strong><span id="label-tahun"></span> - <span id="label-bulan"></span></strong> --%>
-                        </h3>
-                    </div>
+                    <%--<div class="box-header with-border">--%>
+                        <%--<h3 class="box-title"><i class="fa fa-th-list"></i>--%>
+                            <%--&lt;%&ndash;List Tutup Period <strong><span id="label-tahun"></span> - <span id="label-bulan"></span></strong> &ndash;%&gt;--%>
+                        <%--</h3>--%>
+                    <%--</div>--%>
                     <div class="box-body">
+
+                        <span style="font-weight: bold">Pilih Periode :</span>
+
+                        <div class="list-bulan">
+                            <table class="table" width="100%" style="font-size: 13px;">
+                                <tr style="border-bottom: solid 1px lightgrey;">
+                                    <td><span id="tab-bulan-januari" name="bulan" class="tab-bulan" onclick="changePeriode('januari')">Januari</span></td>
+                                    <td><span id="tab-bulan-februari" name="bulan" class="tab-bulan" onclick="changePeriode('februari')">Februari</span></td>
+                                    <td><span id="tab-bulan-maret" name="bulan" class="tab-bulan" onclick="changePeriode('maret')">Maret</span></td>
+                                    <td><span id="tab-bulan-april" name="bulan" class="tab-bulan" onclick="changePeriode('april')">April</span></td>
+                                    <td><span id="tab-bulan-mei" name="bulan" class="tab-bulan" onclick="changePeriode('mei')">Mei</span></td>
+                                    <td><span id="tab-bulan-juni" name="bulan" class="tab-bulan" onclick="changePeriode('juni')">Juni</span></td>
+                                    <td><span id="tab-bulan-juli" name="bulan" class="tab-bulan" onclick="changePeriode('juli')">Juli</span></td>
+                                    <td><span id="tab-bulan-agustus" name="bulan" class="tab-bulan" onclick="changePeriode('agustus')">Agustus</span></td>
+                                    <td><span id="tab-bulan-september" name="bulan" name="bulan" class="tab-bulan" onclick="changePeriode('september')">September</span></td>
+                                    <td><span id="tab-bulan-oktober" name="bulan" class="tab-bulan" onclick="changePeriode('oktober')">Oktober</span></td>
+                                    <td><span id="tab-bulan-november" name="bulan" class="tab-bulan" onclick="changePeriode('november')">November</span></td>
+                                    <td><span id="tab-bulan-desember" name="bulan" class="tab-bulan" onclick="changePeriode('desember')">Desember</span></td>
+                                </tr>
+                            </table>
+                        </div>
 
                         <%--<div class="alert alert-info alert-dismissable" id="alert-info">--%>
                         <%--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>--%>
@@ -131,14 +167,17 @@
                             <strong>Error!</strong><span id="error-msg"></span>
                         </div>
 
+                        <span style="font-weight: bold">Periode <span id="nama-periode"></span> : </span>
+                        <input type="hidden" id="sel-periode"/>
+
                         <div class="row">
-                            <div class="col-md-8 col-md-offset-2">
-                                <table class="table table-bordered table-striped">
-                                    <thead bgcolor="#90ee90">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped" style="font-size: 13px;">
+                                    <thead>
                                     <tr>
-                                        <td>Divisi</td>
-                                        <td align="center">Nilai</td>
-                                        <td align="center">Action</td>
+                                        <td>Investasi</td>
+                                        <td align="right">Nilai</td>
+                                        <td align="center" width="100px">Action</td>
                                     </tr>
                                     </thead>
                                     <tbody id="list-body-budgeting">
@@ -912,6 +951,22 @@
         var form = { "budgeting.tahun":tahun, "budgeting.branchId":unit, "budgeting.jenis":"add" };
         var host = firstpath()+"/bginvestasi/add_bginvestasi.action";
         post(host, form);;
+    }
+
+    function changePeriode(nama){
+        $("#nama-periode").text(nama);
+        $("#sel-periode").val(nama.toLowerCase());
+        $(".tab-bulan").removeAttr("class");
+        var name = $('[name=bulan]');
+        $.each(name, function (i, item) {
+
+            if (item.id == "tab-bulan-"+nama){
+                $("#"+item.id).attr("class", "bold");
+            } else {
+                $("#"+item.id).attr("class", "tab-bulan");
+            }
+        });
+        showListMaster();
     }
 
 </script>

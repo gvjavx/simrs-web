@@ -422,7 +422,7 @@
 //        BgPendapatanAction.getListMasterBudgeting(idKategori, unit, tahun, function (list) {
 
         var periode = $("#sel-periode").val();
-        BgPendapatanAction.getListPositionInParameterBudgeting('PDT', idKategori, periode, tahun, function (list) {
+        BgPendapatanAction.getListPositionInParameterBudgeting('PDT', idKategori, periode, tahun, unit, function (list) {
             var str = "";
             $.each(list, function (i, item) {
                 str += '<tr>' +
@@ -456,7 +456,7 @@
     function listDivisi(i, masterid) {
         var periode = $("#sel-periode").val();
 //        BgPendapatanAction.getListDivisiBudgeting(idKategori, masterid, function (list) {
-        BgPendapatanAction.getListMasterInParameterBudgeting(idKategori, masterid, periode, tahun, function (list) {
+        BgPendapatanAction.getListMasterInParameterBudgeting(idKategori, masterid, periode, tahun, unit, function (list) {
 
             var str = '<br><table class="table table-striped" style="font-size: 13px;">' +
                 '<thead id="head-budgeting">' +

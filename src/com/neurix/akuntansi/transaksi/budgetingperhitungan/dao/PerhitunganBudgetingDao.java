@@ -683,7 +683,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
         return listOfResults;
     }
 
-    public List<ParameterBudgeting> getPositionFromParameterBudgeting(String jenisBudgeting, String rekeningId, String periode, String tahun){
+    public List<ParameterBudgeting> getPositionFromParameterBudgeting(String jenisBudgeting, String rekeningId, String periode, String tahun, String branchId){
 
         String SQL = "SELECT \n" +
                 "pb.position_id, \n" +
@@ -693,7 +693,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
                 "FROM im_akun_parameter_budgeting pb\n" +
                 "INNER JOIN im_position ps ON ps.position_id = pb.position_id\n" +
                 "INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = pb.rekening_id\n" +
-                "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE periode = '"+periode+"' AND tahun = '"+tahun+"') npb ON npb.id_parameter = pb.id \n" +
+                "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE periode = '"+periode+"' AND tahun = '"+tahun+"' AND branch_id = '"+branchId+"') npb ON npb.id_parameter = pb.id \n" +
                 "WHERE pb.id_jenis_budgeting = :jenisBudgeting\n" +
                 "AND pb.rekening_id = :rekeningId\n" +
                 "AND pb.flag = 'Y' \n" +
@@ -724,7 +724,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
         return positionList;
     }
 
-    public List<ParameterBudgeting> getListKodeRekeningInParameterBudgeting(String jenisBudgeting, String tahun){
+    public List<ParameterBudgeting> getListKodeRekeningInParameterBudgeting(String jenisBudgeting, String tahun, String branchId){
 
         String SQL = "SELECT \n" +
                 "pb.rekening_id,\n" +
@@ -732,7 +732,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
                 "SUM(npb.nilai_total) as nilai_total \n" +
                 "FROM im_akun_parameter_budgeting pb\n" +
                 "INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = pb.rekening_id\n" +
-                "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE tahun = '"+tahun+"') npb ON npb.id_parameter = pb.id \n" +
+                "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE tahun = '"+tahun+"' AND branch_id = '"+branchId+"') npb ON npb.id_parameter = pb.id \n" +
                 "WHERE pb.flag = 'Y'\n" +
                 "AND pb.id_jenis_budgeting = :jenisBudgeting \n" +
                 "GROUP BY\n" +
@@ -759,7 +759,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
         return kodeRekenings;
     }
 
-    public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId, String periode, String tahun){
+    public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId, String periode, String tahun, String branchId){
 
         String SQL = "SELECT \n" +
                 "pb.master_id, \n" +
@@ -768,7 +768,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
                 "SUM(npb.nilai_total) as nilai_total\n" +
                 "FROM im_akun_parameter_budgeting pb\n" +
                 "INNER JOIN im_akun_master ms ON ms.nomor_master = pb.master_id \n" +
-                "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE periode = '"+periode+"' AND tahun = '"+tahun+"') npb ON npb.id_parameter = pb.id \n" +
+                "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE periode = '"+periode+"' AND tahun = '"+tahun+"' AND branch_id = '"+branchId+"') npb ON npb.id_parameter = pb.id \n" +
                 "WHERE pb.flag = 'Y'\n" +
                 "AND pb.position_id = :positionId \n" +
                 "AND pb.rekening_id = :rekeningId \n" +

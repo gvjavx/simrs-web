@@ -1007,5 +1007,22 @@ public class BgInvestasiAction {
         return budgetingPerhitunganBo.getListEntityNilaiParameterPengadaan(param);
     }
 
+    public List<ParameterBudgeting> getListKodeRekeningInParameterBudgeting(String jenisBudgeting, String tahun, String branchId){
+        logger.info("[BgInvestasiAction.getListKodeRekeningInParameterBudgeting] START >>>");
+
+        List<ParameterBudgeting> positionList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+
+        try {
+            positionList = budgetingPerhitunganBo.getListKodeRekeningInParameterBudgeting(jenisBudgeting, tahun, branchId);
+        } catch (GeneralBOException e){
+            logger.info("[BgInvestasiAction.getListKodeRekeningInParameterBudgeting] ERROR. ", e);
+        }
+
+        logger.info("[BgInvestasiAction.getListKodeRekeningInParameterBudgeting] END <<<");
+        return positionList;
+    }
+
 
 }

@@ -675,13 +675,13 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     }
 
     @Override
-    public List<ParameterBudgeting> getListPositionInParemeterBudgeting(String jenisBudgeting, String rekeningId, String periode, String tahun) {
+    public List<ParameterBudgeting> getListPositionInParemeterBudgeting(String jenisBudgeting, String rekeningId, String periode, String tahun, String branchId) {
         logger.info("[BudgetingPerhitunganBoImpl.getListPositionInParemeterBudgeting] START >>> ");
 
         List<ParameterBudgeting> positionList = new ArrayList<>();
 
         try {
-            positionList = perhitunganBudgetingDao.getPositionFromParameterBudgeting(jenisBudgeting, rekeningId, periode, tahun);
+            positionList = perhitunganBudgetingDao.getPositionFromParameterBudgeting(jenisBudgeting, rekeningId, periode, tahun, branchId);
         } catch (HibernateException e){
             logger.error("[BudgetingPerhitunganBoImpl.getListPositionInParemeterBudgeting] ERROR. ", e);
             throw new GeneralBOException("[BudgetingPerhitunganBoImpl.getListPositionInParemeterBudgeting] ERROR. ", e);
@@ -692,13 +692,13 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     }
 
     @Override
-    public List<ParameterBudgeting> getListKodeRekeningInParameterBudgeting(String jenisBudgeting, String tahun) {
+    public List<ParameterBudgeting> getListKodeRekeningInParameterBudgeting(String jenisBudgeting, String tahun, String branchId) {
         logger.info("[BudgetingPerhitunganBoImpl.getListKodeRekeningInParameterBudgeting] START >>> ");
 
         List<ParameterBudgeting> kodeRekenings = new ArrayList<>();
 
         try {
-            kodeRekenings = perhitunganBudgetingDao.getListKodeRekeningInParameterBudgeting(jenisBudgeting, tahun);
+            kodeRekenings = perhitunganBudgetingDao.getListKodeRekeningInParameterBudgeting(jenisBudgeting, tahun, branchId);
         } catch (HibernateException e){
             logger.error("[BudgetingPerhitunganBoImpl.getListKodeRekeningInParameterBudgeting] ERROR. ", e);
             throw new GeneralBOException("[BudgetingPerhitunganBoImpl.getListKodeRekeningInParameterBudgeting] ERROR. ", e);
@@ -709,13 +709,13 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     }
 
     @Override
-    public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId, String periode, String tahun) {
+    public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId, String periode, String tahun, String branchId) {
         logger.info("[BudgetingPerhitunganBoImpl.getListMasterInParameterBudgeting] START >>> ");
 
         List<ParameterBudgeting> masters = new ArrayList<>();
 
         try {
-            masters = perhitunganBudgetingDao.getListMasterInParameterBudgeting(rekeningId, positionId, periode, tahun);
+            masters = perhitunganBudgetingDao.getListMasterInParameterBudgeting(rekeningId, positionId, periode, tahun, branchId);
         } catch (HibernateException e){
             logger.error("[BudgetingPerhitunganBoImpl.getListMasterInParameterBudgeting] ERROR. ", e);
             throw new GeneralBOException("[BudgetingPerhitunganBoImpl.getListMasterInParameterBudgeting] ERROR. ", e);

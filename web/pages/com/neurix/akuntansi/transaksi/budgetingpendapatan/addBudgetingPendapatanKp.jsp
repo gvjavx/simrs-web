@@ -28,6 +28,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/BgPendapatanAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BudgetingNilaiDasarAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/TutuPeriodAction.js"/>'></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/lodash.js"/>"></script>
@@ -48,6 +49,10 @@
                 return 0;
             }
         }
+
+        $(document).ready(function () {
+            getSelectTahun('sel-tahun');
+        });
 
     </script>
 </head>
@@ -86,10 +91,6 @@
                                         <label class="control-label col-sm-2">Tahun</label>
                                         <div class="col-sm-2">
                                             <select class="form-control" id="sel-tahun">
-                                                <option value="2020">2020</option>
-                                                <option value="2021">2021</option>
-                                                <option value="2022">2022</option>
-                                                <option value="2023">2023</option>
                                             </select>
                                         </div>
                                     </div>
@@ -857,6 +858,20 @@
 //        var form = { "budgeting.tahun":tahun, "budgeting.branchId":unit, "budgeting.tipe":tipe };
 //        var host = firstpath()+"/budgeting/add_budgeting.action?status=add&tipe=detail&trans=ADD_DRAFT";
 //        post(host, form);
+    }
+
+    function getSelectTahun(idelement) {
+
+        //var str = "<option value=''> - </option>";
+        var str = "";
+        TutuPeriodAction.getListTahunKedepan('5', function (res) {
+
+            $.each(res, function (i, item) {
+                str += "<option value='"+item+"'>" + item + "</option>";
+            });
+
+            $("#"+idelement).html(str);
+        });
     }
 
 </script>

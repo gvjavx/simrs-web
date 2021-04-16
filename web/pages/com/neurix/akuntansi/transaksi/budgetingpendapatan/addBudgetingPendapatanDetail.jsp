@@ -146,7 +146,7 @@
                     </div>
                     <div class="box-header with-border">
                         <i class="fa fa-th-list"></i>
-                            List kategori Budgeting Pendapatan <strong><span id="label-tahun"></span> - <span id="label-branch"></span></strong>
+                            List kategori Budgeting Pendapatan <strong><span id="label-tahun"></span> <span id="label-branch"></span></strong>
                     </div>
                     <div class="box-body">
 
@@ -464,7 +464,7 @@
         //alert("klik");
 
         //BgPendapatanAction.getListKodeRekeningInParameterBudgeting("PDT", tahun, unit, function (res) {
-        BgPendapatanAction.getListKodeRekeningInParameterBudgeting("PDT", tahun, function (res) {
+        BgPendapatanAction.getListKodeRekeningInParameterBudgeting("PDT", tahun, unit, function (res) {
             var str = "";
             $.each(res, function (i, item) {
                 str += "<tr>" +
