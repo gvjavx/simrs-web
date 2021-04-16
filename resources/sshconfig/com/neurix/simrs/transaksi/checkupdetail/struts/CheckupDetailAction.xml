@@ -99,8 +99,15 @@
                 <param name="reportParameters">reportParams</param>
             </result>
 
+            <!--<result name="print_pindah_rs" type="jasper">-->
+                <!--<param name="location">/pages/report/com/neurix/simrs/printPindahRumahSakit.jasper</param>-->
+                <!--<param name="connection">connection</param>-->
+                <!--<param name="format">PDF</param>-->
+                <!--<param name="reportParameters">reportParams</param>-->
+            <!--</result>-->
+
             <result name="print_pindah_rs" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/printPindahRumahSakit.jasper</param>
+                <param name="location">/pages/report/com/neurix/simrs/printSuratPernyataanRujuk.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>

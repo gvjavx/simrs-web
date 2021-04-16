@@ -156,6 +156,9 @@ apply the skin class to the body tag so the changes take effect.
         opacity: .5 !important;
     }
 
+    .ui-dialog-titlebar-close{
+        display: none;
+    }
     .modal { overflow-y: auto}
 </style>
 

@@ -410,7 +410,8 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 "c.id_header_pemeriksaan,\n" +
                 "f.nama_kategori,\n" +
                 "f.kategori,\n" +
-                "a.created_date \n" +
+                "a.created_date, \n" +
+                "c.is_periksa_luar \n"+
                 "FROM it_simrs_header_checkup a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                 "INNER JOIN it_simrs_header_pemeriksaan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
@@ -437,7 +438,6 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     namaPelayanan = obj[4].toString();
                     lab.setCreatedDate(obj[8] == null ? null : (Timestamp) obj[8]);
                 }
-
                 lab.setTanggalMasukLab(obj[0] == null ? null : (Timestamp) obj[0]);
                 lab.setIdPasien(obj[1] == null ? "" : obj[1].toString());
                 lab.setIdDetailCheckup(obj[2] == null ? "" : obj[2].toString());
@@ -446,11 +446,16 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 lab.setIdPeriksaLab(obj[5] == null ? "" : obj[5].toString());
                 lab.setKategoriLabName(obj[6] == null ? "" : obj[6].toString());
                 lab.setKeterangan(obj[7] == null ? "" : obj[7].toString());
+                lab.setIsPeriksaLuar(obj[9] == null ? "" : obj[9].toString());
+                if(lab.getIdPeriksaLab() != null){
+                    lab.setUploadDalam(getListUploadHasilPemeriksaan(lab.getIdPeriksaLab()));
+                }
                 labList.add(lab);
             }
         }
         return labList;
     }
+
 
     public List<PeriksaLab> getListParameterPemeriksaan(String idHeader) {
         List<PeriksaLab> labList = new ArrayList<>();

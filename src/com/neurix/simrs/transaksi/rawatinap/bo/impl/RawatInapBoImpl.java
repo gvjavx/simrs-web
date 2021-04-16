@@ -1075,6 +1075,12 @@ public class RawatInapBoImpl implements RawatInapBo {
                 detailCheckup.setCatatan(bean.getCatatan());
                 detailCheckup.setKeteranganSelesai(bean.getKeteranganSelesai());
                 detailCheckup.setStatusPeriksa("3");
+                if(bean.getRsRujukan() != null){
+                    detailCheckup.setRsRujukan(bean.getRsRujukan());
+                }
+                if(bean.getTglRujukan() != null){
+                    detailCheckup.setTglCekup(Date.valueOf(bean.getTglRujukan()));
+                }
                 response = updateDetail(detailCheckup);
                 if ("success".equalsIgnoreCase(response.getStatus())) {
                     response = updateRawatInap(bean);
