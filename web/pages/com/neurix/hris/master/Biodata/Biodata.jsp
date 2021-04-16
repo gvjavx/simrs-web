@@ -4596,10 +4596,14 @@
                         '<td >' + (i + 1) + '</td>' +
                         '<td >' + item.name + '</td>' +
                         '<td align="center">' + item.statusKeluargaName + '</td>' +
-                        '<td align="center">' + item.gender + '</td>' +
-                        '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>' +
+                        '<td align="center">' + item.gender + '</td>';
+                    if(item.tanggalLahir != null) {
+                        tmp_table += '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>';
+                    }else{
+                        tmp_table += '<td align="center">' + ' - ' + '</td>';
+                    }
                         /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/
-                        '<td align="center">' +
+                    tmp_table += '<td align="center">' +
                         "<a href='javascript:;' class ='item-edit' data ='" + item.keluargaId + "' >" +
                         "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
                         '</a>' +
@@ -4616,8 +4620,12 @@
                         '<td >' + (i + 1 ) + '</td>' +
                         '<td >' + item.name + '</td>' +
                         '<td align="center">' + item.statusKeluargaName + '</td>' +
-                        '<td align="center">' + item.gender + '</td>' +
-                        '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>' +
+                        '<td align="center">' + item.gender + '</td>';
+                            if(item.tanggalLahir != null) {
+                                tmp_table += '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>';
+                            }else{
+                                tmp_table += '<td align="center">' + ' - ' + '</td>';
+                            }
                         /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/
                         "</tr>";
                     </s:else>
@@ -5718,7 +5726,9 @@
                 var myDate = new Date(listdata.tanggalLahir);
                 $('#keluargaName').val(listdata.name);
                 $('#statusKeluarga').val(listdata.statusKeluargaId);
-                $('#tanggalLahirkeluarga').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                if(listdata.tanggalLahir != null){
+                    $('#tanggalLahirkeluarga').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                }
                 $('#keluargaId').val(listdata.keluargaId);
                 $('#genderKeluarga').val(listdata.gender);
             });
@@ -5730,7 +5740,9 @@
                     $('#keluargaName').val(item.name);
                     $('#genderKeluarga').val(item.gender).change();
                     $('#statusKeluarga').val(item.statusKeluargaId);
-                    $('#tanggalLahirkeluarga').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                    if(item.tanggalLahir!=null) {
+                        $('#tanggalLahirkeluarga').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                    }
                     $('#keluargaId').val(item.keluargaId);
                 });
             });
@@ -5861,7 +5873,9 @@
                 var myDate = new Date(listdata.tanggalLahir);
                 $('#keluargaNameDelete').val(listdata.name);
                 $('#statusKeluargaDelete').val(listdata.statusKeluargaId);
-                $('#tanggalLahirkeluargaDelete').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                if(listdata.tanggalLahir!=null) {
+                    $('#tanggalLahirkeluargaDelete').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                }
                 $('#keluargaIdDelete').val(listdata.keluargaId);
             });
 
@@ -5884,7 +5898,9 @@
                     var myDate = new Date(item.tanggalLahir);
                     $('#keluargaNameDelete').val(item.name);
                     $('#statusKeluargaDelete').val(item.statusKeluargaId);
-                    $('#tanggalLahirkeluargaDelete').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                    if(item.tanggalLahir!=null){
+                        $('#tanggalLahirkeluargaDelete').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                    }
                     $('#keluargaIdDelete').val(item.keluargaId);
                 });
             });
