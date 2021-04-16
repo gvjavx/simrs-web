@@ -2,6 +2,7 @@ package com.neurix.akuntansi.transaksi.budgetingpendapatan.action;
 
 import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
+import com.neurix.akuntansi.master.parameterbudgeting.bo.ParameterBudgetingBo;
 import com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunParameterBudgetingEntity;
 import com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunParameterBudgetingRekeningEntity;
 import com.neurix.akuntansi.master.parameterbudgeting.model.ParameterBudgeting;
@@ -770,7 +771,7 @@ public class BgPendapatanAction {
         return budgetingPerhitunganBo.getListPendapatan(brancid, tahun, master, divisi);
     }
 
-    public List<ParameterBudgeting> getListPositionInParameterBudgeting(String jenisBudgeting, String rekeningId){
+    public List<ParameterBudgeting> getListPositionInParameterBudgeting(String jenisBudgeting, String rekeningId, String periode, String tahun){
         logger.info("[BgPendapatanAction.getListPositionFromParameterBudgeting] START >>>");
 
         List<ParameterBudgeting> positionList = new ArrayList<>();
@@ -778,7 +779,7 @@ public class BgPendapatanAction {
         BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
 
         try {
-            positionList = budgetingPerhitunganBo.getListPositionInParemeterBudgeting(jenisBudgeting, rekeningId);
+            positionList = budgetingPerhitunganBo.getListPositionInParemeterBudgeting(jenisBudgeting, rekeningId, periode, tahun);
         } catch (GeneralBOException e){
             logger.info("[BgPendapatanAction.getListPositionFromParameterBudgeting] ERROR. ", e);
         }
@@ -787,7 +788,7 @@ public class BgPendapatanAction {
         return positionList;
     }
 
-    public List<ParameterBudgeting> getListKodeRekeningInParameterBudgeting(String jenisBudgeting){
+    public List<ParameterBudgeting> getListKodeRekeningInParameterBudgeting(String jenisBudgeting, String tahun){
         logger.info("[BgPendapatanAction.getListPositionFromParameterBudgeting] START >>>");
 
         List<ParameterBudgeting> positionList = new ArrayList<>();
@@ -795,7 +796,7 @@ public class BgPendapatanAction {
         BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
 
         try {
-            positionList = budgetingPerhitunganBo.getListKodeRekeningInParameterBudgeting(jenisBudgeting);
+            positionList = budgetingPerhitunganBo.getListKodeRekeningInParameterBudgeting(jenisBudgeting, tahun);
         } catch (GeneralBOException e){
             logger.info("[BgPendapatanAction.getListKodeRekeningInParameterBudgeting] ERROR. ", e);
         }
@@ -804,7 +805,7 @@ public class BgPendapatanAction {
         return positionList;
     }
 
-    public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId){
+    public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId, String periode, String tahun){
         logger.info("[BgPendapatanAction.getListMasterInParameterBudgeting] START >>>");
 
         List<ParameterBudgeting> masterList = new ArrayList<>();
@@ -812,12 +813,116 @@ public class BgPendapatanAction {
         BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
 
         try {
-            masterList = budgetingPerhitunganBo.getListMasterInParameterBudgeting(rekeningId, positionId);
+            masterList = budgetingPerhitunganBo.getListMasterInParameterBudgeting(rekeningId, positionId, periode, tahun);
         } catch (GeneralBOException e){
             logger.info("[BgPendapatanAction.getListMasterInParameterBudgeting] ERROR. ", e);
         }
 
         logger.info("[BgPendapatanAction.getListMasterInParameterBudgeting] END <<<");
         return masterList;
+    }
+
+    public CrudResponse saveAddDraftPendapatan(String stObj, String stJsonList) throws JSONException{
+        logger.info("[BgPendapatanAction.saveAddDraftPendapatan] START >>>");
+
+        CrudResponse response = new CrudResponse();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp times = new Timestamp(System.currentTimeMillis());
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+        ParameterBudgetingBo parameterBudgetingBo = (ParameterBudgetingBo) ctx.getBean("parameterBudgetingBoProxy");
+
+        // mapping perhitungan
+        List<ItAkunPerhitunganBudgetingEntity> perhitunganBudgetingEntities = new ArrayList<>();
+        JSONArray listPerhitungan = new JSONArray(stJsonList);
+        for (int i = 0; i < listPerhitungan.length(); i++) {
+            JSONObject obj = listPerhitungan.getJSONObject(i);
+            ItAkunPerhitunganBudgetingEntity perhitungan = new ItAkunPerhitunganBudgetingEntity();
+            if (!"".equalsIgnoreCase(obj.get("nilai").toString())){
+                perhitungan.setNilai(obj.get("nilai") == null ? new BigDecimal(0) : new BigDecimal(obj.get("nilai").toString()) );
+            }
+            if (!"".equalsIgnoreCase(obj.get("opr").toString())){
+                perhitungan.setOperator(obj.get("opr").toString());
+            }
+            perhitungan.setUrutan(i);
+            perhitunganBudgetingEntities.add(perhitungan);
+        }
+        // END
+
+        // mapping nilaiParameterBudgeting
+        JSONObject objParamBudgeting = new JSONObject(stObj);
+        String branchId     = objParamBudgeting.getString("branch_id");
+        String tahun        = objParamBudgeting.getString("tahun");
+        String periode      = objParamBudgeting.getString("periode");
+        String tipe         = objParamBudgeting.getString("tipe");
+        String idParam      = objParamBudgeting.getString("id_param");
+        // END
+
+        // mencari id
+        String id = "";
+        try {
+            id = budgetingPerhitunganBo.getNextIdNilaiParameter(branchId, tahun, idParam);
+        } catch (GeneralBOException e){
+            logger.error("[BgPendapatanAction.saveAddDraftPendapatan] ERROR. ", e);
+            response.hasError(e.getCause().toString());
+            return response;
+        }
+        // END
+
+        // mencari nilai total berdasarkan list perhitungan
+        BigDecimal nilaiTotal = new BigDecimal(0);
+        try {
+            nilaiTotal = budgetingPerhitunganBo.hitungNilaiBudgeting(perhitunganBudgetingEntities);
+        } catch (GeneralBOException e){
+            logger.error("[BgPendapatanAction.saveAddDraftPendapatan] ERROR. ", e);
+            response.hasError(e.getCause().toString());
+            return response;
+        }
+        // END
+
+        // mencari parameter budgeting data
+        ImAkunParameterBudgetingEntity parameterBudgetingEntity = new ImAkunParameterBudgetingEntity();
+        try {
+            parameterBudgetingEntity = parameterBudgetingBo.getEntityById(idParam);
+        } catch (GeneralBOException e){
+            logger.error("[BgPendapatanAction.saveAddDraftPendapatan] ERROR. ", e);
+            response.hasError(e.getCause().toString());
+            return response;
+        }
+        // END
+
+        ItAkunNilaiParameterBudgetingEntity nilaiParameterEntity = new ItAkunNilaiParameterBudgetingEntity();
+        nilaiParameterEntity.setId(id);
+        nilaiParameterEntity.setTipe(tipe);
+        nilaiParameterEntity.setPeriode(periode);
+        nilaiParameterEntity.setNilaiTotal(nilaiTotal);
+        nilaiParameterEntity.setIdParameter(idParam);
+        nilaiParameterEntity.setMasterId(parameterBudgetingEntity.getMasterId());
+        nilaiParameterEntity.setDivisiId(parameterBudgetingEntity.getDivisiId());
+        nilaiParameterEntity.setPositionId(parameterBudgetingEntity.getPositionId());
+
+        PerhitunganBudgeting perhitunganBudgeting = new PerhitunganBudgeting();
+        perhitunganBudgeting.setTahun(tahun);
+        perhitunganBudgeting.setBranchId(branchId);
+        perhitunganBudgeting.setFlag("Y");
+        perhitunganBudgeting.setAction("C");
+        perhitunganBudgeting.setCreatedDate(times);
+        perhitunganBudgeting.setCreatedWho(userLogin);
+        perhitunganBudgeting.setLastUpdate(times);
+        perhitunganBudgeting.setLastUpdateWho(userLogin);
+
+        try {
+            budgetingPerhitunganBo.saveAddDrafPendapatan(nilaiParameterEntity, perhitunganBudgetingEntities, perhitunganBudgeting);
+        } catch (GeneralBOException e){
+            logger.error("[BgPendapatanAction.saveAddDraftPendapatan] ERROR. ", e);
+            response.hasError(e.getCause().toString());
+            return response;
+        }
+
+
+        logger.info("[BgPendapatanAction.saveAddDraftPendapatan] END <<<");
+        response.hasSuccess("Berhasil");
+        return response;
     }
 }

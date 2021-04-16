@@ -32,6 +32,9 @@
         .tab-bulan:hover{
             cursor: pointer;
         }
+        .expand:hover{
+            cursor: pointer;
+        }
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/BranchAction.js"/>'></script>
@@ -377,11 +380,11 @@
                 flagNilaiDasar = "";
             }
         });
-        BudgetingAction.checkAvailDraftBudgeting(unit, tahun, "PDT", function (res) {
-            if (res == true){
-                flagNilaiDasar = "";
-            }
-        });
+//        BudgetingAction.checkAvailDraftBudgeting(unit, tahun, "PDT", function (res) {
+//            if (res == true){
+//                flagNilaiDasar = "";
+//            }
+//        });
     }
 
     function addButton(id, divisiId, masterid) {
@@ -414,13 +417,15 @@
 
     function showListMaster() {
 //        BgPendapatanAction.getListMasterBudgeting(idKategori, unit, tahun, function (list) {
-        BgPendapatanAction.getListPositionInParameterBudgeting('PDT', idKategori, function (list) {
+
+        var periode = $("#sel-periode").val();
+        BgPendapatanAction.getListPositionInParameterBudgeting('PDT', idKategori, periode, tahun, function (list) {
             var str = "";
             $.each(list, function (i, item) {
                 str += '<tr>' +
                     '<td id="label-master-'+item.positionId+'" style="font-weight: bold">'+item.namaDivisi+'</td>' +
                     '<td align="right">'+ formatRupiah( item.nilaiTotal )+'</td>' +
-                    '<td align="center" id="btn-span-'+i+'"><button class="btn btn-sm btn-primary" onclick="spanRow(\''+i+'\', \''+item.positionId+'\')"><i class="fa fa-angle-down"></i> Expand</button></td>' +
+                    '<td align="center" id="btn-span-'+i+'"><span onclick="spanRow(\''+i+'\', \''+item.positionId+'\')" class="expand"><i class="fa fa-angle-down"></i> Expand</span></td>' +
                     '</tr>' +
                     '<tr style="display: none" id="row-master-'+i+'">' +
                     '<td colspan="3" id="body-divisi-'+i+'">' +
@@ -434,23 +439,23 @@
 
     function spanRow(i, master) {
         $("#row-master-"+i).show();
-        var btn = '<button class="btn btn-sm btn-primary" onclick="unSpanRow(\''+i+'\', \''+master+'\')"><i class="fa fa-angle-up"></i> Hide</button>';
+        var btn = '<span onclick="unSpanRow(\''+i+'\', \''+master+'\')" class="expand"><i class=" fa fa-angle-up"></i> Hide</span>';
         $("#btn-span-"+i).html(btn);
         listDivisi(i, master);
     }
 
     function unSpanRow(i, master) {
         $("#row-master-"+i).hide();
-        var btn = '<button class="btn btn-sm btn-primary" onclick="spanRow(\''+i+'\', \''+master+'\')"><i class="fa fa-angle-down"></i> Expand</button>';
+        var btn = '<span onclick="spanRow(\''+i+'\', \''+master+'\')" class="expand"><i class="fa fa-angle-down"></i> Expand</span>';
         $("#btn-span-"+i).html(btn);
     }
 
     function listDivisi(i, masterid) {
-
+        var periode = $("#sel-periode").val();
 //        BgPendapatanAction.getListDivisiBudgeting(idKategori, masterid, function (list) {
-        BgPendapatanAction.getListMasterInParameterBudgeting(idKategori, masterid, function (list) {
+        BgPendapatanAction.getListMasterInParameterBudgeting(idKategori, masterid, periode, tahun, function (list) {
 
-            var str = '<table class="table table-bordered table-striped" style="font-size: 13px;">' +
+            var str = '<br><table class="table table-striped" style="font-size: 13px;">' +
                 '<thead id="head-budgeting">' +
                 '<tr>' +
                 '<td>Master</td>' +
@@ -988,17 +993,25 @@
             listData.push({"nilai":nilai, "opr":opr});
         }
 
-        var stJson = JSON.stringify(listData);
-//        dwr.engine.setAsync(true);
-        BgPendapatanAction.setPerhitunganToSession(idParam, stJson, masterId, divisiId, tahun, unit, idKategori, periode, function (res) {
-//            dwr.engine.setAsync(false);
+        var objData = {"id_param" : idParam, "branch_id" : unit, "tahun" : tahun, "periode" : periode, "tipe" : "bulanan"};
+
+//        console.log(listData);
+//        console.log(idParam);
+//        console.log(divisiId);
+//        console.log(masterId);
+//        console.log(periode);
+//        alert("success");
+
+        var stList  = JSON.stringify(listData);
+        var stObj   = JSON.stringify(objData);
+        BgPendapatanAction.saveAddDraftPendapatan(stObj, stList, function (res) {
             if (res.status == "success"){
+                alert(res.msg);
                 refreshAdd();
             } else {
-
+                alert(res.msg);
             }
         });
-
     }
 
     function refreshAdd() {

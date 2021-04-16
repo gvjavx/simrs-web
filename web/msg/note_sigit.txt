@@ -1703,3 +1703,8 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ADD COLUMN periode VARCHAR(20);
 
 --
+
+-- 2021-04-16
+    ALTER TABLE it_akun_nilai_parameter_budgeting
+    ADD COLUMN position_id VARCHAR(50);
+--

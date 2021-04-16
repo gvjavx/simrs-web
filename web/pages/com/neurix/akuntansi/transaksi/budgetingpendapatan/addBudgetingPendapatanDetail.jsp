@@ -464,7 +464,7 @@
         //alert("klik");
 
         //BgPendapatanAction.getListKodeRekeningInParameterBudgeting("PDT", tahun, unit, function (res) {
-        BgPendapatanAction.getListKodeRekeningInParameterBudgeting("PDT", function (res) {
+        BgPendapatanAction.getListKodeRekeningInParameterBudgeting("PDT", tahun, function (res) {
             var str = "";
             $.each(res, function (i, item) {
                 str += "<tr>" +

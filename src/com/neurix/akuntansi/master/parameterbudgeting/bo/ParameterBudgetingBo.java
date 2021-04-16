@@ -21,4 +21,5 @@ public interface ParameterBudgetingBo {
     public List<KodeRekening> getListKodeRekeningByTipeCoa(String tipeCoa);
     public String getTipeKodeRekeningFromJenisBudgetingById(String id);
     public String getKoderingFromPositionByPositionId(String id);
+    public ImAkunParameterBudgetingEntity getEntityById(String id) throws GeneralBOException;
 }

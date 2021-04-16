@@ -283,6 +283,23 @@ public class ParameterBudgetingBoImpl implements ParameterBudgetingBo{
         return kodering;
     }
 
+    @Override
+    public ImAkunParameterBudgetingEntity getEntityById(String id) throws GeneralBOException {
+        logger.info("[ParameterBudgetingBoImpl.getEntityById] START >>>");
+
+        ImAkunParameterBudgetingEntity parameterBudgetingEntity = new ImAkunParameterBudgetingEntity();
+
+        try {
+            parameterBudgetingEntity = parameterBudgetingDao.getById("id", id);
+        } catch (HibernateException e){
+            logger.error("[ParameterBudgetingBoImpl.getEntityById] ERROR. ", e);
+            throw new GeneralBOException("[ParameterBudgetingBoImpl.getEntityById] ERROR. ]", e);
+        }
+
+        logger.info("[ParameterBudgetingBoImpl.getEntityById] END <<<");
+        return parameterBudgetingEntity;
+    }
+
     private String getNextId(){
         logger.info("[ParameterBudgetingBoImpl.getNextId] START >>>");
         String id = "";

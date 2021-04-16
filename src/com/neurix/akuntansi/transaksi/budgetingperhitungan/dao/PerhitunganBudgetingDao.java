@@ -683,15 +683,17 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
         return listOfResults;
     }
 
-    public List<ParameterBudgeting> getPositionFromParameterBudgeting(String jenisBudgeting, String rekeningId){
+    public List<ParameterBudgeting> getPositionFromParameterBudgeting(String jenisBudgeting, String rekeningId, String periode, String tahun){
 
         String SQL = "SELECT \n" +
                 "pb.position_id, \n" +
                 "ps.position_name,\n" +
-                "ps.kodering\n" +
+                "ps.kodering,\n" +
+                "SUM(npb.nilai_total) as nilai_total" +
                 "FROM im_akun_parameter_budgeting pb\n" +
                 "INNER JOIN im_position ps ON ps.position_id = pb.position_id\n" +
                 "INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = pb.rekening_id\n" +
+                "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE periode = '"+periode+"' AND tahun = '"+tahun+"') npb ON npb.id_parameter = pb.id \n" +
                 "WHERE pb.id_jenis_budgeting = :jenisBudgeting\n" +
                 "AND pb.rekening_id = :rekeningId\n" +
                 "AND pb.flag = 'Y' \n" +
@@ -713,6 +715,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
                 position.setPositionId(obj[0].toString());
                 position.setNamaDivisi(obj[1].toString());
                 position.setDivisiId(obj[2].toString());
+                position.setNilaiTotal(escapeObjToBigdecimal(obj[3]));
                 positionList.add(position);
 
             }
@@ -721,13 +724,15 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
         return positionList;
     }
 
-    public List<ParameterBudgeting> getListKodeRekeningInParameterBudgeting(String jenisBudgeting){
+    public List<ParameterBudgeting> getListKodeRekeningInParameterBudgeting(String jenisBudgeting, String tahun){
 
         String SQL = "SELECT \n" +
                 "pb.rekening_id,\n" +
-                "kd.nama_kode_rekening\n" +
+                "kd.nama_kode_rekening,\n" +
+                "SUM(npb.nilai_total) as nilai_total" +
                 "FROM im_akun_parameter_budgeting pb\n" +
                 "INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = pb.rekening_id\n" +
+                "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE tahun = '"+tahun+"') npb ON npb.id_parameter = pb.id \n" +
                 "WHERE pb.flag = 'Y'\n" +
                 "AND pb.id_jenis_budgeting = :jenisBudgeting \n" +
                 "GROUP BY\n" +
@@ -746,6 +751,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
                 ParameterBudgeting kodeRekening = new ParameterBudgeting();
                 kodeRekening.setRekeningId(obj[0].toString());
                 kodeRekening.setNamaKodeRekening(obj[1].toString());
+                kodeRekening.setNilaiTotal(escapeObjToBigdecimal(obj[2]));
                 kodeRekenings.add(kodeRekening);
             }
         }
@@ -753,19 +759,23 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
         return kodeRekenings;
     }
 
-    public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId){
+    public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId, String periode, String tahun){
 
         String SQL = "SELECT \n" +
                 "pb.master_id, \n" +
-                "ms.nama\n" +
+                "ms.nama, \n" +
+                "pb.id, \n" +
+                "SUM(npb.nilai_total) as nilai_total" +
                 "FROM im_akun_parameter_budgeting pb\n" +
-                "INNER JOIN im_akun_master ms ON ms.nomor_master = pb.master_id\n" +
+                "INNER JOIN im_akun_master ms ON ms.nomor_master = pb.master_id \n" +
+                "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE periode = '"+periode+"' AND tahun = '"+tahun+"') npb ON npb.id_parameter = pb.id \n" +
                 "WHERE pb.flag = 'Y'\n" +
                 "AND pb.position_id = :positionId \n" +
                 "AND pb.rekening_id = :rekeningId \n" +
                 "GROUP BY\n" +
                 "pb.master_id, \n" +
-                "ms.nama";
+                "ms.nama," +
+                "pb.id";
 
         List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("positionId", positionId)
@@ -779,10 +789,17 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
                 ParameterBudgeting master = new ParameterBudgeting();
                 master.setMasterId(obj[0].toString());
                 master.setNamaMaster(obj[1].toString());
+                master.setId(obj[2].toString());
+                master.setNilaiTotal(escapeObjToBigdecimal(obj[3]));
                 masters.add(master);
             }
         }
         return masters;
+    }
+
+
+    private BigDecimal escapeObjToBigdecimal(Object obj){
+        return obj == null ? new BigDecimal(0) : new BigDecimal(obj.toString());
     }
 
 }

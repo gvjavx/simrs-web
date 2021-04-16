@@ -675,13 +675,13 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     }
 
     @Override
-    public List<ParameterBudgeting> getListPositionInParemeterBudgeting(String jenisBudgeting, String rekeningId) {
+    public List<ParameterBudgeting> getListPositionInParemeterBudgeting(String jenisBudgeting, String rekeningId, String periode, String tahun) {
         logger.info("[BudgetingPerhitunganBoImpl.getListPositionInParemeterBudgeting] START >>> ");
 
         List<ParameterBudgeting> positionList = new ArrayList<>();
 
         try {
-            positionList = perhitunganBudgetingDao.getPositionFromParameterBudgeting(jenisBudgeting, rekeningId);
+            positionList = perhitunganBudgetingDao.getPositionFromParameterBudgeting(jenisBudgeting, rekeningId, periode, tahun);
         } catch (HibernateException e){
             logger.error("[BudgetingPerhitunganBoImpl.getListPositionInParemeterBudgeting] ERROR. ", e);
             throw new GeneralBOException("[BudgetingPerhitunganBoImpl.getListPositionInParemeterBudgeting] ERROR. ", e);
@@ -692,13 +692,13 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     }
 
     @Override
-    public List<ParameterBudgeting> getListKodeRekeningInParameterBudgeting(String jenisBudgeting) {
+    public List<ParameterBudgeting> getListKodeRekeningInParameterBudgeting(String jenisBudgeting, String tahun) {
         logger.info("[BudgetingPerhitunganBoImpl.getListKodeRekeningInParameterBudgeting] START >>> ");
 
         List<ParameterBudgeting> kodeRekenings = new ArrayList<>();
 
         try {
-            kodeRekenings = perhitunganBudgetingDao.getListKodeRekeningInParameterBudgeting(jenisBudgeting);
+            kodeRekenings = perhitunganBudgetingDao.getListKodeRekeningInParameterBudgeting(jenisBudgeting, tahun);
         } catch (HibernateException e){
             logger.error("[BudgetingPerhitunganBoImpl.getListKodeRekeningInParameterBudgeting] ERROR. ", e);
             throw new GeneralBOException("[BudgetingPerhitunganBoImpl.getListKodeRekeningInParameterBudgeting] ERROR. ", e);
@@ -709,13 +709,13 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
     }
 
     @Override
-    public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId) {
+    public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId, String periode, String tahun) {
         logger.info("[BudgetingPerhitunganBoImpl.getListMasterInParameterBudgeting] START >>> ");
 
         List<ParameterBudgeting> masters = new ArrayList<>();
 
         try {
-            masters = perhitunganBudgetingDao.getListMasterInParameterBudgeting(rekeningId, positionId);
+            masters = perhitunganBudgetingDao.getListMasterInParameterBudgeting(rekeningId, positionId, periode, tahun);
         } catch (HibernateException e){
             logger.error("[BudgetingPerhitunganBoImpl.getListMasterInParameterBudgeting] ERROR. ", e);
             throw new GeneralBOException("[BudgetingPerhitunganBoImpl.getListMasterInParameterBudgeting] ERROR. ", e);
@@ -730,7 +730,6 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
         logger.info("[BudgetingPerhitunganBoImpl.saveAddDrafPendapatan] START >>> ");
 
         if (nilaiParameterEntity != null){
-            nilaiParameterEntity.setTipe(bean.getTipe());
             nilaiParameterEntity.setTahun(bean.getTahun());
             nilaiParameterEntity.setBranchId(bean.getBranchId());
             nilaiParameterEntity.setFlag(bean.getFlag());
@@ -759,6 +758,8 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
                     perhitunganEntity.setAction(bean.getAction());
                     perhitunganEntity.setTahun(bean.getTahun());
                     perhitunganEntity.setBranchId(bean.getBranchId());
+                    perhitunganEntity.setIdNilaiParameter(nilaiParameterEntity.getId());
+                    perhitunganEntity.setIdParameterBudgeting(nilaiParameterEntity.getIdParameter());
                     perhitunganEntity.setUrutan(i++);
 
                     try {
@@ -770,7 +771,6 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
                 }
             }
         }
-
 
         logger.info("[BudgetingPerhitunganBoImpl.saveAddDrafPendapatan] END <<< ");
     }
