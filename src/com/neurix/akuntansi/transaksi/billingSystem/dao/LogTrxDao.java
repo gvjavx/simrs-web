@@ -70,20 +70,38 @@ public class LogTrxDao extends GenericDao<ItPgLogTransactionEntity, String> {
             if (mapCriteria.get("invoice_number")!=null) {
                 criteria.add(Restrictions.eq("invoiceNumber", (String) mapCriteria.get("invoice_number")));
             }
-
-            if (mapCriteria.get("received_date_from")!=null && mapCriteria.get("received_date_to")!=null) {
-//                criteria.add(Restrictions.between("receivedDate", (Date) mapCriteria.get("received_date_from"), (Date) mapCriteria.get("received_date_to")));
-                criteria.add(Restrictions.between("receivedDate", mapCriteria.get("received_date_from"), mapCriteria.get("received_date_to")));
-
+            //RAKA-16APR2021 ==> Handle status all, by tanggal
+            if (mapCriteria.get("received_date_from")!=null && mapCriteria.get("received_date_to") != null && mapCriteria.get("sent_date_from")!=null && mapCriteria.get("sent_date_to") != null) {
+                criteria.add(Restrictions.or(
+                        Restrictions.between("receivedDate", mapCriteria.get("received_date_from"), mapCriteria.get("received_date_to")),
+                        Restrictions.between("sentDate", mapCriteria.get("sent_date_from"), mapCriteria.get("sent_date_to"))
+                ));
+            } else if (mapCriteria.get("received_date_from")!=null && mapCriteria.get("sent_date_from") != null) {
+                criteria.add(Restrictions.or(
+                        Restrictions.ge("receivedDate", mapCriteria.get("received_date_from")),
+                        Restrictions.ge("sentDate", mapCriteria.get("sent_date_from"))
+                ));
+            }else if(mapCriteria.get("received_date_to")!=null && mapCriteria.get("sent_date_to") != null){
+                criteria.add(Restrictions.or(
+                        Restrictions.le("receivedDate", mapCriteria.get("received_date_to")),
+                        Restrictions.le("sentDate", mapCriteria.get("sent_date_to"))
+                ));
+            //RAKA-end
+            }else{
+                if (mapCriteria.get("received_date_from") != null && mapCriteria.get("received_date_to") != null) {
+                    criteria.add(Restrictions.between("receivedDate", mapCriteria.get("received_date_from"), mapCriteria.get("received_date_to")));
+                }else if (mapCriteria.get("sent_date_from") != null && mapCriteria.get("sent_date_to") != null) {
+                    criteria.add(Restrictions.between("sentDate", mapCriteria.get("sent_date_from"), mapCriteria.get("sent_date_to")));
+                }else if(mapCriteria.get("sent_date_from") != null){
+                    Restrictions.ge("sentDate", mapCriteria.get("sent_date_from"));
+                }else if(mapCriteria.get("sent_date_to") != null){
+                    Restrictions.le("sentDate", mapCriteria.get("sent_date_to"));
+                }else if(mapCriteria.get("received_date_from") != null){
+                    Restrictions.ge("receivedDate", mapCriteria.get("sent_date_from"));
+                }else if(mapCriteria.get("received_date_to") != null){
+                    Restrictions.le("receivedDate", mapCriteria.get("sent_date_to"));
+                }
             }
-
-            if (mapCriteria.get("sent_date_from")!=null && mapCriteria.get("sent_date_to")!=null) {
-//                criteria.add(Restrictions.between("sentDate", (Date) mapCriteria.get("sent_date_from"), (Date) mapCriteria.get("sent_date_to")));
-                criteria.add(Restrictions.between("sentDate", mapCriteria.get("sent_date_from"), mapCriteria.get("sent_date_to")));
-
-            }
-
-
         }
 
         // Order by
