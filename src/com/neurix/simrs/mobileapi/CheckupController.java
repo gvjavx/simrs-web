@@ -1830,7 +1830,7 @@ public class CheckupController implements ModelDriven<Object> {
 
                         if(tindakanList.size() > 0){
                             tin = tindakanList.get(0);
-                            riwayatTindakan.setIdRuangan(tin.getKategoriInaBpjs());
+                            riwayatTindakan.setKategoriTindakanBpjs(tin.getKategoriInaBpjs());
                         }
 
                         try {

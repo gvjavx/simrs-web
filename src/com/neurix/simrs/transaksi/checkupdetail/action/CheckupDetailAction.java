@@ -4404,7 +4404,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                         if(tindakanList.size() > 0){
                             tin = tindakanList.get(0);
-                            riwayatTindakan.setIdRuangan(tin.getKategoriInaBpjs());
+                            riwayatTindakan.setKategoriTindakanBpjs(tin.getKategoriInaBpjs());
                         }
 
 
