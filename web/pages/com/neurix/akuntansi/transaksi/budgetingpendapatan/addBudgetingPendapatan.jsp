@@ -94,13 +94,6 @@
                     <div class="box-body">
                         <%--<s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">--%>
                         <div class="form-group form-horizontal">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h4>
-                                        <s:property value="budgeting.namaKategori"/> - <s:property value="budgeting.branchName"/> <s:property value="budgeting.tahun"/>
-                                    </h4>
-                                </div>
-                            </div>
 
                             <div class="row">
                                 <div class="col-md-6 col-md-offset-3">
@@ -110,6 +103,14 @@
                                         <tbody id="body-nilai-dasar">
                                         </tbody>
                                     </table>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4>
+                                        <s:property value="budgeting.namaKategori"/> - <s:property value="budgeting.branchName"/> <s:property value="budgeting.tahun"/>
+                                    </h4>
                                 </div>
                             </div>
 
@@ -126,23 +127,23 @@
                     <div class="box-header with-border"></div>
                     <div class="box-body">
 
-                        <span style="font-weight: bold">List Periode :</span>
+                        <span style="font-weight: bold">Pilih Periode :</span>
 
                         <div class="list-bulan">
                             <table class="table" width="100%" style="font-size: 13px;">
                                 <tr style="border-bottom: solid 1px lightgrey;">
-                                    <td><span class="tab-bulan" onclick="changePeriode('januari')">Januari</span></td>
-                                    <td><span class="tab-bulan" onclick="changePeriode('februari')">Februari</span></td>
-                                    <td><span class="tab-bulan" onclick="changePeriode('maret')">Maret</span></td>
-                                    <td><span class="tab-bulan" onclick="changePeriode('april')">April</span></td>
-                                    <td><span class="tab-bulan" onclick="changePeriode('mei')">Mei</span></td>
-                                    <td><span class="tab-bulan" onclick="changePeriode('juni')">Juni</span></td>
-                                    <td><span class="tab-bulan" onclick="changePeriode('juli')">Juli</span></td>
-                                    <td><span class="tab-bulan" onclick="changePeriode('agustus')">Agustus</span></td>
-                                    <td><span class="tab-bulan" onclick="changePeriode('september')">September</span></td>
-                                    <td><span class="tab-bulan" onclick="changePeriode('oktober')">Oktober</span></td>
-                                    <td><span class="tab-bulan" onclick="changePeriode('november')">November</span></td>
-                                    <td><span class="tab-bulan" onclick="changePeriode('desember')">Desember</span></td>
+                                    <td><span id="tab-bulan-januari" name="bulan" class="tab-bulan" onclick="changePeriode('januari')">Januari</span></td>
+                                    <td><span id="tab-bulan-februari" name="bulan" class="tab-bulan" onclick="changePeriode('februari')">Februari</span></td>
+                                    <td><span id="tab-bulan-maret" name="bulan" class="tab-bulan" onclick="changePeriode('maret')">Maret</span></td>
+                                    <td><span id="tab-bulan-april" name="bulan" class="tab-bulan" onclick="changePeriode('april')">April</span></td>
+                                    <td><span id="tab-bulan-mei" name="bulan" class="tab-bulan" onclick="changePeriode('mei')">Mei</span></td>
+                                    <td><span id="tab-bulan-juni" name="bulan" class="tab-bulan" onclick="changePeriode('juni')">Juni</span></td>
+                                    <td><span id="tab-bulan-juli" name="bulan" class="tab-bulan" onclick="changePeriode('juli')">Juli</span></td>
+                                    <td><span id="tab-bulan-agustus" name="bulan" class="tab-bulan" onclick="changePeriode('agustus')">Agustus</span></td>
+                                    <td><span id="tab-bulan-september" name="bulan" name="bulan" class="tab-bulan" onclick="changePeriode('september')">September</span></td>
+                                    <td><span id="tab-bulan-oktober" name="bulan" class="tab-bulan" onclick="changePeriode('oktober')">Oktober</span></td>
+                                    <td><span id="tab-bulan-november" name="bulan" class="tab-bulan" onclick="changePeriode('november')">November</span></td>
+                                    <td><span id="tab-bulan-desember" name="bulan" class="tab-bulan" onclick="changePeriode('desember')">Desember</span></td>
                                 </tr>
                             </table>
                         </div>
@@ -335,8 +336,6 @@
     $( document ).ready(function() {
         chekTipe();
         nilaiDasar();
-//        showListParameter();
-        showListMaster();
         checkTransaksi();
     });
 
@@ -1076,6 +1075,17 @@
     function changePeriode(nama){
         $("#nama-periode").text(nama);
         $("#sel-periode").val(nama.toLowerCase());
+        $(".tab-bulan").removeAttr("class");
+        var name = $('[name=bulan]');
+        $.each(name, function (i, item) {
+
+            if (item.id == "tab-bulan-"+nama){
+                $("#"+item.id).attr("class", "bold");
+            } else {
+                $("#"+item.id).attr("class", "tab-bulan");
+            }
+        });
+        showListMaster();
     }
 
 </script>

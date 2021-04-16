@@ -689,7 +689,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
                 "pb.position_id, \n" +
                 "ps.position_name,\n" +
                 "ps.kodering,\n" +
-                "SUM(npb.nilai_total) as nilai_total" +
+                "SUM(npb.nilai_total) as nilai_total \n" +
                 "FROM im_akun_parameter_budgeting pb\n" +
                 "INNER JOIN im_position ps ON ps.position_id = pb.position_id\n" +
                 "INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = pb.rekening_id\n" +
@@ -729,7 +729,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
         String SQL = "SELECT \n" +
                 "pb.rekening_id,\n" +
                 "kd.nama_kode_rekening,\n" +
-                "SUM(npb.nilai_total) as nilai_total" +
+                "SUM(npb.nilai_total) as nilai_total \n" +
                 "FROM im_akun_parameter_budgeting pb\n" +
                 "INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = pb.rekening_id\n" +
                 "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE tahun = '"+tahun+"') npb ON npb.id_parameter = pb.id \n" +
@@ -765,7 +765,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
                 "pb.master_id, \n" +
                 "ms.nama, \n" +
                 "pb.id, \n" +
-                "SUM(npb.nilai_total) as nilai_total" +
+                "SUM(npb.nilai_total) as nilai_total\n" +
                 "FROM im_akun_parameter_budgeting pb\n" +
                 "INNER JOIN im_akun_master ms ON ms.nomor_master = pb.master_id \n" +
                 "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE periode = '"+periode+"' AND tahun = '"+tahun+"') npb ON npb.id_parameter = pb.id \n" +
