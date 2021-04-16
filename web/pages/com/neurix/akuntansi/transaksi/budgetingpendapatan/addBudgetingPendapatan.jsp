@@ -386,10 +386,14 @@
 //        });
     }
 
-    function addButton(id, divisiId, masterid) {
+    function addButton(id, divisiId, masterid, status) {
 //        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function (res) {
             if (flagNilaiDasar == "Y"){
-                return '<button class="btn btn-sm btn-warning" onclick="showAdd(\''+id+'\', \''+divisiId+'\', \''+masterid+'\')"><i class="fa fa-plus"></i> Tambah</button>';
+                if (status == "edit"){
+                    return '<button class="btn btn-sm btn-primary" onclick="showAdd(\''+id+'\', \''+divisiId+'\', \''+masterid+'\')"><i class="fa fa-edit"></i> Edit</button>';
+                } else {
+                    return '<button class="btn btn-sm btn-warning" onclick="showAdd(\''+id+'\', \''+divisiId+'\', \''+masterid+'\')"><i class="fa fa-plus"></i> Tambah</button>';
+                }
             }
             return "";
 //        })
@@ -469,7 +473,7 @@
                 str += '<tr>' +
                     '<td>'+item.namaMaster+'</td>' +
                     '<td align="right">'+formatRupiah(item.nilaiTotal)+'</td>' +
-                    '<td align="center">'+addButton(item.id, masterid, item.masterId) +'</td>' +
+                    '<td align="center">'+addButton(item.id, masterid, item.masterId, item.status) +'</td>' +
                     '</tr>';
 
 //                str += '<div class="row">' +

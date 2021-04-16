@@ -791,6 +791,11 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
                 master.setNamaMaster(obj[1].toString());
                 master.setId(obj[2].toString());
                 master.setNilaiTotal(escapeObjToBigdecimal(obj[3]));
+                if (master.getNilaiTotal().compareTo(new BigDecimal(0)) == 1){
+                    master.setStatus("edit");
+                } else {
+                    master.setStatus("add");
+                }
                 masters.add(master);
             }
         }
