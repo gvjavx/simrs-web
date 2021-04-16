@@ -3715,6 +3715,12 @@ function savePemeriksaanPasien() {
                                 }
                             });
                         }
+                        if('kontrol_ulang' == tindakLanjut){
+                            window.open('printSuratKeterangan_checkupdetail.action?id='+idDetailCheckup+'&tipe=KU', '_blank');
+                        }
+                        if('rujuk_rs_lain' == tindakLanjut){
+                            window.open('printSuratKeterangan_checkupdetail.action?id='+idDetailCheckup+'&tipe=RSL', '_blank');
+                        }
                     } else {
                         $('#waiting_dialog').dialog('close');
                         $('#error_dialog').dialog('open');

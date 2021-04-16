@@ -249,7 +249,8 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "um.id_detail_checkup, \n" +
                     "dt.tgl_cekup, \n" +
                     "jp.keterangan as jenis_pasien,\n" +
-                    "hd.tgl_lahir\n"+
+                    "hd.tgl_lahir,\n"+
+                    "dt.tindak_lanjut \n"+
                     "FROM it_simrs_header_checkup hd\n" +
                     "INNER JOIN (" +
                     "SELECT a.* FROM(\n" +
@@ -360,6 +361,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     if(headerDetailCheckup.getTanggalLahir() != null){
                         headerDetailCheckup.setUmur(CommonUtil.calculateAge(headerDetailCheckup.getTanggalLahir(), true)+" Tahun");
                     }
+                    headerDetailCheckup.setTindakLanjut(obj[19] != null ? (String) obj[19]: null);
 
                     if (!"".equalsIgnoreCase(headerDetailCheckup.getDesaId())) {
                         List<Object[]> objDesaList = getListAlamatByDesaId(headerDetailCheckup.getDesaId());

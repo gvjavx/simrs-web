@@ -1166,7 +1166,7 @@ public class RawatInapAction extends BaseMasterAction {
             reportParams.put("diagnosa", checkup.getNamaDiagnosa());
 
             reportParams.put("idDokterPengirim", labData.getIdDokterPengirim());
-            reportParams.put("dokterPengirim", labData.getDokterPengirim());
+            reportParams.put("dokterPengirim", labData.getNamaDokterPengirim());
             reportParams.put("idPetugas", labData.getIdPetugas());
             reportParams.put("namaPetugas", labData.getNamaPetugas());
             reportParams.put("idValidator", labData.getIdValidator());
@@ -2042,8 +2042,8 @@ public class RawatInapAction extends BaseMasterAction {
                 if (object.has("tgl_kontrol")) {
                     tglKontrol = object.getString("tgl_kontrol");
                 }
-                if (object.has("kategori_lab")) {
-                    kategoriLab = object.getString("kategori_lab");
+                if (object.has("id_kategori_lab")) {
+                    kategoriLab = object.getString("id_kategori_lab");
                 }
                 if (object.has("list_pemeriksaan")) {
                     listPemeriksaan = object.getString("list_pemeriksaan");
@@ -3540,5 +3540,81 @@ public class RawatInapAction extends BaseMasterAction {
             dietGizi = dietGiziArrayList.get(0);
         }
         return dietGizi;
+    }
+
+    public String printSuratKeterangan() {
+
+        HeaderCheckup checkup = new HeaderCheckup();
+        String id = getId();
+        String jk = "";
+
+        String branch = CommonUtil.userBranchLogin();
+        String logo = "";
+        Branch branches = new Branch();
+
+        try {
+            branches = branchBoProxy.getBranchById(branch, "Y");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when searhc branch logo");
+        }
+
+        if (branches != null) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+        }
+
+        try {
+            checkup = checkupBoProxy.getDataDetailPasien(id);
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when search data detail pasien " + e.getMessage());
+        }
+
+        if (checkup != null) {
+
+            reportParams.put("dokter", "");
+            reportParams.put("area", CommonUtil.userAreaName());
+            reportParams.put("unit", CommonUtil.userBranchNameLogin());
+            reportParams.put("idPasien", checkup.getIdPasien());
+            reportParams.put("logo", logo);
+            reportParams.put("nik", checkup.getNoKtp());
+            reportParams.put("nama", checkup.getNama());
+            if (checkup.getTglLahir() != null) {
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+                reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+            }
+            if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
+                jk = "Laki-Laki";
+            } else {
+                jk = "Perempuan";
+            }
+            reportParams.put("jenisKelamin", jk);
+            reportParams.put("jenisPasien", checkup.getStatusPeriksaName());
+            reportParams.put("poli", checkup.getNamaPelayanan());
+            reportParams.put("provinsi", checkup.getNamaProvinsi());
+            reportParams.put("kabupaten", checkup.getNamaKota());
+            reportParams.put("kecamatan", checkup.getNamaKecamatan());
+            reportParams.put("desa", checkup.getNamaDesa());
+            if (checkup.getTglCheckup() != null) {
+                String formatCheckup = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglCheckup());
+                reportParams.put("tglCheckup", formatCheckup);
+            }
+            reportParams.put("ketCheckup", checkup.getKeterangan());
+            reportParams.put("idDetailCheckup", id);
+            reportParams.put("diagnosa", checkup.getDiagnosa() + "-" + checkup.getNamaDiagnosa());
+            reportParams.put("umur", CommonUtil.calculateAge(checkup.getTglLahir(), true)+" Tahun");
+
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+                return "search";
+            }
+        }
+
+        if("KU".equalsIgnoreCase(getTipe())){
+            return "print_checkup_ulang";
+        }else{
+            return "print_pindah_rs";
+        }
     }
 }

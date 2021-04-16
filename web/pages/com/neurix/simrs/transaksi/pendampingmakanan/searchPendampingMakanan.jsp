@@ -223,7 +223,7 @@
                                 <td>No Pesanan</td>
                                 <td>ID Detail Checkup</td>
                                 <td>No RM</td>
-                                <td>Nama</td>
+                                <td>Keluarga Pasien</td>
                                 <td>Ruangan</td>
                                 <td>Status</td>
                                 <td width="5%" align="center" class="noSort">Action</td>

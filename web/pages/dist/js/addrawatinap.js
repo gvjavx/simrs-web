@@ -1314,14 +1314,17 @@ function listSelectLab(idx) {
                     option += "<option value='" + item.idLab + "'>" + item.namaLab + "</option>";
                 });
                 $('#lab_lab').html(option);
+                $('#ckp_unit').html(option);
             } else {
                 $('#lab_lab').html('');
+                $('#ckp_unit').html('');
             }
         });
     } else {
         $('#lab_lab').html('');
+        $('#ckp_unit').html('');
     }
-    $('#lab_parameter').html('');
+
 }
 
 function listSelectParameter(idLab) {
@@ -1333,12 +1336,15 @@ function listSelectParameter(idLab) {
                     option += "<option value='" + item.idLabDetail + "'>" + item.namaDetailPeriksa + "</option>";
                 });
                 $('#lab_parameter').html(option);
+                $('#ckp_parameter').html(option);
             } else {
                 $('#lab_parameter').html('');
+                $('#ckp_parameter').html('');
             }
         });
     } else {
         $('#lab_parameter').html('');
+        $('#ckp_parameter').html('');
     }
 }
 
@@ -3795,6 +3801,7 @@ function savePemeriksaanPasien() {
                                 'jenis_pasien': jenisPeriksaPasien,
                                 'tgl_kontrol': tglKontrol,
                                 'list_pemeriksaan': JSON.stringify(pemeriksan),
+                                'id_kategori_lab': kategoriLab,
                                 'is_order_lab': 'Y',
                                 'id_ruangan_lama': idRuanganLama
                             }
@@ -3867,6 +3874,12 @@ function savePemeriksaanPasien() {
                         $('#waiting_dialog').dialog('close');
                         $('#info_dialog').dialog('open');
                         $('#close_pos').val(8);
+                        if('kontrol_ulang' == tindakLanjut){
+                            window.open('printSuratKeterangan_rawatinap.action?id='+idDetailCheckup+'&tipe=KU', '_blank');
+                        }
+                        if('rujuk_rs_lain' == tindakLanjut){
+                            window.open('printSuratKeterangan_rawatinap.action?id='+idDetailCheckup+'&tipe=RSL', '_blank');
+                        }
                     } else {
                         $('#waiting_dialog').dialog('close');
                         $('#error_dialog').dialog('open');

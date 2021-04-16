@@ -2547,6 +2547,13 @@ INSERT INTO im_func_roles VALUES
 (6920, 38, 'Y', now(), now(), 'admin', 'admin'),
 (6921, 38, 'Y', now(), now(), 'admin', 'admin');
 
+--SURAT KETERANGAN
+INSERT INTO im_functions VALUES
+(6922, 'print', '/rawatinap/printSuratKeterangan_rawatinap.action', 1485, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6922, 32, 'Y', now(), now(), 'admin', 'admin');
+
 
 
 

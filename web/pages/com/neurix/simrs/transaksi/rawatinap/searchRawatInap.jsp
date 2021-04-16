@@ -230,6 +230,19 @@
                                                 <img onclick="printGelangPasien('<s:property value="noCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
                                             </s:else>
                                         </s:if>
+
+                                        <s:if test='#row.tindakLanjut == "kontrol_ulang"'>
+                                            <a target="_blank" href="printSuratKeterangan_rawatinap.action?id=<s:property value="idDetailCheckup"/>&tipe=KU">
+                                                <img src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                            </a>
+                                        </s:if>
+
+                                        <s:if test='#row.tindakLanjut == "rujuk_rs_lain"'>
+                                            <a target="_blank" href="printSuratKeterangan_rawatinap.action?id=<s:property value="idDetailCheckup"/>&tipe=RSL">
+                                                <img src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                            </a>
+                                        </s:if>
+
                                     </td>
                                 </tr>
                             </s:iterator>

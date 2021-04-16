@@ -164,7 +164,8 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "um.id_detail_checkup, \n" +
                     "f.kategori, \n" +
                     "jenis.keterangan as jenis_pasien,\n" +
-                    "a.tgl_lahir\n"+
+                    "a.tgl_lahir,\n"+
+                    "b.tindak_lanjut \n"+
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_jenis_periksa_pasien jenis ON b.id_jenis_periksa_pasien = jenis.id_jenis_periksa_pasien\n" +
@@ -324,6 +325,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     if(rawatInap.getTanggalLahir() != null){
                         rawatInap.setUmur(CommonUtil.calculateAge(rawatInap.getTanggalLahir(), true)+ " Tahun");
                     }
+                    rawatInap.setTindakLanjut(obj[26] == null ? null : (String) obj[26]);
 
                     if (!"".equalsIgnoreCase(rawatInap.getDesaId())) {
                         List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());

@@ -4269,6 +4269,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             reportParams.put("ketCheckup", checkup.getKeterangan());
             reportParams.put("idDetailCheckup", id);
             reportParams.put("diagnosa", checkup.getDiagnosa() + "-" + checkup.getNamaDiagnosa());
+            reportParams.put("umur", CommonUtil.calculateAge(checkup.getTglLahir(), true)+" Tahun");
 
             try {
                 preDownload();
@@ -4279,7 +4280,11 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
         }
 
-        return "print_checkup_ulang";
+        if("KU".equalsIgnoreCase(getTipe())){
+            return "print_checkup_ulang";
+        }else{
+            return "print_pindah_rs";
+        }
     }
 
     public String saveAddToRiwayatTindakan(String idDetail, String jenisPasien) {

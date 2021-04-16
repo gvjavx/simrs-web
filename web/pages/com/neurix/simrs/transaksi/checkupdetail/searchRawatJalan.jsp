@@ -256,16 +256,15 @@
                                                 </s:if>
                                             </s:else>
                                         </s:if>
-                                        <s:if test='#row.tglCekup == null'>
-                                        </s:if>
-                                        <s:else>
-                                            <a target="_blank" href="printSuratKeterangan_checkupdetail.action?id=<s:property value="idDetailCheckup"/>">
+
+                                        <s:if test='#row.tindakLanjut == "kontrol_ulang"'>
+                                            <a target="_blank" href="printSuratKeterangan_checkupdetail.action?id=<s:property value="idDetailCheckup"/>&tipe=KU">
                                                 <img src="<s:url value="/pages/images/icons8-print-25.png"/>">
                                             </a>
-                                        </s:else>
+                                        </s:if>
 
-                                        <s:if test='#row.keteranganSelesai == "Rujuk Rumah Sakit Lain"'>
-                                            <a target="_blank" href="printFormulirPindahRS_checkupdetail.action?id=<s:property value="idDetailCheckup"/>">
+                                        <s:if test='#row.tindakLanjut == "rujuk_rs_lain"'>
+                                            <a target="_blank" href="printSuratKeterangan_checkupdetail.action?id=<s:property value="idDetailCheckup"/>&tipe=RSL">
                                                 <img src="<s:url value="/pages/images/icons8-print-25.png"/>">
                                             </a>
                                         </s:if>
