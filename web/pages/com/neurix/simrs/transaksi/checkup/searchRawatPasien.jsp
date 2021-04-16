@@ -218,6 +218,7 @@
                                 <td>No Checkup</td>
                                 <td>NO RM</td>
                                 <td>Nama</td>
+                                <td>Umur</td>
                                 <td>Tanggal Masuk</td>
                                 <td>Poli Terakhir</td>
                                 <td>Status Terakhir</td>
@@ -231,6 +232,7 @@
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="nama"/></td>
+                                    <td><s:property value="umur"/></td>
                                     <td><s:property value="formatTglMasuk"/></td>
                                     <td><s:property value="namaPelayanan"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>

@@ -199,7 +199,13 @@
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
                                         <s:if test='#row.flagCover == "Y"'>
-                                            <img src="<s:url value="/pages/images/icon_success.ico"/>">
+                                            <%--<img src="<s:url value="/pages/images/icon_success.ico"/>">--%>
+                                            <a target="_blank"
+                                               href="printVerifikasiTindakan_verifrekananri.action?id=<s:property value="idDetailCheckup"/>&noCheckup=<s:property value="noCheckup"/>">
+                                                <img class="hvr-grow"
+                                                     src="<s:url value="/pages/images/icons8-print-25.png"/>"
+                                                     style="cursor: pointer;">
+                                            </a>
                                         </s:if>
                                         <s:else>
                                             <img id="spin_<s:property value="idDetailCheckup"/>" onclick="detail('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>','<s:property value="flagCloseTraksaksi"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" style="cursor: pointer;">

@@ -89,6 +89,9 @@
             <basic name="lastUpdate">
                 <column name="last_update"/>
             </basic>
+            <basic name="jenisPasien">
+                <column name="jenis_pasien"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

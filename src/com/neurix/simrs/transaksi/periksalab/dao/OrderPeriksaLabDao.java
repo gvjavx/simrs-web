@@ -19,8 +19,6 @@ public class OrderPeriksaLabDao extends GenericDao<ItSimrsOrderPeriksaLabEntity,
     @Override
     public List<ItSimrsOrderPeriksaLabEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ItSimrsOrderPeriksaLabEntity.class);
-
-        // Get Collection and sorting
         if (mapCriteria!=null) {
             if (mapCriteria.get("id_order_periksa")!= null) {
                 criteria.add(Restrictions.eq("idOrderPeriksa", (String) mapCriteria.get("id_order_periksa")));
@@ -29,7 +27,7 @@ public class OrderPeriksaLabDao extends GenericDao<ItSimrsOrderPeriksaLabEntity,
                 criteria.add(Restrictions.eq("idDetailCheckup", (String) mapCriteria.get("id_detail_checkup")));
             }
             if (mapCriteria.get("id_lab")!= null) {
-                criteria.add(Restrictions.eq("idLab", (String) mapCriteria.get("id_lab")));
+                criteria.add(Restrictions.eq("idPemeriksaan", (String) mapCriteria.get("id_lab")));
             }
             if (mapCriteria.get("id_lab_detail")!= null) {
                 criteria.add(Restrictions.eq("idLabDetail", (String) mapCriteria.get("id_lab_detail")));
@@ -43,10 +41,9 @@ public class OrderPeriksaLabDao extends GenericDao<ItSimrsOrderPeriksaLabEntity,
         }
 
         criteria.add(Restrictions.eq("flag", "Y"));
-
-        // Order by
         criteria.addOrder(Order.desc("idDetailCheckup"));
-
+        criteria.addOrder(Order.asc("idPemeriksaan"));
+        criteria.addOrder(Order.asc("idLabDetail"));
         List<ItSimrsOrderPeriksaLabEntity> results = criteria.list();
         return results;
     }

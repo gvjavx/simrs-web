@@ -1184,24 +1184,6 @@ public class CheckupAction extends BaseMasterAction {
             try {
 
                 try {
-                    List<Asesmen> asesmenList = new ArrayList<>();
-                    if (checkup.getAdmisi() != null && !"".equalsIgnoreCase(checkup.getAdmisi())) {
-                        JSONArray json = new JSONArray(checkup.getAdmisi());
-                        for (int i = 0; i < json.length(); i++) {
-                            JSONObject obj = json.getJSONObject(i);
-                            Asesmen asesmen = new Asesmen();
-                            asesmen.setParameter(obj.getString("parameter"));
-                            asesmen.setJawaban(obj.getString("jawaban"));
-                            asesmen.setKeterangan(obj.getString("keterangan"));
-                            asesmenList.add(asesmen);
-                        }
-                    }
-                    checkup.setAsesmenList(asesmenList);
-                } catch (JSONException e) {
-                    logger.error("[CheckupAction.saveAdd] Error Convert json to data admisi.", e);
-                }
-
-                try {
                     checkup.setTglLahir(Date.valueOf(checkup.getStTglLahir()));
                 }catch (Exception e){
                     logger.error("[CheckupAction.parse tanggal lahir] error, " + e.getMessage());
@@ -1276,7 +1258,7 @@ public class CheckupAction extends BaseMasterAction {
 
                 checkupBoProxy.saveAdd(checkup);
 
-            } catch (GeneralBOException e) {
+            } catch (Exception e) {
                 logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
                 throw new GeneralBOException("Found Error when adding item " + e.getMessage());
             }
