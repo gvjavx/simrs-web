@@ -243,13 +243,65 @@
                                 <tr>
                                     <td>
                                         <label class="control-label">
+                                            <small>Status Bank :</small>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:textfield id="delStatusBank" readonly="true" name="logTransaction.statusBank"
+                                                         required="true" cssClass="form-control"/>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label">
                                             <small>Message :</small>
                                         </label>
                                     </td>
                                     <td>
                                         <table>
-                                            <s:textarea id="delMessage" readonly="true" name="logTransaction.message"
+                                            <s:textarea id="delMessage" height="80" readonly="true" name="logTransaction.message"
                                                         required="true" cssClass="form-control"/>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label">
+                                            <small>Channel :</small>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:textfield id="delChannel" readonly="true" name="logTransaction.channel"
+                                                         required="true" cssClass="form-control"/>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label">
+                                            <small>Invoice Date :</small>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:textfield id="delInvoiceDate" readonly="true" name="logTransaction.invoiceDate"
+                                                         required="true" cssClass="form-control"/>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label">
+                                            <small>Invoice Number :</small>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:textfield id="delInvoiceNumber" type="number" readonly="true" name="logTransaction.invoiceNumber"
+                                                         required="true" cssClass="form-control"/>
                                         </table>
                                     </td>
                                 </tr>
