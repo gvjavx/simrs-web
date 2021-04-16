@@ -579,7 +579,7 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
                     parameterBudgeting.setIdKategoriBudgeting(parameterBudgetingEntity.getIdKategoriBudgeting());
 
                     ImAkunParameterBudgetingRekeningEntity parameterBudgetingRekeningEntity = parameterBudgetingRekeningDao.getById("id", parameterBudgetingEntity.getIdParamRekening());
-                    if (parameterBudgetingEntity != null){
+                    if (parameterBudgetingRekeningEntity != null){
                         parameterBudgeting.setRekeningId(parameterBudgetingRekeningEntity.getRekeningId());
                     } else {
                         parameterBudgeting.setRekeningId(parameterBudgetingEntity.getRekeningId());
@@ -706,6 +706,73 @@ public class BudgetingPerhitunganBoImpl implements BudgetingPerhitunganBo {
 
         logger.info("[BudgetingPerhitunganBoImpl.getListKodeRekeningInParameterBudgeting] END <<< ");
         return kodeRekenings;
+    }
+
+    @Override
+    public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId) {
+        logger.info("[BudgetingPerhitunganBoImpl.getListMasterInParameterBudgeting] START >>> ");
+
+        List<ParameterBudgeting> masters = new ArrayList<>();
+
+        try {
+            masters = perhitunganBudgetingDao.getListMasterInParameterBudgeting(rekeningId, positionId);
+        } catch (HibernateException e){
+            logger.error("[BudgetingPerhitunganBoImpl.getListMasterInParameterBudgeting] ERROR. ", e);
+            throw new GeneralBOException("[BudgetingPerhitunganBoImpl.getListMasterInParameterBudgeting] ERROR. ", e);
+        }
+
+        logger.info("[BudgetingPerhitunganBoImpl.getListMasterInParameterBudgeting] END <<< ");
+        return masters;
+    }
+
+    @Override
+    public void saveAddDrafPendapatan(ItAkunNilaiParameterBudgetingEntity nilaiParameterEntity, List<ItAkunPerhitunganBudgetingEntity> listPerhitunganEntity, PerhitunganBudgeting bean) throws GeneralBOException {
+        logger.info("[BudgetingPerhitunganBoImpl.saveAddDrafPendapatan] START >>> ");
+
+        if (nilaiParameterEntity != null){
+            nilaiParameterEntity.setTipe(bean.getTipe());
+            nilaiParameterEntity.setTahun(bean.getTahun());
+            nilaiParameterEntity.setBranchId(bean.getBranchId());
+            nilaiParameterEntity.setFlag(bean.getFlag());
+            nilaiParameterEntity.setAction(bean.getAction());
+            nilaiParameterEntity.setCreatedDate(bean.getCreatedDate());
+            nilaiParameterEntity.setCreatedWho(bean.getCreatedWho());
+            nilaiParameterEntity.setLastUpdate(bean.getLastUpdate());
+            nilaiParameterEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                nilaiParameterDao.addAndSave(nilaiParameterEntity);
+            } catch (HibernateException e){
+                logger.error("[BudgetingPerhitunganBoImpl.saveAddDrafPendapatan] ERROR when save nilai parameter. ", e);
+                throw new GeneralBOException("[BudgetingPerhitunganBoImpl.saveAddDrafPendapatan] ERROR when save nilai parameter. ", e);
+            }
+
+            if (listPerhitunganEntity.size() > 0){
+                int i = 1;
+                for (ItAkunPerhitunganBudgetingEntity perhitunganEntity : listPerhitunganEntity){
+                    perhitunganEntity.setId(getNextIdPerhitungan(nilaiParameterEntity.getId()));
+                    perhitunganEntity.setCreatedDate(bean.getCreatedDate());
+                    perhitunganEntity.setCreatedWho(bean.getCreatedWho());
+                    perhitunganEntity.setLastUpdate(bean.getLastUpdate());
+                    perhitunganEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    perhitunganEntity.setFlag(bean.getFlag());
+                    perhitunganEntity.setAction(bean.getAction());
+                    perhitunganEntity.setTahun(bean.getTahun());
+                    perhitunganEntity.setBranchId(bean.getBranchId());
+                    perhitunganEntity.setUrutan(i++);
+
+                    try {
+                        perhitunganBudgetingDao.addAndSave(perhitunganEntity);
+                    } catch (HibernateException e){
+                        logger.error("[BudgetingPerhitunganBoImpl.saveAddPerhitunganBudgeting] ERROR when save perhitungan. ", e);
+                        throw new GeneralBOException("[BudgetingPerhitunganBoImpl.saveAddPerhitunganBudgeting] ERROR when save perhitungan. ", e);
+                    }
+                }
+            }
+        }
+
+
+        logger.info("[BudgetingPerhitunganBoImpl.saveAddDrafPendapatan] END <<< ");
     }
 
     private String getNextIdNilaiPengadaaan(String tahun){

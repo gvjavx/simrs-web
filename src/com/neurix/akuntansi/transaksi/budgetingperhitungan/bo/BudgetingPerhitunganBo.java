@@ -49,4 +49,7 @@ public interface BudgetingPerhitunganBo {
 
     public List<ParameterBudgeting> getListPositionInParemeterBudgeting(String jenisBudgeting, String rekeningId);
     public List<ParameterBudgeting> getListKodeRekeningInParameterBudgeting(String jenisBudgeting);
+    public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId);
+
+    public void saveAddDrafPendapatan(ItAkunNilaiParameterBudgetingEntity nilaiParameterEntity, List<ItAkunPerhitunganBudgetingEntity> listPerhitunganEntity, PerhitunganBudgeting bean) throws GeneralBOException;
 }

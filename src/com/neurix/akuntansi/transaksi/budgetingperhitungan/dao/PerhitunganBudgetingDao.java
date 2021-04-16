@@ -751,7 +751,38 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
         }
 
         return kodeRekenings;
+    }
 
+    public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId){
+
+        String SQL = "SELECT \n" +
+                "pb.master_id, \n" +
+                "ms.nama\n" +
+                "FROM im_akun_parameter_budgeting pb\n" +
+                "INNER JOIN im_akun_master ms ON ms.nomor_master = pb.master_id\n" +
+                "WHERE pb.flag = 'Y'\n" +
+                "AND pb.position_id = :positionId \n" +
+                "AND pb.rekening_id = :rekeningId \n" +
+                "GROUP BY\n" +
+                "pb.master_id, \n" +
+                "ms.nama";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("positionId", positionId)
+                .setParameter("rekeningId", rekeningId)
+                .list();
+
+        List<ParameterBudgeting> masters = new ArrayList<>();
+        if (list.size() > 0){
+
+            for (Object[] obj : list){
+                ParameterBudgeting master = new ParameterBudgeting();
+                master.setMasterId(obj[0].toString());
+                master.setNamaMaster(obj[1].toString());
+                masters.add(master);
+            }
+        }
+        return masters;
     }
 
 }

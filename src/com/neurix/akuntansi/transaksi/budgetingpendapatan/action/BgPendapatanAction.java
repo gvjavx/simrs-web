@@ -803,4 +803,21 @@ public class BgPendapatanAction {
         logger.info("[BgPendapatanAction.getListKodeRekeningInParameterBudgeting] END <<<");
         return positionList;
     }
+
+    public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId){
+        logger.info("[BgPendapatanAction.getListMasterInParameterBudgeting] START >>>");
+
+        List<ParameterBudgeting> masterList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+
+        try {
+            masterList = budgetingPerhitunganBo.getListMasterInParameterBudgeting(rekeningId, positionId);
+        } catch (GeneralBOException e){
+            logger.info("[BgPendapatanAction.getListMasterInParameterBudgeting] ERROR. ", e);
+        }
+
+        logger.info("[BgPendapatanAction.getListMasterInParameterBudgeting] END <<<");
+        return masterList;
+    }
 }

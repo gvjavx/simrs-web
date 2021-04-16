@@ -101,8 +101,9 @@
 
                             <div class="row">
                                 <div class="col-md-6 col-md-offset-3">
-                                    <h4>Nilai Dasar : </h4>
-                                    <table class="table table-bordered table-striped">
+                                    <%--<h4>Nilai Dasar : </h4>--%>
+                                    <span style="font-weight: bold">Nilai Dasar :</span>
+                                    <table class="table table-bordered table-striped" style="font-size: 13px">
                                         <tbody id="body-nilai-dasar">
                                         </tbody>
                                     </table>
@@ -122,11 +123,11 @@
                     <div class="box-header with-border"></div>
                     <div class="box-body">
 
-                        List Periode :
+                        <span style="font-weight: bold">List Periode :</span>
 
                         <div class="list-bulan">
                             <table class="table" width="100%" style="font-size: 13px;">
-                                <tr style="border-bottom: solid 1px grey;">
+                                <tr style="border-bottom: solid 1px lightgrey;">
                                     <td><span class="tab-bulan" onclick="changePeriode('januari')">Januari</span></td>
                                     <td><span class="tab-bulan" onclick="changePeriode('februari')">Februari</span></td>
                                     <td><span class="tab-bulan" onclick="changePeriode('maret')">Maret</span></td>
@@ -164,7 +165,7 @@
                             <strong>Error!</strong><span id="error-msg"></span>
                         </div>
 
-                        Periode <span id="nama-periode"></span>
+                        <span style="font-weight: bold">Periode <span id="nama-periode"></span> : </span>
                         <input type="hidden" id="sel-periode"/>
                         <div class="row">
                             <div class="col-md-12">
@@ -172,8 +173,8 @@
                                     <thead>
                                         <tr>
                                             <td>Unit / Pelayanan / Cost Center</td>
-                                            <td align="center">Nilai</td>
-                                            <td align="center">Action</td>
+                                            <td align="right">Nilai</td>
+                                            <td align="center" width="100px">Action</td>
                                         </tr>
                                     </thead>
                                     <tbody id="list-body-budgeting">
@@ -386,20 +387,40 @@
     function addButton(id, divisiId, masterid) {
 //        BudgetingAction.checkTransaksiBudgeting(unit, tahun, function (res) {
             if (flagNilaiDasar == "Y"){
-                return '<button class="btn btn-sm btn-primary" style="float: right;" onclick="showAdd(\''+id+'\', \''+divisiId+'\', \''+masterid+'\')"><i class="fa fa-plus"></i> Tambah</button>';
+                return '<button class="btn btn-sm btn-warning" onclick="showAdd(\''+id+'\', \''+divisiId+'\', \''+masterid+'\')"><i class="fa fa-plus"></i> Tambah</button>';
             }
             return "";
 //        })
     }
 
+//    function showListMaster() {
+//        BgPendapatanAction.getListMasterBudgeting(idKategori, unit, tahun, function (list) {
+//            var str = "";
+//            $.each(list, function (i, item) {
+//                str += '<tr>' +
+//                    '<td id="label-master-'+item.masterId+'">'+item.namaMaster+'</td>' +
+//                    '<td align="right">'+ formatRupiah( item.nilaiTotal )+'</td>' +
+//                    '<td align="center" id="btn-span-'+i+'"><button class="btn btn-sm btn-primary" onclick="spanRow(\''+i+'\', \''+item.masterId+'\')"><i class="fa fa-plus"></i></button></td>' +
+//                    '</tr>' +
+//                    '<tr style="display: none" id="row-master-'+i+'">' +
+//                    '<td colspan="3" id="body-divisi-'+i+'">' +
+//                    '</td>' +
+//                    '</tr>';
+//            });
+//
+//            $("#list-body-budgeting").html(str);
+//        });
+//    }
+
     function showListMaster() {
-        BgPendapatanAction.getListMasterBudgeting(idKategori, unit, tahun, function (list) {
+//        BgPendapatanAction.getListMasterBudgeting(idKategori, unit, tahun, function (list) {
+        BgPendapatanAction.getListPositionInParameterBudgeting('PDT', idKategori, function (list) {
             var str = "";
             $.each(list, function (i, item) {
                 str += '<tr>' +
-                    '<td id="label-master-'+item.masterId+'">'+item.namaMaster+'</td>' +
+                    '<td id="label-master-'+item.positionId+'" style="font-weight: bold">'+item.namaDivisi+'</td>' +
                     '<td align="right">'+ formatRupiah( item.nilaiTotal )+'</td>' +
-                    '<td align="center" id="btn-span-'+i+'"><button class="btn btn-sm btn-primary" onclick="spanRow(\''+i+'\', \''+item.masterId+'\')"><i class="fa fa-plus"></i></button></td>' +
+                    '<td align="center" id="btn-span-'+i+'"><button class="btn btn-sm btn-primary" onclick="spanRow(\''+i+'\', \''+item.positionId+'\')"><i class="fa fa-angle-down"></i> Expand</button></td>' +
                     '</tr>' +
                     '<tr style="display: none" id="row-master-'+i+'">' +
                     '<td colspan="3" id="body-divisi-'+i+'">' +
@@ -413,54 +434,69 @@
 
     function spanRow(i, master) {
         $("#row-master-"+i).show();
-        var btn = '<button class="btn btn-sm btn-primary" onclick="unSpanRow(\''+i+'\', \''+master+'\')"><i class="fa fa-minus"></i></button>';
+        var btn = '<button class="btn btn-sm btn-primary" onclick="unSpanRow(\''+i+'\', \''+master+'\')"><i class="fa fa-angle-up"></i> Hide</button>';
         $("#btn-span-"+i).html(btn);
         listDivisi(i, master);
     }
 
     function unSpanRow(i, master) {
         $("#row-master-"+i).hide();
-        var btn = '<button class="btn btn-sm btn-primary" onclick="spanRow(\''+i+'\', \''+master+'\')"><i class="fa fa-plus"></i></button>';
+        var btn = '<button class="btn btn-sm btn-primary" onclick="spanRow(\''+i+'\', \''+master+'\')"><i class="fa fa-angle-down"></i> Expand</button>';
         $("#btn-span-"+i).html(btn);
     }
 
     function listDivisi(i, masterid) {
 
-        BgPendapatanAction.getListDivisiBudgeting(idKategori, masterid, function (list) {
+//        BgPendapatanAction.getListDivisiBudgeting(idKategori, masterid, function (list) {
+        BgPendapatanAction.getListMasterInParameterBudgeting(idKategori, masterid, function (list) {
 
-            var str = '';
+            var str = '<table class="table table-bordered table-striped" style="font-size: 13px;">' +
+                '<thead id="head-budgeting">' +
+                '<tr>' +
+                '<td>Master</td>' +
+                '<td align="right">Nilai</td>' +
+                '<td align="center" width="100px;">Action</td>' +
+                '</tr>' +
+                '</thead>' +
+                '<tbody>';
+
             $.each(list, function (i, item) {
 
-                str += '<div class="row">' +
-                    '<div class="col-md-8 col-md-offset-2">' +
-                    '<h4 id="label-divisi-'+item.divisiId+'">' + item.namaDivisi +'</h4>' + addButton(item.id, item.divisiId, masterid) +
-//                    '<button class="btn btn-sm btn-primary" style="float: right;" onclick="showAdd(\''+item.id+'\', \''+item.divisiId+'\', \''+masterid+'\')"><i class="fa fa-plus"></i> Tambah</button>' +
-                    '<table class="table table-bordered table-striped">' +
-                    '<thead id="head-budgeting">' +
-                    '<tr bgcolor="#90ee90">' +
-                    '<td>Periode</td>' +
-                    '<td>Nilai</td>' +
-                    //                    '<td align="center">Action</td>' +
-                    '</tr>' +
-                    '</thead>' +
-                    '<tbody id="body-budgeting-data-'+ item.id +'">';
+                str += '<tr>' +
+                    '<td>'+item.namaMaster+'</td>' +
+                    '<td align="right">'+formatRupiah(item.nilaiTotal)+'</td>' +
+                    '<td align="center">'+addButton(item.id, masterid, item.masterId) +'</td>' +
+                    '</tr>';
 
-                BgPendapatanAction.getListDataParam(item.id, function (listDatas) {
-
-                    $.each(listDatas, function (n, data) {
-                        str += '<tr>' +
-                            '<td>'+data.periode+'</td>' +
-                            '<td align="right">'+ formatRupiah( data.nilaiTotal )+'</td>' +
-                            '</tr>';
-                    });
-                });
-
-                str += '</tbody>' +
-                    '</table>' +
-                    '</div>' +
-                    '</div>' +
-                    '<br/>' ;
+//                str += '<div class="row">' +
+//                    '<div class="col-md-8 col-md-offset-2">' +
+////                    '<h4 id="label-divisi-'+item.divisiId+'">' + item.namaDivisi +'</h4>' + addButton(item.id, item.divisiId, masterid) +
+//                    '<h4 id="label-divisi-'+item.masterId+'">' + item.namaMaster +'</h4>' + addButton(item.id, masterid, item.masterId) +
+////                    '<button class="btn btn-sm btn-primary" style="float: right;" onclick="showAdd(\''+item.id+'\', \''+item.divisiId+'\', \''+masterid+'\')"><i class="fa fa-plus"></i> Tambah</button>' +
+//                    '<table class="table table-bordered table-striped">' +
+//                    '<thead id="head-budgeting">' +
+//                    '<tr bgcolor="#90ee90">' +
+//                    '<td>Periode</td>' +
+//                    '<td>Nilai</td>' +
+//                    //                    '<td align="center">Action</td>' +
+//                    '</tr>' +
+//                    '</thead>' +
+//                    '<tbody id="body-budgeting-data-'+ item.id +'">';
+//
+//                BgPendapatanAction.getListDataParam(item.id, function (listDatas) {
+//
+//                    $.each(listDatas, function (n, data) {
+//                        str += '<tr>' +
+//                            '<td>'+data.periode+'</td>' +
+//                            '<td align="right">'+ formatRupiah( data.nilaiTotal )+'</td>' +
+//                            '</tr>';
+//                    });
+//                });
+//
             });
+            str += '</tbody>' +
+                '</table>' +
+                '<br/>' ;
             $("#body-divisi-"+i).html(str);
         })
     }
@@ -1022,6 +1058,11 @@
         var form = { "budgeting.tahun":tahun, "budgeting.branchId":unit, "budgeting.jenis":"add" };
         var host = firstpath()+"/bgpendapatan/add_bgpendapatan.action";
         post(host, form);;
+    }
+
+    function changePeriode(nama){
+        $("#nama-periode").text(nama);
+        $("#sel-periode").val(nama.toLowerCase());
     }
 
 </script>
