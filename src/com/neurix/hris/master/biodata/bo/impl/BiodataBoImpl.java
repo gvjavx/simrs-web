@@ -1956,7 +1956,11 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setTanggalMasuk(bean.getTanggalMasuk());
                 imBiodataEntity.setTanggalAktif(bean.getTanggalAktif());
                 imBiodataEntity.setTempatLahir(bean.getTempatLahir());
-                imBiodataEntity.setTipePegawai(bean.getTipePegawai());
+                if ("Y".equalsIgnoreCase(bean.getFlagDokterKso())){
+                    imBiodataEntity.setTipePegawai("TP05"); //Tipe Pegawai : Dokter Tamu
+                }else {
+                    imBiodataEntity.setTipePegawai(bean.getTipePegawai());
+                }
                 imBiodataEntity.setFotoUpload(bean.getFotoUpload());
                 imBiodataEntity.setStatusCaption(bean.getStatusCaption());
                 imBiodataEntity.setKeterangan(bean.getKeterangan());
