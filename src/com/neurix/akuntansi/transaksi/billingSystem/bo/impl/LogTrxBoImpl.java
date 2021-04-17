@@ -214,6 +214,7 @@ public class LogTrxBoImpl implements LogTrxBo {
 
                     returnLogTransaction.setStatusBank(itLogTransactionEntity.getStatusBank());
                     returnLogTransaction.setChannel(itLogTransactionEntity.getChannel());
+                    returnLogTransaction.setStInvoiceDate(CommonUtil.ddMMyyyyFormat(itLogTransactionEntity.getInvoiceDate()));
                     returnLogTransaction.setInvoiceDate(itLogTransactionEntity.getInvoiceDate());
                     returnLogTransaction.setInvoiceNumber(itLogTransactionEntity.getInvoiceNumber());
 

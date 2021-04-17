@@ -41,7 +41,7 @@ public class LogTrxDao extends GenericDao<ItPgLogTransactionEntity, String> {
             }
 
             if (mapCriteria.get("bank_name")!=null) {
-                criteria.add(Restrictions.eq("bankName", (String) mapCriteria.get("bank_name")));
+                criteria.add(Restrictions.ilike("bankName", (String) mapCriteria.get("bank_name")));
             }
 
             if (mapCriteria.get("no_virtual_account")!=null) {
@@ -57,11 +57,11 @@ public class LogTrxDao extends GenericDao<ItPgLogTransactionEntity, String> {
             }
 
             if (mapCriteria.get("status_bank")!=null) {
-                criteria.add(Restrictions.eq("statusBank", (String) mapCriteria.get("status_bank")));
+                criteria.add(Restrictions.ilike("statusBank", (String) mapCriteria.get("status_bank")));
             }
 
             if (mapCriteria.get("status")!=null) {
-                criteria.add(Restrictions.eq("status", (String) mapCriteria.get("status")));
+                criteria.add(Restrictions.ilike("status", (String) mapCriteria.get("status")));
             }
 
             if (mapCriteria.get("channel")!=null) {

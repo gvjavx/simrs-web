@@ -3,7 +3,7 @@ package com.neurix.akuntansi.transaksi.billingSystem.model;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.Date;
+import java.sql.Date;
 
 public class LogTransaction {
     private BigInteger pgLogTrxId;
@@ -51,9 +51,17 @@ public class LogTransaction {
     private Timestamp DateEnd;
     private String stDateEnd;
 
+    private String stInvoiceDate;
     private String stInvDateFrom;
     private String stInvDateTo;
 
+    public String getStInvoiceDate() {
+        return stInvoiceDate;
+    }
+
+    public void setStInvoiceDate(String stInvoiceDate) {
+        this.stInvoiceDate = stInvoiceDate;
+    }
 
     public String getStInvDateFrom() {
         return stInvDateFrom;

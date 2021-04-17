@@ -287,7 +287,7 @@
                                     </td>
                                     <td>
                                         <table>
-                                            <s:textfield id="delInvoiceDate" readonly="true" name="logTransaction.invoiceDate"
+                                            <s:textfield id="delInvoiceDate" readonly="true" name="logTransaction.stInvoiceDate"
                                                          required="true" cssClass="form-control"/>
                                         </table>
                                     </td>

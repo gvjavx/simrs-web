@@ -101,7 +101,7 @@
                 </td>
                 <td>
                     <table>
-                        <s:select list="#{'BNI':'BNI', 'BSI':'BSI'}" id="bankName" name="logTransaction.bankName"
+                        <s:select list="#{'BNI':'BNI', 'BSI':'BSI', 'BSM':'BSM'}" id="bankName" name="logTransaction.bankName"
                                   headerKey="" headerValue="[all bank]" cssClass="form-control"/>
                     </table>
                 </td>
@@ -293,7 +293,7 @@
                             <display:column property="status" sortable="true" title="Status"/>
                             <display:column property="statusBank" sortable="true" title="Status Bank"/>
                             <display:column property="channel" sortable="true" title="Channel"/>
-                            <display:column property="invoiceDate" sortable="true" title="Inv. Date"/>
+                            <display:column property="stInvoiceDate" sortable="true" title="Inv. Date"/>
                             <display:column property="invoiceNumber" sortable="true" title="Inv. Number"/>
                             <display:column property="sentDate" sortable="true" title="Send Date"/>
                             <display:column property="receivedDate" sortable="true" title="Received Date"/>
