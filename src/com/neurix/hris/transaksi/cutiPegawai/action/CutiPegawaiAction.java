@@ -758,7 +758,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
             } catch (GeneralBOException e1) {
                 logger.error("[cutiPegawaiAction.initComboSisaCutiPegawaiId] Error when saving error,", e1);
             }
-            logger.error("[cutiPegawaiAction.initComboSisaCutiPegawaiId] Error when get combo lokasi kebun," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+            logger.error("[cutiPegawaiAction.initComboSisaCutiPegawaiId] Error when get Sisa Cuti," + "[" + logId + "] Found problem when retrieving combo Sisa Cuti data, please inform to your admin.", e);
         }
 
         logger.info("[cutiPegawaiAction.initComboSisaCutiPegawaiId] end process <<<");
