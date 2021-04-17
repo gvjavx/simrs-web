@@ -125,6 +125,14 @@ public class LogTrxBoImpl implements LogTrxBo {
             if (searchBean.getInvoiceNumber() != null) {
                 hsCriteria.put("invoice_number", searchBean.getStatus());
             }
+            if(searchBean.getStInvDateFrom() != null){
+                Date invDateFrom = CommonUtil.convertStringToDate(searchBean.getStInvDateFrom());
+                hsCriteria.put("invoice_date_from", invDateFrom);
+            }
+            if(searchBean.getStInvDateTo() != null){
+                Date invDateTo = CommonUtil.convertStringToDate(searchBean.getStInvDateTo());
+                hsCriteria.put("invoice_date_from", invDateTo);
+            }
 
             if (searchBean.getStReceivedDateFrom() != null && !"".equalsIgnoreCase(searchBean.getStReceivedDateFrom())) {
                 Timestamp receivedDateFrom = CommonUtil.convertToTimestamp(searchBean.getStReceivedDateFrom());

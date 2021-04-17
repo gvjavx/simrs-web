@@ -52,7 +52,7 @@
             <column name="channel"/>
         </property>
         <property name="invoiceDate">
-            <column name="invoice_date"/>
+            <column name="invoice_date" sql-type="date"/>
         </property>
         <property name="invoiceNumber">
             <column name="invoice_number"/>

@@ -10,6 +10,7 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
 import java.sql.Date;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,7 @@ public class LogTrxDao extends GenericDao<ItPgLogTransactionEntity, String> {
         // Get Collection and sorting
         if (mapCriteria!=null) {
             if (mapCriteria.get("pg_log_trx_id")!=null) {
-                criteria.add(Restrictions.eq("pgLogTrxId", (String) mapCriteria.get("pg_log_trx_id")));
+                criteria.add(Restrictions.eq("pgLogTrxId", (BigInteger) mapCriteria.get("pg_log_trx_id")));
             }
 
             if (mapCriteria.get("trx_id")!=null) {
@@ -36,7 +37,7 @@ public class LogTrxDao extends GenericDao<ItPgLogTransactionEntity, String> {
             }
 
             if (mapCriteria.get("tipe_trx")!=null) {
-                criteria.add(Restrictions.eq("tipeTrx", (String) mapCriteria.get("tipe_trx")));
+                criteria.add(Restrictions.ilike("tipeTrx", (String) mapCriteria.get("tipe_trx")));
             }
 
             if (mapCriteria.get("bank_name")!=null) {
@@ -52,7 +53,7 @@ public class LogTrxDao extends GenericDao<ItPgLogTransactionEntity, String> {
             }
 
             if (mapCriteria.get("name_person")!=null) {
-                criteria.add(Restrictions.eq("namePerson", (String) mapCriteria.get("name_person")));
+                criteria.add(Restrictions.ilike("namePerson", (String) "%" + mapCriteria.get("name_person") + "%"));
             }
 
             if (mapCriteria.get("status_bank")!=null) {
@@ -64,11 +65,18 @@ public class LogTrxDao extends GenericDao<ItPgLogTransactionEntity, String> {
             }
 
             if (mapCriteria.get("channel")!=null) {
-                criteria.add(Restrictions.eq("channel", (String) mapCriteria.get("channel")));
+                criteria.add(Restrictions.ilike("channel", (String) mapCriteria.get("channel")));
             }
 
             if (mapCriteria.get("invoice_number")!=null) {
                 criteria.add(Restrictions.eq("invoiceNumber", (String) mapCriteria.get("invoice_number")));
+            }
+
+            if (mapCriteria.get("invoice_date_from")!=null){
+                criteria.add(Restrictions.ge("invoiceDate", (Date) mapCriteria.get("invoice_date_from")));
+            }
+            if (mapCriteria.get("invoice_date_to")!=null){
+                criteria.add(Restrictions.le("invoiceDate", (Date) mapCriteria.get("invoice_date_to")));
             }
             //RAKA-16APR2021 ==> Handle status all, by tanggal
             if (mapCriteria.get("received_date_from")!=null && mapCriteria.get("received_date_to") != null && mapCriteria.get("sent_date_from")!=null && mapCriteria.get("sent_date_to") != null) {

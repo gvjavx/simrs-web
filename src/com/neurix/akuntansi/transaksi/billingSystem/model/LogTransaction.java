@@ -51,6 +51,26 @@ public class LogTransaction {
     private Timestamp DateEnd;
     private String stDateEnd;
 
+    private String stInvDateFrom;
+    private String stInvDateTo;
+
+
+    public String getStInvDateFrom() {
+        return stInvDateFrom;
+    }
+
+    public void setStInvDateFrom(String stInvDateFrom) {
+        this.stInvDateFrom = stInvDateFrom;
+    }
+
+    public String getStInvDateTo() {
+        return stInvDateTo;
+    }
+
+    public void setStInvDateTo(String stInvDateTo) {
+        this.stInvDateTo = stInvDateTo;
+    }
+
     public Timestamp getDateStr() {
         return DateStr;
     }

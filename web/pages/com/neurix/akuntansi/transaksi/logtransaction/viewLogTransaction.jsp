@@ -261,7 +261,7 @@
                                     </td>
                                     <td>
                                         <table>
-                                            <s:textarea id="delMessage" rows="5" readonly="true" name="logTransaction.message"
+                                            <s:textarea id="delMessage" rows="10" readonly="true" name="logTransaction.message"
                                                         required="true" cssClass="form-control"/>
                                         </table>
                                     </td>
