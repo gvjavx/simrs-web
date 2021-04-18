@@ -2,6 +2,7 @@ package com.neurix.akuntansi.transaksi.budgetingperhitungan.dao;
 
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
+import com.neurix.akuntansi.transaksi.budgeting.model.BudgetingPeriode;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ItAkunPerhitunganBudgetingEntity;
 import com.neurix.akuntansi.master.parameterbudgeting.model.ParameterBudgeting;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.PerhitunganBudgeting;
@@ -685,6 +686,10 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
 
     public List<ParameterBudgeting> getPositionFromParameterBudgeting(String jenisBudgeting, String rekeningId, String periode, String tahun, String branchId){
 
+        if ("all".equalsIgnoreCase(periode)){
+            periode = "%";
+        }
+
         String SQL = "SELECT \n" +
                 "pb.position_id, \n" +
                 "ps.position_name,\n" +
@@ -693,7 +698,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
                 "FROM im_akun_parameter_budgeting pb\n" +
                 "INNER JOIN im_position ps ON ps.position_id = pb.position_id\n" +
                 "INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = pb.rekening_id\n" +
-                "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE periode = '"+periode+"' AND tahun = '"+tahun+"' AND branch_id = '"+branchId+"') npb ON npb.id_parameter = pb.id \n" +
+                "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE periode ILIKE '"+periode+"' AND tahun = '"+tahun+"' AND branch_id = '"+branchId+"') npb ON npb.id_parameter = pb.id \n" +
                 "WHERE pb.id_jenis_budgeting = :jenisBudgeting\n" +
                 "AND pb.rekening_id = :rekeningId\n" +
                 "AND pb.flag = 'Y' \n" +
@@ -726,6 +731,10 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
 
     public List<ParameterBudgeting> getPositionFromParameterBudgetingBiaya(String jenisBudgeting, String rekeningId, String periode, String tahun, String branchId){
 
+        if ("all".equalsIgnoreCase(periode)){
+            periode = "%";
+        }
+
         String SQL = "SELECT \n" +
                 "pb.position_id, \n" +
                 "ps.position_name,\n" +
@@ -735,7 +744,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
                 "FROM im_akun_parameter_budgeting pb\n" +
                 "INNER JOIN im_position ps ON ps.position_id = pb.position_id\n" +
                 "INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = pb.rekening_id\n" +
-                "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE periode = '"+periode+"' AND tahun = '"+tahun+"' AND branch_id = '"+branchId+"') npb ON npb.id_parameter = pb.id \n" +
+                "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE periode ILIKE '"+periode+"' AND tahun = '"+tahun+"' AND branch_id = '"+branchId+"') npb ON npb.id_parameter = pb.id \n" +
                 "WHERE pb.id_jenis_budgeting = :jenisBudgeting\n" +
                 "AND pb.rekening_id = :rekeningId\n" +
                 "AND pb.flag = 'Y' \n" +
@@ -875,6 +884,10 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
 
     public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId, String periode, String tahun, String branchId){
 
+        if ("all".equalsIgnoreCase(periode)){
+            periode = "%";
+        }
+
         String SQL = "SELECT \n" +
                 "pb.master_id, \n" +
                 "ms.nama, \n" +
@@ -882,7 +895,7 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
                 "SUM(npb.nilai_total) as nilai_total\n" +
                 "FROM im_akun_parameter_budgeting pb\n" +
                 "INNER JOIN im_akun_master ms ON ms.nomor_master = pb.master_id \n" +
-                "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE periode = '"+periode+"' AND tahun = '"+tahun+"' AND branch_id = '"+branchId+"') npb ON npb.id_parameter = pb.id \n" +
+                "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE periode ILIKE '"+periode+"' AND tahun = '"+tahun+"' AND branch_id = '"+branchId+"') npb ON npb.id_parameter = pb.id \n" +
                 "WHERE pb.flag = 'Y'\n" +
                 "AND pb.position_id = :positionId \n" +
                 "AND pb.rekening_id = :rekeningId \n" +
@@ -928,12 +941,16 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
 
     public List<ParameterBudgeting> getListInvestasiByRekeningId(String jenisBudgeting, String rekeningId, String periode, String tahun, String branchId){
 
+        if ("all".equalsIgnoreCase(periode)){
+            periode = "%";
+        }
+
         String SQL = "SELECT\n" +
                 "pp.id,\n" +
                 "pp.nama,\n" +
                 "pp.nilai_total\n" +
                 "FROM it_akun_nilai_parameter_pengadaan pp\n" +
-                "INNER JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE periode = '"+periode+"' AND tahun = '"+tahun+"' AND branch_id = '"+branchId+"') npb ON npb.id = pp.id_nilai_param\n" +
+                "INNER JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE periode ILIKE '"+periode+"' AND tahun = '"+tahun+"' AND branch_id = '"+branchId+"') npb ON npb.id = pp.id_nilai_param\n" +
                 "INNER JOIN im_akun_parameter_budgeting pb ON pb.id = npb.id_parameter\n" +
                 "WHERE pp.flag = 'Y'\n" +
                 "AND pb.id_jenis_budgeting = :jenisBudgeting \n" +
@@ -964,5 +981,4 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
     private BigDecimal escapeObjToBigdecimal(Object obj){
         return obj == null ? new BigDecimal(0) : new BigDecimal(obj.toString());
     }
-
 }
