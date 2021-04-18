@@ -194,7 +194,7 @@
                         </div>
                         <div class="form-group" style="margin-top: 10px">
                             <div class="col-md-4 col-md-offset-5">
-                                <button class="btn btn-warning" onclick="initForm()"><i class="fa fa-arrow-left"></i> Back</button>
+                                <button class="btn btn-warning" onclick="initForm()"><i class="fa fa-arrow-left"></i> Kembali</button>
                                 <%--<button class="btn btn-success" id="btn-save" onclick="saveAdd()"><i class="fa fa-check"></i> Save </button>--%>
                             </div>
                         </div>
@@ -471,7 +471,7 @@
                     "<td>"+item.namaKodeRekening+"</td>"+
                     "<td align='right'>"+ formatRupiah(nullEscape(item.nilaiTotal)) +"</td>" +
                     "<td align='center'>" +
-                    "<button class='btn btn-sm btn-primary' onclick=\"add(\'"+item.rekeningId+"\',\'"+branch+"\',\'"+tahun+"\',\'"+ item.namaKodeRekening +"\')\"><i class='fa fa-edit'></i></button> " +
+                    "<button class='btn btn-sm btn-primary' onclick=\"add(\'"+item.rekeningId+"\',\'"+branch+"\',\'"+tahun+"\',\'"+ item.namaKodeRekening +"\')\"><i class='fa fa-arrow-right'></i> Pilih</button> " +
                     "</td>" +
                     "</tr>";
             });

@@ -131,8 +131,8 @@
 
                             <div class="row">
                                 <div class="col-md-6 col-md-offset-5" style="margin-top: 10px">
-                                    <button class="btn btn-primary" onclick="choose()"><i class="fa fa-arrow-right"></i> Choose</button>
-                                    <button class="btn btn-danger" onclick="refreshAdd()"><i class="fa fa-refresh"></i> Reset</button>
+                                    <button class="btn btn-primary" onclick="choose()"><i class="fa fa-arrow-right"></i> Pilih</button>
+                                    <%--<button class="btn btn-danger" onclick="refreshAdd()"><i class="fa fa-refresh"></i> Reset</button>--%>
                                 </div>
                             </div>
                         </div>

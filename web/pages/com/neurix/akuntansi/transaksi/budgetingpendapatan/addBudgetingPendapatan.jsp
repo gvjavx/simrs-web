@@ -176,7 +176,7 @@
                                 <table class="table table-bordered table-striped" style="font-size: 13px">
                                     <thead>
                                         <tr>
-                                            <td>Unit / Pelayanan / Cost Center</td>
+                                            <td>Unit / Pelayanan / Profit Center</td>
                                             <td align="right">Nilai</td>
                                             <td align="center" width="100px">Action</td>
                                         </tr>
@@ -206,7 +206,7 @@
                         <%--</div>--%>
                         <div class="form-group" style="margin-top: 10px">
                             <div class="col-md-4 col-md-offset-5">
-                                <button class="btn btn-warning" onclick="back()"><i class="fa fa-refresh"></i> Close</button>
+                                <button class="btn btn-warning" onclick="back()"><i class="fa fa-arrow-left"></i> Kembali</button>
                                 <%--<button class="btn btn-success" id="btn-save" onclick="saveAdd()"><i class="fa fa-arrow-right"></i> Save </button>--%>
                             </div>
                         </div>
@@ -986,8 +986,6 @@
     function addCoa() {
         var listData    = [];
         var idParam     = $("#id-param").val();
-        var divisiId    = $("#divisiid").val();
-        var masterId    = $("#masterid").val();
         var periode     = $("#sel-periode").val();
 
         for (i=0; i<n;i++){
@@ -997,13 +995,6 @@
         }
 
         var objData = {"id_param" : idParam, "branch_id" : unit, "tahun" : tahun, "periode" : periode, "tipe" : "bulanan"};
-
-//        console.log(listData);
-//        console.log(idParam);
-//        console.log(divisiId);
-//        console.log(masterId);
-//        console.log(periode);
-//        alert("success");
 
         var stList  = JSON.stringify(listData);
         var stObj   = JSON.stringify(objData);
@@ -1077,7 +1068,7 @@
     }
 
     function changePeriode(nama){
-        $("#nama-periode").text(nama);
+        $("#nama-periode").text(titleCase(nama));
         $("#sel-periode").val(nama.toLowerCase());
         $(".tab-bulan").removeAttr("class");
         var name = $('[name=bulan]');
@@ -1090,6 +1081,15 @@
             }
         });
         showListMaster();
+    }
+
+    function titleCase(string) {
+        var sentence = string.toLowerCase().split(" ");
+        for(var i = 0; i< sentence.length; i++){
+            sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
+        }
+        sentence.join(" ");
+        return sentence;
     }
 
 </script>

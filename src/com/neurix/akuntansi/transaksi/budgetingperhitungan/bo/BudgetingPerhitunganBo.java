@@ -12,6 +12,7 @@ import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.authorization.position.model.Position;
 import com.neurix.common.exception.GeneralBOException;
 
+import java.lang.reflect.Parameter;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -52,4 +53,7 @@ public interface BudgetingPerhitunganBo {
     public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId, String periode, String tahun, String branchId);
 
     public void saveAddDrafPendapatan(ItAkunNilaiParameterBudgetingEntity nilaiParameterEntity, List<ItAkunPerhitunganBudgetingEntity> listPerhitunganEntity, PerhitunganBudgeting bean) throws GeneralBOException;
+    public void saveAddDrafInvestasi(ItAkunNilaiParameterBudgetingEntity nilaiParameterEntity, List<ItAkunNilaiParameterPengadaaanEntity> pengadaaanEntityList, PerhitunganBudgeting bean) throws GeneralBOException;
+    public void saveAddDrafBiaya(ItAkunNilaiParameterBudgetingEntity nilaiParameterEntity, List<ItAkunPerhitunganBudgetingEntity> listPerhitunganEntity, PerhitunganBudgeting bean) throws GeneralBOException;
+    public List<ParameterBudgeting> getListInvestasiByRekeningId(String jenisBudgeting, String rekeningId, String periode, String tahun, String branchId);
 }

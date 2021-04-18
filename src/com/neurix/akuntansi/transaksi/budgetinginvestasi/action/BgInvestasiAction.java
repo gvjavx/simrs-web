@@ -2,6 +2,8 @@ package com.neurix.akuntansi.transaksi.budgetinginvestasi.action;
 
 import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
+import com.neurix.akuntansi.master.parameterbudgeting.bo.ParameterBudgetingBo;
+import com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunParameterBudgetingEntity;
 import com.neurix.akuntansi.master.parameterbudgeting.model.ParameterBudgeting;
 import com.neurix.akuntansi.transaksi.budgeting.action.BudgetingAction;
 import com.neurix.akuntansi.transaksi.budgeting.bo.BudgetingBo;
@@ -41,7 +43,7 @@ public class BgInvestasiAction {
     private String tipe;
     private String id;
     private String trans;
-    private String tipeBudgeting = "nominasi";
+    private String tipeBudgeting = "investasi";
 
     public String getStatus() {
         return status;
@@ -163,6 +165,7 @@ public class BgInvestasiAction {
             budgetingNew.setIdKategoriBudgeting(budgeting.getIdKategoriBudgeting());
             budgetingNew.setNamaKategori(budgeting.getNamaKategori());
             budgetingNew.setJenis(budgeting.getJenis());
+            budgetingNew.setIdParam(budgeting.getIdParam());
         }
         if (budgetingNew.getBranchId() == null || "".equalsIgnoreCase(budgetingNew.getBranchId())){
             budgetingNew.setFlagKp(branchId.equalsIgnoreCase(CommonConstant.ID_KANPUS) ? "Y" : "N");
@@ -1024,5 +1027,115 @@ public class BgInvestasiAction {
         return positionList;
     }
 
+    public List<ParameterBudgeting> getListInvestasiByRekeningId(String jenisBudgeting, String rekeningId, String periode, String tahun, String branchId) {
+        logger.info("[BgInvestasiAction.getListInvestasiByRekeningId] START >>>");
 
+        List<ParameterBudgeting> positionList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+
+        try {
+            positionList = budgetingPerhitunganBo.getListInvestasiByRekeningId(jenisBudgeting, rekeningId, periode, tahun, branchId);
+        } catch (GeneralBOException e){
+            logger.info("[BgInvestasiAction.getListInvestasiByRekeningId] ERROR. ", e);
+        }
+
+        logger.info("[BgInvestasiAction.getListInvestasiByRekeningId] END <<<");
+        return positionList;
+    }
+
+    public CrudResponse saveAddDraftInvestasi(String stObj, String stJsonList) throws JSONException{
+        logger.info("[BgInvestasiAction.saveAddDraftInvestasi] START >>>");
+
+        CrudResponse response = new CrudResponse();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp times = new Timestamp(System.currentTimeMillis());
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+        ParameterBudgetingBo parameterBudgetingBo = (ParameterBudgetingBo) ctx.getBean("parameterBudgetingBoProxy");
+
+        // mapping perhitungan
+        List<ItAkunNilaiParameterPengadaaanEntity> parameterPengadaaanEntities = new ArrayList<>();
+        JSONArray listPerhitungan = new JSONArray(stJsonList);
+        for (int i = 0; i < listPerhitungan.length(); i++) {
+            JSONObject obj = listPerhitungan.getJSONObject(i);
+            ItAkunNilaiParameterPengadaaanEntity pengadaaanEntity = new ItAkunNilaiParameterPengadaaanEntity();
+            if (!"".equalsIgnoreCase(obj.get("nilai").toString())){
+                pengadaaanEntity.setNilai(obj.get("nilai") == null ? new BigDecimal(0) : new BigDecimal(obj.get("nilai").toString()) );
+            }
+            if (!"".equalsIgnoreCase(obj.get("qty").toString())){
+                pengadaaanEntity.setQty(obj.get("qty") == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj.get("qty").toString()) );
+            }
+            if (!"".equalsIgnoreCase(obj.get("nama").toString())){
+                pengadaaanEntity.setNama(obj.get("nama").toString());
+            }
+            if (pengadaaanEntity.getNilai() != null && pengadaaanEntity.getQty() != null) {
+                pengadaaanEntity.setNilaiTotal(pengadaaanEntity.getNilai().multiply(new BigDecimal(pengadaaanEntity.getQty())));
+            }
+            parameterPengadaaanEntities.add(pengadaaanEntity);
+        }
+        // END
+
+        // mapping nilaiParameterBudgeting
+        JSONObject objParamBudgeting = new JSONObject(stObj);
+        String branchId     = objParamBudgeting.getString("branch_id");
+        String tahun        = objParamBudgeting.getString("tahun");
+        String periode      = objParamBudgeting.getString("periode");
+        String tipe         = objParamBudgeting.getString("tipe");
+        String idParam      = objParamBudgeting.getString("id_param");
+        // END
+
+        // mencari id
+        String id = "";
+        try {
+            id = budgetingPerhitunganBo.getNextIdNilaiParameter(branchId, tahun, idParam);
+        } catch (GeneralBOException e){
+            logger.error("[BgInvestasiAction.saveAddDraftInvestasi] ERROR. ", e);
+            response.hasError(e.getCause().toString());
+            return response;
+        }
+        // END
+
+        // mencari nilai total berdasarkan list perhitungan
+        BigDecimal nilaiTotal = new BigDecimal(0);
+        try {
+            nilaiTotal = hitungTotalPengadaanFromListEntityNilaiPengadaan(parameterPengadaaanEntities);
+        } catch (GeneralBOException e){
+            logger.error("[BgInvestasiAction.saveAddDraftInvestasi] ERROR. ", e);
+            response.hasError(e.getCause().toString());
+            return response;
+        }
+        // END
+
+        ItAkunNilaiParameterBudgetingEntity nilaiParameterEntity = new ItAkunNilaiParameterBudgetingEntity();
+        nilaiParameterEntity.setId(id);
+        nilaiParameterEntity.setTipe(tipe);
+        nilaiParameterEntity.setPeriode(periode);
+        nilaiParameterEntity.setNilaiTotal(nilaiTotal);
+        nilaiParameterEntity.setIdParameter(idParam);
+
+        PerhitunganBudgeting perhitunganBudgeting = new PerhitunganBudgeting();
+        perhitunganBudgeting.setTahun(tahun);
+        perhitunganBudgeting.setBranchId(branchId);
+        perhitunganBudgeting.setFlag("Y");
+        perhitunganBudgeting.setAction("C");
+        perhitunganBudgeting.setCreatedDate(times);
+        perhitunganBudgeting.setCreatedWho(userLogin);
+        perhitunganBudgeting.setLastUpdate(times);
+        perhitunganBudgeting.setLastUpdateWho(userLogin);
+
+        try {
+            budgetingPerhitunganBo.saveAddDrafInvestasi(nilaiParameterEntity, parameterPengadaaanEntities, perhitunganBudgeting);
+        } catch (GeneralBOException e){
+            logger.error("[BgInvestasiAction.saveAddDraftInvestasi] ERROR. ", e);
+            response.hasError(e.getCause().toString());
+            return response;
+        }
+
+
+        logger.info("[BgInvestasiAction.saveAddDraftInvestasi] END <<<");
+        response.hasSuccess("Berhasil");
+        return response;
+    }
 }
