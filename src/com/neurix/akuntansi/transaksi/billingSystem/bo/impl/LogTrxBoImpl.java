@@ -125,32 +125,32 @@ public class LogTrxBoImpl implements LogTrxBo {
             if (searchBean.getInvoiceNumber() != null) {
                 hsCriteria.put("invoice_number", searchBean.getStatus());
             }
-            if(searchBean.getStInvDateFrom() != null){
+            if(searchBean.getStInvDateFrom() != null && !"".equalsIgnoreCase(searchBean.getStInvDateFrom())){
                 Date invDateFrom = CommonUtil.convertStringToDate(searchBean.getStInvDateFrom());
                 hsCriteria.put("invoice_date_from", invDateFrom);
             }
-            if(searchBean.getStInvDateTo() != null){
+            if(searchBean.getStInvDateTo() != null && !"".equalsIgnoreCase(searchBean.getStInvDateTo())){
                 Date invDateTo = CommonUtil.convertStringToDate(searchBean.getStInvDateTo());
                 hsCriteria.put("invoice_date_from", invDateTo);
             }
 
-            if (searchBean.getStReceivedDateFrom() != null && !"".equalsIgnoreCase(searchBean.getStReceivedDateFrom())) {
-                Timestamp receivedDateFrom = CommonUtil.convertToTimestamp(searchBean.getStReceivedDateFrom());
-                hsCriteria.put("received_date_from", receivedDateFrom);
-            }
-            if (searchBean.getStReceivedDateTo() != null && !"".equalsIgnoreCase(searchBean.getStReceivedDateTo())) {
-                Timestamp receivedDateTo = CommonUtil.convertToTimestamp(searchBean.getStReceivedDateTo());
-                hsCriteria.put("received_date_to", receivedDateTo);
-            }
-
-            if (searchBean.getStSentDateFrom() != null && !"".equalsIgnoreCase(searchBean.getStSentDateFrom())) {
-                Timestamp sentDateFrom = CommonUtil.convertToTimestamp(searchBean.getStSentDateFrom());
-                hsCriteria.put("sent_date_from", sentDateFrom);
-            }
-            if (searchBean.getStSentDateTo() != null && !"".equalsIgnoreCase(searchBean.getStSentDateTo())) {
-                Timestamp sentDateTo = CommonUtil.convertToTimestamp(searchBean.getStSentDateTo());
-                hsCriteria.put("sent_date_to", sentDateTo);
-            }
+//            if (searchBean.getStReceivedDateFrom() != null && !"".equalsIgnoreCase(searchBean.getStReceivedDateFrom())) {
+//                Timestamp receivedDateFrom = CommonUtil.convertToTimestamp(searchBean.getStReceivedDateFrom());
+//                hsCriteria.put("received_date_from", receivedDateFrom);
+//            }
+//            if (searchBean.getStReceivedDateTo() != null && !"".equalsIgnoreCase(searchBean.getStReceivedDateTo())) {
+//                Timestamp receivedDateTo = CommonUtil.convertToTimestamp(searchBean.getStReceivedDateTo());
+//                hsCriteria.put("received_date_to", receivedDateTo);
+//            }
+//
+//            if (searchBean.getStSentDateFrom() != null && !"".equalsIgnoreCase(searchBean.getStSentDateFrom())) {
+//                Timestamp sentDateFrom = CommonUtil.convertToTimestamp(searchBean.getStSentDateFrom());
+//                hsCriteria.put("sent_date_from", sentDateFrom);
+//            }
+//            if (searchBean.getStSentDateTo() != null && !"".equalsIgnoreCase(searchBean.getStSentDateTo())) {
+//                Timestamp sentDateTo = CommonUtil.convertToTimestamp(searchBean.getStSentDateTo());
+//                hsCriteria.put("sent_date_to", sentDateTo);
+//            }
 
             if (searchBean.getStDateStr() != null && !"".equalsIgnoreCase(searchBean.getStDateStr())) {
                 Timestamp date_str = CommonUtil.convertToTimestamp(searchBean.getStDateStr());
@@ -214,7 +214,9 @@ public class LogTrxBoImpl implements LogTrxBo {
 
                     returnLogTransaction.setStatusBank(itLogTransactionEntity.getStatusBank());
                     returnLogTransaction.setChannel(itLogTransactionEntity.getChannel());
-                    returnLogTransaction.setStInvoiceDate(CommonUtil.ddMMyyyyFormat(itLogTransactionEntity.getInvoiceDate()));
+                    if(itLogTransactionEntity.getInvoiceDate()!=null) {
+                        returnLogTransaction.setStInvoiceDate(CommonUtil.ddMMyyyyFormat(itLogTransactionEntity.getInvoiceDate()));
+                    }
                     returnLogTransaction.setInvoiceDate(itLogTransactionEntity.getInvoiceDate());
                     returnLogTransaction.setInvoiceNumber(itLogTransactionEntity.getInvoiceNumber());
 

@@ -260,7 +260,7 @@
                     <td align="center">
                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                    height="600" width="900" autoOpen="false"
-                                   title="Log Transaction">
+                                   title="Log Transaction Payment Gateway">
                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>"
                                          alt="Loading..."/></center>
                         </sj:dialog>
@@ -346,6 +346,8 @@
         $('#invDateTo').datepicker({
             dateFormat: 'dd-mm-yy'
         });
+
+        labelSrcDate();
     })
 
     function validateRange() {

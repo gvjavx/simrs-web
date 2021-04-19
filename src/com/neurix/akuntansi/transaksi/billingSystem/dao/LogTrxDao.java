@@ -101,13 +101,13 @@ public class LogTrxDao extends GenericDao<ItPgLogTransactionEntity, String> {
                 }else if (mapCriteria.get("sent_date_from") != null && mapCriteria.get("sent_date_to") != null) {
                     criteria.add(Restrictions.between("sentDate", mapCriteria.get("sent_date_from"), mapCriteria.get("sent_date_to")));
                 }else if(mapCriteria.get("sent_date_from") != null){
-                    Restrictions.ge("sentDate", mapCriteria.get("sent_date_from"));
+                    criteria.add(Restrictions.ge("sentDate", mapCriteria.get("sent_date_from")));
                 }else if(mapCriteria.get("sent_date_to") != null){
-                    Restrictions.le("sentDate", mapCriteria.get("sent_date_to"));
+                    criteria.add(Restrictions.le("sentDate", mapCriteria.get("sent_date_to")));
                 }else if(mapCriteria.get("received_date_from") != null){
-                    Restrictions.ge("receivedDate", mapCriteria.get("sent_date_from"));
+                    criteria.add(Restrictions.ge("receivedDate", mapCriteria.get("received_date_from")));
                 }else if(mapCriteria.get("received_date_to") != null){
-                    Restrictions.le("receivedDate", mapCriteria.get("sent_date_to"));
+                    criteria.add(Restrictions.le("receivedDate", mapCriteria.get("received_date_to")) );
                 }
             }
         }
