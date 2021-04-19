@@ -1844,7 +1844,10 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             int year1 = c.get(Calendar.YEAR);
 
             Calendar d = Calendar.getInstance();
-            java.util.Date tanggalAktif = new java.util.Date(biodataEntity.getTanggalMasuk().getTime());
+            java.util.Date tanggalAktif = new java.util.Date(c.getTimeInMillis());
+            if(biodataEntity != null && biodataEntity.getTanggalMasuk() != null) {
+                tanggalAktif = new java.util.Date(biodataEntity.getTanggalMasuk().getTime());
+            }
             d.setTime(tanggalAktif);
             int year2 = d.get(Calendar.YEAR);
 

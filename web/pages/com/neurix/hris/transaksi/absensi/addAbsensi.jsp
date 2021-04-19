@@ -310,7 +310,6 @@
 <script>
     $(document).ready(function(){
         var limNow = new Date();
-        limNow.setDate(limNow.getDate() - 1);
         $('#tanggal1').datepicker({
             dateFormat: 'dd-mm-yy',
             maxDate: limNow

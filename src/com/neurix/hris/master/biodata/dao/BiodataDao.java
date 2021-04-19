@@ -507,6 +507,193 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         return listOfResult;
     }
 
+    public List<ImBiodataEntity> forComboPersonil(String nip, String nama, String branchId, String divisiId, BigInteger jmlAnak, String tipePegawai, String flag){
+        String searchNip = "" ;
+        String searchNama = "" ;
+        String searchBranchId = "" ;
+        String searchDivisiId = "" ;
+        String searchTipePegawai = "" ;
+        String searchJmlAnak = "";
+
+        if (nip!=null){
+            if(!nip.equalsIgnoreCase("")){
+                searchNip = " and pegawai.nip = '" + nip + "' " ;
+            }
+        }
+        if (nama!=null){
+            if(!nama.equalsIgnoreCase("")){
+                searchNama = " and UPPER(pegawai.nama_pegawai) like UPPER('%" + nama + "%') " ;
+            }
+        }
+        if(branchId!=null){
+            if(!branchId.equalsIgnoreCase("")){
+                searchBranchId = " and itPosisi.branch_id= '" + branchId + "' " ;
+            }
+        }
+        if (divisiId!=null){
+            if(!divisiId.equalsIgnoreCase("")){
+                searchDivisiId = " and posisi.department_id = '" + divisiId + "' " ;
+            }
+        }
+        if (tipePegawai!=null){
+            if(!tipePegawai.equalsIgnoreCase("")){
+                searchTipePegawai = " and pegawai.tipe_pegawai= '" + tipePegawai + "' " ;
+            }
+        }
+        if(jmlAnak!=null){
+            String anak = jmlAnak.toString();
+            if(!anak.equalsIgnoreCase("")) {
+                searchJmlAnak = " AND pegawai.jumlah_anak = '" + anak + "' ";
+            }
+        }
+
+        List<ImBiodataEntity> listOfResult = new ArrayList<ImBiodataEntity>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "select\n" +
+                "\titPosisi.branch_id,\n" +
+                "\tdivisi.department_id,\n" +
+                "\titPosisi.position_id,\n" +
+                "\tprovinsi_name,\n" +
+                "\tkabupaten.kota_name,\n" +
+                "\tkecamatan.kecamatan_name,\n" +
+                "\tdesa.desa_name,\n" +
+                "\ttipePegawai.tipe_pegawai_name,\n" +
+                "\tdivisi.department_id,\n" +
+                "\tdivisi.department_name,\n" +
+                "\titPosisi.pjs_flag,\n" +
+                "\tbagian.bagian_id,\n" +
+                "\tbagian.nama_bagian,\n" +
+                "\titPosisi.profesi_id,\n" +
+                "\tpegawai.nip\n" +
+                "from\n" +
+                "\tim_hris_pegawai pegawai \n" +
+                "\tleft join it_hris_pegawai_position itPosisi on itPosisi.nip = pegawai.nip \n" +
+                "\tleft join im_hris_provinsi provinsi on provinsi.provinsi_id = pegawai.provinsi\n" +
+                "\tleft join im_hris_kota kabupaten on kabupaten.kota_id = pegawai.kabupaten\n" +
+                "\tleft join im_hris_kecamatan kecamatan on kecamatan.kecamatan_id = pegawai.kecamatan\n" +
+                "\tleft join im_hris_desa desa on desa.desa_id= pegawai.desa\n" +
+                "\tleft join im_hris_tipe_pegawai tipePegawai on tipePegawai.tipe_pegawai_id = pegawai.tipe_pegawai\n" +
+                "\tleft join im_position posisi on posisi.position_id = itPosisi.position_id\n" +
+                "\tleft join im_hris_department divisi on divisi.department_id = posisi.department_id\n" +
+                "\tleft join im_hris_position_bagian bagian on bagian.bagian_id = posisi.bagian_id\n" +
+                "where " +
+                "\t itPosisi.flag='"+flag+"' AND" +
+                "\tpegawai.flag = '"+flag+"'\n" + searchNip + searchNama + searchBranchId + searchDivisiId + searchTipePegawai + searchJmlAnak +
+//                "\tAND itPosisi.jenis_pegawai = 'JP01'\n" + // Mencari yg jenis Jabatan NORMAL (Jabatan Utama)
+                "\torder by \n" +
+                "\titPosisi.jenis_pegawai ASC, itPosisi.position_id \n" + //Memprioritaskan jenis jabatan NORMAL (berdasarkan order jabatan_pegawai ID)
+                "\tLIMIT 8";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        List<String> bioNIP = new ArrayList<>();
+
+        for (Object[] row : results) {
+            if(!bioNIP.contains((String) row[14])) {
+                bioNIP.add((String) row[14]);
+
+                ImBiodataEntity result = new ImBiodataEntity();
+                result.setBranchId((String) row[0]);
+                result.setDivisiId((String) row[1]);
+                result.setPosisiId((String) row[2]);
+                result.setProvinsiName((String) row[3]);
+                result.setKotaName((String) row[4]);
+                result.setKecamatanName((String) row[5]);
+                result.setDesaName((String) row[6]);
+                result.setTipePegawaiName((String) row[7]);
+                result.setDivisiName((String) row[9]);
+                result.setPjs((String) row[10]);
+
+                result.setBagianId((String) row[11]);
+                result.setBagianName((String) row[12]);
+                result.setProfesiId((String) row[13]);
+
+                ImBiodataEntity person = getById("nip", row[14].toString());
+
+                result.setNip(person.getNip());
+                result.setNamaPegawai(person.getNamaPegawai());
+                result.setGelarDepan(person.getGelarDepan());
+                result.setGelarBelakang(person.getGelarBelakang());
+                result.setNoKtp(person.getNoKtp());
+                result.setAlamat(person.getAlamat());
+                result.setRtRw(person.getRtRw());
+                result.setDesaId(person.getDesaId());
+                result.setKecamatanId(person.getKecamatanId());
+                result.setNoTelp(person.getNoTelp());
+
+                result.setKotaId(person.getKotaId());
+                result.setProvinsiId(person.getProvinsiId());
+                result.setTanggalLahir(person.getTanggalLahir());
+                result.setTempatLahir(person.getTempatLahir());
+                result.setTipePegawai(person.getTipePegawai());
+                result.setFotoUpload(person.getFotoUpload());
+                result.setStatusCaption(person.getStatusCaption());
+                result.setKeterangan(person.getKeterangan());
+                result.setFlag(person.getFlag());
+                result.setAction(person.getAction());
+
+                result.setShift(person.getShift());
+                result.setCreatedWho(person.getCreatedWho());
+                result.setLastUpdateWho(person.getLastUpdateWho());
+                result.setTanggalAktif(person.getTanggalAktif());
+                result.setGolongan(person.getGolongan());
+                result.setStatusPegawai(person.getStatusPegawai());
+                result.setStatusKeluarga(person.getStatusKeluarga());
+                result.setJumlahAnak(person.getJumlahAnak());
+                result.setGender(person.getGender());
+                result.setNoSkAktif(person.getNoSkAktif());
+
+                result.setPin(person.getPin());
+                result.setPoint(person.getPoint());
+                result.setZakatProfesi(person.getZakatProfesi());
+                result.setLastUpdate(person.getLastUpdate());
+                result.setCreatedDate(person.getCreatedDate());
+                result.setTanggalPensiun(person.getTanggalPensiun());
+                result.setDanaPensiun(person.getDanaPensiun());
+
+                result.setAgama(person.getAgama());
+                result.setTanggalMenikah(person.getTanggalMenikah());
+                result.setNpwp(person.getNpwp());
+                result.setTanggalAkhirKontrak(person.getTanggalAkhirKontrak());
+                result.setNoAnggotaDapen(person.getNoAnggotaDapen());
+                result.setNoBpjsKetenagakerjaan(person.getNoBpjsKetenagakerjaan());
+                result.setNoBpjsKetenagakerjaanPensiun(person.getNoBpjsKetenagakerjaanPensiun());
+                result.setNoBpjsKesehatan(person.getNoBpjsKesehatan());
+
+                result.setNamaBank(person.getNamaBank());
+                result.setNoRekBank(person.getNoRekBank());
+                result.setCabangBank(person.getCabangBank());
+                result.setTanggalMasuk(person.getTanggalMasuk());
+                result.setGolonganDapenId(person.getGolonganDapenId());
+                result.setMasaKerjaGolongan(person.getMasaKerjaGolongan());
+                result.setTanggalAkhirKontrak(person.getTanggalAkhirKontrak());
+                result.setTanggalPraPensiun(person.getTanggalPraPensiun());
+                result.setFlagMess(person.getFlagMess());
+                result.setFlagPlt(person.getFlagPlt());
+                result.setFlagPjs(person.getFlagPjs());
+                result.setFlagFingerMobile(person.getFlagFingerMobile());
+                result.setFlagTunjRumah(person.getFlagTunjRumah());
+                result.setFlagTunjAir(person.getFlagTunjAir());
+                result.setFlagTunjListrik(person.getFlagTunjListrik());
+                result.setFlagTunjBbm(person.getFlagTunjBbm());
+                result.setFlagBpjsKs(person.getFlagBpjsKs());
+                result.setFlagBpjsTk(person.getFlagBpjsTk());
+                result.setFlagPercobaan(person.getFlagPercobaan());
+                result.setPositionPltId(person.getPositionPltId());
+                result.setNipLama(person.getNipLama());
+                result.setFlagDokterKso(person.getFlagDokterKso());
+                result.setFlagPegawaiCutiDiluarTanggungan(person.getFlagPegawaiCutiDiluarTanggungan());
+                result.setTanggalCutiDiluarAwal(person.getTanggalCutiDiluarAwal());
+                result.setTanggalCutiDiluarAkhir(person.getTanggalCutiDiluarAkhir());
+
+                listOfResult.add(result);
+            }
+        }
+        return listOfResult;
+    }
+
     public List<ImBiodataEntity> getDataBiodata(String nip, String nama, String branchId, String divisiId, BigInteger jmlAnak, String tipePegawai, String flag){
         String searchNip = "" ;
         String searchNama = "" ;

@@ -3262,9 +3262,9 @@ public class BiodataBoImpl implements BiodataBo {
         List<ImBiodataEntity> listPersonal = null;
         try {
             if (!"".equalsIgnoreCase(branchId)) {
-                listPersonal = biodataDao.getDataBiodata("", query, branchId, "", null, "", "Y");
+                listPersonal = biodataDao.forComboPersonil("", query, branchId, "", null, "", "Y");
             } else {
-                listPersonal = biodataDao.getDataBiodata("", query, "", "", null, "", "Y");
+                listPersonal = biodataDao.forComboPersonil("", query, "", "", null, "", "Y");
             }
         } catch (HibernateException e) {
             logger.error("[UserBoImpl.getComboUserWithCriteria] Error, " + e.getMessage());
