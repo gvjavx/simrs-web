@@ -71,7 +71,7 @@
                 <%--<div id="panelView">--%>
                     <%--<div class="row">--%>
                         <%--<div class="col-md-6">--%>
-                            <table>
+                            <table width="80%">
                                 <tr>
                                     <td>
                                         <label class="control-label">
@@ -107,8 +107,8 @@
                                     </td>
                                     <td>
                                         <table>
-                                            <s:textfield id="delTipeTrx" readonly="true" name="logTransaction.tipeTrx"
-                                                         required="true" cssClass="form-control"/>
+                                            <s:select list="#{'create':'Create', 'inquiry':'Inquiry', 'payment' : 'Payment'}" id="delTipeTrx" readonly="true" name="logTransaction.tipeTrx"
+                                                      headerKey="" headerValue="[all type]" cssClass="form-control"/>
                                         </table>
                                     </td>
                                 </tr>
@@ -120,7 +120,7 @@
                                     </td>
                                     <td>
                                         <table>
-                                            <s:select list="#{'BNI':'BNI', 'BSI':'BSI'}" id="delBankName"
+                                            <s:select list="#{'BNI':'BNI', 'BSI':'BSI', 'BSM':'BSM'}" id="delBankName"
                                                       name="logTransaction.bankName"
                                                       readonly="true" headerKey="" headerValue="[all bank]"
                                                       cssClass="form-control"/>

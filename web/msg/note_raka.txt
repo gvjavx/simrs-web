@@ -6,6 +6,13 @@
     ADD COLUMN invoice_number bigint;
 
 
+----------------------------------------
+----------------------------------------
+----------  SAMPAI SINI SAJA  ----------
+----------------------------------------
+----------------------------------------
+
+
 ------ 2021-04-06 ===> Create Table Log Transaction
 -- Membuat Table
     CREATE TABLE public.it_pg_log_transaction
@@ -64,12 +71,6 @@
         MINVALUE 1
         MAXVALUE 9223372036854775807
         CACHE 1;
-
-----------------------------------------
-----------------------------------------
-----------  SAMPAI SINI SAJA  ----------
-----------------------------------------
-----------------------------------------
 
 ------ 2021-03-21 ===> Memindahkan nilai Tunjangan ke Transaksi Tunjangan Lain
 -- Menambahkan field Tunjangan
