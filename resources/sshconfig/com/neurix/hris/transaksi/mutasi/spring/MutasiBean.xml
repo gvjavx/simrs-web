@@ -37,6 +37,7 @@
           p:userDao-ref="userDao"
           p:areasBranchesUsersDao-ref="areaBranchUserDao"
           p:userRoleDao-ref="userRoleDao"
+          p:branchDao-ref="branchDao"
     />
 
     <bean id="mutasiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
