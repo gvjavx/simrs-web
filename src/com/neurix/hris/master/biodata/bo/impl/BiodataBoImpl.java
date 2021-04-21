@@ -731,7 +731,7 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataHistoryEntity.setCabangBank(imBiodataEntity.getCabangBank());
                             imBiodataHistoryEntity.setTanggalPraPensiun(imBiodataEntity.getTanggalPraPensiun());
                             imBiodataHistoryEntity.setMasaKerjaGolongan(imBiodataEntity.getMasaKerjaGolongan());
-//                                imBiodataHistoryEntity.setGolonganDapenId(imBiodataEntity.getGolonganDapenId()); //RAKA-delete
+                            imBiodataHistoryEntity.setGolonganDapenId(imBiodataEntity.getGolonganDapenId()); //RAKA-delete
 
                             if (bean.getFotoUpload() != null) {
                                 imBiodataHistoryEntity.setFotoUpload(imBiodataEntity.getFotoUpload());
@@ -1968,6 +1968,7 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setStatusPegawai(bean.getStatusPegawai());
                 imBiodataEntity.setStatusKeluarga(bean.getStatusKeluarga());
                 imBiodataEntity.setGolongan(bean.getGolongan());
+                imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId());
                 if (!CommonConstant.PEGAWAI_PKWT.equalsIgnoreCase(bean.getTipePegawai())) {
 //                if ("N".equalsIgnoreCase(bean.getFlagDokterKso())){
                     if (!"".equalsIgnoreCase(bean.getStMasaKerjaGol()) && bean.getStMasaKerjaGol() != null) {
