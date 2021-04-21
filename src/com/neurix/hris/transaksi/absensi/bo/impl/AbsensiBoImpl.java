@@ -6639,7 +6639,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                 hsCriteria4.put("flag", "Y");
                 double faktor = 0;
                 Double gapok = 0d;
-//        Double sankhus = 0d;
+                Double sankhus = 0d;
 
                 List<PengaliFaktorLemburEntity> pengaliFaktorLemburEntityList = new ArrayList<>();
 
@@ -6682,7 +6682,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     }
                     for (ImPayrollSkalaGajiPkwtEntity skalaGajiLoop : payrollSkalaGajiPkwtEntityList) {
                         gapok = skalaGajiLoop.getGajiPokok().doubleValue();
-//                sankhus = skalaGajiLoop.getSantunanKhusus().doubleValue();
+                        sankhus = skalaGajiLoop.getSantunanKhusus().doubleValue();
                     }
                 }
 
@@ -6968,7 +6968,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                 }
                 for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
                     gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
-                    sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
+//                    sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                 }
             } else if (biodata.getTipePegawai().equalsIgnoreCase(CommonConstant.PEGAWAI_PKWT)) {
                 try {
@@ -7035,8 +7035,8 @@ public class AbsensiBoImpl implements AbsensiBo {
             }
             Double peralihan = 0d;
             peralihan = getTunjPeralihan(biodata.getNip(), tanggalInquiry).doubleValue();
-//            upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
-            upahLembur = (gapok + peralihan) * faktor * jamLembur;
+            upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+//            upahLembur = (gapok + peralihan) * faktor * jamLembur;
             upahLembur = Math.floor(upahLembur);
 
             String stUpahLembur = "";
@@ -7107,7 +7107,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                 }
                 for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
                     gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
-                    sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
+//                    sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                 }
             } else if (biodata.getTipePegawai().equalsIgnoreCase(CommonConstant.PEGAWAI_PKWT)) {
                 try {
@@ -7174,8 +7174,8 @@ public class AbsensiBoImpl implements AbsensiBo {
             }
             Double peralihan = 0d;
             peralihan = getTunjPeralihan(biodata.getNip(), tanggalInquiry).doubleValue();
-//            upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
-            upahLembur = (gapok + peralihan) * faktor * jamLembur;
+            upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+//            upahLembur = (gapok + peralihan) * faktor * jamLembur;
             upahLembur = Math.floor(upahLembur);
 
             String stUpahLembur = "";
