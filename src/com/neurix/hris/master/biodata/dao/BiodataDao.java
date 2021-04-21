@@ -576,12 +576,13 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tleft join im_position posisi on posisi.position_id = itPosisi.position_id\n" +
                 "\tleft join im_hris_department divisi on divisi.department_id = posisi.department_id\n" +
                 "\tleft join im_hris_position_bagian bagian on bagian.bagian_id = posisi.bagian_id\n" +
+                "\tleft join im_hris_jenis_pegawai jenis on itPosisi.jenis_pegawai = jenis.jenis_pegawai_id\n" +
                 "where " +
                 "\t itPosisi.flag='"+flag+"' AND" +
                 "\tpegawai.flag = '"+flag+"'\n" + searchNip + searchNama + searchBranchId + searchDivisiId + searchTipePegawai + searchJmlAnak +
 //                "\tAND itPosisi.jenis_pegawai = 'JP01'\n" + // Mencari yg jenis Jabatan NORMAL (Jabatan Utama)
                 "\torder by \n" +
-                "\titPosisi.jenis_pegawai ASC, itPosisi.position_id \n" + //Memprioritaskan jenis jabatan NORMAL (berdasarkan order jabatan_pegawai ID)
+                "\titjenis.persen_gaji DESC, itPosisi.position_id \n" + //Memprioritaskan jenis jabatan NORMAL (berdasarkan order jabatan_pegawai ID)
                 "\tLIMIT 8";
 
         results = this.sessionFactory.getCurrentSession()
@@ -763,12 +764,13 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tleft join im_position posisi on posisi.position_id = itPosisi.position_id\n" +
                 "\tleft join im_hris_department divisi on divisi.department_id = posisi.department_id\n" +
                 "\tleft join im_hris_position_bagian bagian on bagian.bagian_id = posisi.bagian_id\n" +
+                "\tleft join im_hris_jenis_pegawai jenis on itPosisi.jenis_pegawai = jenis.jenis_pegawai_id\n" +
                 "where " +
                 "\t itPosisi.flag='"+flag+"' AND" +
                 "\tpegawai.flag = '"+flag+"'\n" + searchNip + searchNama + searchBranchId + searchDivisiId + searchTipePegawai + searchJmlAnak +
 //                "\tAND itPosisi.jenis_pegawai = 'JP01'\n" + // Mencari yg jenis Jabatan NORMAL (Jabatan Utama)
                 "\torder by \n" +
-                "\titPosisi.jenis_pegawai ASC, itPosisi.position_id"; //Memprioritaskan jenis jabatan NORMAL (berdasarkan order jabatan_pegawai ID)
+                "\tjenis.persen_gaji DESC, itPosisi.position_id"; //Memprioritaskan jenis jabatan NORMAL (berdasarkan order jabatan_pegawai ID)
 
 //        String query = "select DISTINCT \n" +
 //                "\titPosisi.branch_id,\n" +
