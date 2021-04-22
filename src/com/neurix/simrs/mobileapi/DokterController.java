@@ -470,7 +470,8 @@ public class DokterController implements ModelDriven<Object> {
             if (tglAwal != null && !"".equalsIgnoreCase(tglAwal)) {
                 Date dtTglAwal = CommonUtil.convertStringToDate(tglAwal);
                 tsTglAwal = new Timestamp(dtTglAwal.getTime());
-            } else if (tglAkhir != null && !"".equalsIgnoreCase(tglAkhir)) {
+            }
+            if (tglAkhir != null && !"".equalsIgnoreCase(tglAkhir)) {
                 Date dtTglAkhir = CommonUtil.convertStringToDate(tglAkhir);
                 tsTglAkhir = new Timestamp(dtTglAkhir.getTime());
             }
