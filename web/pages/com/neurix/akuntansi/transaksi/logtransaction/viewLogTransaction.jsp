@@ -164,7 +164,7 @@
                                     <td>
                                         <table>
                                             <s:textfield id="delTrxAmount" readonly="true"
-                                                         name="logTransaction.trxAmount" required="true"
+                                                         name="logTransaction.stTrxAmount" required="true"
                                                          cssClass="form-control"/>
                                         </table>
                                     </td>

@@ -203,6 +203,7 @@ public class LogTrxBoImpl implements LogTrxBo {
                     returnLogTransaction.setNoVirtualAccount(itLogTransactionEntity.getNoVirtualAccount());
                     returnLogTransaction.setNoRekamMedik(itLogTransactionEntity.getNoRekamMedik());
                     returnLogTransaction.setTrxAmount(itLogTransactionEntity.getTrxAmount());
+                    returnLogTransaction.setStTrxAmount(CommonUtil.numbericFormat(itLogTransactionEntity.getTrxAmount(),"###.###"));
                     returnLogTransaction.setNamePerson(itLogTransactionEntity.getNamePerson());
                     returnLogTransaction.setAddressPerson(itLogTransactionEntity.getAddressPerson());
                     returnLogTransaction.setPhonePerson(itLogTransactionEntity.getPhonePerson());

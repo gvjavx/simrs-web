@@ -13,6 +13,8 @@ public class LogTransaction {
     private String noVirtualAccount;
     private String noRekamMedik;
     private BigDecimal trxAmount;
+    private String stTrxAmount;
+
     private String namePerson;
     private String addressPerson;
     private String phonePerson;
@@ -110,6 +112,15 @@ public class LogTransaction {
     public void setStDateEnd(String stDateEnd) {
         this.stDateEnd = stDateEnd;
     }
+
+    public String getStTrxAmount() {
+        return stTrxAmount;
+    }
+
+    public void setStTrxAmount(String stTrxAmount) {
+        this.stTrxAmount = stTrxAmount;
+    }
+
     //RAKA-end
 
     public Timestamp getReceivedDateFrom() {

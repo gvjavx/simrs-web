@@ -288,7 +288,7 @@
                             <display:column property="bankName" sortable="true" title="Bank Name"/>
                             <display:column property="noVirtualAccount" sortable="true" title="No Virtual Account"/>
                             <display:column property="noRekamMedik" sortable="true" title="No Rekam Medik"/>
-                            <display:column property="trxAmount" sortable="true" title="Transaction Amount"/>
+                            <display:column property="stTrxAmount" sortable="true" title="Transaction Amount"/>
                             <display:column property="namePerson" sortable="true" title="Person Name"/>
                             <display:column property="status" sortable="true" title="Status"/>
                             <display:column property="statusBank" sortable="true" title="Status Bank"/>
