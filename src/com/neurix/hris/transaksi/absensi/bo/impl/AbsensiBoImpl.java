@@ -6564,6 +6564,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     jenisLembur = lemburEntity.getTipeLembur();
                     DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                     SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+
                     String stTanggalAwalLembur = df.format(tanggalAbsen) + " " + lemburEntity.getJamAwal() + ":00";
                     String stTanggalAkhirLembur = df.format(tanggalAbsen) + " " + lemburEntity.getJamAkhir() + ":00";
 
@@ -6596,7 +6597,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                 } else {
                     finalAwalLembur = fingerAwal;
                 }
-                if (fingerAkhir.compareTo(fingerAkhir) > 0) {
+                if (fingerAkhir.compareTo(jamAkhirLembur) > 0) {
                     finalAkhirLembur = jamAkhirLembur;
                 } else {
                     finalAkhirLembur = fingerAkhir;
