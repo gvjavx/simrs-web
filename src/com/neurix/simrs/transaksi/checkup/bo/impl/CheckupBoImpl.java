@@ -404,7 +404,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerEntity.setIdPasien(bean.getIdPasien());
             headerEntity.setNama(bean.getNama());
             headerEntity.setJenisKelamin(bean.getJenisKelamin());
-            headerEntity.setNoKtp(bean.getNoKtp());
+            headerEntity.setNoKtp(bean.getNoKtp().replace("_", ""));
             headerEntity.setTempatLahir(bean.getTempatLahir());
             headerEntity.setTglLahir(bean.getTglLahir());
             headerEntity.setDesaId(bean.getDesaId());
