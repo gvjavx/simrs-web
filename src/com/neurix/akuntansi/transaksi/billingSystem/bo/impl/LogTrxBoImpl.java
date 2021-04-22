@@ -131,7 +131,7 @@ public class LogTrxBoImpl implements LogTrxBo {
             }
             if(searchBean.getStInvDateTo() != null && !"".equalsIgnoreCase(searchBean.getStInvDateTo())){
                 Date invDateTo = CommonUtil.convertStringToDate(searchBean.getStInvDateTo());
-                hsCriteria.put("invoice_date_from", invDateTo);
+                hsCriteria.put("invoice_date_to", invDateTo);
             }
 
 //            if (searchBean.getStReceivedDateFrom() != null && !"".equalsIgnoreCase(searchBean.getStReceivedDateFrom())) {
