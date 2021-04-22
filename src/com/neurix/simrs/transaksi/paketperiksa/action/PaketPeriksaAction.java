@@ -1,6 +1,5 @@
 package com.neurix.simrs.transaksi.paketperiksa.action;
 
-import com.neurix.akuntansi.master.master.model.Master;
 import com.neurix.akuntansi.master.masterVendor.bo.MasterVendorBo;
 import com.neurix.akuntansi.master.masterVendor.model.MasterVendor;
 import com.neurix.common.action.BaseTransactionAction;
@@ -12,7 +11,6 @@ import com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.model.Pasien;
 import com.neurix.simrs.transaksi.CrudResponse;
-import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.paketperiksa.bo.PaketPeriksaBo;
 import com.neurix.simrs.transaksi.paketperiksa.model.*;
@@ -20,14 +18,9 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
 import javax.imageio.*;
-import javax.imageio.metadata.IIOMetadata;
-import javax.imageio.stream.ImageInputStream;
-import javax.imageio.stream.ImageOutputStream;
 import javax.servlet.http.HttpSession;
 
 import com.neurix.simrs.transaksi.paketperiksa.model.PaketPeriksa;
-import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,21 +28,15 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 import sun.misc.BASE64Decoder;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 

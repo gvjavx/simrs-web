@@ -69,10 +69,34 @@
             var poliUmum = $('#poli_umum').val();
             var ambulance = $('#ambulance').val();
             var jumlahKm = $('#jumlah_kilometer').val();
+            var statusPerkawinan = $('#status_perkawinan').val();
+            var pendidikan = $('#pendidikan').val();
 
-            if (idPasien != '' && noKtp != '' && namaPasien != '' && jenisKelamin != '' && tempatLahir != ''
+            var cekNik = true;
+            noKtp = replaceUnderLine(noKtp);
+            if(noKtp.length == 6){
+                for (var i = 0; i < noKtp.length; i++) {
+                    if(noKtp.charAt(i) != "0"){
+                        cekNik = false;
+                    }
+                }
+                if(!cekNik){
+                    $('#war_nik_pasien').show();
+                }else{
+                    $('#war_nik_pasien').hide();
+                }
+            }else{
+                if(noKtp.length == 16){
+                    $('#war_nik_pasien').hide();
+                }else{
+                    $('#war_nik_pasien').show();
+                    cekNik = false;
+                }
+            }
+
+            if (idPasien != '' && cekNik && namaPasien != '' && jenisKelamin != '' && tempatLahir != ''
                 && tglLahir != '' && agama != '' && poli != '' && dokter != '' && penjamin != ''
-                && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && tipe != '') {
+                && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && tipe != '' && statusPerkawinan != '' && pendidikan != '' && jalan != '') {
 
                 PasienAction.getDataPasien(idPasien, function (res) {
                     if (res.idPasien != '' && res.idPasien != null) {
@@ -284,8 +308,9 @@
                 if (idPasien == '') {
                     $('#id_pasien').css('border', 'red solid 1px');
                 }
-                if (noKtp == '') {
+                if (!cekNik) {
                     $('#no_ktp').css('border', 'red solid 1px');
+                    $('#war_nik_pasien').show();
                 }
                 if (namaPasien == '') {
                     $('#nama_pasien').css('border', 'red solid 1px');
@@ -326,9 +351,19 @@
                 if (imgInp == '') {
                     $('#img_file').css('border', 'red solid 1px');
                 }
+                if (statusPerkawinan == '') {
+                    $('#status_perkawinan').css('border', 'red solid 1px');
+                }
+                if (pendidikan == '') {
+                    $('#pendidikan').css('border', 'red solid 1px');
+                }
+                if (jalan == '') {
+                    $('#jalan').css('border', 'red solid 1px');
+                }
+                if(tipe == '' || tipe == null){
+                    $('#war_jp').show();
+                }
             }
-
-
         }
 
         $.subscribe('beforeProcessSave', function (event, data) {
@@ -744,12 +779,14 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group">
-                                                <label class="col-md-4" style="margin-top: 7px">NIK Pasien</label>
+                                                <label class="col-md-4" style="margin-top: 7px">NIK</label>
                                                 <div class="col-md-8">
-                                                    <s:textfield id="no_ktp" name="headerCheckup.noKtp" type="number"
-                                                                 onkeypress="$(this).css('border',''); searchNo"
-                                                                 cssClass="form-control" cssStyle="margin-top: 7px"
-                                                    />
+                                                    <s:textfield id="no_ktp" name="headerCheckup.noKtp"
+                                                                 oninput="cekNik('no_ktp','war_nik_pasien'); $(this).css('border','')" onkeyup="cekNik('no_ktp','war_nik_pasien');"
+                                                                 data-inputmask="'mask': ['9999999999999999']" data-mask=""
+                                                                 cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                                    <span style="color: red; display: none;" id="war_nik_pasien"><i
+                                                            class="fa fa-times"></i> jika tidak ada nik masukkan angka (0) 6 digit</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -869,10 +906,10 @@
                                                 <div class="col-md-8">
                                                     <s:select id="status_perkawinan"
                                                               name="headerCheckup.statusPerkawinan"
-                                                              list="#{'Kawin':'Kawin','Belum Kawin':'Belum Kawin'}"
+                                                              list="#{'Kawin':'Kawin','Belum Kawin':'Belum Kawin','Duda':'Duda','Janda':'Janda'}"
                                                               onchange="$(this).css('border','')"
                                                               headerKey="" headerValue="[Select One]"
-                                                              cssStyle="width: 100%" cssClass="form-control select2"/>
+                                                              cssStyle="width: 100%; margin-top: 7px" cssClass="form-control"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -881,10 +918,10 @@
                                                 <label class="col-md-4" style="margin-top: 7px">Pendidikan</label>
                                                 <div class="col-md-8">
                                                     <s:select id="pendidikan" name="headerCheckup.pendidikan"
-                                                              list="#{'SD/Sederajat':'SD/Sederajat','SMP/Sederajat':'SMP/Sederajat','SMA/Sederajat':'SMA/Sederajat','S1':'S1','S2':'S3','S3':'S3'}"
+                                                              list="#{'Belum Sekolah':'Belum Sekolah','SD/Sederajat':'SD/Sederajat','SMP/Sederajat':'SMP/Sederajat','SMA/Sederajat':'SMA/Sederajat','S1':'S1','S2':'S2','S3':'S3'}"
                                                               onchange="$(this).css('border','')"
                                                               headerKey="" headerValue="[Select One]"
-                                                              cssStyle="width: 100%" cssClass="form-control select2"/>
+                                                              cssStyle="width: 100%; margin-top: 7px" cssClass="form-control"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -974,7 +1011,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <div class="row" style="display: none" id="form_diagnosa_bpjs">
                                             <div class="form-group">
                                                 <label class="col-md-4" style="margin-top: 7px">Diagnosa Awal</label>
                                                 <div class="col-md-8">
@@ -1883,8 +1920,11 @@
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">NIK</label>
-                                <input class="form-control" id="add_nik" oninput="$(this).css('border','')"
-                                       type="number">
+                                <input class="form-control" id="add_nik"
+                                       oninput="cekNik('add_nik', 'war_add_nik_pasien'); $(this).css('border','')" onkeyup="cekNik('add_nik', 'war_add_nik_pasien');"
+                                       data-inputmask="'mask': ['9999999999999999']" data-mask="">
+                                <span style="color: red; display: none; font-size: 12px" id="war_add_nik_pasien"><i
+                                        class="fa fa-times"></i> jika tidak ada nik masukkan angka (0) 6 digit</span>
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Nama</label>
@@ -1916,7 +1956,7 @@
                             <div class="form-group">
                                 <label style="margin-top: 7px">Status Perkawinan</label>
                                 <s:select id="add_status_perkawinan" name="headerCheckup.statusPerkawinan"
-                                          list="#{'Kawin':'Kawin','Belum Kawin':'Belum Kawin'}"
+                                          list="#{'Kawin':'Kawin','Belum Kawin':'Belum Kawin','Duda':'Duda','Janda':'Janda'}"
                                           onchange="$(this).css('border','')"
                                           headerKey="" headerValue="[Select One]"
                                           cssStyle="width: 100%" cssClass="form-control"/>
@@ -1926,7 +1966,7 @@
                             <div class="form-group">
                                 <label>Pendidikan</label>
                                 <s:select id="add_pendidikan" name="headerCheckup.pendidikan"
-                                          list="#{'SD/Sederajat':'SD/Sederajat','SMP/Sederajat':'SMP/Sederajat','SMA/Sederajat':'SMA/Sederajat','S1':'S1','S2':'S3','S3':'S3'}"
+                                          list="#{'Belum Sekolah':'Belum Sekolah','SD/Sederajat':'SD/Sederajat','SMP/Sederajat':'SMP/Sederajat','SMA/Sederajat':'SMA/Sederajat','S1':'S1','S2':'S2','S3':'S3'}"
                                           onchange="$(this).css('border','')"
                                           headerKey="" headerValue="[Select One]"
                                           cssStyle="width: 100%" cssClass="form-control"/>
@@ -3180,6 +3220,8 @@
                 $('#form-paket').hide();
                 $('#form-no-bpjs').hide();
                 $('#form-rujukan').hide();
+                $('#form_diagnosa_bpjs').hide();
+                $('#diagnosa_awal, #diagnosa_ket').val(null);
             } else if (jenis == "bpjs" || jenis == "bpjs_rekanan") {
                 if (jenis == "bpjs_rekanan") {
                     listSelectRekanan("Y");
@@ -3195,6 +3237,8 @@
                 $('#form-paket-perusahaan').hide();
                 $('#form-paket').hide();
                 $('#form-asuransi').hide();
+                $('#form_diagnosa_bpjs').show();
+                $('#diagnosa_awal, #diagnosa_ket').val(null);
             } else if (jenis == "rekanan") {
                 listSelectRekanan("N");
                 $('#form_pg').hide();
@@ -3208,6 +3252,8 @@
                 $('#poli').attr('disabled', false);
                 $('#form_eksekutif').hide();
                 $('#form-is-uang-muka').hide();
+                $('#form_diagnosa_bpjs').hide();
+                $('#diagnosa_awal, #diagnosa_ket').val(null);
             } else if (jenis == "paket_perusahaan") {
                 listSelectPaket();
                 $('#form-paket-perusahaan').show();
@@ -3218,6 +3264,8 @@
                 $('#form-rekanan').hide();
                 $('#form-paket').hide();
                 $('#form-is-uang-muka').hide();
+                $('#form_diagnosa_bpjs').hide();
+                $('#diagnosa_awal, #diagnosa_ket').val(null);
             } else if (jenis == "paket_individu") {
                 listSelectPaket();
                 $('#form-paket').show();
@@ -3227,6 +3275,8 @@
                 $('#form-asuransi').hide();
                 $('#form-rekanan').hide();
                 $('#form-is-uang-muka').hide();
+                $('#form_diagnosa_bpjs').hide();
+                $('#diagnosa_awal, #diagnosa_ket').val(null);
             } else if (jenis == "asuransi") {
                 listSelectAsuransi();
                 $('#form-asuransi').show();
@@ -3237,6 +3287,8 @@
                 $('#form-is-uang-muka').hide();
                 $('#form-rekanan').hide();
                 $('#form-is-uang-muka').hide();
+                $('#form_diagnosa_bpjs').hide();
+                $('#diagnosa_awal, #diagnosa_ket').val(null);
             }
 
             if (online == "Y") {
@@ -3343,7 +3395,7 @@
         });
 
         if (nik != '' && nama != '' && jk != '' && tempatLahir != '' && tanggalLahir != '' &&
-            agama != '' && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && noTelp != '' && !cekCondTgl && statusPerkawinan && pendidikan != '') {
+            agama != '' && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && noTelp != '' && !cekCondTgl && statusPerkawinan && pendidikan && alamat != '') {
             cek = true;
         } else {
             $('#warning_add').show().fadeOut(5000);
@@ -3386,6 +3438,9 @@
             }
             if (pendidikan == '') {
                 $('#add_pendidikan').css('border', 'solid 1px red');
+            }
+            if (alamat == '') {
+                $('#add_alamat').css('border', 'solid 1px red');
             }
         }
 
@@ -3860,6 +3915,30 @@
             $('#h_tarif').val('');
             $('#h_id_tindakan').val('');
             $('#h_nama_tindakan').val('');
+        }
+    }
+
+    function cekNik(id, warning){
+        var noKtp = $('#'+id).val();
+        noKtp = replaceUnderLine(noKtp);
+        if(noKtp.length == 6){
+            var cek = true;
+            for (var i = 0; i < noKtp.length; i++) {
+                if(noKtp.charAt(i) != "0"){
+                    cek = false;
+                }
+            }
+            if(!cek){
+                $('#'+warning).show();
+            }else{
+                $('#'+warning).hide();
+            }
+        }else{
+            if(noKtp.length == 16){
+                $('#'+warning).hide();
+            }else{
+                $('#'+warning).show();
+            }
         }
     }
 

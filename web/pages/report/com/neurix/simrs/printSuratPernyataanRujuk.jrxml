@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printSuratPernyataanRujuk" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.7715610000000086"/>
+	<property name="ireport.zoom" value="1.6105100000000077"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
@@ -48,33 +48,14 @@
 	<parameter name="reportParams.tanggalDari" class="java.lang.String"/>
 	<parameter name="reportParams.tanggalKe" class="java.lang.String"/>
 	<parameter name="reportParams.umur" class="java.lang.String"/>
+	<parameter name="idDetailCheckup" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT * FROM im_simrs_pasien LIMIT 1]]>
+		<![CDATA[SELECT
+rs_rujukan
+FROM it_simrs_header_detail_checkup
+WHERE id_detail_checkup = $P{idDetailCheckup}]]>
 	</queryString>
-	<field name="id_pasien" class="java.lang.String"/>
-	<field name="nama" class="java.lang.String">
-		<fieldDescription><![CDATA[Nama Master]]></fieldDescription>
-	</field>
-	<field name="jenis_kelamin" class="java.lang.String"/>
-	<field name="no_ktp" class="java.lang.String"/>
-	<field name="no_bpjs" class="java.lang.String"/>
-	<field name="tempat_lahir" class="java.lang.String"/>
-	<field name="tgl_lahir" class="java.sql.Date"/>
-	<field name="desa_id" class="java.lang.Long"/>
-	<field name="jalan" class="java.lang.String"/>
-	<field name="suku" class="java.lang.String"/>
-	<field name="agama" class="java.lang.String"/>
-	<field name="profesi" class="java.lang.String"/>
-	<field name="no_telp" class="java.lang.String"/>
-	<field name="url_ktp" class="java.lang.String"/>
-	<field name="flag" class="java.lang.String"/>
-	<field name="action" class="java.lang.String"/>
-	<field name="created_date" class="java.sql.Timestamp"/>
-	<field name="created_who" class="java.lang.String"/>
-	<field name="last_update" class="java.sql.Timestamp"/>
-	<field name="last_update_who" class="java.lang.String"/>
-	<field name="email" class="java.lang.String"/>
-	<field name="password" class="java.lang.String"/>
+	<field name="rs_rujukan" class="java.lang.String"/>
 	<variable name="unitKota" class="java.lang.String">
 		<initialValueExpression><![CDATA[$P{reportParams.unitKota} == null ? "" : $P{reportParams.unitKota}]]></initialValueExpression>
 	</variable>
@@ -97,7 +78,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Surat Pernyataan Rujuk ke RSDS]]></text>
+				<text><![CDATA[Surat Pernyataan Rujuk]]></text>
 			</staticText>
 			<image>
 				<reportElement x="0" y="0" width="94" height="39" uuid="7919286e-e855-436b-98b4-eaeedb81ef26"/>
@@ -262,7 +243,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Bersedia dirujuk ke RS. Dr. Soetomo Surabaya"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Bersedia dirujuk ke RS. "+$F{rs_rujukan}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="334" width="381" height="31" uuid="380d5b5d-3f04-449b-ba6c-3af15e060750"/>
@@ -390,7 +371,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Telah menerima penjelasan dari dokter jaga terkait kemungkinan-kemungkinan yang terjadi saat perjalanan merujuk ke RSDS."]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Telah menerima penjelasan dari dokter jaga terkait kemungkinan-kemungkinan yang terjadi saat perjalanan merujuk ke "+$F{rs_rujukan}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="310" width="14" height="13" uuid="7f9fa30c-9a93-45be-a041-951303e5fb78"/>

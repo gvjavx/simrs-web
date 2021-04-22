@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.laporan.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.transaksi.laporan.bo.LaporanOpsBo;
 import com.neurix.simrs.transaksi.laporan.dao.LaporanOpsDao;
 import com.neurix.simrs.transaksi.laporan.model.ImSimrsLaporanOpsEntity;
@@ -87,6 +88,17 @@ public class LaporanOpsBoImpl implements LaporanOpsBo {
             logger.error(e.getMessage());
         }
         return laporanOpsList;
+    }
+
+    @Override
+    public List<Pelayanan> getListPenunjangMedis(Pelayanan bean) throws GeneralBOException {
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        try {
+            pelayananList = laporanOpsDao.getListPenunjangMedis(bean);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+        }
+        return pelayananList;
     }
 
     public static Logger getLogger() {

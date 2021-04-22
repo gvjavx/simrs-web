@@ -1574,6 +1574,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Pemeriksaan</label>
+                        <div class="col-md-7">
+                            <select class="form-control" style="margin-top: 7px;" id="select-jenis-pemeriksaan">
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <hr>
                 <div id="form_lab_dalam">
                     <div class="row">

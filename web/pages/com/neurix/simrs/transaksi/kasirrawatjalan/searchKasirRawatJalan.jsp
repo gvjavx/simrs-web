@@ -672,14 +672,14 @@
 
                         var strCover = "";
                         if (jenisPasien == "asuransi") {
-                            strCover = '<tr><td colspan="3">Potongan Cover Asuransi </td><td align="right" style="padding-right: 20px"> - ' + formatRupiah(tindakanAsuransi + totalObat) + '</td></tr>';
+                            // strCover = '<tr><td colspan="3">Potongan Cover Asuransi </td><td align="right" style="padding-right: 20px"> - ' + formatRupiah(tindakanAsuransi + totalObat) + '</td></tr>';
 
                             var strBiaya = "";
-                            if (jenisPasien == "asuransi") {
-                                strBiaya = '<tr><td colspan="3">Total Biaya yang Dibayar</td><td align="right" style="padding-right: 20px">' + formatRupiah(tindakanUmum + totalObatUmum + ppnObat + ppnObatAsuransi) + '</td></tr>';
-                            } else {
-                                strBiaya = '<tr><td colspan="3">Total Biaya yang Dibayar</td><td align="right" style="padding-right: 20px">' + formatRupiah(total - uangMuka + ppnObat) + '</td></tr>';
-                            }
+                            // if (jenisPasien == "asuransi") {
+                            //     strBiaya = '<tr><td colspan="3">Total Biaya yang Dibayar</td><td align="right" style="padding-right: 20px">' + formatRupiah(tindakanUmum + totalObatUmum + ppnObat + ppnObatAsuransi) + '</td></tr>';
+                            // } else {
+                            //     strBiaya = '<tr><td colspan="3">Total Biaya yang Dibayar</td><td align="right" style="padding-right: 20px">' + formatRupiah(total - uangMuka + ppnObat) + '</td></tr>';
+                            // }
 
                             //tunai
                             if (metode == "tunai") {

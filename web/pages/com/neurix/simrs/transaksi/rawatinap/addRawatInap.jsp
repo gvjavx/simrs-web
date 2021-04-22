@@ -1051,7 +1051,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4" style="margin-top: 7px">Unit</label>
+                                        <label class="col-md-4" style="margin-top: 7px">Jenis Pemeriksaan</label>
                                         <div class="col-md-8">
                                             <select class="form-control select2" style="margin-top: 7px; width: 100%" id="ckp_unit"
                                                     onchange="listSelectParameter(this.value);">
@@ -1065,6 +1065,12 @@
                                             <select class="form-control select2" multiple style="margin-top: 7px; width: 100%" id="ckp_parameter">
                                                 <option value=''>[Select One]</option>
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-offset-4 col-md-8">
+                                            <button onclick="addOrderListPemeriksaan()" class="btn btn-success"><i class="fa fa-plus"></i> Tambah</button>
+                                            <button onclick="resetOrderPemeriksaan()" class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1098,6 +1104,24 @@
                                 <div class="row" style="display: none" id="form-hak_kamar">
                                     <div class="col-md-12">
                                         <span style="background-color: #ec971f; color: white; border-radius: 5px; border: 1px solid black; padding: 5px;" id="hak_kamar_bpjs"></span>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top: 30px; display: none" id="form_order_pemeriksaan">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <span>Daftar Order Pemeriksaan</span>
+                                            <table class="table table-bordered" style="font-size: 13px" id="tabel_order_pemeriksaan">
+                                                <thead>
+                                                <tr>
+                                                    <td>Jenis Pemeriksaan</td>
+                                                    <td>Parameter</td>
+                                                    <td align="10%">Action</td>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="body_order_pemeriksaan">
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1525,6 +1549,15 @@
                                         Centang untuk melakukan order penunjang medis diluar
                                     </span></i>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Pemeriksaan</label>
+                        <div class="col-md-7">
+                            <select class="form-control" style="margin-top: 7px;" id="select-jenis-pemeriksaan">
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -4520,7 +4553,6 @@
         listRuanganInap();
         listResepPasien();
         hitungStatusBiaya();
-        getJenisResep();
         listICD9();
         listMakananPendamping();
 

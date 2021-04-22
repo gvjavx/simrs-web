@@ -1830,7 +1830,7 @@ public class CheckupController implements ModelDriven<Object> {
 
                         if(tindakanList.size() > 0){
                             tin = tindakanList.get(0);
-                            riwayatTindakan.setIdRuangan(tin.getKategoriInaBpjs());
+                            riwayatTindakan.setKategoriTindakanBpjs(tin.getKategoriInaBpjs());
                         }
 
                         try {
@@ -1934,7 +1934,7 @@ public class CheckupController implements ModelDriven<Object> {
 
                         riwayatTindakan.setNamaTindakan("Pemeriksaan " + entity.getKategoriLabName()+namaLab);
                         riwayatTindakan.setKeterangan(entity.getKategori());
-                        riwayatTindakan.setJenisPasien(jenPasien);
+                        riwayatTindakan.setJenisPasien(entity.getJenisPeriksaPasien());
                         riwayatTindakan.setAction("C");
                         riwayatTindakan.setFlag("Y");
                         riwayatTindakan.setCreatedWho(user);
