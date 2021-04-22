@@ -123,7 +123,7 @@ public class LogTrxBoImpl implements LogTrxBo {
                 hsCriteria.put("channel", searchBean.getChannel());
             }
             if (searchBean.getInvoiceNumber() != null) {
-                hsCriteria.put("invoice_number", searchBean.getStatus());
+                hsCriteria.put("invoice_number", searchBean.getInvoiceNumber());
             }
             if(searchBean.getStInvDateFrom() != null && !"".equalsIgnoreCase(searchBean.getStInvDateFrom())){
                 Date invDateFrom = CommonUtil.convertStringToDate(searchBean.getStInvDateFrom());
