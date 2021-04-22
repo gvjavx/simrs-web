@@ -813,6 +813,7 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataEntity.setNamaBank(bean.getNamaBank());
                             imBiodataEntity.setNoRekBank(bean.getNoRekBank());
                             imBiodataEntity.setCabangBank(bean.getCabangBank());
+                            imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId());
 
 //                                imBiodataEntity.setZakatProfesi(bean.getFlagZakat()); //RAKA-delete
                             imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
@@ -3002,6 +3003,7 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setKecamatanName(personalEntity.getKecamatanName());
                     returnBiodata.setDesaName(personalEntity.getDesaName());
                     returnBiodata.setGolonganId(personalEntity.getGolongan());
+                    returnBiodata.setGolonganDapenId(personalEntity.getGolonganDapenId());
                     returnBiodata.setFlagZakat(personalEntity.getZakatProfesi());
                     returnBiodata.setGender(personalEntity.getGender());
                     returnBiodata.setNpwp(personalEntity.getNpwp());
