@@ -124,8 +124,8 @@
 							<box>
 								<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 							</box>
-							<textField>
-								<reportElement x="0" y="0" width="40" height="30" uuid="878cbae6-e89c-4c9c-8f23-b5ccbd352ae9"/>
+							<textField isStretchWithOverflow="true">
+								<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="30" isPrintWhenDetailOverflows="true" uuid="878cbae6-e89c-4c9c-8f23-b5ccbd352ae9"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{nomor}]]></textFieldExpression>
 							</textField>
@@ -151,8 +151,8 @@
 							<box>
 								<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 							</box>
-							<textField isBlankWhenNull="false">
-								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="161" height="30" uuid="81338665-c709-423b-a13d-c7246789b31e"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement positionType="Float" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="0" y="0" width="161" height="30" isPrintWhenDetailOverflows="true" uuid="81338665-c709-423b-a13d-c7246789b31e"/>
 								<box leftPadding="10"/>
 								<textElement verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{branchName}]]></textFieldExpression>
@@ -179,8 +179,8 @@
 							<box>
 								<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 							</box>
-							<textField>
-								<reportElement x="0" y="0" width="250" height="30" uuid="0b3376da-1aa7-4e40-b6a1-a1cb58f6f07e"/>
+							<textField isStretchWithOverflow="true">
+								<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="250" height="30" isPrintWhenDetailOverflows="true" uuid="0b3376da-1aa7-4e40-b6a1-a1cb58f6f07e"/>
 								<box leftPadding="10"/>
 								<textElement verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{namaPelayanan}]]></textFieldExpression>
@@ -207,8 +207,8 @@
 							<box>
 								<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 							</box>
-							<textField>
-								<reportElement x="0" y="0" width="100" height="30" uuid="1bd8ce50-8f94-4b34-91d1-28f29dd8f442"/>
+							<textField isStretchWithOverflow="true">
+								<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="100" height="30" isPrintWhenDetailOverflows="true" uuid="1bd8ce50-8f94-4b34-91d1-28f29dd8f442"/>
 								<box leftPadding="10"/>
 								<textElement verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>

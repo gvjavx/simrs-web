@@ -1128,7 +1128,7 @@ function setSkriningGizi(umur) {
         '    </div>\n' +
         '</div>';
 
-    if (parseInt(umur) >= 18) {
+    if (parseInt(umur) >= 5) {
         res = '<div class="row">\n' +
             '    <div class="form-group">\n' +
             '        <label class="col-md-9">1. Apakah pasien mengalami penuruanan / peningkatan BB yang tidak di inginkan dalam 6 bulan terakhir ?</label>\n' +
@@ -1250,7 +1250,7 @@ function setPengkajianGizi(umur) {
         '        <input class="form-control" id="add_gizi8" type="number">\n' +
         '    </div>\n' +
         '</div>';
-    if (parseInt(umur) >= 18) {
+    if (parseInt(umur) >= 5) {
         res = '<div class="row jarak">\n' +
             '    <div class="col-md-3">\n' +
             '        <span>BB<small><b>(Kg)</b></small></span>\n' +
