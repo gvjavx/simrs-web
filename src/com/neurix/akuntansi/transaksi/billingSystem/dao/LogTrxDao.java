@@ -72,7 +72,6 @@ public class LogTrxDao extends GenericDao<ItPgLogTransactionEntity, String> {
                 criteria.add(Restrictions.eq("invoiceNumber", (BigInteger) mapCriteria.get("invoice_number")));
             }
 
-            if()
             if (mapCriteria.get("invoice_date_from")!=null){
                 criteria.add(Restrictions.ge("invoiceDate", (Date) mapCriteria.get("invoice_date_from")));
             }
