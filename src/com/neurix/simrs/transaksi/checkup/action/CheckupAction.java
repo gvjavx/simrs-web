@@ -1985,26 +1985,15 @@ public class CheckupAction extends BaseMasterAction {
 
     }
 
-    public PesertaResponse checkStatusBpjs(String noBpjs) {
-
+    public RujukanResponse checkStatusBpjs(String noBpjs, String jenisCari) {
         logger.info("[CheckupAction.checkStatusBpjs] START process <<<");
-
-        PesertaResponse response = new PesertaResponse();
-        String unitId = CommonUtil.userBranchLogin();
-        long millis = System.currentTimeMillis();
-        java.util.Date date = new java.util.Date(millis);
-        String formatDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
-        String tglSep = formatDate;
-        logger.info("[CheckupAction.checkStatusBpjs] TGL        -->" + date);
-        logger.info("[CheckupAction.checkStatusBpjs] TGL SEP    -->" + tglSep);
-        logger.info("[CheckupAction.checkStatusBpjs] UnitID     -->" + unitId);
-
-
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BpjsBo bpjsBo = (BpjsBo) ctx.getBean("bpjsBoProxy");
+        RujukanResponse response = new RujukanResponse();
+        String unitId = CommonUtil.userBranchLogin();
 
         try {
-            response = bpjsBo.GetPesertaBpjsByAPIBpjs(noBpjs, tglSep, unitId);
+            response = bpjsBo.caraRujukanBerdasarNomorkartuBpjs(noBpjs, jenisCari, unitId);
         } catch (HibernateException e) {
             logger.error("[CheckupAction.checkStatusBpjs] ERROR " + e.getMessage());
             addActionError("[CheckupAction.checkStatusBpjs] ERROR " + e.getMessage());
@@ -3941,19 +3930,15 @@ public class CheckupAction extends BaseMasterAction {
 
     public Pelayanan getPelayananWithIdVclaim(String id) {
         logger.info("[CheckupAction.getPelayananWithIdVclaim] START process >>>");
-        List<Pelayanan> pelayananArrayList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
         Pelayanan pelayanan = new Pelayanan();
         pelayanan.setKodePoliVclaim(id);
         pelayanan.setBranchId(CommonUtil.userBranchLogin());
         try {
-            pelayananArrayList = pelayananBo.getByCriteria(pelayanan);
+            pelayanan = pelayananBo.getObjectPelayanan(pelayanan);
         } catch (GeneralBOException e) {
             logger.error("Found Error, " + e.getMessage());
-        }
-        if(pelayananArrayList.size() > 0){
-            pelayanan = pelayananArrayList.get(0);
         }
         logger.info("[CheckupAction.getPelayananWithIdVclaim] END process >>>");
         return pelayanan;

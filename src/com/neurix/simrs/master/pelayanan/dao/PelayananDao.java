@@ -302,6 +302,9 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
             if(bean.getKategoriPelayanan() != null && !"".equalsIgnoreCase(bean.getKategoriPelayanan())){
                 condition += "AND b.kategori_pelayanan = '"+bean.getKategoriPelayanan()+"' \n";
             }
+            if(bean.getKodePoliVclaim() != null && !"".equalsIgnoreCase(bean.getKodePoliVclaim())){
+                condition += "AND b.kode_vclaim = '"+bean.getKodePoliVclaim()+"' \n";
+            }
             String SQL = "SELECT\n" +
                     "a.id_pelayanan,\n" +
                     "b.nama_pelayanan,\n" +

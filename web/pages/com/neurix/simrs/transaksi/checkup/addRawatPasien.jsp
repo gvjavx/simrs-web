@@ -768,7 +768,7 @@
                                                                      cssClass="form-control" placeholder="input 3 karakter no bpjs"
                                                                      oninput="searchNoBpjs(this.id)"/>
                                                         <div class="input-group-btn" onclick="checkBpjs()">
-                                                            <a class="btn btn-success">
+                                                            <a class="btn btn-success" id="btn_cek_bpjs">
                                                                 <span id="btn-cek"><i
                                                                         class="fa fa-search"></i> Check</span></a>
                                                         </div>
@@ -2244,6 +2244,17 @@
         var profesi = '<s:property value="headerCheckup.profesi"/>';
         var hubunganKel = '<s:property value="headerCheckup.hubunganKeluarga"/>';
         var noKartu = '<s:property value="headerCheckup.noKartuAsuransi"/>';
+        var jenisPasien = '<s:property value="headerCheckup.idJenisPeriksaPasien"/>';
+        var noBpjs = '<s:property value="headerCheckup.noBpjs"/>';
+
+        if(jenisPasien == 'bpjs' || jenisPasien == 'bpjs_rekanan'){
+            $('#no_bpjs').attr('readonly', true);
+            $('#btn_cek_bpjs').attr('disabled', true);
+            checkBpjs();
+        }else{
+            $('#no_bpjs').attr('readonly', false);
+            $('#btn_cek_bpjs').attr('disabled', false);
+        }
 
         if(idDokter != ''){
             $('#dokter').val(idDokter);
@@ -2434,7 +2445,11 @@
         CheckupAction.getComboAsuransi(function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
-                    option += '<option value="' + item.idAsuransi + '|' + item.isLaka + '">' + item.namaAsuransi + '</option>';
+                    var laka = "";
+                    if(item.isLaka != null && item.isLaka != ''){
+                        laka = item.isLaka;
+                    }
+                    option += '<option value="' + item.idAsuransi + '|' + laka + '">' + item.namaAsuransi + '</option>';
                 });
                 $('#asuransi').html(option);
                 if(idAsuransi != '' && idAsuransi != null){
@@ -2575,9 +2590,16 @@
 
     function checkBpjs() {
         var noBpjs = $('#no_bpjs').val();
+        var perujuk = $('#perujuk').val();
+        var jenisRujukan = "";
+        if (perujuk == '1') {
+            jenisRujukan = "P";
+        } else if (perujuk == '2') {
+            jenisRujukan = "R";
+        }
         $('#btn-cek').html('<i class="fa fa-circle-o-notch fa-spin"></i> Loading...');
         dwr.engine.setAsync(true);
-        CheckupAction.checkStatusBpjs(noBpjs, {
+        CheckupAction.checkStatusBpjs(noBpjs, jenisRujukan, {
             callback: function (response) {
                 var warnClass = "";
                 var title = "";
@@ -2592,6 +2614,8 @@
                     title = "Info!";
                     warnClass = "alert-success";
                     msg = "No BPJS berhasil diverifikasi dengan status AKTIF!";
+                    $('#no_rujukan').val(response.noKunjungan).trigger('input');
+                    cekNoRujukan();
                 } else if (response.keteranganStatusPeserta == "TIDAK AKTIF") {
                     val = "tidak aktif";
                     icon = "fa-warning";
@@ -2613,7 +2637,6 @@
                 $('#status_bpjs').val(val);
                 $('#warn-bpjs').html(warning);
                 $('#btn-cek').html('<i class="fa fa-search"></i> Check');
-
             }
         });
 

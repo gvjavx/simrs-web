@@ -3533,6 +3533,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     headerCheckup.setCoverBiaya(detailCheckupEntity.getCoverBiaya());
                     headerCheckup.setIsEksekutif(detailCheckupEntity.getIsEksekutif());
                     headerCheckup.setIsVaksin(detailCheckupEntity.getIsVaksin());
+                    headerCheckup.setUrlDocRujuk(detailCheckupEntity.getUrlDocRujuk());
 
                     //dokter team data
                     headerCheckup.setIdDokter(dokterTeam.getIdDokter());
@@ -3573,6 +3574,13 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                         headerCheckup.setUangMuka(uangMukaPendaftaranEntity.getJumlah());
                         headerCheckup.setIdUangMuka(uangMukaPendaftaranEntity.getId());
                         headerCheckup.setStatusBayar(uangMukaPendaftaranEntity.getStatusBayar());
+                    }
+
+                    if("bpjs".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
+                        ImSimrsPasienEntity pasienEntity = pasienDao.getById("idPasien", headerChekupEntity.getIdPasien());
+                        if(pasienEntity != null){
+                            headerCheckup.setNoBpjs(pasienEntity.getNoBpjs());
+                        }
                     }
                 }
             }

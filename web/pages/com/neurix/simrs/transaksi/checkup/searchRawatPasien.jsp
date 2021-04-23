@@ -73,7 +73,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4" for="headerCheckup.noKtp">No KTP</label>
+                                    <label class="control-label col-sm-4" for="headerCheckup.noKtp">NIK</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="no_ktp" cssStyle="margin-top: 7px"
                                                      name="headerCheckup.noKtp" required="true"
