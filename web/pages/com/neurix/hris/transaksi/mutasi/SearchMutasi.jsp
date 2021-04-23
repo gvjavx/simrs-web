@@ -256,9 +256,11 @@ To change this template use File | Settings | File Templates.
                                             <td><s:property value="positionBaruName"/></td>
                                             <td><s:property value="stTanggalEfektif"/></td>
                                             <td align="center">
+                                                <s:if test='#row.statusName == "Mutasi" || #row.statusName == "Rotasi"'>
                                                 <a href="javascript:;" data="<s:property value="%{#row.mutasiId}"/>" class="item-print" id="<s:property value="%{#row.mutasiId}"/>">
                                                     <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_edit">
                                                 </a>
+                                                </s:if>
                                             </td>
                                         </tr>
                                     </s:iterator>
@@ -303,7 +305,7 @@ To change this template use File | Settings | File Templates.
                     <div class="form-group">
                         <label class="control-label col-sm-4" >No. Sk Mutasi : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control nip" id="noSurat" name="nip">
+                            <input readonly type="text" class="form-control nip" id="noSurat" name="nip">
                         </div>
                     </div>
                 </form>
@@ -326,8 +328,13 @@ To change this template use File | Settings | File Templates.
         });
         $('#tableMutasi').on('click', '.item-print', function(){
             var id = $(this).attr('id');
-            $('#idMutasi').val(id);
-            $('#modal-edit').modal('show');
+
+            if (confirm('Print Surat Keterangan Mutasi ? ')) {
+                var addr = "printReportMutasi_mutasi.action?idMutasi="+id;
+                window.open(addr,'_blank');
+            }
+            // $('#idMutasi').val(id);
+            // $('#modal-edit').modal('show');
         });
 
         $('#btnSave').click(function(){

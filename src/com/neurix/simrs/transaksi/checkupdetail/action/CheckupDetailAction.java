@@ -5182,7 +5182,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 reportParams.put("lab", lab);
                 reportParams.put("radiologi", radiologi);
                 reportParams.put("keterangan", checkup.getCatatan());
-                DokterTeam dokterTeam = teamDokterBoProxy.getNamaDokter(checkup.getIdDetailCheckup());
+                DokterTeam dokterTeam = teamDokterBoProxy.getNamaDokter(checkup.getIdDetailCheckup(), false);
                 reportParams.put("dokter", dokterTeam.getNamaDokter());
                 reportParams.put("sip", dokterTeam.getSip());
                 reportParams.put("diagnosaMasuk", diagnosaSekunder);
@@ -5736,32 +5736,6 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                     } else {
 
-//                        if (idRuangan != null && !"".equalsIgnoreCase(idRuangan)){
-//                            MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(idRuangan);
-//                            if (ruanganEntity != null) {
-//                                ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
-//                                if (kelasRuanganEntity != null) {
-//                                    ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
-//                                    if (position != null) {
-//                                        divisiId = position.getKodering();
-//                                    }
-//                                }
-//                            }
-//                        } else {
-//                            RawatInap lastRuangan = rawatInapBo.getLastUsedRoom(idDetailCheckup);
-//                            if (lastRuangan != null) {
-//                                MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(lastRuangan.getIdRuang());
-//                                if (ruanganEntity != null) {
-//                                    ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
-//                                    if (kelasRuanganEntity != null) {
-//                                        ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
-//                                        if (position != null) {
-//                                            divisiId = position.getKodering();
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
                         if (idRuangan != null && !"".equalsIgnoreCase(idRuangan)) {
                             List<TempatTidur> tempatTidurList = new ArrayList<>();
                             TempatTidur tt = new TempatTidur();
@@ -5769,14 +5743,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                             tt.setIdTempatTidur(idRuangan);
                             tempatTidurList = tempatTidurBo.getDataTempatTidur(tt);
                             if (tempatTidurList.size() > 0) {
-                                tempatTidur = tempatTidurList.get(0);
-                                ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(tempatTidur.getIdKelasRuangan());
-                                if (kelasRuanganEntity != null) {
-                                    ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
-                                    if (position != null) {
-                                        divisiId = position.getKodering();
-                                    }
-                                }
+                                divisiId = tempatTidurList.get(0).getKodering();
                             }
                         } else {
                             RawatInap lastRuangan = rawatInapBo.getLastUsedRoom(idDetailCheckup);
@@ -5787,14 +5754,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 tt.setIdTempatTidur(idRuangan);
                                 tempatTidurList = tempatTidurBo.getDataTempatTidur(tt);
                                 if (tempatTidurList.size() > 0) {
-                                    tempatTidur = tempatTidurList.get(0);
-                                    ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(tempatTidur.getIdKelasRuangan());
-                                    if (kelasRuanganEntity != null) {
-                                        ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
-                                        if (position != null) {
-                                            divisiId = position.getKodering();
-                                        }
-                                    }
+                                    divisiId = tempatTidurList.get(0).getKodering();
                                 }
                             }
                         }

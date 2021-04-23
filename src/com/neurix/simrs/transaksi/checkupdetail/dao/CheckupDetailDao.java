@@ -286,7 +286,9 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             if ("kasir".equalsIgnoreCase(bean.getTypeTransaction())) {
                 order = "\n ORDER BY dt.last_update DESC";
             }
-
+            if ("mobile".equalsIgnoreCase(bean.getTypeTransaction())) {
+                order = "\n ORDER BY dt.created_date DESC";
+            }
             List<Object[]> results = new ArrayList<>();
             if (!"".equalsIgnoreCase(dateFrom) && !"".equalsIgnoreCase(dateTo)) {
 

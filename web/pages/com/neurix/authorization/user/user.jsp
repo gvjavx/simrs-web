@@ -810,7 +810,6 @@
             if ($('#set_foto').val() != '') {
                 cekFoto = convertToDataURLAtas(foto);
             }
-
             var cekPelayanan = true;
             if (tempPelayanan != '') {
                 if (tempPelayanan == 'rawat_inap') {
@@ -854,9 +853,9 @@
             }else{
                 cekPassword = true;
             }
-
-            if ((userId !='' && username !='' && area !='' && unit !='' && role !='' && bidang !='' && jabatan !='' && email != ''
-                && cekPassword !='' && cekPelayanan !='') || (tipe = 'delete')) {
+            if ((userId !='' && username !='' && area !='' && unit !='' && role !='' && bidang !='' && jabatan !=='' && jabatan!==null && email != ''
+                && cekPassword !='' && cekPelayanan !='') || (tipe == 'delete')) {
+                console.log(">"+jabatan+"< "+tipe);
                 if (tempUserId == 'Y' && tempEmail == 'Y') {
                     $('#save_add').hide();
                     $('#load_add').show();
@@ -942,7 +941,7 @@
                 if (bidang == '') {
                     $('#war_set_bidang').show();
                 }
-                if (jabatan == '') {
+                if (jabatan == '' || jabatan == null) {
                     $('#war_set_jabatan').show();
                 }
                 if (role == '') {

@@ -217,7 +217,6 @@ public class JamKerjaAction extends BaseMasterAction {
             jamKerja.setAction("C");
             jamKerja.setFlag("Y");
 
-
             jamKerjaBoProxy.saveAdd(jamKerja);
         }catch (GeneralBOException e) {
             Long logId = null;

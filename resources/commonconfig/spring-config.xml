@@ -96,9 +96,9 @@
     <import resource="sshconfig/com/neurix/hris/master/branchTunjangan/spring/BranchTunjanganBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/payrollSkalaGaji/spring/PayrollSkalaGajiBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/payrollSkalaGajiPkwt/spring/PayrollSkalaGajiPkwtBean.xml"/>
-    <import resource="sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiun/spring/PayrollskalaGajiPensiunBean.xml"/>
+    <import resource="sshconfig/com/neurix/hris/master/payrollSkalaGajiDplkPegawai/spring/PayrollskalaGajiDplkPegawaiBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/spring/PayrollskalaGajiPensiunDplkBean.xml"/>
-    <import resource="sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunRni/spring/PayrollskalaGajiPensiunRniBean.xml"/>
+    <import resource="sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiun/spring/PayrollskalaGajiPensiunBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/payrollBajuDinas/spring/PayrollBajuDinasBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/payrollAirListrik/spring/PayrollAirListrikBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/payrollTunjanganUmk/spring/PayrollTunjanganUmkBean.xml"/>
@@ -206,7 +206,6 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/verifikatorasuransi/spring/VerifikatorAsuransiBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/notifikasiadmin/spring/NotifikasiAdminBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/antriantelemedic/spring/AntrianTelemedicBean.xml"/>
-    <import resource="sshconfig/com/neurix/simrs/transaksi/logtransaction/spring/LogTransactionBean.xml"/>
 
 
     <!--BEAN AKUNTANSI HERE-->
@@ -230,6 +229,7 @@
 
     <import resource="sshconfig/com/neurix/akuntansi/master/parameterbudgeting/spring/ParameterBudgetingRekeningBean.xml"/>
 
+    <import resource="sshconfig/com/neurix/akuntansi/transaksi/billingSystem/spring/LogTransactionBean.xml"/>
 
     <import resource="sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/spring/ReportKeuanganKonsolDetailBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/budgeting/spring/BudgetingBean.xml"/>

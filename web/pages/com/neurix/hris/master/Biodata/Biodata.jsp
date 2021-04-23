@@ -362,7 +362,7 @@
                                 <div class="col-md-12" style="text-align: center;">
                                     <img  align="center" width="300px" id="detailImg" style="border-radius: 50%; box-shadow: grey 3px 3px 5px;"
                                           src="" alt="">
-                                    <s:textfield cssStyle="display: none" id="pathFoto" name="biodata.pathFoto" required="true" cssClass="form-control"/>
+                                    <s:textfield cssStyle="display: none" id="pathFoto" name="biodata.pathFoto" cssClass="form-control"/>
                                 </div>
                             </div>
                             <br/>
@@ -386,7 +386,7 @@
                                                                 <%--<s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>--%>
                                                             <%--</s:elseif>--%>
                                                             <%--<s:else>--%>
-                                                                <s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>
+                                                                <s:textfield  id="nip1" name="biodata.nip" readonly="true" cssClass="form-control"/>
                                                             <%--</s:else>--%>
                                                     </table>
                                                 </td>
@@ -399,10 +399,10 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield id="namaPegawai1" name="biodata.namaPegawai" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                                                            <s:textfield id="namaPegawai1" name="biodata.namaPegawai" readonly="true" disabled="false" cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="namaPegawai1" name="biodata.namaPegawai" required="true" disabled="false" cssClass="form-control"/>
+                                                            <s:textfield id="namaPegawai1" name="biodata.namaPegawai" disabled="false" cssClass="form-control"/>
                                                         </s:else>
 
                                                     </table>
@@ -471,7 +471,7 @@
                                                     </td>
                                                     <td>
                                                         <table>
-                                                            <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                                                            <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" disabled="false" cssClass="form-control"/>
                                                         </table>
                                                     </td>
                                                 </tr>
@@ -483,7 +483,7 @@
                                                     </td>
                                                     <td>
                                                         <table>
-                                                            <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                                                            <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" disabled="false" cssClass="form-control"/>
                                                         </table>
                                                     </td>
                                                 </tr>
@@ -495,10 +495,10 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield id="tempatLahir1" name="biodata.tempatLahir" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            <s:textfield id="tempatLahir1" name="biodata.tempatLahir" disabled="false" cssClass="form-control" readonly="true"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="tempatLahir1" name="biodata.tempatLahir" required="true" disabled="false" cssClass="form-control"/>
+                                                            <s:textfield id="tempatLahir1" name="biodata.tempatLahir" disabled="false" cssClass="form-control"/>
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -713,10 +713,10 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield id="npwp" name="biodata.npwp" required="true" disabled="false" readonly="true" cssClass="form-control"/>
+                                                            <s:textfield id="npwp" name="biodata.npwp" disabled="false" readonly="true" cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="npwp" name="biodata.npwp" required="true" disabled="false" readonly="false" cssClass="form-control"/>
+                                                            <s:textfield id="npwp" name="biodata.npwp" disabled="false" readonly="false" cssClass="form-control"/>
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -729,10 +729,10 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield id="gelarDepan1" name="biodata.gelarDepan" required="true" disabled="false" readonly="true" cssClass="form-control"/>
+                                                            <s:textfield id="gelarDepan1" name="biodata.gelarDepan" disabled="false" readonly="true" cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="gelarDepan1" name="biodata.gelarDepan" required="true" disabled="false" readonly="false" cssClass="form-control"/>
+                                                            <s:textfield id="gelarDepan1" name="biodata.gelarDepan" disabled="false" readonly="false" cssClass="form-control"/>
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -745,10 +745,10 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield id="gelarBelakang1" name="biodata.gelarBelakang" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            <s:textfield id="gelarBelakang1" name="biodata.gelarBelakang" disabled="false" cssClass="form-control" readonly="true"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="gelarBelakang1" name="biodata.gelarBelakang" required="true" disabled="false" cssClass="form-control"/>
+                                                            <s:textfield id="gelarBelakang1" name="biodata.gelarBelakang" disabled="false" cssClass="form-control"/>
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -761,10 +761,10 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield id="noKtp1" type="number" name="biodata.noKtp" required="true" disabled="false" readonly="true" cssClass="form-control"/>
+                                                            <s:textfield id="noKtp1" type="number" name="biodata.noKtp" disabled="false" readonly="true" cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="noKtp1" type="number" name="biodata.noKtp" required="true" disabled="false" cssClass="form-control"/>
+                                                            <s:textfield id="noKtp1" type="number" name="biodata.noKtp" disabled="false" cssClass="form-control"/>
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -777,10 +777,10 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield id="noTelp1" type="number" name="biodata.noTelp" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            <s:textfield id="noTelp1" type="number" name="biodata.noTelp" disabled="false" cssClass="form-control" readonly="true"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="noTelp1" type="number" name="biodata.noTelp" required="true" disabled="false" cssClass="form-control"/>
+                                                            <s:textfield id="noTelp1" type="number" name="biodata.noTelp" disabled="false" cssClass="form-control"/>
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -793,10 +793,10 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textarea id="alamat1" rows="3" name="biodata.alamat" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            <s:textarea id="alamat1" rows="3" name="biodata.alamat" disabled="false" cssClass="form-control" readonly="true"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textarea id="alamat1" rows="3" name="biodata.alamat" required="true" disabled="false" cssClass="form-control"/>
+                                                            <s:textarea id="alamat1" rows="3" name="biodata.alamat" disabled="false" cssClass="form-control"/>
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -809,11 +809,11 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield id="provinsi11" name="biodata.provinsiName" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            <s:textfield id="provinsi11" name="biodata.provinsiName" disabled="false" cssClass="form-control" readonly="true"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="provinsi1" name="biodata.provinsiName"  required="true" disabled="false" cssClass="form-control"/>
-                                                            <s:textfield cssStyle="display: none" id="provinsi11" name="biodata.provinsiId" required="true" disabled="false" cssClass="form-control"/>
+                                                            <s:textfield id="provinsi1" name="biodata.provinsiName"  disabled="false" cssClass="form-control"/>
+                                                            <s:textfield cssStyle="display: none" id="provinsi11" name="biodata.provinsiId" disabled="false" cssClass="form-control"/>
                                                         </s:else>
                                                         <script type='text/javascript'>
                                                             var functions, mapped;
@@ -859,11 +859,11 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield id="kabupaten1" name="biodata.kotaName" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            <s:textfield id="kabupaten1" name="biodata.kotaName" disabled="false" cssClass="form-control" readonly="true"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="kabupaten1" required="true" disabled="false" name="biodata.kotaName" cssClass="form-control"/>
-                                                            <s:textfield cssStyle="display: none" id="kabupaten11" name="biodata.kabupatenId" required="true" disabled="false" cssClass="form-control"/>
+                                                            <s:textfield id="kabupaten1" disabled="false" name="biodata.kotaName" cssClass="form-control"/>
+                                                            <s:textfield cssStyle="display: none" id="kabupaten11" name="biodata.kabupatenId" disabled="false" cssClass="form-control"/>
                                                         </s:else>
                                                         <script type='text/javascript'>
                                                             var functions, mapped;
@@ -912,11 +912,11 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield id="kecamatan1" name="biodata.kecamatanName" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            <s:textfield id="kecamatan1" name="biodata.kecamatanName" disabled="false" cssClass="form-control" readonly="true"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="kecamatan1" name="biodata.kecamatanName" required="true" disabled="false" cssClass="form-control"/>
-                                                            <s:textfield cssStyle="display: none" id="kecamatan11" name="biodata.kecamatanId" required="true" disabled="false" cssClass="form-control"/>
+                                                            <s:textfield id="kecamatan1" name="biodata.kecamatanName" disabled="false" cssClass="form-control"/>
+                                                            <s:textfield cssStyle="display: none" id="kecamatan11" name="biodata.kecamatanId" disabled="false" cssClass="form-control"/>
                                                         </s:else>
                                                         <script type='text/javascript'>
                                                             var functions, mapped;
@@ -961,11 +961,11 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield id="desa1" name="biodata.desaName" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            <s:textfield id="desa1" name="biodata.desaName" disabled="false" cssClass="form-control" readonly="true"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="desa1" required="true" disabled="false" name="biodata.desaName" cssClass="form-control"/>
-                                                            <s:textfield cssStyle="display: none" id="desa11" name="biodata.desaId" required="true" disabled="false" cssClass="form-control"/>
+                                                            <s:textfield id="desa1" disabled="false" name="biodata.desaName" cssClass="form-control"/>
+                                                            <s:textfield cssStyle="display: none" id="desa11" name="biodata.desaId" disabled="false" cssClass="form-control"/>
                                                         </s:else>
                                                         <script type='text/javascript'>
                                                             var functions, mapped;
@@ -1010,10 +1010,10 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield id="rtRw1" name="biodata.rtRw" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            <s:textfield id="rtRw1" name="biodata.rtRw" disabled="false" cssClass="form-control" readonly="true"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="rtRw1" name="biodata.rtRw" required="true" disabled="false" cssClass="form-control"/>
+                                                            <s:textfield id="rtRw1" name="biodata.rtRw" disabled="false" cssClass="form-control"/>
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -1035,11 +1035,11 @@
                                                                       listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                             <s:hidden name="biodata.tipePegawai" />
                                                         </s:if>
-                                                        <s:elseif test='biodata.tipePegawai=="TP03"'>
-                                                            <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="biodata.tipePegawai" disabled="true"
-                                                                      listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                            <s:hidden name="biodata.tipePegawai" />
-                                                        </s:elseif>
+                                                        <%--<s:elseif test='biodata.tipePegawai=="TP03"'>--%>
+                                                            <%--<s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="biodata.tipePegawai" disabled="true"--%>
+                                                                      <%--listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                                                            <%--<s:hidden name="biodata.tipePegawai" />--%>
+                                                        <%--</s:elseif>--%>
                                                         <s:else>
                                                             <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="biodata.tipePegawai" onchange="changePegawai(this.value),loadStatusPegawai(),getPensiun()"
                                                                       listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
@@ -1242,10 +1242,10 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield id="poinLebih" type="number" name="biodata.stMasaKerjaGol" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            <s:textfield id="poinLebih" type="number" name="biodata.stMasaKerjaGol" disabled="false" cssClass="form-control" readonly="true"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="poinLebih"  type="number" name="biodata.stMasaKerjaGol" required="true" cssClass="form-control"/>
+                                                            <s:textfield id="poinLebih"  type="number" name="biodata.stMasaKerjaGol" cssClass="form-control"/>
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -1257,10 +1257,10 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield id="noAnggotaDapen" type="text" name="biodata.noAnggotaDapen" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            <s:textfield id="noAnggotaDapen" type="text" name="biodata.noAnggotaDapen" disabled="false" cssClass="form-control" readonly="true"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="noAnggotaDapen"  type="text" name="biodata.noAnggotaDapen" required="true" cssClass="form-control"/>
+                                                            <s:textfield id="noAnggotaDapen"  type="text" name="biodata.noAnggotaDapen" cssClass="form-control"/>
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -1273,10 +1273,10 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield id="noBpjsKetenagakerjaan" type="text" name="biodata.noBpjsKetenagakerjaan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            <s:textfield id="noBpjsKetenagakerjaan" type="text" name="biodata.noBpjsKetenagakerjaan" disabled="false" cssClass="form-control" readonly="true"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="noBpjsKetenagakerjaan"  type="text" name="biodata.noBpjsKetenagakerjaan" required="true" cssClass="form-control"/>
+                                                            <s:textfield id="noBpjsKetenagakerjaan"  type="text" name="biodata.noBpjsKetenagakerjaan" cssClass="form-control"/>
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -1289,10 +1289,10 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield id="noBpjsKetenagakerjaanPensiun" type="text" name="biodata.noBpjsKetenagakerjaanPensiun" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            <s:textfield id="noBpjsKetenagakerjaanPensiun" type="text" name="biodata.noBpjsKetenagakerjaanPensiun" disabled="false" cssClass="form-control" readonly="true"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="noBpjsKetenagakerjaanPensiun" type="text" name="biodata.noBpjsKetenagakerjaanPensiun" required="true" cssClass="form-control"/>
+                                                            <s:textfield id="noBpjsKetenagakerjaanPensiun" type="text" name="biodata.noBpjsKetenagakerjaanPensiun" cssClass="form-control"/>
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -1305,10 +1305,10 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield id="noBpjsKesehatan" type="text" name="biodata.noBpjsKesehatan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            <s:textfield id="noBpjsKesehatan" type="text" name="biodata.noBpjsKesehatan" disabled="false" cssClass="form-control" readonly="true"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="noBpjsKesehatan" type="text" name="biodata.noBpjsKesehatan" required="true" cssClass="form-control"/>
+                                                            <s:textfield id="noBpjsKesehatan" type="text" name="biodata.noBpjsKesehatan" cssClass="form-control"/>
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -1338,10 +1338,10 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield  id="nipLama" name="biodata.nipLama" required="true" readonly="true" cssClass="form-control"/>
+                                                            <s:textfield  id="nipLama" name="biodata.nipLama" readonly="true" cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield  id="nipLama" name="biodata.nipLama" required="true" cssClass="form-control"/>
+                                                            <s:textfield  id="nipLama" name="biodata.nipLama" cssClass="form-control"/>
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -1355,10 +1355,10 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield id="pin" type="number" name="biodata.pin" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            <s:textfield id="pin" type="number" name="biodata.pin" disabled="false" cssClass="form-control" readonly="true"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="pin"  type="number" name="biodata.pin" required="true" cssClass="form-control"/>
+                                                            <s:textfield id="pin"  type="number" name="biodata.pin" cssClass="form-control"/>
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -1553,10 +1553,10 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield id="cabangBank" name="biodata.cabangBank" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            <s:textfield id="cabangBank" name="biodata.cabangBank" disabled="false" cssClass="form-control" readonly="true"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="cabangBank" name="biodata.cabangBank" required="true" cssClass="form-control"/>
+                                                            <s:textfield id="cabangBank" name="biodata.cabangBank" cssClass="form-control"/>
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -1569,10 +1569,10 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield id="noRekBank" type="text" name="biodata.noRekBank" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            <s:textfield id="noRekBank" type="text" name="biodata.noRekBank" disabled="false" cssClass="form-control" readonly="true"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="noRekBank" type="text" name="biodata.noRekBank" required="true" cssClass="form-control"/>
+                                                            <s:textfield id="noRekBank" type="text" name="biodata.noRekBank" cssClass="form-control"/>
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -1614,10 +1614,10 @@
                                                         </td>
                                                         <td style="padding-left: 10px;">
                                                             <s:if test="isDelete()">
-                                                                <s:textfield id="nomTunjSupervisi" type="number" name="biodata.stTunjSupervisi" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                                <s:textfield id="nomTunjSupervisi" type="number" name="biodata.stTunjSupervisi" disabled="false" cssClass="form-control" readonly="true"/>
                                                             </s:if>
                                                             <s:else>
-                                                                <s:textfield id="nomTunjSupervisi" type="number" name="biodata.stTunjSupervisi" required="true" cssClass="form-control"/>
+                                                                <s:textfield id="nomTunjSupervisi" type="number" name="biodata.stTunjSupervisi" cssClass="form-control"/>
                                                             </s:else>
                                                         </td>
                                                     </table>
@@ -1642,10 +1642,10 @@
                                                         </td>
                                                         <td style="padding-left: 10px;">
                                                             <s:if test="isDelete()">
-                                                                <s:textfield id="nomTunjLokasi" type="number" name="biodata.stTunjLokasi" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                                <s:textfield id="nomTunjLokasi" type="number" name="biodata.stTunjLokasi" disabled="false" cssClass="form-control" readonly="true"/>
                                                             </s:if>
                                                             <s:else>
-                                                                <s:textfield id="nomTunjLokasi" type="number" name="biodata.stTunjLokasi" required="true" cssClass="form-control"/>
+                                                                <s:textfield id="nomTunjLokasi" type="number" name="biodata.stTunjLokasi" cssClass="form-control"/>
                                                             </s:else>
                                                         </td>
                                                     </table>
@@ -1669,10 +1669,10 @@
                                                         </td>
                                                         <td style="padding-left: 10px;">
                                                             <s:if test="isDelete()">
-                                                                <s:textfield id="nomTunjSiaga" type="number" name="biodata.stTunjSiaga" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                                <s:textfield id="nomTunjSiaga" type="number" name="biodata.stTunjSiaga" disabled="false" cssClass="form-control" readonly="true"/>
                                                             </s:if>
                                                             <s:else>
-                                                                <s:textfield id="nomTunjSiaga" type="number" name="biodata.stTunjSiaga" required="true" cssClass="form-control"/>
+                                                                <s:textfield id="nomTunjSiaga" type="number" name="biodata.stTunjSiaga" cssClass="form-control"/>
                                                             </s:else>
                                                         </td>
                                                     </table>
@@ -1714,10 +1714,10 @@
                                                         </td>
                                                         <td style="padding-left: 10px;">
                                                             <s:if test="isDelete()">
-                                                                <s:textfield id="nomTunjPeralihanGapok" type="number" name="biodata.stTunjPeralihanGapok" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                                <s:textfield id="nomTunjPeralihanGapok" type="number" name="biodata.stTunjPeralihanGapok" disabled="false" cssClass="form-control" readonly="true"/>
                                                             </s:if>
                                                             <s:else>
-                                                                <s:textfield id="nomTunjPeralihanGapok" type="number" name="biodata.stTunjPeralihanGapok" required="true" cssClass="form-control"/>
+                                                                <s:textfield id="nomTunjPeralihanGapok" type="number" name="biodata.stTunjPeralihanGapok" cssClass="form-control"/>
                                                             </s:else>
                                                         </td>
                                                     </table>
@@ -1742,10 +1742,10 @@
                                                         </td>
                                                         <td style="padding-left: 10px;">
                                                             <s:if test="isDelete()">
-                                                                <s:textfield id="nomTunjPeralihanSankhus" type="number" name="biodata.stTunjPeralihanSankhus" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                                <s:textfield id="nomTunjPeralihanSankhus" type="number" name="biodata.stTunjPeralihanSankhus" disabled="false" cssClass="form-control" readonly="true"/>
                                                             </s:if>
                                                             <s:else>
-                                                                <s:textfield id="nomTunjPeralihanSankhus" type="number" name="biodata.stTunjPeralihanSankhus" required="true" cssClass="form-control"/>
+                                                                <s:textfield id="nomTunjPeralihanSankhus" type="number" name="biodata.stTunjPeralihanSankhus" cssClass="form-control"/>
                                                             </s:else>
                                                         </td>
                                                     </table>
@@ -1770,10 +1770,10 @@
                                                         </td>
                                                         <td style="padding-left: 10px;">
                                                             <s:if test="isDelete()">
-                                                                <s:textfield id="nomTunjPeralihanTunjangan" type="number" name="biodata.stTunjPeralihanTunjangan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                                <s:textfield id="nomTunjPeralihanTunjangan" type="number" name="biodata.stTunjPeralihanTunjangan" disabled="false" cssClass="form-control" readonly="true"/>
                                                             </s:if>
                                                             <s:else>
-                                                                <s:textfield id="nomTunjPeralihanTunjangan" type="number" name="biodata.stTunjPeralihanTunjangan" required="true" cssClass="form-control"/>
+                                                                <s:textfield id="nomTunjPeralihanTunjangan" type="number" name="biodata.stTunjPeralihanTunjangan" cssClass="form-control"/>
                                                             </s:else>
                                                         </td>
                                                     </table>
@@ -1797,10 +1797,10 @@
                                                         </td>
                                                         <td style="padding-left: 10px;">
                                                             <s:if test="isDelete()">
-                                                                <s:textfield id="nomTunjPemondokan" type="number" name="biodata.stTunjPemondokan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                                <s:textfield id="nomTunjPemondokan" type="number" name="biodata.stTunjPemondokan" disabled="false" cssClass="form-control" readonly="true"/>
                                                             </s:if>
                                                             <s:else>
-                                                                <s:textfield id="nomTunjPemondokan" type="number" name="biodata.stTunjPemondokan" required="true" cssClass="form-control"/>
+                                                                <s:textfield id="nomTunjPemondokan" type="number" name="biodata.stTunjPemondokan" cssClass="form-control"/>
                                                             </s:else>
                                                         </td>
                                                     </table>
@@ -1881,7 +1881,7 @@
                                                 </td>
                                             </tr>
 
-                                            <tr>
+                                            <tr style="display: none;">
                                                 <td>
                                                     <label><small>Mess :</small></label>
                                                 </td>
@@ -2738,7 +2738,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Lama Pelatihan :</label>
+                        <label class="control-label col-sm-4" >Lama Pelatihan (hari) :</label>
                         <div class="col-sm-8">
                             <input type="number" class="form-control" id="jumlahJamPelatihan">
                         </div>
@@ -3092,7 +3092,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Status Keluarga:</label>
                         <div class="col-sm-8">
-                            <select class="form-control" id="statusKeluarga" name="statusKeluarga" >
+                            <select class="form-control" id="statusKeluarga" name="statusKeluarga" onchange="genderPasangan()">
                             </select>
                         </div>
                     </div>
@@ -3523,8 +3523,12 @@
 
     $(document).ready(function() {
         loadStatusPegawai();
-        <s:if test="isAddOrEdit()">
-            loadPositionJabatan("addOrEdit");
+        <%--<s:if test="isAddOrEdit()">--%>
+            <%--loadPositionJabatan("addOrEdit");--%>
+        <%--</s:if>--%>
+        <s:if test="isAdd()">
+        console.log("is Add")
+            loadPositionJabatan("add");
         </s:if>
         <s:else>
             loadPositionJabatan("viewOrDelete");
@@ -4074,7 +4078,7 @@
                     "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Jam Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Hari Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
@@ -4089,7 +4093,7 @@
                     "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml. Jam Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml. Hari Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
@@ -4163,7 +4167,7 @@
                     "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Jam Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Hari Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
@@ -4178,7 +4182,7 @@
                     "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Jam Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Hari Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
@@ -4592,10 +4596,14 @@
                         '<td >' + (i + 1) + '</td>' +
                         '<td >' + item.name + '</td>' +
                         '<td align="center">' + item.statusKeluargaName + '</td>' +
-                        '<td align="center">' + item.gender + '</td>' +
-                        '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>' +
+                        '<td align="center">' + item.gender + '</td>';
+                    if(item.tanggalLahir != null) {
+                        tmp_table += '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>';
+                    }else{
+                        tmp_table += '<td align="center">' + ' - ' + '</td>';
+                    }
                         /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/
-                        '<td align="center">' +
+                    tmp_table += '<td align="center">' +
                         "<a href='javascript:;' class ='item-edit' data ='" + item.keluargaId + "' >" +
                         "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
                         '</a>' +
@@ -4612,8 +4620,12 @@
                         '<td >' + (i + 1 ) + '</td>' +
                         '<td >' + item.name + '</td>' +
                         '<td align="center">' + item.statusKeluargaName + '</td>' +
-                        '<td align="center">' + item.gender + '</td>' +
-                        '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>' +
+                        '<td align="center">' + item.gender + '</td>';
+                            if(item.tanggalLahir != null) {
+                                tmp_table += '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>';
+                            }else{
+                                tmp_table += '<td align="center">' + ' - ' + '</td>';
+                            }
                         /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/
                         "</tr>";
                     </s:else>
@@ -5328,7 +5340,7 @@
                     msg+="- Penyelenggara \n";
                 }
                 if (jumlahJamPelatihan==""){
-                    msg+="- Jumlah Jam Pelatihan \n";
+                    msg+="- Jumlah Hari Pelatihan \n";
                 }
                 if (sertifikatPelatihan==""){
                     msg+="- Sertifikat Pelatihan \n";
@@ -5421,8 +5433,8 @@
 
             <s:if test="isAdd()">
             if (url == 'addKeluarga') {
-                if (keluargaName == '') {
-                    alert('Name Must be Entry')
+                if (keluargaName == '' || statusKeluarga == '' || genderKeluarga == '' || tanggalLahir == '') {
+                    alert('All Field Must be Entry.')
                 } else {
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
@@ -5435,21 +5447,25 @@
                     }
                 }
             } else {
-                if (confirm('Are you sure you want to save this Record?')) {
-                    dwr.engine.setAsync(false);
-                    KeluargaAction.initEdit(keluargaId, keluargaName, statusKeluarga, statusKeluargaName, tanggalLahir, genderKeluarga,function (listdata) {
-                        alert('Data Successfully Updated');
-                        $('#modal-editKeluarga').modal('hide');
-                        $('#myFormKeluarga')[0].reset();
-                        loadSessionKeluarga();
-                    });
+                if (keluargaName == '' || statusKeluarga == '' || genderKeluarga == '' || tanggalLahir == '') {
+                    alert('All Field Must be Entry.')
+                } else {
+                    if (confirm('Are you sure you want to save this Record?')) {
+                        dwr.engine.setAsync(false);
+                        KeluargaAction.initEdit(keluargaId, keluargaName, statusKeluarga, statusKeluargaName, tanggalLahir, genderKeluarga, function (listdata) {
+                            alert('Data Successfully Updated');
+                            $('#modal-editKeluarga').modal('hide');
+                            $('#myFormKeluarga')[0].reset();
+                            loadSessionKeluarga();
+                        });
+                    }
                 }
             }
             </s:if>
             <s:else>
             if (url == 'addKeluarga') {
-                if (keluargaName == '') {
-                    alert('Name Must be Entry')
+                if (keluargaName == '' || statusKeluarga == '' || genderKeluarga == '' || tanggalLahir == '') {
+                    alert('All Field Must be Entry.')
                 } else {
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
@@ -5462,14 +5478,18 @@
                     }
                 }
             } else {
-                if (confirm('Are you sure you want to save this Record?')) {
-                    dwr.engine.setAsync(false);
-                    KeluargaAction.saveEdit(keluargaId, keluargaName, statusKeluarga, genderKeluarga, tanggalLahir, function (listdata) {
-                        alert('Data Successfully Updated');
-                        $('#modal-editKeluarga').modal('hide');
-                        $('#myFormKeluarga')[0].reset();
-                        loadKeluarga(nip);
-                    });
+                if (keluargaName == '' || statusKeluarga == '' || genderKeluarga == '' || tanggalLahir == '') {
+                    alert('All Field Must be Entry.')
+                } else {
+                    if (confirm('Are you sure you want to save this Record?')) {
+                        dwr.engine.setAsync(false);
+                        KeluargaAction.saveEdit(keluargaId, keluargaName, statusKeluarga, genderKeluarga, tanggalLahir, function (listdata) {
+                            alert('Data Successfully Updated');
+                            $('#modal-editKeluarga').modal('hide');
+                            $('#myFormKeluarga')[0].reset();
+                            loadKeluarga(nip);
+                        });
+                    }
                 }
             }
             </s:else>
@@ -5706,7 +5726,9 @@
                 var myDate = new Date(listdata.tanggalLahir);
                 $('#keluargaName').val(listdata.name);
                 $('#statusKeluarga').val(listdata.statusKeluargaId);
-                $('#tanggalLahirkeluarga').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                if(listdata.tanggalLahir != null){
+                    $('#tanggalLahirkeluarga').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                }
                 $('#keluargaId').val(listdata.keluargaId);
                 $('#genderKeluarga').val(listdata.gender);
             });
@@ -5718,7 +5740,9 @@
                     $('#keluargaName').val(item.name);
                     $('#genderKeluarga').val(item.gender).change();
                     $('#statusKeluarga').val(item.statusKeluargaId);
-                    $('#tanggalLahirkeluarga').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                    if(item.tanggalLahir!=null) {
+                        $('#tanggalLahirkeluarga').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                    }
                     $('#keluargaId').val(item.keluargaId);
                 });
             });
@@ -5849,7 +5873,9 @@
                 var myDate = new Date(listdata.tanggalLahir);
                 $('#keluargaNameDelete').val(listdata.name);
                 $('#statusKeluargaDelete').val(listdata.statusKeluargaId);
-                $('#tanggalLahirkeluargaDelete').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                if(listdata.tanggalLahir!=null) {
+                    $('#tanggalLahirkeluargaDelete').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                }
                 $('#keluargaIdDelete').val(listdata.keluargaId);
             });
 
@@ -5872,7 +5898,9 @@
                     var myDate = new Date(item.tanggalLahir);
                     $('#keluargaNameDelete').val(item.name);
                     $('#statusKeluargaDelete').val(item.statusKeluargaId);
-                    $('#tanggalLahirkeluargaDelete').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                    if(item.tanggalLahir!=null){
+                        $('#tanggalLahirkeluargaDelete').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                    }
                     $('#keluargaIdDelete').val(item.keluargaId);
                 });
             });
@@ -6445,11 +6473,23 @@
     }
 
 
+    function genderPasangan(){
+        var statusKeluarga = $('#statusKeluarga').val();
 
+        if(statusKeluarga == "S") {
+            $("#genderKeluarga").val("L").change();
+        } else if (statusKeluarga == "I"){
+            $("#genderKeluarga").val("P").change();
+        }
+
+    }
 
     window.listStatusKeluarga = function () {
         var gender = document.getElementById("gender").value;
         $('#statusKeluarga').empty();
+        $('#statusKeluarga').append($("<option></option>")
+            .attr("value", "")
+            .text("-"));
         if (gender == 'L') {
             $('#statusKeluarga').append($("<option></option>")
                 .attr("value", "I")

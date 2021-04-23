@@ -59,6 +59,15 @@ public class RawatInapMobile {
     private String message;
 
     private String noSep;
+    private String umur;
+
+    public String getUmur() {
+        return umur;
+    }
+
+    public void setUmur(String umur) {
+        this.umur = umur;
+    }
 
     public String getNoSep() {
         return noSep;

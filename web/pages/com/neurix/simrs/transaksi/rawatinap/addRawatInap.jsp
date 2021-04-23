@@ -1306,7 +1306,7 @@
                                 <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                         id="tin_id_ketgori_tindakan"
                                         onchange="listSelectTindakan(this.value); var warn =$('#war_kategori').is(':visible'); if (warn){$('#cor_kategori').show().fadeOut(3000);$('#war_kategori').hide()}">
-                                    <option value=''>[Select One]</option>
+                                    <option value=''> - </option>
                                 </select>
                         </div>
                         <div class="col-md-2">
@@ -1322,7 +1322,7 @@
                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                     id="tin_id_tindakan"
                                     onchange="var warn =$('#war_tindakan').is(':visible'); if (warn){$('#cor_tindakan').show().fadeOut(3000);$('#war_tindakan').hide()}; setDiskonHarga(this.value)">
-                                <option value=''>[Select One]</option>
+                                <option value=''> - </option>
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -1421,7 +1421,7 @@
                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                     id="nosa_jenis_diagnosa"
                                     onchange="var warn =$('#war_jenis_diagnosa').is(':visible'); if (warn){$('#cor_jenis_diagnosa').show().fadeOut(3000);$('#war_jenis_diagnosa').hide()}">
-                                <option value="">[select one]</option>
+                                <option value=""> - </option>
                                 <option value="diagnosa_awal">Diagnosa Awal</option>
                                 <option value="diagnosa_utama">Diagnosa Utama</option>
                                 <option value="diagnosa_sekunder">Diagnosa Sekunder</option>
@@ -1526,7 +1526,7 @@
                                       list="#comboLab.listOfKategoriLab" id="lab_kategori"
                                       listKey="idKategoriLab"
                                       listValue="namaKategori"
-                                      headerKey="" headerValue="[Select one]"
+                                      headerKey="" headerValue=" - "
                                       cssClass="form-control select2"/>
                         </div>
                         <div class="col-md-2">
@@ -1569,7 +1569,7 @@
                             <div class="col-md-7">
                                 <select class="form-control select2" style="margin-top: 7px; width: 100%" id="lab_lab"
                                         onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this.value);">
-                                    <option value=''>[Select One]</option>
+                                    <option value=''> - </option>
                                 </select>
                             </div>
                             <div class="col-md-2">
@@ -1588,7 +1588,7 @@
                                 <select class="form-control select2 parameter" multiple style="margin-top: 7px; width: 100%"
                                         id="lab_parameter"
                                         onchange="var warn =$('#war_parameter').is(':visible'); if (warn){$('#cor_parameter').show().fadeOut(3000);$('#war_parameter').hide()};">
-                                    <option value=''>[Select One]</option>
+                                    <option value=''> - </option>
                                 </select>
                             </div>
                             <div class="col-md-2">
@@ -1776,7 +1776,7 @@
                                       name="getComboBoxDietGizi_rawatinap"/>
                             <s:select list="#comboDiet1.listOfDietGizi" listKey="idDietGizi" listValue="namaDietGizi" id="bentuk_diet"
                                       onchange="var warn =$('#war_bentuk_diet').is(':visible'); if (warn){$('#cor_bentuk_diet').show().fadeOut(3000);$('#war_bentuk_diet').hide()}; dataDiet(this.value)"
-                                      headerKey="" headerValue="[Select One]" cssClass="form-control select2" cssStyle="width: 100%"/>
+                                      headerKey="" headerValue=" - " cssClass="form-control select2" cssStyle="width: 100%"/>
 
                         </div>
                         <div class="col-md-2">
@@ -2048,7 +2048,7 @@
                                       name="getComboBoxDietGizi_rawatinap"/>
                             <s:select list="#comboDiet0.listOfDietGizi" listKey="idDietGizi" listValue="namaDietGizi" id="edit_bentuk_diet"
                                       onchange="var warn =$('#war_edit_bentuk_diet').is(':visible'); if (warn){$('#cor_edit_bentuk_diet').show().fadeOut(3000);$('#war_edit_bentuk_diet').hide()}"
-                                      headerKey="" headerValue="[Select One]" cssClass="form-control select2" cssStyle="width: 100%"/>
+                                      headerKey="" headerValue=" - " cssClass="form-control select2" cssStyle="width: 100%"/>
 
                         </div>
                         <div class="col-md-2">
@@ -2122,7 +2122,7 @@
                                       listKey="idObat + '|' + namaObat + '|' + qtyBox + '|' + qtyLembar + '|' + qtyBiji + '|' + lembarPerBox + '|' + bijiPerLembar"
                                       listValue="namaObat"
                                       onchange="var warn =$('#war_obat').is(':visible'); if (warn){$('#cor_obat').show().fadeOut(3000);$('#war_obat').hide()}; setStokObat(this);"
-                                      headerKey="" headerValue="[Select one]"
+                                      headerKey="" headerValue=" - "
                                       cssClass="form-control select2"/>
                         </div>
                         <div class="col-md-2">
@@ -2164,7 +2164,7 @@
                                       cssStyle="margin-top: 7px; width: 100%"
                                       onchange="var warn = $('#war_ob_jenis_satuan').is(':visible'); if (warn){$('#cor_ob_jenis_satuan').show().fadeOut(3000);$('#war_ob_jenis_satuan').hide()};"
                                       id="ob_jenis_satuan"
-                                      headerKey="" headerValue="[Select one]"
+                                      headerKey="" headerValue=" - "
                                       cssClass="form-control select2"/>
                         </div>
                         <div class="col-md-2">
@@ -2245,7 +2245,7 @@
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%" id="ruangan_kelas"
                                 onchange="var warn =$('#war_ruangan_kelas').is(':visible'); if (warn){$('#cor_ruangan_kelas').show().fadeOut(3000);$('#war_ruangan_kelas').hide()}; listSelectRuangan(this.value)">
-                                <option value="">[select one]</option>
+                                <option value=""> - </option>
                             </select>
                             <%--<s:action id="initKelas" namespace="/checkupdetail"--%>
                                       <%--name="getListComboKelasRuangan_checkupdetail"/>--%>
@@ -2254,7 +2254,7 @@
                                     <%--list="#initKelas.listOfKelasRuangan" id="ruangan_kelas"--%>
                                     <%--listKey="idKelasRuangan" cssStyle="width: 100%"--%>
                                     <%--listValue="namaKelasRuangan"--%>
-                                    <%--headerKey="" headerValue="[Select one]"--%>
+                                    <%--headerKey="" headerValue=" - "--%>
                                     <%--cssClass="form-control select2"/>--%>
                         </div>
                         <div class="col-md-2">
@@ -2271,7 +2271,7 @@
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%" id="ruangan_ruang"
                                     onchange="var warn =$('#war_ruangan_ruang').is(':visible'); if (warn){$('#cor_ruangan_ruang').show().fadeOut(3000);$('#war_ruangan_ruang').hide()}">
-                                <option value="">[select one]</option>
+                                <option value=""> - </option>
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -2319,7 +2319,7 @@
                                   list="#initApotek.listOfApotek" id="resep_apotek"
                                   listKey="idPelayanan + '|' + namaPelayanan"
                                   listValue="namaPelayanan"
-                                  headerKey="" headerValue="[Select one]"
+                                  headerKey="" headerValue=" - "
                                   cssClass="form-control select2"/>
                         <span style="color: red; margin-top: 12px; display: none;"
                               id="war_rep_apotek"><i class="fa fa-times"></i> required</span>
@@ -2332,7 +2332,7 @@
                     <div class="col-md-9">
                         <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                 id="resep_jenis_obat">
-                            <option value="">[select one]</option>
+                            <option value=""> - </option>
                         </select>
                         <span style="color: red; margin-top: 12px; display: none;"
                               id="war_jenis_obat"><i class="fa fa-times"></i> required</span>
@@ -2345,7 +2345,7 @@
                     <div class="col-md-9">
                         <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                 id="resep_nama_obat">
-                            <option value="">[select one]</option>
+                            <option value=""> - </option>
                         </select>
                         <span style="color: red; margin-top: 12px; display: none;"
                               id="war_rep_obat"><i class="fa fa-times"></i> required</span>
@@ -2397,7 +2397,7 @@
                         <div class="col-md-9">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                     id="resep_nama_obat_serupa">
-                                <option value="">[select one]</option>
+                                <option value=""> - </option>
                             </select>
                             <span style="color: red; margin-top: 12px; display: none;"
                                   id="war_rep_obat_serupa"><i class="fa fa-times"></i> required</span>

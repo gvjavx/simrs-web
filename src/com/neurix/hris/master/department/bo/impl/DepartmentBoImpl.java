@@ -75,7 +75,13 @@ public class DepartmentBoImpl implements DepartmentBo {
 
             ImDepartmentEntity imDepartmentEntity = null;
 
-            List<ImPositionBagianEntity> positionBagianEntityList = positionBagianDao.getListPositionBagianByDivisi(bean.getDepartmentId());
+            List<ImPositionBagianEntity> positionBagianEntityList;
+            try{
+                positionBagianEntityList = positionBagianDao.getListPositionBagianByDivisi(bean.getDepartmentId());
+            }catch (HibernateException e){
+                logger.error("[DepartmentBoImpl.saveDelete] Error, " + e.getMessage());
+                throw new GeneralBOException("Error when retrieving List Position Bagian by Divisi");
+            }
             List<ImPosition> positionList= positionDao.getListPositionBagianByDivisi(bean.getDepartmentId());
             if (positionBagianEntityList.size()>0||positionList.size()>0){
                 String status = "ERROR : data tidak bisa dihapus dikarenakan sudah digunakan di transaksi";

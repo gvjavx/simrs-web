@@ -35,5 +35,4 @@
           p:url="jdbc:postgresql://localhost:5432/gomedsys_nmu_prod_mig_ops"
           p:username="postgres"
           p:password="postgres"/>
-
 </beans>

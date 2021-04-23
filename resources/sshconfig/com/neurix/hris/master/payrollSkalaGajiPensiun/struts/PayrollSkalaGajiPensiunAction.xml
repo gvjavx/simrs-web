@@ -73,6 +73,7 @@
                 class="com.neurix.hris.master.payrollSkalaGajiPensiun.action.PayrollSkalaGajiPensiunAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
             <result name="input">/pages/com/neurix/hris/master/payrollSkalaGajiPensiun/SearchPayrollSkalaGajiPensiun.jsp</result>
+            <result name="input_dplk">/pages/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/SearchPayrollSkalaGajiPensiunDplk.jsp</result>
             <result name="success">/pages/com/neurix/hris/master/payrollSkalaGajiPensiun/SearchPayrollSkalaGajiPensiun.jsp</result>
 
             <result name="error">/pages/com/neurix/hris/master/payrollSkalaGajiPensiun/addPayrollSkalaGajiPensiun.jsp</result>
@@ -96,7 +97,7 @@
         </action>
 
 
-        <action name="paging_displaytag_payrollSkalaGajiPensiun"
+        <action name="paging_payrollSkalaGajiPensiun"
                 class="com.neurix.hris.master.payrollSkalaGajiPensiun.action.PayrollSkalaGajiPensiunAction" method="paging">
             <interceptor-ref name="defaultStack"/>
             <result name="success">/pages/com/neurix/hris/master/payrollSkalaGajiPensiun/SearchPayrollSkalaGajiPensiun.jsp</result>

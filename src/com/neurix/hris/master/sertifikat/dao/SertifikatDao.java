@@ -2,6 +2,7 @@ package com.neurix.hris.master.sertifikat.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.master.sertifikat.model.ImSertifikatEntity;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -21,7 +22,21 @@ public class SertifikatDao extends GenericDao<ImSertifikatEntity, String> {
 
     @Override
     public List<ImSertifikatEntity> getByCriteria(Map mapCriteria) {
-        return null;
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImSertifikatEntity.class);
+        if(mapCriteria!=null){
+            if(mapCriteria.get("pelatihan_id")!=null){
+                criteria.add(Restrictions.eq("sertifikatId", (String) mapCriteria.get("pelatihan_id")));
+            }
+            if(mapCriteria.get("nip")!=null){
+                criteria.add(Restrictions.eq("nip", (String) mapCriteria.get("nip")));
+            }
+        }
+        criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
+        criteria.addOrder(Order.desc("tanggalPengesahan"));
+
+        List<ImSertifikatEntity> results = criteria.list();
+
+        return results;
     }
 
     public String getNextSertifikat() throws HibernateException {

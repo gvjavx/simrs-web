@@ -811,7 +811,7 @@ function saveKeterangan(idKtg, poli, kelas, kamar, ket_selesai, tgl_cekup, ket_c
 }
 
 function listSelectTindakan(idKategori) {
-    var option = "<option value=''>[Select One]</option>";
+    var option = "<option value=''> - </option>";
     if (idKategori != '') {
         CheckupDetailAction.getListComboTindakan(idKategori, idKelasRuangan, flagVaksin, function (response) {
             if (response != null) {
@@ -829,7 +829,7 @@ function listSelectTindakan(idKategori) {
 }
 
 function listSelectTindakanKategori(val) {
-    var option = '<option value="">[Select One]</option>';
+    var option = '<option value=""> - </option>';
     var idDokter = "";
     var idPelayanan = "";
     var def = '';
@@ -861,7 +861,7 @@ function listSelectTindakanKategori(val) {
 }
 
 function getListNamaDokter(tipe) {
-    var option = '<option value="">[Select One]</option>';
+    var option = '<option value=""> - </option>';
     var def = '';
     CheckupAction.getListDokterByIdDetailCheckup(idDetailCheckup, null, function (res) {
         if (res.length > 0) {
@@ -1026,7 +1026,7 @@ function showModal(select) {
         $('#body_detail').html('');
         $('#modal-resep-head').modal({show: true, backdrop: 'static'});
         getJenisResep('select-jenis-resep');
-        var option = '<option value="">[Select One]</option>';
+        var option = '<option value=""> - </option>';
         dwr.engine.setAsync(true);
         CheckupAction.getListJenisObat(function (res) {
             if (res.length > 0) {
@@ -1125,7 +1125,7 @@ function listDokter() {
 function listDokterKeterangan(idPelayanan) {
     $('#list_dokter').val('');
     PelayananAction.getDataPelayanan(idPelayanan, function (res) {
-        var option2 = "<option value=''>[Select One]</option>";
+        var option2 = "<option value=''> - </option>";
         if (res.idPelayanan != null) {
             if (res.isVaksin == "Y") {
                 $('#form_vaksin').show();
@@ -1134,7 +1134,7 @@ function listDokterKeterangan(idPelayanan) {
             }
         }
     });
-    // var option = "<option value=''>[Select One]</option>";
+    // var option = "<option value=''> - </option>";
     // CheckupAction.listOfDokter(idPelayanan, function (response) {
     //     if (response.length > 0) {
     //         $.each(response, function (i, item) {
@@ -1234,7 +1234,7 @@ function listDokterTindakan() {
 
     var option = "";
     CheckupAction.listOfDokter(idPelayanan, function (response) {
-        option = "<option value=''>[Select One]</option>";
+        option = "<option value=''> - </option>";
         if (response != null) {
             $.each(response, function (i, item) {
                 option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
@@ -1431,7 +1431,7 @@ function listDiagnosa() {
 }
 
 function listSelectLab(idKategori) {
-    var option = "<option value=''>[Select One]</option>";
+    var option = "<option value=''> - </option>";
     if (idKategori != '') {
         LabAction.listLab(idKategori, function (response) {
             if (response.length > 0) {
@@ -2236,7 +2236,7 @@ function editObat(id, idobat, qty, jenis, namaObat, qtyBox, qtyLembar, qtyBiji, 
 function listSelectObatEdit(select) {
     var idx = select.selectedIndex;
     var idJenis = select.options[idx].value;
-    var option = "<option value=''>[Select One]</option>";
+    var option = "<option value=''> - </option>";
     if (idJenis != '') {
         ObatAction.listObatByJenis(idJenis, function (response) {
             if (response != null) {
@@ -2257,7 +2257,7 @@ function listSelectObatEdit(select) {
 function listSelectObat(select) {
     var idx = select.selectedIndex;
     var idJenis = select.options[idx].value;
-    var option = "<option value=''>[Select One]</option>";
+    var option = "<option value=''> - </option>";
     if (idJenis != '') {
         ObatAction.listObat(idJenis, function (response) {
             if (response.length > 0) {
@@ -2751,7 +2751,7 @@ function listDetailResepPasien(idApprovalObat) {
                     '<input style="display:none; width: 80px" type="number" id=newQty' + idObat + ' class="form-control">' + "</td>" +
                     "<td>" + '<span id=ket' + idObat + '>' + ket + '</span>' +
                     '<select class="form-control" id=newKet' + idObat + ' style="display:none"' +
-                    '<option value="">[Select One]</option>' +
+                    '<option value=""> - </option>' +
                     '<option value="2 x 1 /Hari">2 x 1 /Hari</option>' +
                     '<option value="3 x 1 /Hari">3 x 1 /Hari</option>' +
                     '</select>' + "</td>" +
@@ -2987,7 +2987,7 @@ function resetAll() {
 
 function setObatPoli(jenis) {
     var poli = $('#resep_apotek').val();
-    var option = "<option value=''>[Select One]</option>";
+    var option = "<option value=''> - </option>";
     var jenisPasien = $('#jenis_pasien').val();
     if (poli != '') {
         var idPel = poli.split('|')[0];
@@ -3011,7 +3011,7 @@ function setObatPoliSerupa() {
     var selPelayanan = $("#resep_apotek").val();
     var idObat = selObat.split('|')[0];
     var idPelayanan = selPelayanan.split('|')[0];
-    var option = "<option value=''>[Select One]</option>";
+    var option = "<option value=''> - </option>";
     ObatPoliAction.getSelectOptionObatByPoliKandunganSerupa(idPelayanan, jenisPasien, idObat, function (response) {
         if (response != null) {
             $.each(response, function (i, item) {
@@ -3368,7 +3368,7 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
 }
 
 function getDokterDpjp() {
-    var option = '<option value="">[Select One]</option>';
+    var option = '<option value=""> - </option>';
     CheckupAction.getListDokterByBranchId(null, function (res) {
         if (res.length > 0) {
             $.each(res, function (i, item) {
@@ -3846,7 +3846,7 @@ function showDetailPaket() {
 }
 
 function setKeteranganPeriksa() {
-    var option = '<option value="">[Select One]</option>';
+    var option = '<option value=""> - </option>';
     if (jenisPeriksaPasien == 'umum' || jenisPeriksaPasien == 'rekanan' || jenisPeriksaPasien == 'bpjs_rekanan') {
         option = option + ' <option value="selesai">Selesai</option>';
         if (urlPage == "checkupdetail" && jenisPeriksaPasien != "bpjs_rekanan") {

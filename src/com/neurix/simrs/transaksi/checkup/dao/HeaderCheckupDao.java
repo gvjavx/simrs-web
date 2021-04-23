@@ -815,7 +815,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "b.flag_close_traksaksi, \n"+
                     "b.flag_cover, \n"+
                     "b.is_eksekutif, \n"+
-                    "b.is_vaksin \n"+
+                    "b.is_vaksin, \n"+
+                    "i.no_ruangan \n"+
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN (SELECT\n" +
@@ -927,6 +928,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setFlagCover(obj[56] == null ? null : obj[56].toString());
                     checkup.setIsEksekutif(obj[57] == null ? null : obj[57].toString());
                     checkup.setIsVaksin(obj[58] == null ? null : obj[58].toString());
+                    checkup.setNoRuangan(obj[59] == null ? null : obj[59].toString());
                     HeaderCheckup hdr = getPemeriksaanFisik(obj[0].toString());
                     checkup.setTensi(hdr.getTensi());
                     checkup.setSuhu(hdr.getSuhu());

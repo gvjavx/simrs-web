@@ -36,7 +36,7 @@ public interface PositionBo extends BaseMasterBo<Position> {
 
     public List<Position> getComboPositionWithCriteria(String query);
 
-    public String cekStatus(String positionName);
+    public String cekStatus(String positionName, String flagCostUnit);
 
     public String cekStatusEdit(String positionName, String department, String bagian, String kelompok);
     public List<Position> getUnitCostByBagian(String bagianId) throws GeneralBOException;

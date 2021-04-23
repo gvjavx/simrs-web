@@ -11,6 +11,8 @@ import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -168,8 +170,8 @@ public class TeamDokterBoImpl extends DokterBoImpl implements TeamDokterBo{
     }
 
     @Override
-    public DokterTeam getNamaDokter(String idDetailCheckup) throws GeneralBOException {
-        return dokterTeamDao.getNamaDokter(idDetailCheckup);
+    public DokterTeam getNamaDokter(String idDetailCheckup, boolean isMobile) throws GeneralBOException {
+        return dokterTeamDao.getNamaDokter(idDetailCheckup, isMobile);
     }
 
     @Override
@@ -239,11 +241,11 @@ public class TeamDokterBoImpl extends DokterBoImpl implements TeamDokterBo{
     }
 
     @Override
-    public List<DokterTeam> cekRequestDokterByIdDokter(String idDokter, String flagApprove) throws GeneralBOException {
+    public List<DokterTeam> cekRequestDokterByIdDokter(String idDokter, String flagApprove, Timestamp tglAwal, Timestamp tglAkhir) throws GeneralBOException {
         List<DokterTeam> entityList = new ArrayList<>();
         if(idDokter != null){
             try {
-                entityList = dokterTeamDao.cekRequestDokterByIdDokter(idDokter, flagApprove);
+                entityList = dokterTeamDao.cekRequestDokterByIdDokter(idDokter, flagApprove, tglAwal, tglAkhir);
             }catch (HibernateException e){
                 logger.error(e.getMessage());
             }

@@ -9,6 +9,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -87,8 +88,14 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
         return res;
     }
 
-    public DokterTeam getNamaDokter(String idDetailCheckup) {
+    public DokterTeam getNamaDokter(String idDetailCheckup, boolean isMobile) {
         DokterTeam res = new DokterTeam();
+
+        String query = "";
+        if (isMobile) {
+            query = " AND a.jenis_dpjp = 'dpjp_1'";
+        }
+
         if(!"".equalsIgnoreCase(idDetailCheckup) && idDetailCheckup != null){
             String SQL = "SELECT \n" +
                     "a.id_dokter,\n" +
@@ -96,7 +103,7 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
                     "b.sip\n" +
                     "FROM it_simrs_dokter_team a\n" +
                     "INNER JOIN im_simrs_dokter b ON a.id_dokter = b.id_dokter\n" +
-                    "WHERE a.id_detail_checkup = :id\n";
+                    "WHERE a.id_detail_checkup = :id\n" +query;
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", idDetailCheckup)
@@ -119,13 +126,21 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
         return listOfResult;
     }
 
-    public List<DokterTeam> cekRequestDokterByIdDokter(String idDokter, String flagApprove){
+    public List<DokterTeam> cekRequestDokterByIdDokter(String idDokter, String flagApprove, Timestamp tglAwal, Timestamp tglAkhir){
 
         String query = "";
+        String queryTgl = "";
         if (flagApprove != null) {
             query = " AND dt.flag_approve = '" + flagApprove + "' ";
         }
-
+        if (tglAwal != null && tglAkhir != null) {
+            queryTgl = " AND CAST(dt.created_date as date) >= TO_DATE('"+ tglAwal + "', 'yyyy-MM-dd') \n" +
+                    "AND CAST(dt.created_date as date) <= TO_DATE('" + tglAkhir + "', 'yyyy-MM-dd') \n";
+        } else if (tglAwal != null) {
+            queryTgl =" AND CAST(dt.created_date as date) >= TO_DATE('"+ tglAwal + "', 'yyyy-MM-dd')";
+        } else if (tglAkhir != null) {
+           queryTgl = " AND CAST(dt.created_date as date) <= TO_DATE('" + tglAkhir + "', 'yyyy-MM-dd')";
+        }
 
         List<DokterTeam> listOfResult = new ArrayList<>();
 
@@ -153,7 +168,7 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
                 "FROM im_simrs_pelayanan a\n" +
                 "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
                 ") pl ON pl.id_pelayanan = dc.id_pelayanan\n" +
-                "WHERE dt.id_dokter = :id " + query +
+                "WHERE dt.id_dokter = :id " + query + queryTgl +
                 "ORDER BY dt.created_date DESC";
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(sql)

@@ -17,8 +17,7 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var nameGolonganPkwt    = document.getElementById("golonganPkwtName1").value;
-
-
+            var idGolonganPkwt    = document.getElementById("golonganPkwtId1").value;
 
             if (nameGolonganPkwt != '') {
                 if (confirm('Do you want to save this record?')) {
@@ -37,8 +36,11 @@
 
                 var msg = "";
 
+                if (idGolonganPkwt == '') {
+                    msg += 'Field <strong>Golongan Pkwt ID</strong> is required.' + '<br/>';
+                }
                 if (nameGolonganPkwt == '') {
-                    msg += 'Field <strong>GolonganPkwt Name</strong> is required.' + '<br/>';
+                    msg += 'Field <strong>Golongan Pkwt Name</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -88,7 +90,7 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/golongan" action="saveAddPkwt_golongan" cssClass="well form-horizontal">
+            <s:form id="addPkwtForm" method="post" theme="simple" namespace="/golongan" action="saveAddPkwt_golongan" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -109,7 +111,18 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>GolonganPkwt Name :</small></label>
+                            <label class="control-label"><small>Golongan Pkwt ID :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="golonganPkwtId1" name="golonganPkwt.golonganPkwtId" required="true" disabled="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Golongan Pkwt Name :</small></label>
                         </td>
                         <td>
                             <table>
@@ -117,16 +130,13 @@
                             </table>
                         </td>
                     </tr>
-
                 </table>
-
-
 
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="modifyRolefuncForm" id="save" name="save"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addPkwtForm" id="save" name="save"
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
