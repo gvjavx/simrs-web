@@ -204,6 +204,24 @@ public class HeaderCheckup {
     private List<UploadHasilPemeriksaan> uploadHasil = new ArrayList<>();
     private List<String> listPemeriksaan = new ArrayList<>();
     private String umur;
+    private String namaDokter;
+    private String idUangMuka;
+
+    public String getIdUangMuka() {
+        return idUangMuka;
+    }
+
+    public void setIdUangMuka(String idUangMuka) {
+        this.idUangMuka = idUangMuka;
+    }
+
+    public String getNamaDokter() {
+        return namaDokter;
+    }
+
+    public void setNamaDokter(String namaDokter) {
+        this.namaDokter = namaDokter;
+    }
 
     public String getUmur() {
         return umur;

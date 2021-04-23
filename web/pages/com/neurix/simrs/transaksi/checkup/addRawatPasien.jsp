@@ -372,14 +372,22 @@
         });
 
         function resetField(input) {
+            var noCheckup = $('#no_checkup').val();
             if (input != 1) {
                 var idPasien = $('#id_pasien').val();
                 var idPelayanan = $('#h_id_pelayanan').val();
                 var jenisPasien = $('#jenis_pasien').val();
                 var isDaftarPJ = $('#is_daftar_pj').val();
-                if(jenisPasien != 'paket_perusahaan' && input != 1 && "N" == isDaftarPJ){
-                    window.open('printNoAntrian_checkup.action?id='+idPasien+'&tipe='+idPelayanan, '_blank');
+                if(noCheckup != '' && noCheckup != null){
+                    var form = { "headerCheckup.idPasien": $('#id_pasien').val()};
+                    var host = contextPathHeader+'/checkup/search_checkup.action';
+                    postAtas(host, form);
+                }else{
+                    if(jenisPasien != 'paket_perusahaan' && input != 1 && "N" == isDaftarPJ){
+                        window.open('printNoAntrian_checkup.action?id='+idPasien+'&tipe='+idPelayanan, '_blank');
+                    }
                 }
+
                 $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #img_file, #provinsi, #kabupaten, #kecamatan, #desa').css('border', '');
                 $('#id_online').val(null);
                 $('#pembayaran').val(null);
@@ -636,7 +644,7 @@
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
-            Tambah Rawat Pasien
+            <span id="text_title">Tambah Rawat Pasien</span>
         </h1>
     </section>
 
@@ -647,7 +655,7 @@
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="box-title"><i class="fa fa-user-plus"></i> Inputan Data Pasien</h3>
+                                <h3 class="box-title"><i class="fa fa-user-plus"></i> <span id="text_sub">Inputan Data Pasien</span></h3>
                             </div>
                             <div class="col-md-6">
                                 <div class="btn-group dropdown pull-right">
@@ -778,7 +786,7 @@
                                                                      onkeypress="$(this).css('border','');"
                                                                      cssClass="form-control"/>
                                                         <div class="input-group-btn">
-                                                            <a class="btn btn-warning" onclick="resetAllField()"><i class="fa fa-refresh"></i> Reset</a>
+                                                            <a id="btn_reset" class="btn btn-warning" onclick="resetAllField()"><i class="fa fa-refresh"></i> Reset</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1547,6 +1555,10 @@
                             <s:hidden id="cek_poli_eksekutif" name="headerCheckup.isEksekutif"></s:hidden>
                             <s:hidden id="cek_is_vaksin" name="headerCheckup.isVaksin"></s:hidden>
                             <s:hidden id="is_daftar_pj"></s:hidden>
+                            <s:hidden id="no_checkup" name="headerCheckup.noCheckup"></s:hidden>
+                            <s:hidden name="headerCheckup.idDetailCheckup"></s:hidden>
+                            <s:hidden name="headerCheckup.idTeamDokter"></s:hidden>
+                            <s:hidden name="headerCheckup.idUangMuka"></s:hidden>
 
                             <div id="form-uang-muka" style="display: none">
                                 <div class="box-header with-border"></div>
@@ -1629,7 +1641,7 @@
                                             <div class="col-md-offset-2 col-md-8 text-center" style="margin-top: 7px">
                                                 <button type="button" id="btn-save" class="btn btn-success"
                                                         onclick="confirm()"><i
-                                                        class="fa fa-check"></i> Save
+                                                        class="fa fa-check"></i> <span id="text-save">Save</span>
                                                 </button>
                                                 <a type="button" id="btn-kronis" style="display:none;"
                                                    class="btn btn-info"
@@ -2220,8 +2232,44 @@
     $(document).ready(function () {
         $('#pendaftaran_active, #bayar_rawat_jalan').addClass('active');
         $('#pendaftaran_open').addClass('menu-open');
-        listJenisPasien();
-        setPelayanan();
+        listJenisPasien('<s:property value="headerCheckup.idJenisPeriksaPasien"/>');
+        setPelayanan('<s:property value="headerCheckup.idPelayanan"/>');
+
+        var idDokter = '<s:property value="headerCheckup.idDokter"/>';
+        var namaDokter = '<s:property value="headerCheckup.namaDokter"/>';
+        var uangMuka = '<s:property value="headerCheckup.uangMuka"/>';
+        var idDetailCheckup = '<s:property value="headerCheckup.idDetailCheckup"/>';
+        var isBayarUangMuka = '<s:property value="headerCheckup.statusBayar"/>';
+
+        if(idDokter != ''){
+            $('#dokter').val(idDokter);
+        }
+        if(namaDokter != ''){
+            $('#nama_dokter').val(namaDokter);
+        }
+        if(uangMuka != ''){
+            $('#uang_muka').val(formatRupiah(uangMuka));
+            if("Y" == isBayarUangMuka){
+                $('#uang_muka').attr('disabled', true);
+            }else{
+                $('#uang_muka').attr('disabled', false);
+            }
+        }
+
+        if(idDetailCheckup != ''){
+            $('#text-save').text("Edit");
+            $('#text_title').text("Edit Data Pasien");
+            $('#text_sub').text("Edit Data Pasien");
+            $('#btnFingerPrint').hide();
+            $('#btn_new').hide();
+        }else{
+            $('#text-save').text("Save");
+            $('#text_title').text("Tambah Data Pasien");
+            $('#text_sub').text("Inputan Data Pasien");
+            $('#btnFingerPrint').hide();
+            $('#btn_new').hide();
+        }
+
 
         $(document).on('change', '.btn-file :file', function () {
             var input = $(this),
@@ -2378,7 +2426,7 @@
         });
     }
 
-    function listJenisPasien() {
+    function listJenisPasien(idJenisPasien) {
         var option = '<option value="">[Select One]</option>';
         CheckupAction.getComboJenisPeriksaPasienWithBpjs(function (response) {
             if (response.length > 0) {
@@ -2386,6 +2434,16 @@
                     option += '<option value="' + item.idJenisPeriksaPasien + '">' + item.keterangan + '</option>';
                 });
                 $('#jenis_pasien').html(option);
+            }
+            if(idJenisPasien != null && idJenisPasien != '' && idJenisPasien != undefined){
+                $('#jenis_pasien').val(idJenisPasien).trigger('change');
+                $('#jenis_pasien').attr('disabled', true);
+                $('#btn_reset').attr('disabled', true);
+                $('#btn_reset').removeAttr('onclick');
+            }else{
+                $('#jenis_pasien').attr('disabled', false);
+                $('#btn_reset').attr('disabled', false);
+                $('#btn_reset').attr('onclick', 'resetAllField()');
             }
         });
     }
@@ -2454,7 +2512,7 @@
         }
     }
 
-    function setPelayanan() {
+    function setPelayanan(idPelayanan) {
         var jenisPasien = $('#jenis_pasien').val();
         var option = '<option value="">[Select One]</option>';
         CheckupAction.getComboPelayananWithLabCtx(jenisPasien, function (res) {
@@ -2463,6 +2521,9 @@
                     option += '<option value="' + item.idPelayanan + '">' + item.namaPelayanan + '</option>';
                 });
                 $('#poli').html(option);
+                if(idPelayanan != null && idPelayanan != '' && idPelayanan != undefined){
+                    $('#poli').val(idPelayanan).trigger('change');
+                }
             }
         });
     }
@@ -3112,16 +3173,16 @@
                                 $('#warning_pasien').show();
                                 $('#msg_pasien').text("Pasien Sudah Meninggal Dunia Pada Tanggal ["+converterDate(res.tglMeninggal)+"]");
                             }else{
-                                if (res.isDaftar == "Y") {
-                                    $('#btn-save').hide();
-                                    $('#warning_pasien').show();
-                                    $('#msg_pasien').text("Pasien Sudah melakukan pendafataran...!");
-                                } else {
+                                // if (res.isDaftar == "Y") {
+                                //     $('#btn-save').hide();
+                                //     $('#warning_pasien').show();
+                                //     $('#msg_pasien').text("Pasien Sudah melakukan pendafataran...!");
+                                // } else {
                                     $('#btn-save').show();
                                     $('#warning_pasien').hide();
                                     $('#msg_pasien').text("");
                                     alertObatKronis(selectedObj.id);
-                                }
+                                // }
                             }
                         }
                     });
@@ -3252,16 +3313,16 @@
                                     $('#warning_pasien').show();
                                     $('#msg_pasien').text("Pasien Sudah Meninggal Dunia Pada Tanggal ["+converterDate(res.tglMeninggal)+"]");
                                 }else{
-                                    if (res.isDaftar == "Y") {
-                                        $('#btn-save').hide();
-                                        $('#warning_pasien').show();
-                                        $('#msg_pasien').text("Pasien Sudah melakukan pendafataran...!");
-                                    } else {
+                                    // if (res.isDaftar == "Y") {
+                                    //     $('#btn-save').hide();
+                                    //     $('#warning_pasien').show();
+                                    //     $('#msg_pasien').text("Pasien Sudah melakukan pendafataran...!");
+                                    // } else {
                                         $('#btn-save').show();
                                         $('#warning_pasien').hide();
                                         $('#msg_pasien').text("");
                                         alertObatKronis(selectedObj.id);
-                                    }
+                                    // }
                                 }
                             }
                         });
