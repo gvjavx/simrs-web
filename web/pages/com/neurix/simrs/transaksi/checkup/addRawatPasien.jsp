@@ -816,7 +816,7 @@
                                                               cssStyle="margin-top: 7px"
                                                               onchange="$(this).css('border','')"
                                                               id="jenis_kelamin" name="headerCheckup.jenisKelamin"
-                                                              headerKey="" headerValue="[Select one]"
+                                                              headerKey="" headerValue=" - "
                                                               cssClass="form-control"/>
                                                 </div>
                                             </div>
@@ -855,7 +855,7 @@
                                                     <s:select id="agama" name="headerCheckup.agama"
                                                               list="#{'Islam':'Islam','Kristen':'Kristen','Katolik':'Katolik','Hindu':'Hindu','Buddha':'Buddha','Konghucu':'Konghucu'}"
                                                               onchange="$(this).css('border','')"
-                                                              headerKey="" headerValue="[Select One]"
+                                                              headerKey="" headerValue=" - "
                                                               cssStyle="margin-top: 7px" cssClass="form-control"/>
                                                 </div>
                                             </div>
@@ -867,7 +867,7 @@
                                                     <s:select id="profesi"
                                                               list="#{'Guru':'Guru','Dokter':'Dokter','Swasta':'Swasta','PNS':'PNS','Lainnya':'Lainnya'}"
                                                               onchange="$('#ket_profesi').val(this.value); $(this).css('border',''); if(this.value == 'Lainnya'){$('#form_profesi').show()}else{$('#form_profesi').hide()} "
-                                                              headerKey="" headerValue="[Select One]"
+                                                              headerKey="" headerValue=" - "
                                                               cssStyle="width: 100%" cssClass="form-control select2"/>
                                                     <s:hidden name="headerCheckup.profesi" id="ket_profesi"></s:hidden>
                                                 </div>
@@ -889,7 +889,7 @@
                                                     <s:select id="suku"
                                                               list="#{'Jawa':'Jawa','Batak':'Batak','Dayak':'Dayak','Asmat':'Asmat','Minahasa':'Minahasa','Melayu':'Melayu','Sunda':'Sunda','Madura':'Madura','Betawi':'Betawi','Bugis':'Bugis','Lainnya':'Lainnya'}"
                                                               onchange="$('#ket_suku').val(this.value); $(this).css('border',''); if(this.value == 'Lainnya'){$('#form_jawa').show()}else{$('#form_jawa').hide()} "
-                                                              headerKey="" headerValue="[Select One]"
+                                                              headerKey="" headerValue=" - "
                                                               cssStyle="width: 100%" cssClass="form-control select2"/>
                                                     <s:hidden name="headerCheckup.suku" id="ket_suku"></s:hidden>
                                                         <%--<s:textfield id="suku" name="headerCheckup.suku"--%>
@@ -915,7 +915,7 @@
                                                               name="headerCheckup.statusPerkawinan"
                                                               list="#{'Kawin':'Kawin','Belum Kawin':'Belum Kawin','Duda':'Duda','Janda':'Janda'}"
                                                               onchange="$(this).css('border','')"
-                                                              headerKey="" headerValue="[Select One]"
+                                                              headerKey="" headerValue=" - "
                                                               cssStyle="width: 100%; margin-top: 7px" cssClass="form-control"/>
                                                 </div>
                                             </div>
@@ -927,7 +927,7 @@
                                                     <s:select id="pendidikan" name="headerCheckup.pendidikan"
                                                               list="#{'Belum Sekolah':'Belum Sekolah','SD/Sederajat':'SD/Sederajat','SMP/Sederajat':'SMP/Sederajat','SMA/Sederajat':'SMA/Sederajat','S1':'S1','S2':'S2','S3':'S3'}"
                                                               onchange="$(this).css('border','')"
-                                                              headerKey="" headerValue="[Select One]"
+                                                              headerKey="" headerValue=" - "
                                                               cssStyle="width: 100%; margin-top: 7px" cssClass="form-control"/>
                                                 </div>
                                             </div>
@@ -1080,7 +1080,7 @@
                                                             list="#{'Ayah':'Ayah','Ibu':'Ibu','Kakak':'Kakak','Adik':'Adik','Sepupu':'Sepupu','Ipar':'Ipar','Anak':'Anak','Suami':'Suami','Istri':'Istri','Lainnya':'Lainnya'}"
                                                             onchange="$('#hub_keluarga').val(this.value); var cek = this.value; if(cek == 'Lainnya'){$('#ket_hubungan').show()}else{$('#ket_hubungan').hide()}"
                                                             id="hubungan"
-                                                            headerKey="" headerValue="[Select one]"
+                                                            headerKey="" headerValue=" - "
                                                             cssClass="form-control select2"/>
                                                 </div>
                                                 <s:hidden id="hub_keluarga"
@@ -1322,7 +1322,7 @@
                                                     <select id="id_lab" class="form-control select2"
                                                             style="margin-top: 7px; width: 100%" multiple name="headerCheckup.listPemeriksaan"
                                                             onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#con_lab').show().fadeOut(3000);$('#war_lab').hide()};">
-                                                        <option value=''>[Select One]</option>
+                                                        <option value=''> - </option>
                                                     </select>
                                                     <span style="color: red; display: none" id="war_lab"><i
                                                             class="fa fa-times"></i> required</span>
@@ -1374,7 +1374,7 @@
                                                             class="form-control select2"
                                                             style="width: 100%"
                                                             onchange="var warn =$('#war_paket').is(':visible'); if (warn){$('#con_paket').show().fadeOut(3000);$('#war_paket').hide()}; selectPelayanan(this.value)">
-                                                        <option value="">[Select One]</option>
+                                                        <option value=""> - </option>
                                                     </select>
                                                     <span style="color: red; display: none" id="warpaket"><i
                                                             class="fa fa-times"></i> required</span>
@@ -1443,7 +1443,7 @@
                                                                 class="form-control select2"
                                                                 style="width: 100%"
                                                                 onchange="var warn =$('#war_asuransi').is(':visible'); if (warn){$('#con_asuransi').show().fadeOut(3000);$('#war_asuransi').hide()}; showLaka(this.value);">
-                                                            <option value="">[Select One]</option>
+                                                            <option value=""> - </option>
                                                         </select>
                                                         <span style="color: red; display: none" id="war_asuransi"><i
                                                                 class="fa fa-times"></i> required</span>
@@ -1594,7 +1594,7 @@
                                                                 id="pembayaran"
                                                                 onchange="var warn =$('#war_pembayaran').is(':visible'); if (warn){$('#con_pembayaran').show().fadeOut(3000);$('#war_pembayaran').hide()}"
                                                                 name="headerCheckup.metodePembayaran"
-                                                                headerKey="" headerValue="[Select one]"
+                                                                headerKey="" headerValue=" - "
                                                                 cssClass="form-control"/>
                                                         <span style="color: red; display: none" id="war_pembayaran"><i
                                                                 class="fa fa-times"></i> required</span>
@@ -1920,7 +1920,7 @@
                             <div class="form-group">
                                 <label style="margin-top: 7px">Jenis Kelamin</label>
                                 <select class="form-control" id="add_jk" onchange="$(this).css('border','')">
-                                    <option value="">[Select One]</option>
+                                    <option value=""> - </option>
                                     <option value="L">Laki-Laki</option>
                                     <option value="P">Perempuan</option>
                                 </select>
@@ -1945,7 +1945,7 @@
                                 <s:select id="add_status_perkawinan" name="headerCheckup.statusPerkawinan"
                                           list="#{'Kawin':'Kawin','Belum Kawin':'Belum Kawin','Duda':'Duda','Janda':'Janda'}"
                                           onchange="$(this).css('border','')"
-                                          headerKey="" headerValue="[Select One]"
+                                          headerKey="" headerValue=" - "
                                           cssStyle="width: 100%" cssClass="form-control"/>
                             </div>
                         </div>
@@ -1955,13 +1955,13 @@
                                 <s:select id="add_pendidikan" name="headerCheckup.pendidikan"
                                           list="#{'Belum Sekolah':'Belum Sekolah','SD/Sederajat':'SD/Sederajat','SMP/Sederajat':'SMP/Sederajat','SMA/Sederajat':'SMA/Sederajat','S1':'S1','S2':'S2','S3':'S3'}"
                                           onchange="$(this).css('border','')"
-                                          headerKey="" headerValue="[Select One]"
+                                          headerKey="" headerValue=" - "
                                           cssStyle="width: 100%" cssClass="form-control"/>
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Agama</label>
                                 <select class="form-control" id="add_agama" onchange="$(this).css('border','')">
-                                    <option value="">[Select One]</option>
+                                    <option value=""> - </option>
                                     <option value="Islam">Islam</option>
                                     <option value="Kristen">Kristen</option>
                                     <option value="Katolik">Katolik</option>
@@ -1974,7 +1974,7 @@
                                 <s:select id="ket_add_profesi"
                                           list="#{'Guru':'Guru','Dokter':'Dokter','Swasta':'Swasta','PNS':'PNS','Lainnya':'Lainnya'}"
                                           onchange="$('#add_profesi').val(this.value); $(this).css('border',''); if(this.value == 'Lainnya'){$('#form_add_profesi').show()}else{$('#form_add_profesi').hide()} "
-                                          headerKey="" headerValue="[Select One]"
+                                          headerKey="" headerValue=" - "
                                           cssStyle="width: 100%" cssClass="form-control"/>
                                 <s:hidden id="add_profesi"></s:hidden>
                             </div>
@@ -1988,7 +1988,7 @@
                                 <s:select id="add_ket_suku"
                                           list="#{'Jawa':'Jawa','Batak':'Batak','Dayak':'Dayak','Asmat':'Asmat','Minahasa':'Minahasa','Melayu':'Melayu','Sunda':'Sunda','Madura':'Madura','Betawi':'Betawi','Bugis':'Bugis','Lainnya':'Lainnya'}"
                                           onchange="$('#add_suku').val(this.value); $(this).css('border',''); if(this.value == 'Lainnya'){$('#form_add_suku').show()}else{$('#form_add_suku').hide()} "
-                                          headerKey="" headerValue="[Select One]"
+                                          headerKey="" headerValue=" - "
                                           cssStyle="width: 100%" cssClass="form-control"/>
                                 <s:hidden id="add_suku"></s:hidden>
                             </div>
@@ -2365,7 +2365,7 @@
     }
 
     function listSelectAsuransi() {
-        var option = "<option value=''>[Select One]</option>";
+        var option = "<option value=''> - </option>";
         CheckupAction.getComboAsuransi(function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
@@ -2379,7 +2379,7 @@
     }
 
     function listJenisPasien() {
-        var option = '<option value="">[Select One]</option>';
+        var option = '<option value=""> - </option>';
         CheckupAction.getComboJenisPeriksaPasienWithBpjs(function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
@@ -2391,7 +2391,7 @@
     }
 
     function listSelectPaket() {
-        var option = "<option value=''>[Select One]</option>";
+        var option = "<option value=''> - </option>";
         PaketPeriksaAction.getListPaketPeriksaByTipe("rawat_jalan", function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
@@ -2405,7 +2405,7 @@
     }
 
     function listSelectRekanan(isBpjs) {
-        var option = "<option value=''>[Select One]</option>";
+        var option = "<option value=''> - </option>";
         CheckupAction.getListRekananOps(isBpjs, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
@@ -2456,7 +2456,7 @@
 
     function setPelayanan() {
         var jenisPasien = $('#jenis_pasien').val();
-        var option = '<option value="">[Select One]</option>';
+        var option = '<option value=""> - </option>';
         CheckupAction.getComboPelayananWithLabCtx(jenisPasien, function (res) {
             if (res.length > 0) {
                 $.each(res, function (i, item) {
@@ -2541,7 +2541,7 @@
     function listDokter(idPelayanan) {
         $('#nama_dokter').val(null);
         $('#id_dokter').val(null);
-        var option = "<option value=''>[Select One]</option>";
+        var option = "<option value=''> - </option>";
         if (idPelayanan != null && idPelayanan != '') {
             var online = $('#id_online').val();
             if(online != ""){
