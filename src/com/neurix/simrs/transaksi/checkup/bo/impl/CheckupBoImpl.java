@@ -12,6 +12,8 @@ import com.neurix.simrs.bpjs.tindakan.model.TindakanBpjs;
 import com.neurix.simrs.master.dokter.dao.DokterDao;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
+import com.neurix.simrs.master.jenisperiksapasien.dao.AsuransiDao;
+import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
 import com.neurix.simrs.master.lab.dao.LabDao;
 import com.neurix.simrs.master.lab.model.ImSimrsLabEntity;
 import com.neurix.simrs.master.lab.model.Lab;
@@ -177,6 +179,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     private PasienDao pasienDao;
     private HeaderPemeriksaanDao headerPemeriksaanDao;
     private LabDao labDao;
+    private AsuransiDao asuransiDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -291,12 +294,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     public List<HeaderCheckup> setTemplateToHeaderCheckupResult(List<ItSimrsHeaderChekupEntity> listHeader) {
         logger.info("[CheckupBoImpl.setTemplateToHeaderCheckupResult] Start >>>>>>>");
-
         List<HeaderCheckup> result = new ArrayList<>();
-
-        HeaderCheckup headerCheckup;
         for (ItSimrsHeaderChekupEntity headerList : listHeader) {
-            headerCheckup = new HeaderCheckup();
+            HeaderCheckup headerCheckup = new HeaderCheckup();
             headerCheckup.setNoCheckup(headerList.getNoCheckup());
             headerCheckup.setIdPasien(headerList.getIdPasien());
             headerCheckup.setNama(headerList.getNama());
@@ -325,7 +325,6 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 headerCheckup.setUrlKtp(src);
             }
 
-            logger.info("[CheckupBoImpl.getByCriteria] URL KTP : " + headerCheckup.getUrlKtp());
             headerCheckup.setBranchId(headerList.getBranchId());
             headerCheckup.setFlag(headerList.getFlag());
             if(headerList.getCreatedDate() != null){
@@ -372,21 +371,24 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 if (teamEntity != null) {
                     headerCheckup.setIdDokter(teamEntity.getIdDokter());
                     headerCheckup.setIdTeamDokter(teamEntity.getIdTeamDokter());
+                    ImSimrsDokterEntity dokterEntity = dokterDao.getById("idDokter", teamEntity.getIdDokter());
+                    if(dokterEntity != null){
+                        headerCheckup.setNamaDokter(dokterEntity.getNamaDokter());
+                    }
                 }
             }
 
             if (headerCheckup.getDesaId() != null) {
                 List<Object[]> objs = provinsiDao.getListAlamatByDesaId(headerCheckup.getDesaId().toString());
                 if (!objs.isEmpty()) {
-                    for (Object[] obj : objs) {
-                        headerCheckup.setNamaDesa(obj[0].toString());
-                        headerCheckup.setNamaKecamatan(obj[1].toString());
-                        headerCheckup.setNamaKota(obj[2].toString());
-                        headerCheckup.setNamaProvinsi(obj[3].toString());
-                        headerCheckup.setKecamatanId(obj[4].toString());
-                        headerCheckup.setKotaId(obj[5].toString());
-                        headerCheckup.setProvinsiId(obj[6].toString());
-                    }
+                    Object[] obj = objs.get(0);
+                    headerCheckup.setNamaDesa(obj[0].toString());
+                    headerCheckup.setNamaKecamatan(obj[1].toString());
+                    headerCheckup.setNamaKota(obj[2].toString());
+                    headerCheckup.setNamaProvinsi(obj[3].toString());
+                    headerCheckup.setKecamatanId(obj[4].toString());
+                    headerCheckup.setKotaId(obj[5].toString());
+                    headerCheckup.setProvinsiId(obj[6].toString());
                 }
             }
 
@@ -3467,6 +3469,22 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                         }
                     }
 
+                    ImSimrsAsuransiEntity asuransiEntity = new ImSimrsAsuransiEntity();
+                    if(detailCheckupEntity.getIdAsuransi() != null){
+                        List<ImSimrsAsuransiEntity> asuransiEntityList = new ArrayList<>();
+                        hsCriteria = new HashMap();
+                        hsCriteria.put("id_asuransi", detailCheckupEntity.getIdAsuransi());
+                        try{
+                            asuransiEntityList = asuransiDao.getByCriteria(hsCriteria);
+                        }catch (HibernateException e){
+                            logger.error("[CheckupBoImpl.getDataPendaftaranPasien] Error"+e.getMessage());
+                        }
+
+                        if(asuransiEntityList.size() > 0){
+                            asuransiEntity = asuransiEntityList.get(0);
+                        }
+                    }
+
                     //checkup data
                     headerCheckup.setNoCheckup(headerChekupEntity.getNoCheckup());
                     headerCheckup.setIdPasien(headerChekupEntity.getIdPasien());
@@ -3511,6 +3529,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     headerCheckup.setIdJenisPeriksaPasien(detailCheckupEntity.getIdJenisPeriksaPasien());
                     headerCheckup.setNoKartuAsuransi(detailCheckupEntity.getNoKartuAsuransi());
                     headerCheckup.setIdAsuransi(detailCheckupEntity.getIdAsuransi());
+                    headerCheckup.setIsLaka(asuransiEntity.getIsLaka());
                     headerCheckup.setCoverBiaya(detailCheckupEntity.getCoverBiaya());
                     headerCheckup.setIsEksekutif(detailCheckupEntity.getIsEksekutif());
                     headerCheckup.setIsVaksin(detailCheckupEntity.getIsVaksin());
@@ -4145,5 +4164,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     public void setLabDao(LabDao labDao) {
         this.labDao = labDao;
+    }
+
+    public void setAsuransiDao(AsuransiDao asuransiDao) {
+        this.asuransiDao = asuransiDao;
     }
 }

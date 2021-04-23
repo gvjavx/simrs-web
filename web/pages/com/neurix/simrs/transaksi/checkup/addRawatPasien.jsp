@@ -2240,6 +2240,10 @@
         var uangMuka = '<s:property value="headerCheckup.uangMuka"/>';
         var idDetailCheckup = '<s:property value="headerCheckup.idDetailCheckup"/>';
         var isBayarUangMuka = '<s:property value="headerCheckup.statusBayar"/>';
+        var suku = '<s:property value="headerCheckup.suku"/>';
+        var profesi = '<s:property value="headerCheckup.profesi"/>';
+        var hubunganKel = '<s:property value="headerCheckup.hubunganKeluarga"/>';
+        var noKartu = '<s:property value="headerCheckup.noKartuAsuransi"/>';
 
         if(idDokter != ''){
             $('#dokter').val(idDokter);
@@ -2268,6 +2272,19 @@
             $('#text_sub').text("Inputan Data Pasien");
             $('#btnFingerPrint').hide();
             $('#btn_new').hide();
+        }
+
+        if(suku != ''){
+            $('#suku').val(suku).trigger('change');
+        }
+        if(profesi != ''){
+            $('#profesi').val(profesi).trigger('change');
+        }
+        if(hubunganKel != ''){
+            $('#hubungan').val(hubunganKel).trigger('change');
+        }
+        if(noKartu != ''){
+            $('#no_kartu').val(noKartu);
         }
 
 
@@ -2412,7 +2429,7 @@
         }
     }
 
-    function listSelectAsuransi() {
+    function listSelectAsuransi(idAsuransi, isLaka) {
         var option = "<option value=''>[Select One]</option>";
         CheckupAction.getComboAsuransi(function (response) {
             if (response.length > 0) {
@@ -2420,6 +2437,9 @@
                     option += '<option value="' + item.idAsuransi + '|' + item.isLaka + '">' + item.namaAsuransi + '</option>';
                 });
                 $('#asuransi').html(option);
+                if(idAsuransi != '' && idAsuransi != null){
+                    $('#asuransi').val(idAsuransi+'|'+isLaka).trigger('change');
+                }
             } else {
                 $('#asuransi').html(option);
             }
@@ -3452,7 +3472,7 @@
             $('#form_diagnosa_bpjs').hide();
             $('#diagnosa_awal, #diagnosa_ket').val(null);
         } else if (jenis == "asuransi") {
-            listSelectAsuransi();
+            listSelectAsuransi('<s:property value="headerCheckup.idAsuransi"/>', '<s:property value="headerCheckup.isLaka"/>');
             $('#form-asuransi').show();
             $('#form-paket').hide();
             $('#form-paket-perusahaan').hide();

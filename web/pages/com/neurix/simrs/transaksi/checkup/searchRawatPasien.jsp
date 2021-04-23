@@ -223,6 +223,7 @@
                                 <td>Penanggung Jawab</td>
                                 <td>Tanggal Masuk</td>
                                 <td>Poli Terakhir</td>
+                                <td>Dokter</td>
                                 <td>Status Terakhir</td>
                                 <td>Desa</td>
                                 <td align="center">Action</td>
@@ -238,6 +239,7 @@
                                     <td><s:property value="namaPenanggung"/></td>
                                     <td><s:property value="formatTglMasuk"/></td>
                                     <td><s:property value="namaPelayanan"/></td>
+                                    <td><s:property value="namaDokter"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td><s:property value="namaDesa"/></td>
                                     <td align="center" width="12%">
