@@ -171,7 +171,7 @@
                                     <thead id="head-budgeting">
                                     <tr>
                                         <%--<td style="width: 20%">COA</td>--%>
-                                        <td align="">Kategori Biaya</td>
+                                        <td align="">Item Investasi / Pengadaan</td>
                                         <td align="right">Nilai</td>
                                         <td align="center" width="100px">Action</td>
                                         <%--<td align="center">Action</td>--%>
@@ -196,8 +196,8 @@
                         </div>
                         <div class="form-group" style="margin-top: 10px">
                             <div class="col-md-4 col-md-offset-5">
-                                <button class="btn btn-warning" onclick="initForm()"><i class="fa fa-arrow-left"></i> Back</button>
-                                <button class="btn btn-success" id="btn-save" onclick="saveAdd()"><i class="fa fa-check"></i> Save </button>
+                                <button class="btn btn-warning" onclick="initForm()"><i class="fa fa-arrow-left"></i> Kembali</button>
+                                <%--<button class="btn btn-success" id="btn-save" onclick="saveAdd()"><i class="fa fa-check"></i> Save </button>--%>
                             </div>
                         </div>
                     </div>
@@ -428,10 +428,12 @@
                         "<td>"+item.namaKodeRekening+"</td>" +
                         "<td align='right'>"+ formatRupiah(nullEscape(item.nilaiTotal)) +"</td>" +
                         "<td align='center'>" +
-                        "<button class='btn btn-sm btn-primary' onclick=\"add(\'"+item.rekeningId+"\',\'"+unit+"\',\'"+tahun+"\',\'"+ item.namaKodeRekening +"\')\"><i class='fa fa-edit'></i></button> " +
+                        "<button class='btn btn-sm btn-primary' onclick=\"add(\'"+item.rekeningId+"\',\'"+unit+"\',\'"+tahun+"\',\'"+ item.namaKodeRekening +"\', \'"+item.id+"\')\"><i class='fa fa-arrow-right'></i> Pilih</button> " +
                         "</td>" +
                         "</tr>";
             });
+
+            console.log(res);
             $("#body-budgeting").html(str);
             $("#label-tahun").text(tahun);
             $("#label-branch").text(labelBranch);
@@ -605,8 +607,8 @@
         post(host);
     }
 
-    function add(idKategori, branch, tahun, nama) {
-        var form = { "budgeting.tahun":tahun, "budgeting.branchId":branch, "budgeting.idKategoriBudgeting":idKategori, "budgeting.namaKategori":nama};
+    function add(idKategori, branch, tahun, nama, id) {
+        var form = { "budgeting.tahun":tahun, "budgeting.branchId":branch, "budgeting.idKategoriBudgeting":idKategori, "budgeting.namaKategori":nama, "budgeting.idParam" : id};
         var host = firstpath()+"/bginvestasi/add_bginvestasi.action";
         post(host, form);
     }
