@@ -362,6 +362,21 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
     }
 
     @Override
+    public ImKodeRekeningEntity getKodeRekeningByCoa(String coa) throws GeneralBOException {
+        ImKodeRekeningEntity imKodeRekeningEntity;
+        logger.info("[KodeRekeningBoImpl.getKodeRekeningByCoa] start process >>>");
+        try {
+            imKodeRekeningEntity = kodeRekeningDao.getById("kodeRekening", coa);
+        }
+        catch (Exception e){
+            logger.error("[KodeRekeningBoImpl.getKodeRekeningByCoa] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by coa, please info to your admin..." + e.getMessage());
+        }
+        logger.info("[KodeRekeningBoImpl.getKodeRekeningByCoa] end process <<<");
+        return imKodeRekeningEntity;
+    }
+
+    @Override
     public List<ImKodeRekeningEntity> getListKodeRekeningByLevel(String coa, Long level) throws GeneralBOException {
         return kodeRekeningDao.getKodeRekeningListByLevel(coa, level);
     }
