@@ -1167,6 +1167,25 @@ public class KasAction extends BaseMasterAction {
         return "input_pemasukan";
     }
 
+    //RAKA-26APR2021 ==> menambahkan initFormKoreksi (kenapa tidak ada method ini padahal di xml & jsp ada (input_koreksi))
+    public String initFormKoreksi() {
+        logger.info("[KasAction.initFormKoreksi] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        String branchId = CommonUtil.userBranchLogin();
+        Kas data = new Kas();
+        if (branchId != null) {
+            data.setBranchId(branchId);
+            data.setBranchIdUser(branchId);
+        } else {
+            data.setBranchId("");
+        }
+        setKas(data);
+        session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultKasDetail");
+        logger.info("[KasAction.initFormKoreksi] end process >>>");
+        return "input_koreksi";
+    }
+
     public String initFormKoreksiPengajuan() {
         logger.info("[KasAction.initFormKoreksiPengajuan] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
