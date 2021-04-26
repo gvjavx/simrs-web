@@ -548,17 +548,17 @@
             <param name="class" value="com.neurix.akuntansi.master.master.action.MasterAction"/>
         </create>
         <convert converter="bean" match="com.neurix.akuntansi.master.master.model.Master"/>
-        <create creator="new">
-            <param name="class"
-                   value="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.action.PembayaranUtangPiutangAction"/>
-        </create>
-        <convert converter="bean"
-                 match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutangDetail"/>
-        <convert converter="bean"
-                 match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutang"/>
-        <convert converter="bean" match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.EfakturDTO"/>
-        <convert converter="bean" match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.Lampiran"/>
-        <convert converter="bean" match="com.neurix.akuntansi.master.trans.model.Trans"/>
+        <!--<create creator="new">-->
+            <!--<param name="class"-->
+                   <!--value="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.action.PembayaranUtangPiutangAction"/>-->
+        <!--</create>-->
+        <!--<convert converter="bean"-->
+                 <!--match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutangDetail"/>-->
+        <!--<convert converter="bean"-->
+                 <!--match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutang"/>-->
+        <!--<convert converter="bean" match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.EfakturDTO"/>-->
+        <!--<convert converter="bean" match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.Lampiran"/>-->
+        <!--<convert converter="bean" match="com.neurix.akuntansi.master.trans.model.Trans"/>-->
 
         <create creator="new">
             <param name="class" value="com.neurix.akuntansi.master.reportDetail.action.ReportDetailAction"/>

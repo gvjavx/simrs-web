@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.akuntansi.transaksi.sewaLahan.model.ItAkunSewaLahanEntity">
+        <table name="it_akun_sewa_lahan" schema="public"/>
+        <attributes>
+            <id name="sewaLahanId">
+                <column name="sewa_lahan_id"/>
+            </id>
+            <basic name="namaPenyewa">
+                <column name="nama_penyewa"/>
+            </basic>
+            <basic name="keterangan">
+                <column name="keterangan"/>
+            </basic>
+            <basic name="branchId">
+                <column name="branch_id"/>
+            </basic>
+            <basic name="tanggalBayar">
+                <column name="tanggal_bayar"/>
+            </basic>
+            <basic name="nilai">
+                <column name="nilai"/>
+            </basic>
+            <basic name="cancelFlag">
+                <column name="cancel_flag"/>
+            </basic>
+            <basic name="cancelWho">
+                <column name="cancel_who"/>
+            </basic>
+            <basic name="cancelDate">
+                <column name="cancel_date"/>
+            </basic>
+            <basic name="noJurnal">
+                <column name="no_jurnal"/>
+            </basic>
+            <basic name="nilaiPpn">
+                <column name="nilai_ppn"/>
+            </basic>
+            <basic name="nilaiNetto">
+                <column name="nilai_netto"/>
+            </basic>
+            <basic name="nilaiPph">
+                <column name="nilai_pph"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="noJurnal">
+                <column name="no_jurnal"/>
+            </basic>
+            <basic name="bank">
+                <column name="bank"/>
+            </basic>
+            <basic name="noFaktur">
+                <column name="no_faktur"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>
