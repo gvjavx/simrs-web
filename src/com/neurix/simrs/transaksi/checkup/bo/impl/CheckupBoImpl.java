@@ -3612,7 +3612,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 }
                 headerEntity.setAgama(bean.getAgama());
                 headerEntity.setUrlKtp(bean.getUrlKtp());
-                headerEntity.setAction("D");
+                headerEntity.setAction("U");
                 headerEntity.setLastUpdate(bean.getLastUpdate());
                 headerEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 headerEntity.setJenisKunjungan(bean.getJenisKunjungan());

@@ -666,8 +666,8 @@
                             </div>
                         </div>
                     </div>
-                    <s:form id="igdForm" enctype="multipart/form-data" method="post" namespace="/igd"
-                            action="saveAddRawatIgd_igd.action" theme="simple">
+                    <s:form id="igdForm" enctype="multipart/form-data" method="post" namespace="/rawatinap"
+                            action="saveAddRawatIgd_rawatinap.action" theme="simple">
                         <div class="box-body">
                             <div class="alert alert-danger alert-dismissible" id="warning_pasien" style="display: none">
                                 <h4><i class="icon fa fa-ban"></i> Warning!</h4>
@@ -1695,7 +1695,7 @@
                                                         onclick="window.location.reload(true)">
                                                     <i class="fa fa-refresh"></i> Reset
                                                 </button>
-                                                <a type="button" class="btn btn-warning" href="initForm_igd.action">
+                                                <a type="button" class="btn btn-warning" href="initTppri_rawatinap.action">
                                                     <i class="fa fa-arrow-left"></i> Back
                                                 </a>
                                             </div>
@@ -2231,7 +2231,10 @@
     var contextPath = '<%= request.getContextPath() %>';
 
     $(document).ready(function () {
-        $('#igd').addClass('active');
+        // $('#igd').addClass('active');
+        $('#pendaftaran_active, #bayar_rawat_inap').addClass('active');
+        $('#pendaftaran_open').addClass('menu-open');
+
         listJenisPasien();
         setPelayanan();
         setPenunjang();

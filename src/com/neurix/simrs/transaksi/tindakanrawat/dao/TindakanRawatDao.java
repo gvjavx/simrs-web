@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.tindakanrawat.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
@@ -130,7 +131,8 @@ public class TindakanRawatDao extends GenericDao<ItSimrsTindakanRawatEntity, Str
                 "a.id_detail_checkup,\n" +
                 "d.id_pelayanan,\n" +
                 "d.nama_pelayanan,\n" +
-                "a.created_date\n" +
+                "a.created_date,\n" +
+                "a.id_dokter\n" +
                 "FROM it_simrs_tindakan_rawat a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
@@ -164,10 +166,26 @@ public class TindakanRawatDao extends GenericDao<ItSimrsTindakanRawatEntity, Str
                 tindakanRawat.setIdPelayanan(obj[7] != null ? obj[7].toString() : "");
                 tindakanRawat.setNamaPelayanan(obj[8] != null ? obj[8].toString() : "");
                 tindakanRawat.setCreatedDate(obj[9] != null ? (Timestamp) obj[9] : null);
+                tindakanRawat.setIdDokter(obj[10] != null ? (String) obj[10] : null);
+                tindakanRawat.setIdKategoriTindakan(getIdKategoriTindakan(tindakanRawat.getIdTindakan()));
                 rawatList.add(tindakanRawat);
             }
         }
         return rawatList;
+    }
+
+    private String getIdKategoriTindakan(String idTindakan) {
+        String idKategoriTindakan = "";
+        if(idTindakan != null && !"".equalsIgnoreCase(idTindakan)){
+            Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsTindakanEntity.class);
+            criteria.add(Restrictions.ilike("idTindakan", idTindakan));
+            criteria.add(Restrictions.eq("flag", "Y"));
+            List<ImSimrsTindakanEntity> listOfResult = criteria.list();
+            if(listOfResult.size() > 0){
+                idKategoriTindakan = listOfResult.get(0).getIdKategoriTindakan();
+            }
+        }
+        return idKategoriTindakan;
     }
 
     public String getNextTindakanRawatId(){

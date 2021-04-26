@@ -119,7 +119,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
-                                    <div class="col-sm-4" style="margin-top: 7px">
+                                    <div class="col-sm-8" style="margin-top: 7px">
                                         <sj:submit type="button" cssClass="btn btn-success" formIds="rawatInapForm"
                                                    id="search" name="search"
                                                    onClickTopics="showDialogLoading"
@@ -130,8 +130,9 @@
                                         <a type="button" class="btn btn-danger" href="initTppri_rawatinap.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
+                                        <a href="addRawatIgd_rawatinap.action" type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran IGD</a>
                                         <button onclick="showDaftar()" type="button" class="btn btn-primary">
-                                            <i class="fa fa-plus"></i> Daftar Anak RB
+                                            <i class="fa fa-plus"></i> Pendaftaran Anak RB
                                         </button>
                                     </div>
                                 </div>
