@@ -561,6 +561,18 @@
         <!--<convert converter="bean" match="com.neurix.akuntansi.master.trans.model.Trans"/>-->
 
         <create creator="new">
+            <param name="class"
+                   value="com.neurix.akuntansi.transaksi.kas.action.KasAction"/>
+        </create>
+        <convert converter="bean"
+                 match="com.neurix.akuntansi.transaksi.kas.model.KasDetail"/>
+        <convert converter="bean"
+                 match="com.neurix.akuntansi.transaksi.kas.model.Kas"/>
+        <convert converter="bean" match="com.neurix.akuntansi.transaksi.kas.model.EfakturDTO"/>
+        <convert converter="bean" match="com.neurix.akuntansi.transaksi.kas.model.Lampiran"/>
+        <convert converter="bean" match="com.neurix.akuntansi.master.trans.model.Trans"/>
+
+        <create creator="new">
             <param name="class" value="com.neurix.akuntansi.master.reportDetail.action.ReportDetailAction"/>
         </create>
         <convert converter="bean" match="com.neurix.akuntansi.master.reportDetail.model.ReportDetail"/>
@@ -1014,6 +1026,19 @@
         <convert converter="bean" match="com.neurix.simrs.transaksi.makananpendamping.model.ItSimrsHeaderPendampingMakananEntity"/>
         <convert converter="bean" match="com.neurix.simrs.transaksi.makananpendamping.model.ItSimrsDetailPendampingMakananEntity"/>
         <convert converter="bean" match="com.neurix.simrs.transaksi.periksalab.model.ItSimrsUploadHasilPemeriksaanEntity"/>
+
+        <!--Aji Noor-->
+        <create creator="new">
+            <param name="class" value="com.neurix.akuntansi.master.akunMataUang.action.AkunMataUangAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.akuntansi.master.akunMataUang.model.ImAkunMataUangEntity"/>
+        <convert converter="bean" match="com.neurix.akuntansi.master.akunMataUang.model.AkunMataUang"/>
+        <convert converter="bean" match="com.neurix.akuntansi.master.trans.model.ImTransEntity"/>
+
+        <!--Common Util-->
+        <create creator="new">
+            <param name="class" value="com.neurix.common.util.CommonUtil"/>
+        </create>
 
     </allow>
 </dwr>

@@ -25,6 +25,15 @@ public class TransAction extends BaseMasterAction {
     private Trans trans;
     private List<Trans> listOfComboTrans = new ArrayList<Trans>();
     private String tipe;
+    private String isOtomatis;
+
+    public String getIsOtomatis() {
+        return isOtomatis;
+    }
+
+    public void setIsOtomatis(String isOtomatis) {
+        this.isOtomatis = isOtomatis;
+    }
 
     public String getTipe() {
         return tipe;
@@ -424,13 +433,15 @@ public class TransAction extends BaseMasterAction {
 
         return SUCCESS;
     }
-    public String initComboTransPembayaran() {
-        logger.info("[TransAction.initComboTransPembayaran] start process >>>");
+    public String initComboTransaksi() {
+        logger.info("[TransAction.initComboTransaksi] start process >>>");
         String tipe = getTipe();
+        String isOtomatis = getIsOtomatis();
         Trans search = new Trans();
         List<Trans> listOfSearchTrans = new ArrayList();
         search.setFlag("Y");
-        search.setTipePembayaran(tipe);
+        search.setTipeJurnalId(tipe);
+        search.setIsOtomatis(isOtomatis);
         try {
             listOfSearchTrans = transBoProxy.getByCriteria(search);
         } catch (GeneralBOException e) {
@@ -438,15 +449,15 @@ public class TransAction extends BaseMasterAction {
             try {
                 logId = transBoProxy.saveErrorMessage(e.getMessage(), "transBo.getByCriteria");
             } catch (GeneralBOException e1) {
-                logger.error("[TransAction.initComboTransPembayaran] Error when saving error,", e1);
+                logger.error("[TransAction.initComboTransaksi] Error when saving error,", e1);
             }
-            logger.error("[TransAction.initComboTransPembayaran] Error when searching function by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            logger.error("[TransAction.initComboTransaksi] Error when searching function by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
             return "failure";
         }
 
         listOfComboTrans.addAll(listOfSearchTrans);
-        logger.info("[TransAction.initComboTransPembayaran] end process <<<");
+        logger.info("[TransAction.initComboTransaksi] end process <<<");
 
         return SUCCESS;
     }

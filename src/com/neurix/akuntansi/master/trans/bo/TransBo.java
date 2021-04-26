@@ -13,4 +13,6 @@ import com.neurix.common.exception.GeneralBOException;
  */
 public interface TransBo extends BaseMasterBo<Trans> {
     public void saveDelete(Trans bean) throws GeneralBOException;
+    public String getNextTransId() throws GeneralBOException;
+    public Trans getByTransId(String transId);
 }

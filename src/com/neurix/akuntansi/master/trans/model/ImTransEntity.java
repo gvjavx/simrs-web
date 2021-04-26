@@ -10,6 +10,8 @@ import java.sql.Timestamp;
  * Time: 14:05
  * To change this template use File | Settings | File Templates.
  */
+// tambahkan tipe_jurnal , is_otomatis*/
+
 public class ImTransEntity implements Serializable {
 
     private String transId;
@@ -17,13 +19,50 @@ public class ImTransEntity implements Serializable {
     private String tipePembayaran;
 
     private String master;
+    private String isOtomatis;
+    private String flagPengajuanBiaya;
+    private String tipeJurnalId;
 
     private String flag;
+    private String flagSumberBaru;
     private String action;
     private Timestamp createdDate;
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+
+    public String getIsOtomatis() {
+        return isOtomatis;
+    }
+
+    public void setIsOtomatis(String isOtomatis) {
+        this.isOtomatis = isOtomatis;
+    }
+
+    public String getFlagPengajuanBiaya() {
+        return flagPengajuanBiaya;
+    }
+
+    public void setFlagPengajuanBiaya(String flagPengajuanBiaya) {
+        this.flagPengajuanBiaya = flagPengajuanBiaya;
+    }
+
+    public String getTipeJurnalId() {
+        return tipeJurnalId;
+    }
+
+    public void setTipeJurnalId(String tipeJurnalId) {
+        this.tipeJurnalId = tipeJurnalId;
+    }
+
+    public String getFlagSumberBaru() {
+        return flagSumberBaru;
+    }
+
+    public void setFlagSumberBaru(String flagSumberBaru) {
+        this.flagSumberBaru = flagSumberBaru;
+    }
 
     public String getMaster() {
         return master;
