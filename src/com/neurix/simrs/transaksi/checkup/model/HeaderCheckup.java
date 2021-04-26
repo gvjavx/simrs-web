@@ -207,6 +207,15 @@ public class HeaderCheckup {
     private String namaDokter;
     private String idUangMuka;
     private String idKelasRuangan;
+    private String kategoriRuangan;
+
+    public String getKategoriRuangan() {
+        return kategoriRuangan;
+    }
+
+    public void setKategoriRuangan(String kategoriRuangan) {
+        this.kategoriRuangan = kategoriRuangan;
+    }
 
     public String getIdKelasRuangan() {
         return idKelasRuangan;

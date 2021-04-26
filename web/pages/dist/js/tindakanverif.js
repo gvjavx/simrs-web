@@ -13,7 +13,6 @@ function showTindakan(){
 function getListNamaDokter(tipe) {
     var option = '<option value="">[Select One]</option>';
     var def = '';
-    console.log(idDetailCheckup)
     CheckupAction.getListDokterByIdDetailCheckup(idDetailCheckup, null, function (res) {
         if (res.length > 0) {
             $.each(res, function (i, item) {
@@ -135,7 +134,7 @@ function listSelectTindakanKategori(val) {
         var dataDokter = val.split("|");
         idDokter = dataDokter[0];
         idPelayanan = dataDokter[1];
-        CheckupDetailAction.getListComboTindakanKategori(idPelayanan, null, function (response) {
+        CheckupDetailAction.getListComboTindakanKategori(idPelayanan, kategoriRuangan, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     if (i == 0) {

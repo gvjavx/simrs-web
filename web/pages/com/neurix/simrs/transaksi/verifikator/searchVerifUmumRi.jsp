@@ -172,12 +172,14 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="sortTable" class="table table-bordered table-striped">
+                        <table id="sortTable" class="table table-bordered table-striped" style="font-size: 12px">
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>No Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
+                                <td>Tanggal Masuk</td>
+                                <td>Pelayanan</td>
                                 <td>Jenis Pasien</td>
                                 <td>Keterangan</td>
                                 <td align="center">Action</td>
@@ -189,6 +191,8 @@
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="formatTglMasuk"/></td>
+                                    <td><s:property value="namaPelayanan"/></td>
                                     <td><s:property value="jenisPeriksaPasien"/></td>
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
@@ -316,6 +320,7 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="box-header with-border"></div>
                 <div class="box-header with-border">
                     <h3 class="box-title" ><i class="fa fa-hospital-o"></i> Penunjang Medis</h3>
                 </div>
@@ -334,6 +339,7 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="box-header with-border"></div>
                 <div class="box-header with-border">
                     <h3 class="box-title"><i class="fa fa-hospital-o"></i> Resep</h3>
                 </div>
@@ -471,6 +477,7 @@
     var jenisPeriksaPasien = "";
     var idKelasRuangan = "";
     var flagVaksin = "";
+    var kategoriRuangan = "";
 
     function formatRupiah(angka) {
         if(angka != "" && angka > 0){
@@ -534,6 +541,7 @@
                         jenisPeriksaPasien = res.idJenisPeriksaPasien;
                         idKelasRuangan = res.idKelasRuangan;
                         flagVaksin = res.isVaksin;
+                        kategoriRuangan = res.kategoriRuangan;
                     }
                 }
             });
@@ -591,6 +599,7 @@
                         table = table + "<tr>" +
                             "<td colspan='4'>Total</td>" +
                             "<td align='right'>" + formatRupiah(trfTtl) + "</td>" +
+                            "<td></td>" +
                             "</tr>";
                         $('#body_tindakan').html(table);
                     }

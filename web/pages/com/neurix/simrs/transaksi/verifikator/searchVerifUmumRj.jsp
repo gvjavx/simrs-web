@@ -456,6 +456,7 @@
     var jenisPeriksaPasien = "";
     var idKelasRuangan = "";
     var flagVaksin = "";
+    var kategoriRuangan = "";
 
     function formatRupiah(angka) {
         if(angka != "" && angka > 0){
@@ -520,6 +521,7 @@
                         jenisPeriksaPasien = res.idJenisPeriksaPasien;
                         idKelasRuangan = res.idKelasRuangan;
                         flagVaksin = res.isVaksin;
+                        kategoriRuangan = res.kategoriRuangan;
                     }
                 }
             });
