@@ -9,7 +9,6 @@
           p:kasBoProxy-ref="kasBoProxy"
           p:billingSystemBoProxy-ref="billingSystemBoProxy"
           p:tipeJurnalBoProxy-ref="tipeJurnalBoProxy"
-          p:akunMataUangBoProxy-ref="akunMataUangBoProxy"
           p:kasDetailBoProxy-ref="kasDetailBoProxy"
 
     />
