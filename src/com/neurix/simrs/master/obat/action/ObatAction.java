@@ -1034,14 +1034,14 @@ public class ObatAction extends BaseMasterAction {
 
         if ("sumary".equalsIgnoreCase(obat.getType())){
             try {
-                report = obatBo.getListReportSumaryTransaksiObat(obat.getIdPelayanan(), obat.getTahun(), obat.getBulan());
+                report = obatBo.getListReportSumaryTransaksiObat(obat.getIdPelayanan(), obat.getTahun(), obat.getBulan(), obat.getFlagBpjs());
             } catch (GeneralBOException e){
                 logger.error("[ObatAction.initPrintReportRiwayat] ERROR. ", e);
                 throw new GeneralBOException("[ObatAction.initPrintReportRiwayat] ERROR. " + e);
             }
         } else {
             try {
-                report = obatBo.getListReporTransaksiObat(obat.getIdPelayanan(), obat.getTahun(), obat.getBulan(), obat.getIdObat());
+                report = obatBo.getListReporTransaksiObat(obat.getIdPelayanan(), obat.getTahun(), obat.getBulan(), obat.getIdObat(), obat.getFlagBpjs());
             } catch (GeneralBOException e){
                 logger.error("[ObatAction.initPrintReportRiwayat] ERROR. ", e);
                 throw new GeneralBOException("[ObatAction.initPrintReportRiwayat] ERROR. " + e);
@@ -1075,6 +1075,7 @@ public class ObatAction extends BaseMasterAction {
         reportParams.put("bulan", obat.getBulan());
         reportParams.put("tahun", obat.getTahun());
         reportParams.put("periode", obat.getBulan()+"-"+obat.getTahun());
+        reportParams.put("jenisObat", "Y".equalsIgnoreCase(obat.getFlagBpjs()) ? "BPJS" : "UMUM");
 
         try {
             preDownload();

@@ -1104,7 +1104,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         updateLembarBijiObat(newObatEntity);
 
         updateAllNewAverageHargaByObatId(bean.getIdObat(), newObatEntity.getAverageHargaBox(), newObatEntity.getAverageHargaLembar(), newObatEntity.getAverageHargaBiji(), bean.getBranchId(), bean.getTipeObat());
-        saveTransaksiStok(newObatEntity, bean.getIdVendor(), bean.getIdPelayanan());
 
         // Sigit 2020-12-08, update harga terakhir, Start
         HargaObat hargaObat = new HargaObat();
@@ -1114,9 +1113,18 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         hargaObat.setHargaRata(newObatEntity.getAverageHargaBiji());
         hargaObat.setLastUpdate(newObatEntity.getLastUpdate());
         hargaObat.setLastUpdateWho(newObatEntity.getLastUpdateWho());
-        hargaObat.setFlagIsBpjs(newObatEntity.getFlagBpjs());
+        hargaObat.setFlagIsBpjs(newObatEntity.getFlagBpjs() == null || "".equalsIgnoreCase(newObatEntity.getFlagBpjs()) ? "N" : newObatEntity.getFlagBpjs());
 
-        updateHargaBeliHargaObat(hargaObat);
+        MtSimrsHargaTerakhirEntity hargaTerakhirEntity = updateHargaBeliHargaObat(hargaObat);
+
+        if ("Y".equalsIgnoreCase(newObatEntity.getFlagBpjs())){
+            newObatEntity.setHargaTerakhir(hargaTerakhirEntity.getHargaTerakhirBpjs());
+        } else {
+            newObatEntity.setFlagBpjs("N");
+            newObatEntity.setHargaTerakhir(hargaTerakhirEntity.getHargaTerakhir());
+        }
+
+        saveTransaksiStok(newObatEntity, bean.getIdVendor(), bean.getIdPelayanan());
         // END
 
         logger.info("[PermintaanVendorBoImpl.updateAddStockGudang] END <<<");
@@ -1145,8 +1153,10 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         }
     }
 
-    private void updateHargaBeliHargaObat(HargaObat hargaObat){
+    private MtSimrsHargaTerakhirEntity updateHargaBeliHargaObat(HargaObat hargaObat){
         logger.info("[PermintaanVendorBoImpl.updateHargaBeliHargaObat] Start >>>");
+
+        MtSimrsHargaTerakhirEntity hargaTerakhirEntity = new MtSimrsHargaTerakhirEntity();
 
         if (hargaObat != null){
 
@@ -1165,7 +1175,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
             if (hargaTerakhirEntities.size() > 0){
 
-                MtSimrsHargaTerakhirEntity hargaTerakhirEntity = hargaTerakhirEntities.get(0);
+                hargaTerakhirEntity = hargaTerakhirEntities.get(0);
                 if ("Y".equalsIgnoreCase(hargaObat.getFlagIsBpjs())){
                     // update jika harga terakhir beli lebih besar dari pada harga terakhir pada table
                     if (hargaObat.getHargaBeli().compareTo(
@@ -1202,7 +1212,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             } else {
 
                 String idseq = hargaTerakhirDao.getNextId();
-                MtSimrsHargaTerakhirEntity hargaTerakhirEntity = new MtSimrsHargaTerakhirEntity();
+                hargaTerakhirEntity = new MtSimrsHargaTerakhirEntity();
                 hargaTerakhirEntity.setId(idseq);
                 hargaTerakhirEntity.setIdObat(hargaObat.getIdObat());
                 hargaTerakhirEntity.setBranchId(hargaObat.getBranchId());
@@ -1241,6 +1251,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         }
 
         logger.info("[PermintaanVendorBoImpl.updateAddStockGudang] End <<<");
+        return hargaTerakhirEntity;
     }
 
     private TransaksiStok getSumSaldoBulanLaluStok(List<ItSimrsTransaksiStokEntity> transaksiStokEntities){
@@ -1311,13 +1322,14 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         return transaksiStok;
     }
 
-    private List<TransaksiStok> getListTransaksiObat(String idPelayanan, Integer tahun, Integer bulan, String idObat) throws GeneralBOException{
+    private List<TransaksiStok> getListTransaksiObat(String idPelayanan, Integer tahun, Integer bulan, String idObat, String flagBpjs) throws GeneralBOException{
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_barang", idObat);
         hsCriteria.put("id_pelayanan", idPelayanan);
         hsCriteria.put("tahun", tahun);
         hsCriteria.put("bulan", bulan);
+        hsCriteria.put("flag_bpjs", flagBpjs);
 
         List<ItSimrsTransaksiStokEntity> stokEntities = new ArrayList<>();
         try {
@@ -1393,10 +1405,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                         trans.setTotal(stok.getTotal());
                         trans.setSubTotal(stok.getSubTotal());
 
-//                        trans.setQtyKredit(nolB);
-//                        trans.setTotalKredit(nol);
-//                        trans.setSubTotalKredit(nol);
-
                         // qty saldo = qty masuk + qty lalu;
                         trans.setQtySaldo(minStok.getQtyLalu().add(stok.getQty()));
 
@@ -1406,10 +1414,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                         // sub total saldo = total saldo * qty saldo
                         trans.setSubTotalSaldo(trans.getTotal().multiply(new BigDecimal(trans.getQtySaldo())));
                     } else {
-
-//                        trans.setQty(nolB);
-//                        trans.setTotal(nol);
-//                        trans.setSubTotal(nol);
 
                         trans.setQtyKredit(stok.getQty());
                         trans.setTotalKredit(stok.getTotal());
@@ -1443,10 +1447,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                         trans.setTotal(stok.getTotal());
                         trans.setSubTotal(stok.getSubTotal());
 
-//                        trans.setQtyKredit(nolB);
-//                        trans.setTotalKredit(nol);
-//                        trans.setSubTotalKredit(nol);
-
                         // qty saldo = qty saldo lalu + qty
                         trans.setQtySaldo(minStok.getQtySaldo().add(stok.getQty()));
 
@@ -1456,10 +1456,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                         // sub total saldo = sub total saldo
                         trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));
                     } else {
-
-//                        trans.setQty(nolB);
-//                        trans.setTotal(nol);
-//                        trans.setSubTotal(nol);
 
                         trans.setQtyKredit(stok.getQty());
                         trans.setTotalKredit(stok.getTotal());
@@ -1520,16 +1516,16 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                 hsCriteria.put("bulan", bulanDepan);
                 hsCriteria.put("tahun", tahunDepan);
                 hsCriteria.put("id_pelayanan", idPelayanan);
+                hsCriteria.put("flag_bpjs", obatEntity.getFlagBpjs());
 
                 List<ItSimrsTransaksiStokEntity> transaksiStokEntities = transaksiStokDao.getByCriteria(hsCriteria);
                 if (transaksiStokEntities.size() == 0){
 
-
                     // jika sudah ditutup bulan ini
                     // maka hitung saldo bulan ini sebagai saldo bulan lalu
                     if (flagTutup){
-                        List<TransaksiStok> saldoBulanLaluList = getListTransaksiObat(idPelayanan, Integer.valueOf(tahun), Integer.valueOf(bulan), obatEntity.getIdObat());
-                        if (saldoBulanLaluList.size() > 0){
+                        List<TransaksiStok> saldoBulanLaluList = getListTransaksiObat(idPelayanan, Integer.valueOf(tahun), Integer.valueOf(bulan), obatEntity.getIdObat(), obatEntity.getFlagBpjs());
+                        if (saldoBulanLaluList.size() > 0) {
                             saldoBulanLalu = saldoBulanLaluList.get(saldoBulanLaluList.size() -1);
                         }
                     }
@@ -1553,16 +1549,9 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                 }
             }
 
-//            BigInteger cons = obatEntity.getBijiPerLembar().multiply(obatEntity.getLembarPerBox());
-//            BigInteger boxToBiji = obatEntity.getQtyBox().multiply(cons);
-//            BigInteger lembarToBiji = obatEntity.getQtyLembar().multiply(obatEntity.getBijiPerLembar());
-//            BigInteger qty = obatEntity.getQtyBiji().add(lembarToBiji).add(boxToBiji);
             BigInteger qty = obatEntity.getQtyBiji();
-
-
-
-//            BigDecimal hargaBarang = obatEntity.getHargaTerakhir().divide(new BigDecimal(cons) ,2, RoundingMode.HALF_UP);
             BigDecimal hargaBarang = obatEntity.getAverageHargaBiji();
+            BigDecimal hargaBeli   = obatEntity.getHargaTerakhir();
 
             java.util.Date now = new java.util.Date();
             SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
@@ -1578,9 +1567,12 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             transaksiStokEntity.setQty(qty);
             transaksiStokEntity.setTotal(hargaBarang);
             transaksiStokEntity.setSubTotal(hargaBarang.multiply(new BigDecimal(qty)));
-
+            transaksiStokEntity.setTotalHargaBeli(hargaBeli == null ? new BigDecimal(0) : hargaBeli);
+            transaksiStokEntity.setSubTotalHargaBeli(new BigDecimal(qty).multiply(hargaBeli));
+            transaksiStokEntity.setFlagBpjs(obatEntity.getFlagBpjs());
 
             if (flagTutup){
+
                 // jika ditutup maka buat registered date bulan depan
                 Integer tahunDepan = new Integer(0);
                 Integer bulanDepan = new Integer(0);
@@ -1605,6 +1597,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             transaksiStokEntity.setIdVendor(idVendor);
             transaksiStokEntity.setIdBarang(obatEntity.getIdBarang());
             transaksiStokEntity.setIdPelayanan(idPelayanan);
+
             // jika ada saldo lalu
             if (saldoBulanLalu.getQtySaldo() != null && saldoBulanLalu.getQtySaldo().compareTo(new BigInteger(String.valueOf(0))) == 1){
                 transaksiStokEntity.setQtyLalu(saldoBulanLalu.getQtySaldo());
@@ -1623,7 +1616,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                 throw new GeneralBOException("[PermintaanVendorBoImpl.saveToRiwayatBarangMasuk] ERROR." + e.getMessage());
             }
         }
-
         logger.info("[PermintaanVendorBoImpl.saveToRiwayatBarangMasuk] END <<<");
     }
 

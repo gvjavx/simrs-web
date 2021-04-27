@@ -1740,3 +1740,16 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
 
     CREATE SEQUENCE seq_nilai_pengadaan;
 --
+
+-- 2021-04-26
+
+    ALTER TABLE it_simrs_transaksi_stok
+    ADD COLUMN flag_bpjs VARCHAR(1),
+    ADD COLUMN total_harga_beli NUMERIC,
+    ADD COLUMN sub_total_harga_beli NUMERIC;
+
+    ALTER TABLE it_simrs_transaksi_stok
+    ADD COLUMN total_harga_beli_lalu NUMERIC,
+    ADD COLUMN sub_total_harga_beli_lalu NUMERIC;
+
+--

@@ -44,9 +44,9 @@ public interface ObatBo{
     public List<Obat> detailReturObat(String idRetur) throws GeneralBOException;
     public List<Obat> searchObatByVendor(String idVendor, String branchId) throws GeneralBOException;
     public ImSimrsObatEntity getObatEntityByKodeBarang(String id) throws GeneralBOException;
-    public List<TransaksiStok> getListReporTransaksiObat(String idPelayanan, String tahun, String bulan, String idObat) throws GeneralBOException;
+    public List<TransaksiStok> getListReporTransaksiObat(String idPelayanan, String tahun, String bulan, String idObat, String flagBpjs) throws GeneralBOException;
     public void saveTransaksiStokOpname(Obat bean) throws GeneralBOException;
-    public List<TransaksiStok> getListReportSumaryTransaksiObat(String idPelayanan, String tahun, String bulan) throws GeneralBOException;
+    public List<TransaksiStok> getListReportSumaryTransaksiObat(String idPelayanan, String tahun, String bulan, String flagBpjs) throws GeneralBOException;
 
     public List<TransaksiStok> getListSummaryStok(String branchId,String idPelayanan, String tahun, String bulan,String namaObat) throws GeneralBOException;
     public List<KandunganObat> getListKandunganObatDetail(String idObat) throws GeneralBOException;

@@ -58,6 +58,10 @@ public class TransaksiStokDao extends GenericDao<ItSimrsTransaksiStokEntity, Str
             if (mapCriteria.get("bulan") != null){
                 criteria.add(Restrictions.sqlRestriction("EXTRACT(MONTH FROM registered_date) = ?", (Integer) mapCriteria.get("bulan"), Hibernate.INTEGER));
             }
+
+            if (mapCriteria.get("flag_bpjs") != null){
+                criteria.add(Restrictions.eq("flagBpjs", mapCriteria.get("flag_bpjs").toString()));
+            }
         }
 
         List list = criteria.list();

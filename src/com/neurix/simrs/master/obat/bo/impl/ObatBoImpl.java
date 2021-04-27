@@ -1700,13 +1700,14 @@ public class ObatBoImpl implements ObatBo {
     }
 
     @Override
-    public List<TransaksiStok> getListReporTransaksiObat(String idPelayanan, String tahun, String bulan, String idObat) throws GeneralBOException{
+    public List<TransaksiStok> getListReporTransaksiObat(String idPelayanan, String tahun, String bulan, String idObat, String flagBpjs) throws GeneralBOException{
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_barang", idObat);
         hsCriteria.put("id_pelayanan", idPelayanan);
         hsCriteria.put("tahun", Integer.valueOf(tahun));
         hsCriteria.put("bulan", Integer.valueOf(bulan));
+        hsCriteria.put("flag_bpjs", flagBpjs);
 
         List<ItSimrsTransaksiStokEntity> stokEntities = new ArrayList<>();
         try {
@@ -1753,10 +1754,14 @@ public class ObatBoImpl implements ObatBo {
                             trans.setQtyLalu(nolB);
                             trans.setTotalLalu(nol);
                             trans.setSubTotalLalu(nol);
+                            trans.setTotalHargaBeliLalu(nol);
+                            trans.setSubTotalHargaBeliLalu(nol);
 
                             trans.setQtyLalu(stok.getQtyLalu() == null ? new BigInteger(String.valueOf(0)) : stok.getQtyLalu());
                             trans.setTotalLalu(stok.getTotalLalu() == null ? new BigDecimal(0) : stok.getTotalLalu());
                             trans.setSubTotalLalu(stok.getSubTotalLalu() == null ? new BigDecimal(0) : stok.getSubTotalLalu());
+                            trans.setTotalHargaBeliLalu(stok.getTotalHargaBeliLalu() == null ? nol : stok.getTotalHargaBeliLalu());
+                            trans.setSubTotalHargaBeliLalu(stok.getSubTotalHargaBeliLalu() == null ? nol : stok.getSubTotalHargaBeliLalu());
                             listOfTransaksi.add(trans);
                             n++;
                         } else {
@@ -1765,6 +1770,8 @@ public class ObatBoImpl implements ObatBo {
                             trans.setQtyLalu(nolB);
                             trans.setTotalLalu(nol);
                             trans.setSubTotalLalu(nol);
+                            trans.setTotalHargaBeliLalu(nol);
+                            trans.setSubTotalHargaBeliLalu(nol);
                             listOfTransaksi.add(trans);
                             n++;
                         }
@@ -1778,38 +1785,39 @@ public class ObatBoImpl implements ObatBo {
                         trans.setTipe(stok.getTipe());
 
                         TransaksiStok minStok = listOfTransaksi.get(n-1);
+
                         if ("D".equalsIgnoreCase(stok.getTipe())){
                             trans.setQty(stok.getQty() == null ? new BigInteger(String.valueOf(0)) : stok.getQty());
                             trans.setTotal(stok.getTotal() == null ? new BigDecimal(0) : stok.getTotal());
                             trans.setSubTotal(stok.getSubTotal() == null ? new BigDecimal(0) : stok.getSubTotal());
-
+                            trans.setTotalHargaBeli(stok.getTotalHargaBeli() == null ? nol : stok.getTotalHargaBeli());
+                            trans.setTotalHargaBeliLalu(stok.getSubTotalHargaBeli() == null ? nol : stok.getSubTotalHargaBeli());
 
                             trans.setQtySaldo(minStok.getQtyLalu().add(trans.getQty()));
-
-                            // total saldo = sub total lalu + sub total / qty saldo
-//                            BigDecimal qtySaldo = new BigDecimal(trans.getQtySaldo() == null ? new BigInteger(String.valueOf(0)) : trans.getQtySaldo());
-//                            BigDecimal subTotalLalu =  minStok.getSubTotalLalu() == null ? new BigDecimal(0) : minStok.getSubTotalLalu();
-//                            BigDecimal totalSubTotalLalu = subTotalLalu.add(trans.getSubTotal());
-//                            BigDecimal totalSaldo = totalSubTotalLalu.compareTo(new BigDecimal(0)) == 1 ? totalSubTotalLalu.divide(qtySaldo, 2, BigDecimal.ROUND_HALF_UP) : new BigDecimal(0) ;
-
                             trans.setTotalSaldo(trans.getTotal());
+                            trans.setTotalSaldoHargaBeli(trans.getTotalHargaBeli());
 
                             // sub total saldo = total saldo * qty saldo
                             trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));
+                            trans.setSubTotalSaldoHargaBeli(trans.getTotalSaldoHargaBeli().multiply(new BigDecimal(trans.getQtySaldo())));
                         } else {
 
                             trans.setQtyKredit(stok.getQty() == null ? new BigInteger(String.valueOf(0)) : stok.getQty());
                             trans.setTotalKredit(stok.getTotal() == null ? new BigDecimal(0) : stok.getTotal());
                             trans.setSubTotalKredit(stok.getSubTotal() == null ? new BigDecimal(0) : stok.getSubTotal());
+                            trans.setTotalHargaBeliKredit(stok.getTotalHargaBeli() == null ? nol : stok.getTotalHargaBeli());
+                            trans.setSubTotalHargaBeli(stok.getSubTotalHargaBeli() == null ? nol : stok.getSubTotalHargaBeli());
 
                             // qty saldo = qty bulan lalu - qty masuk
                             trans.setQtySaldo(minStok.getQtyLalu().subtract(trans.getQtyKredit()));
 
                             // total saldo = total lalu
                             trans.setTotalSaldo(stok.getTotalLalu() == null ? new BigDecimal(0) : stok.getTotalLalu());
+                            trans.setTotalSaldoHargaBeli(stok.getTotalHargaBeliLalu() == null ? new BigDecimal(0) : stok.getTotalHargaBeliLalu());
 
                             // sub total saldo = total saldo * qty saldo
                             trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));
+                            trans.setSubTotalSaldoHargaBeli(trans.getSubTotalSaldoHargaBeli().multiply(new BigDecimal(trans.getQtySaldo())));
                         }
                         listOfTransaksi.add(trans);
                         n++;
@@ -1829,7 +1837,8 @@ public class ObatBoImpl implements ObatBo {
                             trans.setQty(stok.getQty() == null ? new BigInteger(String.valueOf(0)) : stok.getQty());
                             trans.setTotal(stok.getTotal() == null ? new BigDecimal(0) : stok.getTotal());
                             trans.setSubTotal(stok.getSubTotal() == null ? new BigDecimal(0) : stok.getSubTotal());
-
+                            trans.setTotalHargaBeli(stok.getTotalHargaBeli() == null ? nol : stok.getTotalHargaBeli());
+                            trans.setSubTotalHargaBeli(stok.getSubTotalHargaBeli() == null ? nol : stok.getSubTotalHargaBeli());
 
                             // qty saldo = qty saldo lalu + qty
                             trans.setQtySaldo(minStok.getQtySaldo().add(trans.getQty()));
@@ -1837,23 +1846,29 @@ public class ObatBoImpl implements ObatBo {
                             // total saldo = sub total saldo lalu + sub total / qty saldo
 //                            trans.setTotalSaldo(minStok.getSubTotalSaldo().add(trans.getSubTotal()).divide(new BigDecimal(trans.getQtySaldo()), 2, BigDecimal.ROUND_HALF_UP));
                             trans.setTotalSaldo(trans.getTotal());
+                            trans.setTotalSaldoHargaBeli(trans.getTotalHargaBeli());
 
                             // sub total saldo = sub total saldo
                             trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));
+                            trans.setSubTotalSaldoHargaBeli(trans.getTotalSaldoHargaBeli().multiply(new BigDecimal(trans.getQtySaldo())));
                         } else {
 
                             trans.setQtyKredit(stok.getQty() == null ? new BigInteger(String.valueOf(0)) : stok.getQty());
                             trans.setTotalKredit(stok.getTotal() == null ? new BigDecimal(0) : stok.getTotal());
                             trans.setSubTotalKredit(stok.getSubTotal() == null ? new BigDecimal(0) : stok.getSubTotal());
+                            trans.setTotalHargaBeliKredit(stok.getTotalHargaBeli() == null ? nol : stok.getTotalHargaBeli());
+                            trans.setSubTotalHargaBeli(stok.getSubTotalHargaBeli() == null ? nol : stok.getSubTotalHargaBeli());
 
                             // qty saldo = qty saldo - qty
                             trans.setQtySaldo((minStok.getQtySaldo() == null ? new BigInteger(String.valueOf(0)) : minStok.getQtySaldo()).subtract(trans.getQtyKredit()));
 
                             // total saldo = total saldo lalu
                             trans.setTotalSaldo(trans.getTotalKredit());
+                            trans.setTotalSaldoHargaBeli(trans.getTotalHargaBeliKredit());
 
                             // sub total saldo = sub total saldo
                             trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));
+                            trans.setSubTotalSaldoHargaBeli(trans.getTotalSaldoHargaBeli().multiply(new BigDecimal(trans.getQtySaldo())));
                         }
                         listOfTransaksi.add(trans);
                         n++;
@@ -2137,7 +2152,7 @@ public class ObatBoImpl implements ObatBo {
                 // jika sudah ditutup bulan ini
                 // maka hitung saldo bulan ini sebagai saldo bulan lalu
                 if (flagTutup){
-                    List<TransaksiStok> saldoBulanLaluList = getListReporTransaksiObat(bean.getIdPelayanan(), tahun, bulan, bean.getIdObat());
+                    List<TransaksiStok> saldoBulanLaluList = getListReporTransaksiObat(bean.getIdPelayanan(), tahun, bulan, bean.getIdObat(), bean.getFlagBpjs());
                     if (saldoBulanLaluList.size() > 0){
                         saldoBulanLalu = saldoBulanLaluList.get(saldoBulanLaluList.size() -1);
                     }
@@ -2276,7 +2291,7 @@ public class ObatBoImpl implements ObatBo {
     }
 
     @Override
-    public List<TransaksiStok> getListReportSumaryTransaksiObat(String idPelayanan, String tahun, String bulan) throws GeneralBOException {
+    public List<TransaksiStok> getListReportSumaryTransaksiObat(String idPelayanan, String tahun, String bulan, String flagBpjs) throws GeneralBOException {
         logger.info("[ObatBoImpl.getListReportSumaryTransaksiObat] START >>>");
 
         List<TransaksiStok> listObat = transaksiStokDao.getListOpnameByPeriode(idPelayanan, tahun, bulan);
@@ -2286,13 +2301,15 @@ public class ObatBoImpl implements ObatBo {
 
                 obat.setKeterangan(obat.getNamaObat());
 
-                List<TransaksiStok> listTransaksi =  getListReporTransaksiObat(idPelayanan, tahun, bulan, obat.getIdObat());
+                List<TransaksiStok> listTransaksi =  getListReporTransaksiObat(idPelayanan, tahun, bulan, obat.getIdObat(), flagBpjs);
                 if (listTransaksi.size() > 0){
                     TransaksiStok saldoAkhir = listTransaksi.get(listTransaksi.size()-1);
                     if (saldoAkhir != null && saldoAkhir.getSubTotalSaldo().compareTo(new BigDecimal(0)) == 1){
                         obat.setQtySaldo(saldoAkhir.getQtySaldo());
                         obat.setTotalSaldo(saldoAkhir.getTotalSaldo());
                         obat.setSubTotalSaldo(saldoAkhir.getSubTotalSaldo());
+                        obat.setTotalSaldoHargaBeli(saldoAkhir.getTotalSaldoHargaBeli());
+                        obat.setSubTotalSaldoHargaBeli(saldoAkhir.getTotalSaldoHargaBeli());
                     }
                 }
 
