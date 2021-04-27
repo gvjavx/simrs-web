@@ -115,7 +115,7 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "  pegawai.status_pegawai, \n" +
                 "  pegawai.golongan_dapen, \n" +
                 "  pegawai.golongan_dapen_nusindo,  \n" +
-                "  pegawai.poin_lebih," +
+                "  pegawai.poin_lebih, \n" +
                 "  branch.umr, \n" +
                 "  pegawai.golongan_dapen_id, \n"+
                 "  pegawai.masa_kerja_gol, \n"+

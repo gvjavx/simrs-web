@@ -80,7 +80,7 @@
 
 
         <action name="paging_displaytag_master_logcron"
-                class="com.neurix.hris.transaksi.logcron.action.LogCronAction" method="pagingLogcron">
+                class="com.neurix.hris.transaksi.logcron.action.LogCronAction" method="pagingLogCron">
             <interceptor-ref name="defaultStack"/>
             <result name="success">/pages/com/neurix/hris/transaksi/logcron/searchLogCron.jsp</result>
         </action>

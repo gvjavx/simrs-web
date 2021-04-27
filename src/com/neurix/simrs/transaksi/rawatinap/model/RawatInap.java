@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.rawatinap.model;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -131,6 +132,15 @@ public class RawatInap {
     private String isMeninggal;
     private String isSonde;
     private String formatTglMasuk;
+    private Date tanggalLahir;
+
+    public Date getTanggalLahir() {
+        return tanggalLahir;
+    }
+
+    public void setTanggalLahir(Date tanggalLahir) {
+        this.tanggalLahir = tanggalLahir;
+    }
 
     public String getFormatTglMasuk() {
         return formatTglMasuk;

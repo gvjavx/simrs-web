@@ -28,7 +28,11 @@
                 <interceptor-ref name="params">
                     <param name="excludeParams">_,d-\d+?-[sop],6578706f7274</param>
                 </interceptor-ref>
-                <interceptor-ref name="fileUpload"/>
+                <interceptor-ref name="fileUpload">
+                    <param name="allowedTypes">
+                        image/png,image/jpeg
+                    </param>
+                </interceptor-ref>
                 <interceptor-ref name="defaultStack">
                     <param name="exception.logEnabled">true</param>
                     <param name="exception.logLevel">ERROR</param>

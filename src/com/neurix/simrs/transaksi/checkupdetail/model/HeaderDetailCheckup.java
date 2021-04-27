@@ -5,7 +5,6 @@ import com.neurix.simrs.master.rekammedis.model.RekamMedisPasien;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
@@ -219,6 +218,15 @@ public class HeaderDetailCheckup extends BaseModel{
     private String isEksekutif;
     private String isVaksin;
     private String isMeninggal;
+    private Date tanggalLahir;
+
+    public Date getTanggalLahir() {
+        return tanggalLahir;
+    }
+
+    public void setTanggalLahir(Date tanggalLahir) {
+        this.tanggalLahir = tanggalLahir;
+    }
 
     public String getIsMeninggal() {
         return isMeninggal;

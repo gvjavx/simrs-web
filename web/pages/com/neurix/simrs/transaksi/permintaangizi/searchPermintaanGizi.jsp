@@ -623,6 +623,45 @@
 
 <div id="modal-temp"></div>
 
+<div class="modal fade" id="modal-hasil_lab">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-image"></i> <span
+                        id="title_hasil_lab"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="carousel-hasil_lab" class="carousel slide">
+                                <ol class="carousel-indicators" id="li_hasil_lab">
+
+                                </ol>
+                                <div class="carousel-inner" id="item_hasil_lab">
+
+                                </div>
+                                <a class="left carousel-control" href="#carousel-hasil_lab" data-slide="prev">
+                                    <span class="fa fa-angle-left"></span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel-hasil_lab" data-slide="next">
+                                    <span class="fa fa-angle-right"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-confirm-rm">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -960,23 +999,35 @@
                             keteranganTindakan = "laboratorium";
                         }
 
+                        var json = "";
+                        var btn2 = "";
+                        if(item.uploadDalam.length > 0){
+                            json = JSON.stringify(item.uploadDalam);
+                        }
+
                         if ("laboratorium" == keteranganTindakan || "radiologi" == keteranganTindakan) {
                             if ("laboratorium" == keteranganTindakan || "radiologi" == keteranganTindakan) {
-                                if (item.urlLab != null && item.urlLab != '') {
-                                    btn = '<img onclick="labLuar(\'' + item.labName + '\', \'' + item.urlImg + '\')" border="0" class="hvr-grow" src="' + contextPathHeader + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
+                                if ("Y" == item.isPeriksaLuar) {
+                                    btn = '<img onclick="showHasil(\'' + item.idPeriksaLab + '\', \'' + item.kategoriLabName + '\')" border="0" class="hvr-grow" src="' + contextPathHeader + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
                                 } else {
                                     btn = '<img class="hvr-grow" id="btn_' + item.idPeriksaLab + '" \n' +
                                         'onclick="detailTindakan(\'' + item.idPeriksaLab + '\',\'' + item.idPeriksaLab + '\',\'' + keteranganTindakan + '\')"\n' +
                                         'src="' + contextPathHeader + '/pages/images/icons8-plus-25.png">';
+                                    if(json != ''){
+                                        btn2 = '<img onclick="showHasil(\'' + item.idPeriksaLab + '\', \'' + item.kategoriLabName + '\')" border="0" class="hvr-grow" src="' + contextPathHeader + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
+                                    }
                                 }
                             }
                         }
+
                         var temp = '<b>'+ cekDataNull(item.idDetailCheckup) +
                         '<p>' + cekDataNull(item.namaPelayanan) + '</p></b>';
                         table += '<tr id="row_' + item.idPeriksaLab + '">' +
-                            '<td>' + temp +'</td>' +
-                            '<td>' + converterDateTime(item.tanggalMasukLab) + '</td>' +
-                            '<td>' + cekDataNull(item.labName) + ' <div class="pull-right">' + btn + '</div></td>' +
+                            '<td>' + temp +
+                            '<textarea style="display: none" id="id_id' + item.idPeriksaLab + '">' + json + '</textarea>' +
+                            '</td>' +
+                            '<td>' + converterDateTime(item.createdDate) + '</td>' +
+                            '<td>' + cekDataNull(item.kategoriLabName) + ' <div class="pull-right">' + btn + btn2 + '</div></td>' +
                             '<tr>';
                     });
                     $('#body_history').html(table);
@@ -1002,9 +1053,9 @@
                             if (keterangan == "laboratorium") {
                                 body += '<tr>' +
                                     '<td>' + cekDataNull(item.namaDetailLab) + '</td>' +
-                                    '<td>' + cekDataNull(item.satuan) + '</td>' +
-                                    '<td>' + cekDataNull(item.acuan) + '</td>' +
                                     '<td>' + cekDataNull(item.kesimpulan) + '</td>' +
+                                    '<td>' + cekDataNull(item.acuan) + '</td>' +
+                                    '<td>' + cekDataNull(item.satuan) + '</td>' +
                                     '<td>' + cekDataNull(item.keterangan) + '</td>' +
                                     '</tr>';
                             }
@@ -1013,16 +1064,16 @@
 
                     if (keterangan == "radiologi") {
                         head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
-                            '<td>Pemeriksaan</td>' +
+                            '<td width="40%">Pemeriksaan</td>' +
                             '<td>Hasil</td>' +
                             '</tr>';
                     }
                     if (keterangan == "laboratorium") {
                         head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
                             '<td>Pemeriksaan</td>' +
-                            '<td>Satuan</td>' +
-                            '<td>Nilai Normal</td>' +
                             '<td>Hasil</td>' +
+                            '<td>Nilai Normal</td>' +
+                            '<td>Satuan</td>' +
                             '<td>Keterangan</td>' +
                             '</tr>';
                     }
@@ -1057,10 +1108,41 @@
         return data;
     }
 
-    function labLuar(kategori, url){
-        $('#title_lab_luar').text("Detail Hasil "+kategori+" Luar");
-        $('#img_lab_luar').attr('src',url);
-        $('#modal-lab_luar').modal({show:true, backdrop:'static'});
+    function showHasil(id, nama) {
+        var data = $('#id_id' +id).val();
+        $('#item_hasil_lab').html('');
+        $('#li_hasil_lab').html('');
+        if (data != null && data != '') {
+            var result = JSON.parse(data);
+            $('#title_hasil_lab').html(nama);
+            if (result.length > 0) {
+                var set = '';
+                var li = '';
+                $.each(result, function (i, item) {
+                    var cla = 'class="item"';
+                    var claLi = '';
+                    if (i == 0) {
+                        cla = 'class="item active"';
+                        claLi = 'class="active"';
+                    }
+                    var x = item.urlImg;
+                    var tipe = x.split('.').pop();
+                    if("pdf" == tipe){
+                        set += '<div ' + cla + '>\n' +
+                            '<embed src="'+item.urlImg+'" style="width: 100%; height: 70%"/>'+
+                            '</div>';
+                    }else{
+                        set += '<div ' + cla + '>\n' +
+                            '<img src="' + item.urlImg + '" style="width: 100%">\n' +
+                            '</div>';
+                    }
+                    li += '<li data-target="#carousel-hasil_lab" data-slide-to="' + i + '" ' + claLi + '></li>';
+                });
+                $('#item_hasil_lab').html(set);
+                $('#li_hasil_lab').html(li);
+            }
+            $('#modal-hasil_lab').modal({show: true, backdrop: 'static'});
+        }
     }
 
     function loadModalRM(jenis, method, parameter, idRM, flag, flagHide) {

@@ -52,7 +52,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="input-group pull-right">
-                                    <input onchange="cekHasil()" class="form-control" placeholder="Scan No Order Lab" id="id_order" oninput="$(this).css('border','');">
+                                    <input onchange="cekHasil()" class="form-control" placeholder="Scan No Order Radiologi" id="id_order" oninput="$(this).css('border','');">
                                     <div class="input-group-btn" onclick="cekHasil()">
                                         <button class="btn btn-success"><i class="fa fa-search"></i> Search</button>
                                     </div>
@@ -64,7 +64,7 @@
                         <div class="form-group">
                             <s:form id="radiologiForm" method="post" namespace="/radiologi" action="search_radiologi.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Periksa Lab</label>
+                                    <label class="control-label col-sm-4">ID Periksa Radiologi</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_periksa_lab" cssStyle="margin-top: 7px"
                                                      name="periksaLab.idPeriksaLab" required="false"
@@ -211,7 +211,7 @@
                                                     <s:url var="add_periksa_radiologi" namespace="/radiologi" action="add_radiologi" escapeAmp="false">
                                                         <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
                                                         <s:param name="lab"><s:property value="idHeaderPemeriksaan"/></s:param>
-                                                        <s:param name="ket"><s:property value="keterangan"/></s:param>
+                                                        <s:param name="ket"><s:property value="isJustLab"/></s:param>
                                                     </s:url>
                                                     <s:a href="%{add_periksa_radiologi}">
                                                         <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
@@ -225,7 +225,7 @@
                                                 <s:url var="add_periksa_radiologi" namespace="/radiologi" action="add_radiologi" escapeAmp="false">
                                                     <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
                                                     <s:param name="lab"><s:property value="idHeaderPemeriksaan"/></s:param>
-                                                    <s:param name="ket"><s:property value="keterangan"/></s:param>
+                                                    <s:param name="ket"><s:property value="isJustLab"/></s:param>
                                                 </s:url>
                                                 <s:a href="%{add_periksa_radiologi}">
                                                     <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
@@ -367,7 +367,7 @@
                 if(res != null){
                     if(res.idHeaderPemeriksaan != '' && res.idHeaderPemeriksaan != null){
                         if("3" != res.statusPeriksa){
-                            window.location.href = 'add_radiologi.action?id='+res.idDetailCheckup+'&lab='+res.idHeaderPemeriksaan+'&ket=';
+                            window.location.href = 'add_radiologi.action?id='+res.idDetailCheckup+'&lab='+res.idHeaderPemeriksaan+'&ket='+res.isJustLab;
                         }else{
                             $('#id_order').css('border','red solid 1px');
                             $('#warning_text').html('<i class="fa fa-warning blink_me_atas"></i> Pasien sudah selesai...!');

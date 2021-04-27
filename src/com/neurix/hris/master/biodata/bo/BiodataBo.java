@@ -124,4 +124,6 @@ public interface BiodataBo extends BaseMasterBo<Biodata>{
     public String cekStatusJabatan(String nip, String statusJabatan);
     public String cekJabatan(String nip);
     public String cekMutasiJabatan(String pengalamanId);
+
+    public void berhentikanKso(String nip);
 }

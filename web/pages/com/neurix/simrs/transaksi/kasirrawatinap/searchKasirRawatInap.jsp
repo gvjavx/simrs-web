@@ -54,7 +54,7 @@
                             <s:form id="kasirinapForm" method="post" namespace="/kasirinap"
                                     action="search_kasirinap.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Pasien</label>
+                                    <label class="control-label col-sm-4">No RM</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
                                                      name="rawatInap.idPasien" required="false"
@@ -193,9 +193,8 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>No Checkup</td>
-                                <td>ID Pasien</td>
+                                <td>No RM</td>
                                 <td>Nama</td>
-                                <td>Status Periksa</td>
                                 <td>Status</td>
                                 <td>Keterangan</td>
                                 <td align="center">Action</td>
@@ -207,8 +206,7 @@
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="statusPeriksaName"/></td>
-                                    <td style="vertical-align: middle">
+                                    <td style="vertical-align: middle" width="13%">
                                         <s:if test='#row.statusBayar == "Y"'>
                                             <span class="span-success"> sudah bayar</span>
                                         </s:if>

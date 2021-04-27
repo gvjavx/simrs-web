@@ -160,7 +160,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textarea id="delNoteLog" height="10%" readonly="true" name="logCron.note" required="true" cssClass="form-control"/>
+                                <s:textarea id="delNoteLog" cols="5" readonly="true" name="logCron.note" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
