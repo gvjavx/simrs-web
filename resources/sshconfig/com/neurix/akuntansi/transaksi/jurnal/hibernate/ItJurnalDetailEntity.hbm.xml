@@ -13,9 +13,9 @@
         <property name="noJurnal">
             <column name="no_jurnal" sql-type="varchar" length="12" not-null="true" />
         </property>
-        <property name="rekeningId">
+        <!--<property name="rekeningId">
             <column name="rekening_id" sql-type="varchar" length="12" not-null="true" />
-        </property>
+        </property>-->
         <property name="masterId">
             <column name="master_id" sql-type="varchar" length="17" not-null="false" />
         </property>

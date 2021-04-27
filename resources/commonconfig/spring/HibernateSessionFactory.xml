@@ -46,7 +46,7 @@
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
                 <!-- ====== LOCALHOST ======= -->
-                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/aji_nmu_110221</prop>
+                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/gomedsys_mig_19042021</prop>
                 <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
                 <prop key="hibernate.connection.username">postgres</prop>
                 <prop key="hibernate.connection.password">postgres</prop>
@@ -672,6 +672,17 @@
                 <!--<value>-->
                     <!--sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/hibernate/ItAkunLampiranEntity.hbm.xml-->
                 <!--</value>-->
+
+                <value>
+                    sshconfig/com/neurix/akuntansi/transaksi/kas/hibernate/ItAkunKasEntity.xml
+                </value>
+                <value>
+                    sshconfig/com/neurix/akuntansi/transaksi/kas/hibernate/ItAkunKasDetailEntity.xml
+                </value>
+                <value>
+                    sshconfig/com/neurix/akuntansi/transaksi/kas/hibernate/ItAkunLampiranEntity.hbm.xml
+                </value>
+
                 <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalPendingEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalDetailEntity.hbm.xml</value>

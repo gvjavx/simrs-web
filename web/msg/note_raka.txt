@@ -1,3 +1,94 @@
+------ 2021-04-27 ===> keperluan table Kas
+-- Table: public.it_akun_kas
+
+-- DROP TABLE public.it_akun_kas;
+
+CREATE TABLE public.it_akun_kas
+(
+    kas_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    tipe_transaksi character varying(2) COLLATE pg_catalog."default",
+    tanggal date,
+    coa_kas character varying(20) COLLATE pg_catalog."default",
+    bayar numeric(15,2),
+    keterangan character varying(400) COLLATE pg_catalog."default",
+    no_slip_bank character varying(20) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    branch_id character varying(5) COLLATE pg_catalog."default",
+    no_jurnal character varying(20) COLLATE pg_catalog."default",
+    registered_flag character varying(1) COLLATE pg_catalog."default",
+    registered_date date,
+    registered_who character varying(100) COLLATE pg_catalog."default",
+    tipe_kas character varying(5) COLLATE pg_catalog."default",
+    approval_keuangan_flag character varying(1) COLLATE pg_catalog."default",
+    approval_keuangan_id character varying(100) COLLATE pg_catalog."default",
+    approval_keuangan_name character varying(100) COLLATE pg_catalog."default",
+    approval_keuangan_date timestamp without time zone,
+    approval_kasub_keuangan_flag character varying(1) COLLATE pg_catalog."default",
+    approval_kasub_keuangan_id character varying(100) COLLATE pg_catalog."default",
+    approval_kasub_keuangan_name character varying(100) COLLATE pg_catalog."default",
+    approval_kasub_keuangan_date timestamp without time zone,
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    metode_pembayaran character varying(10) COLLATE pg_catalog."default",
+    currencyid character varying(4) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_kas_pkey PRIMARY KEY (kas_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.it_akun_kas
+    OWNER to postgres;
+
+
+-- Table: public.it_akun_kas_detail
+
+-- DROP TABLE public.it_akun_kas_detail;
+
+CREATE TABLE public.it_akun_kas_detail
+(
+    kas_detail_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    kas_id character varying(15) COLLATE pg_catalog."default",
+    master_id character varying(13) COLLATE pg_catalog."default",
+    no_nota character varying(20) COLLATE pg_catalog."default",
+    jumlah_pembayaran numeric(15,2),
+    flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    kode_coa character varying(30) COLLATE pg_catalog."default",
+    divisi_id character varying(13) COLLATE pg_catalog."default",
+    no_faktur_pajak character varying(30) COLLATE pg_catalog."default",
+    url_faktur_image character varying(100) COLLATE pg_catalog."default",
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    ppn numeric(15,2),
+    pph numeric(15,2),
+    CONSTRAINT it_akun_kas_detail_pkey PRIMARY KEY (kas_detail_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.it_akun_kas_detail
+    OWNER to postgres;
+
+-- Sequence Kas
+    CREATE SEQUENCE public.seq_kas
+        INCREMENT 1
+        START 1
+        MINVALUE 1
+        MAXVALUE 9223372036854775807
+        CACHE 1;
+
+    ALTER SEQUENCE public.seq_kas
+        OWNER TO postgres;
+
 ------ 2021-04-26 ===> update IM_FUNCTIONS untuk kas & sewa lahan
 -- Kas Masuk & Keluar
     UPDATE im_functions
