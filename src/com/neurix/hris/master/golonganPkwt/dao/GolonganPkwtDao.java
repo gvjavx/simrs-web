@@ -81,6 +81,22 @@ public class GolonganPkwtDao extends GenericDao<ImGolonganPkwtEntity, String> {
 
         return results;
     }
+
+    public String cekGolonganPkwt(String name, String id) throws HibernateException {
+        String result = "notExits";
+
+        List<ImGolonganPkwtEntity> golPkwt = this.sessionFactory.getCurrentSession().createCriteria(ImGolonganPkwtEntity.class)
+                .add(Restrictions.or(Restrictions.ilike("golonganPkwtName",name),Restrictions.ilike("golonganPkwtId",id)))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("golonganPkwtId"))
+                .list();
+
+        if(golPkwt.size()>0){
+            result = "exist";
+        }
+        return result;
+    }
+
     public List<ImGolonganPkwtEntity> getGolonganById(String golonganPkwtId) throws HibernateException {
 
         List<ImGolonganPkwtEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImGolonganPkwtEntity.class)

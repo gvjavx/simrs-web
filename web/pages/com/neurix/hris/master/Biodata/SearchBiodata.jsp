@@ -944,13 +944,13 @@
                                                     </s:if>
                                                 </display:column>
                                                 <display:column media="html" title="Detail">
-                                                    <s:if test="#attr.row.flagYes">
+                                                    <%--<s:if test="#attr.row.flagYes">--%>
                                                         <s:a action="delete_biodata.action">
                                                             <s:param name="id"><s:property value="#attr.row.nip"/> </s:param>
                                                             <s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>
                                                             <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Detail
                                                         </s:a>
-                                                    </s:if>
+                                                    <%--</s:if>--%>
                                                 </display:column>
                                                 <display:column media="html" title="Print">
                                                     <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">

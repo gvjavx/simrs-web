@@ -121,6 +121,8 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String keteranganHasil;
     private String satuan;
     private String isCatatan;
+    private List<UploadHasilPemeriksaan> uploadDalam = new ArrayList<>();
+    private List<UploadHasilPemeriksaan> uploadLuar = new ArrayList<>();
 
     public String getIsCatatan() {
         return isCatatan;
@@ -305,9 +307,6 @@ public class PeriksaLab extends BaseModel implements Serializable{
     public void setIsLuar(String isLuar) {
         this.isLuar = isLuar;
     }
-
-    private List<UploadHasilPemeriksaan> uploadDalam = new ArrayList<>();
-    private List<UploadHasilPemeriksaan> uploadLuar = new ArrayList<>();
 
     public List<UploadHasilPemeriksaan> getUploadDalam() {
         return uploadDalam;

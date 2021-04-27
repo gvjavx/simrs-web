@@ -14,7 +14,11 @@
       phone_person character varying(100),
       email_person character varying(100),
       status character varying(5),
-      message character varying(1000),
+      status_bank character varying(5),
+      message character varying(10000),
+      channel character varying(1000),
+      invoice_date date,
+      invoice_number bigint,
       sent_date timestamp without time zone,
       received_date timestamp without time zone,
       created_date timestamp without time zone,
@@ -291,7 +295,7 @@
     UPDATE im_functions
         SET url = REPLACE(url, 'IuranDplk', 'DplkPegawai');
    UPDATE im_functions
-        SET url = REPLACE (url, 'searchPayrollSkalaGajiPensiun', 'searchPayrollSkalaGajiDplkPegawai');
+        SET url = REPLACE (url, 'searchPayrollSkalaGajiDplkPegawai', 'searchPayrollSkalaGajiDplkPegawai');
     UPDATE im_functions
         SET func_name = 'S.G.P Dplk Pegawai' WHERE func_id = 1182;
 

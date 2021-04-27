@@ -418,7 +418,7 @@ public class LemburAction extends BaseMasterAction {
     }
 
     public String saveAdd(){
-        logger.info("[AlatAction.saveAdd] start process >>>");
+        logger.info("[LemburAction.saveAdd] start process >>>");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
@@ -433,7 +433,7 @@ public class LemburAction extends BaseMasterAction {
             lamaJam = calcJamLembur(lembur.getNip(), lembur.getStTanggalAwal(),lembur.getStTanggalAkhir(),lembur.getJamAwal(),lembur.getJamAkhir());
 
         }catch (ParseException e) {
-            logger.error("[lemburAction.saveAdd] Error when saving error,", e);
+            logger.error("[LemburAction.saveAdd] Error when saving error,", e);
             return ERROR;
         }
         lembur.setLamaJam(lamaJam);

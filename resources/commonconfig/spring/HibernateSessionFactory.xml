@@ -40,16 +40,16 @@
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
                 <!-- ===== DEV ====== -->
-                <!--<prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu_090421</prop>-->
-                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
-                <!--<prop key="hibernate.connection.username">root</prop>-->
-                <!--<prop key="hibernate.connection.password">123456</prop>-->
-
-                <!-- ===== LOCAL ====== -->
-                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/gomedsys_nmu</prop>
+                <prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu_090421</prop>
                 <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
                 <prop key="hibernate.connection.username">root</prop>
                 <prop key="hibernate.connection.password">123456</prop>
+
+                <!-- ===== LOCAL ====== -->
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/gomedsys_nmu</prop>-->
+                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
+                <!--<prop key="hibernate.connection.username">root</prop>-->
+                <!--<prop key="hibernate.connection.password">123456</prop>-->
 
 
             </props>
@@ -250,7 +250,7 @@
                     sshconfig/com/neurix/hris/master/payrollSkalaGajiPkwt/hibernate/ImPayrollSkalaGajiPkwtEntity.hbm.xml
                 </value>
                 <value>
-                    sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunRni/hibernate/ImPayrollSkalaGajiPensiunRniEntity.hbm.xml
+                    sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiun/hibernate/ImPayrollSkalaGajiPensiunEntity.hbm.xml
                 </value>
                 <value>
                     sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/hibernate/ImPayrollSkalaGajiPensiunDplkEntity.hbm.xml
@@ -323,7 +323,7 @@
                     sshconfig/com/neurix/hris/master/payrollSkalaGajiPkwt/hibernate/ImPayrollSkalaGajiPkwtHistoryEntity.hbm.xml
                 </value>
                 <value>
-                    sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunRni/hibernate/ImPayrollSkalaGajiPensiunRniHistoryEntity.hbm.xml
+                    sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiun/hibernate/ImPayrollSkalaGajiPensiunHistoryEntity.hbm.xml
                 </value>
                 <value>
                     sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/hibernate/ImPayrollSkalaGajiPensiunDplkHistoryEntity.hbm.xml
@@ -348,7 +348,7 @@
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollMinimumPromosiEntity.hbm.xml
                 </value>
                 <value>
-                    sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiun/hibernate/ImPayrollSkalaGajiPensiunEntity.hbm.xml
+                    sshconfig/com/neurix/hris/master/payrollSkalaGajiDplkPegawai/hibernate/ImPayrollSkalaGajiDplkPegawaiEntity.hbm.xml
                 </value>
 
                 <!-- For Rekruitmen -->
@@ -1001,7 +1001,10 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/periksalab/hibernate/ItSimrsHeaderPemeriksaanEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/transaksi/logcron/hibernate/ItLogCronEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/simrs/transaksi/logtransaction/hibernate/ItPgLogTransactionEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/billingSystem/hibernate/ItPgLogTransactionEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/billingSystem/hibernate/ItPgInvoiceEntity.hbm.xml</value>
+
+
 
             </list>
 

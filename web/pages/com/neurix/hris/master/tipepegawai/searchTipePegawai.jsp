@@ -16,7 +16,7 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <%--<script type='text/javascript' src='<s:url value="/dwr/engine.js"/>'></script>--%>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/AlatAction.js"/>'></script>
+    <%--<script type='text/javascript' src='<s:url value="/dwr/interface/AlatAction.js"/>'></script>--%>
 
 
     <style>
@@ -89,7 +89,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Status Pegawai
+            Tipe Pegawai
         </h1>
     </section>
 

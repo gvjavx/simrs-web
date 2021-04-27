@@ -17,9 +17,9 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var nameGolonganPkwt    = document.getElementById("golonganPkwtName1").value;
-            // var idGolonganPkwt    = document.getElementById("golonganPkwtId1").value;
+            var idGolonganPkwt    = document.getElementById("golonganPkwtId1").value;
 
-            if (nameGolonganPkwt != '' && idGolonganPkwt !='') {
+            if (nameGolonganPkwt != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -36,9 +36,9 @@
 
                 var msg = "";
 
-                // if (idGolonganPkwt == '') {
-                //     msg += 'Field <strong>Golongan Pkwt ID</strong> is required.' + '<br/>';
-                // }
+                if (idGolonganPkwt == '') {
+                    msg += 'Field <strong>Golongan Pkwt ID</strong> is required.' + '<br/>';
+                }
                 if (nameGolonganPkwt == '') {
                     msg += 'Field <strong>Golongan Pkwt Name</strong> is required.' + '<br/>';
                 }
@@ -109,16 +109,16 @@
                 </table>
 
                 <table >
-                    <%--<tr>--%>
-                        <%--<td>--%>
-                            <%--<label class="control-label"><small>Golongan Pkwt ID :</small></label>--%>
-                        <%--</td>--%>
-                        <%--<td>--%>
-                            <%--<table>--%>
-                                <%--<s:textfield id="golonganPkwtId1" name="golonganPkwt.golonganPkwtId" required="true" disabled="false" cssClass="form-control"/>--%>
-                            <%--</table>--%>
-                        <%--</td>--%>
-                    <%--</tr>--%>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Golongan Pkwt ID :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="golonganPkwtId1" name="golonganPkwt.golonganPkwtId" required="true" disabled="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
 
                     <tr>
                         <td>

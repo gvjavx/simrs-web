@@ -581,7 +581,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tpegawai.flag = '"+flag+"'\n" + searchNip + searchNama + searchBranchId + searchDivisiId + searchTipePegawai + searchJmlAnak +
 //                "\tAND itPosisi.jenis_pegawai = 'JP01'\n" + // Mencari yg jenis Jabatan NORMAL (Jabatan Utama)
                 "\torder by \n" +
-                "\titPosisi.position_id, itPosisi.jenis_pegawai"; //Memprioritaskan jenis jabatan NORMAL (berdasarkan order jabatan_pegawai ID)
+                "\titPosisi.jenis_pegawai ASC, itPosisi.position_id"; //Memprioritaskan jenis jabatan NORMAL (berdasarkan order jabatan_pegawai ID)
 
 //        String query = "select DISTINCT \n" +
 //                "\titPosisi.branch_id,\n" +
@@ -1888,7 +1888,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "WHERE a.branch_id ILIKE :unit \n" +
                 "AND b.nama_pegawai ILIKE :nama \n" +
                 "AND a.flag = 'Y' \n" +
-                "AND b.flag = 'Y' ";
+                "AND b.flag = 'Y' \n" +
+                "LIMIT 8";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("unit", branchId)
