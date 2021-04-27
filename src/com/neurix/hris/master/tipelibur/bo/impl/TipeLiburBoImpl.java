@@ -78,14 +78,32 @@ public class TipeLiburBoImpl implements TipeLiburBo{
                     logger.error("Data tidak dapat dihapus karena telah digunakan transaksi.");
                     throw new GeneralBOException("Data tidak dapat dihapus karena telah digunakan transaksi.");
                 }
+            }else if("U".equalsIgnoreCase(bean.getAction())) {
+                List<ImHrisTipeLibur> tipeLiburList = new ArrayList();
+                try {
+                    Map criteria = new HashMap();
+                    criteria.put("tipe_libur_name", bean.getTipeLiburName());
+                    criteria.put("flag", "Y");
+                    tipeLiburList = tipeLiburDao.getByCriteria(criteria);
+                } catch (HibernateException e) {
+                    logger.error("[TipePegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting tipe libur by criteria, please info to your admin..." + e.getMessage());
+                }
+
+                if(tipeLiburList.size()>0){
+                    logger.error("Data dengan nama nama tersebut sudah tersedia.");
+                    throw new GeneralBOException("Data tipe libur dengan nama tersebut sudah tersedia.");
+                }
             }
+
+
             try {
                 // Get data from database by ID
                 imHrisTipeLibur = tipeLiburDao.getById("tipeLiburId", liburId);
                 tipelLiburIdHistory = tipeLiburDao.getNextLiburHistoryId();
             } catch (HibernateException e) {
                 logger.error("[TipeLiburBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data Tipe Libur by ID, please inform to your admin...," + e.getMessage());
             }
 
             if (imHrisTipeLibur != null){
