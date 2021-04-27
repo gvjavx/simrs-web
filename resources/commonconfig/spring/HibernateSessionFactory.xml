@@ -1005,6 +1005,9 @@
                 <value>sshconfig/com/neurix/akuntansi/transaksi/billingSystem/hibernate/ItPgLogTransactionEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/billingSystem/hibernate/ItPgInvoiceEntity.hbm.xml</value>
 
+                <value>sshconfig/com/neurix/akuntansi/master/akunMataUang/hibernate/ImAkunMataUangEntity.xml</value>
+
+
 
 
             </list>

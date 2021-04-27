@@ -37,5 +37,18 @@
         <property name="master">
             <column name="master" sql-type="varchar" length="20" not-null="false" />
         </property>
+
+        <property name="isOtomatis">
+            <column name="is_otomatis" sql-type="varchar" length="100" not-null="true" />
+        </property>
+        <property name="tipeJurnalId">
+            <column name="tipe_jurnal_id" sql-type="varchar" length="100" not-null="true" />
+        </property>
+        <property name="flagSumberBaru">
+            <column name="flag_sumber_baru" sql-type="varchar" length="100" not-null="true" />
+        </property>
+        <property name="flagPengajuanBiaya">
+            <column name="flag_pengajuan_biaya" sql-type="varchar" length="100" not-null="true" />
+        </property>
     </class>
 </hibernate-mapping>
