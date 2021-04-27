@@ -136,7 +136,7 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a href="addRawatIgd_igd.action" type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</a>
+                                        <%--<a href="addRawatIgd_igd.action" type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</a>--%>
                                         <a type="button" class="btn btn-danger" href="initForm_igd.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>

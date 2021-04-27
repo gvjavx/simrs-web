@@ -76,6 +76,7 @@
             <result name="search">/pages/com/neurix/simrs/transaksi/rawatinap/searchRawatInap.jsp</result>
             <result name="init_add">/pages/com/neurix/simrs/transaksi/rawatinap/addRawatInap.jsp</result>
             <result name="search_tppri">/pages/com/neurix/simrs/transaksi/rawatinap/searchTppri.jsp</result>
+            <result name="init_add_igd">/pages/com/neurix/simrs/transaksi/igd/addPendaftaranIgd.jsp</result>
 
             <result name="print_resep" type="jasper">
                 <param name="location">/pages/report/com/neurix/simrs/printResepPasien.jasper</param>

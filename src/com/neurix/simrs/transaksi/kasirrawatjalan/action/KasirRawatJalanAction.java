@@ -1164,9 +1164,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                         if (listDetilCheckup.size() > 0) {
                             String idDetailCheckup = listDetilCheckup.get(listDetilCheckup.size() - 1);
                             detailCheckupEntity = checkupDetailBo.getDetailCheckupById(idDetailCheckup);
-                            //                for (String idDetailCheckup : listDetilCheckup){
-                            //                    break;
-                            //                }
                         }
                     }
 
@@ -1284,15 +1281,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                                                 if (!"asuransi".equalsIgnoreCase(jenis) && !"bpjs".equalsIgnoreCase(jenis)) {
                                                     listOfMapTindakanAsuransiRi.add(mapTindakanAsuransi);
                                                 }
-//                                                if("resep".equalsIgnoreCase(keterangan)){
-//                                                    BigDecimal ppnObatUmum = hitungPPN(getJumlahNilaiBiayaByKeterangan(idDetail, "umum", keterangan, "", ""));
-//                                                    BigDecimal ppnObatAsuransi = new BigDecimal(0);
-//                                                    if (!"asuransi".equalsIgnoreCase(jenis) && !"bpjs".equalsIgnoreCase(jenis)) {
-//                                                        ppnObatAsuransi = hitungPPN(getJumlahNilaiBiayaByKeterangan(idDetail, "asuransi", keterangan, "", ""));
-//                                                    }
-//                                                    BigDecimal jumlahPPN = ppnObatUmum.add(ppnObatAsuransi);
-//                                                    ppnObat = ppnObat.add(jumlahPPN);
-//                                                }
                                             } else {
                                                 listOfMapTindakanUmumRi.add(mapTindakanUmum);
                                                 if (!"asuransi".equalsIgnoreCase(jenis) && !"bpjs".equalsIgnoreCase(jenis)) {

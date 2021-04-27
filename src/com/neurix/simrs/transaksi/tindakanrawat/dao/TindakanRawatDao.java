@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.tindakanrawat.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
@@ -128,9 +129,10 @@ public class TindakanRawatDao extends GenericDao<ItSimrsTindakanRawatEntity, Str
                 "a.qty,\n" +
                 "a.tarif_total,\n" +
                 "a.id_detail_checkup,\n" +
-                "d.id_pelayanan,\n" +
+                "a.id_pelayanan,\n" +
                 "d.nama_pelayanan,\n" +
-                "a.created_date\n" +
+                "a.created_date,\n" +
+                "a.id_dokter\n" +
                 "FROM it_simrs_tindakan_rawat a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
@@ -143,7 +145,8 @@ public class TindakanRawatDao extends GenericDao<ItSimrsTindakanRawatEntity, Str
                 "a.branch_id,"+
                 "b.kode_vclaim\n" +
                 "FROM im_simrs_pelayanan a\n" +
-                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) d ON b.id_pelayanan = d.id_pelayanan\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
+                ") d ON b.id_pelayanan = d.id_pelayanan\n" +
                 "WHERE c.no_checkup = :id AND b.id_jenis_periksa_pasien = :jen \n" +
                 "ORDER BY a.id_detail_checkup ASC";
         List<Object[]> result = new ArrayList<>();
@@ -164,10 +167,49 @@ public class TindakanRawatDao extends GenericDao<ItSimrsTindakanRawatEntity, Str
                 tindakanRawat.setIdPelayanan(obj[7] != null ? obj[7].toString() : "");
                 tindakanRawat.setNamaPelayanan(obj[8] != null ? obj[8].toString() : "");
                 tindakanRawat.setCreatedDate(obj[9] != null ? (Timestamp) obj[9] : null);
+                tindakanRawat.setIdDokter(obj[10] != null ? (String) obj[10] : null);
+                tindakanRawat.setIdKategoriTindakan(getIdKategoriTindakan(tindakanRawat.getIdTindakan()));
+                tindakanRawat.setKategoriRuangan(getKategoriRuangan(tindakanRawat.getIdDetailCheckup()));
                 rawatList.add(tindakanRawat);
             }
         }
         return rawatList;
+    }
+
+    private String getIdKategoriTindakan(String idTindakan) {
+        String idKategoriTindakan = "";
+        if(idTindakan != null && !"".equalsIgnoreCase(idTindakan)){
+            Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsTindakanEntity.class);
+            criteria.add(Restrictions.ilike("idTindakan", idTindakan));
+            criteria.add(Restrictions.eq("flag", "Y"));
+            List<ImSimrsTindakanEntity> listOfResult = criteria.list();
+            if(listOfResult.size() > 0){
+                idKategoriTindakan = listOfResult.get(0).getIdKategoriTindakan();
+            }
+        }
+        return idKategoriTindakan;
+    }
+
+    private String getKategoriRuangan(String idDetailCheckup){
+        String kategoriRuangan = "";
+        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
+            String SQL = "SELECT\n" +
+                    "a.id_rawat_inap,\n" +
+                    "d.kategori\n" +
+                    "FROM it_simrs_rawat_inap a\n" +
+                    "INNER JOIN mt_simrs_ruangan_tempat_tidur b ON a.id_ruangan = b.id_tempat_tidur\n" +
+                    "INNER JOIN mt_simrs_ruangan c ON b.id_ruangan = c.id_ruangan\n" +
+                    "INNER JOIN im_simrs_kelas_ruangan d ON c.id_kelas_ruangan = d.id_kelas_ruangan\n" +
+                    "WHERE a.id_detail_checkup = :id";
+            List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idDetailCheckup)
+                    .list();
+            if(results.size() > 0){
+                Object[] obj = results.get(0);
+                kategoriRuangan = obj[1].toString();
+            }
+        }
+        return kategoriRuangan;
     }
 
     public String getNextTindakanRawatId(){

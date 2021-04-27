@@ -21,6 +21,7 @@
           p:asuransiBoProxy-ref="asuransiBoProxy"
 
     />
+
     <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
           p:checkupBoProxy-ref="checkupBoProxy"
     />
@@ -41,9 +42,6 @@
     <bean id="dokterController" class="com.neurix.simrs.mobileapi.DokterController"
           p:checkupBoProxy-ref="checkupBoProxy"
     />
-
-
-
 
     <bean id="checkupBo" class="com.neurix.simrs.transaksi.checkup.bo.impl.CheckupBoImpl"
           p:headerCheckupDao-ref="headerCheckupDao"
@@ -93,6 +91,7 @@
           p:pasienDao-ref="pasienDao"
           p:headerPemeriksaanDao-ref="headerPemeriksaanDao"
           p:labDao-ref="labDao"
+          p:asuransiDao-ref="asuransiDao"
     />
 
     <bean id="checkupBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

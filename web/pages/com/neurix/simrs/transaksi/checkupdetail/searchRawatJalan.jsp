@@ -236,9 +236,6 @@
                                                     <s:a href="%{add_rawat_jalan}">
                                                         <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                                     </s:a>
-                                                    <s:if test='#row.statusPeriksa == "0"'>
-                                                        <img onclick="cancelPeriksa('<s:property value="idDetailCheckup"/>')" style="cursor: pointer" class="hvr-grow" src="<s:url value="/pages/images/cancel-flat-new.png"/>">
-                                                    </s:if>
                                                 </s:if>
                                                 <s:else>
                                                     <span class="span-warning">Uang muka belum bayar</span>
@@ -251,9 +248,6 @@
                                                 <s:a href="%{add_rawat_jalan}">
                                                     <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                                 </s:a>
-                                                <s:if test='#row.statusPeriksa == "0"'>
-                                                    <img onclick="cancelPeriksa('<s:property value="idDetailCheckup"/>')" style="cursor: pointer" class="hvr-grow" src="<s:url value="/pages/images/cancel-flat-new.png"/>">
-                                                </s:if>
                                             </s:else>
                                         </s:if>
 
@@ -350,52 +344,6 @@
 
 <%@ include file="/pages/common/footer.jsp" %>
 <%@ include file="/pages/common/lastScript.jsp" %>
-
-<script>
-    function cancelPeriksa(idDetailCHeckup){
-        CheckupAction.listDataPasien(idDetailCHeckup, {
-            callback: function (res) {
-                $('#det_no_checkup').text(res.noCheckup);
-                $('#det_id_detail_checkup').text(res.idDetailCheckup);
-                $('#det_no_rm').text(res.idPasien);
-                $('#det_nama_pasien').text(res.nama);
-                $('#det_pelayanan').text(res.namaPelayanan);
-                $('#det_jenis_pasien').text(res.statusPeriksaName);
-                $('#det_alamat').text(res.namaDesa+", "+res.namaKecamatan+", "+res.namaKota);
-            }
-        });
-        $('#save_add').attr('onclick', 'saveCancel(\''+idDetailCHeckup+'\')');
-        $('#modal-detail').modal({show: true, backdrop:'static'});
-    }
-
-    function saveCancel(idDetailCHeckup){
-        var alsan = $('#set_alasan').val();
-        if(alsan != ''){
-            $('#save_add').hide();
-            $('#load_add').show();
-            dwr.engine.setAsync(true);
-            CheckupAction.cancelPeriksa(idDetailCHeckup, alsan, {
-                callback: function (res) {
-                    if(res.status == "success"){
-                        $('#save_add').show();
-                        $('#load_add').hide();
-                        $('#modal-detail').modal('hide');
-                        $('#info_dialog').dialog('open');
-                    }else{
-                        $('#save_add').show();
-                        $('#load_add').hide();
-                        $('#warning_cancel').show().fadeOut(5000);
-                        $('#msg_cancel').text(res.msg);
-                    }
-                }
-            });
-        }else{
-            $('#warning_cancel').show().fadeOut(5000);
-            $('#msg_cancel').text("Silahkan masukkan alasan pasien...!");
-        }
-    }
-
-</script>
 
 </body>
 </html>

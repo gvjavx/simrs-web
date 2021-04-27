@@ -857,7 +857,6 @@ function listSelectTindakanKategori(val) {
             }
         });
     }
-
 }
 
 function getListNamaDokter(tipe) {

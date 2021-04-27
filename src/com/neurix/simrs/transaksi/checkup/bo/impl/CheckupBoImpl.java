@@ -12,6 +12,8 @@ import com.neurix.simrs.bpjs.tindakan.model.TindakanBpjs;
 import com.neurix.simrs.master.dokter.dao.DokterDao;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
+import com.neurix.simrs.master.jenisperiksapasien.dao.AsuransiDao;
+import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
 import com.neurix.simrs.master.lab.dao.LabDao;
 import com.neurix.simrs.master.lab.model.ImSimrsLabEntity;
 import com.neurix.simrs.master.lab.model.Lab;
@@ -177,6 +179,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     private PasienDao pasienDao;
     private HeaderPemeriksaanDao headerPemeriksaanDao;
     private LabDao labDao;
+    private AsuransiDao asuransiDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -291,12 +294,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     public List<HeaderCheckup> setTemplateToHeaderCheckupResult(List<ItSimrsHeaderChekupEntity> listHeader) {
         logger.info("[CheckupBoImpl.setTemplateToHeaderCheckupResult] Start >>>>>>>");
-
         List<HeaderCheckup> result = new ArrayList<>();
-
-        HeaderCheckup headerCheckup;
         for (ItSimrsHeaderChekupEntity headerList : listHeader) {
-            headerCheckup = new HeaderCheckup();
+            HeaderCheckup headerCheckup = new HeaderCheckup();
             headerCheckup.setNoCheckup(headerList.getNoCheckup());
             headerCheckup.setIdPasien(headerList.getIdPasien());
             headerCheckup.setNama(headerList.getNama());
@@ -307,7 +307,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             if(headerList.getTglLahir() != null){
                 headerCheckup.setUmur(CommonUtil.calculateAge(headerList.getTglLahir(), true)+" Tahun");
             }
-            headerCheckup.setStTglLahir(headerCheckup.getTglLahir().toString());
+            if(headerCheckup.getTglLahir() != null){
+                headerCheckup.setStTglLahir(headerCheckup.getTglLahir().toString());
+            }
             headerCheckup.setDesaId(headerList.getDesaId());
             headerCheckup.setJalan(headerList.getJalan());
             headerCheckup.setSuku(headerList.getSuku());
@@ -323,7 +325,6 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 headerCheckup.setUrlKtp(src);
             }
 
-            logger.info("[CheckupBoImpl.getByCriteria] URL KTP : " + headerCheckup.getUrlKtp());
             headerCheckup.setBranchId(headerList.getBranchId());
             headerCheckup.setFlag(headerList.getFlag());
             if(headerList.getCreatedDate() != null){
@@ -370,21 +371,24 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 if (teamEntity != null) {
                     headerCheckup.setIdDokter(teamEntity.getIdDokter());
                     headerCheckup.setIdTeamDokter(teamEntity.getIdTeamDokter());
+                    ImSimrsDokterEntity dokterEntity = dokterDao.getById("idDokter", teamEntity.getIdDokter());
+                    if(dokterEntity != null){
+                        headerCheckup.setNamaDokter(dokterEntity.getNamaDokter());
+                    }
                 }
             }
 
             if (headerCheckup.getDesaId() != null) {
                 List<Object[]> objs = provinsiDao.getListAlamatByDesaId(headerCheckup.getDesaId().toString());
                 if (!objs.isEmpty()) {
-                    for (Object[] obj : objs) {
-                        headerCheckup.setNamaDesa(obj[0].toString());
-                        headerCheckup.setNamaKecamatan(obj[1].toString());
-                        headerCheckup.setNamaKota(obj[2].toString());
-                        headerCheckup.setNamaProvinsi(obj[3].toString());
-                        headerCheckup.setKecamatanId(obj[4].toString());
-                        headerCheckup.setKotaId(obj[5].toString());
-                        headerCheckup.setProvinsiId(obj[6].toString());
-                    }
+                    Object[] obj = objs.get(0);
+                    headerCheckup.setNamaDesa(obj[0].toString());
+                    headerCheckup.setNamaKecamatan(obj[1].toString());
+                    headerCheckup.setNamaKota(obj[2].toString());
+                    headerCheckup.setNamaProvinsi(obj[3].toString());
+                    headerCheckup.setKecamatanId(obj[4].toString());
+                    headerCheckup.setKotaId(obj[5].toString());
+                    headerCheckup.setProvinsiId(obj[6].toString());
                 }
             }
 
@@ -3356,12 +3360,24 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     @Override
     public List<HeaderCheckup> cekKunjunganPoliPasien(String idPasien, String idPelayanan) throws GeneralBOException {
-        return headerCheckupDao.cekKunjunganPoliPasien(idPasien, idPelayanan);
+        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
+        try{
+            headerCheckupList = headerCheckupDao.cekKunjunganPoliPasien(idPasien, idPelayanan);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return headerCheckupList;
     }
 
     @Override
     public List<HeaderCheckup> daftarPasienOnline(String branchId, String idPelayanan) throws GeneralBOException {
-        return headerCheckupDao.getDaftarPasienOnline(branchId, idPelayanan);
+        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
+        try{
+            headerCheckupList = headerCheckupDao.getDaftarPasienOnline(branchId, idPelayanan);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return headerCheckupList;
     }
 
     @Override
@@ -3383,6 +3399,56 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             }
         }catch (Exception e){
             throw new GeneralBOException("Errro"+e.getMessage());
+        }
+    }
+
+    @Override
+    public void cancelPeriksaInap(HeaderDetailCheckup detailCheckup) throws GeneralBOException {
+        if(detailCheckup.getNoCheckup() != null && !"".equalsIgnoreCase(detailCheckup.getNoCheckup())){
+            RawatInap rawatInap = rawatInapDao.getPeriksaInap(detailCheckup.getNoCheckup());
+            ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", rawatInap.getIdDetailCheckup());
+            if(detailCheckupEntity != null){
+                detailCheckupEntity.setKeteranganSelesai(detailCheckup.getKeteranganSelesai());
+                detailCheckupEntity.setLastUpdate(detailCheckup.getLastUpdate());
+                detailCheckupEntity.setLastUpdateWho(detailCheckup.getLastUpdateWho());
+                detailCheckupEntity.setAction("U");
+                detailCheckupEntity.setStatusPeriksa("5");
+                detailCheckupEntity.setTindakLanjut("batal");
+                try {
+                    checkupDetailDao.updateAndSave(detailCheckupEntity);
+                }catch (HibernateException e){
+                    throw new GeneralBOException("Errro"+e.getMessage());
+                }
+            }
+
+            ItSimrsRawatInapEntity rawatInapEntity = rawatInapDao.getById("idRawatInap", rawatInap.getIdRawatInap());
+            if(rawatInapEntity != null){
+                rawatInapEntity.setLastUpdate(detailCheckup.getLastUpdate());
+                rawatInapEntity.setLastUpdateWho(detailCheckup.getLastUpdateWho());
+                rawatInapEntity.setFlag("N");
+                rawatInapEntity.setAction("U");
+                rawatInapEntity.setStatus("5");
+                try {
+                    rawatInapDao.updateAndSave(rawatInapEntity);
+                }catch (HibernateException e){
+                    throw new GeneralBOException("Errro"+e.getMessage());
+                }
+
+                MtSimrsRuanganTempatTidurEntity tempatTidurEntity = tempatTidurDao.getById("idTempatTidur", rawatInapEntity.getIdRuangan());
+                if(tempatTidurEntity != null) {
+                    tempatTidurEntity.setStatus("Y");
+                    tempatTidurEntity.setAction("U");
+                    tempatTidurEntity.setLastUpdate(detailCheckup.getLastUpdate());
+                    tempatTidurEntity.setLastUpdateWho(detailCheckup.getLastUpdateWho());
+                    try {
+                        tempatTidurDao.updateAndSave(tempatTidurEntity);
+                    } catch (HibernateException e) {
+                        logger.error("Error when Update data ruangan "+e.getMessage());
+                    }
+                }
+            }
+        }else{
+            throw new GeneralBOException("NO checkup tidak ditemukan...!");
         }
     }
 
@@ -3426,6 +3492,283 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             }
         }
         logger.info("[CheckupBoImpl.updateVitalSign] End <<<<<<<");
+    }
+
+    @Override
+    public HeaderCheckup getDataPendaftaranPasien(String idDetailCheckup) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.getDataPendaftaranPasien] Start <<<<<<<");
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
+            ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", idDetailCheckup);
+            if(detailCheckupEntity != null){
+                ItSimrsHeaderChekupEntity headerChekupEntity = headerCheckupDao.getById("noCheckup", detailCheckupEntity.getNoCheckup());
+                if(headerChekupEntity != null){
+                    List<ItSimrsDokterTeamEntity> dokterTeamEntityList = new ArrayList<>();
+                    ItSimrsDokterTeamEntity dokterTeam = new ItSimrsDokterTeamEntity();
+                    ImSimrsDokterEntity dokterEntity = new ImSimrsDokterEntity();
+
+                    HashMap hsCriteria = new HashMap();
+                    hsCriteria.put("id_detail_checkup", detailCheckupEntity.getIdDetailCheckup());
+                    try {
+                       dokterTeamEntityList = dokterTeamDao.getByCriteria(hsCriteria);
+                    }catch (HibernateException e){
+                        logger.error("[CheckupBoImpl.getDataPendaftaranPasien] Error"+e.getMessage());
+                    }
+
+                    if(dokterTeamEntityList.size() > 0){
+                        dokterTeam = dokterTeamEntityList.get(0);
+                        List<ImSimrsDokterEntity> dokterEntityList = new ArrayList<>();
+                        hsCriteria = new HashMap();
+                        hsCriteria.put("id_dokter", dokterTeam.getIdDokter());
+                        try{
+                            dokterEntityList = dokterDao.getByCriteria(hsCriteria);
+                        }catch (HibernateException e){
+                            logger.error("[CheckupBoImpl.getDataPendaftaranPasien] Error"+e.getMessage());
+                        }
+
+                        if(dokterEntityList.size() > 0){
+                            dokterEntity = dokterEntityList.get(0);
+                        }
+                    }
+
+                    ImSimrsAsuransiEntity asuransiEntity = new ImSimrsAsuransiEntity();
+                    if(detailCheckupEntity.getIdAsuransi() != null){
+                        List<ImSimrsAsuransiEntity> asuransiEntityList = new ArrayList<>();
+                        hsCriteria = new HashMap();
+                        hsCriteria.put("id_asuransi", detailCheckupEntity.getIdAsuransi());
+                        try{
+                            asuransiEntityList = asuransiDao.getByCriteria(hsCriteria);
+                        }catch (HibernateException e){
+                            logger.error("[CheckupBoImpl.getDataPendaftaranPasien] Error"+e.getMessage());
+                        }
+
+                        if(asuransiEntityList.size() > 0){
+                            asuransiEntity = asuransiEntityList.get(0);
+                        }
+                    }
+
+                    //checkup data
+                    headerCheckup.setNoCheckup(headerChekupEntity.getNoCheckup());
+                    headerCheckup.setIdPasien(headerChekupEntity.getIdPasien());
+                    headerCheckup.setNama(headerChekupEntity.getNama());
+                    headerCheckup.setJenisKelamin(headerChekupEntity.getJenisKelamin());
+                    headerCheckup.setNoKtp(headerChekupEntity.getNoKtp());
+                    headerCheckup.setTempatLahir(headerChekupEntity.getTempatLahir());
+                    headerCheckup.setTglLahir(headerChekupEntity.getTglLahir());
+                    if(headerChekupEntity.getTglLahir() != null){
+                        headerCheckup.setUmur(CommonUtil.calculateAge(headerChekupEntity.getTglLahir(), true)+" Tahun");
+                    }
+                    headerCheckup.setStTglLahir(headerCheckup.getTglLahir().toString());
+                    headerCheckup.setDesaId(headerChekupEntity.getDesaId());
+                    headerCheckup.setJalan(headerChekupEntity.getJalan());
+                    headerCheckup.setSuku(headerChekupEntity.getSuku());
+                    headerCheckup.setAgama(headerChekupEntity.getAgama());
+                    headerCheckup.setProfesi(headerChekupEntity.getProfesi());
+                    headerCheckup.setNoTelp(headerChekupEntity.getNoTelp());
+                    headerCheckup.setKeteranganKeluar(headerChekupEntity.getKeteranganKeluar());
+                    headerCheckup.setTinggi(headerChekupEntity.getTinggi());
+                    headerCheckup.setBerat(headerChekupEntity.getBerat());
+                    headerCheckup.setStatusPerkawinan(headerChekupEntity.getStatusPerkawinan());
+                    headerCheckup.setPendidikan(headerChekupEntity.getPendidikan());
+
+                    if (headerChekupEntity.getUrlKtp() != null && !"".equalsIgnoreCase(headerChekupEntity.getUrlKtp())) {
+                        String src = CommonConstant.URL_IMG + CommonConstant.RESOURCE_PATH_KTP_PASIEN + headerChekupEntity.getUrlKtp();
+                        headerCheckup.setUrlKtp(src);
+                    }
+
+                    logger.info("[CheckupBoImpl.getByCriteria] URL KTP : " + headerCheckup.getUrlKtp());
+                    headerCheckup.setBranchId(headerChekupEntity.getBranchId());
+                    headerCheckup.setNamaPenanggung(headerChekupEntity.getNamaPenanggung());
+                    headerCheckup.setHubunganKeluarga(headerChekupEntity.getHubunganKeluarga());
+                    headerCheckup.setJenisKunjungan(headerChekupEntity.getJenisKunjungan());
+
+                    //detail data
+                    headerCheckup.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                    headerCheckup.setIdPelayanan(detailCheckupEntity.getIdPelayanan());
+                    headerCheckup.setStatusPeriksa(detailCheckupEntity.getStatusPeriksa());
+                    headerCheckup.setStatusBayar(detailCheckupEntity.getStatusBayar());
+                    headerCheckup.setIdPelayananBpjs(detailCheckupEntity.getIdPelayananBpjs());
+                    headerCheckup.setIdJenisPeriksaPasien(detailCheckupEntity.getIdJenisPeriksaPasien());
+                    headerCheckup.setNoKartuAsuransi(detailCheckupEntity.getNoKartuAsuransi());
+                    headerCheckup.setIdAsuransi(detailCheckupEntity.getIdAsuransi());
+                    headerCheckup.setIsLaka(asuransiEntity.getIsLaka());
+                    headerCheckup.setCoverBiaya(detailCheckupEntity.getCoverBiaya());
+                    headerCheckup.setIsEksekutif(detailCheckupEntity.getIsEksekutif());
+                    headerCheckup.setIsVaksin(detailCheckupEntity.getIsVaksin());
+                    headerCheckup.setUrlDocRujuk(detailCheckupEntity.getUrlDocRujuk());
+
+                    //dokter team data
+                    headerCheckup.setIdDokter(dokterTeam.getIdDokter());
+                    headerCheckup.setIdTeamDokter(dokterTeam.getIdTeamDokter());
+                    headerCheckup.setNamaDokter(dokterEntity.getNamaDokter());
+
+                    //alamat pasien
+                    if (headerCheckup.getDesaId() != null) {
+                        List<Object[]> objs = provinsiDao.getListAlamatByDesaId(headerCheckup.getDesaId().toString());
+                        if (objs.size() > 0) {
+                            Object[] obj = objs.get(0);
+                            headerCheckup.setNamaDesa(obj[0].toString());
+                            headerCheckup.setNamaKecamatan(obj[1].toString());
+                            headerCheckup.setNamaKota(obj[2].toString());
+                            headerCheckup.setNamaProvinsi(obj[3].toString());
+
+                            headerCheckup.setKecamatanId(obj[4].toString());
+                            headerCheckup.setKotaId(obj[5].toString());
+                            headerCheckup.setProvinsiId(obj[6].toString());
+                        }
+                    }
+
+                    if("umum".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
+                        List<ItSimrsUangMukaPendaftaranEntity> uangMukaPendaftaranEntityList = new ArrayList<>();
+                        ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = new ItSimrsUangMukaPendaftaranEntity();
+                        hsCriteria = new HashMap();
+                        hsCriteria.put("id_detail_checkup", detailCheckupEntity.getIdDetailCheckup());
+                        try{
+                            uangMukaPendaftaranEntityList = uangMukaDao.getByCriteria(hsCriteria);
+                        }catch (HibernateException e){
+                            logger.error("[CheckupBoImpl.getDataPendaftaranPasien] Error"+e.getMessage());
+                        }
+
+                        if(uangMukaPendaftaranEntityList.size() > 0){
+                            uangMukaPendaftaranEntity = uangMukaPendaftaranEntityList.get(0);
+                        }
+                        //uang muka
+                        headerCheckup.setUangMuka(uangMukaPendaftaranEntity.getJumlah());
+                        headerCheckup.setIdUangMuka(uangMukaPendaftaranEntity.getId());
+                        headerCheckup.setStatusBayar(uangMukaPendaftaranEntity.getStatusBayar());
+                    }
+
+                    if("bpjs".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
+                        ImSimrsPasienEntity pasienEntity = pasienDao.getById("idPasien", headerChekupEntity.getIdPasien());
+                        if(pasienEntity != null){
+                            headerCheckup.setNoBpjs(pasienEntity.getNoBpjs());
+                        }
+                    }
+                }
+            }
+        }
+        logger.info("[CheckupBoImpl.getDataPendaftaranPasien] End <<<<<<<");
+        return headerCheckup;
+    }
+
+    @Override
+    public void updateDataPendaftaran(HeaderCheckup bean) throws GeneralBOException {
+        if(bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup())){
+            ItSimrsHeaderChekupEntity headerEntity = headerCheckupDao.getById("noCheckup", bean.getNoCheckup());
+            if(headerEntity != null){
+                headerEntity.setIdPasien(bean.getIdPasien());
+                headerEntity.setNama(bean.getNama());
+                headerEntity.setJenisKelamin(bean.getJenisKelamin());
+                headerEntity.setNoKtp(bean.getNoKtp().replace("_", ""));
+                headerEntity.setTempatLahir(bean.getTempatLahir());
+                if(bean.getStTglLahir() != null && !"".equalsIgnoreCase(bean.getStTglLahir())){
+                    headerEntity.setTglLahir(Date.valueOf(bean.getStTglLahir()));
+                }
+                headerEntity.setDesaId(bean.getDesaId());
+                headerEntity.setJalan(bean.getJalan());
+                headerEntity.setSuku(bean.getSuku());
+                headerEntity.setProfesi(bean.getProfesi() != null && !"".equalsIgnoreCase(bean.getProfesi()) ? bean.getProfesi() : null);
+                if (bean.getNoTelp() != null && !"".equalsIgnoreCase(bean.getNoTelp())) {
+                    String noHp = bean.getNoTelp().replace("-", "").replace("_", "");
+                    headerEntity.setNoTelp(noHp);
+                }
+                headerEntity.setAgama(bean.getAgama());
+                headerEntity.setUrlKtp(bean.getUrlKtp());
+                headerEntity.setAction("U");
+                headerEntity.setLastUpdate(bean.getLastUpdate());
+                headerEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                headerEntity.setJenisKunjungan(bean.getJenisKunjungan());
+                headerEntity.setNamaPenanggung(bean.getNamaPenanggung() != null && !"".equalsIgnoreCase(bean.getNamaPenanggung()) ? bean.getNamaPenanggung() : null);
+                headerEntity.setHubunganKeluarga(bean.getHubunganKeluarga() != null && !"".equalsIgnoreCase(bean.getHubunganKeluarga()) ? bean.getHubunganKeluarga() : null);
+                headerEntity.setBerat(bean.getBerat());
+                headerEntity.setTinggi(bean.getTinggi());
+                headerEntity.setPendidikan(bean.getPendidikan());
+                headerEntity.setStatusPerkawinan(bean.getStatusPerkawinan());
+                headerEntity.setKunjunganPoli(bean.getKunjunganPoli());
+
+                try {
+                    headerCheckupDao.updateAndSave(headerEntity);
+                    updateDataPasien(headerEntity);
+                } catch (HibernateException e) {
+                    logger.error("[CheckupBoImpl.saveAdd] Error When Saving data header checkup" + e.getMessage());
+                    throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving data header checkup");
+                }
+            }
+
+            if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+                ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
+                if(detailCheckupEntity != null){
+                    detailCheckupEntity.setNoCheckup(headerEntity.getNoCheckup());
+                    detailCheckupEntity.setIdPelayanan(bean.getIdPelayanan());
+                    detailCheckupEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
+
+                    if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+                        detailCheckupEntity.setMetodePembayaran("non_tunai");
+                    }else{
+                        if("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                            detailCheckupEntity.setMetodePembayaran("tunai");
+                        }
+                    }
+
+                    detailCheckupEntity.setNoRujukan(bean.getNoRujukan() != null && !"".equalsIgnoreCase(bean.getNoRujukan()) ? bean.getNoRujukan() : null);
+                    if(bean.getTglRujukan() != null && !"".equalsIgnoreCase(bean.getTglRujukan())){
+                        detailCheckupEntity.setTglRujukan(Date.valueOf(bean.getTglRujukan()));
+                    }
+
+                    detailCheckupEntity.setUrlDocRujuk(bean.getUrlDocRujuk() != null && !"".equalsIgnoreCase(bean.getUrlDocRujuk()) ? bean.getUrlDocRujuk() : null);
+                    detailCheckupEntity.setIdPaket(bean.getIdPaket() != null && !"".equalsIgnoreCase(bean.getIdPaket()) ? bean.getIdPaket() : null);
+                    detailCheckupEntity.setIdAsuransi(bean.getIdAsuransi() != null && !"".equalsIgnoreCase(bean.getIdAsuransi()) ? bean.getIdAsuransi() : null);
+                    detailCheckupEntity.setCoverBiaya(bean.getCoverBiaya() != null && !"".equalsIgnoreCase(bean.getCoverBiaya().toString()) ? bean.getCoverBiaya() : null);
+                    detailCheckupEntity.setNoKartuAsuransi(bean.getNoKartuAsuransi() != null && !"".equalsIgnoreCase(bean.getNoKartuAsuransi()) ? bean.getNoKartuAsuransi() : null);
+                    detailCheckupEntity.setAction("U");
+                    detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
+                    detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    detailCheckupEntity.setIsEksekutif(bean.getIsEksekutif());
+                    detailCheckupEntity.setIsVaksin(bean.getIsVaksin());
+
+                    try {
+                        checkupDetailDao.updateAndSave(detailCheckupEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[CheckupBoImpl.saveAdd] Error When Saving data header checkup" + e.getMessage());
+                        throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving data header checkup");
+                    }
+                }
+
+                if(bean.getIdTeamDokter() != null && !"".equalsIgnoreCase(bean.getIdTeamDokter())){
+                    ItSimrsDokterTeamEntity dokterTeamEntity = dokterTeamDao.getById("idTeamDokter", bean.getIdTeamDokter());
+                    if(dokterTeamEntity != null){
+                        dokterTeamEntity.setIdDokter(bean.getIdDokter());
+                        dokterTeamEntity.setAction("U");
+                        dokterTeamEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                        dokterTeamEntity.setLastUpdate(bean.getLastUpdate());
+                        try {
+                            dokterTeamDao.updateAndSave(dokterTeamEntity);
+                        }catch (HibernateException e){
+                            logger.error("[CheckupBoImpl.saveAdd] Error When Saving data header checkup" + e.getMessage());
+                            throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving data header checkup");
+                        }
+                    }
+                }
+
+                if("umum".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
+                    ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = uangMukaDao.getById("id", bean.getIdUangMuka());
+                    if(uangMukaPendaftaranEntity != null){
+                        if(bean.getUangMuka() != null && !"".equalsIgnoreCase(bean.getUangMuka().toString())){
+                            uangMukaPendaftaranEntity.setJumlah(bean.getUangMuka());
+                        }
+                        uangMukaPendaftaranEntity.setAction("U");
+                        uangMukaPendaftaranEntity.setLastUpdate(bean.getLastUpdate());
+                        uangMukaPendaftaranEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                        try {
+                            uangMukaDao.updateAndSave(uangMukaPendaftaranEntity);
+                        }catch (HibernateException e){
+                            logger.error("[CheckupBoImpl.saveAdd] Error When Saving data header checkup" + e.getMessage());
+                            throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving data header checkup");
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private CrudResponse saveRawatInap(RawatInap bean) {
@@ -3891,5 +4234,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     public void setLabDao(LabDao labDao) {
         this.labDao = labDao;
+    }
+
+    public void setAsuransiDao(AsuransiDao asuransiDao) {
+        this.asuransiDao = asuransiDao;
     }
 }

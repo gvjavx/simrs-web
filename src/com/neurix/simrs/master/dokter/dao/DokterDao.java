@@ -342,6 +342,59 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
         return dokterList;
     }
 
+    public List<Dokter> getListDokterByNoCheckup(String noCheckup){
+        List<Dokter> dokterList = new ArrayList<>();
+        if(noCheckup != null && !"".equalsIgnoreCase(noCheckup)){
+            String SQL = "SELECT \n" +
+                    "b.id_dokter, \n" +
+                    "b.nama_dokter, \n" +
+                    "c.id_pelayanan, \n" +
+                    "c.nama_pelayanan, \n" +
+                    "a.id_team_dokter, \n" +
+                    "a.flag_approve, \n" +
+                    "a.jenis_dpjp, \n" +
+                    "a.keterangan\n" +
+                    "FROM it_simrs_dokter_team a\n" +
+                    "INNER JOIN im_simrs_dokter b ON a.id_dokter = b.id_dokter\n" +
+                    "INNER JOIN (SELECT\n" +
+                    "a.id_pelayanan,\n" +
+                    "b.nama_pelayanan,\n" +
+                    "a.branch_id,\n" +
+                    "b.tipe_pelayanan,\n" +
+                    "b.kategori_pelayanan,\n" +
+                    "b.divisi_id,\n" +
+                    "b.kode_vclaim\n" +
+                    "FROM im_simrs_pelayanan a\n" +
+                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
+                    ") c ON a.id_pelayanan = c.id_pelayanan\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup d ON a.id_detail_checkup = d.id_detail_checkup\n" +
+                    "INNER JOIN it_simrs_header_checkup e ON d.no_checkup = e.no_checkup\n" +
+                    "WHERE e.no_checkup = :id\n" +
+                    "ORDER BY a.created_date ASC";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", noCheckup)
+                    .list();
+
+            if(result.size() > 0){
+                for (Object[] obj: result){
+                    Dokter dokter = new Dokter();
+                    dokter.setIdDokter(obj[0] != null ? obj[0].toString() : "");
+                    dokter.setNamaDokter(obj[1] != null ? obj[1].toString() : "");
+                    dokter.setIdPelayanan(obj[2] != null ? obj[2].toString() : "");
+                    dokter.setNamaPelayanan(obj[3] != null ? obj[3].toString() : "");
+                    dokter.setIdTeamDokter(obj[4] != null ? obj[4].toString() : "");
+                    dokter.setFlagApprove(obj[5] != null ? obj[5].toString() : null);
+                    dokter.setJenisDpjp(obj[6] != null ? obj[6].toString() : null);
+                    dokter.setKeterangan(obj[7] != null ? obj[7].toString() : null);
+                    dokterList.add(dokter);
+                }
+            }
+        }
+        return dokterList;
+    }
+
     public List<Dokter> getListDokterByQuery(Dokter bean) {
         List<Dokter> dokterList = new ArrayList<>();
         if (bean != null){
