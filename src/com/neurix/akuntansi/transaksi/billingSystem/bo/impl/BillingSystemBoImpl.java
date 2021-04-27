@@ -649,7 +649,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                                     if (listOfMap.get("rekening_id")!=null){
                                         rekeningId= String.valueOf(listOfMap.get("rekening_id"));
                                     }else{
-                                        status="ERROR : Rekening ID tidak ditemukan pada trans ID"+mapping.getTransId();
+                                        status="ERROR : Rekening ID tidak ditemukan pada trans ID "+mapping.getTransId();
                                         logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                         throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                     }
@@ -853,7 +853,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                                         if (mapList.get(i).get("rekening_id")!=null){
                                             rekeningId= String.valueOf(mapList.get(i).get("rekening_id"));
                                         }else{
-                                            status="ERROR : Rekening ID tidak ditemukan pada trans ID"+mapping.getTransId();
+                                            status="ERROR : Rekening ID tidak ditemukan pada trans ID "+mapping.getTransId();
                                             logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                             throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                         }
@@ -1021,7 +1021,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                                         if (mapList.get(i).get("rekening_id")!=null){
                                             rekeningId= String.valueOf(mapList.get(i).get("rekening_id"));
                                         }else{
-                                            status="ERROR : Rekening ID tidak ditemukan pada trans ID"+mapping.getTransId();
+                                            status="ERROR : Rekening ID tidak ditemukan pada trans ID "+mapping.getTransId();
                                             logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                             throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                         }
@@ -1331,7 +1331,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                                     if (listOfMap.get("rekening_id")!=null){
                                         rekeningId= String.valueOf(listOfMap.get("rekening_id"));
                                     }else{
-                                        status="ERROR : Rekening ID tidak ditemukan pada trans ID"+mapping.getTransId();
+                                        status="ERROR : Rekening ID tidak ditemukan pada trans ID "+mapping.getTransId();
                                         logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                         throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                     }
@@ -1535,7 +1535,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                                         if (mapList.get(i).get("rekening_id")!=null){
                                             rekeningId= String.valueOf(mapList.get(i).get("rekening_id"));
                                         }else{
-                                            status="ERROR : Rekening ID tidak ditemukan pada trans ID"+mapping.getTransId();
+                                            status="ERROR : Rekening ID tidak ditemukan pada trans ID "+mapping.getTransId();
                                             logger.error("[PembayaranUtangPiutangBoImpl.createJurnalDetail]"+status);
                                             throw new GeneralBOException("Found problem "+status+", please info to your admin...");
                                         }
