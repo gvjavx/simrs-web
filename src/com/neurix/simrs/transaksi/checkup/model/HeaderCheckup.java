@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.checkup.model;
 
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.transaksi.periksalab.model.UploadHasilPemeriksaan;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 
 import java.math.BigDecimal;
@@ -197,6 +198,60 @@ public class HeaderCheckup {
 
     private String namaPaket;
     private String formatTglMasuk;
+    private String namaPemeriksaan;
+    private String isPeriksaLuar;
+    private String idHeaderPemeriksaan;
+    private List<UploadHasilPemeriksaan> uploadHasil = new ArrayList<>();
+    private List<String> listPemeriksaan = new ArrayList<>();
+    private String umur;
+
+    public String getUmur() {
+        return umur;
+    }
+
+    public void setUmur(String umur) {
+        this.umur = umur;
+    }
+
+    public List<String> getListPemeriksaan() {
+        return listPemeriksaan;
+    }
+
+    public void setListPemeriksaan(List<String> listPemeriksaan) {
+        this.listPemeriksaan = listPemeriksaan;
+    }
+
+    public List<UploadHasilPemeriksaan> getUploadHasil() {
+        return uploadHasil;
+    }
+
+    public void setUploadHasil(List<UploadHasilPemeriksaan> uploadHasil) {
+        this.uploadHasil = uploadHasil;
+    }
+
+    public String getIsPeriksaLuar() {
+        return isPeriksaLuar;
+    }
+
+    public void setIsPeriksaLuar(String isPeriksaLuar) {
+        this.isPeriksaLuar = isPeriksaLuar;
+    }
+
+    public String getIdHeaderPemeriksaan() {
+        return idHeaderPemeriksaan;
+    }
+
+    public void setIdHeaderPemeriksaan(String idHeaderPemeriksaan) {
+        this.idHeaderPemeriksaan = idHeaderPemeriksaan;
+    }
+
+    public String getNamaPemeriksaan() {
+        return namaPemeriksaan;
+    }
+
+    public void setNamaPemeriksaan(String namaPemeriksaan) {
+        this.namaPemeriksaan = namaPemeriksaan;
+    }
 
     public String getFormatTglMasuk() {
         return formatTglMasuk;

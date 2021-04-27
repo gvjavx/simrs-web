@@ -2,7 +2,7 @@ package com.neurix.simrs.transaksi.periksalab.action;
 
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
-import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.action.BaseTransactionAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -17,9 +17,7 @@ import com.neurix.simrs.transaksi.checkupdetail.action.CheckupDetailAction;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
-import com.neurix.simrs.transaksi.periksalab.model.ItSimrsUploadHasilPemeriksaanEntity;
-import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
-import com.neurix.simrs.transaksi.periksalab.model.PeriksaLabDetail;
+import com.neurix.simrs.transaksi.periksalab.model.*;
 import com.neurix.simrs.transaksi.profilrekammedisrj.bo.RekamMedisRawatJalanBo;
 import com.neurix.simrs.transaksi.profilrekammedisrj.model.RekamMedisRawatJalan;
 import org.apache.log4j.Logger;
@@ -45,7 +43,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class PeriksaLabAction extends BaseMasterAction {
+public class PeriksaLabAction extends BaseTransactionAction {
     protected static transient Logger logger = Logger.getLogger(PeriksaLabAction.class);
     private PeriksaLab periksaLab;
     private PeriksaLabBo periksaLabBoProxy;
@@ -57,73 +55,8 @@ public class PeriksaLabAction extends BaseMasterAction {
     private String lab;
     private String ket;
 
-    public String getKet() {
-        return ket;
-    }
-
-    public void setKet(String ket) {
-        this.ket = ket;
-    }
-
-    public void setBranchBoProxy(BranchBo branchBoProxy) {
-        this.branchBoProxy = branchBoProxy;
-    }
-
-    public String getLab() {
-        return lab;
-    }
-
-    public void setLab(String lab) {
-        this.lab = lab;
-    }
-
-    public void setJenisPriksaPasienBoProxy(JenisPriksaPasienBo jenisPriksaPasienBoProxy) {
-        this.jenisPriksaPasienBoProxy = jenisPriksaPasienBoProxy;
-    }
-
-    public void setCheckupBoProxy(CheckupBo checkupBoProxy) {
-        this.checkupBoProxy = checkupBoProxy;
-    }
-
-    public void setCheckupDetailBoProxy(CheckupDetailBo checkupDetailBoProxy) {
-
-        this.checkupDetailBoProxy = checkupDetailBoProxy;
-    }
-
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setPeriksaLabBoProxy(PeriksaLabBo periksaLabBoProxy) {
-        this.periksaLabBoProxy = periksaLabBoProxy;
-    }
-
-    public static Logger getLogger() {
-        return logger;
-    }
-
-    public static void setLogger(Logger logger) {
-        PeriksaLabAction.logger = logger;
-    }
-
-    public PeriksaLab getPeriksaLab() {
-        return periksaLab;
-    }
-
-    public void setPeriksaLab(PeriksaLab periksaLab) {
-        this.periksaLab = periksaLab;
-    }
-
-    @Override
     public String add() {
         logger.info("[PeriksaLabAction.add] start process >>>");
-
         String id = getId();
         String lab = getLab();
         String keterangan = getKet();
@@ -141,7 +74,6 @@ public class PeriksaLabAction extends BaseMasterAction {
             }
 
             if (checkup != null) {
-
                 PeriksaLab periksaLab = new PeriksaLab();
                 periksaLab.setNoCheckup(checkup.getNoCheckup());
                 periksaLab.setIdDetailCheckup(checkup.getIdDetailCheckup());
@@ -164,41 +96,42 @@ public class PeriksaLabAction extends BaseMasterAction {
                 periksaLab.setJenisKelamin(jk);
                 periksaLab.setTempatLahir(checkup.getTempatLahir());
                 periksaLab.setTglLahir(checkup.getTglLahir() == null ? null : checkup.getTglLahir().toString());
-                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
-                periksaLab.setTempatTglLahir(checkup.getTempatLahir() + ", " + formatDate);
+                if(checkup.getTglLahir() != null){
+                    String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+                    periksaLab.setTempatTglLahir(checkup.getTempatLahir() + ", " + formatDate);
+                    periksaLab.setUmur(CommonUtil.calculateAge(checkup.getTglLahir(), true));
+                }
                 periksaLab.setIdJenisPeriksa(checkup.getIdJenisPeriksaPasien());
                 periksaLab.setNik(checkup.getNoKtp());
                 periksaLab.setUrlKtp(checkup.getUrlKtp());
                 periksaLab.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
-                periksaLab.setIdPeriksaLab(lab);
-                periksaLab.setKeterangan(keterangan);
                 periksaLab.setDiagnosa(checkup.getDiagnosa() + "-" + checkup.getNamaDiagnosa());
                 periksaLab.setMetodePembayaran(checkup.getMetodePembayaran());
 
-                PeriksaLab periksalb = new PeriksaLab();
+                List<PeriksaLab> periksaLabList = new ArrayList<>();
+                PeriksaLab labData = new PeriksaLab();
+                labData.setIdHeaderPemeriksaan(lab);
                 try {
-                    periksalb = periksaLabBoProxy.getNamaLab(lab);
+                    periksaLabList = periksaLabBoProxy.getByCriteriaHeaderPemeriksaan(labData);
                 } catch (HibernateException e) {
                     logger.error("Found Error " + e.getMessage());
                 }
-                if (periksalb.getIdPeriksaLab() != null) {
-                    periksaLab.setKategoriLabName(periksalb.getKategoriLabName());
-                    periksaLab.setIdLab(periksalb.getIdLab());
-                    periksaLab.setLabName(periksalb.getLabName());
-                    periksaLab.setIsLuar(periksalb.getIsLuar());
-                    periksaLab.setNamaLabLuar(periksalb.getNamaLabLuar());
-                }
 
+                if(periksaLabList.size() > 0){
+                    labData = periksaLabList.get(0);
+                }
+                periksaLab.setIsPeriksaLuar(labData.getIsPeriksaLuar());
+                periksaLab.setIdHeaderPemeriksaan(lab);
+                periksaLab.setKeterangan(labData.getIsJustLab());
+                periksaLab.setIsJustLab(labData.getIsJustLab());
+                periksaLab.setNamaDokterPengirim(labData.getNamaDokterPengirim());
                 setPeriksaLab(periksaLab);
 
-                long millis = System.currentTimeMillis();
-                java.util.Date date = new java.util.Date(millis);
-                String tglToday = new SimpleDateFormat("yyyy-MM-dd").format(date);
                 PeriksaLab periksa = new PeriksaLab();
-                periksa.setIdPeriksaLab(lab);
+                periksa.setIdHeaderPemeriksaan(lab);
                 periksa.setLastUpdate(updateTime);
                 periksa.setLastUpdateWho(userArea);
-                periksa.setTanggalMasukLab(Date.valueOf(tglToday));
+                periksa.setTanggalMasukLab(new Timestamp(Calendar.getInstance().getTimeInMillis()));
 
                 try {
                     periksaLabBoProxy.saveEditStatusPeriksa(periksa);
@@ -216,31 +149,10 @@ public class PeriksaLabAction extends BaseMasterAction {
     }
 
     @Override
-    public String edit() {
-        return "init_edit";
-    }
-
-    @Override
-    public String delete() {
-        return "init_delete";
-    }
-
-    @Override
-    public String view() {
-        return "init_view";
-    }
-
-    @Override
-    public String save() {
-        return "init_save";
-    }
-
-    @Override
     public String search() {
         logger.info("[PeriksaLabAction.search] start process >>>");
         PeriksaLab periksaLab = getPeriksaLab();
         List<PeriksaLab> listPeriksaLabList = new ArrayList();
-        // hanya kategori lab laboratorium saja
         periksaLab.setIdKategoriLab("lab");
         periksaLab.setBranchId(CommonUtil.userBranchLogin());
         try {
@@ -258,35 +170,20 @@ public class PeriksaLabAction extends BaseMasterAction {
     @Override
     public String initForm() {
         logger.info("[PeriksaLabAction.initForm] start process >>>");
-
         long millis = System.currentTimeMillis();
         java.util.Date date = new java.util.Date(millis);
         String tglToday = new SimpleDateFormat("dd-MM-yyyy").format(date);
-
         PeriksaLab periksaLab = new PeriksaLab();
         periksaLab.setStDateFrom(tglToday);
         periksaLab.setStDateTo(tglToday);
         setPeriksaLab(periksaLab);
-
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
-
         logger.info("[PeriksaLabAction.initForm] end process <<<");
-
         return "search";
     }
 
-    @Override
-    public String downloadPdf() {
-        return null;
-    }
-
-    @Override
-    public String downloadXls() {
-        return null;
-    }
-
-    public CrudResponse saveOrderLab(String idDetailCheckup, String idLab, List<String> idParameter, String isLuar, String idDokter, String idKategori, String waktuPending, String ttdPengirim) {
+    public CrudResponse saveOrderLab(String data) {
         logger.info("[PeriksaLabAction.saveOrderLab] start process >>>");
         CrudResponse response = new CrudResponse();
         try {
@@ -294,60 +191,120 @@ public class PeriksaLabAction extends BaseMasterAction {
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+            if (data != null && !"".equalsIgnoreCase(data)) {
+                JSONObject obj = new JSONObject(data);
+                if (obj != null) {
+                    String idDetailCheckup = obj.getString("id_detail_checkup");
+                    String listPemeriksaan = obj.getString("list_pemeriksaan");
+                    String isLuar = obj.getString("is_luar");
+                    String idDokterPengirim = obj.getString("id_dokter_pengirim");
+                    String namaDokterPengirim = obj.getString("nama_dokter_pengirim");
+                    String idKategori = obj.getString("id_kategori_lab");
+                    String waktuPending = obj.getString("waktu_pending");
+                    String ttdPengirim = obj.getString("ttd_pengirim");
+                    String jenisPemeriksaan = obj.getString("jenis_pemeriksaan");
+                    List<PeriksaLab> periksaLabList = new ArrayList<>();
 
-            PeriksaLab periksaLab = new PeriksaLab();
-            periksaLab.setIdDetailCheckup(idDetailCheckup);
-            periksaLab.setAction("C");
-            periksaLab.setFlag("Y");
-            periksaLab.setIdDokterPengirim(idDokter);
-            periksaLab.setIdKategoriLab(idKategori);
-            periksaLab.setIsLuar(isLuar);
-            if ("Y".equalsIgnoreCase(isLuar)) {
-                periksaLab.setNamaLabLuar(idLab);
-            } else {
-                periksaLab.setIdLab(idLab);
-            }
-            if (waktuPending != null && !"".equalsIgnoreCase(waktuPending)) {
-                periksaLab.setIsPending("Y");
-                periksaLab.setLastUpdate(Timestamp.valueOf(waktuPending));
-                periksaLab.setCreatedDate(Timestamp.valueOf(waktuPending));
-                periksaLab.setCreatedWho(userLogin);
-                periksaLab.setLastUpdateWho(userLogin);
-            } else {
-                periksaLab.setCreatedWho(userLogin);
-                periksaLab.setLastUpdate(updateTime);
-                periksaLab.setCreatedDate(updateTime);
-                periksaLab.setLastUpdateWho(userLogin);
-            }
+                    if (listPemeriksaan != null) {
+                        JSONArray json = new JSONArray(listPemeriksaan);
+                        for (int i = 0; i < json.length(); i++) {
+                            JSONObject ob = json.getJSONObject(i);
+                            PeriksaLab periksa = new PeriksaLab();
+                            List<PeriksaLabDetail> detailList = new ArrayList<>();
+                            periksa.setIdLab(ob.getString("id_pemeriksaan"));
+                            periksa.setNamaLab(ob.getString("nama_pemeriksaan"));
+                            String listParameter = ob.getString("list_parameter");
+                            if (listParameter != null) {
+                                JSONArray jsn = new JSONArray(listParameter);
+                                for (int j = 0; j < jsn.length(); j++) {
+                                    JSONObject oc = jsn.getJSONObject(j);
+                                    PeriksaLabDetail detail = new PeriksaLabDetail();
+                                    detail.setIdLabDetail(oc.getString("id_parameter"));
+                                    detail.setNamaDetailPeriksa(oc.getString("nama_parameter"));
+                                    detailList.add(detail);
+                                }
+                            } else {
+                                response.setStatus("error");
+                                response.setMsg("Data order jenis parameter pemeriksaan tidak ditemukan");
+                                return response;
+                            }
+                            periksa.setDetailLab(detailList);
+                            periksaLabList.add(periksa);
+                        }
+                    } else {
+                        response.setStatus("error");
+                        response.setMsg("Data order jenis pemeriksaan tidak ditemukan");
+                        return response;
+                    }
 
-            if (ttdPengirim != null && !"".equalsIgnoreCase(ttdPengirim)) {
-                BASE64Decoder decoder = new BASE64Decoder();
-                byte[] decodedBytes = decoder.decodeBuffer(ttdPengirim);
-                String wkt = updateTime.toString();
-                String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                String fileName = idDokter + "-" + patten + ".png";
-                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + fileName;
-                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
-                if (image == null) {
-                    logger.error("Buffered Image is null");
-                    response.setStatus("error");
-                    response.setMsg("Buffered Image is null");
-                    return response;
+                    PeriksaLab periksaLab = new PeriksaLab();
+                    periksaLab.setIdDetailCheckup(idDetailCheckup);
+                    periksaLab.setAction("C");
+                    periksaLab.setFlag("Y");
+                    periksaLab.setIdDokterPengirim(idDokterPengirim);
+                    periksaLab.setNamaDokterPengirim(namaDokterPengirim);
+                    periksaLab.setIdKategoriLab(idKategori);
+                    periksaLab.setIsLuar(isLuar);
+                    periksaLab.setIsJustLab("N");
+                    periksaLab.setJenisPeriksaPasien(jenisPemeriksaan);
+
+                    if (waktuPending != null && !"".equalsIgnoreCase(waktuPending)) {
+                        periksaLab.setIsPending("Y");
+                        periksaLab.setLastUpdate(Timestamp.valueOf(waktuPending));
+                        periksaLab.setCreatedDate(Timestamp.valueOf(waktuPending));
+                        periksaLab.setCreatedWho(userLogin);
+                        periksaLab.setLastUpdateWho(userLogin);
+                    } else {
+                        periksaLab.setIsPending("N");
+                        periksaLab.setCreatedWho(userLogin);
+                        periksaLab.setLastUpdate(updateTime);
+                        periksaLab.setCreatedDate(updateTime);
+                        periksaLab.setLastUpdateWho(userLogin);
+                    }
+
+                    if (ttdPengirim != null && !"".equalsIgnoreCase(ttdPengirim)) {
+                        BASE64Decoder decoder = new BASE64Decoder();
+                        byte[] decodedBytes = decoder.decodeBuffer(ttdPengirim);
+                        String wkt = updateTime.toString();
+                        String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                        String fileName = idDokterPengirim + "-" + patten + ".png";
+                        String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + fileName;
+                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+                        if (image == null) {
+                            logger.error("Buffered Image is null");
+                            response.setStatus("error");
+                            response.setMsg("Buffered Image is null");
+                            return response;
+                        } else {
+                            File f = new File(uploadFile);
+                            ImageIO.write(image, "png", f);
+                            periksaLab.setTtdPengirim(fileName);
+                        }
+
+                        if (periksaLabList.size() > 0) {
+                            periksaLab.setListLab(periksaLabList);
+                            periksaLabBo.saveOrderPemeriksaan(periksaLab);
+                            insertProfilRJ(idDetailCheckup);
+                            response.setStatus("success");
+                            response.setMsg("OK");
+                        } else {
+                            response.setStatus("error");
+                            response.setMsg("Data order lab atau radiologi tidak ditemukan");
+                        }
+                    }
                 } else {
-                    File f = new File(uploadFile);
-                    ImageIO.write(image, "png", f);
-                    periksaLab.setTtdPengirim(fileName);
+                    response.setStatus("error");
+                    response.setMsg("Data order lab atau radiologi tidak ditemukan");
                 }
+            } else {
+                response.setStatus("error");
+                response.setMsg("Data order lab atau radiologi tidak ditemukan");
             }
-
-            response = periksaLabBo.saveAddWithParameter(periksaLab, idParameter);
-            insertProfilRJ(idDetailCheckup);
 
         } catch (Exception e) {
             response.setMsg(e.getMessage());
             logger.error("[PeriksaLabAction.saveOrderLab] Error when adding item ,Found problem when saving add data, please inform to your admin." + e.getMessage());
         }
-
         logger.info("[PeriksaLabAction.saveOrderLab] End process >>>");
         return response;
     }
@@ -403,7 +360,7 @@ public class PeriksaLabAction extends BaseMasterAction {
         PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
         if (!"".equalsIgnoreCase(idDetailCheckup)) {
             try {
-                periksaLabList = periksaLabBo.getByCriteria(periksaLab);
+                periksaLabList = periksaLabBo.getByCriteriaHeaderPemeriksaan(periksaLab);
             } catch (GeneralBOException e) {
                 logger.error("[PeriksaLabAction.listOrderLab] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
             }
@@ -425,20 +382,17 @@ public class PeriksaLabAction extends BaseMasterAction {
         return periksaLabBo.getListDokterLabRadiologi(tipe);
     }
 
-    public List<PeriksaLabDetail> listParameterPemeriksaan(String idPeriksaLab) {
+    public List<PeriksaLab> listParameterPemeriksaan(String idHeader) {
         logger.info("[PeriksaLabAction.listParameterPemeriksaan] start process >>>");
-        List<PeriksaLabDetail> periksaLabDetailList = new ArrayList<>();
-        PeriksaLabDetail periksaLabDetail = new PeriksaLabDetail();
-        periksaLabDetail.setIdPeriksaLab(idPeriksaLab);
+        List<PeriksaLab> periksaLabDetailList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
-        if (idPeriksaLab != null && !"".equalsIgnoreCase(idPeriksaLab)) {
+        if (idHeader != null && !"".equalsIgnoreCase(idHeader)) {
             try {
-                periksaLabDetailList = periksaLabBo.getListParameterLab(periksaLabDetail);
+                periksaLabDetailList = periksaLabBo.getListParameterLab(idHeader);
             } catch (GeneralBOException e) {
                 logger.error("[PeriksaLabAction.listParameterPemeriksaan] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
             }
-
         }
         logger.info("[PeriksaLabAction.listParameterPemeriksaan] start process >>>");
         return periksaLabDetailList;
@@ -539,29 +493,87 @@ public class PeriksaLabAction extends BaseMasterAction {
         return result;
     }
 
-    public CrudResponse editOrderLab(String idPeriksaLab, String idLab, List<String> idParameter, String isKeluar) {
+    public CrudResponse editOrderLab(String data) {
         logger.info("[PeriksaLabAction.editOrderLab] start process >>>");
         CrudResponse response = new CrudResponse();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
         try {
-            String userLogin = CommonUtil.userLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-            PeriksaLab periksaLab = new PeriksaLab();
-            periksaLab.setIdPeriksaLab(idPeriksaLab);
-            if ("Y".equalsIgnoreCase(isKeluar)) {
-                periksaLab.setNamaLabLuar(idLab);
+            if (data != null && !"".equalsIgnoreCase(data)) {
+                JSONObject obj = new JSONObject(data);
+                if (obj != null) {
+                    String idHeaderPemeriksaan = obj.getString("id_header_pemeriksaan");
+                    String listPemeriksaan = obj.getString("list_pemeriksaan");
+                    String isPeriksaLuar = obj.getString("is_luar");
+                    String idKategoriLab = obj.getString("id_kategori_lab");
+                    String jenisPemeriksaan = obj.getString("jenis_pemeriksaan");
+                    List<PeriksaLab> periksaLabList = new ArrayList<>();
+
+                    if (listPemeriksaan != null) {
+                        JSONArray json = new JSONArray(listPemeriksaan);
+                        for (int i = 0; i < json.length(); i++) {
+                            JSONObject ob = json.getJSONObject(i);
+                            PeriksaLab periksa = new PeriksaLab();
+                            List<PeriksaLabDetail> detailList = new ArrayList<>();
+                            periksa.setIdLab(ob.getString("id_pemeriksaan"));
+                            periksa.setNamaLab(ob.getString("nama_pemeriksaan"));
+                            String listParameter = ob.getString("list_parameter");
+                            if (listParameter != null) {
+                                JSONArray jsn = new JSONArray(listParameter);
+                                for (int j = 0; j < jsn.length(); j++) {
+                                    JSONObject oc = jsn.getJSONObject(j);
+                                    PeriksaLabDetail detail = new PeriksaLabDetail();
+                                    detail.setIdLabDetail(oc.getString("id_parameter"));
+                                    detail.setNamaDetailPeriksa(oc.getString("nama_parameter"));
+                                    detailList.add(detail);
+                                }
+                            } else {
+                                response.setStatus("error");
+                                response.setMsg("Data order jenis parameter pemeriksaan tidak ditemukan");
+                                return response;
+                            }
+                            periksa.setDetailLab(detailList);
+                            periksaLabList.add(periksa);
+                        }
+                    } else {
+                        response.setStatus("error");
+                        response.setMsg("Data order jenis pemeriksaan tidak ditemukan");
+                        return response;
+                    }
+
+                    PeriksaLab periksaLab = new PeriksaLab();
+                    periksaLab.setIdHeaderPemeriksaan(idHeaderPemeriksaan);
+                    periksaLab.setIsLuar(isPeriksaLuar);
+                    periksaLab.setFlag("Y");
+                    periksaLab.setAction("U");
+                    periksaLab.setCreatedWho(userLogin);
+                    periksaLab.setCreatedDate(updateTime);
+                    periksaLab.setLastUpdateWho(userLogin);
+                    periksaLab.setLastUpdate(updateTime);
+                    periksaLab.setIdKategoriLab(idKategoriLab);
+                    periksaLab.setJenisPeriksaPasien(jenisPemeriksaan);
+
+                    if (periksaLabList.size() > 0) {
+                        periksaLab.setListLab(periksaLabList);
+                        periksaLabBo.editOrderPemeriksaan(periksaLab);
+                        response.setStatus("success");
+                        response.setMsg("OK");
+                    } else {
+                        response.setStatus("error");
+                        response.setMsg("Data order lab atau radiologi tidak ditemukan");
+                    }
+
+                } else {
+                    response.setStatus("error");
+                    response.setMsg("Tidak ada data order lab");
+                }
             } else {
-                periksaLab.setIdLab(idLab);
+                response.setStatus("error");
+                response.setMsg("Tidak ada data order lab");
             }
-            periksaLab.setCreatedDate(updateTime);
-            periksaLab.setCreatedWho(userLogin);
-            periksaLab.setLastUpdate(updateTime);
-            periksaLab.setLastUpdateWho(userLogin);
-            periksaLab.setAction("U");
-            periksaLab.setIsLuar(isKeluar);
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-            PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
-            response = periksaLabBo.saveEdit(periksaLab, idParameter);
-        } catch (GeneralBOException e) {
+        } catch (Exception e) {
             response.setStatus("error");
             response.setMsg("Error ketika edit lab...!, " + e.getMessage());
             logger.error("[PeriksaLabAction.editOrderLab] Error when adding item , Found problem when saving add data, please inform to your admin.", e);
@@ -570,8 +582,8 @@ public class PeriksaLabAction extends BaseMasterAction {
         return response;
     }
 
-    public CheckResponse saveEditDokterLab(String data) {
-        logger.info("[PeriksaLabAction.saveEditDokterLab] start process >>>");
+    public CheckResponse selesaiPemeriksaan(String data) {
+        logger.info("[PeriksaLabAction.selesaiPemeriksaan] start process >>>");
         CheckResponse response = new CheckResponse();
         try {
             String userLogin = CommonUtil.userLogin();
@@ -583,8 +595,9 @@ public class PeriksaLabAction extends BaseMasterAction {
                 JSONObject obj = new JSONObject(data);
                 if (obj != null) {
                     List<ItSimrsUploadHasilPemeriksaanEntity> uploadHasilPemeriksaanEntityList = new ArrayList<>();
-                    String idPeriksaLab = obj.getString("id_periksa_lab");
-                    String keterangan = obj.getString("keterangan");
+                    String idHeaderPemeriksaan = null;
+                    String idPeriksaLab = null;
+                    String keterangan = null;
                     String namaPetugas = null;
                     String nipPetugas = null;
                     String namaValidator = null;
@@ -592,27 +605,39 @@ public class PeriksaLabAction extends BaseMasterAction {
                     String ttdPetugas = null;
                     String ttdValidator = null;
 
-                    if(obj.has("nama_petugas")){
+                    if(obj.has("id_header_pemeriksaan")){
+                        idHeaderPemeriksaan = obj.getString("id_header_pemeriksaan");
+                    }
+
+                    if(obj.has("id_periksa_lab")){
+                        idPeriksaLab = obj.getString("id_periksa_lab");
+                    }
+
+                    if(obj.has("keterangan")){
+                        keterangan = obj.getString("keterangan");
+                    }
+
+                    if (obj.has("nama_petugas")) {
                         namaPetugas = obj.getString("nama_petugas");
                     }
-                    if(obj.has("nip_petugas")){
+                    if (obj.has("nip_petugas")) {
                         nipPetugas = obj.getString("nip_petugas");
                     }
-                    if(obj.has("nama_validator")){
+                    if (obj.has("nama_validator")) {
                         namaValidator = obj.getString("nama_validator");
                     }
-                    if(obj.has("nip_validator")){
+                    if (obj.has("nip_validator")) {
                         nipValidator = obj.getString("nip_validator");
                     }
-                    if(obj.has("ttd_petugas")){
+                    if (obj.has("ttd_petugas")) {
                         ttdPetugas = obj.getString("ttd_petugas");
                     }
-                    if(obj.has("ttd_validator")){
+                    if (obj.has("ttd_validator")) {
                         ttdValidator = obj.getString("ttd_validator");
                     }
 
                     String jsonParams = "";
-                    if(obj.has("hasil_pemeriksaan")){
+                    if (obj.has("hasil_pemeriksaan")) {
                         jsonParams = obj.getString("hasil_pemeriksaan");
                     }
                     String dataJustLab = obj.getString("data");
@@ -624,7 +649,7 @@ public class PeriksaLabAction extends BaseMasterAction {
                     }
 
                     PeriksaLab periksaLab = new PeriksaLab();
-                    periksaLab.setIdPeriksaLab(idPeriksaLab);
+                    periksaLab.setIdHeaderPemeriksaan(idHeaderPemeriksaan);
                     periksaLab.setNamaPetugas(namaPetugas);
                     periksaLab.setIdPetugas(nipPetugas);
                     periksaLab.setNamaValidator(namaValidator);
@@ -643,7 +668,7 @@ public class PeriksaLabAction extends BaseMasterAction {
                             BASE64Decoder decoder = new BASE64Decoder();
                             byte[] decodedBytes = decoder.decodeBuffer(ttdValidator);
                             String patten = updateTime.toString().replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                            String fileName = idPeriksaLab + "-ttd_validator-" + patten + ".png";
+                            String fileName = idHeaderPemeriksaan + "-ttd_validator-" + patten + ".png";
                             String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + fileName;
                             BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
@@ -667,7 +692,7 @@ public class PeriksaLabAction extends BaseMasterAction {
                             BASE64Decoder decoder = new BASE64Decoder();
                             byte[] decodedBytes = decoder.decodeBuffer(ttdPetugas);
                             String patten = updateTime.toString().replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                            String fileName = idPeriksaLab + "-ttd_petugas-" + patten + ".png";
+                            String fileName = idHeaderPemeriksaan + "-ttd_petugas-" + patten + ".png";
                             String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + fileName;
                             BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
@@ -708,8 +733,10 @@ public class PeriksaLabAction extends BaseMasterAction {
 
                     periksaLab.setUploadHasil(uploadHasilPemeriksaanEntityList);
                     periksaLab.setTarifLabLuar(totalTarif);
-                    response = periksaLabBo.saveDokterLab(periksaLab, detailList);
-                    if ("just_lab".equalsIgnoreCase(keterangan)) {
+                    periksaLabBo.selesaiPemeriksaan(periksaLab);
+                    response.setStatus("success");
+                    response.setMessage("Berhasil");
+                    if ("Y".equalsIgnoreCase(keterangan)) {
                         if ("success".equalsIgnoreCase(response.getStatus())) {
                             CheckupDetailAction detailAction = new CheckupDetailAction();
                             CrudResponse res = new CrudResponse();
@@ -735,7 +762,7 @@ public class PeriksaLabAction extends BaseMasterAction {
             response.setStatus("error");
             response.setMessage("Error" + e.getMessage());
         }
-        logger.info("[PeriksaLabAction.saveOrderLab] End process >>>");
+        logger.info("[PeriksaLabAction.selesaiPemeriksaan] End process >>>");
         return response;
     }
 
@@ -830,24 +857,20 @@ public class PeriksaLabAction extends BaseMasterAction {
 
         if (checkup != null) {
 
-            PeriksaLab periksalb = new PeriksaLab();
+            List<PeriksaLab> periksaLabList = new ArrayList<>();
+            PeriksaLab labData = new PeriksaLab();
+            labData.setIdHeaderPemeriksaan(lab);
             try {
-                periksalb = periksaLabBoProxy.getNamaLab(lab);
+                periksaLabList = periksaLabBoProxy.getByCriteriaHeaderPemeriksaan(labData);
             } catch (HibernateException e) {
                 logger.error("Found Error " + e.getMessage());
             }
 
-            if (periksalb.getIdPeriksaLab() != null) {
-                String namaLab = "";
-                if ("Y".equalsIgnoreCase(periksalb.getIsLuar())) {
-                    namaLab = periksalb.getNamaLabLuar();
-                } else {
-                    namaLab = periksalb.getLabName();
-                }
-                reportParams.put("title", "Hasil Pemeriksaan Lab");
-                reportParams.put("jenisPemeriksaan", namaLab);
+            if(periksaLabList.size() > 0){
+                labData = periksaLabList.get(0);
             }
 
+            reportParams.put("title", "Hasil Periksa Lab");
             reportParams.put("area", CommonUtil.userAreaName());
             reportParams.put("unit", CommonUtil.userBranchNameLogin());
             reportParams.put("idPasien", checkup.getIdPasien());
@@ -862,8 +885,8 @@ public class PeriksaLabAction extends BaseMasterAction {
                 reportParams.put("tgllahir", formatDate);
                 reportParams.put("divisi", "Laboratorium");
             }
-            if (periksalb.getCreatedDate() != null) {
-                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(periksalb.getCreatedDate());
+            if (labData.getCreatedDate() != null) {
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(labData.getCreatedDate());
                 reportParams.put("tglFoto", formatDate);
             }
 
@@ -881,14 +904,37 @@ public class PeriksaLabAction extends BaseMasterAction {
             reportParams.put("desa", checkup.getNamaDesa());
             reportParams.put("diagnosa", checkup.getNamaDiagnosa());
 
-            reportParams.put("idDokterPengirim", periksalb.getIdDokterPengirim());
-            reportParams.put("dokterPengirim", periksalb.getDokterPengirim());
-            reportParams.put("idPetugas", periksalb.getIdPetugas());
-            reportParams.put("namaPetugas", periksalb.getNamaPetugas());
-            reportParams.put("idValidator", periksalb.getIdValidator());
-            reportParams.put("namaValidator", periksalb.getNamaValidator());
-            reportParams.put("ttdPetugas", periksalb.getTtdPetugas());
-            reportParams.put("ttdValidator", periksalb.getTtdValidator());
+            reportParams.put("idDokterPengirim", labData.getIdDokterPengirim());
+            reportParams.put("dokterPengirim", labData.getNamaDokterPengirim());
+            reportParams.put("idPetugas", labData.getIdPetugas());
+            reportParams.put("namaPetugas", labData.getNamaPetugas());
+            reportParams.put("idValidator", labData.getIdValidator());
+            reportParams.put("namaValidator", labData.getNamaValidator());
+            reportParams.put("ttdPetugas", labData.getTtdPetugas());
+            reportParams.put("ttdValidator", labData.getTtdValidator());
+            reportParams.put("umur", CommonUtil.calculateAge(checkup.getTglLahir(), true));
+
+            String namaLab = "";
+            List<PeriksaLab> periksaLabs = new ArrayList<>();
+            PeriksaLab periksa = new PeriksaLab();
+            periksa.setIdHeaderPemeriksaan(lab);
+            try {
+                periksaLabs = periksaLabBoProxy.getByCriteria(periksa);
+            } catch (HibernateException e) {
+                logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search riwayat tindakan :" + e.getMessage());
+            }
+
+            if(periksaLabs.size() > 0){
+                for (PeriksaLab pb: periksaLabs){
+                    if("".equalsIgnoreCase(namaLab)){
+                        namaLab = pb.getNamaPemeriksaan();
+                    }else{
+                        namaLab = namaLab+", "+pb.getNamaPemeriksaan();
+                    }
+                }
+            }
+            reportParams.put("pemeriksaan", namaLab);
+
 
             try {
                 preDownload();
@@ -906,33 +952,68 @@ public class PeriksaLabAction extends BaseMasterAction {
         }
     }
 
-    public CrudResponse saveUpdatePemeriksaan(String idLabPeriksa, List<String> idParameter, String ket) {
+    public CrudResponse saveUpdatePemeriksaan(String idHeaderPemeriksaan, String listPemeriksaan) {
         CrudResponse response = new CrudResponse();
-        logger.info("[PeriksaLabAction.saveOrderLab] start process >>>");
+        logger.info("[PeriksaLabAction.saveUpdatePemeriksaan] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+            List<PeriksaLab> periksaLabList = new ArrayList<>();
+
+            if (listPemeriksaan != null) {
+                JSONArray json = new JSONArray(listPemeriksaan);
+                for (int i = 0; i < json.length(); i++) {
+                    JSONObject ob = json.getJSONObject(i);
+                    PeriksaLab periksa = new PeriksaLab();
+                    List<PeriksaLabDetail> detailList = new ArrayList<>();
+                    periksa.setIdLab(ob.getString("id_pemeriksaan"));
+                    periksa.setNamaLab(ob.getString("nama_pemeriksaan"));
+                    String listParameter = ob.getString("list_parameter");
+                    if (listParameter != null) {
+                        JSONArray jsn = new JSONArray(listParameter);
+                        for (int j = 0; j < jsn.length(); j++) {
+                            JSONObject oc = jsn.getJSONObject(j);
+                            PeriksaLabDetail detail = new PeriksaLabDetail();
+                            detail.setIdLabDetail(oc.getString("id_parameter"));
+                            detail.setNamaDetailPeriksa(oc.getString("nama_parameter"));
+                            detailList.add(detail);
+                        }
+                    } else {
+                        response.setStatus("error");
+                        response.setMsg("Data order jenis parameter pemeriksaan tidak ditemukan");
+                        return response;
+                    }
+                    periksa.setDetailLab(detailList);
+                    periksaLabList.add(periksa);
+                }
+            } else {
+                response.setStatus("error");
+                response.setMsg("Data order jenis pemeriksaan tidak ditemukan");
+                return response;
+            }
+
             PeriksaLab periksaLab = new PeriksaLab();
-            periksaLab.setIdPeriksaLab(idLabPeriksa);
+            periksaLab.setIdHeaderPemeriksaan(idHeaderPemeriksaan);
             periksaLab.setCreatedWho(userLogin);
             periksaLab.setLastUpdate(updateTime);
             periksaLab.setCreatedDate(updateTime);
             periksaLab.setLastUpdateWho(userLogin);
             periksaLab.setAction("C");
             periksaLab.setFlag("Y");
-            periksaLab.setKeterangan(ket);
+            periksaLab.setListLab(periksaLabList);
 
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-            PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+            periksaLabBo.saveUpdateParameter(periksaLab);
+            response.setStatus("success");
+            response.setMsg("OK");
 
-            response = periksaLabBo.saveUpdateParameter(periksaLab, idParameter);
-
-        } catch (GeneralBOException e) {
+        } catch (Exception e) {
             response.setStatus("error");
             response.setMsg("Found error");
         }
 
-        logger.info("[PeriksaLabAction.saveOrderLab] End process >>>");
+        logger.info("[PeriksaLabAction.saveUpdatePemeriksaan] End process >>>");
         return response;
     }
 
@@ -991,8 +1072,8 @@ public class PeriksaLabAction extends BaseMasterAction {
         return periksaLabList;
     }
 
-    public CrudResponse saveEditRadiologi(String data) {
-        logger.info("[PeriksaLabAction.saveEditRadiologi] start process >>>");
+    public CrudResponse saveDetailParameter(String data) {
+        logger.info("[PeriksaLabAction.saveDetailParameter] start process >>>");
         CrudResponse response = new CrudResponse();
         try {
             String userLogin = CommonUtil.userLogin();
@@ -1003,17 +1084,40 @@ public class PeriksaLabAction extends BaseMasterAction {
             if (data != null && !"".equalsIgnoreCase(data)) {
                 JSONObject obj = new JSONObject(data);
                 if (obj != null) {
-                    List<ItSimrsUploadHasilPemeriksaanEntity> uploadHasilPemeriksaanEntityList = new ArrayList<>();
-                    String idPeriksaLab = obj.getString("id_periksa_lab");
-                    String idPeriksaDetail = obj.getString("id_periksa_detail");
-                    String namaPeriksaDetail = obj.getString("nama_periksa_detail");
-                    String namaDokter = obj.getString("nama_dokter");
-                    String sipDokter = obj.getString("sip_dokter");
-                    String ttdDokter = obj.getString("ttd_dokter");
-                    String keteranganHasil = obj.getString("keterangan");
+
+                    String idHeaderPemeriksaan = null;
+                    String idPeriksaDetail = null;
+                    String namaDokter = null;
+                    String sipDokter = null;
+                    String ttdDokter = null;
+                    String hasil = null;
+                    String keteranganHasil = null;
+
+                    if(obj.has("id_header_pemeriksaan")){
+                        idHeaderPemeriksaan = obj.getString("id_header_pemeriksaan");
+                    }
+                    if(obj.has("id_periksa_detail")){
+                        idPeriksaDetail = obj.getString("id_periksa_detail");
+                    }
+                    if(obj.has("nama_dokter")){
+                        namaDokter = obj.getString("nama_dokter");
+                    }
+                    if(obj.has("sip_dokter")){
+                        sipDokter = obj.getString("sip_dokter");
+                    }
+                    if(obj.has("ttd_dokter")){
+                        ttdDokter = obj.getString("ttd_dokter");
+                    }
+                    if(obj.has("hasil")){
+                        hasil = obj.getString("hasil");
+                    }
+                    if(obj.has("keterangan")){
+                        keteranganHasil = obj.getString("keterangan");
+                    }
+
 
                     PeriksaLab periksaLab = new PeriksaLab();
-                    periksaLab.setIdPeriksaLab(idPeriksaLab);
+                    periksaLab.setIdHeaderPemeriksaan(idHeaderPemeriksaan);
                     periksaLab.setIdPeriksaLabDetail(idPeriksaDetail);
                     periksaLab.setNamaPetugas(namaDokter);
                     periksaLab.setIdPetugas(sipDokter);
@@ -1021,14 +1125,15 @@ public class PeriksaLabAction extends BaseMasterAction {
                     periksaLab.setLastUpdate(updateTime);
                     periksaLab.setLastUpdateWho(userLogin);
                     periksaLab.setAction("U");
-                    periksaLab.setHasil(keteranganHasil);
+                    periksaLab.setHasil(hasil);
+                    periksaLab.setKeteranganHasil(keteranganHasil);
 
                     if (ttdDokter != null && !"".equalsIgnoreCase(ttdDokter)) {
                         try {
                             BASE64Decoder decoder = new BASE64Decoder();
                             byte[] decodedBytes = decoder.decodeBuffer(ttdDokter);
                             String patten = updateTime.toString().replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                            String fileName = idPeriksaLab + "-ttd_petugas-" + patten + ".png";
+                            String fileName = idHeaderPemeriksaan + "-ttd_petugas-" + patten + ".png";
                             String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + fileName;
                             BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
@@ -1047,8 +1152,8 @@ public class PeriksaLabAction extends BaseMasterAction {
                             return response;
                         }
                     }
-                    periksaLab.setUploadHasil(uploadHasilPemeriksaanEntityList);
-                    periksaLabBo.saveEditRadiologi(periksaLab);
+
+                    periksaLabBo.saveDetailParameter(periksaLab);
                     response.setStatus("success");
                     response.setMsg("OK");
                 } else {
@@ -1063,7 +1168,7 @@ public class PeriksaLabAction extends BaseMasterAction {
             response.setStatus("error");
             response.setMsg("Error" + e.getMessage());
         }
-        logger.info("[PeriksaLabAction.saveEditRadiologi] End process >>>");
+        logger.info("[PeriksaLabAction.saveDetailParameter] End process >>>");
         return response;
     }
 
@@ -1102,7 +1207,7 @@ public class PeriksaLabAction extends BaseMasterAction {
         if (data != null && !"".equalsIgnoreCase(data)) {
             try {
                 JSONObject obj = new JSONObject(data);
-                String idPeriksaLab = obj.getString("id_periksa_lab");
+                String idHeaderPemeriksaan = obj.getString("id_header_pemeriksaan");
                 String stringByte = obj.getString("byte");
                 String idPeriksaDetail = obj.getString("id_periksa_detail");
                 String namaPeriksaDetail = obj.getString("nama_periksa");
@@ -1119,16 +1224,16 @@ public class PeriksaLabAction extends BaseMasterAction {
                     theDir.mkdirs();
                 }
 
-                if("pdf".equalsIgnoreCase(eks)){
-                    fileName = idPeriksaLab+"-"+name+".pdf";
+                if ("pdf".equalsIgnoreCase(eks)) {
+                    fileName = idHeaderPemeriksaan + "-" + name + ".pdf";
                     File file = new File(cekPath + fileName);
                     FileOutputStream fop = new FileOutputStream(file);
                     fop.write(decodedBytes);
                     fop.flush();
                     fop.close();
-                }else{
-                    fileName = idPeriksaLab+"-"+name+".jpg";
-                    String uploadFile = cekPath+fileName;
+                } else {
+                    fileName = idHeaderPemeriksaan + "-" + name + ".jpg";
+                    String uploadFile = cekPath + fileName;
                     BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
                     if (image == null) {
                         logger.error("Buffered Image is null");
@@ -1140,7 +1245,7 @@ public class PeriksaLabAction extends BaseMasterAction {
                 ItSimrsUploadHasilPemeriksaanEntity entity = new ItSimrsUploadHasilPemeriksaanEntity();
                 entity.setUrlImg(fileName);
                 entity.setTipe(tipe);
-                entity.setIdPeriksaLab(idPeriksaLab);
+                entity.setIdHeaderPemeriksaan(idHeaderPemeriksaan);
                 entity.setIdPeriksaLabDetail(idPeriksaDetail);
                 entity.setNamaDetailPeriksa(namaPeriksaDetail);
                 entity.setFlag("Y");
@@ -1153,9 +1258,9 @@ public class PeriksaLabAction extends BaseMasterAction {
                 response = periksaLabBo.saveUpload(entity);
                 response.setStatus("success");
             } catch (Exception e) {
-                logger.error("[PeriksaLabAction.uploadFilePemeriksaan] Error, "+e.getMessage());
+                logger.error("[PeriksaLabAction.uploadFilePemeriksaan] Error, " + e.getMessage());
                 response.setStatus("error");
-                response.setMsg("ERROR, "+e.getMessage());
+                response.setMsg("ERROR, " + e.getMessage());
             }
         } else {
             response.setStatus("error");
@@ -1170,19 +1275,115 @@ public class PeriksaLabAction extends BaseMasterAction {
         CrudResponse response = new CrudResponse();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
-        if(id != null && !"".equalsIgnoreCase(id)){
+        if (id != null && !"".equalsIgnoreCase(id)) {
             try {
                 periksaLabBo.deleteUpload(id);
                 response.setStatus("success");
                 response.setMsg("OK");
-            }catch (Exception e){
+            } catch (Exception e) {
                 logger.error(e.getMessage());
                 response.setStatus("error");
-                response.setMsg("[PeriksaLabAction.uploadFilePemeriksaan] ERROR, "+e.getMessage());
+                response.setMsg("[PeriksaLabAction.uploadFilePemeriksaan] ERROR, " + e.getMessage());
             }
         }
         logger.info("[PeriksaLabAction.uploadFilePemeriksaan] end process >>>");
         return response;
+    }
+
+    public ItSimrsHeaderPemeriksaanEntity getEntityHeaderpemeriksaan(String id) {
+        logger.info("[PeriksaLabAction.getEntityHeaderpemeriksaan] start process >>>");
+        ItSimrsHeaderPemeriksaanEntity response = new ItSimrsHeaderPemeriksaanEntity();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+        if (id != null && !"".equalsIgnoreCase(id)) {
+            try {
+                response = periksaLabBo.getEntityHeaderpemeriksaan(id);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+        }
+        logger.info("[PeriksaLabAction.getEntityHeaderpemeriksaan] end process >>>");
+        return response;
+    }
+
+    public List<PeriksaLab> getPemeriksaanById(String idHeader) {
+        logger.info("[PeriksaLabAction.getPemeriksaanById] start process >>>");
+        List<PeriksaLab> periksaLabList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+        PeriksaLab periksaLab = new PeriksaLab();
+        periksaLab.setIdHeaderPemeriksaan(idHeader);
+        if (!"".equalsIgnoreCase(idHeader) && idHeader != null) {
+            try {
+                periksaLabList = periksaLabBo.getByCriteria(periksaLab);
+            } catch (GeneralBOException e) {
+                logger.error("[PeriksaLabAction.getPemeriksaanById] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+
+        }
+        logger.info("[PeriksaLabAction.getPemeriksaanById] end process >>>");
+        return periksaLabList;
+    }
+
+    public String getKet() {
+        return ket;
+    }
+
+    public void setKet(String ket) {
+        this.ket = ket;
+    }
+
+    public void setBranchBoProxy(BranchBo branchBoProxy) {
+        this.branchBoProxy = branchBoProxy;
+    }
+
+    public String getLab() {
+        return lab;
+    }
+
+    public void setLab(String lab) {
+        this.lab = lab;
+    }
+
+    public void setJenisPriksaPasienBoProxy(JenisPriksaPasienBo jenisPriksaPasienBoProxy) {
+        this.jenisPriksaPasienBoProxy = jenisPriksaPasienBoProxy;
+    }
+
+    public void setCheckupBoProxy(CheckupBo checkupBoProxy) {
+        this.checkupBoProxy = checkupBoProxy;
+    }
+
+    public void setCheckupDetailBoProxy(CheckupDetailBo checkupDetailBoProxy) {
+
+        this.checkupDetailBoProxy = checkupDetailBoProxy;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setPeriksaLabBoProxy(PeriksaLabBo periksaLabBoProxy) {
+        this.periksaLabBoProxy = periksaLabBoProxy;
+    }
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public static void setLogger(Logger logger) {
+        PeriksaLabAction.logger = logger;
+    }
+
+    public PeriksaLab getPeriksaLab() {
+        return periksaLab;
+    }
+
+    public void setPeriksaLab(PeriksaLab periksaLab) {
+        this.periksaLab = periksaLab;
     }
 
 }

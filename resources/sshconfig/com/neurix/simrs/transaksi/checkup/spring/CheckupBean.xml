@@ -91,7 +91,8 @@
           p:tempatTidurDao-ref="tempatTidurDao"
           p:rawatInapDao-ref="rawatInapDao"
           p:pasienDao-ref="pasienDao"
-
+          p:headerPemeriksaanDao-ref="headerPemeriksaanDao"
+          p:labDao-ref="labDao"
     />
 
     <bean id="checkupBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

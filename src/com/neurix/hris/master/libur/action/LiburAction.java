@@ -272,13 +272,13 @@ public class LiburAction extends BaseMasterAction{
             return ERROR;
         }
 
-        logger.info("[AlatAction.saveDelete] end process <<<");
+        logger.info("[LiburAction.saveDelete] end process <<<");
 
         return "success_save_delete";
     }
 
     public String saveAdd(){
-        logger.info("[AlatAction.saveAdd] start process >>>");
+        logger.info("[LiburAction.saveAdd] start process >>>");
 
         try {
             Libur libur = getLibur();

@@ -1,7 +1,6 @@
 package com.neurix.hris.master.payrollSkalaGajiPensiun.bo;
 
 import com.neurix.common.bo.BaseMasterBo;
-import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.payrollSkalaGajiPensiun.model.payrollSkalaGajiPensiun;
 
 /**

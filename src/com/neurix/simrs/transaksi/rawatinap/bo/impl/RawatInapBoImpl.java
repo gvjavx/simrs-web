@@ -333,7 +333,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                     monVitalSign.setTb(entity.getTb());
                     monVitalSign.setBb(entity.getBb());
                     monVitalSigns.add(monVitalSign);
-                } else if (bean.getIsMobile().equalsIgnoreCase("Y")) {
+                } else if ("Y".equalsIgnoreCase(bean.getIsMobile())) {
                     monVitalSign = new MonVitalSign();
                     monVitalSign.setId(entity.getId());
                     monVitalSign.setNoCheckup(entity.getNoCheckup());
@@ -529,7 +529,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                     monCairan.setLastUpdateWho(entity.getLastUpdateWho());
                     monCairan.setStDate(stringDate(entity.getCreatedDate()));
                     monCairans.add(monCairan);
-                } else if (bean.getIsMobile().equalsIgnoreCase("Y")) {
+                } else if ("Y".equalsIgnoreCase(bean.getIsMobile())) {
                     monCairan = new MonCairan();
                     monCairan.setId(entity.getId());
                     monCairan.setNoCheckup(entity.getNoCheckup());
@@ -669,7 +669,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                     monPemberianObat.setStDate(stringDate(entity.getCreatedDate()));
                     monPemberianObat.setKategori(entity.getKategori());
                     monPemberianObats.add(monPemberianObat);
-                } else if (bean.getIsMobile().equalsIgnoreCase("Y")) {
+                } else if ("Y".equalsIgnoreCase(bean.getIsMobile())) {
                     monPemberianObat = new MonPemberianObat();
                     monPemberianObat.setId(entity.getId());
                     monPemberianObat.setNoCheckup(entity.getNoCheckup());
@@ -1075,6 +1075,12 @@ public class RawatInapBoImpl implements RawatInapBo {
                 detailCheckup.setCatatan(bean.getCatatan());
                 detailCheckup.setKeteranganSelesai(bean.getKeteranganSelesai());
                 detailCheckup.setStatusPeriksa("3");
+                if(bean.getRsRujukan() != null){
+                    detailCheckup.setRsRujukan(bean.getRsRujukan());
+                }
+                if(bean.getTglRujukan() != null){
+                    detailCheckup.setTglCekup(Date.valueOf(bean.getTglRujukan()));
+                }
                 response = updateDetail(detailCheckup);
                 if ("success".equalsIgnoreCase(response.getStatus())) {
                     response = updateRawatInap(bean);

@@ -726,7 +726,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
 
     public PositionBagian getPositionBagianById(String id){
 
-        String SQL = "SELECT bagian_id, nama_bagian, kodering FROM im_hris_position_bagian WHERE bagian_id = '"+id+"' \n";
+        String SQL = "SELECT bagian_id, nama_bagian, kodering FROM im_hris_position_bagian WHERE bagian_id = '"+id+"' AND flag = 'Y'\n";
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
 
         if (results.size() > 0){

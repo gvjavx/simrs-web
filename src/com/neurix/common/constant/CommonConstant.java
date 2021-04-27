@@ -74,7 +74,7 @@ public class CommonConstant {
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\user\\Pictures";
 
     public final static String EXTERNAL_IMG_URI = ServletActionContext.getRequest().getContextPath()+"/images";
-    public final static String EXTERNAL_IMG_URI_PROFILE = ServletActionContext.getRequest().getContextPath()+"/images/profile/";
+    public final static String EXTERNAL_IMG_URI_PROFILE = ServletActionContext.getRequest().getContextPath()+"/images/"; // profile/";
 //    public final static String EXTERNAL_IMG_URI_PROFILE = ServletActionContext.getRequest().getContextPath()+"/profile/";
     public final static String RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY = CommonUtil.getUploadFolderValue();
 
@@ -265,6 +265,12 @@ public class CommonConstant {
 
     public final static String PEGAWAI_TETAP = "TP03";
     public final static String PEGAWAI_PKWT = "TP04";
+
+    //CONSTANT STATUS LOG CRON
+    public final static String LOG_CRON_SUCCESS = "success";
+    public final static String LOG_CRON_CON_PROBLEM = "connection_problem";
+    public final static String LOG_CRON_PROG_PROBLEM = "program_problem";
+    public final static String LOG_CRON_OTHER = "other";
 
     //EMAIL
     public final static String EMAIL_USERNAME = CommonUtil.getPropertyParams("email.username");

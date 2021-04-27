@@ -612,7 +612,7 @@ public class TesTelemedicController implements ModelDriven<Object> {
         if ("pelayanan".equalsIgnoreCase(this.result)){
 
             try {
-                resultDokter  = teamDokterBoProxy.getNamaDokter(id);
+                resultDokter  = teamDokterBoProxy.getNamaDokter(id, true);
             } catch (GeneralBOException e){
                 logger.error("[TesTelemedicController.tesDokterTeam] Test dokter team. dokter",e);
             }

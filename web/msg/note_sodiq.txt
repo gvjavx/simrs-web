@@ -2232,7 +2232,6 @@ INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ALTER TABLE it_simrs_hemodinamika
 ALTER COLUMN tensi TYPE VARCHAR(10);
 
---BARU SETELAH DI DEV
 ALTER TABLE it_simrs_asesmen_keperawatan_rawat_inap
 ADD COLUMN no_checkup VARCHAR(50);
 
@@ -2345,11 +2344,218 @@ INSERT INTO im_func_roles VALUES
 (6915, 40, 'Y', now(), now(), 'admin', 'admin'),
 (6916, 40, 'Y', now(), now(), 'admin', 'admin');
 
---BELUM DI PROD
+---------- SUDAH DI PROD -----------
+====================================
+
+            /\   /\   /\
+           |__| |__| |__|
+            ||   ||   ||
+            ||   ||   ||
+            ||   ||   ||                    ---------
+----------- ||   ||   || -----------        |  ------
+---------- SUDAH DI PROD -----------        | |
+----------- +++++++++++ ------------        |  ------
+                                            ------  |
+                                                  | |
+                                            ------  |
+                                            ---------
+
+--SUDAH DI PROD
 UPDATE im_func_roles
 SET flag = 'N'
 WHERE func_id = 2
-AND role_id = 41
+AND role_id = 41;
+
+INSERT INTO im_functions VALUES
+(6900, 'Laporan', '/laporanops/initForm_laporanops.action', 0, 1, now(), 'admin', now(), 'admin', 'Y','C', 6900),
+(6901, 'Init Laporan', '/laporanops/initForm_laporanops.action', 6900, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6902, 'Search', '/laporanops/search_laporanops.action', 6900, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6900, 32, 'Y', now(), now(), 'admin', 'admin'),
+(6901, 32, 'Y', now(), now(), 'admin', 'admin'),
+(6902, 32, 'Y', now(), now(), 'admin', 'admin');
+
+CREATE TABLE im_simrs_laporan_ops(
+  id_laporan_ops VARCHAR(100) NOT NULL PRIMARY KEY,
+  nama_laporan VARCHAR(500),
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  created_who character varying(100),
+  last_update_who character varying(100)
+);
+
+INSERT INTO im_simrs_laporan_ops VALUES
+('kpi','KPI Operasional','Y','C',now(),now(),'admin','admin'),
+('formularium','Formularium','Y','C',now(),now(),'admin','admin'),
+('rawat_jalan','Rawat Jalan','Y','C',now(),now(),'admin','admin'),
+('rawat_inap','Rawat Inap','Y','C',now(),now(),'admin','admin'),
+('penunjang_medis','Penunjang Medis','Y','C',now(),now(),'admin','admin'),
+('bor','Bed Occupation Rate (BOR)','Y','C',now(),now(),'admin','admin'),
+('diagnosa','Diagnosis Terbanyak','Y','C',now(),now(),'admin','admin'),
+('kematian','Indikator Kematian','Y','C',now(),now(),'admin','admin'),
+('kegiatan','Form Kegiatan','Y','C',now(),now(),'admin','admin'),
+('statistik','Statistik Rumah Sakit','Y','C',now(),now(),'admin','admin'),
+('mutu','Indikator Mutu Pelayanan Kriyandas','Y','C',now(),now(),'admin','admin'),
+('kapitasi','Kapitasi','Y','C',now(),now(),'admin','admin'),
+('unggulan','Layanan Unggulan','Y','C',now(),now(),'admin','admin');
+
+--create header for lab dan radiologi
+CREATE TABLE it_simrs_header_pemeriksaan(
+  id_header_pemeriksaan VARCHAR(100) NOT NULL PRIMARY KEY,
+  id_detail_checkup VARCHAR(50),
+  id_kategori_lab VARCHAR(50),
+  id_dokter_pengirim VARCHAR(50),
+  nama_dokter_pengirim VARCHAR(50),
+  ttd_dokter_pengirim VARCHAR(100),
+  id_petugas VARCHAR(50),
+  nama_petugas VARCHAR(100),
+  ttd_petugas VARCHAR(100),
+  id_validator VARCHAR(50),
+  nama_validator VARCHAR(100),
+  ttd_validator VARCHAR(100),
+  status_periksa VARCHAR(1),
+  catatan TEXT,
+  tarif_lab_luar NUMERIC,
+  approve_flag VARCHAR(1),
+  is_just_lab VARCHAR(1),
+  is_pending VARCHAR(1),
+  is_periksa_luar VARCHAR(1),
+  is_read VARCHAR(1),
+  tanggal_masuk_periksa TIMESTAMP WITHOUT TIME ZONE,
+  tanggal_selesai_periksa TIMESTAMP WITHOUT TIME ZONE,
+  flag VARCHAR(1),
+  action VARCHAR(1),
+  created_who VARCHAR(100),
+  created_date TIMESTAMP WITHOUT TIME ZONE,
+  last_update_who VARCHAR(100),
+  last_update TIMESTAMP WITHOUT TIME ZONE
+);
+
+CREATE SEQUENCE seq_header_pemeriksaan;
+
+DROP TABLE it_simrs_periksa_lab;
+CREATE TABLE public.it_simrs_periksa_lab
+(
+  id_periksa_lab VARCHAR(50) NOT NULL PRIMARY KEY,
+  id_header_pemeriksaan VARCHAR(50),
+  id_pemeriksaan VARCHAR(30),
+  nama_pemeriksaan VARCHAR(30),
+  flag VARCHAR(1),
+  action VARCHAR(1),
+  created_who VARCHAR(100),
+  created_date TIMESTAMP WITHOUT TIME ZONE,
+  last_update_who VARCHAR(100),
+  last_update TIMESTAMP WITHOUT TIME ZONE
+);
+
+ALTER TABLE it_simrs_upload_hasil_pemeriksaan
+RENAME id_periksa_lab TO id_header_pemeriksaan;
+
+ALTER TABLE it_simrs_riwayat_tindakan
+ALTER COLUMN nama_tindakan TYPE TEXT;
+
+INSERT INTO im_functions VALUES
+(6917, 'print', '/ordergizi/printListGizi_ordergizi.action', 1716, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6917, 40, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE im_simrs_lab
+ADD COLUMN is_catatan VARCHAR(1),
+
+UPDATE im_simrs_lab
+SET is_catatan = 'N';
+
+ALTER TABLE im_simrs_lab DISABLE TRIGGER ALL;
+INSERT INTO im_simrs_lab VALUES
+('LAB00000028','SWAB','','','','Y','C',now(),'migrasi',now(),'migrasi','','Y');
+ALTER TABLE im_simrs_lab ENABLE TRIGGER ALL;
+
+INSERT INTO im_simrs_parameter_pemeriksaan VALUES
+('PRP00000284','KAL00000002','ANTI GEN','','','',140000,'Y','C',now(),'migrasi',now(),'migrasi');
+
+INSERT INTO im_simrs_lab_detail VALUES
+('LDB00000284','LAB00000028','Y',now(),'migrasi',now(),'migrasi','C',800000,'PRP00000284','02');
+
+
+---------- SUDAH DI PROD -----------
+====================================
+
+            /\   /\   /\
+           |__| |__| |__|
+            ||   ||   ||
+            ||   ||   ||
+            ||   ||   ||                    ---------   |
+----------- ||   ||   || -----------        |  ------   |  |
+---------- SUDAH DI PROD -----------        | |         |  |
+----------- +++++++++++ ------------        |  ------   |  |
+                                            ------  |   |  |
+                                                  | |   |  |
+                                            ------  |   |   ----------
+                                            ---------   |_ _ _ _ _ _ _|
+
+--SENIN, SELASA BESOK PUASA
+DROP TABLE it_simrs_order_periksa_lab;
+
+CREATE TABLE public.it_simrs_order_periksa_lab
+(
+  id_order_periksa character varying(30) NOT NULL,
+  id_detail_checkup character varying(30),
+  id_pemeriksaan character varying(30),
+  nama_pemeriksaan character varying(100),
+  id_lab_detail character varying(30),
+  nama_detail_pemeriksaan character varying(100),
+  id_kategori_lab character varying(30),
+  keterangan character varying(100),
+  is_pemeriksaan character varying(1),
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  created_who character varying(100),
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_order_periksa PRIMARY KEY (id_order_periksa)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_order_periksa_lab
+  OWNER TO postgres;
+
+--PERTAMA PUASA 13-04-2021
+ALTER TABLE it_simrs_header_pemeriksaan
+ADD COLUMN jenis_pasien VARCHAR(100);
+
+--FUNCTION PRINT REPORT AS
+INSERT INTO im_functions VALUES
+(6918, 'print', '/verifasrj/printVerifikasiTindakan_verifasrj.action', 2335, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6919, 'print', '/verifasri/printVerifikasiTindakan_verifasri.action', 2338, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6918, 38, 'Y', now(), now(), 'admin', 'admin'),
+(6919, 38, 'Y', now(), now(), 'admin', 'admin');
+
+--FUNCTION PRINT REPORT REKANAN
+INSERT INTO im_functions VALUES
+(6920, 'print', '/verifrekananrj/printVerifikasiTindakan_verifrekananrj.action', 6904, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6921, 'print', '/verifrekananri/printVerifikasiTindakan_verifrekananri.action', 6907, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6920, 38, 'Y', now(), now(), 'admin', 'admin'),
+(6921, 38, 'Y', now(), now(), 'admin', 'admin');
+
+--SURAT KETERANGAN
+INSERT INTO im_functions VALUES
+(6922, 'print', '/rawatinap/printSuratKeterangan_rawatinap.action', 1485, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6922, 32, 'Y', now(), now(), 'admin', 'admin');
+
+
+
 
 
 

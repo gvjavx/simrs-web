@@ -11,6 +11,7 @@
     <bean id="positionBagianBo" class="com.neurix.hris.master.positionBagian.bo.impl.PositionBagianBoImpl"
           p:positionBagianDao-ref="positionBagianDao"
           p:departmentDao-ref="departmentDao"
+          p:positionDao-ref="positionDao"
     />
     <bean id="positionBagianBoProxy"
           class="org.springframework.aop.framework.ProxyFactoryBean"

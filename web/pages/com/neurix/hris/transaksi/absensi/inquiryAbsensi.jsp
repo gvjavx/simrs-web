@@ -545,18 +545,32 @@
     $(document).ready(function(){
         loadFinal();
         var limNow = new Date();
-        limNow.setDate(limNow.getDate() - 1);
         $('#tanggal1').datepicker({
             dateFormat: 'dd-mm-yy',
             maxDate: limNow
-    });
+        });
         $('#tanggal2').datepicker({
             dateFormat: 'dd-mm-yy',
             maxDate: limNow
         });
+
+        canSave();
         $("#btnProses").click(function() {
             $("#btnProsesSave").trigger( "click" );
         });
         $('input:checkbox').removeAttr('checked');
     });
+
+    function canSave() {
+        var lastDate = $("#tanggal2").val().split("-");
+        var inqDate = new Date(lastDate[2],lastDate[1]-1,lastDate[0]);
+        var nowDate = new Date();
+        console.log(inqDate + " - " + nowDate);
+        if(inqDate >= nowDate){
+            $("#btnProses").hide();
+        }else {
+            $("#btnProses").show();
+
+        }
+    }
 </script>

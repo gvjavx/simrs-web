@@ -17,8 +17,6 @@ public interface PositionBo extends BaseMasterBo<Position> {
 
     public Position getPositionById(String positionId, String flag) throws GeneralBOException;
 
-    List<Position> getComboPositionWithCriteria(String query) throws GeneralBOException;
-
     public List<Position> searchPosition2Sys(Position position) throws GeneralBOException;
 
     List<Position> searchPositionMutasi(Position position) throws GeneralBOException;
@@ -29,7 +27,6 @@ public interface PositionBo extends BaseMasterBo<Position> {
     public List<Position> searchPositionBiodataSys(String divisiId) throws GeneralBOException;
     public List<Position> searchPositionBiodataSysHistory(String divisiId) throws GeneralBOException;
 
-    String cekStatus(String positionName)throws GeneralBOException;
 
     String cekStatusEdit(String positionName, String department, String bagian, String kelompok) throws GeneralBOException;
 
@@ -40,6 +37,11 @@ public interface PositionBo extends BaseMasterBo<Position> {
 
     List<Position> getComboBodBoc() throws GeneralBOException;
     public PersonilPosition getAndCheckJabatanTerpakai(String positionId, String branchId) throws GeneralBOException;
+
+    public List<Position> getComboPositionWithCriteria(String query);
+
+    public String cekStatus(String positionName, String flagCostUnit);
+
     public List<Position> getUnitCostByBagian(String bagianId) throws GeneralBOException;
     public Position getOnePositionByKodering(String kodering) throws GeneralBOException;
     public String sugestLastKoderingBySubbidId(String subBidId) throws GeneralBOException;

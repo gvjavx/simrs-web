@@ -13,6 +13,8 @@ import com.neurix.hris.transaksi.absensi.bo.AbsensiBo;
 import com.neurix.hris.transaksi.absensi.model.AbsensiOnCall;
 import com.neurix.hris.transaksi.absensi.model.AbsensiPegawai;
 import com.neurix.hris.transaksi.absensi.model.MesinAbsensi;
+import com.neurix.hris.transaksi.logcron.bo.LogCronBo;
+import com.neurix.hris.transaksi.logcron.model.LogCron;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.neurix.simrs.bpjs.eklaim.bo.EklaimBo;
@@ -21,6 +23,7 @@ import com.neurix.simrs.bpjs.eklaim.model.KlaimRequest;
 import com.neurix.simrs.bpjs.vclaim.bo.BpjsBo;
 import com.neurix.simrs.bpjs.vclaim.model.*;
 import com.opensymphony.xwork2.ModelDriven;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.rest.DefaultHttpHeaders;
@@ -93,6 +96,11 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
     private AbsensiBo absensiBoProxy;
     private UserBo userBoProxy;
     private NotifikasiBo notifikasiBoProxy;
+    private LogCronBo logCronBoProxy;
+
+    public void setLogCronBoProxy(LogCronBo logCronBoProxy) {
+        this.logCronBoProxy = logCronBoProxy;
+    }
 
     public UserBo getUserBoProxy() {
         return userBoProxy;
@@ -700,16 +708,43 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         mesinAbsensi.setCreatedWho("cron");
         mesinAbsensi.setLastUpdate(updateTime);
 
+        LogCron logCron = new LogCron();
+        logCron.setCronName("cronJobMesinAbsensi");
+
         if ("all".equalsIgnoreCase(metode)){
             try {
                 statusMesin = absensiBoProxy.getAllDataFromMesin(mesinAbsensi);
-//                statusMesin = "{status:" +status+ "}";
+
+                logCron.setStatus(CommonConstant.LOG_CRON_SUCCESS);
+                logCron.setNote("SUCCESS");
+                try{
+                    logCronBoProxy.saveAdd(logCron);
+                }catch (GeneralBOException e){
+                    logger.error("[BpjsController.cronJobMesinAbsensi] Error, " + e.getMessage());
+                    throw new GeneralBOException("Error when saving Log Cron, " + e.getMessage());
+                }
+
             }catch (Exception e){
                 String error = "ERROR WHEN GET MESIN: " + "[" + e + "]";
                 absensiBoProxy.saveErrorMessage(error,"BpjsController.cronJobAbsensiPegawai");
                 String status =  e.getMessage();
                 String stJson = status.substring(status.indexOf("{")+1,status.indexOf("}"));
                 statusMesin = "{"+stJson+"}";
+
+                //SIMPAN LOG CRON
+                String respCode = StringUtils.substringBetween(stJson,"response:",";");
+                if(!"200".equalsIgnoreCase(respCode)) {
+                    logCron.setStatus(CommonConstant.LOG_CRON_CON_PROBLEM);
+                }else{
+                    logCron.setStatus(CommonConstant.LOG_CRON_PROG_PROBLEM);
+                }
+                logCron.setNote(e.getMessage());
+                try{
+                    logCronBoProxy.saveAdd(logCron);
+                }catch (GeneralBOException err){
+                    logger.error("[BpjsController.cronJobMesinAbsensi] Error, " + err.getMessage());
+                    throw new GeneralBOException("Error when saving Log Cron, " + err.getMessage());
+                }
 
                 //Kirim Notif
                 List<User> usersList = userBoProxy.getUserByRoleAndBranch(CommonConstant.ROLE_ID_ADMIN,branchId);
@@ -734,8 +769,26 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
             }catch (Exception e){
                 String error = "ERROR WHEN GET MESIN: " + "[" + e + "]";
                 absensiBoProxy.saveErrorMessage(error,"BpjsController.cronJobAbsensiPegawai");
-                String[] getStatus =  e.getMessage().split("-");
-                statusMesin = getStatus[0];
+//                String[] getStatus =  e.getMessage().split("-");
+//                statusMesin = getStatus[0];
+                String status = e.getMessage();
+                String stJson = status.substring(status.indexOf("{")+1,status.indexOf("}"));
+                statusMesin = "{"+stJson+"}";
+
+                //SIMPAN LOG CRON
+                String respCode = StringUtils.substringBetween(stJson,"response:",";");
+                if(!"200".equalsIgnoreCase(respCode)) {
+                    logCron.setStatus(CommonConstant.LOG_CRON_CON_PROBLEM);
+                }else{
+                    logCron.setStatus(CommonConstant.LOG_CRON_PROG_PROBLEM);
+                }
+                logCron.setNote(e.getMessage());
+                try{
+                    logCronBoProxy.saveAdd(logCron);
+                }catch (GeneralBOException err){
+                    logger.error("[BpjsController.cronJobMesinAbsensi] Error, " + err.getMessage());
+                    throw new GeneralBOException("Error when saving Log Cron, " + err.getMessage());
+                }
 
                 //Kirim Notif
                 List<User> usersList = userBoProxy.getUserByRoleAndBranch(CommonConstant.ROLE_ID_ADMIN,branchId);
@@ -857,6 +910,8 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
 
         statusInquiry = "{status:1;}";
 
+        LogCron logCron = new LogCron();
+        logCron.setCronName("cronJobAbsensiPegawai");
         try {
             absensiPegawaiList = absensiBoProxy.cronInquiry(data);
             listOfResultOnCall = (List<AbsensiOnCall>) session.getAttribute("listOfResultOnCall");
@@ -865,10 +920,29 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
             }
             try {
                 absensiBoProxy.saveAddAbsensi(absensiPegawaiList, listOfResultOnCall, search);
+
+                logCron.setStatus(CommonConstant.LOG_CRON_SUCCESS);
+                logCron.setNote("SUCCESS");
+                try{
+                    logCronBoProxy.saveAdd(logCron);
+                }catch (GeneralBOException err){
+                    logger.error("[BpjsController.cronJobAbsensiPegawai] Error, " + err.getMessage());
+                    throw new GeneralBOException("Error when saving Log Cron, " + err.getMessage());
+                }
             }catch (GeneralBOException e){
                 String error = "ERROR WHEN SAVE ABSENSI PEGAWAI : " + "[" + e + "]";
                 statusInquiry = "{status:3;}";
                 absensiBoProxy.saveErrorMessage(error,"BpjsController.cronJobAbsensiPegawai");
+
+                //SAVE LOG CRON
+                logCron.setStatus(CommonConstant.LOG_CRON_PROG_PROBLEM);
+                logCron.setNote(e.getMessage());
+                try{
+                    logCronBoProxy.saveAdd(logCron);
+                }catch (GeneralBOException err){
+                    logger.error("[BpjsController.cronJobAbsensiPegawai] Error, " + err.getMessage());
+                    throw new GeneralBOException("Error when saving Log Cron, " + err.getMessage());
+                }
 
                 //Kirim Notif
                 List<User> usersList = userBoProxy.getUserByRoleAndBranch(CommonConstant.ROLE_ID_ADMIN,branchId);
@@ -892,6 +966,15 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
             statusInquiry = "{status:2;}";
             absensiBoProxy.saveErrorMessage(error,"BpjsController.cronJobAbsensiPegawai");
 
+            //SAVE LOG CRON
+            logCron.setStatus(CommonConstant.LOG_CRON_PROG_PROBLEM);
+            logCron.setNote(e.getMessage());
+            try{
+                logCronBoProxy.saveAdd(logCron);
+            }catch (GeneralBOException err){
+                logger.error("[BpjsController.cronJobAbsensiPegawai] Error, " + err.getMessage());
+                throw new GeneralBOException("Error when saving Log Cron, " + err.getMessage());
+            }
             //Kirim Notif
             List<User> usersList = userBoProxy.getUserByRoleAndBranch(CommonConstant.ROLE_ID_ADMIN,branchId);
             for (User user : usersList){

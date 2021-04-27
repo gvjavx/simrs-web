@@ -116,7 +116,7 @@
             });
 
             ObatAction.getListKandunganObat(function (list) {
-                var str = "<option value=''>[Select One]</option>";
+                var str = "<option value=''> - </option>";
                 $.each(list, function (i, item) {
                     str += "<option value='"+item.idKandungan+"'>"+item.kandungan+"</option>";
                 });
@@ -124,7 +124,7 @@
             });
 
             ObatAction.getAllKategoriPersediaan(function (list) {
-                var str = "<option value=''>[Select One]</option>";
+                var str = "<option value=''> - </option>";
                 $.each(list, function (i, item) {
                     str += "<option value='"+item.idKategoriPersediaan+"'>"+item.nama+"</option>";
                 });
@@ -133,6 +133,21 @@
 
             listBentukObat('');
         });
+
+        function formatRupiah(angka) {
+            if(angka != null && angka != ''){
+                var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = ribuan.join('.').split('').reverse().join('');
+                if (angka < 0){
+                    return "-"+ribuan;
+                } else {
+                    return ribuan;
+                }
+            }else{
+                return 0;
+            }
+        }
 
     </script>
     <style>
@@ -183,30 +198,12 @@
                                     <div class="col-sm-4">
                                         <select name="obat.idBentuk" class="form-control select2" id="id_bentuk_search" style="margin-top:0px !important; width: 100%">
                                         </select>
-                                        <%--<s:action id="initJenis" namespace="/jenisobat"--%>
-                                                  <%--name="getListJenisObat_jenisobat"/>--%>
-                                        <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                  <%--list="#initJenis.listOfJenisObat" id="obat_jenis_obat"--%>
-                                                  <%--listKey="idJenisObat"--%>
-                                                  <%--listValue="namaJenisObat"--%>
-                                                  <%--name="obat.idJenisObat"--%>
-                                                  <%--headerKey="" headerValue="[Select one]"--%>
-                                                  <%--cssClass="form-control select2"/>--%>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama Obat</label>
                                     <div class="col-sm-4">
                                         <s:textfield cssStyle="margin-top: 7px" cssClass="form-control" name="obat.namaObat"></s:textfield>
-                                        <%--<s:action id="initObat" namespace="/obat"--%>
-                                                  <%--name="getListObat_obat"/>--%>
-                                        <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                  <%--list="#initObat.listOfObat" id="nama_obat"--%>
-                                                  <%--listKey="idObat"--%>
-                                                  <%--listValue="namaObat"--%>
-                                                  <%--name="obat.idObat"--%>
-                                                  <%--headerKey="" headerValue="[Select one]"--%>
-                                                  <%--cssClass="form-control select2"/>--%>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -312,14 +309,10 @@
                             <tr bgcolor="#90ee90">
                                 <td>ID Obat</td>
                                 <td>Nama Obat</td>
-                                <%--<td>Kategori</td>--%>
-                                <%--<td>Lembar/ Box</td>--%>
-                                <%--<td>Biji/ Lembar</td>--%>
-                                <%--<td>Stok Box</td>--%>
-                                <%--<td>Stok Lembar</td>--%>
-                                <td>Stok Biji</td>
-                                <td>Min Stok</td>
-                                <td>Standar Margin</td>
+                                <td>Bentuk</td>
+                                <td align="right" width="50px">Standar Margin</td>
+                                <td align="right">Min Stok</td>
+                                <td align="right">Stok</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -333,14 +326,10 @@
                                 </s:else>
                                         <td><s:property value="idObat"/></td>
                                         <td><s:property value="namaObat"/></td>
-                                        <%--<td><s:property escape="false" value="jenisObat"/></td>--%>
-                                        <%--<td><s:property value="lembarPerBox"/></td>--%>
-                                        <%--<td><s:property value="bijiPerLembar"/></td>--%>
-                                        <%--<td><s:property value="qtyBox"/></td>--%>
-                                        <%--<td><s:property value="qtyLembar"/></td>--%>
-                                        <td><s:property value="qtyBiji"/></td>
-                                        <td><s:property value="minStok"/></td>
-                                        <td><s:property value="margin"/>%</td>
+                                        <td><s:property value="bentuk"/></td>
+                                        <td align="right"><s:property value="margin"/>%</td>
+                                        <td align="right"><script>document.write(formatRupiah('<s:property value="minStok"/>'))</script></td>
+                                        <td align="right" style="font-weight: bold;"><script>document.write(formatRupiah('<s:property value="qtyBiji"/>'))</script></td>
                                         <td align="center" width="13%">
                                             <img onclick="detailObat('<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="flag"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="merk"/>','<s:property value="jenisObat"/>','<s:property value="minStok"/>', '<s:property value="flagKronis" />', '<s:property value="flagGeneric" />', '<s:property value="flagBpjs" />', '<s:property value="margin" />', '<s:property value="idKategoriPersediaan" />')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer;">
                                         <s:if test='obat.isKp == "Y"'>
@@ -856,10 +845,11 @@
                     <td>ID Barang</td>
                     <td>Pabrik</td>
                     <td>Expired Date</td>
-                    <td>Stok Biji</td>
+                    <td align="right">Stok Biji</td>
+                    <td>Jenis</td>
                     <td>Barcode</td>
                     </thead>
-                    <tbody id="body_detail">
+                    <tbody id="body_detail" style="font-size: 13px">
                     </tbody>
                 </table>
                 <div class="row">
@@ -1195,17 +1185,18 @@
                         var warna = "";
                         var color = "";
                         var disabled = "";
+                        var intLamaHari = parseInt(item.stLamaHari);
 
-                        if(Math.abs(date1) > Math.abs(date2)){
+                        if(intLamaHari < 0){
                             warna = '#ccc';
                             color = '#fff';
                             disabled = 'disabled';
 
-                        } else if (diffDays < 10) {
+                        } else if (intLamaHari < 10) {
                             warna = '#dd4b39';
                             color = '#fff';
 
-                        } else if (diffDays < 30) {
+                        } else if (intLamaHari < 30) {
                             warna = '#eea236';
                             color = '#fff';
                         } else {
@@ -1217,7 +1208,8 @@
                             '<td>'+item.idBarang+'</td>'+
                             '<td>'+item.namaPabrikObat+'</td>'+
                             '<td>'+converterDate(item.expiredDate)+'</td>'+
-                            '<td>'+item.qtyBiji+'</td>'+
+                            '<td align="right" style="font-weight:bold;">'+formatRupiah(item.qtyAllBiji)+'</td>'+
+                            '<td>'+item.jenisObat+'</td>'+
                             '<td align="center">' +
                             '<a target="_blank" href="../permintaanpo/printBarcodeBarang_permintaanpo.action?id='+item.idBarang+'">' +
                             //'<button class="btn btn-sm btn-default" onclick="printBarcode(\''+item.idBarang+'\')">' +
@@ -1359,7 +1351,7 @@
             });
         } else {
             ObatAction.listAllBentukBarang(function (res) {
-                var str = "<option value=''>[Select One]</option>";
+                var str = "<option value=''> - </option>";
                 $.each(res, function (i, item) {
                     str += '<option value="' + item.idBentuk + '">' + item.bentuk + '</option>';
                 });
@@ -1389,7 +1381,7 @@
 
         } else {
             JenisPersediaanObatAction.getJenisPersediaanAll(function (res) {
-                var str = "<option value=''>[Select One]</option>";
+                var str = "<option value=''> - </option>";
                 $.each(res, function (i, item) {
                     str += '<option value="'+item.id+'">'+item.nama+'</option>';
                 });
@@ -1400,7 +1392,7 @@
 
     function listJenisSubObat(jenis) {
         JenisPersediaanObatSubAction.getListJenisObatSubByIdJenis(jenis, function (res) {
-            var str = "<option value=''>[Select One]</option>";
+            var str = "<option value=''> - </option>";
             $.each(res, function (i, item) {
                 str += '<option value="' + item.id + '">' + item.nama + '</option>';
             });

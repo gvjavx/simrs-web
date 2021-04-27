@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printStrukResepPasien" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.610510000000005"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="96"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -59,6 +59,7 @@
 	<parameter name="reportParams.petugas" class="java.lang.String"/>
 	<parameter name="reportParams.sep" class="java.lang.String"/>
 	<parameter name="reportParams.ppnObat" class="java.lang.Integer"/>
+	<parameter name="umur" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT * FROM it_simrs_riwayat_tindakan LIMIT 1]]>
 	</queryString>
@@ -164,21 +165,21 @@
 				<text><![CDATA[NIK]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="274" y="99" width="5" height="15" uuid="725e93d7-7404-4ef8-a696-10c6d435c94e"/>
+				<reportElement x="273" y="114" width="5" height="15" uuid="725e93d7-7404-4ef8-a696-10c6d435c94e"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="274" y="84" width="5" height="15" uuid="8f4ca6d6-dcca-453a-8b96-273452633cb1"/>
+				<reportElement x="273" y="99" width="5" height="15" uuid="8f4ca6d6-dcca-453a-8b96-273452633cb1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="274" y="69" width="5" height="15" uuid="697a1e0a-cea4-40f9-b589-f3dab21d2e7a"/>
+				<reportElement x="273" y="84" width="5" height="15" uuid="697a1e0a-cea4-40f9-b589-f3dab21d2e7a"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -192,7 +193,7 @@
 				<text><![CDATA[Tempat, Tanggal Lahir]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="279" y="69" width="102" height="15" uuid="1bbe29f5-308e-462b-835b-380775fd5b06"/>
+				<reportElement x="278" y="84" width="102" height="15" uuid="1bbe29f5-308e-462b-835b-380775fd5b06"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -200,7 +201,7 @@
 				<textFieldExpression><![CDATA[$P{reportParams.jenisKelamin} == null ? "" : $P{reportParams.jenisKelamin}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="279" y="84" width="102" height="15" uuid="3e55cd5a-1914-4512-a83c-541abc6138f2"/>
+				<reportElement x="278" y="99" width="102" height="15" uuid="3e55cd5a-1914-4512-a83c-541abc6138f2"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -208,7 +209,7 @@
 				<textFieldExpression><![CDATA[$P{reportParams.jenisPasien} == null ? "" : $P{reportParams.jenisPasien}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="214" y="69" width="60" height="15" uuid="4a091c3c-f4b7-4523-8f59-66c6c2cbea52"/>
+				<reportElement x="213" y="84" width="60" height="15" uuid="4a091c3c-f4b7-4523-8f59-66c6c2cbea52"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -222,7 +223,7 @@
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="214" y="84" width="60" height="15" uuid="505c3d1e-53f6-4ee8-b533-fa22d9ea8ad9"/>
+				<reportElement x="213" y="99" width="60" height="15" uuid="505c3d1e-53f6-4ee8-b533-fa22d9ea8ad9"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -244,7 +245,7 @@
 				<text><![CDATA[Nama]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="279" y="101" width="102" height="35" uuid="16d2202a-f971-4d52-aee5-8348b4afee9b"/>
+				<reportElement x="278" y="116" width="102" height="35" uuid="16d2202a-f971-4d52-aee5-8348b4afee9b"/>
 				<box topPadding="1" leftPadding="1"/>
 				<textElement verticalAlignment="Top">
 					<font size="8"/>
@@ -252,7 +253,7 @@
 				<textFieldExpression><![CDATA[$P{reportParams.desa} == null ? "" : $P{reportParams.desa}+", "+$P{reportParams.kecamatan}+", "+$P{reportParams.kabupaten}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="214" y="99" width="60" height="15" uuid="9144e08b-73cd-46ab-aca1-becda7ff2e6c"/>
+				<reportElement x="213" y="114" width="60" height="15" uuid="9144e08b-73cd-46ab-aca1-becda7ff2e6c"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -309,6 +310,28 @@
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="213" y="69" width="60" height="15" uuid="27431325-dc70-4727-a6ca-4ee4b8c83921"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Umur]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="273" y="69" width="5" height="15" uuid="3ea9ea3e-63c8-48dc-a6d3-0fa8d1ded423"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="278" y="69" width="102" height="15" uuid="6e2e9e4a-b158-4ab1-a402-2c6b5fb94f3d"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{umur} == null ? "" : $P{umur}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<detail>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="newReportMutasi" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8e506c74-d8ab-4e72-b68c-624eb5e52f8b">
-	<property name="ireport.zoom" value="1.610510000000001"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="newReportMutasi" language="groovy" pageWidth="595" pageHeight="842" columnWidth="541" leftMargin="27" rightMargin="27" topMargin="20" bottomMargin="20" uuid="8e506c74-d8ab-4e72-b68c-624eb5e52f8b">
+	<property name="ireport.zoom" value="0.8264462809917359"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="16"/>
 	<parameter name="reportParams.branchName" class="java.lang.String"/>
 	<parameter name="reportParams.titleReport" class="java.lang.String"/>
 	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
@@ -18,41 +18,55 @@
 	<parameter name="reportParams.noSurat" class="java.lang.String"/>
 	<parameter name="reportParams.gajiBaru" class="java.lang.String"/>
 	<parameter name="reportParams.date" class="java.lang.String"/>
+	<parameter name="reportParams.mutasiId" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select * from it_hris_mutasi_jabatan limit 1]]>
+		<![CDATA[SELECT
+	peg.nama_pegawai,
+	mts.mutasi_id,
+	mts.no_sk,
+	TO_CHAR(mts.tanggal_efektif, 'DD-MM-YYYY') tanggal_efektif,
+	mts.nip,
+	br1.branch_name branch_lama,
+	dep1.department_name divisi_lama,
+	pos1.position_name posisi_lama,
+	br2.branch_name branch_baru,
+	dep2.department_name divisi_baru,
+	pos2.position_name posisi_baru
+FROM it_hris_mutasi_jabatan mts
+JOIN im_hris_pegawai peg
+ON peg.nip = mts.nip
+JOIN im_branches br1
+ON br1.branch_id = mts.branch_lama_id
+JOIN im_branches br2
+ON br2.branch_id = mts.branch_baru_id
+JOIN im_hris_department dep1
+ON dep1.department_id = mts.divisi_lama_id
+JOIN im_hris_department dep2
+ON dep2.department_id = mts.divisi_baru_id
+JOIN im_position pos1
+ON pos1.position_id = mts.position_lama_id
+JOIN im_position pos2
+ON pos2.position_id = mts.position_lama_id
+WHERE mutasi_id = $P{reportParams.mutasiId};]]>
 	</queryString>
+	<field name="nama_pegawai" class="java.lang.String"/>
 	<field name="mutasi_id" class="java.lang.String"/>
+	<field name="no_sk" class="java.lang.String"/>
+	<field name="tanggal_efektif" class="java.lang.String"/>
 	<field name="nip" class="java.lang.String"/>
-	<field name="divisi_lama_id" class="java.lang.String"/>
-	<field name="branch_lama_id" class="java.lang.String"/>
-	<field name="branch_baru_id" class="java.lang.String"/>
-	<field name="divisi_baru_id" class="java.lang.String"/>
-	<field name="created_date" class="java.sql.Timestamp"/>
-	<field name="last_update" class="java.sql.Timestamp"/>
-	<field name="created_who" class="java.lang.String"/>
-	<field name="action" class="java.lang.String"/>
-	<field name="flag" class="java.lang.String"/>
-	<field name="last_update_who" class="java.lang.String"/>
-	<field name="tanggal_efektif" class="java.sql.Timestamp"/>
-	<field name="pjs" class="java.lang.String"/>
-	<field name="position_lama_id" class="java.lang.String"/>
-	<field name="position_baru_id" class="java.lang.String"/>
-	<field name="menggantikan_nip" class="java.lang.String"/>
-	<field name="tipe" class="java.lang.String"/>
+	<field name="branch_lama" class="java.lang.String"/>
+	<field name="divisi_lama" class="java.lang.String"/>
+	<field name="posisi_lama" class="java.lang.String"/>
+	<field name="branch_baru" class="java.lang.String"/>
+	<field name="divisi_baru" class="java.lang.String"/>
+	<field name="posisi_baru" class="java.lang.String"/>
 	<pageHeader>
 		<band height="90" splitType="Stretch">
-			<textField>
-				<reportElement x="181" y="13" width="208" height="20" uuid="dca4a545-31e8-447f-8c5e-7308bcaf62f6"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="DejaVu Sans" size="15" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.titleReport}]]></textFieldExpression>
-			</textField>
 			<line>
 				<reportElement x="2" y="71" width="555" height="1" uuid="6a9069a1-b5bf-4b05-b4e9-fa4e6e0b69c6"/>
 			</line>
 			<staticText>
-				<reportElement x="3" y="38" width="143" height="20" uuid="baee2e0d-720b-459e-99ef-b91d5d8ddb6e"/>
+				<reportElement x="3" y="38" width="167" height="15" uuid="baee2e0d-720b-459e-99ef-b91d5d8ddb6e"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -64,7 +78,7 @@
 new com.google.zxing.qrcode.QRCodeWriter().encode($F{nip},com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="3" y="43" width="145" height="17" uuid="e3c08a6a-4037-471c-8acf-21f4d70911e4"/>
+				<reportElement x="3" y="43" width="178" height="17" uuid="e3c08a6a-4037-471c-8acf-21f4d70911e4"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -74,13 +88,6 @@ new com.google.zxing.qrcode.QRCodeWriter().encode($F{nip},com.google.zxing.Barco
 				<reportElement x="7" y="3" width="68" height="33" uuid="49262725-f884-42e6-8505-0d78c7101f5e"/>
 				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
 			</image>
-			<textField>
-				<reportElement x="181" y="33" width="208" height="20" uuid="e30776aa-519d-4376-9b5f-7533971f2401"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{mutasi_id}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="447" y="53" width="79" height="20" uuid="a20c672a-a51a-441a-8d11-68e7c7692725"/>
 				<textElement verticalAlignment="Top">
@@ -95,6 +102,13 @@ new com.google.zxing.qrcode.QRCodeWriter().encode($F{nip},com.google.zxing.Barco
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.date}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="186" y="21" width="205" height="17" uuid="158e687a-a59e-4b8a-84d1-d1a50c8e20c5"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SURAT MUTASI / ROTASI]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<detail>
@@ -162,162 +176,85 @@ new com.google.zxing.qrcode.QRCodeWriter().encode($F{nip},com.google.zxing.Barco
 				</textElement>
 				<text><![CDATA[Sdr.]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="30" y="99" width="177" height="17" uuid="cf44fb94-7c0b-4349-8eb8-95bdfae90939"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.namaPegawai}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="3" y="116" width="177" height="17" uuid="deac0c59-d635-45a1-a01e-6d290c4e7b0b"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.jabatanLama}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="3" y="133" width="177" height="17" uuid="72bbf752-9282-41c0-9c6a-5d31f8bfdfd7"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.unitLama}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="2" y="185" width="553" height="17" uuid="f672101b-0b10-4d05-901c-c3781c9ccdce"/>
+				<reportElement x="2" y="171" width="555" height="32" uuid="f672101b-0b10-4d05-901c-c3781c9ccdce"/>
 				<textElement>
 					<font size="12" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Direksi PT. Nusantara Medika Utama dengan ini menetapkan bahwa terhitung mulai Tanggal:]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="2" y="202" width="553" height="17" uuid="1354f46e-ee09-4b7b-bc87-fedc4e2b3be4"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.tanggalSk}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="2" y="241" width="553" height="17" uuid="742717c8-40bd-4d1d-83d3-4cc0adee4df8"/>
+				<reportElement x="2" y="234" width="553" height="17" uuid="742717c8-40bd-4d1d-83d3-4cc0adee4df8"/>
 				<textElement>
 					<font size="12" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Saudara dipindahkan:]]></text>
+				<text><![CDATA[Saudara :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="51" y="274" width="84" height="17" uuid="d48c059b-3c69-49b6-9b69-cb9b5ac36a26"/>
+				<reportElement x="53" y="281" width="84" height="17" uuid="d48c059b-3c69-49b6-9b69-cb9b5ac36a26"/>
 				<textElement>
 					<font size="12" isBold="false"/>
 				</textElement>
-				<text><![CDATA[- Dari]]></text>
+				<text><![CDATA[- NIP]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="51" y="291" width="84" height="17" uuid="4e2a3fdc-10d3-46c0-892c-551ec582b3f7"/>
+				<reportElement x="72" y="375" width="84" height="17" uuid="4e2a3fdc-10d3-46c0-892c-551ec582b3f7"/>
 				<textElement>
 					<font size="12" isBold="false"/>
 				</textElement>
-				<text><![CDATA[- Ke]]></text>
+				<text><![CDATA[- Posisi]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="135" y="274" width="11" height="17" uuid="5d70c95e-8d36-4371-a4b8-5d8465ac4c65"/>
+				<reportElement x="137" y="281" width="11" height="17" uuid="5d70c95e-8d36-4371-a4b8-5d8465ac4c65"/>
 				<textElement>
 					<font size="12" isBold="false"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="135" y="291" width="11" height="17" uuid="2c890e34-1ecd-410c-8866-34e1b326f486"/>
-				<textElement>
-					<font size="12" isBold="false"/>
-				</textElement>
-				<text><![CDATA[:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="146" y="274" width="177" height="17" uuid="44f6a9f7-cac6-4a1f-af03-da4225e13629"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.unitLama}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="146" y="291" width="177" height="17" uuid="18ca4523-4a7e-4bef-a102-f6c6bb0a1dcd"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.unitBaru}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="2" y="326" width="553" height="17" uuid="fcf0a61e-ce8f-4072-a9da-8f3fdcb24ed6"/>
-				<textElement>
-					<font size="12" isBold="false"/>
-				</textElement>
-				<text><![CDATA[dengan:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="51" y="364" width="84" height="17" uuid="470f9a31-15ba-4101-ad3c-bbbb636342aa"/>
-				<textElement>
-					<font size="12" isBold="false"/>
-				</textElement>
-				<text><![CDATA[- Jabatan]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="51" y="381" width="84" height="17" uuid="fa876255-96a7-4c00-9dd7-81112a3a6e50"/>
-				<textElement>
-					<font size="12" isBold="false"/>
-				</textElement>
-				<text><![CDATA[(Baru/tetap)]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="51" y="398" width="84" height="17" uuid="70b37129-9416-4831-bd9a-d67e3d4e6875"/>
-				<textElement>
-					<font size="12" isBold="false"/>
-				</textElement>
-				<text><![CDATA[- Level]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="51" y="415" width="84" height="17" uuid="7775f0c5-6f7c-4a0d-a4cf-17cd14365c5d"/>
-				<textElement>
-					<font size="12" isBold="false"/>
-				</textElement>
-				<text><![CDATA[(Baru/tetap)]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="51" y="432" width="84" height="17" uuid="c1f927f5-e7b0-42f1-9eec-fe66e31df858"/>
-				<textElement>
-					<font size="12" isBold="false"/>
-				</textElement>
-				<text><![CDATA[- Gaji Pokok]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="51" y="449" width="84" height="17" uuid="f52ecabf-9fd4-4126-a933-f0a79716c57f"/>
-				<textElement>
-					<font size="12" isBold="false"/>
-				</textElement>
-				<text><![CDATA[(Baru/tetap)]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="135" y="364" width="11" height="17" uuid="9a642178-3ca9-467d-9459-7b6737799741"/>
+				<reportElement x="156" y="375" width="11" height="17" uuid="2c890e34-1ecd-410c-8866-34e1b326f486"/>
 				<textElement>
 					<font size="12" isBold="false"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="135" y="398" width="11" height="17" uuid="4617120b-2212-4b93-89ac-23a75623b4fa"/>
+				<reportElement x="2" y="311" width="553" height="17" uuid="fcf0a61e-ce8f-4072-a9da-8f3fdcb24ed6"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Dipindahkan :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="72" y="333" width="84" height="17" uuid="470f9a31-15ba-4101-ad3c-bbbb636342aa"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Unit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="72" y="354" width="84" height="17" uuid="c1f927f5-e7b0-42f1-9eec-fe66e31df858"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Divisi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="156" y="333" width="11" height="17" uuid="9a642178-3ca9-467d-9459-7b6737799741"/>
 				<textElement>
 					<font size="12" isBold="false"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="135" y="432" width="11" height="17" uuid="a03d1306-1fa0-4fa9-91d9-6a5f1ba6b8f5"/>
+				<reportElement x="156" y="354" width="11" height="17" uuid="a03d1306-1fa0-4fa9-91d9-6a5f1ba6b8f5"/>
 				<textElement>
 					<font size="12" isBold="false"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="489" width="552" height="71" uuid="f666fb4c-f0cc-460b-a074-c611947bb07e"/>
+				<reportElement x="3" y="476" width="538" height="71" uuid="f666fb4c-f0cc-460b-a074-c611947bb07e"/>
 				<textElement textAlignment="Justified">
 					<font size="12" isBold="false"/>
 				</textElement>
@@ -337,26 +274,12 @@ new com.google.zxing.qrcode.QRCodeWriter().encode($F{nip},com.google.zxing.Barco
 				</textElement>
 				<text><![CDATA[DIREKSI]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="148" y="364" width="177" height="17" uuid="f56cb7d7-1bdb-43be-bc2b-62882590b6e0"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.jabatanBaru}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="148" y="398" width="177" height="17" uuid="034102db-cfb0-42a0-9b3d-519ee3d959dc"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.levelBaru}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="85" y="34" width="83" height="17" uuid="1e67237e-5a7a-4a99-9b29-3cb22483a571"/>
+				<reportElement x="85" y="34" width="205" height="17" uuid="1e67237e-5a7a-4a99-9b29-3cb22483a571"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[PEMINDAHAN]]></text>
+				<text><![CDATA[MUTASI / ROTASI]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="85" y="17" width="11" height="17" uuid="35ff73c9-66c0-4483-acfc-921394155b27"/>
@@ -365,19 +288,166 @@ new com.google.zxing.qrcode.QRCodeWriter().encode($F{nip},com.google.zxing.Barco
 				</textElement>
 				<text><![CDATA[-]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="85" y="0" width="205" height="17" uuid="6d1c811c-0614-4cb0-a3a1-fb738d05bd01"/>
-				<textElement verticalAlignment="Middle">
+			<staticText>
+				<reportElement x="53" y="260" width="84" height="17" uuid="7541eab9-27b7-4a4c-8cf5-65cf3007d65a"/>
+				<textElement>
 					<font size="12" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.noSurat}]]></textFieldExpression>
+				<text><![CDATA[- Nama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="137" y="260" width="11" height="17" uuid="2f8f9735-4e0e-4c31-bf1a-ca532cf03149"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="333" width="55" height="17" uuid="bfcb37dd-ceea-4548-8d8a-3adda3da8ffa"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Dari :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="85" y="0" width="100" height="17" uuid="30e4d31d-04d6-4419-8ec8-8233591210eb"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{no_sk}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="148" y="432" width="177" height="17" uuid="6d1c1702-fea0-4641-b056-fb44e0f8bc3d"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement x="28" y="99" width="262" height="17" uuid="374041d1-26e0-4666-9ee6-97316ef61790"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nama_pegawai}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="116" width="286" height="17" uuid="de7f9801-3851-4d2c-9a6a-e094fff3da90"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{posisi_lama}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="133" width="286" height="17" uuid="3b27de82-d00e-47f7-9c85-fab65fc6d78e"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{branch_lama}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="151" y="260" width="262" height="17" uuid="a529bfff-0cb4-4318-91cf-43dfa00463e7"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nama_pegawai}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="152" y="281" width="261" height="17" uuid="8d1d953f-ddd0-4389-b925-46910e9cc20c"/>
+				<textElement>
 					<font size="12" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.gajiBaru}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nip}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="19" y="402" width="55" height="17" uuid="fcdfcfd0-0e04-4906-a544-89497babc3ac"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Ke :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="71" y="402" width="84" height="17" uuid="793d8dee-50a2-4ebf-8b3e-fd69779e72da"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Unit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="156" y="402" width="11" height="17" uuid="56485e09-ae21-475a-8ebe-b0dbde5ca077"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="157" y="423" width="11" height="17" uuid="cca4e3f9-8b39-408a-93ab-6625557e721f"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="157" y="444" width="11" height="17" uuid="addbd602-3cd7-46ca-825a-4dbcbcd73acc"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="72" y="444" width="84" height="17" uuid="3e665b04-11dd-4bec-b9f9-a4078b63cd81"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Posisi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="71" y="423" width="84" height="17" uuid="f1ad329a-7a2e-46d3-b629-4febde6e1683"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Divisi]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="170" y="333" width="277" height="17" uuid="e4319a1c-9fbd-4da3-8c24-da9608ed2a5c"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{branch_lama}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="354" width="277" height="17" uuid="4f649272-e827-4aa1-bbc0-bff5dd6062f7"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{divisi_lama}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="375" width="277" height="17" uuid="2092447d-e992-4ce5-ab7f-e825cbbd5b8a"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{posisi_lama}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="402" width="277" height="17" uuid="4b87c2ab-f25c-40a1-a293-b8a341186a73"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{branch_baru}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="423" width="277" height="17" uuid="747f8d90-be40-47e3-97f4-a1c43937427e"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{divisi_baru}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="444" width="277" height="17" uuid="485695a7-19b3-4a14-adb2-6dfbbe6b39ef"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{posisi_baru}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="181" y="197" width="155" height="20" uuid="2152d7c0-afb1-46fa-b0c1-4352931f4827"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tanggal_efektif}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -395,7 +465,7 @@ new com.google.zxing.qrcode.QRCodeWriter().encode($F{nip},com.google.zxing.Barco
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["-/- Kepala Rumah Sakit "+$P{reportParams.unitLama}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["-/- Kepala "+$F{branch_lama}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

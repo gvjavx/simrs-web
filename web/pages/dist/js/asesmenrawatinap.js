@@ -3408,8 +3408,8 @@ function detailAsesmenRawatInap(jenis) {
                         } else if ("add_tindakan_ina" == jenis) {
                             var del = '';
                             if("Tanggal" == item.parameter){
-                                del = '<span style="margin-right: 60px" onclick="conRI(\'' + jenis + '\',\''+item.keterangan+'\', \'' + item.idAsesmenKeperawatanRawatInap + '\')" class="pull-right"><i id="delete_' + item.idAsesmenKeperawatanRawatInap + '" class="fa fa-trash hvr-grow" style="color: red"></i></span>' +
-                                    '<a target="_blank" href="'+contextPath+'/rekammedik/printSuratPernyataan_rekammedik?id='+idDetailCheckup+'&tipe=INA&keterangan='+item.keterangan+'&createdDate='+converterDateTimeComplex(item.createdDate)+'" class="pull-right"><i class="fa fa-print hvr-grow" style="color: deepskyblue"></i></a>';
+                                del = '<span style="margin-right: 60px;" onclick="conRI(\'' + jenis + '\',\''+item.keterangan+'\', \'' + item.idAsesmenKeperawatanRawatInap + '\')" class="pull-right"><i id="delete_' + item.idAsesmenKeperawatanRawatInap + '" class="fa fa-trash hvr-grow" style="color: red; font-size: 20px"></i></span>' +
+                                    '<a style="margin-right: 7px" target="_blank" href="'+contextPath+'/rekammedik/printSuratPernyataan_rekammedik?id='+idDetailCheckup+'&tipe=INA&keterangan='+item.keterangan+'&createdDate='+converterDateTimeComplex(item.createdDate)+'" class="pull-right"><i class="fa fa-print hvr-grow" style="color: deepskyblue; font-size: 20px"></i></a>';
                             }
 
                             if ("colspan" == item.tipe) {

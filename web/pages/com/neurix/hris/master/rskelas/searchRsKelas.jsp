@@ -16,7 +16,7 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <%--<script type='text/javascript' src='<s:url value="/dwr/engine.js"/>'></script>--%>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/AlatAction.js"/>'></script>
+    <%--<script type='text/javascript' src='<s:url value="/dwr/interface/AlatAction.js"/>'></script>--%>
 
 
     <style>

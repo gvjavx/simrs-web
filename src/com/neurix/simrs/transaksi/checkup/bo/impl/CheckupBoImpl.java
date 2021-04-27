@@ -12,6 +12,8 @@ import com.neurix.simrs.bpjs.tindakan.model.TindakanBpjs;
 import com.neurix.simrs.master.dokter.dao.DokterDao;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
+import com.neurix.simrs.master.lab.dao.LabDao;
+import com.neurix.simrs.master.lab.model.ImSimrsLabEntity;
 import com.neurix.simrs.master.lab.model.Lab;
 import com.neurix.simrs.master.labdetail.dao.LabDetailDao;
 import com.neurix.simrs.master.labdetail.model.ImSimrsLabDetailEntity;
@@ -59,6 +61,7 @@ import com.neurix.simrs.transaksi.pemeriksaanfisik.dao.PemeriksaanFisikDao;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisikEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
 import com.neurix.simrs.transaksi.pengkajian.model.RingkasanKeluarMasukRs;
+import com.neurix.simrs.transaksi.periksalab.dao.HeaderPemeriksaanDao;
 import com.neurix.simrs.transaksi.periksalab.dao.OrderPeriksaLabDao;
 import com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDao;
 import com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDetailDao;
@@ -172,6 +175,8 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     private TempatTidurDao tempatTidurDao;
     private RawatInapDao rawatInapDao;
     private PasienDao pasienDao;
+    private HeaderPemeriksaanDao headerPemeriksaanDao;
+    private LabDao labDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -299,6 +304,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerCheckup.setNoKtp(headerList.getNoKtp());
             headerCheckup.setTempatLahir(headerList.getTempatLahir());
             headerCheckup.setTglLahir(headerList.getTglLahir());
+            if(headerList.getTglLahir() != null){
+                headerCheckup.setUmur(CommonUtil.calculateAge(headerList.getTglLahir(), true)+" Tahun");
+            }
             headerCheckup.setStTglLahir(headerCheckup.getTglLahir().toString());
             headerCheckup.setDesaId(headerList.getDesaId());
             headerCheckup.setJalan(headerList.getJalan());
@@ -391,7 +399,6 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     public void saveAdd(HeaderCheckup bean) throws GeneralBOException {
         logger.info("[CheckupBoImpl.saveAdd] Start >>>>>>>");
         if (bean != null) {
-            String id = "";
             ItSimrsHeaderChekupEntity headerEntity = new ItSimrsHeaderChekupEntity();
             headerEntity.setNoCheckup(bean.getNoCheckup());
             headerEntity.setIdPasien(bean.getIdPasien());
@@ -438,17 +445,17 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())) {
                 ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = new ItSimrsHeaderDetailCheckupEntity();
 
-                id = "";
-                id = getNextDetailCheckupId();
-                detailCheckupEntity.setIdDetailCheckup("DCM" + id);
+                detailCheckupEntity.setIdDetailCheckup("DCM" + getNextDetailCheckupId());
                 detailCheckupEntity.setNoCheckup(headerEntity.getNoCheckup());
                 detailCheckupEntity.setIdPelayanan(bean.getIdPelayanan());
                 detailCheckupEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
 
                 if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                     detailCheckupEntity.setMetodePembayaran("non_tunai");
-                } else {
-                    detailCheckupEntity.setMetodePembayaran(bean.getMetodePembayaran() != null && !"".equalsIgnoreCase(bean.getMetodePembayaran()) ? bean.getMetodePembayaran() : null);
+                }else{
+                    if("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                        detailCheckupEntity.setMetodePembayaran("tunai");
+                    }
                 }
 
                 detailCheckupEntity.setNoRujukan(bean.getNoRujukan() != null && !"".equalsIgnoreCase(bean.getNoRujukan()) ? bean.getNoRujukan() : null);
@@ -468,11 +475,6 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
                 detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 detailCheckupEntity.setIsEksekutif(bean.getIsEksekutif());
-                if(bean.getIsEksekutif() != null && !"".equalsIgnoreCase(bean.getIsEksekutif())){
-                    if("Y".equalsIgnoreCase(bean.getIsEksekutif())){
-                        detailCheckupEntity.setMetodePembayaran("tunai");
-                    }
-                }
                 detailCheckupEntity.setIsVaksin(bean.getIsVaksin());
 
                 if ("paket_perusahaan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
@@ -552,7 +554,8 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
                 // saving dokter
                 if (bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter()) &&
-                        detailCheckupEntity.getIdDetailCheckup() != null && !"".equalsIgnoreCase(detailCheckupEntity.getIdDetailCheckup())) {
+                        detailCheckupEntity.getIdDetailCheckup() != null && !"".equalsIgnoreCase(detailCheckupEntity.getIdDetailCheckup())
+                && !"N".equalsIgnoreCase(bean.getIdDokter())) {
                     DokterTeam dokterTeam = new DokterTeam();
                     dokterTeam.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
                     dokterTeam.setIdDokter(bean.getIdDokter());
@@ -731,43 +734,30 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     }
                 }
 
-                if (bean.getAsesmenList().size() > 0) {
-
-                    for (Asesmen list : bean.getAsesmenList()) {
-
-                        ItSimrsAsesmenEntity asesmen = new ItSimrsAsesmenEntity();
-                        asesmen.setIdAsesmen("ASM" + getNextIdAsesmen());
-                        asesmen.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-                        asesmen.setParameter(list.getParameter());
-                        asesmen.setJawaban(list.getJawaban());
-                        asesmen.setKeterangan(list.getKeterangan());
-                        asesmen.setFlag("Y");
-                        asesmen.setAction("C");
-                        asesmen.setCreatedWho(bean.getCreatedWho());
-                        asesmen.setCreatedDate(bean.getCreatedDate());
-                        asesmen.setLastUpdate(bean.getLastUpdate());
-                        asesmen.setLastUpdateWho(bean.getLastUpdateWho());
-
-                        try {
-                            asesmenDao.addAndSave(asesmen);
-                        } catch (HibernateException e) {
-                            logger.error("Found Error " + e.getMessage());
+                if (bean.getListPemeriksaan().size() > 0 && bean.getListPemeriksaan() != null) {
+                    List<PeriksaLab> periksaLabList = new ArrayList<>();
+                    for (String idPemeriksaan: bean.getListPemeriksaan()){
+                        if(idPemeriksaan != null && !"".equalsIgnoreCase(idPemeriksaan)){
+                            PeriksaLab periksaLab = new PeriksaLab();
+                            periksaLab.setIdDokterPengirim(bean.getIdDokter());
+                            periksaLab.setIdPemeriksaan(idPemeriksaan);
+                            ImSimrsLabEntity labEntity = labDao.getById("idLab", idPemeriksaan);
+                            if(labEntity != null){
+                                periksaLab.setNamaPemeriksaan(labEntity.getNamaLab());
+                            }
+                            periksaLab.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                            periksaLab.setCreatedWho(bean.getCreatedWho());
+                            periksaLab.setCreatedDate(bean.getCreatedDate());
+                            periksaLab.setLastUpdateWho(bean.getLastUpdateWho());
+                            periksaLab.setLastUpdate(bean.getLastUpdate());
+                            periksaLab.setIdKategoriLab(headerCheckupDao.getIdKategoriLab(idPemeriksaan));
+                            periksaLab.setIsJustLab("Y");
+                            periksaLabList.add(periksaLab);
                         }
                     }
-                }
-
-                if (!"".equalsIgnoreCase(bean.getIdLab()) && bean.getIdLab() != null) {
-                    PeriksaLab periksaLab = new PeriksaLab();
-                    periksaLab.setIdDokterPengirim(bean.getIdDokter());
-                    periksaLab.setIdLab(bean.getIdLab());
-                    periksaLab.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-                    periksaLab.setCreatedWho(bean.getCreatedWho());
-                    periksaLab.setCreatedDate(bean.getCreatedDate());
-                    periksaLab.setLastUpdateWho(bean.getLastUpdateWho());
-                    periksaLab.setLastUpdate(bean.getLastUpdate());
-                    periksaLab.setIdKategoriLab(headerCheckupDao.getIdKategoriLab(bean.getIdLab()));
-                    periksaLab.setKeterangan("just_lab");
-                    saveOrderLab(periksaLab);
+                    if(periksaLabList.size() > 0){
+                        saveOrderLab(periksaLabList);
+                    }
                 }
 
                 if ("Y".equalsIgnoreCase(bean.getIsOrderLab())) {
@@ -842,29 +832,51 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         }
     }
 
-    private void saveOrderLab(PeriksaLab bean) {
-        if (bean != null) {
-            ItSimrsPeriksaLabEntity entity = new ItSimrsPeriksaLabEntity();
-            String id = getNextPeriksaLabId();
-            entity.setIdPeriksaLab("PRL" + id);
-            entity.setIdLab(bean.getIdLab());
-            entity.setIdDetailCheckup(bean.getIdDetailCheckup());
-            entity.setIdDokterPengirim(bean.getIdDokterPengirim());
-            entity.setStatusPeriksa("0");
-            entity.setFlag("Y");
-            entity.setAction("C");
-            entity.setCreatedDate(bean.getCreatedDate());
-            entity.setCreatedWho(bean.getCreatedWho());
-            entity.setLastUpdate(bean.getLastUpdate());
-            entity.setLastUpdateWho(bean.getLastUpdateWho());
-            entity.setKeterangan(bean.getKeterangan());
-            entity.setIdKategoriLab(bean.getIdKategoriLab());
+    private void saveOrderLab(List<PeriksaLab> list) {
+        if (list != null && list.size() > 0) {
+            PeriksaLab periksaLab = list.get(0);
+            ItSimrsHeaderPemeriksaanEntity pemeriksaanEntity = new ItSimrsHeaderPemeriksaanEntity();
+            pemeriksaanEntity.setIdHeaderPemeriksaan(headerPemeriksaanDao.getNextId());
+            pemeriksaanEntity.setIdDetailCheckup(periksaLab.getIdDetailCheckup());
+            pemeriksaanEntity.setIdDokterPengirim(periksaLab.getIdDokterPengirim());
+            pemeriksaanEntity.setStatusPeriksa("0");
+            pemeriksaanEntity.setFlag("Y");
+            pemeriksaanEntity.setAction("C");
+            pemeriksaanEntity.setCreatedDate(periksaLab.getCreatedDate());
+            pemeriksaanEntity.setCreatedWho(periksaLab.getCreatedWho());
+            pemeriksaanEntity.setLastUpdate(periksaLab.getLastUpdate());
+            pemeriksaanEntity.setLastUpdateWho(periksaLab.getLastUpdateWho());
+            pemeriksaanEntity.setIsJustLab(periksaLab.getIsJustLab());
+            pemeriksaanEntity.setIsPending("N");
+            pemeriksaanEntity.setIsPeriksaLuar("N");
+            pemeriksaanEntity.setIdKategoriLab(periksaLab.getIdKategoriLab());
 
             try {
-                periksaLabDao.addAndSave(entity);
+                headerPemeriksaanDao.addAndSave(pemeriksaanEntity);
             } catch (HibernateException e) {
                 logger.error("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data periksa lab " + e.getMessage());
                 throw new GeneralBOException("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data periksa lab " + e.getMessage());
+            }
+
+            for (PeriksaLab lab: list){
+                ItSimrsPeriksaLabEntity periksaLabEntity = new ItSimrsPeriksaLabEntity();
+                periksaLabEntity.setIdPeriksaLab(getNextPeriksaLabId());
+                periksaLabEntity.setIdHeaderPemeriksaan(pemeriksaanEntity.getIdHeaderPemeriksaan());
+                periksaLabEntity.setIdPemeriksaan(lab.getIdPemeriksaan());
+                periksaLabEntity.setNamaPemeriksaan(lab.getNamaPemeriksaan());
+                periksaLabEntity.setFlag("Y");
+                periksaLabEntity.setAction("C");
+                periksaLabEntity.setCreatedWho(lab.getCreatedWho());
+                periksaLabEntity.setCreatedDate(lab.getCreatedDate());
+                periksaLabEntity.setLastUpdateWho(lab.getLastUpdateWho());
+                periksaLabEntity.setLastUpdate(lab.getLastUpdate());
+
+                try {
+                    periksaLabDao.addAndSave(periksaLabEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PeriksaLabBoImpl.saveOrderPemeriksaan] ERROR when saving data periksa lab " + e.getMessage());
+                    throw new GeneralBOException("[PeriksaLabBoImpl.saveOrderPemeriksaan] ERROR when saving data periksa lab " + e.getMessage());
+                }
             }
         }
     }
@@ -885,69 +897,96 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 throw new GeneralBOException("[PeriksaLabBoImpl.getListEntityPeriksaLab] ERROR When search data periksa lab " + e.getCause());
             }
 
-            ItSimrsPeriksaLabEntity entity = new ItSimrsPeriksaLabEntity();
+            ItSimrsOrderPeriksaLabEntity orderPeriksaLabEntity = new ItSimrsOrderPeriksaLabEntity();
             if (periksaLabEntities.size() > 0) {
+                orderPeriksaLabEntity = periksaLabEntities.get(0);
+                ItSimrsHeaderPemeriksaanEntity pemeriksaanEntity = new ItSimrsHeaderPemeriksaanEntity();
+                pemeriksaanEntity.setIdHeaderPemeriksaan(headerPemeriksaanDao.getNextId());
+                pemeriksaanEntity.setIdDetailCheckup(idDetailCheckup);
+                pemeriksaanEntity.setIdKategoriLab(orderPeriksaLabEntity.getIdKategoriLab());
+                pemeriksaanEntity.setIdDokterPengirim(idDokter);
+                pemeriksaanEntity.setIsPending("N");
+                pemeriksaanEntity.setIsPeriksaLuar("N");
+                pemeriksaanEntity.setIsJustLab("N");
+                pemeriksaanEntity.setIsPending("N");
+                pemeriksaanEntity.setStatusPeriksa("0");
+                pemeriksaanEntity.setFlag("Y");
+                pemeriksaanEntity.setAction("C");
+                pemeriksaanEntity.setCreatedWho(userLogin);
+                pemeriksaanEntity.setCreatedDate(now);
+                pemeriksaanEntity.setLastUpdateWho(userLogin);
+                pemeriksaanEntity.setLastUpdate(now);
 
-                ItSimrsOrderPeriksaLabEntity order = periksaLabEntities.get(0);
-                if (order.getIdLab() != null) {
-                    String idKategoriLab = labDetailDao.kategoriLab(order.getIdLab(), CommonUtil.userBranchLogin());
-                    String id = getNextPeriksaLabId();
-                    entity.setIdPeriksaLab("PRL" + id);
-                    entity.setIdLab(order.getIdLab());
-                    entity.setIdDetailCheckup(idDetailCheckup);
-                    entity.setIdDokterPengirim(idDokter);
-                    entity.setStatusPeriksa("0");
-                    entity.setFlag("Y");
-                    entity.setAction("C");
-                    entity.setCreatedDate(now);
-                    entity.setCreatedWho(userLogin);
-                    entity.setLastUpdate(now);
-                    entity.setLastUpdateWho(userLogin);
-                    entity.setIdKategoriLab(idKategoriLab);
-
-                    try {
-                        periksaLabDao.addAndSave(entity);
-                    } catch (HibernateException e) {
-                        logger.error("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data periksa lab " + e.getMessage());
-                        throw new GeneralBOException("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data periksa lab " + e.getMessage());
-                    }
+                try {
+                    headerPemeriksaanDao.addAndSave(pemeriksaanEntity);
+                }catch (HibernateException e){
+                    logger.error("[PeriksaLabBoImpl.saveOrderPemeriksaan] ERROR when saving data periksa lab " + e.getMessage());
+                    throw new GeneralBOException("Error, "+e.getMessage());
                 }
 
-                for (ItSimrsOrderPeriksaLabEntity prl : periksaLabEntities) {
-                    LabDetail detail = new LabDetail();
+                String idPemeriksaan = "";
+                String idPeriksaLab = "";
+
+                for (ItSimrsOrderPeriksaLabEntity orderLab: periksaLabEntities){
+                    ItSimrsPeriksaLabEntity periksaLabEntity = new ItSimrsPeriksaLabEntity();
+                    periksaLabEntity.setIdPeriksaLab(getNextPeriksaLabId());
+                    periksaLabEntity.setIdHeaderPemeriksaan(pemeriksaanEntity.getIdHeaderPemeriksaan());
+                    periksaLabEntity.setIdPemeriksaan(orderLab.getIdPemeriksaan());
+                    periksaLabEntity.setNamaPemeriksaan(orderLab.getNamaPemeriksaan());
+                    periksaLabEntity.setFlag("Y");
+                    periksaLabEntity.setAction("C");
+                    periksaLabEntity.setCreatedWho(userLogin);
+                    periksaLabEntity.setCreatedDate(now);
+                    periksaLabEntity.setLastUpdateWho(userLogin);
+                    periksaLabEntity.setLastUpdate(now);
+
+                    if(!idPemeriksaan.equalsIgnoreCase(orderLab.getIdPemeriksaan())){
+                        idPemeriksaan = orderLab.getIdPemeriksaan();
+                        try {
+                            periksaLabDao.addAndSave(periksaLabEntity);
+                            idPeriksaLab = periksaLabEntity.getIdPeriksaLab();
+                        } catch (HibernateException e) {
+                            logger.error("[PeriksaLabBoImpl.saveOrderPemeriksaan] ERROR when saving data periksa lab " + e.getMessage());
+                            throw new GeneralBOException("[PeriksaLabBoImpl.saveOrderPemeriksaan] ERROR when saving data periksa lab " + e.getMessage());
+                        }
+                    }
+
                     List<LabDetail> labDetailList = new ArrayList<>();
-                    if (prl.getIdLabDetail() != null && !"".equalsIgnoreCase(prl.getIdLabDetail())) {
+                    if(orderLab.getIdLabDetail() != null && !"".equalsIgnoreCase(orderLab.getIdLabDetail())){
                         LabDetail lab = new LabDetail();
-                        lab.setIdLabDetail(prl.getIdLabDetail());
+                        lab.setIdLabDetail(orderLab.getIdLabDetail());
                         try {
                             labDetailList = labDetailDao.getDataParameterPemeriksaan(lab);
                         } catch (GeneralBOException e) {
                             logger.error(e.getMessage());
+                            throw new GeneralBOException("[PeriksaLabBoImpl.saveOrderPemeriksaan] ERROR when saving data detail periksa lab " + e.getMessage());
                         }
-                    }
-                    if (labDetailList.size() > 0) {
-                        detail = labDetailList.get(0);
-                        ItSimrsPeriksaLabDetailEntity detailEntity = new ItSimrsPeriksaLabDetailEntity();
-                        detailEntity.setIdPeriksaLabDetail("DPL" + getNextDetailLapId());
-                        detailEntity.setIdPeriksaLab(entity.getIdPeriksaLab());
-                        detailEntity.setIdLabDetail(prl.getIdLabDetail());
-                        detailEntity.setNamaDetailPeriksa(detail.getNamaDetailPeriksa());
-                        detailEntity.setKeteranganAcuanL(detail.getKeteranganAcuanL());
-                        detailEntity.setKeteranganAcuanP(detail.getKeteranganAcuanP());
-                        detailEntity.setSatuan(detail.getSatuan());
-                        detailEntity.setTarif(detail.getTarif());
-                        detailEntity.setFlag("Y");
-                        detailEntity.setAction("C");
-                        detailEntity.setCreatedDate(now);
-                        detailEntity.setCreatedWho(userLogin);
-                        detailEntity.setLastUpdate(now);
-                        detailEntity.setLastUpdateWho(userLogin);
+                        if (labDetailList.size() > 0) {
+                            lab = labDetailList.get(0);
+                            ItSimrsPeriksaLabDetailEntity detailEntity = new ItSimrsPeriksaLabDetailEntity();
+                            detailEntity.setIdPeriksaLabDetail(getNextDetailLapId());
+                            detailEntity.setIdPeriksaLab(idPeriksaLab);
+                            detailEntity.setIdLabDetail(lab.getIdLabDetail());
+                            detailEntity.setNamaDetailPeriksa(lab.getNamaDetailPeriksa());
+                            detailEntity.setKeteranganAcuanL(lab.getKeteranganAcuanL());
+                            detailEntity.setKeteranganAcuanP(lab.getKeteranganAcuanP());
+                            detailEntity.setSatuan(lab.getSatuan());
+                            detailEntity.setTarif(lab.getTarif());
+                            detailEntity.setFlag("Y");
+                            detailEntity.setAction("C");
+                            detailEntity.setCreatedWho(userLogin);
+                            detailEntity.setCreatedDate(now);
+                            detailEntity.setLastUpdateWho(userLogin);
+                            detailEntity.setLastUpdate(now);
 
-                        try {
-                            periksaLabDetailDao.addAndSave(detailEntity);
-                        } catch (HibernateException e) {
-                            logger.error("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data detail periksa lab " + e.getMessage());
-                            throw new GeneralBOException("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data detail periksa lab " + e.getMessage());
+                            try {
+                                periksaLabDetailDao.addAndSave(detailEntity);
+                            } catch (HibernateException e) {
+                                logger.error("[PeriksaLabBoImpl.saveOrderPemeriksaan] ERROR when saving data detail periksa lab " + e.getMessage());
+                                throw new GeneralBOException("[PeriksaLabBoImpl.saveOrderPemeriksaan] ERROR when saving data detail periksa lab " + e.getMessage());
+                            }
+                        }else{
+                            throw new GeneralBOException("[PeriksaLabBoImpl.saveOrderPemeriksaan] ERROR when saving data detail periksa lab ");
                         }
                     }
                 }
@@ -984,8 +1023,12 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         }
 
         if (paketPasienList.size() > 0) {
-            String kategoriLab = "";
-            String idPeriksaLab = "";
+
+            String seqIdHeaderPemeriksaan = "";
+            String jenisPemeriksaan = "";
+            String idPemeriksaan = "";
+            String seqIdPeriksaLab = "";
+
             for (PaketPeriksa paketPeriksa : paketPasienList) {
                 if ("tindakan".equalsIgnoreCase(paketPeriksa.getJenisItem())) {
                     ItSimrsTindakanRawatEntity tindakanRawatEntity = new ItSimrsTindakanRawatEntity();
@@ -1030,67 +1073,95 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 }
 
                 if ("laboratorium".equalsIgnoreCase(paketPeriksa.getJenisItem()) || "radiologi".equalsIgnoreCase(paketPeriksa.getJenisItem())) {
-                    ItSimrsPeriksaLabEntity entityPeriksaLab = new ItSimrsPeriksaLabEntity();
-                    if (!kategoriLab.equalsIgnoreCase(paketPeriksa.getIdKategoriItem())) {
-                        String idKategoriLab = labDetailDao.kategoriLab(paketPeriksa.getIdKategoriItem(), CommonUtil.userBranchLogin());
-                        kategoriLab = paketPeriksa.getIdKategoriItem();
-                        String id = getNextPeriksaLabId();
-                        entityPeriksaLab.setIdPeriksaLab("PRL" + id);
-                        entityPeriksaLab.setIdLab(paketPeriksa.getIdKategoriItem());
-                        entityPeriksaLab.setIdDetailCheckup(idDetailCheckup);
-                        entityPeriksaLab.setIdDokterPengirim(idDokter);
-                        entityPeriksaLab.setStatusPeriksa("0");
-                        entityPeriksaLab.setFlag("Y");
-                        entityPeriksaLab.setAction("C");
-                        entityPeriksaLab.setCreatedDate(time);
-                        entityPeriksaLab.setCreatedWho(userLogin);
-                        entityPeriksaLab.setLastUpdate(time);
-                        entityPeriksaLab.setLastUpdateWho(userLogin);
-                        entityPeriksaLab.setIdKategoriLab(idKategoriLab);
+                    String idKategoriLab = labDetailDao.kategoriLab(paketPeriksa.getIdKategoriItem(), CommonUtil.userBranchLogin());
+                    if(!jenisPemeriksaan.equalsIgnoreCase(paketPeriksa.getJenisItem())){
+                        jenisPemeriksaan = paketPeriksa.getJenisItem();
+                        ItSimrsHeaderPemeriksaanEntity pemeriksaanEntity = new ItSimrsHeaderPemeriksaanEntity();
+                        pemeriksaanEntity.setIdHeaderPemeriksaan(headerPemeriksaanDao.getNextId());
+                        pemeriksaanEntity.setIdDetailCheckup(idDetailCheckup);
+                        pemeriksaanEntity.setIdKategoriLab(idKategoriLab);
+                        pemeriksaanEntity.setIdDokterPengirim(idDokter);
+                        pemeriksaanEntity.setIsPending("N");
+                        pemeriksaanEntity.setIsPeriksaLuar("N");
+                        pemeriksaanEntity.setIsJustLab("N");
+                        pemeriksaanEntity.setIsPending("N");
+                        pemeriksaanEntity.setStatusPeriksa("0");
+                        pemeriksaanEntity.setFlag("Y");
+                        pemeriksaanEntity.setAction("C");
+                        pemeriksaanEntity.setCreatedWho(userLogin);
+                        pemeriksaanEntity.setCreatedDate(time);
+                        pemeriksaanEntity.setLastUpdateWho(userLogin);
+                        pemeriksaanEntity.setLastUpdate(time);
 
                         try {
-                            periksaLabDao.addAndSave(entityPeriksaLab);
-                        } catch (HibernateException e) {
-                            logger.error("Found Error when insert " + e.getMessage());
+                            headerPemeriksaanDao.addAndSave(pemeriksaanEntity);
+                            seqIdHeaderPemeriksaan = pemeriksaanEntity.getIdHeaderPemeriksaan();
+                        }catch (HibernateException e){
+                            logger.error("[CheckupBoImpl.insertItemPaketToPeriksa] ERROR when saving data periksa lab " + e.getMessage());
+                            throw new GeneralBOException("Error, "+e.getMessage());
                         }
-                        idPeriksaLab = entityPeriksaLab.getIdPeriksaLab();
                     }
 
-                    ItSimrsPeriksaLabDetailEntity detailEntity = new ItSimrsPeriksaLabDetailEntity();
-                    String id = getNextDetailLapId();
-                    detailEntity.setIdPeriksaLabDetail("DPL" + id);
-                    detailEntity.setIdPeriksaLab(idPeriksaLab);
-                    detailEntity.setIdLabDetail(paketPeriksa.getIdItem());
+                    if(!idPemeriksaan.equalsIgnoreCase(paketPeriksa.getIdKategoriItem())){
+                        idPemeriksaan = paketPeriksa.getIdKategoriItem();
+                        ImSimrsLabEntity labEntity = labDao.getById("idLab", paketPeriksa.getIdKategoriItem());
+                        if(labEntity != null){
+                            ItSimrsPeriksaLabEntity periksaLabEntity = new ItSimrsPeriksaLabEntity();
+                            periksaLabEntity.setIdPeriksaLab(getNextPeriksaLabId());
+                            periksaLabEntity.setIdHeaderPemeriksaan(seqIdHeaderPemeriksaan);
+                            periksaLabEntity.setIdPemeriksaan(paketPeriksa.getIdKategoriItem());
+                            periksaLabEntity.setNamaPemeriksaan(labEntity.getNamaLab());
+                            periksaLabEntity.setFlag("Y");
+                            periksaLabEntity.setAction("C");
+                            periksaLabEntity.setCreatedWho(userLogin);
+                            periksaLabEntity.setCreatedDate(time);
+                            periksaLabEntity.setLastUpdateWho(userLogin);
+                            periksaLabEntity.setLastUpdate(time);
+                            try {
+                                periksaLabDao.addAndSave(periksaLabEntity);
+                                seqIdPeriksaLab = periksaLabEntity.getIdPeriksaLab();
+                            } catch (HibernateException e) {
+                                logger.error("[CheckupBoImpl.insertItemPaketToPeriksa] ERROR when saving data periksa lab " + e.getMessage());
+                                throw new GeneralBOException("[CheckupBoImpl.insertItemPaketToPeriksa] ERROR when saving data periksa lab " + e.getMessage());
+                            }
+                        }
+                    }
 
                     List<LabDetail> labDetailList = new ArrayList<>();
-                    LabDetail resultLab = new LabDetail();
-                    LabDetail labDetail = new LabDetail();
-                    labDetail.setIdLabDetail(paketPeriksa.getIdItem());
-
+                    LabDetail lab = new LabDetail();
+                    lab.setIdLabDetail(paketPeriksa.getIdItem());
                     try {
-                        labDetailList = labDetailDao.getDataParameterPemeriksaan(labDetail);
-                    } catch (HibernateException e) {
-                        logger.error("Found Error when insert " + e.getMessage());
+                        labDetailList = labDetailDao.getDataParameterPemeriksaan(lab);
+                    } catch (GeneralBOException e) {
+                        logger.error(e.getMessage());
+                        throw new GeneralBOException("[CheckupBoImpl.insertItemPaketToPeriksa] ERROR when saving data detail periksa lab " + e.getMessage());
                     }
                     if (labDetailList.size() > 0) {
-                        resultLab = labDetailList.get(0);
-                        detailEntity.setNamaDetailPeriksa(resultLab.getNamaDetailPeriksa());
-                        detailEntity.setKeteranganAcuanP(resultLab.getKeteranganAcuanP());
-                        detailEntity.setKeteranganAcuanL(resultLab.getKeteranganAcuanL());
-                        detailEntity.setSatuan(resultLab.getSatuan());
-                        detailEntity.setTarif(resultLab.getTarif());
+                        lab = labDetailList.get(0);
+                        ItSimrsPeriksaLabDetailEntity detailEntity = new ItSimrsPeriksaLabDetailEntity();
+                        detailEntity.setIdPeriksaLabDetail(getNextDetailLapId());
+                        detailEntity.setIdPeriksaLab(seqIdPeriksaLab);
+                        detailEntity.setIdLabDetail(paketPeriksa.getIdItem());
+                        detailEntity.setNamaDetailPeriksa(lab.getNamaDetailPeriksa());
+                        detailEntity.setKeteranganAcuanL(lab.getKeteranganAcuanL());
+                        detailEntity.setKeteranganAcuanP(lab.getKeteranganAcuanP());
+                        detailEntity.setSatuan(lab.getSatuan());
+                        detailEntity.setTarif(paketPeriksa.getTarif());
                         detailEntity.setFlag("Y");
                         detailEntity.setAction("C");
-                        detailEntity.setCreatedDate(time);
                         detailEntity.setCreatedWho(userLogin);
-                        detailEntity.setLastUpdate(time);
+                        detailEntity.setCreatedDate(time);
                         detailEntity.setLastUpdateWho(userLogin);
+                        detailEntity.setLastUpdate(time);
+
                         try {
                             periksaLabDetailDao.addAndSave(detailEntity);
                         } catch (HibernateException e) {
-                            logger.error("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data detail periksa lab " + e.getMessage());
-                            throw new GeneralBOException("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data detail periksa lab " + e.getMessage());
+                            logger.error("[CheckupBoImpl.insertItemPaketToPeriksa] ERROR when saving data detail periksa lab " + e.getMessage());
+                            throw new GeneralBOException("[CheckupBoImpl.insertItemPaketToPeriksa] ERROR when saving data detail periksa lab " + e.getMessage());
                         }
+                    }else{
+                        throw new GeneralBOException("[CheckupBoImpl.insertItemPaketToPeriksa] ERROR when saving data detail periksa lab ");
                     }
                 }
             }
@@ -1225,7 +1296,6 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 headerEntity.setProfesi(bean.getProfesi());
                 headerEntity.setNoTelp(bean.getNoTelp());
                 headerEntity.setAgama(bean.getAgama());
-//                headerEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
                 headerEntity.setUrlKtp(bean.getUrlKtp());
                 headerEntity.setBranchId(bean.getBranchId());
                 headerEntity.setFlag("Y");
@@ -1235,13 +1305,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 headerEntity.setJenisKunjungan(bean.getJenisKunjungan());
                 headerEntity.setNamaPenanggung(bean.getNamaPenanggung());
                 headerEntity.setHubunganKeluarga(bean.getHubunganKeluarga());
-//                headerEntity.setRujuk(bean.getRujuk());
-//                headerEntity.setNoSep(bean.getNoSep());
-//                headerEntity.setKodeDiagnosa(bean.getDiagnosa());
-//                headerEntity.setJenisTransaksi(bean.getJenisTransaksi());
-//                if (bean.getTarifBpjs() != null && bean.getTarifBpjs().compareTo(new BigDecimal(String.valueOf(0))) == 1) {
-//                    headerEntity.setTarifBpjs(bean.getTarifBpjs());
-//                }
+
             }
 
             try {
@@ -2910,17 +2974,17 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                             kategoriLab = paketPeriksa.getIdKategoriItem();
                             String id = getNextPeriksaLabId();
                             entityPeriksaLab.setIdPeriksaLab("PRL" + id);
-                            entityPeriksaLab.setIdLab(paketPeriksa.getIdKategoriItem());
-                            entityPeriksaLab.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-                            entityPeriksaLab.setIdDokterPengirim(bean.getIdDokter());
-                            entityPeriksaLab.setStatusPeriksa("0");
+//                            entityPeriksaLab.setIdLab(paketPeriksa.getIdKategoriItem());
+//                            entityPeriksaLab.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+//                            entityPeriksaLab.setIdDokterPengirim(bean.getIdDokter());
+//                            entityPeriksaLab.setStatusPeriksa("0");
                             entityPeriksaLab.setFlag("Y");
                             entityPeriksaLab.setAction("C");
                             entityPeriksaLab.setCreatedDate(bean.getCreatedDate());
                             entityPeriksaLab.setCreatedWho(bean.getCreatedWho());
                             entityPeriksaLab.setLastUpdate(bean.getLastUpdate());
                             entityPeriksaLab.setLastUpdateWho(bean.getLastUpdateWho());
-                            entityPeriksaLab.setIdKategoriLab(idKategoriLab);
+//                            entityPeriksaLab.setIdKategoriLab(idKategoriLab);
 
                             try {
                                 periksaLabDao.addAndSave(entityPeriksaLab);
@@ -3819,5 +3883,13 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     public void setPasienDao(PasienDao pasienDao) {
         this.pasienDao = pasienDao;
+    }
+
+    public void setHeaderPemeriksaanDao(HeaderPemeriksaanDao headerPemeriksaanDao) {
+        this.headerPemeriksaanDao = headerPemeriksaanDao;
+    }
+
+    public void setLabDao(LabDao labDao) {
+        this.labDao = labDao;
     }
 }

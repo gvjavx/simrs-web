@@ -22,6 +22,7 @@
           p:labDao-ref="labDao"
           p:periksaRadiologiDao-ref="periksaRadiologiDao"
           p:uploadHasilPeriksaDao-ref="uploadHasilPeriksaDao"
+          p:headerPemeriksaanDao-ref="headerPemeriksaanDao"
     />
 
     <bean id="periksaLabBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -41,8 +42,8 @@
             <props>
                 <prop key="getByCriteria">readOnly</prop>
                 <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
-                <prop key="saveEdit">PROPAGATION_REQUIRED</prop>
-                <prop key="saveAddWithParameter">PROPAGATION_REQUIRED</prop>
+                <prop key="editOrderPemeriksaan">PROPAGATION_REQUIRED</prop>
+                <prop key="saveOrderPemeriksaan">PROPAGATION_REQUIRED</prop>
                 <prop key="saveUpdateHasilLab">PROPAGATION_REQUIRED</prop>
                 <prop key="saveDokterLab">PROPAGATION_REQUIRED</prop>
             </props>
@@ -54,6 +55,8 @@
     <bean id="periksaLabDetailDao" class="com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDetailDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="uploadHasilPeriksaDao" class="com.neurix.simrs.transaksi.periksalab.dao.UploadHasilPeriksaDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="headerPemeriksaanDao" class="com.neurix.simrs.transaksi.periksalab.dao.HeaderPemeriksaanDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

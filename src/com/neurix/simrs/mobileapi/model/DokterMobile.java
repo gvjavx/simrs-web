@@ -52,6 +52,34 @@ public class DokterMobile {
     private String tipePelayanan;
     private String createdDate;
 
+    private String umur;
+    private String jalan;
+    private String jenisKelamin;
+
+    public String getJalan() {
+        return jalan;
+    }
+
+    public void setJalan(String jalan) {
+        this.jalan = jalan;
+    }
+
+    public String getJenisKelamin() {
+        return jenisKelamin;
+    }
+
+    public void setJenisKelamin(String jenisKelamin) {
+        this.jenisKelamin = jenisKelamin;
+    }
+
+    public String getUmur() {
+        return umur;
+    }
+
+    public void setUmur(String umur) {
+        this.umur = umur;
+    }
+
     public String getCreatedDate() {
         return createdDate;
     }

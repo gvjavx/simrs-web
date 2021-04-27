@@ -41,10 +41,10 @@ public class ErrorLogDao extends GenericDao<ItBusinessObjectLog,Long> {
                 criteria.add(Restrictions.ilike("message", "%" + (String) mapCriteria.get("message") + "%"));
             }
             if (mapCriteria.get("branch_id")!=null) {
-                criteria.add(Restrictions.ilike("message", "%" + (String) mapCriteria.get("branch_id") + "%"));
+                criteria.add(Restrictions.ilike("branchId", "%" + (String) mapCriteria.get("branch_id") + "%"));
             }
             if (mapCriteria.get("user_id")!=null) {
-                criteria.add(Restrictions.ilike("message", "%" + (String) mapCriteria.get("user_id") + "%"));
+                criteria.add(Restrictions.ilike("userId", "%" + (String) mapCriteria.get("user_id") + "%"));
             }
 
             if (mapCriteria.get("error_date_from")!=null && mapCriteria.get("error_date_to")!=null) {

@@ -1,8 +1,6 @@
 package com.neurix.simrs.transaksi.kasirrawatjalan.action;
 
-import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.master.pembayaran.model.ImAkunPembayaranEntity;
-import com.neurix.akuntansi.master.pembayaran.model.Pembayaran;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.authorization.company.bo.BranchBo;
@@ -15,21 +13,16 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.jenisperiksapasien.bo.AsuransiBo;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
-import com.neurix.simrs.master.jenisperiksapasien.dao.JenisPeriksaPasienDao;
-import com.neurix.simrs.master.jenisperiksapasien.model.Asuransi;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImJenisPeriksaPasienEntity;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
-import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.kelasruangan.bo.KelasRuanganBo;
 import com.neurix.simrs.master.kelasruangan.model.ImSimrsKelasRuanganEntity;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
-import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.rekananops.bo.RekananOpsBo;
 import com.neurix.simrs.master.rekananops.model.ImSimrsRekananOpsEntity;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.bo.TempatTidurBo;
-import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
 import com.neurix.simrs.master.ruangan.model.TempatTidur;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
@@ -50,9 +43,7 @@ import com.neurix.simrs.transaksi.periksaradiologi.bo.PeriksaRadiologiBo;
 import com.neurix.simrs.transaksi.periksaradiologi.model.ItSimrsPeriksaRadiologiEntity;
 import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
 import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
-import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
-import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
@@ -64,7 +55,6 @@ import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
-import com.neurix.simrs.transaksi.transaksiobat.model.RiwayatTransaksiObat;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.io.FileUtils;
@@ -78,12 +68,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
-import javax.xml.soap.Detail;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.security.PublicKey;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -373,6 +361,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
                 riwayatTindakan.setNoCheckup(checkup.getNoCheckup());
                 riwayatTindakan.setBranchId(CommonUtil.userBranchLogin());
+                riwayatTindakan.setJenisPasien(jenisPasien);
 
                 try {
                     riwayatTindakanList = kasirRawatJalanBoProxy.getListAllTindakan(riwayatTindakan);
@@ -1082,7 +1071,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         if ("laboratorium".equalsIgnoreCase(keterangan)) {
             ItSimrsPeriksaLabEntity periksaLabEntity = periksaLabBo.getPeriksaLabEntityById(idTindakan);
             if (periksaLabEntity != null) {
-                idDokter = periksaLabEntity.getIdDokter();
+//                idDokter = periksaLabEntity.getIdDokter();
             }
         }
         if ("radiologi".equalsIgnoreCase(keterangan)) {

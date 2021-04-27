@@ -258,6 +258,7 @@ public class DepartmentAction extends BaseMasterAction{
 
             departmentBoProxy.saveDelete(deleteDepartment);
         } catch (GeneralBOException e) {
+            logger.error("[DepartmentAction.saveDelete] Error, " + e.getMessage());
            throw new GeneralBOException(e.getMessage());
         }
 

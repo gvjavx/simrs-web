@@ -117,6 +117,19 @@
 
                 <table >
                     <tr>
+                        <s:if test='position.flagCostUnit == "Y"'>
+                            <td colspan="2">
+                                <label class="control-label" style="background-color: #00a65a;padding: 6px;margin:2px;border-radius: 5px;" align="center"><big>UNIT COST</big></label>
+                            </td>
+                        </s:if>
+                        <s:else>
+                            <td colspan="2">
+                                <label class="control-label" style="background-color: lightgrey;padding: 6px;margin: 2px;border-radius: 5px;" align="center"><big>JABATAN</big></label>
+                            </td>
+                        </s:else>
+                        <s:hidden name="position.flagCostUnit"/>
+                    </tr>
+                    <tr>
                         <td>
                             <label class="control-label"><small>Posisi Id :</small></label>
                         </td>

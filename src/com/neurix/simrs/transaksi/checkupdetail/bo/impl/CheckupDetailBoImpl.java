@@ -8,7 +8,6 @@ import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
 import com.neurix.simrs.master.pasien.dao.PasienDao;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
-import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.ruangan.dao.RuanganDao;
 import com.neurix.simrs.master.ruangan.dao.TempatTidurDao;
@@ -38,8 +37,6 @@ import com.neurix.simrs.transaksi.diagnosarawat.dao.DiagnosaRawatDao;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.diagnosarawat.model.ItSimrsDiagnosaRawatEntity;
 import com.neurix.simrs.transaksi.ordergizi.dao.OrderGiziDao;
-import com.neurix.simrs.transaksi.ordergizi.model.ItSimrsOrderGiziEntity;
-import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
 import com.neurix.simrs.transaksi.paketperiksa.dao.PaketPasienDao;
 import com.neurix.simrs.transaksi.paketperiksa.model.ItSimrsPaketPasienEntity;
 import com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDao;
@@ -55,17 +52,14 @@ import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEn
 import com.neurix.simrs.transaksi.teamdokter.dao.DokterTeamDao;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
-import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 import com.neurix.simrs.transaksi.tindakanrawat.dao.TindakanRawatDao;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
-import org.apache.log4j.Hierarchy;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -782,11 +776,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         CrudResponse response = new CrudResponse();
 
         // create new detail
-        String id = "";
-        id = getNextDetailCheckupId();
-
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = new ItSimrsHeaderDetailCheckupEntity();
-        detailCheckupEntity.setIdDetailCheckup("DCM" + id);
+        detailCheckupEntity.setIdDetailCheckup("DCM" + getNextDetailCheckupId());
         detailCheckupEntity.setNoCheckup(bean.getNoCheckup());
         detailCheckupEntity.setIdPelayanan(bean.getIdPelayanan());
         detailCheckupEntity.setFlag("Y");
@@ -798,7 +789,6 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setTglAntrian(bean.getCreatedDate());
         detailCheckupEntity.setNoSep(bean.getNoSep());
         detailCheckupEntity.setTarifBpjs(bean.getTarifBpjs());
-        detailCheckupEntity.setMetodePembayaran(bean.getMetodePembayaran());
         detailCheckupEntity.setKodeCbg(bean.getKodeCbg());
         detailCheckupEntity.setBranchId(bean.getBranchId());
         detailCheckupEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
@@ -811,8 +801,11 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setFlagKunjungan(bean.getFlagKunjungan());
         detailCheckupEntity.setIsEksekutif(bean.getIsEksekutif());
         detailCheckupEntity.setIsVaksin(bean.getIsVaksin());
-        if(bean.getIsEksekutif() != null && !"".equalsIgnoreCase(bean.getIsEksekutif())){
-            if("Y".equalsIgnoreCase(bean.getIsEksekutif())){
+
+        if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+            detailCheckupEntity.setMetodePembayaran("non_tunai");
+        }else{
+            if("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
                 detailCheckupEntity.setMetodePembayaran("tunai");
             }
         }
@@ -887,8 +880,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             }
         }
 
+        // save to table rawat inap
         if (bean.getRawatInap()) {
-            // save to table rawat inap
             RawatInap rawatInap = new RawatInap();
             rawatInap.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
             rawatInap.setIdRuangan(bean.getIdRuangan());
@@ -976,8 +969,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = new ItSimrsUangMukaPendaftaranEntity();
                 if (bean.getBranchId() != null && !bean.getBranchId().equalsIgnoreCase("")) {
                     uangMukaPendaftaranEntity.setId("UM" + bean.getBranchId() + dateFormater("MM") + dateFormater("yy") + uangMukaDao.getNextId());
-                } else
+                } else{
                     uangMukaPendaftaranEntity.setId("UM" + CommonUtil.userBranchLogin() + dateFormater("MM") + dateFormater("yy") + uangMukaDao.getNextId());
+                }
                 uangMukaPendaftaranEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
                 uangMukaPendaftaranEntity.setFlag("Y");
                 uangMukaPendaftaranEntity.setAction("C");

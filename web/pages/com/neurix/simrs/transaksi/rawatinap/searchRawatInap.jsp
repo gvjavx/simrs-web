@@ -79,7 +79,7 @@
                                     <label class="control-label col-sm-4">Kelas Ruangan</label>
                                     <div class="col-sm-4">
                                         <select style="margin-top: 7px" class="form-control select2" id="kelas_kamar" name="rawatInap.idKelas" onchange="listSelectRuangan(this.value)">
-                                            <option value=''>[Select One]</option>
+                                            <option value=''> - </option>
                                         </select>
                                         <%--<s:action id="initComboKelas" namespace="/checkupdetail"--%>
                                                   <%--name="getListComboKelasRuangan_checkupdetail"/>--%>
@@ -98,7 +98,7 @@
                                     <label class="control-label col-sm-4">Ruangan</label>
                                     <div class="col-sm-4">
                                         <select style="margin-top: 7px" class="form-control select2" id="nama_ruangan" name="rawatInap.idRuang">
-                                            <option value=''>[Select One]</option>
+                                            <option value=''> - </option>
                                         </select>
                                     </div>
                                 </div>
@@ -179,6 +179,7 @@
                                 <td>ID Detail Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
+                                <td>Umur</td>
                                 <td>Tanggal Masuk</td>
                                 <td>Desa</td>
                                 <td>Status</td>
@@ -192,6 +193,7 @@
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="umur"/></td>
                                     <td><s:property value="formatTglMasuk"/></td>
                                     <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
@@ -228,6 +230,19 @@
                                                 <img onclick="printGelangPasien('<s:property value="noCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
                                             </s:else>
                                         </s:if>
+
+                                        <s:if test='#row.tindakLanjut == "kontrol_ulang"'>
+                                            <a target="_blank" href="printSuratKeterangan_rawatinap.action?id=<s:property value="idDetailCheckup"/>&tipe=KU">
+                                                <img src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                            </a>
+                                        </s:if>
+
+                                        <s:if test='#row.tindakLanjut == "rujuk_rs_lain"'>
+                                            <a target="_blank" href="printSuratKeterangan_rawatinap.action?id=<s:property value="idDetailCheckup"/>&tipe=RSL">
+                                                <img src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                            </a>
+                                        </s:if>
+
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -244,7 +259,7 @@
 <script type='text/javascript'>
 
     function getKelasKamar(){
-        var option = '<option value="">[Select One]</option>';
+        var option = '<option value=""> - </option>';
         dwr.engine.setAsync(true);
         CheckupDetailAction.getListKelasKamar('rawat_inap', function (res) {
             if(res.length > 0){
@@ -263,7 +278,7 @@
     }
 
     function listSelectRuangan(id){
-        var option  = "<option value=''>[Select One]</option>";;
+        var option  = "<option value=''> - </option>";;
         var flag    = false;
         $('#load_ruang').show();
         setTimeout(function () {

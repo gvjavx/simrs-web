@@ -197,7 +197,9 @@ public class KeluargaBoImpl implements KeluargaBo {
             // update jumlah anak keluarga
             if (bean.getStatusKeluargaId().contains("A")){
                 ImBiodataEntity biodataEntity = biodataDao.getById("nip",bean.getNip());
-                BigInteger jumlahAnak = biodataEntity.getJumlahAnak();
+                BigInteger jumlahAnak = BigInteger.ZERO;
+                if(biodataEntity.getJumlahAnak()!=null)
+                    jumlahAnak = biodataEntity.getJumlahAnak();
                 BigInteger totJumlahAnak = jumlahAnak.add(BigInteger.ONE);
                 biodataEntity.setJumlahAnak(totJumlahAnak);
                 biodataDao.updateAndSave(biodataEntity);

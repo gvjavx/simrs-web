@@ -1,5 +1,7 @@
 package com.neurix.hris.master.positionBagian.bo.impl;
 
+import com.neurix.authorization.position.dao.PositionDao;
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.department.dao.DepartmentDao;
 import com.neurix.hris.master.department.model.Department;
@@ -30,6 +32,11 @@ public class PositionBagianBoImpl implements PositionBagianBo {
     protected static transient Logger logger = Logger.getLogger(PositionBagianBoImpl.class);
     private PositionBagianDao positionBagianDao;
     private DepartmentDao departmentDao;
+    private PositionDao positionDao;
+
+    public void setPositionDao(PositionDao positionDao) {
+        this.positionDao = positionDao;
+    }
 
     public DepartmentDao getDepartmentDao() {
         return departmentDao;
@@ -61,13 +68,28 @@ public class PositionBagianBoImpl implements PositionBagianBo {
 
         if (bean!=null) {
 
-            String kelompokPositionId = bean.getBagianId();
+            String bagianId = bean.getBagianId();
             String idHistory = "";
             ImPositionBagianEntity imPositionBagianEntity = null;
             ImPositionBagianHistoryEntity imPositionBagianHistoryEntity = new ImPositionBagianHistoryEntity();
+
+            try{
+                List<ImPosition> positionList = positionDao.getListByBagianId(bagianId);
+
+                if(positionList.size()>0){
+                    String status = "Data tidak dapat dihapus karena telah digunakan dalam transaksi.";
+                    logger.error("[PositionBagianBoImpl.saveDelete] " + status);
+                    throw new GeneralBOException(status);
+                }
+            }catch (HibernateException e){
+                logger.error("[PositionBagianBoImpl.saveDelete] Error, " + e.getMessage());
+                throw new GeneralBOException("Error when retrieving Position By Bagian ID, " + e.getMessage());
+            }
+
+
             try {
                 // Get data from database by ID
-                imPositionBagianEntity = positionBagianDao.getById("bagianId", kelompokPositionId);
+                imPositionBagianEntity = positionBagianDao.getById("bagianId", bagianId);
                 idHistory = positionBagianDao.getNextPositionBagianHistoryId();
             } catch (HibernateException e) {
                 logger.error("[PositionBagianBoImpl.saveDelete] Error, " + e.getMessage());
