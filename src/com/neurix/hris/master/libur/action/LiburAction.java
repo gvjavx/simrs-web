@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -246,30 +247,38 @@ public class LiburAction extends BaseMasterAction{
 
     public String saveDelete(){
         logger.info("[LiburAction.saveDelete] start process >>>");
-        try {
 
-            Libur deleteLibur = getLibur();
+        Libur deleteLibur = getLibur();
 
-            String userLogin = CommonUtil.userLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        Date now = new Date(System.currentTimeMillis());
+        Date liburDate = CommonUtil.convertStringToDate(deleteLibur.getStTanggal());
 
-            deleteLibur.setLastUpdate(updateTime);
-            deleteLibur.setLastUpdateWho(userLogin);
-            deleteLibur.setAction("U");
-            deleteLibur.setFlag("N");
-
-            liburBoProxy.saveDelete(deleteLibur);
-        } catch (GeneralBOException e) {
-            Long logId = null;
+        if(now.compareTo(liburDate) < 0) {
             try {
-                logId = liburBoProxy.saveErrorMessage(e.getMessage(), "LiburBO.saveDelete");
-            } catch (GeneralBOException e1) {
-                logger.error("[AlatAction.saveDelete] Error when saving error,", e1);
+                String userLogin = CommonUtil.userLogin();
+                Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+                deleteLibur.setLastUpdate(updateTime);
+                deleteLibur.setLastUpdateWho(userLogin);
+                deleteLibur.setAction("U");
+                deleteLibur.setFlag("N");
+
+                liburBoProxy.saveDelete(deleteLibur);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = liburBoProxy.saveErrorMessage(e.getMessage(), "LiburBO.saveDelete");
+                } catch (GeneralBOException e1) {
+                    logger.error("[LiburAction.saveDelete] Error when saving error,", e1);
+                    return ERROR;
+                }
+                logger.error("[LiburAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
                 return ERROR;
             }
-            logger.error("[AlatAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+        }else{
+            logger.error("[LiburAction.saveDelete] Tidak bisa menghapus data tanggal libur yang terlewat.");
+            throw new GeneralBOException("Tidak dapat menghapus data tanggal libur yang sudah terlewat.");
         }
 
         logger.info("[LiburAction.saveDelete] end process <<<");
