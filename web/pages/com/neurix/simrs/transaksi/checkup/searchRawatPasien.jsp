@@ -45,20 +45,6 @@
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Rawat Pasien</h3>
-                        <%--<div class="row">--%>
-                            <%--<div class="col-md-4">--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-3 pull-right">--%>
-                                <%--<div class="input-group date">--%>
-                                    <%--<input class="form-control" id="id_antrian" placeholder="Antrian Online"--%>
-                                           <%--onchange="saveAntrian()">--%>
-                                    <%--<div class="input-group-btn">--%>
-                                        <%--<button class="btn btn-success"onclick="saveAntrian()" id="save_resep"><i class="fa fa-arrow-right"></i> Save</button>--%>
-                                        <%--<button class="btn btn-success" id="load_resep" style="cursor: no-drop; display: none"><i class="fa fa-spinner fa-spin"></i> Sedang mencari...</button>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
                     </div>
                     <div class="box-body">
                         <div class="form-group">

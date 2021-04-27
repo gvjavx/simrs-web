@@ -3360,12 +3360,24 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     @Override
     public List<HeaderCheckup> cekKunjunganPoliPasien(String idPasien, String idPelayanan) throws GeneralBOException {
-        return headerCheckupDao.cekKunjunganPoliPasien(idPasien, idPelayanan);
+        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
+        try{
+            headerCheckupList = headerCheckupDao.cekKunjunganPoliPasien(idPasien, idPelayanan);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return headerCheckupList;
     }
 
     @Override
     public List<HeaderCheckup> daftarPasienOnline(String branchId, String idPelayanan) throws GeneralBOException {
-        return headerCheckupDao.getDaftarPasienOnline(branchId, idPelayanan);
+        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
+        try{
+            headerCheckupList = headerCheckupDao.getDaftarPasienOnline(branchId, idPelayanan);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return headerCheckupList;
     }
 
     @Override
@@ -3387,6 +3399,56 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             }
         }catch (Exception e){
             throw new GeneralBOException("Errro"+e.getMessage());
+        }
+    }
+
+    @Override
+    public void cancelPeriksaInap(HeaderDetailCheckup detailCheckup) throws GeneralBOException {
+        if(detailCheckup.getNoCheckup() != null && !"".equalsIgnoreCase(detailCheckup.getNoCheckup())){
+            RawatInap rawatInap = rawatInapDao.getPeriksaInap(detailCheckup.getNoCheckup());
+            ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", rawatInap.getIdDetailCheckup());
+            if(detailCheckupEntity != null){
+                detailCheckupEntity.setKeteranganSelesai(detailCheckup.getKeteranganSelesai());
+                detailCheckupEntity.setLastUpdate(detailCheckup.getLastUpdate());
+                detailCheckupEntity.setLastUpdateWho(detailCheckup.getLastUpdateWho());
+                detailCheckupEntity.setAction("U");
+                detailCheckupEntity.setStatusPeriksa("5");
+                detailCheckupEntity.setTindakLanjut("batal");
+                try {
+                    checkupDetailDao.updateAndSave(detailCheckupEntity);
+                }catch (HibernateException e){
+                    throw new GeneralBOException("Errro"+e.getMessage());
+                }
+            }
+
+            ItSimrsRawatInapEntity rawatInapEntity = rawatInapDao.getById("idRawatInap", rawatInap.getIdRawatInap());
+            if(rawatInapEntity != null){
+                rawatInapEntity.setLastUpdate(detailCheckup.getLastUpdate());
+                rawatInapEntity.setLastUpdateWho(detailCheckup.getLastUpdateWho());
+                rawatInapEntity.setFlag("N");
+                rawatInapEntity.setAction("U");
+                rawatInapEntity.setStatus("5");
+                try {
+                    rawatInapDao.updateAndSave(rawatInapEntity);
+                }catch (HibernateException e){
+                    throw new GeneralBOException("Errro"+e.getMessage());
+                }
+
+                MtSimrsRuanganTempatTidurEntity tempatTidurEntity = tempatTidurDao.getById("idTempatTidur", rawatInapEntity.getIdRuangan());
+                if(tempatTidurEntity != null) {
+                    tempatTidurEntity.setStatus("Y");
+                    tempatTidurEntity.setAction("U");
+                    tempatTidurEntity.setLastUpdate(detailCheckup.getLastUpdate());
+                    tempatTidurEntity.setLastUpdateWho(detailCheckup.getLastUpdateWho());
+                    try {
+                        tempatTidurDao.updateAndSave(tempatTidurEntity);
+                    } catch (HibernateException e) {
+                        logger.error("Error when Update data ruangan "+e.getMessage());
+                    }
+                }
+            }
+        }else{
+            throw new GeneralBOException("NO checkup tidak ditemukan...!");
         }
     }
 

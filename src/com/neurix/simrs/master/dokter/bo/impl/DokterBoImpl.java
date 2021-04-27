@@ -716,12 +716,35 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
 
     @Override
     public List<Dokter> getListDokterByBranchId(String branchId, String idDokter) throws GeneralBOException {
-        return dokterDao.getListDokterByBranchId(branchId, idDokter);
+        List<Dokter> dokterList = new ArrayList<>();
+        try {
+            dokterList = dokterDao.getListDokterByBranchId(branchId, idDokter);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return dokterList;
     }
 
     @Override
     public List<Dokter> getListDokterByIdDetailCheckup(String idDetailChekcup, String approve) throws GeneralBOException {
-        return dokterDao.getListDokterByIdDetailCheckup(idDetailChekcup, approve);
+        List<Dokter> dokterList = new ArrayList<>();
+        try {
+            dokterList = dokterDao.getListDokterByIdDetailCheckup(idDetailChekcup, approve);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return dokterList;
+    }
+
+    @Override
+    public List<Dokter> getListDokterByNoCheckup(String noChekcup) throws GeneralBOException {
+        List<Dokter> dokterList = new ArrayList<>();
+        try {
+            dokterList = dokterDao.getListDokterByNoCheckup(noChekcup);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return dokterList;
     }
 
     @Override

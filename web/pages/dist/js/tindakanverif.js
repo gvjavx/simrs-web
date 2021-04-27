@@ -13,7 +13,7 @@ function showTindakan(){
 function getListNamaDokter(tipe) {
     var option = '<option value="">[Select One]</option>';
     var def = '';
-    CheckupAction.getListDokterByIdDetailCheckup(idDetailCheckup, null, function (res) {
+    CheckupAction.getListDokterByNoCheckup(noCheckupPasien, function (res) {
         if (res.length > 0) {
             $.each(res, function (i, item) {
                 if (i == 0) {
@@ -111,7 +111,8 @@ function saveTindakan(id) {
     }
 }
 
-function editTindakan(id, idTindakan, idKategori, idPerawat, qty, idDokter, idPelayanan) {
+function editTindakan(id, idTindakan, idKategori, katRuangan, qty, idDokter, idPelayanan) {
+    kategoriRuangan = katRuangan;
     $('#is_edit').val('Y');
     $('#form_elektif').hide();
     getListNamaDokter('edit');

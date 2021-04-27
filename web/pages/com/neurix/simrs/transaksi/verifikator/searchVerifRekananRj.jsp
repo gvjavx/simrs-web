@@ -533,7 +533,7 @@
                         $('#poli').html(res.namaPelayanan);
                         $('#diagnosa').html(diagnosa);
                         $('#h_id_pasien').val(res.idPasien);
-                        $('#h_id_detail_pasien').val(res.idDetail);
+                        $('#h_id_detail_pasien').val(idDetail);
                         $('#h_id_pelayanan').val(res.idPelayanan);
                         $('#h_metode_bayar').val(res.metodePembayaran);
                         $('#h_jenis_pasien').val(res.idJenisPeriksaPasien);
@@ -576,7 +576,7 @@
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
                         var tanggal = item.createdDate;
-                        var dateFormat = converterDate(new Date(tanggal));
+                        var dateFormat = converterDateTime(new Date(tanggal));
                         var tarif = "-";
                         var tarifTotal = "-";
                         var trfTotal = 0;
@@ -609,7 +609,7 @@
                             "<td align='right'>" + tarif + "</td>" +
                             "<td align='center'>" + item.qty + "</td>" +
                             "<td align='right'>" + tarifTotal + "</td>" +
-                            '<td align="center">'+'<img border="0" class="hvr-grow" onclick="editTindakan(\'' + item.idTindakanRawat + '\',\'' + item.idTindakan + '\',\'' + item.idKategoriTindakan + '\',\'' + item.idPerawat + '\',\'' + item.qty + '\', \'' + item.idDokter + '\', \'' + item.idPelayanan + '\')" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer;">'+'</td>'+
+                            '<td align="center">'+'<img border="0" class="hvr-grow" onclick="editTindakan(\'' + item.idTindakanRawat + '\',\'' + item.idTindakan + '\',\'' + item.idKategoriTindakan + '\',\'' + item.kategoriRuangan + '\',\'' + item.qty + '\', \'' + item.idDokter + '\', \'' + item.idPelayanan + '\')" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer;">'+'</td>'+
                             "</tr>";
 
                     });
@@ -636,7 +636,7 @@
                     $.each(response, function (i, item) {
                         var idResep = "";
                         var tanggal = item.createdDate;
-                        var dateFormat = converterDate(new Date(tanggal));
+                        var dateFormat = converterDateTime(new Date(tanggal));
                         var status = "";
 
                         if(item.status == "0"){
@@ -680,7 +680,7 @@
                         var status = "-";
                         var lab = "-";
                         var tanggal = item.createdDate;
-                        var dateFormat = converterDate(new Date(tanggal));
+                        var dateFormat = converterDateTime(new Date(tanggal));
                         var tipe = "";
 
                         if (item.kategori == "radiologi") {
@@ -922,7 +922,7 @@
                             $('#loading_page').hide();
                             $.each(response, function (i, item) {
                                 var tanggal = item.createdDate;
-                                var dateFormat = converterDate(new Date(tanggal));
+                                var dateFormat = converterDateTime(new Date(tanggal));
                                 var tarif = "-";
                                 var tarifTotal = "-";
                                 var trfTotal = 0;

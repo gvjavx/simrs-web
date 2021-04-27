@@ -3742,6 +3742,22 @@ public class CheckupAction extends BaseMasterAction {
         return dokterList;
     }
 
+    public List<Dokter> getListDokterByNoCheckup(String noCheckup) {
+        logger.info("[CheckupAction.getListDokterByNoCheckup] START process >>>");
+        List<Dokter> dokterList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        DokterBo dokterBo = (DokterBo) ctx.getBean("dokterBoProxy");
+        if (noCheckup != null && !"".equalsIgnoreCase(noCheckup)) {
+            try {
+                dokterList = dokterBo.getListDokterByNoCheckup(noCheckup);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error, " + e.getMessage());
+            }
+        }
+        logger.info("[CheckupAction.getListDokterByNoCheckup] END process >>>");
+        return dokterList;
+    }
+
     public List<HeaderCheckup> getRiwayatPemeriksaan(String idPasien) {
 
         logger.info("[CheckupAction.getListDokterByBranchId] START process >>>");
@@ -3955,6 +3971,26 @@ public class CheckupAction extends BaseMasterAction {
             detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
             detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
             checkupBo.cancelPeriksa(detailCheckup);
+            response.setStatus("success");
+            response.setMsg("OK");
+        }catch (Exception e){
+            response.setStatus("error");
+            response.setMsg("Error, "+e.getMessage());
+        }
+        return response;
+    }
+
+    public CrudResponse cancelPeriksaInap(String noCheckup, String keterangan){
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        try {
+            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+            detailCheckup.setNoCheckup(noCheckup);
+            detailCheckup.setKeteranganSelesai(keterangan);
+            detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+            detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
+            checkupBo.cancelPeriksaInap(detailCheckup);
             response.setStatus("success");
             response.setMsg("OK");
         }catch (Exception e){
