@@ -407,4 +407,23 @@ ALTER TABLE it_simrs_antian_online ADD id_paket character varying(50)
 --2021-03-10
 ALTER TABLE it_simrs_antrian_telemedic ADD COLUMN flag_call VARCHAR(1)
 
+--2021-04-27
+ALTER TABLE im_simrs_rekening_telemedic
+ADD tipe_rekening character varying(100)
+
+ALTER TABLE im_simrs_rekening_telemedic
+ADD client_id character varying(20)
+
+ALTER TABLE im_simrs_rekening_telemedic
+ADD Keterangan text
+
+ALTER TABLE it_simrs_pembayaran_online
+ADD tipe_rekening character varying(100)
+
+ALTER TABLE it_simrs_pembayaran_online
+ADD client_id character varying(20)
+
+ALTER TABLE it_simrs_pembayaran_online
+ADD keterangan text
+
 
