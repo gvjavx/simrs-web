@@ -1753,3 +1753,22 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ADD COLUMN sub_total_harga_beli_lalu NUMERIC;
 
 --
+
+-- 2021-04-27
+CREATE TABLE mt_simrs_harga_obat_per_konsumen(
+	id VARCHAR(100) PRIMARY KEY NOT NULL,
+	id_harga_obat VARCHAR(30),
+	jenis_konsumen VARCHAR(30),
+	id_rekanan VARCHAR(30),
+	harga_bruto NUMERIC,
+	margin NUMERIC,
+	harga_jual NUMERIC,
+	flag VARCHAR(1),
+	action VARCHAR(1),
+	created_date TIMESTAMP WITHOUT TIME ZONE,
+	created_who VARCHAR(100),
+	last_update TIMESTAMP WITHOUT TIME ZONE,
+	last_update_who VARCHAR(100)
+);
+CREATE SEQUENCE seq_harga_obat_per_konsumen;
+--
