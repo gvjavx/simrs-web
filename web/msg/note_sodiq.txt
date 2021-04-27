@@ -2563,6 +2563,21 @@ INSERT INTO im_func_roles VALUES
 (6923, 32, 'Y', now(), now(), 'admin', 'admin'),
 (6924, 32, 'Y', now(), now(), 'admin', 'admin');
 
+ALTER TABLE im_simrs_lab
+DROP COLUMN id_operator_lab,
+DROP COLUMN id_dokter,
+DROP COLUMN id_kategori_lab,
+DROP COLUMN branch_id;
+
+ALTER TABLE im_simrs_lab
+ADD COLUMN is_paket VARCHAR(1);
+
+UPDATE im_simrs_lab
+SET is_paket = 'N';
+
+UPDATE im_simrs_lab
+SET is_paket = 'Y'
+WHERE id_lab = 'LAB00000015';
 
 
 

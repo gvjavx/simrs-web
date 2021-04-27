@@ -124,6 +124,15 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private List<UploadHasilPemeriksaan> uploadDalam = new ArrayList<>();
     private List<UploadHasilPemeriksaan> uploadLuar = new ArrayList<>();
     private String umur;
+    private String isUpload;
+
+    public String getIsUpload() {
+        return isUpload;
+    }
+
+    public void setIsUpload(String isUpload) {
+        this.isUpload = isUpload;
+    }
 
     public String getUmur() {
         return umur;

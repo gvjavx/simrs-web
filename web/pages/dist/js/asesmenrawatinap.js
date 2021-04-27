@@ -60,6 +60,8 @@ function showModalAsesmenRawatInap(jenis, idRM, isSetIdRM, flagHide, flagCheck) 
         if("gizi" == flagHide){
             option = '<option value="Gizi">Gizi</option>';
             $('#btn_ina_catatan_integrasi_pasien_ina').attr('onclick', 'detailCPPT(\'catatan_integrasi_pasien_ina\', \'catatan_terintegrasi_ina\', \'ina\', \'gizi\')');
+            $('#cppt5_tensi, #cppt5_suhu, #cppt5_nadi, #cppt5_rr').attr('disabled', true);
+            $('#form_ttd_dpjp').hide();
         }else{
             option = '<option value="">[Select One]</option>\n' +
                 '<option value="Dokter">Dokter</option>\n' +
@@ -67,6 +69,8 @@ function showModalAsesmenRawatInap(jenis, idRM, isSetIdRM, flagHide, flagCheck) 
                 '<option value="Apoteker">Apoteker</option>\n' +
                 '<option value="Bidan">Bidan</option>';
             $('#btn_ina_catatan_integrasi_pasien_ina').attr('onclick', 'detailCPPT(\'catatan_integrasi_pasien_ina\', \'catatan_terintegrasi_ina\', \'ina\')');
+            $('#cppt5_tensi, #cppt5_suhu, #cppt5_nadi, #cppt5_rr').attr('disabled', false);
+            $('#form_ttd_dpjp').show();
         }
         $('#cppt3').html(option);
     }
@@ -2188,7 +2192,7 @@ function saveAsesmenRawatInap(jenis, ket) {
         var cekTtd4 = isCanvasBlank(ttd4);
         var cekTtd5 = isCanvasBlank(ttd5);
 
-        if (nama1 && nama2 && nama3 && nama4 && nama5 && sip1 && sip3 && va1 && va2 && va3 && va4 && persetujuan != '' && !cekTtd1 && !cekTtd2 && !cekTtd3 && !cekTtd4 && !cekTtd5) {
+        if (nama1 && nama2 && nama3 && nama4 && nama5 && sip1 && va1 && va2 && va3 && va4 && persetujuan != '' && !cekTtd1 && !cekTtd2 && !cekTtd3 && !cekTtd4 && !cekTtd5) {
 
             data.push({
                 'parameter': 'pernyataan',
@@ -2365,7 +2369,6 @@ function saveAsesmenRawatInap(jenis, ket) {
                 'jenis': persetujuan,
                 'tipe': 'ttd',
                 'nama_terang':nama3,
-                'sip':sip3,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({

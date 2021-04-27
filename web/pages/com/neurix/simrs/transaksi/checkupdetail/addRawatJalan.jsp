@@ -1673,6 +1673,28 @@
                         </div>
                     </div>
                 </div>
+                <div class="row" style="display: none" id="form_tarif_lab_luar">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Tarif Lab Luar</label>
+                        <div class="col-md-7">
+                            <div class="input-group" style="margin-top: 7px">
+                                <div class="input-group-addon">
+                                    Rp.
+                                </div>
+                                <input class="form-control"  oninput="convertRpAtas(this.id, this.value, 'h_total_tarif')"
+                                       id="tarif_luar_lab" placeholder="Tarif"
+                                       oninput="var warn =$('#war_tarif_luar_lab').is(':visible'); if (warn){$('#cor_tarif_luar_lab').show().fadeOut(3000);$('#war_tarif_luar_lab').hide()};">
+                                <input type="hidden" id="h_total_tarif">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_tarif_luar_lab"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_tarif_luar_lab"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
                 <hr>
                 <div id="form_lab_dalam">
                     <div class="row">
@@ -2191,7 +2213,7 @@
                               id="cor_rep_hari"><i class="fa fa-check"></i> correct</span>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="display: none">
                     <label class="col-md-3" style="margin-top: 7px">Jenis Resep</label>
                     <div class="col-md-9">
                         <select class="form-control" style="margin-top: 7px;" id="select-jenis-resep">

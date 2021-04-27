@@ -1561,6 +1561,28 @@
                         </div>
                     </div>
                 </div>
+                <div class="row" style="display: none" id="form_tarif_lab_luar">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Tarif Lab Luar</label>
+                        <div class="col-md-7">
+                            <div class="input-group" style="margin-top: 7px">
+                                <div class="input-group-addon">
+                                    Rp.
+                                </div>
+                                <input class="form-control"  oninput="convertRpAtas(this.id, this.value, 'h_total_tarif')"
+                                       id="tarif_luar_lab" placeholder="Tarif"
+                                       oninput="var warn =$('#war_tarif_luar_lab').is(':visible'); if (warn){$('#cor_tarif_luar_lab').show().fadeOut(3000);$('#war_tarif_luar_lab').hide()};">
+                                <input type="hidden" id="h_total_tarif">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_tarif_luar_lab"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_tarif_luar_lab"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
                 <hr>
                 <div id="form_lab_dalam">
                     <div class="row">
@@ -2351,7 +2373,6 @@
                               id="war_rep_obat"><i class="fa fa-times"></i> required</span>
                         <span style="color: green; margin-top: 12px; display: none;"
                               id="cor_rep_obat"><i class="fa fa-check"></i> correct</span>
-                        <span style="margin-top: 17px; display: none;" id="label-kronis"><label class="label label-warning" >Obat Kronis</label></span>
                         <button class="btn btn-sm btn-primary" style="display: none;" id="btn-reset-combo-obat" onclick="resetComboObat()"><i class="fa fa-edit"></i></button>
                         <input type="hidden" id="val-kronis"/>
                     </div>
@@ -2361,18 +2382,20 @@
                     <div class="col-md-9">
                         <table class="table" style="font-size: 12px; border: solid 1px #ddd">
                             <tr>
-                                <td width="30%">- Formularium</td>
-                                <td align="left"><span id="set_formula"></span></td>
+                                <td width="30%">- <span id="set_formula"></span></td>
+                                <td align="left"></td>
                                 <td width="20%"></td>
-                                <td width="30%">- Parenteral</td>
-                                <td align="left"><span id="set_teral"></span></td>
+                                <td width="30%">- <span id="set_teral"></span></td>
+                                <td align="left"></td>
                             </tr>
                             <tr>
-                                <td width="30%">- Jenis Satuan</td>
+                                <td width="30%">- Jenis Satuan : </td>
                                 <td align="left"><span id="set_js"></span></td>
                                 <td width="20%"></td>
-                                <td width="30%">- Non Parenteral</td>
-                                <td align="left"><span id="set_noretal"></span></td>
+                                <td width="30%">
+                                    <span style="display: none;" id="label-kronis"><label class="label label-warning" >Obat Kronis</label></span>
+                                </td>
+                                <td align="left"></td>
                             </tr>
                         </table>
                     </div>
@@ -2492,7 +2515,7 @@
                               id="cor_rep_hari"><i class="fa fa-check"></i> correct</span>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="display: none">
                     <label class="col-md-3" style="margin-top: 7px">Jenis Resep</label>
                     <div class="col-md-9">
                         <select class="form-control" style="margin-top: 7px;" id="select-jenis-resep">
