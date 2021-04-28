@@ -1324,7 +1324,7 @@
                                                             <s:file id="fileUpload" name="fileUpload" cssClass="form-control" disabled="true" />
                                                         </s:if>
                                                         <s:else>
-                                                            <s:file id="fileUpload" name="fileUpload" cssClass="form-control" />
+                                                            <s:file id="fileUpload" name="fileUpload" cssClass="form-control" onchange="validateFoto()" />
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -2336,7 +2336,7 @@
                             <label class="control-label col-sm-4">Ijazah (Jpeg) : </label>
 
                             <div class="col-sm-8">
-                                <input type="file" id="file" class="form-control" name="fileUpload"/>
+                                <input type="file" id="file" class="form-control" accept=".jpg,.png" name="fileUpload" onchange="validateIjazah()" />
                                 <input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg"
                                        name="study.uploadFile" readonly style="display: none;"/>
                             </div>
@@ -2772,7 +2772,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4">Sertifikat (Jpeg) : </label>
                         <div class="col-sm-8">
-                            <input type="file" id="fileSertifikat"  accept=".jpg" class="form-control" name="fileUpload"/>
+                            <input type="file" id="fileSertifikat"  accept=".jpg, .png" class="form-control" name="fileUpload" onchange="validateSertifikat()" />
                             <input type="hidden" id="base64sertifikat" />
                         </div>
                     </div>
@@ -6749,6 +6749,39 @@
             $('#golongan2').prop('disabled', false);
             $('#poinLebih').prop('disabled', false);
             $('#noAnggotaDapen').prop('disabled', false);
+        }
+    }
+    
+    function validateFoto() {
+        var fileInput = $('#fileUpload').val();
+        var fileExt = fileInput.split(".").pop().toUpperCase();
+        console.log(fileInput+" => "+fileExt);
+
+        if(fileExt != "JPEG" && fileExt != "JPG" && fileExt != "PNG"){
+            alert("Format file salah, coba gunakan file berformat JPEG atau PNG.");
+            $('#fileUpload').val('');
+        }
+    }
+
+    function validateIjazah() {
+        var fileInput = $('#file').val();
+        var fileExt = fileInput.split(".").pop().toUpperCase();
+        console.log(fileInput+" => "+fileExt);
+
+        if(fileExt != "JPEG" && fileExt != "JPG" && fileExt != "PNG"){
+            alert("Format file salah, coba gunakan file berformat JPEG atau PNG.");
+            $('#file').val('');
+        }
+    }
+
+    function validateSertifikat() {
+        var fileInput = $('#fileSertifikat').val();
+        var fileExt = fileInput.split(".").pop().toUpperCase();
+        console.log(fileInput+" => "+fileExt);
+
+        if(fileExt != "JPEG" && fileExt != "JPG" && fileExt != "PNG"){
+            alert("Format file salah, coba gunakan file berformat JPEG atau PNG.");
+            $('#fileSertifikat').val('');
         }
     }
 
