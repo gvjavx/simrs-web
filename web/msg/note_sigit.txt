@@ -1770,5 +1770,10 @@ CREATE TABLE mt_simrs_harga_obat_per_konsumen(
 	last_update TIMESTAMP WITHOUT TIME ZONE,
 	last_update_who VARCHAR(100)
 );
+
 CREATE SEQUENCE seq_harga_obat_per_konsumen;
+
+ALTER TABLE im_simrs_keterangan_obat
+ADD COLUMN parent_id VARCHAR(30);
+
 --

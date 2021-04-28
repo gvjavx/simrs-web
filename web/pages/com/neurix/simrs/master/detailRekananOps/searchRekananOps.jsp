@@ -67,19 +67,24 @@
                                         </table>
                                         <table>
 
-                                            <tr>
-                                                <td width="30%">
-                                                    <label class="control-label"><small>Nama Rekanan </small></label>
-                                                </td>
-                                                <td width="90%">
-                                                    <table>
-                                                        <s:action id="initComboRekanan" namespace="/detailrekananops" name="initComboRekanan_detailrekananops"/>
-                                                        <s:select list="#initComboRekanan.listOfComboRekananOps" id="positionId1" name="detailRekananOps.idRekananOps"
-                                                        listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue="[Select one]"
-                                                        cssClass="form-control select2" cssStyle="width: 100%"/>
-                                                    </table>
-                                                </td>
-                                            </tr>
+                                            <%--<tr>--%>
+                                                <%--<td width="30%">--%>
+                                                    <%--<label class="control-label"><small>Nama Rekanan </small></label>--%>
+                                                <%--</td>--%>
+                                                <%--<td width="90%">--%>
+                                                    <%--&lt;%&ndash;<s:textfield cssStyle="margin-top: 7px"&ndash;%&gt;--%>
+                                                                 <%--&lt;%&ndash;id="nama-search" &ndash;%&gt;--%>
+                                                                 <%--&lt;%&ndash;name="detailRekananOps.namaRekanan"&ndash;%&gt;--%>
+                                                                 <%--&lt;%&ndash;required="false"&ndash;%&gt;--%>
+                                                                 <%--&lt;%&ndash;readonly="false" cssClass="form-control"/>&ndash;%&gt;--%>
+                                                    <%--&lt;%&ndash;<table>&ndash;%&gt;--%>
+                                                        <%--&lt;%&ndash;<s:action id="initComboRekanan" namespace="/detailrekananops" name="initComboRekanan_detailrekananops"/>&ndash;%&gt;--%>
+                                                        <%--&lt;%&ndash;<s:select list="#initComboRekanan.listOfComboRekananOps" id="positionId1" name="detailRekananOps.idRekananOps"&ndash;%&gt;--%>
+                                                        <%--&lt;%&ndash;listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue="[Select one]"&ndash;%&gt;--%>
+                                                        <%--&lt;%&ndash;cssClass="form-control select2" cssStyle="width: 100%"/>&ndash;%&gt;--%>
+                                                    <%--&lt;%&ndash;</table>&ndash;%&gt;--%>
+                                                <%--</td>--%>
+                                            <%--</tr>--%>
 
                                             <%--<tr>--%>
                                                 <%--<td width="18%">--%>

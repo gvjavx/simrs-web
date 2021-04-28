@@ -107,7 +107,7 @@
                             <table>
                                 <s:action id="initComboRekanan" namespace="/detailrekananops" name="initComboRekanan_detailrekananops"/>
                                 <s:select list="#initComboRekanan.listOfComboRekananOps" id="namarekananadd" name="detailRekananOps.idRekananOps" 
-                                          listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue="[Select one]"
+                                          listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue=" - "
                                           cssClass="form-control" cssStyle="margin-top: 5px" />
 
                             </table>
@@ -123,7 +123,7 @@
                                 <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
                                 <s:select list="#comboBranch.listOfComboBranches" id="branchIdadd" name="detailRekananOps.branchId"
                                           cssStyle="margin-top: 5px"
-                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
+                                          listKey="branchId" listValue="branchName" headerKey="" headerValue=" - "
                                           cssClass="form-control" disabled="true" />
                                 <s:hidden name="detailRekananOps.idRekananOps"></s:hidden>
                             </table>
@@ -136,11 +136,11 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield cssStyle="margin-top: 7px"
-                                             id="diskonadd" type="number"
-                                             name="detailRekananOps.diskon"
-                                             required="false"
-                                             readonly="false" cssClass="form-control"/>
+                                <%--<s:textfield cssStyle="margin-top: 7px"--%>
+                                             <%--id="diskonadd" type="number"--%>
+                                             <%--name="detailRekananOps.diskon"--%>
+                                             <%--required="false"--%>
+                                             <%--readonly="false" cssClass="form-control"/>--%>
                             </table>
                         </td>
                     </tr>
