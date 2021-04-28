@@ -1109,8 +1109,9 @@
             "order": [[0, "desc"]]
         });
 
-        var canvas = document.getElementById('img_faktur_canvas');
-        var ctx = canvas.getContext('2d');
+        //RAKA-28APR2021 ==> component dgn ID img_faktur_canvas diComment
+        // var canvas = document.getElementById('img_faktur_canvas');
+        // var ctx = canvas.getContext('2d');
 
         $(document).on('change', '.btn-file :file', function () {
             var input = $(this),

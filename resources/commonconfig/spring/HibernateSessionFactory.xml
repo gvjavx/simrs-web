@@ -52,7 +52,6 @@
                 <prop key="hibernate.connection.password">postgres</prop>
 
 
-
             </props>
         </property>
         <property name="mappingResources">
@@ -924,9 +923,14 @@
                 <value>
                     sshconfig/com/neurix/simrs/transaksi/hemodialisa/hibernate/ItSimrsObservasiTindakanHdEntity.hbm.xml
                 </value>
-                <value>
-                    sshconfig/com/neurix/akuntansi/transaksi/penyewaanLahan/hibernate/ItAkunPenyewaanLahanEntity.hbm.xml
-                </value>
+                <!--<value>
+                    sshconfig/com/neurix/akuntansi/transaksi/sewaLahan/hibernate/ItAkunPenyewaanLahanEntity.hbm.xml
+                </value>-->
+                <value>sshconfig/com/neurix/akuntansi/transaksi/sewaLahan/hibernate/ItAkunSewaLahanEntity.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/koreksi/hibernate/ItAkunKoreksiDetailEntity.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/koreksi/hibernate/ItAkunKoreksiEntity.xml</value>
+
+
                 <value>sshconfig/com/neurix/hris/master/payrollPtkp/hibernate/ImHrisPayrollPtkpEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/tipeLaporan/hibernate/ImAkunTipeLaporanEntity.hbm.xml
                 </value>

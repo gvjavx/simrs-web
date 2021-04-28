@@ -592,6 +592,13 @@
         <convert converter="bean"
                  match="com.neurix.simrs.master.kategoritindakanina.model.ImSimrsKategoriTindakanInaEntity"/>
 
+        <create creator="new">
+            <param name="class" value="com.neurix.akuntansi.master.tipeJurnal.action.TipeJurnalAction"/>
+        </create>
+        <convert converter="bean"
+                 match="com.neurix.akuntansi.master.tipeJurnal.model.ImTipeJurnalEntity"/>
+        <convert converter="bean"
+                 match="com.neurix.akuntansi.master.tipeJurnal.model.TipeJurnal"/>
 
         <create creator="new">
             <param name="class"
@@ -624,6 +631,12 @@
                  match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.PerhitunganBudgeting"/>
         <convert converter="bean" match="com.neurix.akuntansi.master.parameterbudgeting.model.ParameterBudgeting"/>
         <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.KategoriParameter"/>
+
+        <create creator="new">
+            <param name="class" value="com.neurix.akuntansi.transaksi.koreksi.action.KoreksiAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.akuntansi.transaksi.koreksi.model.Koreksi"/>
+        <convert converter="bean" match="com.neurix.akuntansi.transaksi.koreksi.model.KoreksiDetail"/>
 
         <!--Master Hcm-->
         <create creator="new">
@@ -875,10 +888,15 @@
         <convert converter="bean" match="com.neurix.simrs.transaksi.kandungan.model.Kandungan"/>
         <convert converter="bean" match="com.neurix.simrs.transaksi.kandungan.model.Partograf"/>
 
+        <!--<create creator="new">-->
+            <!--<param name="class" value="com.neurix.akuntansi.transaksi.penyewaanLahan.action.PenyewaanLahanAction"/>-->
+        <!--</create>-->
+        <!--<convert converter="bean" match="com.neurix.akuntansi.transaksi.penyewaanLahan.model.PenyewaanLahan"/>-->
+
         <create creator="new">
-            <param name="class" value="com.neurix.akuntansi.transaksi.penyewaanLahan.action.PenyewaanLahanAction"/>
+            <param name="class" value="com.neurix.akuntansi.transaksi.sewaLahan.action.SewaLahanAction"/>
         </create>
-        <convert converter="bean" match="com.neurix.akuntansi.transaksi.penyewaanLahan.model.PenyewaanLahan"/>
+        <convert converter="bean" match="com.neurix.akuntansi.transaksi.sewaLahan.model.SewaLahan"/>
 
         <create creator="new">
             <param name="class" value="com.neurix.simrs.master.pelayanan.action.PelayananAction"/>

@@ -67,7 +67,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Pengeluaran Kas/Bank
+            Pengeluaran Kas
         </h1>
     </section>
     <!-- Main content -->
@@ -76,7 +76,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Search Pengeluaran Kas/Bank</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Search Pengeluaran Kas</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group">

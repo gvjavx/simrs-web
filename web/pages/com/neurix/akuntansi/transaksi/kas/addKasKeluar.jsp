@@ -64,6 +64,12 @@
         function resetField() {
             window.location.reload()
         }
+
+        function searchSaved(idKas) {
+            var form = { "kas.kasId":idKas};
+            var host = "<%= request.getContextPath() %>/kas/search_kas.action";
+            postAtas(host, form);
+        }
     </script>
 </head>
 
