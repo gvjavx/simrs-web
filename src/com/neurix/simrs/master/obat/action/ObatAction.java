@@ -1521,8 +1521,10 @@ public class ObatAction extends BaseMasterAction {
         return results;
     }
 
-    public List<HargaObatPerKonsumen> listHargaObatPerKonsumenByBranch(String idObat, String branchId){
+    public List<HargaObatPerKonsumen> listHargaObatPerKonsumenByBranch(String idObat){
         logger.info("[ObatAction.listHargaObatPerKonsumenByBranch] START >>> ");
+
+        String branchId = CommonUtil.userBranchLogin();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
@@ -1538,5 +1540,7 @@ public class ObatAction extends BaseMasterAction {
         logger.info("[ObatAction.listHargaObatPerKonsumenByBranch] END <<< ");
         return obatPerKonsumenList;
     }
+
+    public void saveListHargaRekananObat
 
 }

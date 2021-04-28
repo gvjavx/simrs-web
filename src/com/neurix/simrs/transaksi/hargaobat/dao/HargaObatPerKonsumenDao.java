@@ -111,7 +111,7 @@ public class HargaObatPerKonsumenDao extends GenericDao<MtSimrsHargaObatPerKonsu
                 "WHEN dro.is_bpjs = 'Y' AND ro.tipe = 'normal' THEN ht.harga_terakhir_bpjs\n" +
                 "WHEN dro.is_bpjs = 'N' AND ro.tipe = 'normal' THEN ht.harga_terakhir\n" +
                 "ELSE 0 END as harga_terakhir\n" +
-                "FROM (SELECT * FROM im_simrs_detail_rekanan_ops WHERE flag_parent = 'Y') dro\n" +
+                "FROM (SELECT * FROM im_simrs_detail_rekanan_ops WHERE flag_parent = 'Y' AND flag = 'Y') dro\n" +
                 "INNER JOIN im_simrs_rekanan_ops ro ON ro.id_rekanan_ops = dro.id_rekanan_ops\n" +
                 "LEFT JOIN mt_simrs_harga_obat_per_konsumen hopk ON hopk.id_rekanan = dro.id_detail_rekanan_ops\n" +
                 "LEFT JOIN mt_simrs_harga_terakhir ht ON ht.branch_id = dro.branch_id\n" +
