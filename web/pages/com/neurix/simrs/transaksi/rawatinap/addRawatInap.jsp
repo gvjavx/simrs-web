@@ -679,7 +679,7 @@
                         </table>
                     </div>
 
-                    <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
+                    <s:if test='rawatInap.kategoriRuangan == "rawat_inap" || rawatInap.kategoriRuangan == "ruang_bersalin"'>
                     <div class="box-header with-border" id="pos_lab">
                     </div>
                     <div class="box-header with-border">

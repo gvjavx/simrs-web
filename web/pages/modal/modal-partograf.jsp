@@ -132,6 +132,27 @@
                 <div class="box-body">
                     <div class="row">
                         <div class="form-group">
+                            <label class="col-md-4">Waktu</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control tgl" id="dp00">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control jam" id="dp0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
                             <label class="col-md-4">Nama</label>
                             <div class="col-md-8">
                                 <input class="form-control nama-pasien" id="dp1">
@@ -166,31 +187,70 @@
                         <div class="form-group">
                             <label class="col-md-4">No. Registrasi</label>
                             <div class="col-md-8">
-                                <input class="form-control" id="dp5">
+                                <input class="form-control no_registrasi" id="dp5">
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-4">Waktu Saat Masuk</label>
-                            <div class="col-md-8">
-                                <input class="form-control tgl" id="dp6">
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control tgl" id="dp6">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control jam" id="dp61">
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-4">Waktu Mulai Mulas</label>
-                            <div class="col-md-8">
-                                <input class="form-control tgl" id="dp7">
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control tgl" id="dp7">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control jam" id="dp71">
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-4">Waktu Kebutuban Pecah</label>
-                            <div class="col-md-8">
-                                <input class="form-control tgl" id="dp8">
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control tgl" id="dp8">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control jam" id="dp81">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -325,12 +385,18 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-md-offset-6 col-md-2">
+                            <label style="margin-top: 7px">Lama</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input class="form-control" type="number" id="lama_kontraksi" style="margin-top: 7px">
+                        </div>
                     </div>
                     <hr class="garis">
                     <div class="row">
                         <label class="col-md-12"><b>Kondisi Ibu</b></label>
                         <div class="form-group">
-                            <label class="col-md-3">Oksitosin UV</label>
+                            <label class="col-md-3">Oksitosin IV</label>
                             <div class="col-md-1">
                                 <div class="custom02">
                                     <input type="radio" value="Ya" id="ji71" name="ji7" /><label for="ji71" >Ya</label>
@@ -359,20 +425,21 @@
                         <div class="form-group">
                             <label class="col-md-2">Nadi</label>
                             <div class="col-md-4">
-                                <select class="form-control" id="ji10">
-                                    <option value="">[Select One]</option>
-                                    <option value="80">80</option>
-                                    <option value="90">90</option>
-                                    <option value="100">100</option>
-                                    <option value="110">110</option>
-                                    <option value="120">120</option>
-                                    <option value="130">130</option>
-                                    <option value="140">140</option>
-                                    <option value="150">150</option>
-                                    <option value="160">160</option>
-                                    <option value="170">170</option>
-                                    <option value="180">180</option>
-                                </select>
+                                <input class="form-control" type="number" id="ji10">
+                                <%--<select class="form-control" id="ji10">--%>
+                                    <%--<option value="">[Select One]</option>--%>
+                                    <%--<option value="80">80</option>--%>
+                                    <%--<option value="90">90</option>--%>
+                                    <%--<option value="100">100</option>--%>
+                                    <%--<option value="110">110</option>--%>
+                                    <%--<option value="120">120</option>--%>
+                                    <%--<option value="130">130</option>--%>
+                                    <%--<option value="140">140</option>--%>
+                                    <%--<option value="150">150</option>--%>
+                                    <%--<option value="160">160</option>--%>
+                                    <%--<option value="170">170</option>--%>
+                                    <%--<option value="180">180</option>--%>
+                                <%--</select>--%>
                             </div>
                             <label class="col-md-2">Tensi</label>
                             <div class="col-md-4">

@@ -68,6 +68,7 @@ public class PartografBoImpl implements PartografBo {
                     partograf.setNamaTerang(entity.getNamaTerang());
                     partograf.setSip(entity.getSip());
                     partograf.setTtd(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getTtd());
+                    partograf.setLamaKontraksi(entity.getLamaKontraksi());
                     list.add(partograf);
                 }
             }

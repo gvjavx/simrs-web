@@ -2594,6 +2594,9 @@ CREATE TABLE it_simrs_upload_pendukung_pemeriksaan(
 
 CREATE SEQUENCE seq_upload_pendukung_pemeriksaan;
 
+ALTER TABLE it_simrs_partograf
+ADD COLUMN lama_kontraksi VARCHAR(10);
+
 
 
 

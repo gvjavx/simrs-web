@@ -160,6 +160,10 @@
                             <div class="col-md-4">
                                 <input class="form-control" id="rps9" style="margin-top: 7px"  oninput="setSideValue('rps20', this.value)">
                             </div>
+                            <label class="col-md-1" style="margin-top: 7px">SPO2</label>
+                            <div class="col-md-4">
+                                <input class="form-control" style="margin-top: 7px" id="spo1" type="number" oninput="setSideValue('spo2', this.value)">
+                            </div>
                         </div>
                     </div>
                     <hr class="garis">
@@ -266,6 +270,10 @@
                             <label class="col-md-2" style="margin-top: 7px">GCS</label>
                             <div class="col-md-4">
                                 <input class="form-control" id="rps20" style="margin-top: 7px">
+                            </div>
+                            <label class="col-md-1" style="margin-top: 7px">SPO2</label>
+                            <div class="col-md-4">
+                                <input class="form-control" style="margin-top: 7px" id="spo2" type="number">
                             </div>
                         </div>
                     </div>

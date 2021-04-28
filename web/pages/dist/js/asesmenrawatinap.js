@@ -245,10 +245,11 @@ function saveAsesmenRawatInap(jenis, ket) {
         var va10 = $('#kd6').val();
         var va11 = $('[name=ket_kd6]:checked').val();
         var va12 = $('#kd7').val();
-        var va13 = $('#kd7').val();
+        var va13 = $('#kd8').val();
+        var va14 = $('#kd9').val();
 
         if (va1 && va9 && va11 != undefined &&
-            va2 && va3 && va4 && va5 && va6 && va7 && va8 && va10 && va12 && va13 != '') {
+            va2 && va3 && va4 && va6 && va7 && va8 && va10 && va12 && va13 != '') {
 
             data.push({
                 'parameter': 'Kesadaran',
@@ -259,7 +260,7 @@ function saveAsesmenRawatInap(jenis, ket) {
             });
             data.push({
                 'parameter': 'GCS',
-                'jawaban': 'E = ' + va2 + ', V = ' + va3 + ', M = ' + va4 + ', Hasil = ' + va5,
+                'jawaban': 'E = ' + va2 + ', V = ' + va3 + ', M = ' + va4 + ', Hasil = ' + (parseInt(va2)+parseInt(va3)+parseInt(va4)),
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -273,7 +274,7 @@ function saveAsesmenRawatInap(jenis, ket) {
             });
             data.push({
                 'parameter': 'Suhu',
-                'jawaban': va7 + ' C',
+                'jawaban': va7 + ' ˚C',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -306,7 +307,15 @@ function saveAsesmenRawatInap(jenis, ket) {
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
+            data.push({
+                'parameter': 'SPO2',
+                'jawaban': va14,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
             cek = true;
+
         }
     }
 
@@ -2514,9 +2523,9 @@ function saveAsesmenRawatInap(jenis, ket) {
                             var ket4 = $('#ket_ina1244').val();
 
                             if (ketIna != '') {
-                                ketIna = ketIna + '| TD : ' + ket1 + ' mmHg, Suhu : ' + ket2 + 'C , Nadi : ' + ket3 + ', RR : ' + ket4 + ' x/menit';
+                                ketIna = ketIna + '| TD : ' + ket1 + ' mmHg, Suhu : ' + ket2 + ' ˚C , Nadi : ' + ket3 + ', RR : ' + ket4 + ' x/menit';
                             } else {
-                                ketIna = "TD : " + ket1 + ' mmHg, Suhu : ' + ket2 + 'C , Nadi : ' + ket3 + ', RR : ' + ket4 + ' x/menit';
+                                ketIna = "TD : " + ket1 + ' mmHg, Suhu : ' + ket2 + ' ˚C , Nadi : ' + ket3 + ', RR : ' + ket4 + ' x/menit';
                             }
 
                         } else {

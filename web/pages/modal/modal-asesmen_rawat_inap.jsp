@@ -413,17 +413,14 @@
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3">GCS</label>
-                            <div class="col-md-2">
-                                <input placeholder="E" class="form-control" id="kd2_1">
+                            <div class="col-md-3">
+                                <input placeholder="E" class="form-control" id="kd2_1" type="number">
                             </div>
-                            <div class="col-md-2">
-                                <input placeholder="V" class="form-control" id="kd2_2">
+                            <div class="col-md-3">
+                                <input placeholder="V" class="form-control" id="kd2_2" type="number">
                             </div>
-                            <div class="col-md-2">
-                                <input placeholder="M" class="form-control" id="kd2_3">
-                            </div>
-                            <div class="col-md-2">
-                                <input placeholder="Hasil" class="form-control" id="kd2_4">
+                            <div class="col-md-3">
+                                <input placeholder="M" class="form-control" id="kd2_3" type="number">
                             </div>
                         </div>
                     </div>
@@ -444,7 +441,7 @@
                                 <div class="input-group">
                                     <input class="form-control suhu-pasien" id="kd4">
                                     <div class="input-group-addon" style="font-size: 10px">
-                                        C
+                                        &#8451
                                     </div>
                                 </div>
                             </div>
@@ -502,7 +499,7 @@
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3">Berat Badan</label>
-                            <div class="col-md-4">
+                            <div class="col-md-7">
                                 <div class="input-group">
                                     <input type="number" class="form-control berat-pasien" id="kd7">
                                     <div class="input-group-addon" style="font-size: 10px">
@@ -510,14 +507,26 @@
                                     </div>
                                 </div>
                             </div>
-                            <label class="col-md-2">Tinggi Badan</label>
-                            <div class="col-md-3">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 7px">
+                        <div class="form-group">
+                            <label class="col-md-3">Tinggi Badan</label>
+                            <div class="col-md-7">
                                 <div class="input-group">
                                     <input type="number" class="form-control tinggi-pasien" id="kd8">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         cm
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak_atas" style="margin-top: 7px">
+                        <div class="form-group">
+                            <label class="col-md-3">SPO2</label>
+                            <div class="col-md-7">
+                                <input type="number" class="form-control tinggi-pasien" id="kd9">
                             </div>
                         </div>
                     </div>

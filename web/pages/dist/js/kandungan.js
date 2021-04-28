@@ -81,10 +81,18 @@ function saveRB(jenis, ket) {
         var ttd3 = document.getElementById("ttd3");
         var ttd4 = document.getElementById("ttd4");
 
+        var capkakibayi = document.getElementById("cap_kaki_bayi");
+        var capjempolbayi = document.getElementById("cap_jempol_bayi");
+        var capjembpolibu = document.getElementById("cap_jempol_ibu");
+
         var cekTtd1 = isCanvasBlank(ttd1);
         var cekTtd2 = isCanvasBlank(ttd2);
         var cekTtd3 = isCanvasBlank(ttd3);
         var cekTtd4 = isCanvasBlank(ttd4);
+
+        var cekKakiBayi = isCanvasBlank(capkakibayi);
+        var cekJempolBayi = isCanvasBlank(capjempolbayi);
+        var cekJempolIbu = isCanvasBlank(capjembpolibu);
 
         var nama1 = $('#nama_terang_ttd1').val();
         var nama2 = $('#nama_terang_ttd2').val();
@@ -95,8 +103,9 @@ function saveRB(jenis, ket) {
         var sip3 = $('#sip_ttd3').val();
         var sip4 = $('#sip_ttd4').val();
 
-        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 && nama1 && nama2 && nama3 && nama4 && sip1 && sip2 && sip3 && sip4 &&
-            va11 && va12 && va13 && va14 && va15 != '' && !cekTtd1 && !cekTtd2 && !cekTtd3 && !cekTtd4) {
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 && nama1 && nama2 &&
+            nama3 && nama4 && sip1 && sip2 && sip3 && sip4 && va11 && va12 && va13 && va14 && va15 != '' &&
+            !cekTtd1 && !cekTtd2 && !cekTtd3 && !cekTtd4 && !cekKakiBayi && !cekJempolBayi && !cekJempolIbu) {
 
             data.push({
                 'parameter': 'No Rekam Medik',
@@ -190,7 +199,6 @@ function saveRB(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
 
-
             var canv1 = ttd1.toDataURL("image/png"),
                 canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
             var canv2 = ttd2.toDataURL("image/png"),
@@ -199,6 +207,37 @@ function saveRB(jenis, ket) {
                 canv3 = canv3.replace(/^data:image\/(png|jpg);base64,/, "");
             var canv4 = ttd4.toDataURL("image/png"),
                 canv4 = canv4.replace(/^data:image\/(png|jpg);base64,/, "");
+
+            var canv5 = capkakibayi.toDataURL("image/png"),
+                canv5 = canv5.replace(/^data:image\/(png|jpg);base64,/, "");
+            var canv6 = capjempolbayi.toDataURL("image/png"),
+                canv6 = canv6.replace(/^data:image\/(png|jpg);base64,/, "");
+            var canv7 = capjembpolibu.toDataURL("image/png"),
+                canv7 = canv7.replace(/^data:image\/(png|jpg);base64,/, "");
+            data.push({
+                'parameter': 'Cap Kaki Bayi',
+                'jawaban': canv5,
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe': 'gambar',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Cap Jempol Bayi',
+                'jawaban': canv6,
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe': 'gambar',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Cap Jempol Ibu',
+                'jawaban': canv7,
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe': 'gambar',
+                'id_detail_checkup': idDetailCheckup
+            });
 
             data.push({
                 'parameter': 'TTD Penentu Jenis Kelamin',
@@ -2073,8 +2112,21 @@ function saveRB(jenis, ket) {
         var va4 = $('#dp4').val();
         var va5 = $('#dp5').val();
         var va6 = $('#dp6').val();
+        var va61 = $('#dp61').val();
         var va7 = $('#dp7').val();
+        var va71 = $('#dp71').val();
         var va8 = $('#dp8').val();
+        var va81 = $('#dp81').val();
+        var tgl = $('#dp00').val();
+        var jam = $('#dp0').val();
+        data.push({
+            'parameter': 'Waktu',
+            'jawaban': tgl+' '+jam,
+            'keterangan': jenis,
+            'jenis': ket,
+            'id_detail_checkup': idDetailCheckup
+        });
+
         data.push({
             'parameter': 'Nama',
             'jawaban': va1,
@@ -2112,21 +2164,21 @@ function saveRB(jenis, ket) {
         });
         data.push({
             'parameter': 'Waktu Saat Masuk',
-            'jawaban': va6,
+            'jawaban': va6+' '+va61,
             'keterangan': jenis,
             'jenis': ket,
             'id_detail_checkup': idDetailCheckup
         });
         data.push({
             'parameter': 'Waktu Mulai Mulas',
-            'jawaban': va7,
+            'jawaban': va7+' '+va71,
             'keterangan': jenis,
             'jenis': ket,
             'id_detail_checkup': idDetailCheckup
         });
         data.push({
             'parameter': 'Waktu Kebutuban Pecah',
-            'jawaban': va8,
+            'jawaban': va8+' '+va81,
             'keterangan': jenis,
             'jenis': ket,
             'id_detail_checkup': idDetailCheckup
@@ -2150,6 +2202,7 @@ function saveRB(jenis, ket) {
         var va11 = $('#ji11').val();
         var va12 = $('#ji12').val();
         var va13 = $('#ji13').val();
+        var lamaKon = $('#lama_kontraksi').val();
 
         if (va1 != '') {
             dataTemp = {
@@ -2160,6 +2213,7 @@ function saveRB(jenis, ket) {
                 'molase': va4,
                 'pembukaan': va5,
                 'kontraksi': va6,
+                'lama_kontraksi': lamaKon,
                 'oksitosin': va7,
                 'tetes': va8,
                 'obat_cairan': va9,
@@ -2640,6 +2694,11 @@ function detailRB(jenis) {
                                             '</td>' +
                                             '</tr>';
                                     }
+                                }else if("gambar" == item.tipe){
+                                    body += '<tr>' +
+                                        '<td width="40%">' + item.parameter + '</td>' +
+                                        '<td><img src="'+jwb+'" style="width: 100%; height: 250px"></td>' +
+                                        '</tr>';
                                 } else {
                                     body += '<tr>' +
                                         '<td width="40%">' + item.parameter + '</td>' +

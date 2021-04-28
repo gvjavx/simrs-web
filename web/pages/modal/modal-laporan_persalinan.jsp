@@ -98,7 +98,7 @@
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4">Bidang Pendamping</label>
+                            <label class="col-md-4">Bidan Pendamping</label>
                             <div class="col-md-8">
                                 <input class="form-control" id="la4">
                             </div>
