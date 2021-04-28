@@ -67,39 +67,34 @@
                                         </table>
                                         <table>
 
-                                            <%--<tr>--%>
-                                                <%--<td width="30%">--%>
-                                                    <%--<label class="control-label"><small>Nama Rekanan </small></label>--%>
-                                                <%--</td>--%>
-                                                <%--<td width="90%">--%>
-                                                    <%--&lt;%&ndash;<s:textfield cssStyle="margin-top: 7px"&ndash;%&gt;--%>
-                                                                 <%--&lt;%&ndash;id="nama-search" &ndash;%&gt;--%>
-                                                                 <%--&lt;%&ndash;name="detailRekananOps.namaRekanan"&ndash;%&gt;--%>
-                                                                 <%--&lt;%&ndash;required="false"&ndash;%&gt;--%>
-                                                                 <%--&lt;%&ndash;readonly="false" cssClass="form-control"/>&ndash;%&gt;--%>
-                                                    <%--&lt;%&ndash;<table>&ndash;%&gt;--%>
-                                                        <%--&lt;%&ndash;<s:action id="initComboRekanan" namespace="/detailrekananops" name="initComboRekanan_detailrekananops"/>&ndash;%&gt;--%>
-                                                        <%--&lt;%&ndash;<s:select list="#initComboRekanan.listOfComboRekananOps" id="positionId1" name="detailRekananOps.idRekananOps"&ndash;%&gt;--%>
-                                                        <%--&lt;%&ndash;listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue="[Select one]"&ndash;%&gt;--%>
-                                                        <%--&lt;%&ndash;cssClass="form-control select2" cssStyle="width: 100%"/>&ndash;%&gt;--%>
-                                                    <%--&lt;%&ndash;</table>&ndash;%&gt;--%>
-                                                <%--</td>--%>
-                                            <%--</tr>--%>
+                                            <tr>
+                                                <td width="30%">
+                                                    <label class="control-label"><small>Nama Rekanan </small></label>
+                                                </td>
+                                                <td width="90%">
+                                                    <table>
+                                                        <s:action id="initComboRekanan" namespace="/detailrekananops" name="initComboRekanan_detailrekananops"/>
+                                                        <s:select list="#initComboRekanan.listOfComboRekananOps" id="positionId1" name="detailRekananOps.idRekananOps"
+                                                                  listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue=" - "
+                                                                  cssClass="form-control select2" cssStyle="width: 100%"/>
+                                                    </table>
+                                                </td>
+                                            </tr>
 
-                                            <%--<tr>--%>
+                                                <%--<tr>--%>
                                                 <%--<td width="18%">--%>
-                                                    <%--<label class="control-label"><small>RekananOps ID :</small></label>--%>
+                                                <%--<label class="control-label"><small>RekananOps ID :</small></label>--%>
                                                 <%--</td>--%>
                                                 <%--<td>--%>
-                                                    <%--<table>--%>
-                                                        <%--<s:textfield cssStyle="margin-top: 7px"--%>
-                                                                     <%--id="idRekananOps"--%>
-                                                                     <%--name="detailRekananOps.idDetailRekananOps"--%>
-                                                                     <%--required="false"--%>
-                                                                     <%--readonly="false" cssClass="form-control"/>--%>
-                                                    <%--</table>--%>
+                                                <%--<table>--%>
+                                                <%--<s:textfield cssStyle="margin-top: 7px"--%>
+                                                <%--id="idRekananOps"--%>
+                                                <%--name="detailRekananOps.idDetailRekananOps"--%>
+                                                <%--required="false"--%>
+                                                <%--readonly="false" cssClass="form-control"/>--%>
+                                                <%--</table>--%>
                                                 <%--</td>--%>
-                                            <%--</tr>--%>
+                                                <%--</tr>--%>
                                             <tr>
                                                 <td>
                                                     <label class="control-label"><small>Cover BPJS </small></label>
@@ -107,7 +102,7 @@
                                                 <td>
                                                     <table>
                                                         <s:select list="#{'Y':'Ya','N':'Tidak'}" id="flag2" name="detailRekananOps.isBpjs"
-                                                                  headerKey="" headerValue="[Select One]" cssClass="form-control select2"  cssStyle="width: 100%"/>
+                                                                  headerKey="" headerValue=" - " cssClass="form-control select2"  cssStyle="width: 100%"/>
                                                     </table>
 
                                                 </td>
@@ -148,7 +143,7 @@
                                                     <td>
                                                         <button type="button" class="btn btn-danger" cssStyle="margin-right: 5px"
                                                                 onclick="window.location.href='<s:url
-                                                                action="initForm_detailrekananops"/>'">
+                                                                        action="initForm_detailrekananops"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
@@ -158,7 +153,7 @@
                                         <br>
                                         <br>
                                         <center>
-                                            <table id="showdata" width="90%">
+                                            <table id="showdata" style="font-size: 13px;">
                                                 <tr>
                                                     <td align="center">
                                                         <sj:dialog id="waiting_dialog_loading" openTopics="showDialog"

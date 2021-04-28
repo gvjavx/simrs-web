@@ -26,7 +26,9 @@ import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.vendor.model.ImSimrsVendorEntity;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.hargaobat.dao.HargaObatDao;
+import com.neurix.simrs.transaksi.hargaobat.dao.HargaObatPerKonsumenDao;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
+import com.neurix.simrs.transaksi.hargaobat.model.HargaObatPerKonsumen;
 import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatEntity;
 import com.neurix.simrs.transaksi.obatinap.model.ItSimrsObatInapEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.dao.PermintaanVendorDao;
@@ -76,6 +78,11 @@ public class ObatBoImpl implements ObatBo {
     private KandunganObatDao kandunganObatDao;
     private BentukBarangDao bentukBarangDao;
     private PabrikDao pabrikDao;
+    private HargaObatPerKonsumenDao hargaObatPerKonsumenDao;
+
+    public void setHargaObatPerKonsumenDao(HargaObatPerKonsumenDao hargaObatPerKonsumenDao) {
+        this.hargaObatPerKonsumenDao = hargaObatPerKonsumenDao;
+    }
 
     public void setPabrikDao(PabrikDao pabrikDao) {
         this.pabrikDao = pabrikDao;
@@ -2546,5 +2553,21 @@ public class ObatBoImpl implements ObatBo {
         }
 
         logger.info("[ObatBoImpl.testSumPersediaanObat] END <<<");
+    }
+
+    @Override
+    public List<HargaObatPerKonsumen> listHargaObatPerKonsumenByBranch(String idObat, String branchId) {
+        logger.info("[ObatBoImpl.listHargaObatPerKonsumenByBranch] START >>>");
+
+        List<HargaObatPerKonsumen> obatPerKonsumenList = new ArrayList<>();
+        try {
+            obatPerKonsumenList = hargaObatPerKonsumenDao.listRekananAndHargaByBranch(idObat, branchId);
+        } catch (HibernateException e){
+            logger.error("[ObatBoImpl.listHargaObatPerKonsumenByBranch] ERROR.", e);
+            throw new GeneralBOException("[ObatBoImpl.listHargaObatPerKonsumenByBranch] ERROR." + e.getMessage());
+        }
+
+        logger.info("[ObatBoImpl.listHargaObatPerKonsumenByBranch] END <<<");
+        return obatPerKonsumenList;
     }
 }

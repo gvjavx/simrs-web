@@ -1002,6 +1002,7 @@
                 <value>sshconfig/com/neurix/hris/transaksi/logcron/hibernate/ItLogCronEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/billingSystem/hibernate/ItPgLogTransactionEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/billingSystem/hibernate/ItPgInvoiceEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/hargaobat/hibernate/MtSimrsHargaObatPerKonsumenEntity.xml</value>
 
 
 

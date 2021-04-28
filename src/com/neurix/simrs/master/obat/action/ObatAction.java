@@ -28,6 +28,7 @@ import com.neurix.simrs.master.vendor.model.ImSimrsVendorEntity;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
+import com.neurix.simrs.transaksi.hargaobat.model.HargaObatPerKonsumen;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.riwayatbarang.model.TransaksiStok;
 import io.agora.recording.common.Common;
@@ -1518,6 +1519,24 @@ public class ObatAction extends BaseMasterAction {
         }
         logger.info("[ObatAction.getComboParameterObat] END <<< ");
         return results;
+    }
+
+    public List<HargaObatPerKonsumen> listHargaObatPerKonsumenByBranch(String idObat, String branchId){
+        logger.info("[ObatAction.listHargaObatPerKonsumenByBranch] START >>> ");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        List<HargaObatPerKonsumen> obatPerKonsumenList = new ArrayList<>();
+        try {
+            obatPerKonsumenList = obatBo.listHargaObatPerKonsumenByBranch(idObat, branchId);
+        } catch (HibernateException e){
+            logger.error("[ObatAction.listHargaObatPerKonsumenByBranch] ERROR.", e);
+            throw new GeneralBOException("[ObatAction.listHargaObatPerKonsumenByBranch] ERROR." + e.getMessage());
+        }
+
+        logger.info("[ObatAction.listHargaObatPerKonsumenByBranch] END <<< ");
+        return obatPerKonsumenList;
     }
 
 }

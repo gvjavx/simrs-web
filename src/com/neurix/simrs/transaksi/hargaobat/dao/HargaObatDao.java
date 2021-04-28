@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.hargaobat.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
 import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatEntity;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
@@ -218,5 +219,7 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
             return new BigDecimal(obj.toString());
 
     }
+
+
 
 }
