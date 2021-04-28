@@ -63,4 +63,6 @@ public interface ObatBo{
     public ImSimrsHeaderObatEntity getHeaderObatById(String id) throws GeneralBOException;
     public void testSumPersediaanObat(String id, String ket, String branchId);
     public List<HargaObatPerKonsumen> listHargaObatPerKonsumenByBranch(String idObat, String branchId);
+    public String getIdHargaObatByIdObatAndBranch(String idObat, String branchId);
+    public void saveHargaObatPerKonsumen(HargaObatPerKonsumen bean, List<HargaObatPerKonsumen> listHargaPerKonsumen);
 }

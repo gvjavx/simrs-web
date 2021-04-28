@@ -30,6 +30,7 @@ import com.neurix.simrs.transaksi.hargaobat.dao.HargaObatPerKonsumenDao;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObatPerKonsumen;
 import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatEntity;
+import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatPerKonsumenEntity;
 import com.neurix.simrs.transaksi.obatinap.model.ItSimrsObatInapEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.dao.PermintaanVendorDao;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
@@ -2569,5 +2570,117 @@ public class ObatBoImpl implements ObatBo {
 
         logger.info("[ObatBoImpl.listHargaObatPerKonsumenByBranch] END <<<");
         return obatPerKonsumenList;
+    }
+
+    @Override
+    public String getIdHargaObatByIdObatAndBranch(String idObat, String branchId) {
+        logger.info("[ObatBoImpl.getIdHargaObatByIdObatAndBranch] START >>>");
+
+        String idHargaObat = "";
+
+        try {
+            idHargaObat = hargaObatDao.getIdHargaObatByIdObatAndBranch(idObat, branchId);
+        } catch (HibernateException e){
+            logger.error("[ObatBoImpl.getIdHargaObatByIdObatAndBranch] ERROR.", e);
+            throw new GeneralBOException("[ObatBoImpl.getIdHargaObatByIdObatAndBranch] ERROR." + e.getCause());
+        }
+
+        logger.info("[ObatBoImpl.getIdHargaObatByIdObatAndBranch] END <<<");
+        return idHargaObat;
+    }
+
+    @Override
+    public void saveHargaObatPerKonsumen(HargaObatPerKonsumen bean, List<HargaObatPerKonsumen> listHargaPerKonsumen) {
+        logger.info("[ObatBoImpl.saveHargaObatPerKonsumen] START >>>");
+
+        for (HargaObatPerKonsumen hargaPerKonsumen : listHargaPerKonsumen){
+
+            List<MtSimrsHargaObatPerKonsumenEntity> perKonsumenEntities = getListHargaObatPerKonsumenEntity(hargaPerKonsumen);
+            if (perKonsumenEntities.size() > 0){
+
+                // jika ditemukan maka update
+                MtSimrsHargaObatPerKonsumenEntity perKonsumenEntity = perKonsumenEntities.get(0);
+                perKonsumenEntity.setHargaBruto(hargaPerKonsumen.getHargaBruto());
+                perKonsumenEntity.setMargin(hargaPerKonsumen.getMargin());
+                perKonsumenEntity.setHargaJual(hargaPerKonsumen.getHargaJual());
+                perKonsumenEntity.setJenisKonsumen(hargaPerKonsumen.getJenisKonsumen());
+                perKonsumenEntity.setAction("U");
+                perKonsumenEntity.setLastUpdate(bean.getLastUpdate());
+                perKonsumenEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                try {
+                    hargaObatPerKonsumenDao.updateAndSave(perKonsumenEntity);
+                } catch (HibernateException e){
+                    logger.error("[ObatBoImpl.saveHargaObatPerKonsumen] ERROR.", e);
+                    throw new GeneralBOException("[ObatBoImpl.saveHargaObatPerKonsumen] ERROR." + e.getCause());
+                }
+            } else {
+
+                // jika tidak ditemukan maka insert new
+                MtSimrsHargaObatPerKonsumenEntity perKonsumenEntity = new MtSimrsHargaObatPerKonsumenEntity();
+                perKonsumenEntity.setId(generateNewHargaObatPerKonsumen());
+                perKonsumenEntity.setIdRekanan(hargaPerKonsumen.getIdRekanan());
+                perKonsumenEntity.setIdHargaObat(hargaPerKonsumen.getIdHargaObat());
+                perKonsumenEntity.setJenisKonsumen(hargaPerKonsumen.getJenisKonsumen());
+                perKonsumenEntity.setHargaBruto(hargaPerKonsumen.getHargaBruto());
+                perKonsumenEntity.setMargin(hargaPerKonsumen.getMargin());
+                perKonsumenEntity.setHargaJual(hargaPerKonsumen.getHargaJual());
+                perKonsumenEntity.setFlag("Y");
+                perKonsumenEntity.setAction("C");
+                perKonsumenEntity.setCreatedDate(bean.getCreatedDate());
+                perKonsumenEntity.setCreatedWho(bean.getCreatedWho());
+                perKonsumenEntity.setLastUpdate(bean.getLastUpdate());
+                perKonsumenEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                try {
+                    hargaObatPerKonsumenDao.addAndSave(perKonsumenEntity);
+                } catch (HibernateException e){
+                    logger.error("[ObatBoImpl.saveHargaObatPerKonsumen] ERROR.", e);
+                    throw new GeneralBOException("[ObatBoImpl.saveHargaObatPerKonsumen] ERROR." + e.getCause());
+                }
+            }
+        }
+        logger.info("[ObatBoImpl.saveHargaObatPerKonsumen] END <<<");
+    }
+
+    private List<MtSimrsHargaObatPerKonsumenEntity> getListHargaObatPerKonsumenEntity(HargaObatPerKonsumen bean){
+        logger.info("[ObatBoImpl.getListHargaObatPerKonsumenEntity] START >>>");
+
+        Map hsCriteria = new HashMap();
+        if (bean.getIdHargaObat() != null && !"".equalsIgnoreCase(bean.getIdHargaObat()))
+            hsCriteria.put("id_harga_obat", bean.getIdHargaObat());
+        if (bean.getJenisKonsumen() != null && !"".equalsIgnoreCase(bean.getJenisKonsumen()))
+            hsCriteria.put("jenis_konsumen", bean.getJenisKonsumen());
+        if (bean.getIdRekanan() != null && !"".equalsIgnoreCase(bean.getIdRekanan()))
+            hsCriteria.put("id_rekanan", bean.getIdRekanan());
+        if (bean.getId() != null && !"".equalsIgnoreCase(bean.getId()))
+            hsCriteria.put("id", bean.getId());
+        hsCriteria.put("flag", "Y");
+
+        List<MtSimrsHargaObatPerKonsumenEntity> perKonsumenEntities = new ArrayList<>();
+        try {
+            perKonsumenEntities = hargaObatPerKonsumenDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[ObatBoImpl.getListHargaObatPerKonsumenEntity] ERROR.", e);
+            throw new GeneralBOException("[ObatBoImpl.getListHargaObatPerKonsumenEntity] ERROR." + e.getCause());
+        }
+
+        logger.info("[ObatBoImpl.getListHargaObatPerKonsumenEntity] END <<<");
+        return perKonsumenEntities;
+    }
+
+    private String generateNewHargaObatPerKonsumen(){
+        logger.info("[ObatBoImpl.generateNewHargaObatPerKonsumen] START >>>");
+
+        String id = "";
+        try {
+            id = hargaObatPerKonsumenDao.getNextId();
+        } catch (HibernateException e){
+            logger.error("[ObatBoImpl.getListHargaObatPerKonsumenEntity] ERROR.", e);
+            throw new GeneralBOException("[ObatBoImpl.getListHargaObatPerKonsumenEntity] ERROR." + e.getCause());
+        }
+
+        logger.info("[ObatBoImpl.generateNewHargaObatPerKonsumen] END <<<");
+        return id;
     }
 }

@@ -150,6 +150,10 @@ public class HargaObatPerKonsumenDao extends GenericDao<MtSimrsHargaObatPerKonsu
                 obatPerKonsumen.setMargin(objToBigDecimal(obj[6]));
                 obatPerKonsumen.setHargaJual(objToBigDecimal(obj[7]));
                 obatPerKonsumen.setHargaTerakhir(objToBigDecimal(obj[8]));
+                if ("Y".equalsIgnoreCase(obatPerKonsumen.getFlagIsBpjs()))
+                    obatPerKonsumen.setJenisKonsumen("rekanan_bpjs");
+                else
+                    obatPerKonsumen.setJenisKonsumen("rekanan");
                 perKonsumenList.add(obatPerKonsumen);
             }
         }

@@ -327,47 +327,74 @@
 
     function saveObat(id, idBarang){
 
-        if (checkMargin())
-            return false;
+        var idObat      = $("#mod-id-obat").val();
+        var listHarga   = [];
+        for (var i = 0 ; i < jumlahList.length; i ++){
+            var hargaBruto  = $("#bruto-"+i).val();
+            var margin      = $("#margin-"+i).val();
+            var hargaJual   = $("#harga-jual-"+i).val();
+            var idRekanan   = $("#id-rekanan-"+i).val();
+            var jenis       = $("#jenis-konsumen-"+i).val();
+            listHarga.push(
+                {"harga_bruto":hargaBruto, "margin_obat":margin, "harga_jual":hargaJual, "jenis_konsumen":jenis, "id_rekanan":idRekanan}
+            );
+        }
 
-        // khusus not bpjs
-        var net     = $("#mod-harga-net").val();
-        var margin  = $("#mod-margin").val();
-
-        // umum not bpjs
-        var netUmum = $("#mod-harga-net-umum").val();
-        var marginUmum = $("#mod-margin-umum").val();
-
-        // khusus bpjs
-        var netKhususBpjs = $("#mod-harga-net-bpjs").val() == '' ? "0" : $("#mod-harga-net-bpjs").val();
-        var marginKhususBpjs = $("#mod-margin-bpjs").val() == '' ? "0" : $("#mod-margin-bpjs").val();
-
-        // umum bpjs
-        var netUmumBpjs = $("#mod-harga-net-umum-bpjs").val() == '' ? "0" : $("#mod-harga-net-umum-bpjs").val();
-        var marginUmumBpjs = $("#mod-margin-umum-bpjs").val() == '' ? "0" : $("#mod-margin-umum-bpjs").val();
-
-        var arJson = [];
-        arJson.push({
-            "harga_net":net, "margin" : margin,
-            "harga_net_umum" : netUmum, "margin_umum" : marginUmum,
-            "net_khusus_bpjs" : netKhususBpjs, "margin_khusus_bpjs" : marginKhususBpjs,
-            "net_umum_bpjs" : netUmumBpjs, "margin_umum_bpjs" : marginUmumBpjs
+        var stJson = JSON.stringify(listHarga);
+        ObatAction.saveListHargaRekananObat(idObat, stJson, function (res) {
+            if (response.status == "success"){
+                $("#success_obat").show();
+                $("#ok_obat").show();
+                $("#ok_obat").attr("onclick", "searchForm('"+id+"')");
+                $("#save_obat").hide();
+                $("#close_obat").hide();
+            } else {
+                $("#warning_obat").show();
+                $("#obat_error").text(response.msg);
+            }
         });
-        var stJson = JSON.stringify(arJson);
-        console.log(arJson);
-        console.log(stJson);
-        ObatAction.saveHargaObat(id, idBarang, stJson, function (response) {
-           if (response.status == "success"){
-               $("#success_obat").show();
-               $("#ok_obat").show();
-               $("#ok_obat").attr("onclick", "searchForm('"+id+"')");
-               $("#save_obat").hide();
-               $("#close_obat").hide();
-           } else {
-               $("#warning_obat").show();
-               $("#obat_error").text(response.msg);
-           }
-        });
+
+//        if (checkMargin())
+//            return false;
+//
+//        // khusus not bpjs
+//        var net     = $("#mod-harga-net").val();
+//        var margin  = $("#mod-margin").val();
+//
+//        // umum not bpjs
+//        var netUmum = $("#mod-harga-net-umum").val();
+//        var marginUmum = $("#mod-margin-umum").val();
+//
+//        // khusus bpjs
+//        var netKhususBpjs = $("#mod-harga-net-bpjs").val() == '' ? "0" : $("#mod-harga-net-bpjs").val();
+//        var marginKhususBpjs = $("#mod-margin-bpjs").val() == '' ? "0" : $("#mod-margin-bpjs").val();
+//
+//        // umum bpjs
+//        var netUmumBpjs = $("#mod-harga-net-umum-bpjs").val() == '' ? "0" : $("#mod-harga-net-umum-bpjs").val();
+//        var marginUmumBpjs = $("#mod-margin-umum-bpjs").val() == '' ? "0" : $("#mod-margin-umum-bpjs").val();
+//
+//        var arJson = [];
+//        arJson.push({
+//            "harga_net":net, "margin" : margin,
+//            "harga_net_umum" : netUmum, "margin_umum" : marginUmum,
+//            "net_khusus_bpjs" : netKhususBpjs, "margin_khusus_bpjs" : marginKhususBpjs,
+//            "net_umum_bpjs" : netUmumBpjs, "margin_umum_bpjs" : marginUmumBpjs
+//        });
+//        var stJson = JSON.stringify(arJson);
+//        console.log(arJson);
+//        console.log(stJson);
+//        ObatAction.saveHargaObat(id, idBarang, stJson, function (response) {
+//           if (response.status == "success"){
+//               $("#success_obat").show();
+//               $("#ok_obat").show();
+//               $("#ok_obat").attr("onclick", "searchForm('"+id+"')");
+//               $("#save_obat").hide();
+//               $("#close_obat").hide();
+//           } else {
+//               $("#warning_obat").show();
+//               $("#obat_error").text(response.msg);
+//           }
+//        });
     }
 
     function searchForm(idObat){
@@ -505,7 +532,10 @@
             var str = "";
             $.each(res, function (i, item) {
                str += "<tr id='baris-"+n+"'>" +
-                       "<td>"+item.namaKonsumen+" <input type='hidden' id='id-rekanan-"+n+"' value='"+item.idRekanan+"'/></td>"+
+                       "<td>"+item.namaKonsumen+"" +
+                       "<input type='hidden' id='id-rekanan-"+n+"' value='"+item.idRekanan+"'/>" +
+                       "<input type='hidden' id='jenis-konsumen-"+n+"' value='"+item.jenisKonsumen+"'/>" +
+                       "</td>"+
                        "<td><input type='hidden' value='"+item.hargaTerakhir+"' id='bruto-"+n+"'/><input type='text' style='text-align: right; font-size: 13px;' class='form-control' value='"+formatRupiah(item.hargaTerakhir)+"' readonly/></td>"+
                        "<td><input type='number' style='text-align: right; font-size: 13px; width: 100px' class='form-control' id='margin-"+n+"' value='"+formatRupiah(item.margin)+"' onchange='hitungHargaJual(this.id)'/></td>"+
                        "<td><input type='number' style='text-align: right; font-size: 13px;' class='form-control' id='harga-jual-"+n+"' value='"+formatRupiah(item.hargaJual)+"' onchange='hitungMargin(this.id)' readonly/></td>"+

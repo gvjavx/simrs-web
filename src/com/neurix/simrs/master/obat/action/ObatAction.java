@@ -1541,6 +1541,83 @@ public class ObatAction extends BaseMasterAction {
         return obatPerKonsumenList;
     }
 
-    public void saveListHargaRekananObat
+    public CrudResponse saveListHargaRekananObat(String jsonList, String idObat) throws JSONException{
+        logger.info("[ObatAction.saveListHargaRekananObat] START >>>");
+
+        CrudResponse response   = new CrudResponse();
+        JSONArray jsonArray     = new JSONArray(jsonList);
+
+        if (jsonArray.length() == 0){
+            logger.error("[ObatAction.saveListHargaRekananObat] ERROR. Tidak Ada List Harga yg dikirim.");
+            response.hasError("Tidak Ada List Harga yg dikirim. ");
+            return response;
+        }
+        if (idObat == null || "".equalsIgnoreCase(idObat)){
+            logger.error("[ObatAction.saveListHargaRekananObat] ERROR. Tidak Ada idObat yg dikirim.");
+            response.hasError("Tidak Ada idObat yg dikirim. ");
+            return response;
+        }
+
+        String branchId     = CommonUtil.userBranchLogin();
+        String userLogin    = CommonUtil.userLogin();
+        Timestamp times     = new Timestamp(System.currentTimeMillis());
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        String idHargaObat = "";
+        try {
+            idHargaObat = obatBo.getIdHargaObatByIdObatAndBranch(idObat, branchId);
+        } catch (GeneralBOException e){
+            logger.error("[ObatAction.saveListHargaRekananObat] ERROR. ", e);
+            response.hasError(e.getCause().toString());
+            return response;
+        }
+
+        if (idHargaObat == null || "".equalsIgnoreCase(idHargaObat)){
+            response.hasError("Tidak ditemukan master harga obat. ");
+            return response;
+        }
+
+        List<HargaObatPerKonsumen> perKonsumenList = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++){
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            HargaObatPerKonsumen obatPerKonsumen = new HargaObatPerKonsumen();
+            obatPerKonsumen.setJenisKonsumen(jsonObject.getString("jenis_konsumen"));
+            obatPerKonsumen.setIdRekanan(jsonObject.getString("id_rekanan"));
+            obatPerKonsumen.setHargaBruto(stToBigDecimal(jsonObject.getString("harga_bruto")));
+            obatPerKonsumen.setMargin(stToBigDecimal(jsonObject.getString("margin_obat")));
+            obatPerKonsumen.setHargaJual(stToBigDecimal(jsonObject.getString("harga_jual")));
+            obatPerKonsumen.setIdHargaObat(idHargaObat);
+            perKonsumenList.add(obatPerKonsumen);
+        }
+
+        HargaObatPerKonsumen obatPerKonsumen = new HargaObatPerKonsumen();
+        obatPerKonsumen.setIdHargaObat(idHargaObat);
+        obatPerKonsumen.setCreatedDate(times);
+        obatPerKonsumen.setCreatedWho(userLogin);
+        obatPerKonsumen.setLastUpdate(times);
+        obatPerKonsumen.setLastUpdateWho(userLogin);
+
+        try {
+            obatBo.saveHargaObatPerKonsumen(obatPerKonsumen, perKonsumenList);
+        } catch (GeneralBOException e){
+            logger.error("[ObatAction.saveListHargaRekananObat] ERROR. ", e);
+            response.hasError(e.getCause().toString());
+            return response;
+        }
+
+        response.hasSuccess("success");
+        logger.info("[ObatAction.saveListHargaRekananObat] END <<<");
+        return response;
+    }
+
+    private BigDecimal stToBigDecimal(String jsonObj){
+        if (jsonObj == null || "".equalsIgnoreCase(jsonObj)){
+            return new BigDecimal(0);
+        } else {
+            return new BigDecimal(jsonObj);
+        }
+    }
 
 }
