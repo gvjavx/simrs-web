@@ -366,18 +366,21 @@ public class MappingJurnalAction extends BaseMasterAction {
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
         try {
-            for (MappingJurnal mappingJurnal : listOfResult){
-                mappingJurnal.setTipeJurnalId(data.getTipeJurnalId());
-                mappingJurnal.setTransId(data.getTransId());
-                mappingJurnal.setCreatedWho(userLogin);
-                mappingJurnal.setLastUpdate(updateTime);
-                mappingJurnal.setCreatedDate(updateTime);
-                mappingJurnal.setLastUpdateWho(userLogin);
-                mappingJurnal.setAction("C");
-                mappingJurnal.setFlag("Y");
+            //RAKA-28APR2021 ===> looping dalam BO agar tidak ada kemungkinan hanya sebagian data yg berhasil disimpan
+            mappingJurnalBoProxy.saveAddList(listOfResult, data, userLogin, updateTime);
 
-                mappingJurnalBoProxy.saveAdd(mappingJurnal);
-            }
+//            for (MappingJurnal mappingJurnal : listOfResult){
+//                mappingJurnal.setTipeJurnalId(data.getTipeJurnalId());
+//                mappingJurnal.setTransId(data.getTransId());
+//                mappingJurnal.setCreatedWho(userLogin);
+//                mappingJurnal.setLastUpdate(updateTime);
+//                mappingJurnal.setCreatedDate(updateTime);
+//                mappingJurnal.setLastUpdateWho(userLogin);
+//                mappingJurnal.setAction("C");
+//                mappingJurnal.setFlag("Y");
+//
+//                mappingJurnalBoProxy.saveAdd(mappingJurnal);
+//            }
 
         }catch (GeneralBOException e) {
             Long logId = null;

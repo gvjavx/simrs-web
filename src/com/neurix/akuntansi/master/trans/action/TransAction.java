@@ -1,6 +1,5 @@
 package com.neurix.akuntansi.master.trans.action;
 
-//import com.neurix.authorization.company.bo.AreaBo;
 import com.neurix.akuntansi.master.trans.bo.TransBo;
 import com.neurix.akuntansi.master.trans.model.Trans;
 import com.neurix.common.action.BaseMasterAction;
@@ -327,7 +326,6 @@ public class TransAction extends BaseMasterAction {
 
     public String saveAdd(){
         logger.info("[TransAction.saveAdd] start process >>>");
-
         try {
             Trans trans = getTrans();
             String userLogin = CommonUtil.userLogin();
@@ -358,7 +356,8 @@ public class TransAction extends BaseMasterAction {
             }
             logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e);
+//            return ERROR;
         }
 
 
@@ -386,7 +385,8 @@ public class TransAction extends BaseMasterAction {
             }
             logger.error("[TransAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
-            return ERROR;
+            throw new GeneralBOException(e);
+//            return ERROR;
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();

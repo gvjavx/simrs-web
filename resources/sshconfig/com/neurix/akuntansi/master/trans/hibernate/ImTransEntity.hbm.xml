@@ -9,7 +9,6 @@
         <id name="transId">
             <column name="trans_id" sql-type="varchar" length="2" not-null="true" />
         </id>
-
         <property name="transName">
             <column name="trans_name" sql-type="varchar" length="100" not-null="true" />
         </property>
@@ -41,8 +40,9 @@
         <property name="isOtomatis">
             <column name="is_otomatis" sql-type="varchar" length="100" not-null="true" />
         </property>
+        <!--RAKA-28APR2021 ===> tipeJurnalId not-null = false-->
         <property name="tipeJurnalId">
-            <column name="tipe_jurnal_id" sql-type="varchar" length="100" not-null="true" />
+            <column name="tipe_jurnal_id" sql-type="varchar" length="100" not-null="false" />
         </property>
         <property name="flagSumberBaru">
             <column name="flag_sumber_baru" sql-type="varchar" length="100" not-null="true" />

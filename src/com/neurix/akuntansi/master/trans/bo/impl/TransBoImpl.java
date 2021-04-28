@@ -167,7 +167,6 @@ public class TransBoImpl implements TransBo {
 
             // creating object entity serializable
             ImTransEntity imTransEntity = new ImTransEntity();
-
             imTransEntity.setTransId(transId);
             imTransEntity.setTransName(bean.getTransName());
             imTransEntity.setMaster(bean.getMaster());

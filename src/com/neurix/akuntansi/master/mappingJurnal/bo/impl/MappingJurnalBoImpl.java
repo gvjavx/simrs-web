@@ -15,6 +15,7 @@ import com.neurix.common.exception.GeneralBOException;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -152,6 +153,24 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
         }
         logger.info("[MappingJurnalBoImpl.saveEdit] end process <<<");
     }
+
+    //RAKA-28APR2021 ===> melakukan looping save add di BO
+    @Override
+    public void saveAddList(List<MappingJurnal> listBean, MappingJurnal data , String userLogin, Timestamp updateTime) throws GeneralBOException {
+        for (MappingJurnal mappingJurnal : listBean){
+            mappingJurnal.setTipeJurnalId(data.getTipeJurnalId());
+            mappingJurnal.setTransId(data.getTransId());
+            mappingJurnal.setCreatedWho(userLogin);
+            mappingJurnal.setLastUpdate(updateTime);
+            mappingJurnal.setCreatedDate(updateTime);
+            mappingJurnal.setLastUpdateWho(userLogin);
+            mappingJurnal.setAction("C");
+            mappingJurnal.setFlag("Y");
+
+            saveAdd(mappingJurnal);
+        }
+    }
+    //RAKA-end
 
     @Override
     public MappingJurnal saveAdd(MappingJurnal bean) throws GeneralBOException {
