@@ -5207,4 +5207,163 @@ function resetOrderPemeriksaan(){
     $('#ckp_parameter').val(null).trigger('change');
 }
 
+function uploadPemeriksaan(){
+    $('#btn-uploded').html('<button onclick="doneUplod()" class="btn btn-success"><i class="fa fa-cloud-upload"></i> Upload</button>');
+    $('#form-uploded').hide();
+    $('#ket_upload_pemeriksan_0, #upload_pemeriksan_0, #label_upload_pemeriksan_0').val('');
+    $('#set_upload_pemeriksan').html('');
+    $('#label_upload_pemeriksan_0').css('border-bottom','');
+    listUploadPemeriksaan();
+    $('#modal-upload_pemeriksaan').modal({show: true, backdrop:'static'});
+}
+
+function parseToByte(id, label, ket, idRow) {
+    if(!cekSession()){
+        var files = document.getElementById(id).files;
+        var keterangan = $('#'+ket).val();
+        if (files.length > 0 && keterangan != '') {
+            var fileToLoad = files[0];
+            var fileReader = new FileReader();
+            var base64File;
+            fileReader.onload = function(event) {
+                base64File = event.target.result;
+                var eks = cekEks(base64File);
+                var base = replaceFile(base64File);
+                var data = {
+                    'id_detail_checkup': idDetailCheckup,
+                    'byte': base,
+                    'keterangan': keterangan,
+                    'eks': eks,
+                    'file_name': id
+                }
+                if(eks == "pdf" || eks == "jpg" || eks == "png"){
+                    var result = JSON.stringify(data);
+                    $('#'+label).val("Sedang menyimpan...");
+                    dwr.engine.setAsync(true);
+                    CheckupDetailAction.uploadFilePemeriksaan(result, {
+                        callback: function (res) {
+                            if(res.status == "success"){
+                                $('#'+label).val(files[0].name);
+                                $('#'+label).css('border-bottom','solid 5px #5cb85c');
+                                dwr.engine.setAsync(false);
+                                listUploadPemeriksaan();
+                            }else{
+                                $('#'+label).val(res.msg);
+                                $('#'+label).css('border-bottom','solid 5px #c9302c');
+                            }
+                        }
+                    });
+                }else{
+                    $('#'+label).val("File harus .jpg, .png, .pdf");
+                    $('#'+label).css('border-bottom','solid 5px #c9302c');
+                }
+            };
+            fileReader.readAsDataURL(fileToLoad);
+        }else{
+            $('#'+ket).css('border', 'red solid 1px');
+            $('#'+ket).focus();
+            $('#'+id).val('');
+        }
+    }
+}
+
+function replaceFile(byte){
+    var conditon = byte.split(",")[0]+',';
+    var res = byte.replace(conditon, "");
+    return res;
+}
+
+function cekEks(byte){
+    var res = "";
+    var conditon = byte.split(",")[0];
+    if(conditon == "data:image/jpeg;base64"){
+        res = "jpg";
+    }else if(conditon == "data:image/png;base64"){
+        res = "png";
+    }else if(conditon == "data:application/pdf;base64"){
+        res = "pdf";
+    }
+    return res;
+}
+
+function delUpload(idDetail) {
+    $('#modal-confirm-rm').modal('show');
+    $('#tanya').text("Apakah anda yakin untuk menghapus data?");
+    if(idDetail != ''){
+        $('#save_con_rm').attr('onclick', 'executeDel(\''+idDetail+'\')');
+    }
+}
+
+function executeDel(idDetail){
+    $('#modal-confirm-rm').modal('hide');
+    if(!cekSession()){
+        dwr.engine.setAsync(true);
+        CheckupDetailAction.deleteUploadFilePemeriksaan(idDetail, {
+            callback: function (res) {
+                if(res.status == "success"){
+                    dwr.engine.setAsync(false);
+                    $('#success_pemeriksaan').show().fadeOut(5000);
+                    $('#msg_success_pemeriksaan').text("Berhasil menghapus data...!");
+                    listUploadPemeriksaan();
+                }else{
+                    $('#warning_pemeriksaan').show().fadeOut(5000);
+                    $('#msg_warning_pemeriksaan').text(res.msg);
+                }
+            }
+        });
+    }
+}
+
+function listUploadPemeriksaan(){
+    $('#item_pemeriksaan').html('');
+    $('#li_pemeriksaan').html('');
+    CheckupDetailAction.getListUploadPendukungPemeriksaan(idDetailCheckup, function (res) {
+        if(res.length > 0){
+            var set = '';
+            var li = '';
+            $.each(res, function (i, item) {
+                var cla = 'class="item"';
+                var claLi = '';
+                if (i == 0) {
+                    cla = 'class="item active"';
+                    claLi = 'class="active"';
+                }
+                var x = item.urlImg;
+                var tipe = x.split('.').pop();
+                if("pdf" == tipe){
+                    set += '<div ' + cla + '>\n' +
+                        '<embed src="'+item.urlImg+'" style="width: 100%; height: 400px"/>'+
+                        '</div>';
+                }else{
+                    set += '<div ' + cla + '>\n' +
+                        '<div class="text-center">' +
+                        '<span><b>'+item.keterangan+'</b></span>'+
+                        '</div>'+
+                        '<img src="' + item.urlImg + '" style="width: 100%; height: 400px; cursor: pointer" onclick="delUpload(\''+item.idUpload+'\')">\n' +
+                        '</div>';
+                }
+                li += '<li data-target="#carousel-pemeriksaan" data-slide-to="' + i + '" ' + claLi + '></li>';
+            });
+            $('#item_pemeriksaan').html(set);
+            $('#li_pemeriksaan').html(li);
+        }
+    });
+}
+
+function setUpload(){
+    $('#btn-uploded').html('<button onclick="doneUplod()" class="btn btn-success"><i class="fa fa-cloud-upload"></i> Upload</button>');
+    $('#form-uploded').hide();
+    $('#ket_upload_pemeriksan_0, #upload_pemeriksan_0, #label_upload_pemeriksan_0').val('');
+    $('#set_upload_pemeriksan').html('');
+    $('#label_upload_pemeriksan_0').css('border-bottom','');
+}
+
+function doneUplod(){
+    $('#btn-uploded').html('<button onclick="setUpload()" class="btn btn-warning"><i class="fa fa-check"></i> Selesai Upload</button>');
+    $('#form-uploded').show();
+    $('#ket_upload_pemeriksan_0, #upload_pemeriksan_0, #label_upload_pemeriksan_0').val('');
+    $('#set_upload_pemeriksan').html('');
+    $('#label_upload_pemeriksan_0').css('border-bottom','');
+}
+
 

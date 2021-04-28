@@ -2579,6 +2579,21 @@ UPDATE im_simrs_lab
 SET is_paket = 'Y'
 WHERE id_lab = 'LAB00000015';
 
+CREATE TABLE it_simrs_upload_pendukung_pemeriksaan(
+ id_upload VARCHAR(30) NOT NULL PRIMARY KEY,
+ id_detail_checkup VARCHAR(50),
+ keterangan VARCHAR(100),
+ url_img VARCHAR(100),
+ flag VARCHAR(1),
+ action VARCHAR(1),
+ created_who VARCHAR(100),
+ created_date TIMESTAMP WITHOUT TIME ZONE,
+ last_update_who VARCHAR(100),
+ last_update TIMESTAMP WITHOUT TIME ZONE
+);
+
+CREATE SEQUENCE seq_upload_pendukung_pemeriksaan;
+
 
 
 

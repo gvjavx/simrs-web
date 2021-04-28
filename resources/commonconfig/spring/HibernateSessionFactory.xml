@@ -1002,6 +1002,7 @@
 
                 <value>sshconfig/com/neurix/hris/transaksi/logcron/hibernate/ItLogCronEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/logtransaction/hibernate/ItPgLogTransactionEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/checkupdetail/hibernate/ItSimrsUploadPendukungPemeriksaanEntity.hbm.xml</value>
 
             </list>
 

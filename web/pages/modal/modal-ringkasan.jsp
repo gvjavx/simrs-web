@@ -273,35 +273,35 @@
                         <div class="form-group">
                             <div class="col-md-4">
                                 <div class="custom02" style="margin-top: 10px">
-                                    <input type="radio" value="Diijinkan" id="rps211" name="rps21" /><label for="rps211">Diijinkan</label>
+                                    <input onclick="showKetRing(this.value, 'penyembab_kematian')" type="radio" value="Diijinkan" id="rps211" name="rps21" /><label for="rps211">Diijinkan</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="custom02" style="margin-top: 10px">
-                                    <input type="radio" value="Sembuh" id="rps212" name="rps21" /><label for="rps212">Sembuh</label>
+                                    <input onclick="showKetRing(this.value, 'penyembab_kematian')" type="radio" value="Sembuh" id="rps212" name="rps21" /><label for="rps212">Sembuh</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="custom02" style="margin-top: 10px">
-                                    <input type="radio" value="Dirujuk" id="rps213" name="rps21" /><label for="rps213">Dirujuk</label>
+                                    <input onclick="showKetRing(this.value, 'penyembab_kematian')" type="radio" value="Dirujuk" id="rps213" name="rps21" /><label for="rps213">Dirujuk</label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-4">
                                 <div class="custom02">
-                                    <input type="radio" value="Permintaan Sendiri" id="rps214" name="rps21" /><label for="rps214">Permintaan Sendiri</label>
+                                    <input onclick="showKetRing(this.value, 'penyembab_kematian')" type="radio" value="Permintaan Sendiri" id="rps214" name="rps21" /><label for="rps214">Permintaan Sendiri</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="custom02">
-                                    <input type="radio" value="Meninggal" id="rps215" name="rps21" /><label for="rps215">Meninggal</label>
+                                    <input onclick="showKetRing(this.value, 'penyembab_kematian')" type="radio" value="Meninggal" id="rps215" name="rps21" /><label for="rps215">Meninggal</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <hr class="garis">
-                    <div class="row">
+                    <div class="row" style="display: none" id="form-ring-penyembab_kematian">
                         <div class="form-group">
                             <label class="col-md-12" style="margin-top: 7px">Penyebab Kematian</label>
                             <div class="form-group">

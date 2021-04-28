@@ -2706,6 +2706,7 @@ function saveAsesmenRawatInap(jenis, ket) {
         var va6 = $('#so6').val();
         var va7 = $('#so7').val();
         var va8 = $('#so8').val();
+        var ket = $('#ket_area_canvas').val();
         var fisik = document.getElementById("area_canvas");
 
         if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 != '') {
@@ -2760,6 +2761,13 @@ function saveAsesmenRawatInap(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'gambar',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Keterangan',
+                'jawaban': ket,
+                'keterangan': jenis,
+                'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
