@@ -136,11 +136,11 @@
                         </td>
                         <td>
                             <table>
-                                <%--<s:textfield cssStyle="margin-top: 7px"--%>
-                                             <%--id="diskonadd" type="number"--%>
-                                             <%--name="detailRekananOps.diskon"--%>
-                                             <%--required="false"--%>
-                                             <%--readonly="false" cssClass="form-control"/>--%>
+                                <s:textfield cssStyle="margin-top: 7px"
+                                             id="diskonadd" type="number"
+                                             name="detailRekananOps.diskon"
+                                             required="false"
+                                             readonly="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
