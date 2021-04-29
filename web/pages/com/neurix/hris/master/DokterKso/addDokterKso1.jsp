@@ -50,7 +50,7 @@
                 var branchId = document.getElementById("branchId1").value;
                 var masterId = document.getElementById("masterId1").value;
                 var jenisKso = document.getElementById("jenisKso1").value;
-                var positionId = document.getElementById("positionId1").value;
+                // var positionId = document.getElementById("positionId1").value;
                 var persenKso = document.getElementById("persenKso1").value;
                 var persenKs = document.getElementById("persenKs1").value;
 
@@ -58,12 +58,12 @@
                 console.log(branchId);
                 console.log(masterId);
                 console.log(jenisKso);
-                console.log(positionId);
+                // console.log(positionId);
                 console.log(persenKso);
                 console.log(persenKs);
 
                 if (nip != ''&& branchId != '' && masterId != '' && jenisKso != ''
-                        && persenKso != '' && persenKs != '' && positionId != '') {
+                        && persenKso != '' && persenKs != '') {
                     var status ="";
                     dwr.engine.setAsync(false);
                     DokterKsoAction.cekBeforeSave(nip, jenisKso, masterId,"add",function (listData) {
