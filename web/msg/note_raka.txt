@@ -3,6 +3,13 @@
     alter table it_akun_pengajuan_biaya_detail
     add column url_ipa varchar(100);
 
+-- sepertinya belum tereksekusi (2021-04-17)
+    -- Menambahkan Length Kodering dari 11 ke 20
+        ALTER TABLE im_simrs_dokter_kso ALTER COLUMN kodering TYPE VARCHAR(20);
+    -- Menambahkan column Position ID
+        ALTER TABLE im_simrs_dokter_kso
+        ADD COLUMN position_id VARCHAR(10);
+
 ------ 2021-04-28 ===> function kas koreksi
 -- Update Function
     UPDATE im_functions
