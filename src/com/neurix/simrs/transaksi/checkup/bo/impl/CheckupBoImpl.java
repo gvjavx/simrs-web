@@ -1096,6 +1096,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                         pemeriksaanEntity.setCreatedDate(time);
                         pemeriksaanEntity.setLastUpdateWho(userLogin);
                         pemeriksaanEntity.setLastUpdate(time);
+                        pemeriksaanEntity.setJenisPasien(jenisPeriksa);
 
                         try {
                             headerPemeriksaanDao.addAndSave(pemeriksaanEntity);
@@ -3547,6 +3548,15 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                         }
                     }
 
+                    RekananOps rekananOps = new RekananOps();
+                    if(detailCheckupEntity.getIdAsuransi() != null){
+                        try{
+                            rekananOps = rekananOpsDao.getDetailRekananOps(detailCheckupEntity.getIdAsuransi(), headerChekupEntity.getBranchId());
+                        }catch (HibernateException e){
+                            logger.error("[CheckupBoImpl.getDataPendaftaranPasien] Error"+e.getMessage());
+                        }
+                    }
+
                     //checkup data
                     headerCheckup.setNoCheckup(headerChekupEntity.getNoCheckup());
                     headerCheckup.setIdPasien(headerChekupEntity.getIdPasien());
@@ -3596,6 +3606,11 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     headerCheckup.setIsEksekutif(detailCheckupEntity.getIsEksekutif());
                     headerCheckup.setIsVaksin(detailCheckupEntity.getIsVaksin());
                     headerCheckup.setUrlDocRujuk(detailCheckupEntity.getUrlDocRujuk());
+                    headerCheckup.setIdPaket(detailCheckupEntity.getIdPaket());
+
+                    //data rekanan
+                    headerCheckup.setIsRekananWithBpjs(rekananOps.getIsBpjs());
+                    headerCheckup.setTipeRekanan(rekananOps.getTipe());
 
                     //dokter team data
                     headerCheckup.setIdDokter(dokterTeam.getIdDokter());

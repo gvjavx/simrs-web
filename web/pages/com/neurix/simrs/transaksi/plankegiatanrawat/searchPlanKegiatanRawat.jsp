@@ -1166,31 +1166,34 @@
         var arrJson = [];
         arrJson.push({"id_pasien":idPasien, "id_detail_checkup":idDetail, "id_pelayanan":""});
         var stJson = JSON.stringify(arrJson);
-        $('#waiting_dialog').dialog('open');
-        dwr.engine.setAsync(true);
-        PlanKegiatanRawatAction.getSearchKegiatanRawat(stJson, function (response) {
-            dwr.engine.setAsync(false);
-            var str = "";
-            if (response.length > 0){
-                $.each(response, function (i, item) {
-                    str += "<tr>" +
-                        "<td>" + item.idDetailCheckup + "</td>" +
-                        "<td>" + item.idPasien + "</td>" +
-                        "<td>" + item.namaPasien + "</td>" +
-                        "<td>" + item.namaPelayanan + "</td>" +
-                        "<td>" + item.diagnosa + "</td>" +
-                        "<td align='center'>" +
-                        "<button class='btn btn-primary' onclick=\"viewAddPlan('"+item.idDetailCheckup+"', '"+item.idPelayanan+"')\"><i class='fa fa-plus'></i></button> " +
-                        "<button class='btn btn-primary' onclick=\"viewPlan('"+item.idDetailCheckup+"')\"><i class='fa fa-search'></i></button>" +
-                        "</td>" +
-                        "</tr>";
-                });
-                $("#body-list-plan").html(str);
-            } else {
-                $("#body-list-plan").html(str);
-            }
-            $('#waiting_dialog').dialog('close');
-        })
+        if(!cekSession()){
+            $('#waiting_dialog').dialog('open'); //show dialog loading
+            dwr.engine.setAsync(true);
+            PlanKegiatanRawatAction.getSearchKegiatanRawat(stJson, {
+                callback: function (response) {
+                    var str = "";
+                    if (response.length > 0){
+                        $.each(response, function (i, item) {
+                            str += "<tr>" +
+                                "<td>" + item.idDetailCheckup + "</td>" +
+                                "<td>" + item.idPasien + "</td>" +
+                                "<td>" + item.namaPasien + "</td>" +
+                                "<td>" + item.namaPelayanan + "</td>" +
+                                "<td>" + item.diagnosa + "</td>" +
+                                "<td align='center'>" +
+                                "<button class='btn btn-primary' onclick=\"viewAddPlan('"+item.idDetailCheckup+"', '"+item.idPelayanan+"')\"><i class='fa fa-plus'></i></button> " +
+                                "<button class='btn btn-primary' onclick=\"viewPlan('"+item.idDetailCheckup+"')\"><i class='fa fa-search'></i></button>" +
+                                "</td>" +
+                                "</tr>";
+                        });
+                        $("#body-list-plan").html(str);
+                    } else {
+                        $("#body-list-plan").html(str);
+                    }
+                    $('#waiting_dialog').dialog('close'); //close dialog loading
+                }
+            });
+        }
     }
 
     function viewPlan(idDetail){
@@ -1231,42 +1234,44 @@
     }
 
     function showModalAdd(param) {
-        var idDetail = $("#idDetailCheckup").val();
-        if (param == "vitalsign")
-            $("#modal-add-vital-sign").modal('show');
-        if (param == "cairan"){
+        if(!cekSession()){
+            var idDetail = $("#idDetailCheckup").val();
+            if (param == "vitalsign")
+                $("#modal-add-vital-sign").modal('show');
+            if (param == "cairan"){
 
-            $("#mcr_mulai").timepicker();
-            $("#mcr_selesai").timepicker();
-            $("#mcr_buang").timepicker();
+                $("#mcr_mulai").timepicker();
+                $("#mcr_selesai").timepicker();
+                $("#mcr_buang").timepicker();
 
-            $("#modal-add-cairan").modal('show');
-        }
-        if (param == "parenteral"){
+                $("#modal-add-cairan").modal('show');
+            }
+            if (param == "parenteral"){
 
-            var idPoli = $("#idPoli").val();
+                var idPoli = $("#idPoli").val();
 
-            RawatInapAction.getListObatParenteral(idDetail, function(response){
-                var str = "";
-                $.each(response, function(i, item) {
-                    str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+' ('+item.bentuk+')'+"</option>";
+                RawatInapAction.getListObatParenteral(idDetail, function(response){
+                    var str = "";
+                    $.each(response, function(i, item) {
+                        str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+' ('+item.bentuk+')'+"</option>";
+                    });
+                    $("#select_obat_par").html(str);
                 });
-                $("#select_obat_par").html(str);
-            });
 
-            $("#modal-add-pemberian-parenteral").modal('show');
-        }
-        if (param == "nonparenteral"){
+                $("#modal-add-pemberian-parenteral").modal('show');
+            }
+            if (param == "nonparenteral"){
 
-            RawatInapAction.getListObatNonParenteral(idDetail,  function(response){
-                var str = "";
-                $.each(response, function(i, item) {
-                    str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+' ('+item.bentuk+')'+"</option>";
+                RawatInapAction.getListObatNonParenteral(idDetail,  function(response){
+                    var str = "";
+                    $.each(response, function(i, item) {
+                        str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+' ('+item.bentuk+')'+"</option>";
+                    });
+                    $("#select_obat_nonpar").html(str);
                 });
-                $("#select_obat_nonpar").html(str);
-            });
 
-            $("#modal-add-pemberian-non-parenteral").modal('show');
+                $("#modal-add-pemberian-non-parenteral").modal('show');
+            }
         }
     }
 
@@ -1360,9 +1365,6 @@
     function setToListTable(param) {
 
         if(param == "vitalsign"){
-
-            console.log(listOfVitalSign);
-
             $("#body-list-vital-sign").html("");
             if(listOfVitalSign.length > 0) {
                 var str = "";
@@ -1445,23 +1447,24 @@
         var strCairan = JSON.stringify(listOfCairan);
         var strParenteral = JSON.stringify(listOfParenteral);
         var strNonParenteral = JSON.stringify(listOfNonParenteral);
-
-        if (idDetail != "" && tglPlan != ""){
-            PlanKegiatanRawatAction.savePlanKegiatanRawat(idDetail, tglPlan, strVitalSign, strCairan, strParenteral, strNonParenteral, function(response) {
-                if (response.status == "success"){
-                    alert("success");
-                    $("#modal-add-plan").modal('hide');
-                    $("#search_iddetailcheckup").val(idDetail);
-                    search();
-                } else {
-                    alert(response.msg);
-                    $("#modal-add-plan").modal('hide');
-                    $("#search_iddetailcheckup").val(idDetail);
-                    search();
-                }
-            })
-        } else {
-            alert("kosong");
+        if(!cekSession()){
+            if (idDetail != "" && tglPlan != ""){
+                PlanKegiatanRawatAction.savePlanKegiatanRawat(idDetail, tglPlan, strVitalSign, strCairan, strParenteral, strNonParenteral, function(response) {
+                    if (response.status == "success"){
+                        alert("success");
+                        $("#modal-add-plan").modal('hide');
+                        $("#search_iddetailcheckup").val(idDetail);
+                        search();
+                    } else {
+                        alert(response.msg);
+                        $("#modal-add-plan").modal('hide');
+                        $("#search_iddetailcheckup").val(idDetail);
+                        search();
+                    }
+                })
+            } else {
+                alert("kosong");
+            }
         }
     }
 

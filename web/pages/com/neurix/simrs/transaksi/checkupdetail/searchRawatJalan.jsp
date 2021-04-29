@@ -44,7 +44,7 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="checkupDetailForm" method="post" namespace="/checkupdetail" action="search_checkupdetail.action" theme="simple" cssClass="form-horizontal">
+                            <s:form id="checkupDetailForm" method="post" theme="simple" cssClass="form-horizontal" name="checkupdetail" action="search_checkupdetail.action">
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">No RM</label>
                                     <div class="col-sm-4">
@@ -131,7 +131,7 @@
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-6" style="margin-top: 7px">
                                         <sj:submit type="button" cssClass="btn btn-success" formIds="checkupDetailForm" id="search" name="search"
-                                                   onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
+                                                   onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading">
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>

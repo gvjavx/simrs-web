@@ -2460,6 +2460,7 @@ function detailRB(jenis) {
                                 '<td align="center">' + cekIconsIsNotNull(item.molase) + '</td>' +
                                 '<td align="center">' + cekItemIsNull(item.pembukaan) + '</td>' +
                                 '<td align="center">' + cekItemIsNull(item.kontraksi) + '</td>' +
+                                '<td align="center">' + cekItemIsNull(item.lamaKontraksi) + '</td>' +
                                 '<td align="center">' + cekIconsIsNotNull(item.oksitosin) + '</td>' +
                                 '<td align="center">' + cekItemIsNull(item.tetes) + '</td>' +
                                 '<td align="center">' + cekItemIsNull(item.obatCairan) + '</td>' +
@@ -2482,7 +2483,7 @@ function detailRB(jenis) {
                             '<td width="10%" rowspan="2" align="center" style="vertical-align: middle">Grafik</td>' +
                             '<td width="15%" rowspan="2" align="center" style="vertical-align: middle">Waktu</td>' +
                             '<td colspan="3" align="center" style="vertical-align: middle">Kondisi Janin</td>' +
-                            '<td colspan="2" align="center" style="vertical-align: middle">Kemajuan Persalinan</td>' +
+                            '<td colspan="3" align="center" style="vertical-align: middle">Kemajuan Persalinan</td>' +
                             '<td colspan="7" align="center" style="vertical-align: middle">Kondisi Ibu</td>' +
                             '<td rowspan="2" align="center" style="vertical-align: middle">Action</td>' +
                             '</tr>' +
@@ -2492,6 +2493,7 @@ function detailRB(jenis) {
                             '<td>MOL</td>' +
                             '<td>PEM</td>' +
                             '<td>KON</td>' +
+                            '<td>Lama</td>' +
                             '<td>OKS</td>' +
                             '<td>TTS</td>' +
                             '<td>ODC</td>' +
@@ -3498,11 +3500,12 @@ function showChart(jenis, tanggal) {
                         data.push({
                             y: item.waktu,
                             a: item.pembukaan,
-                            b: item.kontraksi
+                            b: item.kontraksi,
+                            c: item.lamaKontraksi
                         });
-                        xKey = ['a', 'b'];
-                        label = ['Pembukaan', 'Kontraksi'];
-                        warna = ['#ff0000', '#0000ff'];
+                        xKey = ['a', 'b', 'c'];
+                        label = ['Pembukaan', 'Kontraksi', 'Lama Kontraksi'];
+                        warna = ['#ff0000', '#0000ff', '#00ff00'];
                     }
                     if ("ibu" == jenis) {
                         data.push({

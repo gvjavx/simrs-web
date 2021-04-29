@@ -459,7 +459,7 @@
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border" id="pos_rm">
                         <div class="row">
-                            <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
+                            <s:if test='rawatInap.kategoriRuangan == "rawat_inap" || rawatInap.kategoriRuangan == "ruang_bersalin"'>
                                 <div class="col-md-6">
                                     <h3 class="box-title"><i class="fa fa-laptop"></i> Monitoring</h3>
                                 </div>
@@ -471,7 +471,7 @@
                     </div>
                     <div class="box-body">
                        <div class="row">
-                           <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
+                           <s:if test='rawatInap.kategoriRuangan == "rawat_inap" || rawatInap.kategoriRuangan == "ruang_bersalin"'>
                                <div class="col-md-6">
                                    <button class="btn btn-primary" onclick="showModalPlan('<s:property value="rawatInap.idDetailCheckup"/>','','suster')">
                                        <i class="fa fa-calendar"></i> Schedule Rawat

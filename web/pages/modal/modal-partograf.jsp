@@ -515,11 +515,14 @@
                         </div>
                         <div class="row" style="font-size: 12px; display: none" id="label_kemajuan">
                             <div class="form-group">
-                                <div class="col-md-offset-3 col-md-3">
+                                <div class="col-md-offset-2 col-md-3">
                                     <i class="fa fa-circle" style="color: #ff0000"></i> Pembukaan
                                 </div>
                                 <div class="col-md-3">
                                     <i class="fa fa-circle" style="color: #0000ff"></i> Kontraksi
+                                </div>
+                                <div class="col-md-3">
+                                    <i class="fa fa-circle" style="color: #00ff00"></i> Lama Kontraksi
                                 </div>
                             </div>
                         </div>

@@ -2786,13 +2786,14 @@ function detailOperasi(jenis) {
                                     '<td align="left">' +
                                     '<p>TTD Pasien</p>' +
                                     '<img src="' + item.jawaban1 + '" style="width: 100px; height: 70px">' +
+                                    '<p style="margin-top: -3px; padding-bottom: 10px">' + cekItemIsNull(item.namaterang) + '</p>' +
                                     '</td>' +
                                     '</tr>';
                             }
                             if ("Tanda Tangan Dokter" == item.parameter) {
                                 body += '<tr>' +
                                     '<td align="right">' +
-                                    '<p style="margin-top: -113px">TTD Dokter</p>' +
+                                    '<p style="margin-top: -147px">TTD Dokter</p>' +
                                     '<img src="' + item.jawaban1 + '" style="width: 100px; height: 70px;">' +
                                     '<p style="margin-top: -3px">' + cekItemIsNull(item.namaterang) + '</p>' +
                                     '<p style="margin-top: -7px">' + cekItemIsNull(item.sip) + '</p>' +

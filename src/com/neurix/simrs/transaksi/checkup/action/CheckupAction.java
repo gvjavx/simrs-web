@@ -3724,7 +3724,7 @@ public class CheckupAction extends BaseMasterAction {
 
     public List<Dokter> getListDokterByIdDetailCheckup(String idDetailCheckup, String approve) {
 
-        logger.info("[CheckupAction.getListDokterByBranchId] START process >>>");
+        logger.info("[CheckupAction.getListDokterByIdDetailCheckup] START process >>>");
 
         List<Dokter> dokterList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -3738,7 +3738,7 @@ public class CheckupAction extends BaseMasterAction {
             }
         }
 
-        logger.info("[CheckupAction.getListDokterByBranchId] END process >>>");
+        logger.info("[CheckupAction.getListDokterByIdDetailCheckup] END process >>>");
         return dokterList;
     }
 
@@ -3760,7 +3760,7 @@ public class CheckupAction extends BaseMasterAction {
 
     public List<HeaderCheckup> getRiwayatPemeriksaan(String idPasien) {
 
-        logger.info("[CheckupAction.getListDokterByBranchId] START process >>>");
+        logger.info("[CheckupAction.getRiwayatPemeriksaan] START process >>>");
 
         List<HeaderCheckup> checkupList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -3774,12 +3774,12 @@ public class CheckupAction extends BaseMasterAction {
             }
         }
 
-        logger.info("[CheckupAction.getListDokterByBranchId] END process >>>");
+        logger.info("[CheckupAction.getRiwayatPemeriksaan] END process >>>");
         return checkupList;
     }
 
     public List<JenisObat> getListJenisObat() {
-        logger.info("[CheckupAction.getListDokterByBranchId] START process >>>");
+        logger.info("[CheckupAction.getListJenisObat] START process >>>");
         List<JenisObat> jenisObatList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         JenisObatBo jenisObatBo = (JenisObatBo) ctx.getBean("jenisObatBoProxy");
@@ -3789,7 +3789,7 @@ public class CheckupAction extends BaseMasterAction {
         } catch (GeneralBOException e) {
             logger.error("Found Error, " + e.getMessage());
         }
-        logger.info("[CheckupAction.getListDokterByBranchId] END process >>>");
+        logger.info("[CheckupAction.getListJenisObat] END process >>>");
         return jenisObatList;
     }
 

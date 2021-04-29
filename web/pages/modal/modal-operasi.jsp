@@ -697,11 +697,13 @@
                     <div class="col-md-1">
                         <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker-op  color-picker pull-left" value="#ff0000">
                     </div>
-                    <div class="col-md-9">
-                        <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72" value="1">
-                    </div>
-                    <div class="col-md-2">
-                        <div style="margin-top: -8px;" class="js-range-value">1 px</div>
+                    <div style="display: none">
+                        <div class="col-md-9">
+                            <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72" value="1">
+                        </div>
+                        <div class="col-md-2">
+                            <div style="margin-top: -8px;" class="js-range-value">1 px</div>
+                        </div>
                     </div>
                 </div>
                 <div class="text-center">
@@ -2479,7 +2481,10 @@
                         <div class="form-group">
                             <label class="col-md-4" id="label_op_3">3. Desinfektan</label>
                             <div class="col-md-8">
-                                <textarea class="form-control urutan_op"></textarea>
+                                <select class="form-control urutan_op">
+                                    <option value="Betadin">Betadin</option>
+                                    <option value="Salvon">Salvon</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -2487,7 +2492,10 @@
                         <div class="form-group">
                             <label class="col-md-4" id="label_op_4">4. Insisi kulit dan pembukaan lapangan operasi</label>
                             <div class="col-md-8">
-                                <textarea class="form-control urutan_op"></textarea>
+                                <select class="form-control urutan_op">
+                                    <option value="Midline">Midline</option>
+                                    <option value="Pfanenstil">Pfanenstil</option>
+                                </select>
                             </div>
                         </div>
                     </div>

@@ -5612,32 +5612,6 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                     } else {
 
-//                        if (idRuangan != null && !"".equalsIgnoreCase(idRuangan)){
-//                            MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(idRuangan);
-//                            if (ruanganEntity != null) {
-//                                ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
-//                                if (kelasRuanganEntity != null) {
-//                                    ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
-//                                    if (position != null) {
-//                                        divisiId = position.getKodering();
-//                                    }
-//                                }
-//                            }
-//                        } else {
-//                            RawatInap lastRuangan = rawatInapBo.getLastUsedRoom(idDetailCheckup);
-//                            if (lastRuangan != null) {
-//                                MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(lastRuangan.getIdRuang());
-//                                if (ruanganEntity != null) {
-//                                    ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
-//                                    if (kelasRuanganEntity != null) {
-//                                        ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
-//                                        if (position != null) {
-//                                            divisiId = position.getKodering();
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
                         if (idRuangan != null && !"".equalsIgnoreCase(idRuangan)) {
                             List<TempatTidur> tempatTidurList = new ArrayList<>();
                             TempatTidur tt = new TempatTidur();
