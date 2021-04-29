@@ -11,6 +11,8 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.hargaterakhir.dao.HargaTerakhirDao;
 import com.neurix.simrs.master.hargaterakhir.model.MtSimrsHargaTerakhirEntity;
+import com.neurix.simrs.master.marginobat.dao.MarginObatDao;
+import com.neurix.simrs.master.marginobat.model.ImSimrsMarginObatEntity;
 import com.neurix.simrs.master.obat.dao.HeaderObatDao;
 import com.neurix.simrs.master.obat.dao.ObatDao;
 import com.neurix.simrs.master.obat.model.ImSimrsHeaderObatEntity;
@@ -25,8 +27,11 @@ import com.neurix.simrs.master.vendor.model.Vendor;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.hargaobat.dao.HargaObatDao;
+import com.neurix.simrs.transaksi.hargaobat.dao.HargaObatPerKonsumenDao;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
+import com.neurix.simrs.transaksi.hargaobat.model.HargaObatPerKonsumen;
 import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatEntity;
+import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatPerKonsumenEntity;
 import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsObatPoliEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
 import com.neurix.simrs.transaksi.permintaanvendor.dao.DocPoDao;
@@ -84,6 +89,8 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
     private HargaObatDao hargaObatDao;
     private HargaTerakhirDao hargaTerakhirDao;
     private HeaderObatDao headerObatDao;
+    private HargaObatPerKonsumenDao hargaObatPerKonsumenDao;
+    private MarginObatDao marginObatDao;
 
     @Override
     public List<PermintaanVendor> getByCriteria(PermintaanVendor bean) throws GeneralBOException {
@@ -1028,31 +1035,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         BigInteger qtyLembar = dataObatBatch.getQtyLembar() == null ? new BigInteger(String.valueOf(0)) : dataObatBatch.getQtyLembar();
         BigInteger qtyBiji = dataObatBatch.getQtyBiji() == null ? new BigInteger(String.valueOf(0)) : dataObatBatch.getQtyBiji();
 
-//        if ("box".equalsIgnoreCase(bean.getJenisSatuan())) {
-//            qtyBox = bean.getQtyApprove();
-//
-//            // get semua bijian pada permintaan;
-//            ttlQtyPermintaan = bean.getQtyApprove().multiply(cons);
-//
-//            // total harga per biji dari permintaan;
-//            ttlAvgHargaPermintaan = bean.getNetto().divide(new BigDecimal(ttlQtyPermintaan), 2, RoundingMode.HALF_UP);
-//            newObatEntity.setHargaTerakhir(bean.getNetto().divide(new BigDecimal(ttlQtyPermintaan), 2, RoundingMode.HALF_UP));
-//        }
-//        if ("lembar".equalsIgnoreCase(bean.getJenisSatuan())) {
-//            qtyLembar = bean.getQtyApprove();
-//
-//            ttlQtyPermintaan = bean.getQtyApprove().multiply(obatEntity.getBijiPerLembar());
-//            ttlAvgHargaPermintaan = bean.getNetto().divide(new BigDecimal(ttlQtyPermintaan), 2, RoundingMode.HALF_UP);
-//            newObatEntity.setHargaTerakhir(bean.getNetto().divide(new BigDecimal(ttlQtyPermintaan), 2, RoundingMode.HALF_UP));
-//        }
-//        if ("biji".equalsIgnoreCase(bean.getJenisSatuan())) {
-//            qtyBiji = bean.getQtyApprove();
-//
-//            ttlQtyPermintaan = bean.getQtyApprove();
-//            ttlAvgHargaPermintaan = bean.getNetto().divide(new BigDecimal(ttlQtyPermintaan), 2, RoundingMode.HALF_UP);
-//            newObatEntity.setHargaTerakhir(bean.getNetto());
-//        }
-
         BigDecimal ttlStockInBijian = new BigDecimal(0);
         if (obatEntity.getAverageHargaBiji().compareTo(new BigDecimal(0)) == 1 && allStockToBiji.compareTo(new BigInteger(String.valueOf(0))) == 0) {
             ttlStockInBijian = obatEntity.getAverageHargaBiji();
@@ -1065,14 +1047,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         BigDecimal ttlHargaBijian = ttlStockInBijian.add(ttlAvgHargaPermintaan);
         BigInteger ttlQty = allStockToBiji.add(ttlQtyPermintaan);
         BigDecimal newAvgHargaBijian = ttlHargaBijian.divide(new BigDecimal(ttlQty), 2, RoundingMode.HALF_UP);
-
-//        if (obatEntity.getLembarPerBox().compareTo(new BigInteger(String.valueOf(0))) == 1) {
-//            newObatEntity.setAverageHargaBox(newAvgHargaBijian.multiply(new BigDecimal(cons)));
-//            newObatEntity.setAverageHargaLembar(newAvgHargaBijian.multiply(new BigDecimal(obatEntity.getBijiPerLembar())));
-//        }
-//        if (obatEntity.getBijiPerLembar().compareTo(new BigInteger(String.valueOf(0))) == 1) {
-//            newObatEntity.setAverageHargaBiji(newAvgHargaBijian);
-//        }
 
         newObatEntity.setQtyBox(qtyBox);
         newObatEntity.setQtyLembar(qtyLembar);
@@ -1124,7 +1098,11 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             newObatEntity.setHargaTerakhir(hargaTerakhirEntity.getHargaTerakhir());
         }
 
+        // catat pada kartu stock;
         saveTransaksiStok(newObatEntity, bean.getIdVendor(), bean.getIdPelayanan());
+
+        // update harga jual per konsumen;
+        saveAndCalculateHargaPerKonsumen(hargaTerakhirEntity);
         // END
 
         logger.info("[PermintaanVendorBoImpl.updateAddStockGudang] END <<<");
@@ -1151,6 +1129,184 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                 }
             }
         }
+    }
+
+    private void saveAndCalculateHargaPerKonsumen(MtSimrsHargaTerakhirEntity bean){
+        logger.info("[PermintaanVendorBoImpl.saveAndCalculateHargaPerKonsumen] START >>>");
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_obat", bean.getIdObat());
+
+        List<ImSimrsMarginObatEntity> marginObatEntities = new ArrayList<>();
+        try {
+            marginObatEntities = marginObatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorBoImpl.saveAndCalculateHargaPerKonsumen] ERROR. ", e);
+            throw new GeneralBOException("[PermintaanVendorBoImpl.saveAndCalculateHargaPerKonsumen] ERROR. ", e);
+        }
+
+        if (marginObatEntities.size() == 0){
+            logger.error("[PermintaanVendorBoImpl.saveAndCalculateHargaPerKonsumen] ERROR. tidak ditemukan standart margin pada obat. ");
+            throw new GeneralBOException("[PermintaanVendorBoImpl.saveAndCalculateHargaPerKonsumen] ERROR. tidak ditemukan standart margin pada obat. ");
+        }
+
+        ImSimrsMarginObatEntity marginObatEntity = marginObatEntities.get(0);
+
+        // mencari jika sudah ada harga untuk umum;
+        // jika tindak ada maka insert new;
+        HargaObatPerKonsumen paramPencarian = new HargaObatPerKonsumen();
+        paramPencarian.setIdHargaObat(bean.getId());
+        paramPencarian.setJenisKonsumen("umum");
+        List<MtSimrsHargaObatPerKonsumenEntity> perKonsumenUmumList = getListHargaObatPerKonsumenEntity(paramPencarian);
+        if (perKonsumenUmumList.size() == 0){
+            MtSimrsHargaObatPerKonsumenEntity konsumenUmum = new MtSimrsHargaObatPerKonsumenEntity();
+            konsumenUmum.setId(generateNewHargaObatPerKonsumen());
+            konsumenUmum.setIdHargaObat(bean.getId());
+            konsumenUmum.setJenisKonsumen("umum");
+            konsumenUmum.setHargaBruto(bean.getHargaTerakhir());
+            konsumenUmum.setMargin(new BigDecimal(marginObatEntity.getStandarMargin()));
+            konsumenUmum.setHargaJual(hitungHargaJualDenganMargin(konsumenUmum.getHargaBruto(), konsumenUmum.getMargin()));
+            konsumenUmum.setFlag("Y");
+            konsumenUmum.setAction("C");
+            konsumenUmum.setCreatedDate(bean.getCreatedDate());
+            konsumenUmum.setCreatedWho(bean.getCreatedWho());
+            konsumenUmum.setLastUpdate(bean.getLastUpdate());
+            konsumenUmum.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                hargaObatPerKonsumenDao.addAndSave(konsumenUmum);
+            } catch (HibernateException e){
+                logger.error("[PermintaanVendorBoImpl.saveAndCalculateHargaPerKonsumen] ERROR. ", e);
+                throw new GeneralBOException("[PermintaanVendorBoImpl.saveAndCalculateHargaPerKonsumen] ERROR. ", e);
+            }
+        }
+        // END;
+
+        // mencari jika sudah ada harga untuk bpjs;
+        // jika tindak ada maka insert new;
+        paramPencarian = new HargaObatPerKonsumen();
+        paramPencarian.setIdHargaObat(bean.getId());
+        paramPencarian.setJenisKonsumen("umum");
+        List<MtSimrsHargaObatPerKonsumenEntity> perKonsumenBpjsList = getListHargaObatPerKonsumenEntity(paramPencarian);
+        if (perKonsumenBpjsList.size() == 0){
+            MtSimrsHargaObatPerKonsumenEntity konsumenBpjs = new MtSimrsHargaObatPerKonsumenEntity();
+            konsumenBpjs.setId(generateNewHargaObatPerKonsumen());
+            konsumenBpjs.setIdHargaObat(bean.getId());
+            konsumenBpjs.setJenisKonsumen("umum");
+            konsumenBpjs.setHargaBruto(bean.getHargaTerakhir());
+            konsumenBpjs.setMargin(new BigDecimal(marginObatEntity.getStandarMargin()));
+            konsumenBpjs.setHargaJual(hitungHargaJualDenganMargin(konsumenBpjs.getHargaBruto(), konsumenBpjs.getMargin()));
+            konsumenBpjs.setFlag("Y");
+            konsumenBpjs.setAction("C");
+            konsumenBpjs.setCreatedDate(bean.getCreatedDate());
+            konsumenBpjs.setCreatedWho(bean.getCreatedWho());
+            konsumenBpjs.setLastUpdate(bean.getLastUpdate());
+            konsumenBpjs.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                hargaObatPerKonsumenDao.addAndSave(konsumenBpjs);
+            } catch (HibernateException e){
+                logger.error("[PermintaanVendorBoImpl.saveAndCalculateHargaPerKonsumen] ERROR. ", e);
+                throw new GeneralBOException("[PermintaanVendorBoImpl.saveAndCalculateHargaPerKonsumen] ERROR. ", e);
+            }
+        }
+        // END;
+
+        // update harga jual masing2 konsumen berdasarkan margin yg telah ditentukan
+        List<HargaObatPerKonsumen> listHargaObatPerKonsumen = hargaObatPerKonsumenDao.listRekananAndHargaByBranch(bean.getIdObat(), bean.getBranchId());
+        if (listHargaObatPerKonsumen.size() > 0){
+
+            List<HargaObatPerKonsumen> konsumenTerdaftar = listHargaObatPerKonsumen.stream().filter(
+                    p->p.getId() != null && !"".equalsIgnoreCase(p.getId())
+            ).collect(Collectors.toList());
+
+            if (konsumenTerdaftar.size() > 0){
+
+                for (HargaObatPerKonsumen perKonsumen : konsumenTerdaftar){
+
+                    HargaObatPerKonsumen hargaData = new HargaObatPerKonsumen();
+                    hargaData.setId(perKonsumen.getId());
+
+                    List<MtSimrsHargaObatPerKonsumenEntity> hargaObatPerKonsumenEntities = getListHargaObatPerKonsumenEntity(hargaData);
+                    if (hargaObatPerKonsumenEntities.size() > 0){
+                        MtSimrsHargaObatPerKonsumenEntity perKonsumenEntity = hargaObatPerKonsumenEntities.get(0);
+                        perKonsumenEntity.setHargaBruto(perKonsumen.getHargaTerakhir());
+                        perKonsumenEntity.setHargaJual(hitungHargaJualDenganMargin(perKonsumenEntity.getHargaBruto(), perKonsumenEntity.getMargin()));
+                        perKonsumenEntity.setAction("U");
+                        perKonsumenEntity.setLastUpdate(bean.getLastUpdate());
+                        perKonsumenEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                        try {
+                            hargaObatPerKonsumenDao.updateAndSave(perKonsumenEntity);
+                        } catch (HibernateException e){
+                            logger.error("[PermintaanVendorBoImpl.saveAndCalculateHargaPerKonsumen] ERROR. ", e);
+                            throw new GeneralBOException("[PermintaanVendorBoImpl.saveAndCalculateHargaPerKonsumen] ERROR. ", e);
+                        }
+                    }
+                }
+            }
+        }
+        // END;
+
+        logger.info("[PermintaanVendorBoImpl.saveAndCalculateHargaPerKonsumen] END <<<");
+    }
+
+    private BigDecimal hitungHargaJualDenganMargin(BigDecimal hargaTerakhir, BigDecimal margin){
+        logger.info("[PermintaanVendorBoImpl.hitungHargaJualDenganMargin] START >>>");
+
+        BigDecimal hargaJual = new BigDecimal(0);
+
+        if (hargaTerakhir == null || margin == null){
+            logger.info("[PermintaanVendorBoImpl.hitungHargaJualDenganMargin] ERROR. tidak ditemukan nilai harga terakhir / margin.");
+            throw new GeneralBOException("[PermintaanVendorBoImpl.hitungHargaJualDenganMargin] ERROR. tidak ditemukan nilai harga terakhir / margin.");
+        }
+
+        BigDecimal selisih  = hargaTerakhir.multiply(margin.divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP, 2));
+        hargaJual           = hargaTerakhir.add(selisih);
+
+        logger.info("[PermintaanVendorBoImpl.hitungHargaJualDenganMargin] END <<<");
+        return hargaJual;
+    }
+
+    private List<MtSimrsHargaObatPerKonsumenEntity> getListHargaObatPerKonsumenEntity(HargaObatPerKonsumen bean){
+        logger.info("[PermintaanVendorBoImpl.getListHargaObatPerKonsumenEntity] START >>>");
+
+        Map hsCriteria = new HashMap();
+        if (bean.getIdHargaObat() != null && !"".equalsIgnoreCase(bean.getIdHargaObat()))
+            hsCriteria.put("id_harga_obat", bean.getIdHargaObat());
+        if (bean.getJenisKonsumen() != null && !"".equalsIgnoreCase(bean.getJenisKonsumen()))
+            hsCriteria.put("jenis_konsumen", bean.getJenisKonsumen());
+        if (bean.getIdRekanan() != null && !"".equalsIgnoreCase(bean.getIdRekanan()))
+            hsCriteria.put("id_rekanan", bean.getIdRekanan());
+        if (bean.getId() != null && !"".equalsIgnoreCase(bean.getId()))
+            hsCriteria.put("id", bean.getId());
+        hsCriteria.put("flag", "Y");
+
+        List<MtSimrsHargaObatPerKonsumenEntity> perKonsumenEntities = new ArrayList<>();
+        try {
+            perKonsumenEntities = hargaObatPerKonsumenDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorBoImpl.getListHargaObatPerKonsumenEntity] ERROR.", e);
+            throw new GeneralBOException("[ObatBoImpl.getListHargaObatPerKonsumenEntity] ERROR." + e.getCause());
+        }
+
+        logger.info("[PermintaanVendorBoImpl.getListHargaObatPerKonsumenEntity] END <<<");
+        return perKonsumenEntities;
+    }
+
+    private String generateNewHargaObatPerKonsumen(){
+        logger.info("[PermintaanVendorBoImpl.generateNewHargaObatPerKonsumen] START >>>");
+
+        String id = "";
+        try {
+            id = hargaObatPerKonsumenDao.getNextId();
+        } catch (HibernateException e){
+            logger.error("[ObatBoImpl.getListHargaObatPerKonsumenEntity] ERROR.", e);
+            throw new GeneralBOException("[ObatBoImpl.getListHargaObatPerKonsumenEntity] ERROR." + e.getCause());
+        }
+
+        logger.info("[PermintaanVendorBoImpl.generateNewHargaObatPerKonsumen] END <<<");
+        return id;
     }
 
     private MtSimrsHargaTerakhirEntity updateHargaBeliHargaObat(HargaObat hargaObat){
@@ -2526,5 +2682,13 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
     public void setHeaderObatDao(HeaderObatDao headerObatDao) {
         this.headerObatDao = headerObatDao;
+    }
+
+    public void setHargaObatPerKonsumenDao(HargaObatPerKonsumenDao hargaObatPerKonsumenDao) {
+        this.hargaObatPerKonsumenDao = hargaObatPerKonsumenDao;
+    }
+
+    public void setMarginObatDao(MarginObatDao marginObatDao) {
+        this.marginObatDao = marginObatDao;
     }
 }
