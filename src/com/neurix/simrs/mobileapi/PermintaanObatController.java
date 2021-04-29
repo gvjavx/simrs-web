@@ -475,7 +475,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
                 transaksiObatMobile.setIdApprovalObat(item.getIdApprovalObat());
                 transaksiObatMobile.setIdObat(item.getIdObat());
                 transaksiObatMobile.setKeterangan(item.getKeterangan());
-//                transaksiObatMobile.setQtyApprove(item.getQtyApprove().toString());
+                transaksiObatMobile.setQtyApprove(item.getQtyApprove() != null ? item.getQtyApprove().toString() : "");
 //                transaksiObatMobile.setQtyBox(item.getQtyBox().toString());
 //                transaksiObatMobile.setQtyLembar(item.getQtyLembar().toString());
 //                transaksiObatMobile.setQtyBiji(item.getQtyBiji().toString());

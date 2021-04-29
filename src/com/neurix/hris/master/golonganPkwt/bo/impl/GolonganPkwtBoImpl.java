@@ -216,20 +216,17 @@ public class GolonganPkwtBoImpl implements GolonganPkwtBo {
 
         if (bean!=null) {
             String status = cekStatus(bean.getGolonganPkwtName());
+            try{
+                status = golonganPkwtDao.cekGolonganPkwt(bean.getGolonganPkwtName(),bean.getGolonganPkwtId());
+            }catch (HibernateException e){
+                logger.error("[GolonganPkwtBoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Error when check Golongan Pkwt, " + e.getMessage());
+            }
             if (!status.equalsIgnoreCase("Exist")){
-                String golonganPkwtId;
-                try {
-                    // Generating ID, get from postgre sequence
-                    golonganPkwtId = golonganPkwtDao.getNextGolonganPkwtId();
-                } catch (HibernateException e) {
-                    logger.error("[GolonganPkwtBoImpl.saveAdd] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when getting sequence golonganPkwtId id, please info to your admin..." + e.getMessage());
-                }
-
                 // creating object entity serializable
                 ImGolonganPkwtEntity imGolonganPkwtEntity = new ImGolonganPkwtEntity();
 
-                imGolonganPkwtEntity.setGolonganPkwtId(golonganPkwtId);
+                imGolonganPkwtEntity.setGolonganPkwtId(bean.getGolonganPkwtId());
                 imGolonganPkwtEntity.setGolonganPkwtName(bean.getGolonganPkwtName());
                 imGolonganPkwtEntity.setFlag(bean.getFlag());
                 imGolonganPkwtEntity.setAction(bean.getAction());
@@ -325,6 +322,7 @@ public class GolonganPkwtBoImpl implements GolonganPkwtBo {
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
         return null;
     }
+
     public String cekStatus(String golonganName)throws GeneralBOException{
         String status ="";
         List<ImGolonganPkwtEntity> skalaGajiEntity = new ArrayList<>();

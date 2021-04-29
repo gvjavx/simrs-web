@@ -570,4 +570,21 @@ public class PelayananBoImpl implements PelayananBo {
         logger.info("[PelayananBoImpl.getListPelayananByTipe] END <<<");
         return pelayananList;
     }
+
+    @Override
+    public List<Pelayanan> getListPelayananByBranch(String branchId) throws GeneralBOException {
+        logger.info("[PelayananBoImpl.getListPelayananByBranch] START >>>");
+
+        List<Pelayanan> pelayananList = new ArrayList<>();
+
+        try {
+            pelayananList = pelayananDao.getListPelayananByBranch(branchId);
+        } catch (HibernateException e){
+            logger.error("[PelayananBoImpl.getListPelayananByBranch] ERROR, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[PelayananBoImpl.getListPelayananByBranch] END <<<");
+        return pelayananList;
+    }
 }

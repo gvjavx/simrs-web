@@ -330,43 +330,50 @@ public class MutasiAction extends BaseMasterAction{
         return hasil;
     }
 
-    public String saveMutasi(){
+    public CrudResponse saveMutasi(String tglMutasi){
         logger.info("[MutasiAction.saveMutasi] start process >>>");
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        MutasiBo mutasiBo = (MutasiBo) ctx.getBean("mutasiBoProxy");
         try {
-            Mutasi mutasi = getMutasi();
+            Mutasi mutasi = new Mutasi();
+            mutasi.setStTanggalEfektif(tglMutasi);
             HttpSession session = ServletActionContext.getRequest().getSession();
             List<Mutasi> mutasiList = (List<Mutasi>) session.getAttribute("listOfMutasi");
 
-            String userLogin = CommonUtil.userLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            if(mutasiList.size()>0) {
+                String userLogin = CommonUtil.userLogin();
+                Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-            if (mutasi.getStTanggalEfektif() != null && !"".equalsIgnoreCase(mutasi.getStTanggalEfektif())) {
-                mutasi.setTanggalEfektif(CommonUtil.convertToTimestamp(mutasi.getStTanggalEfektif()));
+                if (mutasi.getStTanggalEfektif() != null && !"".equalsIgnoreCase(mutasi.getStTanggalEfektif())) {
+                    mutasi.setTanggalEfektif(CommonUtil.convertToTimestamp(mutasi.getStTanggalEfektif()));
+                }
+
+                mutasi.setCreatedWho(userLogin);
+                mutasi.setLastUpdate(updateTime);
+                mutasi.setCreatedDate(updateTime);
+                mutasi.setLastUpdateWho(userLogin);
+                mutasi.setAction("C");
+                mutasi.setFlag("Y");
+
+                mutasiBo.saveMutasi(mutasi, mutasiList);
+                response.setStatus("success");
+                response.setMsg("Data berhasil simpan...!");
+            }else {
+                logger.error("ERROR, List Data Mutasi masih kosong !");
+                response.setStatus("error");
+                response.setMsg("Error, list mutasi masih kosong.");
+//                throw new GeneralBOException("List Data Mutasi masih kosong, mohon cek kembali.");
             }
-
-            mutasi.setCreatedWho(userLogin);
-            mutasi.setLastUpdate(updateTime);
-            mutasi.setCreatedDate(updateTime);
-            mutasi.setLastUpdateWho(userLogin);
-            mutasi.setAction("C");
-            mutasi.setFlag("Y");
-
-            mutasiBoProxy.saveMutasi(mutasi,mutasiList);
-        }catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = mutasiBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
-            } catch (GeneralBOException e1) {
-                logger.error("[mutasiAction.saveMutasi] Error when saving error,", e1);
-                throw new GeneralBOException(e1.getMessage());
-            }
-            logger.error("[mutasiAction.saveMutasi] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionMessage("Error, mohon periksa inputan anda kembali");
-            throw new GeneralBOException(e.getMessage());
+        }catch (Exception e) {
+            logger.error("[mutasiAction.saveMutasi] Error when adding item , Found problem when saving add data, please inform to your admin.", e);
+            response.setStatus("error");
+            response.setMsg(e.getMessage());
+//            throw new GeneralBOException(e.getMessage());
         }
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("saveMutasi");
-        return INPUT;
+        return response;
     }
 
     @Override
@@ -458,7 +465,7 @@ public class MutasiAction extends BaseMasterAction{
                 logger.error("[mutasiAction.printReportMutasi] Error when get data report mutasi. please inform to your admin.", e);
             }
 
-            String tahun            = "";
+            String tahun            = "2020";
             BigDecimal gajiPegawai  = mutasiBo.getGajiPokok(searchMutasi.getLevelBaru(),tahun);
             String stGajiPegawai    = CommonUtil.numbericFormat(gajiPegawai,"###,###");
             String noSurat          = searchMutasi.getNoSk();
@@ -473,19 +480,20 @@ public class MutasiAction extends BaseMasterAction{
             String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
             reportParams.put("alamatUni", branch.getAlamatSurat()+","+stTanggal);
             reportParams.put("branchName", branch.getBranchName());
-            reportParams.put("titleReport", "Surat Mutasi");
-            reportParams.put("noSurat", noSurat);
-            reportParams.put("tanggalSk", searchMutasi.getStTanggalEfektif());
+//            reportParams.put("titleReport", "Surat Mutasi");
+//            reportParams.put("noSurat", noSurat);
+//            reportParams.put("tanggalSk", searchMutasi.getStTanggalEfektif());
 
-            reportParams.put("namaPegawai", searchMutasi.getNama());
-            reportParams.put("jabatanLama", searchMutasi.getPositionLamaName());
-            reportParams.put("unitLama", searchMutasi.getBranchLamaName());
-            reportParams.put("jabatanBaru", searchMutasi.getPositionBaruName());
-            reportParams.put("unitBaru", searchMutasi.getBranchBaruName());
-            reportParams.put("levelBaru", searchMutasi.getLevelBaruName());
-            reportParams.put("gajiBaru","Rp. "+ stGajiPegawai);
+//            reportParams.put("namaPegawai", searchMutasi.getNama());
+//            reportParams.put("jabatanLama", searchMutasi.getPositionLamaName());
+//            reportParams.put("unitLama", searchMutasi.getBranchLamaName());
+//            reportParams.put("jabatanBaru", searchMutasi.getPositionBaruName());
+//            reportParams.put("unitBaru", searchMutasi.getBranchBaruName());
+//            reportParams.put("gajiBaru","Rp. "+ stGajiPegawai);
             stTanggal = CommonUtil.convertDateToString( new java.util.Date());
             reportParams.put("date", stTanggal);
+
+            reportParams.put("mutasiId", searchMutasi.getMutasiId());
             try {
                 preDownload();
             } catch (SQLException e) {
@@ -899,9 +907,7 @@ public class MutasiAction extends BaseMasterAction{
         if(nip != null && !"".equalsIgnoreCase(nip)){
             if(mutasiList != null){
                 for (Mutasi mutasi: mutasiList) {
-                    if(nip.equalsIgnoreCase(mutasi.getNip())){
-
-                    }else{
+                    if(!nip.equalsIgnoreCase(mutasi.getNip())){
                         listHasil.add(mutasi);
                     }
                 }

@@ -99,7 +99,7 @@
                 <table >
                     <tr>
                         <td width="30%">
-                            <label class="control-label"><small>ID Detail Rekanan OPS :</small></label>
+                            <label class="control-label"><small>ID Detail Rekanan OPS</small></label>
                         </td>
                         <td>
                             <table>
@@ -113,7 +113,7 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Nama Rekanan :</small></label>
+                            <label class="control-label"><small>Nama Rekanan</small></label>
                         </td>
                         <td width="70%">
                             <table>
@@ -130,7 +130,7 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Unit:</small></label>
+                            <label class="control-label"><small>Unit</small></label>
                         </td>
                         <td width="70%">
                             <table>
@@ -145,7 +145,7 @@
                     </tr>
                     <tr>
                         <td width="18%">
-                            <label class="control-label"><small> Diskon :</small></label>
+                            <label class="control-label"><small> Diskon</small></label>
                         </td>
                         <td>
                             <table>
@@ -159,7 +159,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Cover BPJS :</small></label>
+                            <label class="control-label"><small>Cover BPJS</small></label>
                         </td>
                         <td>
                             <table>

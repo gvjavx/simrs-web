@@ -582,7 +582,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     rawatInap.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
                     rawatInap.setIdRawatInap(obj[10].toString());
                     rawatInap.setIdRuangan(obj[11].toString());
-                    rawatInap.setNoRuangan(obj[12].toString());
+                    rawatInap.setNoRuangan(obj[12] == null ? "" : obj[12].toString());
                     rawatInap.setNamaRangan(obj[13].toString());
                     rawatInap.setKelasRuanganName(obj[14].toString());
                     rawatInap.setIdKelas(obj[15].toString());

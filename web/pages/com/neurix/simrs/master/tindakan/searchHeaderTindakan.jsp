@@ -175,7 +175,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Tindakan</h3>
                     </div>
                     <div class="box-body">
-                        <table id="sortTable" class="table table-bordered table-striped tablePasien">
+                        <table id="sortTable" class="table table-bordered table-striped tablePasien" style="font-size: 13px;">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID Tindakan</td>

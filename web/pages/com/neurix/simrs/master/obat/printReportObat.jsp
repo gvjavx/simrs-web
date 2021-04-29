@@ -59,7 +59,7 @@
                                             <div class="col-md-4">
                                                 <s:action id="initComboFarmasi" namespace="/pelayanan" name="initComboPelayananFarmasi_pelayanan"/>
                                                 <s:select list="#initComboFarmasi.listOfComboFarmasi" id="idPelayanan" name="obat.idPelayanan"
-                                                          listKey="idPelayanan" listValue="namaPelayanan" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                          listKey="idPelayanan" listValue="namaPelayanan" headerKey="" headerValue=" - " cssClass="form-control"/>
                                             </div>
                                         </div>
                                     </div>
@@ -69,7 +69,7 @@
                                             <div class="col-md-4">
                                                 <s:select list="#{'2020':'2020', '2021' : '2021', '2022':'2022', '2023':'2023', '2024':'2024'}"
                                                           id="periodeTahun" name="obat.tahun"
-                                                          headerKey="" headerValue="[Select One]" cssClass="form-control" />
+                                                          headerKey="" headerValue=" - " cssClass="form-control" />
                                             </div>
                                         </div>
                                     </div>
@@ -80,10 +80,21 @@
                                             <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
                                 '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
                                                       id="periodeBulan" name="obat.bulan"
-                                                      headerKey="" headerValue="[Select One]" cssClass="form-control" />
+                                                      headerKey="" headerValue=" - " cssClass="form-control" />
                                         </div>
                                         </div>
                                     </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-md-2 col-md-offset-3" style="margin-top: 7px">Jenis</label>
+                                        <div class="col-md-4">
+                                            <s:select list="#{'Y' : 'BPJS'}"
+                                                      id="jenisObat" name="obat.flagBpjs"
+                                                      headerKey="N" headerValue="UMUM" cssClass="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
                                     <div class="row">
                                         <div class="form-group">
                                             <label class="col-md-2 col-md-offset-3" style="margin-top: 7px">Nama Obat</label>

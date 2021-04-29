@@ -276,6 +276,7 @@ public class PositionAction extends BaseMasterAction {
             entryPosition.setLastUpdateWho(userLogin);
             positionBoProxy.saveAdd(entryPosition);
         }  catch (GeneralBOException e) {
+            logger.error("[PositionAction.save] Error, " + e.getMessage());
             throw new GeneralBOException(e.getMessage());
         }
 

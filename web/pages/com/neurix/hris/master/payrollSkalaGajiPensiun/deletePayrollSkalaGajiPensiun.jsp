@@ -16,35 +16,52 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var idDepartment = document.getElementById("skalaGajiId1").value;
+            var golonganId = document.getElementById("golonganId1").value;
+            var point = document.getElementById("point1").value;
+            var nilai = document.getElementById("nilai1").value;
 
-
-
-            if (idDepartment != '' ) {
-                if (confirm('Do you want to save this record?')) {
-                    event.originalEvent.options.submit = true;
-                    $.publish('showDialog');
-
-                } else {
-                    // Cancel Submit comes with 1.8.0
+            if (golonganId != '' && point != '' && nilai != '' ) {
+                if(isNaN(point) ==  false && isNaN(nilai) == false){
+                    if (confirm('Do you want to save this record?')) {
+                        event.originalEvent.options.submit = true;
+                        $.publish('showDialog');
+                    } else {
+                        // Cancel Submit comes with 1.8.0
+                        event.originalEvent.options.submit = false;
+                    }
+                }else{
                     event.originalEvent.options.submit = false;
+                    var msg = "";
+                    if (isNaN(point)) {
+                        msg += 'Field <strong>point</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+
+                    if (isNaN(nilai)) {
+                        msg += 'Field <strong>nilai</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+
+                    document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                    $.publish('showErrorValidationDialog');
+                }
+            } else {
+                event.originalEvent.options.submit = false;
+                var msg = "";
+                if (golonganId == '') {
+                    msg += 'Field <strong>Golongan </strong> is required.' + '<br/>';
                 }
 
+                if (point == '') {
+                    msg += 'Field <strong>Masa Golongan</strong> is required.' + '<br/>';
+                }
 
-            } else {
-
-                event.originalEvent.options.submit = false;
-
-                var msg = "";
-
-                if (idDepartment == '') {
-                    msg += 'Field <strong>ID</strong> is required.' + '<br/>';
+                if (nilai == '') {
+                    msg += 'Field <strong>Nilai</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
-
             }
         });
 
@@ -95,7 +112,7 @@
 
 
 
-                <legend align="left">Delete Payroll Iuran Pegawai DPLK</legend>
+                <legend align="left">Delete Payroll Skala Gaji Pensiun</legend>
 
 
                 <table>
@@ -117,9 +134,31 @@
                             </table>
                         </td>
                     </tr>
+
                     <tr>
                         <td>
-                            <label class="control-label"><small>Ms. Kerja Gol. :</small></label>
+                            <label class="control-label"><small>Golongan :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                    <s:textfield  id="golonganId1" name="payrollSkalaGajiPensiun.golonganName" readonly="true" required="true"  cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tipe Dapen :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield  id="tipeDapenId1" name="payrollSkalaGajiPensiun.tipeDapenName" readonly="true" required="true"  cssClass="form-control"/>
+
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Poin :</small></label>
                         </td>
                         <td>
                             <table>
@@ -166,15 +205,21 @@
                             <div id="crud">
                                 <td>
                                     <table>
-                                        <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                   closeTopics="closeDialog" modal="true"
                                                    resizable="false"
-                                                   height="350" width="600" autoOpen="false" title="Saving ...">
+                                                   height="250" width="600" autoOpen="false"
+                                                   title="Searching ...">
                                             Please don't close this window, server is processing your request ...
-                                            </br>
-                                            </br>
-                                            </br>
+                                            <br>
                                             <center>
-                                                <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
 

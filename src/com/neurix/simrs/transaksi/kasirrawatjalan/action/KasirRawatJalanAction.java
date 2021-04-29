@@ -939,14 +939,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                             tt.setIdTempatTidur(idRuangan);
                             tempatTidurList = tempatTidurBo.getDataTempatTidur(tt);
                             if (tempatTidurList.size() > 0) {
-                                tempatTidur = tempatTidurList.get(0);
-                                ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(tempatTidur.getIdKelasRuangan());
-                                if (kelasRuanganEntity != null) {
-                                    ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
-                                    if (position != null) {
-                                        divisiId = position.getKodering();
-                                    }
-                                }
+                                divisiId = tempatTidurList.get(0).getKodering();
                             }
                         } else {
                             RawatInap lastRuangan = rawatInapBo.getLastUsedRoom(idDetailCheckup);
@@ -957,14 +950,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                                 tt.setIdTempatTidur(idRuangan);
                                 tempatTidurList = tempatTidurBo.getDataTempatTidur(tt);
                                 if (tempatTidurList.size() > 0) {
-                                    tempatTidur = tempatTidurList.get(0);
-                                    ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(tempatTidur.getIdKelasRuangan());
-                                    if (kelasRuanganEntity != null) {
-                                        ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
-                                        if (position != null) {
-                                            divisiId = position.getKodering();
-                                        }
-                                    }
+                                    divisiId = tempatTidurList.get(0).getKodering();
                                 }
                             }
                         }

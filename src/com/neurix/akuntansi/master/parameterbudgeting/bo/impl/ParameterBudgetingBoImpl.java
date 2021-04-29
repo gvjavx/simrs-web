@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.master.parameterbudgeting.bo.impl;
 
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.master.dao.MasterDao;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.master.parameterbudgeting.bo.ParameterBudgetingBo;
@@ -121,9 +122,11 @@ public class ParameterBudgetingBoImpl implements ParameterBudgetingBo{
             ImAkunParameterBudgetingEntity akunParameterBudgetingEntity = new ImAkunParameterBudgetingEntity();
             akunParameterBudgetingEntity.setId(getNextId());
             akunParameterBudgetingEntity.setIdKategoriBudgeting(bean.getIdKategoriBudgeting());
+            akunParameterBudgetingEntity.setIdJenisBudgeting(bean.getIdJenisBudgeting());
             akunParameterBudgetingEntity.setMasterId(bean.getMasterId());
             akunParameterBudgetingEntity.setDivisiId(bean.getDivisiId());
-            akunParameterBudgetingEntity.setIdParamRekening(bean.getIdParamRekening());
+            akunParameterBudgetingEntity.setPositionId(bean.getPositionId());
+            akunParameterBudgetingEntity.setRekeningId(bean.getRekeningId());
             akunParameterBudgetingEntity.setFlag("Y");
             akunParameterBudgetingEntity.setAction("C");
             akunParameterBudgetingEntity.setCreatedDate(bean.getCreatedDate());
@@ -171,10 +174,12 @@ public class ParameterBudgetingBoImpl implements ParameterBudgetingBo{
 
             if (akunParameterBudgetingEntity != null && akunParameterBudgetingEntity.getId() != null){
 
+                akunParameterBudgetingEntity.setIdJenisBudgeting(bean.getIdJenisBudgeting());
+                akunParameterBudgetingEntity.setPositionId(bean.getPositionId());
                 akunParameterBudgetingEntity.setIdKategoriBudgeting(bean.getIdKategoriBudgeting());
                 akunParameterBudgetingEntity.setDivisiId(bean.getDivisiId());
                 akunParameterBudgetingEntity.setMasterId(bean.getMasterId());
-                akunParameterBudgetingEntity.setIdParamRekening(bean.getIdParamRekening());
+                akunParameterBudgetingEntity.setRekeningId(bean.getRekeningId());
                 akunParameterBudgetingEntity.setFlag(bean.getFlag());
                 akunParameterBudgetingEntity.setLastUpdate(bean.getLastUpdate());
                 akunParameterBudgetingEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -227,6 +232,72 @@ public class ParameterBudgetingBoImpl implements ParameterBudgetingBo{
         logger.info("[ParameterBudgetingBoImpl.getAllParameterRekening] START >>>");
         logger.info("[ParameterBudgetingBoImpl.getAllParameterRekening] END <<<");
         return parameterBudgetingRekeningDao.getAll();
+    }
+
+    @Override
+    public List<KodeRekening> getListKodeRekeningByTipeCoa(String tipeCoa) {
+        logger.info("[ParameterBudgetingBoImpl.getListKodeRekeningByTipeCoa] START >>>");
+
+        List<KodeRekening> kodeRekeningList = new ArrayList<>();
+
+        try {
+            kodeRekeningList = parameterBudgetingDao.getListKodeRekeningByTipeKodeRekening(tipeCoa);
+        } catch (HibernateException e){
+            logger.error("[ParameterBudgetingBoImpl.getListKodeRekeningByTipeCoa] ERROR. ", e);
+            throw new GeneralBOException("[ParameterBudgetingBoImpl.getListKodeRekeningByTipeCoa] ERROR. ]", e);
+        }
+
+        logger.info("[ParameterBudgetingBoImpl.getListKodeRekeningByTipeCoa] END <<<");
+        return kodeRekeningList;
+    }
+
+    @Override
+    public String getTipeKodeRekeningFromJenisBudgetingById(String id) {
+        logger.info("[ParameterBudgetingBoImpl.getTipeKodeRekeningFromJenisBudgetingById] START >>>");
+
+        String tipeCoa = "";
+        try {
+            tipeCoa = parameterBudgetingDao.getTipeKodeRekeningById(id);
+        } catch (HibernateException e){
+            logger.error("[ParameterBudgetingBoImpl.getTipeKodeRekeningFromJenisBudgetingById] ERROR. ", e);
+            throw new GeneralBOException("[ParameterBudgetingBoImpl.getTipeKodeRekeningFromJenisBudgetingById] ERROR. ]", e);
+        }
+
+        logger.info("[ParameterBudgetingBoImpl.getTipeKodeRekeningFromJenisBudgetingById] END <<<");
+        return tipeCoa;
+    }
+
+    @Override
+    public String getKoderingFromPositionByPositionId(String id) {
+        logger.info("[ParameterBudgetingBoImpl.getKoderingFromPositionByPositionId] START >>>");
+
+        String kodering = "";
+        try {
+            kodering = parameterBudgetingDao.getKoderingPositionByPositionId(id);
+        } catch (HibernateException e){
+            logger.error("[ParameterBudgetingBoImpl.getKoderingFromPositionByPositionId] ERROR. ", e);
+            throw new GeneralBOException("[ParameterBudgetingBoImpl.getKoderingFromPositionByPositionId] ERROR. ]", e);
+        }
+
+        logger.info("[ParameterBudgetingBoImpl.getKoderingFromPositionByPositionId] END <<<");
+        return kodering;
+    }
+
+    @Override
+    public ImAkunParameterBudgetingEntity getEntityById(String id) throws GeneralBOException {
+        logger.info("[ParameterBudgetingBoImpl.getEntityById] START >>>");
+
+        ImAkunParameterBudgetingEntity parameterBudgetingEntity = new ImAkunParameterBudgetingEntity();
+
+        try {
+            parameterBudgetingEntity = parameterBudgetingDao.getById("id", id);
+        } catch (HibernateException e){
+            logger.error("[ParameterBudgetingBoImpl.getEntityById] ERROR. ", e);
+            throw new GeneralBOException("[ParameterBudgetingBoImpl.getEntityById] ERROR. ]", e);
+        }
+
+        logger.info("[ParameterBudgetingBoImpl.getEntityById] END <<<");
+        return parameterBudgetingEntity;
     }
 
     private String getNextId(){

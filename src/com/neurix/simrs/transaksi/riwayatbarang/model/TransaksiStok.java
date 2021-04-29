@@ -36,6 +36,78 @@ public class TransaksiStok {
     private BigDecimal totalKredit;
     private BigDecimal subTotalKredit;
     private String namaObat;
+    private String flagBpjs;
+    private BigDecimal totalHargaBeli;
+    private BigDecimal subTotalHargaBeli;
+    private BigDecimal totalHargaBeliLalu;
+    private BigDecimal subTotalHargaBeliLalu;
+    private BigDecimal totalSaldoHargaBeli;
+    private BigDecimal subTotalSaldoHargaBeli;
+    private BigDecimal totalHargaBeliKredit;
+
+    public BigDecimal getTotalHargaBeliKredit() {
+        return totalHargaBeliKredit;
+    }
+
+    public void setTotalHargaBeliKredit(BigDecimal totalHargaBeliKredit) {
+        this.totalHargaBeliKredit = totalHargaBeliKredit;
+    }
+
+    public BigDecimal getTotalSaldoHargaBeli() {
+        return totalSaldoHargaBeli;
+    }
+
+    public void setTotalSaldoHargaBeli(BigDecimal totalSaldoHargaBeli) {
+        this.totalSaldoHargaBeli = totalSaldoHargaBeli;
+    }
+
+    public BigDecimal getSubTotalSaldoHargaBeli() {
+        return subTotalSaldoHargaBeli;
+    }
+
+    public void setSubTotalSaldoHargaBeli(BigDecimal subTotalSaldoHargaBeli) {
+        this.subTotalSaldoHargaBeli = subTotalSaldoHargaBeli;
+    }
+
+    public BigDecimal getTotalHargaBeliLalu() {
+        return totalHargaBeliLalu;
+    }
+
+    public void setTotalHargaBeliLalu(BigDecimal totalHargaBeliLalu) {
+        this.totalHargaBeliLalu = totalHargaBeliLalu;
+    }
+
+    public BigDecimal getSubTotalHargaBeliLalu() {
+        return subTotalHargaBeliLalu;
+    }
+
+    public void setSubTotalHargaBeliLalu(BigDecimal subTotalHargaBeliLalu) {
+        this.subTotalHargaBeliLalu = subTotalHargaBeliLalu;
+    }
+
+    public String getFlagBpjs() {
+        return flagBpjs;
+    }
+
+    public void setFlagBpjs(String flagBpjs) {
+        this.flagBpjs = flagBpjs;
+    }
+
+    public BigDecimal getTotalHargaBeli() {
+        return totalHargaBeli;
+    }
+
+    public void setTotalHargaBeli(BigDecimal totalHargaBeli) {
+        this.totalHargaBeli = totalHargaBeli;
+    }
+
+    public BigDecimal getSubTotalHargaBeli() {
+        return subTotalHargaBeli;
+    }
+
+    public void setSubTotalHargaBeli(BigDecimal subTotalHargaBeli) {
+        this.subTotalHargaBeli = subTotalHargaBeli;
+    }
 
     public String getNamaObat() {
         return namaObat;

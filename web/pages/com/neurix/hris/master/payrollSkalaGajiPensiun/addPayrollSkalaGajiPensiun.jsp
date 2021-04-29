@@ -16,11 +16,13 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
+            var tipeDapen = document.getElementById("tipeDapenId1").value;
             var golonganId = document.getElementById("golonganId1").value;
+            var point = document.getElementById("point1").value;
             var nilai = document.getElementById("nilai1").value;
 
-            if (golonganId != '' && nilai != '' ) {
-                if(isNaN(nilai) == false){
+            if (golonganId != '' && point != '' && nilai != '' &&tipeDapen!='' ) {
+                if(isNaN(point) ==  false && isNaN(nilai) == false){
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -31,6 +33,13 @@
                 }else{
                     event.originalEvent.options.submit = false;
                     var msg = "";
+                    if (golonganId == '') {
+                        msg += 'Field <strong>Golongan </strong> is required.' + '<br/>';
+                    }
+                    if (isNaN(point)) {
+                        msg += 'Field <strong>Masa Kerja</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+
                     if (isNaN(nilai)) {
                         msg += 'Field <strong>nilai</strong> Harus angka tanpa koma.' + '<br/>';
                     }
@@ -46,6 +55,12 @@
                     msg += 'Field <strong>Golongan </strong> is required.' + '<br/>';
                 }
 
+                if (point == '') {
+                    msg += 'Field <strong>Point</strong> is required.' + '<br/>';
+                }
+                if (tipeDapen == '') {
+                    msg += 'Field <strong>Tipe Dapen </strong> is required.' + '<br/>';
+                }
                 if (nilai == '') {
                     msg += 'Field <strong>Nilai</strong> is required.' + '<br/>';
                 }
@@ -64,7 +79,7 @@
         });
 
         $.subscribe('errorDialog', function (event, data) {
-
+            console.log(event);
 //            alert(event.originalEvent.request.getResponseHeader('message'));
             document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
             $.publish('showErrorDialog');
@@ -85,15 +100,9 @@
     <tr>
         <td align="center">
             <s:form id="addPayrollSkalaGajiForm" method="post" theme="simple" namespace="/payrollSkalaGajiPensiun" action="saveAdd_payrollSkalaGajiPensiun" cssClass="well form-horizontal">
-
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
-
-
-
-                <legend align="left">Add Payroll Iuran Pegawai DPLK</legend>
-
-
+                <legend align="left">Add Payroll Skala Gaji Pensiun</legend>
                 <table>
                     <tr>
                         <td width="10%" align="center">
@@ -101,17 +110,39 @@
                         </td>
                     </tr>
                 </table>
-
-                <table >
+                <table>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tipe Dapen :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="comboGolongan" namespace="/payrollDanaPensiun" name="searchPayrollDanaPensiun_payrollDanaPensiun"/>
+                                <s:select cssClass="form-control" list="#comboGolongan.listComboPayrollDanaPensiun" id="tipeDapenId1" name="payrollSkalaGajiPensiun.tipeDapenId"
+                                          listKey="danaPensiunId" listValue="danaPensiun" headerKey="" headerValue="" />
+                            </table>
+                        </td>
+                    </tr>
                     <tr>
                         <td>
                             <label class="control-label"><small>Golongan :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:action id="comboGolongan" namespace="/golongan" name="initComboGolonganDapen_golongan"/>
-                                <s:select cssClass="form-control" list="#comboGolongan.listComboGolonganDapen" id="golonganId1" name="payrollSkalaGajiPensiun.golonganId"
-                                          listKey="golonganDapenId" listValue="golonganDapenName" headerKey="" headerValue="" />
+                                <s:action id="comboGolongan" namespace="/golongan" name="initComboGolongan_golongan"/>
+                                <s:select cssClass="form-control" list="#comboGolongan.listComboGolongan" id="golonganId1" name="payrollSkalaGajiPensiun.golonganId" required="true"
+                                          listKey="golonganId" listValue="golPensiun" headerKey="" headerValue="" />
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Masa Kerja :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" min="0" id="point1" name="payrollSkalaGajiPensiun.poin" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -154,15 +185,21 @@
                             <div id="crud">
                                 <td>
                                     <table>
-                                        <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                   closeTopics="closeDialog" modal="true"
                                                    resizable="false"
-                                                   height="350" width="600" autoOpen="false" title="Saving ...">
+                                                   height="250" width="600" autoOpen="false"
+                                                   title="Searching ...">
                                             Please don't close this window, server is processing your request ...
-                                            </br>
-                                            </br>
-                                            </br>
+                                            <br>
                                             <center>
-                                                <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
 

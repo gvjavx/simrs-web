@@ -1423,48 +1423,14 @@ public class VerifikatorAction extends BaseTransactionAction {
                         }
 
                     } else {
-
-//                        if (idRuangan != null && !"".equalsIgnoreCase(idRuangan)){
-//                            MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(idRuangan);
-//                            if (ruanganEntity != null) {
-//                                ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
-//                                if (kelasRuanganEntity != null) {
-//                                    ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
-//                                    if (position != null) {
-//                                        divisiId = position.getKodering();
-//                                    }
-//                                }
-//                            }
-//                        } else {
-//                            RawatInap lastRuangan = rawatInapBo.getLastUsedRoom(idDetailCheckup);
-//                            if (lastRuangan != null) {
-//                                MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(lastRuangan.getIdRuang());
-//                                if (ruanganEntity != null) {
-//                                    ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
-//                                    if (kelasRuanganEntity != null) {
-//                                        ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
-//                                        if (position != null) {
-//                                            divisiId = position.getKodering();
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-                        if (idRuangan != null && !"".equalsIgnoreCase(idRuangan)){
+                        if (idRuangan != null && !"".equalsIgnoreCase(idRuangan)) {
                             List<TempatTidur> tempatTidurList = new ArrayList<>();
                             TempatTidur tt = new TempatTidur();
                             TempatTidur tempatTidur = new TempatTidur();
                             tt.setIdTempatTidur(idRuangan);
                             tempatTidurList = tempatTidurBo.getDataTempatTidur(tt);
                             if (tempatTidurList.size() > 0) {
-                                tempatTidur = tempatTidurList.get(0);
-                                ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(tempatTidur.getIdKelasRuangan());
-                                if (kelasRuanganEntity != null) {
-                                    ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
-                                    if (position != null) {
-                                        divisiId = position.getKodering();
-                                    }
-                                }
+                                divisiId = tempatTidurList.get(0).getKodering();
                             }
                         } else {
                             RawatInap lastRuangan = rawatInapBo.getLastUsedRoom(idDetailCheckup);
@@ -1475,14 +1441,7 @@ public class VerifikatorAction extends BaseTransactionAction {
                                 tt.setIdTempatTidur(idRuangan);
                                 tempatTidurList = tempatTidurBo.getDataTempatTidur(tt);
                                 if (tempatTidurList.size() > 0) {
-                                    tempatTidur = tempatTidurList.get(0);
-                                    ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(tempatTidur.getIdKelasRuangan());
-                                    if (kelasRuanganEntity != null) {
-                                        ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
-                                        if (position != null) {
-                                            divisiId = position.getKodering();
-                                        }
-                                    }
+                                    divisiId = tempatTidurList.get(0).getKodering();
                                 }
                             }
                         }

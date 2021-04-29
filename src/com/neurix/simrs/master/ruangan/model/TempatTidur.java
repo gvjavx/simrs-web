@@ -20,6 +20,24 @@ public class TempatTidur {
     private String noRuangan;
     private String branchId;
     private String namaKelasRuangan;
+    private String positionId;
+    private String kodering;
+
+    public String getPositionId() {
+        return positionId;
+    }
+
+    public void setPositionId(String positionId) {
+        this.positionId = positionId;
+    }
+
+    public String getKodering() {
+        return kodering;
+    }
+
+    public void setKodering(String kodering) {
+        this.kodering = kodering;
+    }
 
     public String getNamaKelasRuangan() {
         return namaKelasRuangan;

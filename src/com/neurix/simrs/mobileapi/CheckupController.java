@@ -123,6 +123,7 @@ public class CheckupController implements ModelDriven<Object> {
     private String idPoli;
     private String idStatusPasien;
     private String tglMasuk;
+    private String tglKeluar;
     private String branchId;
     private String action;
 
@@ -164,6 +165,14 @@ public class CheckupController implements ModelDriven<Object> {
     private String tahun;
 
     private String jenisKunjungan;
+
+    public String getTglKeluar() {
+        return tglKeluar;
+    }
+
+    public void setTglKeluar(String tglKeluar) {
+        this.tglKeluar = tglKeluar;
+    }
 
     public void setPaketPeriksaBoProxy(PaketPeriksaBo paketPeriksaBoProxy) {
         this.paketPeriksaBoProxy = paketPeriksaBoProxy;
@@ -661,9 +670,10 @@ public class CheckupController implements ModelDriven<Object> {
             bean.setNamaPasien(nama);
             bean.setIdPelayanan(idPoli);
             bean.setStDateFrom(tglMasuk);
-            bean.setStDateTo(tglMasuk);
+            bean.setStDateTo(tglKeluar);
             bean.setBranchId(branchId);
             bean.setStatusPeriksa(idStatusPasien);
+            bean.setTypeTransaction("mobile");
 
             try {
                result = checkupDetailBoProxy.getSearchRawatJalan(bean);

@@ -68,7 +68,7 @@ public class MesinDao extends GenericDao<ImMesinAbsensiEntity, String> {
     public String getNextMesinAbsensiId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_master_mesin_absensi')");
         Iterator<BigInteger> iter=query.list().iterator();
-        String sId = String.format("%02d", iter.next());
+        String sId = String.format("%03d", iter.next());
 
         return "MA" + sId;
     }
@@ -76,8 +76,22 @@ public class MesinDao extends GenericDao<ImMesinAbsensiEntity, String> {
     public String getNextMesinAbsensiIdHistory() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_master_mesin_absensi_history')");
         Iterator<BigInteger> iter=query.list().iterator();
-        String sId = String.format("%02d", iter.next());
+        String sId = String.format("%03d", iter.next());
 
         return "MH" + sId;
+    }
+
+    public String cekAvailMesin(String mesinAddr, String mesinSn) throws HibernateException {
+        String result = "";
+        List<ImMesinAbsensiEntity> mesinList = this.sessionFactory.getCurrentSession().createCriteria(ImMesinAbsensiEntity.class)
+                .add(Restrictions.or(Restrictions.ilike("mesinName", mesinAddr), Restrictions.ilike("mesinSn", mesinSn)))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        if(mesinList.size()>0){
+            result = "Exist";
+        }else{
+            result = "notExists";
+        }
+        return result;
     }
 }
