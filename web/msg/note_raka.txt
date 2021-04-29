@@ -1,3 +1,8 @@
+------ 2021-04-29 ===> sql harian
+-- menambahkan column pada it_akun_pengajuan_biaya_detail
+    alter table it_akun_pengajuan_biaya_detail
+    add column url_ipa varchar(100);
+
 ------ 2021-04-28 ===> function kas koreksi
 -- Update Function
     UPDATE im_functions
