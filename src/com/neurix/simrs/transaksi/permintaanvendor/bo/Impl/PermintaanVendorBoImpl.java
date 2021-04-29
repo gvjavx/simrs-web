@@ -1153,7 +1153,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         ImSimrsMarginObatEntity marginObatEntity = marginObatEntities.get(0);
 
         // mencari jika sudah ada harga untuk umum;
-        // jika tindak ada maka insert new;
+        // jika tidak ada maka insert new;
         HargaObatPerKonsumen paramPencarian = new HargaObatPerKonsumen();
         paramPencarian.setIdHargaObat(bean.getId());
         paramPencarian.setJenisKonsumen("umum");
@@ -1183,16 +1183,16 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         // END;
 
         // mencari jika sudah ada harga untuk bpjs;
-        // jika tindak ada maka insert new;
+        // jika tidak ada maka insert new;
         paramPencarian = new HargaObatPerKonsumen();
         paramPencarian.setIdHargaObat(bean.getId());
-        paramPencarian.setJenisKonsumen("umum");
+        paramPencarian.setJenisKonsumen("bpjs");
         List<MtSimrsHargaObatPerKonsumenEntity> perKonsumenBpjsList = getListHargaObatPerKonsumenEntity(paramPencarian);
         if (perKonsumenBpjsList.size() == 0){
             MtSimrsHargaObatPerKonsumenEntity konsumenBpjs = new MtSimrsHargaObatPerKonsumenEntity();
             konsumenBpjs.setId(generateNewHargaObatPerKonsumen());
             konsumenBpjs.setIdHargaObat(bean.getId());
-            konsumenBpjs.setJenisKonsumen("umum");
+            konsumenBpjs.setJenisKonsumen("bpjs");
             konsumenBpjs.setHargaBruto(bean.getHargaTerakhir());
             konsumenBpjs.setMargin(new BigDecimal(marginObatEntity.getStandarMargin()));
             konsumenBpjs.setHargaJual(hitungHargaJualDenganMargin(konsumenBpjs.getHargaBruto(), konsumenBpjs.getMargin()));
