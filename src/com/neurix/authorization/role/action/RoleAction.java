@@ -455,7 +455,8 @@ public class RoleAction extends BaseMasterAction {
         Long lRoleId = Long.parseLong(roleId);
         if (roleId != null && !"".equalsIgnoreCase(roleId));
 
-        return roleBo.getRoleById(lRoleId, "Y");
+        Roles result = roleBo.getRoleById(lRoleId, "Y");
+        return result;
     }
 
 }

@@ -241,8 +241,8 @@
                                     <div class="form-group">
                                         <label class="control-label col-sm-4" for="users.areaId">Area :</label>
                                         <div class="col-sm-4">
-                                            <s:action id="comboArea" namespace="/admin/user" name="initComboArea_user"/>
-                                            <s:select list="#comboArea.listOfComboAreas" id="areaid" name="users.areaId"
+                                            <s:action id="comboAreaAdd" namespace="/admin/user" name="initComboArea_user"/>
+                                            <s:select list="#comboAreaAdd.listOfComboAreas" id="areaid" name="users.areaId"
                                                       onchange="listUnit(this.value)"
                                                       listKey="areaId" listValue="areaName" headerKey="" headerValue="[Select one]"
                                                       cssClass="form-control select2"/>
