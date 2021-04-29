@@ -10,6 +10,21 @@
         ALTER TABLE im_simrs_dokter_kso
         ADD COLUMN position_id VARCHAR(10);
 
+-- menambahkan im_functions
+    INSERT INTO im_functions
+    VALUES
+    (6527, 'Print Rekap Closing Kasir', '/laporanAkuntansi/printReportRekapClosingKasir_laporanAkuntansi.action', 1703, NULL, '2016-10-09 15:27:54.756', 'admin', '2016-10-09 15:27:54.756', 'admin', 'Y', 'C', NULL);
+
+-- menambahkan setting_report_user
+    INSERT INTO im_akun_setting_report_user
+    VALUES
+    ('RU0000021', 'RPT19', 'adminakun', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754'),
+    ('RU0000022', 'RPT19', 'adminakungt', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754'),
+    ('RU0000023', 'RPT19', '123456', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754'),
+    ('RU0000024', 'RPT19', '789011', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754'),
+    ('RU0000025', 'RPT19', '121314', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754'),
+    ('RU0000026', 'RPT19', '151617', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754');
+
 ------ 2021-04-28 ===> function kas koreksi
 -- Update Function
     UPDATE im_functions
