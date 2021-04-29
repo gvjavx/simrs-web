@@ -172,7 +172,7 @@
                                                               'OK':function() {
                                                                     //$(this).dialog('close');
                                                                       callSearch2();
-                                                                      link();
+                                                                      //link();
                                                                    }
                                                             }"
                                         >
