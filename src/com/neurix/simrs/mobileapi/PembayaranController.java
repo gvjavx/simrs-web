@@ -35,7 +35,7 @@ import java.util.List;
  * @author gondok
  * Thursday, 11/06/20 11:01
  */
-public class PembayaranController implements ModelDriven<Object> {
+public class  PembayaranController implements ModelDriven<Object> {
     private static final transient Logger logger = Logger.getLogger(PembayaranController.class);
     private PembayaranMobile model = new PembayaranMobile();
     private Collection<PembayaranMobile> listOfPembayaran;
@@ -325,6 +325,8 @@ public class PembayaranController implements ModelDriven<Object> {
                 if (rekeningTelemedicList.size() == 1){
                     pembayaranMobile.setNoRekening(rekeningTelemedicList.get(0).getNoRekening());
                     pembayaranMobile.setNamaRekening(rekeningTelemedicList.get(0).getNamaRekening());
+                    pembayaranMobile.setTipeRekening(rekeningTelemedicList.get(0).getTipeRekening());
+                    pembayaranMobile.setClientId(rekeningTelemedicList.get(0).getClientId());
                 }
 
                 pembayaranMobile.setWaktuBayar(CommonUtil.addJamBayar(item.getWaktuBayar()));
