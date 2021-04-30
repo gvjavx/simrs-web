@@ -1,17 +1,19 @@
+------ 2021-04-30 ===> penambahan column
+-- add column im_company
+    alter table im_company
+        add column payroll_tanggal_lembur_awal varchar(10),
+        add column payroll_tanggal_lembur_akhir varchar(10);
+
+    update im_company
+    set payroll_tanggal_lembur_awal  = cast(tanggal_awal_lembur as varchar),
+    	payroll_tanggal_lembur_akhir = cast(tanggal_akhir_lembur as varchar);
+
 ------ 2021-04-17 ===> perbaikan Table Log Transaction
     ALTER TABLE it_pg_log_transaction
     ADD COLUMN status_bank character varying(5),
     ADD COLUMN channel character varying(1000),
     ADD COLUMN invoice_date date,
     ADD COLUMN invoice_number bigint;
-
-
-----------------------------------------
-----------------------------------------
-----------  SAMPAI SINI SAJA  ----------
-----------------------------------------
-----------------------------------------
-
 
 ------ 2021-04-06 ===> Create Table Log Transaction
 -- Membuat Table

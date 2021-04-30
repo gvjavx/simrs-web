@@ -5,6 +5,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.mobileapi.model.ProfilPayroll;
 import com.neurix.hris.transaksi.payroll.bo.PayrollBo;
+import com.neurix.hris.transaksi.payroll.model.ItHrisPayrollEntity;
 import com.neurix.hris.transaksi.payroll.model.ItPayrollEntity;
 import com.neurix.hris.transaksi.payroll.model.Payroll;
 import com.opensymphony.xwork2.ModelDriven;

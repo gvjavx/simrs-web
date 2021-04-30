@@ -79,9 +79,11 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
     public void setCompanyDao(CompanyDao companyDao) {
         this.companyDao = companyDao;
     }
+
     public void setBranchDao(BranchDao branchDao) {
         this.branchDao = branchDao;
     }
+
     public void setPayrollDao(PayrollDao payrollDao) {
         this.payrollDao = payrollDao;
     }
@@ -103,7 +105,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         ItHrisPayrollEntity result = new ItHrisPayrollEntity();
         try {
             // Get data from database by ID
-            result = payrollDao.getById("payrollId",payrollId);
+            result = payrollDao.getById("payrollId", payrollId);
         } catch (HibernateException e) {
             logger.error("[PayrollBoImpl.getPayrollById] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching payroll id, please inform to your admin...," + e.getMessage());
@@ -180,10 +182,10 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             throw new GeneralBOException("[PayrollBoImpl.getListAbsensiLembur] Tidak ditemukan tanggal lembur awal atau tanggal lembur akhir pada master Company, please info to your admin...");
         }
 
-        absensiPegawaiEntityList = absensiPegawaiDao.getDataLembur(nip,branchId,tglAwalLembur,tglAkhirLembur);
+        absensiPegawaiEntityList = absensiPegawaiDao.getDataLembur(nip, branchId, tglAwalLembur, tglAkhirLembur);
 
-        if(absensiPegawaiEntityList.size() > 0){
-            for(AbsensiPegawaiEntity absensiPegawaiEntity : absensiPegawaiEntityList){
+        if (absensiPegawaiEntityList.size() > 0) {
+            for (AbsensiPegawaiEntity absensiPegawaiEntity : absensiPegawaiEntityList) {
                 AbsensiPegawai absensiPegawai = new AbsensiPegawai();
                 absensiPegawai.setNip(absensiPegawaiEntity.getNip());
                 absensiPegawai.setBranchId(absensiPegawaiEntity.getBranchId());
@@ -284,7 +286,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         itHrisPayrollTempEntity.setGolonganName(pegawaiPayroll.getGolonganName());
 
         itHrisPayrollTempEntity.setGolonganDapen(pegawaiPayroll.getGolonganDapen());
-        itHrisPayrollTempEntity.setGradeLevel(pegawaiPayroll.getGradeLevel() );
+        itHrisPayrollTempEntity.setGradeLevel(pegawaiPayroll.getGradeLevel());
 
         itHrisPayrollTempEntity.setMasaKerjaGol(pegawaiPayroll.getiMasaKerjaGol());
 
@@ -515,14 +517,14 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
     }
 
     //updated by ferdi, 01-12-2020, untuk copy data dari it payroll temp ke it payroll
-    private ItHrisPayrollEntity copyDataItPayrollTempToItPayroll(ItHrisPayrollTempEntity itHrisPayrollTempEntity, String periodePayroll,String tahunPayroll, String createdWho) throws GeneralBOException {
+    private ItHrisPayrollEntity copyDataItPayrollTempToItPayroll(ItHrisPayrollTempEntity itHrisPayrollTempEntity, String periodePayroll, String tahunPayroll, String createdWho) throws GeneralBOException {
 
         logger.info("[PayrollBoImpl.copyDataItPayrollTempToItPayroll] start process >>>");
 
         ItHrisPayrollEntity itHrisPayrollEntity = new ItHrisPayrollEntity();
         String idPayroll = null;
         try {
-            idPayroll = payrollDao.getNextPayrollId(periodePayroll,tahunPayroll);
+            idPayroll = payrollDao.getNextPayrollId(periodePayroll, tahunPayroll);
             itHrisPayrollEntity.setPayrollId(idPayroll);
         } catch (HibernateException e) {
             logger.error("[PayrollBoImpl.copyDataItPayrollTempToItPayroll] Error, " + e.getMessage());
@@ -553,7 +555,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         itHrisPayrollEntity.setGolonganName(itHrisPayrollTempEntity.getGolonganName());
 
         itHrisPayrollEntity.setGolonganDapen(itHrisPayrollTempEntity.getGolonganDapen());
-        itHrisPayrollEntity.setGradeLevel(itHrisPayrollTempEntity.getGradeLevel() );
+        itHrisPayrollEntity.setGradeLevel(itHrisPayrollTempEntity.getGradeLevel());
 
         itHrisPayrollEntity.setMasaKerjaGol(itHrisPayrollTempEntity.getMasaKerjaGol());
 
@@ -813,8 +815,8 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         pegawaiPayroll.setPersenDapenKaryNilai(itHrisPayrollTempEntity.getPersenDapenKary());
         pegawaiPayroll.setPersenDapenPershNilai(itHrisPayrollTempEntity.getPersenDapenPers());
 
-        pegawaiPayroll.setPersenDapenKary(pegawaiPayroll.getPersenDapenKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenDapenKaryNilai(),"###,###") : "");
-        pegawaiPayroll.setPersenDapenPersh(pegawaiPayroll.getPersenDapenPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenDapenPershNilai(),"###,###") : "");
+        pegawaiPayroll.setPersenDapenKary(pegawaiPayroll.getPersenDapenKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenDapenKaryNilai(), "###,###") : "");
+        pegawaiPayroll.setPersenDapenPersh(pegawaiPayroll.getPersenDapenPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenDapenPershNilai(), "###,###") : "");
 
         pegawaiPayroll.setGajiPensiunNilai(itHrisPayrollTempEntity.getGajiPensiun());
         pegawaiPayroll.setGajiPokokNilai(itHrisPayrollTempEntity.getGajiPokok());
@@ -831,36 +833,36 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         pegawaiPayroll.setIuranDapenPershNilai(itHrisPayrollTempEntity.getIuranDapenPers());
         pegawaiPayroll.setIuranDapenKaryNilai(itHrisPayrollTempEntity.getIuranDapenKary());
 
-        pegawaiPayroll.setGajiPensiun(pegawaiPayroll.getGajiPensiunNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getGajiPensiunNilai(),"###,###") : "");
-        pegawaiPayroll.setGajiPokok(pegawaiPayroll.getGajiPokokNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getGajiPokokNilai(),"###,###") : "");
-        pegawaiPayroll.setSantunanKhusus(pegawaiPayroll.getSantunanKhususNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getSantunanKhususNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjRumah(pegawaiPayroll.getTunjRumahNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjRumahNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjListrik(pegawaiPayroll.getTunjListrikNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjListrikNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjAir(pegawaiPayroll.getTunjAirNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjAirNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjBbm(pegawaiPayroll.getTunjBbmNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjBbmNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjJabatan(pegawaiPayroll.getTunjJabatanNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjJabatanNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjStruktural(pegawaiPayroll.getTunjStrukturalNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjStrukturalNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjFungsional(pegawaiPayroll.getTunjFungsionalNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjFungsionalNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjTambahan(pegawaiPayroll.getTunjTambahanNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjTambahanNilai(),"###,###") : "");
-        pegawaiPayroll.setGajiPensiun(pegawaiPayroll.getGajiPensiunNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getGajiPensiunNilai(),"###,###") : "");
-        pegawaiPayroll.setIuranDapenPersh(pegawaiPayroll.getIuranDapenPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranDapenPershNilai(),"###,###") : "");
-        pegawaiPayroll.setIuranDapenKary(pegawaiPayroll.getIuranDapenKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranDapenKaryNilai(),"###,###") : "");
+        pegawaiPayroll.setGajiPensiun(pegawaiPayroll.getGajiPensiunNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getGajiPensiunNilai(), "###,###") : "");
+        pegawaiPayroll.setGajiPokok(pegawaiPayroll.getGajiPokokNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getGajiPokokNilai(), "###,###") : "");
+        pegawaiPayroll.setSantunanKhusus(pegawaiPayroll.getSantunanKhususNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getSantunanKhususNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjRumah(pegawaiPayroll.getTunjRumahNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjRumahNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjListrik(pegawaiPayroll.getTunjListrikNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjListrikNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjAir(pegawaiPayroll.getTunjAirNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjAirNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjBbm(pegawaiPayroll.getTunjBbmNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjBbmNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjJabatan(pegawaiPayroll.getTunjJabatanNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjJabatanNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjStruktural(pegawaiPayroll.getTunjStrukturalNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjStrukturalNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjFungsional(pegawaiPayroll.getTunjFungsionalNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjFungsionalNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjTambahan(pegawaiPayroll.getTunjTambahanNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjTambahanNilai(), "###,###") : "");
+        pegawaiPayroll.setGajiPensiun(pegawaiPayroll.getGajiPensiunNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getGajiPensiunNilai(), "###,###") : "");
+        pegawaiPayroll.setIuranDapenPersh(pegawaiPayroll.getIuranDapenPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranDapenPershNilai(), "###,###") : "");
+        pegawaiPayroll.setIuranDapenKary(pegawaiPayroll.getIuranDapenKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranDapenKaryNilai(), "###,###") : "");
 
         pegawaiPayroll.setTunjanganDapenNilai(itHrisPayrollTempEntity.getTunjanganDapen());
         pegawaiPayroll.setTunjanganPphNilai(itHrisPayrollTempEntity.getTunjanganPph());
         pegawaiPayroll.setPphGajiNilai(itHrisPayrollTempEntity.getPphGaji());
 
-        pegawaiPayroll.setTunjanganDapen(pegawaiPayroll.getTunjanganDapenNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjanganDapenNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjanganPph(pegawaiPayroll.getTunjanganPphNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjanganPphNilai(),"###,###") : "");
-        pegawaiPayroll.setPphGaji(pegawaiPayroll.getPphGajiNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPphGajiNilai(),"###,###") : "");
+        pegawaiPayroll.setTunjanganDapen(pegawaiPayroll.getTunjanganDapenNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjanganDapenNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjanganPph(pegawaiPayroll.getTunjanganPphNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjanganPphNilai(), "###,###") : "");
+        pegawaiPayroll.setPphGaji(pegawaiPayroll.getPphGajiNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPphGajiNilai(), "###,###") : "");
 
         pegawaiPayroll.setTunjPeralihanGapokNilai(itHrisPayrollTempEntity.getPeralihanGapok());
         pegawaiPayroll.setTunjPeralihanSankhusNilai(itHrisPayrollTempEntity.getPeralihanSankhus());
         pegawaiPayroll.setTunjPeralihanTunjNilai(itHrisPayrollTempEntity.getPeralihanTunjangan());
 
-        pegawaiPayroll.setTunjPeralihanGapok(pegawaiPayroll.getTunjPeralihanGapokNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjPeralihanGapokNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjPeralihanSankhus(pegawaiPayroll.getTunjPeralihanSankhusNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjPeralihanSankhusNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjPeralihanTunj(pegawaiPayroll.getTunjPeralihanTunjNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjPeralihanTunjNilai(),"###,###") : "");
+        pegawaiPayroll.setTunjPeralihanGapok(pegawaiPayroll.getTunjPeralihanGapokNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjPeralihanGapokNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjPeralihanSankhus(pegawaiPayroll.getTunjPeralihanSankhusNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjPeralihanSankhusNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjPeralihanTunj(pegawaiPayroll.getTunjPeralihanTunjNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjPeralihanTunjNilai(), "###,###") : "");
 
         pegawaiPayroll.setTunjKomunikasiNilai(itHrisPayrollTempEntity.getTunjanganKomunikasi());
         pegawaiPayroll.setTunjPemondokanNilai(itHrisPayrollTempEntity.getTunjanganPemondokan());
@@ -869,15 +871,15 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         pegawaiPayroll.setTunjLokalNilai(itHrisPayrollTempEntity.getTunjanganLokal());
         pegawaiPayroll.setTunjSiagaNilai(itHrisPayrollTempEntity.getTunjanganSiaga());
 
-        pegawaiPayroll.setTunjKomunikasi(pegawaiPayroll.getTunjKomunikasiNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjKomunikasiNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjPemondokan(pegawaiPayroll.getTunjPemondokanNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjPemondokanNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjLembur(pegawaiPayroll.getTunjLemburNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjLemburNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjSupervisi(pegawaiPayroll.getTunjSupervisiNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjSupervisiNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjLokal(pegawaiPayroll.getTunjLokalNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjLokalNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjSiaga(pegawaiPayroll.getTunjSiagaNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjSiagaNilai(),"###,###") : "");
+        pegawaiPayroll.setTunjKomunikasi(pegawaiPayroll.getTunjKomunikasiNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjKomunikasiNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjPemondokan(pegawaiPayroll.getTunjPemondokanNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjPemondokanNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjLembur(pegawaiPayroll.getTunjLemburNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjLemburNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjSupervisi(pegawaiPayroll.getTunjSupervisiNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjSupervisiNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjLokal(pegawaiPayroll.getTunjLokalNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjLokalNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjSiaga(pegawaiPayroll.getTunjSiagaNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjSiagaNilai(), "###,###") : "");
 
         pegawaiPayroll.setKopkarNilai(itHrisPayrollTempEntity.getIuranKopkar());
-        pegawaiPayroll.setKopkar(pegawaiPayroll.getKopkarNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getKopkarNilai(),"###,###") : "");
+        pegawaiPayroll.setKopkar(pegawaiPayroll.getKopkarNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getKopkarNilai(), "###,###") : "");
 
         pegawaiPayroll.setIuranSpNilai(itHrisPayrollTempEntity.getIuranSp());
         pegawaiPayroll.setIuranPiikbNilai(itHrisPayrollTempEntity.getIuranPiikb());
@@ -890,50 +892,50 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         pegawaiPayroll.setPotonganLainNilai(itHrisPayrollTempEntity.getIuranPotonganLain());
         pegawaiPayroll.setTotalPotonganLainNilai(itHrisPayrollTempEntity.getTotalPotonganLain());
 
-        pegawaiPayroll.setIuranSp(pegawaiPayroll.getIuranSpNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranSpNilai(),"###,###") : "");
-        pegawaiPayroll.setIuranPiikb(pegawaiPayroll.getIuranPiikbNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranPiikbNilai(),"###,###") : "");
-        pegawaiPayroll.setBankMandiri(pegawaiPayroll.getBankMandiriNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getBankMandiriNilai(),"###,###") : "");
-        pegawaiPayroll.setBankBri(pegawaiPayroll.getBankBriNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getBankBriNilai(),"###,###") : "");
-        pegawaiPayroll.setInfaq(pegawaiPayroll.getInfaqNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getInfaqNilai(),"###,###") : "");
-        pegawaiPayroll.setPerkesDanObat(pegawaiPayroll.getPerkesDanObatNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPerkesDanObatNilai(),"###,###") : "");
-        pegawaiPayroll.setListrik(pegawaiPayroll.getListrikNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getListrikNilai(),"###,###") : "");
-        pegawaiPayroll.setIuranProfesi(pegawaiPayroll.getIuranProfesiNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranProfesiNilai(),"###,###") : "");
-        pegawaiPayroll.setPotonganLain(pegawaiPayroll.getPotonganLainNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPotonganLainNilai(),"###,###") : "");
-        pegawaiPayroll.setTotalPotonganLain(pegawaiPayroll.getTotalPotonganLainNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalPotonganLainNilai(),"###,###") : "");
+        pegawaiPayroll.setIuranSp(pegawaiPayroll.getIuranSpNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranSpNilai(), "###,###") : "");
+        pegawaiPayroll.setIuranPiikb(pegawaiPayroll.getIuranPiikbNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranPiikbNilai(), "###,###") : "");
+        pegawaiPayroll.setBankMandiri(pegawaiPayroll.getBankMandiriNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getBankMandiriNilai(), "###,###") : "");
+        pegawaiPayroll.setBankBri(pegawaiPayroll.getBankBriNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getBankBriNilai(), "###,###") : "");
+        pegawaiPayroll.setInfaq(pegawaiPayroll.getInfaqNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getInfaqNilai(), "###,###") : "");
+        pegawaiPayroll.setPerkesDanObat(pegawaiPayroll.getPerkesDanObatNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPerkesDanObatNilai(), "###,###") : "");
+        pegawaiPayroll.setListrik(pegawaiPayroll.getListrikNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getListrikNilai(), "###,###") : "");
+        pegawaiPayroll.setIuranProfesi(pegawaiPayroll.getIuranProfesiNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranProfesiNilai(), "###,###") : "");
+        pegawaiPayroll.setPotonganLain(pegawaiPayroll.getPotonganLainNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPotonganLainNilai(), "###,###") : "");
+        pegawaiPayroll.setTotalPotonganLain(pegawaiPayroll.getTotalPotonganLainNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalPotonganLainNilai(), "###,###") : "");
 
         pegawaiPayroll.setMinBpjsKsNilai(itHrisPayrollTempEntity.getMinBpjsKs());
         pegawaiPayroll.setMaxBpjsKsNilai(itHrisPayrollTempEntity.getMaxBpjsKs());
 
-        pegawaiPayroll.setMinBpjsKs(pegawaiPayroll.getMinBpjsKsNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getMinBpjsKsNilai(),"###,###") : "");
-        pegawaiPayroll.setMaxBpjsKs(pegawaiPayroll.getMaxBpjsKsNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getMaxBpjsKsNilai(),"###,###") : "");
+        pegawaiPayroll.setMinBpjsKs(pegawaiPayroll.getMinBpjsKsNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getMinBpjsKsNilai(), "###,###") : "");
+        pegawaiPayroll.setMaxBpjsKs(pegawaiPayroll.getMaxBpjsKsNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getMaxBpjsKsNilai(), "###,###") : "");
 
         pegawaiPayroll.setPersenBpjsKsKaryNilai(itHrisPayrollTempEntity.getPersenBpjsKsKary());
         pegawaiPayroll.setPersenBpjsKsPershNilai(itHrisPayrollTempEntity.getPersenBpjsKsPers());
 
-        pegawaiPayroll.setPersenBpjsKsKary(pegawaiPayroll.getPersenBpjsKsKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsKsKaryNilai(),"###,###") : "");
-        pegawaiPayroll.setPersenBpjsKsPersh(pegawaiPayroll.getPersenBpjsKsPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsKsPershNilai(),"###,###") : "");
+        pegawaiPayroll.setPersenBpjsKsKary(pegawaiPayroll.getPersenBpjsKsKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsKsKaryNilai(), "###,###") : "");
+        pegawaiPayroll.setPersenBpjsKsPersh(pegawaiPayroll.getPersenBpjsKsPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsKsPershNilai(), "###,###") : "");
 
         pegawaiPayroll.setMinBpjsTkNilai(itHrisPayrollTempEntity.getMinBpjsTk());
         pegawaiPayroll.setMaxBpjsTkNilai(itHrisPayrollTempEntity.getMaxBpjsTk());
 
-        pegawaiPayroll.setMinBpjsTk(pegawaiPayroll.getMinBpjsTkNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getMinBpjsTkNilai(),"###,###") : "");
-        pegawaiPayroll.setMaxBpjsTk(pegawaiPayroll.getMaxBpjsTkNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getMaxBpjsTkNilai(),"###,###") : "");
+        pegawaiPayroll.setMinBpjsTk(pegawaiPayroll.getMinBpjsTkNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getMinBpjsTkNilai(), "###,###") : "");
+        pegawaiPayroll.setMaxBpjsTk(pegawaiPayroll.getMaxBpjsTkNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getMaxBpjsTkNilai(), "###,###") : "");
 
         pegawaiPayroll.setPersenBpjsTkIuranKaryNilai(itHrisPayrollTempEntity.getPersenBpjsTkIuranKary());
         pegawaiPayroll.setPersenBpjsTkJpkKaryNilai(itHrisPayrollTempEntity.getPersenBpjsTkJpkKary());
 
-        pegawaiPayroll.setPersenBpjsTkIuranKary(pegawaiPayroll.getPersenBpjsTkIuranKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkIuranKaryNilai(),"###,###") : "");
-        pegawaiPayroll.setPersenBpjsTkJpkKary(pegawaiPayroll.getPersenBpjsTkJpkKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkJpkKaryNilai(),"###,###") : "");
+        pegawaiPayroll.setPersenBpjsTkIuranKary(pegawaiPayroll.getPersenBpjsTkIuranKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkIuranKaryNilai(), "###,###") : "");
+        pegawaiPayroll.setPersenBpjsTkJpkKary(pegawaiPayroll.getPersenBpjsTkJpkKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkJpkKaryNilai(), "###,###") : "");
 
         pegawaiPayroll.setPersenBpjsTkJkkPershNilai(itHrisPayrollTempEntity.getPersenBpjsTkJkkPers());
         pegawaiPayroll.setPersenBpjsTkJhtPershNilai(itHrisPayrollTempEntity.getPersenBpjsTkJhtPers());
         pegawaiPayroll.setPersenBpjsTkJkmPershNilai(itHrisPayrollTempEntity.getPersenBpjsTkJkmPers());
         pegawaiPayroll.setPersenBpjsTkJpkPershNilai(itHrisPayrollTempEntity.getPersenBpjsTkJpkPers());
 
-        pegawaiPayroll.setPersenBpjsTkJkkPersh(pegawaiPayroll.getPersenBpjsTkJkkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkJkkPershNilai(),"###,###") : "");
-        pegawaiPayroll.setPersenBpjsTkJhtPersh(pegawaiPayroll.getPersenBpjsTkJhtPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkJhtPershNilai(),"###,###") : "");
-        pegawaiPayroll.setPersenBpjsTkJkmPersh(pegawaiPayroll.getPersenBpjsTkJkmPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkJkmPershNilai(),"###,###") : "");
-        pegawaiPayroll.setPersenBpjsTkJpkPersh(pegawaiPayroll.getPersenBpjsTkJpkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkJpkPershNilai(),"###,###") : "");
+        pegawaiPayroll.setPersenBpjsTkJkkPersh(pegawaiPayroll.getPersenBpjsTkJkkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkJkkPershNilai(), "###,###") : "");
+        pegawaiPayroll.setPersenBpjsTkJhtPersh(pegawaiPayroll.getPersenBpjsTkJhtPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkJhtPershNilai(), "###,###") : "");
+        pegawaiPayroll.setPersenBpjsTkJkmPersh(pegawaiPayroll.getPersenBpjsTkJkmPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkJkmPershNilai(), "###,###") : "");
+        pegawaiPayroll.setPersenBpjsTkJpkPersh(pegawaiPayroll.getPersenBpjsTkJpkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkJpkPershNilai(), "###,###") : "");
 
         pegawaiPayroll.setStatusKeluarga(itHrisPayrollTempEntity.getStatusKeluarga());
         pegawaiPayroll.setJumlahAnak(itHrisPayrollTempEntity.getJumlahAnak());
@@ -950,35 +952,35 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         pegawaiPayroll.setTanggalPensiun(itHrisPayrollTempEntity.getTanggalPensiun());
         pegawaiPayroll.setTanggalKeluar(itHrisPayrollTempEntity.getTanggalKeluar());
 
-        pegawaiPayroll.setStTanggalAktif(pegawaiPayroll.getTanggalAktif()!=null ? CommonUtil.simpleDateFormat(pegawaiPayroll.getTanggalAktif()) : "");
-        pegawaiPayroll.setStTanggalAkhirKontrak(pegawaiPayroll.getTanggalAkhirKontrak()!=null ? CommonUtil.simpleDateFormat(pegawaiPayroll.getTanggalAkhirKontrak()) : "");
-        pegawaiPayroll.setStTanggalPraPensiun(pegawaiPayroll.getTanggalPraPensiun()!=null ? CommonUtil.simpleDateFormat(pegawaiPayroll.getTanggalPraPensiun()) : "");
-        pegawaiPayroll.setStTanggalPensiun(pegawaiPayroll.getTanggalPensiun()!=null ? CommonUtil.simpleDateFormat(pegawaiPayroll.getTanggalPensiun()) : "");
-        pegawaiPayroll.setStTanggalKeluar(pegawaiPayroll.getTanggalKeluar()!=null ? CommonUtil.simpleDateFormat(pegawaiPayroll.getTanggalKeluar()) : "");
+        pegawaiPayroll.setStTanggalAktif(pegawaiPayroll.getTanggalAktif() != null ? CommonUtil.simpleDateFormat(pegawaiPayroll.getTanggalAktif()) : "");
+        pegawaiPayroll.setStTanggalAkhirKontrak(pegawaiPayroll.getTanggalAkhirKontrak() != null ? CommonUtil.simpleDateFormat(pegawaiPayroll.getTanggalAkhirKontrak()) : "");
+        pegawaiPayroll.setStTanggalPraPensiun(pegawaiPayroll.getTanggalPraPensiun() != null ? CommonUtil.simpleDateFormat(pegawaiPayroll.getTanggalPraPensiun()) : "");
+        pegawaiPayroll.setStTanggalPensiun(pegawaiPayroll.getTanggalPensiun() != null ? CommonUtil.simpleDateFormat(pegawaiPayroll.getTanggalPensiun()) : "");
+        pegawaiPayroll.setStTanggalKeluar(pegawaiPayroll.getTanggalKeluar() != null ? CommonUtil.simpleDateFormat(pegawaiPayroll.getTanggalKeluar()) : "");
 
         pegawaiPayroll.setKodering(itHrisPayrollTempEntity.getKodering());
         pegawaiPayroll.setGender(itHrisPayrollTempEntity.getGender());
 
         pegawaiPayroll.setUmrNilai(itHrisPayrollTempEntity.getUmr());
-        pegawaiPayroll.setUmr(pegawaiPayroll.getUmrNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getUmrNilai(),"###,###") : "");
+        pegawaiPayroll.setUmr(pegawaiPayroll.getUmrNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getUmrNilai(), "###,###") : "");
 
         pegawaiPayroll.setMultifikatorNilai(itHrisPayrollTempEntity.getMultifikator());
-        pegawaiPayroll.setMultifikator(pegawaiPayroll.getMultifikatorNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getMultifikatorNilai(),"###,###") : "");
+        pegawaiPayroll.setMultifikator(pegawaiPayroll.getMultifikatorNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getMultifikatorNilai(), "###,###") : "");
 
         pegawaiPayroll.setDasarPerhitunganBpjsKsNilai(itHrisPayrollTempEntity.getDasarBpjsKs());
         pegawaiPayroll.setDasarPerhitunganBpjsTkNilai(itHrisPayrollTempEntity.getDasarBpjsTk());
 
-        pegawaiPayroll.setDasarPerhitunganBpjsKs(pegawaiPayroll.getDasarPerhitunganBpjsKsNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getDasarPerhitunganBpjsKsNilai(),"###,###") : "");
-        pegawaiPayroll.setDasarPerhitunganBpjsTk(pegawaiPayroll.getDasarPerhitunganBpjsTkNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getDasarPerhitunganBpjsTkNilai(),"###,###") : "");
+        pegawaiPayroll.setDasarPerhitunganBpjsKs(pegawaiPayroll.getDasarPerhitunganBpjsKsNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getDasarPerhitunganBpjsKsNilai(), "###,###") : "");
+        pegawaiPayroll.setDasarPerhitunganBpjsTk(pegawaiPayroll.getDasarPerhitunganBpjsTkNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getDasarPerhitunganBpjsTkNilai(), "###,###") : "");
 
         pegawaiPayroll.setPtkpPegawaiNilai(itHrisPayrollTempEntity.getPtkpPegawai());
-        pegawaiPayroll.setPtkpPegawai(pegawaiPayroll.getPtkpPegawaiNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPtkpPegawaiNilai(),"###,###") : "");
+        pegawaiPayroll.setPtkpPegawai(pegawaiPayroll.getPtkpPegawaiNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPtkpPegawaiNilai(), "###,###") : "");
 
         pegawaiPayroll.setIuranBpjsKsKaryNilai(itHrisPayrollTempEntity.getIuranBpjsKsKary());
         pegawaiPayroll.setIuranBpjsKsPersNilai(itHrisPayrollTempEntity.getIuranBpjsKsPers());
 
-        pegawaiPayroll.setIuranBpjsKsKary(pegawaiPayroll.getIuranBpjsKsKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranBpjsKsKaryNilai(),"###,###") : "");
-        pegawaiPayroll.setIuranBpjsKsPers(pegawaiPayroll.getIuranBpjsKsPersNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranBpjsKsPersNilai(),"###,###") : "");
+        pegawaiPayroll.setIuranBpjsKsKary(pegawaiPayroll.getIuranBpjsKsKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranBpjsKsKaryNilai(), "###,###") : "");
+        pegawaiPayroll.setIuranBpjsKsPers(pegawaiPayroll.getIuranBpjsKsPersNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranBpjsKsPersNilai(), "###,###") : "");
 
         pegawaiPayroll.setIuranBpjsTkKaryNilai(itHrisPayrollTempEntity.getIuranBpjsTkKary());
         pegawaiPayroll.setJpkBpjsTkKaryNilai(itHrisPayrollTempEntity.getJpkBpjsTkKary());
@@ -987,12 +989,12 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         pegawaiPayroll.setJkmBpjsTkPershNilai(itHrisPayrollTempEntity.getJkmBpjsTkPers());
         pegawaiPayroll.setJpkBpjsTkPershNilai(itHrisPayrollTempEntity.getJpkBpjsTkPers());
 
-        pegawaiPayroll.setIuranBpjsTkKary(pegawaiPayroll.getIuranBpjsTkKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranBpjsTkKaryNilai(),"###,###") : "");
-        pegawaiPayroll.setJpkBpjsTkKary(pegawaiPayroll.getJpkBpjsTkKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getJpkBpjsTkKaryNilai(),"###,###") : "");
-        pegawaiPayroll.setJkkBpjsTkPersh(pegawaiPayroll.getJkkBpjsTkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getJkkBpjsTkPershNilai(),"###,###") : "");
-        pegawaiPayroll.setJhtBpjsTkPersh(pegawaiPayroll.getJhtBpjsTkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getJhtBpjsTkPershNilai(),"###,###") : "");
-        pegawaiPayroll.setJkmBpjsTkPersh(pegawaiPayroll.getJkmBpjsTkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getJkmBpjsTkPershNilai(),"###,###") : "");
-        pegawaiPayroll.setJpkBpjsTkPersh(pegawaiPayroll.getJpkBpjsTkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getJpkBpjsTkPershNilai(),"###,###") : "");
+        pegawaiPayroll.setIuranBpjsTkKary(pegawaiPayroll.getIuranBpjsTkKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranBpjsTkKaryNilai(), "###,###") : "");
+        pegawaiPayroll.setJpkBpjsTkKary(pegawaiPayroll.getJpkBpjsTkKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getJpkBpjsTkKaryNilai(), "###,###") : "");
+        pegawaiPayroll.setJkkBpjsTkPersh(pegawaiPayroll.getJkkBpjsTkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getJkkBpjsTkPershNilai(), "###,###") : "");
+        pegawaiPayroll.setJhtBpjsTkPersh(pegawaiPayroll.getJhtBpjsTkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getJhtBpjsTkPershNilai(), "###,###") : "");
+        pegawaiPayroll.setJkmBpjsTkPersh(pegawaiPayroll.getJkmBpjsTkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getJkmBpjsTkPershNilai(), "###,###") : "");
+        pegawaiPayroll.setJpkBpjsTkPersh(pegawaiPayroll.getJpkBpjsTkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getJpkBpjsTkPershNilai(), "###,###") : "");
 
         pegawaiPayroll.setThpNilai(itHrisPayrollTempEntity.getThp());
         pegawaiPayroll.setGajiKotorNilai(itHrisPayrollTempEntity.getGajiKotor());
@@ -1007,22 +1009,22 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         pegawaiPayroll.setTotalTunjPeralihanNilai(itHrisPayrollTempEntity.getTunjanganPeralihan());
         pegawaiPayroll.setTunjanganLainNilai(itHrisPayrollTempEntity.getTunjanganLain());
 
-        pegawaiPayroll.setThp(pegawaiPayroll.getThpNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getThpNilai(),"###,###") : "");
-        pegawaiPayroll.setGajiBersih(pegawaiPayroll.getGajiBersihNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getGajiBersihNilai(),"###,###") : "");
-        pegawaiPayroll.setComponentA(pegawaiPayroll.getComponentANilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getComponentANilai(),"###,###") : "");
-        pegawaiPayroll.setComponentB(pegawaiPayroll.getComponentBNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getComponentBNilai(),"###,###") : "");
-        pegawaiPayroll.setComponentC(pegawaiPayroll.getComponentCNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getComponentCNilai(),"###,###") : "");
-        pegawaiPayroll.setTotalRLAB(pegawaiPayroll.getTotalRLABNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalRLABNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjanganBpjsKs(pegawaiPayroll.getTunjanganBpjsKsNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjanganBpjsKsNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjanganBpjsTk(pegawaiPayroll.getTunjanganBpjsTkNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjanganBpjsTkNilai(),"###,###") : "");
-        pegawaiPayroll.setTotalTunjPeralihan(pegawaiPayroll.getTotalTunjPeralihanNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalTunjPeralihanNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjanganLain(pegawaiPayroll.getTunjanganLainNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjanganLainNilai(),"###,###") : "");
+        pegawaiPayroll.setThp(pegawaiPayroll.getThpNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getThpNilai(), "###,###") : "");
+        pegawaiPayroll.setGajiBersih(pegawaiPayroll.getGajiBersihNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getGajiBersihNilai(), "###,###") : "");
+        pegawaiPayroll.setComponentA(pegawaiPayroll.getComponentANilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getComponentANilai(), "###,###") : "");
+        pegawaiPayroll.setComponentB(pegawaiPayroll.getComponentBNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getComponentBNilai(), "###,###") : "");
+        pegawaiPayroll.setComponentC(pegawaiPayroll.getComponentCNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getComponentCNilai(), "###,###") : "");
+        pegawaiPayroll.setTotalRLAB(pegawaiPayroll.getTotalRLABNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalRLABNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjanganBpjsKs(pegawaiPayroll.getTunjanganBpjsKsNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjanganBpjsKsNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjanganBpjsTk(pegawaiPayroll.getTunjanganBpjsTkNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjanganBpjsTkNilai(), "###,###") : "");
+        pegawaiPayroll.setTotalTunjPeralihan(pegawaiPayroll.getTotalTunjPeralihanNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalTunjPeralihanNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjanganLain(pegawaiPayroll.getTunjanganLainNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjanganLainNilai(), "###,###") : "");
 
         pegawaiPayroll.setTotalIuranBpjsTkKaryNilai(itHrisPayrollTempEntity.getTotalIuranBpjsTkKary());
         pegawaiPayroll.setTotalIuranBpjsTkPersNilai(itHrisPayrollTempEntity.getTotalIuranBpjsTkPers());
 
-        pegawaiPayroll.setTotalIuranBpjsTkKary(pegawaiPayroll.getTotalIuranBpjsTkKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalIuranBpjsTkKaryNilai(),"###,###") : "");
-        pegawaiPayroll.setTotalIuranBpjsTkPers(pegawaiPayroll.getTotalIuranBpjsTkPersNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalIuranBpjsTkPersNilai(),"###,###") : "");
+        pegawaiPayroll.setTotalIuranBpjsTkKary(pegawaiPayroll.getTotalIuranBpjsTkKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalIuranBpjsTkKaryNilai(), "###,###") : "");
+        pegawaiPayroll.setTotalIuranBpjsTkPers(pegawaiPayroll.getTotalIuranBpjsTkPersNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalIuranBpjsTkPersNilai(), "###,###") : "");
 
         Set<ItHrisPayrollPphTempEntity> itHrisPayrollPphTempEntitySet = itHrisPayrollTempEntity.getItHrisPayrollPphTemp();
 
@@ -1039,10 +1041,10 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             payrollPph.setBrutoNilai(itHrisPayrollPphTempEntity.getBruto());
             payrollPph.setReduceNilai(itHrisPayrollPphTempEntity.getReduce());
 
-            payrollPph.setPkp(payrollPph.getPkpNilai() != null ? CommonUtil.numbericFormat(payrollPph.getPkpNilai(),"###,###") : "");
-            payrollPph.setPphGaji(payrollPph.getPphGajiNilai() != null ? CommonUtil.numbericFormat(payrollPph.getPphGajiNilai(),"###,###") : "");
-            payrollPph.setBruto(payrollPph.getBrutoNilai() != null ? CommonUtil.numbericFormat(payrollPph.getBrutoNilai(),"###,###") : "");
-            payrollPph.setTunjanganPphBulan(payrollPph.getTunjanganPphNilaiBulan() != null ? CommonUtil.numbericFormat(payrollPph.getTunjanganPphNilaiBulan(),"###,###") : "");
+            payrollPph.setPkp(payrollPph.getPkpNilai() != null ? CommonUtil.numbericFormat(payrollPph.getPkpNilai(), "###,###") : "");
+            payrollPph.setPphGaji(payrollPph.getPphGajiNilai() != null ? CommonUtil.numbericFormat(payrollPph.getPphGajiNilai(), "###,###") : "");
+            payrollPph.setBruto(payrollPph.getBrutoNilai() != null ? CommonUtil.numbericFormat(payrollPph.getBrutoNilai(), "###,###") : "");
+            payrollPph.setTunjanganPphBulan(payrollPph.getTunjanganPphNilaiBulan() != null ? CommonUtil.numbericFormat(payrollPph.getTunjanganPphNilaiBulan(), "###,###") : "");
 
             payrollPph.setNip(itHrisPayrollPphTempEntity.getNip());
             payrollPph.setBulan(itHrisPayrollPphTempEntity.getBulan());
@@ -1053,8 +1055,8 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             payrollPph.setHutangPphNilai(itHrisPayrollPphTempEntity.getHutangPphSetahun());
             payrollPph.setSelisihPphNilai(itHrisPayrollPphTempEntity.getSelisihPphSetahun());
 
-            payrollPph.setHutangPph(payrollPph.getHutangPphNilai() != null ? CommonUtil.numbericFormat(payrollPph.getHutangPphNilai(),"###,###") : "");
-            payrollPph.setSelisihPph(payrollPph.getSelisihPphNilai() != null ? CommonUtil.numbericFormat(payrollPph.getSelisihPphNilai(),"###,###") : "");
+            payrollPph.setHutangPph(payrollPph.getHutangPphNilai() != null ? CommonUtil.numbericFormat(payrollPph.getHutangPphNilai(), "###,###") : "");
+            payrollPph.setSelisihPph(payrollPph.getSelisihPphNilai() != null ? CommonUtil.numbericFormat(payrollPph.getSelisihPphNilai(), "###,###") : "");
 
             payrollPph.setGajiNilai(itHrisPayrollPphTempEntity.getGaji());
             payrollPph.setSankhusNilai(itHrisPayrollPphTempEntity.getSankhus());
@@ -1138,8 +1140,8 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         pegawaiPayroll.setPersenDapenKaryNilai(itHrisPayrollEntity.getPersenDapenKary());
         pegawaiPayroll.setPersenDapenPershNilai(itHrisPayrollEntity.getPersenDapenPers());
 
-        pegawaiPayroll.setPersenDapenKary(pegawaiPayroll.getPersenDapenKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenDapenKaryNilai(),"###,###") : "");
-        pegawaiPayroll.setPersenDapenPersh(pegawaiPayroll.getPersenDapenPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenDapenPershNilai(),"###,###") : "");
+        pegawaiPayroll.setPersenDapenKary(pegawaiPayroll.getPersenDapenKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenDapenKaryNilai(), "###,###") : "");
+        pegawaiPayroll.setPersenDapenPersh(pegawaiPayroll.getPersenDapenPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenDapenPershNilai(), "###,###") : "");
 
         pegawaiPayroll.setGajiPensiunNilai(itHrisPayrollEntity.getGajiPensiun());
         pegawaiPayroll.setGajiPokokNilai(itHrisPayrollEntity.getGajiPokok());
@@ -1156,36 +1158,36 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         pegawaiPayroll.setIuranDapenPershNilai(itHrisPayrollEntity.getIuranDapenPers());
         pegawaiPayroll.setIuranDapenKaryNilai(itHrisPayrollEntity.getIuranDapenKary());
 
-        pegawaiPayroll.setGajiPensiun(pegawaiPayroll.getGajiPensiunNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getGajiPensiunNilai(),"###,###") : "");
-        pegawaiPayroll.setGajiPokok(pegawaiPayroll.getGajiPokokNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getGajiPokokNilai(),"###,###") : "");
-        pegawaiPayroll.setSantunanKhusus(pegawaiPayroll.getSantunanKhususNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getSantunanKhususNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjRumah(pegawaiPayroll.getTunjRumahNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjRumahNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjListrik(pegawaiPayroll.getTunjListrikNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjListrikNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjAir(pegawaiPayroll.getTunjAirNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjAirNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjBbm(pegawaiPayroll.getTunjBbmNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjBbmNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjJabatan(pegawaiPayroll.getTunjJabatanNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjJabatanNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjStruktural(pegawaiPayroll.getTunjStrukturalNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjStrukturalNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjFungsional(pegawaiPayroll.getTunjFungsionalNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjFungsionalNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjTambahan(pegawaiPayroll.getTunjTambahanNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjTambahanNilai(),"###,###") : "");
-        pegawaiPayroll.setGajiPensiun(pegawaiPayroll.getGajiPensiunNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getGajiPensiunNilai(),"###,###") : "");
-        pegawaiPayroll.setIuranDapenPersh(pegawaiPayroll.getIuranDapenPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranDapenPershNilai(),"###,###") : "");
-        pegawaiPayroll.setIuranDapenKary(pegawaiPayroll.getIuranDapenKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranDapenKaryNilai(),"###,###") : "");
+        pegawaiPayroll.setGajiPensiun(pegawaiPayroll.getGajiPensiunNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getGajiPensiunNilai(), "###,###") : "");
+        pegawaiPayroll.setGajiPokok(pegawaiPayroll.getGajiPokokNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getGajiPokokNilai(), "###,###") : "");
+        pegawaiPayroll.setSantunanKhusus(pegawaiPayroll.getSantunanKhususNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getSantunanKhususNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjRumah(pegawaiPayroll.getTunjRumahNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjRumahNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjListrik(pegawaiPayroll.getTunjListrikNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjListrikNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjAir(pegawaiPayroll.getTunjAirNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjAirNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjBbm(pegawaiPayroll.getTunjBbmNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjBbmNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjJabatan(pegawaiPayroll.getTunjJabatanNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjJabatanNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjStruktural(pegawaiPayroll.getTunjStrukturalNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjStrukturalNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjFungsional(pegawaiPayroll.getTunjFungsionalNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjFungsionalNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjTambahan(pegawaiPayroll.getTunjTambahanNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjTambahanNilai(), "###,###") : "");
+        pegawaiPayroll.setGajiPensiun(pegawaiPayroll.getGajiPensiunNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getGajiPensiunNilai(), "###,###") : "");
+        pegawaiPayroll.setIuranDapenPersh(pegawaiPayroll.getIuranDapenPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranDapenPershNilai(), "###,###") : "");
+        pegawaiPayroll.setIuranDapenKary(pegawaiPayroll.getIuranDapenKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranDapenKaryNilai(), "###,###") : "");
 
         pegawaiPayroll.setTunjanganDapenNilai(itHrisPayrollEntity.getTunjanganDapen());
         pegawaiPayroll.setTunjanganPphNilai(itHrisPayrollEntity.getTunjanganPph());
         pegawaiPayroll.setPphGajiNilai(itHrisPayrollEntity.getPphGaji());
 
-        pegawaiPayroll.setTunjanganDapen(pegawaiPayroll.getTunjanganDapenNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjanganDapenNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjanganPph(pegawaiPayroll.getTunjanganPphNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjanganPphNilai(),"###,###") : "");
-        pegawaiPayroll.setPphGaji(pegawaiPayroll.getPphGajiNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPphGajiNilai(),"###,###") : "");
+        pegawaiPayroll.setTunjanganDapen(pegawaiPayroll.getTunjanganDapenNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjanganDapenNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjanganPph(pegawaiPayroll.getTunjanganPphNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjanganPphNilai(), "###,###") : "");
+        pegawaiPayroll.setPphGaji(pegawaiPayroll.getPphGajiNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPphGajiNilai(), "###,###") : "");
 
         pegawaiPayroll.setTunjPeralihanGapokNilai(itHrisPayrollEntity.getPeralihanGapok());
         pegawaiPayroll.setTunjPeralihanSankhusNilai(itHrisPayrollEntity.getPeralihanSankhus());
         pegawaiPayroll.setTunjPeralihanTunjNilai(itHrisPayrollEntity.getPeralihanTunjangan());
 
-        pegawaiPayroll.setTunjPeralihanGapok(pegawaiPayroll.getTunjPeralihanGapokNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjPeralihanGapokNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjPeralihanSankhus(pegawaiPayroll.getTunjPeralihanSankhusNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjPeralihanSankhusNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjPeralihanTunj(pegawaiPayroll.getTunjPeralihanTunjNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjPeralihanTunjNilai(),"###,###") : "");
+        pegawaiPayroll.setTunjPeralihanGapok(pegawaiPayroll.getTunjPeralihanGapokNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjPeralihanGapokNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjPeralihanSankhus(pegawaiPayroll.getTunjPeralihanSankhusNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjPeralihanSankhusNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjPeralihanTunj(pegawaiPayroll.getTunjPeralihanTunjNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjPeralihanTunjNilai(), "###,###") : "");
 
         pegawaiPayroll.setTunjKomunikasiNilai(itHrisPayrollEntity.getTunjanganKomunikasi());
         pegawaiPayroll.setTunjPemondokanNilai(itHrisPayrollEntity.getTunjanganPemondokan());
@@ -1194,15 +1196,15 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         pegawaiPayroll.setTunjLokalNilai(itHrisPayrollEntity.getTunjanganLokal());
         pegawaiPayroll.setTunjSiagaNilai(itHrisPayrollEntity.getTunjanganSiaga());
 
-        pegawaiPayroll.setTunjKomunikasi(pegawaiPayroll.getTunjKomunikasiNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjKomunikasiNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjPemondokan(pegawaiPayroll.getTunjPemondokanNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjPemondokanNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjLembur(pegawaiPayroll.getTunjLemburNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjLemburNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjSupervisi(pegawaiPayroll.getTunjSupervisiNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjSupervisiNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjLokal(pegawaiPayroll.getTunjLokalNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjLokalNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjSiaga(pegawaiPayroll.getTunjSiagaNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjSiagaNilai(),"###,###") : "");
+        pegawaiPayroll.setTunjKomunikasi(pegawaiPayroll.getTunjKomunikasiNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjKomunikasiNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjPemondokan(pegawaiPayroll.getTunjPemondokanNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjPemondokanNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjLembur(pegawaiPayroll.getTunjLemburNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjLemburNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjSupervisi(pegawaiPayroll.getTunjSupervisiNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjSupervisiNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjLokal(pegawaiPayroll.getTunjLokalNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjLokalNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjSiaga(pegawaiPayroll.getTunjSiagaNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjSiagaNilai(), "###,###") : "");
 
         pegawaiPayroll.setKopkarNilai(itHrisPayrollEntity.getIuranKopkar());
-        pegawaiPayroll.setKopkar(pegawaiPayroll.getKopkarNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getKopkarNilai(),"###,###") : "");
+        pegawaiPayroll.setKopkar(pegawaiPayroll.getKopkarNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getKopkarNilai(), "###,###") : "");
 
         pegawaiPayroll.setIuranSpNilai(itHrisPayrollEntity.getIuranSp());
         pegawaiPayroll.setIuranPiikbNilai(itHrisPayrollEntity.getIuranPiikb());
@@ -1214,49 +1216,49 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         pegawaiPayroll.setIuranProfesiNilai(itHrisPayrollEntity.getIuranProfesi());
         pegawaiPayroll.setPotonganLainNilai(itHrisPayrollEntity.getIuranPotonganLain());
 
-        pegawaiPayroll.setIuranSp(pegawaiPayroll.getIuranSpNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranSpNilai(),"###,###") : "");
-        pegawaiPayroll.setIuranPiikb(pegawaiPayroll.getIuranPiikbNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranPiikbNilai(),"###,###") : "");
-        pegawaiPayroll.setBankMandiri(pegawaiPayroll.getBankMandiriNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getBankMandiriNilai(),"###,###") : "");
-        pegawaiPayroll.setBankBri(pegawaiPayroll.getBankBriNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getBankBriNilai(),"###,###") : "");
-        pegawaiPayroll.setInfaq(pegawaiPayroll.getInfaqNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getInfaqNilai(),"###,###") : "");
-        pegawaiPayroll.setPerkesDanObat(pegawaiPayroll.getPerkesDanObatNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPerkesDanObatNilai(),"###,###") : "");
-        pegawaiPayroll.setListrik(pegawaiPayroll.getListrikNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getListrikNilai(),"###,###") : "");
-        pegawaiPayroll.setIuranProfesi(pegawaiPayroll.getIuranProfesiNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranProfesiNilai(),"###,###") : "");
-        pegawaiPayroll.setPotonganLain(pegawaiPayroll.getPotonganLainNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPotonganLainNilai(),"###,###") : "");
+        pegawaiPayroll.setIuranSp(pegawaiPayroll.getIuranSpNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranSpNilai(), "###,###") : "");
+        pegawaiPayroll.setIuranPiikb(pegawaiPayroll.getIuranPiikbNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranPiikbNilai(), "###,###") : "");
+        pegawaiPayroll.setBankMandiri(pegawaiPayroll.getBankMandiriNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getBankMandiriNilai(), "###,###") : "");
+        pegawaiPayroll.setBankBri(pegawaiPayroll.getBankBriNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getBankBriNilai(), "###,###") : "");
+        pegawaiPayroll.setInfaq(pegawaiPayroll.getInfaqNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getInfaqNilai(), "###,###") : "");
+        pegawaiPayroll.setPerkesDanObat(pegawaiPayroll.getPerkesDanObatNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPerkesDanObatNilai(), "###,###") : "");
+        pegawaiPayroll.setListrik(pegawaiPayroll.getListrikNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getListrikNilai(), "###,###") : "");
+        pegawaiPayroll.setIuranProfesi(pegawaiPayroll.getIuranProfesiNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranProfesiNilai(), "###,###") : "");
+        pegawaiPayroll.setPotonganLain(pegawaiPayroll.getPotonganLainNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPotonganLainNilai(), "###,###") : "");
 
         pegawaiPayroll.setMinBpjsKsNilai(itHrisPayrollEntity.getMinBpjsKs());
         pegawaiPayroll.setMaxBpjsKsNilai(itHrisPayrollEntity.getMaxBpjsKs());
 
-        pegawaiPayroll.setMinBpjsKs(pegawaiPayroll.getMinBpjsKsNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getMinBpjsKsNilai(),"###,###") : "");
-        pegawaiPayroll.setMaxBpjsKs(pegawaiPayroll.getMaxBpjsKsNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getMaxBpjsKsNilai(),"###,###") : "");
+        pegawaiPayroll.setMinBpjsKs(pegawaiPayroll.getMinBpjsKsNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getMinBpjsKsNilai(), "###,###") : "");
+        pegawaiPayroll.setMaxBpjsKs(pegawaiPayroll.getMaxBpjsKsNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getMaxBpjsKsNilai(), "###,###") : "");
 
         pegawaiPayroll.setPersenBpjsKsKaryNilai(itHrisPayrollEntity.getPersenBpjsKsKary());
         pegawaiPayroll.setPersenBpjsKsPershNilai(itHrisPayrollEntity.getPersenBpjsKsPers());
 
-        pegawaiPayroll.setPersenBpjsKsKary(pegawaiPayroll.getPersenBpjsKsKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsKsKaryNilai(),"###,###") : "");
-        pegawaiPayroll.setPersenBpjsKsPersh(pegawaiPayroll.getPersenBpjsKsPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsKsPershNilai(),"###,###") : "");
+        pegawaiPayroll.setPersenBpjsKsKary(pegawaiPayroll.getPersenBpjsKsKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsKsKaryNilai(), "###,###") : "");
+        pegawaiPayroll.setPersenBpjsKsPersh(pegawaiPayroll.getPersenBpjsKsPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsKsPershNilai(), "###,###") : "");
 
         pegawaiPayroll.setMinBpjsTkNilai(itHrisPayrollEntity.getMinBpjsTk());
         pegawaiPayroll.setMaxBpjsTkNilai(itHrisPayrollEntity.getMaxBpjsTk());
 
-        pegawaiPayroll.setMinBpjsTk(pegawaiPayroll.getMinBpjsTkNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getMinBpjsTkNilai(),"###,###") : "");
-        pegawaiPayroll.setMaxBpjsTk(pegawaiPayroll.getMaxBpjsTkNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getMaxBpjsTkNilai(),"###,###") : "");
+        pegawaiPayroll.setMinBpjsTk(pegawaiPayroll.getMinBpjsTkNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getMinBpjsTkNilai(), "###,###") : "");
+        pegawaiPayroll.setMaxBpjsTk(pegawaiPayroll.getMaxBpjsTkNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getMaxBpjsTkNilai(), "###,###") : "");
 
         pegawaiPayroll.setPersenBpjsTkIuranKaryNilai(itHrisPayrollEntity.getPersenBpjsTkIuranKary());
         pegawaiPayroll.setPersenBpjsTkJpkKaryNilai(itHrisPayrollEntity.getPersenBpjsTkJpkKary());
 
-        pegawaiPayroll.setPersenBpjsTkIuranKary(pegawaiPayroll.getPersenBpjsTkIuranKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkIuranKaryNilai(),"###,###") : "");
-        pegawaiPayroll.setPersenBpjsTkJpkKary(pegawaiPayroll.getPersenBpjsTkJpkKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkJpkKaryNilai(),"###,###") : "");
+        pegawaiPayroll.setPersenBpjsTkIuranKary(pegawaiPayroll.getPersenBpjsTkIuranKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkIuranKaryNilai(), "###,###") : "");
+        pegawaiPayroll.setPersenBpjsTkJpkKary(pegawaiPayroll.getPersenBpjsTkJpkKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkJpkKaryNilai(), "###,###") : "");
 
         pegawaiPayroll.setPersenBpjsTkJkkPershNilai(itHrisPayrollEntity.getPersenBpjsTkJkkPers());
         pegawaiPayroll.setPersenBpjsTkJhtPershNilai(itHrisPayrollEntity.getPersenBpjsTkJhtPers());
         pegawaiPayroll.setPersenBpjsTkJkmPershNilai(itHrisPayrollEntity.getPersenBpjsTkJkmPers());
         pegawaiPayroll.setPersenBpjsTkJpkPershNilai(itHrisPayrollEntity.getPersenBpjsTkJpkPers());
 
-        pegawaiPayroll.setPersenBpjsTkJkkPersh(pegawaiPayroll.getPersenBpjsTkJkkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkJkkPershNilai(),"###,###") : "");
-        pegawaiPayroll.setPersenBpjsTkJhtPersh(pegawaiPayroll.getPersenBpjsTkJhtPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkJhtPershNilai(),"###,###") : "");
-        pegawaiPayroll.setPersenBpjsTkJkmPersh(pegawaiPayroll.getPersenBpjsTkJkmPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkJkmPershNilai(),"###,###") : "");
-        pegawaiPayroll.setPersenBpjsTkJpkPersh(pegawaiPayroll.getPersenBpjsTkJpkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkJpkPershNilai(),"###,###") : "");
+        pegawaiPayroll.setPersenBpjsTkJkkPersh(pegawaiPayroll.getPersenBpjsTkJkkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkJkkPershNilai(), "###,###") : "");
+        pegawaiPayroll.setPersenBpjsTkJhtPersh(pegawaiPayroll.getPersenBpjsTkJhtPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkJhtPershNilai(), "###,###") : "");
+        pegawaiPayroll.setPersenBpjsTkJkmPersh(pegawaiPayroll.getPersenBpjsTkJkmPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkJkmPershNilai(), "###,###") : "");
+        pegawaiPayroll.setPersenBpjsTkJpkPersh(pegawaiPayroll.getPersenBpjsTkJpkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPersenBpjsTkJpkPershNilai(), "###,###") : "");
 
         pegawaiPayroll.setStatusKeluarga(itHrisPayrollEntity.getStatusKeluarga());
         pegawaiPayroll.setJumlahAnak(itHrisPayrollEntity.getJumlahAnak());
@@ -1273,35 +1275,35 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         pegawaiPayroll.setTanggalPensiun(itHrisPayrollEntity.getTanggalPensiun());
         pegawaiPayroll.setTanggalKeluar(itHrisPayrollEntity.getTanggalKeluar());
 
-        pegawaiPayroll.setStTanggalAktif(pegawaiPayroll.getTanggalAktif()!=null ? CommonUtil.simpleDateFormat(pegawaiPayroll.getTanggalAktif()) : "");
-        pegawaiPayroll.setStTanggalAkhirKontrak(pegawaiPayroll.getTanggalAkhirKontrak()!=null ? CommonUtil.simpleDateFormat(pegawaiPayroll.getTanggalAkhirKontrak()) : "");
-        pegawaiPayroll.setStTanggalPraPensiun(pegawaiPayroll.getTanggalPraPensiun()!=null ? CommonUtil.simpleDateFormat(pegawaiPayroll.getTanggalPraPensiun()) : "");
-        pegawaiPayroll.setStTanggalPensiun(pegawaiPayroll.getTanggalPensiun()!=null ? CommonUtil.simpleDateFormat(pegawaiPayroll.getTanggalPensiun()) : "");
-        pegawaiPayroll.setStTanggalKeluar(pegawaiPayroll.getTanggalKeluar()!=null ? CommonUtil.simpleDateFormat(pegawaiPayroll.getTanggalKeluar()) : "");
+        pegawaiPayroll.setStTanggalAktif(pegawaiPayroll.getTanggalAktif() != null ? CommonUtil.simpleDateFormat(pegawaiPayroll.getTanggalAktif()) : "");
+        pegawaiPayroll.setStTanggalAkhirKontrak(pegawaiPayroll.getTanggalAkhirKontrak() != null ? CommonUtil.simpleDateFormat(pegawaiPayroll.getTanggalAkhirKontrak()) : "");
+        pegawaiPayroll.setStTanggalPraPensiun(pegawaiPayroll.getTanggalPraPensiun() != null ? CommonUtil.simpleDateFormat(pegawaiPayroll.getTanggalPraPensiun()) : "");
+        pegawaiPayroll.setStTanggalPensiun(pegawaiPayroll.getTanggalPensiun() != null ? CommonUtil.simpleDateFormat(pegawaiPayroll.getTanggalPensiun()) : "");
+        pegawaiPayroll.setStTanggalKeluar(pegawaiPayroll.getTanggalKeluar() != null ? CommonUtil.simpleDateFormat(pegawaiPayroll.getTanggalKeluar()) : "");
 
         pegawaiPayroll.setKodering(itHrisPayrollEntity.getKodering());
         pegawaiPayroll.setGender(itHrisPayrollEntity.getGender());
 
         pegawaiPayroll.setUmrNilai(itHrisPayrollEntity.getUmr());
-        pegawaiPayroll.setUmr(pegawaiPayroll.getUmrNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getUmrNilai(),"###,###") : "");
+        pegawaiPayroll.setUmr(pegawaiPayroll.getUmrNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getUmrNilai(), "###,###") : "");
 
         pegawaiPayroll.setMultifikatorNilai(itHrisPayrollEntity.getMultifikator());
-        pegawaiPayroll.setMultifikator(pegawaiPayroll.getMultifikatorNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getMultifikatorNilai(),"###,###") : "");
+        pegawaiPayroll.setMultifikator(pegawaiPayroll.getMultifikatorNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getMultifikatorNilai(), "###,###") : "");
 
         pegawaiPayroll.setDasarPerhitunganBpjsKsNilai(itHrisPayrollEntity.getDasarBpjsKs());
         pegawaiPayroll.setDasarPerhitunganBpjsTkNilai(itHrisPayrollEntity.getDasarBpjsTk());
 
-        pegawaiPayroll.setDasarPerhitunganBpjsKs(pegawaiPayroll.getDasarPerhitunganBpjsKsNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getDasarPerhitunganBpjsKsNilai(),"###,###") : "");
-        pegawaiPayroll.setDasarPerhitunganBpjsTk(pegawaiPayroll.getDasarPerhitunganBpjsTkNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getDasarPerhitunganBpjsTkNilai(),"###,###") : "");
+        pegawaiPayroll.setDasarPerhitunganBpjsKs(pegawaiPayroll.getDasarPerhitunganBpjsKsNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getDasarPerhitunganBpjsKsNilai(), "###,###") : "");
+        pegawaiPayroll.setDasarPerhitunganBpjsTk(pegawaiPayroll.getDasarPerhitunganBpjsTkNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getDasarPerhitunganBpjsTkNilai(), "###,###") : "");
 
         pegawaiPayroll.setPtkpPegawaiNilai(itHrisPayrollEntity.getPtkpPegawai());
-        pegawaiPayroll.setPtkpPegawai(pegawaiPayroll.getPtkpPegawaiNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPtkpPegawaiNilai(),"###,###") : "");
+        pegawaiPayroll.setPtkpPegawai(pegawaiPayroll.getPtkpPegawaiNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPtkpPegawaiNilai(), "###,###") : "");
 
         pegawaiPayroll.setIuranBpjsKsKaryNilai(itHrisPayrollEntity.getIuranBpjsKsKary());
         pegawaiPayroll.setIuranBpjsKsPersNilai(itHrisPayrollEntity.getIuranBpjsKsPers());
 
-        pegawaiPayroll.setIuranBpjsKsKary(pegawaiPayroll.getIuranBpjsKsKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranBpjsKsKaryNilai(),"###,###") : "");
-        pegawaiPayroll.setIuranBpjsKsPers(pegawaiPayroll.getIuranBpjsKsPersNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranBpjsKsPersNilai(),"###,###") : "");
+        pegawaiPayroll.setIuranBpjsKsKary(pegawaiPayroll.getIuranBpjsKsKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranBpjsKsKaryNilai(), "###,###") : "");
+        pegawaiPayroll.setIuranBpjsKsPers(pegawaiPayroll.getIuranBpjsKsPersNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranBpjsKsPersNilai(), "###,###") : "");
 
         pegawaiPayroll.setIuranBpjsTkKaryNilai(itHrisPayrollEntity.getIuranBpjsTkKary());
         pegawaiPayroll.setJpkBpjsTkKaryNilai(itHrisPayrollEntity.getJpkBpjsTkKary());
@@ -1310,12 +1312,12 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         pegawaiPayroll.setJkmBpjsTkPershNilai(itHrisPayrollEntity.getJkmBpjsTkPers());
         pegawaiPayroll.setJpkBpjsTkPershNilai(itHrisPayrollEntity.getJpkBpjsTkPers());
 
-        pegawaiPayroll.setIuranBpjsTkKary(pegawaiPayroll.getIuranBpjsTkKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranBpjsTkKaryNilai(),"###,###") : "");
-        pegawaiPayroll.setJpkBpjsTkKary(pegawaiPayroll.getJpkBpjsTkKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getJpkBpjsTkKaryNilai(),"###,###") : "");
-        pegawaiPayroll.setJkkBpjsTkPersh(pegawaiPayroll.getJkkBpjsTkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getJkkBpjsTkPershNilai(),"###,###") : "");
-        pegawaiPayroll.setJhtBpjsTkPersh(pegawaiPayroll.getJhtBpjsTkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getJhtBpjsTkPershNilai(),"###,###") : "");
-        pegawaiPayroll.setJkmBpjsTkPersh(pegawaiPayroll.getJkmBpjsTkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getJkmBpjsTkPershNilai(),"###,###") : "");
-        pegawaiPayroll.setJpkBpjsTkPersh(pegawaiPayroll.getJpkBpjsTkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getJpkBpjsTkPershNilai(),"###,###") : "");
+        pegawaiPayroll.setIuranBpjsTkKary(pegawaiPayroll.getIuranBpjsTkKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranBpjsTkKaryNilai(), "###,###") : "");
+        pegawaiPayroll.setJpkBpjsTkKary(pegawaiPayroll.getJpkBpjsTkKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getJpkBpjsTkKaryNilai(), "###,###") : "");
+        pegawaiPayroll.setJkkBpjsTkPersh(pegawaiPayroll.getJkkBpjsTkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getJkkBpjsTkPershNilai(), "###,###") : "");
+        pegawaiPayroll.setJhtBpjsTkPersh(pegawaiPayroll.getJhtBpjsTkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getJhtBpjsTkPershNilai(), "###,###") : "");
+        pegawaiPayroll.setJkmBpjsTkPersh(pegawaiPayroll.getJkmBpjsTkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getJkmBpjsTkPershNilai(), "###,###") : "");
+        pegawaiPayroll.setJpkBpjsTkPersh(pegawaiPayroll.getJpkBpjsTkPershNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getJpkBpjsTkPershNilai(), "###,###") : "");
 
         pegawaiPayroll.setThpNilai(itHrisPayrollEntity.getThp());
         pegawaiPayroll.setGajiKotorNilai(itHrisPayrollEntity.getGajiKotor());
@@ -1330,21 +1332,21 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         pegawaiPayroll.setTotalTunjPeralihanNilai(itHrisPayrollEntity.getTunjanganPeralihan());
         pegawaiPayroll.setTunjanganLainNilai(itHrisPayrollEntity.getTunjanganLain());
 
-        pegawaiPayroll.setThp(pegawaiPayroll.getThpNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getThpNilai(),"###,###") : "");
-        pegawaiPayroll.setComponentA(pegawaiPayroll.getComponentANilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getComponentANilai(),"###,###") : "");
-        pegawaiPayroll.setComponentB(pegawaiPayroll.getComponentBNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getComponentBNilai(),"###,###") : "");
-        pegawaiPayroll.setComponentC(pegawaiPayroll.getComponentCNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getComponentCNilai(),"###,###") : "");
-        pegawaiPayroll.setTotalRLAB(pegawaiPayroll.getTotalRLABNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalRLABNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjanganBpjsKs(pegawaiPayroll.getTunjanganBpjsKsNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjanganBpjsKsNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjanganBpjsTk(pegawaiPayroll.getTunjanganBpjsTkNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjanganBpjsTkNilai(),"###,###") : "");
-        pegawaiPayroll.setTotalTunjPeralihan(pegawaiPayroll.getTotalTunjPeralihanNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalTunjPeralihanNilai(),"###,###") : "");
-        pegawaiPayroll.setTunjanganLain(pegawaiPayroll.getTunjanganLainNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjanganLainNilai(),"###,###") : "");
+        pegawaiPayroll.setThp(pegawaiPayroll.getThpNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getThpNilai(), "###,###") : "");
+        pegawaiPayroll.setComponentA(pegawaiPayroll.getComponentANilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getComponentANilai(), "###,###") : "");
+        pegawaiPayroll.setComponentB(pegawaiPayroll.getComponentBNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getComponentBNilai(), "###,###") : "");
+        pegawaiPayroll.setComponentC(pegawaiPayroll.getComponentCNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getComponentCNilai(), "###,###") : "");
+        pegawaiPayroll.setTotalRLAB(pegawaiPayroll.getTotalRLABNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalRLABNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjanganBpjsKs(pegawaiPayroll.getTunjanganBpjsKsNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjanganBpjsKsNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjanganBpjsTk(pegawaiPayroll.getTunjanganBpjsTkNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjanganBpjsTkNilai(), "###,###") : "");
+        pegawaiPayroll.setTotalTunjPeralihan(pegawaiPayroll.getTotalTunjPeralihanNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalTunjPeralihanNilai(), "###,###") : "");
+        pegawaiPayroll.setTunjanganLain(pegawaiPayroll.getTunjanganLainNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTunjanganLainNilai(), "###,###") : "");
 
         pegawaiPayroll.setTotalIuranBpjsTkKaryNilai(itHrisPayrollEntity.getTotalIuranBpjsTkKary());
         pegawaiPayroll.setTotalIuranBpjsTkPersNilai(itHrisPayrollEntity.getTotalIuranBpjsTkPers());
 
-        pegawaiPayroll.setTotalIuranBpjsTkKary(pegawaiPayroll.getTotalIuranBpjsTkKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalIuranBpjsTkKaryNilai(),"###,###") : "");
-        pegawaiPayroll.setTotalIuranBpjsTkPers(pegawaiPayroll.getTotalIuranBpjsTkPersNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalIuranBpjsTkPersNilai(),"###,###") : "");
+        pegawaiPayroll.setTotalIuranBpjsTkKary(pegawaiPayroll.getTotalIuranBpjsTkKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalIuranBpjsTkKaryNilai(), "###,###") : "");
+        pegawaiPayroll.setTotalIuranBpjsTkPers(pegawaiPayroll.getTotalIuranBpjsTkPersNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalIuranBpjsTkPersNilai(), "###,###") : "");
 
         Set<ItHrisPayrollPphEntity> itHrisPayrollPphEntitySet = itHrisPayrollEntity.getItHrisPayrollPph();
 
@@ -1361,10 +1363,10 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             payrollPph.setBrutoNilai(itHrisPayrollPphEntity.getBruto());
             payrollPph.setReduceNilai(itHrisPayrollPphEntity.getReduce());
 
-            payrollPph.setPkp(payrollPph.getPkpNilai() != null ? CommonUtil.numbericFormat(payrollPph.getPkpNilai(),"###,###") : "");
-            payrollPph.setPphGaji(payrollPph.getPphGajiNilai() != null ? CommonUtil.numbericFormat(payrollPph.getPphGajiNilai(),"###,###") : "");
-            payrollPph.setBruto(payrollPph.getBrutoNilai() != null ? CommonUtil.numbericFormat(payrollPph.getBrutoNilai(),"###,###") : "");
-            payrollPph.setTunjanganPphBulan(payrollPph.getTunjanganPphNilaiBulan() != null ? CommonUtil.numbericFormat(payrollPph.getTunjanganPphNilaiBulan(),"###,###") : "");
+            payrollPph.setPkp(payrollPph.getPkpNilai() != null ? CommonUtil.numbericFormat(payrollPph.getPkpNilai(), "###,###") : "");
+            payrollPph.setPphGaji(payrollPph.getPphGajiNilai() != null ? CommonUtil.numbericFormat(payrollPph.getPphGajiNilai(), "###,###") : "");
+            payrollPph.setBruto(payrollPph.getBrutoNilai() != null ? CommonUtil.numbericFormat(payrollPph.getBrutoNilai(), "###,###") : "");
+            payrollPph.setTunjanganPphBulan(payrollPph.getTunjanganPphNilaiBulan() != null ? CommonUtil.numbericFormat(payrollPph.getTunjanganPphNilaiBulan(), "###,###") : "");
 
             payrollPph.setNip(itHrisPayrollPphEntity.getNip());
             payrollPph.setBulan(itHrisPayrollPphEntity.getBulan());
@@ -1375,8 +1377,8 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             payrollPph.setHutangPphNilai(itHrisPayrollPphEntity.getHutangPphSetahun());
             payrollPph.setSelisihPphNilai(itHrisPayrollPphEntity.getSelisihPphSetahun());
 
-            payrollPph.setHutangPph(payrollPph.getHutangPphNilai() != null ? CommonUtil.numbericFormat(payrollPph.getHutangPphNilai(),"###,###") : "");
-            payrollPph.setSelisihPph(payrollPph.getSelisihPphNilai() != null ? CommonUtil.numbericFormat(payrollPph.getSelisihPphNilai(),"###,###") : "");
+            payrollPph.setHutangPph(payrollPph.getHutangPphNilai() != null ? CommonUtil.numbericFormat(payrollPph.getHutangPphNilai(), "###,###") : "");
+            payrollPph.setSelisihPph(payrollPph.getSelisihPphNilai() != null ? CommonUtil.numbericFormat(payrollPph.getSelisihPphNilai(), "###,###") : "");
 
             payrollPph.setGajiNilai(itHrisPayrollPphEntity.getGaji());
             payrollPph.setSankhusNilai(itHrisPayrollPphEntity.getSankhus());
@@ -1452,8 +1454,8 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         existingPegawaiPayroll.setPersenDapenKaryNilai(refreshInitPegawaiPayroll.getPersenDapenKaryNilai());
         existingPegawaiPayroll.setPersenDapenPershNilai(refreshInitPegawaiPayroll.getPersenDapenPershNilai());
 
-        existingPegawaiPayroll.setPersenDapenKary(existingPegawaiPayroll.getPersenDapenKaryNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPersenDapenKaryNilai(),"###,###") : "");
-        existingPegawaiPayroll.setPersenDapenPersh(existingPegawaiPayroll.getPersenDapenPershNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPersenDapenPershNilai(),"###,###") : "");
+        existingPegawaiPayroll.setPersenDapenKary(existingPegawaiPayroll.getPersenDapenKaryNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPersenDapenKaryNilai(), "###,###") : "");
+        existingPegawaiPayroll.setPersenDapenPersh(existingPegawaiPayroll.getPersenDapenPershNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPersenDapenPershNilai(), "###,###") : "");
 
         existingPegawaiPayroll.setGajiPensiunNilai(refreshInitPegawaiPayroll.getGajiPensiunNilai());
         existingPegawaiPayroll.setGajiPokokNilai(refreshInitPegawaiPayroll.getGajiPokokNilai());
@@ -1470,30 +1472,30 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         existingPegawaiPayroll.setIuranDapenPershNilai(refreshInitPegawaiPayroll.getIuranDapenPershNilai());
         existingPegawaiPayroll.setIuranDapenKaryNilai(refreshInitPegawaiPayroll.getIuranDapenKaryNilai());
 
-        existingPegawaiPayroll.setGajiPensiun(existingPegawaiPayroll.getGajiPensiunNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getGajiPensiunNilai(),"###,###") : "");
-        existingPegawaiPayroll.setSantunanKhusus(existingPegawaiPayroll.getSantunanKhususNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getSantunanKhususNilai(),"###,###") : "");
-        existingPegawaiPayroll.setTunjRumah(existingPegawaiPayroll.getTunjRumahNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjRumahNilai(),"###,###") : "");
-        existingPegawaiPayroll.setTunjListrik(existingPegawaiPayroll.getTunjListrikNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjListrikNilai(),"###,###") : "");
-        existingPegawaiPayroll.setTunjAir(existingPegawaiPayroll.getTunjAirNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjAirNilai(),"###,###") : "");
-        existingPegawaiPayroll.setTunjBbm(existingPegawaiPayroll.getTunjBbmNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjBbmNilai(),"###,###") : "");
-        existingPegawaiPayroll.setTunjJabatan(existingPegawaiPayroll.getTunjJabatanNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjJabatanNilai(),"###,###") : "");
-        existingPegawaiPayroll.setTunjStruktural(existingPegawaiPayroll.getTunjStrukturalNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjStrukturalNilai(),"###,###") : "");
-        existingPegawaiPayroll.setTunjFungsional(existingPegawaiPayroll.getTunjFungsionalNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjFungsionalNilai(),"###,###") : "");
-        existingPegawaiPayroll.setTunjTambahan(existingPegawaiPayroll.getTunjTambahanNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjTambahanNilai(),"###,###") : "");
-        existingPegawaiPayroll.setGajiPensiun(existingPegawaiPayroll.getGajiPensiunNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getGajiPensiunNilai(),"###,###") : "");
-        existingPegawaiPayroll.setIuranDapenPersh(existingPegawaiPayroll.getIuranDapenPershNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getIuranDapenPershNilai(),"###,###") : "");
-        existingPegawaiPayroll.setIuranDapenKary(existingPegawaiPayroll.getIuranDapenKaryNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getIuranDapenKaryNilai(),"###,###") : "");
+        existingPegawaiPayroll.setGajiPensiun(existingPegawaiPayroll.getGajiPensiunNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getGajiPensiunNilai(), "###,###") : "");
+        existingPegawaiPayroll.setSantunanKhusus(existingPegawaiPayroll.getSantunanKhususNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getSantunanKhususNilai(), "###,###") : "");
+        existingPegawaiPayroll.setTunjRumah(existingPegawaiPayroll.getTunjRumahNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjRumahNilai(), "###,###") : "");
+        existingPegawaiPayroll.setTunjListrik(existingPegawaiPayroll.getTunjListrikNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjListrikNilai(), "###,###") : "");
+        existingPegawaiPayroll.setTunjAir(existingPegawaiPayroll.getTunjAirNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjAirNilai(), "###,###") : "");
+        existingPegawaiPayroll.setTunjBbm(existingPegawaiPayroll.getTunjBbmNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjBbmNilai(), "###,###") : "");
+        existingPegawaiPayroll.setTunjJabatan(existingPegawaiPayroll.getTunjJabatanNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjJabatanNilai(), "###,###") : "");
+        existingPegawaiPayroll.setTunjStruktural(existingPegawaiPayroll.getTunjStrukturalNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjStrukturalNilai(), "###,###") : "");
+        existingPegawaiPayroll.setTunjFungsional(existingPegawaiPayroll.getTunjFungsionalNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjFungsionalNilai(), "###,###") : "");
+        existingPegawaiPayroll.setTunjTambahan(existingPegawaiPayroll.getTunjTambahanNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjTambahanNilai(), "###,###") : "");
+        existingPegawaiPayroll.setGajiPensiun(existingPegawaiPayroll.getGajiPensiunNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getGajiPensiunNilai(), "###,###") : "");
+        existingPegawaiPayroll.setIuranDapenPersh(existingPegawaiPayroll.getIuranDapenPershNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getIuranDapenPershNilai(), "###,###") : "");
+        existingPegawaiPayroll.setIuranDapenKary(existingPegawaiPayroll.getIuranDapenKaryNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getIuranDapenKaryNilai(), "###,###") : "");
 
         existingPegawaiPayroll.setTunjanganDapenNilai(refreshInitPegawaiPayroll.getTunjanganDapenNilai());
-        existingPegawaiPayroll.setTunjanganDapen(existingPegawaiPayroll.getTunjanganDapenNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjanganDapenNilai(),"###,###") : "");
+        existingPegawaiPayroll.setTunjanganDapen(existingPegawaiPayroll.getTunjanganDapenNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjanganDapenNilai(), "###,###") : "");
 
         existingPegawaiPayroll.setTunjPeralihanGapokNilai(refreshInitPegawaiPayroll.getTunjPeralihanGapokNilai());
         existingPegawaiPayroll.setTunjPeralihanSankhusNilai(refreshInitPegawaiPayroll.getTunjPeralihanSankhusNilai());
         existingPegawaiPayroll.setTunjPeralihanTunjNilai(refreshInitPegawaiPayroll.getTunjPeralihanTunjNilai());
 
-        existingPegawaiPayroll.setTunjPeralihanGapok(existingPegawaiPayroll.getTunjPeralihanGapokNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjPeralihanGapokNilai(),"###,###") : "");
-        existingPegawaiPayroll.setTunjPeralihanSankhus(existingPegawaiPayroll.getTunjPeralihanSankhusNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjPeralihanSankhusNilai(),"###,###") : "");
-        existingPegawaiPayroll.setTunjPeralihanTunj(existingPegawaiPayroll.getTunjPeralihanTunjNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjPeralihanTunjNilai(),"###,###") : "");
+        existingPegawaiPayroll.setTunjPeralihanGapok(existingPegawaiPayroll.getTunjPeralihanGapokNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjPeralihanGapokNilai(), "###,###") : "");
+        existingPegawaiPayroll.setTunjPeralihanSankhus(existingPegawaiPayroll.getTunjPeralihanSankhusNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjPeralihanSankhusNilai(), "###,###") : "");
+        existingPegawaiPayroll.setTunjPeralihanTunj(existingPegawaiPayroll.getTunjPeralihanTunjNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjPeralihanTunjNilai(), "###,###") : "");
 
         existingPegawaiPayroll.setTunjKomunikasiNilai(refreshInitPegawaiPayroll.getTunjKomunikasiNilai());
         existingPegawaiPayroll.setTunjPemondokanNilai(refreshInitPegawaiPayroll.getTunjPemondokanNilai());
@@ -1502,46 +1504,46 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         existingPegawaiPayroll.setTunjLokalNilai(refreshInitPegawaiPayroll.getTunjLokalNilai());
         existingPegawaiPayroll.setTunjSiagaNilai(refreshInitPegawaiPayroll.getTunjSiagaNilai());
 
-        existingPegawaiPayroll.setTunjKomunikasi(existingPegawaiPayroll.getTunjKomunikasiNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjKomunikasiNilai(),"###,###") : "");
-        existingPegawaiPayroll.setTunjPemondokan(existingPegawaiPayroll.getTunjPemondokanNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjPemondokanNilai(),"###,###") : "");
-        existingPegawaiPayroll.setTunjLembur(existingPegawaiPayroll.getTunjLemburNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjLemburNilai(),"###,###") : "");
-        existingPegawaiPayroll.setTunjSupervisi(existingPegawaiPayroll.getTunjSupervisiNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjSupervisiNilai(),"###,###") : "");
-        existingPegawaiPayroll.setTunjLokal(existingPegawaiPayroll.getTunjLokalNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjLokalNilai(),"###,###") : "");
-        existingPegawaiPayroll.setTunjSiaga(existingPegawaiPayroll.getTunjSiagaNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjSiagaNilai(),"###,###") : "");
+        existingPegawaiPayroll.setTunjKomunikasi(existingPegawaiPayroll.getTunjKomunikasiNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjKomunikasiNilai(), "###,###") : "");
+        existingPegawaiPayroll.setTunjPemondokan(existingPegawaiPayroll.getTunjPemondokanNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjPemondokanNilai(), "###,###") : "");
+        existingPegawaiPayroll.setTunjLembur(existingPegawaiPayroll.getTunjLemburNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjLemburNilai(), "###,###") : "");
+        existingPegawaiPayroll.setTunjSupervisi(existingPegawaiPayroll.getTunjSupervisiNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjSupervisiNilai(), "###,###") : "");
+        existingPegawaiPayroll.setTunjLokal(existingPegawaiPayroll.getTunjLokalNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjLokalNilai(), "###,###") : "");
+        existingPegawaiPayroll.setTunjSiaga(existingPegawaiPayroll.getTunjSiagaNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getTunjSiagaNilai(), "###,###") : "");
 
         existingPegawaiPayroll.setMinBpjsKsNilai(refreshInitPegawaiPayroll.getMinBpjsKsNilai());
         existingPegawaiPayroll.setMaxBpjsKsNilai(refreshInitPegawaiPayroll.getMaxBpjsKsNilai());
 
-        existingPegawaiPayroll.setMinBpjsKs(existingPegawaiPayroll.getMinBpjsKsNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getMinBpjsKsNilai(),"###,###") : "");
-        existingPegawaiPayroll.setMaxBpjsKs(existingPegawaiPayroll.getMaxBpjsKsNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getMaxBpjsKsNilai(),"###,###") : "");
+        existingPegawaiPayroll.setMinBpjsKs(existingPegawaiPayroll.getMinBpjsKsNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getMinBpjsKsNilai(), "###,###") : "");
+        existingPegawaiPayroll.setMaxBpjsKs(existingPegawaiPayroll.getMaxBpjsKsNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getMaxBpjsKsNilai(), "###,###") : "");
 
         existingPegawaiPayroll.setPersenBpjsKsKaryNilai(refreshInitPegawaiPayroll.getPersenBpjsKsKaryNilai());
         existingPegawaiPayroll.setPersenBpjsKsPershNilai(refreshInitPegawaiPayroll.getPersenBpjsKsPershNilai());
 
-        existingPegawaiPayroll.setPersenBpjsKsKary(existingPegawaiPayroll.getPersenBpjsKsKaryNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPersenBpjsKsKaryNilai(),"###,###") : "");
-        existingPegawaiPayroll.setPersenBpjsKsPersh(existingPegawaiPayroll.getPersenBpjsKsPershNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPersenBpjsKsPershNilai(),"###,###") : "");
+        existingPegawaiPayroll.setPersenBpjsKsKary(existingPegawaiPayroll.getPersenBpjsKsKaryNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPersenBpjsKsKaryNilai(), "###,###") : "");
+        existingPegawaiPayroll.setPersenBpjsKsPersh(existingPegawaiPayroll.getPersenBpjsKsPershNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPersenBpjsKsPershNilai(), "###,###") : "");
 
         existingPegawaiPayroll.setMinBpjsTkNilai(refreshInitPegawaiPayroll.getMinBpjsTkNilai());
         existingPegawaiPayroll.setMaxBpjsTkNilai(refreshInitPegawaiPayroll.getMaxBpjsTkNilai());
 
-        existingPegawaiPayroll.setMinBpjsTk(existingPegawaiPayroll.getMinBpjsTkNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getMinBpjsTkNilai(),"###,###") : "");
-        existingPegawaiPayroll.setMaxBpjsTk(existingPegawaiPayroll.getMaxBpjsTkNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getMaxBpjsTkNilai(),"###,###") : "");
+        existingPegawaiPayroll.setMinBpjsTk(existingPegawaiPayroll.getMinBpjsTkNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getMinBpjsTkNilai(), "###,###") : "");
+        existingPegawaiPayroll.setMaxBpjsTk(existingPegawaiPayroll.getMaxBpjsTkNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getMaxBpjsTkNilai(), "###,###") : "");
 
         existingPegawaiPayroll.setPersenBpjsTkIuranKaryNilai(refreshInitPegawaiPayroll.getPersenBpjsTkIuranKaryNilai());
         existingPegawaiPayroll.setPersenBpjsTkJpkKaryNilai(refreshInitPegawaiPayroll.getPersenBpjsTkJpkKaryNilai());
 
-        existingPegawaiPayroll.setPersenBpjsTkIuranKary(existingPegawaiPayroll.getPersenBpjsTkIuranKaryNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPersenBpjsTkIuranKaryNilai(),"###,###") : "");
-        existingPegawaiPayroll.setPersenBpjsTkJpkKary(existingPegawaiPayroll.getPersenBpjsTkJpkKaryNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPersenBpjsTkJpkKaryNilai(),"###,###") : "");
+        existingPegawaiPayroll.setPersenBpjsTkIuranKary(existingPegawaiPayroll.getPersenBpjsTkIuranKaryNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPersenBpjsTkIuranKaryNilai(), "###,###") : "");
+        existingPegawaiPayroll.setPersenBpjsTkJpkKary(existingPegawaiPayroll.getPersenBpjsTkJpkKaryNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPersenBpjsTkJpkKaryNilai(), "###,###") : "");
 
         existingPegawaiPayroll.setPersenBpjsTkJkkPershNilai(refreshInitPegawaiPayroll.getPersenBpjsTkJkkPershNilai());
         existingPegawaiPayroll.setPersenBpjsTkJhtPershNilai(refreshInitPegawaiPayroll.getPersenBpjsTkJhtPershNilai());
         existingPegawaiPayroll.setPersenBpjsTkJkmPershNilai(refreshInitPegawaiPayroll.getPersenBpjsTkJkmPershNilai());
         existingPegawaiPayroll.setPersenBpjsTkJpkPershNilai(refreshInitPegawaiPayroll.getPersenBpjsTkJpkPershNilai());
 
-        existingPegawaiPayroll.setPersenBpjsTkJkkPersh(existingPegawaiPayroll.getPersenBpjsTkJkkPershNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPersenBpjsTkJkkPershNilai(),"###,###") : "");
-        existingPegawaiPayroll.setPersenBpjsTkJhtPersh(existingPegawaiPayroll.getPersenBpjsTkJhtPershNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPersenBpjsTkJhtPershNilai(),"###,###") : "");
-        existingPegawaiPayroll.setPersenBpjsTkJkmPersh(existingPegawaiPayroll.getPersenBpjsTkJkmPershNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPersenBpjsTkJkmPershNilai(),"###,###") : "");
-        existingPegawaiPayroll.setPersenBpjsTkJpkPersh(existingPegawaiPayroll.getPersenBpjsTkJpkPershNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPersenBpjsTkJpkPershNilai(),"###,###") : "");
+        existingPegawaiPayroll.setPersenBpjsTkJkkPersh(existingPegawaiPayroll.getPersenBpjsTkJkkPershNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPersenBpjsTkJkkPershNilai(), "###,###") : "");
+        existingPegawaiPayroll.setPersenBpjsTkJhtPersh(existingPegawaiPayroll.getPersenBpjsTkJhtPershNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPersenBpjsTkJhtPershNilai(), "###,###") : "");
+        existingPegawaiPayroll.setPersenBpjsTkJkmPersh(existingPegawaiPayroll.getPersenBpjsTkJkmPershNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPersenBpjsTkJkmPershNilai(), "###,###") : "");
+        existingPegawaiPayroll.setPersenBpjsTkJpkPersh(existingPegawaiPayroll.getPersenBpjsTkJpkPershNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPersenBpjsTkJpkPershNilai(), "###,###") : "");
 
         existingPegawaiPayroll.setStatusKeluarga(refreshInitPegawaiPayroll.getStatusKeluarga());
         existingPegawaiPayroll.setJumlahAnak(refreshInitPegawaiPayroll.getJumlahAnak());
@@ -1560,11 +1562,11 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         existingPegawaiPayroll.setTanggalPensiun(refreshInitPegawaiPayroll.getTanggalPensiun());
         existingPegawaiPayroll.setTanggalKeluar(refreshInitPegawaiPayroll.getTanggalKeluar());
 
-        existingPegawaiPayroll.setStTanggalAktif(existingPegawaiPayroll.getTanggalAktif()!=null ? CommonUtil.simpleDateFormat(existingPegawaiPayroll.getTanggalAktif()) : "");
-        existingPegawaiPayroll.setStTanggalAkhirKontrak(existingPegawaiPayroll.getTanggalAkhirKontrak()!=null ? CommonUtil.simpleDateFormat(existingPegawaiPayroll.getTanggalAkhirKontrak()) : "");
-        existingPegawaiPayroll.setStTanggalPraPensiun(existingPegawaiPayroll.getTanggalPraPensiun()!=null ? CommonUtil.simpleDateFormat(existingPegawaiPayroll.getTanggalPraPensiun()) : "");
-        existingPegawaiPayroll.setStTanggalPensiun(existingPegawaiPayroll.getTanggalPensiun()!=null ? CommonUtil.simpleDateFormat(existingPegawaiPayroll.getTanggalPensiun()) : "");
-        existingPegawaiPayroll.setStTanggalKeluar(existingPegawaiPayroll.getTanggalKeluar()!=null ? CommonUtil.simpleDateFormat(existingPegawaiPayroll.getTanggalKeluar()) : "");
+        existingPegawaiPayroll.setStTanggalAktif(existingPegawaiPayroll.getTanggalAktif() != null ? CommonUtil.simpleDateFormat(existingPegawaiPayroll.getTanggalAktif()) : "");
+        existingPegawaiPayroll.setStTanggalAkhirKontrak(existingPegawaiPayroll.getTanggalAkhirKontrak() != null ? CommonUtil.simpleDateFormat(existingPegawaiPayroll.getTanggalAkhirKontrak()) : "");
+        existingPegawaiPayroll.setStTanggalPraPensiun(existingPegawaiPayroll.getTanggalPraPensiun() != null ? CommonUtil.simpleDateFormat(existingPegawaiPayroll.getTanggalPraPensiun()) : "");
+        existingPegawaiPayroll.setStTanggalPensiun(existingPegawaiPayroll.getTanggalPensiun() != null ? CommonUtil.simpleDateFormat(existingPegawaiPayroll.getTanggalPensiun()) : "");
+        existingPegawaiPayroll.setStTanggalKeluar(existingPegawaiPayroll.getTanggalKeluar() != null ? CommonUtil.simpleDateFormat(existingPegawaiPayroll.getTanggalKeluar()) : "");
 
         existingPegawaiPayroll.setKodering(refreshInitPegawaiPayroll.getKodering());
         existingPegawaiPayroll.setGender(refreshInitPegawaiPayroll.getGender());
@@ -1574,9 +1576,9 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 
         existingPegawaiPayroll.setPtkpPegawaiNilai(refreshInitPegawaiPayroll.getPtkpPegawaiNilai());
 
-        existingPegawaiPayroll.setUmr(existingPegawaiPayroll.getUmrNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getUmrNilai(),"###,###") : "");
-        existingPegawaiPayroll.setMultifikator(existingPegawaiPayroll.getMultifikatorNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getMultifikatorNilai(),"###,###") : "");
-        existingPegawaiPayroll.setPtkpPegawai(existingPegawaiPayroll.getPtkpPegawaiNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPtkpPegawaiNilai(),"###,###") : "");
+        existingPegawaiPayroll.setUmr(existingPegawaiPayroll.getUmrNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getUmrNilai(), "###,###") : "");
+        existingPegawaiPayroll.setMultifikator(existingPegawaiPayroll.getMultifikatorNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getMultifikatorNilai(), "###,###") : "");
+        existingPegawaiPayroll.setPtkpPegawai(existingPegawaiPayroll.getPtkpPegawaiNilai() != null ? CommonUtil.numbericFormat(existingPegawaiPayroll.getPtkpPegawaiNilai(), "###,###") : "");
 
         logger.info("[PayrollBoImpl.copyRefreshInitialPegawaiPayroll] end process <<<");
 
@@ -1628,7 +1630,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         itemPegawaiPayroll.setPersenBiayaJabatan(persenBiayaJabatan);
 
         //set refresh updated param to exixting pegawai payroll
-        copyRefreshInitialPegawaiPayroll(itemPegawaiPayroll,refreshInitialPegawaiPayroll);
+        copyRefreshInitialPegawaiPayroll(itemPegawaiPayroll, refreshInitialPegawaiPayroll);
 
         //set recalculate dasar perhitungan bpjs
         itemPegawaiPayroll.recalculateDasarBpjs();
@@ -1661,7 +1663,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             itemPegawaiPayroll.calculatePostNonRutinPayroll();
         }
 
-        ItHrisPayrollTempEntity itPayrollTemp = copyDataInitialPegawaiPayrollToPayrollTemp(itemPegawaiPayroll,createdWho,periodePayroll,tahunPayroll,"U");
+        ItHrisPayrollTempEntity itPayrollTemp = copyDataInitialPegawaiPayrollToPayrollTemp(itemPegawaiPayroll, createdWho, periodePayroll, tahunPayroll, "U");
 
         logger.info("[PayrollBoImpl.refreshInitialPegawaiPayrollTemp] end process <<<");
 
@@ -1744,7 +1746,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
                 itemPegawaiPayroll.calculatePostNonRutinPayroll();
             }
 
-            ItHrisPayrollTempEntity itPayrollTempEntity = copyDataInitialPegawaiPayrollToPayrollTemp(itemPegawaiPayroll,createdWho,periodePayroll,tahunPayroll,"C");
+            ItHrisPayrollTempEntity itPayrollTempEntity = copyDataInitialPegawaiPayrollToPayrollTemp(itemPegawaiPayroll, createdWho, periodePayroll, tahunPayroll, "C");
             listOfItPayrollTemp.add(itPayrollTempEntity);
 
         }
@@ -1985,7 +1987,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
                             List<PayrollPph> listOfInitialPphUntilNov = new ArrayList<>();
                             try {
                                 // Get data pph payroll bulan 1-11  from database
-                                listOfInitialPphUntilNov = payrollPphDao.getInitialDataPphPayrollUntilNov(branchId,tahunPayroll);
+                                listOfInitialPphUntilNov = payrollPphDao.getInitialDataPphPayrollUntilNov(branchId, tahunPayroll);
                             } catch (HibernateException e) {
                                 logger.error("[PayrollBoImpl.saveInitialCalculatePayroll] Error, " + e.getMessage());
                                 throw new GeneralBOException("[PayrollBoImpl.saveInitialCalculatePayroll] Found problem when get initial data pph payroll sampai bulan nov, please inform to your admin...," + e.getMessage());
@@ -2032,7 +2034,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
                     ItHrisPayrollHeaderEntity itHrisPayrollHeaderEntity = new ItHrisPayrollHeaderEntity();
                     String idPayrollHeader = null;
                     try {
-                        idPayrollHeader = payrollHeaderDao.getNextPayrollHeaderId(periodePayroll,tahunPayroll);
+                        idPayrollHeader = payrollHeaderDao.getNextPayrollHeaderId(periodePayroll, tahunPayroll);
                     } catch (HibernateException e) {
                         logger.error("[PayrollBoImpl.saveInitialCalculatePayroll] Error, " + e.getMessage());
                         throw new GeneralBOException("[PayrollBoImpl.saveInitialCalculatePayroll] Found problem when get sequence payroll header, please inform to your admin...," + e.getMessage());
@@ -2142,7 +2144,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
                     throw new GeneralBOException("[PayrollBoImpl.saveApprovalSdmPayroll] Found problem when get payroll header data, please inform to your admin...," + e.getMessage());
                 }
 
-                if (itHrisPayrollHeaderEntity!=null) {
+                if (itHrisPayrollHeaderEntity != null) {
 
                     itHrisPayrollHeaderEntity.setAction("U");
                     itHrisPayrollHeaderEntity.setApprovalSdmFlag("Y");
@@ -2329,7 +2331,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
                         }
 
                         //jika tidak muncul datanya maka data dgn nip lama di hilangkan dari temp
-                        if (refreshInitialPegawaiPayroll== null)  removedItemPegawaiPayroll = true;
+                        if (refreshInitialPegawaiPayroll == null) removedItemPegawaiPayroll = true;
 
                         if (!removedItemPegawaiPayroll) {
 
@@ -2353,7 +2355,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
                         }
 
                         //jika tidak muncul datanya maka data dgn nip lama di hilangkan dari temp
-                        if (refreshInitialPegawaiPayroll== null)  removedItemPegawaiPayroll = true;
+                        if (refreshInitialPegawaiPayroll == null) removedItemPegawaiPayroll = true;
 
                         if (!removedItemPegawaiPayroll) {
 
@@ -2573,7 +2575,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
                         List<PayrollPph> listOfInitialPphUntilNov = new ArrayList<>();
                         try {
                             // Get data pph payroll bulan 1-11  from database
-                            listOfInitialPphUntilNov = payrollPphDao.getInitialDataPphPayrollUntilNov(branchId,tahunPayroll);
+                            listOfInitialPphUntilNov = payrollPphDao.getInitialDataPphPayrollUntilNov(branchId, tahunPayroll);
                         } catch (HibernateException e) {
                             logger.error("[PayrollBoImpl.refreshAllCalculatePayroll] Error, " + e.getMessage());
                             throw new GeneralBOException("[PayrollBoImpl.refreshAllCalculatePayroll] Found problem when get initial data pph payroll sampai bulan nov, please inform to your admin...," + e.getMessage());
@@ -2724,7 +2726,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 
         List<PayrollHeader> payrollHeaderlList = new ArrayList<>();
 
-        if (payrollHeaderBean!=null) {
+        if (payrollHeaderBean != null) {
 
             //get tipe gaji
             String tipePayroll = payrollHeaderBean.getTipePayroll();
@@ -2736,7 +2738,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 
             try {
                 //get search all payroll header based on tipe payroll, bulan, tahun
-                payrollHeaderlList = payrollHeaderDao.getPayrollSearch(branchId,periodePayroll,tahunPayroll,periodePayrollSd,tahunPayrollSd,tipePayroll);
+                payrollHeaderlList = payrollHeaderDao.getPayrollSearch(branchId, periodePayroll, tahunPayroll, periodePayrollSd, tahunPayrollSd, tipePayroll);
             } catch (HibernateException e) {
                 logger.error("[PayrollBoImpl.searchCalculatePayroll] Error, " + e.getMessage());
                 throw new GeneralBOException("[PayrollBoImpl.searchCalculatePayroll] Found problem when searching data payroll all based tipe payroll, bulan, and tahun payroll, please inform to your admin...," + e.getMessage());
@@ -2795,7 +2797,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
                     itemPayrollHeader.setEnableApprovalAks(false);
                     itemPayrollHeader.setStatusPayroll("Sudah Diproses Keu");
 
-                } else if ("Y".equalsIgnoreCase(itemPayrollHeader.getApprovalSdmFlag()) && ("".equalsIgnoreCase(itemPayrollHeader.getApprovalAksFlag()) || itemPayrollHeader.getApprovalAksFlag()==null)) { //jika sudah di approval sdm dan belum di approval aks, maka tidak bisa di edit/refresh hanya view only
+                } else if ("Y".equalsIgnoreCase(itemPayrollHeader.getApprovalSdmFlag()) && ("".equalsIgnoreCase(itemPayrollHeader.getApprovalAksFlag()) || itemPayrollHeader.getApprovalAksFlag() == null)) { //jika sudah di approval sdm dan belum di approval aks, maka tidak bisa di edit/refresh hanya view only
 
                     itemPayrollHeader.setFlagEdit(false);
                     itemPayrollHeader.setFlagRefresh(false);
@@ -2888,7 +2890,6 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
                 }
 
 
-
             } else if ("Y".equalsIgnoreCase(approvedSdm)) {
 
                 List<ItHrisPayrollTempEntity> payrollTempEntityList = new ArrayList<>();
@@ -2964,7 +2965,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
                 throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Found problem when get payroll header data, please inform to your admin...," + e.getMessage());
             }
 
-            if (itHrisPayrollHeaderEntity!=null) {
+            if (itHrisPayrollHeaderEntity != null) {
 
                 if ("Y".equalsIgnoreCase(approvalAksFlag)) {
 
@@ -3036,12 +3037,12 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
                             masterIdForBranch = selectedImBranches.getMasterId();
                         }
 
-                        Map buildDataBasedMappingJurnal = setupDataBasedMappingJurnal(tipePayroll,masterIdForBranch,transId,payrollTempEntityList);
+                        Map buildDataBasedMappingJurnal = setupDataBasedMappingJurnal(tipePayroll, masterIdForBranch, transId, payrollTempEntityList);
 
                         //pindahkan dari table temp ke permanen
                         for (ItHrisPayrollTempEntity itHrisPayrollTempEntity : payrollTempEntityList) {
 
-                            ItHrisPayrollEntity itHrisPayrollEntity = copyDataItPayrollTempToItPayroll(itHrisPayrollTempEntity,periodePayroll,tahunPayroll,createdWho);
+                            ItHrisPayrollEntity itHrisPayrollEntity = copyDataItPayrollTempToItPayroll(itHrisPayrollTempEntity, periodePayroll, tahunPayroll, createdWho);
 
                             //delete table payroll temp dan pph temp secara permanent
                             try {
@@ -3063,10 +3064,10 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 
                         //prepare jurnal ke billing system
 
-                        String catatanJurnal = "Pembayaran Payroll ( " + ketPayroll + " ) untuk periode +" + periodePayroll + "/" + tahunPayroll ;
-                        buildDataBasedMappingJurnal.put("keterangan",catatanJurnal);
-                        buildDataBasedMappingJurnal.put("userId",createdWhoId);
-                        buildDataBasedMappingJurnal.put("userName",createdWho);
+                        String catatanJurnal = "Pembayaran Payroll ( " + ketPayroll + " ) untuk periode +" + periodePayroll + "/" + tahunPayroll;
+                        buildDataBasedMappingJurnal.put("keterangan", catatanJurnal);
+                        buildDataBasedMappingJurnal.put("userId", createdWhoId);
+                        buildDataBasedMappingJurnal.put("userName", createdWho);
 
                         ItJurnalEntity itJurnalEntity = null;
                         try {
@@ -3078,7 +3079,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 
                         //create jurnal
 
-                        if (itJurnalEntity!=null) {
+                        if (itJurnalEntity != null) {
 
                             try {
                                 jurnalDao.addAndSave(itJurnalEntity);
@@ -3154,15 +3155,15 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
     }
 
     //untuk membuat map berdasarkan mapping jurnal dan tipe payroll
-    private Map<String,List> setupDataBasedMappingJurnal(String tipePayroll, String masterId, String transId, List<ItHrisPayrollTempEntity> payrollTempEntityList) throws GeneralBOException {
+    private Map<String, List> setupDataBasedMappingJurnal(String tipePayroll, String masterId, String transId, List<ItHrisPayrollTempEntity> payrollTempEntityList) throws GeneralBOException {
         logger.info("[PayrollBoImpl.setupDataBasedMappingJurnal] start process >>>");
 
-        Map<String,List> resultDataOfMappingJurnal = new HashMap();
+        Map<String, List> resultDataOfMappingJurnal = new HashMap();
 
-        if (transId!=null) {
+        if (transId != null) {
 
             //get mapping jurnal based trans id
-            List<ImMappingJurnalEntity> mappingJurnal = null ;
+            List<ImMappingJurnalEntity> mappingJurnal = null;
             try {
                 mappingJurnal = mappingJurnalDao.getMappingByTransId(transId);
             } catch (HibernateException e) {
@@ -3170,7 +3171,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
                 throw new GeneralBOException("[PayrollBoImpl.setupDataBasedMappingJurnal] Found problem when searching mapping jurnal, please info to your admin..." + e.getMessage());
             }
 
-            if (mappingJurnal!=null) {
+            if (mappingJurnal != null) {
 
                 List<MappingDetail> pphList = new ArrayList<>();
 
@@ -3257,7 +3258,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
     // tunj.lain -> jika ada tunj bpjs ks / tk dimasukkan ke sini
     // titipan iuran bpjs ks -> jika ada potongan untuk bpjs ks
     // titipan iuran bpjs tk -> jika ada potongan untuk bpjs ks
-    private BigDecimal setupDataDekom(String tipePayroll, String masterIdBranch, Map<String,List> resultDataOfMappingJurnal, List<MappingDetail> pphList, List<ItHrisPayrollTempEntity> payrollTempEntityList) {
+    private BigDecimal setupDataDekom(String tipePayroll, String masterIdBranch, Map<String, List> resultDataOfMappingJurnal, List<MappingDetail> pphList, List<ItHrisPayrollTempEntity> payrollTempEntityList) {
 
         logger.info("[PayrollBoImpl.setupDataDecom] start process >>>");
 
@@ -3391,11 +3392,11 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             List<MappingDetail> tunjRumahDekomListFiltered = new ArrayList<>();
             List<MappingDetail> tunjLainDekomListFiltered = new ArrayList<>();
 
-            BigDecimal sumOfGaji = filterAndSumOfListMappingDetail(gajiDekomList,gajiDekomListFiltered);
-            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDekomList,tunjPPHDekomListFiltered);
-            BigDecimal sumOfTransportKom = filterAndSumOfListMappingDetail(tunjTransportKomDekomList,tunjTransportKomDekomListFiltered);
-            BigDecimal sumOfRumah = filterAndSumOfListMappingDetail(tunjRumahDekomList,tunjRumahDekomListFiltered);
-            BigDecimal sumOfLain = filterAndSumOfListMappingDetail(tunjLainDekomList,tunjLainDekomListFiltered);
+            BigDecimal sumOfGaji = filterAndSumOfListMappingDetail(gajiDekomList, gajiDekomListFiltered);
+            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDekomList, tunjPPHDekomListFiltered);
+            BigDecimal sumOfTransportKom = filterAndSumOfListMappingDetail(tunjTransportKomDekomList, tunjTransportKomDekomListFiltered);
+            BigDecimal sumOfRumah = filterAndSumOfListMappingDetail(tunjRumahDekomList, tunjRumahDekomListFiltered);
+            BigDecimal sumOfLain = filterAndSumOfListMappingDetail(tunjLainDekomList, tunjLainDekomListFiltered);
             sumOfAll = sumOfAll.add(sumOfGaji).add(sumOfTunjPPH).add(sumOfTransportKom).add(sumOfRumah).add(sumOfLain);
 
             //add based mapping jurnal
@@ -3449,8 +3450,8 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             List<MappingDetail> tunjHariRayaDekomListFiltered = new ArrayList<>();
             List<MappingDetail> tunjPPHDekomListFiltered = new ArrayList<>();
 
-            BigDecimal sumOfTHR = filterAndSumOfListMappingDetail(tunjHariRayaDekomList,tunjHariRayaDekomListFiltered);
-            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDekomList,tunjPPHDekomListFiltered);
+            BigDecimal sumOfTHR = filterAndSumOfListMappingDetail(tunjHariRayaDekomList, tunjHariRayaDekomListFiltered);
+            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDekomList, tunjPPHDekomListFiltered);
 
             sumOfAll = sumOfAll.add(sumOfTHR).add(sumOfTunjPPH);
 
@@ -3481,7 +3482,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
     // titipan iuran bpjs ks -> jika ada potongan iuran bpjs ks
     // titipan iuran bpjs tk -> jika ada potongan iuran bpjs tk
     // titipan potongan karyawan -> jika ada potongan lain nya untuk direksi dimasukkan ke sini
-    private BigDecimal setupDataDireksi(String tipePayroll, String masterIdBranch, Map<String,List> resultDataOfMappingJurnal, List<MappingDetail> pphList, List<ItHrisPayrollTempEntity> payrollTempEntityList) {
+    private BigDecimal setupDataDireksi(String tipePayroll, String masterIdBranch, Map<String, List> resultDataOfMappingJurnal, List<MappingDetail> pphList, List<ItHrisPayrollTempEntity> payrollTempEntityList) {
 
         logger.info("[PayrollBoImpl.setupDataDireksi] start process >>>");
 
@@ -3729,11 +3730,11 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             List<MappingDetail> tunjRumahDireksiListFiltered = new ArrayList<>();
             List<MappingDetail> tunjLainDireksiListFiltered = new ArrayList<>();
 
-            BigDecimal sumOfGaji = filterAndSumOfListMappingDetail(gajiDireksiList,gajiDireksiListFiltered);
-            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDireksiList,tunjPPHDireksiListFiltered);
-            BigDecimal sumOfTransportKom = filterAndSumOfListMappingDetail(tunjTransportKomDireksiList,tunjTransportKomDireksiListFiltered);
-            BigDecimal sumOfRumah = filterAndSumOfListMappingDetail(tunjRumahDireksiList,tunjRumahDireksiListFiltered);
-            BigDecimal sumOfLain = filterAndSumOfListMappingDetail(tunjLainDireksiList,tunjLainDireksiListFiltered);
+            BigDecimal sumOfGaji = filterAndSumOfListMappingDetail(gajiDireksiList, gajiDireksiListFiltered);
+            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDireksiList, tunjPPHDireksiListFiltered);
+            BigDecimal sumOfTransportKom = filterAndSumOfListMappingDetail(tunjTransportKomDireksiList, tunjTransportKomDireksiListFiltered);
+            BigDecimal sumOfRumah = filterAndSumOfListMappingDetail(tunjRumahDireksiList, tunjRumahDireksiListFiltered);
+            BigDecimal sumOfLain = filterAndSumOfListMappingDetail(tunjLainDireksiList, tunjLainDireksiListFiltered);
             sumOfAll = sumOfAll.add(sumOfGaji).add(sumOfTunjPPH).add(sumOfTransportKom).add(sumOfRumah).add(sumOfLain);
 
             //add based mapping jurnal
@@ -3790,8 +3791,8 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             List<MappingDetail> tunjHariRayaDireksiListFiltered = new ArrayList<>();
             List<MappingDetail> tunjPPHDireksiListFiltered = new ArrayList<>();
 
-            BigDecimal sumOfTHR = filterAndSumOfListMappingDetail(tunjHariRayaDireksiList,tunjHariRayaDireksiListFiltered);
-            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDireksiList,tunjPPHDireksiListFiltered);
+            BigDecimal sumOfTHR = filterAndSumOfListMappingDetail(tunjHariRayaDireksiList, tunjHariRayaDireksiListFiltered);
+            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDireksiList, tunjPPHDireksiListFiltered);
 
             sumOfAll = sumOfAll.add(sumOfTHR).add(sumOfTunjPPH);
 
@@ -3832,7 +3833,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
     // titipan iuran bpjs ks -> iuran bpjs ks kary maupun persh
     // titipan iuran bpjs tk -> iuran bpjs tk kary maupun persh
     // titipan potongan karyawan -> potongan lain nya diluar yg diatas seperti kopkar, bank dll.
-    private BigDecimal setupDataPegawaiTetap(String tipePayroll, String masterIdBranch, Map<String,List> resultDataOfMappingJurnal, List<MappingDetail> pphList, List<ItHrisPayrollTempEntity> payrollTempEntityList) {
+    private BigDecimal setupDataPegawaiTetap(String tipePayroll, String masterIdBranch, Map<String, List> resultDataOfMappingJurnal, List<MappingDetail> pphList, List<ItHrisPayrollTempEntity> payrollTempEntityList) {
 
         logger.info("[PayrollBoImpl.setupDataPegawaiTetap] start process >>>");
 
@@ -4181,21 +4182,21 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             List<MappingDetail> tunjLainPegTetapListFiltered = new ArrayList<>();
             List<MappingDetail> tunjPemondokanPegTetapListFiltered = new ArrayList<>();
 
-            BigDecimal sumOfGaji = filterAndSumOfListMappingDetail(gajiPegTetapList,gajiPegTetapListFiltered);
-            BigDecimal sumOfTunjJabatan = filterAndSumOfListMappingDetail(tunjJabatanPegTetapList,tunjJabatanPegTetapListFiltered);
-            BigDecimal sumOfTunjStruktural = filterAndSumOfListMappingDetail(tunjStrukturalPegTetapList,tunjStrukturalPegTetapListFiltered);
-            BigDecimal sumOfTunjPajak = filterAndSumOfListMappingDetail(tunjPajakPegTetapList,tunjPajakPegTetapListFiltered);
-            BigDecimal sumOfTunjRlab = filterAndSumOfListMappingDetail(tunjRlabPegTetapList,tunjRlabPegTetapListFiltered);
-            BigDecimal sumOfTunjPensiun = filterAndSumOfListMappingDetail(tunjPensiunPegTetapList,tunjPensiunPegTetapListFiltered);
-            BigDecimal sumOfBpjsTk = filterAndSumOfListMappingDetail(tunjBpjsTkPegTetapList,tunjBpjsTkPegTetapListFiltered);
-            BigDecimal sumOfBpjsKs = filterAndSumOfListMappingDetail(tunjBpjsKsPegTetapList,tunjBpjsKsPegTetapListFiltered);
-            BigDecimal sumOfKhusus = filterAndSumOfListMappingDetail(tunjKhususPegTetapList,tunjKhususPegTetapListFiltered);
-            BigDecimal sumOfTunjLembur = filterAndSumOfListMappingDetail(tunjLemburPegTetapList,tunjLemburPegTetapListFiltered);
-            BigDecimal sumOfTunjPeralihan = filterAndSumOfListMappingDetail(tunjPeralihanPegTetapList,tunjPeralihanPegTetapListFiltered);
-            BigDecimal sumOfTunjSupervisi = filterAndSumOfListMappingDetail(tunjSupervisiPegTetapList,tunjSupervisiPegTetapListFiltered);
-            BigDecimal sumOfTunjFungsional = filterAndSumOfListMappingDetail(tunjFungsionalPegTetapList,tunjFungsionalPegTetapListFiltered);
-            BigDecimal sumOfTunjLain = filterAndSumOfListMappingDetail(tunjLainPegTetapList,tunjLainPegTetapListFiltered);
-            BigDecimal sumOfTunjPemondokan = filterAndSumOfListMappingDetail(tunjPemondokanPegTetapList,tunjPemondokanPegTetapListFiltered);
+            BigDecimal sumOfGaji = filterAndSumOfListMappingDetail(gajiPegTetapList, gajiPegTetapListFiltered);
+            BigDecimal sumOfTunjJabatan = filterAndSumOfListMappingDetail(tunjJabatanPegTetapList, tunjJabatanPegTetapListFiltered);
+            BigDecimal sumOfTunjStruktural = filterAndSumOfListMappingDetail(tunjStrukturalPegTetapList, tunjStrukturalPegTetapListFiltered);
+            BigDecimal sumOfTunjPajak = filterAndSumOfListMappingDetail(tunjPajakPegTetapList, tunjPajakPegTetapListFiltered);
+            BigDecimal sumOfTunjRlab = filterAndSumOfListMappingDetail(tunjRlabPegTetapList, tunjRlabPegTetapListFiltered);
+            BigDecimal sumOfTunjPensiun = filterAndSumOfListMappingDetail(tunjPensiunPegTetapList, tunjPensiunPegTetapListFiltered);
+            BigDecimal sumOfBpjsTk = filterAndSumOfListMappingDetail(tunjBpjsTkPegTetapList, tunjBpjsTkPegTetapListFiltered);
+            BigDecimal sumOfBpjsKs = filterAndSumOfListMappingDetail(tunjBpjsKsPegTetapList, tunjBpjsKsPegTetapListFiltered);
+            BigDecimal sumOfKhusus = filterAndSumOfListMappingDetail(tunjKhususPegTetapList, tunjKhususPegTetapListFiltered);
+            BigDecimal sumOfTunjLembur = filterAndSumOfListMappingDetail(tunjLemburPegTetapList, tunjLemburPegTetapListFiltered);
+            BigDecimal sumOfTunjPeralihan = filterAndSumOfListMappingDetail(tunjPeralihanPegTetapList, tunjPeralihanPegTetapListFiltered);
+            BigDecimal sumOfTunjSupervisi = filterAndSumOfListMappingDetail(tunjSupervisiPegTetapList, tunjSupervisiPegTetapListFiltered);
+            BigDecimal sumOfTunjFungsional = filterAndSumOfListMappingDetail(tunjFungsionalPegTetapList, tunjFungsionalPegTetapListFiltered);
+            BigDecimal sumOfTunjLain = filterAndSumOfListMappingDetail(tunjLainPegTetapList, tunjLainPegTetapListFiltered);
+            BigDecimal sumOfTunjPemondokan = filterAndSumOfListMappingDetail(tunjPemondokanPegTetapList, tunjPemondokanPegTetapListFiltered);
 
             sumOfAll = sumOfAll.add(sumOfGaji)
                     .add(sumOfTunjJabatan)
@@ -4277,8 +4278,8 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             List<MappingDetail> tunjHariRayaPegTetapListFiltered = new ArrayList<>();
             List<MappingDetail> tunjPPHPegTetapListFiltered = new ArrayList<>();
 
-            BigDecimal sumOfTHR = filterAndSumOfListMappingDetail(tunjHariRayaPegTetapList,tunjHariRayaPegTetapListFiltered);
-            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDPegTetapList,tunjPPHPegTetapListFiltered);
+            BigDecimal sumOfTHR = filterAndSumOfListMappingDetail(tunjHariRayaPegTetapList, tunjHariRayaPegTetapListFiltered);
+            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDPegTetapList, tunjPPHPegTetapListFiltered);
 
             sumOfAll = sumOfAll.add(sumOfTHR).add(sumOfTunjPPH);
 
@@ -4327,8 +4328,8 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             List<MappingDetail> tunjInsentivePegTetapListFiltered = new ArrayList<>();
             List<MappingDetail> tunjPPHPegTetapListFiltered = new ArrayList<>();
 
-            BigDecimal sumOfInsentive = filterAndSumOfListMappingDetail(tunjInsentivePegTetapList,tunjInsentivePegTetapListFiltered);
-            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDPegTetapList,tunjPPHPegTetapListFiltered);
+            BigDecimal sumOfInsentive = filterAndSumOfListMappingDetail(tunjInsentivePegTetapList, tunjInsentivePegTetapListFiltered);
+            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDPegTetapList, tunjPPHPegTetapListFiltered);
 
             sumOfAll = sumOfAll.add(sumOfInsentive).add(sumOfTunjPPH);
 
@@ -4377,8 +4378,8 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             List<MappingDetail> tunjJasopPegTetapListFiltered = new ArrayList<>();
             List<MappingDetail> tunjPPHPegTetapListFiltered = new ArrayList<>();
 
-            BigDecimal sumOfJasop = filterAndSumOfListMappingDetail(tunjJasopPegTetapList,tunjJasopPegTetapListFiltered);
-            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDPegTetapList,tunjPPHPegTetapListFiltered);
+            BigDecimal sumOfJasop = filterAndSumOfListMappingDetail(tunjJasopPegTetapList, tunjJasopPegTetapListFiltered);
+            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDPegTetapList, tunjPPHPegTetapListFiltered);
 
             sumOfAll = sumOfAll.add(sumOfJasop).add(sumOfTunjPPH);
 
@@ -4428,8 +4429,8 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             List<MappingDetail> tunjCutiPegTetapListFiltered = new ArrayList<>();
             List<MappingDetail> tunjPPHPegTetapListFiltered = new ArrayList<>();
 
-            BigDecimal sumOfCuti = filterAndSumOfListMappingDetail(tunjCutiPegTetapList,tunjCutiPegTetapListFiltered);
-            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDPegTetapList,tunjPPHPegTetapListFiltered);
+            BigDecimal sumOfCuti = filterAndSumOfListMappingDetail(tunjCutiPegTetapList, tunjCutiPegTetapListFiltered);
+            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDPegTetapList, tunjPPHPegTetapListFiltered);
 
             sumOfAll = sumOfAll.add(sumOfCuti).add(sumOfTunjPPH);
 
@@ -4462,7 +4463,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
     // titipan iuran bpjs ks -> iuran bpjs ks kary maupun persh
     // titipan iuran bpjs tk -> iuran bpjs tk kary maupun persh
     // titipan potongan karyawan -> potongan lain nya diluar yg diatas seperti kopkar, bank dll.
-    private BigDecimal setupDataPegawaiTidakTetap(String tipePayroll, String masterIdBranch, Map<String,List> resultDataOfMappingJurnal, List<MappingDetail> pphList, List<ItHrisPayrollTempEntity> payrollTempEntityList) {
+    private BigDecimal setupDataPegawaiTidakTetap(String tipePayroll, String masterIdBranch, Map<String, List> resultDataOfMappingJurnal, List<MappingDetail> pphList, List<ItHrisPayrollTempEntity> payrollTempEntityList) {
 
         logger.info("[PayrollBoImpl.setupDataPegawaiTidakTetap] start process >>>");
 
@@ -4730,15 +4731,15 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             List<MappingDetail> tunjLemburPegTidakTetapListFiltered = new ArrayList<>();
             List<MappingDetail> tunjLainPegTidakTetapListFiltered = new ArrayList<>();
 
-            BigDecimal sumOfGaji = filterAndSumOfListMappingDetail(gajiPegTidakTetapList,gajiPegTidakTetapListFiltered);
-            BigDecimal sumOfTunjFungsional = filterAndSumOfListMappingDetail(tunjFungsionalPegTidakTetapList,tunjFungsionalPegTidakTetapListFiltered);
-            BigDecimal sumOfTunjTambahan = filterAndSumOfListMappingDetail(tunjTambahanPegTidakTetapList,tunjTambahanPegTidakTetapListFiltered);
-            BigDecimal sumOfTunjPajak = filterAndSumOfListMappingDetail(tunjPajakPegTidakTetapList,tunjPajakPegTidakTetapListFiltered);
-            BigDecimal sumOfBpjsTk = filterAndSumOfListMappingDetail(tunjBpjsTkPegTidakTetapList,tunjBpjsTkPegTidakTetapListFiltered);
-            BigDecimal sumOfBpjsKs = filterAndSumOfListMappingDetail(tunjBpjsKsPegTidakTetapList,tunjBpjsKsPegTidakTetapListFiltered);
-            BigDecimal sumOfKhusus = filterAndSumOfListMappingDetail(tunjKhususPegTidakTetapList,tunjKhususPegTidakTetapListFiltered);
-            BigDecimal sumOfTunjLembur = filterAndSumOfListMappingDetail(tunjLemburPegTidakTetapList,tunjLemburPegTidakTetapListFiltered);
-            BigDecimal sumOfTunjLain = filterAndSumOfListMappingDetail(tunjLainPegTidakTetapList,tunjLainPegTidakTetapListFiltered);
+            BigDecimal sumOfGaji = filterAndSumOfListMappingDetail(gajiPegTidakTetapList, gajiPegTidakTetapListFiltered);
+            BigDecimal sumOfTunjFungsional = filterAndSumOfListMappingDetail(tunjFungsionalPegTidakTetapList, tunjFungsionalPegTidakTetapListFiltered);
+            BigDecimal sumOfTunjTambahan = filterAndSumOfListMappingDetail(tunjTambahanPegTidakTetapList, tunjTambahanPegTidakTetapListFiltered);
+            BigDecimal sumOfTunjPajak = filterAndSumOfListMappingDetail(tunjPajakPegTidakTetapList, tunjPajakPegTidakTetapListFiltered);
+            BigDecimal sumOfBpjsTk = filterAndSumOfListMappingDetail(tunjBpjsTkPegTidakTetapList, tunjBpjsTkPegTidakTetapListFiltered);
+            BigDecimal sumOfBpjsKs = filterAndSumOfListMappingDetail(tunjBpjsKsPegTidakTetapList, tunjBpjsKsPegTidakTetapListFiltered);
+            BigDecimal sumOfKhusus = filterAndSumOfListMappingDetail(tunjKhususPegTidakTetapList, tunjKhususPegTidakTetapListFiltered);
+            BigDecimal sumOfTunjLembur = filterAndSumOfListMappingDetail(tunjLemburPegTidakTetapList, tunjLemburPegTidakTetapListFiltered);
+            BigDecimal sumOfTunjLain = filterAndSumOfListMappingDetail(tunjLainPegTidakTetapList, tunjLainPegTidakTetapListFiltered);
 
             sumOfAll = sumOfAll.add(sumOfGaji)
                     .add(sumOfTunjFungsional)
@@ -4808,8 +4809,8 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             List<MappingDetail> tunjHariRayaPegTidakTetapListFiltered = new ArrayList<>();
             List<MappingDetail> tunjPPHPegTidakTetapListFiltered = new ArrayList<>();
 
-            BigDecimal sumOfTHR = filterAndSumOfListMappingDetail(tunjHariRayaPegTidakTetapList,tunjHariRayaPegTidakTetapListFiltered);
-            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDPegTidakTetapList,tunjPPHPegTidakTetapListFiltered);
+            BigDecimal sumOfTHR = filterAndSumOfListMappingDetail(tunjHariRayaPegTidakTetapList, tunjHariRayaPegTidakTetapListFiltered);
+            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDPegTidakTetapList, tunjPPHPegTidakTetapListFiltered);
 
             sumOfAll = sumOfAll.add(sumOfTHR).add(sumOfTunjPPH);
 
@@ -4859,8 +4860,8 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             List<MappingDetail> tunjInsentivePegTidakTetapListFiltered = new ArrayList<>();
             List<MappingDetail> tunjPPHPegTidakTetapListFiltered = new ArrayList<>();
 
-            BigDecimal sumOfInsentive = filterAndSumOfListMappingDetail(tunjInsentivePegTidakTetapList,tunjInsentivePegTidakTetapListFiltered);
-            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDPegTidakTetapList,tunjPPHPegTidakTetapListFiltered);
+            BigDecimal sumOfInsentive = filterAndSumOfListMappingDetail(tunjInsentivePegTidakTetapList, tunjInsentivePegTidakTetapListFiltered);
+            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDPegTidakTetapList, tunjPPHPegTidakTetapListFiltered);
 
             sumOfAll = sumOfAll.add(sumOfInsentive).add(sumOfTunjPPH);
 
@@ -4909,8 +4910,8 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             List<MappingDetail> tunjJasopPegTidakTetapListFiltered = new ArrayList<>();
             List<MappingDetail> tunjPPHPegTidakTetapListFiltered = new ArrayList<>();
 
-            BigDecimal sumOfJasop = filterAndSumOfListMappingDetail(tunjJasopPegTidakTetapList,tunjJasopPegTidakTetapListFiltered);
-            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDPegTidakTetapList,tunjPPHPegTidakTetapListFiltered);
+            BigDecimal sumOfJasop = filterAndSumOfListMappingDetail(tunjJasopPegTidakTetapList, tunjJasopPegTidakTetapListFiltered);
+            BigDecimal sumOfTunjPPH = filterAndSumOfListMappingDetail(tunjPPHDPegTidakTetapList, tunjPPHPegTidakTetapListFiltered);
 
             sumOfAll = sumOfAll.add(sumOfJasop).add(sumOfTunjPPH);
 
@@ -5829,7 +5830,6 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 //        }
 //        return hasil;
 //    }
-
 
 
     //uncomment by ferdi, 01 des 2020
@@ -11016,7 +11016,6 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 //
 //        return payrollList;
 //    }
-
 
 
     //uncomment by ferdi, 01 des 2020
@@ -26306,7 +26305,6 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 //    }
 
 
-
     //uncomment by ferdi, 01 des 2020
 //    @Override
 //    public List<PayrollPendapatanPphDTO> searchReportPendapatanPph(String tahun, String unit) throws GeneralBOException {
@@ -27239,8 +27237,6 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 //        }
 //        return listOfResult;
 //    }
-
-
 
 
     @Override

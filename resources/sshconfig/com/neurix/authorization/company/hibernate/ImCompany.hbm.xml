@@ -125,5 +125,13 @@
         <property name="tanggalAkhirLembur">
             <column name="tanggal_akhir_lembur"/>
         </property>
+
+        <!--RAKA-30APR2021==> penyesuaian Payroll-Commit -->
+        <property name="payrollTanggalLemburAwal">
+            <column name="payroll_tanggal_lembur_awal"/>
+        </property>
+        <property name="payrollTanggalLemburAkhir">
+            <column name="payroll_tanggal_lebur_akhir"/>
+        </property>
     </class>
 </hibernate-mapping>

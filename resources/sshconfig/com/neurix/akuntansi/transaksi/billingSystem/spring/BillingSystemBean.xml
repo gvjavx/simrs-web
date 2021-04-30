@@ -42,6 +42,11 @@
           p:saldoAkhirDetailHistoryDao-ref="saldoAkhirDetailHistoryDao"
           p:jurnalAkhirTahunDao-ref="jurnalAkhirTahunDao"
           p:jurnalDetailAkhirTahunDao-ref="jurnalDetailAkhirTahunDao"
+          p:jurnalDetailActivityDao-ref="jurnalDetailActivityDao"
+          p:batasTutupPeriodDao-ref="batasTutupPeriodDao"
+          p:jurnalDetailDao-ref="jurnalDetailDao"
+          p:logTrxDao-ref="logTrxDao"
+          p:paymentGatewayInvoiceDao-ref="paymentGatewayInvoiceDao"
     />
 
     <bean id="billingSystemBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -65,10 +70,18 @@
                 <prop key="saveTutupPeriod">PROPAGATION_REQUIRED</prop>
                 <prop key="updateSaldoAkhirBulanBerjalan">PROPAGATION_REQUIRED</prop>
                 <!--<prop key="generateAndSaveCurrentSaldoPersediaanToNextMonth">readOnly</prop>-->
+                <prop key="prepareCreateJurnal">readOnly</prop>
+                <!--<prop key="createInvoiceNumber">PROPAGATION_REQUIRED</prop>-->
+                <prop key="settlementPGInvoice">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>
 
+    <bean id="paymentGatewayInvoiceDao" class="com.neurix.akuntansi.transaksi.billingSystem.dao.PaymentGatewayInvoiceDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="logTrxDao" class="com.neurix.akuntansi.transaksi.billingSystem.dao.LogTrxDao"
+          p:sessionFactory-ref="sessionFactory" />
 
 
 </beans>

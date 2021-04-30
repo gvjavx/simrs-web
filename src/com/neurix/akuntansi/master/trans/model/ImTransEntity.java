@@ -25,6 +25,43 @@ public class ImTransEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
+    private String flagSumberBaru;
+    private String flagPengajuanBiaya;
+    private String tipeJurnalId;
+    private String isOtomatis;
+
+    public String getFlagSumberBaru() {
+        return flagSumberBaru;
+    }
+
+    public void setFlagSumberBaru(String flagSumberBaru) {
+        this.flagSumberBaru = flagSumberBaru;
+    }
+
+    public String getFlagPengajuanBiaya() {
+        return flagPengajuanBiaya;
+    }
+
+    public void setFlagPengajuanBiaya(String flagPengajuanBiaya) {
+        this.flagPengajuanBiaya = flagPengajuanBiaya;
+    }
+
+    public String getTipeJurnalId() {
+        return tipeJurnalId;
+    }
+
+    public void setTipeJurnalId(String tipeJurnalId) {
+        this.tipeJurnalId = tipeJurnalId;
+    }
+
+    public String getIsOtomatis() {
+        return isOtomatis;
+    }
+
+    public void setIsOtomatis(String isOtomatis) {
+        this.isOtomatis = isOtomatis;
+    }
+
     public String getMaster() {
         return master;
     }

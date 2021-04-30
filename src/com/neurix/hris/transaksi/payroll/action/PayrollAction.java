@@ -571,7 +571,7 @@ public class PayrollAction extends BaseTransactionAction {
         String userLogin = CommonUtil.userLogin();
 
         if (!editSearch) {
-            String payrollHeaderId = getId();
+            String payrollHeaderId = getIdPayrollHeader(); //RAKA-30APR2021==> merubah getId ==> getIdPayrollHeader
             String branchId = getBranchId();
             String bulan = getBulan();
             String tahun = getTahun();
@@ -810,7 +810,7 @@ public class PayrollAction extends BaseTransactionAction {
 
         if (!editSearch) {
             //get dari url
-            String payrollHeaderId = getId();
+            String payrollHeaderId = getIdPayrollHeader(); //RAKA-30APR2021==> merubah getId ==> getIdPayrollHeader
             String branchId = getBranchId();
             String bulan = getBulan();
             String tahun = getTahun();
@@ -901,7 +901,7 @@ public class PayrollAction extends BaseTransactionAction {
     public String refresh() {
         logger.info("[PayrollAction.refresh] start process >>>");
 
-        String payrollHeaderId = getId();
+        String payrollHeaderId = getIdPayrollHeader(); //RAKA-30APR2021==> merubah getId ==> getIdPayrollHeader
         String branchId = getBranchId();
         String bulan = getBulan();
         String tahun = getTahun();

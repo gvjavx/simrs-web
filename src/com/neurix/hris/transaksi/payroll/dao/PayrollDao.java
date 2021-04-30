@@ -5094,18 +5094,19 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
 //
 //        return results;
 //    }
-//    public List<ItPayrollEntity> getTunjanganPeralihan(String nip, String bulan, String tahun) throws HibernateException {
-//        List<ItPayrollEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPayrollEntity.class)
-//                .add(Restrictions.eq("nip", nip))
-//                .add(Restrictions.eq("bulan", bulan))
-//                .add(Restrictions.eq("tahun", tahun))
-//                .add(Restrictions.eq("flag", "Y"))
-//                .add(Restrictions.eq("flagPayroll", "Y"))
-//                .add(Restrictions.eq("approvalFlag", "Y"))
-//                .list();
-//
-//        return results;
-//    }
+    //RAKA-30APR2021==> UNCOMMENT
+    public List<ItPayrollEntity> getTunjanganPeralihan(String nip, String bulan, String tahun) throws HibernateException {
+        List<ItPayrollEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPayrollEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("bulan", bulan))
+                .add(Restrictions.eq("tahun", tahun))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("flagPayroll", "Y"))
+                .add(Restrictions.eq("approvalFlag", "Y"))
+                .list();
+
+        return results;
+    }
 //
 //    public List<ItPayrollEntity> getLastPayroll(String nip) throws HibernateException {
 //        List<ItPayrollEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPayrollEntity.class)
@@ -8242,20 +8243,20 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
 //
 //        return listOfResult;
 //    }
-//
-//    public List<ItPayrollEntity> getTunjanganPeralihanForAbsensi(String nip, String tahun) throws HibernateException {
-//        List<ItPayrollEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPayrollEntity.class)
-//                .add(Restrictions.eq("nip", nip))
-//                .add(Restrictions.eq("tahun", tahun))
-//                .add(Restrictions.eq("flag", "Y"))
-//                .add(Restrictions.eq("approvalFlag", "Y"))
-//                .add(Restrictions.eq("flagPayroll", "Y"))
-//                .addOrder(Order.desc("bulan"))
-//                .setMaxResults(1)
-//                .list();
-//
-//        return results;
-//    }
+    //RAKA-30APR2021==> UNCOMMENT
+    public List<ItPayrollEntity> getTunjanganPeralihanForAbsensi(String nip, String tahun) throws HibernateException {
+        List<ItPayrollEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPayrollEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("tahun", tahun))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("approvalFlag", "Y"))
+                .add(Restrictions.eq("flagPayroll", "Y"))
+                .addOrder(Order.desc("bulan"))
+                .setMaxResults(1)
+                .list();
+
+        return results;
+    }
 //
 //    // pengobatan selama 1 tahun
 //    public List<PayrollPph> getJumlahPengobatan(String tahun, String nip){

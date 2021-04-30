@@ -5444,13 +5444,17 @@ public class AbsensiBoImpl implements AbsensiBo {
 
     @Override
     public AbsensiPegawai getJadwalShiftKerja(String nip, Date tanggal) {
-        //NOTE by RAKA : Periksa method aneh ini
+        //NOTE by RAKA : Periksa method aneh ini ==> repair
         AbsensiPegawai result = new AbsensiPegawai();
+        List<AbsensiPegawai> listResult = new ArrayList<>();
         try {
-//            result = absensiPegawaiDao.getSearchJadwalShift(nip, tanggal);
+            listResult = absensiPegawaiDao.getSearchJadwalShift(nip, tanggal);
         } catch (HibernateException e) {
             logger.error("[AbsensiBoImpl.getByCriteriaMesin] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        if(listResult.size() > 0){
+            result = listResult.get(0);
         }
         return result;
     }
