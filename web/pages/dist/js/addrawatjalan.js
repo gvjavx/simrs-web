@@ -813,14 +813,17 @@ function saveKeterangan(idKtg, poli, kelas, kamar, ket_selesai, tgl_cekup, ket_c
 function listSelectTindakan(idKategori) {
     var option = "<option value=''> - </option>";
     if (idKategori != '') {
-        CheckupDetailAction.getListComboTindakan(idKategori, idKelasRuangan, flagVaksin, function (response) {
-            if (response != null) {
-                $.each(response, function (i, item) {
-                    option += "<option value='" + item.idTindakan + "'>" + item.tindakan + "</option>";
-                });
-                $('#tin_id_tindakan').html(option);
-            } else {
-                $('#tin_id_tindakan').html('');
+        dwr.engine.setAsync(true);
+        CheckupDetailAction.getListComboTindakan(idKategori, idKelasRuangan, flagVaksin, {
+            callback:function (response) {
+                if (response != null) {
+                    $.each(response, function (i, item) {
+                        option += "<option value='" + item.idTindakan + "'>" + item.tindakan + "</option>";
+                    });
+                    $('#tin_id_tindakan').html(option);
+                } else {
+                    $('#tin_id_tindakan').html('');
+                }
             }
         });
     } else {
@@ -4709,6 +4712,8 @@ function addListPemeriksaan(){
     var tempIdParameter = "";
     var tempParameterLi = "";
     var cekLuar = $('#is_luar').is(':checked');
+    var tarifLabLuar = $('#h_total_tarif').val();
+    var cekTarif = true;
 
     if (cekLuar) {
         if(namaPemeriksaanLuar != ''){
@@ -4725,6 +4730,11 @@ function addListPemeriksaan(){
                     tempParameterLi += '<li>'+item.value+'</li>';
                 }
             });
+        }
+        if(tarifLabLuar != '' && parseInt(tarifLabLuar) > 0){
+            cekTarif = true;
+        }else{
+            cekTarif = false;
         }
     }else{
         if(idPemeriksaan != ''){
@@ -4751,7 +4761,7 @@ function addListPemeriksaan(){
 
 
 
-    if(tempPemeriksaan && tempParameter != ''){
+    if(tempPemeriksaan && tempParameter != '' && cekTarif){
         var cek = false;
         $.each($('.nama_jenis_pemeriksaan'), function (i, item) {
             if(item.value != ''){
@@ -4816,6 +4826,9 @@ function addListPemeriksaan(){
         }
         if (idParamLuar == '') {
             $('#war_lab_parameter_luar').show();
+        }
+        if (tarifLabLuar == '') {
+            $('#war_tarif_luar_lab').show();
         }
     }
 }

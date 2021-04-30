@@ -159,14 +159,17 @@ function listSelectTindakanKategori(val) {
 function listSelectTindakan(idKategori) {
     var option = "<option value=''>[Select One]</option>";
     if (idKategori != '') {
-        CheckupDetailAction.getListComboTindakan(idKategori, idKelasRuangan, flagVaksin, function (response) {
-            if (response != null) {
-                $.each(response, function (i, item) {
-                    option += "<option value='" + item.idTindakan + "'>" + item.tindakan + "</option>";
-                });
-                $('#tin_id_tindakan').html(option);
-            } else {
-                $('#tin_id_tindakan').html('');
+        dwr.engine.setAsync(true);
+        CheckupDetailAction.getListComboTindakan(idKategori, idKelasRuangan, flagVaksin, {
+            callback: function (response) {
+                if (response != null) {
+                    $.each(response, function (i, item) {
+                        option += "<option value='" + item.idTindakan + "'>" + item.tindakan + "</option>";
+                    });
+                    $('#tin_id_tindakan').html(option);
+                } else {
+                    $('#tin_id_tindakan').html('');
+                }
             }
         });
     } else {
@@ -219,5 +222,42 @@ function setDiskonHarga(id) {
                 }
             }
         });
+    }
+}
+
+function showHasil(id, kategori){
+    var data = $('#file_'+id).val();
+    $('#item_hasil_lab').html('');
+    $('#li_hasil_lab').html('');
+    if(data != null && data != ''){
+        var result = JSON.parse(data);
+        $('#title_hasil_lab').html("Hasil Pemeriksaan "+kategori);
+        if(result.length > 0){
+            var set = '';
+            var li = '';
+            $.each(result, function (i, item) {
+                var cla = 'class="item"';
+                var claLi = '';
+                if(i == 0){
+                    cla = 'class="item active"';
+                    claLi = 'class="active"';
+                }
+                var x = item.urlImg;
+                var tipe = x.split('.').pop();
+                if("pdf" == tipe){
+                    set += '<div ' + cla + '>\n' +
+                        '<embed src="'+item.urlImg+'" style="width: 100%; height: 70%"/>'+
+                        '</div>';
+                }else{
+                    set += '<div ' + cla + '>\n' +
+                        '<img src="' + item.urlImg + '" style="width: 100%">\n' +
+                        '</div>';
+                }
+                li += '<li data-target="#carousel-hasil_lab" data-slide-to="'+i+'" '+claLi+'></li>';
+            });
+            $('#item_hasil_lab').html(set);
+            $('#li_hasil_lab').html(li);
+        }
+        $('#modal-hasil_lab').modal({show: true, backdrop:'static'});
     }
 }

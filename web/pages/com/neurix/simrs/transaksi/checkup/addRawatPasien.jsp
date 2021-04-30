@@ -2281,8 +2281,8 @@
             $('#text-save').text("Save");
             $('#text_title').text("Tambah Data Pasien");
             $('#text_sub').text("Inputan Data Pasien");
-            $('#btnFingerPrint').hide();
-            $('#btn_new').hide();
+            $('#btnFingerPrint').show();
+            $('#btn_new').show();
         }
 
         if(suku != ''){
