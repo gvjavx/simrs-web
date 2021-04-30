@@ -128,6 +128,12 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td><b>Umur</b></td>
+                                        <td>
+                                            <table><s:property value="periksaLab.umur"></s:property> Tahun</table>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
@@ -323,22 +329,22 @@
                                     <div id="set_luar">
 
                                     </div>
-                                    <div class="row top_jarak">
-                                        <%--<div class="col-md-3">--%>
-                                            <%--<a class="btn btn-success" onclick="viewUpload('hasil_luar')"><i--%>
-                                                    <%--class="fa fa-image"></i> View Upload</a>--%>
+                                    <%--<div class="row top_jarak">--%>
+                                        <%--&lt;%&ndash;<div class="col-md-3">&ndash;%&gt;--%>
+                                            <%--&lt;%&ndash;<a class="btn btn-success" onclick="viewUpload('hasil_luar')"><i&ndash;%&gt;--%>
+                                                    <%--&lt;%&ndash;class="fa fa-image"></i> View Upload</a>&ndash;%&gt;--%>
+                                        <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+                                        <%--<div class="col-md-7">--%>
+                                            <%--<div class="input-group">--%>
+                                                <%--<div class="input-group-addon">--%>
+                                                    <%--Rp.--%>
+                                                <%--</div>--%>
+                                                <%--<input oninput="convertRpAtas(this.id, this.value, 'h_total_tarif')"--%>
+                                                       <%--id="total_tarif" class="form-control" placeholder="Total Tarif">--%>
+                                                <%--<input type="hidden" id="h_total_tarif">--%>
+                                            <%--</div>--%>
                                         <%--</div>--%>
-                                        <div class="col-md-7">
-                                            <div class="input-group">
-                                                <div class="input-group-addon">
-                                                    Rp.
-                                                </div>
-                                                <input oninput="convertRpAtas(this.id, this.value, 'h_total_tarif')"
-                                                       id="total_tarif" class="form-control" placeholder="Total Tarif">
-                                                <input type="hidden" id="h_total_tarif">
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <%--</div>--%>
                                 </div>
                             </div>
                         </div>
@@ -414,8 +420,8 @@
                             <canvas style="margin-left: -7px; cursor: pointer" class="ttd-paint-canvas" id="ttd_dokter"
                                     width="355" height="250"
                                     onmouseover="paintTtd(this.id)"></canvas>
-                            <input oninput="$(this).css('border', '')" class="form-control" id="nama_dokter" placeholder="Nama Terang">
-                            <input oninput="$(this).css('border', '')" class="form-control" id="sip_dokter" style="margin-top: 5px" placeholder="SIP/NIP">
+                            <input oninput="$(this).css('border', '')" class="form-control nama_petugas" id="nama_dokter" placeholder="Nama Terang">
+                            <input oninput="$(this).css('border', '')" class="form-control nip_petugas" id="sip_dokter" style="margin-top: 5px" placeholder="SIP/NIP">
                             <button style="margin-top: 5px" type="button" class="btn btn-danger"
                                     onclick="removePaint('ttd_dokter')"><i class="fa fa-trash"></i> Clear
                             </button>
@@ -498,12 +504,29 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Pemeriksaan</label>
+                        <div class="col-md-7">
+                            <select class="form-control select2" style="width: 100%"
+                                    id="jenis_pemeriksaan"
+                                    onchange="inputWarning('war_jenis_pemeriksaan', 'cor_jenis_pemeriksaan'); listSelectParameter(this.value)">
+                                <option value=''>-</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_jenis_pemeriksaan"><i
+                                    class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_jenis_pemeriksaan">
+                                <i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Parameter</label>
                         <div class="col-md-7">
                             <select class="form-control select2" multiple style="margin-top: 7px; width: 100%"
                                     id="lab_parameter"
                                     onchange="var warn =$('#war_param').is(':visible'); if (warn){$('#cor_param').show().fadeOut(3000);$('#war_param').hide()}">
-                                <option value=''>[Select One]</option>
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -511,6 +534,32 @@
                                     class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_param">
                                 <i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 10px">
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-9">
+                            <button onclick="addOrderListPemeriksaan()" class="btn btn-success"><i class="fa fa-plus"></i> Tambah</button>
+                            <button onclick="resetOrderPemeriksaan()" class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>
+                        </div>
+                    </div>
+                </div>
+                <hr class="garis">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <table class="table table-bordered" style="font-size: 13px" id="tabel_order_pemeriksaan">
+                                <thead>
+                                <tr>
+                                    <td>Jenis Pemeriksaan</td>
+                                    <td>Parameter</td>
+                                    <td>Action</td>
+                                </tr>
+                                </thead>
+                                <tbody id="body_order_pemeriksaan">
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -823,11 +872,12 @@
 
     function showModal(select) {
         if (select == 1) {
-            $('#lab_kategori, #lab_lab, #lab_parameter').val('').trigger('change');
+            $('#body_order_pemeriksaan').html("");
+            $('#jenis_pemeriksaan, #lab_lab, #lab_parameter').val('').trigger('change');
             $('#save_lab').show();
             $('#load_lab, #warning_lab').hide();
             $('#lab_kategori, #lab_lab').css('border', '');
-            listSelectParameter(idLabPemeriksaan);
+            getJenisPemeirksaan();
             $('#modal-lab').modal({show: true, backdrop: 'static'});
         }
     }
@@ -909,12 +959,44 @@
 
 
     function saveLab() {
-        var idParameter = $('#lab_parameter').val();
-        if (idDetailCheckup != '' && idPeriksaLab != '' && idParameter != null) {
+        var data = $('#tabel_order_pemeriksaan').tableToJSON();
+        if (data.length > 0) {
+
+            var namaPemeriksaan = $('.nama_order_jenis_pemeriksaan');
+            var idPemeriksaan = $('.id_order_jenis_pemeriksaan');
+            var parameterPemeriksaan = $('.nama_order_parameter_pemeriksaan');
+            var idParameter = $('.id_order_parameter_pemeriksaan');
+
+            var pemeriksan = [];
+            $.each(namaPemeriksaan, function (i, item) {
+                if(item.value){
+                    var tempItem = [];
+                    var tmep = parameterPemeriksaan[i].value;
+                    var imep = idParameter[i].value;
+                    if(tmep != '' && imep != ''){
+                        var pp = tmep.split("#");
+                        var mp = imep.split("#");
+                        $.each(pp, function (i, item) {
+                            tempItem.push({
+                                'id_parameter': mp[i],
+                                'nama_parameter': item
+                            })
+                        });
+                    }
+                    pemeriksan.push({
+                        'id_pemeriksaan': idPemeriksaan[i].value,
+                        'nama_pemeriksaan': item.value,
+                        'list_parameter': JSON.stringify(tempItem)
+                    });
+                }
+            });
+
+            var result = JSON.stringify(pemeriksan);
+
             $('#save_lab').hide();
             $('#load_lab').show();
             dwr.engine.setAsync(true);
-            PeriksaLabAction.saveUpdatePemeriksaan(idPeriksaLab, idParameter, "radiologi", {
+            PeriksaLabAction.saveUpdatePemeriksaan(idHeaderPemeriksaan, result, {
                 callback: function (response) {
                     if (response.status == "success") {
                         dwr.engine.setAsync(false);
@@ -923,6 +1005,8 @@
                         $('#info_dialog').dialog('open');
                         $('#close_pos').val(2);
                         $('body').scrollTop(0);
+                        $('#save_lab').show();
+                        $('#load_lab').hide();
                     } else {
                         $('#save_lab').show();
                         $('#load_lab').hide();
@@ -934,9 +1018,6 @@
         } else {
             $('#msg_lab').text("Silahkan cek kembali inputan anda..!");
             $('#warning_lab').show().fadeOut(5000);
-            if (idParameter == '' || idParameter == null) {
-                $('#war_param').show();
-            }
         }
     }
 
@@ -1061,7 +1142,7 @@
         });
 
         if ("Y" == cekIsKeluar) {
-            if (cekLabLuar && totalTarif != '') {
+            if (cekLabLuar) {
                 $('#modal-confirm-dialog').modal('show');
                 $('#save_con').attr('onclick', 'savePeriksaLab()');
             } else {
@@ -1104,7 +1185,7 @@
         var nama2 = $('#nama_validator').val();
         var nip2 = $('#nip_validator').val();
         var isiParam = $('#tabel_radiologi').tableToJSON();
-        var totalTarif = $('#h_total_tarif').val();
+        var totalTarif = "";
         var cekIsKeluar = '<s:property value="periksaLab.isPeriksaLuar"/>';
         var tempDataFinal = "";
         var data = {
@@ -1389,6 +1470,111 @@
             res = "pdf";
         }
         return res;
+    }
+
+    function addOrderListPemeriksaan(){
+        var count = $('#tabel_order_pemeriksaan').tableToJSON().length;
+        var namaPemeriksaan = $('#jenis_pemeriksaan option:selected').text();
+        var idPemeriksaan = $('#jenis_pemeriksaan').val();
+
+        var namaParameter = $('#lab_parameter option:selected');
+        var idParameter = $('#lab_parameter').val();
+
+        var tempPemeriksaan = "";
+        var tempIdPemeriksan= "";
+
+        var tempParameter = "";
+        var tempIdParameter = "";
+        var tempParameterLi = "";
+
+        if(idPemeriksaan != ''){
+            tempPemeriksaan = namaPemeriksaan;
+            tempIdPemeriksan = idPemeriksaan;
+        }
+        if(idParameter != '' && idParameter != null){
+            $.each(namaParameter, function (i, item) {
+                if(tempIdParameter != ''){
+                    tempIdParameter = tempIdParameter+'#'+item.value;
+                }else{
+                    tempIdParameter = item.value;
+                }
+
+                if(tempParameter != ''){
+                    tempParameter = tempParameter+'#'+item.innerHTML;
+                }else{
+                    tempParameter = item.innerHTML;
+                }
+                tempParameterLi += '<li>'+item.innerHTML+'</li>';
+            });
+        }
+
+        if(tempPemeriksaan && tempParameter != ''){
+            var cek = false;
+            $.each($('.nama_order_jenis_pemeriksaan'), function (i, item) {
+                if(item.value != ''){
+                    if(item.value.toLowerCase() == tempPemeriksaan.toLowerCase()){
+                        cek = true;
+                    }
+                }
+            });
+            if(!cek){
+                var row =
+                    '<tr id="row_'+count+'">' +
+                    '<td>'+
+                    tempPemeriksaan +
+                    '<input type="hidden" class="nama_order_jenis_pemeriksaan" value="'+tempPemeriksaan+'">'+
+                    '<input type="hidden" class="id_order_jenis_pemeriksaan" value="'+tempIdPemeriksan+'">'+
+                    '<input type="hidden" class="nama_order_parameter_pemeriksaan" value="'+tempParameter+'">'+
+                    '<input type="hidden" class="id_order_parameter_pemeriksaan" value="'+tempIdParameter+'">'+
+                    '</td>'+
+                    '<td><ul style="margin-left: 20px">'+tempParameterLi+'</ul></td>'+
+                    '<td align="center"><img onclick="delOrderPemeriksaan(\'row_'+count+'\')" style="cursor: pointer" src="'+contextPathHeader+'/pages/images/cancel-flat-new.png" class="hvr-row"></td>'+
+                    '</tr>';
+                $('#body_order_pemeriksaan').append(row);
+                $('#jenis_pemeriksaan').val(null).trigger('change');
+                $('#lab_parameter').val(null).trigger('change');
+            }else{
+                $('#warning_lab').show().fadeOut(5000);
+                $('#msg_lab').text("Pemeriksaan "+tempPemeriksaan+" sudah ada dalam ist");
+            }
+        }else{
+            $('#warning_lab').show().fadeOut(5000);
+            $('#msg_lab').text("Silahkan cek kembali inputan berikut...!");
+            if (idPemeriksaan == '') {
+                $('#war_jenis_pemeriksaan').show();
+            }
+            if (idParameter == '' || idParameter == null) {
+                $('#war_param').show();
+            }
+        }
+    }
+
+    function delOrderPemeriksaan(id){
+        $('#'+id).remove();
+        var table = $('#tabel_order_pemeriksaan').tableToJSON().length;
+        if(table == 0){
+            $('#ckp_kategori').attr('disabled', false);
+        }
+    }
+
+    function resetOrderPemeriksaan(){
+        $('#body_order_pemeriksaan').html('');
+        $('#ckp_kategori').attr('disabled', false);
+        $('#ckp_kategori').val(null).trigger('change');
+        $('#ckp_unit').val(null).trigger('change');
+        $('#ckp_parameter').val(null).trigger('change');
+    }
+
+    function getJenisPemeirksaan(){
+        var option = '<option value="">-</option>';
+        PeriksaLabAction.getPemeriksaanById(idHeaderPemeriksaan ,function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    option += '<option value="'+item.idPemeriksaan+'">'+item.namaPemeriksaan+'</option>';
+                });
+            }
+            $('#jenis_pemeriksaan').html(option);
+        });
     }
 
 </script>

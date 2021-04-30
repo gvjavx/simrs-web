@@ -14,6 +14,13 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/VerifikatorAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaLabAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanResepAction.js"/>'></script>
+
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/tindakanverif.js"/>'></script>
+
     <script type='text/javascript'>
 
         $( document ).ready(function() {
@@ -165,12 +172,14 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="sortTable" class="table table-bordered table-striped">
+                        <table id="sortTable" class="table table-bordered table-striped" style="font-size: 12px">
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>No Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
+                                <td>Tanggal Masuk</td>
+                                <td>Pelayanan</td>
                                 <td>Jenis Pasien</td>
                                 <td>Keterangan</td>
                                 <td align="center">Action</td>
@@ -182,6 +191,8 @@
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="formatTglMasuk"/></td>
+                                    <td><s:property value="namaPelayanan"/></td>
                                     <td><s:property value="jenisPeriksaPasien"/></td>
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
@@ -291,22 +302,25 @@
                 <div class="box-header with-border"></div>
                 <div class="box-header with-border">
                     <h3 class="box-title" ><i class="fa fa-hospital-o"></i> Tindakan Rawat</h3>
+                    <button class="btn btn-success pull-right" onclick="showTindakan()"><i class="fa fa-plus"></i> Tambah Tindakan</button>
                 </div>
                 <div class="box-body">
                     <table class="table table-bordered table-striped" id="tabel_tindakan" >
                         <thead>
                         <tr bgcolor="#90ee90">
-                            <td width="20%">Tanggal</td>
+                            <td width="20%">Waktu</td>
                             <td>Nama Tindakan</td>
                             <td>Tarif (Rp.)</td>
                             <td>Qty</td>
                             <td align="center">Total Tarif (Rp.)</td>
+                            <td align="center">Action</td>
                         </tr>
                         </thead>
                         <tbody id="body_tindakan">
                         </tbody>
                     </table>
                 </div>
+                <div class="box-header with-border"></div>
                 <div class="box-header with-border">
                     <h3 class="box-title" ><i class="fa fa-hospital-o"></i> Penunjang Medis</h3>
                 </div>
@@ -314,7 +328,7 @@
                     <table class="table table-bordered table-striped" id="tabel_penunjang_medis" >
                         <thead>
                         <tr bgcolor="#90ee90">
-                            <td width="20%">Tanggal</td>
+                            <td width="20%">Waktu</td>
                             <td>Pemeriksaan</td>
                             <td>Status</td>
                             <td align="center">Tarif (Rp.)</td>
@@ -325,6 +339,7 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="box-header with-border"></div>
                 <div class="box-header with-border">
                     <h3 class="box-title"><i class="fa fa-hospital-o"></i> Resep</h3>
                 </div>
@@ -332,7 +347,7 @@
                     <table class="table table-bordered table-striped" id="tabel_resep" >
                         <thead>
                         <tr bgcolor="#90ee90">
-                            <td width="20%">Tanggal</td>
+                            <td width="20%">Waktu</td>
                             <td>ID Resep</td>
                             <td>Status</td>
                             <td align="center">Detail</td>
@@ -349,7 +364,7 @@
                     <%--<table class="table table-bordered table-striped" id="tabel_gizi" >--%>
                         <%--<thead>--%>
                         <%--<tr bgcolor="#90ee90">--%>
-                            <%--<td width="20%">Tanggal</td>--%>
+                            <%--<td width="20%">Waktu</td>--%>
                             <%--<td>ID Resep</td>--%>
                             <%--<td>Status</td>--%>
                             <%--<td align="center">Detail</td>--%>
@@ -366,7 +381,7 @@
                     <%--<table class="table table-bordered table-striped" id="tabel_pendamping" >--%>
                         <%--<thead>--%>
                         <%--<tr bgcolor="#90ee90">--%>
-                            <%--<td width="20%">Tanggal</td>--%>
+                            <%--<td width="20%">Waktu</td>--%>
                             <%--<td>ID Resep</td>--%>
                             <%--<td>Status</td>--%>
                             <%--<td align="center">Detail</td>--%>
@@ -430,6 +445,8 @@
     </div>
 </div>
 
+<%@ include file="/pages/modal/modal-general.jsp" %>
+
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -451,14 +468,16 @@
     </div>
 </div>
 
-<script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatAction.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaLabAction.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanResepAction.js"/>'></script>
-
 <script type='text/javascript'>
 
     var contextPath = '<%= request.getContextPath() %>';
     var jenisKelamin = "";
+    var idDetailCheckup = "";
+    var noCheckupPasien = "";
+    var jenisPeriksaPasien = "";
+    var idKelasRuangan = "";
+    var flagVaksin = "";
+    var kategoriRuangan = "";
 
     function formatRupiah(angka) {
         if(angka != "" && angka > 0){
@@ -471,16 +490,16 @@
         }
     }
 
-    function detail(noCheckup, idDetailCheckup) {
+    function detail(noCheckup, idDetail) {
         if(!cekSession()){
             $('#body_tindakan').html('');
             $('#body_lab').html('');
             $('#body_resep').html('');
-            startSpinner('t_', idDetailCheckup);
+            startSpinner('t_', idDetail);
             dwr.engine.setAsync(true);
-            CheckupAction.listDataPasien(idDetailCheckup, {callback: function (res) {
+            CheckupAction.listDataPasien(idDetail, {callback: function (res) {
                     if (res.idPasien != null) {
-                        stopSpinner('t_', idDetailCheckup);
+                        stopSpinner('t_', idDetail);
                         dwr.engine.setAsync(false);
                         jenisKelamin = res.jenisKelamin;
                         listTindakan(noCheckup, res.idJenisPeriksaPasien);
@@ -497,7 +516,7 @@
 
                         $('#no_rm').html(res.idPasien);
                         $('#no_checkup').html(noCheckup);
-                        $('#no_detail_checkup').html(idDetailCheckup);
+                        $('#no_detail_checkup').html(idDetail);
                         $('#nik').html(res.noKtp);
                         $('#nama').html(res.nama);
                         $('#jenis_kelamin').html(jk);
@@ -506,7 +525,8 @@
                         $('#poli').html(res.namaPelayanan);
                         $('#diagnosa').html(diagnosa);
                         $('#h_id_pasien').val(res.idPasien);
-                        $('#h_id_detail_pasien').val(res.idDetailCheckup);
+                        $('#no_checkup').html(noCheckup);
+                        $('#h_id_detail_pasien').val(idDetail);
                         $('#h_no_checkup').val(noCheckup);
                         $('#h_id_pelayanan').val(res.idPelayanan);
                         $('#h_metode_bayar').val(res.metodePembayaran);
@@ -515,6 +535,13 @@
                         $('#save_fin').show();
                         $('#load_fin').hide();
                         $('#modal-detail').modal({show: true, backdrop: 'static'});
+
+                        idDetailCheckup = idDetail;
+                        noCheckupPasien = noCheckup;
+                        jenisPeriksaPasien = res.idJenisPeriksaPasien;
+                        idKelasRuangan = res.idKelasRuangan;
+                        flagVaksin = res.isVaksin;
+                        kategoriRuangan = res.kategoriRuangan;
                     }
                 }
             });
@@ -530,7 +557,7 @@
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
                         var tanggal = item.createdDate;
-                        var dateFormat = converterDate(new Date(tanggal));
+                        var dateFormat = converterDateTime(new Date(tanggal));
                         var tarif = "-";
                         var tarifTotal = "-";
                         var trfTotal = 0;
@@ -563,6 +590,7 @@
                             "<td align='right'>" + tarif + "</td>" +
                             "<td align='center'>" + item.qty + "</td>" +
                             "<td align='right'>" + tarifTotal + "</td>" +
+                            '<td align="center">'+'<img border="0" class="hvr-grow" onclick="editTindakan(\'' + item.idTindakanRawat + '\',\'' + item.idTindakan + '\',\'' + item.idKategoriTindakan + '\',\'' + item.kategoriRuangan + '\',\'' + item.qty + '\', \'' + item.idDokter + '\', \'' + item.idPelayanan + '\')" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer;">'+'</td>'+
                             "</tr>";
 
                     });
@@ -571,6 +599,7 @@
                         table = table + "<tr>" +
                             "<td colspan='4'>Total</td>" +
                             "<td align='right'>" + formatRupiah(trfTtl) + "</td>" +
+                            "<td></td>" +
                             "</tr>";
                         $('#body_tindakan').html(table);
                     }
@@ -588,7 +617,7 @@
                     $.each(response, function (i, item) {
                         var idResep = "";
                         var tanggal = item.createdDate;
-                        var dateFormat = converterDate(new Date(tanggal));
+                        var dateFormat = converterDateTime(new Date(tanggal));
                         var status = "";
 
                         if(item.status == "0"){
@@ -631,7 +660,7 @@
                         var status = "-";
                         var lab = "-";
                         var tanggal = item.createdDate;
-                        var dateFormat = converterDate(new Date(tanggal));
+                        var dateFormat = converterDateTime(new Date(tanggal));
                         var tipe = "";
 
                         if (item.kategori == "radiologi") {

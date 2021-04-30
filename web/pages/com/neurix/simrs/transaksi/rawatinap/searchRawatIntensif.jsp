@@ -160,6 +160,7 @@
                                 <td>ID Detail Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
+                                <td>Umur</td>
                                 <td>Tanggal Masuk</td>
                                 <td>Status</td>
                                 <td align="center">Jenis Pasien</td>
@@ -172,6 +173,7 @@
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="umur"/></td>
                                     <td><s:property value="formatTglMasuk"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td align="center">

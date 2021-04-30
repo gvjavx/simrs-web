@@ -9,6 +9,7 @@ import com.neurix.simrs.master.kategoripersediaan.model.ImSimrsKategoriPersediaa
 import com.neurix.simrs.master.obat.model.*;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
+import com.neurix.simrs.transaksi.hargaobat.model.HargaObatPerKonsumen;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.riwayatbarang.model.TransaksiStok;
 
@@ -44,9 +45,9 @@ public interface ObatBo{
     public List<Obat> detailReturObat(String idRetur) throws GeneralBOException;
     public List<Obat> searchObatByVendor(String idVendor, String branchId) throws GeneralBOException;
     public ImSimrsObatEntity getObatEntityByKodeBarang(String id) throws GeneralBOException;
-    public List<TransaksiStok> getListReporTransaksiObat(String idPelayanan, String tahun, String bulan, String idObat) throws GeneralBOException;
+    public List<TransaksiStok> getListReporTransaksiObat(String idPelayanan, String tahun, String bulan, String idObat, String flagBpjs) throws GeneralBOException;
     public void saveTransaksiStokOpname(Obat bean) throws GeneralBOException;
-    public List<TransaksiStok> getListReportSumaryTransaksiObat(String idPelayanan, String tahun, String bulan) throws GeneralBOException;
+    public List<TransaksiStok> getListReportSumaryTransaksiObat(String idPelayanan, String tahun, String bulan, String flagBpjs) throws GeneralBOException;
 
     public List<TransaksiStok> getListSummaryStok(String branchId,String idPelayanan, String tahun, String bulan,String namaObat) throws GeneralBOException;
     public List<KandunganObat> getListKandunganObatDetail(String idObat) throws GeneralBOException;
@@ -61,4 +62,7 @@ public interface ObatBo{
     public List<ImSimrsBentukBarangEntity> getAllBentukBarang() throws  GeneralBOException;
     public ImSimrsHeaderObatEntity getHeaderObatById(String id) throws GeneralBOException;
     public void testSumPersediaanObat(String id, String ket, String branchId);
+    public List<HargaObatPerKonsumen> listHargaObatPerKonsumenByBranch(String idObat, String branchId);
+    public String getIdHargaObatByIdObatAndBranch(String idObat, String branchId);
+    public void saveHargaObatPerKonsumen(HargaObatPerKonsumen bean, List<HargaObatPerKonsumen> listHargaPerKonsumen);
 }

@@ -1324,7 +1324,7 @@
                                                             <s:file id="fileUpload" name="fileUpload" cssClass="form-control" disabled="true" />
                                                         </s:if>
                                                         <s:else>
-                                                            <s:file id="fileUpload" name="fileUpload" cssClass="form-control" />
+                                                            <s:file id="fileUpload" name="fileUpload" cssClass="form-control" onchange="validateFoto()" />
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -2336,7 +2336,7 @@
                             <label class="control-label col-sm-4">Ijazah (Jpeg) : </label>
 
                             <div class="col-sm-8">
-                                <input type="file" id="file" class="form-control" name="fileUpload"/>
+                                <input type="file" id="file" class="form-control" accept=".jpg,.png" name="fileUpload" onchange="validateIjazah()" />
                                 <input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg"
                                        name="study.uploadFile" readonly style="display: none;"/>
                             </div>
@@ -2738,7 +2738,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Lama Pelatihan :</label>
+                        <label class="control-label col-sm-4" >Lama Pelatihan (hari) :</label>
                         <div class="col-sm-8">
                             <input type="number" class="form-control" id="jumlahJamPelatihan">
                         </div>
@@ -2772,7 +2772,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4">Sertifikat (Jpeg) : </label>
                         <div class="col-sm-8">
-                            <input type="file" id="fileSertifikat"  accept=".jpg" class="form-control" name="fileUpload"/>
+                            <input type="file" id="fileSertifikat"  accept=".jpg, .png" class="form-control" name="fileUpload" onchange="validateSertifikat()" />
                             <input type="hidden" id="base64sertifikat" />
                         </div>
                     </div>
@@ -3092,7 +3092,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Status Keluarga:</label>
                         <div class="col-sm-8">
-                            <select class="form-control" id="statusKeluarga" name="statusKeluarga" >
+                            <select class="form-control" id="statusKeluarga" name="statusKeluarga" onchange="genderPasangan()">
                             </select>
                         </div>
                     </div>
@@ -4078,7 +4078,7 @@
                     "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Jam Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Hari Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
@@ -4093,7 +4093,7 @@
                     "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml. Jam Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml. Hari Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
@@ -4167,7 +4167,7 @@
                     "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Jam Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Hari Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
@@ -4182,7 +4182,7 @@
                     "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Jam Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Hari Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
@@ -4596,10 +4596,14 @@
                         '<td >' + (i + 1) + '</td>' +
                         '<td >' + item.name + '</td>' +
                         '<td align="center">' + item.statusKeluargaName + '</td>' +
-                        '<td align="center">' + item.gender + '</td>' +
-                        '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>' +
+                        '<td align="center">' + item.gender + '</td>';
+                    if(item.tanggalLahir != null) {
+                        tmp_table += '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>';
+                    }else{
+                        tmp_table += '<td align="center">' + ' - ' + '</td>';
+                    }
                         /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/
-                        '<td align="center">' +
+                    tmp_table += '<td align="center">' +
                         "<a href='javascript:;' class ='item-edit' data ='" + item.keluargaId + "' >" +
                         "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
                         '</a>' +
@@ -4616,8 +4620,12 @@
                         '<td >' + (i + 1 ) + '</td>' +
                         '<td >' + item.name + '</td>' +
                         '<td align="center">' + item.statusKeluargaName + '</td>' +
-                        '<td align="center">' + item.gender + '</td>' +
-                        '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>' +
+                        '<td align="center">' + item.gender + '</td>';
+                            if(item.tanggalLahir != null) {
+                                tmp_table += '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>';
+                            }else{
+                                tmp_table += '<td align="center">' + ' - ' + '</td>';
+                            }
                         /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/
                         "</tr>";
                     </s:else>
@@ -5332,7 +5340,7 @@
                     msg+="- Penyelenggara \n";
                 }
                 if (jumlahJamPelatihan==""){
-                    msg+="- Jumlah Jam Pelatihan \n";
+                    msg+="- Jumlah Hari Pelatihan \n";
                 }
                 if (sertifikatPelatihan==""){
                     msg+="- Sertifikat Pelatihan \n";
@@ -5425,10 +5433,8 @@
 
             <s:if test="isAdd()">
             if (url == 'addKeluarga') {
-                if (keluargaName == '') {
-                    alert('Name Must be Entry')
-                } else if(tanggalLahir == ''){
-                    alert('Tanggal Lahir Must be Entry')
+                if (keluargaName == '' || statusKeluarga == '' || genderKeluarga == '' || tanggalLahir == '') {
+                    alert('All Field Must be Entry.')
                 } else {
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
@@ -5441,8 +5447,8 @@
                     }
                 }
             } else {
-                if(tanggalLahir == ''){
-                    alert('Tanggal Lahir Must be Entry')
+                if (keluargaName == '' || statusKeluarga == '' || genderKeluarga == '' || tanggalLahir == '') {
+                    alert('All Field Must be Entry.')
                 } else {
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
@@ -5458,10 +5464,8 @@
             </s:if>
             <s:else>
             if (url == 'addKeluarga') {
-                if (keluargaName == '') {
-                    alert('Name Must be Entry')
-                }else if (tanggalLahir == ''){
-                    alert('Tanggal Lahir Must be Entry')
+                if (keluargaName == '' || statusKeluarga == '' || genderKeluarga == '' || tanggalLahir == '') {
+                    alert('All Field Must be Entry.')
                 } else {
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
@@ -5474,8 +5478,8 @@
                     }
                 }
             } else {
-                if (tanggalLahir == ''){
-                    alert('Tanggal Lahir Must be Entry')
+                if (keluargaName == '' || statusKeluarga == '' || genderKeluarga == '' || tanggalLahir == '') {
+                    alert('All Field Must be Entry.')
                 } else {
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
@@ -5722,7 +5726,9 @@
                 var myDate = new Date(listdata.tanggalLahir);
                 $('#keluargaName').val(listdata.name);
                 $('#statusKeluarga').val(listdata.statusKeluargaId);
-                $('#tanggalLahirkeluarga').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                if(listdata.tanggalLahir != null){
+                    $('#tanggalLahirkeluarga').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                }
                 $('#keluargaId').val(listdata.keluargaId);
                 $('#genderKeluarga').val(listdata.gender);
             });
@@ -5734,7 +5740,9 @@
                     $('#keluargaName').val(item.name);
                     $('#genderKeluarga').val(item.gender).change();
                     $('#statusKeluarga').val(item.statusKeluargaId);
-                    $('#tanggalLahirkeluarga').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                    if(item.tanggalLahir!=null) {
+                        $('#tanggalLahirkeluarga').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                    }
                     $('#keluargaId').val(item.keluargaId);
                 });
             });
@@ -5865,7 +5873,9 @@
                 var myDate = new Date(listdata.tanggalLahir);
                 $('#keluargaNameDelete').val(listdata.name);
                 $('#statusKeluargaDelete').val(listdata.statusKeluargaId);
-                $('#tanggalLahirkeluargaDelete').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                if(listdata.tanggalLahir!=null) {
+                    $('#tanggalLahirkeluargaDelete').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                }
                 $('#keluargaIdDelete').val(listdata.keluargaId);
             });
 
@@ -5888,7 +5898,9 @@
                     var myDate = new Date(item.tanggalLahir);
                     $('#keluargaNameDelete').val(item.name);
                     $('#statusKeluargaDelete').val(item.statusKeluargaId);
-                    $('#tanggalLahirkeluargaDelete').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                    if(item.tanggalLahir!=null){
+                        $('#tanggalLahirkeluargaDelete').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
+                    }
                     $('#keluargaIdDelete').val(item.keluargaId);
                 });
             });
@@ -6461,11 +6473,23 @@
     }
 
 
+    function genderPasangan(){
+        var statusKeluarga = $('#statusKeluarga').val();
 
+        if(statusKeluarga == "S") {
+            $("#genderKeluarga").val("L").change();
+        } else if (statusKeluarga == "I"){
+            $("#genderKeluarga").val("P").change();
+        }
+
+    }
 
     window.listStatusKeluarga = function () {
         var gender = document.getElementById("gender").value;
         $('#statusKeluarga').empty();
+        $('#statusKeluarga').append($("<option></option>")
+            .attr("value", "")
+            .text("-"));
         if (gender == 'L') {
             $('#statusKeluarga').append($("<option></option>")
                 .attr("value", "I")
@@ -6725,6 +6749,39 @@
             $('#golongan2').prop('disabled', false);
             $('#poinLebih').prop('disabled', false);
             $('#noAnggotaDapen').prop('disabled', false);
+        }
+    }
+    
+    function validateFoto() {
+        var fileInput = $('#fileUpload').val();
+        var fileExt = fileInput.split(".").pop().toUpperCase();
+        console.log(fileInput+" => "+fileExt);
+
+        if(fileExt != "JPEG" && fileExt != "JPG" && fileExt != "PNG"){
+            alert("Format file salah, coba gunakan file berformat JPEG atau PNG.");
+            $('#fileUpload').val('');
+        }
+    }
+
+    function validateIjazah() {
+        var fileInput = $('#file').val();
+        var fileExt = fileInput.split(".").pop().toUpperCase();
+        console.log(fileInput+" => "+fileExt);
+
+        if(fileExt != "JPEG" && fileExt != "JPG" && fileExt != "PNG"){
+            alert("Format file salah, coba gunakan file berformat JPEG atau PNG.");
+            $('#file').val('');
+        }
+    }
+
+    function validateSertifikat() {
+        var fileInput = $('#fileSertifikat').val();
+        var fileExt = fileInput.split(".").pop().toUpperCase();
+        console.log(fileInput+" => "+fileExt);
+
+        if(fileExt != "JPEG" && fileExt != "JPG" && fileExt != "PNG"){
+            alert("Format file salah, coba gunakan file berformat JPEG atau PNG.");
+            $('#fileSertifikat').val('');
         }
     }
 

@@ -1,8 +1,10 @@
 package com.neurix.akuntansi.transaksi.budgeting.bo;
 
+import com.neurix.akuntansi.master.tipeRekening.model.TipeRekening;
 import com.neurix.akuntansi.transaksi.budgeting.model.*;
 import com.neurix.akuntansi.master.parameterbudgeting.model.ParameterBudgeting;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.tipepegawai.model.TipePegawai;
 
 import java.util.List;
 
@@ -49,4 +51,6 @@ public interface BudgetingBo {
     public List<ParameterBudgeting> getListBudgetingRealisasiPerperiode(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId, String rekeningId, String status);
     public List<ParameterBudgeting> getListBudgetingRealisasiPerKodeRekening(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId, String status);
     public String getIdBudgetingDetailInvestasi(String status, String unit, String tahun, String divisi, String tipe);
-}
+
+    public List<TipeRekening> getAllTipeRekening();
+ }

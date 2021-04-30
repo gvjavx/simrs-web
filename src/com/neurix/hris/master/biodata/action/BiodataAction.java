@@ -3973,6 +3973,23 @@ public class BiodataAction extends BaseMasterAction {
         logger.info("[BiodataAction.createUser] end process >>>");
     }
 
+    public String berhentikanKso(){
+        logger.info("[BiodataAction.berhentikanKso] start process >>>");
+
+        String itemId = getId();
+
+        try{
+            biodataBoProxy.berhentikanKso(itemId);
+        }catch (GeneralBOException e){
+            logger.error("[BiodataAction.berhentikanKso] Error, " + e.getMessage());
+            throw new GeneralBOException("Error when trying non-active Data Dokter Kso, " + e.getMessage());
+        }
+
+        logger.info("[BiodataAction.berhentikanKso] end process <<<");
+
+        return "success";
+    }
+
     public String paging() {
         return SUCCESS;
     }

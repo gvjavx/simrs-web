@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.master.parameterbudgeting.action;
 
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.master.parameterbudgeting.bo.ParameterBudgetingBo;
 import com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunJenisBudgetingEntity;
@@ -44,6 +45,7 @@ public class ParameterBudgetingAction {
         logger.info("[ParameterBudgetingAction.resetAllSession] START >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfParameterBudgeting");
+        session.removeAttribute("listOfCoa");
         logger.info("[ParameterBudgetingAction.resetAllSession] END <<<");
     }
 
@@ -115,9 +117,10 @@ public class ParameterBudgetingAction {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     parameterBudgeting.setIdKategoriBudgeting(jsonObject.get("id_kategori_budgeting").toString());
                     parameterBudgeting.setIdJenisBudgeting(jsonObject.get("id_jenis_budgeting").toString());
-                    parameterBudgeting.setMasterId(jsonObject.get("master_id").toString());
-                    parameterBudgeting.setDivisiId(jsonObject.get("divisi_id").toString());
-                    parameterBudgeting.setIdParamRekening(jsonObject.get("id_param_rekening").toString());
+                    parameterBudgeting.setMasterId(stringNullAscape(jsonObject.get("master_id").toString()));
+                    parameterBudgeting.setDivisiId(stringNullAscape(jsonObject.get("divisi_id").toString()));
+                    parameterBudgeting.setRekeningId(jsonObject.getString("rekening_id"));
+                    parameterBudgeting.setPositionId(stringNullAscape(jsonObject.getString("position_id")));
                 }
             }
         } catch (JSONException e){
@@ -127,8 +130,13 @@ public class ParameterBudgetingAction {
         }
 
         // selain pendapatan tidak ada master;
-        if (!"PDT".equalsIgnoreCase(parameterBudgeting.getIdJenisBudgeting()))
+        if (!"PDT".equalsIgnoreCase(parameterBudgeting.getIdJenisBudgeting())){
             parameterBudgeting.setMasterId(parameterBudgeting.getIdJenisBudgeting());
+            if ("INV".equalsIgnoreCase(parameterBudgeting.getIdJenisBudgeting())){
+                parameterBudgeting.setDivisiId(null);
+                parameterBudgeting.setPositionId(null);
+            }
+        }
 
         parameterBudgeting.setCreatedDate(times);
         parameterBudgeting.setCreatedWho(userLogin);
@@ -144,11 +152,19 @@ public class ParameterBudgetingAction {
         } catch (GeneralBOException e){
             logger.info("[ParameterBudgetingAction.saveAdd] ERROR. ", e);
             response.setStatus("error");
-            response.setMsg(e.getMessage());
+            response.setMsg(e.getCause().toString());
         }
 
         logger.info("[ParameterBudgetingAction.saveAdd] END <<<");
         return response;
+    }
+
+    public String stringNullAscape(String id){
+        if (id == null || "".equalsIgnoreCase(id)){
+            return null;
+        } else {
+            return id;
+        }
     }
 
     public CrudResponse saveEdit(String jsonString){
@@ -167,10 +183,11 @@ public class ParameterBudgetingAction {
                     parameterBudgeting.setId(jsonObject.getString("id"));
                     parameterBudgeting.setIdJenisBudgeting(jsonObject.getString("id_jenis_budgeting").toString());
                     parameterBudgeting.setIdKategoriBudgeting(jsonObject.get("id_kategori_budgeting").toString());
-                    parameterBudgeting.setMasterId(jsonObject.get("master_id").toString());
-                    parameterBudgeting.setDivisiId(jsonObject.get("divisi_id").toString());
-                    parameterBudgeting.setIdParamRekening(jsonObject.get("id_param_rekening").toString());
+                    parameterBudgeting.setMasterId(stringNullAscape(jsonObject.get("master_id").toString()));
+                    parameterBudgeting.setDivisiId(stringNullAscape(jsonObject.get("divisi_id").toString()));
+                    parameterBudgeting.setRekeningId(jsonObject.get("rekening_id").toString());
                     parameterBudgeting.setFlag(jsonObject.get("flag").toString());
+                    parameterBudgeting.setPositionId(stringNullAscape(jsonObject.getString("position_id")));
                 }
             }
         } catch (JSONException e){
@@ -180,8 +197,14 @@ public class ParameterBudgetingAction {
         }
 
         // selain pendapatan tidak ada master;
-        if (!"PDT".equalsIgnoreCase(parameterBudgeting.getIdJenisBudgeting()))
+        if (!"PDT".equalsIgnoreCase(parameterBudgeting.getIdJenisBudgeting())){
             parameterBudgeting.setMasterId(parameterBudgeting.getIdJenisBudgeting());
+            if ("INV".equalsIgnoreCase(parameterBudgeting.getIdJenisBudgeting())){
+                parameterBudgeting.setDivisiId(null);
+                parameterBudgeting.setPositionId(null);
+            }
+        }
+
 
         parameterBudgeting.setLastUpdate(times);
         parameterBudgeting.setLastUpdateWho(userLogin);
@@ -277,5 +300,64 @@ public class ParameterBudgetingAction {
 
         logger.info("[ParameterBudgetingAction.getAllKatagoriByIdJenis] END <<<");
         return null;
+    }
+
+    public CrudResponse getListKodeRekeningByTipeCoa(String tipeCoa){
+        logger.info("[ParameterBudgetingAction.getListKodeRekeningByTipeCoa] START >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ParameterBudgetingBo parameterBudgetingBo = (ParameterBudgetingBo) ctx.getBean("parameterBudgetingBoProxy");
+
+        List<KodeRekening> kodeRekeningList = new ArrayList<>();
+
+        CrudResponse response = new CrudResponse();
+
+        try {
+            kodeRekeningList = parameterBudgetingBo.getListKodeRekeningByTipeCoa(tipeCoa);
+        } catch (GeneralBOException e){
+            logger.info("[ParameterBudgetingAction.getListKodeRekeningByTipeCoa] ERROR .",e);
+            response.hasError("[ParameterBudgetingAction.getListKodeRekeningByTipeCoa] ERROR ."+e.getMessage());
+        }
+
+        logger.info("[ParameterBudgetingAction.getListKodeRekeningByTipeCoa] END <<<");
+        response.hasSuccess("berhasil");
+        response.setList(kodeRekeningList);
+        return response;
+    }
+
+    public String getTipeKodeRekening(String idJenisBudgeting){
+        logger.info("[ParameterBudgetingAction.getTipeKodeRekening] START >>>");
+
+        String tipeCoa = "";
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ParameterBudgetingBo parameterBudgetingBo = (ParameterBudgetingBo) ctx.getBean("parameterBudgetingBoProxy");
+
+        try {
+            tipeCoa = parameterBudgetingBo.getTipeKodeRekeningFromJenisBudgetingById(idJenisBudgeting);
+        } catch (GeneralBOException e){
+            logger.info("[ParameterBudgetingAction.getTipeKodeRekening] ERROR .",e);
+        }
+
+        logger.info("[ParameterBudgetingAction.getTipeKodeRekening] END <<<");
+        return tipeCoa;
+    }
+
+    public String getKoderingByPositionId(String positionId){
+        logger.info("[ParameterBudgetingAction.getTipeKodeRekening] START >>>");
+
+        String kodering = "";
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ParameterBudgetingBo parameterBudgetingBo = (ParameterBudgetingBo) ctx.getBean("parameterBudgetingBoProxy");
+
+        try {
+            kodering = parameterBudgetingBo.getKoderingFromPositionByPositionId(positionId);
+        } catch (GeneralBOException e){
+            logger.info("[ParameterBudgetingAction.getTipeKodeRekening] ERROR .",e);
+        }
+
+        logger.info("[ParameterBudgetingAction.getTipeKodeRekening] END <<<");
+        return kodering;
     }
 }

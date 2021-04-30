@@ -157,35 +157,48 @@ public class MesinAbsensiBoImpl implements MesinAbsensiBo {
     public MesinAbsensi saveAdd(MesinAbsensi bean) throws GeneralBOException {
         logger.info("[MesinAbsensiBoImpl.saveAdd] start process >>>");
         if (bean!=null) {
-            String mesinAbsensiId;
-            try {
-                // Generating ID, get from postgre sequence
-                mesinAbsensiId = mesinDao.getNextMesinAbsensiId();
-            } catch (HibernateException e) {
+            String mesinExist = "";
+            try{
+                mesinExist = mesinDao.cekAvailMesin(bean.getMesinAddress(), bean.getMesinSn());
+            }catch (HibernateException e){
                 logger.error("[MesinAbsensiBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence MesinAbsensi id, please info to your admin..." + e.getMessage());
+                throw new GeneralBOException("Found problem when check Availability Mesin Absensi, please info to your admin..." + e.getMessage());
             }
 
-            // creating object entity serializable
-            ImMesinAbsensiEntity entity = new ImMesinAbsensiEntity();
+            if(!"exist".equalsIgnoreCase(mesinExist)) {
+                String mesinAbsensiId;
+                try {
+                    // Generating ID, get from postgre sequence
+                    mesinAbsensiId = mesinDao.getNextMesinAbsensiId();
+                } catch (HibernateException e) {
+                    logger.error("[MesinAbsensiBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence MesinAbsensi id, please info to your admin..." + e.getMessage());
+                }
 
-            entity.setMesinId(mesinAbsensiId);
-            entity.setMesinName(bean.getMesinAddress());
-            entity.setMesinSn(bean.getMesinSn());
-            entity.setBranchId(bean.getBranchId());
-            entity.setFlag(bean.getFlag());
-            entity.setAction(bean.getAction());
-            entity.setCreatedWho(bean.getCreatedWho());
-            entity.setLastUpdateWho(bean.getLastUpdateWho());
-            entity.setCreatedDate(bean.getCreatedDate());
-            entity.setLastUpdate(bean.getLastUpdate());
+                // creating object entity serializable
+                ImMesinAbsensiEntity entity = new ImMesinAbsensiEntity();
 
-            try {
-                // insert into database
-                mesinDao.addAndSave(entity);
-            } catch (HibernateException e) {
-                logger.error("[MesinAbsensiBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data MesinAbsensi, please info to your admin..." + e.getMessage());
+                entity.setMesinId(mesinAbsensiId);
+                entity.setMesinName(bean.getMesinAddress());
+                entity.setMesinSn(bean.getMesinSn());
+                entity.setBranchId(bean.getBranchId());
+                entity.setFlag(bean.getFlag());
+                entity.setAction(bean.getAction());
+                entity.setCreatedWho(bean.getCreatedWho());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setCreatedDate(bean.getCreatedDate());
+                entity.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    // insert into database
+                    mesinDao.addAndSave(entity);
+                } catch (HibernateException e) {
+                    logger.error("[MesinAbsensiBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data MesinAbsensi, please info to your admin..." + e.getMessage());
+                }
+            }else{
+                logger.error("[MesinAbsensiBoImpl.saveAdd] Data Mesin Absensi dengan Address / SN tersebut telah tersedia.");
+                throw new GeneralBOException("Mesin Absensi dengan data Address / SN tersebut telah tersedia.");
             }
 
         }

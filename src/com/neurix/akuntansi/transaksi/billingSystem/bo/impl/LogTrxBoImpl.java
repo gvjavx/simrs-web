@@ -1,34 +1,33 @@
-package com.neurix.simrs.transaksi.logtransaction.bo.impl;
+package com.neurix.akuntansi.transaksi.billingSystem.bo.impl;
 
+import com.neurix.akuntansi.transaksi.billingSystem.bo.LogTrxBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
-import com.neurix.simrs.transaksi.logtransaction.bo.LogTransactionBo;
-import com.neurix.simrs.transaksi.logtransaction.dao.LogTransactionDao;
-import com.neurix.simrs.transaksi.logtransaction.model.ItPgLogTransactionEntity;
-import com.neurix.simrs.transaksi.logtransaction.model.LogTransaction;
+import com.neurix.akuntansi.transaksi.billingSystem.dao.LogTrxDao;
+import com.neurix.akuntansi.transaksi.billingSystem.model.ItPgLogTransactionEntity;
+import com.neurix.akuntansi.transaksi.billingSystem.model.LogTransaction;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.*;
 
-public class LogTransactionBoImpl implements LogTransactionBo {
-    protected static transient Logger logger = Logger.getLogger(LogTransactionBoImpl.class);
-    private LogTransactionDao logTransactionDao;
+public class LogTrxBoImpl implements LogTrxBo {
+    protected static transient Logger logger = Logger.getLogger(LogTrxBoImpl.class);
+    private LogTrxDao logTrxDao;
 
     public static Logger getLogger() {
         return logger;
     }
 
-    public void setLogTransactionDao(LogTransactionDao logTransactionDao) {
-        this.logTransactionDao = logTransactionDao;
+    public void setLogTrxDao(LogTrxDao logTrxDao) {
+        this.logTrxDao = logTrxDao;
     }
 
     @Override
     public void saveDelete(LogTransaction bean) throws GeneralBOException {
-        logger.info("[LogTransactionBoImpl.saveDelete] start process >>>");
+        logger.info("[LogTrxBoImpl.saveDelete] start process >>>");
 
         if (bean != null) {
 
@@ -37,14 +36,14 @@ public class LogTransactionBoImpl implements LogTransactionBo {
             BigInteger logId = bean.getPgLogTrxId();
             List<ItPgLogTransactionEntity> itLogTransactionEntities = new ArrayList<>();
             Map criteria = new HashMap();
-            criteria.put("Log_Trx_Id", logId);
+            criteria.put("pg_log_trx_id", logId);
             criteria.put("flag", "Y");
 
             try {
                 // Get data from database by ID
-                itLogTransactionEntities = logTransactionDao.getByCriteria(criteria);
+                itLogTransactionEntities = logTrxDao.getByCriteria(criteria);
             } catch (HibernateException e) {
-                logger.error("[LogTransactionBoImpl.saveDelete] Error, " + e.getMessage());
+                logger.error("[LogTrxBoImpl.saveDelete] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data by ID, please inform to your admin..., " + e.getMessage());
             }
             if (itLogTransactionEntities.size() > 0) {
@@ -57,17 +56,17 @@ public class LogTransactionBoImpl implements LogTransactionBo {
 
                 try {
                     // Delete (Edit) into database
-                    logTransactionDao.updateAndSave(itLogTransactionEntity);
+                    logTrxDao.updateAndSave(itLogTransactionEntity);
                 } catch (HibernateException e) {
-                    logger.error("[LogTransactionBoImpl.saveDelete] Error, " + e.getMessage());
+                    logger.error("[LogTrxBoImpl.saveDelete] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving update data Log Transaction, please info to your admin..." + e.getMessage());
                 }
             } else {
-                logger.error("[LogTransactionBoImpl.saveDelete] Error, not found data Log Transaction with request id, please check again your data ...");
+                logger.error("[LogTrxBoImpl.saveDelete] Error, not found data Log Transaction with request id, please check again your data ...");
                 throw new GeneralBOException("Error, not found data Log Transaction with request id, please check again your data ...");
             }
         }
-        logger.info("[LogTransactionBoImpl.saveDelete] end process <<<");
+        logger.info("[LogTrxBoImpl.saveDelete] end process <<<");
     }
 
     @Override
@@ -82,7 +81,7 @@ public class LogTransactionBoImpl implements LogTransactionBo {
 
     @Override
     public List<LogTransaction> getByCriteria(LogTransaction searchBean) throws GeneralBOException {
-        logger.info("[LogTransactionBoImpl.getByCriteria] start process >>>");
+        logger.info("[LogTrxBoImpl.getByCriteria] start process >>>");
 
         // Mapping with collection and put
         List<LogTransaction> listOfResult = new ArrayList();
@@ -91,7 +90,7 @@ public class LogTransactionBoImpl implements LogTransactionBo {
             Map hsCriteria = new HashMap();
 
             if (searchBean.getPgLogTrxId() != null) {
-                hsCriteria.put("Log_Trx_Id", searchBean.getPgLogTrxId());
+                hsCriteria.put("pg_log_trx_id", searchBean.getPgLogTrxId());
             }
             if (searchBean.getTrxId() != null && !"".equalsIgnoreCase(searchBean.getTrxId())) {
                 hsCriteria.put("trx_id", searchBean.getTrxId());
@@ -102,17 +101,75 @@ public class LogTransactionBoImpl implements LogTransactionBo {
             if (searchBean.getBankName() != null && !"".equalsIgnoreCase(searchBean.getBankName())) {
                 hsCriteria.put("bank_name", searchBean.getBankName());
             }
+
+            if (searchBean.getNoVirtualAccount() != null && !"".equalsIgnoreCase(searchBean.getNoVirtualAccount())) {
+                hsCriteria.put("no_virtual_account", searchBean.getNoVirtualAccount());
+            }
+            if (searchBean.getNoRekamMedik() != null && !"".equalsIgnoreCase(searchBean.getNoRekamMedik())) {
+                hsCriteria.put("no_rekam_medik", searchBean.getNoRekamMedik());
+            }
+            if (searchBean.getNamePerson() != null && !"".equalsIgnoreCase(searchBean.getNamePerson())) {
+                hsCriteria.put("name_person", searchBean.getNamePerson());
+            }
+            if (searchBean.getStatusBank() != null && !"".equalsIgnoreCase(searchBean.getStatusBank())) {
+                hsCriteria.put("status_bank", searchBean.getStatusBank());
+            }
+
             if (searchBean.getStatus() != null && !"".equalsIgnoreCase(searchBean.getStatus())) {
                 hsCriteria.put("status", searchBean.getStatus());
             }
 
+            if (searchBean.getChannel() != null && !"".equalsIgnoreCase(searchBean.getChannel())) {
+                hsCriteria.put("channel", searchBean.getChannel());
+            }
+            if (searchBean.getInvoiceNumber() != null) {
+                hsCriteria.put("invoice_number", searchBean.getInvoiceNumber());
+            }
+            if(searchBean.getStInvDateFrom() != null && !"".equalsIgnoreCase(searchBean.getStInvDateFrom())){
+                Date invDateFrom = CommonUtil.convertStringToDate(searchBean.getStInvDateFrom());
+                hsCriteria.put("invoice_date_from", invDateFrom);
+            }
+            if(searchBean.getStInvDateTo() != null && !"".equalsIgnoreCase(searchBean.getStInvDateTo())){
+                Date invDateTo = CommonUtil.convertStringToDate(searchBean.getStInvDateTo());
+                hsCriteria.put("invoice_date_to", invDateTo);
+            }
+
+//            if (searchBean.getStReceivedDateFrom() != null && !"".equalsIgnoreCase(searchBean.getStReceivedDateFrom())) {
+//                Timestamp receivedDateFrom = CommonUtil.convertToTimestamp(searchBean.getStReceivedDateFrom());
+//                hsCriteria.put("received_date_from", receivedDateFrom);
+//            }
+//            if (searchBean.getStReceivedDateTo() != null && !"".equalsIgnoreCase(searchBean.getStReceivedDateTo())) {
+//                Timestamp receivedDateTo = CommonUtil.convertToTimestamp(searchBean.getStReceivedDateTo());
+//                hsCriteria.put("received_date_to", receivedDateTo);
+//            }
+//
+//            if (searchBean.getStSentDateFrom() != null && !"".equalsIgnoreCase(searchBean.getStSentDateFrom())) {
+//                Timestamp sentDateFrom = CommonUtil.convertToTimestamp(searchBean.getStSentDateFrom());
+//                hsCriteria.put("sent_date_from", sentDateFrom);
+//            }
+//            if (searchBean.getStSentDateTo() != null && !"".equalsIgnoreCase(searchBean.getStSentDateTo())) {
+//                Timestamp sentDateTo = CommonUtil.convertToTimestamp(searchBean.getStSentDateTo());
+//                hsCriteria.put("sent_date_to", sentDateTo);
+//            }
+
             if (searchBean.getStDateStr() != null && !"".equalsIgnoreCase(searchBean.getStDateStr())) {
                 Timestamp date_str = CommonUtil.convertToTimestamp(searchBean.getStDateStr());
-                hsCriteria.put("dateStr", date_str);
+                if(!"out".equalsIgnoreCase(searchBean.getStatus())) {
+                    hsCriteria.put("received_date_from", date_str);
+                }
+                if (!"in".equalsIgnoreCase(searchBean.getStatus())){
+                    hsCriteria.put("sent_date_from", date_str);
+                }
             }
             if (searchBean.getStDateEnd() != null && !"".equalsIgnoreCase(searchBean.getStDateEnd())) {
                 Timestamp date_end = CommonUtil.convertToTimestamp(searchBean.getStDateEnd());
-                hsCriteria.put("dateEnd", date_end);
+                date_end.setTime(date_end.getTime() + 86400000);
+                if(!"out".equalsIgnoreCase(searchBean.getStatus())) {
+                    hsCriteria.put("received_date_to", date_end);
+                }
+                if (!"in".equalsIgnoreCase(searchBean.getStatus())){
+                    hsCriteria.put("sent_date_to", date_end);
+                }
             }
 
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
@@ -127,9 +184,9 @@ public class LogTransactionBoImpl implements LogTransactionBo {
 
             List<ItPgLogTransactionEntity> itLogTransactionEntities = null;
             try {
-                itLogTransactionEntities = logTransactionDao.getByCriteria(hsCriteria);
+                itLogTransactionEntities = logTrxDao.getByCriteria(hsCriteria);
             } catch (HibernateException e) {
-                logger.error("[LogTransactionBoImpl.getByCriteria] Error, " + e.getMessage());
+                logger.error("[LogTrxBoImpl.getByCriteria] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
             }
 
@@ -146,6 +203,7 @@ public class LogTransactionBoImpl implements LogTransactionBo {
                     returnLogTransaction.setNoVirtualAccount(itLogTransactionEntity.getNoVirtualAccount());
                     returnLogTransaction.setNoRekamMedik(itLogTransactionEntity.getNoRekamMedik());
                     returnLogTransaction.setTrxAmount(itLogTransactionEntity.getTrxAmount());
+                    returnLogTransaction.setStTrxAmount(CommonUtil.numbericFormat(itLogTransactionEntity.getTrxAmount(),"###,###"));
                     returnLogTransaction.setNamePerson(itLogTransactionEntity.getNamePerson());
                     returnLogTransaction.setAddressPerson(itLogTransactionEntity.getAddressPerson());
                     returnLogTransaction.setPhonePerson(itLogTransactionEntity.getPhonePerson());
@@ -154,6 +212,14 @@ public class LogTransactionBoImpl implements LogTransactionBo {
                     returnLogTransaction.setMessage(itLogTransactionEntity.getMessage());
                     returnLogTransaction.setSentDate(itLogTransactionEntity.getSentDate());
                     returnLogTransaction.setReceivedDate(itLogTransactionEntity.getReceivedDate());
+
+                    returnLogTransaction.setStatusBank(itLogTransactionEntity.getStatusBank());
+                    returnLogTransaction.setChannel(itLogTransactionEntity.getChannel());
+                    if(itLogTransactionEntity.getInvoiceDate()!=null) {
+                        returnLogTransaction.setStInvoiceDate(CommonUtil.ddMMyyyyFormat(itLogTransactionEntity.getInvoiceDate()));
+                    }
+                    returnLogTransaction.setInvoiceDate(itLogTransactionEntity.getInvoiceDate());
+                    returnLogTransaction.setInvoiceNumber(itLogTransactionEntity.getInvoiceNumber());
 
                     returnLogTransaction.setCreatedWho(itLogTransactionEntity.getCreatedWho());
                     returnLogTransaction.setCreatedDate(itLogTransactionEntity.getCreatedDate());
@@ -166,7 +232,7 @@ public class LogTransactionBoImpl implements LogTransactionBo {
                 }
             }
         }
-        logger.info("[LogTransactionBoImpl.getByCriteria] end process <<<");
+        logger.info("[LogTrxBoImpl.getByCriteria] end process <<<");
 
         return listOfResult;
     }

@@ -1,71 +1,54 @@
-package com.neurix.simrs.transaksi.logtransaction.model;
+package com.neurix.akuntansi.transaksi.billingSystem.model;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-public class ItPgLogTransactionEntity {
-    private BigInteger pgLogTrxId;
-    private String trxId;
-    private String tipeTrx;
-    private String bankName;
-    private String noVirtualAccount;
+public class ItPgInvoiceEntity {
+    private String pgInvoiceId;
+    private String noInvoice;
+    private Date invoiceDate;
     private String noRekamMedik;
     private BigDecimal trxAmount;
     private String namePerson;
     private String addressPerson;
     private String phonePerson;
     private String emailPerson;
+    private String branchId;
     private String status;
-    private String message;
-    private Timestamp sentDate;
-    private Timestamp receivedDate;
+    private String bankName;
+    private String noVirtualAccount;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String action;
     private String flag;
+    private String description;
 
-    public BigInteger getPgLogTrxId() {
-        return pgLogTrxId;
+    public String getPgInvoiceId() {
+        return pgInvoiceId;
     }
 
-    public void setPgLogTrxId(BigInteger pgLogTrxId) {
-        this.pgLogTrxId = pgLogTrxId;
+    public void setPgInvoiceId(String pgInvoiceId) {
+        this.pgInvoiceId = pgInvoiceId;
     }
 
-    public String getTrxId() {
-        return trxId;
+    public String getNoInvoice() {
+        return noInvoice;
     }
 
-    public void setTrxId(String trxId) {
-        this.trxId = trxId;
+    public void setNoInvoice(String noInvoice) {
+        this.noInvoice = noInvoice;
     }
 
-    public String getTipeTrx() {
-        return tipeTrx;
+    public Date getInvoiceDate() {
+        return invoiceDate;
     }
 
-    public void setTipeTrx(String tipeTrx) {
-        this.tipeTrx = tipeTrx;
-    }
-
-    public String getBankName() {
-        return bankName;
-    }
-
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
-    }
-
-    public String getNoVirtualAccount() {
-        return noVirtualAccount;
-    }
-
-    public void setNoVirtualAccount(String noVirtualAccount) {
-        this.noVirtualAccount = noVirtualAccount;
+    public void setInvoiceDate(Date invoiceDate) {
+        this.invoiceDate = invoiceDate;
     }
 
     public String getNoRekamMedik() {
@@ -116,6 +99,14 @@ public class ItPgLogTransactionEntity {
         this.emailPerson = emailPerson;
     }
 
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -124,28 +115,20 @@ public class ItPgLogTransactionEntity {
         this.status = status;
     }
 
-    public String getMessage() {
-        return message;
+    public String getBankName() {
+        return bankName;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 
-    public Timestamp getSentDate() {
-        return sentDate;
+    public String getNoVirtualAccount() {
+        return noVirtualAccount;
     }
 
-    public void setSentDate(Timestamp sentDate) {
-        this.sentDate = sentDate;
-    }
-
-    public Timestamp getReceivedDate() {
-        return receivedDate;
-    }
-
-    public void setReceivedDate(Timestamp receivedDate) {
-        this.receivedDate = receivedDate;
+    public void setNoVirtualAccount(String noVirtualAccount) {
+        this.noVirtualAccount = noVirtualAccount;
     }
 
     public Timestamp getCreatedDate() {
@@ -196,36 +179,43 @@ public class ItPgLogTransactionEntity {
         this.flag = flag;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ItPgLogTransactionEntity that = (ItPgLogTransactionEntity) o;
-        return pgLogTrxId == that.pgLogTrxId &&
-                Objects.equals(trxId, that.trxId) &&
-                Objects.equals(tipeTrx, that.tipeTrx) &&
-                Objects.equals(bankName, that.bankName) &&
-                Objects.equals(noVirtualAccount, that.noVirtualAccount) &&
+        ItPgInvoiceEntity that = (ItPgInvoiceEntity) o;
+        return Objects.equals(pgInvoiceId, that.pgInvoiceId) &&
+                Objects.equals(noInvoice, that.noInvoice) &&
+                Objects.equals(invoiceDate, that.invoiceDate) &&
                 Objects.equals(noRekamMedik, that.noRekamMedik) &&
                 Objects.equals(trxAmount, that.trxAmount) &&
                 Objects.equals(namePerson, that.namePerson) &&
                 Objects.equals(addressPerson, that.addressPerson) &&
                 Objects.equals(phonePerson, that.phonePerson) &&
                 Objects.equals(emailPerson, that.emailPerson) &&
+                Objects.equals(branchId, that.branchId) &&
                 Objects.equals(status, that.status) &&
-                Objects.equals(message, that.message) &&
-                Objects.equals(sentDate, that.sentDate) &&
-                Objects.equals(receivedDate, that.receivedDate) &&
+                Objects.equals(bankName, that.bankName) &&
+                Objects.equals(noVirtualAccount, that.noVirtualAccount) &&
                 Objects.equals(createdDate, that.createdDate) &&
                 Objects.equals(createdWho, that.createdWho) &&
                 Objects.equals(lastUpdate, that.lastUpdate) &&
                 Objects.equals(lastUpdateWho, that.lastUpdateWho) &&
                 Objects.equals(action, that.action) &&
-                Objects.equals(flag, that.flag);
+                Objects.equals(flag, that.flag) &&
+                Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pgLogTrxId, trxId, tipeTrx, bankName, noVirtualAccount, noRekamMedik, trxAmount, namePerson, addressPerson, phonePerson, emailPerson, status, message, sentDate, receivedDate, createdDate, createdWho, lastUpdate, lastUpdateWho, action, flag);
+        return Objects.hash(pgInvoiceId, noInvoice, invoiceDate, noRekamMedik, trxAmount, namePerson, addressPerson, phonePerson, emailPerson, branchId, status, bankName, noVirtualAccount, createdDate, createdWho, lastUpdate, lastUpdateWho, action, flag, description);
     }
 }

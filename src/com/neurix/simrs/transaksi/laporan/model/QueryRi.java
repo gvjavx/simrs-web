@@ -87,8 +87,8 @@ public class QueryRi {
                 "CAST(SUM(okt) AS VARCHAR) as okt,\n" +
                 "CAST(SUM(nov) AS VARCHAR) as nov,\n" +
                 "CAST(SUM(des) AS VARCHAR) as des,\n" +
-                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
-                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
+                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
+                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
                 "(SELECT COUNT(a.id_detail_checkup)\n" +
                 "FROM it_simrs_header_detail_checkup a\n" +
                 "INNER JOIN it_simrs_rawat_inap b ON a.id_detail_checkup = b.id_detail_checkup\n" +
@@ -174,8 +174,8 @@ public class QueryRi {
                 "CAST(SUM(okt) AS VARCHAR) as okt,\n" +
                 "CAST(SUM(nov) AS VARCHAR) as nov,\n" +
                 "CAST(SUM(des) AS VARCHAR) as des,\n" +
-                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
-                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
+                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
+                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
                 "(SELECT COUNT(a.id_detail_checkup)\n" +
                 "FROM it_simrs_header_detail_checkup a\n" +
                 "INNER JOIN it_simrs_rawat_inap b ON a.id_detail_checkup = b.id_detail_checkup\n" +
@@ -242,8 +242,8 @@ public class QueryRi {
                 "CAST(SUM(okt) AS VARCHAR) as okt,\n" +
                 "CAST(SUM(nov) AS VARCHAR) as nov,\n" +
                 "CAST(SUM(des) AS VARCHAR) as des,\n" +
-                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
-                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
+                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
+                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
                 "(SELECT COUNT(a.id_detail_checkup)\n" +
                 "FROM it_simrs_header_detail_checkup a\n" +
                 "INNER JOIN it_simrs_rawat_inap b ON a.id_detail_checkup = b.id_detail_checkup\n" +
@@ -310,8 +310,8 @@ public class QueryRi {
                 "CAST(SUM(okt) AS VARCHAR) as okt,\n" +
                 "CAST(SUM(nov) AS VARCHAR) as nov,\n" +
                 "CAST(SUM(des) AS VARCHAR) as des,\n" +
-                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
-                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
+                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
+                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
                 "(SELECT COUNT(a.id_detail_checkup)\n" +
                 "FROM it_simrs_header_detail_checkup a\n" +
                 "INNER JOIN it_simrs_rawat_inap b ON a.id_detail_checkup = b.id_detail_checkup\n" +
@@ -378,8 +378,8 @@ public class QueryRi {
                 "CAST(SUM(okt) AS VARCHAR) as okt,\n" +
                 "CAST(SUM(nov) AS VARCHAR) as nov,\n" +
                 "CAST(SUM(des) AS VARCHAR) as des,\n" +
-                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
-                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
+                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
+                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
                 "(SELECT COUNT(a.id_detail_checkup)\n" +
                 "FROM it_simrs_header_detail_checkup a\n" +
                 "INNER JOIN it_simrs_rawat_inap b ON a.id_detail_checkup = b.id_detail_checkup\n" +
@@ -462,8 +462,8 @@ public class QueryRi {
                 "CAST(SUM(okt) AS VARCHAR) as okt,\n" +
                 "CAST(SUM(nov) AS VARCHAR) as nov,\n" +
                 "CAST(SUM(des) AS VARCHAR) as des,\n" +
-                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
-                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
+                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
+                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
                 "(SELECT COUNT(a.id_detail_checkup)\n" +
                 "FROM it_simrs_header_detail_checkup a\n" +
                 "INNER JOIN it_simrs_rawat_inap b ON a.id_detail_checkup = b.id_detail_checkup\n" +
@@ -530,8 +530,8 @@ public class QueryRi {
                 "CAST(SUM(okt) AS VARCHAR) as okt,\n" +
                 "CAST(SUM(nov) AS VARCHAR) as nov,\n" +
                 "CAST(SUM(des) AS VARCHAR) as des,\n" +
-                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
-                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
+                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
+                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
                 "(SELECT COUNT(a.id_detail_checkup)\n" +
                 "FROM it_simrs_header_detail_checkup a\n" +
                 "INNER JOIN it_simrs_rawat_inap b ON a.id_detail_checkup = b.id_detail_checkup\n" +
@@ -566,9 +566,7 @@ public class QueryRi {
                 "\t\tCOUNT(a.id_detail_checkup) jumlah,\n" +
                 "\t\tdate_part('month', a.created_date) bulan\n" +
                 "\t\tFROM it_simrs_header_detail_checkup a\n" +
-                "\t\tINNER JOIN im_simrs_rekanan_ops b ON a.id_asuransi = b.id_rekanan_ops\n" +
-                "\t\tINNER JOIn im_simrs_detail_rekanan_ops c ON b.id_rekanan_ops = c.id_rekanan_ops\n" +
-                "\t\tINNER JOIN it_simrs_rawat_inap d ON a.id_detail_checkup = d.id_detail_checkup\n" +
+                "\t\tINNER JOIN it_simrs_rawat_inap b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "\t\tINNER JOIN (\n" +
                 "\t\tSELECT\n" +
                 "\t\ta.id_tempat_tidur,\n" +
@@ -576,12 +574,10 @@ public class QueryRi {
                 "\t\tb.nama_ruangan\n" +
                 "\t\tFROM mt_simrs_ruangan_tempat_tidur a\n" +
                 "\t\tINNER JOIN mt_simrs_ruangan b ON a.id_ruangan = b.id_ruangan\n" +
-                "\t\t) e ON d.id_ruangan = e.id_tempat_tidur\n" +
-                "\t\tWHERE a.id_jenis_periksa_pasien = 'rekanan'\n" +
-                "\t\tAND e.id_ruangan IN ("+idRuangan+") \n" +
+                "\t\t) c ON b.id_ruangan = c.id_tempat_tidur\n" +
+                "\t\tWHERE a.id_jenis_periksa_pasien = 'bpjs_rekanan'\n" +
+                "\t\tAND c.id_ruangan IN ("+idRuangan+") \n" +
                 "\t\tAND date_part('year', a.created_date) = '"+bean.getTahun()+"'\n" +
-                "\t\tAND c.is_bpjs = 'Y' \n" +
-                "\t\tAND b.tipe != 'ptpn'\n" +
                 "\t\tAND a.status_periksa = '3'\n" +
                 "\t\tGROUP BY date_part('month', a.created_date)\n" +
                 "\t)a\n" +
@@ -602,8 +598,8 @@ public class QueryRi {
                 "CAST(SUM(okt) AS VARCHAR) as okt,\n" +
                 "CAST(SUM(nov) AS VARCHAR) as nov,\n" +
                 "CAST(SUM(des) AS VARCHAR) as des,\n" +
-                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
-                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
+                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
+                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
                 "(SELECT COUNT(a.id_detail_checkup)\n" +
                 "FROM it_simrs_header_detail_checkup a\n" +
                 "INNER JOIN it_simrs_rawat_inap b ON a.id_detail_checkup = b.id_detail_checkup\n" +

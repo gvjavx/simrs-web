@@ -136,7 +136,7 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a href="addRawatIgd_igd.action" type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</a>
+                                        <%--<a href="addRawatIgd_igd.action" type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</a>--%>
                                         <a type="button" class="btn btn-danger" href="initForm_igd.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
@@ -184,6 +184,7 @@
                                 <td>ID Detail Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
+                                <td>Umur</td>
                                 <td>Tanggal Masuk</td>
                                 <td>Desa</td>
                                 <td>Status</td>
@@ -197,6 +198,7 @@
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="umur"/></td>
                                     <td><s:property value="formatTglMasuk"/></td>
                                     <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>

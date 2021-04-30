@@ -236,6 +236,11 @@
                                                             <display:column property="createdWho" sortable="true" title="Created who"  />
                                                             <display:column property="lastUpdate" sortable="true" title="Last update"  />
                                                             <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
+                                                            <display:setProperty name="paging.banner.item_name">TunjanganFungsional</display:setProperty>
+                                                            <display:setProperty name="paging.banner.items_name">TunjanganFungsional</display:setProperty>
+                                                            <display:setProperty name="export.excel.filename">TunjanganFungsional.xls</display:setProperty>
+                                                            <display:setProperty name="export.csv.filename">TunjanganFungsional.csv</display:setProperty>
+                                                            <display:setProperty name="export.pdf.filename">TunjanganFungsional.pdf</display:setProperty>
                                                         </display:table>
                                                     </td>
                                                 </tr>

@@ -160,7 +160,7 @@
                                             <tr>
                                                 <td>
                                                     <sj:submit type="button" cssClass="btn btn-primary" formIds="searchForm" id="search" name="search"
-                                                               onClickTopics="showDialog" onCompleteTopics="closeDialog" onclick="showLoadingDialog();">
+                                                               onClickTopics="showDialog" onCompleteTopics="closeDialog" onclick="searchData(), showLoadingDialog();">
                                                         <i class="fa fa-search"></i>
                                                         Search
                                                     </sj:submit>
@@ -589,6 +589,18 @@
         $('#jamAwal2').timepicker();
         $('#jamAkhir2').timepicker();
     });
+
+    function searchData() {
+        var nip = $('#personId').val();
+        var lemburId = $('#lemburId').val();
+        var data = "viewNotifikasi_notifikasi.action?tipeNotif=TN77";
+        if(nip!=null && nip!="")
+            data = data + "&id=" + nip;
+        if(lemburId!=null && lemburId!='')
+            data = data + "&request=" + lemburId;
+
+        $('#searchForm').attr('action',data);
+    }
 </script>
 
 

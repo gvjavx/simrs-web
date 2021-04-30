@@ -54,12 +54,14 @@ function saveRingkasanPasien(jenis, ket) {
         var pe18 = $('#rps18').val();
         var pe19 = $('#rps19').val();
         var pe20 = $('#rps20').val();
-        var pe21 = $('[name=rps21]').val();
-        var pe22 = $('[name=rps22]').val();
+        var pe21 = $('[name=rps21]:checked').val();
+        var pe22 = $('[name=rps22]:checked').val();
         var pe23 = $('#rps23').val();
+        var spo1 = $('#spo1').val();
+        var spo2 = $('#spo2').val();
 
         if (pe1 && pe2 && pe3 && pe4 && pe5 && pe6 && pe7 && pe8 && pe9 && pe10 &&
-            pe11 && pe12 && pe13 && pe14 && pe15 && pe16 && pe17 && pe18 && pe19 && pe20 && pe23 != '' && pe21 && pe22 != undefined) {
+            pe11 && pe12 && pe13 && pe14 && pe15 && pe16 && pe17 && pe18 && pe19 && pe20 && pe23 != '' && pe21 != undefined) {
 
             data.push({
                 'parameter': 'Tanggal Masuk',
@@ -126,6 +128,13 @@ function saveRingkasanPasien(jenis, ket) {
             data.push({
                 'parameter': 'CGS',
                 'jawaban': pe9,
+                'keterangan': jenis,
+                'jenis': 'ringkasan_pulang',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'SPO2',
+                'jawaban': spo1,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
                 'id_detail_checkup': idDetailCheckup
@@ -214,19 +223,28 @@ function saveRingkasanPasien(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
+                'parameter': 'SPO2',
+                'jawaban': spo2,
+                'keterangan': jenis,
+                'jenis': 'ringkasan_pulang',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
                 'parameter': 'Keterangan Keluar',
                 'jawaban': pe21,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
                 'id_detail_checkup': idDetailCheckup
             });
-            data.push({
-                'parameter': 'Penyebab Kematian',
-                'jawaban': pe22,
-                'keterangan': jenis,
-                'jenis': 'ringkasan_pulang',
-                'id_detail_checkup': idDetailCheckup
-            });
+            if(pe22 != undefined){
+                data.push({
+                    'parameter': 'Penyebab Kematian',
+                    'jawaban': pe22,
+                    'keterangan': jenis,
+                    'jenis': 'ringkasan_pulang',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
             data.push({
                 'parameter': 'Instruksi tindak lanjut',
                 'jawaban': pe23,
@@ -1115,6 +1133,12 @@ function showKetRing(value, ket) {
         } else {
             $('#form-ring-' + ket).hide();
             $('#pre_ket_alergi').hide();
+        }
+    } else if(ket == "penyembab_kematian"){
+        if(value == "Meninggal"){
+            $('#form-ring-' + ket).show();
+        }else{
+            $('#form-ring-' + ket).hide();
         }
     }else{
         if (value == "Meninggal dunia, sebab kematian" || value == "Rujuk" ||

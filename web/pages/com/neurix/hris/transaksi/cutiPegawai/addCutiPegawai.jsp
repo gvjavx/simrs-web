@@ -717,11 +717,15 @@
             $('#info_dialog').dialog('close');
         }
     });
+    var limNow = new Date();
+    limNow.setDate(limNow.getDate() + 1);
     $('#tgl1').datepicker({
-        dateFormat: 'dd/mm/yy'
+        dateFormat: 'dd/mm/yy',
+        minDate: limNow
     });
     $('#tgl2').datepicker({
-        dateFormat: 'dd/mm/yy'
+        dateFormat: 'dd/mm/yy',
+        minDate: limNow
     });
 
     $('#tgl2').on('change', function(){

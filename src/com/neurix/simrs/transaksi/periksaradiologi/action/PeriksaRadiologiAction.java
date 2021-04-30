@@ -184,8 +184,13 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 periksaLab.setJenisKelamin(jk);
                 periksaLab.setTempatLahir(checkup.getTempatLahir());
                 periksaLab.setTglLahir(checkup.getTglLahir() == null ? null : checkup.getTglLahir().toString());
-                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
-                periksaLab.setTempatTglLahir(checkup.getTempatLahir() + ", " + formatDate);
+
+                if(checkup.getTglLahir() != null){
+                    String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+                    periksaLab.setTempatTglLahir(checkup.getTempatLahir() + ", " + formatDate);
+                    periksaLab.setUmur(CommonUtil.calculateAge(checkup.getTglLahir(), true));
+                }
+
                 periksaLab.setIdJenisPeriksa(checkup.getIdJenisPeriksaPasien());
                 periksaLab.setNik(checkup.getNoKtp());
                 periksaLab.setUrlKtp(checkup.getUrlKtp());
@@ -271,6 +276,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listPeriksaLabList);
+        setPeriksaLab(periksaLab);
         logger.info("[PeriksaRadiologiAction.search] end process <<<");
         return "search";
     }

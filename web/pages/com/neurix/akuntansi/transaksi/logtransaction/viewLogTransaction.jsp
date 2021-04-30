@@ -71,7 +71,7 @@
                 <%--<div id="panelView">--%>
                     <%--<div class="row">--%>
                         <%--<div class="col-md-6">--%>
-                            <table>
+                            <table width="80%">
                                 <tr>
                                     <td>
                                         <label class="control-label">
@@ -107,8 +107,8 @@
                                     </td>
                                     <td>
                                         <table>
-                                            <s:textfield id="delTipeTrx" readonly="true" name="logTransaction.tipeTrx"
-                                                         required="true" cssClass="form-control"/>
+                                            <s:select list="#{'create':'Create', 'inquiry':'Inquiry', 'payment' : 'Payment'}" id="delTipeTrx" readonly="true" name="logTransaction.tipeTrx"
+                                                      headerKey="" headerValue="[all type]" cssClass="form-control"/>
                                         </table>
                                     </td>
                                 </tr>
@@ -120,7 +120,7 @@
                                     </td>
                                     <td>
                                         <table>
-                                            <s:select list="#{'BNI':'BNI', 'BSI':'BSI'}" id="delBankName"
+                                            <s:select list="#{'BNI':'BNI', 'BSI':'BSI', 'BSM':'BSM'}" id="delBankName"
                                                       name="logTransaction.bankName"
                                                       readonly="true" headerKey="" headerValue="[all bank]"
                                                       cssClass="form-control"/>
@@ -164,7 +164,7 @@
                                     <td>
                                         <table>
                                             <s:textfield id="delTrxAmount" readonly="true"
-                                                         name="logTransaction.trxAmount" required="true"
+                                                         name="logTransaction.stTrxAmount" required="true"
                                                          cssClass="form-control"/>
                                         </table>
                                     </td>
@@ -243,13 +243,65 @@
                                 <tr>
                                     <td>
                                         <label class="control-label">
+                                            <small>Status Bank :</small>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:textfield id="delStatusBank" readonly="true" name="logTransaction.statusBank"
+                                                         required="true" cssClass="form-control"/>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label">
                                             <small>Message :</small>
                                         </label>
                                     </td>
                                     <td>
                                         <table>
-                                            <s:textarea id="delMessage" readonly="true" name="logTransaction.message"
+                                            <s:textarea id="delMessage" rows="10" readonly="true" name="logTransaction.message"
                                                         required="true" cssClass="form-control"/>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label">
+                                            <small>Channel :</small>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:textfield id="delChannel" readonly="true" name="logTransaction.channel"
+                                                         required="true" cssClass="form-control"/>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label">
+                                            <small>Invoice Date :</small>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:textfield id="delInvoiceDate" readonly="true" name="logTransaction.stInvoiceDate"
+                                                         required="true" cssClass="form-control"/>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label">
+                                            <small>Invoice Number :</small>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:textfield id="delInvoiceNumber" type="number" readonly="true" name="logTransaction.invoiceNumber"
+                                                         required="true" cssClass="form-control"/>
                                         </table>
                                     </td>
                                 </tr>

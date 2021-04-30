@@ -50,6 +50,7 @@ function setDataPasien() {
         var nadiMon = $('.nadi_mon').length;
         var rrMon = $('.rr_mon').length;
         var suhuMon = $('.suhu_mon').length;
+        var noregistrasi = $('.no_registrasi').length;
 
         if (tensi > 0 || gejala > 0 || bb > 0 || tb > 0) {
             dwr.engine.setAsync(true);
@@ -356,5 +357,9 @@ function setDataPasien() {
                 }
             });
         }
+    }
+
+    if(noregistrasi > 0){
+        $('.no_registrasi').val(idDetailCheckup);
     }
 }

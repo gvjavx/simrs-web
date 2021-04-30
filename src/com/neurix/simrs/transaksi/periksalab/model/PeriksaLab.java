@@ -123,6 +123,24 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String isCatatan;
     private List<UploadHasilPemeriksaan> uploadDalam = new ArrayList<>();
     private List<UploadHasilPemeriksaan> uploadLuar = new ArrayList<>();
+    private String umur;
+    private String isUpload;
+
+    public String getIsUpload() {
+        return isUpload;
+    }
+
+    public void setIsUpload(String isUpload) {
+        this.isUpload = isUpload;
+    }
+
+    public String getUmur() {
+        return umur;
+    }
+
+    public void setUmur(String umur) {
+        this.umur = umur;
+    }
 
     public String getIsCatatan() {
         return isCatatan;

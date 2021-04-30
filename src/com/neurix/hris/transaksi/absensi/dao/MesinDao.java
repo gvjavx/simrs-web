@@ -80,4 +80,18 @@ public class MesinDao extends GenericDao<ImMesinAbsensiEntity, String> {
 
         return "MH" + sId;
     }
+
+    public String cekAvailMesin(String mesinAddr, String mesinSn) throws HibernateException {
+        String result = "";
+        List<ImMesinAbsensiEntity> mesinList = this.sessionFactory.getCurrentSession().createCriteria(ImMesinAbsensiEntity.class)
+                .add(Restrictions.or(Restrictions.ilike("mesinName", mesinAddr), Restrictions.ilike("mesinSn", mesinSn)))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        if(mesinList.size()>0){
+            result = "Exist";
+        }else{
+            result = "notExists";
+        }
+        return result;
+    }
 }

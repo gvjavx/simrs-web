@@ -17,6 +17,16 @@ public class CrudResponse {
         this.setMsg(msg);
     }
 
+    public void hasError(String msg){
+        this.setStatus("error");
+        this.setMsg(msg);
+    }
+
+    public void hasSuccess(String msg){
+        this.setStatus("success");
+        this.setMsg(msg);
+    }
+
     public List getList() {
         return list;
     }

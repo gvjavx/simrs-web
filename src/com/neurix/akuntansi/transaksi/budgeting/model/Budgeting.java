@@ -89,8 +89,16 @@ public class Budgeting {
     private String namaKategori;
     private String jenis;
     private String namaPengadaan;
-
     private BigDecimal realisasi;
+    private String idParam;
+
+    public String getIdParam() {
+        return idParam;
+    }
+
+    public void setIdParam(String idParam) {
+        this.idParam = idParam;
+    }
 
     public String getNamaPengadaan() {
         return namaPengadaan;

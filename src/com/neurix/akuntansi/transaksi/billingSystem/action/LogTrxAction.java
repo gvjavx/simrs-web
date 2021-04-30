@@ -1,10 +1,10 @@
-package com.neurix.simrs.transaksi.logtransaction.action;
+package com.neurix.akuntansi.transaksi.billingSystem.action;
 
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
-import com.neurix.simrs.transaksi.logtransaction.bo.LogTransactionBo;
-import com.neurix.simrs.transaksi.logtransaction.model.LogTransaction;
+import com.neurix.akuntansi.transaksi.billingSystem.bo.LogTrxBo;
+import com.neurix.akuntansi.transaksi.billingSystem.model.LogTransaction;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
@@ -15,21 +15,21 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class LogTransactionAction extends BaseMasterAction {
-    protected static transient Logger logger = Logger.getLogger(LogTransactionAction.class);
-    private LogTransactionBo logTransactionBoProxy;
+public class LogTrxAction extends BaseMasterAction {
+    protected static transient Logger logger = Logger.getLogger(LogTrxAction.class);
+    private LogTrxBo logTrxBoProxy;
     private LogTransaction logTransaction;
 
     public static Logger getLogger() {
         return logger;
     }
 
-    public void setLogTransactionBoProxy(LogTransactionBo logTransactionBoProxy) {
-        this.logTransactionBoProxy = logTransactionBoProxy;
+    public void setLogTrxBoProxy(LogTrxBo logTrxBoProxy) {
+        this.logTrxBoProxy = logTrxBoProxy;
     }
 
-    public LogTransactionBo getLogTransactionBoProxy() {
-        return logTransactionBoProxy;
+    public LogTrxBo getLogTrxBoProxy() {
+        return logTrxBoProxy;
     }
 
     public LogTransaction getLogTransaction() {
@@ -41,7 +41,7 @@ public class LogTransactionAction extends BaseMasterAction {
     }
 
     public LogTransaction init(BigInteger id, String flag){
-        logger.info("[LogTransactionAction.init] start process >>>");
+        logger.info("[LogTrxAction.init] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<LogTransaction> listOfResult = (List<LogTransaction>) session.getAttribute("listOfResult");
 
@@ -57,13 +57,13 @@ public class LogTransactionAction extends BaseMasterAction {
                 setLogTransaction(new LogTransaction());
             }
 
-            logger.info("[LogTransactionAction.init] end process >>>");
+            logger.info("[LogTrxAction.init] end process >>>");
         }
         return getLogTransaction();
     }
 
     public String saveDelete(){
-        logger.info("[LogTransactionAction.saveDelete] start process >>>");
+        logger.info("[LogTrxAction.saveDelete] start process >>>");
         try {
 
             LogTransaction deleteLogTrx = getLogTransaction();
@@ -76,21 +76,21 @@ public class LogTransactionAction extends BaseMasterAction {
             deleteLogTrx.setAction("U");
             deleteLogTrx.setFlag("N");
 
-            logTransactionBoProxy.saveDelete(deleteLogTrx);
+            logTrxBoProxy.saveDelete(deleteLogTrx);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = logTransactionBoProxy.saveErrorMessage(e.getMessage(), "LogTransactionBo.saveDelete");
+                logId = logTrxBoProxy.saveErrorMessage(e.getMessage(), "LogTrxBo.saveDelete");
             } catch (GeneralBOException e1) {
-                logger.error("[LogTransactionAction.saveDelete] Error when saving error,", e1);
+                logger.error("[LogTrxAction.saveDelete] Error when saving error,", e1);
                 return ERROR;
             }
-            logger.error("[LogTransactionAction.saveDelete] Error when editing item," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            logger.error("[LogTrxAction.saveDelete] Error when editing item," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
             return ERROR;
         }
 
-        logger.info("[LogTransactionAction.saveDelete] end process <<<");
+        logger.info("[LogTrxAction.saveDelete] end process <<<");
 
         return "success_save_delete";
     }
@@ -107,7 +107,7 @@ public class LogTransactionAction extends BaseMasterAction {
 
     @Override
     public String delete() {
-        logger.info("[LogTransactionAction.delete] start process >>>");
+        logger.info("[LogTrxAction.delete] start process >>>");
 
         BigInteger itemId = new BigInteger(getId());
         String itemFlag = getFlag();
@@ -120,11 +120,11 @@ public class LogTransactionAction extends BaseMasterAction {
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {
-                    logId = logTransactionBoProxy.saveErrorMessage(e.getMessage(), "LogTransactionBo.getById");
+                    logId = logTrxBoProxy.saveErrorMessage(e.getMessage(), "LogTrxBo.getById");
                 } catch (GeneralBOException e1) {
-                    logger.error("[LogTransactionAction.delete] Error when retrieving delete data,", e1);
+                    logger.error("[LogTrxAction.delete] Error when retrieving delete data,", e1);
                 }
-                logger.error("[LogTransactionAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+                logger.error("[LogTrxAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
                 addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
                 return "failure";
             }
@@ -152,31 +152,30 @@ public class LogTransactionAction extends BaseMasterAction {
             return "failure";
         }
         setDelete(true);
-        logger.info("[LogTransactionAction.delete] end process <<<");
+        logger.info("[LogTrxAction.delete] end process <<<");
 
         return "init_delete";
     }
 
     @Override
     public String view() {
-        logger.info("[LogTransactionAction.view] start process >>>");
+        logger.info("[LogTrxAction.view] start process >>>");
 
         BigInteger itemId = new BigInteger(getId());
         String itemFlag = getFlag();
         LogTransaction viewLogTrx = new LogTransaction();
 
         if (itemFlag != null ) {
-
             try {
                 viewLogTrx = init(itemId, itemFlag);
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {
-                    logId = logTransactionBoProxy.saveErrorMessage(e.getMessage(), "LogTransactionBo.getById");
+                    logId = logTrxBoProxy.saveErrorMessage(e.getMessage(), "LogTrxBo.getById");
                 } catch (GeneralBOException e1) {
-                    logger.error("[LogTransactionAction.delete] Error when retrieving delete data,", e1);
+                    logger.error("[LogTrxAction.delete] Error when retrieving delete data,", e1);
                 }
-                logger.error("[LogTransactionAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+                logger.error("[LogTrxAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
                 addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
                 return "failure";
             }
@@ -204,7 +203,7 @@ public class LogTransactionAction extends BaseMasterAction {
             return "failure";
         }
         setDelete(true);
-        logger.info("[LogTransactionAction.view] end process <<<");
+        logger.info("[LogTrxAction.view] end process <<<");
 
         return "init_view";
     }
@@ -216,22 +215,22 @@ public class LogTransactionAction extends BaseMasterAction {
 
     @Override
     public String search() {
-        logger.info("[LogTransactionAction.search] start process >>>");
+        logger.info("[LogTrxAction.search] start process >>>");
 
         LogTransaction searchLogTrx = getLogTransaction();
         List<LogTransaction> listOfsearchLogTrx = new ArrayList();
 
         try {
-            listOfsearchLogTrx = logTransactionBoProxy.getByCriteria(searchLogTrx);
+            listOfsearchLogTrx = logTrxBoProxy.getByCriteria(searchLogTrx);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = logTransactionBoProxy.saveErrorMessage(e.getMessage(), "LogTransactionBO.getByCriteria");
+                logId = logTrxBoProxy.saveErrorMessage(e.getMessage(), "LogTransactionBO.getByCriteria");
             } catch (GeneralBOException e1) {
-                logger.error("[LogTransactionAction.search] Error when saving error,", e1);
+                logger.error("[LogTrxAction.search] Error when saving error,", e1);
                 return ERROR;
             }
-            logger.error("[LogTransactionAction.save] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            logger.error("[LogTrxAction.save] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
             return ERROR;
         }
@@ -241,18 +240,18 @@ public class LogTransactionAction extends BaseMasterAction {
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfsearchLogTrx);
 
-        logger.info("[LogTransactionAction.search] end process <<<");
+        logger.info("[LogTrxAction.search] end process <<<");
 
         return SUCCESS;
     }
 
     @Override
     public String initForm() {
-        logger.info("[LogTransactionAction.initForm] start process >>>");
+        logger.info("[LogTrxAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
 
         session.removeAttribute("listOfResult");
-        logger.info("[LogTransactionAction.initForm] end process >>>");
+        logger.info("[LogTrxAction.initForm] end process >>>");
         return INPUT;
     }
 

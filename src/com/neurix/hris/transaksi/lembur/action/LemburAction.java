@@ -418,7 +418,7 @@ public class LemburAction extends BaseMasterAction {
     }
 
     public String saveAdd(){
-        logger.info("[AlatAction.saveAdd] start process >>>");
+        logger.info("[LemburAction.saveAdd] start process >>>");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
@@ -433,7 +433,7 @@ public class LemburAction extends BaseMasterAction {
             lamaJam = calcJamLembur(lembur.getNip(), lembur.getStTanggalAwal(),lembur.getStTanggalAkhir(),lembur.getJamAwal(),lembur.getJamAkhir());
 
         }catch (ParseException e) {
-            logger.error("[lemburAction.saveAdd] Error when saving error,", e);
+            logger.error("[LemburAction.saveAdd] Error when saving error,", e);
             return ERROR;
         }
         lembur.setLamaJam(lamaJam);
@@ -735,7 +735,7 @@ public class LemburAction extends BaseMasterAction {
             }
 
             // Sigit, 2020-11-26, jika mengajukan pada jam kerja, maka durasi 0 / tidak dapat hitungan lembur
-            if (iJamAwalKerja>iJamAwalDb && iJamAwalKerja<iJamAkhirDb && tglAwal.equals(tglAkhir)){
+            if (iJamAwalKerja>iJamAwalDb && iJamAkhirKerja<iJamAkhirDb && tglAwal.equals(tglAkhir)){
                 return new Double(0);
             }
 

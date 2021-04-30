@@ -7,9 +7,7 @@ import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
-import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
-import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
-import com.neurix.simrs.transaksi.checkupdetail.model.RiwayatTindakanDTO;
+import com.neurix.simrs.transaksi.checkupdetail.model.*;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
@@ -70,4 +68,7 @@ public interface CheckupDetailBo {
 
     public List<HeaderDetailCheckup> getIDDetailCheckup(String noCheckup, String status, String jenisPasien) throws GeneralBOException;
     public CrudResponse setNoRujukan(HeaderDetailCheckup bean) throws GeneralBOException;
+    public CrudResponse saveUploadPemeriksaan(ItSimrsUploadPendukungPemeriksaanEntity bean) throws GeneralBOException;
+    public void deleteUploadPemeriksaan(String id) throws GeneralBOException;
+    public List<UploadPendukungPemeriksaan> getListUploadPemeriksaan(UploadPendukungPemeriksaan bean) throws GeneralBOException;
 }

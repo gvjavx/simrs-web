@@ -809,7 +809,7 @@ function saveDataOperasi(jenis, ket) {
         var cekTtd4 = isCanvasBlank(ttd4);
         var cekTtd5 = isCanvasBlank(ttd5);
 
-        if (nama1 && nama2 && nama3 && nama4 && nama5 && sip1 && sip3 && va1 && va2 && va3 && va4 && persetujuan != '' && !cekTtd1 && !cekTtd2 && !cekTtd3 && !cekTtd4 && !cekTtd5) {
+        if (nama1 && nama2 && nama3 && nama4 && nama5 && sip1 && va1 && va2 && va3 && va4 && persetujuan != '' && !cekTtd1 && !cekTtd2 && !cekTtd3 && !cekTtd4 && !cekTtd5) {
 
             data.push({
                 'parameter': 'pernyataan',
@@ -986,7 +986,6 @@ function saveDataOperasi(jenis, ket) {
                 'jenis': persetujuan,
                 'tipe': 'ttd',
                 'nama_terang':nama3,
-                'sip':sip3,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -2787,13 +2786,14 @@ function detailOperasi(jenis) {
                                     '<td align="left">' +
                                     '<p>TTD Pasien</p>' +
                                     '<img src="' + item.jawaban1 + '" style="width: 100px; height: 70px">' +
+                                    '<p style="margin-top: -3px; padding-bottom: 10px">' + cekItemIsNull(item.namaterang) + '</p>' +
                                     '</td>' +
                                     '</tr>';
                             }
                             if ("Tanda Tangan Dokter" == item.parameter) {
                                 body += '<tr>' +
                                     '<td align="right">' +
-                                    '<p style="margin-top: -113px">TTD Dokter</p>' +
+                                    '<p style="margin-top: -147px">TTD Dokter</p>' +
                                     '<img src="' + item.jawaban1 + '" style="width: 100px; height: 70px;">' +
                                     '<p style="margin-top: -3px">' + cekItemIsNull(item.namaterang) + '</p>' +
                                     '<p style="margin-top: -7px">' + cekItemIsNull(item.sip) + '</p>' +

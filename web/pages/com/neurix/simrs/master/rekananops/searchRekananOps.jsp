@@ -41,7 +41,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            RekananOps
+            Rekanan Operasional
         </h1>
     </section>
     <!-- Main content -->
@@ -50,7 +50,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i>RekananOps</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i>Rekanan Operasional</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
@@ -193,7 +193,7 @@
                                                                 </s:if>
                                                             </display:column>
                                                             <%--<display:column property="idRekananOps" sortable="true" title="ID RekananOps" />--%>
-                                                            <display:column property="idRekananOps" sortable="true" title="ID Rekanan OPS" />
+                                                            <display:column property="idRekananOps" sortable="true" title="ID" />
                                                             <display:column property="namaRekanan" sortable="true" title="Nama Rekanan OPS" />
 
                                                             <display:column property="action" sortable="true" title="Action"  />

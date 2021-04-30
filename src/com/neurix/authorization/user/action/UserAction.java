@@ -172,6 +172,7 @@ public class UserAction extends BaseMasterAction {
             return "failure";
         }
 
+        listOfComboRoles.clear();
         listOfComboRoles.addAll(listOfRoles);
 
         return "init_combo_role";
@@ -222,6 +223,7 @@ public class UserAction extends BaseMasterAction {
             return "failure";
         }
 
+        listOfComboAreas.clear();
         listOfComboAreas.addAll(listOfAreas);
 
         return "init_combo_area";

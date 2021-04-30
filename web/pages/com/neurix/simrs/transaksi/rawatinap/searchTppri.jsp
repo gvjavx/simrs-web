@@ -119,7 +119,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
-                                    <div class="col-sm-4" style="margin-top: 7px">
+                                    <div class="col-sm-8" style="margin-top: 7px">
                                         <sj:submit type="button" cssClass="btn btn-success" formIds="rawatInapForm"
                                                    id="search" name="search"
                                                    onClickTopics="showDialogLoading"
@@ -130,8 +130,9 @@
                                         <a type="button" class="btn btn-danger" href="initTppri_rawatinap.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
+                                        <a href="addRawatIgd_rawatinap.action" type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran IGD</a>
                                         <button onclick="showDaftar()" type="button" class="btn btn-primary">
-                                            <i class="fa fa-plus"></i> Daftar Anak RB
+                                            <i class="fa fa-plus"></i> Pendaftaran Anak RB
                                         </button>
                                     </div>
                                 </div>
@@ -240,6 +241,9 @@
                                                  src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>"
                                                  style="cursor: pointer;">
                                         </s:else>
+                                        <s:if test='#row.isTindakanRawat == "N" && #row.flagBatal == "N"'>
+                                            <img onclick="cancelPeriksa('<s:property value="idDetailCheckup"/>')" style="cursor: pointer" class="hvr-grow" src="<s:url value="/pages/images/cancel-flat-new.png"/>">
+                                        </s:if>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -847,6 +851,73 @@
 </div>
 
 <div id="modal-temp"></div>
+
+<div class="modal fade" id="modal-detail_cancel">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Batal Rawat Inap</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_cancel">
+                                <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                                <p id="msg_cancel"></p>
+                            </div>
+                            <table class="table table-striped" style="font-size: 13px">
+                                <tr>
+                                    <td width="30%">No Checkup</td>
+                                    <td><span id="det_no_checkup_cancel"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ID Detail Checkup</td>
+                                    <td><span id="det_id_detail_checkup"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>NO RM</td>
+                                    <td><span id="det_no_rm_cancel"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Nama Pasien</td>
+                                    <td><span id="det_nama_pasien"></span></td>
+                                </tr>
+                                <%--<tr>--%>
+                                    <%--<td>Ruangan</td>--%>
+                                    <%--<td><span id="det_ruangan"></span></td>--%>
+                                <%--</tr>--%>
+                                <tr>
+                                    <td>Jenis Pasien</td>
+                                    <td><span id="det_jenis_pasien"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Alamat</td>
+                                    <td><span id="det_alamat_batal"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-12">
+                            <textarea id="set_alasan" class="form-control" rows="2" placeholder="Alasan"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_cancel" ><i class="fa fa-check"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
+                        id="load_cancel"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="modal-confirm-rm">
     <div class="modal-dialog modal-sm">
@@ -1803,6 +1874,50 @@
         });
 
     }
+
+    function cancelPeriksa(idDetailCHeckup){
+        CheckupAction.listDataPasien(idDetailCHeckup, {
+            callback: function (res) {
+                $('#det_no_checkup_cancel').text(res.noCheckup);
+                $('#det_id_detail_checkup').text(res.idDetailCheckup);
+                $('#det_no_rm_cancel').text(res.idPasien);
+                $('#det_nama_pasien').text(res.nama);
+                $('#det_pelayanan').text(res.namaPelayanan);
+                $('#det_jenis_pasien').text(res.statusPeriksaName);
+                $('#det_alamat_batal').text(res.namaDesa+", "+res.namaKecamatan+", "+res.namaKota);
+                $('#save_cancel').attr('onclick', 'saveCancel(\''+res.noCheckup+'\')');
+            }
+        });
+        $('#modal-detail_cancel').modal({show: true, backdrop:'static'});
+    }
+
+    function saveCancel(noCheckup){
+        var alsan = $('#set_alasan').val();
+        if(alsan != ''){
+            $('#save_cancel').hide();
+            $('#load_cancel').show();
+            dwr.engine.setAsync(true);
+            CheckupAction.cancelPeriksaInap(noCheckup, alsan, {
+                callback: function (res) {
+                    if(res.status == "success"){
+                        $('#save_cancel').show();
+                        $('#load_cancel').hide();
+                        $('#modal-detail_cancel').modal('hide');
+                        $('#info_dialog').dialog('open');
+                    }else{
+                        $('#save_cancel').show();
+                        $('#load_cancel').hide();
+                        $('#warning_cancel').show().fadeOut(5000);
+                        $('#msg_cancel').text(res.msg);
+                    }
+                }
+            });
+        }else{
+            $('#warning_cancel').show().fadeOut(5000);
+            $('#msg_cancel').text("Silahkan masukkan alasan pasien...!");
+        }
+    }
+
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

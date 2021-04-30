@@ -40,17 +40,16 @@
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
                 <!-- ===== DEV ====== -->
-                <!--<prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu_240321</prop>-->
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu_090421</prop>-->
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
                 <!--<prop key="hibernate.connection.username">root</prop>-->
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
                 <!-- ====== LOCALHOST ======= -->
-                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/gomedsys_mig</prop>
+                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/gomedsys_nmu_prod</prop>
                 <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
                 <prop key="hibernate.connection.username">postgres</prop>
-                <prop key="hibernate.connection.password">postgres</prop>
-
+                <prop key="hibernate.connection.password">123456</prop>
 
             </props>
         </property>
@@ -1001,7 +1000,11 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/periksalab/hibernate/ItSimrsHeaderPemeriksaanEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/transaksi/logcron/hibernate/ItLogCronEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/simrs/transaksi/logtransaction/hibernate/ItPgLogTransactionEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/checkupdetail/hibernate/ItSimrsUploadPendukungPemeriksaanEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/billingSystem/hibernate/ItPgLogTransactionEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/billingSystem/hibernate/ItPgInvoiceEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/hargaobat/hibernate/MtSimrsHargaObatPerKonsumenEntity.xml</value>
+
 
             </list>
 

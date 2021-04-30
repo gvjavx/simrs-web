@@ -758,7 +758,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
             } catch (GeneralBOException e1) {
                 logger.error("[cutiPegawaiAction.initComboSisaCutiPegawaiId] Error when saving error,", e1);
             }
-            logger.error("[cutiPegawaiAction.initComboSisaCutiPegawaiId] Error when get combo lokasi kebun," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+            logger.error("[cutiPegawaiAction.initComboSisaCutiPegawaiId] Error when get Sisa Cuti," + "[" + logId + "] Found problem when retrieving combo Sisa Cuti data, please inform to your admin.", e);
         }
 
         logger.info("[cutiPegawaiAction.initComboSisaCutiPegawaiId] end process <<<");
@@ -2271,24 +2271,25 @@ public class CutiPegawaiAction extends BaseMasterAction {
         for (CutiPegawai data : listOfResultCutiPegawai){
             if (!("").equalsIgnoreCase(data.getStSetelahResetCutiPanjang())||!("").equalsIgnoreCase(data.getStSetelahResetCutiTahunan())){
 
-                List<CutiPegawai> listOfCuti = new ArrayList<>();
-                try {
-                    if (CommonConstant.ROLE_ID_ADMIN.equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
-                        listOfCuti = cutiPegawaiBo.getListNipCuti(data.getNip());
-                    }
-                } catch (GeneralBOException e) {
-                    Long logId = null;
-                    try {
-                        logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "cutiPegawaiAction.cekNipCuti");
-                    } catch (GeneralBOException e1) {
-                        logger.error("[cutiPegawaiAction.cekNipCuti] Error when saving error,", e1);
-                    }
-                    logger.error("[cutiPegawaiAction.cekNipCuti] Error when get combo lokasi kebun," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
-                }
-                if (listOfCuti.size() != 0){
-                    cek = "exist";
-                    break;
-                }else {
+                //RAKA-29APR2021 ===> Mematikan Validasi cek cuti
+//                List<CutiPegawai> listOfCuti = new ArrayList<>();
+//                try {
+//                    if (CommonConstant.ROLE_ID_ADMIN.equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
+//                        listOfCuti = cutiPegawaiBo.getListNipCuti(data.getNip());
+//                    }
+//                } catch (GeneralBOException e) {
+//                    Long logId = null;
+//                    try {
+//                        logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "cutiPegawaiAction.cekNipCuti");
+//                    } catch (GeneralBOException e1) {
+//                        logger.error("[cutiPegawaiAction.cekNipCuti] Error when saving error,", e1);
+//                    }
+//                    logger.error("[cutiPegawaiAction.cekNipCuti] Error when get combo lokasi kebun," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+//                }
+//                if (listOfCuti.size() != 0){
+//                    cek = "exist";
+//                    break;
+//                }else {
 
                     CutiPegawai cutiPegawai = new CutiPegawai();
                     cutiPegawai.setNip(data.getNip());
@@ -2337,7 +2338,8 @@ public class CutiPegawaiAction extends BaseMasterAction {
                         }
                     }
 
-                }
+//                }
+                //RAKA-end
 
             }
 

@@ -374,16 +374,16 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             }
 
             List<User> usersList = new ArrayList<>();
-            try{
+            try {
                 usersList = userDao.getUserByBranchAndRole(itCutiPegawaiEntity.getUnitId(), CommonConstant.ROLE_ID_ADMIN);
-            }catch(HibernateException e){
+            } catch (HibernateException e) {
                 logger.error("[CutiPegawaiBoImpl.savePengajuanBatal] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when retrieving User by Branch and Role, please info to your admin..." + e.getMessage());
             }
             ImBiodataEntity biodataEntity;
-            try{
+            try {
                 biodataEntity = biodataDao.getById("nip", itCutiPegawaiEntity.getNip());
-            }catch(HibernateException e){
+            } catch (HibernateException e) {
                 logger.error("[CutiPegawaiBoImpl.savePengajuanBatal] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when retrieving Biodata by ID, please info to your admin..." + e.getMessage());
             }
@@ -564,9 +564,9 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
         //validasi
         ImBiodataEntity biodataEntity;
-        try{
+        try {
             biodataEntity = biodataDao.getById("nip", bean.getNip());
-        }catch (HibernateException e){
+        } catch (HibernateException e) {
             logger.error("[CutiPegawaiBoImpl.saveAddCuti] Error :, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
         }
@@ -645,7 +645,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
                     Calendar calendar = Calendar.getInstance();
                     Timestamp lastTglPengajuan = new Timestamp(0);
-                    if(itCutiPegawaiEntities.size() > 0) {
+                    if (itCutiPegawaiEntities.size() > 0) {
                         lastTglPengajuan = itCutiPegawaiEntities.get(0).getTsTanggalDari();
                     }
                     calendar.setTime(lastTglPengajuan);
@@ -661,9 +661,9 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                         if (bean.getNip() != null && !"".equalsIgnoreCase(bean.getNip())) {
                             hsCriteria.put("nip", bean.getNip());
                         }
-                        try{
+                        try {
                             cutiPegawaiId = cutiPegawaiDao.getNextCutiPegawaiId();
-                        }catch(HibernateException e){
+                        } catch (HibernateException e) {
                             logger.error("[CutiPegawaiBoImpl.saveAddCuti] Error, " + e.getMessage());
                             throw new GeneralBOException("Error when retrieving Next Cuti Pegawai ID, " + e.getMessage());
                         }
@@ -861,11 +861,11 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
                             try {
                                 cutiPegawaiEntityList = cutiPegawaiDao.getJumlahHariCuti(nip, bean.getCutiId());
-                            }catch(HibernateException e){
+                            } catch (HibernateException e) {
                                 logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
                                 throw new GeneralBOException("Found problem when getting jumlah hari cuti, please info to your admin..." + e.getMessage());
                             }
-                            if(cutiPegawaiEntityList.size() != 0) {
+                            if (cutiPegawaiEntityList.size() != 0) {
                                 for (ItCutiPegawaiEntity cutiPegawai : cutiPegawaiEntityList) {
                                     jumlahCutiPegawai = cutiPegawai.getSisaCutiHari();
                                 }
@@ -873,7 +873,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                                 try {
                                     ImCutiEntity cuti = cutiDao.getById("cutiId", bean.getCutiId());
                                     jumlahCutiPegawai = BigInteger.valueOf(cuti.getJumlahCuti());
-                                }catch(HibernateException e){
+                                } catch (HibernateException e) {
                                     logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
                                     throw new GeneralBOException("Found problem when getting data cuti, please info to your admin..." + e.getMessage());
                                 }
@@ -1808,14 +1808,14 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
     }
 
     //get sisa cuti
-    public List<CutiPegawai> getComboSisaCutiPegawaiWithCriteria(String query, String cutiId, String branchId) throws GeneralBOException {
+    public List<CutiPegawai> getComboSisaCutiPegawaiWithCriteria(String nip, String cutiId, String branchId) throws GeneralBOException {
         logger.info("[UserBoImpl.getComboUserWithCriteria] start process >>>");
 
         List<CutiPegawai> listComboSisaCutiPegawai = new ArrayList();
 
         List<ItCutiPegawaiEntity> listSisaCutiPegawai = null;
         try {
-            listSisaCutiPegawai = cutiPegawaiDao.getListSisaCutiPegawai(query, cutiId);
+            listSisaCutiPegawai = cutiPegawaiDao.getListSisaCutiPegawai(nip, cutiId);
         } catch (HibernateException e) {
             logger.error("[UserBoImpl.getComboUserWithCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
@@ -1829,24 +1829,44 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 itemComboCutiPegawai.setCutiId(itCutiPegawaiEntity.getCutiId());
                 listComboSisaCutiPegawai.add(itemComboCutiPegawai);
             }
-        }
-        //ada kesalahan disini
-        else if (listSisaCutiPegawai.size() == 0) {
-            CutiPegawai itemComboCutiPegawai = new CutiPegawai();
-
-            ImCutiEntity cuti;
-            try{
-                cuti = cutiDao.getById("cutiId", cutiId);
-            }catch (HibernateException e){
-                logger.error("[CutiPegawaiBoImpl.getComboSisaCutiPegawaiWithCriteria] Error, " + e.getMessage());
-                throw new GeneralBOException("Error when retrieving Cuti by ID, " + e.getMessage());
+        } else if (listSisaCutiPegawai.size() == 0) {
+            ImBiodataEntity biodataEntity;
+            try {
+                biodataEntity = biodataDao.getById("nip", nip);
+            } catch (HibernateException e) {
+                logger.error("[CutiPegawaiBoImpl.saveAddCuti] Error :, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
             }
 
+            Calendar c = Calendar.getInstance();
+            java.util.Date tanggalSekarang = new java.util.Date(c.getTimeInMillis());
+            c.setTime(tanggalSekarang);
+            int year1 = c.get(Calendar.YEAR);
+
+            Calendar d = Calendar.getInstance();
+            java.util.Date tanggalAktif = new java.util.Date(c.getTimeInMillis());
+            if(biodataEntity != null && biodataEntity.getTanggalMasuk() != null) {
+                tanggalAktif = new java.util.Date(biodataEntity.getTanggalMasuk().getTime());
+            }
+            d.setTime(tanggalAktif);
+            int year2 = d.get(Calendar.YEAR);
+
+            CutiPegawai itemComboCutiPegawai = new CutiPegawai();
+            itemComboCutiPegawai.setSisaCutiHari(BigInteger.valueOf(0));
             itemComboCutiPegawai.setCutiId(cutiId);
-            if(cuti!=null) {
-                itemComboCutiPegawai.setSisaCutiHari(BigInteger.valueOf(cuti.getJumlahCuti()));
-            }else{
-                itemComboCutiPegawai.setSisaCutiHari(BigInteger.valueOf(0));
+
+            if ((year1 - year2) > 0) {
+                ImCutiEntity cuti;
+                try {
+                    cuti = cutiDao.getById("cutiId", cutiId);
+                } catch (HibernateException e) {
+                    logger.error("[CutiPegawaiBoImpl.getComboSisaCutiPegawaiWithCriteria] Error, " + e.getMessage());
+                    throw new GeneralBOException("Error when retrieving Cuti by ID, " + e.getMessage());
+                }
+
+                if (cuti != null) {
+                    itemComboCutiPegawai.setSisaCutiHari(BigInteger.valueOf(cuti.getJumlahCuti()));
+                }
             }
             listComboSisaCutiPegawai.add(itemComboCutiPegawai);
         }
@@ -2239,7 +2259,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                             try {
                                 String cutiPegId = cutiPegawaiDao.getNextCutiPegawaiId();
                                 resetCuti.setCutiPegawaiId(cutiPegId);
-                            }catch (HibernateException e){
+                            } catch (HibernateException e) {
                                 logger.error("[CutiPegawaiBoImpl.saveApprove] Error, " + e.getMessage());
                                 throw new GeneralBOException("Error when retrieving Next Cuti Pegawai ID, " + e.getMessage());
                             }
@@ -2499,9 +2519,31 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
         List<CutiPegawai> cutiPegawai = new ArrayList<>();
         List<ItCutiPegawaiEntity> itCutiPegawaiEntities = null;
 
+        //RAKA-27APR2021 ==> cek selisaih tahun masuk u/ validasi dapat jatah cuti
+        ImBiodataEntity biodataEntity;
+        try {
+            biodataEntity = biodataDao.getById("nip", nip);
+        } catch (HibernateException e) {
+            logger.error("[CutiPegawaiBoImpl.saveAddCuti] Error :, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
+        }
+
+        Calendar c = Calendar.getInstance();
+        java.util.Date tanggalSekarang = new java.util.Date(c.getTimeInMillis());
+        c.setTime(tanggalSekarang);
+        int year1 = c.get(Calendar.YEAR);
+
+        Calendar d = Calendar.getInstance();
+        java.util.Date tanggalAktif = new java.util.Date(c.getTimeInMillis());
+        if(biodataEntity != null && biodataEntity.getTanggalMasuk() != null) {
+            tanggalAktif = new java.util.Date(biodataEntity.getTanggalMasuk().getTime());
+        }
+        d.setTime(tanggalAktif);
+        int year2 = d.get(Calendar.YEAR);
+
         try {
             itCutiPegawaiEntities = cutiPegawaiDao.getSisaCutiSys(nip);
-        }catch (HibernateException e){
+        } catch (HibernateException e) {
             logger.error("[CutiPegawaiBoImpl.sisaCutiSys] Error, " + e.getMessage());
             throw new GeneralBOException("Error when retrieving Sisa Cuti, " + e.getMessage());
         }
@@ -2510,11 +2552,16 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 CutiPegawai cutiPegawai1 = new CutiPegawai();
                 cutiPegawai1.setCutiId(itCutiPegawaiEntity.getCutiId());
                 cutiPegawai1.setCutiName(itCutiPegawaiEntity.getCutiName());
-                cutiPegawai1.setJumlahCutihari(itCutiPegawaiEntity.getJumlahCuti());
-                cutiPegawai1.setSisaCutiHari(itCutiPegawaiEntity.getSisaCutiHari());
+                if((year1-year2)>0) {
+                    cutiPegawai1.setJumlahCutihari(itCutiPegawaiEntity.getJumlahCuti());
+                    cutiPegawai1.setSisaCutiHari(itCutiPegawaiEntity.getSisaCutiHari());
+                }else{
+                    cutiPegawai1.setJumlahCutihari(BigInteger.ZERO);
+                    cutiPegawai1.setSisaCutiHari(BigInteger.ZERO);
+                }
                 cutiPegawai.add(cutiPegawai1);
             }
-        }else{
+        } else {
 
         }
 
@@ -2643,15 +2690,15 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             logger.error("[CutiPegawaiBoImpl.getListSetCuti] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when retieving list , please info to your admin..." + e.getMessage());
         }
-        if(cutiPegawaiEntityList.size() == 0){
-            try{
-                ImCutiEntity cuti = cutiDao.getById("cutiId","CT002");
+        if (cutiPegawaiEntityList.size() == 0) {
+            try {
+                ImCutiEntity cuti = cutiDao.getById("cutiId", "CT002");
                 sisaCutiTahunan = BigInteger.valueOf(cuti.getJumlahCuti());
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error("[CutiPegawaiBoImpl.getListSetCuti] Error, " + e.getMessage());
                 throw new GeneralBOException("Error when retrieving Cuti by ID, " + e.getMessage());
             }
-        }else {
+        } else {
             for (ItCutiPegawaiEntity cutiPegawaiEntity : cutiPegawaiEntityList) {
                 sisaCutiTahunan = cutiPegawaiEntity.getSisaCutiHari();
             }
@@ -2701,7 +2748,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 throw new GeneralBOException("Found problem when retieving list , please info to your admin..." + e.getMessage());
             }
 
-            if(cutiPegawaiEntityList.size() != 0) {
+            if (cutiPegawaiEntityList.size() != 0) {
                 for (ItCutiPegawaiEntity cutiPegawaiEntity : cutiPegawaiEntityList) {
                     sisaCutiTahunan = cutiPegawaiEntity.getSisaCutiHari();
                 }
@@ -2709,16 +2756,16 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 result.setSisaCutiHari(sisaCutiTahunan);
             } else {
                 ImCutiEntity cuti;
-                try{
+                try {
                     cuti = cutiDao.getById("cutiId", cutiId);
-                }catch (HibernateException e){
+                } catch (HibernateException e) {
                     logger.error("[CutiPegawaiBoImpl.getComboSisaCutiPegawaiWithCriteria] Error, " + e.getMessage());
                     throw new GeneralBOException("Error when retrieving Cuti by ID, " + e.getMessage());
                 }
                 result.setCutiId(cutiId);
-                if(cuti!=null) {
+                if (cuti != null) {
                     result.setSisaCutiHari(BigInteger.valueOf(cuti.getJumlahCuti()));
-                }else{
+                } else {
                     result.setSisaCutiHari(BigInteger.valueOf(0));
                 }
             }

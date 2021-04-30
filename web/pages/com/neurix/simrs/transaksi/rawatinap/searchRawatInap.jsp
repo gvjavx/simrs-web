@@ -179,7 +179,9 @@
                                 <td>ID Detail Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
+                                <td>Umur</td>
                                 <td>Tanggal Masuk</td>
+                                <td>Ruangan</td>
                                 <td>Desa</td>
                                 <td>Status</td>
                                 <td align="center">Jenis Pasien</td>
@@ -192,7 +194,16 @@
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="umur"/></td>
                                     <td><s:property value="formatTglMasuk"/></td>
+                                    <td>
+                                        <s:if test='#row.noRuangan != ""'>
+                                            [<s:property value="noRuangan"/>]-<s:property value="namaRangan"/>
+                                        </s:if>
+                                        <s:else>
+                                            <s:property value="namaRangan"/>
+                                        </s:else>
+                                    </td>
                                     <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td align="center">
@@ -228,6 +239,19 @@
                                                 <img onclick="printGelangPasien('<s:property value="noCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
                                             </s:else>
                                         </s:if>
+
+                                        <s:if test='#row.tindakLanjut == "kontrol_ulang"'>
+                                            <a target="_blank" href="printSuratKeterangan_rawatinap.action?id=<s:property value="idDetailCheckup"/>&tipe=KU">
+                                                <img src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                            </a>
+                                        </s:if>
+
+                                        <s:if test='#row.tindakLanjut == "rujuk_rs_lain"'>
+                                            <a target="_blank" href="printSuratKeterangan_rawatinap.action?id=<s:property value="idDetailCheckup"/>&tipe=RSL">
+                                                <img src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                            </a>
+                                        </s:if>
+
                                     </td>
                                 </tr>
                             </s:iterator>
