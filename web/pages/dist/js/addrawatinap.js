@@ -588,7 +588,7 @@ function listSelectTindakan(idKtg) {
     if (idKtg != '') {
         dwr.engine.setAsync(true);
         CheckupDetailAction.getListComboTindakan(idKtg, idKelasRuangan, null, {
-            callbak:function (response) {
+            callback:function (response) {
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idTindakan + "'>" + item.tindakan + "</option>";

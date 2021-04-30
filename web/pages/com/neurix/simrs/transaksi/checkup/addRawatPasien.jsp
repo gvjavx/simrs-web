@@ -3851,7 +3851,7 @@
                                 $('#nama_pasien').val(response.nama);
                                 $('#jenis_kelamin').val(response.jenisKelamin);
                                 $('#tempat_lahir').val(response.tempatLahir);
-                                $('#tgl_lahir').val(response.tglLahir);
+                                $('#tgl_lahir').val(converterDateYmd(response.tglLahir));
                                 $('#agama').val(response.agama);
                                 $('#profesi').val(response.profesi);
                                 $('#jalan').val(response.jalan);
