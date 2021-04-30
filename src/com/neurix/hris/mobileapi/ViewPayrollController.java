@@ -48,7 +48,7 @@ public class ViewPayrollController implements ModelDriven<Object> {
         logger.info("[ViewPayrollController.create] end process POST /activity <<<");
 
         List<Payroll> payroll = null;
-        ItPayrollEntity payrollEntity = new ItPayrollEntity();
+        ItHrisPayrollEntity payrollEntity = new ItHrisPayrollEntity(); //RAKA-30APR2021==> merubah ItPayrollEntity ==> ItHrisPayrollEntity
         try {
             payroll = biodataBoProxy.viewPayrollSys(nip,branchId,bulan,tahun, payrollId);
         } catch (GeneralBOException e) {
@@ -91,25 +91,25 @@ public class ViewPayrollController implements ModelDriven<Object> {
                 returnPayroll.setJasprod(personal.getTotalJasProd());
                 returnPayroll.setPensiun(personal.getTotalPensiun());
                 returnPayroll.setJubileum(personal.getTotalJubileum());
-                returnPayroll.setIurDpPegawai(CommonUtil.numbericFormat(payrollEntity.getIuranDapenPeg(), "###,###"));
+                returnPayroll.setIurDpPegawai(CommonUtil.numbericFormat(payrollEntity.getIuranDapenKary(), "###,###"));
                 returnPayroll.setIurBpjsTkPegawai(CommonUtil.numbericFormat(payrollEntity.getIuranBpjsTkKary(), "###,###"));
                 returnPayroll.setIurBpjsKsPegawai(CommonUtil.numbericFormat(payrollEntity.getIuranBpjsKsKary(), "###,###"));
-                if (payrollEntity.getPotPph() != null) {
-                    returnPayroll.setPotPph(CommonUtil.numbericFormat(payrollEntity.getPotPph(), "###,###"));
+                if (payrollEntity.getTunjanganPph() != null) {
+                    returnPayroll.setPotPph(CommonUtil.numbericFormat(payrollEntity.getTunjanganPph(), "###,###"));
                 } else  returnPayroll.setPotPph(CommonUtil.numbericFormat(new BigDecimal(0), "###,###"));
                 returnPayroll.setTotalC(CommonUtil.numbericFormat(payrollEntity.getTotalC(), "###,###"));
-                returnPayroll.setKopkar(CommonUtil.numbericFormat(payrollEntity.getKopkar(), "###,###"));
+                returnPayroll.setKopkar(CommonUtil.numbericFormat(payrollEntity.getIuranKopkar(), "###,###"));
                 returnPayroll.setIuranSp(CommonUtil.numbericFormat(payrollEntity.getIuranSp(), "###,###"));
                 returnPayroll.setIuranPIIKB(CommonUtil.numbericFormat(payrollEntity.getIuranPiikb(), "###,###"));
-                returnPayroll.setBankBri(CommonUtil.numbericFormat(payrollEntity.getBankBri(), "###,###"));
-                returnPayroll.setBankMandiri(CommonUtil.numbericFormat(payrollEntity.getBankMandiri(), "###,###"));
-                returnPayroll.setInfaq(CommonUtil.numbericFormat(payrollEntity.getInfaq(), "###,###"));
-                returnPayroll.setPerkesDanObat(CommonUtil.numbericFormat(payrollEntity.getPerkesDanObat(), "###,###"));
-                returnPayroll.setListrik(CommonUtil.numbericFormat(payrollEntity.getPerkesDanObat(), "###,###"));
+                returnPayroll.setBankBri(CommonUtil.numbericFormat(payrollEntity.getIuranBankBri(), "###,###"));
+                returnPayroll.setBankMandiri(CommonUtil.numbericFormat(payrollEntity.getIuranBankMandiri(), "###,###"));
+                returnPayroll.setInfaq(CommonUtil.numbericFormat(payrollEntity.getIuranInfaq(), "###,###"));
+                returnPayroll.setPerkesDanObat(CommonUtil.numbericFormat(payrollEntity.getIuranPerkesDanObat(), "###,###"));
+                returnPayroll.setListrik(CommonUtil.numbericFormat(payrollEntity.getIuranListrik(), "###,###"));
                 returnPayroll.setIuranProfesi(CommonUtil.numbericFormat(payrollEntity.getIuranProfesi(), "###,###"));
-                returnPayroll.setPotonganLain(CommonUtil.numbericFormat(payrollEntity.getPotonganLain(), "###,###"));
-                returnPayroll.setIurDpPerush(CommonUtil.numbericFormat(payrollEntity.getIuranDapenPersh(), "###,###"));
-                returnPayroll.setIurBpjsTkPerush(CommonUtil.numbericFormat(payrollEntity.getIuranBpjsTkPers(), "###,###"));
+                returnPayroll.setPotonganLain(CommonUtil.numbericFormat(payrollEntity.getIuranPotonganLain(), "###,###"));
+                returnPayroll.setIurDpPerush(CommonUtil.numbericFormat(payrollEntity.getIuranDapenPers(), "###,###"));
+                returnPayroll.setIurBpjsTkPerush(CommonUtil.numbericFormat(payrollEntity.getTotalIuranBpjsTkPers(), "###,###"));
                 returnPayroll.setIurBpjsKsPerush(CommonUtil.numbericFormat(payrollEntity.getIuranBpjsKsPers(), "###,###"));
                 returnPayroll.setTunjanganLemburNilai(CommonUtil.numbericFormat(payrollEntity.getTunjanganLembur(), "###,###"));
 

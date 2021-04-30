@@ -6,6 +6,7 @@ package com.neurix.hris.transaksi.payroll.model;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.Set;

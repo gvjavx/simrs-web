@@ -5,6 +5,7 @@ import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.TutupPeriod;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,10 @@ public interface BillingSystemBo {
 
     String getParameterPembayaran(String transaksiId);
 //    //tutup period, Sigit
-//    public void saveTutupPeriod(List<TutupPeriod> listTransitoris, TutupPeriod tutupPeriod) throws GeneralBOException;
+    public void saveTutupPeriod(List<TutupPeriod> listTransitoris, TutupPeriod tutupPeriod) throws GeneralBOException;
 //
 //    List<ItJurnalEntity> getJurnalByPengajuanId(String pengajuanId) throws GeneralBOException;
+
+    //RAKA-30APR2021==> mencoba membantu
+    public void saveUpdateNoJuran(HeaderDetailCheckup bean) throws GeneralBOException;
 }

@@ -8,6 +8,10 @@
     set payroll_tanggal_lembur_awal  = cast(tanggal_awal_lembur as varchar),
     	payroll_tanggal_lembur_akhir = cast(tanggal_akhir_lembur as varchar);
 
+-- add column im_mapping_jurnal
+    alter table im_akun_mapping_jurnal
+        add column parameter_coa varchar(20);
+
 ------ 2021-04-17 ===> perbaikan Table Log Transaction
     ALTER TABLE it_pg_log_transaction
     ADD COLUMN status_bank character varying(5),

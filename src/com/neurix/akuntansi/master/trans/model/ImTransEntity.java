@@ -1,7 +1,10 @@
 package com.neurix.akuntansi.master.trans.model;
 
+import com.neurix.akuntansi.master.mappingJurnal.model.ImMappingJurnalEntity;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,6 +19,12 @@ public class ImTransEntity implements Serializable {
     private String transName;
     private String tipePembayaran;
 
+    //updated by ferdi, 01-12-2020
+    private String tipeJurnalId;
+    private String isOtomatis;
+    private String flagPengajuanBiaya;
+    private String flagSumberBaru;
+
     private String master;
 
     private String flag;
@@ -25,10 +34,15 @@ public class ImTransEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
-    private String flagSumberBaru;
-    private String flagPengajuanBiaya;
-    private String tipeJurnalId;
-    private String isOtomatis;
+    private Set<ImMappingJurnalEntity> imMappingJurnal;
+
+    public Set<ImMappingJurnalEntity> getImMappingJurnal() {
+        return imMappingJurnal;
+    }
+
+    public void setImMappingJurnal(Set<ImMappingJurnalEntity> imMappingJurnal) {
+        this.imMappingJurnal = imMappingJurnal;
+    }
 
     public String getFlagSumberBaru() {
         return flagSumberBaru;
