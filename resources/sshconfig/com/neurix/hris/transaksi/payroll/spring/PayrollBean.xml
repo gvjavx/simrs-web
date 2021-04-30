@@ -35,7 +35,6 @@
           p:jurnalDetailDao-ref="jurnalDetailDao"
           p:logTrxDao-ref="logTrxDao"
           p:paymentGatewayInvoiceDao-ref="paymentGatewayInvoiceDao"
-
     />
 
     <bean id="payrollBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
