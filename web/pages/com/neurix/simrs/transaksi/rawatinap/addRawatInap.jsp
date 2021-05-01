@@ -459,7 +459,7 @@
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border" id="pos_rm">
                         <div class="row">
-                            <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
+                            <s:if test='rawatInap.kategoriRuangan == "rawat_inap" || rawatInap.kategoriRuangan == "ruang_bersalin"'>
                                 <div class="col-md-6">
                                     <h3 class="box-title"><i class="fa fa-laptop"></i> Monitoring</h3>
                                 </div>
@@ -471,7 +471,7 @@
                     </div>
                     <div class="box-body">
                        <div class="row">
-                           <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
+                           <s:if test='rawatInap.kategoriRuangan == "rawat_inap" || rawatInap.kategoriRuangan == "ruang_bersalin"'>
                                <div class="col-md-6">
                                    <button class="btn btn-primary" onclick="showModalPlan('<s:property value="rawatInap.idDetailCheckup"/>','','suster')">
                                        <i class="fa fa-calendar"></i> Schedule Rawat
@@ -522,6 +522,7 @@
                                </div>
                                <button type="button" onclick="viewHistory()" class="btn btn-info hvr-icon-spin"><i class="fa fa-history hvr-icon"></i> All History
                                </button>
+                               <button class="btn btn-info" onclick="uploadPemeriksaan()"><i class="fa fa-line-chart"></i> Upload Pemeriksaan</button>
                            </div>
                        </div>
                     </div>
@@ -678,7 +679,7 @@
                         </table>
                     </div>
 
-                    <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
+                    <s:if test='rawatInap.kategoriRuangan == "rawat_inap" || rawatInap.kategoriRuangan == "ruang_bersalin"'>
                     <div class="box-header with-border" id="pos_lab">
                     </div>
                     <div class="box-header with-border">
@@ -1561,6 +1562,27 @@
                         </div>
                     </div>
                 </div>
+                <div class="row" style="display: none" id="form_tarif_lab_luar">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Tarif Lab Luar</label>
+                        <div class="col-md-7">
+                            <div class="input-group" style="margin-top: 7px">
+                                <div class="input-group-addon">
+                                    Rp.
+                                </div>
+                                <input class="form-control"  oninput="convertRpAtas(this.id, this.value, 'h_total_tarif'); var warn =$('#war_tarif_luar_lab').is(':visible'); if (warn){$('#cor_tarif_luar_lab').show().fadeOut(3000);$('#war_tarif_luar_lab').hide()}"
+                                       id="tarif_luar_lab" placeholder="Tarif">
+                                <input type="hidden" id="h_total_tarif">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_tarif_luar_lab"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_tarif_luar_lab"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
                 <hr>
                 <div id="form_lab_dalam">
                     <div class="row">
@@ -2351,7 +2373,6 @@
                               id="war_rep_obat"><i class="fa fa-times"></i> required</span>
                         <span style="color: green; margin-top: 12px; display: none;"
                               id="cor_rep_obat"><i class="fa fa-check"></i> correct</span>
-                        <span style="margin-top: 17px; display: none;" id="label-kronis"><label class="label label-warning" >Obat Kronis</label></span>
                         <button class="btn btn-sm btn-primary" style="display: none;" id="btn-reset-combo-obat" onclick="resetComboObat()"><i class="fa fa-edit"></i></button>
                         <input type="hidden" id="val-kronis"/>
                     </div>
@@ -2361,18 +2382,20 @@
                     <div class="col-md-9">
                         <table class="table" style="font-size: 12px; border: solid 1px #ddd">
                             <tr>
-                                <td width="30%">- Formularium</td>
-                                <td align="left"><span id="set_formula"></span></td>
+                                <td width="30%">- <span id="set_formula"></span></td>
+                                <td align="left"></td>
                                 <td width="20%"></td>
-                                <td width="30%">- Parenteral</td>
-                                <td align="left"><span id="set_teral"></span></td>
+                                <td width="30%">- <span id="set_teral"></span></td>
+                                <td align="left"></td>
                             </tr>
                             <tr>
-                                <td width="30%">- Jenis Satuan</td>
+                                <td width="30%">- Jenis Satuan : </td>
                                 <td align="left"><span id="set_js"></span></td>
                                 <td width="20%"></td>
-                                <td width="30%">- Non Parenteral</td>
-                                <td align="left"><span id="set_noretal"></span></td>
+                                <td width="30%">
+                                    <span style="display: none;" id="label-kronis"><label class="label label-warning" >Obat Kronis</label></span>
+                                </td>
+                                <td align="left"></td>
                             </tr>
                         </table>
                     </div>
@@ -2492,7 +2515,7 @@
                               id="cor_rep_hari"><i class="fa fa-check"></i> correct</span>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="display: none">
                     <label class="col-md-3" style="margin-top: 7px">Jenis Resep</label>
                     <div class="col-md-9">
                         <select class="form-control" style="margin-top: 7px;" id="select-jenis-resep">
@@ -2875,17 +2898,20 @@
                     <hr class="garis">
                     <div class="row" style="font-size: 12px">
                         <div class="form-group">
-                            <div class="col-md-offset-4 col-md-1">
-                                <i class="fa fa-circle" style="color: #ff0000"></i> RR
-                            </div>
-                            <div class="col-md-1">
-                                <i class="fa fa-circle" style="color: #0000ff"></i> Nadi
-                            </div>
-                            <div class="col-md-2">
+                            <div class="col-md-offset-3 col-md-2">
                                 <i class="fa fa-circle" style="color: #00cc00"></i> Sistole
                             </div>
                             <div class="col-md-2">
                                 <i class="fa fa-circle" style="color: #cc6699; margin-left: -70px"></i> Diastole
+                            </div>
+                            <div class="col-md-1">
+                                <i class="fa fa-circle" style="color: #ff0000; margin-left: -130px"></i> RR
+                            </div>
+                            <div class="col-md-1">
+                                <i class="fa fa-circle" style="color: #0000ff; margin-left: -130px"></i> Nadi
+                            </div>
+                            <div class="col-md-1">
+                                <i class="fa fa-circle" style="color: #ffa302; margin-left: -130px"></i> Suhu
                             </div>
                         </div>
                     </div>
@@ -3199,71 +3225,73 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_non-parenteral">
-                    <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                    <h4><i class="icon fa fa-ban"></i> Warning !</h4>
                     <p id="msg_non-parenteral"></p>
                 </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label>Created Date</label>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="input-group" style="cursor: pointer">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
+                <div id="form-non-parenteral">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Created Date</label>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group" style="cursor: pointer">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input style="background-color: white;" type="text" class="form-control datepicker2" id="nonpar_date" readonly placeholder="dd-mm-yyyy">
                                 </div>
-                                <input style="background-color: white;" type="text" class="form-control datepicker2" id="nonpar_date" readonly placeholder="dd-mm-yyyy">
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label style="margin-top: 7px">Obat</label>
-                        </div>
-                        <div class="col-md-8">
-                            <select style="margin-top: 7px" class="form-control" name="" id="select_obat_nonpar">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label style="margin-top: 7px">Obat</label>
+                            </div>
+                            <div class="col-md-8">
+                                <select style="margin-top: 7px" class="form-control" name="" id="select_obat_nonpar">
 
-                            </select>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label style="margin-top: 7px">Dosis</label>
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" style="margin-top: 7px" name="" value="" class="form-control" id="nonpar_dosis">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label style="margin-top: 7px">Dosis</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" style="margin-top: 7px" name="" value="" class="form-control" id="nonpar_dosis">
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label style="margin-top: 7px">Waktu</label>
-                        </div>
-                        <div class="col-md-4">
-                            <select style="margin-top: 7px" class="form-control" name="" id="select_waktu_nonpar">
-                                <option value='pagi'>Pagi</option>
-                                <option value='siang'>Siang</option>
-                                <option value='sore'>Sore</option>
-                                <option value='malam'>Malam</option>
-                                <option value='bila perlu'>Bila Perlu</option>
-                            </select>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label style="margin-top: 7px">Waktu</label>
+                            </div>
+                            <div class="col-md-4">
+                                <select style="margin-top: 7px" class="form-control" name="" id="select_waktu_nonpar">
+                                    <option value='pagi'>Pagi</option>
+                                    <option value='siang'>Siang</option>
+                                    <option value='sore'>Sore</option>
+                                    <option value='malam'>Malam</option>
+                                    <option value='bila perlu'>Bila Perlu</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label style="margin-top: 7px">Keterangan</label>
-                        </div>
-                        <div class="col-md-8">
-                            <textarea style="margin-top: 7px" class="form-control" name="name" rows="8" cols="80" id="nonpar_keterangan"></textarea>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label style="margin-top: 7px">Keterangan</label>
+                            </div>
+                            <div class="col-md-8">
+                                <textarea style="margin-top: 7px" class="form-control" name="name" rows="8" cols="80" id="nonpar_keterangan"></textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -3291,89 +3319,91 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_parenteral">
-                    <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                    <h4><i class="icon fa fa-ban"></i> Warning !</h4>
                     <p id="msg_parenteral"></p>
                 </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label>Created Date</label>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="input-group" style="cursor: pointer">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
+                <div id="form-parenteral">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Created Date</label>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group" style="cursor: pointer">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input style="background-color: white;" type="text" class="form-control datepicker2" id="par_date" readonly placeholder="dd-mm-yyyy">
                                 </div>
-                                <input style="background-color: white;" type="text" class="form-control datepicker2" id="par_date" readonly placeholder="dd-mm-yyyy">
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label style="margin-top: 7px">Obat</label>
-                        </div>
-                        <div class="col-md-8">
-                            <select style="margin-top: 7px" class="form-control" name="" id="select_obat_par">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label style="margin-top: 7px">Obat</label>
+                            </div>
+                            <div class="col-md-8">
+                                <select style="margin-top: 7px" class="form-control" name="" id="select_obat_par">
 
-                            </select>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label style="margin-top: 7px">Cara Pemberian</label>
-                        </div>
-                        <div class="col-md-8">
-                            <input style="margin-top: 7px" type="text" name="" value="" class="form-control" id="par_cara">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label style="margin-top: 7px">Dosis</label>
-                        </div>
-                        <div class="col-md-4">
-                            <input style="margin-top: 7px" type="text" name="" value="" class="form-control" id="par_dosis">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label style="margin-top: 7px">Cara Pemberian</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input style="margin-top: 7px" type="text" name="" value="" class="form-control" id="par_cara">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label style="margin-top: 7px">Skin Tes</label>
-                        </div>
-                        <div class="col-md-4">
-                            <input style="margin-top: 7px" type="text" name="" value="" class="form-control" id="par_skintes">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label style="margin-top: 7px">Waktu</label>
-                        </div>
-                        <div class="col-md-4">
-                            <select style="margin-top: 7px" class="form-control" name="" id="select_waktu_par">
-                                <option value='pagi'>Pagi</option>
-                                <option value='siang'>Siang</option>
-                                <option value='sore'>Sore</option>
-                                <option value='malam'>Malam</option>
-                                <option value='bila perlu'>Bila Perlu</option>
-                            </select>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label style="margin-top: 7px">Dosis</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input style="margin-top: 7px" type="text" name="" value="" class="form-control" id="par_dosis">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label style="margin-top: 7px">Keterangan</label>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label style="margin-top: 7px">Skin Tes</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input style="margin-top: 7px" type="text" name="" value="" class="form-control" id="par_skintes">
+                            </div>
                         </div>
-                        <div class="col-md-8">
-                            <textarea style="margin-top: 7px" class="form-control" name="name" rows="8" cols="80" id="par_keterangan"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label style="margin-top: 7px">Waktu</label>
+                            </div>
+                            <div class="col-md-4">
+                                <select style="margin-top: 7px" class="form-control" name="" id="select_waktu_par">
+                                    <option value='pagi'>Pagi</option>
+                                    <option value='siang'>Siang</option>
+                                    <option value='sore'>Sore</option>
+                                    <option value='malam'>Malam</option>
+                                    <option value='bila perlu'>Bila Perlu</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label style="margin-top: 7px">Keterangan</label>
+                            </div>
+                            <div class="col-md-8">
+                                <textarea style="margin-top: 7px" class="form-control" name="name" rows="8" cols="80" id="par_keterangan"></textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -4317,6 +4347,82 @@
             <div class="modal-body">
                 <div class="box-body">
                     <video controls width="100%" height="420px" id="body-video-rm"></video>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-upload_pemeriksaan">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-image"></i> Upload Pemeriksaan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_pemeriksaan">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_warning_pemeriksaan"></p>
+                </div>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_pemeriksaan">
+                    <h4><i class="icon fa fa-info"></i> Warning!</h4>
+                    <p id="msg_success_pemeriksaan"></p>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div id="btn-uploded">
+                                <button onclick="doneUplod()" class="btn btn-success"><i class="fa fa-cloud-upload"></i> Upload</button>
+                            </div>
+                        </div>
+                        <div id="form-uploded" style="display: none">
+                            <div class="col-md-3">
+                                <input class="form-control" style="margin-top: 7px" placeholder="Keterangan" id="ket_upload_pemeriksan_0" oninput="$(this).css('border', '')">
+                            </div>
+                            <div class="col-md-7">
+                                <div class="input-group">
+                                <span class="input-group-btn">
+                                    <span class="btn btn-default btn-file">
+                                        Browse… <input accept="image/*" class="upload_pemeriksan" onchange="parseToByte('upload_pemeriksan_0', 'label_upload_pemeriksan_0', 'ket_upload_pemeriksan_0')" type="file" id="upload_pemeriksan_0">
+                                    </span>
+                                </span>
+                                    <input type="text" class="form-control" readonly id="label_upload_pemeriksan_0" style="margin-top: 7px">
+                                </div>
+                                <span style="color: red; font-size: 12px">* format file upload (.jpg/.jpeg/.png)</span>
+                            </div>
+                            <%--<div class="col-md-1">--%>
+                            <%--<button onclick="addUpload('upload_pemeriksan', 'set_upload_pemeriksan')" class="btn btn-success" style="margin-left: -20px; margin-top: 9px"><i class="fa fa-plus"></i></button>--%>
+                            <%--</div>--%>
+                        </div>
+                    </div>
+                    <div id="set_upload_pemeriksan">
+
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="carousel-pemeriksaan" class="carousel slide">
+                                <ol class="carousel-indicators" id="li_pemeriksaan">
+
+                                </ol>
+                                <div class="carousel-inner" id="item_pemeriksaan">
+
+                                </div>
+                                <a class="left carousel-control" href="#carousel-pemeriksaan" data-slide="prev">
+                                    <span class="fa fa-angle-left"></span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel-pemeriksaan" data-slide="next">
+                                    <span class="fa fa-angle-right"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">

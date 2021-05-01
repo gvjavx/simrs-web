@@ -74,7 +74,8 @@ public class PartografDao extends GenericDao<ItSimrsPartografEntity, String> {
                 "nadi,\n" +
                 "tensi,\n" +
                 "suhu,\n" +
-                "rr\n" +
+                "rr,\n" +
+                "lama_kontraksi\n"+
                 "FROM it_simrs_partograf\n" +
                 "WHERE id_detail_checkup = :id\n" +
                 "AND flag = 'Y'\n" +
@@ -101,6 +102,7 @@ public class PartografDao extends GenericDao<ItSimrsPartografEntity, String> {
                 partograf.setTensi(obj[10] != null ? obj[10].toString() : null);
                 partograf.setSuhu(obj[11] != null ? obj[11].toString() : null);
                 partograf.setRr(obj[12] != null ? obj[12].toString() : null);
+                partograf.setLamaKontraksi(obj[13] != null ? obj[13].toString() : null);
                 partografList.add(partograf);
             }
         }

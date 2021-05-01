@@ -111,7 +111,7 @@
                 <table >
                     <tr>
                         <td width="30%">
-                            <label class="control-label"><small>ID Detail Rekanan OPS :</small></label>
+                            <label class="control-label"><small>ID Detail Rekanan OPS</small></label>
                         </td>
                         <td>
                             <table>
@@ -125,7 +125,7 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Nama Rekanan :</small></label>
+                            <label class="control-label"><small>Nama Rekanan</small></label>
                         </td>
                         <td width="70%">
                             <table>
@@ -138,7 +138,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Unit:</small></label>
+                            <label class="control-label"><small>Unit</small></label>
                         </td>
                         <td width="70%">
                             <table>
@@ -152,7 +152,7 @@
                     </tr>
                     <tr>
                         <td width="18%">
-                            <label class="control-label"><small>Diskon :</small></label>
+                            <label class="control-label"><small>Diskon</small></label>
                         </td>
                         <td>
                             <table>
@@ -167,12 +167,12 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Cover BPJS :</small></label>
+                            <label class="control-label"><small>Cover BPJS</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:select list="#{'N':'Non-Active'}" id="flag2" name="detailRekananOps.isBpjs"
-                                          headerKey="Y" headerValue="Active" cssClass="form-control select2" cssStyle="margin-top: 5px" />
+                                <s:select list="#{'N':'Tidak'}" id="flag2" name="detailRekananOps.isBpjs"
+                                          headerKey="Y" headerValue="Ya" cssClass="form-control select2" cssStyle="margin-top: 5px" />
                             </table>
 
                         </td>

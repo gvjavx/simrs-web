@@ -1777,3 +1777,11 @@ ALTER TABLE im_simrs_keterangan_obat
 ADD COLUMN parent_id VARCHAR(30);
 
 --
+
+-- 2021-04-29
+
+    ALTER TABLE im_simrs_keterangan_obat
+    ADD COLUMN level VARCHAR(1),
+    ADD COLUMN jenis VARCHAR(100);
+
+--

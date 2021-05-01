@@ -60,8 +60,6 @@
         );
 
         $.subscribe('errorDialogAdd', function (event, data) {
-
-//            alert(event.originalEvent.request.getResponseHeader('message'));
             document.getElementById('errorMessageAdd').innerHTML = "Status = "
                 + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
             $.publish('showErrorDialogAdd');
@@ -101,7 +99,7 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Nama Rekanan :</small></label>
+                            <label class="control-label"><small>Nama Rekanan</small></label>
                         </td>
                         <td width="70%">
                             <table>
@@ -125,29 +123,29 @@
                                           cssStyle="margin-top: 5px"
                                           listKey="branchId" listValue="branchName" headerKey="" headerValue=" - "
                                           cssClass="form-control" disabled="true" />
-                                <s:hidden name="detailRekananOps.idRekananOps"></s:hidden>
+                                <s:hidden name="detailRekananOps.branchId"></s:hidden>
                             </table>
                         </td>
                     </tr>
 
                     <tr>
                         <td width="18%">
-                            <label class="control-label"><small> Diskon :</small></label>
+                            <label class="control-label"><small> Diskon</small></label>
                         </td>
                         <td>
                             <table>
-                                <%--<s:textfield cssStyle="margin-top: 7px"--%>
-                                             <%--id="diskonadd" type="number"--%>
-                                             <%--name="detailRekananOps.diskon"--%>
-                                             <%--required="false"--%>
-                                             <%--readonly="false" cssClass="form-control"/>--%>
+                                <s:textfield cssStyle="margin-top: 7px"
+                                             id="diskonadd" type="number"
+                                             name="detailRekananOps.diskon"
+                                             required="false"
+                                             readonly="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
 
                     <tr>
                         <td width="20%">
-                            <label class="control-label"><small>Cover BPJS :</small></label>
+                            <label class="control-label"><small>Cover BPJS</small></label>
                         </td>
                         <td>
                             <table>

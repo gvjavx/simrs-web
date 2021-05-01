@@ -1186,7 +1186,7 @@ function saveICU(jenis, ket) {
         var cekTtd4 = isCanvasBlank(ttd4);
         var cekTtd5 = isCanvasBlank(ttd5);
 
-        if (nama1 && nama2 && nama3 && nama4 && nama5 && sip1 && sip3 && va1 && va2 && va3 && va4 && persetujuan != '' && !cekTtd1 && !cekTtd2 && !cekTtd3 && !cekTtd4 && !cekTtd5) {
+        if (nama1 && nama2 && nama3 && nama4 && nama5 && sip1 && va1 && va2 && va3 && va4 && persetujuan != '' && !cekTtd1 && !cekTtd2 && !cekTtd3 && !cekTtd4 && !cekTtd5) {
 
             data.push({
                 'parameter': 'pernyataan',
@@ -1363,7 +1363,6 @@ function saveICU(jenis, ket) {
                 'jenis': persetujuan,
                 'tipe': 'ttd',
                 'nama_terang':nama3,
-                'sip':sip3,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({

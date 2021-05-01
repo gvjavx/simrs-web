@@ -208,6 +208,15 @@ public class HeaderCheckup {
     private String idUangMuka;
     private String idKelasRuangan;
     private String kategoriRuangan;
+    private String tipeRekanan;
+
+    public String getTipeRekanan() {
+        return tipeRekanan;
+    }
+
+    public void setTipeRekanan(String tipeRekanan) {
+        this.tipeRekanan = tipeRekanan;
+    }
 
     public String getKategoriRuangan() {
         return kategoriRuangan;

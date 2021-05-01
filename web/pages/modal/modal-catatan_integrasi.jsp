@@ -188,7 +188,7 @@
                                             class="fa fa-trash"></i> Clear
                                     </button>
                                 </div>
-                                <div class="col-md-6 text-center">
+                                <div class="col-md-6 text-center" id="form_ttd_dpjp">
                                     <label>TTD DPJP</label>
                                     <canvas class="paint-canvas-ttd del-canvas" id="cppt10" width="220"
                                             onmouseover="paintTtd('cppt10')"></canvas>

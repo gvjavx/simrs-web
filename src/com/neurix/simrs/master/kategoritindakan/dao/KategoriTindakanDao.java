@@ -72,7 +72,7 @@ public class KategoriTindakanDao extends GenericDao<ImSimrsKategoriTindakanEntit
                     "b.kode_vclaim\n" +
                     "FROM im_simrs_pelayanan a\n" +
                     "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON b.id_pelayanan = c.id_pelayanan\n" +
-                    "WHERE c.tipe_pelayanan = '"+kategori+"'\n" +
+                    "WHERE c.tipe_pelayanan IN ('"+kategori+"', 'rawat_jalan', 'igd')\n" +
                     "AND b.branch_id = '"+branchId+"'\n" +
                     "GROUP BY a.id_kategori_tindakan,\n" +
                     "a.kategori_tindakan";

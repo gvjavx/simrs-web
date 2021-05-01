@@ -1000,10 +1000,10 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/periksalab/hibernate/ItSimrsHeaderPemeriksaanEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/transaksi/logcron/hibernate/ItLogCronEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/checkupdetail/hibernate/ItSimrsUploadPendukungPemeriksaanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/billingSystem/hibernate/ItPgLogTransactionEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/billingSystem/hibernate/ItPgInvoiceEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/hargaobat/hibernate/MtSimrsHargaObatPerKonsumenEntity.xml</value>
-
 
 
             </list>

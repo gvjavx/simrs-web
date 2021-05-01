@@ -276,6 +276,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listPeriksaLabList);
+        setPeriksaLab(periksaLab);
         logger.info("[PeriksaRadiologiAction.search] end process <<<");
         return "search";
     }
