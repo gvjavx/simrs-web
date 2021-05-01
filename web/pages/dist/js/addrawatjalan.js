@@ -964,6 +964,7 @@ function showModal(select) {
         $('#modal-diagnosa').modal({show: true, backdrop: 'static'});
 
     } else if (select == 4) {
+        removePaint('ttd_dokter_pengirim');
         dokterDpjp();
         getJenisResep('select-jenis-pemeriksaan');
         $('#body_pemeriksaan').html('');
@@ -4589,7 +4590,7 @@ function hasilUploadRJ(id, tipe, kategori) {
                         '</div>';
                 }else{
                     set += '<div ' + cla + '>\n' +
-                        '<img src="' + item.urlImg + '" style="width: 100%">\n' +
+                        '<img src="' + item.urlImg + '" style="width: 100%; height: 70%">\n' +
                         '</div>';
                 }
                 li += '<li data-target="#carousel-hasil_lab" data-slide-to="' + i + '" ' + claLi + '></li>';

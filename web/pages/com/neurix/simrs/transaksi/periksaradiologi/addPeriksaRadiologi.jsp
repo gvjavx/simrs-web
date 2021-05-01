@@ -868,6 +868,8 @@
             ride: false,
             pause: false
         });
+
+        cekLogin();
     });
 
     function showModal(select) {
@@ -1342,7 +1344,7 @@
                     $('#btn_save_'+id).html('<a class="btn btn-warning" onclick="changeHasil(\''+id+'\', \''+text+'\', \''+namaPeriksa+'\')"><i class="fa fa-edit"></i> Edit Hasil</a>');
                     $('#h_'+id).val("Y");
                     CKEDITOR.instances[text].setReadOnly(true);
-                    listRadiologi();
+                    // listRadiologi();
                 }else{
                     $('#warning_ttd').show().fadeOut(5000);
                     $('#msg_ttd').text(res.msg);
@@ -1574,6 +1576,17 @@
                 });
             }
             $('#jenis_pemeriksaan').html(option);
+        });
+    }
+
+    function cekLogin() {
+        CheckupAction.cekLogin({
+            callback: function (res) {
+                if (res != '') {
+                    $('.nama_petugas').val(res.msg);
+                    $('.nip_petugas').val(res.status);
+                }
+            }
         });
     }
 

@@ -1587,7 +1587,8 @@
                         $('#hasil_'+index).attr('disabled', true);
                         $('#kesan_'+index).attr('disabled', true);
                         $('#btn_save_'+index).html('<button onclick="editDetail(\''+id+'\', \''+index+'\')" class="btn btn-warning"><i class="fa fa-edit"></i> Edit</button>');
-                        listParameter();
+                        $('#status_pengisian_'+index).val("Y");
+                        // listParameter();
                     }else{
                         $('#warning_rad').show().fadeOut(5000);
                         $('#msg_rad').text(response.msg);

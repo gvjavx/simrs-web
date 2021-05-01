@@ -2702,6 +2702,7 @@
                                 </span>
                                     <input type="text" class="form-control" readonly id="label_upload_pemeriksan_0" style="margin-top: 7px">
                                 </div>
+                                <span style="color: red; font-size: 12px">* format file upload (.jpg/.jpeg/.png)</span>
                             </div>
                             <%--<div class="col-md-1">--%>
                             <%--<button onclick="addUpload('upload_pemeriksan', 'set_upload_pemeriksan')" class="btn btn-success" style="margin-left: -20px; margin-top: 9px"><i class="fa fa-plus"></i></button>--%>
