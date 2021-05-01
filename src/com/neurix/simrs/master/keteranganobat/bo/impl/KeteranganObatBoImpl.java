@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class KeteranganObatBoImpl implements KeteranganObatBo{
     private static transient Logger logger = Logger.getLogger(KeteranganObatBoImpl.class);
@@ -223,5 +224,147 @@ public class KeteranganObatBoImpl implements KeteranganObatBo{
 
         logger.info("[KeteranganObatBoImpl.getNextId] END <<< ");
         return id;
+    }
+
+    @Override
+    public List<KeteranganObat> getListKeteranganObatBySubJenis(String id) {
+        logger.info("[KeteranganObatBoImpl.getListKeteranganObatBySubJenis] START >>> ");
+
+        List<KeteranganObat> results = new ArrayList<>();
+        List<KeteranganObat> keteranganObatList = new ArrayList<>();
+
+        try {
+            keteranganObatList = keteranganObatDao.getListKeteranganObatBySubJenisObat(id);
+        } catch (HibernateException e){
+            logger.error("[ParameterKeteranganObatBoImpl.getListKeteranganObatBySubJenis] ERROR, error when. ",e);
+            throw new GeneralBOException("[ParameterKeteranganObatBoImpl.getListKeteranganObatBySubJenis] ERROR, error when. "+e);
+        }
+
+        int maxlevel = new Integer(0);
+
+        try {
+            maxlevel = keteranganObatDao.getMaxLevelOfKeteranganBySubJenis(id);
+        } catch (HibernateException e){
+            logger.error("[ParameterKeteranganObatBoImpl.getListKeteranganObatBySubJenis] ERROR, error when. ",e);
+            throw new GeneralBOException("[ParameterKeteranganObatBoImpl.getListKeteranganObatBySubJenis] ERROR, error when. "+e);
+        }
+
+        if (keteranganObatList.size() == 0 || maxlevel == 0){
+            KeteranganObat keteranganObat = new KeteranganObat();
+            keteranganObat.setKeterangan("lainnya");
+            results.add(keteranganObat);
+            return results;
+        }
+
+        if (keteranganObatList.size() > 0){
+            List<KeteranganObat> listOfLevel2Keatas = keteranganObatList.stream().filter(
+                    p->p.getId() != "1"
+            ).collect(Collectors.toList());
+
+            for (int i = maxlevel ; i <= maxlevel ; i--){
+
+                if (i == 1){
+                    break;
+                }
+
+                List<KeteranganObat> currentLevel = filteredByLevel(listOfLevel2Keatas, String.valueOf(i));
+                if (currentLevel == null)
+                    break;
+
+                for (KeteranganObat keteranganObat : currentLevel){
+
+                    if (keteranganObat.getParentId() != null || !"".equalsIgnoreCase(keteranganObat.getParentId()))
+                        results.add(keteranganObat);
+                    else {
+
+                        List<KeteranganObat> parentLevel = filteredByLevel(listOfLevel2Keatas, String.valueOf(i--));
+                        if (parentLevel == null)
+                            break;
+
+                        for (KeteranganObat keteranganParent : parentLevel){
+                            keteranganObat.setParentId(keteranganParent.getParentId());
+                            results.add(keteranganObat);
+                        }
+                    }
+
+                }
+            }
+        }
+
+//        List<KeteranganObat> resultSigna = new ArrayList<>();
+//        if (listOfSigna.size() > 0){
+//
+//            for (int i = 0; i <= maxlevel; i ++){
+//                List<KeteranganObat> currentLevel = filteredByLevel(listOfSigna, String.valueOf(i));
+//
+//                if (currentLevel.size() > 0){
+//                    for (KeteranganObat keteranganObat : currentLevel){
+//                        List<KeteranganObat> listChild = filteredByParent(listOfSigna, keteranganObat.getParentId());
+//                        if (listChild.size() > 0){
+//                            for (KeteranganObat signaChild : listChild){
+//                                if (resultSigna.size() == 0){
+//                                    KeteranganObat signa = new KeteranganObat();
+//                                    signa.setKeterangan(keteranganObat.getKeterangan()+"-"+signaChild.getKeterangan()+"-");
+//                                    resultSigna.add(signa);
+//                                } else {
+//
+//                                    List<KeteranganObat> filterdByKeterangan = filteredByKeterangan(listOfSigna, keteranganObat.getKeterangan()+"-"+signaChild.getKeterangan()+"-");
+//                                    if (filterdByKeterangan.size() > 0){
+//                                        KeteranganObat filteredSigna =  filterdByKeterangan.get(0);
+//                                        filteredSigna.setKeterangan(filteredSigna.getKeterangan()+signaChild.getKeterangan()+"-");
+//                                    } else {
+//                                        KeteranganObat signa = new KeteranganObat();
+//                                        signa.setKeterangan(keteranganObat.getKeterangan()+"-"+signaChild.getKeterangan()+"-");
+//                                        resultSigna.add(signa);
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+
+        logger.info("[KeteranganObatBoImpl.getListKeteranganObatBySubJenis] END <<< ");
+        return results;
+    }
+
+    private List<KeteranganObat> filteredByLevel(List<KeteranganObat> keteranganObatList, String level){
+        logger.info("[KeteranganObatBoImpl.filteredByLevel] START >>> ");
+
+        if (keteranganObatList.size() == 0){
+            return null;
+        }
+
+        logger.info("[KeteranganObatBoImpl.filteredByLevel] END <<< ");
+        return keteranganObatList.stream().filter(
+                p->p.getLevel().equalsIgnoreCase(level)
+        ).collect(Collectors.toList());
+    }
+
+    private List<KeteranganObat> filteredByParent(List<KeteranganObat> keteranganObatList, String parentId){
+        logger.info("[KeteranganObatBoImpl.filteredByParent] START >>> ");
+
+        if (keteranganObatList.size() == 0){
+            return null;
+        }
+
+        logger.info("[KeteranganObatBoImpl.filteredByParent] END <<< ");
+        return keteranganObatList.stream().filter(
+                p->p.getParentId().equalsIgnoreCase(parentId)
+        ).collect(Collectors.toList());
+    }
+
+    private List<KeteranganObat> filteredByKeterangan(List<KeteranganObat> keteranganObatList, String keterangan){
+        logger.info("[KeteranganObatBoImpl.filteredByKeterangan] START >>> ");
+
+        if (keteranganObatList.size() == 0){
+            return null;
+        }
+
+        logger.info("[KeteranganObatBoImpl.filteredByKeterangan] END <<< ");
+        return keteranganObatList.stream().filter(
+                p->p.getKeterangan().contains(keterangan)
+        ).collect(Collectors.toList());
     }
 }

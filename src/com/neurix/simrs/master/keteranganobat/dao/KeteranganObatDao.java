@@ -184,4 +184,76 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
         String sId = String.format("%07d", iter.next());
         return "KTO" + sId;
     }
+
+    public List<KeteranganObat> getListKeteranganObatBySubJenisObat(String id){
+
+        String SQL = "SELECT id, id_sub_jenis, keterangan, level, parent_id, jenis\n" +
+                "FROM im_simrs_keterangan_obat\n" +
+                "WHERE id_sub_jenis = '"+id+"'\n" +
+                "ORDER BY id_sub_jenis, id, level";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<KeteranganObat> keteranganObats = new ArrayList<>();
+
+        if (keteranganObats.size() > 0){
+            for (Object[] obj : list){
+                KeteranganObat keteranganObat = new KeteranganObat();
+                keteranganObat.setId(obj[0].toString());
+                keteranganObat.setIdSubJenis(obj[1].toString());
+                keteranganObat.setKeterangan(obj[2].toString());
+                keteranganObat.setLevel(obj[3].toString());
+                keteranganObat.setParentId(obj[4] == null ? null : obj[4].toString());
+                keteranganObat.setJenis(obj[5] == null ? null : obj[5].toString());
+                keteranganObats.add(keteranganObat);
+            }
+        }
+
+        return keteranganObats;
+    }
+
+    public List<KeteranganObat> getListKeteranganObatBySubJenisObatAndLevel(String id, String level){
+
+        String SQL = "SELECT id, id_sub_jenis, keterangan, level, parent_id, jenis\n" +
+                "FROM im_simrs_keterangan_obat\n" +
+                "WHERE id_sub_jenis = '"+id+"'\n" +
+                "AND level = '"+level+"'\n" +
+                "ORDER BY id_sub_jenis, id, level";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<KeteranganObat> keteranganObats = new ArrayList<>();
+
+        if (keteranganObats.size() > 0){
+            for (Object[] obj : list){
+                KeteranganObat keteranganObat = new KeteranganObat();
+                keteranganObat.setId(obj[0].toString());
+                keteranganObat.setIdSubJenis(obj[1].toString());
+                keteranganObat.setKeterangan(obj[2].toString());
+                keteranganObat.setLevel(obj[3].toString());
+                keteranganObat.setParentId(obj[4] == null ? null : obj[4].toString());
+                keteranganObat.setJenis(obj[5] == null ? null : obj[5].toString());
+                keteranganObats.add(keteranganObat);
+            }
+        }
+
+        return keteranganObats;
+    }
+
+    public int getMaxLevelOfKeteranganBySubJenis(String id){
+
+        String SQL = "SELECT MAX(level) as max_level, id_sub_jenis\n" +
+                "FROM im_simrs_keterangan_obat\n" +
+                "WHERE id_sub_jenis = '"+id+"'\n" +
+                "GROUP BY id_sub_jenis\n" +
+                "ORDER BY id_sub_jenis";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+        if (list.size() > 0){
+            Object[] obj = list.get(0);
+            return Integer.valueOf(obj[0].toString());
+        }
+
+        return new Integer(0);
+    }
 }

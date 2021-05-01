@@ -283,7 +283,7 @@
                                         <td>
                                             <table><s:label name="headerDetailCheckup.tempatTglLahir"></s:label></table>
                                         </td>
-                                    </tr>
+                                    </tr>listOfSigna
                                     <tr>
                                         <td><b>Umur</b></td>
                                         <td>
@@ -2359,6 +2359,25 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-keterangan">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Signa</h4>
+            </div>
+            <div class="modal-body">
+
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close

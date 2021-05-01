@@ -18,4 +18,5 @@ public interface KeteranganObatBo {
     public List<ImSimrsParameterKeteranganObatEntity> getAllParameterKeterangan() throws GeneralBOException;
     public List<ImSimrsJenisPersediaanObatEntity> getAllJenisPersedian() throws GeneralBOException;
     public List<ImSimrsJenisPersediaanObatSubEntity> getAllJenisPersediaanSub() throws GeneralBOException;
+    public List<KeteranganObat> getListKeteranganObatBySubJenis(String id);
 }

@@ -2323,7 +2323,8 @@ function addObatToList() {
         hariKronis = $("#hari-kronis").val();
     }
 
-    if (obat && qty && apotek && jenisSatuan && isRacik && tableKeterangan.length > 0) {
+    // if (obat && qty && apotek && jenisSatuan && isRacik && tableKeterangan.length > 0) {
+    if (obat && qty && apotek && jenisSatuan && isRacik) {
 
         var idPelayanan = apotek.split('|')[0];
         var namaPelayanan = apotek.split('|')[1];
@@ -2365,64 +2366,64 @@ function addObatToList() {
             stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
         }
 
-        var bodyKet = "";
-        var tempBodyKet = [];
-        var stringTempBodyKet = "";
-        var keteranganTemp = "";
-        var keteranganTempe = "";
-        $.each(tableKeterangan, function (i, item) {
-            var idWaktu = $('#waktu_' + i).val();
-            var namaWaktu = $('#nama_waktu_' + i).val();
-            var idParam = $('#id_param_' + i).val();
-            var namaParam = $('#nama_param_' + i).val();
-
-            bodyKet += '<tr>' +
-                '<td>' + namaWaktu + '</td>' +
-                '<td>' + namaParam + '</td>' +
-                '</tr>';
-
-            if (keteranganTemp != '') {
-                var nwt = "";
-                if (namaWaktu != '') {
-                    nwt = '. ' + namaWaktu + ' : ' + namaParam;
-                } else {
-                    nwt = ', ' + namaParam;
-                }
-                keteranganTemp = keteranganTemp + nwt;
-            } else {
-                keteranganTemp = namaWaktu + ' : ' + namaParam;
-            }
-
-            if (keteranganTempe != '') {
-                var nwt = "";
-                if (namaWaktu != '') {
-                    nwt = '|' + idWaktu + '#' + namaWaktu + ' : ' + namaParam;
-                } else {
-                    nwt = '. ' + namaParam;
-                }
-                keteranganTempe = keteranganTempe + nwt;
-            } else {
-                keteranganTempe = idWaktu + '#' + namaWaktu + ' : ' + namaParam;
-            }
-        });
-        if (keteranganTempe != '') {
-            var sp = keteranganTempe.split('|');
-            $.each(sp, function (i, item) {
-                var data = item.split('#');
-                tempBodyKet.push({
-                    'id_waktu': data[0],
-                    'keterangan': data[1]
-                });
-            });
-            stringTempBodyKet = JSON.stringify(tempBodyKet);
-        }
-
-        var ket = "";
-        if (bodyKet != '') {
-            ket = '<table style="font-size: 10px" class="table table-bordered" id="tbl_keterangan_' + data.length + '">' +
-                '<tbody>' + bodyKet + '</tbody>' +
-                '</table>';
-        }
+        // var bodyKet = "";
+        // var tempBodyKet = [];
+        // var stringTempBodyKet = "";
+        // var keteranganTemp = "";
+        // var keteranganTempe = "";
+        // $.each(tableKeterangan, function (i, item) {
+        //     var idWaktu = $('#waktu_' + i).val();
+        //     var namaWaktu = $('#nama_waktu_' + i).val();
+        //     var idParam = $('#id_param_' + i).val();
+        //     var namaParam = $('#nama_param_' + i).val();
+        //
+        //     bodyKet += '<tr>' +
+        //         '<td>' + namaWaktu + '</td>' +
+        //         '<td>' + namaParam + '</td>' +
+        //         '</tr>';
+        //
+        //     if (keteranganTemp != '') {
+        //         var nwt = "";
+        //         if (namaWaktu != '') {
+        //             nwt = '. ' + namaWaktu + ' : ' + namaParam;
+        //         } else {
+        //             nwt = ', ' + namaParam;
+        //         }
+        //         keteranganTemp = keteranganTemp + nwt;
+        //     } else {
+        //         keteranganTemp = namaWaktu + ' : ' + namaParam;
+        //     }
+        //
+        //     if (keteranganTempe != '') {
+        //         var nwt = "";
+        //         if (namaWaktu != '') {
+        //             nwt = '|' + idWaktu + '#' + namaWaktu + ' : ' + namaParam;
+        //         } else {
+        //             nwt = '. ' + namaParam;
+        //         }
+        //         keteranganTempe = keteranganTempe + nwt;
+        //     } else {
+        //         keteranganTempe = idWaktu + '#' + namaWaktu + ' : ' + namaParam;
+        //     }
+        // });
+        // if (keteranganTempe != '') {
+        //     var sp = keteranganTempe.split('|');
+        //     $.each(sp, function (i, item) {
+        //         var data = item.split('#');
+        //         tempBodyKet.push({
+        //             'id_waktu': data[0],
+        //             'keterangan': data[1]
+        //         });
+        //     });
+        //     stringTempBodyKet = JSON.stringify(tempBodyKet);
+        // }
+        //
+        // var ket = "";
+        // if (bodyKet != '') {
+        //     ket = '<table style="font-size: 10px" class="table table-bordered" id="tbl_keterangan_' + data.length + '">' +
+        //         '<tbody>' + bodyKet + '</tbody>' +
+        //         '</table>';
+        // }
 
         if (parseInt(qty) <= parseInt(stok)) {
             $.each(data, function (i, item) {
@@ -2481,14 +2482,17 @@ function addObatToList() {
                     '<input type="hidden" value="' + jenisSatuan + '" id="jenis_satuan_' + count + '">' +
                     '<input type="hidden" value="' + jenisResep + '" id="jenis_resep_' + count + '">' +
                     '<input type="hidden" value="' + hariKronis + '" id="hari_kronis_' + count + '">' +
-                    '<textarea style="display: none" type="hidden" id="keterangan_' + count + '">' + stringTempBodyKet + '</textarea>' +
-                    '<input type="hidden" value="' + keteranganTemp + '" id="keterangan_detail_' + count + '">' +
+                    // '<textarea style="display: none" type="hidden" id="keterangan_' + count + '">' + stringTempBodyKet + '</textarea>' +
+                    // '<input type="hidden" value="' + keteranganTemp + '" id="keterangan_detail_' + count + '">' +
                     '<input type="hidden" value="' + flagCicik + '" id="is_racik_' + count + '">' +
                     '<input type="hidden" value="' + nameRacik + '" id="nama_racik_' + count + '">' +
                     '<input type="hidden" value="' + idRacik + '" id="id_racik_' + count + '">' +
                     '</td>' +
                     '<td align="center">' + qty + ' ' + jenisSatuan + '</td>' +
-                    '<td>' + ket + '</td>' +
+                    '<td><span id="body_ket_'+ count +'"></span>' +
+                    '<button class="btn btn-sm btn-warning" onclick="showModalKeterangan(\''+count+'\')">Tambah</button>' +
+                    '<button class="btn btn-sm btn-danger" onclick="hapusKeterangan(\''+count+'\')">Hapus</button>' +
+                    '</td>' +
                     '<td align="right">' + formatRupiah(totalHarga) + '</td>' +
                     '<td align="center"><img border="0" onclick="delRowObat(\'' + id + '\',\'' + totalHarga + '\')" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
                     '</tr>';
@@ -2537,6 +2541,15 @@ function addObatToList() {
         $('#msg_resep').text('Silahkan cek kembali data inputan!');
         $('#modal-resep-head').scrollTop(0);
     }
+}
+
+function showModalKeterangan(count) {
+
+}
+
+
+function hapusKeterangan(count){
+    $("#body_ket_"+count).text("");
 }
 
 function delRowObat(id, harga) {
