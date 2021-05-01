@@ -112,6 +112,7 @@ function dataResikoJatuh(jenis){
 }
 
 function setResikoJatuh(id, tahun) {
+    console.log(tahun);
     var jenis  = "";
     var resikoJatuh = "";
 
@@ -119,7 +120,7 @@ function setResikoJatuh(id, tahun) {
         jenis = "humpty_dumpty";
     }else if(parseInt(tahun) >= 18 && parseInt(tahun) <= 65){
         jenis = "skala_morse";
-    }else if(parseint(tahun) > 65){
+    }else if(parseInt(tahun) > 65){
         jenis = "geriatri";
     }
 

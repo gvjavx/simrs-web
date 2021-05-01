@@ -37,6 +37,7 @@
           p:kategoriPersedianDao-ref="kategoriPersedianDao"
           p:marginObatDao-ref="marginObatDao"
           p:pabrikDao-ref="pabrikDao"
+          p:hargaObatPerKonsumenDao-ref="hargaObatPerKonsumenDao"
     />
 
     <bean id="obatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -92,6 +93,9 @@
           p:sessionFactory-ref="sessionFactory" />
 
     <bean id="pabrikDao" class="com.neurix.simrs.master.obat.dao.PabrikDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="hargaObatPerKonsumenDao" class="com.neurix.simrs.transaksi.hargaobat.dao.HargaObatPerKonsumenDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

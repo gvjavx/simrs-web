@@ -99,7 +99,8 @@ public class RekananOpsDao extends GenericDao<ImSimrsRekananOpsEntity, String> {
                     "a.nomor_master,\n" +
                     "a.nama_rekanan,\n" +
                     "b.is_bpjs,\n" +
-                    "ROUND((((100 - b.diskon) / 100)), 2) as sisa_persen\n" +
+                    "ROUND((((100 - b.diskon) / 100)), 2) as sisa_persen,\n" +
+                    "a.tipe \n"+
                     "FROM im_simrs_rekanan_ops a\n" +
                     "INNER JOIN im_simrs_detail_rekanan_ops b ON a.id_rekanan_ops = b.id_rekanan_ops\n" +
                     "WHERE a.id_rekanan_ops = :id \n" +
@@ -118,6 +119,7 @@ public class RekananOpsDao extends GenericDao<ImSimrsRekananOpsEntity, String> {
                 ops.setNamaRekanan(obj[2] != null ? obj[2].toString() : "");
                 ops.setIsBpjs(obj[3] != null ? obj[3].toString() : "");
                 ops.setDiskon(obj[4] != null ? new BigDecimal(obj[4].toString()) : null);
+                ops.setTipe(obj[5] != null ? obj[5].toString() : "");
             }
         }
         return ops;

@@ -61,7 +61,7 @@ public class DetailRekananOpsDao extends GenericDao<ImSimrsDetailRekananOpsEntit
     public String getNextId() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_detail_rekanan_ops')");
         Iterator<BigInteger> iter = query.list().iterator();
-        String sId = String.format("%05d", iter.next());
+        String sId = String.format("%08d", iter.next());
 
         return "DRK"+sId;
     }

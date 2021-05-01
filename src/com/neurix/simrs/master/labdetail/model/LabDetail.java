@@ -29,6 +29,15 @@ public class LabDetail extends BaseModel {
     private String idKategoriLab;
     private String namaKategoriLab;
     private String branchId;
+    private String isPaket;
+
+    public String getIsPaket() {
+        return isPaket;
+    }
+
+    public void setIsPaket(String isPaket) {
+        this.isPaket = isPaket;
+    }
 
     public String getBranchId() {
         return branchId;

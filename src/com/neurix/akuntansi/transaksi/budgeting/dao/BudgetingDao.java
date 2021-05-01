@@ -1,6 +1,8 @@
 package com.neurix.akuntansi.transaksi.budgeting.dao;
 
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
+import com.neurix.akuntansi.master.tipeRekening.model.TipeRekening;
 import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
 import com.neurix.akuntansi.transaksi.budgeting.model.ItAkunBudgetingEntity;
 import com.neurix.akuntansi.master.parameterbudgeting.model.ParameterBudgeting;
@@ -855,5 +857,24 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
         }
 
         return "";
+    }
+
+    public List<TipeRekening> getAllListTipeKoderekening(){
+
+        String SQL = "SELECT tipe_rekening_id, tipe_rekening_name \n" +
+                "FROM im_akun_tipe_rekening\n" +
+                "WHERE flag = 'Y'";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+        List<TipeRekening> tipeRekeningList = new ArrayList<>();
+
+        for (Object[] obj : list){
+            TipeRekening tipeRekening = new TipeRekening();
+            tipeRekening.setTipeRekeningId(obj[0].toString());
+            tipeRekening.setTipeRekeningName(obj[1].toString());
+            tipeRekeningList.add(tipeRekening);
+        }
+
+        return tipeRekeningList;
     }
 }

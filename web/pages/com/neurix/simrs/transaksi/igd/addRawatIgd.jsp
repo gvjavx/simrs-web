@@ -543,8 +543,8 @@
                                     <ul class="dropdown-menu" role="menu" id="asesmen_rj">
                                     </ul>
                                 </div>
-                                <button type="button" onclick="viewHistory()" class="btn btn-info hvr-icon-spin"><i class="fa fa-history hvr-icon"></i> All History
-                                </button>
+                                <button type="button" onclick="viewHistory()" class="btn btn-info hvr-icon-spin"><i class="fa fa-history hvr-icon"></i> All History</button>
+                                <button class="btn btn-info" onclick="uploadPemeriksaan()"><i class="fa fa-line-chart"></i> Upload Pemeriksaan</button>
                             </div>
                         </div>
                     </div>
@@ -1569,7 +1569,8 @@
                                 <i class="fa fa-question-circle box-rm" style="font-size: 18px">
                                     <span class="box-rmtext" style="font-size: 12px; font-family: Calibri">
                                         Centang untuk melakukan order penunjang medis diluar
-                                    </span></i>
+                                    </span>
+                                </i>
                             </div>
                         </div>
                     </div>
@@ -1580,6 +1581,27 @@
                         <div class="col-md-7">
                             <select class="form-control" style="margin-top: 7px;" id="select-jenis-pemeriksaan">
                             </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="display: none" id="form_tarif_lab_luar">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Tarif Lab Luar</label>
+                        <div class="col-md-7">
+                            <div class="input-group" style="margin-top: 7px">
+                                <div class="input-group-addon">
+                                    Rp.
+                                </div>
+                                <input class="form-control"  oninput="convertRpAtas(this.id, this.value, 'h_total_tarif'); var warn =$('#war_tarif_luar_lab').is(':visible'); if (warn){$('#cor_tarif_luar_lab').show().fadeOut(3000);$('#war_tarif_luar_lab').hide()}"
+                                       id="tarif_luar_lab" placeholder="Tarif">
+                                <input type="hidden" id="h_total_tarif">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_tarif_luar_lab"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_tarif_luar_lab"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                 </div>
@@ -1918,7 +1940,6 @@
                               id="war_rep_obat"><i class="fa fa-times"></i> required</span>
                         <span style="color: green; margin-top: 12px; display: none;"
                               id="cor_rep_obat"><i class="fa fa-check"></i> correct</span>
-                        <span style="margin-top: 17px; display: none;" id="label-kronis"><label class="label label-warning" >Obat Kronis</label></span>
                         <button class="btn btn-sm btn-primary" style="display: none;" id="btn-reset-combo-obat" onclick="resetComboObat()"><i class="fa fa-edit"></i></button>
                         <input type="hidden" id="val-kronis"/>
                     </div>
@@ -1928,18 +1949,20 @@
                     <div class="col-md-9">
                         <table class="table" style="font-size: 12px; border: solid 1px #ddd">
                             <tr>
-                                <td width="30%">- Formularium</td>
-                                <td align="left"><span id="set_formula"></span></td>
+                                <td width="30%">- <span id="set_formula"></span></td>
+                                <td align="left"></td>
                                 <td width="20%"></td>
-                                <td width="30%">- Parenteral</td>
-                                <td align="left"><span id="set_teral"></span></td>
+                                <td width="30%">- <span id="set_teral"></span></td>
+                                <td align="left"></td>
                             </tr>
                             <tr>
-                                <td width="30%">- Jenis Satuan</td>
+                                <td width="30%">- Jenis Satuan : </td>
                                 <td align="left"><span id="set_js"></span></td>
                                 <td width="20%"></td>
-                                <td width="30%">- Non Parenteral</td>
-                                <td align="left"><span id="set_noretal"></span></td>
+                                <td width="30%">
+                                    <span style="display: none;" id="label-kronis"><label class="label label-warning" >Obat Kronis</label></span>
+                                </td>
+                                <td align="left"></td>
                             </tr>
                         </table>
                     </div>
@@ -2059,7 +2082,7 @@
                               id="cor_rep_hari"><i class="fa fa-check"></i> correct</span>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="display: none">
                     <label class="col-md-3" style="margin-top: 7px">Jenis Resep</label>
                     <div class="col-md-9">
                         <select class="form-control" style="margin-top: 7px;" id="select-jenis-resep">
@@ -2627,6 +2650,82 @@
                                     <span class="fa fa-angle-left"></span>
                                 </a>
                                 <a class="right carousel-control" href="#carousel-hasil_lab" data-slide="next">
+                                    <span class="fa fa-angle-right"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-upload_pemeriksaan">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-image"></i> Upload Pemeriksaan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_pemeriksaan">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_warning_pemeriksaan"></p>
+                </div>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_pemeriksaan">
+                    <h4><i class="icon fa fa-info"></i> Warning!</h4>
+                    <p id="msg_success_pemeriksaan"></p>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div id="btn-uploded">
+                                <button onclick="doneUplod()" class="btn btn-success"><i class="fa fa-cloud-upload"></i> Upload</button>
+                            </div>
+                        </div>
+                        <div id="form-uploded" style="display: none">
+                            <div class="col-md-3">
+                                <input class="form-control" style="margin-top: 7px" placeholder="Keterangan" id="ket_upload_pemeriksan_0" oninput="$(this).css('border', '')">
+                            </div>
+                            <div class="col-md-7">
+                                <div class="input-group">
+                                <span class="input-group-btn">
+                                    <span class="btn btn-default btn-file">
+                                        Browse… <input accept="image/*" class="upload_pemeriksan" onchange="parseToByte('upload_pemeriksan_0', 'label_upload_pemeriksan_0', 'ket_upload_pemeriksan_0')" type="file" id="upload_pemeriksan_0">
+                                    </span>
+                                </span>
+                                    <input type="text" class="form-control" readonly id="label_upload_pemeriksan_0" style="margin-top: 7px">
+                                </div>
+                                <span style="color: red; font-size: 12px">* format file upload (.jpg/.jpeg/.png)</span>
+                            </div>
+                            <%--<div class="col-md-1">--%>
+                            <%--<button onclick="addUpload('upload_pemeriksan', 'set_upload_pemeriksan')" class="btn btn-success" style="margin-left: -20px; margin-top: 9px"><i class="fa fa-plus"></i></button>--%>
+                            <%--</div>--%>
+                        </div>
+                    </div>
+                    <div id="set_upload_pemeriksan">
+
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="carousel-pemeriksaan" class="carousel slide">
+                                <ol class="carousel-indicators" id="li_pemeriksaan">
+
+                                </ol>
+                                <div class="carousel-inner" id="item_pemeriksaan">
+
+                                </div>
+                                <a class="left carousel-control" href="#carousel-pemeriksaan" data-slide="prev">
+                                    <span class="fa fa-angle-left"></span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel-pemeriksaan" data-slide="next">
                                     <span class="fa fa-angle-right"></span>
                                 </a>
                             </div>

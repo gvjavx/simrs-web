@@ -133,6 +133,24 @@ public class RawatInap {
     private String isSonde;
     private String formatTglMasuk;
     private Date tanggalLahir;
+    private String isTindakanRawat;
+    private String flagBatal;
+
+    public String getFlagBatal() {
+        return flagBatal;
+    }
+
+    public void setFlagBatal(String flagBatal) {
+        this.flagBatal = flagBatal;
+    }
+
+    public String getIsTindakanRawat() {
+        return isTindakanRawat;
+    }
+
+    public void setIsTindakanRawat(String isTindakanRawat) {
+        this.isTindakanRawat = isTindakanRawat;
+    }
 
     public Date getTanggalLahir() {
         return tanggalLahir;

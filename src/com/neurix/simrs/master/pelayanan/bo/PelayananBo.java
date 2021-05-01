@@ -42,4 +42,5 @@ public interface PelayananBo {
     public List<Pelayanan> getJustPelayananOnly(String branchId) throws GeneralBOException;
     public List<Pelayanan> getListPelayananByTipe(String tipe, String branchId) throws GeneralBOException;
     public List<Pelayanan> getJustPelayananOnlyRJ(String branchId) throws GeneralBOException;
+    public List<Pelayanan> getListPelayananByBranch(String branchId) throws GeneralBOException;
 }

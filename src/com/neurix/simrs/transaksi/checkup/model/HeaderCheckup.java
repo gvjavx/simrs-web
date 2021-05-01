@@ -204,6 +204,51 @@ public class HeaderCheckup {
     private List<UploadHasilPemeriksaan> uploadHasil = new ArrayList<>();
     private List<String> listPemeriksaan = new ArrayList<>();
     private String umur;
+    private String namaDokter;
+    private String idUangMuka;
+    private String idKelasRuangan;
+    private String kategoriRuangan;
+    private String tipeRekanan;
+
+    public String getTipeRekanan() {
+        return tipeRekanan;
+    }
+
+    public void setTipeRekanan(String tipeRekanan) {
+        this.tipeRekanan = tipeRekanan;
+    }
+
+    public String getKategoriRuangan() {
+        return kategoriRuangan;
+    }
+
+    public void setKategoriRuangan(String kategoriRuangan) {
+        this.kategoriRuangan = kategoriRuangan;
+    }
+
+    public String getIdKelasRuangan() {
+        return idKelasRuangan;
+    }
+
+    public void setIdKelasRuangan(String idKelasRuangan) {
+        this.idKelasRuangan = idKelasRuangan;
+    }
+
+    public String getIdUangMuka() {
+        return idUangMuka;
+    }
+
+    public void setIdUangMuka(String idUangMuka) {
+        this.idUangMuka = idUangMuka;
+    }
+
+    public String getNamaDokter() {
+        return namaDokter;
+    }
+
+    public void setNamaDokter(String namaDokter) {
+        this.namaDokter = namaDokter;
+    }
 
     public String getUmur() {
         return umur;

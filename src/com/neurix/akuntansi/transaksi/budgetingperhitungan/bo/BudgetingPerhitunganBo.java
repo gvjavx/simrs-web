@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.transaksi.budgetingperhitungan.bo;
 
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunJenisBudgetingEntity;
 import com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunParameterBudgetingEntity;
@@ -8,8 +9,10 @@ import com.neurix.akuntansi.master.parameterbudgeting.model.ParameterBudgeting;
 import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.*;
 import com.neurix.authorization.position.model.ImPosition;
+import com.neurix.authorization.position.model.Position;
 import com.neurix.common.exception.GeneralBOException;
 
+import java.lang.reflect.Parameter;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -44,4 +47,13 @@ public interface BudgetingPerhitunganBo {
     public List<ParameterBudgeting> getListPerhitunganTransaksiBudgetingByJenis(String tahun, String unit, String idJenis, String status);
     public List<ParameterBudgeting> getListPendapatan(String branchId, String tahun, String master, String divisi) throws GeneralBOException;
     public String getNextIdBiayaRutin() throws GeneralBOException;
+
+    public List<ParameterBudgeting> getListPositionInParemeterBudgeting(String jenisBudgeting, String rekeningId, String periode, String tahun, String branchId);
+    public List<ParameterBudgeting> getListKodeRekeningInParameterBudgeting(String jenisBudgeting, String tahun, String branchId);
+    public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId, String periode, String tahun, String branchId);
+
+    public void saveAddDrafPendapatan(ItAkunNilaiParameterBudgetingEntity nilaiParameterEntity, List<ItAkunPerhitunganBudgetingEntity> listPerhitunganEntity, PerhitunganBudgeting bean) throws GeneralBOException;
+    public void saveAddDrafInvestasi(ItAkunNilaiParameterBudgetingEntity nilaiParameterEntity, List<ItAkunNilaiParameterPengadaaanEntity> pengadaaanEntityList, PerhitunganBudgeting bean) throws GeneralBOException;
+    public void saveAddDrafBiaya(ItAkunNilaiParameterBudgetingEntity nilaiParameterEntity, List<ItAkunPerhitunganBudgetingEntity> listPerhitunganEntity, PerhitunganBudgeting bean) throws GeneralBOException;
+    public List<ParameterBudgeting> getListInvestasiByRekeningId(String jenisBudgeting, String rekeningId, String periode, String tahun, String branchId);
 }

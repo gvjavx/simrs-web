@@ -151,7 +151,7 @@
                     <div class="row jarak">
                         <label class="col-md-4">Indikasi Rawat Inap</label>
                         <div class="col-md-8">
-                            <input class="form-control anamnese" id="pt8">
+                            <input class="form-control" id="pt8">
                         </div>
                     </div>
                 </div>

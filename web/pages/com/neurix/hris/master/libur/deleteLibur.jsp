@@ -48,9 +48,11 @@
                         event.originalEvent.options.submit = false;
                         var msg = "";
 
+                        console.log("masuk sini");
+
                         msg += '<strong> can not Delete past data</strong>' + '<br/>';
 
-                        document.getElementById('errorValidationMessage').innerHTML = msg;
+                        document.getElementById('errorValidationMessage1').innerHTML = msg;
 
                         $.publish('showErrorValidationDialog');
                     }else{
@@ -269,14 +271,14 @@
                                         <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); }
+                                                                        'OK':function() { $(this).dialog('close'); }
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
                                                     <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
                                                     <br/>
-                                                    <center><div id="errorValidationMessage"></div></center>
+                                                    <center><div id="errorValidationMessage1"></div></center>
                                                 </label>
                                             </div>
                                         </sj:dialog>

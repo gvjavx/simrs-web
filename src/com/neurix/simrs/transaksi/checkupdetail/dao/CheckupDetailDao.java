@@ -1968,37 +1968,46 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "a.no_sep,\n" +
                     "a.tarif_bpjs,\n" +
                     "b.total_tindakan,\n" +
-                    "c.total_lab,\n" +
-                    "d.total_radiologi,\n" +
-                    "e.total_resep, \n" +
+                    "c.total_pemeriksaan,\n" +
+                    "d.total_resep, \n" +
                     "a.id_jenis_periksa_pasien, \n" +
                     "a.kode_cbg\n" +
                     "FROM it_simrs_header_detail_checkup a\n" +
                     "LEFT JOIN (\n" +
-                    "SELECT id_detail_checkup, SUM(tarif_total) as total_tindakan\n" +
-                    "FROM it_simrs_tindakan_rawat GROUP BY id_detail_checkup\n" +
+                    "\tSELECT \n" +
+                    "\tid_detail_checkup, \n" +
+                    "\tSUM(tarif_total) as total_tindakan\n" +
+                    "\tFROM it_simrs_tindakan_rawat \n" +
+                    "\tGROUP BY id_detail_checkup\n" +
                     ") b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                     "LEFT JOIN(\n" +
-                    "SELECT a.id_detail_checkup, SUM(c.tarif) as total_lab FROM it_simrs_periksa_lab a\n" +
-                    "INNER JOIN it_simrs_periksa_lab_detail b ON a.id_periksa_lab = b.id_periksa_lab\n" +
-                    "INNER JOIN im_simrs_lab_detail c ON b.id_lab_detail = c.id_lab_detail\n" +
-                    "GROUP BY a.id_detail_checkup\n" +
+                    "\tSELECT \n" +
+                    "\taa.id_detail_checkup,\n" +
+                    "\tSUM(aa.total_pemeriksaan) as total_pemeriksaan\n" +
+                    "\tFROM (\n" +
+                    "\t\tSELECT \n" +
+                    "\t\ta.id_detail_checkup,\n" +
+                    "\t\tCASE \n" +
+                    "\t\tWHEN a.is_periksa_luar = 'Y' THEN a.tarif_lab_luar\n" +
+                    "\t\tELSE c.tarif END as total_pemeriksaan\n" +
+                    "\t\tFROM it_simrs_header_pemeriksaan a\n" +
+                    "\t\tINNER JOIN it_simrs_periksa_lab b ON a.id_header_pemeriksaan = b.id_header_pemeriksaan\n" +
+                    "\t\tINNER JOIN it_simrs_periksa_lab_detail c ON b.id_periksa_lab = c.id_periksa_lab\n" +
+                    "\t)aa\n" +
+                    "\tGROUP BY aa.id_detail_checkup\n" +
                     ") c ON a.id_detail_checkup = c.id_detail_checkup\n" +
-                    "LEFT JOIN(\n" +
-                    "SELECT a.id_detail_checkup, SUM(c.tarif) as total_radiologi FROM it_simrs_periksa_lab a\n" +
-                    "INNER JOIN it_simrs_periksa_radiologi b ON a.id_periksa_lab = b.id_periksa_lab\n" +
-                    "INNER JOIN im_simrs_lab_detail c ON b.id_lab_detail = c.id_lab_detail\n" +
-                    "GROUP BY a.id_detail_checkup\n" +
-                    ") d ON a.id_detail_checkup = d.id_detail_checkup\n" +
                     "LEFT JOIN (\n" +
-                    "SELECT a.id_detail_checkup, (c.qty * d.harga_jual) as total_resep FROM mt_simrs_permintaan_resep a\n" +
-                    "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
-                    "INNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch\n" +
-                    "WHERE approve_flag = 'Y'\n" +
-                    "GROUP BY id_transaksi_obat_detail) c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
-                    "INNER JOIN mt_simrs_harga_obat d ON b.id_obat = d.id_obat\n" +
-                    ") e ON a.id_detail_checkup = e.id_detail_checkup\n" +
-                    "WHERE a.id_detail_checkup = :id";
+                    "\tSELECT \n" +
+                    "\ta.id_detail_checkup, \n" +
+                    "\t(c.qty * d.harga_jual) as total_resep \n" +
+                    "\tFROM mt_simrs_permintaan_resep a\n" +
+                    "\tINNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
+                    "\tINNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch\n" +
+                    "\tWHERE approve_flag = 'Y'\n" +
+                    "\tGROUP BY id_transaksi_obat_detail) c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
+                    "\tINNER JOIN mt_simrs_harga_obat d ON b.id_obat = d.id_obat\n" +
+                    ") d ON a.id_detail_checkup = d.id_detail_checkup\n" +
+                    "WHERE a.id_detail_checkup = :id ";
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -2009,10 +2018,12 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 if (objects != null) {
                     BigDecimal tarifBpjs = new BigDecimal(String.valueOf("0"));
                     BigDecimal tindakan = new BigDecimal(String.valueOf("0"));
-                    BigDecimal lab = new BigDecimal(String.valueOf("0"));
-                    BigDecimal radiologi = new BigDecimal(String.valueOf("0"));
+                    BigDecimal penunjangmedis = new BigDecimal(String.valueOf("0"));
                     BigDecimal resep = new BigDecimal(String.valueOf("0"));
                     BigDecimal totalTindakan = new BigDecimal(String.valueOf("0"));
+
+                    detailCheckup.setIdDetailCheckup(objects[0] == null ? "" : objects[0].toString());
+                    detailCheckup.setNoSep(objects[1] == null ? "" : objects[1].toString());
 
                     if (objects[2] != null && !"".equalsIgnoreCase(objects[2].toString())) {
                         tarifBpjs = new BigDecimal(objects[2].toString());
@@ -2021,24 +2032,19 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                             tindakan = new BigDecimal(objects[3].toString());
                         }
                         if (objects[4] != null && !"".equalsIgnoreCase(objects[4].toString())) {
-                            lab = new BigDecimal(objects[4].toString());
+                            penunjangmedis = new BigDecimal(objects[4].toString());
                         }
                         if (objects[5] != null && !"".equalsIgnoreCase(objects[5].toString())) {
-                            radiologi = new BigDecimal(objects[5].toString());
-                        }
-                        if (objects[6] != null && !"".equalsIgnoreCase(objects[6].toString())) {
-                            resep = new BigDecimal(objects[6].toString());
+                            resep = new BigDecimal(objects[5].toString());
                         }
 
-                        totalTindakan = tindakan.add(lab).add(radiologi).add(resep);
+                        totalTindakan = tindakan.add(penunjangmedis).add(resep);
                     }
 
-                    detailCheckup.setIdDetailCheckup(objects[0] == null ? "" : objects[0].toString());
-                    detailCheckup.setNoSep(objects[1] == null ? "" : objects[1].toString());
                     detailCheckup.setTarifBpjs(tarifBpjs);
                     detailCheckup.setTarifTindakan(totalTindakan);
-                    detailCheckup.setIdJenisPeriksaPasien(objects[7] == null ? "" : objects[7].toString());
-                    detailCheckup.setKodeCbg(objects[8] == null ? "" : objects[8].toString());
+                    detailCheckup.setIdJenisPeriksaPasien(objects[6] == null ? "" : objects[6].toString());
+                    detailCheckup.setKodeCbg(objects[7] == null ? "" : objects[7].toString());
                 }
             }
         }
@@ -2356,7 +2362,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "a.no_checkup,\n" +
                     "a.id_pasien,\n" +
                     "a.nama,\n" +
-                    "b.Id_detail_checkup,\n" +
+                    "b.id_detail_checkup,\n" +
                     "b.keterangan_selesai,\n" +
                     "b.tindak_lanjut,\n" +
                     "b.catatan,\n" +
@@ -2365,12 +2371,30 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "b.flag_close_traksaksi, \n" +
                     "b.metode_pembayaran, \n" +
                     "b.id_jenis_periksa_pasien,\n" +
-                    "b.flag_cover\n" +
+                    "b.flag_cover,\n" +
+                    "a.created_date,\n" +
+                    "b.nama_pelayanan\n"+
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN (" +
                     "SELECT a.* FROM(\n" +
-                    "SELECT *, rank() OVER (PARTITION BY no_checkup, id_jenis_periksa_pasien ORDER BY created_date DESC) as rank \n" +
-                    "FROM it_simrs_header_detail_checkup\n" +
+                    "SELECT\n" +
+                    "\t\ta.no_checkup,\n" +
+                    "\t\ta.id_detail_checkup,\n" +
+                    "\t\ta.keterangan_selesai,\n" +
+                    "\t\ta.status_periksa,\n" +
+                    "\t\ta.tindak_lanjut,\n" +
+                    "\t\ta.catatan,\n" +
+                    "\t\ta.flag_close_traksaksi, \n" +
+                    "\t\ta.metode_pembayaran, \n" +
+                    "\t\ta.id_jenis_periksa_pasien,\n" +
+                    "\t\ta.flag_cover,\n" +
+                    "\t\ta.id_pelayanan,\n" +
+                    "\t\tc.nama_pelayanan,\n" +
+                    "\t\ta.created_date,\n"+
+                    "\t\trank() OVER (PARTITION BY a.no_checkup, a.id_jenis_periksa_pasien ORDER BY a.created_date DESC) as rank \n" +
+                    "\t\tFROM it_simrs_header_detail_checkup a\n" +
+                    "\t\tINNER JOIN im_simrs_pelayanan b ON a.id_pelayanan = b.id_pelayanan\n" +
+                    "\t\tINNER JOIN im_simrs_header_pelayanan c ON b.id_header_pelayanan = c.id_header_pelayanan\n"+
                     ") a WHERE a.rank = 1" +
                     ") b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_jenis_periksa_pasien c ON b.id_jenis_periksa_pasien = c.id_jenis_periksa_pasien\n"
@@ -2397,6 +2421,12 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     detail.setMetodePembayaran(obj[10] == null ? null : obj[10].toString());
                     detail.setIdJenisPeriksaPasien(obj[11] == null ? null : obj[11].toString());
                     detail.setFlagCover(obj[12] == null ? null : obj[12].toString());
+                    detail.setCreatedDate(obj[13] == null ? null : (Timestamp) obj[13]);
+                    if(detail.getCreatedDate() != null){
+                        String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(detail.getCreatedDate());
+                        detail.setFormatTglMasuk(formatDate);
+                    }
+                    detail.setNamaPelayanan(obj[14] == null ? null : obj[14].toString());
                     response.add(detail);
                 }
             }

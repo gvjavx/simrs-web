@@ -46,6 +46,7 @@
 //            $('#bayar_rawat_jalan, #pembayaran_active').addClass('active');
 //            $('#pembayaran_open').addClass('menu-open');
 //            changeAction('');
+            getSelectTahun('sel-tahun')
         });
 
     </script>
@@ -85,86 +86,16 @@
                                             <label class="control-label col-sm-2">Tahun</label>
                                             <div class="col-sm-2">
                                                 <select class="form-control" id="sel-tahun">
-                                                    <option value="2020">2020</option>
-                                                    <option value="2021">2021</option>
-                                                    <option value="2022">2022</option>
-                                                    <option value="2023">2023</option>
-                                                    <option value="2024">2024</option>
-                                                    <option value="2025">2025</option>
-                                                    <option value="2026">2026</option>
-                                                    <option value="2027">2027</option>
-                                                    <option value="2028">2028</option>
-                                                    <option value="2029">2029</option>
-                                                    <option value="2030">2030</option>
                                                 </select>
                                             </div>
                                         </div>
-                                        <%--<div class="row">--%>
-                                            <%--<label class="control-label col-sm-2">Unit</label>--%>
-                                            <%--<div class="col-sm-2">--%>
-                                                <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
-                                                <%--<s:select list="#initComboBranch.listOfComboBranch" id="sel-unit" name="budgeting.branchId"--%>
-                                                          <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select Value]" cssClass="form-control" onchange="changeAction(this.value)"/>--%>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
-                                        <%--<div class="row">--%>
-                                            <%--<label class="control-label col-sm-2">Status</label>--%>
-                                            <%--<div class="col-sm-2">--%>
-                                                <%--<select class="form-control" id="sel-status">--%>
-                                                    <%--<option value="#">[Select One]</option>--%>
-                                                    <%--<option value="DRAFT">DRAFT</option>--%>
-                                                    <%--<option value="FINAL">FINAL</option>--%>
-                                                    <%--<option value="REVISI">REVISI</option>--%>
-                                                <%--</select>--%>  <%--<div class="row">--%>
-                                        <%--<label class="control-label col-sm-2">Coa</label>--%>
-                                        <%--<div class="col-sm-2">--%>
-                                        <%--<input type="text" class="form-control" id="coa">--%>
-                                        <%--<script>--%>
-                                        <%--$(document).ready(function() {--%>
-                                        <%--var functions, mapped;--%>
-                                        <%--$('#coa').typeahead({--%>
-                                        <%--minLength: 1,--%>
-                                        <%--source: function (query, process) {--%>
-                                        <%--functions = [];--%>
-                                        <%--mapped = {};--%>
-                                        <%--var data = [];--%>
-                                        <%--dwr.engine.setAsync(false);--%>
-                                        <%--KodeRekeningAction.initTypeaheadKodeRekening(query,function (listdata) {--%>
-                                        <%--data = listdata;--%>
-                                        <%--});--%>
-                                        <%--$.each(data, function (i, item) {--%>
-                                        <%--var labelItem = item.kodeRekening + " | " + item.namaKodeRekening;--%>
-                                        <%--mapped[labelItem] = {--%>
-                                        <%--id: item.rekeningId,--%>
-                                        <%--nama: item.namaKodeRekening,--%>
-                                        <%--kode : item.kodeRekening,--%>
-                                        <%--parent :item.parentId--%>
-                                        <%--};--%>
-                                        <%--functions.push(labelItem);--%>
-                                        <%--});--%>
-                                        <%--process(functions);--%>
-                                        <%--},--%>
-                                        <%--updater: function (item) {--%>
-                                        <%--var selectedObj = mapped[item];--%>
-                                        <%--$('#rekeningid').val(selectedObj.id);--%>
-                                        <%--return selectedObj.kode;--%>
-                                        <%--}--%>
-                                        <%--});--%>
-                                        <%--});--%>
-                                        <%--</script>--%>
-                                        <%--</div>--%>
-                                        <%--</div>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
-
                                         <input type="hidden" id="rekeningid">
-
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-md-6 col-md-offset-5" style="margin-top: 10px">
-                                        <button class="btn btn-success" onclick="search()"><i class="fa fa-search"></i> Search</button>
+                                        <button class="btn btn-primary" onclick="search()"><i class="fa fa-arrow-right"></i> Pilih</button>
                                         <%--<s:if test='budgeting.flagKp == "Y"'>--%>
                                             <%--<button class="btn btn-primary" onclick="add()" id="btn-add"><i class="fa fa-plus"></i> Add</button>--%>
                                         <%--</s:if>--%>
@@ -711,14 +642,14 @@
             $.each(list, function (i, item) {
             str +=
                     '<div class="row">' +
-                        '<div class="col-md-8 col-md-offset-2">' +
+                        '<div class="col-md-12">' +
                             '<h4 id="branch-name-'+item.branchId+'">'+item.branchName+'</h4>' +
                             '<table class="table table-bordered table-striped">' +
                                 '<thead id="head-budgeting">'+
-                                    '<tr bgcolor="#90ee90">'+
+                                    '<tr>'+
                                     '<td align="">Jenis</td>'+
-                                    '<td align="center">Nilai Total</td>' +
-                                    '<td>Action</td>' +
+                                    '<td align="right">Nilai Total</td>' +
+                                    '<td align="center" width="100px">Action</td>' +
                                     '</tr>' +
                                 '</thead>' +
                                 '<tbody id="body-data-budgeting" style="font-size: 13px">';
@@ -762,7 +693,7 @@
 
     function showBtn(id, branchId){
         if ("rugi" != id && "laba" != id){
-            return '<buttton class="btn btn-success" onclick="viewDetail(\''+id+'\', \''+branchId+'\')"><i class="fa fa-search"></i> View</buttton>';
+            return '<buttton class="btn btn-sm btn-default" onclick="viewDetail(\''+id+'\', \''+branchId+'\')"><i class="fa fa-search"></i> View</buttton>';
         }
         return "";
     }
@@ -772,33 +703,63 @@
         var branchName = $("#branch-name-"+branchId).text();
         $("#label-view-budgeting").text(branchName);
         var tahun = $("#sel-tahun").val();
-        BgEksploitasiAction.getListKategoriBudgeting(tahun, branchId, id, function (res) {
-            var str = '<table class="table table-bordered table-striped">' +
-                '<thead>' +
-                '<tr>' +
-                '<td>Nama</td>' +
-                '<td align="right">Nilai</td>' +
-                '<td align="center">Action</td>' +
-                '</tr>' +
-                '</thead>' +
-                '<tbody>';
 
-            $.each(res, function (i, item) {
-                str += '<tr>' +
-                    '<td>'+item.nama+'</td>' +
-                    '<td align="right">'+formatRupiah(item.nilaiTotal)+'</td>' +
-                    '<td align="center" width="150px"><button class="btn btn-sm btn-success" onclick="viewDataDetail(\''+id+'\',\''+branchId+'\',\''+tahun+'\',\''+item.idKategoriBudgeting+'\')"><i class="fa fa-search"></i></button></td>' +
-                    '</tr>';
+        if (id == "INV"){
+            BgInvestasiAction.getListKodeRekeningInParameterBudgeting(id, tahun, branchId, function (res) {
+                var str = '<table class="table table-bordered table-striped" style="font-size: 13px">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<td>Item Investasi / Pengadaan</td>' +
+                    '<td align="right">Nilai</td>' +
+                    '<td align="center" width="100px">Action</td>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>';
+
+                $.each(res, function (i, item) {
+                    str += '<tr>' +
+                        '<td>'+item.namaKodeRekening+'</td>' +
+                        '<td align="right">'+formatRupiah(item.nilaiTotal)+'</td>' +
+                        '<td align="center" width="150px"><button class="btn btn-sm btn-default" onclick="viewDataDetail(\''+id+'\',\''+branchId+'\',\''+tahun+'\',\''+item.rekeningId+'\')"><i class="fa fa-search"></i> View</button></td>' +
+                        '</tr>';
+                });
+
+                str += '</tbody>' +
+                    '</table>';
+
+                $("#body-view-budgeting").html(str);
             });
+        } else if (id == "BYA"){
 
-            str += '</tbody>' +
-                '</table>';
+        } else {
+            BgEksploitasiAction.getListKategoriBudgeting(tahun, branchId, id, function (res) {
+                var str = '<table class="table table-bordered table-striped" style="font-size: 13px">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<td>Nama</td>' +
+                    '<td align="right">Nilai</td>' +
+                    '<td align="center" width="100px">Action</td>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>';
 
-            $("#body-view-budgeting").html(str);
-        });
+                $.each(res, function (i, item) {
+                    str += '<tr>' +
+                        '<td>'+item.nama+'</td>' +
+                        '<td align="right">'+formatRupiah(item.nilaiTotal)+'</td>' +
+                        '<td align="center" width="150px"><button class="btn btn-sm btn-default" onclick="viewDataDetail(\''+id+'\',\''+branchId+'\',\''+tahun+'\',\''+item.idKategoriBudgeting+'\')"><i class="fa fa-search"></i> View</button></td>' +
+                        '</tr>';
+                });
+
+                str += '</tbody>' +
+                    '</table>';
+
+                $("#body-view-budgeting").html(str);
+            });
+        }
     }
 
-    function viewDataDetail(idJenis, unit, tahun, idKategori) {
+    function viewDataDetail(idJenis, unit, tahun, rekeningId) {
         $("#modal-view-detail").modal('show');
         $("#jenis-budgeting").val(idJenis);
         if ("PDT" == idJenis){
@@ -831,26 +792,34 @@
                 $("#body-view-budgeting-detail").html(str);
             });
         } else if ("INV" == idJenis){
-            BgInvestasiAction.getListDivisiBudgeting(idKategori, idJenis, unit, tahun, "DRAFT", function (list) {
-                var str = '<table class="table table-bordered table-striped">' +
+            BgInvestasiAction.getListInvestasiByRekeningId(idJenis, rekeningId, 'all', tahun, unit, function (list) {
+                var str = '<table class="table table-bordered table-striped" style="font-size: 13px">' +
                     '<thead>' +
                     '<tr>' +
-                    '<td>Nama</td>' +
+                    '<td>Investasi / Pengadaan</td>' +
                     '<td align="right">Nilai</td>' +
-                    '<td align="center">Action</td>' +
+                    '<td align="center" width="100px">Action</td>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
+
                 $.each(list, function (i, item) {
-                    str += '<tr>' +
-                        '<td id="label-divisi-'+item.divisiId+'">' + item.namaDivisi + '</td>' +
-                        '<td align="right">' + formatRupiah(item.nilaiTotal) + '</td>' +
-                        '<td align="center" id="btn-span-' + i + '"><button class="btn btn-sm btn-success" onclick="spanRow(\'' + i + '\', \'' + item.divisiId + '\', \''+idKategori+'\')"><i class="fa fa-plus"></i></button></td>' +
-                        '</tr>' +
-                        '<tr style="display: none" id="row-master-' + i + '">' +
-                        '<td colspan="3" id="body-divisi-' + i + '">' +
-                        '</td>' +
-                        '</tr>';
+
+                    str += "<tr>" +
+                        "<td>"+item.nama+"</td>" +
+                        "<td align='right'>"+formatRupiah(item.nilaiTotal)+"</td>" +
+                        "<td align='center'><button class='btn btn-sm btn-default'><i class='fa fa-search'></i> View</button></td>" +
+                        "</tr>";
+
+//                    str += '<tr>' +
+//                        '<td id="label-divisi-'+item.divisiId+'">' + item.namaDivisi + '</td>' +
+//                        '<td align="right">' + formatRupiah(item.nilaiTotal) + '</td>' +
+//                        '<td align="center" id="btn-span-' + i + '"><button class="btn btn-sm btn-success" onclick="spanRow(\'' + i + '\', \'' + item.divisiId + '\', \''+idKategori+'\')"><i class="fa fa-plus"></i></button></td>' +
+//                        '</tr>' +
+//                        '<tr style="display: none" id="row-master-' + i + '">' +
+//                        '<td colspan="3" id="body-divisi-' + i + '">' +
+//                        '</td>' +
+//                        '</tr>';
                 });
 
                 str += '</tbody>' +
@@ -1229,6 +1198,20 @@ function showDialog(tipe) {
         $("#modal-loading-dialog").modal('hide');
         $("#modal-success-dialog").modal('show');
     }
+}
+
+function getSelectTahun(idelement) {
+
+    //var str = "<option value=''> - </option>";
+    var str = "";
+    TutuPeriodAction.getListTahunKedepan('5', function (res) {
+
+        $.each(res, function (i, item) {
+            str += "<option value='"+item+"'>" + item + "</option>";
+        });
+
+        $("#"+idelement).html(str);
+    });
 }
 
 

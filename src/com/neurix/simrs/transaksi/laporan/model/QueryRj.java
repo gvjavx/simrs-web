@@ -88,14 +88,14 @@ public class QueryRj {
                 "CAST(SUM(okt) AS VARCHAR) as okt,\n" +
                 "CAST(SUM(nov) AS VARCHAR) as nov,\n" +
                 "CAST(SUM(des) AS VARCHAR) as des,\n" +
-                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
-                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
+                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
+                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
                 "(SELECT COUNT(id_detail_checkup)\n" +
                 "FROM it_simrs_header_detail_checkup\n" +
                 "WHERE date_part('year', created_date) = '"+bean.getTahun()+"'\n" +
                 "AND id_pelayanan IN ("+idPelayanan+") \n" +
                 "AND status_periksa = '3')*100),1) AS VARCHAR\n" +
-                ") as persen\n"+
+                ") as persen\n" +
                 "FROM (\n" +
                 "\tSELECT \n" +
                 "\tCASE WHEN bulan = 1 THEN jumlah ELSE 0 END as jan,\n" +
@@ -157,14 +157,14 @@ public class QueryRj {
                 "CAST(SUM(okt) AS VARCHAR) as okt,\n" +
                 "CAST(SUM(nov) AS VARCHAR) as nov,\n" +
                 "CAST(SUM(des) AS VARCHAR) as des,\n" +
-                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
-                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
+                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
+                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
                 "(SELECT COUNT(id_detail_checkup)\n" +
                 "FROM it_simrs_header_detail_checkup\n" +
                 "WHERE date_part('year', created_date) = '"+bean.getTahun()+"'\n" +
                 "AND id_pelayanan IN ("+idPelayanan+") \n" +
                 "AND status_periksa = '3')*100),1) AS VARCHAR\n" +
-                ") as persen\n"+
+                ") as persen\n" +
                 "FROM (\n" +
                 "\tSELECT \n" +
                 "\tCASE WHEN bulan = 1 THEN jumlah ELSE 0 END as jan,\n" +
@@ -207,14 +207,14 @@ public class QueryRj {
                 "CAST(SUM(okt) AS VARCHAR) as okt,\n" +
                 "CAST(SUM(nov) AS VARCHAR) as nov,\n" +
                 "CAST(SUM(des) AS VARCHAR) as des,\n" +
-                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
-                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
+                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
+                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
                 "(SELECT COUNT(id_detail_checkup)\n" +
                 "FROM it_simrs_header_detail_checkup\n" +
                 "WHERE date_part('year', created_date) = '"+bean.getTahun()+"'\n" +
                 "AND id_pelayanan IN ("+idPelayanan+") \n" +
                 "AND status_periksa = '3')*100),1) AS VARCHAR\n" +
-                ") as persen\n"+
+                ") as persen\n" +
                 "FROM (\n" +
                 "\tSELECT \n" +
                 "\tCASE WHEN bulan = 1 THEN jumlah ELSE 0 END as jan,\n" +
@@ -231,20 +231,20 @@ public class QueryRj {
                 "\tCASE WHEN bulan = 12 THEN jumlah ELSE 0 END as des\n" +
                 "\tFROM(\n" +
                 "\t\tSELECT\n" +
-                "\t\tCOUNT(a.id_detail_checkup) jumlah,\n" +
-                "\t\tdate_part('month', a.created_date) bulan\n" +
-                "\t\tFROM it_simrs_header_detail_checkup a\n" +
-                "\t\tWHERE a.id_jenis_periksa_pasien = 'umum'\n" +
-                "\t\tAND a.id_pelayanan IN ("+idPelayanan+") \n" +
-                "\t\tAND date_part('year', a.created_date) = '"+bean.getTahun()+"'\n" +
-                "\t\tAND a.status_periksa = '3'\n" +
-                "\t\tGROUP BY date_part('month', a.created_date)\n" +
+                "\t\tCOUNT(id_detail_checkup) jumlah,\n" +
+                "\t\tdate_part('month', created_date) bulan\n" +
+                "\t\tFROM it_simrs_header_detail_checkup\n" +
+                "\t\tWHERE id_jenis_periksa_pasien = 'umum'\n" +
+                "\t\tAND id_pelayanan IN ("+idPelayanan+") \n" +
+                "\t\tAND date_part('year', created_date) = '"+bean.getTahun()+"'\n" +
+                "\t\tAND status_periksa = '3'\n" +
+                "\t\tGROUP BY date_part('month', created_date)\n" +
                 "\t)a\n" +
                 ")aa\n" +
                 "UNION ALL\n" +
                 "SELECT\n" +
                 "CAST('3' AS VARCHAR) as nomor,\n" +
-                "CAST('Assuransi' AS VARCHAR) uraian,\n" +
+                "CAST('Asuransi' AS VARCHAR) uraian,\n" +
                 "CAST(SUM(jan) AS VARCHAR) as jan,\n" +
                 "CAST(SUM(feb) AS VARCHAR) as feb,\n" +
                 "CAST(SUM(mar) AS VARCHAR) as mar,\n" +
@@ -257,14 +257,14 @@ public class QueryRj {
                 "CAST(SUM(okt) AS VARCHAR) as okt,\n" +
                 "CAST(SUM(nov) AS VARCHAR) as nov,\n" +
                 "CAST(SUM(des) AS VARCHAR) as des,\n" +
-                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
-                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
+                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
+                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
                 "(SELECT COUNT(id_detail_checkup)\n" +
                 "FROM it_simrs_header_detail_checkup\n" +
                 "WHERE date_part('year', created_date) = '"+bean.getTahun()+"'\n" +
                 "AND id_pelayanan IN ("+idPelayanan+") \n" +
                 "AND status_periksa = '3')*100),1) AS VARCHAR\n" +
-                ") as persen\n"+
+                ") as persen\n" +
                 "FROM (\n" +
                 "\tSELECT \n" +
                 "\tCASE WHEN bulan = 1 THEN jumlah ELSE 0 END as jan,\n" +
@@ -281,14 +281,14 @@ public class QueryRj {
                 "\tCASE WHEN bulan = 12 THEN jumlah ELSE 0 END as des\n" +
                 "\tFROM(\n" +
                 "\t\tSELECT\n" +
-                "\t\tCOUNT(a.id_detail_checkup) jumlah,\n" +
-                "\t\tdate_part('month', a.created_date) bulan\n" +
-                "\t\tFROM it_simrs_header_detail_checkup a\n" +
-                "\t\tWHERE a.id_jenis_periksa_pasien = 'asuransi'\n" +
-                "\t\tAND a.id_pelayanan IN ("+idPelayanan+") \n" +
-                "\t\tAND date_part('year', a.created_date) = '"+bean.getTahun()+"'\n" +
-                "\t\tAND a.status_periksa = '3'\n" +
-                "\t\tGROUP BY date_part('month', a.created_date)\n" +
+                "\t\tCOUNT(id_detail_checkup) jumlah,\n" +
+                "\t\tdate_part('month', created_date) bulan\n" +
+                "\t\tFROM it_simrs_header_detail_checkup\n" +
+                "\t\tWHERE id_jenis_periksa_pasien = 'asuransi'\n" +
+                "\t\tAND id_pelayanan IN ("+idPelayanan+") \n" +
+                "\t\tAND date_part('year', created_date) = '"+bean.getTahun()+"'\n" +
+                "\t\tAND status_periksa = '3'\n" +
+                "\t\tGROUP BY date_part('month', created_date)\n" +
                 "\t)a\n" +
                 ")aa\n" +
                 "UNION ALL\n" +
@@ -307,14 +307,14 @@ public class QueryRj {
                 "CAST(SUM(okt) AS VARCHAR) as okt,\n" +
                 "CAST(SUM(nov) AS VARCHAR) as nov,\n" +
                 "CAST(SUM(des) AS VARCHAR) as des,\n" +
-                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
-                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
+                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
+                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
                 "(SELECT COUNT(id_detail_checkup)\n" +
                 "FROM it_simrs_header_detail_checkup\n" +
                 "WHERE date_part('year', created_date) = '"+bean.getTahun()+"'\n" +
                 "AND id_pelayanan IN ("+idPelayanan+") \n" +
                 "AND status_periksa = '3')*100),1) AS VARCHAR\n" +
-                ") as persen\n"+
+                ") as persen\n" +
                 "FROM (\n" +
                 "\tSELECT \n" +
                 "\tCASE WHEN bulan = 1 THEN jumlah ELSE 0 END as jan,\n" +
@@ -331,13 +331,13 @@ public class QueryRj {
                 "\tCASE WHEN bulan = 12 THEN jumlah ELSE 0 END as des\n" +
                 "\tFROM(\n" +
                 "\t\tSELECT\n" +
-                "\t\tCOUNT(a.id_detail_checkup) jumlah,\n" +
-                "\t\tdate_part('month', a.created_date) bulan\n" +
-                "\t\tFROM it_simrs_header_detail_checkup a\n" +
-                "\t\tWHERE a.id_jenis_periksa_pasien = 'paket_individu'\n" +
-                "\t\tAND a.id_pelayanan IN ("+idPelayanan+") \n" +
-                "\t\tAND date_part('year', a.created_date) = '"+bean.getTahun()+"'\n" +
-                "\t\tGROUP BY date_part('month', a.created_date)\n" +
+                "\t\tCOUNT(id_detail_checkup) jumlah,\n" +
+                "\t\tdate_part('month', created_date) bulan\n" +
+                "\t\tFROM it_simrs_header_detail_checkup\n" +
+                "\t\tWHERE id_jenis_periksa_pasien = 'paket_individu'\n" +
+                "\t\tAND id_pelayanan IN ("+idPelayanan+") \n" +
+                "\t\tAND date_part('year', created_date) = '"+bean.getTahun()+"'\n" +
+                "\t\tGROUP BY date_part('month', created_date)\n" +
                 "\t)a\n" +
                 ")aa\n" +
                 "UNION ALL\n" +
@@ -373,14 +373,14 @@ public class QueryRj {
                 "CAST(SUM(okt) AS VARCHAR) as okt,\n" +
                 "CAST(SUM(nov) AS VARCHAR) as nov,\n" +
                 "CAST(SUM(des) AS VARCHAR) as des,\n" +
-                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
-                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
+                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
+                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
                 "(SELECT COUNT(id_detail_checkup)\n" +
                 "FROM it_simrs_header_detail_checkup\n" +
                 "WHERE date_part('year', created_date) = '"+bean.getTahun()+"'\n" +
                 "AND id_pelayanan IN ("+idPelayanan+") \n" +
                 "AND status_periksa = '3')*100),1) AS VARCHAR\n" +
-                ") as persen\n"+
+                ") as persen\n" +
                 "FROM (\n" +
                 "\tSELECT \n" +
                 "\tCASE WHEN bulan = 1 THEN jumlah ELSE 0 END as jan,\n" +
@@ -397,14 +397,14 @@ public class QueryRj {
                 "\tCASE WHEN bulan = 12 THEN jumlah ELSE 0 END as des\n" +
                 "\tFROM(\n" +
                 "\t\tSELECT\n" +
-                "\t\tCOUNT(a.id_detail_checkup) jumlah,\n" +
-                "\t\tdate_part('month', a.created_date) bulan\n" +
-                "\t\tFROM it_simrs_header_detail_checkup a\n" +
-                "\t\tWHERE a.id_jenis_periksa_pasien = 'bpjs'\n" +
-                "\t\tAND a.id_pelayanan IN ("+idPelayanan+") \n" +
-                "\t\tAND date_part('year', a.created_date) = '"+bean.getTahun()+"'\n" +
-                "\t\tAND a.status_periksa = '3'\n" +
-                "\t\tGROUP BY date_part('month', a.created_date)\n" +
+                "\t\tCOUNT(id_detail_checkup) jumlah,\n" +
+                "\t\tdate_part('month', created_date) bulan\n" +
+                "\t\tFROM it_simrs_header_detail_checkup\n" +
+                "\t\tWHERE id_jenis_periksa_pasien = 'bpjs'\n" +
+                "\t\tAND id_pelayanan IN ("+idPelayanan+") \n" +
+                "\t\tAND date_part('year', created_date) = '"+bean.getTahun()+"'\n" +
+                "\t\tAND status_periksa = '3'\n" +
+                "\t\tGROUP BY date_part('month', created_date)\n" +
                 "\t)a\n" +
                 ")aa\n" +
                 "UNION ALL\n" +
@@ -423,14 +423,14 @@ public class QueryRj {
                 "CAST(SUM(okt) AS VARCHAR) as okt,\n" +
                 "CAST(SUM(nov) AS VARCHAR) as nov,\n" +
                 "CAST(SUM(des) AS VARCHAR) as des,\n" +
-                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
-                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
+                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
+                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
                 "(SELECT COUNT(id_detail_checkup)\n" +
                 "FROM it_simrs_header_detail_checkup\n" +
                 "WHERE date_part('year', created_date) = '"+bean.getTahun()+"'\n" +
                 "AND id_pelayanan IN ("+idPelayanan+") \n" +
                 "AND status_periksa = '3')*100),1) AS VARCHAR\n" +
-                ") as persen\n"+
+                ") as persen\n" +
                 "FROM (\n" +
                 "\tSELECT \n" +
                 "\tCASE WHEN bulan = 1 THEN jumlah ELSE 0 END as jan,\n" +
@@ -447,18 +447,13 @@ public class QueryRj {
                 "\tCASE WHEN bulan = 12 THEN jumlah ELSE 0 END as des\n" +
                 "\tFROM(\n" +
                 "\t\tSELECT\n" +
-                "\t\tCOUNT(a.id_detail_checkup) jumlah,\n" +
-                "\t\tdate_part('month', a.created_date) bulan\n" +
-                "\t\tFROM it_simrs_header_detail_checkup a\n" +
-                "\t\tINNER JOIN im_simrs_rekanan_ops b ON a.id_asuransi = b.id_rekanan_ops\n" +
-                "\t\tINNER JOIn im_simrs_detail_rekanan_ops c ON b.id_rekanan_ops = c.id_rekanan_ops\n" +
-                "\t\tWHERE a.id_jenis_periksa_pasien = 'rekanan'\n" +
-                "\t\tAND a.id_pelayanan IN ("+idPelayanan+") \n" +
-                "\t\tAND date_part('year', a.created_date) = '"+bean.getTahun()+"'\n" +
-                "\t\tAND c.is_bpjs = 'Y' \n" +
-                "\t\tAND b.tipe != 'ptpn'\n" +
-                "\t\tAND a.status_periksa = '3'\n" +
-                "\t\tGROUP BY date_part('month', a.created_date)\n" +
+                "\t\tCOUNT(id_detail_checkup) jumlah,\n" +
+                "\t\tdate_part('month', created_date) bulan\n" +
+                "\t\tFROM it_simrs_header_detail_checkup\n" +
+                "\t\tWHERE id_jenis_periksa_pasien = 'bpjs_rekanan'\n" +
+                "\t\tAND id_pelayanan IN ("+idPelayanan+") \n" +
+                "\t\tAND date_part('year', created_date) = '"+bean.getTahun()+"'\n" +
+                "\t\tGROUP BY date_part('month', created_date)\n" +
                 "\t)a\n" +
                 ")aa\n" +
                 "UNION ALL\n" +
@@ -477,14 +472,14 @@ public class QueryRj {
                 "CAST(SUM(okt) AS VARCHAR) as okt,\n" +
                 "CAST(SUM(nov) AS VARCHAR) as nov,\n" +
                 "CAST(SUM(des) AS VARCHAR) as des,\n" +
-                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
-                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
+                "CAST((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des))AS VARCHAR) as total,\n" +
+                "CAST(ROUND(((SUM(jan)+SUM(feb)+SUM(mar)+SUM(apr)+SUM(mei)+SUM(jun)+SUM(jul)+SUM(ags)+SUM(sep)+SUM(okt)+SUM(nov)+SUM(des)) / \n" +
                 "(SELECT COUNT(id_detail_checkup)\n" +
                 "FROM it_simrs_header_detail_checkup\n" +
                 "WHERE date_part('year', created_date) = '"+bean.getTahun()+"'\n" +
                 "AND id_pelayanan IN ("+idPelayanan+") \n" +
                 "AND status_periksa = '3')*100),1) AS VARCHAR\n" +
-                ") as persen\n"+
+                ") as persen\n" +
                 "FROM (\n" +
                 "\tSELECT \n" +
                 "\tCASE WHEN bulan = 1 THEN jumlah ELSE 0 END as jan,\n" +

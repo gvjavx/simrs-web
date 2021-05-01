@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -246,8 +247,8 @@ public class LiburAction extends BaseMasterAction{
 
     public String saveDelete(){
         logger.info("[LiburAction.saveDelete] start process >>>");
-        try {
 
+        try {
             Libur deleteLibur = getLibur();
 
             String userLogin = CommonUtil.userLogin();
@@ -306,11 +307,13 @@ public class LiburAction extends BaseMasterAction{
                 logId = liburBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
             } catch (GeneralBOException e1) {
                 logger.error("[liburAction.saveAdd] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1);
+//                return ERROR;
             }
             logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e);
+//            return ERROR;
         }
 
 

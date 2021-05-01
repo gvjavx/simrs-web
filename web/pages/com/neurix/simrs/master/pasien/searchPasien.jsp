@@ -453,7 +453,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_password"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_password">
                     <i
@@ -765,7 +765,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-check"></i> Yes
                 </button>
             </div>
         </div>
@@ -1155,13 +1155,10 @@
             images = '';
         }
 
-        console.log(profesi);
-        console.log(suku);
-
         var foto = isCanvasBlank(canvas);
         if (nik != '' && nama != '' && jk != '' && tempatLahir != '' && tanggalLahir != '' &&
             agama != '' && provinsi != '' && kota != '' && kecamatan != '' && desa != '' &&
-            password != '' && statusPerkawinan != '' && pendidikan != '' && !foto && noTelp != '' && profesi != '' && suku != '') {
+            statusPerkawinan != '' && pendidikan != '' && noTelp != '' && profesi != '' && suku != '') {
             $('#modal-confirm-dialog').modal({show: true, backdrop: 'static'});
             $('#save_con').attr('onclick', 'saveEditPasien()');
         }else {
@@ -1207,12 +1204,12 @@
             if (pendidikan == '') {
                 $('#add_pendidikan').css('border', 'solid 1px red');
             }
-            if (password == '') {
-                $('#add_password').css('border', 'solid 1px red');
-            }
-            if(foto){
-                $('#img_ktp_canvas').css('border', 'solid 1px red');
-            }
+            // if (password == '') {
+            //     $('#add_password').css('border', 'solid 1px red');
+            // }
+            // if(foto){
+            //     $('#img_ktp_canvas').css('border', 'solid 1px red');
+            // }
             if(noTelp == ''){
                 $('#add_no_telp').css('border', 'solid 1px red');
             }
@@ -1262,7 +1259,7 @@
         }
 
         if (nik != '' && nama != '' && jk != '' && tempatLahir != '' && tanggalLahir != '' &&
-            agama != '' && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && password != '' && statusPerkawinan != '' && pendidikan != '') {
+            agama != '' && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && statusPerkawinan != '' && pendidikan != '') {
 
             data = {
                 'id_pasien': idPasien,
@@ -1356,9 +1353,9 @@
             if (pendidikan == '') {
                 $('#add_pendidikan').css('border', 'solid 1px red');
             }
-            if (password == '') {
-                $('#add_password').css('border', 'solid 1px red');
-            }
+            // if (password == '') {
+            //     $('#add_password').css('border', 'solid 1px red');
+            // }
         }
 
     }

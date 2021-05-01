@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.laporan.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.transaksi.laporan.model.Laporan;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.transaksi.laporan.model.*;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
@@ -156,7 +157,9 @@ public class LaporanOpsDao extends GenericDao<ImSimrsLaporanOpsEntity, String> {
                     "GROUP BY b.id_pelayanan, \n" +
                     "c.nama_pelayanan, \n" +
                     "a.branch_id, \n" +
-                    "d.branch_name \n";
+                    "d.branch_name \n" +
+                    "ORDER BY branch_name ASC,\n" +
+                    "COUNT(a.id_detail_checkup) DESC\n";
             List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("branch", branch)
                     .list();
@@ -377,5 +380,58 @@ public class LaporanOpsDao extends GenericDao<ImSimrsLaporanOpsEntity, String> {
             }
         }
         return laporanOpsList;
+    }
+
+    public List<Pelayanan> getListPenunjangMedis(Pelayanan bean) {
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        if (bean != null) {
+            String SQL = "";
+            if ("farmasi".equalsIgnoreCase(bean.getTipePelayanan())) {
+                SQL = "SELECT\n" +
+                        "b.id_pelayanan,\n" +
+                        "b.nama_pelayanan\n" +
+                        "FROM im_simrs_header_pelayanan a\n" +
+                        "INNER JOIN im_simrs_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
+                        "WHERE a.tipe_pelayanan IN ('apotek','apotek_ri')\n" +
+                        "AND b.branch_id = :branch";
+            }
+            if("kamar".equalsIgnoreCase(bean.getTipePelayanan())){
+                SQL = "SELECT\n" +
+                        "b.id_ruangan,\n" +
+                        "CASE \n" +
+                        " WHEN b.no_ruangan IS NULL OR b.no_ruangan = '' THEN b.nama_ruangan\n" +
+                        "ELSE CONCAT('[',b.no_ruangan,'] ',b.nama_ruangan) END as ruangan\n" +
+                        "FROM im_simrs_kelas_ruangan a\n" +
+                        "INNER JOIN mt_simrs_ruangan b ON a.id_kelas_ruangan = b.id_kelas_ruangan\n" +
+                        "WHERE a.kategori NOT LIKE 'rawat_inap'\n" +
+                        "AND b.branch_id = :branch";
+            }
+
+            if("lab".equalsIgnoreCase(bean.getTipePelayanan()) || "radiologi".equalsIgnoreCase(bean.getTipePelayanan())){
+                SQL = "SELECT\n" +
+                        "c.id_parameter_pemeriksaan,\n" +
+                        "c.nama_pemeriksaan\n" +
+                        "FROM im_simrs_lab a\n" +
+                        "INNER JOIN im_simrs_lab_detail b ON a.id_lab = b.id_lab\n" +
+                        "INNER JOIN im_simrs_parameter_pemeriksaan c ON b.id_parameter_pemeriksaan = c.id_parameter_pemeriksaan\n" +
+                        "INNER JOIN im_simrs_kategori_lab d ON c.id_kategori_lab = d.id_kategori_lab\n" +
+                        "WHERE d.kategori = '"+bean.getTipePelayanan()+"'\n" +
+                        "AND b.branch_id = :branch";
+            }
+
+            List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("branch", bean.getBranchId())
+                    .list();
+
+            if (result.size() > 0) {
+                for (Object[] obj : result) {
+                    Pelayanan pelayanan = new Pelayanan();
+                    pelayanan.setIdPelayanan(obj[0] != null ? obj[0].toString() : null);
+                    pelayanan.setNamaPelayanan(obj[1] != null ? obj[1].toString() : null);
+                    pelayananList.add(pelayanan);
+                }
+            }
+        }
+        return pelayananList;
     }
 }
