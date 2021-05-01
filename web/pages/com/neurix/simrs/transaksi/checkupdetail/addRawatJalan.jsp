@@ -2009,6 +2009,36 @@
                     <p id="msg_resep"></p>
                 </div>
                 <div class="row">
+                    <label class="col-md-3" style="margin-top: 7px">Obat Racik ?</label>
+                    <div class="col-md-9">
+                        <div class="form-check" style="margin-top: 7px;">
+                            <input type="checkbox" name="cek_racik" id="racik_racik" value="Y" onclick="var warn = $('#war_rep_racik').is(':visible'); if (warn){$('#cor_rep_racik').show().fadeOut(3000);$('#war_rep_racik').hide()}; cekRacik(this.id)">
+                            <label for="racik_racik"></label> Ya
+                        </div>
+                        <span style="color: red; margin-top: 12px; display: none;"
+                              id="war_rep_racik"><i class="fa fa-times"></i> required</span>
+                        <span style="color: green; margin-top: 12px; display: none;"
+                              id="cor_rep_racik"><i class="fa fa-check"></i> correct</span>
+                    </div>
+                </div>
+                <div class="row" id="form-nama-racik" style="display: none">
+                    <label class="col-md-3" style="margin-top: 7px;">Nama Racik</label>
+                    <div class="col-md-9">
+                        <div class="input-group" style="margin-top: 7px;">
+                            <input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"
+                                   class="form-control" type="text"
+                                   id="nama_racik">
+                            <div class="input-group-addon">
+                                <input type="color" id="color_racik" style="height: 20px;">
+                            </div>
+                        </div>
+                        <span style="color: red; margin-top: 12px; display: none;"
+                              id="war_nama_racik"><i class="fa fa-times"></i> required</span>
+                        <span style="color: green; margin-top: 12px; display: none;"
+                              id="cor_nama_racik"><i class="fa fa-check"></i> correct</span>
+                    </div>
+                </div>
+                <div class="row">
                     <label class="col-md-3" style="margin-top: 7px">Apotek</label>
                     <div class="col-md-9">
                         <s:action id="initApotek" namespace="/checkup"
@@ -2025,19 +2055,19 @@
                               id="cor_rep_apotek"><i class="fa fa-check"></i> correct</span>
                     </div>
                 </div>
-                <div class="row">
-                    <label class="col-md-3" style="margin-top: 7px">Kategori</label>
-                    <div class="col-md-9">
-                        <select class="form-control select2" style="margin-top: 7px; width: 100%"
-                                id="resep_jenis_obat">
-                            <option value=""> - </option>
-                        </select>
-                        <span style="color: red; margin-top: 12px; display: none;"
-                              id="war_jenis_obat"><i class="fa fa-times"></i> required</span>
-                        <span style="color: green; margin-top: 12px; display: none;"
-                              id="cor_jenis_obat"><i class="fa fa-check"></i> correct</span>
-                    </div>
-                </div>
+                <%--<div class="row">--%>
+                    <%--<label class="col-md-3" style="margin-top: 7px">Kategori</label>--%>
+                    <%--<div class="col-md-9">--%>
+                        <%--<select class="form-control select2" style="margin-top: 7px; width: 100%"--%>
+                                <%--id="resep_jenis_obat">--%>
+                            <%--<option value=""> - </option>--%>
+                        <%--</select>--%>
+                        <%--<span style="color: red; margin-top: 12px; display: none;"--%>
+                              <%--id="war_jenis_obat"><i class="fa fa-times"></i> required</span>--%>
+                        <%--<span style="color: green; margin-top: 12px; display: none;"--%>
+                              <%--id="cor_jenis_obat"><i class="fa fa-check"></i> correct</span>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
                 <div class="row">
                     <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                     <div class="col-md-9">
@@ -2149,36 +2179,6 @@
                               id="cor_rep_qty"><i class="fa fa-check"></i> correct</span>
                     </div>
                 </div>
-                <div class="row">
-                    <label class="col-md-3" style="margin-top: 7px">Obat Racik ?</label>
-                    <div class="col-md-9">
-                        <div class="form-check" style="margin-top: 7px;">
-                            <input type="checkbox" name="cek_racik" id="racik_racik" value="Y" onclick="var warn = $('#war_rep_racik').is(':visible'); if (warn){$('#cor_rep_racik').show().fadeOut(3000);$('#war_rep_racik').hide()}; cekRacik(this.id)">
-                            <label for="racik_racik"></label> Ya
-                        </div>
-                        <span style="color: red; margin-top: 12px; display: none;"
-                              id="war_rep_racik"><i class="fa fa-times"></i> required</span>
-                        <span style="color: green; margin-top: 12px; display: none;"
-                              id="cor_rep_racik"><i class="fa fa-check"></i> correct</span>
-                    </div>
-                </div>
-                <div class="row" id="form-nama-racik" style="display: none">
-                    <label class="col-md-3" style="margin-top: 7px;">Nama Racik</label>
-                    <div class="col-md-9">
-                        <div class="input-group" style="margin-top: 7px;">
-                            <input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"
-                                   class="form-control" type="text"
-                                   id="nama_racik">
-                            <div class="input-group-addon">
-                                <input type="color" id="color_racik" style="height: 20px;">
-                            </div>
-                        </div>
-                        <span style="color: red; margin-top: 12px; display: none;"
-                              id="war_nama_racik"><i class="fa fa-times"></i> required</span>
-                        <span style="color: green; margin-top: 12px; display: none;"
-                              id="cor_nama_racik"><i class="fa fa-check"></i> correct</span>
-                    </div>
-                </div>
                 <div class="row" id="form-hari" style="display: none">
                     <label class="col-md-3" style="margin-top: 7px; font-size:12px">Pengambilan(Hari)</label>
                     <div class="col-md-9">
@@ -2200,33 +2200,33 @@
                 </div>
                 <hr/>
                 <%--Keterangan Obat Berdasarkan Jenis Obat--%>
-                <div class="row" style="margin-top: -7px">
-                    <div class="col-md-offset-2 col-md-8">
-                        <div class="alert alert-danger alert-dismissible" style="display: none" id="w_keterangan">
-                            <p id="p_keterangan"></p>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <label style="margin-bottom: -7px">Waktu</label>
-                        <select class="form-control select2" style="width: 100%" id="waktu_param">
-                            <option value=""> - </option>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label style="margin-bottom: -7px">Parameter Keterangan</label>
-                        <select onchange="getComboKeteranganObat(this.value)" class="form-control select2" style="width: 100%" id="param_ket">
-                            <option value=""> - </option>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label style="margin-bottom: -7px">Keterangan</label>
-                        <select class="select2 form-control" multiple style="width: 100%" id="ket_param">
-                        </select>
-                    </div>
-                    <div class="col-md-1">
-                        <button style="margin-top: 20px; margin-left: -25px" class="btn btn-warning" onclick="addKeterangan()"><i class="fa fa-plus"></i></button>
-                    </div>
-                </div>
+                <%--<div class="row" style="margin-top: -7px">--%>
+                    <%--<div class="col-md-offset-2 col-md-8">--%>
+                        <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="w_keterangan">--%>
+                            <%--<p id="p_keterangan"></p>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<div class="col-md-3">--%>
+                        <%--<label style="margin-bottom: -7px">Waktu</label>--%>
+                        <%--<select class="form-control select2" style="width: 100%" id="waktu_param">--%>
+                            <%--<option value=""> - </option>--%>
+                        <%--</select>--%>
+                    <%--</div>--%>
+                    <%--<div class="col-md-4">--%>
+                        <%--<label style="margin-bottom: -7px">Parameter Keterangan</label>--%>
+                        <%--<select onchange="getComboKeteranganObat(this.value)" class="form-control select2" style="width: 100%" id="param_ket">--%>
+                            <%--<option value=""> - </option>--%>
+                        <%--</select>--%>
+                    <%--</div>--%>
+                    <%--<div class="col-md-4">--%>
+                        <%--<label style="margin-bottom: -7px">Keterangan</label>--%>
+                        <%--<select class="select2 form-control" multiple style="width: 100%" id="ket_param">--%>
+                        <%--</select>--%>
+                    <%--</div>--%>
+                    <%--<div class="col-md-1">--%>
+                        <%--<button style="margin-top: 20px; margin-left: -25px" class="btn btn-warning" onclick="addKeterangan()"><i class="fa fa-plus"></i></button>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
                 <div class="row" style="margin-top: 10px">
                     <div class="col-md-12">
                         <table class="table table-bordered" style="font-size: 14px" id="table_keterangan">
