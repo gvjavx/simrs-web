@@ -3182,7 +3182,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         if (transId!=null) {
 
             //get mapping jurnal based trans id
-            List<ImMappingJurnalEntity> mappingJurnal = null ;
+            List<ImMappingJurnalEntity> mappingJurnal = null;
             try {
                 mappingJurnal = mappingJurnalDao.getMappingByTransId(transId);
             } catch (HibernateException e) {
