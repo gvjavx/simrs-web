@@ -822,10 +822,10 @@
 
                 showDialog("loading");
                 dwr.engine.setAsync(true);
-                PayrollAction.approvePayrollKeu(payrollHeaderId, branchId, bulan, tahun, statusApprove, tipe, keteranganKeu, function(listdata){
+                PayrollAction.approvePayrollKeu(payrollHeaderId, branchId, bulan, tahun, statusApprove, tipe, keteranganKeu, function(status){
                     dwr.engine.setAsync(false);
                     if (status == '00') {
-                        $('#modal-approve-keu-unit').modal('hide');
+                        $('#modal-approve-keu').modal('hide');
                         showDialog("success");
                     } else {
                         showDialog("error");

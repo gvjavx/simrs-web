@@ -25,7 +25,11 @@
     rename column payroll_id to payroll_temp_id;
     alter table it_hris_payroll_pph_temp
     add column selisih_pph_setahun numeric(15,2);
+    alter table it_hris_payroll_pph
+    add column selisih_pph_setahun numeric(15,2);
     alter table it_hris_payroll_temp
+    alter column nama_bank type varchar(50);
+    alter table it_hris_payroll
     alter column nama_bank type varchar(50);
 
 ------ 2021-04-30 ===> penambahan column

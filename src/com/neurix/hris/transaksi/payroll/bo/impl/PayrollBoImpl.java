@@ -626,6 +626,8 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         itHrisPayrollEntity.setIuranProfesi(itHrisPayrollTempEntity.getIuranProfesi());
         itHrisPayrollEntity.setIuranPotonganLain(itHrisPayrollTempEntity.getIuranPotonganLain());
 
+        itHrisPayrollEntity.setTotalPotonganLain(itHrisPayrollTempEntity.getTotalPotonganLain());
+
         itHrisPayrollEntity.setMinBpjsKs(itHrisPayrollTempEntity.getMinBpjsKs());
         itHrisPayrollEntity.setMaxBpjsKs(itHrisPayrollTempEntity.getMaxBpjsKs());
 
@@ -1221,6 +1223,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         pegawaiPayroll.setListrikNilai(itHrisPayrollEntity.getIuranListrik());
         pegawaiPayroll.setIuranProfesiNilai(itHrisPayrollEntity.getIuranProfesi());
         pegawaiPayroll.setPotonganLainNilai(itHrisPayrollEntity.getIuranPotonganLain());
+        pegawaiPayroll.setTotalPotonganLainNilai(itHrisPayrollEntity.getTotalPotonganLain());
 
         pegawaiPayroll.setIuranSp(pegawaiPayroll.getIuranSpNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranSpNilai(),"###,###") : "");
         pegawaiPayroll.setIuranPiikb(pegawaiPayroll.getIuranPiikbNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranPiikbNilai(),"###,###") : "");
@@ -1231,6 +1234,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         pegawaiPayroll.setListrik(pegawaiPayroll.getListrikNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getListrikNilai(),"###,###") : "");
         pegawaiPayroll.setIuranProfesi(pegawaiPayroll.getIuranProfesiNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getIuranProfesiNilai(),"###,###") : "");
         pegawaiPayroll.setPotonganLain(pegawaiPayroll.getPotonganLainNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getPotonganLainNilai(),"###,###") : "");
+        pegawaiPayroll.setTotalPotonganLain(pegawaiPayroll.getTotalPotonganLainNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalPotonganLainNilai(),"###,###") : "");
 
         pegawaiPayroll.setMinBpjsKsNilai(itHrisPayrollEntity.getMinBpjsKs());
         pegawaiPayroll.setMaxBpjsKsNilai(itHrisPayrollEntity.getMaxBpjsKs());
@@ -1339,6 +1343,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         pegawaiPayroll.setTunjanganLainNilai(itHrisPayrollEntity.getTunjanganLain());
 
         pegawaiPayroll.setThp(pegawaiPayroll.getThpNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getThpNilai(),"###,###") : "");
+        pegawaiPayroll.setGajiBersih(pegawaiPayroll.getGajiBersihNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getGajiBersihNilai(),"###,###") : "");
         pegawaiPayroll.setComponentA(pegawaiPayroll.getComponentANilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getComponentANilai(),"###,###") : "");
         pegawaiPayroll.setComponentB(pegawaiPayroll.getComponentBNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getComponentBNilai(),"###,###") : "");
         pegawaiPayroll.setComponentC(pegawaiPayroll.getComponentCNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getComponentCNilai(),"###,###") : "");
@@ -2160,6 +2165,11 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
                     itHrisPayrollHeaderEntity.setApprovalSdmFlag("Y");
                     itHrisPayrollHeaderEntity.setApprovalSdmName(createdWho);
                     itHrisPayrollHeaderEntity.setApprovalSdmDate(CommonUtil.getCurrentDateTimes());
+
+                    itHrisPayrollHeaderEntity.setApprovalAksFlag(null);
+                    itHrisPayrollHeaderEntity.setApprovalAksName(null);
+                    itHrisPayrollHeaderEntity.setApprovalAksDate(null);
+
                     itHrisPayrollHeaderEntity.setLastUpdate(CommonUtil.getCurrentDateTimes());
                     itHrisPayrollHeaderEntity.setLastUpdateWho(createdWho);
 
@@ -2827,9 +2837,20 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 
                 } else { // jika belum di approval sdm maka masih bisa di lakukan edit / refresh
 
+                    //jika tipe payroll selain payroll bulanan ada edit, selain itu tidak disable edit nya
+                    if (CommonConstant.CODE_PAYROLL.equalsIgnoreCase(tipePayroll)) {
+
                     itemPayrollHeader.setFlagEdit(true);
                     itemPayrollHeader.setFlagRefresh(true);
                     itemPayrollHeader.setFlagView(false);
+
+                    } else {
+
+                        itemPayrollHeader.setFlagEdit(false);
+                        itemPayrollHeader.setFlagRefresh(false);
+                        itemPayrollHeader.setFlagView(true);
+                    }
+
                     itemPayrollHeader.setFlagSlip(false);
                     itemPayrollHeader.setEnableApprovalSdm(true);
                     itemPayrollHeader.setEnableApprovalAks(false);
@@ -2943,9 +2964,35 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 
             } else {
 
+                List<ItHrisPayrollTempEntity> payrollTempEntityList = new ArrayList<>();
+
+                try {
+                    payrollTempEntityList = payrollTempDao.getByCriteria(hsCriteria);
+                } catch (HibernateException e) {
+                    logger.error("[PayrollBoImpl.viewAllCalculatePayroll] Error, " + e.getMessage());
+                    throw new GeneralBOException("[PayrollBoImpl.viewAllCalculatePayroll] Found problem when get payroll data, please inform to your admin...," + e.getMessage());
+                }
+
+                if (!payrollTempEntityList.isEmpty()) {
+
+                    for (ItHrisPayrollTempEntity itHrisPayrollTempEntity : payrollTempEntityList) {
+
+                        PegawaiPayroll pegawaiPayroll = copyDataPayrollTempToPegawaiPayroll(itHrisPayrollTempEntity);
+                        pegawaiPayroll.setFlagPrint("N");
+                        pegawaiPayroll.setFlagEdit("N");
+                        listOfViewPegawaiPayroll.add(pegawaiPayroll);
+                    }
+
+                    //sorting pegawai payroll based on BOC-BOD-Peg.Tetap-PKWT
+                    listOfSortingViewPegawaiPayroll = sortingListPegawaiPayroll(listOfViewPegawaiPayroll);
+
+
+            } else {
+
                 logger.error("[PayrollBoImpl.viewAllCalculatePayroll] Tidak ditemukan periode-tahun gaji yang sudah di-proses.");
                 throw new GeneralBOException("[PayrollBoImpl.viewAllCalculatePayroll] Tidak ditemukan periode-tahun gaji yang sudah di-proses., please info to your admin...");
 
+            }
             }
 
         }
@@ -3083,57 +3130,59 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 
                         //prepare jurnal ke billing system
 
-                        String catatanJurnal = "Pembayaran Payroll ( " + ketPayroll + " ) untuk periode :" + periodePayroll + "/" + tahunPayroll ;
-                        buildDataBasedMappingJurnal.put("keterangan",catatanJurnal);
-                        buildDataBasedMappingJurnal.put("user_id",createdWhoId);
-                        buildDataBasedMappingJurnal.put("user_who",createdWho);
+//                        String catatanJurnal = "Pembayaran Payroll ( " + ketPayroll + " ) untuk periode :" + periodePayroll + "/" + tahunPayroll ;
+//                        buildDataBasedMappingJurnal.put("keterangan",catatanJurnal);
+//                        buildDataBasedMappingJurnal.put("user_id",createdWhoId);
+//                        buildDataBasedMappingJurnal.put("user_who",createdWho);
 
-                        ItJurnalEntity itJurnalEntity = null;
-                        try {
-                            itJurnalEntity = prepareCreateJurnal(transId, buildDataBasedMappingJurnal, branchId, "Y");
-                        } catch (GeneralBOException e) {
-                            logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Error, " + e.getMessage());
-                            throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Found problem when preparing jurnal save payroll, please inform to your admin...," + e.getMessage());
-                        }
-
-                        //create jurnal
-
-                        if (itJurnalEntity!=null) {
-
-                            try {
-                                jurnalDao.addAndSave(itJurnalEntity);
-                            } catch (HibernateException e) {
-                                logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Error, " + e.getMessage());
-                                throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Found problem when saving jurnal payroll, please info to your admin..." + e.getMessage());
-                            }
-
-                            String noJurnal = itJurnalEntity.getNoJurnal();
-
-                            //update payroll header, approval aks = Y dan no jurnal
-                            itHrisPayrollHeaderEntity.setNoJurnal(noJurnal);
-                            itHrisPayrollHeaderEntity.setAction("U");
-                            itHrisPayrollHeaderEntity.setApprovalAksFlag("Y");
-                            itHrisPayrollHeaderEntity.setApprovalAksName(createdWho);
-                            itHrisPayrollHeaderEntity.setKeteranganAks("Telah Approval Gaji.");
-                            itHrisPayrollHeaderEntity.setApprovalAksDate(CommonUtil.getCurrentDateTimes());
-                            itHrisPayrollHeaderEntity.setLastUpdate(CommonUtil.getCurrentDateTimes());
-                            itHrisPayrollHeaderEntity.setLastUpdateWho(createdWho);
-
+                        //RAKA01MEI2021==>Comment
+//                        ItJurnalEntity itJurnalEntity = null;
+//                        try {
+//                            itJurnalEntity = prepareCreateJurnal(transId, buildDataBasedMappingJurnal, branchId, "Y");
+//                        } catch (GeneralBOException e) {
+//                            logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Error, " + e.getMessage());
+//                            throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Found problem when preparing jurnal save payroll, please inform to your admin...," + e.getMessage());
+//                        }
+//
+////                        create jurnal
+//
+//                        if (itJurnalEntity!=null) {
+//
+//                            try {
+//                                jurnalDao.addAndSave(itJurnalEntity);
+//                            } catch (HibernateException e) {
+//                                logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Error, " + e.getMessage());
+//                                throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Found problem when saving jurnal payroll, please info to your admin..." + e.getMessage());
+//                            }
+//
+//                            String noJurnal = itJurnalEntity.getNoJurnal();
+//
+//                            //update payroll header, approval aks = Y dan no jurnal
+//                            itHrisPayrollHeaderEntity.setNoJurnal(noJurnal);
+//                            itHrisPayrollHeaderEntity.setAction("U");
+//                            itHrisPayrollHeaderEntity.setApprovalAksFlag("Y");
+//                            itHrisPayrollHeaderEntity.setApprovalAksName(createdWho);
+//                            itHrisPayrollHeaderEntity.setKeteranganAks("Telah Approval Gaji.");
+//                            itHrisPayrollHeaderEntity.setApprovalAksDate(CommonUtil.getCurrentDateTimes());
+//                            itHrisPayrollHeaderEntity.setLastUpdate(CommonUtil.getCurrentDateTimes());
+//                            itHrisPayrollHeaderEntity.setLastUpdateWho(createdWho);
+//
                             try {
                                 payrollHeaderDao.updateAndSave(itHrisPayrollHeaderEntity);
                             } catch (HibernateException e) {
                                 logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Error, " + e.getMessage());
                                 throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Found problem when save update payroll header set approval sdm YES, dan no jurnal, please inform to your admin...," + e.getMessage());
                             }
-
-
-                        } else {
-
-                            logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Tidak ditemukan jurnal yang akan di buat.");
-                            throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Tidak ditemukan jurnal yang akan di buat., please info to your admin...");
-
-                        }
-
+//
+//
+//
+//                        } else {
+//
+//                            logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Tidak ditemukan jurnal yang akan di buat.");
+//                            throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Tidak ditemukan jurnal yang akan di buat., please info to your admin...");
+//
+//                        }
+                    //RAKA-end
                     } else {
 
                         logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Tidak ditemukan periode-tahun gaji yang masih dalam proses.");

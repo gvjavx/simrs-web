@@ -53,6 +53,10 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 criteria.add(Restrictions.eq("branchId", (String) mapCriteria.get("branch_id")));
             }
 
+            if (mapCriteria.get("tipe_payroll")!=null) {
+                criteria.add(Restrictions.eq("tipePayroll", (String) mapCriteria.get("tipe_payroll")));
+            }
+
             if (mapCriteria.get("approval_flag")!=null) {
                 criteria.add(Restrictions.eq("approvalFlag", (String) mapCriteria.get("approval_flag")));
             }
@@ -1001,75 +1005,99 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
             result.setPersenDapenPersh(CommonUtil.numbericFormat(result.getPersenDapenPershNilai(),"###,###"));
 
             result.setGajiPokokNilai(row[31]!=null ? (BigDecimal) row[31] : new BigDecimal(0));
+            result.setGajiPokokNilai(result.getGajiPokokNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setGajiPokok(CommonUtil.numbericFormat(result.getGajiPokokNilai(),"###,###"));
 
             result.setSantunanKhususNilai(row[32]!=null ? (BigDecimal) row[32] : new BigDecimal(0));
+            result.setSantunanKhususNilai(result.getSantunanKhususNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setSantunanKhusus(CommonUtil.numbericFormat(result.getSantunanKhususNilai(),"###,###"));
 
             result.setTunjRumahNilai(row[33]!=null ? (BigDecimal) row[33] : new BigDecimal(0));
+            result.setTunjRumahNilai(result.getTunjRumahNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjRumah(CommonUtil.numbericFormat(result.getTunjRumahNilai(),"###,###"));
 
             result.setTunjListrikNilai(row[34]!=null ? (BigDecimal) row[34] : new BigDecimal(0));
+            result.setTunjListrikNilai(result.getTunjListrikNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjListrik(CommonUtil.numbericFormat(result.getTunjListrikNilai(),"###,###"));
 
             result.setTunjAirNilai(row[35]!=null ? (BigDecimal) row[35] : new BigDecimal(0));
+            result.setTunjAirNilai(result.getTunjAirNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjAir(CommonUtil.numbericFormat(result.getTunjAirNilai(),"###,###"));
 
             result.setTunjBbmNilai(row[36]!=null ? (BigDecimal) row[36] : new BigDecimal(0));
+            result.setTunjBbmNilai(result.getTunjBbmNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjBbm(CommonUtil.numbericFormat(result.getTunjBbmNilai(),"###,###"));
 
             result.setTunjJabatanNilai(row[37]!=null ? (BigDecimal) row[37] : new BigDecimal(0));
+            result.setTunjJabatanNilai(result.getTunjJabatanNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjJabatan(CommonUtil.numbericFormat(result.getTunjJabatanNilai(),"###,###"));
 
             result.setTunjStrukturalNilai(row[38]!=null ? (BigDecimal) row[38] : new BigDecimal(0));
+            result.setTunjStrukturalNilai(result.getTunjStrukturalNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjStruktural(CommonUtil.numbericFormat(result.getTunjStrukturalNilai(),"###,###"));
 
             result.setTunjFungsionalNilai(row[39]!=null ? (BigDecimal) row[39] : new BigDecimal(0));
+            result.setTunjFungsionalNilai(result.getTunjFungsionalNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjFungsional(CommonUtil.numbericFormat(result.getTunjFungsionalNilai(),"###,###"));
 
             result.setTunjTambahanNilai(row[40]!=null ? (BigDecimal) row[40] : new BigDecimal(0));
+            result.setTunjTambahanNilai(result.getTunjTambahanNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjTambahan(CommonUtil.numbericFormat(result.getTunjTambahanNilai(),"###,###"));
 
             result.setGajiPensiunNilai(row[41]!=null ? (BigDecimal) row[41] : new BigDecimal(0));
+            result.setGajiPensiunNilai(result.getGajiPensiunNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setGajiPensiun(CommonUtil.numbericFormat(result.getGajiPensiunNilai(),"###,###"));
 
             result.setIuranDapenPershNilai(row[42]!=null ? (BigDecimal) row[42] : new BigDecimal(0));
+            result.setIuranDapenPershNilai(result.getIuranDapenPershNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setIuranDapenPersh(CommonUtil.numbericFormat(result.getIuranDapenPershNilai(),"###,###"));
 
             result.setIuranDapenKaryNilai(row[43]!=null ? (BigDecimal) row[43] : new BigDecimal(0));
+            result.setIuranDapenKaryNilai(result.getIuranDapenKaryNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setIuranDapenKary(CommonUtil.numbericFormat(result.getIuranDapenKaryNilai(),"###,###"));
 
             result.setTunjPeralihanGapokNilai(row[44]!=null ? (BigDecimal) row[44] : new BigDecimal(0));
+            result.setTunjPeralihanGapokNilai(result.getTunjPeralihanGapokNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjPeralihanGapok(CommonUtil.numbericFormat(result.getTunjPeralihanGapokNilai(),"###,###"));
 
             result.setTunjPeralihanSankhusNilai(row[45]!=null ? (BigDecimal) row[45] : new BigDecimal(0));
+            result.setTunjPeralihanSankhusNilai(result.getTunjPeralihanSankhusNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjPeralihanSankhus(CommonUtil.numbericFormat(result.getTunjPeralihanSankhusNilai(),"###,###"));
 
             result.setTunjPeralihanTunjNilai(row[46]!=null ? (BigDecimal) row[46] : new BigDecimal(0));
+            result.setTunjPeralihanTunjNilai(result.getTunjPeralihanTunjNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjPeralihanTunj(CommonUtil.numbericFormat(result.getTunjPeralihanTunjNilai(),"###,###"));
 
             result.setTunjKomunikasiNilai(row[47]!=null ? (BigDecimal) row[47] : new BigDecimal(0));
+            result.setTunjKomunikasiNilai(result.getTunjKomunikasiNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjKomunikasi(CommonUtil.numbericFormat(result.getTunjKomunikasiNilai(),"###,###"));
 
             result.setTunjPemondokanNilai(row[48]!=null ? (BigDecimal) row[48] : new BigDecimal(0));
+            result.setTunjPemondokanNilai(result.getTunjPemondokanNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjPemondokan(CommonUtil.numbericFormat(result.getTunjPemondokanNilai(),"###,###"));
 
             result.setTunjLemburNilai(row[49]!=null ? (BigDecimal) row[49] : new BigDecimal(0));
+            result.setTunjLemburNilai(result.getTunjLemburNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjLembur(CommonUtil.numbericFormat(result.getTunjLemburNilai(),"###,###"));
 
             result.setTunjSupervisiNilai(row[50]!=null ? (BigDecimal) row[50] : new BigDecimal(0));
+            result.setTunjSupervisiNilai(result.getTunjSupervisiNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjSupervisi(CommonUtil.numbericFormat(result.getTunjSupervisiNilai(),"###,###"));
 
             result.setTunjLokalNilai(row[51]!=null ? (BigDecimal) row[51] : new BigDecimal(0));
+            result.setTunjLokalNilai(result.getTunjLokalNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjLokal(CommonUtil.numbericFormat(result.getTunjLokalNilai(),"###,###"));
 
             result.setTunjSiagaNilai(row[52]!=null ? (BigDecimal) row[52] : new BigDecimal(0));
+            result.setTunjSiagaNilai(result.getTunjSiagaNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjSiaga(CommonUtil.numbericFormat(result.getTunjSiagaNilai(),"###,###"));
 
             result.setMinBpjsKsNilai(row[53]!=null ? (BigDecimal) row[53] : new BigDecimal(0));
+            result.setMinBpjsKsNilai(result.getMinBpjsKsNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setMinBpjsKs(CommonUtil.numbericFormat(result.getMinBpjsKsNilai(),"###,###"));
 
             result.setMaxBpjsKsNilai(row[54]!=null ? (BigDecimal) row[54] : new BigDecimal(0));
+            result.setMaxBpjsKsNilai(result.getMaxBpjsKsNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setMaxBpjsKs(CommonUtil.numbericFormat(result.getMaxBpjsKsNilai(),"###,###"));
 
             result.setPersenBpjsKsKaryNilai(row[55]!=null ? (BigDecimal) row[55] : new BigDecimal(0));
@@ -1079,9 +1107,11 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
             result.setPersenBpjsKsPersh(CommonUtil.numbericFormat(result.getPersenBpjsKsPershNilai(),"###,###"));
 
             result.setMinBpjsTkNilai(row[57]!=null ? (BigDecimal) row[57] : new BigDecimal(0));
+            result.setGajiPokokNilai(result.getGajiPokokNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setMinBpjsTk(CommonUtil.numbericFormat(result.getMinBpjsTkNilai(),"###,###"));
 
             result.setMaxBpjsTkNilai(row[58]!=null ? (BigDecimal) row[58] : new BigDecimal(0));
+            result.setMaxBpjsTkNilai(result.getMaxBpjsTkNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setMaxBpjsTk(CommonUtil.numbericFormat(result.getMaxBpjsTkNilai(),"###,###"));
 
             result.setPersenBpjsTkIuranKaryNilai(row[59]!=null ? (BigDecimal) row[59] : new BigDecimal(0));
@@ -1132,12 +1162,14 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
             result.setNoBpjsTk(row[79]!=null ? (String) row[79] : "");
 
             result.setUmrNilai(row[80]!=null ? (BigDecimal) row[80] : new BigDecimal(0));
+            result.setUmrNilai(result.getUmrNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setUmr(CommonUtil.numbericFormat(result.getUmrNilai(),"###,###"));
 
             result.setMultifikatorNilai(row[81]!=null ? (BigDecimal) row[81] : new BigDecimal(0));
             result.setMultifikator(CommonUtil.numbericFormat(result.getMultifikatorNilai(),"###,###"));
 
             result.setPtkpPegawaiNilai(row[82]!=null ? (BigDecimal) row[82] : new BigDecimal(0));
+            result.setPtkpPegawaiNilai(result.getPtkpPegawaiNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setPtkpPegawai(CommonUtil.numbericFormat(result.getPtkpPegawaiNilai(),"###,###"));
 
             listOfResult.add(result);
@@ -1902,57 +1934,75 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
             result.setProfesiName(row[25] != null ? (String) row[25] : "");
 
             result.setGajiPokokNilai(row[26] != null ? (BigDecimal) row[26] : new BigDecimal(0));
+            result.setGajiPokokNilai(result.getGajiPokokNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setGajiPokok(CommonUtil.numbericFormat(result.getGajiPokokNilai(), "###,###"));
 
             result.setSantunanKhususNilai(row[27] != null ? (BigDecimal) row[27] : new BigDecimal(0));
+            result.setSantunanKhususNilai(result.getSantunanKhususNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setSantunanKhusus(CommonUtil.numbericFormat(result.getSantunanKhususNilai(), "###,###"));
 
             result.setTunjRumahNilai(row[28] != null ? (BigDecimal) row[28] : new BigDecimal(0));
+            result.setTunjRumahNilai(result.getTunjRumahNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjRumah(CommonUtil.numbericFormat(result.getTunjRumahNilai(), "###,###"));
 
             result.setTunjListrikNilai(row[29] != null ? (BigDecimal) row[29] : new BigDecimal(0));
+            result.setTunjListrikNilai(result.getTunjListrikNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjListrik(CommonUtil.numbericFormat(result.getTunjListrikNilai(), "###,###"));
 
             result.setTunjAirNilai(row[30] != null ? (BigDecimal) row[30] : new BigDecimal(0));
+            result.setTunjAirNilai(result.getTunjAirNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjAir(CommonUtil.numbericFormat(result.getTunjAirNilai(), "###,###"));
 
             result.setTunjBbmNilai(row[31] != null ? (BigDecimal) row[31] : new BigDecimal(0));
+            result.setTunjBbmNilai(result.getTunjBbmNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjBbm(CommonUtil.numbericFormat(result.getTunjBbmNilai(), "###,###"));
 
             result.setTunjJabatanNilai(row[32] != null ? (BigDecimal) row[32] : new BigDecimal(0));
+            result.setTunjJabatanNilai(result.getTunjJabatanNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjJabatan(CommonUtil.numbericFormat(result.getTunjJabatanNilai(), "###,###"));
 
             result.setTunjStrukturalNilai(row[33] != null ? (BigDecimal) row[33] : new BigDecimal(0));
+            result.setTunjStrukturalNilai(result.getTunjStrukturalNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjStruktural(CommonUtil.numbericFormat(result.getTunjStrukturalNilai(), "###,###"));
 
             result.setTunjFungsionalNilai(row[34] != null ? (BigDecimal) row[34] : new BigDecimal(0));
+            result.setTunjFungsionalNilai(result.getTunjFungsionalNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjFungsional(CommonUtil.numbericFormat(result.getTunjFungsionalNilai(), "###,###"));
 
             result.setTunjTambahanNilai(row[35] != null ? (BigDecimal) row[35] : new BigDecimal(0));
+            result.setTunjTambahanNilai(result.getTunjTambahanNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjTambahan(CommonUtil.numbericFormat(result.getTunjTambahanNilai(), "###,###"));
 
             result.setTunjPeralihanGapokNilai(row[36] != null ? (BigDecimal) row[36] : new BigDecimal(0));
+            result.setTunjPeralihanGapokNilai(result.getTunjPeralihanGapokNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjPeralihanGapok(CommonUtil.numbericFormat(result.getTunjPeralihanGapokNilai(), "###,###"));
 
             result.setTunjPeralihanSankhusNilai(row[37] != null ? (BigDecimal) row[37] : new BigDecimal(0));
+            result.setTunjPeralihanSankhusNilai(result.getTunjPeralihanSankhusNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjPeralihanSankhus(CommonUtil.numbericFormat(result.getTunjPeralihanSankhusNilai(), "###,###"));
 
             result.setTunjPeralihanTunjNilai(row[38] != null ? (BigDecimal) row[38] : new BigDecimal(0));
+            result.setTunjPeralihanTunjNilai(result.getTunjPeralihanTunjNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjPeralihanTunj(CommonUtil.numbericFormat(result.getTunjPeralihanTunjNilai(), "###,###"));
 
             result.setTunjKomunikasiNilai(row[39] != null ? (BigDecimal) row[39] : new BigDecimal(0));
+            result.setTunjKomunikasiNilai(result.getTunjKomunikasiNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjKomunikasi(CommonUtil.numbericFormat(result.getTunjKomunikasiNilai(), "###,###"));
 
             result.setTunjPemondokanNilai(row[40] != null ? (BigDecimal) row[40] : new BigDecimal(0));
+            result.setTunjPemondokanNilai(result.getTunjPemondokanNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjPemondokan(CommonUtil.numbericFormat(result.getTunjPemondokanNilai(), "###,###"));
 
             result.setTunjSupervisiNilai(row[41] != null ? (BigDecimal) row[41] : new BigDecimal(0));
+            result.setTunjSupervisiNilai(result.getTunjSupervisiNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjSupervisi(CommonUtil.numbericFormat(result.getTunjSupervisiNilai(), "###,###"));
 
             result.setTunjLokalNilai(row[42] != null ? (BigDecimal) row[42] : new BigDecimal(0));
+            result.setTunjLokalNilai(result.getTunjLokalNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjLokal(CommonUtil.numbericFormat(result.getTunjLokalNilai(), "###,###"));
 
             result.setTunjSiagaNilai(row[43] != null ? (BigDecimal) row[43] : new BigDecimal(0));
+            result.setTunjSiagaNilai(result.getTunjSiagaNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjSiaga(CommonUtil.numbericFormat(result.getTunjSiagaNilai(), "###,###"));
 
             result.setStatusKeluarga(row[44] != null ? (String) row[44] : "");
@@ -1985,6 +2035,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
             result.setMultifikator(CommonUtil.numbericFormat(result.getMultifikatorNilai(), "###,###"));
 
             result.setPtkpPegawaiNilai(row[58] != null ? (BigDecimal) row[58] : new BigDecimal(0));
+            result.setPtkpPegawaiNilai(result.getPtkpPegawaiNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setPtkpPegawai(CommonUtil.numbericFormat(result.getPtkpPegawaiNilai(), "###,###"));
 
             listOfResult.add(result);
@@ -3082,69 +3133,91 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
             result.setPersenDapenPersh(CommonUtil.numbericFormat(result.getPersenDapenPershNilai(),"###,###"));
 
             result.setGajiPokokNilai(row[31]!=null ? (BigDecimal) row[31] : new BigDecimal(0));
+            result.setGajiPokokNilai(result.getGajiPokokNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setGajiPokok(CommonUtil.numbericFormat(result.getGajiPokokNilai(),"###,###"));
 
             result.setSantunanKhususNilai(row[32]!=null ? (BigDecimal) row[32] : new BigDecimal(0));
+            result.setSantunanKhususNilai(result.getSantunanKhususNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setSantunanKhusus(CommonUtil.numbericFormat(result.getSantunanKhususNilai(),"###,###"));
 
             result.setTunjRumahNilai(row[33]!=null ? (BigDecimal) row[33] : new BigDecimal(0));
+            result.setTunjRumahNilai(result.getTunjRumahNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjRumah(CommonUtil.numbericFormat(result.getTunjRumahNilai(),"###,###"));
 
             result.setTunjListrikNilai(row[34]!=null ? (BigDecimal) row[34] : new BigDecimal(0));
+            result.setTunjListrikNilai(result.getTunjListrikNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjListrik(CommonUtil.numbericFormat(result.getTunjListrikNilai(),"###,###"));
 
             result.setTunjAirNilai(row[35]!=null ? (BigDecimal) row[35] : new BigDecimal(0));
+            result.setTunjAirNilai(result.getTunjAirNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjAir(CommonUtil.numbericFormat(result.getTunjAirNilai(),"###,###"));
 
             result.setTunjBbmNilai(row[36]!=null ? (BigDecimal) row[36] : new BigDecimal(0));
+            result.setTunjBbmNilai(result.getTunjBbmNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjBbm(CommonUtil.numbericFormat(result.getTunjBbmNilai(),"###,###"));
 
             result.setTunjJabatanNilai(row[37]!=null ? (BigDecimal) row[37] : new BigDecimal(0));
+            result.setTunjJabatanNilai(result.getTunjJabatanNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjJabatan(CommonUtil.numbericFormat(result.getTunjJabatanNilai(),"###,###"));
 
             result.setTunjStrukturalNilai(row[38]!=null ? (BigDecimal) row[38] : new BigDecimal(0));
+            result.setTunjStrukturalNilai(result.getTunjStrukturalNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjStruktural(CommonUtil.numbericFormat(result.getTunjStrukturalNilai(),"###,###"));
 
             result.setTunjFungsionalNilai(row[39]!=null ? (BigDecimal) row[39] : new BigDecimal(0));
+            result.setTunjFungsionalNilai(result.getTunjFungsionalNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjFungsional(CommonUtil.numbericFormat(result.getTunjFungsionalNilai(),"###,###"));
 
             result.setTunjTambahanNilai(row[40]!=null ? (BigDecimal) row[40] : new BigDecimal(0));
+            result.setTunjTambahanNilai(result.getTunjTambahanNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjTambahan(CommonUtil.numbericFormat(result.getTunjTambahanNilai(),"###,###"));
 
             result.setGajiPensiunNilai(row[41]!=null ? (BigDecimal) row[41] : new BigDecimal(0));
+            result.setGajiPensiunNilai(result.getGajiPensiunNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setGajiPensiun(CommonUtil.numbericFormat(result.getGajiPensiunNilai(),"###,###"));
 
             result.setIuranDapenPershNilai(row[42]!=null ? (BigDecimal) row[42] : new BigDecimal(0));
+            result.setIuranDapenPershNilai(result.getIuranDapenPershNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setIuranDapenPersh(CommonUtil.numbericFormat(result.getIuranDapenPershNilai(),"###,###"));
 
             result.setIuranDapenKaryNilai(row[43]!=null ? (BigDecimal) row[43] : new BigDecimal(0));
+            result.setIuranDapenKaryNilai(result.getIuranDapenKaryNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setIuranDapenKary(CommonUtil.numbericFormat(result.getIuranDapenKaryNilai(),"###,###"));
 
             result.setTunjPeralihanGapokNilai(row[44]!=null ? (BigDecimal) row[44] : new BigDecimal(0));
+            result.setTunjPeralihanGapokNilai(result.getTunjPeralihanGapokNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjPeralihanGapok(CommonUtil.numbericFormat(result.getTunjPeralihanGapokNilai(),"###,###"));
 
             result.setTunjPeralihanSankhusNilai(row[45]!=null ? (BigDecimal) row[45] : new BigDecimal(0));
+            result.setTunjPeralihanSankhusNilai(result.getTunjPeralihanSankhusNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjPeralihanSankhus(CommonUtil.numbericFormat(result.getTunjPeralihanSankhusNilai(),"###,###"));
 
             result.setTunjPeralihanTunjNilai(row[46]!=null ? (BigDecimal) row[46] : new BigDecimal(0));
+            result.setTunjPeralihanTunjNilai(result.getTunjPeralihanTunjNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjPeralihanTunj(CommonUtil.numbericFormat(result.getTunjPeralihanTunjNilai(),"###,###"));
 
             result.setTunjKomunikasiNilai(row[47]!=null ? (BigDecimal) row[47] : new BigDecimal(0));
+            result.setTunjKomunikasiNilai(result.getTunjKomunikasiNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjKomunikasi(CommonUtil.numbericFormat(result.getTunjKomunikasiNilai(),"###,###"));
 
             result.setTunjPemondokanNilai(row[48]!=null ? (BigDecimal) row[48] : new BigDecimal(0));
+            result.setTunjPemondokanNilai(result.getTunjPemondokanNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjPemondokan(CommonUtil.numbericFormat(result.getTunjPemondokanNilai(),"###,###"));
 
             result.setTunjLemburNilai(row[49]!=null ? (BigDecimal) row[49] : new BigDecimal(0));
+            result.setTunjLemburNilai(result.getTunjLemburNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjLembur(CommonUtil.numbericFormat(result.getTunjLemburNilai(),"###,###"));
 
             result.setTunjSupervisiNilai(row[50]!=null ? (BigDecimal) row[50] : new BigDecimal(0));
+            result.setTunjSupervisiNilai(result.getTunjSupervisiNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjSupervisi(CommonUtil.numbericFormat(result.getTunjSupervisiNilai(),"###,###"));
 
             result.setTunjLokalNilai(row[51]!=null ? (BigDecimal) row[51] : new BigDecimal(0));
+            result.setTunjLokalNilai(result.getTunjLokalNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjLokal(CommonUtil.numbericFormat(result.getTunjLokalNilai(),"###,###"));
 
             result.setTunjSiagaNilai(row[52]!=null ? (BigDecimal) row[52] : new BigDecimal(0));
+            result.setTunjSiagaNilai(result.getTunjSiagaNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjSiaga(CommonUtil.numbericFormat(result.getTunjSiagaNilai(),"###,###"));
 
             result.setKopkarNilai(row[53]!=null ? (BigDecimal) row[53] : new BigDecimal(0));
@@ -3178,9 +3251,11 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
             result.setPotonganLain(CommonUtil.numbericFormat(result.getPotonganLainNilai(),"###,###"));
 
             result.setMinBpjsKsNilai(row[63]!=null ? (BigDecimal) row[63] : new BigDecimal(0));
+            result.setMinBpjsKsNilai(result.getMinBpjsKsNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setMinBpjsKs(CommonUtil.numbericFormat(result.getMinBpjsKsNilai(),"###,###"));
 
             result.setMaxBpjsKsNilai(row[64]!=null ? (BigDecimal) row[64] : new BigDecimal(0));
+            result.setMaxBpjsKsNilai(result.getMaxBpjsKsNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setMaxBpjsKs(CommonUtil.numbericFormat(result.getMaxBpjsKsNilai(),"###,###"));
 
             result.setPersenBpjsKsKaryNilai(row[65]!=null ? (BigDecimal) row[65] : new BigDecimal(0));
@@ -3190,9 +3265,11 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
             result.setPersenBpjsKsPersh(CommonUtil.numbericFormat(result.getPersenBpjsKsPershNilai(),"###,###"));
 
             result.setMinBpjsTkNilai(row[67]!=null ? (BigDecimal) row[67] : new BigDecimal(0));
+            result.setTunjStrukturalNilai(result.getTunjStrukturalNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setMinBpjsTk(CommonUtil.numbericFormat(result.getMinBpjsTkNilai(),"###,###"));
 
             result.setMaxBpjsTkNilai(row[68]!=null ? (BigDecimal) row[68] : new BigDecimal(0));
+            result.setMaxBpjsTkNilai(result.getMaxBpjsTkNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setMinBpjsTk(CommonUtil.numbericFormat(result.getMinBpjsTkNilai(),"###,###"));
 
             result.setPersenBpjsTkIuranKaryNilai(row[69]!=null ? (BigDecimal) row[69] : new BigDecimal(0));
@@ -3249,36 +3326,47 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
             result.setMultifikator(CommonUtil.numbericFormat(result.getMultifikatorNilai(),"###,###"));
 
             result.setDasarPerhitunganBpjsKsNilai(row[92]!=null ? (BigDecimal) row[92] : new BigDecimal(0));
+            result.setDasarPerhitunganBpjsKsNilai(result.getDasarPerhitunganBpjsKsNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setDasarPerhitunganBpjsKs(CommonUtil.numbericFormat(result.getDasarPerhitunganBpjsKsNilai(),"###,###"));
 
             result.setDasarPerhitunganBpjsTkNilai(row[93]!=null ? (BigDecimal) row[93] : new BigDecimal(0));
+            result.setDasarPerhitunganBpjsTkNilai(result.getDasarPerhitunganBpjsTkNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setDasarPerhitunganBpjsTk(CommonUtil.numbericFormat(result.getDasarPerhitunganBpjsTkNilai(),"###,###"));
 
             result.setPtkpPegawaiNilai(row[94]!=null ? (BigDecimal) row[94] : new BigDecimal(0));
+            result.setPtkpPegawaiNilai(result.getPtkpPegawaiNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setPtkpPegawai(CommonUtil.numbericFormat(result.getPtkpPegawaiNilai(),"###,###"));
 
             result.setIuranBpjsKsKaryNilai(row[95]!=null ? (BigDecimal) row[95] : new BigDecimal(0));
+            result.setIuranBpjsKsKaryNilai(result.getIuranBpjsKsKaryNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setIuranBpjsKsKary(CommonUtil.numbericFormat(result.getIuranBpjsKsKaryNilai(),"###,###"));
 
             result.setIuranBpjsKsPersNilai(row[96]!=null ? (BigDecimal) row[96] : new BigDecimal(0));
+            result.setIuranBpjsKsPersNilai(result.getIuranBpjsKsPersNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setIuranBpjsKsPers(CommonUtil.numbericFormat(result.getIuranBpjsKsPersNilai(),"###,###"));
 
             result.setIuranBpjsTkKaryNilai(row[97]!=null ? (BigDecimal) row[97] : new BigDecimal(0));
+            result.setIuranBpjsTkKaryNilai(result.getIuranBpjsTkKaryNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setIuranBpjsTkKary(CommonUtil.numbericFormat(result.getIuranBpjsTkKaryNilai(),"###,###"));
 
             result.setJpkBpjsTkKaryNilai(row[98]!=null ? (BigDecimal) row[98] : new BigDecimal(0));
+            result.setJpkBpjsTkKaryNilai(result.getJpkBpjsTkKaryNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setJpkBpjsTkKary(CommonUtil.numbericFormat(result.getJpkBpjsTkKaryNilai(),"###,###"));
 
             result.setJkkBpjsTkPershNilai(row[99]!=null ? (BigDecimal) row[99] : new BigDecimal(0));
+            result.setJkkBpjsTkPershNilai(result.getJkkBpjsTkPershNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setJkkBpjsTkPersh(CommonUtil.numbericFormat(result.getJkkBpjsTkPershNilai(),"###,###"));
 
             result.setJhtBpjsTkPershNilai(row[100]!=null ? (BigDecimal) row[100] : new BigDecimal(0));
+            result.setJhtBpjsTkPershNilai(result.getJhtBpjsTkPershNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setJhtBpjsTkPersh(CommonUtil.numbericFormat(result.getJhtBpjsTkPershNilai(),"###,###"));
 
             result.setJkmBpjsTkPershNilai(row[101]!=null ? (BigDecimal) row[101] : new BigDecimal(0));
+            result.setJkmBpjsTkPershNilai(result.getJkmBpjsTkPershNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setJkmBpjsTkPersh(CommonUtil.numbericFormat(result.getJkmBpjsTkPershNilai(),"###,###"));
 
             result.setJpkBpjsTkPershNilai(row[102]!=null ? (BigDecimal) row[102] : new BigDecimal(0));
+            result.setJpkBpjsTkPershNilai(result.getJpkBpjsTkPershNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setJpkBpjsTkPersh(CommonUtil.numbericFormat(result.getJpkBpjsTkPershNilai(),"###,###"));
 
             listOfResult.add(result);
@@ -3306,7 +3394,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
 
             query = "select " +
                     "peg.*,\n" +
-                    "ptkp.nilai                                                                      as ptkp_pegawai" +
+                    "ptkp.nilai                                                                      as ptkp_pegawai\n" +
                     "from (\n" +
                     //bod / boc
                     "     select pegawai.nip                                                                as nip,\n" +
@@ -4040,57 +4128,75 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
             result.setProfesiName(row[25] != null ? (String) row[25] : "");
 
             result.setGajiPokokNilai(row[26] != null ? (BigDecimal) row[26] : new BigDecimal(0));
+            result.setGajiPokokNilai(result.getGajiPokokNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setGajiPokok(CommonUtil.numbericFormat(result.getGajiPokokNilai(), "###,###"));
 
             result.setSantunanKhususNilai(row[27] != null ? (BigDecimal) row[27] : new BigDecimal(0));
+            result.setSantunanKhususNilai(result.getSantunanKhususNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setSantunanKhusus(CommonUtil.numbericFormat(result.getSantunanKhususNilai(), "###,###"));
 
             result.setTunjRumahNilai(row[28] != null ? (BigDecimal) row[28] : new BigDecimal(0));
+            result.setTunjRumahNilai(result.getTunjRumahNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjRumah(CommonUtil.numbericFormat(result.getTunjRumahNilai(), "###,###"));
 
             result.setTunjListrikNilai(row[29] != null ? (BigDecimal) row[29] : new BigDecimal(0));
+            result.setTunjListrikNilai(result.getTunjListrikNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjListrik(CommonUtil.numbericFormat(result.getTunjListrikNilai(), "###,###"));
 
             result.setTunjAirNilai(row[30] != null ? (BigDecimal) row[30] : new BigDecimal(0));
+            result.setTunjAirNilai(result.getTunjAirNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjAir(CommonUtil.numbericFormat(result.getTunjAirNilai(), "###,###"));
 
             result.setTunjBbmNilai(row[31] != null ? (BigDecimal) row[31] : new BigDecimal(0));
+            result.setTunjBbmNilai(result.getTunjBbmNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjBbm(CommonUtil.numbericFormat(result.getTunjBbmNilai(), "###,###"));
 
             result.setTunjJabatanNilai(row[32] != null ? (BigDecimal) row[32] : new BigDecimal(0));
+            result.setTunjJabatanNilai(result.getTunjJabatanNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjJabatan(CommonUtil.numbericFormat(result.getTunjJabatanNilai(), "###,###"));
 
             result.setTunjStrukturalNilai(row[33] != null ? (BigDecimal) row[33] : new BigDecimal(0));
+            result.setTunjStrukturalNilai(result.getTunjStrukturalNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjStruktural(CommonUtil.numbericFormat(result.getTunjStrukturalNilai(), "###,###"));
 
             result.setTunjFungsionalNilai(row[34] != null ? (BigDecimal) row[34] : new BigDecimal(0));
+            result.setTunjFungsionalNilai(result.getTunjFungsionalNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjFungsional(CommonUtil.numbericFormat(result.getTunjFungsionalNilai(), "###,###"));
 
             result.setTunjTambahanNilai(row[35] != null ? (BigDecimal) row[35] : new BigDecimal(0));
+            result.setTunjTambahanNilai(result.getTunjTambahanNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjTambahan(CommonUtil.numbericFormat(result.getTunjTambahanNilai(), "###,###"));
 
             result.setTunjPeralihanGapokNilai(row[36] != null ? (BigDecimal) row[36] : new BigDecimal(0));
+            result.setTunjPeralihanGapokNilai(result.getTunjPeralihanGapokNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjPeralihanGapok(CommonUtil.numbericFormat(result.getTunjPeralihanGapokNilai(), "###,###"));
 
             result.setTunjPeralihanSankhusNilai(row[37] != null ? (BigDecimal) row[37] : new BigDecimal(0));
+            result.setTunjPeralihanSankhusNilai(result.getTunjPeralihanSankhusNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjPeralihanSankhus(CommonUtil.numbericFormat(result.getTunjPeralihanSankhusNilai(), "###,###"));
 
             result.setTunjPeralihanTunjNilai(row[38] != null ? (BigDecimal) row[38] : new BigDecimal(0));
+            result.setTunjPeralihanTunjNilai(result.getTunjPeralihanTunjNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjPeralihanTunj(CommonUtil.numbericFormat(result.getTunjPeralihanTunjNilai(), "###,###"));
 
             result.setTunjKomunikasiNilai(row[39] != null ? (BigDecimal) row[39] : new BigDecimal(0));
+            result.setTunjKomunikasiNilai(result.getTunjKomunikasiNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjKomunikasi(CommonUtil.numbericFormat(result.getTunjKomunikasiNilai(), "###,###"));
 
             result.setTunjPemondokanNilai(row[40] != null ? (BigDecimal) row[40] : new BigDecimal(0));
+            result.setTunjPemondokanNilai(result.getTunjPemondokanNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjPemondokan(CommonUtil.numbericFormat(result.getTunjPemondokanNilai(), "###,###"));
 
             result.setTunjSupervisiNilai(row[41] != null ? (BigDecimal) row[41] : new BigDecimal(0));
+            result.setTunjSupervisiNilai(result.getTunjSupervisiNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjSupervisi(CommonUtil.numbericFormat(result.getTunjSupervisiNilai(), "###,###"));
 
             result.setTunjLokalNilai(row[42] != null ? (BigDecimal) row[42] : new BigDecimal(0));
+            result.setTunjLokalNilai(result.getTunjLokalNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjLokal(CommonUtil.numbericFormat(result.getTunjLokalNilai(), "###,###"));
 
             result.setTunjSiagaNilai(row[43] != null ? (BigDecimal) row[43] : new BigDecimal(0));
+            result.setTunjSiagaNilai(result.getTunjSiagaNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjSiaga(CommonUtil.numbericFormat(result.getTunjSiagaNilai(), "###,###"));
 
             result.setStatusKeluarga(row[44] != null ? (String) row[44] : "");
@@ -4123,6 +4229,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
             result.setMultifikator(CommonUtil.numbericFormat(result.getMultifikatorNilai(), "###,###"));
 
             result.setPtkpPegawaiNilai(row[58] != null ? (BigDecimal) row[58] : new BigDecimal(0));
+            result.setPtkpPegawaiNilai(result.getPtkpPegawaiNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setPtkpPegawai(CommonUtil.numbericFormat(result.getPtkpPegawaiNilai(), "###,###"));
 
             listOfResult.add(result);

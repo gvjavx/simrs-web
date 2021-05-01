@@ -311,8 +311,8 @@ public class PegawaiPayroll extends BasePayroll {
 
         if (getNoBpjsKs()!=null && !"".equalsIgnoreCase(getNoBpjsKs())) {
 
-            iuranBpjsKsKaryNilai = dasarPerhitunganBpjsKsNilai.multiply(persenBpjsKsKaryNilai).divide(new BigDecimal(100));
-            iuranBpjsKsPersNilai = dasarPerhitunganBpjsKsNilai.multiply(persenBpjsKsPershNilai).divide(new BigDecimal(100));
+            iuranBpjsKsKaryNilai = (dasarPerhitunganBpjsKsNilai.multiply(persenBpjsKsKaryNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+            iuranBpjsKsPersNilai = (dasarPerhitunganBpjsKsNilai.multiply(persenBpjsKsPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
 
         } else {
 
@@ -322,12 +322,12 @@ public class PegawaiPayroll extends BasePayroll {
 
         if (getNoBpjsTk()!=null && !"".equalsIgnoreCase(getNoBpjsTk())) {
 
-            iuranBpjsTkKaryNilai = dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkIuranKaryNilai).divide(new BigDecimal(100));
-            jpkBpjsTkKaryNilai = dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJpkKaryNilai).divide(new BigDecimal(100));
-            jkkBpjsTkPershNilai = dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJkkPershNilai).divide(new BigDecimal(100));
-            jhtBpjsTkPershNilai = dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJhtPershNilai).divide(new BigDecimal(100));
-            jkmBpjsTkPershNilai = dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJkmPershNilai).divide(new BigDecimal(100));
-            jpkBpjsTkPershNilai = dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJpkPershNilai).divide(new BigDecimal(100));
+            iuranBpjsTkKaryNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkIuranKaryNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+            jpkBpjsTkKaryNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJpkKaryNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+            jkkBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJkkPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+            jhtBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJhtPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+            jkmBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJkmPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+            jpkBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJpkPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
 
         } else {
 
@@ -356,48 +356,48 @@ public class PegawaiPayroll extends BasePayroll {
 
             if (CommonConstant.CODE_PAYROLL.equalsIgnoreCase(getTipePayroll())) { // untuk pendapatan rutin (payroll)
 
-                tunjRumahNilai = multifikatorNilai.multiply(tunjRumahNilai);
-                tunjListrikNilai = multifikatorNilai.multiply(tunjListrikNilai);
-                tunjAirNilai = multifikatorNilai.multiply(tunjAirNilai);
-                tunjBbmNilai = multifikatorNilai.multiply(tunjBbmNilai);
-                tunjPeralihanGapokNilai = multifikatorNilai.multiply(tunjPeralihanGapokNilai);
-                tunjPeralihanSankhusNilai = multifikatorNilai.multiply(tunjPeralihanSankhusNilai);
-                tunjPeralihanTunjNilai = multifikatorNilai.multiply(tunjPeralihanTunjNilai);
+                tunjRumahNilai = (multifikatorNilai.multiply(tunjRumahNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjListrikNilai = (multifikatorNilai.multiply(tunjListrikNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjAirNilai = (multifikatorNilai.multiply(tunjAirNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjBbmNilai = (multifikatorNilai.multiply(tunjBbmNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjPeralihanGapokNilai = (multifikatorNilai.multiply(tunjPeralihanGapokNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjPeralihanSankhusNilai = (multifikatorNilai.multiply(tunjPeralihanSankhusNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjPeralihanTunjNilai = (multifikatorNilai.multiply(tunjPeralihanTunjNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
 
-                santunanKhususNilai = multifikatorNilai.multiply(santunanKhususNilai);
-                tunjJabatanNilai = multifikatorNilai.multiply(tunjJabatanNilai);
-                tunjStrukturalNilai = multifikatorNilai.multiply(tunjStrukturalNilai);
-                tunjFungsionalNilai = multifikatorNilai.multiply(tunjFungsionalNilai);
-                tunjTambahanNilai = multifikatorNilai.multiply(tunjTambahanNilai);
+                santunanKhususNilai = (multifikatorNilai.multiply(santunanKhususNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjJabatanNilai = (multifikatorNilai.multiply(tunjJabatanNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjStrukturalNilai = (multifikatorNilai.multiply(tunjStrukturalNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjFungsionalNilai = (multifikatorNilai.multiply(tunjFungsionalNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjTambahanNilai = (multifikatorNilai.multiply(tunjTambahanNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
 
-                tunjSupervisiNilai = multifikatorNilai.multiply(tunjSupervisiNilai);
-                tunjSiagaNilai = multifikatorNilai.multiply(tunjSiagaNilai);
-                tunjLokalNilai = multifikatorNilai.multiply(tunjLokalNilai);
+                tunjSupervisiNilai = (multifikatorNilai.multiply(tunjSupervisiNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjSiagaNilai = (multifikatorNilai.multiply(tunjSiagaNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjLokalNilai = (multifikatorNilai.multiply(tunjLokalNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
 
-                tunjPemondokanNilai = multifikatorNilai.multiply(tunjPemondokanNilai);
-                tunjKomunikasiNilai = multifikatorNilai.multiply(tunjKomunikasiNilai);
+                tunjPemondokanNilai = (multifikatorNilai.multiply(tunjPemondokanNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjKomunikasiNilai = (multifikatorNilai.multiply(tunjKomunikasiNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
 
-                BigDecimal gapok = multifikatorNilai.multiply(getGajiPokokNilai());
+                BigDecimal gapok = (multifikatorNilai.multiply(getGajiPokokNilai())).setScale(0, BigDecimal.ROUND_HALF_UP);;
                 setGajiPokokNilai(gapok);
                 setGajiPokok(CommonUtil.numbericFormat(gapok,"###,###"));
 
             } else { // untuk pendapatan tidak rutin (THR/Insentif/Jasop/Cuti Panjang/ Cuti Tahunan)
 
-                tunjRumahNilai = multifikatorNilai.multiply(tunjRumahNilai);
-                tunjListrikNilai = multifikatorNilai.multiply(tunjListrikNilai);
-                tunjAirNilai = multifikatorNilai.multiply(tunjAirNilai);
-                tunjBbmNilai = multifikatorNilai.multiply(tunjBbmNilai);
-                tunjPeralihanGapokNilai = multifikatorNilai.multiply(tunjPeralihanGapokNilai);
-                tunjPeralihanSankhusNilai = multifikatorNilai.multiply(tunjPeralihanSankhusNilai);
-                tunjPeralihanTunjNilai = multifikatorNilai.multiply(tunjPeralihanTunjNilai);
-                santunanKhususNilai = multifikatorNilai.multiply(santunanKhususNilai);
-                tunjJabatanNilai = multifikatorNilai.multiply(tunjJabatanNilai);
-                tunjStrukturalNilai = multifikatorNilai.multiply(tunjStrukturalNilai);
-                tunjFungsionalNilai = multifikatorNilai.multiply(tunjFungsionalNilai);
-                tunjTambahanNilai = multifikatorNilai.multiply(tunjTambahanNilai);
-                tunjKomunikasiNilai = multifikatorNilai.multiply(tunjKomunikasiNilai);
+                tunjRumahNilai = (multifikatorNilai.multiply(tunjRumahNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjListrikNilai = (multifikatorNilai.multiply(tunjListrikNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjAirNilai = (multifikatorNilai.multiply(tunjAirNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjBbmNilai = (multifikatorNilai.multiply(tunjBbmNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjPeralihanGapokNilai = (multifikatorNilai.multiply(tunjPeralihanGapokNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjPeralihanSankhusNilai = (multifikatorNilai.multiply(tunjPeralihanSankhusNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjPeralihanTunjNilai = (multifikatorNilai.multiply(tunjPeralihanTunjNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                santunanKhususNilai = (multifikatorNilai.multiply(santunanKhususNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjJabatanNilai = (multifikatorNilai.multiply(tunjJabatanNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjStrukturalNilai = (multifikatorNilai.multiply(tunjStrukturalNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjFungsionalNilai = (multifikatorNilai.multiply(tunjFungsionalNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjTambahanNilai = (multifikatorNilai.multiply(tunjTambahanNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
+                tunjKomunikasiNilai = (multifikatorNilai.multiply(tunjKomunikasiNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
 
-                BigDecimal gapok = multifikatorNilai.multiply(getGajiPokokNilai());
+                BigDecimal gapok = (multifikatorNilai.multiply(getGajiPokokNilai())).setScale(0, BigDecimal.ROUND_HALF_UP);;
                 setGajiPokokNilai(gapok);
                 setGajiPokok(CommonUtil.numbericFormat(gapok,"###,###"));
 
@@ -677,6 +677,7 @@ public class PegawaiPayroll extends BasePayroll {
         payrollPph.setPphGaji(CommonUtil.numbericFormat(pphGaji,"###,###"));
         payrollPph.setPphGajiNilai(pphGaji);
 
+        tunjPph = tunjPph.setScale(0, RoundingMode.HALF_UP); //Also tried with RoundingMode.UP
         payrollPph.setTunjanganPphBulan(CommonUtil.numbericFormat(tunjPph,"###,###"));
         payrollPph.setTunjanganPphNilaiBulan(tunjPph);
 
@@ -939,6 +940,8 @@ public class PegawaiPayroll extends BasePayroll {
         payrollPph.setBpjsKs(CommonUtil.numbericFormat(tunjanganBpjsKsNilai,"###,###"));
         payrollPph.setBpjsKsNilai(tunjanganBpjsKsNilai);
 
+        setPayrollPph(payrollPph);
+
     }
 
     //untuk menghitung pajak dalam setahun
@@ -1155,13 +1158,14 @@ public class PegawaiPayroll extends BasePayroll {
 
         //menghitung bruto = gaji pokok + tunj.yang diperhitungkan pph + tunj.pph
         bruto = bruto.add(getGajiPokokNilai()).add(tunjDalamPPH);
+        boolean isRoundUpPph = true;
 
         do {
 
             bruto = bruto.add(tunjPphRutin);
 
             //jika persen_biaya_jabatan(5%) x bruto lebih kecil dari param biaya jabatan, maka biaya jabatan = 5% x bruto, sebaliknya diambil param biaya jabatan
-            if ((CommonUtil.percentage(bruto, persenBiayaJabatan)).compareTo(biayaJabatanNilai)<1){
+            if ((CommonUtil.percentage(bruto, persenBiayaJabatan)).compareTo(biayaJabatanNilai) < 1) {
                 biayaJabatan = CommonUtil.percentage(bruto, persenBiayaJabatan);
             }
 
@@ -1171,18 +1175,33 @@ public class PegawaiPayroll extends BasePayroll {
             //menghitung pkp untuk setahun untuk pendapatan rutin
             netto = (netto).multiply(BigDecimal.valueOf(12));
             pkpSetahun = netto.subtract(ptkp);
-            pkpSetahun = pkpSetahun.setScale(3, BigDecimal.ROUND_HALF_UP);
+//            pkpSetahun = pkpSetahun.setScale(3, BigDecimal.ROUND_HALF_UP);
+            pkpSetahun = pkpSetahun.setScale(0, BigDecimal.ROUND_HALF_UP);
+            pkpSetahun = pkpSetahun.round(new MathContext(pkpSetahun.precision() - 3, RoundingMode.UP));
 
-            //menghitung pph setahun
-            pphTerhutangSetahun = calculateTaxInOneYear(pkpSetahun,npwp);
+            if (pkpSetahun.compareTo(new BigDecimal(0)) < 0) {
+                isRoundUpPph = false;
+            } else {
+                //menghitung pph setahun
+                pphTerhutangSetahun = calculateTaxInOneYear(pkpSetahun, npwp);
 
-            //pph setahun / 12 untuk mendapat pph perbulan
-            pphRutin = pphTerhutangSetahun.divide(BigDecimal.valueOf(12),2, BigDecimal.ROUND_HALF_UP);
+                //pph setahun / 12 untuk mendapat pph perbulan
+                pphRutin = pphTerhutangSetahun.divide(BigDecimal.valueOf(12), 2, BigDecimal.ROUND_HALF_UP);
 
-            //perhitungan selisih antara tunjPph dan pph gaji, jika selisih = 0 looping berhenti
-            selisih = pphRutin.subtract(tunjPphRutin).intValue();
+                //perhitungan selisih antara tunjPph dan pph gaji, jika selisih = 0 looping berhenti
+                selisih = pphRutin.subtract(tunjPphRutin).intValue();
+
+                if (selisih > 0) {
+                    bruto = bruto.subtract(tunjPphRutin);
+                } else {
+                    isRoundUpPph = false;
+                }
+            }
+
             tunjPphRutin = pphRutin;
-        } while (selisih != 0);
+
+        } while (isRoundUpPph);
+//        } while (selisih != 0);
 
 
         //perhitungan pph dengan pendapatan rutin dan non rutin di gabung
@@ -1195,6 +1214,7 @@ public class PegawaiPayroll extends BasePayroll {
 
         //menghitung bruto = gaji pokok + tunj.yang diperhitungkan pph + tunj.pph
         bruto = bruto.add(getGajiPokokNilai()).add(tunjDalamPPH);
+        isRoundUpPph = true;
 
         do {
 
@@ -1211,18 +1231,37 @@ public class PegawaiPayroll extends BasePayroll {
             //menghitung pkp untuk setahun harus dikeluarkan pendapatan tidak tetap baru di kalikan 12 bulan
             netto = (netto).multiply(BigDecimal.valueOf(12)).add(incomeTidakTetapNilai);
             pkpSetahun = netto.subtract(ptkp);
-            pkpSetahun = pkpSetahun.setScale(3, BigDecimal.ROUND_HALF_UP);
+//            pkpSetahun = pkpSetahun.setScale(3, BigDecimal.ROUND_HALF_UP);
 
-            //menghitung pph setahun
-            pphTerhutangSetahun = calculateTaxInOneYear(pkpSetahun,npwp);
+            pkpSetahun = pkpSetahun.setScale(0, BigDecimal.ROUND_HALF_UP);
+            pkpSetahun = pkpSetahun.round(new MathContext(pkpSetahun.precision() - 3,RoundingMode.UP));
 
-            //pph setahun / 12 untuk mendapat pph perbulan
-            pphNonRutin = pphTerhutangSetahun.divide(BigDecimal.valueOf(12),2, BigDecimal.ROUND_HALF_UP);
+            if (pkpSetahun.compareTo(new BigDecimal(0)) < 0) {
 
-            //perhitungan selisih antara tunjPph dan pph gaji, jika selisih = 0 looping berhenti
-            selisih = pphNonRutin.subtract(tunjPphNonRutin).intValue();
+                isRoundUpPph = false;
+
+            } else {
+
+                //menghitung pph setahun
+                pphTerhutangSetahun = calculateTaxInOneYear(pkpSetahun,npwp);
+
+                //pph setahun / 12 untuk mendapat pph perbulan
+                pphNonRutin = pphTerhutangSetahun.divide(BigDecimal.valueOf(12),2, BigDecimal.ROUND_HALF_UP);
+
+                //perhitungan selisih antara tunjPph dan pph gaji, jika selisih = 0 looping berhenti
+                selisih = pphNonRutin.subtract(tunjPphNonRutin).intValue();
+
+                if (selisih > 0) {
+                    bruto = bruto.subtract(tunjPphNonRutin);
+                } else {
+                    isRoundUpPph = false;
+                }
+            }
+
             tunjPphNonRutin = pphNonRutin;
-        } while (selisih != 0);
+
+        } while (isRoundUpPph);
+//        } while (selisih != 0);
 
         //set pph yang didapat ke model pph payroll
         //selisih tunj pph non rutin ( pph non rutin - rutin )
@@ -1276,19 +1315,21 @@ public class PegawaiPayroll extends BasePayroll {
         payrollPph.setTunjanganStrategisNilai(tunjFungsionalNilai);
         payrollPph.setTunjanganPeralihan(CommonUtil.numbericFormat(totalTunjPeralihanNilai,"###,###"));
         payrollPph.setTunjanganPeralihanNilai(totalTunjPeralihanNilai);
-        payrollPph.setTotalTunjanganLain(CommonUtil.numbericFormat(tunjanganLainNilai,"###,###"));
-        payrollPph.setTotalTunjanganLainNilai(tunjanganLainNilai);
+//        payrollPph.setTotalTunjanganLain(CommonUtil.numbericFormat(tunjanganLainNilai,"###,###"));
+//        payrollPph.setTotalTunjanganLainNilai(tunjanganLainNilai);
         payrollPph.setTunjanganTambahan(CommonUtil.numbericFormat(tunjTambahanNilai,"###,###"));
         payrollPph.setTunjanganTambahanNilai(tunjTambahanNilai);
         payrollPph.setKomunikasi(CommonUtil.numbericFormat(tunjKomunikasiNilai,"###,###"));
         payrollPph.setKomunikasiNilai(tunjKomunikasiNilai);
         payrollPph.setTotalRlab(CommonUtil.numbericFormat(totalRLABNilai,"###,###"));
         payrollPph.setTotalRlabNilai(totalRLABNilai);
-        payrollPph.setTunjanganLembur(CommonUtil.numbericFormat(tunjLemburNilai,"###,###"));
-        payrollPph.setTunjanganLemburNilai(tunjLemburNilai);
+//        payrollPph.setTunjanganLembur(CommonUtil.numbericFormat(tunjLemburNilai,"###,###"));
+//        payrollPph.setTunjanganLemburNilai(tunjLemburNilai);
 
         payrollPph.setIncomeTidakTetap(CommonUtil.numbericFormat(incomeTidakTetapNilai,"###,###"));
         payrollPph.setIncomeTidakTetapNilai(incomeTidakTetapNilai);
+
+        setPayrollPph(payrollPph);
     }
 
     public String getStApprovalDate() {

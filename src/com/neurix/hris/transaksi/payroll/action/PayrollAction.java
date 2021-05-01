@@ -49,6 +49,7 @@ public class PayrollAction extends BaseTransactionAction {
     private String bulan2;
     private String tahun2;
 
+    private String id;
     private String branchId;
     private String branchName;
     private String statusPegawai;
@@ -307,6 +308,14 @@ public class PayrollAction extends BaseTransactionAction {
 
     public void setPayrollPph(PayrollPph payrollPph) {
         this.payrollPph = payrollPph;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getBranchId() {
@@ -571,7 +580,7 @@ public class PayrollAction extends BaseTransactionAction {
         String userLogin = CommonUtil.userLogin();
 
         if (!editSearch) {
-            String payrollHeaderId = getIdPayrollHeader(); //RAKA-30APR2021==> merubah getId ==> getIdPayrollHeader
+            String payrollHeaderId = getId();
             String branchId = getBranchId();
             String bulan = getBulan();
             String tahun = getTahun();
@@ -810,7 +819,7 @@ public class PayrollAction extends BaseTransactionAction {
 
         if (!editSearch) {
             //get dari url
-            String payrollHeaderId = getIdPayrollHeader(); //RAKA-30APR2021==> merubah getId ==> getIdPayrollHeader
+            String payrollHeaderId = getId();
             String branchId = getBranchId();
             String bulan = getBulan();
             String tahun = getTahun();
@@ -901,7 +910,7 @@ public class PayrollAction extends BaseTransactionAction {
     public String refresh() {
         logger.info("[PayrollAction.refresh] start process >>>");
 
-        String payrollHeaderId = getIdPayrollHeader(); //RAKA-30APR2021==> merubah getId ==> getIdPayrollHeader
+        String payrollHeaderId = getId();
         String branchId = getBranchId();
         String bulan = getBulan();
         String tahun = getTahun();

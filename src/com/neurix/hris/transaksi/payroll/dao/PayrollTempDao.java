@@ -63,7 +63,7 @@ public class PayrollTempDao extends GenericDao<ItHrisPayrollTempEntity, String> 
         // Order by
         criteria.addOrder(Order.desc("payrollTempId"));
 
-        List<ItHrisPayrollTempEntity> results = criteria.list();
+        List<ItHrisPayrollTempEntity> results= criteria.list();
 
         return results;
     }

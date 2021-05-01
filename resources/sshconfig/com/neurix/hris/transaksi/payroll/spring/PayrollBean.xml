@@ -53,8 +53,8 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="getListAbsensiLembur">readOnly</prop>
-                <prop key="refreshAllCalculatePayroll">readOnly</prop>
-                <prop key="editAllCalculatePayroll">readOnly</prop>
+                <prop key="refreshAllCalculatePayroll">PROPAGATION_REQUIRED</prop>
+                <prop key="editAllCalculatePayroll">PROPAGATION_REQUIRED</prop>
                 <prop key="searchCalculatePayroll">readOnly</prop>
                 <prop key="viewAllCalculatePayroll">readOnly</prop>
                 <prop key="saveInitialCalculatePayroll">PROPAGATION_REQUIRED</prop>
