@@ -223,7 +223,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                  skala_gaji.tahun = :tahunSkalaPayroll\n" +
                 "             left join im_hris_payroll_bpjs param_bpjs on param_bpjs.branch_id = :branchId and param_bpjs.flag = 'Y'\n" +
                 "      where pegawai.flag = 'Y'\n" +
-                "        and pegawai.tipe_pegawai = 'TP02'\n" +
+                "        and pegawai.tipe_pegawai = 'TP02'\n" + //RAKA-update tipe pegawai
                 "        and pegawai_posisi.branch_id = :branchId\n" +
                 "      union\n" ;
 
@@ -421,8 +421,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "             left join it_hris_tunj_lain_pegawai tunj_lainnya on tunj_lainnya.nip = pegawai.nip and tunj_lainnya.flag = 'Y'\n" +
                 "      where pegawai.flag = 'Y'\n" +
                 "        and to_date(:tanggalGaji, 'DD-MM-YYYY') <= pegawai.tanggal_pensiun\n" +
-                "        and (pegawai.flag_cuti_diluar_tanggung = 'N' or pegawai.flag_cuti_diluar_tanggung is null)\n" +
-                "        and pegawai.tipe_pegawai = 'TP01'\n" +
+                "        and (pegawai.flag_pegawai_cuti_diluar_tanggungan = 'N' or pegawai.flag_pegawai_cuti_diluar_tanggungan is null)\n" +
+                "        and pegawai.tipe_pegawai = 'TP03'\n" + //RAKA-update tipe pegawai
                 "        and pegawai_posisi.branch_id = :branchId\n" +
                 "      union\n" ;
 
@@ -570,7 +570,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                        group by nip) absensi_lembur on absensi_lembur.nip = pegawai.nip\n" +
                 "             left join it_hris_tunj_lain_pegawai tunj_lainnya on tunj_lainnya.nip = pegawai.nip and tunj_lainnya.flag = 'Y'\n" +
                 "      where pegawai.flag = 'Y'\n" +
-                "        and pegawai.tipe_pegawai = 'TP03'\n" +
+                "        and pegawai.tipe_pegawai = 'TP04'\n" + //RAKA-update tipe pegawai
                 "        and pegawai_posisi.branch_id = :branchId\n" +
                 "      union\n" ;
 
@@ -774,7 +774,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "             left join it_hris_tunj_lain_pegawai tunj_lainnya on tunj_lainnya.nip = pegawai.nip and tunj_lainnya.flag = 'Y'\n" +
                 "      where (pegawai.flag = 'N' and cast(extract(month from pegawai.tanggal_keluar) as varchar)  = :periodePayroll and cast(extract(year from pegawai.tanggal_keluar) as varchar)  = :tahunPayroll) \n" +
                 "        and to_date(:tanggalGaji, 'DD-MM-YYYY') <= pegawai.tanggal_pensiun\n" +
-                "        and pegawai.tipe_pegawai = 'TP01'\n" +
+                "        and pegawai.tipe_pegawai = 'TP03'\n" + //RAKA-update tipe pegawai
                 "        and pegawai_posisi.branch_id = :branchId \n" +
                 "      union\n" ;
 
@@ -923,7 +923,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                        group by nip) absensi_lembur on absensi_lembur.nip = pegawai.nip\n" +
                 "             left join it_hris_tunj_lain_pegawai tunj_lainnya on tunj_lainnya.nip = pegawai.nip and tunj_lainnya.flag = 'Y'\n" +
                 "      where (pegawai.flag = 'N' and cast(extract(month from pegawai.tanggal_keluar) as varchar)  = :periodePayroll and cast(extract(year from pegawai.tanggal_keluar) as varchar)  = :tahunPayroll) \n" +
-                "        and pegawai.tipe_pegawai = 'TP03'\n" +
+                "        and pegawai.tipe_pegawai = 'TP04'\n" + //RAKA-update tipe pegawai
                 "        and pegawai_posisi.branch_id = :branchId\n" +
                 "      order by status_pegawai desc\n" +
                 "    ) peg\n" +
@@ -1258,7 +1258,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                     "                 skala_gaji.tahun = :tahunSkalaPayroll\n" +
                     "\n" +
                     "     where pegawai.flag = 'Y'\n" +
-                    "       and pegawai.tipe_pegawai = 'TP02'\n" +
+                    "       and pegawai.tipe_pegawai = 'TP02'\n" + //RAKA-update tipe pegawai
                     "       and pegawai_posisi.branch_id = :branchId\n" +
                     "     union\n" +
                     //pegawai tetap
@@ -1405,8 +1405,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                     "            left join it_hris_tunj_lain_pegawai tunj_lainnya on tunj_lainnya.nip = pegawai.nip and tunj_lainnya.flag = 'Y'\n" +
                     "\n" +
                     "     where pegawai.flag = 'Y'\n" +
-                    "       and (pegawai.flag_cuti_diluar_tanggung = 'N' or pegawai.flag_cuti_diluar_tanggung is null)\n" +
-                    "       and pegawai.tipe_pegawai = 'TP01'\n" +
+                    "       and (pegawai.flag_pegawai_cuti_diluar_tanggungan = 'N' or pegawai.flag_pegawai_cuti_diluar_tanggungan is null)\n" +
+                    "       and pegawai.tipe_pegawai = 'TP03'\n" + //RAKA-update tipe pegawai
                     "       and pegawai_posisi.branch_id = :branchId\n" +
                     "     union\n" +
                     //pkwt
@@ -1519,7 +1519,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                     "                 skala_gaji.tahun = :tahunSkalaPayroll\n" +
                     "            left join it_hris_tunj_lain_pegawai tunj_lainnya on tunj_lainnya.nip = pegawai.nip and tunj_lainnya.flag = 'Y'\n" +
                     "     where pegawai.flag = 'Y'\n" +
-                    "       and pegawai.tipe_pegawai = 'TP03'\n" +
+                    "       and pegawai.tipe_pegawai = 'TP04'\n" + //RAKA-update tipe pegawai
                     "       and pegawai_posisi.branch_id = :branchId\n" +
                     "     order by status_pegawai desc\n" +
                     "    ) peg \n" +
@@ -1679,8 +1679,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                     "       left join im_company company on company.flag = 'Y'\n" +
                     "\n" +
                     "where pegawai.flag = 'Y'\n" +
-                    "  and (pegawai.flag_cuti_diluar_tanggung = 'N' or pegawai.flag_cuti_diluar_tanggung is null)\n" +
-                    "  and pegawai.tipe_pegawai = 'TP01'\n" +
+                    "  and (pegawai.flag_pegawai_cuti_diluar_tanggungan = 'N' or pegawai.flag_pegawai_cuti_diluar_tanggungan is null)\n" +
+                    "  and pegawai.tipe_pegawai = 'TP03'\n" + //RAKA-update tipe pegawai
                     "  and pegawai_posisi.branch_id = :branchId \n" +
                     ")peg \n" +
                     "left join im_hris_payroll_ptkp ptkp on ptkp.status_keluarga = peg.status_keluarga\n" +
@@ -1839,8 +1839,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                     "       left join im_company company on company.flag = 'Y'\n" +
                     "\n" +
                     "where pegawai.flag = 'Y'\n" +
-                    "  and (pegawai.flag_cuti_diluar_tanggung = 'N' or pegawai.flag_cuti_diluar_tanggung is null)\n" +
-                    "  and pegawai.tipe_pegawai = 'TP01'\n" +
+                    "  and (pegawai.flag_pegawai_cuti_diluar_tanggungan = 'N' or pegawai.flag_pegawai_cuti_diluar_tanggungan is null)\n" +
+                    "  and pegawai.tipe_pegawai = 'TP03'\n" + //RAKA-update tipe pegawai
                     "  and pegawai_posisi.branch_id = :branchId \n" +
                     ")peg \n" +
                     "left join im_hris_payroll_ptkp ptkp on ptkp.status_keluarga = peg.status_keluarga\n" +
@@ -2165,7 +2165,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                  left join im_hris_payroll_bpjs param_bpjs on param_bpjs.branch_id = :branchId and param_bpjs.flag = 'Y'\n" +
                 "\n" +
                 "            where pegawai.flag = 'Y'\n" +
-                "             and (pegawai.tipe_pegawai = 'TP02' or pegawai.tipe_pegawai = 'TP04')\n" +
+                "             and (pegawai.tipe_pegawai = 'TP02' or pegawai.tipe_pegawai = 'TP01')\n" + //RAKA-update tipe pegawai
                 "             and pegawai_posisi.branch_id = :branchId \n" +
                 "           union\n" ;
 
@@ -2400,8 +2400,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "\n" +
                 "            where pegawai.flag = 'Y'\n" +
                 "              and to_date(:tanggalGaji, 'DD-MM-YYYY') <= pegawai.tanggal_pensiun \n" +
-                "              and (pegawai.flag_cuti_diluar_tanggung = 'N' or pegawai.flag_cuti_diluar_tanggung is null)\n" +
-                "              and pegawai.tipe_pegawai = 'TP01'\n" +
+                "              and (pegawai.flag_pegawai_cuti_diluar_tanggungan = 'N' or pegawai.flag_pegawai_cuti_diluar_tanggungan is null)\n" +
+                "              and pegawai.tipe_pegawai = 'TP03'\n" + //RAKA-update tipe pegawai
                 "              and pegawai_posisi.branch_id = :branchId \n" +
                 "            union\n" ;
 
@@ -2583,7 +2583,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                              group by nip) absensi_lembur on absensi_lembur.nip = pegawai.nip\n" +
                 "                   left join it_hris_tunj_lain_pegawai tunj_lainnya on tunj_lainnya.nip = pegawai.nip and tunj_lainnya.flag = 'Y'\n" +
                 "            where pegawai.flag = 'Y'\n" +
-                "              and pegawai.tipe_pegawai = 'TP03'\n" +
+                "              and pegawai.tipe_pegawai = 'TP04'\n" + //RAKA-update tipe pegawai
                 "              and pegawai_posisi.branch_id = :branchId \n" +
                 "            union\n" ;
 
@@ -2822,7 +2822,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "\n" +
                 "            where (pegawai.flag = 'N' and cast(extract(month from pegawai.tanggal_keluar) as varchar)  = :periodePayroll and cast(extract(year from pegawai.tanggal_keluar) as varchar)  = :tahunPayroll) \n" +
                 "              and to_date(:tanggalGaji, 'DD-MM-YYYY') <= pegawai.tanggal_pensiun \n" +
-                "              and pegawai.tipe_pegawai = 'TP01'\n" +
+                "              and pegawai.tipe_pegawai = 'TP03'\n" + //RAKA-update tipe pegawai
                 "              and pegawai_posisi.branch_id = :branchId \n" +
                 "            union\n" ;
 
@@ -3005,7 +3005,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                   left join it_hris_tunj_lain_pegawai tunj_lainnya on tunj_lainnya.nip = pegawai.nip and tunj_lainnya.flag = 'Y'\n" +
                 "\n" +
                 "            where (pegawai.flag = 'N' and cast(extract(month from pegawai.tanggal_keluar) as varchar)  = :periodePayroll and cast(extract(year from pegawai.tanggal_keluar) as varchar)  = :tahunPayroll) \n" +
-                "              and pegawai.tipe_pegawai = 'TP03'\n" +
+                "              and pegawai.tipe_pegawai = 'TP04'\n" + //RAKA-update tipe pegawai
                 "              and pegawai_posisi.branch_id = :branchId \n" +
                 "            order by status_pegawai desc ) peg\n" +
                 "             left join im_hris_payroll_ptkp ptkp on ptkp.status_keluarga = peg.status_keluarga\n" +
@@ -3398,7 +3398,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                     "                 skala_gaji.tahun = :tahunSkalaPayroll\n" +
                     "\n" +
                     "     where pegawai.flag = 'Y'\n" +
-                    "       and (pegawai.tipe_pegawai = 'TP02' or pegawai.tipe_pegawai = 'TP04')\n" +
+                    "       and (pegawai.tipe_pegawai = 'TP02' or pegawai.tipe_pegawai = 'TP01')\n" + //RAKA-update tipe pegawai
                     "       and pegawai_posisi.branch_id = :branchId\n" +
                     "     union\n" +
                     //pegawai tetap
@@ -3545,8 +3545,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                     "            left join it_hris_tunj_lain_pegawai tunj_lainnya on tunj_lainnya.nip = pegawai.nip and tunj_lainnya.flag = 'Y'\n" +
                     "\n" +
                     "     where pegawai.flag = 'Y'\n" +
-                    "       and (pegawai.flag_cuti_diluar_tanggung = 'N' or pegawai.flag_cuti_diluar_tanggung is null)\n" +
-                    "       and pegawai.tipe_pegawai = 'TP01'\n" +
+                    "       and (pegawai.flag_pegawai_cuti_diluar_tanggungan = 'N' or pegawai.flag_pegawai_cuti_diluar_tanggungan is null)\n" +
+                    "       and pegawai.tipe_pegawai = 'TP03'\n" + //RAKA-update tipe pegawai
                     "       and pegawai_posisi.branch_id = :branchId\n" +
                     "     union\n" +
                     //pkwt
@@ -3659,7 +3659,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                     "                 skala_gaji.tahun = :tahunSkalaPayroll\n" +
                     "            left join it_hris_tunj_lain_pegawai tunj_lainnya on tunj_lainnya.nip = pegawai.nip and tunj_lainnya.flag = 'Y'\n" +
                     "     where pegawai.flag = 'Y'\n" +
-                    "       and pegawai.tipe_pegawai = 'TP03'\n" +
+                    "       and pegawai.tipe_pegawai = 'TP04'\n" + //RAKA-update tipe pegawai
                     "       and pegawai_posisi.branch_id = :branchId\n" +
                     "     order by status_pegawai desc\n" +
                     "    ) peg \n" +
@@ -3819,8 +3819,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                     "       left join im_company company on company.flag = 'Y'\n" +
                     "\n" +
                     "where pegawai.flag = 'Y'\n" +
-                    "  and (pegawai.flag_cuti_diluar_tanggung = 'N' or pegawai.flag_cuti_diluar_tanggung is null)\n" +
-                    "  and pegawai.tipe_pegawai = 'TP01'\n" +
+                    "  and (pegawai.flag_pegawai_cuti_diluar_tanggungan = 'N' or pegawai.flag_pegawai_cuti_diluar_tanggungan is null)\n" +
+                    "  and pegawai.tipe_pegawai = 'TP03'\n" + //RAKA-update tipe pegawai
                     "  and pegawai_posisi.branch_id = :branchId \n" +
                     ")peg \n" +
                     "left join im_hris_payroll_ptkp ptkp on ptkp.status_keluarga = peg.status_keluarga\n" +
@@ -3979,8 +3979,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                     "       left join im_company company on company.flag = 'Y'\n" +
                     "\n" +
                     "where pegawai.flag = 'Y'\n" +
-                    "  and (pegawai.flag_cuti_diluar_tanggung = 'N' or pegawai.flag_cuti_diluar_tanggung is null)\n" +
-                    "  and pegawai.tipe_pegawai = 'TP01'\n" +
+                    "  and (pegawai.flag_pegawai_cuti_diluar_tanggungan = 'N' or pegawai.flag_pegawai_cuti_diluar_tanggungan is null)\n" +
+                    "  and pegawai.tipe_pegawai = 'TP03'\n" + //RAKA-update tipe pegawai
                     "  and pegawai_posisi.branch_id = :branchId \n" +
                     ")peg \n" +
                     "left join im_hris_payroll_ptkp ptkp on ptkp.status_keluarga = peg.status_keluarga\n" +

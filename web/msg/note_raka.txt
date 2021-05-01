@@ -1,3 +1,33 @@
+------ 2021-04-01 ===> query tambahan table payroll
+-- sequence
+    create sequence seq_payroll_temp ;
+    alter sequence seq_payroll_temp
+      owner to postgres;
+
+    create sequence seq_payroll_pph_temp;
+    alter sequence seq_payroll_pph_temp
+      owner to postgres;
+
+    create sequence seq_payroll_header;
+    alter sequence seq_payroll_header
+      owner to postgres;
+
+-- it_bussiness_object_log
+    ALTER TABLE public.it_business_object_log
+    alter column message type varchar(1000000);
+
+-- other
+    alter table im_hris_pegawai
+    alter column masa_kerja_gol type varchar(5);
+    alter table it_hris_payroll_pph_temp
+    rename column pph_id to pph_temp_id;
+    alter table it_hris_payroll_pph_temp
+    rename column payroll_id to payroll_temp_id;
+    alter table it_hris_payroll_pph_temp
+    add column selisih_pph_setahun numeric(15,2);
+    alter table it_hris_payroll_temp
+    alter column nama_bank type varchar(50);
+
 ------ 2021-04-30 ===> penambahan column
 -- add column im_company
     alter table im_company

@@ -730,7 +730,8 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataHistoryEntity.setNoRekBank(imBiodataEntity.getNoRekBank());
                             imBiodataHistoryEntity.setCabangBank(imBiodataEntity.getCabangBank());
                             imBiodataHistoryEntity.setTanggalPraPensiun(imBiodataEntity.getTanggalPraPensiun());
-                            imBiodataHistoryEntity.setMasaKerjaGolongan(imBiodataEntity.getMasaKerjaGolongan());
+//                            imBiodataHistoryEntity.setMasaKerjaGolongan(imBiodataEntity.getMasaKerjaGolongan());
+//                            imBiodataHistoryEntity.setMasaKerjaGol(imBiodataEntity.getStMasaKerjaGol());
                             imBiodataHistoryEntity.setGolonganDapenId(imBiodataEntity.getGolonganDapenId()); //RAKA-delete
 
                             if (bean.getFotoUpload() != null) {
@@ -820,10 +821,10 @@ public class BiodataBoImpl implements BiodataBo {
 
                             if (!"".equalsIgnoreCase(bean.getStTanggalPensiun()) && bean.getStTanggalPensiun() != null) {
                                 if (!"".equalsIgnoreCase(bean.getStMasaKerjaGol()) && bean.getStMasaKerjaGol() != null) {
-                                    imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
+                                    imBiodataEntity.setStMasaKerjaGol(bean.getStMasaKerjaGol());
                                 }
                             } else {
-                                imBiodataEntity.setMasaKerjaGolongan(0);
+                                imBiodataEntity.setStMasaKerjaGol("0");
                             }
 //                                imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId()); //RAKA-delete
 
@@ -1410,7 +1411,7 @@ public class BiodataBoImpl implements BiodataBo {
                         }
 
 //                            imBiodataHistoryEntity.setMasaKerjaGolongan(Integer.parseInt(imBiodataEntity.getStMasaKerjaGol()));
-                        imBiodataHistoryEntity.setMasaKerjaGolongan(imBiodataEntity.getMasaKerjaGolongan());
+//                        imBiodataHistoryEntity.setMasaKerjaGolongan(imBiodataEntity.getMasaKerjaGolongan());
                         imBiodataHistoryEntity.setGolonganDapenId(imBiodataEntity.getGolonganDapenId()); //RAKA-delete
 
                         if (bean.getFotoUpload() != null) {
@@ -1484,9 +1485,9 @@ public class BiodataBoImpl implements BiodataBo {
                         }
 
                         if (bean.getStMasaKerjaGol() != null && !"".equalsIgnoreCase(bean.getStMasaKerjaGol())) {
-                            imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
+                            imBiodataEntity.setStMasaKerjaGol(bean.getStMasaKerjaGol());
                         } else {
-                            imBiodataEntity.setMasaKerjaGolongan(0);
+                            imBiodataEntity.setStMasaKerjaGol("0");
                         }
                         imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId()); //RAKA-delete
 
@@ -1973,12 +1974,12 @@ public class BiodataBoImpl implements BiodataBo {
                 if (!CommonConstant.PEGAWAI_PKWT.equalsIgnoreCase(bean.getTipePegawai())) {
 //                if ("N".equalsIgnoreCase(bean.getFlagDokterKso())){
                     if (!"".equalsIgnoreCase(bean.getStMasaKerjaGol()) && bean.getStMasaKerjaGol() != null) {
-                        imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
+                        imBiodataEntity.setStMasaKerjaGol(bean.getStMasaKerjaGol());
                     } else {
-                        imBiodataEntity.setMasaKerjaGolongan(0);
+                        imBiodataEntity.setStMasaKerjaGol("0");
                     }
                 } else {
-                    imBiodataEntity.setMasaKerjaGolongan(0);
+                    imBiodataEntity.setStMasaKerjaGol("0");
                 }
                 imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
                 imBiodataEntity.setShift(bean.getShift());
@@ -2862,8 +2863,8 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setStatusCaption(personalEntity.getStatusCaption());
                     returnBiodata.setKeterangan(personalEntity.getKeterangan());
                     if ("N".equalsIgnoreCase(personalEntity.getFlagDokterKso()) && CommonConstant.PEGAWAI_TETAP.equalsIgnoreCase(personalEntity.getTipePegawai())) {
-                        returnBiodata.setStMasaKerjaGol(String.valueOf(personalEntity.getMasaKerjaGolongan()));
-                        returnBiodata.setMasaKerjaGolongan(personalEntity.getMasaKerjaGolongan());
+                        returnBiodata.setStMasaKerjaGol(personalEntity.getStMasaKerjaGol());
+                        returnBiodata.setMasaKerjaGolongan(Integer.parseInt(personalEntity.getStMasaKerjaGol()));
                     }
                     returnBiodata.setGolonganDapenId(personalEntity.getGolonganDapenId());
                     returnBiodata.setProfesiId(personalEntity.getProfesiId());

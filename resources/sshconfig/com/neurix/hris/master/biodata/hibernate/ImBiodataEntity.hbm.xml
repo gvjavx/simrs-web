@@ -207,7 +207,8 @@
         <property name="golonganDapenId">
             <column name="golongan_dapen_id" sql-type="varchar" length="3" not-null="false" />
         </property>
-        <property name="masaKerjaGolongan">
+        <!--<property name="masaKerjaGolongan">-->
+        <property name="stMasaKerjaGol">
             <column name="masa_kerja_gol" sql-type="integer" not-null="false" />
         </property>
         <property name="tanggalAkhirKontrak">

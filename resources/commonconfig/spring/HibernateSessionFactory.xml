@@ -179,13 +179,13 @@
 
                 <value>sshconfig/com/neurix/hris/master/smkJabatan/hibernate/ImSmkJabatanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/smkJabatan/hibernate/ImSmkJabatanDetailEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItSmkEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItSmkAspekActivityMonthly.hbm.xml</value>
-                <value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItSmkEvaluasiPegawaiAspek.hbm.xml</value>
-                <value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItSmkEvaluasiPegawaiAspekActivity.hbm.xml</value>
-                <value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItSmkEvaluasiPegawaiAspekActivityPeristiwa.hbm.xml</value>
-                <value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItSmkEvaluasiPegawaiAspekDetail.hbm.xml</value>
-                <value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItSmkHistoryEvaluasiPegawai.hbm.xml</value>
+                <!--<value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItSmkEntity.hbm.xml</value>-->
+                <!--<value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItSmkAspekActivityMonthly.hbm.xml</value>-->
+                <!--<value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItSmkEvaluasiPegawaiAspek.hbm.xml</value>-->
+                <!--<value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItSmkEvaluasiPegawaiAspekActivity.hbm.xml</value>-->
+                <!--<value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItSmkEvaluasiPegawaiAspekActivityPeristiwa.hbm.xml</value>-->
+                <!--<value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItSmkEvaluasiPegawaiAspekDetail.hbm.xml</value>-->
+                <!--<value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItSmkHistoryEvaluasiPegawai.hbm.xml</value>-->
                 <value>sshconfig/com/neurix/hris/master/smkKategoriAspekBobot/hibernate/ImSmkKategoriAspekBobotEntity.hbm.xml</value>
 
                 <!-- For Payroll -->
@@ -282,13 +282,13 @@
                 <value>sshconfig/com/neurix/hris/master/masaTanam/hibernate/ImMasaTanamEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/transaksi/notifikasi/hibernate/ItNotifikasiFcm.hbm.xml</value>
-                <value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItHistorySmkEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItHistorySmkEvaluasiPegawaiAspek.hbm.xml</value>
-                <value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItHistorySmkEvaluasiPegawaiAspekDetail.hbm.xml</value>
-                <value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItHistorySmkEvaluasiPegawaiAspekActivity.hbm.xml</value>
-                <value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItHistorySmkEvaluasiPegawaiAspekActivityPeristiwa.hbm.xml</value>
-                <value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItHistorySmkAspekActivityMonthly.hbm.xml</value>
-                <value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ImtHistorySmkGolongan.hbm.xml</value>
+                <!--<value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItHistorySmkEntity.hbm.xml</value>-->
+                <!--<value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItHistorySmkEvaluasiPegawaiAspek.hbm.xml</value>-->
+                <!--<value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItHistorySmkEvaluasiPegawaiAspekDetail.hbm.xml</value>-->
+                <!--<value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItHistorySmkEvaluasiPegawaiAspekActivity.hbm.xml</value>-->
+                <!--<value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItHistorySmkEvaluasiPegawaiAspekActivityPeristiwa.hbm.xml</value>-->
+                <!--<value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ItHistorySmkAspekActivityMonthly.hbm.xml</value>-->
+                <!--<value>sshconfig/com/neurix/hris/transaksi/smk/hibernate/ImtHistorySmkGolongan.hbm.xml</value>-->
 
                 <value>sshconfig/com/neurix/hris/transaksi/laporan/hibernate/ItLaporanEntity.hbm.xml</value>
 
@@ -616,10 +616,6 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/periksalab/hibernate/ItSimrsHeaderPemeriksaanEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/transaksi/logcron/hibernate/ItLogCronEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/akuntansi/transaksi/billingSystem/hibernate/ItPgLogTransactionEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/akuntansi/transaksi/billingSystem/hibernate/ItPgInvoiceEntity.hbm.xml</value>
-
-
 
             </list>
 

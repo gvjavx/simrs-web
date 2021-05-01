@@ -131,7 +131,7 @@
             <column name="payroll_tanggal_lembur_awal"/>
         </property>
         <property name="payrollTanggalLemburAkhir">
-            <column name="payroll_tanggal_lebur_akhir"/>
+            <column name="payroll_tanggal_lembur_akhir"/>
         </property>
     </class>
 </hibernate-mapping>
