@@ -75,7 +75,7 @@
                                                                   name="initComboKodeRekening_kodeRekening" />
                                                         <s:select cssStyle="margin-top: 7px; width: 100%" list="#rekening6.listOfComboKodeRekening"
                                                                   id="koderek" name="parameterBudgetingRekening.rekeningId"
-                                                                  listKey="rekeningId" listValue="namaKodeRekening" headerKey="" headerValue="[Select one]"
+                                                                  listKey="rekeningId" listValue="namaKodeRekening" headerKey="" headerValue=" - "
                                                                   cssClass="form-control select2" />
                                                     </table>
                                                 </td>

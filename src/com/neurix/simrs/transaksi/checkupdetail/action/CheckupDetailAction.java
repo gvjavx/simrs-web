@@ -950,156 +950,6 @@ public class CheckupDetailAction extends BaseMasterAction {
         return kategoriTindakans;
     }
 
-//    public CrudResponse saveKeterangan(String noCheckup, String idDetailCheckup, String idKtg, String poli, String kelas, String kamar, String idDokter, String ket, String tglCekup, String ketCekup, String jenisPasien, String caraPulang, String pendamping, String tujuan, String idPasien, String metodeBayar, String uangMuka, String jenisBayar, String tipe, String dataPemeriksaan) throws JSONException {
-//        logger.info("[CheckupDetailAction.saveKeterangan] start process >>>");
-//
-//        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-//        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
-//
-//
-//        CrudResponse response = new CrudResponse();
-//
-//        HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
-//        headerDetailCheckup.setIdDetailCheckup(idDetailCheckup);
-//        headerDetailCheckup.setStatusPeriksa("3");
-//        headerDetailCheckup.setFlag("Y");
-//        headerDetailCheckup.setAction("U");
-//
-//        if (tipe.equalsIgnoreCase("lab")) {
-//            response.setStatus("success");
-//        } else {
-//            response = cekAllTindakanRawat(idDetailCheckup);
-//        }
-//
-//        if ("success".equalsIgnoreCase(response.getStatus())) {
-//
-//            if (tglCekup != null && !"".equalsIgnoreCase(tglCekup)) {
-//                headerDetailCheckup.setTglCekup(java.sql.Date.valueOf(tglCekup));
-//                headerDetailCheckup.setNoCheckupUlang(CommonUtil.userBranchLogin() + dateFormater("yy") + dateFormater("MM") + dateFormater("dd"));
-//            }
-//
-//            if ("selesai".equalsIgnoreCase(idKtg)) {
-//                if (!"".equalsIgnoreCase(dataPemeriksaan)) {
-//                    JSONObject obj = new JSONObject(dataPemeriksaan);
-//                    List<OrderPeriksaLab> orderPeriksaLab = new ArrayList<>();
-//                    if (obj != null) {
-//                        Timestamp now = new Timestamp(System.currentTimeMillis());
-//                        String user = CommonUtil.userLogin();
-//                        String idKategori = obj.getString("kategori_lab");
-//                        String idLab = obj.getString("unit_lab");
-//                        JSONArray json = obj.getJSONArray("parameter");
-//                        for (int i = 0; i < json.length(); i++) {
-//                            String value = json.getString(i);
-//                            OrderPeriksaLab order = new OrderPeriksaLab();
-//                            order.setIdDetailCheckup(idDetailCheckup);
-//                            order.setIdLab(idLab);
-//                            order.setIdLabDetail(value);
-//                            order.setIsPemeriksaan("N");
-//                            order.setAction("C");
-//                            order.setFlag("Y");
-//                            order.setCreatedWho(user);
-//                            order.setCreatedDate(now);
-//                            order.setLastUpdateWho(user);
-//                            order.setLastUpdate(now);
-//                            if ("KAL00000001".equalsIgnoreCase(idKategori)) {
-//                                order.setKeterangan("radiologi");
-//                            }
-//                            if ("KAL00000002".equalsIgnoreCase(idKategori)) {
-//                                order.setKeterangan("lab");
-//                            }
-//                            orderPeriksaLab.add(order);
-//                        }
-//
-//                        if (orderPeriksaLab.size() > 0) {
-//                            response = saveLabCheckup(orderPeriksaLab);
-//                            if ("success".equalsIgnoreCase(response.getStatus())) {
-//                                headerDetailCheckup.setIsOrderLab("Y");
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                headerDetailCheckup.setKeteranganSelesai(ket);
-//                headerDetailCheckup.setCaraPasienPulang(caraPulang);
-//                headerDetailCheckup.setPendamping(pendamping);
-//                headerDetailCheckup.setTempatTujuan(tujuan);
-//                headerDetailCheckup.setKeteranganCekupUlang(ketCekup);
-//                headerDetailCheckup.setStatus(idKtg);
-//                cekRawatInap(idDetailCheckup);
-//            }
-//
-//            if ("lanjut_biaya".equalsIgnoreCase(idKtg)) {
-//                headerDetailCheckup.setKeteranganSelesai("Lanjut Biaya");
-//                cekRawatInap(idDetailCheckup);
-//            }
-//            if ("rujuk_rs_lain".equalsIgnoreCase(idKtg)) {
-//                headerDetailCheckup.setKeteranganSelesai("Rujuk Rumah Sakit Lain");
-//                cekRawatInap(idDetailCheckup);
-//            }
-//
-//            if ("pindah".equalsIgnoreCase(idKtg)) {
-//                headerDetailCheckup.setKeteranganSelesai("Pindah ke Poli Lain");
-//            }
-//            if ("rujuk".equalsIgnoreCase(idKtg)) {
-//                headerDetailCheckup.setIdJenisPeriksaPasien(jenisPasien);
-//                headerDetailCheckup.setKeteranganSelesai("Rujuk Rawat Inap");
-//            }
-//
-//            // save approve tindakan
-//            saveAddToRiwayatTindakan(idDetailCheckup, jenisPasien);
-//
-//            if ("asuransi".equalsIgnoreCase(jenisPasien) || "rekanan".equalsIgnoreCase(jenisPasien) || "paket_individu".equalsIgnoreCase(jenisPasien) || "paket_perusahaan".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
-//                metodeBayar = "non_tunai";
-//            } else if ("umum".equalsIgnoreCase(jenisPasien)) {
-//                metodeBayar = jenisBayar;
-//            }
-//
-//            // create jurnal if non tunai
-//            if ("non_tunai".equalsIgnoreCase(metodeBayar)) {
-//                JurnalResponse jurnalResponse = closingJurnalNonTunai(idDetailCheckup, poli, idPasien);
-//                if (!"rekanan".equalsIgnoreCase(jurnalResponse.getStatus())) {
-//                    if ("error".equalsIgnoreCase(jurnalResponse.getStatus())) {
-//                        response.setStatus("error");
-//                        response.setMsg(jurnalResponse.getMsg());
-//                        return response;
-//                    } else if (!"".equalsIgnoreCase(jurnalResponse.getInvoice())) {
-//                        headerDetailCheckup.setInvoice(jurnalResponse.getInvoice());
-//                    }
-//                }
-//            }
-//
-//
-//            if ("pindah".equalsIgnoreCase(idKtg)) {
-//                response = pindahPoli(idDetailCheckup, poli, idDokter, metodeBayar, uangMuka, null, null);
-//            }
-//
-//            if ("rujuk".equalsIgnoreCase(idKtg)) {
-//                response = rujukRawatInap(noCheckup, idDetailCheckup, kelas, kamar, metodeBayar, uangMuka, idDokter, poli);
-//            }
-//
-//            try {
-//
-//                if ("success".equalsIgnoreCase(response.getStatus()) || "selesai".equalsIgnoreCase(idKtg) || "lanjut_biaya".equalsIgnoreCase(idKtg) || "rujuk_rs_lain".equalsIgnoreCase(idKtg)) {
-//                    headerDetailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-//                    headerDetailCheckup.setLastUpdateWho(CommonUtil.userLogin());
-//                    response = checkupDetailBo.saveEdit(headerDetailCheckup);
-//                }
-//
-//            } catch (GeneralBOException e) {
-//                logger.error("[CheckupDetailAction.saveKeterangan] Error when saving data detail checkup, ", e);
-//                response.setStatus("error");
-//                response.setMsg("[CheckupDetailAction.saveKeterangan] Error when saving data detail checkup, " + e);
-//                return response;
-//            }
-//
-//            updateFlagPeriksaAntrianOnline(idDetailCheckup);
-//
-//        }
-//
-//        logger.info("[CheckupDetailAction.saveKeterangan] end process >>>");
-//        return response;
-//    }
-
     public CrudResponse closeTraksaksiPasien(String data) {
         logger.info("[CheckupDetailAction.closeTraksaksiPasien] START process >>>");
         CrudResponse response = new CrudResponse();
@@ -1139,6 +989,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                             response.setStatus("success");
                         } else {
                             if (detailCheckupList.size() > 0) {
+
+                                for (HeaderDetailCheckup detail: detailCheckupList){
+                                    approveTindakanRawat(detail.getIdDetailCheckup());
+                                }
+
                                 for (HeaderDetailCheckup detail : detailCheckupList) {
                                     response = cekAllTindakanRawat(detail.getIdDetailCheckup());
                                 }
@@ -4188,7 +4043,6 @@ public class CheckupDetailAction extends BaseMasterAction {
             String user = CommonUtil.userLogin();
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
-            RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
 
             HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
             headerDetailCheckup.setIdDetailCheckup(idDetailCheckup);
@@ -4209,6 +4063,28 @@ public class CheckupDetailAction extends BaseMasterAction {
         logger.info("[CheckupDetailAction.saveApproveAllTindakanRawatJalan] END process >>>");
 
         return response;
+    }
+
+    private void approveTindakanRawat(String idDetailCheckup){
+        logger.info("[CheckupDetailAction.approveTindakanRawat] START process >>>");
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        String user = CommonUtil.userLogin();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+
+        if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
+            HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+            headerDetailCheckup.setIdDetailCheckup(idDetailCheckup);
+            headerDetailCheckup.setLastUpdate(updateTime);
+            headerDetailCheckup.setLastUpdateWho(user);
+
+            try {
+                checkupDetailBo.saveApproveAllTindakanRawatJalan(headerDetailCheckup);
+            } catch (GeneralBOException e) {
+                logger.error("[CheckupDetailAction.approveTindakanRawat] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+        }
+        logger.info("[CheckupDetailAction.approveTindakanRawat] END process >>>");
     }
 
     public String printSuratKeterangan() {
@@ -5736,32 +5612,6 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                     } else {
 
-//                        if (idRuangan != null && !"".equalsIgnoreCase(idRuangan)){
-//                            MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(idRuangan);
-//                            if (ruanganEntity != null) {
-//                                ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
-//                                if (kelasRuanganEntity != null) {
-//                                    ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
-//                                    if (position != null) {
-//                                        divisiId = position.getKodering();
-//                                    }
-//                                }
-//                            }
-//                        } else {
-//                            RawatInap lastRuangan = rawatInapBo.getLastUsedRoom(idDetailCheckup);
-//                            if (lastRuangan != null) {
-//                                MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(lastRuangan.getIdRuang());
-//                                if (ruanganEntity != null) {
-//                                    ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
-//                                    if (kelasRuanganEntity != null) {
-//                                        ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
-//                                        if (position != null) {
-//                                            divisiId = position.getKodering();
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
                         if (idRuangan != null && !"".equalsIgnoreCase(idRuangan)) {
                             List<TempatTidur> tempatTidurList = new ArrayList<>();
                             TempatTidur tt = new TempatTidur();
@@ -5769,14 +5619,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                             tt.setIdTempatTidur(idRuangan);
                             tempatTidurList = tempatTidurBo.getDataTempatTidur(tt);
                             if (tempatTidurList.size() > 0) {
-                                tempatTidur = tempatTidurList.get(0);
-                                ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(tempatTidur.getIdKelasRuangan());
-                                if (kelasRuanganEntity != null) {
-                                    ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
-                                    if (position != null) {
-                                        divisiId = position.getKodering();
-                                    }
-                                }
+                                divisiId = tempatTidurList.get(0).getKodering();
                             }
                         } else {
                             RawatInap lastRuangan = rawatInapBo.getLastUsedRoom(idDetailCheckup);
@@ -5787,14 +5630,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 tt.setIdTempatTidur(idRuangan);
                                 tempatTidurList = tempatTidurBo.getDataTempatTidur(tt);
                                 if (tempatTidurList.size() > 0) {
-                                    tempatTidur = tempatTidurList.get(0);
-                                    ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(tempatTidur.getIdKelasRuangan());
-                                    if (kelasRuanganEntity != null) {
-                                        ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
-                                        if (position != null) {
-                                            divisiId = position.getKodering();
-                                        }
-                                    }
+                                    divisiId = tempatTidurList.get(0).getKodering();
                                 }
                             }
                         }

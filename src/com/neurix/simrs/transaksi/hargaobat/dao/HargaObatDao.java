@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.hargaobat.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
 import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatEntity;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
@@ -218,5 +219,22 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
             return new BigDecimal(obj.toString());
 
     }
+
+    public String getIdHargaObatByIdObatAndBranch(String idObat, String branchId){
+
+        String SQL = "SELECT id_harga_obat FROM mt_simrs_harga_obat " +
+                "WHERE id_obat = '"+idObat+"'" +
+                "AND branch_id = '"+branchId+"'";
+
+        List<Object> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0)
+            return list.get(0).toString();
+        else
+            return null;
+
+    }
+
+
 
 }

@@ -21,6 +21,20 @@
         .treegrid-indent {width:16px; height: 16px; display: inline-block; position: relative;}
 
         .treegrid-expander { width:16px; height: 16px; display: inline-block; position: relative; cursor: pointer;}
+
+        .bold{
+            font-weight: bold;
+            color: black;
+        }
+        .tab-bulan{
+            color: grey;
+        }
+        .tab-bulan:hover{
+            cursor: pointer;
+        }
+        .expand:hover{
+            cursor: pointer;
+        }
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/BranchAction.js"/>'></script>
@@ -80,21 +94,22 @@
                     <div class="box-body">
                         <%--<s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">--%>
                         <div class="form-group form-horizontal">
+
+
+                            <div class="row">
+                                <div class="col-md-6 col-md-offset-3">
+                                    <table class="table table-bordered table-striped">
+                                        <tbody id="body-nilai-dasar">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="col-md-12">
                                     <h4>
                                         <s:property value="budgeting.namaKategori"/> - <s:property value="budgeting.branchName"/> <s:property value="budgeting.tahun"/>
                                     </h4>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6 col-md-offset-3">
-                                    <%--<h4>Nilai Dasar : </h4>--%>
-                                    <table class="table table-bordered table-striped">
-                                        <tbody id="body-nilai-dasar">
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
 
@@ -109,12 +124,33 @@
                     </div>
 
                     <div class="box-header with-border"></div>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i>
-                            <%--List Tutup Period <strong><span id="label-tahun"></span> - <span id="label-bulan"></span></strong> --%>
-                        </h3>
-                    </div>
+                    <%--<div class="box-header with-border">--%>
+                        <%--<h3 class="box-title"><i class="fa fa-th-list"></i>--%>
+                            <%--&lt;%&ndash;List Tutup Period <strong><span id="label-tahun"></span> - <span id="label-bulan"></span></strong> &ndash;%&gt;--%>
+                        <%--</h3>--%>
+                    <%--</div>--%>
                     <div class="box-body">
+
+                        <span style="font-weight: bold">Pilih Periode :</span>
+
+                        <div class="list-bulan">
+                            <table class="table" width="100%" style="font-size: 13px;">
+                                <tr style="border-bottom: solid 1px lightgrey;">
+                                    <td><span id="tab-bulan-januari" name="bulan" class="tab-bulan" onclick="changePeriode('januari')">Januari</span></td>
+                                    <td><span id="tab-bulan-februari" name="bulan" class="tab-bulan" onclick="changePeriode('februari')">Februari</span></td>
+                                    <td><span id="tab-bulan-maret" name="bulan" class="tab-bulan" onclick="changePeriode('maret')">Maret</span></td>
+                                    <td><span id="tab-bulan-april" name="bulan" class="tab-bulan" onclick="changePeriode('april')">April</span></td>
+                                    <td><span id="tab-bulan-mei" name="bulan" class="tab-bulan" onclick="changePeriode('mei')">Mei</span></td>
+                                    <td><span id="tab-bulan-juni" name="bulan" class="tab-bulan" onclick="changePeriode('juni')">Juni</span></td>
+                                    <td><span id="tab-bulan-juli" name="bulan" class="tab-bulan" onclick="changePeriode('juli')">Juli</span></td>
+                                    <td><span id="tab-bulan-agustus" name="bulan" class="tab-bulan" onclick="changePeriode('agustus')">Agustus</span></td>
+                                    <td><span id="tab-bulan-september" name="bulan" name="bulan" class="tab-bulan" onclick="changePeriode('september')">September</span></td>
+                                    <td><span id="tab-bulan-oktober" name="bulan" class="tab-bulan" onclick="changePeriode('oktober')">Oktober</span></td>
+                                    <td><span id="tab-bulan-november" name="bulan" class="tab-bulan" onclick="changePeriode('november')">November</span></td>
+                                    <td><span id="tab-bulan-desember" name="bulan" class="tab-bulan" onclick="changePeriode('desember')">Desember</span></td>
+                                </tr>
+                            </table>
+                        </div>
 
                         <%--<div class="alert alert-info alert-dismissable" id="alert-info">--%>
                         <%--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>--%>
@@ -131,14 +167,19 @@
                             <strong>Error!</strong><span id="error-msg"></span>
                         </div>
 
+                        <span style="font-weight: bold">Periode <span id="nama-periode"></span> : </span>
+                        <input type="hidden" id="sel-periode"/>
+
+                        <button class="btn btn-sm btn-warning" id="btn-tambah" style="float: right; display: none;" onclick="showAdd()"><i class="fa fa-plus"></i> Tambah</button>
+
                         <div class="row">
-                            <div class="col-md-8 col-md-offset-2">
-                                <table class="table table-bordered table-striped">
-                                    <thead bgcolor="#90ee90">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped" style="font-size: 13px;">
+                                    <thead>
                                     <tr>
-                                        <td>Divisi</td>
-                                        <td align="center">Nilai</td>
-                                        <td align="center">Action</td>
+                                        <td>Investasi</td>
+                                        <td align="right">Nilai</td>
+                                        <td align="center" width="100px">Action</td>
                                     </tr>
                                     </thead>
                                     <tbody id="list-body-budgeting">
@@ -166,7 +207,7 @@
                         <%--</div>--%>
                         <div class="form-group" style="margin-top: 10px">
                             <div class="col-md-4 col-md-offset-5">
-                                <button class="btn btn-warning" onclick="back()"><i class="fa fa-refresh"></i> Close</button>
+                                <button class="btn btn-warning" onclick="back()"><i class="fa fa-arrow-left"></i> Kembali</button>
                                 <%--<button class="btn btn-success" id="btn-save" onclick="saveAdd()"><i class="fa fa-arrow-right"></i> Save </button>--%>
                             </div>
                         </div>
@@ -261,52 +302,31 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-12">
-                            <div id="form-master">
-                                <%--<strong>Master</strong> <hr style="width: 80%;">--%>
-                                <div class="row">
-                                    <%--<label class="control-label col-sm-2"> <strong>Master</strong> </label>--%>
-                                    <div class="col-sm-6">
-                                        <h5 id="master-name"></h5>
-                                        <input type="hidden" class="form-control" id="masterid" readonly/>
-                                    </div>
-                                </div>
-                            </div>
+                            <%--<div id="form-master">--%>
+                                <%--&lt;%&ndash;<strong>Master</strong> <hr style="width: 80%;">&ndash;%&gt;--%>
+                                <%--<div class="row">--%>
+                                    <%--&lt;%&ndash;<label class="control-label col-sm-2"> <strong>Master</strong> </label>&ndash;%&gt;--%>
+                                    <%--<div class="col-sm-6">--%>
+                                        <%--<h5 id="master-name"></h5>--%>
+                                        <%--<input type="hidden" class="form-control" id="masterid" readonly/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
 
-                            <br>
-                            <div id="form-divisi">
-                                <%--<strong>Divisi</strong> <hr style="width: 80%;">--%>
-                                <div class="row">
-                                    <label class="control-label col-sm-2"><strong>Divisi</strong></label>
-                                    <div class="col-sm-6">
-                                        <h5 id="divisi-name"></h5>
-                                        <input type="hidden" class="form-control" id="divisiid" readonly/>
-                                    </div>
-                                </div>
-                            </div>
+                            <%--<br>--%>
+                            <%--<div id="form-divisi">--%>
+                                <%--&lt;%&ndash;<strong>Divisi</strong> <hr style="width: 80%;">&ndash;%&gt;--%>
+                                <%--<div class="row">--%>
+                                    <%--<label class="control-label col-sm-2"><strong>Divisi</strong></label>--%>
+                                    <%--<div class="col-sm-6">--%>
+                                        <%--<h5 id="divisi-name"></h5>--%>
+                                        <%--<input type="hidden" class="form-control" id="divisiid" readonly/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
 
-                            <br>
-                            <div id="form-periode">
-                                <%--<strong>Periode</strong> <hr style="width: 80%;">--%>
-                                <div class="row">
-                                    <label class="control-label col-sm-2"><strong>Periode</strong></label>
-                                    <div class="col-sm-4">
-                                        <select class="form-control" id="sel-periode">
-                                            <option value="januari">Januari</option>
-                                            <option value="februari">Februari</option>
-                                            <option value="maret">Maret</option>
-                                            <option value="april">April</option>
-                                            <option value="mei">Mei</option>
-                                            <option value="juni">Juni</option>
-                                            <option value="juli">Juli</option>
-                                            <option value="agustus">Agustus</option>
-                                            <option value="september">September</option>
-                                            <option value="oktober">Oktober</option>
-                                            <option value="november">November</option>
-                                            <option value="desember">Desember</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+                            <%--<input type="hidden" class="form-control" id="masterid" readonly/>--%>
+                            <%--<input type="hidden" class="form-control" id="divisiid" readonly/>--%>
 
                             <br>
                             <strong>Nilai</strong>
@@ -375,38 +395,12 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-add-hitung">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-info"></i> Add Perhitungan </h4>
-            </div>
-            <div class="modal-body">
-                <br>
-                <div class="form-group">
-                    <div class="row" id="body-hitung">
-                    </div>
-
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="save-hotung" onclick="addHitung()"><i class="fa fa-check"></i> Save</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script type='text/javascript'>
 
     var listOfCoa = [];
     $( document ).ready(function() {
         chekTipe();
-        nilaiDasar();
-//        showListParameter();
-//        showListMaster();
-        listDivisi();
+//        nilaiDasar();
         checkTransaksi();
     });
 
@@ -419,6 +413,7 @@
     var namaKategori    = '<s:property value="budgeting.namaKategori"/>';
     var tahun           = '<s:property value="budgeting.tahun"/>';
     var unit            = '<s:property value="budgeting.branchId"/>';
+    var idParam         = '<s:property value="budgeting.idParam"/>';
 
     function chekTipe() {
         if ("Y" == flagDisable){
@@ -450,108 +445,31 @@
                 flagNilaiDasar = "";
             }
         });
-        BudgetingAction.checkAvailDraftBudgeting(unit, tahun, "INV", function (res) {
-            if (res == true){
-                flagNilaiDasar = "";
-            }
-        });
+//        BudgetingAction.checkAvailDraftBudgeting(unit, tahun, "INV", function (res) {
+//            if (res == true){
+//                flagNilaiDasar = "";
+//            }
+//        });
     }
+
 
     function showListParameter() {
-        BgPendapatanAction.getListParameterByIdKategori(idKategori, function (list) {
+        var periode = $("#sel-periode").val();
+
+        BgInvestasiAction.getListInvestasiByRekeningId("INV", idKategori, periode, tahun, unit, function (res) {
+
+            console.log(res);
             var str = "";
-            $.each(list, function (i, item) {
-                str += '<div class="row">' +
-                    '<div class="col-md-8 col-md-offset-2">' +
-                    '<h4 id="label-head-'+item.id+'">' + item.nama +'</h4>' +
-                    '<button class="btn btn-sm btn-primary" style="float: right;" onclick="showAdd(\''+item.id+'\')"><i class="fa fa-plus"></i> Tambah</button>' +
-                    '<table class="table table-bordered table-striped tree">' +
-                    '<thead id="head-budgeting">' +
-                    '<tr bgcolor="#90ee90">' +
-                    '<td>Periode</td>' +
-//                    '<td>Master</td>' +
-                    '<td>Divisi</td>' +
-                    '<td>Nilai</td>' +
-//                    '<td align="center">Action</td>' +
-                    '</tr>' +
-                    '</thead>' +
-                    '<tbody id="body-budgeting-'+ item.id +'">';
-
-                BgInvestasiAction.getListDataParam(item.id, function (listDatas) {
-
-                    $.each(listDatas, function (n, data) {
-                        str += '<tr>' +
-                            '<td>'+data.periode+'</td>' +
-//                            '<td>'+data.namaMaster+'</td>' +
-                            '<td>'+data.namaDivisi+'</td>' +
-                            '<td align="right">'+ formatRupiah( data.nilaiTotal )+'</td>' +
-                            '</tr>';
-                    });
-                });
-
-
-                str += '</tbody>' +
-                    '</table>' +
-                    '</div>' +
-                    '</div>' +
-                    '<br/>' ;
-            });
-            $("#list-body-budgeting").html(str);
-
-        });
-    }
-
-    function listDivisi() {
-        BgInvestasiAction.getListDivisiBudgeting(idKategori, "INV", unit, tahun, function (list) {
-            var str = "";
-            $.each(list, function (i, item) {
-                str += '<tr>' +
-                    '<td id="label-divisi-'+item.divisiId+'">' + item.namaDivisi + '</td>' +
-                    '<td align="right">' + formatRupiah(item.nilaiTotal) + '</td>' +
-                    '<td align="center" id="btn-span-' + i + '"><button class="btn btn-sm btn-primary" onclick="spanRow(\'' + i + '\', \'' + item.divisiId + '\')"><i class="fa fa-plus"></i></button></td>' +
-                    '</tr>' +
-                    '<tr style="display: none" id="row-master-' + i + '">' +
-                    '<td colspan="3" id="body-divisi-' + i + '">' +
-                    '</td>' +
-                    '</tr>';
+            $.each(res, function (i, item) {
+               str += "<tr>" +
+                   "<td>"+item.nama+"</td>" +
+                   "<td align='right'>"+formatRupiah(item.nilaiTotal)+"</td>" +
+                   "<td align='center'><button class='btn btn-sm btn-primary'><i class='fa fa-edit'></i> Edit</button></td>" +
+                   "</tr>"
             });
 
             $("#list-body-budgeting").html(str);
         });
-    }
-
-
-    function showListMaster() {
-        BgInvestasiAction.getListMasterBudgeting(idKategori, function (list) {
-            var str = "";
-            $.each(list, function (i, item) {
-                str += '<tr>' +
-                    '<td>'+item.namaMaster+'</td>' +
-                    '<td align="right">'+ formatRupiah( item.nilaiTotal )+'</td>' +
-                    '<td align="center" id="btn-span-'+i+'"><button class="btn btn-sm btn-primary" onclick="spanRow(\''+i+'\', \''+item.masterId+'\')"><i class="fa fa-plus"></i></button></td>' +
-                    '</tr>' +
-                    '<tr style="display: none" id="row-master-'+i+'">' +
-                    '<td colspan="3" id="body-divisi-'+i+'">' +
-                    '</td>' +
-                    '</tr>';
-            });
-
-            $("#list-body-budgeting").html(str);
-        });
-    }
-
-    function spanRow(i, divisiId) {
-        $("#row-master-"+i).show();
-        var btn = '<button class="btn btn-sm btn-primary" onclick="unSpanRow(\''+i+'\', \''+divisiId+'\')"><i class="fa fa-minus"></i></button>';
-        $("#btn-span-"+i).html(btn);
-//        listDivisi(i, master);
-        listRekening(i, divisiId);
-    }
-
-    function unSpanRow(i, divisiId) {
-        $("#row-master-"+i).hide();
-        var btn = '<button class="btn btn-sm btn-primary" onclick="spanRow(\''+i+'\', \''+divisiId+'\')"><i class="fa fa-plus"></i></button>';
-        $("#btn-span-"+i).html(btn);
     }
 
     function listRekening(i, divisiId) {
@@ -562,7 +480,6 @@
                 str += '<div class="row">' +
                     '<div class="col-md-8 col-md-offset-2">' +
                     '<h4 id="label-head-'+item.idParameter+'">' + item.nama +'</h4>' + addButton(item.idParameter, item.divisiId, "INV") +
-//                    '<button class="btn btn-sm btn-primary" style="float: right;" onclick="showAdd(\''+item.idParameter+'\', \''+item.divisiId+'\', \'INV\')"><i class="fa fa-plus"></i> Tambah</button>' +
                     '<table class="table table-bordered table-striped">' +
                     '<thead id="head-budgeting">' +
                     '<tr bgcolor="#90ee90">' +
@@ -630,29 +547,6 @@
 //        })
     }
 
-    function addPerhitungan() {
-//        $("#modal-add-hitung").modal('show');
-        var idParam = $("#id-param").val();
-        var str = "<div class='row'>" +
-            "<div class=\"col-md-4\"><input type='text' class=\"form-control\" id=\"nama-"+n+"-" +idParam+ "\" placeholder='Nama'/></div>" +
-            "<div class=\"col-md-3\">" +
-            "<input type='number' class='form-control' id='total-"+ n + "-"+ idParam +"' placeholder='Nilai'  onchange=\"hitungInvestasi(\'"+n+"\')\" />" +
-            "</div>" +
-            "<div class=\"col-md-2\">"+
-            "<input type=\"number\" class=\"form-control\" id=\"qty-"+n+"-"+idParam+"\" placeholder='Qty'  onchange=\"hitungInvestasi(\'"+n+"\')\" />" +
-            "</div>" +
-            "<div class=\"col-md-3\">" +
-            "<input type=\"number\" class='form-control' id='total-nilai-"+ n + "-"+ idParam +"' placeholder='Total Nilai' readonly />" +
-            "</div>" +
-            "</div>";
-
-        n = n + 1;
-        var i = n - 1;
-        str += "<div id='hitung-"+ n +"'></div>";
-        $("#hitung-" + i ).html(str);
-        console.log("n = " + i);
-    }
-
     function hitungInvestasi(id) {
         console.log("mulai hitung -> "+id);
         var idParam     = $("#id-param").val();
@@ -684,49 +578,35 @@
         }
     }
 
-    function showAdd(idParam, divisi, master) {
+    function showAdd() {
+        $("#modal-add").modal('show');
+        $("#id-param").val(idParam);
+        var periode = $("#sel-periode").val();
+        $("#label-edit").text("Investasi "+namaKategori +" "+ titleCase(periode) + " " + tahun);
+        listOfParam = [];
+        n = 0;
 
-        if ("Y" != flagNilaiDasar){
-            alert("Nilai Dasar Belum Ada untuk Tahun Tersebut");
-        } else {
+        var str = "<div class=\"row\">" +
+            "<div class=\"col-md-4\"><input type='text' class=\"form-control\" id=\"nama-"+n+"-" +idParam+ "\" placeholder='Nama'/></div>" +
+            "<div class=\"col-md-3\">" +
+            "<input type='number' class='form-control' id='total-"+ n + "-"+ idParam +"' placeholder='Nilai' onchange=\"hitungInvestasi(\'"+n+"\')\" />" +
+            "</div>" +
+            "<div class=\"col-md-2\">"+
+            "<input type=\"number\" class=\"form-control\" id=\"qty-"+n+"-"+idParam+"\" placeholder='Qty'  onchange=\"hitungInvestasi(\'"+n+"\')\" />" +
+            "</div>" +
+            "<div class=\"col-md-3\">" +
+            "<input type=\"number\" class='form-control' id='total-nilai-"+ n + "-"+ idParam +"' placeholder='Total Nilai' readonly />" +
+            "</div>" +
+            "</div>";
 
-            $("#modal-add").modal('show');
-            $("#id-param").val(idParam);
-            listOfParam = [];
-            n = 0;
+        n = n + 1;
 
-            var namaDivisi = divisi.replace(/\./g,'\\.');
-            namaDivisi = $("#label-divisi-"+namaDivisi).text();
+        str += "<div id='hitung-"+ n +"'></div>";
 
+        listOfParam.push({"id":"total-"+idParam, "opr":"="});
 
-            var label = $("#label-head-"+idParam).text();
-
-            var str = "<div class=\"row\">" +
-                "<div class=\"col-md-4\"><input type='text' class=\"form-control\" id=\"nama-"+n+"-" +idParam+ "\" placeholder='Nama'/></div>" +
-                "<div class=\"col-md-3\">" +
-                "<input type='number' class='form-control' id='total-"+ n + "-"+ idParam +"' placeholder='Nilai' onchange=\"hitungInvestasi(\'"+n+"\')\" />" +
-                "</div>" +
-                "<div class=\"col-md-2\">"+
-                "<input type=\"number\" class=\"form-control\" id=\"qty-"+n+"-"+idParam+"\" placeholder='Qty'  onchange=\"hitungInvestasi(\'"+n+"\')\" />" +
-                "</div>" +
-                "<div class=\"col-md-3\">" +
-                "<input type=\"number\" class='form-control' id='total-nilai-"+ n + "-"+ idParam +"' placeholder='Total Nilai' readonly />" +
-                "</div>" +
-                "</div>";
-
-            n = n + 1;
-
-            str += "<div id='hitung-"+ n +"'></div>";
-
-            listOfParam.push({"id":"total-"+idParam, "opr":"="});
-
-            $("#id-param").val(idParam);
-            $("#masterid").val(master);
-            $("#divisiid").val(divisi);
-            $("#divisi-name").text(namaDivisi);
-            $("#label-edit").text(label);
-            $("#body-nilai").html(str);
-        }
+        $("#id-param").val(idParam);
+        $("#body-nilai").html(str);
 
     }
 
@@ -829,9 +709,6 @@
 
     function addCoa() {
         var listData    = [];
-        var idParam     = $("#id-param").val();
-        var divisiId    = $("#divisiid").val();
-        var masterId    = $("#masterid").val();
         var periode     = $("#sel-periode").val();
 
         for (i=0; i<n;i++){
@@ -841,10 +718,12 @@
             listData.push({"nilai":nilai, "qty":qty, "nama":nama});
         }
 
+        var objData = {"id_param" : idParam, "branch_id" : unit, "tahun" : tahun, "periode" : periode, "tipe" : "bulanan"};
+
         console.log(listData);
-        var stJson = JSON.stringify(listData);
-//        dwr.engine.setAsync(true);
-        BgInvestasiAction.setPerhitunganToSession(idParam, stJson, masterId, divisiId, tahun, unit, idKategori, periode, function (res) {
+        var stList  = JSON.stringify(listData);
+        var stObj   = JSON.stringify(objData);
+        BgInvestasiAction.saveAddDraftInvestasi(stObj, stList, function (res) {
 //            dwr.engine.setAsync(false);
             if (res.status == "success"){
                 refreshAdd();
@@ -913,6 +792,36 @@
         var host = firstpath()+"/bginvestasi/add_bginvestasi.action";
         post(host, form);;
     }
+
+    function changePeriode(nama){
+
+        $("#nama-periode").text(titleCase(nama));
+        $("#sel-periode").val(nama.toLowerCase());
+        $(".tab-bulan").removeAttr("class");
+        $("#btn-tambah").removeAttr("style");
+        $("#btn-tambah").attr("style", "font-size : 13px; float : right");
+
+        var name = $('[name=bulan]');
+        $.each(name, function (i, item) {
+
+            if (item.id == "tab-bulan-"+nama){
+                $("#"+item.id).attr("class", "bold");
+            } else {
+                $("#"+item.id).attr("class", "tab-bulan");
+            }
+        });
+        showListParameter();
+    }
+
+    function titleCase(string) {
+        var sentence = string.toLowerCase().split(" ");
+        for(var i = 0; i< sentence.length; i++){
+            sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
+        }
+        sentence.join(" ");
+        return sentence;
+    }
+
 
 </script>
 

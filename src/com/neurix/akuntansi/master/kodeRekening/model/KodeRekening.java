@@ -31,9 +31,15 @@ public class KodeRekening extends BaseModel {
     private String flagMaster;
     private String flagDivisi;
     private String tipeBudgeting;
+    private BigInteger bLevel;
 
+    public BigInteger getbLevel() {
+        return bLevel;
+    }
 
-
+    public void setbLevel(BigInteger bLevel) {
+        this.bLevel = bLevel;
+    }
 
     public String getTipeBudgeting() {
         return tipeBudgeting;

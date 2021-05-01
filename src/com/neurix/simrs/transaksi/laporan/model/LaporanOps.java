@@ -38,6 +38,15 @@ public class LaporanOps {
     private String bulan;
     private String namaPenyakit;
     private String icdx;
+    private String tipePenunjang;
+
+    public String getTipePenunjang() {
+        return tipePenunjang;
+    }
+
+    public void setTipePenunjang(String tipePenunjang) {
+        this.tipePenunjang = tipePenunjang;
+    }
 
     List<String> listIdPelayanan = new ArrayList<>();
     List<String> listIdRuangan = new ArrayList<>();

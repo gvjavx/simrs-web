@@ -2356,7 +2356,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "a.no_checkup,\n" +
                     "a.id_pasien,\n" +
                     "a.nama,\n" +
-                    "b.Id_detail_checkup,\n" +
+                    "b.id_detail_checkup,\n" +
                     "b.keterangan_selesai,\n" +
                     "b.tindak_lanjut,\n" +
                     "b.catatan,\n" +
@@ -2365,12 +2365,30 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "b.flag_close_traksaksi, \n" +
                     "b.metode_pembayaran, \n" +
                     "b.id_jenis_periksa_pasien,\n" +
-                    "b.flag_cover\n" +
+                    "b.flag_cover,\n" +
+                    "a.created_date,\n" +
+                    "b.nama_pelayanan\n"+
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN (" +
                     "SELECT a.* FROM(\n" +
-                    "SELECT *, rank() OVER (PARTITION BY no_checkup, id_jenis_periksa_pasien ORDER BY created_date DESC) as rank \n" +
-                    "FROM it_simrs_header_detail_checkup\n" +
+                    "SELECT\n" +
+                    "\t\ta.no_checkup,\n" +
+                    "\t\ta.id_detail_checkup,\n" +
+                    "\t\ta.keterangan_selesai,\n" +
+                    "\t\ta.status_periksa,\n" +
+                    "\t\ta.tindak_lanjut,\n" +
+                    "\t\ta.catatan,\n" +
+                    "\t\ta.flag_close_traksaksi, \n" +
+                    "\t\ta.metode_pembayaran, \n" +
+                    "\t\ta.id_jenis_periksa_pasien,\n" +
+                    "\t\ta.flag_cover,\n" +
+                    "\t\ta.id_pelayanan,\n" +
+                    "\t\tc.nama_pelayanan,\n" +
+                    "\t\ta.created_date,\n"+
+                    "\t\trank() OVER (PARTITION BY a.no_checkup, a.id_jenis_periksa_pasien ORDER BY a.created_date DESC) as rank \n" +
+                    "\t\tFROM it_simrs_header_detail_checkup a\n" +
+                    "\t\tINNER JOIN im_simrs_pelayanan b ON a.id_pelayanan = b.id_pelayanan\n" +
+                    "\t\tINNER JOIN im_simrs_header_pelayanan c ON b.id_header_pelayanan = c.id_header_pelayanan\n"+
                     ") a WHERE a.rank = 1" +
                     ") b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_jenis_periksa_pasien c ON b.id_jenis_periksa_pasien = c.id_jenis_periksa_pasien\n"
@@ -2397,6 +2415,12 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     detail.setMetodePembayaran(obj[10] == null ? null : obj[10].toString());
                     detail.setIdJenisPeriksaPasien(obj[11] == null ? null : obj[11].toString());
                     detail.setFlagCover(obj[12] == null ? null : obj[12].toString());
+                    detail.setCreatedDate(obj[13] == null ? null : (Timestamp) obj[13]);
+                    if(detail.getCreatedDate() != null){
+                        String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(detail.getCreatedDate());
+                        detail.setFormatTglMasuk(formatDate);
+                    }
+                    detail.setNamaPelayanan(obj[14] == null ? null : obj[14].toString());
                     response.add(detail);
                 }
             }

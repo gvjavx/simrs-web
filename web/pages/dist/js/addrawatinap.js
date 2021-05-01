@@ -802,7 +802,7 @@ function showModal(select) {
         $('#body_detail').html('');
         $('#modal-resep-head').modal({show: true, backdrop: 'static'});
 
-        var option = '<option value="">[Select One]</option>';
+        var option = '<option value=""> - </option>';
         dwr.engine.setAsync(true);
         CheckupAction.getListJenisObat(function (res) {
             if (res.length > 0) {
@@ -1015,7 +1015,7 @@ function listDokterKeterangan(idPelayanan) {
     var idPoli = idPelayanan.options[idx].value;
     var option = "";
     CheckupAction.listOfDokter(idPoli, function (response) {
-        option = "<option value=''>[Select One]</option>";
+        option = "<option value=''> - </option>";
         if (response != null) {
             $.each(response, function (i, item) {
                 option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
@@ -1122,7 +1122,7 @@ function saveTindakan(id) {
 function listDokterTindakan() {
 
     var idPelayanan = $("#id_pelayanan").val();
-    var option = "<option value=''>[Select One]</option>";
+    var option = "<option value=''> - </option>";
 
     CheckupAction.listOfDokter(idPelayanan, function (response) {
         if (response.length > 0) {
@@ -1306,7 +1306,7 @@ function listDiagnosa() {
 }
 
 function listSelectLab(idx) {
-    var option = "<option value=''>[Select One]</option>";
+    var option = "<option value=''> - </option>";
     if (idx != '') {
         LabAction.listLab(idx, function (response) {
             if (response != null) {
@@ -1545,11 +1545,11 @@ function listLab() {
                 }
 
                 if (item.uploadDalam.length > 0) {
-                    dalam = '<img border="0" class="hvr-grow" onclick="showHasil(\'' + item.idHeaderPemeriksaan + '\',\'dalam\',\'' + item.kategoriLabName + '\')" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
+                    dalam = '<img border="0" class="hvr-grow" onclick="showHasilUploadRadiologi(\'' + item.idHeaderPemeriksaan + '\',\'dalam\',\'' + item.kategoriLabName + '\')" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
                     hiddeDalam = JSON.stringify(item.uploadDalam);
                 }
                 if (item.uploadLuar.length > 0) {
-                    luar = '<img border="0" class="hvr-grow" onclick="showHasil(\'' + item.idHeaderPemeriksaan + '\',\'luar\',\'' + item.kategoriLabName + '\')" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
+                    luar = '<img border="0" class="hvr-grow" onclick="showHasilUploadRadiologi(\'' + item.idHeaderPemeriksaan + '\',\'luar\',\'' + item.kategoriLabName + '\')" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
                     hiddeLuar = JSON.stringify(item.uploadLuar);
                 }
 
@@ -1602,7 +1602,7 @@ function labLuar(kategori, url) {
 function listSelectObat(select) {
     var idx = select.selectedIndex;
     var idJenis = select.options[idx].value;
-    var option = "<option value=''>[Select One]</option>";
+    var option = "<option value=''> - </option>";
     var stok = "";
 
     if (idJenis != '') {
@@ -2353,7 +2353,7 @@ function editRuangan(kelas, ruang, idRawatInap) {
 function listSelectObatEdit(select) {
     var idx = select.selectedIndex;
     var idJenis = select.options[idx].value;
-    var option = "<option value=''>[Select One]</option>";
+    var option = "<option value=''> - </option>";
     if (idJenis != '') {
         ObatAction.listObatByJenis(idJenis, function (response) {
             if (response != null) {
@@ -3040,7 +3040,7 @@ function listDetailResepPasien(idApprovalObat) {
                     '<input style="display:none; width: 80px" type="number" id=newQty' + idObat + ' class="form-control">' + "</td>" +
                     "<td>" + '<span id=ket' + idObat + '>' + ket + '</span>' +
                     '<select class="form-control" id=newKet' + idObat + ' style="display:none"' +
-                    '<option value="">[Select One]</option>' +
+                    '<option value=""> - </option>' +
                     '<option value="2 x 1 /Hari">2 x 1 /Hari</option>' +
                     '<option value="3 x 1 /Hari">3 x 1 /Hari</option>' +
                     '</select>' + "</td>" +
@@ -3156,7 +3156,7 @@ function showOtherInput(id) {
 
 function setObatPoli(jenis) {
     var poli = $('#resep_apotek').val();
-    var option = "<option value=''>[Select One]</option>";
+    var option = "<option value=''> - </option>";
     var jenisPasien = $('#id_jenis_pasien').val();
 
     if (poli != '') {
@@ -3558,7 +3558,7 @@ function searchICD9(id) {
 }
 
 function getListNamaDokter(tipe) {
-    var option = '<option value="">[Select One]</option>';
+    var option = '<option value=""> - </option>';
     var def = '';
     CheckupAction.getListDokterByIdDetailCheckup(idDetailCheckup, "Y", function (res) {
         if (res.length > 0) {
@@ -3584,7 +3584,7 @@ function setObatPoliSerupa() {
     var selPelayanan = $("#resep_apotek").val();
     var idObat = selObat.split('|')[0];
     var idPelayanan = selPelayanan.split('|')[0];
-    var option = "<option value=''>[Select One]</option>";
+    var option = "<option value=''> - </option>";
     ObatPoliAction.getSelectOptionObatByPoliKandunganSerupa(idPelayanan, jenisPasien, idObat, function (response) {
         if (response != null) {
             $.each(response, function (i, item) {
@@ -3615,7 +3615,7 @@ function isPemeriksaan(id, idTujuan) {
 }
 
 function getKamar(idKelas, kategori) {
-    var option = '<option value="">[Select One]</option>';
+    var option = '<option value=""> - </option>';
     dwr.engine.setAsync(true);
     CheckupDetailAction.listRuangan(idKelas, true, kategori, {
         callback: function (response) {
@@ -3632,7 +3632,7 @@ function getKamar(idKelas, kategori) {
 }
 
 function getKelasKamar(kategori) {
-    var option = '<option value="">[Select One]</option>';
+    var option = '<option value=""> - </option>';
     CheckupDetailAction.getListKelasKamar(kategori, function (res) {
         if (res.length > 0) {
             $.each(res, function (i, item) {
@@ -4403,7 +4403,7 @@ function delParamrs(id){
     $('#'+id).remove();
 }
 
-function showHasil(id, tipe, kategori){
+function showHasilUploadRadiologi(id, tipe, kategori){
     var data = $('#'+tipe+'_'+id).val();
     $('#item_hasil_lab').html('');
     $('#li_hasil_lab').html('');

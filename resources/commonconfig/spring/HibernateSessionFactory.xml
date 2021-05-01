@@ -51,7 +51,6 @@
                 <!--<prop key="hibernate.connection.username">root</prop>-->
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
-
             </props>
         </property>
         <property name="mappingResources">
@@ -1003,6 +1002,7 @@
                 <value>sshconfig/com/neurix/hris/transaksi/logcron/hibernate/ItLogCronEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/billingSystem/hibernate/ItPgLogTransactionEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/billingSystem/hibernate/ItPgInvoiceEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/hargaobat/hibernate/MtSimrsHargaObatPerKonsumenEntity.xml</value>
 
 
 

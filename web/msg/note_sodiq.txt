@@ -2554,9 +2554,14 @@ INSERT INTO im_functions VALUES
 INSERT INTO im_func_roles VALUES
 (6922, 32, 'Y', now(), now(), 'admin', 'admin');
 
+--SENIN 26-04-2021
+INSERT INTO im_functions VALUES
+(6923, 'add rawat igd', '/rawatinap/addRawatIgd_rawatinap.action', 1485, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6924, 'save rawat igd', '/rawatinap/saveAddRawatIgd_rawatinap.action', 1485, null, now(), 'admin', now(), 'admin', 'Y','C', null);
 
-
-
+INSERT INTO im_func_roles VALUES
+(6923, 32, 'Y', now(), now(), 'admin', 'admin'),
+(6924, 32, 'Y', now(), now(), 'admin', 'admin');
 
 
 

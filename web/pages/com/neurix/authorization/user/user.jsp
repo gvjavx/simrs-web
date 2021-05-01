@@ -114,7 +114,7 @@
                                         <s:action id="comboArea" namespace="/admin/user" name="initComboArea_user"/>
                                         <s:select list="#comboArea.listOfComboAreas" id="areaId" name="users.areaId"
                                                   listKey="areaId" listValue="areaName" headerKey=""
-                                                  headerValue="[Select one]"
+                                                  headerValue=" - "
                                                   cssClass="form-control select2" cssStyle="width: 100%"/>
                                     </div>
                                 </div>
@@ -125,7 +125,7 @@
                                         <s:select list="#comboBranch.listOfComboBranches" id="branchid"
                                                   name="users.branchId"
                                                   listKey="branchId" listValue="branchName" headerKey=""
-                                                  headerValue="[Select one]"
+                                                  headerValue=" - "
                                                   cssClass="form-control select2" cssStyle="width: 100%"/>
                                     </div>
                                 </div>
@@ -137,7 +137,7 @@
                                         <s:select list="#comboDivisi.listComboDepartment" id="users.divisiId"
                                                   name="users.divisiId"
                                                   listKey="departmentId" listValue="departmentName" headerKey=""
-                                                  headerValue="[Select One]"
+                                                  headerValue=" - "
                                                   cssClass="form-control select2" cssStyle="width: 100%"/>
                                     </div>
                                 </div>
@@ -149,7 +149,7 @@
                                         <s:select list="#comboPosition.listOfComboPositions" id="positionId"
                                                   name="users.positionId"
                                                   listKey="stPositionId" listValue="positionName" headerKey=""
-                                                  headerValue="[Select one]"
+                                                  headerValue=" - "
                                                   cssClass="form-control select2" cssStyle="width: 100%"/>
                                     </div>
                                 </div>
@@ -159,7 +159,7 @@
                                         <s:action id="comboRole" namespace="/admin/user" name="initComboRole_user"/>
                                         <s:select list="#comboRole.listOfComboRoles" id="roleId" name="users.roleId"
                                                   listKey="stRoleId" listValue="roleName" headerKey=""
-                                                  headerValue="[Select one]"
+                                                  headerValue=" - "
                                                   cssClass="form-control select2" cssStyle="width: 100%"/>
                                     </div>
                                 </div>
@@ -173,7 +173,7 @@
                                     <label class="control-label col-sm-4">Flag</label>
                                     <div class="col-sm-4">
                                         <s:select list="#{'Y':'Active', 'N':'Non Active'}" id="flag" name="users.flag"
-                                                  headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                  headerKey="" headerValue=" - " cssClass="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -420,7 +420,7 @@
                             <s:action name="initComboArea_user" namespace="/admin/user" id="areaCombo"/>
                             <s:select list="#areaCombo.listOfComboAreas" id="set_area"
                                       onchange="listUnit(this.value); inputWarning('war_set_area', 'cor_set_area')"
-                                      listKey="areaId" listValue="areaName" headerKey="" headerValue="[Select one]"
+                                      listKey="areaId" listValue="areaName" headerKey="" headerValue=" - "
                                       cssClass="form-control select2" cssStyle="width: 100%"
                             />
                         </div>
@@ -439,7 +439,7 @@
                         <div class="col-md-7">
                             <select onchange="inputWarning('war_set_unit', 'cor_set_unit');" id="set_unit"
                                     style="width: 100%" class="form-control select2">
-                                <option value="">[Select One]</option>
+                                <option value=""> - </option>
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -459,7 +459,7 @@
                             <s:select list="#comboDivisi123.listComboDepartment" id="set_bidang"
                                       onchange="listJabatan(this.value); inputWarning('war_set_bidang', 'cor_set_bidang')"
                                       listKey="departmentId" listValue="departmentName" headerKey=""
-                                      headerValue="[Select One]" cssClass="form-control select2"
+                                      headerValue=" - " cssClass="form-control select2"
                                       cssStyle="width: 100%"/>
                         </div>
                         <div class="col-md-2">
@@ -477,7 +477,7 @@
                         <div class="col-md-7">
                             <select id="set_jabatan" class="form-control select2" style="width: 100%"
                                     onchange="inputWarning('war_set_jabatan', 'cor_set_jabatan')">
-                                <option value="">[Select One]</option>
+                                <option value=""> - </option>
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -495,7 +495,7 @@
                         <div class="col-md-7">
                             <s:action id="comboRole" namespace="/admin/user" name="initComboRole_user"/>
                             <s:select list="#comboRole.listOfComboRoles" id="set_role"
-                                      listKey="stRoleId" listValue="roleName" headerKey="" headerValue="[Select one]"
+                                      listKey="stRoleId" listValue="roleName" headerKey="" headerValue=" - "
                                       cssClass="form-control select2" cssStyle="width: 100%"/>
                         </div>
                         <div class="col-md-2">
@@ -513,7 +513,7 @@
                         <div class="col-md-7">
                             <select style="width: 100%" class="form-control select2" id="set_pelayanan"
                                     onchange="inputWarning('war_set_pelayanan', 'cor_set_pelayanan')">
-                                <option value="">[Select One]</option>
+                                <option value=""> - </option>
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -531,7 +531,7 @@
                         <div class="col-md-7">
                             <select style="width: 100%" class="form-control select2" id="set_ruangan"
                                     onchange="inputWarning('war_set_ruangan', 'cor_set_ruangan')">
-                                <option value="">[Select One]</option>
+                                <option value=""> - </option>
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -549,7 +549,7 @@
                         <div class="col-md-7">
                             <select style="width: 100%" class="form-control select2" id="set_vendor"
                                     onchange="inputWarning('war_set_vendor', 'cor_set_vendor')">
-                                <option value="">[Select One]</option>
+                                <option value=""> - </option>
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -1027,7 +1027,7 @@
     }
 
     function listUnit(area) {
-        var option = '<option value="">[Select One]</option>';
+        var option = '<option value=""> - </option>';
         BranchAction.getComboBranchByArea(area, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
@@ -1041,7 +1041,7 @@
     }
 
     function listJabatan(divisi) {
-        var option = '<option value="">[Select One]</option>';
+        var option = '<option value=""> - </option>';
         PositionAction.searchPositionBiodata(divisi, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
@@ -1105,7 +1105,7 @@
     function getListPelayananByBranchAndTipe(branch, tipe) {
         var option = "";
         PelayananAction.getListPelayananByBranchAndTipe(branch, tipe, function (response) {
-            option = "<option value=''>[Select One]</option>";
+            option = "<option value=''> - </option>";
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idPelayanan + "'>" + item.namaPelayanan + "</option>";
@@ -1120,7 +1120,7 @@
     function getListRuanganByBranch(branch) {
         var option = "";
         RuanganAction.getListRuangan(branch, function (response) {
-            option = "<option value=''>[Select One]</option>";
+            option = "<option value=''> - </option>";
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idRuangan + "'>" + item.namaRuangan + "</option>";
@@ -1135,7 +1135,7 @@
     function getListVendorByBranch() {
         var option = "";
         VendorAction.getListVendor(function (response) {
-            option = "<option value=''>[Select One]</option>";
+            option = "<option value=''> - </option>";
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idVendor + "'>" + item.namaVendor + "</option>";
@@ -1150,7 +1150,7 @@
     function listApotek(branch) {
         var option = "";
         CheckupAction.getListComboApotek(branch, function (response) {
-            option = "<option value=''>[Select One]</option>";
+            option = "<option value=''> - </option>";
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idPelayanan + "'>" + item.namaPelayanan + "</option>";
@@ -1165,7 +1165,7 @@
     function listPelayanan(branch) {
         var option = "";
         CheckupAction.getListComboPoli(branch, function (response) {
-            option = "<option value=''>[Select One]</option>";
+            option = "<option value=''> - </option>";
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idPelayanan + "'>" + item.namaPelayanan + "</option>";
