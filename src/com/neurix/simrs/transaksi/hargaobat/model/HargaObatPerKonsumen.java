@@ -21,6 +21,24 @@ public class HargaObatPerKonsumen {
     private String tipeRekanan;
     private String flagIsBpjs;
     private BigDecimal hargaTerakhir;
+    private String idObat;
+    private String branchId;
+
+    public String getIdObat() {
+        return idObat;
+    }
+
+    public void setIdObat(String idObat) {
+        this.idObat = idObat;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
     public BigDecimal getHargaTerakhir() {
         return hargaTerakhir;
