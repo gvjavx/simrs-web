@@ -231,9 +231,9 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
         List<ObatPoli> obatPoliList = new ArrayList<>();
         String queryJenisObat = "";
 
-        if (idJenisObat != null && !idJenisObat.equalsIgnoreCase("")) {
-            queryJenisObat = "AND d.id_jenis_obat = '" + idJenisObat + "' \n";
-        }
+//        if (idJenisObat != null && !idJenisObat.equalsIgnoreCase("")) {
+//            queryJenisObat = "AND d.id_jenis_obat = '" + idJenisObat + "' \n";
+//        }
 
         if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan) && branchId != null && !"".equalsIgnoreCase(branchId)){
 

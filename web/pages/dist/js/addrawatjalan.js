@@ -1006,6 +1006,7 @@ function showModal(select) {
     } else if (select == 7) {
         resetAll();
         cekRekakanops();
+        getApotekRawatJalan();
         $('#resep_jenis_obat').val('').trigger('change');
         $('#resep_apotek').val('').trigger('change').attr('disabled', false);
         $('#resep_nama_obat').val('').trigger('change');
@@ -1046,6 +1047,21 @@ function showModal(select) {
         $('#save_icd9').attr('onclick', 'saveICD9(\'' + id + '\')').show();
         $('#modal-icd9').modal({show: true, backdrop: 'static'});
     }
+}
+
+function getApotekRawatJalan() {
+   CheckupAction.getComboApotekList(function (res) {
+       if (res.length == 1){
+           $("#body-apotek").html("");
+           var str = "";
+           $.each(res, function (i, item) {
+               str += "<input type='text' class='form-control' value='"+item.namaPelayanan+"' disabled/>" +
+                   "<input type='text' id='resep_apotek' value='"+item.idPelayanan+"' />";
+           });
+           $("#body-apotek").html(str);
+           setObatPoli();
+       };
+   })
 }
 
 
@@ -2287,6 +2303,7 @@ function addObatToList() {
         obat = $('#resep_nama_obat').val();
     }
     var apotek = $('#resep_apotek').val();
+    alert(apotek);
     var qty = $('#resep_qty').val();
     var jenisSatuan = $('#resep_jenis_satuan').val();
     var jenisObat = $('#resep_jenis_obat').val();
@@ -2544,6 +2561,8 @@ function addObatToList() {
 }
 
 function showModalKeterangan(count) {
+
+    $("#modal-keterangan").show();
 
 }
 

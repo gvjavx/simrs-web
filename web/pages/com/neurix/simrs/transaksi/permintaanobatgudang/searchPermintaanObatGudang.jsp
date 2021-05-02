@@ -300,9 +300,11 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Gudang Obat</label>
                         <div class="col-md-7">
-                            <select class="form-control select2" id="req_gudang_obat" style="width: 100%"
-                            onchange="$('#war_gudang_obat').is(':visible'); if (warn){$('#cor_gudang_obat').show().fadeOut(3000);$('#war_gudang_obat').hide()}">
-                            </select>
+                            <input type="text" class="form-control" id="label_gudang_obat" readonly/>
+                            <input type="hidden" id="req_gudang_obat"/>
+                            <%--<select class="form-control select2" id="req_gudang_obat" style="width: 100%"--%>
+                            <%--onchange="$('#war_gudang_obat').is(':visible'); if (warn){$('#cor_gudang_obat').show().fadeOut(3000);$('#war_gudang_obat').hide()}">--%>
+                            <%--</select>--%>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -354,7 +356,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Stok Tujuan</label>
+                        <label class="col-md-3" style="margin-top: 7px">Stok Gudang Farmasi</label>
                         <%--<label class="col-md-3" style="margin-top: 7px"></label>--%>
                         <%--<div class="col-md-2">--%>
                             <%--<label style="margin-top: 7px">Box</label>--%>
@@ -375,7 +377,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Stok Sendiri</label>
+                        <label class="col-md-3" style="margin-top: 7px">Stok Farmasi</label>
                         <%--<div class="col-md-2">--%>
                             <%--<label style="margin-top: 7px">Box</label>--%>
                             <%--<input class="form-control" readonly id="req_stok_box_sendiri">--%>
@@ -1394,12 +1396,18 @@
         CheckupAction.getListComboGudang(function (res) {
             if(res.length > 0){
                 $.each(res, function (i, item) {
-                    option += '<option value="'+item.idPelayanan+'">'+item.namaPelayanan+'</option>';
+                    //option += '<option value="'+item.idPelayanan+'">'+item.namaPelayanan+'</option>';
+
+                    $("#label_gudang_obat").val(item.namaPelayanan);
+                    $('#req_gudang_obat').val(item.idPelayanan);
+
                 });
-                $('#req_gudang_obat').html(option);
-            }else{
-                $('#req_gudang_obat').html('');
+                //$('#req_gudang_obat').html(option);
+                //$('#req_gudang_obat').attr("readOnly", "true");
             }
+            //else{
+                //$('#req_gudang_obat').html('');
+            //}
 
             getListObat();
         });
@@ -1408,7 +1416,8 @@
     function getListObat() {
 
         var option      = "<option value=''> - </option>";
-        var idPelayanan = $("#req_gudang_obat option:selected").val();
+       // var idPelayanan = $("#req_gudang_obat option:selected").val();
+        var idPelayanan = $("#req_gudang_obat").val();
         var jenisObat   = $("#id-jenis-obat").val() == '' ? $("#req_jenis_obat option:selected").val() : $("#id-jenis-obat").val();
 
         ObatAction.getListObat(idPelayanan,jenisObat, function (res) {

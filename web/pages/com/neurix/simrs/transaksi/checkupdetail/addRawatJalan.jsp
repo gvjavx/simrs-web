@@ -283,7 +283,7 @@
                                         <td>
                                             <table><s:label name="headerDetailCheckup.tempatTglLahir"></s:label></table>
                                         </td>
-                                    </tr>listOfSigna
+                                    </tr>
                                     <tr>
                                         <td><b>Umur</b></td>
                                         <td>
@@ -2041,14 +2041,15 @@
                 <div class="row">
                     <label class="col-md-3" style="margin-top: 7px">Apotek</label>
                     <div class="col-md-9">
-                        <s:action id="initApotek" namespace="/checkup"
-                                  name="getComboApotek_checkup"/>
-                        <s:select cssStyle="margin-top: 7px; width: 100%"
-                                  list="#initApotek.listOfApotek" id="resep_apotek"
-                                  listKey="idPelayanan + '|' + namaPelayanan"
-                                  listValue="namaPelayanan"
-                                  headerKey="" headerValue=" - "
-                                  cssClass="form-control select2"/>
+                        <div id="body-apotek">
+                            <s:action id="initApotek" namespace="/checkup"
+                                      name="getComboApotek_checkup"/>
+                            <s:select cssStyle="margin-top: 7px; width: 100%"
+                                      list="#initApotek.listOfApotek" id="resep_apotek"
+                                      listKey="idPelayanan + '|' + namaPelayanan"
+                                      listValue="namaPelayanan"
+                                      cssClass="form-control select2"/>
+                        </div>
                         <span style="color: red; margin-top: 12px; display: none;"
                               id="war_rep_apotek"><i class="fa fa-times"></i> required</span>
                         <span style="color: green; margin-top: 12px; display: none;"
