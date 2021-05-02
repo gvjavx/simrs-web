@@ -481,7 +481,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setCabangBank(person.getCabangBank());
             result.setTanggalMasuk(person.getTanggalMasuk());
             result.setGolonganDapenId(person.getGolonganDapenId());
-            result.setMasaKerjaGolongan(person.getMasaKerjaGolongan());
+//            result.setMasaKerjaGolongan(person.getMasaKerjaGolongan());
+            result.setStMasaKerjaGol(person.getStMasaKerjaGol());
             result.setTanggalAkhirKontrak(person.getTanggalAkhirKontrak());
             result.setTanggalPraPensiun(person.getTanggalPraPensiun());
             result.setFlagMess(person.getFlagMess());
@@ -668,7 +669,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 result.setCabangBank(person.getCabangBank());
                 result.setTanggalMasuk(person.getTanggalMasuk());
                 result.setGolonganDapenId(person.getGolonganDapenId());
-                result.setMasaKerjaGolongan(person.getMasaKerjaGolongan());
+//                result.setMasaKerjaGolongan(person.getMasaKerjaGolongan());
+                result.setStMasaKerjaGol(person.getStMasaKerjaGol());
                 result.setTanggalAkhirKontrak(person.getTanggalAkhirKontrak());
                 result.setTanggalPraPensiun(person.getTanggalPraPensiun());
                 result.setFlagMess(person.getFlagMess());
@@ -890,7 +892,9 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 result.setCabangBank(person.getCabangBank());
                 result.setTanggalMasuk(person.getTanggalMasuk());
                 result.setGolonganDapenId(person.getGolonganDapenId());
-                result.setMasaKerjaGolongan(person.getMasaKerjaGolongan());
+//                result.setMasaKerjaGolongan(person.getMasaKerjaGolongan());
+                result.setStMasaKerjaGol(person.getStMasaKerjaGol());
+
                 result.setTanggalAkhirKontrak(person.getTanggalAkhirKontrak());
                 result.setTanggalPraPensiun(person.getTanggalPraPensiun());
                 result.setFlagMess(person.getFlagMess());
@@ -1040,7 +1044,9 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 result.setNoRekBank(biodataEntity.getNoRekBank());
                 result.setCabangBank(biodataEntity.getCabangBank());
                 result.setTanggalMasuk(biodataEntity.getTanggalMasuk());
-                result.setMasaKerjaGolongan(biodataEntity.getMasaKerjaGolongan());
+//                result.setMasaKerjaGolongan(biodataEntity.getMasaKerjaGolongan());
+                result.setStMasaKerjaGol(biodataEntity.getStMasaKerjaGol());
+
                 result.setZakatProfesi(biodataEntity.getZakatProfesi());
 
             }
@@ -1156,7 +1162,9 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setCabangBank(person.getCabangBank());
             result.setTanggalMasuk(person.getTanggalMasuk());
             result.setGolonganDapenId(person.getGolonganDapenId());
-            result.setMasaKerjaGolongan(person.getMasaKerjaGolongan());
+//            result.setMasaKerjaGolongan(person.getMasaKerjaGolongan());
+            result.setStMasaKerjaGol(person.getStMasaKerjaGol());
+
             result.setTanggalAkhirKontrak(person.getTanggalAkhirKontrak());
             result.setTanggalPraPensiun(person.getTanggalPraPensiun());
             result.setFlagMess(person.getFlagMess());
@@ -1298,28 +1306,36 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\t\t\tON position.position_id = posisi.position_id \n" +
                 "\t\tLEFT JOIN im_hris_tipe_pegawai tipe \n" +
                 "\t\t\tON tipe.tipe_pegawai_id = pegawai.tipe_pegawai \n" +
+                "\t\tLEFT JOIN im_hris_jenis_pegawai jenis \n" +
+                "\t\t\tON jenis.jenis_pegawai_id = posisi.jenis_pegawai \n" +
                 "\t\t\t\n" +
                 "\tWHERE pegawai.flag = 'Y'\n" +
                 "\t\tAND pegawai.pin IS NOT NULL\n" +
                 "\t\tAND posisi.flag = 'Y' \n" +
-                tipeWhere;
+                tipeWhere +
+                "\tORDER BY jenis.persen_gaji DESC \n" ;
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
 
+        List<String> bioNIP = new ArrayList<>();
 
         for (Object[] row : results) {
-            Biodata result  = new Biodata();
-            result.setNip((String) row[0]);
-            result.setNamaPegawai((String) row[1]);
-            result.setPositionName((String) row[2]);
-            result.setTipePegawai((String) row[3]);
-            result.setTanggalMasuk((Date) row[4]);
-            result.setProfesiId((String)row[5]);
-            result.setTipePegawaiName((String) row[6]);
+            if (!bioNIP.contains((String) row[0])) {
+                bioNIP.add((String) row[0]);
 
-            listOfResult.add(result);
+                Biodata result = new Biodata();
+                result.setNip((String) row[0]);
+                result.setNamaPegawai((String) row[1]);
+                result.setPositionName((String) row[2]);
+                result.setTipePegawai((String) row[3]);
+                result.setTanggalMasuk((Date) row[4]);
+                result.setProfesiId((String) row[5]);
+                result.setTipePegawaiName((String) row[6]);
+
+                listOfResult.add(result);
+            }
         }
         return listOfResult;
     }
@@ -1922,7 +1938,9 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                     result.setNoRekBank(biodataEntity.getNoRekBank());
                     result.setCabangBank(biodataEntity.getCabangBank());
                     result.setTanggalMasuk(biodataEntity.getTanggalMasuk());
-                    result.setMasaKerjaGolongan(biodataEntity.getMasaKerjaGolongan());
+//                    result.setMasaKerjaGolongan(biodataEntity.getMasaKerjaGolongan());
+                    result.setStMasaKerjaGol(biodataEntity.getStMasaKerjaGol());
+
                 }
 
                 listOfResult.add(result);

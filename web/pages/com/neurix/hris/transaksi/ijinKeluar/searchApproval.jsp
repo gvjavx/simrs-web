@@ -145,7 +145,7 @@
                                             <tr>
                                                 <td>
                                                     <sj:submit type="button" cssClass="btn btn-primary" formIds="searchForm" id="search" name="search"
-                                                               onClickTopics="showDialog" onCompleteTopics="closeDialog" onclick="showLoadingDialog();">
+                                                               onClickTopics="showDialog" onCompleteTopics="closeDialog" onclick="searchData(), showLoadingDialog();">
                                                         <i class="fa fa-search"></i>
                                                         Search
                                                     </sj:submit>
@@ -188,6 +188,7 @@
                                                     </s:else>
                                                 </display:column>
                                                 <display:column property="ijinKeluarId" sortable="true" title="Ijin Tidak Masuk Id" />
+                                                <display:column property="nip" sortable="true" title="Person NIP"  />
                                                 <display:column property="namaPegawai" sortable="true" title="Person Name"  />
                                                 <display:column property="ijinId" sortable="true" title="Ijin Id"  />
                                                 <display:column property="ijinName" sortable="true" title="Ijin Tidak Masuk Name"  />
@@ -464,4 +465,16 @@
         }
 
     });
+
+    function searchData() {
+        var nip = $('#personId').val();
+        var ijinKeluarId = $('#ijinKeluarId').val();
+        var data = "viewNotifikasi_notifikasi.action?tipeNotif=TN55";
+        if(nip!=null && nip!="")
+            data = data + "&id=" + nip;
+        if(ijinKeluarId!=null && ijinKeluarId!='')
+            data = data + "&request=" + ijinKeluarId;
+
+        $('#searchForm').attr('action',data);
+    }
 </script>

@@ -82,7 +82,7 @@
     <import resource="sshconfig/com/neurix/hris/transaksi/JadwalShiftKerja/spring/JadwalShiftKerjaBean.xml"/>
 
     <import resource="sshconfig/com/neurix/hris/master/smkJabatan/spring/SmkJabatanBean.xml"/>
-    <import resource="sshconfig/com/neurix/hris/transaksi/smk/spring/SmkBean.xml"/>
+    <!--<import resource="sshconfig/com/neurix/hris/transaksi/smk/spring/SmkBean.xml"/>-->
     <import resource="sshconfig/com/neurix/hris/transaksi/notifikasi/spring/NotifikasiFcmBean.xml" />
     <import resource="sshconfig/com/neurix/hris/transaksi/indisipliner/spring/IndisiplinerBean.xml"/>
 

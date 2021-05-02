@@ -145,6 +145,7 @@ public class LogCronBoImpl implements LogCronBo {
             }
             if (searchBean.getStCronDateEnd() != null && !"".equalsIgnoreCase(searchBean.getStCronDateEnd())) {
                 Timestamp cronDateEnd = CommonUtil.convertToTimestamp(searchBean.getStCronDateEnd());
+                cronDateEnd.setDate(cronDateEnd.getDate() + 1);
                 hsCriteria.put("cronDateEnd", cronDateEnd);
             }
 
