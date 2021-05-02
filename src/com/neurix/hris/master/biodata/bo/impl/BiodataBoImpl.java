@@ -60,7 +60,7 @@ import com.neurix.hris.transaksi.ijinKeluar.dao.IjinKeluarDao;
 import com.neurix.hris.transaksi.lembur.dao.LemburDao;
 import com.neurix.hris.transaksi.mutasi.dao.MutasiDao;
 import com.neurix.hris.transaksi.payroll.dao.PayrollDao;
-import com.neurix.hris.transaksi.payroll.model.ItPayrollEntity;
+import com.neurix.hris.transaksi.payroll.model.ItHrisPayrollEntity;
 import com.neurix.hris.transaksi.payroll.model.Payroll;
 import com.neurix.hris.transaksi.personilPosition.dao.HistoryJabatanPegawaiDao;
 import com.neurix.hris.transaksi.personilPosition.model.HistoryJabatanPegawai;
@@ -294,11 +294,11 @@ public class BiodataBoImpl implements BiodataBo {
     @Override
     public List<Payroll> viewPayrollSys(String nip, String branchId, String bulan, String tahun, String payrollId) throws GeneralBOException {
         List<Payroll> payroll = new ArrayList<>();
-        List<ItPayrollEntity> itPayroll = null;
+        List<ItHrisPayrollEntity> itPayroll = null;
 
         itPayroll = payrollDao.getDataViewMobile(nip, branchId, bulan, tahun, payrollId);
         if (itPayroll.size() > 0) {
-            for (ItPayrollEntity itPayrollEntity : itPayroll) {
+            for (ItHrisPayrollEntity itPayrollEntity : itPayroll) {
                 Payroll payroll1 = new Payroll();
                 payroll1.setPayrollId(itPayrollEntity.getPayrollId());
                 payroll1.setBranchId(itPayrollEntity.getBranchId());
@@ -3821,7 +3821,7 @@ public class BiodataBoImpl implements BiodataBo {
     public List<Payroll> searchPayrollSys(String nip) throws GeneralBOException {
         logger.info("[BiodataBoImpl.searchPayrollSys] START >>>>>>");
         List<Payroll> payroll = new ArrayList<>();
-        List<ItPayrollEntity> itPayroll = null;
+        List<ItHrisPayrollEntity> itPayroll = null;
 
         try {
             itPayroll = payrollDao.getAllPayroll(nip);
@@ -3830,7 +3830,7 @@ public class BiodataBoImpl implements BiodataBo {
             throw new GeneralBOException("Found problem when get All Payroll, please info to your admin..." + e.getMessage());
         }
         if (itPayroll.size() > 0) {
-            for (ItPayrollEntity itPayrollEntity : itPayroll) {
+            for (ItHrisPayrollEntity itPayrollEntity : itPayroll) {
                 Payroll payroll1 = new Payroll();
                 payroll1.setPayrollId(itPayrollEntity.getPayrollId());
                 payroll1.setBulan(itPayrollEntity.getBulan());
@@ -3852,18 +3852,20 @@ public class BiodataBoImpl implements BiodataBo {
 //                payroll1.setTotalJasProd(CommonUtil.numbericFormat(itPayrollEntity.getTotalJasProd(), "###,###"));
 //                payroll1.setTotalPensiun(CommonUtil.numbericFormat(itPayrollEntity.getTotalPensiun(), "###,###"));
 //                payroll1.setTotalJubileum(CommonUtil.numbericFormat(itPayrollEntity.getTotalJubileum(), "###,###"));
-//
-                payroll1.setFlagPayroll(itPayrollEntity.getFlagPayroll());
-                payroll1.setFlagRapel(itPayrollEntity.getFlagRapel());
-                payroll1.setFlagThr(itPayrollEntity.getFlagThr());
-                payroll1.setFlagPendidikan(itPayrollEntity.getFlagPendidikan());
-                payroll1.setFlagJasprod(itPayrollEntity.getFlagJasprod());
-                payroll1.setFlagPensiun(itPayrollEntity.getFlagPensiun());
-                payroll1.setFlagJubileum(itPayrollEntity.getFlagJubileum());
-                payroll1.setFlagInsentif(itPayrollEntity.getFlagInsentif());
-                payroll1.setFlagCutiPanjang(itPayrollEntity.getFlagCutiPanjang());
-                payroll1.setFlagCutiTahunan(itPayrollEntity.getFlagCutiTahunan());
 
+                payroll1.setTipePayroll(itPayrollEntity.getTipePayroll());
+                //RAKA-02MEI2021==> Merubahnya menjadi TipePayroll
+//                payroll1.setFlagPayroll(itPayrollEntity.getFlagPayroll());
+//                payroll1.setFlagRapel(itPayrollEntity.getFlagRapel());
+//                payroll1.setFlagThr(itPayrollEntity.getFlagThr());
+//                payroll1.setFlagPendidikan(itPayrollEntity.getFlagPendidikan());
+//                payroll1.setFlagJasprod(itPayrollEntity.getFlagJasprod());
+//                payroll1.setFlagPensiun(itPayrollEntity.getFlagPensiun());
+//                payroll1.setFlagJubileum(itPayrollEntity.getFlagJubileum());
+//                payroll1.setFlagInsentif(itPayrollEntity.getFlagInsentif());
+//                payroll1.setFlagCutiPanjang(itPayrollEntity.getFlagCutiPanjang());
+//                payroll1.setFlagCutiTahunan(itPayrollEntity.getFlagCutiTahunan());
+                //RAKA-end
                 payroll.add(payroll1);
             }
         }

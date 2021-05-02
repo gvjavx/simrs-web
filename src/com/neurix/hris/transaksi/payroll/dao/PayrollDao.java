@@ -1683,7 +1683,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                     "       pegawai.tanggal_keluar                                                     as tanggal_keluar,\n" +
                     "       posisi.kodering                                                            as kodering,\n" +
                     "       pegawai.jenis_kelamin                                                      as gender,\n" +
-                    "       company.persen_cuti_panjang/100                                            as multifikator" +
+                    "       company.persen_cuti_panjang/100                                            as multifikator \n" +
                     "from im_hris_pegawai pegawai\n" +
                     "       left join im_hris_golongan golongan on pegawai.golongan_id = golongan.golongan_id and\n" +
                     "                                              golongan.flag = 'Y'\n" +
@@ -1843,7 +1843,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                     "       pegawai.tanggal_keluar                                                     as tanggal_keluar,\n" +
                     "       posisi.kodering                                                            as kodering,\n" +
                     "       pegawai.jenis_kelamin                                                      as gender,\n" +
-                    "       company.persen_cuti_tahunan/100                                            as multifikator" +
+                    "       company.persen_cuti_tahunan/100                                            as multifikator \n" +
                     "from im_hris_pegawai pegawai\n" +
                     "       left join im_hris_golongan golongan on pegawai.golongan_id = golongan.golongan_id and\n" +
                     "                                              golongan.flag = 'Y'\n" +
@@ -3879,7 +3879,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                     "       pegawai.tanggal_keluar                                                     as tanggal_keluar,\n" +
                     "       posisi.kodering                                                            as kodering,\n" +
                     "       pegawai.jenis_kelamin                                                      as gender,\n" +
-                    "       company.persen_cuti_panjang/100                                            as multifikator" +
+                    "       company.persen_cuti_panjang/100                                            as multifikator \n" +
                     "from im_hris_pegawai pegawai\n" +
                     "       left join im_hris_golongan golongan on pegawai.golongan_id = golongan.golongan_id and\n" +
                     "                                              golongan.flag = 'Y'\n" +
@@ -4039,7 +4039,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                     "       pegawai.tanggal_keluar                                                     as tanggal_keluar,\n" +
                     "       posisi.kodering                                                            as kodering,\n" +
                     "       pegawai.jenis_kelamin                                                      as gender,\n" +
-                    "       company.persen_cuti_tahunan/100                                            as multifikator" +
+                    "       company.persen_cuti_tahunan/100                                            as multifikator \n" +
                     "from im_hris_pegawai pegawai\n" +
                     "       left join im_hris_golongan golongan on pegawai.golongan_id = golongan.golongan_id and\n" +
                     "                                              golongan.flag = 'Y'\n" +
@@ -4076,13 +4076,31 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                     "order by grade_level, masa_kerja_gol desc , nip";
         }
 
-        results = this.sessionFactory.getCurrentSession()
-                .createSQLQuery(query)
-                .setParameter("branchId", branchId)
-                .setParameter("tahunSkalaPayroll", tahunSkalaPayroll)
-                .setParameter("periodePayroll", periodePayroll)
-                .setParameter("tahunPayroll", tahunPayroll)
-                .list();
+//        results = this.sessionFactory.getCurrentSession()
+//                .createSQLQuery(query)
+//                .setParameter("branchId", branchId)
+//                .setParameter("tahunSkalaPayroll", tahunSkalaPayroll)
+//                .setParameter("periodePayroll", periodePayroll)
+//                .setParameter("tahunPayroll", tahunPayroll)
+//                .list();
+
+        if (CommonConstant.CODE_THR.equalsIgnoreCase(tipePayroll) ||
+                CommonConstant.CODE_INSENTIF.equalsIgnoreCase(tipePayroll) ||
+                CommonConstant.CODE_JASOP.equalsIgnoreCase(tipePayroll)) {
+            results = this.sessionFactory.getCurrentSession()
+                    .createSQLQuery(query)
+                    .setParameter("branchId", branchId)
+                    .setParameter("tahunSkalaPayroll", tahunSkalaPayroll)
+                    .setParameter("periodePayroll", periodePayroll)
+                    .setParameter("tahunPayroll", tahunPayroll)
+                    .list();
+        } else {
+            results = this.sessionFactory.getCurrentSession()
+                    .createSQLQuery(query)
+                    .setParameter("branchId", branchId)
+                    .setParameter("tahunSkalaPayroll", tahunSkalaPayroll)
+                    .list();
+        }
 
         for (Object[] row : results) {
             PegawaiPayroll result = new PegawaiPayroll();
@@ -4163,7 +4181,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
             result.setTunjFungsionalNilai(result.getTunjFungsionalNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjFungsional(CommonUtil.numbericFormat(result.getTunjFungsionalNilai(), "###,###"));
 
-            result.setTunjTambahanNilai(row[35] != null ? (BigDecimal) row[35] : new BigDecimal(0));
+            result.setTunjTambahanNilai(row[35] != null ? new BigDecimal((Integer)row[35]) : new BigDecimal(0));
             result.setTunjTambahanNilai(result.getTunjTambahanNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjTambahan(CommonUtil.numbericFormat(result.getTunjTambahanNilai(), "###,###"));
 
@@ -5202,14 +5220,13 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
 //        return results;
 //    }
     //RAKA-30APR2021==> UNCOMMENT
-    public List<ItPayrollEntity> getTunjanganPeralihan(String nip, String bulan, String tahun) throws HibernateException {
-        List<ItPayrollEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPayrollEntity.class)
+    public List<ItHrisPayrollEntity> getTunjanganPeralihan(String nip, String bulan, String tahun) throws HibernateException {
+        List<ItHrisPayrollEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItHrisPayrollEntity.class)
                 .add(Restrictions.eq("nip", nip))
                 .add(Restrictions.eq("bulan", bulan))
                 .add(Restrictions.eq("tahun", tahun))
                 .add(Restrictions.eq("flag", "Y"))
-                .add(Restrictions.eq("flagPayroll", "Y"))
-                .add(Restrictions.eq("approvalFlag", "Y"))
+                .add(Restrictions.eq("tipePayroll", "PY"))
                 .list();
 
         return results;
@@ -5228,27 +5245,18 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
 //        return results;
 //    }
 //
-    public List<ItPayrollEntity> getAllPayroll(String nip) throws HibernateException {
-//        List<ItPayrollEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPayrollEntity.class)
-//                .add(Restrictions.eq("nip", nip))
-//                .add(Restrictions.eq("flag", "Y"))
-//                .add(Restrictions.eq("flagPayroll", "Y"))
-//                .add(Restrictions.eq("approvalFlag", "Y"))
-//                .addOrder(Order.desc("createdDate"))
-//                .list();
-
-        List<ItPayrollEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPayrollEntity.class)
+    public List<ItHrisPayrollEntity> getAllPayroll(String nip) throws HibernateException {
+        List<ItHrisPayrollEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItHrisPayrollEntity.class)
                 .add(Restrictions.eq("nip", nip))
                 .add(Restrictions.eq("flag", "Y"))
-                .add(Restrictions.eq("approvalFlag", "Y"))
-                .add(Restrictions.eq("flagPayroll", "Y"))
+                .add(Restrictions.eq("tipePayroll", "PY"))
                 .addOrder(Order.desc("createdDate"))
                 .list();
         return results;
     }
 
-    public List<ItPayrollEntity> getDataViewMobile(String nip, String branchId, String bulan, String tahun, String payrollId) throws HibernateException {
-        List<ItPayrollEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPayrollEntity.class)
+    public List<ItHrisPayrollEntity> getDataViewMobile(String nip, String branchId, String bulan, String tahun, String payrollId) throws HibernateException {
+        List<ItHrisPayrollEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItHrisPayrollEntity.class)
                 .add(Restrictions.eq("nip", nip))
                 .add(Restrictions.eq("branchId", branchId))
                 .add(Restrictions.eq("bulan", bulan))
@@ -8351,13 +8359,12 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
 //        return listOfResult;
 //    }
     //RAKA-30APR2021==> UNCOMMENT
-    public List<ItPayrollEntity> getTunjanganPeralihanForAbsensi(String nip, String tahun) throws HibernateException {
-        List<ItPayrollEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPayrollEntity.class)
+    public List<ItHrisPayrollEntity> getTunjanganPeralihanForAbsensi(String nip, String tahun) throws HibernateException {
+        List<ItHrisPayrollEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItHrisPayrollEntity.class)
                 .add(Restrictions.eq("nip", nip))
                 .add(Restrictions.eq("tahun", tahun))
                 .add(Restrictions.eq("flag", "Y"))
-                .add(Restrictions.eq("approvalFlag", "Y"))
-                .add(Restrictions.eq("flagPayroll", "Y"))
+                .add(Restrictions.eq("tipePayroll", "PY"))
                 .addOrder(Order.desc("bulan"))
                 .setMaxResults(1)
                 .list();

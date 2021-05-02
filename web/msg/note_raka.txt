@@ -1,3 +1,12 @@
+------ 2021-04-02 ===> query tambahan untuk payroll
+-- add column im_company
+    alter table im_company
+    add column persen_cuti_panjang numeric(10,2),
+    add column persen_cuti_tahunan numeric(10,2);
+    update im_company set persen_cuti_panjang = 100, persen_cuti_tahunan=55;
+
+
+
 ------ 2021-04-01 ===> query tambahan table payroll
 -- sequence
     create sequence seq_payroll_temp ;

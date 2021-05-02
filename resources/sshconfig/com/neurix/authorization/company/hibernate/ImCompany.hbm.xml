@@ -133,5 +133,11 @@
         <property name="payrollTanggalLemburAkhir">
             <column name="payroll_tanggal_lembur_akhir"/>
         </property>
+        <property name="persenCutiPanjang">
+            <column name="persen_cuti_panjang" sql-type="numeric" precision="10" scale="2" />
+        </property>
+        <property name="persenCutiTahunan">
+            <column name="persen_cuti_tahunan" sql-type="numeric" precision="10" scale="2" />
+        </property>
     </class>
 </hibernate-mapping>

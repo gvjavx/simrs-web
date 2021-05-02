@@ -10,10 +10,7 @@ import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.transaksi.absensi.model.AbsensiPegawai;
 import com.neurix.hris.transaksi.payroll.bo.PayrollBo;
-import com.neurix.hris.transaksi.payroll.model.Payroll;
-import com.neurix.hris.transaksi.payroll.model.PayrollHeader;
-import com.neurix.hris.transaksi.payroll.model.PayrollPph;
-import com.neurix.hris.transaksi.payroll.model.PegawaiPayroll;
+import com.neurix.hris.transaksi.payroll.model.*;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
@@ -1184,6 +1181,66 @@ public class PayrollAction extends BaseTransactionAction {
         return INPUT;
     }
 
+    //RAKA-02MAI2021==> Recover &  Edit by Raka
+    public String printReportPayroll(){
+        logger.info("[PayrollAction.printReportPayroll] start process >>>");
+        String hasil = "";
+        String id = getId();
+        String tipe = getTipePayroll();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ItHrisPayrollEntity payroll = new ItHrisPayrollEntity();
+        if (id != null) {
+            if(tipe.equalsIgnoreCase("PY")){
+                String payrollId = getId();
+                if (payrollId != null) {
+                    Branch branch = new Branch();
+                    try{
+                        PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
+                        payroll = payrollBo.getPayrollById(id);
+
+                        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+                        branch = branchBo.getBranchById(payroll.getBranchId(),"Y");
+                    }catch( HibernateException e){
+                        throw e;
+                    }
+                    String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+
+                    reportParams.put("payrollId", payrollId);
+                    reportParams.put("areaId",CommonUtil.userAreaName());
+                    reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT + branch.getLogoName());
+                    reportParams.put("branchId", branchId);
+                    reportParams.put("branchName", branch.getBranchName());
+                    reportParams.put("alamatSurat", branch.getAlamatSurat()+","+stTanggal);
+                    reportParams.put("bulan", bulan);
+                    reportParams.put("tahun", tahun);
+                    reportParams.put("date", stTanggal);
+
+                    hasil = "success_print_report_payroll";
+                }
+            }
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                Long logId = null;
+                try {
+                    logId = payrollBoProxy.saveErrorMessage(e.getMessage(), "printReportPayroll");
+                } catch (GeneralBOException e1) {
+                    logger.error("[PayrollAction.printReportPayroll] Error when downloading ,", e1);
+                }
+                logger.error("[PayrollAction.printReportPayroll] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
+                throw new GeneralBOException("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+            }
+
+        } else {
+            logger.error("[PayrollAction.printReportPayroll] Error when print report payroll, payroll ID is empty , Found problem when downloading data, please inform to your admin.");
+            throw new GeneralBOException("Error, Found problem when downloading data, payroll ID is empty, please inform to your admin.");
+        }
+        logger.info("[PayrollAction.printReportPayroll] end process <<<");
+        return hasil;
+    }
+
+    //RAKA-end
+
     //updated by ferdi, 01-12-2020, to make sure (raka) print slip gaji atau tunj. PTT (pend. tidak tetak), THR/Insenteive, dll
     public String printReportPayrollByBranch(){
         logger.info("[ReportAction.printReportPayrollByBranch] start process >>>");
@@ -1250,7 +1307,7 @@ public class PayrollAction extends BaseTransactionAction {
             reportParams.put("date", stTanggal);
 
             try {
-                preDownload();
+                 preDownload();
             } catch (SQLException e) {
                 Long logId = null;
                 try {
