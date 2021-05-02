@@ -4112,6 +4112,9 @@ function refreshTable(id, tipe) {
         if ("resep" == tipe) {
             listResepPasien();
         }
+        if ("pendamping" == tipe) {
+            listMakananPendamping();
+        }
         $('#' + id).removeClass("fa-spin");
     }, 500);
 }

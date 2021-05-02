@@ -197,7 +197,7 @@ public class PlanKegiatanRawatAction extends BaseTransactionAction {
         PlanKegiatanRawatBo planKegiatanRawatBo = (PlanKegiatanRawatBo) ctx.getBean("planKegiatanRawatBoProxy");
         try {
             planKegiatanRawatBo.saveAddPlanKegiatan(planKegiatanRawat, monVitalSigns, monCairans, monPemberianObats);
-            response.setMsg("success");
+            response.setStatus("success");
         } catch (GeneralBOException e){
             logger.error("[PlanKegiatanAction.savePlanKegiatanRawat] ERROR. ", e);
             response.setStatus("error");

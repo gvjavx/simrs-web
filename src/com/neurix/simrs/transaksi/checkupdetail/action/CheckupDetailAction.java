@@ -3233,8 +3233,9 @@ public class CheckupDetailAction extends BaseMasterAction {
     }
 
     public List<Ruangan> listRuangan(String idkelas, boolean flag, String kategori) {
-
         logger.info("[TindakanRawatAction.listTindakanRawat] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
         List<Ruangan> ruanganList = new ArrayList<>();
         Ruangan ruangan = new Ruangan();
         if (flag) {
@@ -3244,19 +3245,14 @@ public class CheckupDetailAction extends BaseMasterAction {
         ruangan.setBranchId(CommonUtil.userBranchLogin());
         ruangan.setKategori(kategori);
 
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
-
         try {
             ruanganList = ruanganBo.getListRuangan(ruangan);
         } catch (GeneralBOException e) {
             logger.error("[TindakanRawatAction.listTindakanRawat] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
         }
 
         logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
         return ruanganList;
-
     }
 
     public List<Ruangan> listJustRuangan(String idKelas) {
