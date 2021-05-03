@@ -1347,10 +1347,8 @@
                                                         <input readonly class="form-control" id="nama_dokter"
                                                                style="cursor: pointer"
                                                                placeholder="*klik untuk jadwal dokter">
-                                                        <div class="input-group-btn">
-                                                            <a class="btn btn-success">
-                                                                <span id="btn-dokter"><i
-                                                                        class="fa fa-search"></i> Dokter</span></a>
+                                                        <div class="input-group-btn" id="btn-dokter">
+                                                            <a class="btn btn-success"><i class="fa fa-search"></i> Dokter</a>
                                                         </div>
                                                     </div>
                                                     <s:hidden name="headerCheckup.idDokter" id="dokter"></s:hidden>
@@ -3144,11 +3142,19 @@
                     if (data.length != 0) {
                         $.each(data, function (i, item) {
                             var labelItem = "";
+                            var dddesa = "";
+                            var tglLahir = "";
+                            if(item.desa != null){
+                                dddesa = '-'+item.desa;
+                            }
+                            if(item.tanggalLahir != null){
+                                tglLahir = '-'+converterDate(item.tanggalLahir);
+                            }
 
                             if (item.noBpjs != '' && item.noBpjs != null) {
-                                labelItem = item.idPasien + "-" + item.noBpjs + "-" + item.nama;
+                                labelItem = item.idPasien + "-" + item.noBpjs + "-" + item.nama+dddesa+tglLahir;
                             } else {
-                                labelItem = item.noBpjs + "-" + item.nama;
+                                labelItem = item.noBpjs + "-" + item.nama+dddesa+tglLahir;
                             }
                             mapped[labelItem] = {
                                 id: item.noBpjs,
@@ -3282,14 +3288,18 @@
                         $.each(data, function (i, item) {
                             var labelItem = "";
                             var dddesa = "";
+                            var tglLahir = "";
                             if(item.desa != null){
                                 dddesa = '-'+item.desa;
                             }
+                            if(item.tanggalLahir != null){
+                                tglLahir = '-'+converterDate(item.tanggalLahir);
+                            }
 
                             if (item.noBpjs != '' && item.noBpjs != null) {
-                                labelItem = item.idPasien + "-" + item.noBpjs + "-" + item.nama + dddesa;
+                                labelItem = item.idPasien + "-" + item.noBpjs + "-" + item.nama + dddesa+tglLahir;
                             } else {
-                                labelItem = item.idPasien + "-" + item.nama + dddesa;
+                                labelItem = item.idPasien + "-" + item.nama + dddesa+tglLahir;
                             }
                             mapped[labelItem] = {
                                 id: item.idPasien,

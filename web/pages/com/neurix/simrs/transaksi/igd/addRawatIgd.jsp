@@ -532,19 +532,32 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="btn-group dropdown">
-                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen
-                                    </button>
-                                    <button onclick="setRekamMedis()" type="button" class="btn btn-primary dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu" id="asesmen_rj">
-                                    </ul>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="btn-group dropdown">
+                                            <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen
+                                            </button>
+                                            <button onclick="setRekamMedis()" type="button" class="btn btn-primary dropdown-toggle"
+                                                    data-toggle="dropdown" style="height: 34px">
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu" id="asesmen_rj">
+                                            </ul>
+                                        </div>
+                                        <button type="button" onclick="viewHistory()" class="btn btn-info hvr-icon-spin"><i class="fa fa-history hvr-icon"></i> All History</button>
+                                        <button class="btn btn-info" onclick="uploadPemeriksaan()"><i class="fa fa-line-chart"></i> Upload Pemeriksaan</button>
+                                    </div>
                                 </div>
-                                <button type="button" onclick="viewHistory()" class="btn btn-info hvr-icon-spin"><i class="fa fa-history hvr-icon"></i> All History</button>
-                                <button class="btn btn-info" onclick="uploadPemeriksaan()"><i class="fa fa-line-chart"></i> Upload Pemeriksaan</button>
+                                <div class="row jarak">
+                                    <div class="col-md-12">
+                                        <div class="box-body">
+                                            <table class="table table-hover" style="font-size: 12px">
+                                                <tbody id="temp_kesimpulan"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2949,6 +2962,8 @@
             ride: false,
             pause: false
         });
+
+        kesimpulanAsesmen();
 
     });
 

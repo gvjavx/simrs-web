@@ -1343,10 +1343,8 @@
                                                         <input readonly class="form-control" id="nama_dokter"
                                                                style="cursor: pointer"
                                                                placeholder="*klik untuk jadwal dokter">
-                                                        <div class="input-group-btn">
-                                                            <a class="btn btn-success">
-                                                                <span id="btn-dokter"><i
-                                                                        class="fa fa-search"></i> Dokter</span></a>
+                                                        <div class="input-group-btn" id="btn-dokter">
+                                                            <a class="btn btn-success"><i class="fa fa-search"></i> Dokter</a>
                                                         </div>
                                                     </div>
                                                     <s:hidden name="headerCheckup.idDokter" id="dokter"></s:hidden>
@@ -2023,7 +2021,7 @@
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Alamat</label>
-                                <input class="form-control" id="add_alamat">
+                                <input class="form-control" id="add_alamat" oninput="$(this).css('border', '');">
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">No Telp</label>
@@ -2508,7 +2506,7 @@
         });
     }
 
-    function listSelectRekanan(isBpjs) {
+    function listSelectRekanan(isBpjs, idRekanan, tipe) {
         var option = "<option value=''>[Select One]</option>";
         CheckupAction.getListRekananOps(isBpjs, function (response) {
             if (response.length > 0) {
@@ -3065,11 +3063,19 @@
                 if (data.length != 0) {
                     $.each(data, function (i, item) {
                         var labelItem = "";
+                        var dddesa = "";
+                        var tglLahir = "";
+                        if(item.desa != null){
+                            dddesa = '-'+item.desa;
+                        }
+                        if(item.tanggalLahir != null){
+                            tglLahir = '-'+converterDate(item.tanggalLahir);
+                        }
 
                         if (item.noBpjs != '' && item.noBpjs != null) {
-                            labelItem = item.idPasien + "-" + item.noBpjs + "-" + item.nama;
+                            labelItem = item.idPasien + "-" + item.noBpjs + "-" + item.nama+dddesa+tglLahir;
                         } else {
-                            labelItem = item.noBpjs + "-" + item.nama;
+                            labelItem = item.noBpjs + "-" + item.nama+dddesa+tglLahir;
                         }
                         mapped[labelItem] = {
                             id: item.noBpjs,
@@ -3179,14 +3185,18 @@
                     $.each(data, function (i, item) {
                         var labelItem = "";
                         var dddesa = "";
+                        var tglLahir = "";
                         if(item.desa != null){
                             dddesa = '-'+item.desa;
                         }
+                        if(item.tanggalLahir != null){
+                            tglLahir = '-'+converterDate(item.tanggalLahir);
+                        }
 
                         if (item.noBpjs != '' && item.noBpjs != null) {
-                            labelItem = item.idPasien + "-" + item.noBpjs + "-" + item.nama + dddesa;
+                            labelItem = item.idPasien + "-" + item.noBpjs + "-" + item.nama + dddesa+tglLahir;
                         } else {
-                            labelItem = item.idPasien + "-" + item.nama + dddesa;
+                            labelItem = item.idPasien + "-" + item.nama + dddesa+tglLahir;
                         }
                         mapped[labelItem] = {
                             id: item.idPasien,

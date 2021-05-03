@@ -4,6 +4,7 @@ import com.neurix.common.model.BaseModel;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 public class AsesmenUgd extends BaseModel {
 
@@ -23,6 +24,15 @@ public class AsesmenUgd extends BaseModel {
     private String tipe;
     private String namaTerang;
     private String sip;
+    private List<String> tipeAsesmen;
+
+    public List<String> getTipeAsesmen() {
+        return tipeAsesmen;
+    }
+
+    public void setTipeAsesmen(List<String> tipeAsesmen) {
+        this.tipeAsesmen = tipeAsesmen;
+    }
 
     public String getNamaTerang() {
         return namaTerang;

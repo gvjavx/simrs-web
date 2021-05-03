@@ -37,6 +37,9 @@ public class AsesmenUgdBoImpl implements AsesmenUgdBo {
             if (bean.getJenis() != null && !"".equalsIgnoreCase(bean.getJenis())) {
                 hsCriteria.put("jenis", bean.getJenis());
             }
+            if(bean.getTipeAsesmen().size() > 0){
+                hsCriteria.put("tipe_asesmen", bean.getTipeAsesmen());
+            }
 
             List<ItSimrsAsesmenUgdEntity> entityList = new ArrayList<>();
 
