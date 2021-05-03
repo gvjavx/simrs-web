@@ -904,10 +904,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 pelayanan.setBranchId(detailCheckupEntity.getBranchId());
                 pelayanan.setTipePelayanan("gizi");
 
-                List<Pelayanan> pelayananList = pelayananBo.getByCriteria(pelayanan);
-                if (pelayananList.size() > 0) {
-                    Pelayanan pelayananData = pelayananList.get(0);
-
+                Pelayanan pelayananData = pelayananBo.getObjectPelayanan(pelayanan);
+                if(pelayananData != null){
                     ImPosition position = positionBo.getPositionEntityById(pelayananData.getDivisiId());
                     if (position != null) {
                         divisiId = position.getKodering();

@@ -1019,6 +1019,7 @@
         <convert converter="bean" match="com.neurix.simrs.transaksi.makananpendamping.model.ItSimrsHeaderPendampingMakananEntity"/>
         <convert converter="bean" match="com.neurix.simrs.transaksi.makananpendamping.model.ItSimrsDetailPendampingMakananEntity"/>
         <convert converter="bean" match="com.neurix.simrs.transaksi.periksalab.model.ItSimrsUploadHasilPemeriksaanEntity"/>
+        <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.UploadPendukungPemeriksaan"/>
 
     </allow>
 </dwr>

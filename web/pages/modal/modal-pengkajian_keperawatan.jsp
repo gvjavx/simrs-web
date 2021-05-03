@@ -513,7 +513,7 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Perjalanan</label>
+                            <label class="col-md-3" style="margin-top: 7px">Penjalaran</label>
                             <div class="col-md-8">
                                 <input class="form-control" id="yer5" style="margin-top: 7px">
                             </div>

@@ -89,7 +89,7 @@ public class TempatTidurDao extends GenericDao<MtSimrsRuanganTempatTidurEntity, 
                 "FROM im_simrs_kelas_ruangan a\n" +
                 "INNER JOIN mt_simrs_ruangan b ON a.id_kelas_ruangan = b.id_kelas_ruangan\n" +
                 "INNER JOIN mt_simrs_ruangan_tempat_tidur c ON b.id_ruangan = c.id_ruangan\n" +
-                "INNER JOIN im_position d ON d.position_id = b.position_id\n" +
+                "LEFT JOIN im_position d ON d.position_id = b.position_id\n" +
                 "WHERE c.flag = :flag \n" + condition;
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

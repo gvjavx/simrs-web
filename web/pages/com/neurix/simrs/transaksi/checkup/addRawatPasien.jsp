@@ -2281,8 +2281,8 @@
             $('#text-save').text("Save");
             $('#text_title').text("Tambah Data Pasien");
             $('#text_sub').text("Inputan Data Pasien");
-            $('#btnFingerPrint').hide();
-            $('#btn_new').hide();
+            $('#btnFingerPrint').show();
+            $('#btn_new').show();
         }
 
         if(suku != ''){
@@ -2296,6 +2296,7 @@
         }
         if(noKartu != ''){
             $('#no_kartu').val(noKartu);
+            $('#no_kartu_ptpn').val(noKartu);
         }
 
 
@@ -2483,28 +2484,46 @@
         });
     }
 
-    function listSelectPaket() {
-        var option = "<option value=''> - </option>";
+    function listSelectPaket(idPaket) {
+        var option = "<option value=''>[Select One]</option>";
         PaketPeriksaAction.getListPaketPeriksaByTipe("rawat_jalan", function (response) {
             if (response.length > 0) {
+                var paket = "";
                 $.each(response, function (i, item) {
+                    if(idPaket != null && idPaket != ''){
+                        paket = item.idPaket + "|" + item.idPelayanan + "|" + item.tarif;
+                    }
                     option += "<option value='" + item.idPaket + "|" + item.idPelayanan + "|" + item.tarif + "'>" + item.namaPaket + "</option>";
                 });
                 $('#paket').html(option);
+                if(idPaket != null && idPaket != ''){
+                    $('#paket').val(paket).trigger('change');
+                }
             } else {
                 $('#paket').html(option);
             }
         });
     }
 
-    function listSelectRekanan(isBpjs) {
-        var option = "<option value=''> - </option>";
+    function listSelectRekanan(isBpjs, idRekanan, isBpjs, tipe) {
+        var option = "<option value=''>[Select One]</option>";
         CheckupAction.getListRekananOps(isBpjs, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
-                    option += "<option value='" + item.idRekananOps + '|' + item.isBpjs + '|' + item.tipe + "'>" + item.namaRekanan + "</option>";
+                    var bpjs = "";
+                    var tip = "";
+                    if(item.isBpjs != null && item.isBpjs != ''){
+                        bpjs = item.isBpjs;
+                    }
+                    if(item.tipe != null && item.tipe != ''){
+                        tip = item.tipe;
+                    }
+                    option += "<option value='" + item.idRekananOps + '|' + bpjs + '|' + tip + "'>" + item.namaRekanan + "</option>";
                 });
                 $('#unit_ptpn').html(option);
+                if(idRekanan != null && idRekanan != ''){
+                    $('#unit_ptpn').val(idRekanan+ '|' + isBpjs + '|' + tipe).trigger('change');
+                }
             } else {
                 $('#unit_ptpn').html(option);
             }
@@ -2645,7 +2664,8 @@
     function listDokter(idPelayanan) {
         $('#nama_dokter').val(null);
         $('#id_dokter').val(null);
-        var option = "<option value=''> - </option>";
+        var option = "<option value=''>[Select One]</option>";
+        var uangMuka = '<s:property value="headerCheckup.uangMuka"/>';
         if (idPelayanan != null && idPelayanan != '') {
             var online = $('#id_online').val();
             if(online != ""){
@@ -2678,11 +2698,16 @@
                         $('#form-nominal_uang_muka').hide();
                         $('#form_eksekutif').hide();
                         $('#cek_cek').show();
-                        $('#uang_muka, #uang_muka_val').val('');
                         $('#cek_is_uang_muka').prop('checked', false);
                         $('#pembayaran').val('tunai');
                         $('#id_lab').val(null).trigger('change');
+                        if(uangMuka == ''){
+                            $('#uang_muka, #uang_muka_val').val('');
+                        }
                     } else {
+                        if(uangMuka == ''){
+                            $('#uang_muka, #uang_muka_val').val('');
+                        }
                         if("umum" == jenisPasien){
                             $('#form-nominal_uang_muka').show();
                             $('#pembayaran').val('tunai');
@@ -2698,7 +2723,6 @@
                         $('#is_daftar_pj').val("N");
                         $('#text_centang').text(" Uang Muka");
                         $('#cek_cek').hide();
-                        $('#uang_muka, #uang_muka_val').val('');
                         $('#cek_is_uang_muka').prop('checked', false);
                         $('#id_lab').val(null).trigger('change');
                     }
@@ -3451,7 +3475,7 @@
             $('#diagnosa_awal, #diagnosa_ket').val(null);
             $('#form_diagnosa_bpjs').show();
         }else if (jenis == "rekanan") {
-            listSelectRekanan("N");
+            listSelectRekanan("N", '<s:property value="headerCheckup.idAsuransi"/>', '<s:property value="headerCheckup.isRekananWithBpjs"/>', '<s:property value="headerCheckup.tipeRekanan"/>');
             $('#form_pg').hide();
             $('#form-rekanan').show();
             $('#form-no-bpjs').hide();
@@ -3481,7 +3505,7 @@
             $('#form_diagnosa_bpjs').hide();
             $('#diagnosa_awal, #diagnosa_ket').val(null);
         } else if (jenis == "paket_individu") {
-            listSelectPaket();
+            listSelectPaket('<s:property value="headerCheckup.idPaket"/>');
             $('#form-paket').show();
             $('#form-paket-perusahaan').hide();
             $('#form-no-bpjs').hide();
@@ -3827,7 +3851,7 @@
                                 $('#nama_pasien').val(response.nama);
                                 $('#jenis_kelamin').val(response.jenisKelamin);
                                 $('#tempat_lahir').val(response.tempatLahir);
-                                $('#tgl_lahir').val(response.tglLahir);
+                                $('#tgl_lahir').val(converterDateYmd(response.tglLahir));
                                 $('#agama').val(response.agama);
                                 $('#profesi').val(response.profesi);
                                 $('#jalan').val(response.jalan);

@@ -1,3 +1,4 @@
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <div class="modal fade" id="modal-sps-spesialis_gigi">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -18,8 +19,10 @@
                         <h4><i class="icon fa fa-warning"></i> Warning!</h4>
                         <p id="msg_warning"></p>
                     </div>
-                        <button type="button" onclick="showModalSPS('asesmen_gigi')" class="btn btn-success"><i class="fa fa-plus"></i> Asesmen Gigi
+                        <button type="button" onclick="showModalSPS('asesmen_gigi')" class="btn btn-success"><i class="fa fa-plus"></i> Asesmen Gigi Awal
                         </button>
+                    <button type="button" onclick="showModalSPS('asesmen_gigi_lanjut')" class="btn btn-success"><i class="fa fa-plus"></i> Asesmen Gigi Tindak Lanjut
+                    </button>
                         <button type="button" onclick="showModalSPS('rencana_gigi_pasien')" class="btn btn-success"><i class="fa fa-plus"></i> Rencana Perawatan Gigi
                         </button>
                 </div>
@@ -27,12 +30,21 @@
                     <table class="table" id="tabel_sps_spesialis_gigi">
                         <tbody>
                         <tr id="row_sps_asesmen_gigi">
-                            <td>Asesmen Gigi</td>
+                            <td>Asesmen Gigi Awal</td>
                             <td width="20%" align="center">
                                 <img id="btn_sps_asesmen_gigi" class="hvr-grow"
                                      onclick="detailSPS('asesmen_gigi')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                                 <img id="delete_asesmen_gigi" class="hvr-grow btn-hide" onclick="conSPS('asesmen_gigi', 'spesialis_gigi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                            </td>
+                        </tr>
+                        <tr id="row_sps_asesmen_gigi_lanjut">
+                            <td>Asesmen Gigi Tindak Lanjut</td>
+                            <td width="20%" align="center">
+                                <img id="btn_sps_asesmen_gigi_lanjut" class="hvr-grow"
+                                     onclick="detailSPS('asesmen_gigi_lanjut')"
+                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_asesmen_gigi_lanjut" class="hvr-grow btn-hide" onclick="conSPS('asesmen_gigi_lanjut', 'spesialis_gigi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_rencana_gigi_pasien">
@@ -62,7 +74,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Asesmen Gigi
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Asesmen Gigi Awal
                 </h4>
             </div>
             <div class="modal-body">
@@ -74,7 +86,7 @@
                 <div class="box-body">
                     <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
                         <div class="col-md-1">
-                            <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker-op  color-picker pull-left">
+                            <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker-op  color-picker pull-left" value="#ff0000">
                         </div>
                     </div>
                     <div class="row jarak text-center">
@@ -85,6 +97,9 @@
                             <canvas style="display: none" id="area_cek"></canvas>
                             <button style="margin-top: -5px; margin-left: 8px" type="button" class="btn btn-danger" onclick="removePaint('area_gigi1')"><i class="fa fa-trash"></i> Clear
                             </button>
+                        </div>
+                        <div class="col-md-12">
+                            <img style="margin-top: 10px" src="<s:url value="/pages/images/ket_odontogram.png"/>">
                         </div>
                     </div>
                     <hr class="garis">
@@ -148,7 +163,40 @@
                             </div>
                         </div>
                     </div>
-                    <hr class="garis">
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_sps_asesmen_gigi" class="btn btn-success pull-right"
+                        onclick="saveSPS('asesmen_gigi','spesialis_gigi')"><i class="fa fa-check"></i>
+                    Save
+                </button>
+                <button id="load_sps_asesmen_gigi" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-sps-asesmen_gigi_lanjut">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Asesmen Gigi Tindak Lanjut
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_sps_asesmen_gigi_lanjut">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_sps_asesmen_gigi_lanjut"></p>
+                </div>
+                <div class="box-body">
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3">Diastema</label>
@@ -209,11 +257,11 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_sps_asesmen_gigi" class="btn btn-success pull-right"
-                        onclick="saveSPS('asesmen_gigi','spesialis_gigi')"><i class="fa fa-check"></i>
+                <button id="save_sps_asesmen_gigi_lanjut" class="btn btn-success pull-right"
+                        onclick="saveSPS('asesmen_gigi_lanjut','spesialis_gigi')"><i class="fa fa-check"></i>
                     Save
                 </button>
-                <button id="load_sps_asesmen_gigi" style="display: none; cursor: no-drop" type="button"
+                <button id="load_sps_asesmen_gigi_lanjut" style="display: none; cursor: no-drop" type="button"
                         class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>

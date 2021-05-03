@@ -181,6 +181,7 @@
                                 <td>Nama</td>
                                 <td>Umur</td>
                                 <td>Tanggal Masuk</td>
+                                <td>Ruangan</td>
                                 <td>Desa</td>
                                 <td>Status</td>
                                 <td align="center">Jenis Pasien</td>
@@ -195,6 +196,14 @@
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="umur"/></td>
                                     <td><s:property value="formatTglMasuk"/></td>
+                                    <td>
+                                        <s:if test='#row.noRuangan != ""'>
+                                            [<s:property value="noRuangan"/>]-<s:property value="namaRangan"/>
+                                        </s:if>
+                                        <s:else>
+                                            <s:property value="namaRangan"/>
+                                        </s:else>
+                                    </td>
                                     <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td align="center">

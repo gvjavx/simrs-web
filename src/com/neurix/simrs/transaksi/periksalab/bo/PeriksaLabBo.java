@@ -38,4 +38,5 @@ public interface PeriksaLabBo {
     public void deleteUpload(String id) throws GeneralBOException;
     public List<PeriksaLab> getByCriteriaHeaderPemeriksaan(PeriksaLab bean) throws GeneralBOException;
     public ItSimrsHeaderPemeriksaanEntity getEntityHeaderpemeriksaan(String id) throws GeneralBOException;
+    public List<UploadHasilPemeriksaan> hasilUploadPemeriksaan(String id) throws GeneralBOException;
 }

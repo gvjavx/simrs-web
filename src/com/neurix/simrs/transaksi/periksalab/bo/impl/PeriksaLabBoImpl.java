@@ -124,6 +124,10 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                 headerPemeriksaanEntity.setAction(bean.getAction());
                 headerPemeriksaanEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 headerPemeriksaanEntity.setLastUpdate(bean.getLastUpdate());
+                if(bean.getTarifLabLuar() != null){
+                    headerPemeriksaanEntity.setTarifLabLuar(bean.getTarifLabLuar());
+                }
+
                 try {
                     headerPemeriksaanDao.updateAndSave(headerPemeriksaanEntity);
                 }catch (HibernateException e){
@@ -290,6 +294,9 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
             pemeriksaanEntity.setLastUpdateWho(bean.getLastUpdateWho());
             pemeriksaanEntity.setLastUpdate(bean.getLastUpdate());
             pemeriksaanEntity.setJenisPasien(bean.getJenisPeriksaPasien());
+            if(bean.getTarifLabLuar() != null){
+                pemeriksaanEntity.setTarifLabLuar(bean.getTarifLabLuar());
+            }
 
             try {
                 headerPemeriksaanDao.addAndSave(pemeriksaanEntity);
@@ -467,7 +474,6 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                 entity.setTanggalSelesaiPeriksa(bean.getLastUpdate());
                 entity.setStatusPeriksa("3");
                 entity.setApproveFlag("Y");
-                entity.setTarifLabLuar(bean.getTarifLabLuar());
                 entity.setCatatan(bean.getCatatan());
             }
 
@@ -492,8 +498,6 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
             List<ItSimrsPeriksaLabEntity> entityList = getListEntityPeriksaLab(bean);
             if (entityList.size() > 0) {
                 for (ItSimrsPeriksaLabEntity entity : entityList) {
-
-//                    entity.setApproveFlag("Y");
                     entity.setLastUpdate(bean.getLastUpdate());
                     entity.setLastUpdateWho(bean.getLastUpdateWho());
 
@@ -648,15 +652,6 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
             ImSimrsLabEntity labEntity = labEntities.get(0);
             lab.setIdLab(labEntity.getIdLab());
             lab.setNamaLab(labEntity.getNamaLab());
-            lab.setIdKategoriLab(labEntity.getIdKategoriLab());
-
-            if (labEntity.getIdKategoriLab() != null && !"".equalsIgnoreCase(labEntity.getIdKategoriLab())) {
-                ImSimrsKategoriLabEntity kategoriLabEntity = getKategoriLabById(labEntity.getIdKategoriLab());
-                if (kategoriLabEntity != null) {
-                    lab.setKategoriLabName(kategoriLabEntity.getNamaKategori());
-                    lab.setKategori(kategoriLabEntity.getNamaKategori());
-                }
-            }
         }
 
         logger.info("[PeriksaLabBoImpl.getDatamasterLabById] END <<<<<<<<< ");
@@ -1220,6 +1215,17 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
         ItSimrsHeaderPemeriksaanEntity entity = new ItSimrsHeaderPemeriksaanEntity();
         try {
             entity = headerPemeriksaanDao.getById("idHeaderPemeriksaan", id);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return entity;
+    }
+
+    @Override
+    public List<UploadHasilPemeriksaan> hasilUploadPemeriksaan(String id) throws GeneralBOException {
+        List<UploadHasilPemeriksaan> entity = new ArrayList<>();
+        try {
+            entity = periksaLabDao.getListUploadHasilPemeriksaan(id);
         }catch (HibernateException e){
             logger.error(e.getMessage());
         }

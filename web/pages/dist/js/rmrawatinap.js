@@ -424,10 +424,11 @@ function showModalMonVitalSign(idDetail){
                 }
                 dataArray.push({
                     y: jam,
-                    a: item.rr,
-                    b: item.nadi,
-                    c: sistole,
-                    d: diastole
+                    a: sistole,
+                    b: diastole,
+                    c: item.rr,
+                    d: item.nadi,
+                    e: item.suhu
                 });
             });
             $('#modal-vital-sign').on('shown.bs.modal', function (event) {
@@ -437,9 +438,9 @@ function showModalMonVitalSign(idDetail){
                     resize: true,
                     data: dataArray,
                     xkey: 'y',
-                    ykeys: ['a', 'b', 'c', 'd'],
-                    labels: ['RR', 'Nadi', 'Sistole', 'Diastole'],
-                    lineColors: ['#ff0000', '#0000ff', '#00cc00', '#cc6699'],
+                    ykeys: ['a', 'b', 'c', 'd', 'e'],
+                    labels: ['Sistole', 'Diastole', 'RR', 'Nadi',  'Suhu'],
+                    lineColors: ['#00cc00', '#cc6699', '#ff0000', '#0000ff', '#ffa302'],
                     hideHover: 'auto',
                     parseTime: false,
                     lineWidth: 1
@@ -668,18 +669,34 @@ function addPemberianObat(){
     dwr.engine.setAsync(true);
     if (kat == "parenteral") {
         RawatInapAction.getListObatParenteral(idDetailCheckup, function(response){
-            $.each(response, function(i, item) {
-                str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+' ('+item.bentuk+')'+"</option>";
-            });
-            $("#select_obat_par").html(str);
+            if(response.length > 0){
+                $.each(response, function(i, item) {
+                    str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+' ('+item.bentuk+')'+"</option>";
+                });
+                $("#select_obat_par").html(str);
+                $('#save_parenteral, #form-parenteral').show();
+                $('#warning_parenteral').hide();
+            }else{
+                $('#save_parenteral, #form-parenteral').hide();
+                $('#warning_parenteral').show();
+                $('#msg_parenteral').text("List Obat tidak tersedia silahkan lakukan order resep terlebih dahulu...!");
+            }
         });
         $("#modal-add-pemberian-parenteral").modal("show");
     } else {
         RawatInapAction.getListObatNonParenteral(idDetailCheckup, function(response){
-            $.each(response, function(i, item) {
-                str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+' ('+item.bentuk+')'+"</option>";
-            });
-            $("#select_obat_nonpar").html(str);
+            if(response.length > 0){
+                $.each(response, function(i, item) {
+                    str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+' ('+item.bentuk+')'+"</option>";
+                });
+                $("#select_obat_nonpar").html(str);
+                $('#save_non-parenteral, #form-non-parenteral').show();
+                $('#warning_non-parenteral').hide();
+            }else{
+                $('#save_non-parenteral, #form-non-parenteral').hide();
+                $('#warning_non-parenteral').show();
+                $('#msg_non-parenteral').text("List Obat tidak tersedia silahkan lakukan order resep terlebih dahulu...!");
+            }
         });
         $("#modal-add-pemberian-non-parenteral").modal("show");
     }

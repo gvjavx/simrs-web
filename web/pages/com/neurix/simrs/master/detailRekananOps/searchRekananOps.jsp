@@ -206,13 +206,13 @@
                                                                 </s:if>
                                                             </display:column>
 
-                                                            <display:column media="html" title="detail" style="text-align:center;font-size:9">
+                                                            <display:column media="html" title="Detail" style="text-align:center;font-size:9">
                                                                 <s:if test='#attr.row.flag == "Y"'>
                                                                     <s:url var="viewDetail" namespace="/detailrekananops" action="initDetailTarif_detailrekananops" escapeAmp="false">
                                                                         <s:param name="id"><s:property value="#attr.row.idDetailRekananOps" /></s:param>
                                                                     </s:url>
                                                                     <s:a href="%{viewDetail}">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_detail">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_detail">
                                                                     </s:a>
                                                                 </s:if>
                                                             </display:column>
@@ -229,14 +229,14 @@
                                                                 </s:if>
                                                             </display:column>
                                                             <%--<display:column property="idRekananOps" sortable="true" title="ID RekananOps" />--%>
-                                                            <display:column property="idDetailRekananOps" sortable="true" title="id DetailRekananOps" />
-                                                            <display:column property="isBpjs" sortable="true" title="is Bpjs" />
-                                                            <display:column property="namaRekanan" sortable="true" title="nama rekanan Ops" />
+                                                            <display:column property="idDetailRekananOps" sortable="true" title="ID" />
+                                                            <display:column property="isBpjs" sortable="true" title="Cover BPJS" />
+                                                            <display:column property="namaRekanan" sortable="true" title="Nama Rekanan" />
                                                             <display:column property="diskon" sortable="true" title="diskon" />
-                                                            <display:column property="branchName" sortable="true" title=" nama branch" />
-                                                            <display:column property="flag" sortable="true" title="flag"  />
+                                                            <display:column property="branchName" sortable="true" title="Unit" />
+                                                            <display:column property="flag" sortable="true" title="Flag"  />
 
-                                                            <display:column property="action" sortable="true" title="action"  />
+                                                            <display:column property="action" sortable="true" title="Action"  />
                                                             <display:column property="createdDate" sortable="true" title="Created date"  />
                                                             <display:column property="createdWho" sortable="true" title="Created who"  />
                                                             <display:column property="lastUpdate" sortable="true" title="Last update"  />

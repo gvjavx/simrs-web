@@ -67,7 +67,7 @@ function dataForm(jenis){
 
     data.push({
         'jenis':'kala1',
-        'parameter': '10. Partoraf melewati garis waspada',
+        'parameter': '10. Partograf melewati garis waspada',
         'jawaban':'Ya|Tidak',
         'class':'',
         'keterangan':'r'
@@ -146,7 +146,7 @@ function dataForm(jenis){
     });
     data.push({
         'jenis':'kala3',
-        'parameter': '21. Pemberian Oksitosin (2x)',
+        'parameter': '21. Pemberian Oksitosin',
         'jawaban':'Ya|Tidak',
         'class':'',
         'keterangan':'r'

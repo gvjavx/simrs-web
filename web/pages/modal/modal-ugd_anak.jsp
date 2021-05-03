@@ -2081,7 +2081,7 @@
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4">Saran</label>
+                            <label class="col-md-4">Sasaran</label>
                             <div class="col-md-8">
                                 <textarea rows="2" class="form-control" id="an15"></textarea>
                             </div>

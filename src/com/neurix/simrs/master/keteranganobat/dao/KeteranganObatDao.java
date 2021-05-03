@@ -196,7 +196,7 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
 
         List<KeteranganObat> keteranganObats = new ArrayList<>();
 
-        if (keteranganObats.size() > 0){
+        if (list.size() > 0){
             for (Object[] obj : list){
                 KeteranganObat keteranganObat = new KeteranganObat();
                 keteranganObat.setId(obj[0].toString());
@@ -224,7 +224,7 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
 
         List<KeteranganObat> keteranganObats = new ArrayList<>();
 
-        if (keteranganObats.size() > 0){
+        if (list.size() > 0){
             for (Object[] obj : list){
                 KeteranganObat keteranganObat = new KeteranganObat();
                 keteranganObat.setId(obj[0].toString());
@@ -255,5 +255,18 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
         }
 
         return new Integer(0);
+    }
+
+    public String getIdSubJenisObat(String idObat){
+
+        String SQL = "SELECT id_sub_jenis FROM im_simrs_header_obat WHERE id_obat = '"+idObat+"'\n";
+
+        List<Object> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+            return list.get(0).toString();
+        }
+
+        return null;
     }
 }

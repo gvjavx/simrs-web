@@ -34,8 +34,7 @@ function saveCPPT(jenis, ket, tipe) {
     }
 
     if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 &&
-        nP && sP && nadi && suhu && rr && tensi != '' &&
-        !va9) {
+        nP && sP && !va9) {
 
         var ttd1 = v9.toDataURL("image/png"),
             ttd1 = ttd1.replace(/^data:image\/(png|jpg);base64,/, "");

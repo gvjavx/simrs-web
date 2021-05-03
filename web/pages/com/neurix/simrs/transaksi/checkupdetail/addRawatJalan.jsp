@@ -563,6 +563,7 @@
                                 </div>
                                 <button type="button" onclick="viewHistory()" class="btn btn-info hvr-icon-spin"><i class="fa fa-history hvr-icon"></i> All History
                                 </button>
+                                <button class="btn btn-info" onclick="uploadPemeriksaan()"><i class="fa fa-line-chart"></i> Upload Pemeriksaan</button>
                             </div>
                         </div>
                     </div>
@@ -1673,6 +1674,27 @@
                         </div>
                     </div>
                 </div>
+                <div class="row" style="display: none" id="form_tarif_lab_luar">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Tarif Lab Luar</label>
+                        <div class="col-md-7">
+                            <div class="input-group" style="margin-top: 7px">
+                                <div class="input-group-addon">
+                                    Rp.
+                                </div>
+                                <input class="form-control"  oninput="convertRpAtas(this.id, this.value, 'h_total_tarif'); var warn =$('#war_tarif_luar_lab').is(':visible'); if (warn){$('#cor_tarif_luar_lab').show().fadeOut(3000);$('#war_tarif_luar_lab').hide()}"
+                                       id="tarif_luar_lab" placeholder="Tarif">
+                                <input type="hidden" id="h_total_tarif">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_tarif_luar_lab"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_tarif_luar_lab"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
                 <hr>
                 <div id="form_lab_dalam">
                     <div class="row">
@@ -2192,7 +2214,7 @@
                               id="cor_rep_hari"><i class="fa fa-check"></i> correct</span>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="display: none">
                     <label class="col-md-3" style="margin-top: 7px">Jenis Resep</label>
                     <div class="col-md-9">
                         <select class="form-control" style="margin-top: 7px;" id="select-jenis-resep">
@@ -2228,28 +2250,28 @@
                         <%--<button style="margin-top: 20px; margin-left: -25px" class="btn btn-warning" onclick="addKeterangan()"><i class="fa fa-plus"></i></button>--%>
                     <%--</div>--%>
                 <%--</div>--%>
-                <div class="row" style="margin-top: 10px">
-                    <div class="col-md-12">
-                        <table class="table table-bordered" style="font-size: 14px" id="table_keterangan">
-                            <thead>
-                            <tr>
-                                <td>Waktu</td>
-                                <td>Keterangan</td>
-                                <td align="center" width="5%">Action</td>
-                            </tr>
-                            </thead>
-                            <tbody id="body_keterangan">
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-md-2">
-                        <span style="color: red; margin-top: 12px; display: none;"
-                              id="war_rep_cek_waktu"><i class="fa fa-times"></i> required</span>
-                        <span style="color: green; margin-top: 12px; display: none;"
-                              id="cor_rep_cek_waktu"><i class="fa fa-check"></i> correct</span>
-                    </div>
-                </div>
-                <hr/>
+                <%--<div class="row" style="margin-top: 10px">--%>
+                    <%--<div class="col-md-12">--%>
+                        <%--<table class="table table-bordered" style="font-size: 14px" id="table_keterangan">--%>
+                            <%--<thead>--%>
+                            <%--<tr>--%>
+                                <%--<td>Waktu</td>--%>
+                                <%--<td>Keterangan</td>--%>
+                                <%--<td align="center" width="5%">Action</td>--%>
+                            <%--</tr>--%>
+                            <%--</thead>--%>
+                            <%--<tbody id="body_keterangan">--%>
+                            <%--</tbody>--%>
+                        <%--</table>--%>
+                    <%--</div>--%>
+                    <%--<div class="col-md-2">--%>
+                        <%--<span style="color: red; margin-top: 12px; display: none;"--%>
+                              <%--id="war_rep_cek_waktu"><i class="fa fa-times"></i> required</span>--%>
+                        <%--<span style="color: green; margin-top: 12px; display: none;"--%>
+                              <%--id="cor_rep_cek_waktu"><i class="fa fa-check"></i> correct</span>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+                <%--<hr/>--%>
                 <div class="row" style="margin-top: -10px">
                     <div class="col-md-12">
                         <button class="btn btn-success" onclick="addObatToList()"><i class="fa fa-plus"></i> Tambah
@@ -2273,7 +2295,7 @@
                         <thead>
                         <td>Nama Obat</td>
                         <td align="center">Qty</td>
-                        <td>Keterangan</td>
+                        <td>Keterangan / Signa</td>
                         <td align="center">Harga (Rp.)</td>
                         <td align="center" width="5%">Action</td>
                         </thead>
@@ -2360,25 +2382,6 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal-keterangan">
-    <div class="modal-dialog modal-flat">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Signa</h4>
-            </div>
-            <div class="modal-body">
-
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -2868,6 +2871,82 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-upload_pemeriksaan">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-image"></i> Upload Pemeriksaan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_pemeriksaan">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_warning_pemeriksaan"></p>
+                </div>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_pemeriksaan">
+                    <h4><i class="icon fa fa-info"></i> Warning!</h4>
+                    <p id="msg_success_pemeriksaan"></p>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div id="btn-uploded">
+                                <button onclick="doneUplod()" class="btn btn-success"><i class="fa fa-cloud-upload"></i> Upload</button>
+                            </div>
+                        </div>
+                        <div id="form-uploded" style="display: none">
+                            <div class="col-md-3">
+                                <input class="form-control" style="margin-top: 7px" placeholder="Keterangan" id="ket_upload_pemeriksan_0" oninput="$(this).css('border', '')">
+                            </div>
+                            <div class="col-md-7">
+                                <div class="input-group">
+                                <span class="input-group-btn">
+                                    <span class="btn btn-default btn-file">
+                                        Browse… <input accept="image/*" class="upload_pemeriksan" onchange="parseToByte('upload_pemeriksan_0', 'label_upload_pemeriksan_0', 'ket_upload_pemeriksan_0')" type="file" id="upload_pemeriksan_0">
+                                    </span>
+                                </span>
+                                    <input type="text" class="form-control" readonly id="label_upload_pemeriksan_0" style="margin-top: 7px">
+                                </div>
+                                <span style="color: red; font-size: 12px">* format file upload (.jpg/.jpeg/.png)</span>
+                            </div>
+                            <%--<div class="col-md-1">--%>
+                                <%--<button onclick="addUpload('upload_pemeriksan', 'set_upload_pemeriksan')" class="btn btn-success" style="margin-left: -20px; margin-top: 9px"><i class="fa fa-plus"></i></button>--%>
+                            <%--</div>--%>
+                        </div>
+                    </div>
+                    <div id="set_upload_pemeriksan">
+
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="carousel-pemeriksaan" class="carousel slide">
+                                <ol class="carousel-indicators" id="li_pemeriksaan">
+
+                                </ol>
+                                <div class="carousel-inner" id="item_pemeriksaan">
+
+                                </div>
+                                <a class="left carousel-control" href="#carousel-pemeriksaan" data-slide="prev">
+                                    <span class="fa fa-angle-left"></span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel-pemeriksaan" data-slide="next">
+                                    <span class="fa fa-angle-right"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -2907,7 +2986,28 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Tidak
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con_rm"><i class="fa fa-check"></i> Ya            </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con_rm"><i class="fa fa-check"></i> Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-keterangan">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Signa</h4>
+            </div>
+            <div class="modal-body">
+                <div id="body-keterangan-obat"></div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-success" onclick="saveKeteranganObat()"><i class="fa fa-check"></i> Save
+                </button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
             </div>
         </div>
     </div>

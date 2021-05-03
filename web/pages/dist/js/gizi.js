@@ -270,7 +270,7 @@ function saveGizi(jenis, ket) {
         var va16 = $('[name=gizi15]');
         var tempVa15 = "";
         if (va15 != undefined) {
-            if ("Baik" == va15) {
+            if ("Kurang" == va15) {
                 var tmp = "";
                 $.each(va16, function (i, item) {
                     if (item.checked && item.value != '' && item.value != 'on') {
@@ -955,7 +955,7 @@ function delGizi(jenis, ket) {
 }
 
 function showKetGizi(val, ket) {
-    if (val == "Ada" || val == "Lain-Lain" || "Bermasalah" == val || "Baik" == val) {
+    if (val == "Ada" || val == "Lain-Lain" || "Bermasalah" == val || "Kurang" == val) {
         $('#form_' + ket).show();
     } else {
         $('#form_' + ket).hide();
@@ -1166,7 +1166,7 @@ function setSkriningGizi(umur) {
             '        <label class="col-md-9">3. Pasien dengan diagnosa khusus / kondisi khusus ?</label>\n' +
             '        <div class="col-md-1">\n' +
             '            <div class="custom02">\n' +
-            '                <input type="radio" value="Ya|2" id="gz31" name="gz3" /><label for="gz31">Ya</label>\n' +
+            '                <input type="radio" value="Ya|3" id="gz31" name="gz3" /><label for="gz31">Ya</label>\n' +
             '            </div>\n' +
             '        </div>\n' +
             '        <div class="col-md-2">\n' +

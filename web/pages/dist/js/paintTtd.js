@@ -12,11 +12,12 @@ function paintTtd(id, change){
     }
 
     if(colorPicker != null){
+        context.strokeStyle = colorPicker.value;
         colorPicker.addEventListener("change", function (evt) {
             context.strokeStyle = evt.target.value;
         });
     }else{
-        colorPicker = "#151414";
+        context.strokeStyle = "#151414";
     }
 
     const lineWidthRange = document.querySelector(".js-line-range");

@@ -1082,7 +1082,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 //            periodSudahTutup=simrsBatasTutupPeriodEntity.getFlagTutup();
 //        }
         ItSimrsBatasTutupPeriodEntity batasTutupPeriodEntity = batasTutupPeriodDao.getBatasTutupPeriod(branchId,bulanSekarang,tahunSekarang);
-        periodSudahTutup=batasTutupPeriodEntity.getFlagTutup();
+        periodSudahTutup = batasTutupPeriodEntity != null ? batasTutupPeriodEntity.getFlagTutup() : null;
 
         // perbaikan periode
 //        String isTransitoris = checkIsJurnalTransitoris(transId);

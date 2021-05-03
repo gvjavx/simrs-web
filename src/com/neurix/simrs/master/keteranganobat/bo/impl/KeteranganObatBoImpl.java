@@ -261,7 +261,7 @@ public class KeteranganObatBoImpl implements KeteranganObatBo{
                     p->p.getId() != "1"
             ).collect(Collectors.toList());
 
-            for (int i = maxlevel ; i <= maxlevel ; i--){
+            for (int i = maxlevel ; i > 0 ; i--){
 
                 if (i == 1){
                     break;
@@ -271,18 +271,19 @@ public class KeteranganObatBoImpl implements KeteranganObatBo{
                 if (currentLevel == null)
                     break;
 
+                int levelParent = i-1;
                 for (KeteranganObat keteranganObat : currentLevel){
 
-                    if (keteranganObat.getParentId() != null || !"".equalsIgnoreCase(keteranganObat.getParentId()))
+                    if (keteranganObat.getParentId() != null && !"".equalsIgnoreCase(keteranganObat.getParentId()))
                         results.add(keteranganObat);
                     else {
 
-                        List<KeteranganObat> parentLevel = filteredByLevel(listOfLevel2Keatas, String.valueOf(i--));
+                        List<KeteranganObat> parentLevel = filteredByLevel(listOfLevel2Keatas, String.valueOf(levelParent));
                         if (parentLevel == null)
                             break;
 
                         for (KeteranganObat keteranganParent : parentLevel){
-                            keteranganObat.setParentId(keteranganParent.getParentId());
+                            keteranganObat.setParentId(keteranganParent.getId());
                             results.add(keteranganObat);
                         }
                     }
@@ -327,6 +328,23 @@ public class KeteranganObatBoImpl implements KeteranganObatBo{
 
         logger.info("[KeteranganObatBoImpl.getListKeteranganObatBySubJenis] END <<< ");
         return results;
+    }
+
+    @Override
+    public String getIdSubJenisObat(String idObat) {
+        logger.info("[KeteranganObatBoImpl.getIdSubJenisObat] START >>> ");
+
+        String idSubJenis = "";
+
+        try {
+            idSubJenis = keteranganObatDao.getIdSubJenisObat(idObat);
+        } catch (HibernateException e){
+            logger.error("[ParameterKeteranganObatBoImpl.getIdSubJenisObat] ERROR, error when. ",e);
+            throw new GeneralBOException("[ParameterKeteranganObatBoImpl.getIdSubJenisObat] ERROR, error when. "+e);
+        }
+
+        logger.info("[KeteranganObatBoImpl.getIdSubJenisObat] END <<< ");
+        return idSubJenis;
     }
 
     private List<KeteranganObat> filteredByLevel(List<KeteranganObat> keteranganObatList, String level){

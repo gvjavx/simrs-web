@@ -113,9 +113,9 @@
                                 <div class="form-group" id="form_waktu">
                                     <label class="control-label col-sm-4">Waktu</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'siang':'Siang','malam':'Malam'}" cssStyle="margin-top: 7px"
+                                        <s:select list="#{'pagi':'Pagi','siang':'Siang','malam':'Malam'}" cssStyle="margin-top: 7px"
                                                   id="status" name="rawatInap.waktu"
-                                                  headerKey="pagi" headerValue="Pagi"
+                                                  headerKey="" headerValue="All"
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
@@ -301,7 +301,12 @@
                                         <input type="hidden" id="no_checkup_<s:property value="idOrderGizi"/>" value="<s:property value="noCheckup"/>">
                                     </td>
                                     <td><s:property value="namaDiagnosa"/></td>
-                                    <td><s:property value="waktu"/></td>
+                                    <td>
+                                        <script>
+                                            var waktu = '<s:property value="waktu"/>';
+                                            document.write(waktu.toUpperCase());
+                                        </script>
+                                    </td>
                                     <td>
                                         <s:if test='#row.diterimaFlag == "R"'>
                                             <span class="span-danger">dibatalkan</span>

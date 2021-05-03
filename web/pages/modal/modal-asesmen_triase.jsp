@@ -217,29 +217,29 @@
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3">Diagnosa</label>
+                            <label class="col-md-3">SPO2</label>
                             <div class="col-md-9">
                                 <textarea class="form-control" id="tr10"></textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Terapi</label>
-                            <div class="col-md-9">
-                                <textarea class="form-control resep-pasien" id="tr11"></textarea>
-                            </div>
-                        </div>
-                    </div>
+                    <%--<div class="row jarak">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-md-3">Terapi</label>--%>
+                            <%--<div class="col-md-9">--%>
+                                <%--<textarea class="form-control resep-pasien" id="tr11"></textarea>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">
-                            <div class="col-md-6 text-center">
-                                <label>TTD Dokter IGD</label>
+                            <div class="col-md-offset-3 col-md-6 text-center">
+                                <label>TTD Perawat</label>
                                 <canvas class="paint-canvas-ttd" id="tr12" width="220"
                                         onmouseover="paintTtd('tr12')"></canvas>
-                                <input class="form-control nama_dokter" id="nama_terang_tr12" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_tr12" placeholder="SIP">
+                                <input class="form-control nama_petugas" id="nama_terang_tr12" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control nip_petugas" id="sip_tr12" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('tr12')"><i
                                         class="fa fa-trash"></i> Clear
