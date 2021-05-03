@@ -1036,172 +1036,49 @@ public class BillingSystemBoImpl implements BillingSystemBo {
     }
 
     @Override
-    public Jurnal createJurnal(String transId, Map data, String branchId, String catatanPembuatanJurnal, String flagRegister){
-        logger.info("[PembayaranUtangPiutangBoImpl.createJurnal] start process >>>");
-        String noJurnal;
-        String status;
-        if (data.get("user_id") != null ){
-            if(!data.get("user_id").toString().equalsIgnoreCase("")) {
-                userLogin = data.get("user_id").toString();
-            } else userLogin = CommonUtil.userIdLogin();
-        } else userLogin = CommonUtil.userIdLogin();
-        updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-        String tipeJurnalId;
-        String sumber = null;
-        Jurnal returnJurnal = new Jurnal();
+    //updated by ferdi, 01-12-2020, modify createJurnal, call prepareJurnal and sent object jurnal (after create jurnal), if want to execute create jurnal process only, not update or insert other transaction table.
+    public Jurnal createJurnal(String transId, Map buildDataBasedMappingJurnal, String branchId, String catatanPembuatanJurnal, String flagRegister) throws GeneralBOException {
+        logger.info("[BillingSystemBoImpl.createJurnal] start process >>>");
 
-        //mencari tipe jurnal Id
+        Jurnal resultJurnal = new Jurnal();
+
+        buildDataBasedMappingJurnal.put("keterangan",catatanPembuatanJurnal);
+
+        ItJurnalEntity itJurnalEntity = null;
         try {
-            tipeJurnalId = mappingJurnalDao.tipeJurnalByTransId(transId);
-        } catch (HibernateException e) {
-            logger.error("[PembayaranUtangPiutangBoImpl.createJurnal] Error, " + e.getMessage());
-            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+            itJurnalEntity = prepareCreateJurnal(transId, buildDataBasedMappingJurnal, branchId, flagRegister);
+        } catch (GeneralBOException e) {
+            logger.error("[BillingSystemBoImpl.createJurnal] Error, " + e.getMessage());
+            throw new GeneralBOException("[BillingSystemBoImpl.createJurnal] Found problem when preparing jurnal to create jurnal, please inform to your admin...," + e.getMessage());
         }
 
-        //Pencarian di tipe jurnal apakah jurnal ini perlu membuat sumber baru
-        ImTransEntity transEntity;
-        try {
-            transEntity = transDao.getById("transId",transId);
-        } catch (HibernateException e) {
-            logger.error("[PembayaranUtangPiutangBoImpl.createJurnal] Error, " + e.getMessage());
-            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
-        }
+        //create jurnal
 
-        Date tanggalSekarang = new Date();
-        DateTime datetime = new DateTime(tanggalSekarang);
+        if (itJurnalEntity!=null) {
 
-        DateTime bulanBerikutnya = new DateTime(tanggalSekarang);
-        bulanBerikutnya = bulanBerikutnya.plusMonths(1).withDayOfMonth(1);
-
-        String bulanSekarang = String.valueOf(Integer.parseInt(datetime.toString("MM")));
-        String tahunSekarang = datetime.toString("YYYY");
-        String periodSudahTutup=null;
-
-//        List<ItSimrsBatasTutupPeriodEntity> batasTutupPeriodEntityList = batasTutupPeriodDao.getBatasTutupPeriod(branchId,bulanSekarang,tahunSekarang);
-//        for (ItSimrsBatasTutupPeriodEntity simrsBatasTutupPeriodEntity : batasTutupPeriodEntityList){
-//            periodSudahTutup=simrsBatasTutupPeriodEntity.getFlagTutup();
-//        }
-        ItSimrsBatasTutupPeriodEntity batasTutupPeriodEntity = batasTutupPeriodDao.getBatasTutupPeriod(branchId,bulanSekarang,tahunSekarang);
-        periodSudahTutup = batasTutupPeriodEntity != null ? batasTutupPeriodEntity.getFlagTutup() : null;
-
-        // perbaikan periode
-//        String isTransitoris = checkIsJurnalTransitoris(transId);
-//        if ("Y".equalsIgnoreCase(isTransitoris)){
-//            periodSudahTutup=null;
-//        }
-
-        String pengajuanId=null;
-        //mengambil pengajuan Id
-        if (data.get("pengajuan_id")!=null){
-            pengajuanId = (String) data.get("pengajuan_id");
-        }
-
-        String sumberDana=null;
-        //mengambil Sumber Dana
-        if (data.get("sumber_dana")!=null){
-            sumberDana = (String) data.get("sumber_dana");
-        }
-
-        if (tipeJurnalId!=null){
             try {
-                // Generating ID, get from postgre sequence
-                noJurnal=jurnalDao.getNextJurnalId();
-
-                sumber = createJurnalDetail(data,noJurnal,tipeJurnalId,transId,periodSudahTutup,branchId);
-
-//                // MEMBUAT JURNAL DETAIL TERLEBIH DAHULU UNTUK MENGAMBIL NOMOR INVOICE DARI PEMBAYARAN
-//                if (("Y").equalsIgnoreCase(transEntity.getFlagSumberBaru())){
-//                    createJurnalDetail(data,noJurnal,tipeJurnalId,transId,periodSudahTutup);
-//                    sumber = createInvoiceNumber(tipeJurnalId,branchId);
-//                }else{
-//                }
-
-                //MEMBUAT JURNAL HEADER
-                ItJurnalEntity jurnalEntity = new ItJurnalEntity();
-                jurnalEntity.setNoJurnal(noJurnal);
-                jurnalEntity.setPengajuanBiayaId(pengajuanId);
-                jurnalEntity.setTipeJurnalId(tipeJurnalId);
-                jurnalEntity.setTanggalJurnal(new java.sql.Date(tanggalSekarang.getTime()));
-                jurnalEntity.setMataUangId("032");
-                jurnalEntity.setKurs(BigDecimal.valueOf(1));
-                jurnalEntity.setKeterangan(catatanPembuatanJurnal);
-                jurnalEntity.setSumber(sumber);
-                jurnalEntity.setSumberDanaId(sumberDana);
-                jurnalEntity.setPrintRegisterCount(BigDecimal.ZERO);
-                jurnalEntity.setPrintCount(BigDecimal.ZERO);
-                if (("Y").equalsIgnoreCase(flagRegister)){
-                    jurnalEntity.setRegisteredFlag("Y");
-                    jurnalEntity.setRegisteredUser(userLogin);
-                    jurnalEntity.setRegisteredDate(new java.sql.Date(new Date().getTime()));
-                }
-                jurnalEntity.setBranchId(branchId);
-                jurnalEntity.setFlag("Y");
-                jurnalEntity.setCreatedWho(userLogin);
-                jurnalEntity.setLastUpdateWho(userLogin);
-                jurnalEntity.setCreatedDate(updateTime);
-                jurnalEntity.setLastUpdate(updateTime);
-                jurnalEntity.setAction("C");
-                // dirubah oleh sigit penambahan filter JKR 2020-09-15
-                if (periodSudahTutup==null || "JKR".equalsIgnoreCase(jurnalEntity.getTipeJurnalId())){
-                    try {
-                        jurnalDao.addAndSave(jurnalEntity);
-                    } catch (HibernateException e) {
-                        logger.error("[PembayaranUtangPiutangBoImpl.createJurnal] Error, " + e.getMessage());
-                        throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
-                    }
-                }else if ("Y".equalsIgnoreCase(periodSudahTutup)){
-                    jurnalEntity.setTanggalJurnal(new java.sql.Date(bulanBerikutnya.getMillis()));
-                    try {
-                        jurnalDao.addAndSave(jurnalEntity);
-                    } catch (HibernateException e) {
-                        logger.error("[PembayaranUtangPiutangBoImpl.createJurnal] Error, " + e.getMessage());
-                        throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
-                    }
-                }else{
-                    ItJurnalPendingEntity pending = new ItJurnalPendingEntity();
-                    pending.setNoJurnal(noJurnal);
-                    pending.setTipeJurnalId(tipeJurnalId);
-                    pending.setTanggalJurnal(new java.sql.Date(tanggalSekarang.getTime()));
-                    pending.setMataUangId("032");
-                    pending.setKurs(BigDecimal.valueOf(1));
-                    pending.setKeterangan(catatanPembuatanJurnal);
-                    pending.setSumber(sumber);
-                    pending.setPrintRegisterCount(BigDecimal.ZERO);
-                    pending.setPrintCount(BigDecimal.ZERO);
-                    if (("Y").equalsIgnoreCase(flagRegister)){
-                        pending.setRegisteredFlag("Y");
-                        pending.setRegisteredUser(userLogin);
-                        pending.setRegisteredDate(new java.sql.Date(new Date().getTime()));
-                    }
-                    pending.setBranchId(branchId);
-                    pending.setFlag("Y");
-                    pending.setCreatedWho(userLogin);
-                    pending.setLastUpdateWho(userLogin);
-                    pending.setCreatedDate(updateTime);
-                    pending.setLastUpdate(updateTime);
-                    pending.setAction("C");
-
-                    try {
-                        jurnalDao.addAndSavePending(pending);
-                    } catch (HibernateException e) {
-                        logger.error("[PembayaranUtangPiutangBoImpl.createJurnal] Error, " + e.getMessage());
-                        throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
-                    }
-                }
-
-                returnJurnal.setNoJurnal(noJurnal);
-                returnJurnal.setSumber(sumber);
-            } catch (Exception e){
-                logger.error("[PembayaranUtangPiutangBoImpl.createJurnal]"+e);
-                throw new GeneralBOException("Found problem : "+e+", please info to your admin...");
+                jurnalDao.addAndSave(itJurnalEntity);
+            } catch (HibernateException e) {
+                logger.error("[BillingSystemBoImpl.createJurnal] Error, " + e.getMessage());
+                throw new GeneralBOException("[BillingSystemBoImpl.createJurnal] Found problem when saving jurnal, please info to your admin..." + e.getMessage());
             }
-        }else{
-            status="ERROR : tidak bisa menemukan Tipe Jurnal Id";
-            logger.error("[PembayaranUtangPiutangBoImpl.createJurnal]"+status);
-            throw new GeneralBOException("Found problem when "+status+", please info to your admin...");
+
+            String noJurnal = itJurnalEntity.getNoJurnal();
+            String sumber = itJurnalEntity.getSumber();
+
+            resultJurnal.setNoJurnal(noJurnal);
+            resultJurnal.setSumber(sumber);
+
+        } else {
+
+            logger.error("[BillingSystemBoImpl.createJurnal] Tidak ditemukan jurnal yang akan di buat.");
+            throw new GeneralBOException("[BillingSystemBoImpl.createJurnal] Tidak ditemukan jurnal yang akan di buat., please info to your admin...");
+
         }
-        logger.info("[PembayaranUtangPiutangBoImpl.createJurnal] End process <<<");
-        return returnJurnal;
+
+        logger.info("[BillingSystemBoImpl.createJurnal] end process <<<");
+
+        return resultJurnal;
     }
 
     public Jurnal createJurnalTutupTahun(String transId, Map data, String branchId, String catatanPembuatanJurnal, String flagRegister, String tglJurnal, String tipePeriode){
