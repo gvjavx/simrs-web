@@ -369,10 +369,10 @@ public class CommonConstant {
     public final static String MAPPING_CUTI_KAS = CommonUtil.getPropertyParams("mapping.cuti.kas");
     public final static String MAPPING_CUTI_PPH = CommonUtil.getPropertyParams("mapping.cuti.pph");
 
-    public final static String TIPE_PEGAWAI_BOC = "TP04";
+    public final static String TIPE_PEGAWAI_BOC = "TP01";
     public final static String TIPE_PEGAWAI_BOD = "TP02";
-    public final static String TIPE_PEGAWAI_TETAP = "TP01";
-    public final static String TIPE_PEGAWAI_TIDAK_TETAP = "TP03";
+    public final static String TIPE_PEGAWAI_TETAP = "TP03";
+    public final static String TIPE_PEGAWAI_TIDAK_TETAP = "TP04";
 
     public final static String TIPE_DPLK = "DP01";
     public final static String TIPE_DAPENBUN = "DP02";
