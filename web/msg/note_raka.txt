@@ -20,8 +20,6 @@
     add column persen_cuti_tahunan numeric(10,2);
     update im_company set persen_cuti_panjang = 100, persen_cuti_tahunan=55;
 
-
-
 ------ 2021-05-01 ===> query tambahan table payroll
 -- sequence
     create sequence seq_payroll_temp ;
