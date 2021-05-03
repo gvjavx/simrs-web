@@ -1683,7 +1683,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                     "       pegawai.tanggal_keluar                                                     as tanggal_keluar,\n" +
                     "       posisi.kodering                                                            as kodering,\n" +
                     "       pegawai.jenis_kelamin                                                      as gender,\n" +
-                    "       company.persen_cuti_panjang/100                                            as multifikator \n" +
+                    "       company.persen_cuti_panjang/100                                            as multifikator" +
                     "from im_hris_pegawai pegawai\n" +
                     "       left join im_hris_golongan golongan on pegawai.golongan_id = golongan.golongan_id and\n" +
                     "                                              golongan.flag = 'Y'\n" +
