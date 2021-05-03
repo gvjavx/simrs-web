@@ -3157,16 +3157,16 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 //
 //                            String noJurnal = itJurnalEntity.getNoJurnal();
 //
-//                            //update payroll header, approval aks = Y dan no jurnal
+                            //update payroll header, approval aks = Y dan no jurnal
 //                            itHrisPayrollHeaderEntity.setNoJurnal(noJurnal);
-//                            itHrisPayrollHeaderEntity.setAction("U");
-//                            itHrisPayrollHeaderEntity.setApprovalAksFlag("Y");
-//                            itHrisPayrollHeaderEntity.setApprovalAksName(createdWho);
-//                            itHrisPayrollHeaderEntity.setKeteranganAks("Telah Approval Gaji.");
-//                            itHrisPayrollHeaderEntity.setApprovalAksDate(CommonUtil.getCurrentDateTimes());
-//                            itHrisPayrollHeaderEntity.setLastUpdate(CommonUtil.getCurrentDateTimes());
-//                            itHrisPayrollHeaderEntity.setLastUpdateWho(createdWho);
-//
+                            itHrisPayrollHeaderEntity.setAction("U");
+                            itHrisPayrollHeaderEntity.setApprovalAksFlag("Y");
+                            itHrisPayrollHeaderEntity.setApprovalAksName(createdWho);
+                            itHrisPayrollHeaderEntity.setKeteranganAks("Telah Approval Gaji.");
+                            itHrisPayrollHeaderEntity.setApprovalAksDate(CommonUtil.getCurrentDateTimes());
+                            itHrisPayrollHeaderEntity.setLastUpdate(CommonUtil.getCurrentDateTimes());
+                            itHrisPayrollHeaderEntity.setLastUpdateWho(createdWho);
+
                             try {
                                 payrollHeaderDao.updateAndSave(itHrisPayrollHeaderEntity);
                             } catch (HibernateException e) {

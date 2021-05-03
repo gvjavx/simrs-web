@@ -740,7 +740,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-success-dialog">
+<div class="modal fade" id="modal-success-search-payroll">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
@@ -778,7 +778,7 @@
             }
             if (tipe == "success"){
                 $("#modal-loading-dialog").modal('hide');
-                $("#modal-success-dialog").modal('show');
+                $("#modal-success-search-payroll").modal('show');
             }
         }
 
