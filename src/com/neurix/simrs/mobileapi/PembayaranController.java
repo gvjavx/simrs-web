@@ -35,7 +35,7 @@ import java.util.List;
  * @author gondok
  * Thursday, 11/06/20 11:01
  */
-public class  PembayaranController implements ModelDriven<Object> {
+public class PembayaranController implements ModelDriven<Object> {
     private static final transient Logger logger = Logger.getLogger(PembayaranController.class);
     private PembayaranMobile model = new PembayaranMobile();
     private Collection<PembayaranMobile> listOfPembayaran;
