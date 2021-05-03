@@ -474,7 +474,6 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                 entity.setTanggalSelesaiPeriksa(bean.getLastUpdate());
                 entity.setStatusPeriksa("3");
                 entity.setApproveFlag("Y");
-                entity.setTarifLabLuar(bean.getTarifLabLuar());
                 entity.setCatatan(bean.getCatatan());
             }
 

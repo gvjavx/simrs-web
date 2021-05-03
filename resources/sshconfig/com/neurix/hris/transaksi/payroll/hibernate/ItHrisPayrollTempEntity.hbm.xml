@@ -1,0 +1,496 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+  ~ Copyright (c) GO-MEDSYS(TM) 2020 created by MGI
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.hris.transaksi.payroll.model.ItHrisPayrollTempEntity" table="it_hris_payroll_temp" schema="public">
+
+        <id name="payrollTempId">
+            <column name="payroll_temp_id" sql-type="varchar(15)" length="15" not-null="true"/>
+        </id>
+        <property name="payrollHeaderId">
+            <column name="payroll_header_id" sql-type="varchar(15)" length="15" />
+        </property>
+
+        <property name="tipePayroll">
+            <column name="tipe_payroll" sql-type="varchar(2)" length="2" />
+        </property>
+        <property name="bulan">
+            <column name="bulan" sql-type="varchar(2)" length="2" />
+        </property>
+        <property name="tahun">
+            <column name="tahun" sql-type="varchar(4)" length="4" />
+        </property>
+        <property name="tahunSkalaGaji">
+            <column name="tahun_skala_gaji" sql-type="varchar(4)" length="4" />
+        </property>
+
+        <property name="nip">
+            <column name="nip" sql-type="varchar(20)" length="20" />
+        </property>
+        <property name="nipLama">
+            <column name="nip_lama" sql-type="varchar(20)" length="20" />
+        </property>
+        <property name="namaPegawai">
+            <column name="nama_pegawai" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="gelar">
+            <column name="gelar" sql-type="varchar(20)" length="20" />
+        </property>
+        <property name="positionId">
+            <column name="position_id" sql-type="varchar(5)" length="5" />
+        </property>
+        <property name="positionName">
+            <column name="position_name" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="golonganId">
+            <column name="golongan_id" sql-type="varchar(5)" length="5" />
+        </property>
+        <property name="golonganName">
+            <column name="golongan_name" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="departmentId">
+            <column name="department_id" sql-type="varchar(5)" length="5" />
+        </property>
+        <property name="departmentName">
+            <column name="department_name" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="subDivisi">
+            <column name="sub_divisi" sql-type="varchar(5)" length="5" />
+        </property>
+        <property name="subDivisiName">
+            <column name="sub_divisi_name" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="kelompokPositionId">
+            <column name="kelompok_position_id" sql-type="varchar(5)" length="5" />
+        </property>
+        <property name="kelompokPositionName">
+            <column name="kelompok_position_name" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="profesiId">
+            <column name="profesi_id" sql-type="varchar(20)" length="20" />
+        </property>
+        <property name="profesiName">
+            <column name="profesi_name" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar(5)" length="5" />
+        </property>
+        <property name="branchName">
+            <column name="branch_name" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="golonganDapen">
+            <column name="golongan_dapen" sql-type="varchar(10)" length="10" />
+        </property>
+        <property name="gradeLevel">
+            <column name="grade_level" sql-type="integer" />
+        </property>
+        <property name="tipePegawaiId">
+            <column name="tipe_pegawai_id" sql-type="varchar(5)" length="5" />
+        </property>
+        <property name="tipePegawaiName">
+            <column name="tipe_pegawai_name" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="statusPegawaiId">
+            <column name="status_pegawai_id" sql-type="varchar(5)" length="5" />
+        </property>
+        <property name="statusPegawaiName">
+            <column name="status_pegawai_name" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="jenisPegawaiId">
+            <column name="jenis_pegawai_id" sql-type="varchar(5)" length="5" />
+        </property>
+        <property name="jenisPegawaiName">
+            <column name="jenis_pegawai_name" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="dapenId">
+            <column name="dapen_id" sql-type="varchar(20)" length="20" />
+        </property>
+        <property name="dapenName">
+            <column name="dapen_name" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="statusKeluarga">
+            <column name="status_keluarga" sql-type="varchar(12)" length="12" />
+        </property>
+        <property name="jumlahAnak">
+            <column name="jumlah_anak" sql-type="integer" />
+        </property>
+        <property name="jumlahAnakDitanggung">
+            <column name="jumlah_anak_ditanggung" sql-type="integer" />
+        </property>
+        <property name="npwp">
+            <column name="npwp" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="noRekBank">
+            <column name="no_rek_bank" sql-type="varchar(20)" length="20" />
+        </property>
+        <property name="namaBank">
+            <column name="nama_bank" sql-type="varchar(15)" length="15" />
+        </property>
+        <property name="gender">
+            <column name="gender" sql-type="varchar(1)" length="1" />
+        </property>
+        <property name="masaKerjaGol">
+            <column name="masa_kerja_gol" sql-type="integer" />
+        </property>
+        <property name="masaKerja">
+            <column name="masa_kerja" sql-type="integer" />
+        </property>
+        <property name="tanggalAktif">
+            <column name="tanggal_aktif" sql-type="date" />
+        </property>
+        <property name="tanggalAkhirKontrak">
+            <column name="tanggal_akhir_kontrak" sql-type="date" />
+        </property>
+        <property name="tanggalPraPensiun">
+            <column name="tanggal_pra_pensiun" sql-type="date" />
+        </property>
+        <property name="tanggalPensiun">
+            <column name="tanggal_pensiun" sql-type="date" />
+        </property>
+
+        <property name="tanggalKeluar">
+            <column name="tanggal_keluar" sql-type="date" />
+        </property>
+        <property name="tanggalAwalLembur">
+            <column name="tanggal_awal_lembur" sql-type="date" />
+        </property>
+        <property name="tanggalAkhirLembur">
+            <column name="tanggal_akhir_lembur" sql-type="date" />
+        </property>
+        <property name="kodering">
+            <column name="kodering" sql-type="varchar(10)" length="10" />
+        </property>
+        <property name="gajiPensiun">
+            <column name="gaji_pensiun" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="gajiPensiunBpjs">
+            <column name="gaji_pensiun_bpjs" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="gajiPokok">
+            <column name="gaji_pokok" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="gajiKotor">
+            <column name="gaji_kotor" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="thp">
+            <column name="thp" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="gajiBersih">
+            <column name="gaji_bersih" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="totalA">
+            <column name="total_a" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="totalB">
+            <column name="total_b" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="totalC">
+            <column name="total_c" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="totalD">
+            <column name="total_d" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="totalRlab">
+            <column name="total_rlab" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjunganSankhus">
+            <column name="tunjungan_sankhus" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganUmk">
+            <column name="tunjangan_umk" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganStruktural">
+            <column name="tunjangan_struktural" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganPeralihan">
+            <column name="tunjangan_peralihan" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganJabatanStruktural">
+            <column name="tunjangan_jabatan_struktural" sql-type="numeric(15,2)" precision="15" scale="2"
+                    />
+        </property>
+        <property name="tunjanganStrategis">
+            <column name="tunjangan_strategis" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="kompensasi">
+            <column name="kompensasi" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganTransport">
+            <column name="tunjangan_transport" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganAirListrik">
+            <column name="tunjangan_air_listrik" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganPengobatan">
+            <column name="tunjangan_pengobatan" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganPerumahan">
+            <column name="tunjangan_perumahan" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganAir">
+            <column name="tunjangan_air" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganListrik">
+            <column name="tunjangan_listrik" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganBbm">
+            <column name="tunjangan_bbm" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganFungsional">
+            <column name="tunjangan_fungsional" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganTambahan">
+            <column name="tunjangan_tambahan" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganPph">
+            <column name="tunjangan_pph" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganBajuDinas">
+            <column name="tunjangan_baju_dinas" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganLain">
+            <column name="tunjangan_lain" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganLembur">
+            <column name="tunjangan_lembur" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="peralihanGapok">
+            <column name="peralihan_gapok" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="peralihanSankhus">
+            <column name="peralihan_sankhus" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="peralihanTunjangan">
+            <column name="peralihan_tunjangan" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganPemondokan">
+            <column name="tunjangan_pemondokan" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganKomunikasi">
+            <column name="tunjangan_komunikasi" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganSupervisi">
+            <column name="tunjangan_supervisi" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganLokal">
+            <column name="tunjangan_lokal" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganSiaga">
+            <column name="tunjangan_siaga" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="pphGaji">
+            <column name="pph_gaji" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="pphPengobatan">
+            <column name="pph_pengobatan" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="pphSeharusnya">
+            <column name="pph_seharusnya" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="selisihPph">
+            <column name="selisih_pph" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganDapen">
+            <column name="tunjangan_dapen" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="persenDapenKary">
+            <column name="persen_dapen_kary" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="persenDapenPers">
+            <column name="persen_dapen_pers" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="iuranDapenKary">
+            <column name="iuran_dapen_kary" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="iuranDapenPers">
+            <column name="iuran_dapen_pers" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="iuranKopkar">
+            <column name="iuran_kopkar" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="iuranSp">
+            <column name="iuran_sp" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="iuranPiikb">
+            <column name="iuran_piikb" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="iuranBankMandiri">
+            <column name="iuran_bank_mandiri" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="iuranBankBri">
+            <column name="iuran_bank_bri" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="iuranInfaq">
+            <column name="iuran_infaq" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="iuranPerkesDanObat">
+            <column name="iuran_perkes_dan_obat" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="iuranListrik">
+            <column name="iuran_listrik" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="iuranProfesi">
+            <column name="iuran_profesi" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="iuranPotonganLain">
+            <column name="iuran_potongan_lain" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tambahanLain">
+            <column name="tambahan_lain" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="uangMukaLainnya">
+            <column name="uang_muka_lainnya" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="kekuranganBpjsTk">
+            <column name="kekurangan_bpjs_tk" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="pengobatan">
+            <column name="pengobatan" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="koperasi">
+            <column name="koperasi" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="dansos">
+            <column name="dansos" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="sp">
+            <column name="sp" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="bazis">
+            <column name="bazis" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="bapor">
+            <column name="bapor" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="zakat">
+            <column name="zakat" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="lainLain">
+            <column name="lain_lain" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="umr">
+            <column name="umr" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="totalPotonganLain">
+            <column name="total_potongan_lain" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="ptkpPegawai">
+            <column name="ptkp_pegawai" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganBpjsKs">
+            <column name="tunjangan_bpjs_ks" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjanganBpjsTk">
+            <column name="tunjangan_bpjs_tk" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="totalIuranBpjsTkKary">
+            <column name="total_iuran_bpjs_tk_kary" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="totalIuranBpjsTkPers">
+            <column name="total_iuran_bpjs_tk_pers" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="minBpjsKs">
+            <column name="min_bpjs_ks" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="maxBpjsKs">
+            <column name="max_bpjs_ks" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="persenBpjsKsKary">
+            <column name="persen_bpjs_ks_kary" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="persenBpjsKsPers">
+            <column name="persen_bpjs_ks_pers" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="minBpjsTk">
+            <column name="min_bpjs_tk" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="maxBpjsTk">
+            <column name="max_bpjs_tk" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="persenBpjsTkIuranKary">
+            <column name="persen_bpjs_tk_iuran_kary" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="persenBpjsTkJpkKary">
+            <column name="persen_bpjs_tk_jpk_kary" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="persenBpjsTkJkkPers">
+            <column name="persen_bpjs_tk_jkk_pers" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="persenBpjsTkJhtPers">
+            <column name="persen_bpjs_tk_jht_pers" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="persenBpjsTkJkmPers">
+            <column name="persen_bpjs_tk_jkm_pers" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="persenBpjsTkJpkPers">
+            <column name="persen_bpjs_tk_jpk_pers" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="dasarBpjsKs">
+            <column name="dasar_bpjs_ks" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="dasarBpjsTk">
+            <column name="dasar_bpjs_tk" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="iuranBpjsKsKary">
+            <column name="iuran_bpjs_ks_kary" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="iuranBpjsKsPers">
+            <column name="iuran_bpjs_ks_pers" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="iuranBpjsTkKary">
+            <column name="iuran_bpjs_tk_kary" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="jpkBpjsTkKary">
+            <column name="jpk_bpjs_tk_kary" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="jkkBpjsTkPers">
+            <column name="jkk_bpjs_tk_pers" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="jhtBpjsTkPers">
+            <column name="jht_bpjs_tk_pers" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="jkmBpjsTkPers">
+            <column name="jkm_bpjs_tk_pers" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="jpkBpjsTkPers">
+            <column name="jpk_bpjs_tk_pers" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="multifikator">
+            <column name="multifikator" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+
+
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar(1)" length="1" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar(1)" length="1" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" />
+        </property>
+
+        <set name="itHrisPayrollPphTemp" inverse="true" lazy="true" fetch="select" cascade="all" >
+            <key>
+                <column name="payroll_temp_id" not-null="true"/>
+            </key>
+            <one-to-many not-found="ignore" class="com.neurix.hris.transaksi.payroll.model.ItHrisPayrollPphTempEntity"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

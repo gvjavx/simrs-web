@@ -149,6 +149,46 @@ public class ImCompany implements Serializable {
     private Integer tanggalAwalLembur;
     private Integer tanggalAkhirLembur;
 
+    //updated by ferdi, 01-12-2020,
+    private String payrollTanggalLemburAwal;
+    private String payrollTanggalLemburAkhir;
+
+    private BigDecimal persenCutiTahunan;
+    private BigDecimal persenCutiPanjang;
+
+    public BigDecimal getPersenCutiTahunan() {
+        return persenCutiTahunan;
+    }
+
+    public void setPersenCutiTahunan(BigDecimal persenCutiTahunan) {
+        this.persenCutiTahunan = persenCutiTahunan;
+    }
+
+    public BigDecimal getPersenCutiPanjang() {
+        return persenCutiPanjang;
+    }
+
+    public void setPersenCutiPanjang(BigDecimal persenCutiPanjang) {
+        this.persenCutiPanjang = persenCutiPanjang;
+    }
+
+    public String getPayrollTanggalLemburAwal() {
+        return payrollTanggalLemburAwal;
+    }
+
+    public void setPayrollTanggalLemburAwal(String payrollTanggalLemburAwal) {
+        this.payrollTanggalLemburAwal = payrollTanggalLemburAwal;
+    }
+
+    public String getPayrollTanggalLemburAkhir() {
+        return payrollTanggalLemburAkhir;
+    }
+
+    public void setPayrollTanggalLemburAkhir(String payrollTanggalLemburAkhir) {
+        this.payrollTanggalLemburAkhir = payrollTanggalLemburAkhir;
+    }
+    //RAKA-end
+
     public Integer getTanggalAwalLembur() {
         return tanggalAwalLembur;
     }

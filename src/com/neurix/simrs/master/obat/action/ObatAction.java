@@ -1620,4 +1620,69 @@ public class ObatAction extends BaseMasterAction {
         }
     }
 
+    public List<KeteranganObat> KeteranganObatByIdObat(String idObat){
+        logger.info("[ObatAction.KeteranganObatByIdObat] START >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KeteranganObatBo keteranganObatBo = (KeteranganObatBo) ctx.getBean("keteranganObatBoProxy");
+
+        String idSubJenis = "";
+
+        List<KeteranganObat> results = new ArrayList<>();
+
+        try {
+            idSubJenis = keteranganObatBo.getIdSubJenisObat(idObat);
+        } catch (GeneralBOException e){
+            logger.error("[ObatAction.KeteranganObatByIdObat] ERROR. ", e);
+        }
+
+        if (idSubJenis == null){
+            KeteranganObat keteranganObat = new KeteranganObat();
+            keteranganObat.setKeterangan("lainnya");
+            results.add(keteranganObat);
+            return results;
+        }
+
+        try {
+            results = keteranganObatBo.getListKeteranganObatBySubJenis(idSubJenis);
+        } catch (GeneralBOException e){
+            logger.error("[ObatAction.KeteranganObatByIdObat] ERROR. ", e);
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResultKeterangan");
+        session.setAttribute("listOfResultKeterangan", results);
+
+
+        logger.info("[ObatAction.KeteranganObatByIdObat] END <<<");
+        return results.stream().filter(p->p.getLevel().equalsIgnoreCase("2")).collect(Collectors.toList());
+    }
+
+    public List<KeteranganObat> getByParentKeteranganObat(String id){
+        logger.info("[ObatAction.KeteranganObatByIdObat] START >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<KeteranganObat> keteranganObats = (List<KeteranganObat>) session.getAttribute("listOfResultKeterangan");
+
+        List<KeteranganObat> listChild = keteranganObats.stream().filter(
+                p->p.getParentId().equalsIgnoreCase(id)
+        ).collect(Collectors.toList());
+
+        if (listChild.size() == 0){
+            List<KeteranganObat> listParent = keteranganObats.stream().filter(p->p.getId().equalsIgnoreCase(id)).collect(Collectors.toList());
+            if (listParent.size() > 0){
+                KeteranganObat keteranganObat = listParent.get(0);
+
+                int level = Integer.parseInt(keteranganObat.getLevel()) + 1;
+                String stLevel = String.valueOf(level);
+
+                // jika tidak ada cari berdasarkan level
+               listChild = keteranganObats.stream().filter(
+                        p->p.getLevel().equalsIgnoreCase(stLevel)
+                ).collect(Collectors.toList());
+            }
+        }
+
+        logger.info("[ObatAction.KeteranganObatByIdObat] END <<<");
+        return listChild;
+    }
 }

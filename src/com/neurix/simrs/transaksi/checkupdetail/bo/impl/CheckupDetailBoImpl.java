@@ -488,7 +488,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                         uploadPendukungPemeriksaanDao.deleteAndSave(pendukungPemeriksaanEntity);
                     }catch (HibernateException e){
                         logger.error(e.getMessage());
-                        throw new GeneralBOException("Error when delete data");
+                        throw new GeneralBOException("Error when delete data"+e.getMessage());
                     }
                 }
             }
@@ -499,7 +499,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 response.setMsg(bean.getIdUpload());
             }catch (HibernateException e){
                 logger.error(e.getMessage());
-                throw new GeneralBOException("Error when save data");
+                throw new GeneralBOException("Error when save data"+e.getMessage());
             }
         }
         return response;

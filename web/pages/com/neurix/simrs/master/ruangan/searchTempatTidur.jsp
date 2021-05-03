@@ -215,12 +215,12 @@
                                     <td><s:property value="namaTempatTidur"/></td>
                                     <td align="center">
                                         <s:if test='#row.status == "Y"'>
-                                            <span style="color: white; background-color: #0F9E5E; padding: 4px; border-radius: 5px">
+                                            <span style="color: white; background-color: #0F9E5E; padding: 4px; border-radius: 5px; font-size: 12px">
                                                 Tersedia
                                             </span>
                                         </s:if>
                                         <s:else>
-                                            <span style="color: white; background-color: #d33724; padding: 4px; border-radius: 5px">
+                                            <span style="color: white; background-color: #d33724; padding: 4px; border-radius: 5px; font-size: 12px">
                                                 Tidak Tersedia
                                             </span>
                                         </s:else>
@@ -832,7 +832,7 @@
                         option += "<option value='" + item.idRuangan + "'>" + item.namaRuangan + "</option>";
                     });
                     if(add == "Y"){
-                        option = option + "<option value='new'>Lainnya</option>";
+                        option = option + "<option value='new'>Ruangan Baru</option>";
                         $('#set_id_ruangan').html(option);
                     }else{
                         $('#ruangan').html(option);
@@ -841,6 +841,8 @@
                     }
                 } else {
                     $('#ruangan').html(option);
+                    option = option + "<option value='new'>Ruangan Baru</option>";
+                    $('#set_id_ruangan').html(option);
                 }
             }
         });

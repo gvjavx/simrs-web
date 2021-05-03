@@ -1570,9 +1570,8 @@
                                 <div class="input-group-addon">
                                     Rp.
                                 </div>
-                                <input class="form-control"  oninput="convertRpAtas(this.id, this.value, 'h_total_tarif')"
-                                       id="tarif_luar_lab" placeholder="Tarif"
-                                       oninput="var warn =$('#war_tarif_luar_lab').is(':visible'); if (warn){$('#cor_tarif_luar_lab').show().fadeOut(3000);$('#war_tarif_luar_lab').hide()};">
+                                <input class="form-control"  oninput="convertRpAtas(this.id, this.value, 'h_total_tarif'); var warn =$('#war_tarif_luar_lab').is(':visible'); if (warn){$('#cor_tarif_luar_lab').show().fadeOut(3000);$('#war_tarif_luar_lab').hide()}"
+                                       id="tarif_luar_lab" placeholder="Tarif">
                                 <input type="hidden" id="h_total_tarif">
                             </div>
                         </div>
@@ -4395,6 +4394,7 @@
                                 </span>
                                     <input type="text" class="form-control" readonly id="label_upload_pemeriksan_0" style="margin-top: 7px">
                                 </div>
+                                <span style="color: red; font-size: 12px">* format file upload (.jpg/.jpeg/.png)</span>
                             </div>
                             <%--<div class="col-md-1">--%>
                             <%--<button onclick="addUpload('upload_pemeriksan', 'set_upload_pemeriksan')" class="btn btn-success" style="margin-left: -20px; margin-top: 9px"><i class="fa fa-plus"></i></button>--%>

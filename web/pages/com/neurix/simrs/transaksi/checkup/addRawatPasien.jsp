@@ -2281,8 +2281,8 @@
             $('#text-save').text("Save");
             $('#text_title').text("Tambah Data Pasien");
             $('#text_sub').text("Inputan Data Pasien");
-            $('#btnFingerPrint').hide();
-            $('#btn_new').hide();
+            $('#btnFingerPrint').show();
+            $('#btn_new').show();
         }
 
         if(suku != ''){
@@ -3851,7 +3851,7 @@
                                 $('#nama_pasien').val(response.nama);
                                 $('#jenis_kelamin').val(response.jenisKelamin);
                                 $('#tempat_lahir').val(response.tempatLahir);
-                                $('#tgl_lahir').val(response.tglLahir);
+                                $('#tgl_lahir').val(converterDateYmd(response.tglLahir));
                                 $('#agama').val(response.agama);
                                 $('#profesi').val(response.profesi);
                                 $('#jalan').val(response.jalan);

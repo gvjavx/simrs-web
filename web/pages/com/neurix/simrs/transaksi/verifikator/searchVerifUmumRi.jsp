@@ -694,7 +694,7 @@
                             if("radiologi" == item.kategori){
                                 if(item.uploadDalam.length > 0){
                                     rad = '<img src="'+contextPath + '/pages/images/icons8-pictures-folder-25.png" onclick="showHasil(\''+item.idPeriksaLab+'\', \''+item.kategoriLabName+'\')" class="hvr-grow" style="cursor: pointer">';
-                                    json = JSON.stringify(item.uploadHasil);
+                                    json = JSON.stringify(item.uploadDalam);
                                 }
                             }
                         }

@@ -377,12 +377,24 @@ public class RuanganBoImpl implements RuanganBo {
 
     @Override
     public MtSimrsRuanganEntity getEntityRuanganById(String id) throws GeneralBOException {
-        return ruanganDao.getById("idRuangan", id);
+        MtSimrsRuanganEntity ruanganEntity = new MtSimrsRuanganEntity();
+        try{
+            ruanganEntity = ruanganDao.getById("idRuangan", id);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return ruanganEntity;
     }
 
     @Override
     public List<Ruangan> getListRuangan(Ruangan bean) throws GeneralBOException {
-        return ruanganDao.getListRuanganKamar(bean);
+        List<Ruangan> ruanganList = new ArrayList<>();
+        try {
+            ruanganList = ruanganDao.getListRuanganKamar(bean);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return ruanganList;
     }
 
     @Override
