@@ -2532,7 +2532,7 @@ function addObatToList() {
                     '<input type="hidden" value="' + idRacik + '" id="id_racik_' + count + '">' +
                     '</td>' +
                     '<td align="center">' + qty + ' ' + jenisSatuan + '</td>' +
-                    '<td><span id="body_ket_'+ count +'"></span><br>' +
+                    '<td><div id="body_ket_'+ count +'"></div><br>' +
                     '<button class="btn btn-sm btn-warning" onclick="showModalKeterangan(\''+count+'\')">Tambah</button>' +
                     '<button class="btn btn-sm btn-danger" onclick="hapusKeterangan(\''+count+'\')">Hapus</button>' +
                     '</td>' +
@@ -2597,23 +2597,26 @@ function showModalKeterangan(count) {
 
     ObatAction.KeteranganObatByIdObat(idObat, function (res) {
 
-        var table = "<table class='table'><tbody>";
-        var n = 0;
-        var str = "";
-        indexKet = n;
-        var i = parseInt(n) + 1;
-        var select = "<tr><td width='100px'><select id='ket-"+n+"' onchange='getChildKeterangan("+ i +")' class='form-control'><option> - </option>";
-        $.each(res, function (i, item) {
-            if (item.keterangan == "lainnya"){
-                str += "<td><textarea cols='3' rows='2' id='ket-"+n+"'></textarea></td>"
-            }else{
-                str += "<option value='"+item.id+"'>"+item.keterangan+"</option>";
-            }
-        });
+        if (res.length > 0){
 
-        n++;
-        var endselect = "</select></td><td id='body-ket-"+i+"'></td></tr>";
-        $("#body-keterangan-obat").html(table + select + str + endselect);
+            var table = "<table class='table' width='100%'><tbody>";
+            var n = 0;
+            var str = "";
+            indexKet = n;
+            var i = parseInt(n) + 1;
+            var select = "<tr><td width='100px'><select id='ket-"+n+"' onchange='getChildKeterangan("+ i +")' class='form-control'><option> - </option>";
+            $.each(res, function (i, item) {
+                if (item.keterangan == "lainnya"){
+                    str += "<td><textarea cols='3' rows='2' id='ket-"+n+"'></textarea></td>"
+                }else{
+                    str += "<option value='"+item.id+"'>"+item.keterangan+"</option>";
+                }
+            });
+
+            n++;
+            var endselect = "</select></td><td id='body-ket-"+i+"'></td></tr>";
+            $("#body-keterangan-obat").html(table + select + str + endselect);
+        }
     });
 }
 
@@ -2647,6 +2650,7 @@ function saveKeteranganObat(){
 
     var str = "";
     var id = "";
+    var tempBodyKet = [];
     for (var i = 0 ; i < ket ; i++){
         if (i == 0){
             id = $("#ket-"+i+" option:selected").val();
@@ -2655,7 +2659,6 @@ function saveKeteranganObat(){
         str += keterangan +". ";
     }
 
-    var tempBodyKet = [];
     tempBodyKet.push({
         'id_waktu': id,
         'keterangan': str
@@ -2664,11 +2667,13 @@ function saveKeteranganObat(){
     var stTemp = JSON.stringify(tempBodyKet);
     $("#keterangan_"+n).text(stTemp);
     $("#keterangan_detail_"+n).val(str);
-    $("#body_ket_"+n).append(str);
+
+    str         = "<div>"+str+"</div>";
+    var instr   = $("#body_ket_"+n).html();
+    instr       = "<div>"+instr+"</div>";
+    $("#body_ket_"+n).html(instr+str);
+    $("#modal-keterangan").modal('hide');
 }
-
-
-
 
 function hapusKeterangan(count){
     $("#body_ket_"+count).text("");
