@@ -385,10 +385,17 @@
         });
 
         function resetField(input) {
+            var noCheckup = $('#no_checkup').val();
             if (input != 1) {
                 var idPasien = $('#id_pasien').val();
                 var idPelayanan = $('#h_id_pelayanan').val();
                 var jenisPasien = $('#jenis_pasien').val();
+                if(noCheckup != '' && noCheckup != null){
+                    var form = { "headerDetailCheckup.idPasien": $('#id_pasien').val()};
+                    var host = contextPathHeader+'/rawatinap/searchIgd_rawatinap.action';
+                    postAtas(host, form);
+                }
+
                 $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #jalan, #suku, #profesi, #agama, #dokter, #penjamin, #img_file, #provinsi, #kabupaten, #kecamatan, #desa').css('border', '');
                 $('#id_online').val(null);
                 $('#pembayaran').val(null);
@@ -1522,6 +1529,10 @@
                             <s:hidden name="headerCheckup.tarif" id="h_tarif"></s:hidden>
                             <s:hidden name="headerCheckup.idTindakan" id="h_id_tindakan"></s:hidden>
                             <s:hidden name="headerCheckup.namaTindakan" id="h_nama_tindakan"></s:hidden>
+                            <s:hidden id="no_checkup" name="headerCheckup.noCheckup"></s:hidden>
+                            <s:hidden name="headerCheckup.idDetailCheckup"></s:hidden>
+                            <s:hidden name="headerCheckup.idTeamDokter"></s:hidden>
+                            <s:hidden name="headerCheckup.idUangMuka"></s:hidden>
 
                             <div id="form-is-uang-muka" style="display: none">
                                 <div class="box-header with-border"></div>
@@ -1655,7 +1666,7 @@
                                             <div class="col-md-offset-2 col-md-8 text-center" style="margin-top: 7px">
                                                 <button type="button" id="btn-save" class="btn btn-success"
                                                         onclick="confirm()"><i
-                                                        class="fa fa-check"></i> Save
+                                                        class="fa fa-check"></i> <span id="text-save">Save</span>
                                                 </button>
                                                 <a type="button" id="btn-kronis" style="display:none;"
                                                    class="btn btn-info"
@@ -2231,13 +2242,76 @@
     var contextPath = '<%= request.getContextPath() %>';
 
     $(document).ready(function () {
-        // $('#igd').addClass('active');
         $('#pendaftaran_active, #bayar_rawat_inap').addClass('active');
         $('#pendaftaran_open').addClass('menu-open');
 
-        listJenisPasien();
-        setPelayanan();
+        listJenisPasien('<s:property value="headerCheckup.idJenisPeriksaPasien"/>');
+        setPelayanan('<s:property value="headerCheckup.idPelayanan"/>');
         setPenunjang();
+
+        var idDokter = '<s:property value="headerCheckup.idDokter"/>';
+        var namaDokter = '<s:property value="headerCheckup.namaDokter"/>';
+        var uangMuka = '<s:property value="headerCheckup.uangMuka"/>';
+        var idDetailCheckup = '<s:property value="headerCheckup.idDetailCheckup"/>';
+        var isBayarUangMuka = '<s:property value="headerCheckup.statusBayar"/>';
+        var suku = '<s:property value="headerCheckup.suku"/>';
+        var profesi = '<s:property value="headerCheckup.profesi"/>';
+        var hubunganKel = '<s:property value="headerCheckup.hubunganKeluarga"/>';
+        var noKartu = '<s:property value="headerCheckup.noKartuAsuransi"/>';
+        var jenisPasien = '<s:property value="headerCheckup.idJenisPeriksaPasien"/>';
+        var noBpjs = '<s:property value="headerCheckup.noBpjs"/>';
+
+        if(jenisPasien == 'bpjs' || jenisPasien == 'bpjs_rekanan'){
+            $('#no_bpjs').attr('readonly', true);
+            $('#btn_cek_bpjs').attr('disabled', true);
+            checkBpjs();
+        }else{
+            $('#no_bpjs').attr('readonly', false);
+            $('#btn_cek_bpjs').attr('disabled', false);
+        }
+
+        if(idDokter != ''){
+            $('#dokter').val(idDokter);
+        }
+        if(namaDokter != ''){
+            $('#nama_dokter').val(namaDokter);
+        }
+        if(uangMuka != ''){
+            $('#uang_muka').val(formatRupiah(uangMuka));
+            if("Y" == isBayarUangMuka){
+                $('#uang_muka').attr('disabled', true);
+            }else{
+                $('#uang_muka').attr('disabled', false);
+            }
+        }
+
+        if(idDetailCheckup != ''){
+            $('#text-save').text("Edit");
+            $('#text_title').text("Edit Data Pasien");
+            $('#text_sub').text("Edit Data Pasien");
+            $('#btnFingerPrint').hide();
+            $('#btn_new').hide();
+        }else{
+            $('#text-save').text("Save");
+            $('#text_title').text("Tambah Data Pasien");
+            $('#text_sub').text("Inputan Data Pasien");
+            $('#btnFingerPrint').show();
+            $('#btn_new').show();
+        }
+
+        if(suku != ''){
+            $('#suku').val(suku).trigger('change');
+        }
+        if(profesi != ''){
+            $('#profesi').val(profesi).trigger('change');
+        }
+        if(hubunganKel != ''){
+            $('#hubungan').val(hubunganKel).trigger('change');
+        }
+        if(noKartu != ''){
+            $('#no_kartu').val(noKartu);
+            $('#no_kartu_ptpn').val(noKartu);
+        }
 
         $(document).on('change', '.btn-file :file', function () {
             var input = $(this),
@@ -2392,7 +2466,7 @@
         });
     }
 
-    function listJenisPasien() {
+    function listJenisPasien(idJenisPasien) {
         var option = '<option value="">[Select One]</option>';
         CheckupAction.getComboJenisPeriksaPasienWithBpjs(function (response) {
             if (response.length > 0) {
@@ -2400,18 +2474,34 @@
                     option += '<option value="' + item.idJenisPeriksaPasien + '">' + item.keterangan + '</option>';
                 });
                 $('#jenis_pasien').html(option);
+                if(idJenisPasien != null && idJenisPasien != '' && idJenisPasien != undefined){
+                    $('#jenis_pasien').val(idJenisPasien).trigger('change');
+                    $('#jenis_pasien').attr('disabled', true);
+                    $('#btn_reset').attr('disabled', true);
+                    $('#btn_reset').removeAttr('onclick');
+                }else{
+                    $('#jenis_pasien').attr('disabled', false);
+                    $('#btn_reset').attr('disabled', false);
+                    $('#btn_reset').attr('onclick', 'resetAllField()');
+                }
             }
         });
     }
 
-    function listSelectPaket() {
+    function listSelectPaket(idPaket) {
         var option = "<option value=''>[Select One]</option>";
         PaketPeriksaAction.getListPaketPeriksaByTipe("igd", function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
+                    if(idPaket != null && idPaket != ''){
+                        paket = item.idPaket + "|" + item.idPelayanan + "|" + item.tarif;
+                    }
                     option += "<option value='" + item.idPaket + "|" + item.idPelayanan + "|" + item.tarif + "'>" + item.namaPaket + "</option>";
                 });
                 $('#paket').html(option);
+                if(idPaket != null && idPaket != ''){
+                    $('#paket').val(paket).trigger('change');
+                }
             } else {
                 $('#paket').html(option);
             }
@@ -2423,9 +2513,20 @@
         CheckupAction.getListRekananOps(isBpjs, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
-                    option += "<option value='" + item.idRekananOps + '|' + item.isBpjs + '|' + item.tipe + "'>" + item.namaRekanan + "</option>";
+                    var bpjs = "";
+                    var tip = "";
+                    if(item.isBpjs != null && item.isBpjs != ''){
+                        bpjs = item.isBpjs;
+                    }
+                    if(item.tipe != null && item.tipe != ''){
+                        tip = item.tipe;
+                    }
+                    option += "<option value='" + item.idRekananOps + '|' + bpjs + '|' + tip + "'>" + item.namaRekanan + "</option>";
                 });
                 $('#unit_ptpn').html(option);
+                if(idRekanan != null && idRekanan != ''){
+                    $('#unit_ptpn').val(idRekanan+ '|' + isBpjs + '|' + tipe).trigger('change');
+                }
             } else {
                 $('#unit_ptpn').html(option);
             }
@@ -3243,7 +3344,7 @@
                 $('#form_diagnosa_bpjs').show();
                 $('#diagnosa_awal, #diagnosa_ket').val(null);
             } else if (jenis == "rekanan") {
-                listSelectRekanan("N");
+                listSelectRekanan("N", '<s:property value="headerCheckup.idAsuransi"/>', '<s:property value="headerCheckup.isRekananWithBpjs"/>', '<s:property value="headerCheckup.tipeRekanan"/>');
                 $('#form_pg').hide();
                 $('#form-rekanan').show();
                 $('#form-no-bpjs').hide();
@@ -3270,7 +3371,7 @@
                 $('#form_diagnosa_bpjs').hide();
                 $('#diagnosa_awal, #diagnosa_ket').val(null);
             } else if (jenis == "paket_individu") {
-                listSelectPaket();
+                listSelectPaket('<s:property value="headerCheckup.idPaket"/>');
                 $('#form-paket').show();
                 $('#form-paket-perusahaan').hide();
                 $('#form-no-bpjs').hide();
@@ -3281,7 +3382,7 @@
                 $('#form_diagnosa_bpjs').hide();
                 $('#diagnosa_awal, #diagnosa_ket').val(null);
             } else if (jenis == "asuransi") {
-                listSelectAsuransi();
+                listSelectAsuransi('<s:property value="headerCheckup.idAsuransi"/>', '<s:property value="headerCheckup.isLaka"/>');
                 $('#form-asuransi').show();
                 $('#form-paket').hide();
                 $('#form-paket-perusahaan').hide();

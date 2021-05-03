@@ -26,8 +26,8 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a onclick="addAsesmenUgd('keluhan_utama')" style="cursor: pointer" ><i class="fa fa-plus"></i> Keluhan Utama</a></li>
-                            <li><a onclick="addAsesmenUgd('pre_hospital')" style="cursor: pointer"><i class="fa fa-plus"></i> Data Pre Hospital</a></li>
+                            <li><a onclick="addAsesmenUgd('keluhan_utama')" style="cursor: pointer" ><i class="fa fa-plus"></i> Triase</a></li>
+                            <li><a onclick="addAsesmenUgd('pre_hospital')" style="cursor: pointer"><i class="fa fa-plus"></i> Data Pre Hospital & Data Primary Survei</a></li>
                             <li><a onclick="addAsesmenUgd('keperawatan')" style="cursor: pointer"><i class="fa fa-plus"></i> Keperawatan</a></li>
                             <li><a onclick="addAsesmenUgd('nyeri')" style="cursor: pointer"><i class="fa fa-plus"></i> Asesmen Nyeri</a></li>
                             <li><a onclick="addAsesmenUgd('nutrisional')" style="cursor: pointer"><i class="fa fa-plus"></i> Skrining Risiko Nutrisional</a></li>
@@ -47,14 +47,14 @@
                     <table class="table" id="tabel_aud">
                         <tbody>
                         <tr id="row_aud_keluhan_utama">
-                            <td>Keluhan Utama</td>
+                            <td>Triase</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_keluhan_utama" class="hvr-grow" onclick="detailAud('keluhan_utama')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                                 <img id="delete_keluhan_utama" class="hvr-grow btn-hide" onclick="conUGD('keluhan_utama', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_pre_hospital">
-                            <td>Data Pre Hospipal</td>
+                            <td>Data Pre Hospital & Data Primary Survei</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_pre_hospital" class="hvr-grow" onclick="detailAud('pre_hospital')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                                 <img id="delete_pre_hospital" class="hvr-grow btn-hide" onclick="conUGD('pre_hospital', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
@@ -160,7 +160,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Keluhan Utama
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Triase
                 </h4>
             </div>
             <div class="modal-body">
@@ -231,7 +231,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Data Pre Hospital
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Data Pre Hospital & Data Primary Survei
                 </h4>
             </div>
             <div class="modal-body">

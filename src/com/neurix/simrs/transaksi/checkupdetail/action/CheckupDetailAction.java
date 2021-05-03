@@ -798,10 +798,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         try {
             listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getSearchRawatJalan(headerDetailCheckup);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[CheckupDetailAction.save] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
-            return ERROR;
+            logger.error("[CheckupDetailAction.save] Error when searching pasien by criteria," + "Found problem when searching data by criteria, please inform to your admin.", e);
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -3970,7 +3967,6 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
 
         if (checkup != null) {
-
             reportParams.put("idDokter", permintaanResep.getIdDokter());
             reportParams.put("dokter", permintaanResep.getNamaDokter());
             reportParams.put("ttdDokter", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + permintaanResep.getTtdDokter());
@@ -3984,13 +3980,17 @@ public class CheckupDetailAction extends BaseMasterAction {
             reportParams.put("logo", logo);
             reportParams.put("nik", checkup.getNoKtp());
             reportParams.put("nama", checkup.getNama());
-            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
-            reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+            if(checkup.getTglLahir() != null){
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+                reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+            }
+
             if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
                 jk = "Laki-Laki";
             } else {
                 jk = "Perempuan";
             }
+
             reportParams.put("jenisKelamin", jk);
             reportParams.put("jenisPasien", checkup.getStatusPeriksaName());
             reportParams.put("poli", checkup.getNamaPelayanan());
@@ -4003,7 +4003,6 @@ public class CheckupDetailAction extends BaseMasterAction {
                 preDownload();
             } catch (SQLException e) {
                 logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
                 return "search";
             }
         }

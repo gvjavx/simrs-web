@@ -165,6 +165,15 @@ public class HeaderDetailCheckup extends BaseModel{
     private String pemeriksaanTerakhir;
     private String dibayarPasien;
     private String formatTglMasuk;
+    private String isTindakan;
+
+    public String getIsTindakan() {
+        return isTindakan;
+    }
+
+    public void setIsTindakan(String isTindakan) {
+        this.isTindakan = isTindakan;
+    }
 
     public String getFormatTglMasuk() {
         return formatTglMasuk;

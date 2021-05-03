@@ -9,6 +9,7 @@ import com.neurix.simrs.transaksi.checkupdetail.model.RiwayatTindakanDTO;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
+import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Criterion;
@@ -389,11 +390,26 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                         }
                     }
                     headerDetailCheckup.setAlamat(jalan);
+                    headerDetailCheckup.setIsTindakan(isTindakanRawat(obj[0].toString()));
                     checkupList.add(headerDetailCheckup);
                 }
             }
         }
         return checkupList;
+    }
+
+    public String isTindakanRawat(String id){
+        String res = "N";
+        if(id != null && !"".equalsIgnoreCase(id)){
+            Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsTindakanRawatEntity.class);
+            criteria.add(Restrictions.eq("idDetailCheckup", id));
+            criteria.add(Restrictions.eq("flag", "Y"));
+            List<ItSimrsTindakanRawatEntity> listOfResult = criteria.list();
+            if(listOfResult.size() > 0){
+                res = "Y";
+            }
+        }
+        return res;
     }
 
     public List<HeaderDetailCheckup> getSearchVerifikasiRawatJalan(HeaderDetailCheckup bean) {
