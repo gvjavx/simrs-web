@@ -757,7 +757,7 @@
             <div class="modal-footer">
                 <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
                 <%--</button>--%>
-                <button type="button" class="btn btn-sm btn-success" id="ok_con"><i class="fa fa-check"></i> Ok
+                <button type="button" class="btn btn-sm btn-success" data-dismiss="modal" id="ok_con"><i class="fa fa-check"></i> Ok
                 </button>
             </div>
         </div>
@@ -850,7 +850,7 @@
                     dwr.engine.setAsync(false);
                     if (status == '00') {
                         alert('Payroll Berhasil Tidak Di Approve');
-                        $('#modal-approve').modal('hide');
+                        $('#modal-approve-keu').modal('hide');
                         showDialog("success");
                         $('#myForm')[0].reset();
                         window.location.href="<s:url action='initForm_payroll.action'/>";
@@ -891,7 +891,7 @@
                 PayrollAction.approvePayrollSdm(payrollHeaderId, branchId, bulan, tahun, tipe, function(status){
                     dwr.engine.setAsync(false);
                     if (status == '00') {
-                        $('#modal-approve').modal('hide');
+                        $('#modal-approve-sdm').modal('hide');
                         showDialog("success");
                     } else {
                         showDialog("error");

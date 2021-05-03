@@ -1040,7 +1040,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
             result.setTunjFungsionalNilai(result.getTunjFungsionalNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjFungsional(CommonUtil.numbericFormat(result.getTunjFungsionalNilai(),"###,###"));
 
-            result.setTunjTambahanNilai(row[40]!=null ? (BigDecimal) row[40] : new BigDecimal(0));
+            result.setTunjTambahanNilai(row[40]!=null ? new BigDecimal((Integer)row[40]) : new BigDecimal(0));
             result.setTunjTambahanNilai(result.getTunjTambahanNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjTambahan(CommonUtil.numbericFormat(result.getTunjTambahanNilai(),"###,###"));
 
@@ -3168,7 +3168,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
             result.setTunjFungsionalNilai(result.getTunjFungsionalNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjFungsional(CommonUtil.numbericFormat(result.getTunjFungsionalNilai(),"###,###"));
 
-            result.setTunjTambahanNilai(row[40]!=null ? (BigDecimal) row[40] : new BigDecimal(0));
+            result.setTunjTambahanNilai(row[40]!=null ? new BigDecimal((Integer)row[40]) : new BigDecimal(0));
             result.setTunjTambahanNilai(result.getTunjTambahanNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjTambahan(CommonUtil.numbericFormat(result.getTunjTambahanNilai(),"###,###"));
 
@@ -4181,7 +4181,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
             result.setTunjFungsionalNilai(result.getTunjFungsionalNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjFungsional(CommonUtil.numbericFormat(result.getTunjFungsionalNilai(), "###,###"));
 
-            result.setTunjTambahanNilai(row[35] != null ? new BigDecimal((Integer)row[35]) : new BigDecimal(0));
+            result.setTunjTambahanNilai(row[35] != null ? (BigDecimal) row[35] : new BigDecimal(0));
             result.setTunjTambahanNilai(result.getTunjTambahanNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjTambahan(CommonUtil.numbericFormat(result.getTunjTambahanNilai(), "###,###"));
 
