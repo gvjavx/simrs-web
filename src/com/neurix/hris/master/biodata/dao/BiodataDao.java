@@ -481,7 +481,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setCabangBank(person.getCabangBank());
             result.setTanggalMasuk(person.getTanggalMasuk());
             result.setGolonganDapenId(person.getGolonganDapenId());
-            result.setMasaKerjaGolongan(person.getMasaKerjaGolongan());
+//            result.setMasaKerjaGolongan(person.getMasaKerjaGolongan());
+            result.setStMasaKerjaGol(person.getStMasaKerjaGol());
             result.setTanggalAkhirKontrak(person.getTanggalAkhirKontrak());
             result.setTanggalPraPensiun(person.getTanggalPraPensiun());
             result.setFlagMess(person.getFlagMess());
@@ -668,7 +669,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 result.setCabangBank(person.getCabangBank());
                 result.setTanggalMasuk(person.getTanggalMasuk());
                 result.setGolonganDapenId(person.getGolonganDapenId());
-                result.setMasaKerjaGolongan(person.getMasaKerjaGolongan());
+//                result.setMasaKerjaGolongan(person.getMasaKerjaGolongan());
+                result.setStMasaKerjaGol(person.getStMasaKerjaGol());
                 result.setTanggalAkhirKontrak(person.getTanggalAkhirKontrak());
                 result.setTanggalPraPensiun(person.getTanggalPraPensiun());
                 result.setFlagMess(person.getFlagMess());
@@ -890,7 +892,9 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 result.setCabangBank(person.getCabangBank());
                 result.setTanggalMasuk(person.getTanggalMasuk());
                 result.setGolonganDapenId(person.getGolonganDapenId());
-                result.setMasaKerjaGolongan(person.getMasaKerjaGolongan());
+//                result.setMasaKerjaGolongan(person.getMasaKerjaGolongan());
+                result.setStMasaKerjaGol(person.getStMasaKerjaGol());
+
                 result.setTanggalAkhirKontrak(person.getTanggalAkhirKontrak());
                 result.setTanggalPraPensiun(person.getTanggalPraPensiun());
                 result.setFlagMess(person.getFlagMess());
@@ -1040,7 +1044,9 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 result.setNoRekBank(biodataEntity.getNoRekBank());
                 result.setCabangBank(biodataEntity.getCabangBank());
                 result.setTanggalMasuk(biodataEntity.getTanggalMasuk());
-                result.setMasaKerjaGolongan(biodataEntity.getMasaKerjaGolongan());
+//                result.setMasaKerjaGolongan(biodataEntity.getMasaKerjaGolongan());
+                result.setStMasaKerjaGol(biodataEntity.getStMasaKerjaGol());
+
                 result.setZakatProfesi(biodataEntity.getZakatProfesi());
 
             }
@@ -1156,7 +1162,9 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setCabangBank(person.getCabangBank());
             result.setTanggalMasuk(person.getTanggalMasuk());
             result.setGolonganDapenId(person.getGolonganDapenId());
-            result.setMasaKerjaGolongan(person.getMasaKerjaGolongan());
+//            result.setMasaKerjaGolongan(person.getMasaKerjaGolongan());
+            result.setStMasaKerjaGol(person.getStMasaKerjaGol());
+
             result.setTanggalAkhirKontrak(person.getTanggalAkhirKontrak());
             result.setTanggalPraPensiun(person.getTanggalPraPensiun());
             result.setFlagMess(person.getFlagMess());
@@ -1930,7 +1938,9 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                     result.setNoRekBank(biodataEntity.getNoRekBank());
                     result.setCabangBank(biodataEntity.getCabangBank());
                     result.setTanggalMasuk(biodataEntity.getTanggalMasuk());
-                    result.setMasaKerjaGolongan(biodataEntity.getMasaKerjaGolongan());
+//                    result.setMasaKerjaGolongan(biodataEntity.getMasaKerjaGolongan());
+                    result.setStMasaKerjaGol(biodataEntity.getStMasaKerjaGol());
+
                 }
 
                 listOfResult.add(result);

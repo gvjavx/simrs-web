@@ -3,7 +3,7 @@
         version="2.0">
 
     <entity class="com.neurix.akuntansi.transaksi.billingSystem.model.ItPgInvoiceEntity">
-        <table name="it_pg_invoice" schema="public" catalog="gomedsys_mig_07042021"/>
+        <table name="it_pg_invoice" schema="public"/>
         <attributes>
             <id name="pgInvoiceId">
                 <column name="pg_invoice_id"/>

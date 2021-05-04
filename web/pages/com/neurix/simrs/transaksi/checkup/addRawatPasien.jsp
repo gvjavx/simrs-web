@@ -3802,8 +3802,8 @@
                     } else {
                         $('#save_add').show();
                         $('#load_add').hide();
-                        $('#warning_add').show();
-                        $('#msg_add').text(response.msg).fadeOut(5000);
+                        $('#warning_add').show().fadeOut(5000);
+                        $('#msg_add').text(response.msg);
                     }
                 }
             });

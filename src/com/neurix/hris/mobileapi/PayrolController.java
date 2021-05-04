@@ -6,6 +6,7 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.mobileapi.model.PayrollPayment;
 import com.neurix.hris.transaksi.payroll.bo.PayrollBo;
+import com.neurix.hris.transaksi.payroll.model.ItHrisPayrollEntity;
 import com.neurix.hris.transaksi.payroll.model.ItPayrollEntity;
 import com.opensymphony.xwork2.ModelDriven;
 import net.sf.jasperreports.engine.*;
@@ -49,7 +50,7 @@ public class PayrolController implements ModelDriven<PayrollPayment> {
 
     public HttpHeaders create() {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        ItPayrollEntity payroll = new ItPayrollEntity();
+        ItHrisPayrollEntity payroll = new ItHrisPayrollEntity(); //RAKA-30APR2021==> merubah ItPayrollEntity -> ItHrisPayrollEntity
         com.neurix.authorization.company.model.Branch branch = new Branch();
         Map reportParams=new HashMap();
 

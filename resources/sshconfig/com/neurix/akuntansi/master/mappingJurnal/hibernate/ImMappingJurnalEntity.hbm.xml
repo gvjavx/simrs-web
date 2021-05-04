@@ -34,6 +34,9 @@
         <property name="keterangan">
             <column name="keterangan" sql-type="varchar" length="20" not-null="false" />
         </property>
+        <property name="parameterCoa">
+            <column name="parameter_coa" sql-type="varchar" length="20" not-null="false" />
+        </property>
         <property name="kirimList">
             <column name="kirim_list" sql-type="varchar" length="1" not-null="false" />
         </property>

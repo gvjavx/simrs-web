@@ -72,57 +72,60 @@
         <action name="*_payroll"
                 class="com.neurix.hris.transaksi.payroll.action.PayrollAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
-            <result name="input">/pages/com/neurix/hris/transaksi/payroll/SearchPayroll.jsp</result>
-            <result name="success">/pages/com/neurix/hris/transaksi/payroll/SearchPayroll.jsp</result>
-            <result name="success_insentif">/pages/com/neurix/hris/transaksi/payroll/SearchPayrollInsentif.jsp</result>
-            <result name="csv_pajak">/pages/com/neurix/hris/transaksi/payroll/SearchCsvPajak.jsp</result>
-            <result name="report_payroll">/pages/com/neurix/hris/transaksi/payroll/SearchReportPajak.jsp</result>
-            <result name="reportRekapGaji_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportRekapGaji.jsp</result>
-            <result name="reportRekapDapen_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportRekapDapen.jsp</result>
-            <result name="reportRekapBpjs_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportRekapBpjs.jsp</result>
-            <result name="reportTransferGaji_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportTransferGaji.jsp</result>
-            <result name="reportJubileum_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportJubileum.jsp</result>
-            <result name="reportPensiun_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportPensiun.jsp</result>
-            <result name="reportEspt_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportEspt.jsp</result>
+            <result name="input">/pages/com/neurix/hris/transaksi/payroll/searchPayroll.jsp</result>
+            <result name="success">/pages/com/neurix/hris/transaksi/payroll/searchPayroll.jsp</result>
+            <result name="init_add">/pages/com/neurix/hris/transaksi/payroll/addPayroll.jsp</result>
+            <result name="success_save_add">/pages/com/neurix/hris/transaksi/payroll/addPayroll.jsp</result>
+            <result name="init_edit">/pages/com/neurix/hris/transaksi/payroll/editPayroll.jsp</result>
+            <result name="init_view">/pages/com/neurix/hris/transaksi/payroll/viewPayroll.jsp</result>
+
+            <!--<result name="success_insentif">/pages/com/neurix/hris/transaksi/payroll/SearchPayrollInsentif.jsp</result>-->
+            <!--<result name="csv_pajak">/pages/com/neurix/hris/transaksi/payroll/SearchCsvPajak.jsp</result>-->
+            <!--<result name="report_payroll">/pages/com/neurix/hris/transaksi/payroll/SearchReportPajak.jsp</result>-->
+            <!--<result name="reportRekapGaji_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportRekapGaji.jsp</result>-->
+            <!--<result name="reportRekapDapen_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportRekapDapen.jsp</result>-->
+            <!--<result name="reportRekapBpjs_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportRekapBpjs.jsp</result>-->
+            <!--<result name="reportTransferGaji_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportTransferGaji.jsp</result>-->
+            <!--<result name="reportJubileum_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportJubileum.jsp</result>-->
+            <!--<result name="reportPensiun_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportPensiun.jsp</result>-->
+            <!--<result name="reportEspt_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportEspt.jsp</result>-->
 
             <!--<result name="error">/pages/com/neurix/hris/transaksi/payroll/addPayrollV2.jsp</result>-->
-            <result name="init_add">/pages/com/neurix/hris/transaksi/payroll/addPayroll.jsp</result>
-            <result name="init_add_v2">/pages/com/neurix/hris/transaksi/payroll/addPayrollV2.jsp</result>
-            <result name="view_payroll">/pages/com/neurix/hris/transaksi/payroll/viewPayroll.jsp</result>
-            <result name="success_save_add">/pages/com/neurix/hris/transaksi/payroll/addPayroll.jsp</result>
 
-            <result name="success_save_delete">/pages/com/neurix/hris/transaksi/payroll/deletePayroll.jsp</result>
-            <result name="init_delete">/pages/com/neurix/hris/transaksi/payroll/deletePayroll.jsp</result>
-            <result name="init_edit">/pages/com/neurix/hris/transaksi/payroll/editPayroll.jsp</result>
-            <result name="modal_add_payroll">/pages/com/neurix/hris/transaksi/payroll/modalAddPayroll.jsp</result>
-            <result name="detail_rapel">/pages/com/neurix/hris/transaksi/payroll/detailRapel.jsp</result>
-            <result name="detail_thr">/pages/com/neurix/hris/transaksi/payroll/detailThr.jsp</result>
-            <result name="detail_pendidikan">/pages/com/neurix/hris/transaksi/payroll/detailPendidikan.jsp</result>
-            <result name="detail_jasprod">/pages/com/neurix/hris/transaksi/payroll/detailJasprod.jsp</result>
-            <result name="init_edit_sdm">/pages/com/neurix/hris/transaksi/payroll/editPayrollSdm.jsp</result>
-            <result name="success_save_edit">/pages/com/neurix/hris/transaksi/payroll/editPayroll.jsp</result>
-            <result name="failure">/pages/com/neurix/hris/transaksi/payroll/editPayroll.jsp</result>
+            <!--<result name="init_add_v2">/pages/com/neurix/hris/transaksi/payroll/addPayrollV2.jsp</result>-->
+            <!--<result name="success_save_add">/pages/com/neurix/hris/transaksi/payroll/addPayroll.jsp</result>-->
+
+            <!--<result name="success_save_delete">/pages/com/neurix/hris/transaksi/payroll/deletePayroll.jsp</result>-->
+            <!--<result name="init_delete">/pages/com/neurix/hris/transaksi/payroll/deletePayroll.jsp</result>-->
+            <!--<result name="modal_add_payroll">/pages/com/neurix/hris/transaksi/payroll/modalAddPayroll.jsp</result>-->
+            <!--<result name="detail_rapel">/pages/com/neurix/hris/transaksi/payroll/detailRapel.jsp</result>-->
+            <!--<result name="detail_thr">/pages/com/neurix/hris/transaksi/payroll/detailThr.jsp</result>-->
+            <!--<result name="detail_pendidikan">/pages/com/neurix/hris/transaksi/payroll/detailPendidikan.jsp</result>-->
+            <!--<result name="detail_jasprod">/pages/com/neurix/hris/transaksi/payroll/detailJasprod.jsp</result>-->
+            <!--<result name="init_edit_sdm">/pages/com/neurix/hris/transaksi/payroll/editPayrollSdm.jsp</result>-->
+            <!--<result name="success_save_edit">/pages/com/neurix/hris/transaksi/payroll/editPayroll.jsp</result>-->
+            <!--<result name="failure">/pages/com/neurix/hris/transaksi/payroll/editPayroll.jsp</result>-->
 
 
             <!--  CETAKAN LAPORAN PAYROLL-->
-            <result name="success_print_daftar_gaji_kary" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/daftarGajiKaryawan.jasper</param>
-                <param name="format">PDF</param>
-                <param name="dataSource">payrollList</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
-            <result name="success_print_rekap_gaji_kary" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/daftarRekapGajiKaryawan.jasper</param>
-                <param name="format">PDF</param>
-                <param name="dataSource">payrollList</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
-            <result name="success_print_daftar_potongan_dapen" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/daftarIuranDapen.jasper</param>
-                <param name="format">PDF</param>
-                <param name="dataSource">payrollList</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
+            <!--<result name="success_print_daftar_gaji_kary" type="jasper">-->
+                <!--<param name="location">/pages/report/com/neurix/hris/daftarGajiKaryawan.jasper</param>-->
+                <!--<param name="format">PDF</param>-->
+                <!--<param name="dataSource">payrollList</param>-->
+                <!--<param name="reportParameters">reportParams</param>-->
+            <!--</result>-->
+            <!--<result name="success_print_rekap_gaji_kary" type="jasper">-->
+                <!--<param name="location">/pages/report/com/neurix/hris/daftarRekapGajiKaryawan.jasper</param>-->
+                <!--<param name="format">PDF</param>-->
+                <!--<param name="dataSource">payrollList</param>-->
+                <!--<param name="reportParameters">reportParams</param>-->
+            <!--</result>-->
+            <!--<result name="success_print_daftar_potongan_dapen" type="jasper">-->
+                <!--<param name="location">/pages/report/com/neurix/hris/daftarIuranDapen.jasper</param>-->
+                <!--<param name="format">PDF</param>-->
+                <!--<param name="dataSource">payrollList</param>-->
+                <!--<param name="reportParameters">reportParams</param>-->
+            <!--</result>-->
             <!-- END OF LAPORAN PAYROLL -->
 
 
@@ -207,19 +210,19 @@
                 <param name="reportParameters">reportParams</param>
             </result>
 
-            <result name="success_print_report_payroll_pendidikan" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/reportPayrollPendidikan.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
+            <!--<result name="success_print_report_payroll_pendidikan" type="jasper">-->
+                <!--<param name="location">/pages/report/com/neurix/hris/reportPayrollPendidikan.jasper</param>-->
+                <!--<param name="connection">connection</param>-->
+                <!--<param name="format">PDF</param>-->
+                <!--<param name="reportParameters">reportParams</param>-->
+            <!--</result>-->
 
-            <result name="success_print_report_payroll_pendidikan_branch" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/reportPayrollPendidikanBranch.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
+            <!--<result name="success_print_report_payroll_pendidikan_branch" type="jasper">-->
+                <!--<param name="location">/pages/report/com/neurix/hris/reportPayrollPendidikanBranch.jasper</param>-->
+                <!--<param name="connection">connection</param>-->
+                <!--<param name="format">PDF</param>-->
+                <!--<param name="reportParameters">reportParams</param>-->
+            <!--</result>-->
 
             <result name="success_print_report_payroll_thr_branch" type="jasper">
                 <param name="location">/pages/report/com/neurix/hris/reportPayrollthrBranch3.jasper</param>
@@ -268,33 +271,33 @@
                 <param name="reportParameters">reportParams</param>
             </result>
 
-            <result name="print_report_potongan_dinas" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/ReportPayrollPotonganDinas.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
+            <!--<result name="print_report_potongan_dinas" type="jasper">-->
+                <!--<param name="location">/pages/report/com/neurix/hris/ReportPayrollPotonganDinas.jasper</param>-->
+                <!--<param name="connection">connection</param>-->
+                <!--<param name="format">PDF</param>-->
+                <!--<param name="reportParameters">reportParams</param>-->
+            <!--</result>-->
 
-            <result name="print_report_potongan_lain" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/ReportPayrollPotonganLainLain.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
+            <!--<result name="print_report_potongan_lain" type="jasper">-->
+                <!--<param name="location">/pages/report/com/neurix/hris/ReportPayrollPotonganLainLain.jasper</param>-->
+                <!--<param name="connection">connection</param>-->
+                <!--<param name="format">PDF</param>-->
+                <!--<param name="reportParameters">reportParams</param>-->
+            <!--</result>-->
 
-            <result name="print_report_penghasilan_karyawan" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/ReportPayrollPenghasilanKaryawan.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
+            <!--<result name="print_report_penghasilan_karyawan" type="jasper">-->
+                <!--<param name="location">/pages/report/com/neurix/hris/ReportPayrollPenghasilanKaryawan.jasper</param>-->
+                <!--<param name="connection">connection</param>-->
+                <!--<param name="format">PDF</param>-->
+                <!--<param name="reportParameters">reportParams</param>-->
+            <!--</result>-->
 
-            <result name="print_report_pendidikan" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/ReportPayrollRekapPendidikan.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
+            <!--<result name="print_report_pendidikan" type="jasper">-->
+                <!--<param name="location">/pages/report/com/neurix/hris/ReportPayrollRekapPendidikan.jasper</param>-->
+                <!--<param name="connection">connection</param>-->
+                <!--<param name="format">PDF</param>-->
+                <!--<param name="reportParameters">reportParams</param>-->
+            <!--</result>-->
 
             <result name="print_report_thr" type="jasper">
                 <param name="location">/pages/report/com/neurix/hris/ReportPayrollRekapThr.jasper</param>
@@ -374,12 +377,12 @@
             </result>
 
 
-            <result name="print_report_rekap_thr_dirkom" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/payrollRekapThrDirkom.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
+            <!--<result name="print_report_rekap_thr_dirkom" type="jasper">-->
+                <!--<param name="location">/pages/report/com/neurix/hris/payrollRekapThrDirkom.jasper</param>-->
+                <!--<param name="connection">connection</param>-->
+                <!--<param name="format">PDF</param>-->
+                <!--<param name="reportParameters">reportParams</param>-->
+            <!--</result>-->
 
             <result name="print_report_rekap_jasprod" type="jasper">
                 <param name="location">/pages/report/com/neurix/hris/payrollRekapJasprod.jasper</param>
@@ -395,33 +398,33 @@
                 <param name="reportParameters">reportParams</param>
             </result>
 
-            <result name="print_report_rekap_potongan" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/payrollRekapPotongan.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
+            <!--<result name="print_report_rekap_potongan" type="jasper">-->
+                <!--<param name="location">/pages/report/com/neurix/hris/payrollRekapPotongan.jasper</param>-->
+                <!--<param name="connection">connection</param>-->
+                <!--<param name="format">PDF</param>-->
+                <!--<param name="reportParameters">reportParams</param>-->
+            <!--</result>-->
 
-            <result name="print_report_rekap_gaji_dirkom" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/payrollRekapGajiDirkom.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
+            <!--<result name="print_report_rekap_gaji_dirkom" type="jasper">-->
+                <!--<param name="location">/pages/report/com/neurix/hris/payrollRekapGajiDirkom.jasper</param>-->
+                <!--<param name="connection">connection</param>-->
+                <!--<param name="format">PDF</param>-->
+                <!--<param name="reportParameters">reportParams</param>-->
+            <!--</result>-->
 
-            <result name="print_report_rekap_potongan_dirkom" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/payrollRekapPotonganDirkom.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
+            <!--<result name="print_report_rekap_potongan_dirkom" type="jasper">-->
+                <!--<param name="location">/pages/report/com/neurix/hris/payrollRekapPotonganDirkom.jasper</param>-->
+                <!--<param name="connection">connection</param>-->
+                <!--<param name="format">PDF</param>-->
+                <!--<param name="reportParameters">reportParams</param>-->
+            <!--</result>-->
 
-            <result name="print_report_rekap_dapen" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/payrollRekapDapen.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
+            <!--<result name="print_report_rekap_dapen" type="jasper">-->
+                <!--<param name="location">/pages/report/com/neurix/hris/payrollRekapDapen.jasper</param>-->
+                <!--<param name="connection">connection</param>-->
+                <!--<param name="format">PDF</param>-->
+                <!--<param name="reportParameters">reportParams</param>-->
+            <!--</result>-->
 
             <result name="init_view_img">/pages/com/neurix/hris/transaksi/payroll/viewImg.jsp</result>
             <result name="init_view_pdf">/pages/com/neurix/hris/transaksi/payroll/viewPdf.jsp</result>
@@ -431,83 +434,83 @@
                 <param name="headers.message">${actionErrors}</param>
             </result>
 
-            <result name="downloadXlsRekaptulasiPenghasilan" type="stream">
-                <param name="contentType">${excelContentType}</param>
-                <param name="inputName">excelStream</param>
-                <param name="contentDisposition">contentDisposition</param>
-                <param name="bufferSize">1024</param>
-            </result>
+            <!--<result name="downloadXlsRekaptulasiPenghasilan" type="stream">-->
+                <!--<param name="contentType">${excelContentType}</param>-->
+                <!--<param name="inputName">excelStream</param>-->
+                <!--<param name="contentDisposition">contentDisposition</param>-->
+                <!--<param name="bufferSize">1024</param>-->
+            <!--</result>-->
 
-            <result name="downloadXlsDanaPensiun" type="stream">
-                <param name="contentType">${excelContentType}</param>
-                <param name="inputName">excelStream</param>
-                <param name="contentDisposition">contentDisposition</param>
-                <param name="bufferSize">1024</param>
-            </result>
+            <!--<result name="downloadXlsDanaPensiun" type="stream">-->
+                <!--<param name="contentType">${excelContentType}</param>-->
+                <!--<param name="inputName">excelStream</param>-->
+                <!--<param name="contentDisposition">contentDisposition</param>-->
+                <!--<param name="bufferSize">1024</param>-->
+            <!--</result>-->
 
-            <result name="downloadXlsBpjs" type="stream">
-                <param name="contentType">${excelContentType}</param>
-                <param name="inputName">excelStream</param>
-                <param name="contentDisposition">contentDisposition</param>
-                <param name="bufferSize">1024</param>
-            </result>
+            <!--<result name="downloadXlsBpjs" type="stream">-->
+                <!--<param name="contentType">${excelContentType}</param>-->
+                <!--<param name="inputName">excelStream</param>-->
+                <!--<param name="contentDisposition">contentDisposition</param>-->
+                <!--<param name="bufferSize">1024</param>-->
+            <!--</result>-->
 
-            <result name="downloadXlsTransferGaji" type="stream">
-                <param name="contentType">${excelContentType}</param>
-                <param name="inputName">excelStream</param>
-                <param name="contentDisposition">contentDisposition</param>
-                <param name="bufferSize">1024</param>
-            </result>
-            <result name="downloadXlsRekapGaji" type="stream">
-                <param name="contentType">${excelContentType}</param>
-                <param name="inputName">excelStream</param>
-                <param name="contentDisposition">contentDisposition</param>
-                <param name="bufferSize">1024</param>
-            </result>
+            <!--<result name="downloadXlsTransferGaji" type="stream">-->
+                <!--<param name="contentType">${excelContentType}</param>-->
+                <!--<param name="inputName">excelStream</param>-->
+                <!--<param name="contentDisposition">contentDisposition</param>-->
+                <!--<param name="bufferSize">1024</param>-->
+            <!--</result>-->
+            <!--<result name="downloadXlsRekapGaji" type="stream">-->
+                <!--<param name="contentType">${excelContentType}</param>-->
+                <!--<param name="inputName">excelStream</param>-->
+                <!--<param name="contentDisposition">contentDisposition</param>-->
+                <!--<param name="bufferSize">1024</param>-->
+            <!--</result>-->
         </action>
 
 
         <action name="paging_displaytag_payroll"
                 class="com.neurix.hris.transaksi.payroll.action.PayrollAction" method="paging">
             <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/hris/transaksi/payroll/addPayrollV2.jsp</result>
+            <result name="success">/pages/com/neurix/hris/transaksi/payroll/addPayroll.jsp</result>
         </action>
 
-        <action name="paging_displaytag_insentif_payroll"
-                class="com.neurix.hris.transaksi.payroll.action.PayrollAction" method="paging">
-            <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/hris/transaksi/payroll/SearchPayrollInsentif.jsp</result>
-        </action>
+        <!--<action name="paging_displaytag_insentif_payroll"-->
+                <!--class="com.neurix.hris.transaksi.payroll.action.PayrollAction" method="paging">-->
+            <!--<interceptor-ref name="defaultStack"/>-->
+            <!--<result name="success">/pages/com/neurix/hris/transaksi/payroll/SearchPayrollInsentif.jsp</result>-->
+        <!--</action>-->
 
         <action name="paging_displaytag_edit_payroll"
-                class="com.neurix.hris.transaksi.payroll.action.PayrollAction" method="paging">
+                class="com.neurix.hris.transaksi.payroll.action.PayrollAction" method="pagingEdit">
             <interceptor-ref name="defaultStack"/>
             <result name="success">/pages/com/neurix/hris/transaksi/payroll/editPayroll.jsp</result>
         </action>
 
         <action name="paging_displaytag_view_payroll"
-                class="com.neurix.hris.transaksi.payroll.action.PayrollAction" method="paging">
+                class="com.neurix.hris.transaksi.payroll.action.PayrollAction" method="pagingView">
             <interceptor-ref name="defaultStack"/>
             <result name="success">/pages/com/neurix/hris/transaksi/payroll/viewPayroll.jsp</result>
         </action>
 
-        <action name="paging_displaytag_payroll_csv"
-                class="com.neurix.hris.transaksi.payroll.action.PayrollAction" method="paging">
-            <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/hris/transaksi/payroll/SearchCsvPajak.jsp</result>
-        </action>
+        <!--<action name="paging_displaytag_payroll_csv"-->
+                <!--class="com.neurix.hris.transaksi.payroll.action.PayrollAction" method="paging">-->
+            <!--<interceptor-ref name="defaultStack"/>-->
+            <!--<result name="success">/pages/com/neurix/hris/transaksi/payroll/SearchCsvPajak.jsp</result>-->
+        <!--</action>-->
 
-        <action name="paging_displaytag_payroll_jubileum_payroll"
-                class="com.neurix.hris.transaksi.payroll.action.PayrollAction" method="paging">
-            <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/hris/transaksi/payroll/ReportJubileum.jsp</result>
-        </action>
+        <!--<action name="paging_displaytag_payroll_jubileum_payroll"-->
+                <!--class="com.neurix.hris.transaksi.payroll.action.PayrollAction" method="paging">-->
+            <!--<interceptor-ref name="defaultStack"/>-->
+            <!--<result name="success">/pages/com/neurix/hris/transaksi/payroll/ReportJubileum.jsp</result>-->
+        <!--</action>-->
 
-        <action name="paging_displaytag_payroll_pensiun_payroll"
-                class="com.neurix.hris.transaksi.payroll.action.PayrollAction" method="paging">
-            <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/hris/transaksi/payroll/ReportPensiun.jsp</result>
-        </action>
+        <!--<action name="paging_displaytag_payroll_pensiun_payroll"-->
+                <!--class="com.neurix.hris.transaksi.payroll.action.PayrollAction" method="paging">-->
+            <!--<interceptor-ref name="defaultStack"/>-->
+            <!--<result name="success">/pages/com/neurix/hris/transaksi/payroll/ReportPensiun.jsp</result>-->
+        <!--</action>-->
 
     </package>
 </struts>

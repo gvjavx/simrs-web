@@ -901,7 +901,7 @@ public class PasienBoImpl implements PasienBo {
             pasienEntity.setIdPasien(CommonUtil.userBranchLogin() + dateFormater("yy") + id);
             pasienEntity.setNama(pasien.getNama());
             pasienEntity.setJenisKelamin(pasien.getJenisKelamin());
-            pasienEntity.setNoKtp(pasien.getNoKtp());
+            pasienEntity.setNoKtp(pasien.getNoKtp().replace("_",""));
             pasienEntity.setNoBpjs(pasien.getNoBpjs());
             pasienEntity.setTempatLahir(pasien.getTempatLahir());
             if(pasien.getNoTelp() != null && !"".equalsIgnoreCase(pasien.getNoTelp())){
