@@ -15,16 +15,15 @@ function showKetUgd2(val, id){
 }
 
 function showKetIntruksi(val){
-    if(val == "Rawat Inap"){
+    if(val == "rawat_inap" || val == "rawat_isolasi" || val == "rawat_intensif"){
         $('#int-ket1').show();
         $('#int-ket2').hide();
         $('#int-ket3').hide();
-    }else if ("Rawat Intensif" == val || "Rawat Isolasi" == val || 
-              "Dirujuk" == val) {
+    }else if ("selesai" == val) {
         $('#int-ket1').hide();
         $('#int-ket2').show();
         $('#int-ket3').hide();
-    }else if ("Pulang Atas Persetujuan Dokter" == val) {
+    }else if ("rujuk_rs_lain" == val) {
         $('#int-ket1').hide();
         $('#int-ket2').hide();
         $('#int-ket3').show();
@@ -67,6 +66,9 @@ function addAsesmenUgd(jenis, idRM, isSetIdRM) {
         if("triase" == jenis){
             setNyeri('set_nyeri', umur);
         }
+        if("keluar_igd" == jenis){
+            setKeteranganPeriksa('ki9');
+        }
         $('#modal-aud-' + jenis).modal({show: true, backdrop: 'static'});
         setDataPasien();
     }
@@ -78,6 +80,7 @@ function saveAsesmenUgd(jenis, keterangan) {
         var data = [];
         var cek = false;
         var dataPasien = "";
+        var sendTppri = [];
 
         dataPasien = {
             'no_checkup': noCheckup,
@@ -89,6 +92,15 @@ function saveAsesmenUgd(jenis, keterangan) {
         if ("keluhan_utama" == jenis) {
             var triase = $('.triase_ugd');
             if (triase.length > 0) {
+                var warna = $('[name=radio_triase]:checked').val();
+                data.push({
+                    'parameter': 'Triase',
+                    'jawaban': warna,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'tipe': 'triase',
+                    'id_detail_checkup': idDetailCheckup
+                });
                 $.each(triase, function (idx, itemx) {
                     var label = $('#label_trias_'+idx).text();
                     var isi = $('[name=trias_'+idx+']:checked').val();
@@ -514,35 +526,45 @@ function saveAsesmenUgd(jenis, keterangan) {
             var lokasi = $('#yer_lokasi').val();
             var skal = $('#skala_nyeri').val();
             if (nyeri != undefined) {
-                data.push({
-                    'parameter': 'Apakah terdapat keluhan nyeri',
-                    'jawaban': nyeri,
-                    'keterangan': jenis,
-                    'jenis': keterangan,
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'Lokasi',
-                    'jawaban': lokasi,
-                    'keterangan': jenis,
-                    'jenis': keterangan,
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'Jenis',
-                    'jawaban': skala,
-                    'keterangan': jenis,
-                    'jenis': keterangan,
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'Skala',
-                    'jawaban': skal,
-                    'keterangan': jenis,
-                    'jenis': keterangan,
-                    'id_detail_checkup': idDetailCheckup
-                });
-                cek = true;
+                var cecek = false;
+                if(nyeri == "Ya"){
+                    if(skala != undefined && lokasi != '' && skal != ''){
+                        cecek = true;
+                    }
+                }else{
+                    cecek = true;
+                }
+                if(cecek){
+                    data.push({
+                        'parameter': 'Apakah terdapat keluhan nyeri',
+                        'jawaban': nyeri,
+                        'keterangan': jenis,
+                        'jenis': keterangan,
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                    data.push({
+                        'parameter': 'Lokasi',
+                        'jawaban': lokasi != '' ? lokasi : '-',
+                        'keterangan': jenis,
+                        'jenis': keterangan,
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                    data.push({
+                        'parameter': 'Jenis',
+                        'jawaban': skala != undefined ? skala : '-',
+                        'keterangan': jenis,
+                        'jenis': keterangan,
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                    data.push({
+                        'parameter': 'Skala',
+                        'jawaban': skal != '' ? skal : '-',
+                        'keterangan': jenis,
+                        'jenis': keterangan,
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                    cek = true;
+                }
             }
         }
 
@@ -712,17 +734,6 @@ function saveAsesmenUgd(jenis, keterangan) {
             var status8 = $('#status8').val();
             var status9 = $('#status9').val();
             var status10 = $('#status10').val();
-            console.log(status1);
-            console.log(status2);
-            console.log(status3);
-            console.log(status4);
-            console.log(status5);
-            console.log(status6);
-            console.log(status7);
-            console.log(status8);
-            console.log(status9);
-            console.log(status10);
-
 
 
             if (status1 && status2 && status3 && status4 && status5 && status6 && status7 && status8 && status9 && status10 != '') {
@@ -821,11 +832,11 @@ function saveAsesmenUgd(jenis, keterangan) {
                 var total = parseInt(skor1)+parseInt(skor2)+parseInt(skor3)+parseInt(skor4)+parseInt(skor5)+parseInt(skor6)+parseInt(skor7)+parseInt(skor8)+parseInt(skor9)+parseInt(skor10);
                 var kesimpulan = "";
                 if(total >= 0 && total <= 20){
-                    kesimpulan = "Rendah";
+                    kesimpulan = "Keteragantungan Total";
                 }else if(total >= 25 && total <= 40){
-                    kesimpulan = "Berat";
+                    kesimpulan = "Keteragantungan Berat";
                 }else if(total >= 45 && total <= 55){
-                    kesimpulan = "Sebagian";
+                    kesimpulan = "Keteragantungan Sebagian";
                 }else if(total >= 60 && total <= 95){
                     kesimpulan = "Ketergantungan Ringan";
                 }else if(total == 100){
@@ -853,7 +864,7 @@ function saveAsesmenUgd(jenis, keterangan) {
             var kebutuhan1 = $('[name=radio_aud_kebutuhan1]:checked').val();
             var kebutuhan2 = $('[name=radio_aud_kebutuhan2]:checked').val();
             var kebutuhan3 = $('[name=radio_aud_kebutuhan3]:checked').val();
-            var kebutuhan4 = $('[name=radio_aud_kebutuhan4]:checked').val();
+            var kebutuhan4 = document.getElementsByName('kp');
             var tKebutuhan1 = "";
             var tKebutuhan2 = "";
             var tKebutuhan3 = "";
@@ -893,14 +904,15 @@ function saveAsesmenUgd(jenis, keterangan) {
                 tKebutuhan3 = kebutuhan1;
             }
 
-            if (kebutuhan4 == "lainnya") {
-                var p = $('#aud_ket_kebutuhan1').val();
-                if (p != '') {
-                    tKebutuhan4 = p;
+            $.each(kebutuhan4, function (i, item) {
+                if(item.checked){
+                    if(tKebutuhan4 != ''){
+                        tKebutuhan4 = tKebutuhan4 +', '+item.value;
+                    }else{
+                        tKebutuhan4 = item.value;
+                    }
                 }
-            } else {
-                tKebutuhan4 = kebutuhan4;
-            }
+            });
 
             if (tKebutuhan1 && tKebutuhan2 && tKebutuhan3 && tKebutuhan4 != '') {
                 data.push({
@@ -916,7 +928,7 @@ function saveAsesmenUgd(jenis, keterangan) {
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
-                    'parameter': 'Hambatan belajar',
+                    'parameter': 'Hambatan Belajar',
                     'jawaban': tKebutuhan3,
                     'keterangan': jenis,
                     'id_detail_checkup': idDetailCheckup
@@ -984,6 +996,7 @@ function saveAsesmenUgd(jenis, keterangan) {
             var va1 = $('#an1').val();
             var va2 = "";
             var v2 = $('#an2').val();
+            var allow = $('#ket_allow').val();
             if(v2 != ''){
                 var ket = $('#ket_an2').val();
                 if(v2 == "Lainnya"){
@@ -1023,9 +1036,13 @@ function saveAsesmenUgd(jenis, keterangan) {
                     'keterangan': jenis,
                     'id_detail_checkup': idDetailCheckup
                 });
+                var low = "";
+                if(allow != ''){
+                    low = ', '+allow;
+                }
                 data.push({
-                    'parameter': 'Alloanamnesis oleh',
-                    'jawaban': va2,
+                    'parameter': 'Alloanamnesis',
+                    'jawaban': 'oleh '+va2+low,
                     'keterangan': jenis,
                     'id_detail_checkup': idDetailCheckup
                 });
@@ -1170,21 +1187,27 @@ function saveAsesmenUgd(jenis, keterangan) {
             var va8 = $('#ki8').val();
             var va9 = "";
             var v9 = $('#ki9').val();
+            var v9Text = $('#ki9 option:selected').text();
             if(v9 != "") {
                 var ket1 = $('#ket_ki91').val();
-                var ket2 = $('#ket_ki92').val();
+                var ket2 = $('#ket_ki92 option:selected').text();
                 var ket3 = $('#ket_ki93').val();
-                var ket4 = $('#ket_ki94').val();
 
-                if ("Rawat Inap" == v9) {
-                    va9 = v9 + ', ' + ket1;
-                } else if ("Rawat Intensif" == v9 || "Rawat Isolasi" == v9 ||
-                    "Dirujuk" == v9 || "") {
-                    va9 = v9 + ', ' + ket2;
-                } else if ("Pulang Atas Persetujuan Dokter" == v9) {
-                    va9 = v9 + ', Kontrol Tgl : ' + ket3 + ', ke : ' + ket4;
+                if ("rawat_inap" == v9 || "rawat_isolasi" == v9 || "rawat_intensif" == v9) {
+                    va9 = v9Text + ', ' + ket1;
+                } else if ("selesai" == v9) {
+                    va9 = ket2;
+                } else if ("rujuk_rs_lain" == v9){
+                    va9 = v9 + ','+ ket3;
                 } else {
                     va9 = v9;
+                }
+
+                sendTppri = {
+                    'tindak_lanjut': v9,
+                    'indikasi': ket1,
+                    'keterangan': va9,
+                    'rujuk_rs': ket3
                 }
             }
 
@@ -1342,12 +1365,14 @@ function saveAsesmenUgd(jenis, keterangan) {
                 });
                 var kesimpulan = "";
                 var total = parseInt(skor2)+parseInt(skor3)+parseInt(skor4)+parseInt(skor5)+parseInt(skor6);
-                if(total >= 7 && total <= 11){
-                    kesimpulan = "Rendah";
-                }else if (total >= 12 && total <= 44) {
-                    kesimpulan = "Tinggi";
-                }else{
-                    kesimpulan = "Rendah";
+                if(total >= 1 && total <= 3){
+                    kesimpulan = "Nyeri Ringan";
+                }else if (total >= 4 && total <= 6) {
+                    kesimpulan = "Nyeri Sedang";
+                }else if (total >= 7 && total <= 10) {
+                    kesimpulan = "Nyeri Berat";
+                }else if(total == 0){
+                    kesimpulan = "Tidak Nyeri";
                 }
 
                 data.push({
@@ -1358,7 +1383,7 @@ function saveAsesmenUgd(jenis, keterangan) {
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
-                    'parameter': 'Resiko Nyeri',
+                    'parameter': 'Nyeri',
                     'jawaban': kesimpulan,
                     'keterangan': jenis,
                     'tipe': 'kesimpulan',
@@ -1435,7 +1460,7 @@ function saveAsesmenUgd(jenis, keterangan) {
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
-                    'parameter': 'Respon',
+                    'parameter': 'Respon Terhadap Pembedahan/Sedasi/Anastesi',
                     'jawaban': isi5,
                     'keterangan': jenis,
                     'skor': skor5,
@@ -1453,7 +1478,7 @@ function saveAsesmenUgd(jenis, keterangan) {
                 var total = parseInt(skor1)+parseInt(skor2)+parseInt(skor3)+parseInt(skor4)+parseInt(skor5)+parseInt(skor6);
                 if(total >= 7 && total <= 11){
                     kesimpulan = "Rendah";
-                }else if (total >= 12 && total <= 44) {
+                }else if (total >= 12) {
                     kesimpulan = "Tinggi";
                 }
 
@@ -1684,15 +1709,64 @@ function saveAsesmenUgd(jenis, keterangan) {
                 AsesmenUgdAction.saveAsesmenUgd(result, pasienData, {
                     callback: function (res) {
                         if(res.status == "success"){
-                            $('#save_aud_'+jenis).show();
-                            $('#load_aud_'+jenis).hide();
-                            $('#modal-aud-' + jenis).modal('hide');
-                            $('#warning_aud_'+keterangan).show().fadeOut(5000);
-                            $('#msg_aud_'+keterangan).text("Berhasil menambahkan data asesmen UGD...");
-                            $("#modal-aud_"+keterangan).scrollTop(0);
-                            delRowAud(jenis);
-                            detailAud(jenis);
-                            kesimpulanAsesmen();
+                            if("keluar_igd" == jenis){
+                                dwr.engine.setAsync(true);
+                                CheckupDetailAction.sendToTppti(idDetailCheckup, sendTppri.tindak_lanjut, sendTppri.indikasi, sendTppri.keterangan, {
+                                    callback:function (res) {
+                                        if(res.status == "success"){
+                                            $('#save_aud_'+jenis).show();
+                                            $('#load_aud_'+jenis).hide();
+                                            $('#modal-aud-' + jenis).modal('hide');
+                                            $('#warning_aud_'+keterangan).show().fadeOut(5000);
+                                            $('#msg_aud_'+keterangan).text("Berhasil menambahkan data asesmen UGD...");
+                                            $("#modal-aud_"+keterangan).scrollTop(0);
+                                            delRowAud(jenis);
+                                            detailAud(jenis);
+                                            kesimpulanAsesmen();
+                                            $('#keterangan').val(sendTppri.tindak_lanjut).trigger('change');
+                                            $('#keterangan').attr('disabled', true);
+                                            if(sendTppri.tindak_lanjut == 'selesai'){
+                                                var kete = $('#ket_selesai option');
+                                                var ketse = "";
+                                                $.each(kete, function (i, item) {
+                                                    if(item.innerHTML == sendTppri.keterangan){
+                                                        ketse = item.value;
+                                                    }
+                                                });
+                                                $('#ket_selesai').val(ketse).trigger('change');
+                                                $('#ket_selesai').attr('disabled', true);
+                                            }else if(sendTppri.tindak_lanjut == 'rawat_inap' || sendTppri.tindak_lanjut == 'rawat_isolasi' || sendTppri.tindak_lanjut == 'rawat_intensif'){
+                                                $('#keterangan_rw').val(sendTppri.indikasi).trigger('change');
+                                                $('#keterangan_rw').attr('disabled', true);
+                                            }else if(sendTppri.tindak_lanjut == 'rujuk_rs_lain'){
+                                                $('#rs_rujukan').val(sendTppri.rujuk_rs);
+                                                $('#rs_rujukan').attr('disabled', true);
+                                            }
+                                        }else{
+                                            $('#save_aud_'+jenis).show();
+                                            $('#load_aud_'+jenis).hide();
+                                            $("#warning_aud_" + jenis).show().fadeOut(5000);
+                                            $('#msg_aud_' + jenis).text(res.msg);
+                                            $("#modal-aud-"+jenis).scrollTop(0);
+                                            delUGD(jenis, keterangan);
+                                        }
+                                    }
+                                });
+                            }else{
+                                $('#save_aud_'+jenis).show();
+                                $('#load_aud_'+jenis).hide();
+                                $('#modal-aud-' + jenis).modal('hide');
+                                $('#warning_aud_'+keterangan).show().fadeOut(5000);
+                                $('#msg_aud_'+keterangan).text("Berhasil menambahkan data asesmen UGD...");
+                                $("#modal-aud_"+keterangan).scrollTop(0);
+                                delRowAud(jenis);
+                                detailAud(jenis);
+                                kesimpulanAsesmen();
+                                $('#keterangan').attr('disabled', false);
+                                $('#ket_selesai').attr('disabled', false);
+                                $('#keterangan_rw').attr('disabled', false);
+                                $('#rs_rujukan').attr('disabled', false);
+                            }
                         }else{
                             $('#save_aud_'+jenis).show();
                             $('#load_aud_'+jenis).hide();
@@ -1747,6 +1821,12 @@ function detailAud(jenis) {
                             body += '<tr>' +
                                 '<td width="40%">' + item.parameter + '</td>' +
                                 '<td>' + '<img src="' + item.jawaban + '" style="width: 100%">' + '</td>' +
+                                '</tr>';
+                        }else if("triase" == item.tipe){
+                            var warna = item.jawaban.split("|")[1];
+                            body += '<tr>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
+                                '<td>' + '<i class="fa fa-square fa-2x" style="color: '+warna+'"></i>' + '</td>' +
                                 '</tr>';
                         }else{
                             if(item.skor != null){
@@ -1989,7 +2069,8 @@ function dataTriase(jenis){
 function setDataTriase(val){
     if(val != ''){
         var traise = "";
-        $.each(dataTriase(val), function (i, item) {
+        var warna = val.split("|")[0];
+        $.each(dataTriase(warna), function (i, item) {
             traise += '<hr class="garis">\n' +
                 '<div class="row">\n' +
                 '    <div class="form-group">\n' +
@@ -2060,4 +2141,12 @@ function kesimpulanAsesmen(){
         }
         $('#temp_kesimpulan').html(temp);
     });
+}
+
+function cekBox(id, tujuan) {
+    if($('#'+id).is(':checked')){
+        $('#'+tujuan).show();
+    }else{
+        $('#'+tujuan).hide();
+    }
 }

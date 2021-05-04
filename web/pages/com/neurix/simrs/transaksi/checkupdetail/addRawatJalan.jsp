@@ -3159,7 +3159,8 @@
         if(jenisPeriksaPasien == 'paket_perusahaan' || jenisPeriksaPasien == 'paket_individu'){
             showDetailPaket();
         }
-        setKeteranganPeriksa();
+
+        setKeteranganPeriksa('keterangan');
 
         $('.carousel').carousel({
             interval: false,

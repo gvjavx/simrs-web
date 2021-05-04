@@ -3870,7 +3870,7 @@ function showDetailPaket() {
     });
 }
 
-function setKeteranganPeriksa() {
+function setKeteranganPeriksa(id) {
     var option = '<option value=""> - </option>';
     if (jenisPeriksaPasien == 'umum' || jenisPeriksaPasien == 'rekanan' || jenisPeriksaPasien == 'bpjs_rekanan') {
         option = option + ' <option value="selesai">Selesai</option>';
@@ -3911,7 +3911,7 @@ function setKeteranganPeriksa() {
                 '<option value="kontrol_ulang">Kontrol Ulang</option>';
         }
     }
-    $('#keterangan').html(option);
+    $('#'+id).html(option);
 }
 
 function setDiskonHarga(id) {
@@ -5128,4 +5128,32 @@ function doneUplod(){
     $('#ket_upload_pemeriksan_0, #upload_pemeriksan_0, #label_upload_pemeriksan_0').val('');
     $('#set_upload_pemeriksan').html('');
     $('#label_upload_pemeriksan_0').css('border-bottom','');
+}
+
+function setTindakLanjut(){
+    dwr.engine.setAsync(true);
+    CheckupDetailAction.getDetailCheckup(idDetailCheckup, function (res) {
+        console.log(res);
+        if(res.tindakLanjut != null && res.tindakLanjut != ''){
+            $('#keterangan').val(res.tindakLanjut).trigger('change');
+            $('#keterangan').attr('disabled', true);
+            if(res.tindakLanjut == 'selesai'){
+                var kete = $('#ket_selesai option');
+                var ketse = "";
+                $.each(kete, function (i, item) {
+                    if(item.innerHTML == res.keteranganSelesai){
+                        ketse = item.value;
+                    }
+                });
+                $('#ket_selesai').val(ketse).trigger('change');
+                $('#ket_selesai').attr('disabled', true);
+            }else if(res.tindakLanjut == 'rawat_inap' || res.tindakLanjut == 'rawat_isolasi' || res.tindakLanjut == 'rawat_intensif'){
+                $('#keterangan_rw').val(res.indikasi).trigger('change');
+                $('#keterangan_rw').attr('disabled', true);
+            }else if(res.tindakLanjut == 'rujuk_rs_lain'){
+                $('#rs_rujukan').val(res.rsRujukan);
+                $('#rs_rujukan').attr('disabled', true);
+            }
+        }
+    });
 }

@@ -29,10 +29,12 @@ function cekNyeri(val, idSet) {
     if (val == "Ya") {
         $('.nyeri').attr('style', 'width: 100%; cursor: pointer');
         $('.nyeri').attr('onclick', 'choiceImg(this.id, $(\'#\'+this.id).attr(\'src\'), \'' + idSet + '\')');
+        $('#apakah_nyeri, #emoji').show();
     } else {
         $('.nyeri').attr('style', 'width: 100%; cursor: no-drop');
         $('.nyeri').removeAttr('onclick');
         $('#' + idSet).val('');
+        $('#apakah_nyeri, #emoji').hide();
     }
 }
 

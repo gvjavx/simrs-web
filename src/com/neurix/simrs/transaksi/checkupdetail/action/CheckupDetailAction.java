@@ -541,7 +541,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
 
             try {
-                checkupDetailBoProxy.saveEdit(detailCheckup);
+                checkupDetailBoProxy.updateStatusPeriksa(detailCheckup);
             } catch (GeneralBOException e) {
                 logger.error("[CheckupDetailAction.add] Error when update checkup detail");
                 throw new GeneralBOException("Error when update checkup detail," + e.getMessage());
@@ -5948,6 +5948,51 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
         }
         logger.info("[CheckupDetailAction.getListUploadPendukungPemeriksaan] end process >>>");
+        return response;
+    }
+
+    public CrudResponse sendToTppti(String id, String lanjut, String indikasi, String selesai) {
+        logger.info("[CheckupDetailAction.sendToTppti] start process >>>");
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        if (id != null && !"".equalsIgnoreCase(id)) {
+            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+            detailCheckup.setIdDetailCheckup(id);
+            detailCheckup.setTindakLanjut(lanjut);
+            detailCheckup.setIndikasi(indikasi);
+            detailCheckup.setKeteranganSelesai(selesai);
+            detailCheckup.setLastUpdateWho(userLogin);
+            detailCheckup.setLastUpdate(updateTime);
+            try {
+                checkupDetailBo.sendToTppti(detailCheckup);
+                response.setStatus("success");
+                response.setMsg("OK");
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                response.setStatus("error");
+                response.setMsg("[CheckupDetailAction.sendToTppti] ERROR, " + e.getMessage());
+            }
+        }
+        logger.info("[CheckupDetailAction.sendToTppti] end process >>>");
+        return response;
+    }
+
+    public ItSimrsHeaderDetailCheckupEntity getDetailCheckup(String id) {
+        logger.info("[CheckupDetailAction.getDetailCheckup] start process >>>");
+        ItSimrsHeaderDetailCheckupEntity response = new ItSimrsHeaderDetailCheckupEntity();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        if (id != null && !"".equalsIgnoreCase(id)) {
+            try {
+                response = checkupDetailBo.getEntityById(id);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+        }
+        logger.info("[CheckupDetailAction.getDetailCheckup] end process >>>");
         return response;
     }
 

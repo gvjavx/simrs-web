@@ -699,40 +699,35 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
     public List<RawatInap> getListTppri(RawatInap bean) {
         List<RawatInap> response = new ArrayList<>();
         if (bean != null) {
-            String idPasien = "";
-            String nama = "";
-            String idDetailCheckup = "";
-            String branchId = "";
-            String tgl = "";
-            String flag = "";
+            String condition = "";
 
             if (bean.getFlagTppri() != null && !"".equalsIgnoreCase(bean.getFlagTppri())) {
-                flag = "AND b.flag_tppri = '" + bean.getFlagTppri() + "' \n";
+                condition += "AND b.flag_tppri = '" + bean.getFlagTppri() + "' \n";
             }else{
-                flag = "AND b.flag_tppri IS NULL \n";
+                condition += "AND b.flag_tppri IS NULL \n";
             }
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
-                idPasien = "AND a.id_pasien LIKE '%" + bean.getIdPasien() + "%' \n";
+                condition += "AND a.id_pasien LIKE '%" + bean.getIdPasien() + "%' \n";
             }
             if (bean.getNamaPasien() != null && !"".equalsIgnoreCase(bean.getNamaPasien())) {
-                nama = "AND a.nama ILIKE '%" + bean.getNamaPasien() + "%' \n";
+                condition += "AND a.nama ILIKE '%" + bean.getNamaPasien() + "%' \n";
             }
             if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
-                idDetailCheckup = "AND b.id_detail_checkup LIKE '%" + bean.getIdDetailCheckup() + "%' \n";
+                condition += "AND b.id_detail_checkup LIKE '%" + bean.getIdDetailCheckup() + "%' \n";
             }
             if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
-                branchId = "AND a.branch_id LIKE '" + bean.getBranchId() + "'";
+                condition += "AND a.branch_id LIKE '" + bean.getBranchId() + "'";
             } else {
-                branchId = "AND a.branch_id LIKE '%'";
+                condition += "AND a.branch_id LIKE '%'";
             }
 
             if (bean.getStTglTo() != null && !"".equalsIgnoreCase(bean.getStTglTo()) &&
                     bean.getStTglFrom() != null && !"".equalsIgnoreCase(bean.getStTglFrom())) {
-                tgl = "AND CAST(a.created_date AS date) >= to_date('" + bean.getStTglFrom() + "', 'dd-MM-yyyy') AND CAST(a.created_date AS date) <= to_date('" + bean.getStTglTo() + "', 'dd-MM-yyyy') \n";
+                condition += "AND CAST(a.created_date AS date) >= to_date('" + bean.getStTglFrom() + "', 'dd-MM-yyyy') AND CAST(a.created_date AS date) <= to_date('" + bean.getStTglTo() + "', 'dd-MM-yyyy') \n";
             } else if (bean.getStTglTo() != null && !"".equalsIgnoreCase(bean.getStTglTo())) {
-                tgl = "AND CAST(a.created_date AS date) <= to_date('" + bean.getStTglTo() + "', 'dd-MM-yyyy') \n";
+                condition += "AND CAST(a.created_date AS date) <= to_date('" + bean.getStTglTo() + "', 'dd-MM-yyyy') \n";
             } else if (bean.getStTglFrom() != null && !"".equalsIgnoreCase(bean.getStTglFrom())) {
-                tgl = "AND CAST(a.created_date AS date) >= to_date('" + bean.getStTglFrom() + "', 'dd-MM-yyyy') \n";
+                condition += "AND CAST(a.created_date AS date) >= to_date('" + bean.getStTglFrom() + "', 'dd-MM-yyyy') \n";
             }
 
             String SQL = "SELECT\n" +
@@ -753,10 +748,8 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_jenis_periksa_pasien c ON b.id_jenis_periksa_pasien = c.id_jenis_periksa_pasien\n" +
                     "LEFT JOIN it_simrs_rawat_inap d ON b.id_detail_checkup = d.id_detail_checkup\n" +
-                    "WHERE b.status_periksa = '3'\n" +
-                    "AND b.tindak_lanjut IN ('rawat_inap','rawat_intensif','rawat_isolasi','kamar_operasi','ruang_bersalin')\n" +
-                    "AND d.id_detail_checkup IS NULL \n" +
-                    flag + branchId + idPasien + nama + idDetailCheckup + tgl;
+                    "WHERE b.tindak_lanjut IN ('rawat_inap','rawat_intensif','rawat_isolasi','kamar_operasi','ruang_bersalin')\n" +
+                    "AND d.id_detail_checkup IS NULL \n" +condition;
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

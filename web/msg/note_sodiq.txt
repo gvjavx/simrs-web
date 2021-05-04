@@ -2636,6 +2636,9 @@ INSERT INTO im_functions VALUES
 INSERT INTO im_func_roles VALUES
 (6925, 36, 'Y', now(), now(), 'admin', 'admin');
 
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN indikasi VARCHAR(100);
+
 
 
 

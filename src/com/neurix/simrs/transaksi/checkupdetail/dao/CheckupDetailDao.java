@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.checkupdetail.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.transaksi.asesmenugd.model.ItSimrsAsesmenUgdEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.KlaimFpkDTO;
@@ -391,6 +392,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     }
                     headerDetailCheckup.setAlamat(jalan);
                     headerDetailCheckup.setIsTindakan(isTindakanRawat(obj[0].toString()));
+                    headerDetailCheckup.setTriase(triase(obj[0].toString()));
                     checkupList.add(headerDetailCheckup);
                 }
             }
@@ -407,6 +409,22 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             List<ItSimrsTindakanRawatEntity> listOfResult = criteria.list();
             if(listOfResult.size() > 0){
                 res = "Y";
+            }
+        }
+        return res;
+    }
+
+    public String triase(String id){
+        String res = "";
+        if(id != null && !"".equalsIgnoreCase(id)){
+            Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsAsesmenUgdEntity.class);
+            criteria.add(Restrictions.eq("idDetailCheckup", id));
+            criteria.add(Restrictions.eq("tipe", "triase"));
+            criteria.add(Restrictions.eq("flag", "Y"));
+            List<ItSimrsAsesmenUgdEntity> listOfResult = criteria.list();
+            if(listOfResult.size() > 0){
+                ItSimrsAsesmenUgdEntity entity = listOfResult.get(0);
+                res = entity.getJawaban();
             }
         }
         return res;
