@@ -8401,75 +8401,76 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
 //        return listOfResult;
 //    }
 //
-//    public List<PayrollEsptDTO> searchReportEspt(String tahun, String unit) {
-//        List<PayrollEsptDTO> listOfResult = new ArrayList<>();
-//        List<Object[]> results;
-//        final String query = "SELECT\n" +
-//                "\tMIN(p.bulan) AS masaperolehanawal,\n" +
-//                "\tMAX(p.bulan) AS masaperolehanakhir,\n" +
-//                "\tpeg.npwp AS npwp,\n" +
-//                "\tpeg.no_ktp AS noktp,\n" +
-//                "\tpeg.nama_pegawai AS nama,\n" +
-//                "\tpeg.alamat AS alamat,\n" +
-//                "\tpeg.jenis_kelamin AS jk,\n" +
-//                "\tpeg.status_keluarga AS status,\n" +
-//                "\tpeg.jumlah_anak AS jumlahanak,\t\n" +
-//                "\tpos.position_name AS namajabatan,\n" +
-//                "\tsum(p.gaji_golongan) as jumlah1gaji,\n" +
-//                "\tsum(p.tunjangan_pph) as jumlah2tunjpph,\n" +
-//                "\tsum(p.tunjangan_umk+p.tunjangan_jabatan_struktural+p.tunjangan_struktural+p.tunjangan_strategis+p.tunjangan_peralihan+p.tunjangan_lain+p.tunjangan_tambahan+p.tunjangan_lembur+p.pemondokan+p.komunikasi+p.total_rlab+p.tunjangan_dapen+p.tunjangan_bpjs_ks+p.tunjangan_bpjs_tk) as jumlah3tunjanganlemburlainnya,\n" +
-//                "\tsum(p.iuran_dapen_peg+p.iuran_bpjs_tk_kary+p.iuran_bpjs_ks_kary) as jumlah10iuranpensiunthtjht," +
-//                "\tp.nip \n" +
-//                "from\n" +
-//                "\tit_hris_payroll p\n" +
-//                "\tleft join it_hris_pegawai_position pp on p.nip = pp.nip\n" +
-//                "\tleft join im_position pos on pp.position_id = pos.position_id\n" +
-//                "\tleft join im_hris_pegawai peg on peg.nip = p.nip\n" +
-//                "where\n" +
-//                "\tpp.branch_id= '"+unit+"'\n" +
-//                "\tand peg.flag ='Y'\n" +
-//                "\tand pp.flag='Y'\n" +
-//                "\tand p.flag='Y'\n" +
-//                "\tand pos.flag='Y'\n" +
-//                "\tand p.approval_flag='Y'\n" +
-//                "\tand p.flag_payroll ='Y'\n" +
-//                "\tand p.tahun = '"+tahun+"'\n" +
-//                "group by\n" +
-//                "\tp.nip,\n" +
-//                "\tpeg.npwp,\n" +
-//                "\tpeg.no_ktp,\n" +
-//                "\tpeg.nama_pegawai,\n" +
-//                "\tpeg.alamat,\n" +
-//                "\tpeg.jenis_kelamin,\n" +
-//                "\tpeg.status_keluarga,\n" +
-//                "\tpeg.jumlah_anak,\n" +
-//                "\tpos.position_name,\n" +
-//                "\tpos.kelompok_id\n" +
-//                "order by\n" +
-//                "\tpos.kelompok_id\n" +
-//                "\t";
-//        results = (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(query).list();
-//        for (Object[] row : results) {
-//            PayrollEsptDTO result = new PayrollEsptDTO();
-//            result.setMasaPerolehanAwal((String)row[0]);
-//            result.setMasaPerolehanAkhir((String)row[1]);
-//            result.setNpwp((String)row[2]);
-//            result.setNik((String)row[3]);
-//            result.setNama((String)row[4]);
-//            result.setAlamat((String)row[5]);
-//            result.setJenisKelamin((String)row[6]);
-//            result.setStatusPtkp((String)row[7]);
-//            result.setJumlahTanggungan(String.valueOf(row[8]));
-//            result.setNamaJabatan((String)row[9]);
-//            result.setJumlah1(BigDecimal.valueOf(Double.valueOf(row[10].toString())));
-//            result.setJumlah2(BigDecimal.valueOf(Double.valueOf(row[11].toString())));
-//            result.setJumlah3(BigDecimal.valueOf(Double.valueOf(row[12].toString())));
-//            result.setJumlah10(BigDecimal.valueOf(Double.valueOf(row[13].toString())));
-//            result.setNip((String)row[14]);
-//            listOfResult.add(result);
-//        }
-//        return listOfResult;
-//    }
+    //RAKA-04MEI2021 ==> recover by raka
+    public List<PayrollEsptDTO> searchReportEspt(String tahun, String unit) {
+        List<PayrollEsptDTO> listOfResult = new ArrayList<>();
+        List<Object[]> results;
+        final String query = "SELECT\n" +
+                "\tMIN(p.bulan) AS masaperolehanawal,\n" +
+                "\tMAX(p.bulan) AS masaperolehanakhir,\n" +
+                "\tpeg.npwp AS npwp,\n" +
+                "\tpeg.no_ktp AS noktp,\n" +
+                "\tpeg.nama_pegawai AS nama,\n" +
+                "\tpeg.alamat AS alamat,\n" +
+                "\tpeg.jenis_kelamin AS jk,\n" +
+                "\tpeg.status_keluarga AS status,\n" +
+                "\tpeg.jumlah_anak AS jumlahanak,\t\n" +
+                "\tpos.position_name AS namajabatan,\n" +
+                "\tsum(p.gaji_golongan) as jumlah1gaji,\n" +
+                "\tsum(p.tunjangan_pph) as jumlah2tunjpph,\n" +
+                "\tsum(p.tunjangan_umk+p.tunjangan_jabatan_struktural+p.tunjangan_struktural+p.tunjangan_strategis+p.tunjangan_peralihan+p.tunjangan_lain+p.tunjangan_tambahan+p.tunjangan_lembur+p.pemondokan+p.komunikasi+p.total_rlab+p.tunjangan_dapen+p.tunjangan_bpjs_ks+p.tunjangan_bpjs_tk) as jumlah3tunjanganlemburlainnya,\n" +
+                "\tsum(p.iuran_dapen_peg+p.iuran_bpjs_tk_kary+p.iuran_bpjs_ks_kary) as jumlah10iuranpensiunthtjht," +
+                "\tp.nip \n" +
+                "from\n" +
+                "\tit_hris_payroll p\n" +
+                "\tleft join it_hris_pegawai_position pp on p.nip = pp.nip\n" +
+                "\tleft join im_position pos on pp.position_id = pos.position_id\n" +
+                "\tleft join im_hris_pegawai peg on peg.nip = p.nip\n" +
+                "where\n" +
+                "\tpp.branch_id= '"+unit+"'\n" +
+                "\tand peg.flag ='Y'\n" +
+                "\tand pp.flag='Y'\n" +
+                "\tand p.flag='Y'\n" +
+                "\tand pos.flag='Y'\n" +
+                "\tand p.approval_flag='Y'\n" +
+                "\tand p.flag_payroll ='Y'\n" +
+                "\tand p.tahun = '"+tahun+"'\n" +
+                "group by\n" +
+                "\tp.nip,\n" +
+                "\tpeg.npwp,\n" +
+                "\tpeg.no_ktp,\n" +
+                "\tpeg.nama_pegawai,\n" +
+                "\tpeg.alamat,\n" +
+                "\tpeg.jenis_kelamin,\n" +
+                "\tpeg.status_keluarga,\n" +
+                "\tpeg.jumlah_anak,\n" +
+                "\tpos.position_name,\n" +
+                "\tpos.kelompok_id\n" +
+                "order by\n" +
+                "\tpos.kelompok_id\n" +
+                "\t";
+        results = (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(query).list();
+        for (Object[] row : results) {
+            PayrollEsptDTO result = new PayrollEsptDTO();
+            result.setMasaPerolehanAwal((String)row[0]);
+            result.setMasaPerolehanAkhir((String)row[1]);
+            result.setNpwp((String)row[2]);
+            result.setNik((String)row[3]);
+            result.setNama((String)row[4]);
+            result.setAlamat((String)row[5]);
+            result.setJenisKelamin((String)row[6]);
+            result.setStatusPtkp((String)row[7]);
+            result.setJumlahTanggungan(String.valueOf(row[8]));
+            result.setNamaJabatan((String)row[9]);
+            result.setJumlah1(BigDecimal.valueOf(Double.valueOf(row[10].toString())));
+            result.setJumlah2(BigDecimal.valueOf(Double.valueOf(row[11].toString())));
+            result.setJumlah3(BigDecimal.valueOf(Double.valueOf(row[12].toString())));
+            result.setJumlah10(BigDecimal.valueOf(Double.valueOf(row[13].toString())));
+            result.setNip((String)row[14]);
+            listOfResult.add(result);
+        }
+        return listOfResult;
+    }
 //
 //    public List<ItPayrollEntity> searchReportTarikanPendapatanPPH(final String tahun, final String unit) {
 //        final List<ItPayrollEntity> listOfResult = new ArrayList<ItPayrollEntity>();

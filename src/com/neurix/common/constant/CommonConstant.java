@@ -176,7 +176,8 @@ public class CommonConstant {
     public final static String KELOMPOK_ID_PEJABAT_MADYA = CommonUtil.getPropertyParams("kelompok.id.pejabat.madya");
     public final static String KELOMPOK_ID_PEJABAT_UTAMA = CommonUtil.getPropertyParams("kelompok.id.pejabat.utama");
     public final static String KELOMPOK_ID_STAFF = CommonUtil.getPropertyParams("kelompok.id.staff");
-    public final static String BAGIAN_ID_BOD_BOC =CommonUtil.getPropertyParams("bagian.bod.boc");
+    public final static String BAGIAN_ID_BOD =CommonUtil.getPropertyParams("bagian.bod");
+    public final static String BAGIAN_ID_BOC =CommonUtil.getPropertyParams("bagian.boc");
     public final static String KELOMPOK_ID_BOD =CommonUtil.getPropertyParams("kelompok.id.bod");
     public final static String KELOMPOK_ID_BOC =CommonUtil.getPropertyParams("kelompok.id.boc");
     public final static String ROLE_ID_KARYAWAN = CommonUtil.getPropertyParams("role.id.karyawan");
