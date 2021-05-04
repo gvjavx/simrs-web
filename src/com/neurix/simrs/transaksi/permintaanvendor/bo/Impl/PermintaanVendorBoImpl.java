@@ -227,7 +227,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 transaksiObatDetail.setAverageHargaBiji(transaksiObatDetailEntity.getAverageHargaBiji());
                                 transaksiObatDetail.setFlagDiterima(transaksiObatDetailEntity.getFlagDiterima());
                                 transaksiObatDetail.setJenisSatuan(transaksiObatDetailEntity.getJenisSatuan());
-                                transaksiObatDetail.setIdPabrik(obatEntity.getIdPabrik());
+                                transaksiObatDetail.setIdPabrik(obatEntity != null ? obatEntity.getIdPabrik() : null);
                                 transaksiObatDetail.setMerek(transaksiObatDetailEntity.getMrek());
                                 transaksiObatDetail.setNamaObatBaru(transaksiObatDetailEntity.getNamaObatBaru());
 

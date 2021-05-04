@@ -589,14 +589,11 @@ public class ObatAction extends BaseMasterAction {
         }
 
         List<Obat> obatList = new ArrayList<>();
-        Obat obat = new Obat();
-        obat.setBranchId(branchId);
-        obat.setFlag("Y");
-        obat.setFlagBpjs("bpjs".equalsIgnoreCase(jenisObat) ? "Y" : "N");
+        String flagBpjs = "bpjs".equalsIgnoreCase(jenisObat) ? "Y" : "N";
 
-        if (obat.getBranchId() != null){
+        if (branchId != null){
             try {
-                obatList = obatBo.getListObatGroup(obat);
+                obatList = obatBo.getListStokGudangForRequest(branchId, flagBpjs);
             } catch (GeneralBOException e) {
                 logger.error("[ObatAction.getListObat] Error when obat ," + "Found problem when saving add data, please inform to your admin.", e);
             }
