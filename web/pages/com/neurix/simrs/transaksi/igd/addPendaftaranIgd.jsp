@@ -2609,9 +2609,16 @@
 
     function checkBpjs() {
         var noBpjs = $('#no_bpjs').val();
+        var perujuk = $('#perujuk').val();
+        var jenisRujukan = "";
+        if (perujuk == '1') {
+            jenisRujukan = "P";
+        } else if (perujuk == '2') {
+            jenisRujukan = "R";
+        }
         $('#btn-cek').html('<i class="fa fa-circle-o-notch fa-spin"></i> Loading...');
         dwr.engine.setAsync(true);
-        CheckupAction.checkStatusBpjs(noBpjs, {
+        CheckupAction.checkStatusBpjs(noBpjs, jenisRujukan, {
             callback: function (response) {
                 var warnClass = "";
                 var title = "";
@@ -2626,6 +2633,8 @@
                     title = "Info!";
                     warnClass = "alert-success";
                     msg = "No BPJS berhasil diverifikasi dengan status AKTIF!";
+                    $('#no_rujukan').val(response.noKunjungan).trigger('input');
+                    cekNoRujukan();
                 } else if (response.keteranganStatusPeserta == "TIDAK AKTIF") {
                     val = "tidak aktif";
                     icon = "fa-warning";

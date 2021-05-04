@@ -2656,7 +2656,6 @@
                 $('#btn-cek').html('<i class="fa fa-search"></i> Check');
             }
         });
-
     }
 
     function listDokter(idPelayanan) {
