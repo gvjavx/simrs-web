@@ -1616,7 +1616,7 @@ function saveRB(jenis, ket) {
             });
             data.push({
                 'parameter': 'Darah beku/encer : HT yang biasa',
-                'jawaban': va10 + ' HPL ' + va11,
+                'jawaban': va10 + ' Haid Terakhir ' + va11,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -3662,18 +3662,21 @@ function delRB(jenis, ket, date) {
     }
 }
 
-function setHPL(idTujuan, idHPHT, idLama){
+function setHPL(idTujuan, idHPHT){
     var hpht = $('#'+idHPHT).val();
-    var lama = $('#'+idLama).val();
-    if(hpht != '' && lama != ''){
+    if(hpht != ''){
         var tanggal = hpht.split("-").reverse().join("-");
         var newDate = new Date(tanggal);
-        newDate.setMonth(newDate.getMonth()+9);
-        var jml = 21;
-        if(parseInt(lama) > 21){
-            jml = lama;
+        console.log(newDate.getMonth());
+        console.log(newDate.getUTCMonth());
+        var bulan = hpht.split("-")[1];
+        if(parseInt(bulan) > 3){
+            newDate.setDate(newDate.getDate()+7);
+            newDate.setMonth(newDate.getMonth()-3);
+            newDate.setFullYear(newDate.getFullYear()+1);
+        }else{
+            newDate.setDate(newDate.getDate()+7);
         }
-        newDate.setDate(newDate.getDate()+(jml - 21));
         var hpl = converterDate(newDate);
         $('#'+idTujuan).val(hpl);
     }

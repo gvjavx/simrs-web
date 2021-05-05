@@ -2854,6 +2854,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenRawatInapAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/KandunganAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenIcuAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenUgd.js"/>'></script>
@@ -2866,6 +2867,7 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/allhistory.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/kandungan.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/icu.js"/>'></script>
 
 <script type='text/javascript'>
 
