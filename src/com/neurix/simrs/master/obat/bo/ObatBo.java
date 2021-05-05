@@ -65,4 +65,5 @@ public interface ObatBo{
     public List<HargaObatPerKonsumen> listHargaObatPerKonsumenByBranch(String idObat, String branchId);
     public String getIdHargaObatByIdObatAndBranch(String idObat, String branchId);
     public void saveHargaObatPerKonsumen(HargaObatPerKonsumen bean, List<HargaObatPerKonsumen> listHargaPerKonsumen);
+    public List<Obat> getListStokGudangForRequest(String branchId, String flagBpjs);
 }

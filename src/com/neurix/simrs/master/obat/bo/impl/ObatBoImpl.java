@@ -2683,4 +2683,20 @@ public class ObatBoImpl implements ObatBo {
         logger.info("[ObatBoImpl.generateNewHargaObatPerKonsumen] END <<<");
         return id;
     }
+
+    @Override
+    public List<Obat> getListStokGudangForRequest(String branchId, String flagBpjs) {
+        logger.info("[ObatBoImpl.getListStokGudangForRequest] START >>>");
+
+        List<Obat> obatList = new ArrayList<>();
+        try {
+            obatList = obatDao.getListStokGudangForRequest(branchId, flagBpjs);
+        } catch (HibernateException e){
+            logger.error("[ObatBoImpl.getListStokGudangForRequest] ERROR.", e);
+            throw new GeneralBOException("[ObatBoImpl.getListStokGudangForRequest] ERROR." + e.getCause());
+        }
+
+        logger.info("[ObatBoImpl.getListStokGudangForRequest] END <<<");
+        return obatList;
+    }
 }
