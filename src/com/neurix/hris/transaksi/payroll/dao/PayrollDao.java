@@ -2045,6 +2045,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
     }
 
     //updated by ferdi, 01-12-2020, rebuild to get data payroll bulanan (pendapatan rutin)
+    //RAKA-05MEI2021==> Update. mengali tunj. Struktural & tunj. Jabatan dengan persen gaji jenis pegawai
     public List<PegawaiPayroll> getInitialDataPayrollBulanan(String branchId,
                                                              String periodePayroll,
                                                              String tahunPayroll,
@@ -2279,10 +2280,10 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                     else 0 end                                                               as tunj_bbm,\n" +
                 "                   case\n" +
                 "                     when tunj_struktural.tunj_jabatan is null then 0\n" +
-                "                     else tunj_struktural.tunj_jabatan end                                    as tunj_jabatan,\n" +
+                "                     else (tunj_struktural.tunj_jabatan * jenis_pegawai.persen_gaji)/100 end           as tunj_jabatan,\n" + //RAKA-update disini
                 "                   case\n" +
                 "                     when tunj_struktural.tunj_struktural is null then 0\n" +
-                "                     else tunj_struktural.tunj_struktural end                                 as tunj_struktural,\n" +
+                "                     else (tunj_struktural.tunj_struktural * jenis_pegawai.persen_gaji)/100 end        as tunj_struktural,\n" +
                 "                   case\n" +
                 "                     when tunj_strategis.nilai is null then 0\n" +
                 "                     else tunj_strategis.nilai end                                            as tunj_fungsional,\n" +
@@ -2697,10 +2698,10 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                     else 0 end                                                               as tunj_bbm,\n" +
                 "                   case\n" +
                 "                     when tunj_struktural.tunj_jabatan is null then 0\n" +
-                "                     else tunj_struktural.tunj_jabatan end                                    as tunj_jabatan,\n" +
+                "                     else (tunj_struktural.tunj_jabatan * jenis_pegawai.persen_gaji) / 100 end         as tunj_jabatan,\n" + //RAKA-update disini
                 "                   case\n" +
                 "                     when tunj_struktural.tunj_struktural is null then 0\n" +
-                "                     else tunj_struktural.tunj_struktural end                                 as tunj_struktural,\n" +
+                "                     else (tunj_struktural.tunj_struktural * jenis_pegawai.persen_gaji) / 100 end      as tunj_struktural,\n" +
                 "                   case\n" +
                 "                     when tunj_strategis.nilai is null then 0\n" +
                 "                     else tunj_strategis.nilai end                                            as tunj_fungsional,\n" +
@@ -4181,8 +4182,11 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
             result.setTunjFungsionalNilai(result.getTunjFungsionalNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjFungsional(CommonUtil.numbericFormat(result.getTunjFungsionalNilai(), "###,###"));
 
-            if()
-            result.setTunjTambahanNilai(row[35] != null ? (BigDecimal) row[35] : new BigDecimal(0)); //THR
+            if(tipePayroll.equalsIgnoreCase(CommonConstant.CODE_CUTI_TAHUNAN) || tipePayroll.equalsIgnoreCase(CommonConstant.CODE_CUTI_PANJANG)){
+                result.setTunjTambahanNilai(row[35] != null ? new BigDecimal((Integer)row[35]) : new BigDecimal(0)); //CUTI
+            } else {
+                result.setTunjTambahanNilai(row[35] != null ? (BigDecimal) row[35] : new BigDecimal(0)); //THR
+            }
             result.setTunjTambahanNilai(result.getTunjTambahanNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjTambahan(CommonUtil.numbericFormat(result.getTunjTambahanNilai(), "###,###"));
 
