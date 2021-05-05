@@ -1717,4 +1717,26 @@ public class  CommonUtil {
         }
     }
 
+    public static String sendGetRequest(String requestUrl) {
+        try {
+            URL url = new URL(requestUrl);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Authorization", "02210");
+            con.setDoInput(true);
+            con.setDoOutput(true);
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            StringBuffer jsonString = new StringBuffer();
+            String line;
+            while ((line = br.readLine()) != null) {
+                jsonString.append(line);
+            }
+            br.close();
+            con.disconnect();
+            return jsonString.toString();
+        } catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
 }
