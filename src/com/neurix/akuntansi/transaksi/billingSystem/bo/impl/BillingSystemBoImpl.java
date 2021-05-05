@@ -347,12 +347,14 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                     }
                 }
 
-            } else {
-
-                logger.error("[BillingSystemBoImpl.prepareCreateJurnal] Error, tidak ditemukan setting tutup periode, tolong di cek kembali batas tutup periode.");
-                throw new GeneralBOException("Found problem, tidak ditemukan setting tutup periode, tolong di cek kembali batas tutup periode. please info to your admin..." );
-
             }
+
+//            else {
+//
+//                logger.error("[BillingSystemBoImpl.prepareCreateJurnal] Error, tidak ditemukan setting tutup periode, tolong di cek kembali batas tutup periode.");
+//                throw new GeneralBOException("Found problem, tidak ditemukan setting tutup periode, tolong di cek kembali batas tutup periode. please info to your admin..." );
+//
+//            }
 
             //get trans id dan mapping jurnal
             ImTransEntity transEntity = null;

@@ -1364,7 +1364,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     }
 
                     String branchId = CommonUtil.userBranchLogin();
-//        String branchId = "RS01";
+
                     //** CARI APAKAH ADA TRANSITORIS **//
                     boolean isTransitoris = false;
                     BigDecimal allTindakanTransUmum = new BigDecimal(0);
@@ -1387,7 +1387,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     String transId = "";
 
                     Map mapPajakObat = new HashMap();
-//        String invoiceNumber = billingSystemBo.createInvoiceNumber(type, branchId);
 
                     if ("tunai".equalsIgnoreCase(jenis) || "bpjs".equalsIgnoreCase(jenis) || "asuransi".equalsIgnoreCase(jenis)) {
 
@@ -1409,8 +1408,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                         if ("JRJ".equalsIgnoreCase(type) && "Y".equalsIgnoreCase(withObat)) {
 
                             mapJurnal.put("pendapatan_rawat_jalan_umum", listOfMapTindakanUmum);
-
-//                mapPajakObat.put("bukti", invoiceNumber);
                             mapPajakObat.put("nilai", ppnObat);
                             mapPajakObat.put("master_id", CommonConstant.MASTER_PAJAK_OBAT);
                             mapJurnal.put("ppn_keluaran", mapPajakObat);
