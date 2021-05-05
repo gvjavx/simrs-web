@@ -14,6 +14,7 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.exception.GenerateBoLog;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.biodata.dao.BiodataDao;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.mappingpersengaji.dao.MappingPersenGajiDao;
 import com.neurix.hris.master.mappingpersengaji.model.ImHrisMappingPersenGaji;
@@ -53,6 +54,12 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
     private AbsensiPegawaiDao absensiPegawaiDao;
 
     private MappingJurnalDao mappingJurnalDao;
+
+    private BiodataDao biodataDao;
+
+    public void setBiodataDao(BiodataDao biodataDao) {
+        this.biodataDao = biodataDao;
+    }
 
     @Override
     public void setMappingJurnalDao(MappingJurnalDao mappingJurnalDao) {

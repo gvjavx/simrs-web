@@ -1683,7 +1683,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                     "       pegawai.tanggal_keluar                                                     as tanggal_keluar,\n" +
                     "       posisi.kodering                                                            as kodering,\n" +
                     "       pegawai.jenis_kelamin                                                      as gender,\n" +
-                    "       company.persen_cuti_panjang/100                                            as multifikator" +
+                    "       company.persen_cuti_panjang/100                                            as multifikator\n" +
                     "from im_hris_pegawai pegawai\n" +
                     "       left join im_hris_golongan golongan on pegawai.golongan_id = golongan.golongan_id and\n" +
                     "                                              golongan.flag = 'Y'\n" +
@@ -4181,7 +4181,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
             result.setTunjFungsionalNilai(result.getTunjFungsionalNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjFungsional(CommonUtil.numbericFormat(result.getTunjFungsionalNilai(), "###,###"));
 
-            result.setTunjTambahanNilai(row[35] != null ? (BigDecimal) row[35] : new BigDecimal(0));
+            if()
+            result.setTunjTambahanNilai(row[35] != null ? (BigDecimal) row[35] : new BigDecimal(0)); //THR
             result.setTunjTambahanNilai(result.getTunjTambahanNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjTambahan(CommonUtil.numbericFormat(result.getTunjTambahanNilai(), "###,###"));
 
@@ -8401,54 +8402,53 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
 //        return listOfResult;
 //    }
 //
-    //RAKA-04MEI2021 ==> recover by raka
+    //RAKA-04MEI2021 ==> recover by raka (penyesuaian perlu dicek)
     public List<PayrollEsptDTO> searchReportEspt(String tahun, String unit) {
         List<PayrollEsptDTO> listOfResult = new ArrayList<>();
         List<Object[]> results;
         final String query = "SELECT\n" +
-                "\tMIN(p.bulan) AS masaperolehanawal,\n" +
-                "\tMAX(p.bulan) AS masaperolehanakhir,\n" +
-                "\tpeg.npwp AS npwp,\n" +
-                "\tpeg.no_ktp AS noktp,\n" +
-                "\tpeg.nama_pegawai AS nama,\n" +
-                "\tpeg.alamat AS alamat,\n" +
-                "\tpeg.jenis_kelamin AS jk,\n" +
-                "\tpeg.status_keluarga AS status,\n" +
-                "\tpeg.jumlah_anak AS jumlahanak,\t\n" +
-                "\tpos.position_name AS namajabatan,\n" +
-                "\tsum(p.gaji_golongan) as jumlah1gaji,\n" +
-                "\tsum(p.tunjangan_pph) as jumlah2tunjpph,\n" +
-                "\tsum(p.tunjangan_umk+p.tunjangan_jabatan_struktural+p.tunjangan_struktural+p.tunjangan_strategis+p.tunjangan_peralihan+p.tunjangan_lain+p.tunjangan_tambahan+p.tunjangan_lembur+p.pemondokan+p.komunikasi+p.total_rlab+p.tunjangan_dapen+p.tunjangan_bpjs_ks+p.tunjangan_bpjs_tk) as jumlah3tunjanganlemburlainnya,\n" +
-                "\tsum(p.iuran_dapen_peg+p.iuran_bpjs_tk_kary+p.iuran_bpjs_ks_kary) as jumlah10iuranpensiunthtjht," +
-                "\tp.nip \n" +
-                "from\n" +
-                "\tit_hris_payroll p\n" +
-                "\tleft join it_hris_pegawai_position pp on p.nip = pp.nip\n" +
-                "\tleft join im_position pos on pp.position_id = pos.position_id\n" +
-                "\tleft join im_hris_pegawai peg on peg.nip = p.nip\n" +
-                "where\n" +
-                "\tpp.branch_id= '"+unit+"'\n" +
-                "\tand peg.flag ='Y'\n" +
-                "\tand pp.flag='Y'\n" +
-                "\tand p.flag='Y'\n" +
-                "\tand pos.flag='Y'\n" +
-                "\tand p.approval_flag='Y'\n" +
-                "\tand p.flag_payroll ='Y'\n" +
-                "\tand p.tahun = '"+tahun+"'\n" +
-                "group by\n" +
-                "\tp.nip,\n" +
-                "\tpeg.npwp,\n" +
-                "\tpeg.no_ktp,\n" +
-                "\tpeg.nama_pegawai,\n" +
-                "\tpeg.alamat,\n" +
-                "\tpeg.jenis_kelamin,\n" +
-                "\tpeg.status_keluarga,\n" +
-                "\tpeg.jumlah_anak,\n" +
-                "\tpos.position_name,\n" +
-                "\tpos.kelompok_id\n" +
-                "order by\n" +
-                "\tpos.kelompok_id\n" +
-                "\t";
+                "                MIN(p.bulan) AS masaperolehanawal, \n" +
+                "                MAX(p.bulan) AS masaperolehanakhir, \n" +
+                "                peg.npwp AS npwp, \n" +
+                "                peg.no_ktp AS noktp, \n" +
+                "                peg.nama_pegawai AS nama, \n" +
+                "                peg.alamat AS alamat, \n" +
+                "                peg.jenis_kelamin AS jk, \n" +
+                "                peg.status_keluarga AS status, \n" +
+                "                peg.jumlah_anak AS jumlahanak, \n" +
+                "                pos.position_name AS namajabatan, \n" +
+                "                sum(p.gaji_pokok) as jumlah1gaji, \n" +
+                "                sum(p.tunjangan_pph) as jumlah2tunjpph, \n" +
+                "                sum(p.tunjangan_umk+p.tunjangan_jabatan_struktural+p.tunjangan_struktural+p.tunjangan_strategis+p.tunjangan_peralihan+p.tunjangan_lain+p.tunjangan_tambahan+p.tunjangan_lembur+p.tunjangan_pemondokan+p.tunjangan_komunikasi+p.total_rlab+p.tunjangan_dapen+p.tunjangan_bpjs_ks+p.tunjangan_bpjs_tk) as jumlah3tunjanganlemburlainnya, \n" +
+                "                sum(p.iuran_dapen_kary+p.iuran_bpjs_tk_kary+p.iuran_bpjs_ks_kary) as jumlah10iuranpensiunthtjht, \n" +
+                "                p.nip  \n" +
+                "                from \n" +
+                "                it_hris_payroll p \n" +
+                "                left join it_hris_pegawai_position pp on p.nip = pp.nip \n" +
+                "                left join im_position pos on pp.position_id = pos.position_id \n" +
+                "                left join im_hris_pegawai peg on peg.nip = p.nip \n" +
+                "                where \n" +
+                "                pp.branch_id= '"+ unit +"' \n" +
+                "                and peg.flag ='Y' \n" +
+                "                and pp.flag='Y' \n" +
+                "                and p.flag='Y' \n" +
+                "                and pos.flag='Y' \n" +
+                "                and p.tipe_payroll ='PY' \n" +
+                "                and p.tahun = '"+ tahun +"' \n" +
+                "                group by \n" +
+                "                p.nip, \n" +
+                "                peg.npwp, \n" +
+                "                peg.no_ktp, \n" +
+                "                peg.nama_pegawai, \n" +
+                "                peg.alamat, \n" +
+                "                peg.jenis_kelamin, \n" +
+                "                peg.status_keluarga, \n" +
+                "                peg.jumlah_anak, \n" +
+                "                pos.position_name, \n" +
+                "                pos.kelompok_id \n" +
+                "                order by \n" +
+                "                pos.kelompok_id ";
+
         results = (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(query).list();
         for (Object[] row : results) {
             PayrollEsptDTO result = new PayrollEsptDTO();
@@ -8471,6 +8471,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
         }
         return listOfResult;
     }
+    //RAKA-end
 //
 //    public List<ItPayrollEntity> searchReportTarikanPendapatanPPH(final String tahun, final String unit) {
 //        final List<ItPayrollEntity> listOfResult = new ArrayList<ItPayrollEntity>();
@@ -8828,27 +8829,24 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
 //        }
 //        return total;
 //    }
-//    public BigDecimal getTunjanganPPhGajiBonusSetahun(String tahun,String nip){
-//        BigDecimal total = new BigDecimal(0);
-//        String query="select \n" +
-//                "\tsum(tunjangan_pph\n" +
-//                "\t\t  ) as jumlah\n" +
-//                "\tfrom it_hris_payroll\n" +
-//                "\t\twhere nip = '"+nip+"'\n" +
-//                "\t\tand tahun='"+tahun+"'\n" +
-//                "\t\tand flag='Y'\n" +
-//                "\t\tand flag_payroll<>'Y'\n" +
-//                "\t\tand flag_pensiun<>'Y'\n" +
-//                "\t\tand approval_flag='Y'";
-//        Object results = this.sessionFactory.getCurrentSession()
-//                .createSQLQuery(query).uniqueResult();
-//        if (results!=null){
-//            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
-//        }else{
-//            total = BigDecimal.valueOf(0);
-//        }
-//        return total;
-//    }
+    public BigDecimal getTunjanganPPhGajiBonusSetahun(String tahun,String nip){
+        BigDecimal total = new BigDecimal(0);
+        String query="select  \n" +
+                "                sum(tunjangan_pph \n" +
+                "                  ) as jumlah \n" +
+                "                from it_hris_payroll \n" +
+                "                where nip = '" +nip+ "' \n" +
+                "                and tahun='" +tahun+ "' \n" +
+                "                and flag='Y' ";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
+    }
 //
 //    public BigDecimal getTotalBonusSetahun(String tahun,String nip){
 //        BigDecimal total = new BigDecimal(0);
