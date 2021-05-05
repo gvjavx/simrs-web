@@ -1785,3 +1785,8 @@ ADD COLUMN parent_id VARCHAR(30);
     ADD COLUMN jenis VARCHAR(100);
 
 --
+
+-- 2021-05-05
+    ALTER TABLE it_simrs_pembayaran_online
+    ADD COLUMN no_jurnal VARCHAR(100);
+--

@@ -74,6 +74,9 @@
             <basic name="shiftId">
                 <column name="shift_id"/>
             </basic>
+            <basic name="noJurnal">
+                <column name="no_jurnal"/>
+            </basic>
 
         </attributes>
     </entity>
