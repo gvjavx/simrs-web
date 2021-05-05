@@ -422,7 +422,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                     Set<ItJurnalDetailEntity> listOfJurnalDetail = new HashSet<>();
                     Set<ImMappingJurnalEntity> imMappingJurnalEntitySet = transEntity.getImMappingJurnal();
 
-                    if (!imMappingJurnalEntitySet.isEmpty()) {
+                    if (imMappingJurnalEntitySet != null && !imMappingJurnalEntitySet.isEmpty()) {
 
                         //filling it_jurnal_detail berdasarkan mapping jurnal
 
