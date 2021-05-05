@@ -415,7 +415,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
     }
 
     private ImSimrsObatEntity getLastEntityObatById(String id, String flagBpjs) throws GeneralBOException {
-        logger.info("[PermintaanVendorBoImpl.getObatById] START >>>>>>>>>>");
+        logger.info("[PermintaanVendorBoImpl.getLastEntityObatById] START >>>>>>>>>>");
 
         List<ImSimrsObatEntity> obatEntities = new ArrayList<>();
 
@@ -424,29 +424,26 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         try {
             obat = obatDao.getLastIdSeqObat(id, flagBpjs);
         } catch (HibernateException e) {
-            logger.error("[PermintaanVendorBoImpl.getObatById] ERROR. ", e);
-            throw new GeneralBOException("[PermintaanVendorBoImpl.getObatById] ERROR. ", e);
+            logger.error("[PermintaanVendorBoImpl.getLastEntityObatById] ERROR. ", e);
+            throw new GeneralBOException("[PermintaanVendorBoImpl.getLastEntityObatById] ERROR. ", e);
         }
 
         if (obat.getIdSeqObat() != null) {
             Map hsCriteria = new HashMap();
             hsCriteria.put("id_seq_obat", obat.getIdSeqObat());
             hsCriteria.put("flag", "Y");
-//            hsCriteria.put("asc", "Y");
-
             try {
                 obatEntities = obatDao.getByCriteria(hsCriteria);
             } catch (HibernateException e) {
-                logger.error("[PermintaanVendorBoImpl.getObatById] ERROR when get obat entity by criteria. ", e);
-                throw new GeneralBOException("[PermintaanVendorBoImpl.getObatById] ERROR when get obat entity by criteria. ", e);
+                logger.error("[PermintaanVendorBoImpl.getLastEntityObatById] ERROR when get obat entity by criteria. ", e);
+                throw new GeneralBOException("[PermintaanVendorBoImpl.getLastEntityObatById] ERROR when get obat entity by criteria. ", e);
             }
 
             if (!obatEntities.isEmpty() && obatEntities.size() > 0) {
                 return obatEntities.get(0);
             }
         }
-
-        logger.info("[TransaksiObatBoImpl.getObatById] END <<<<<<<<<<");
+        logger.info("[TransaksiObatBoImpl.getLastEntityObatById] END <<<<<<<<<<");
         return null;
     }
 
