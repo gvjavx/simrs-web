@@ -2211,6 +2211,34 @@
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
+                            <div class="col-md-offset-3 col-md-4">
+                                <span>Tingkat Kesadaran </span>
+                                <select class="form-control" id="tk">
+                                    <option value="-">-</option>
+                                    <option value="Alert">Alert</option>
+                                    <option value="V/P/U">V/P/U</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <span>SpO2 </span> <small>(x/menit)</small>
+                                <input class="form-control rr-pasien" id="spo2" type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-4">
+                                <span>Oksigen </span>
+                                <select class="form-control" id="o2">
+                                    <option value="-">-</option>
+                                    <option value="Ya">Ya</option>
+                                    <option value="Tidak">Tidak</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
                             <div class="col-md-offset-3 col-md-8">
                                 <textarea class="form-control" id="ket_cppt5"></textarea>
                             </div>
