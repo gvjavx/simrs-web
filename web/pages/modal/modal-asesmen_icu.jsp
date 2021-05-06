@@ -69,22 +69,22 @@
                         <tr id="row_icu_resiko_jatuh">
                             <td>Skala Resiko Jatuh</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_resiko_jatuh" class="hvr-grow" onclick="detailICU('resiko_jatuh')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_resiko_jatuh" class="hvr-grow btn-hide" onclick="conICU('resiko_jatuh', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="btn_icu_resiko_jatuh" class="hvr-grow" onclick="detailICU('resiko_jatuh')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
+                                <%--<img id="delete_resiko_jatuh" class="hvr-grow btn-hide" onclick="conICU('resiko_jatuh', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">--%>
                             </td>
                         </tr>
                         <tr id="row_icu_decobitus">
                             <td>Derajat Decobitus</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_decobitus" class="hvr-grow" onclick="detailICU('decobitus')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_decobitus" class="hvr-grow btn-hide" onclick="conICU('decobitus', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="btn_icu_decobitus" class="hvr-grow" onclick="detailICU('decobitus')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
+                                <%--<img id="delete_decobitus" class="hvr-grow btn-hide" onclick="conICU('decobitus', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">--%>
                             </td>
                         </tr>
                         <tr id="row_icu_nyeri">
                             <td>Skala Nyeri</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_nyeri" class="hvr-grow" onclick="detailICU('nyeri')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_nyeri" class="hvr-grow btn-hide" onclick="conICU('nyeri', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="btn_icu_nyeri" class="hvr-grow" onclick="detailICU('nyeri')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
+                                <%--<img id="delete_nyeri" class="hvr-grow btn-hide" onclick="conICU('nyeri', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">--%>
                             </td>
                         </tr>
                         <tr id="row_icu_gcs">
@@ -619,38 +619,39 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-md-5" style="margin-top: 7px">Lokasi</label>
-                                <div class="col-md-7">
-                                    <input class="form-control" id="yer_lokasi">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-5" style="margin-top: 7px">Jenis</label>
-                                <div class="col-md-2">
-                                    <div class="custom02" style="margin-top: 7px">
-                                        <input type="radio" value="Akut" id="aud_skala1" name="radio_aud_skala" /><label for="aud_skala1">Akut</label>
+                            <div id="apakah_nyeri" style="display: none">
+                                <div class="form-group">
+                                    <label class="col-md-5" style="margin-top: 7px">Lokasi</label>
+                                    <div class="col-md-7">
+                                        <input class="form-control" id="yer_lokasi">
                                     </div>
                                 </div>
-                                <div class="col-md-5">
-                                    <div class="custom02" style="margin-top: 7px">
-                                        <input type="radio" value="Kronis" id="aud_skala2" name="radio_aud_skala" /><label for="aud_skala2">Kronis</label>
+                                <div class="form-group">
+                                    <label class="col-md-5" style="margin-top: 7px">Jenis</label>
+                                    <div class="col-md-2">
+                                        <div class="custom02" style="margin-top: 7px">
+                                            <input type="radio" value="Akut" id="aud_skala1" name="radio_aud_skala" /><label for="aud_skala1">Akut</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="custom02" style="margin-top: 7px">
+                                            <input type="radio" value="Kronis" id="aud_skala2" name="radio_aud_skala" /><label for="aud_skala2">Kronis</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5" style="margin-top: 7px">Skala</label>
+                                    <div class="col-md-7">
+                                        <input class="form-control" id="skala_nyeri" readonly>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-md-5" style="margin-top: 7px">Skala</label>
-                                <div class="col-md-7">
-                                    <input class="form-control" id="skala_nyeri" readonly>
-                                </div>
-                            </div>
-                            <%--<img src="<%= request.getContextPath() %>/pages/images/asesmen-nyeri.jpg" style="width: 100%; margin-top: 20px">--%>
                         </div>
                     </div>
                     <hr class="garis">
                     <input id="temp_scala" type="hidden">
                     <canvas id="choice_emoji" style="display: none"></canvas>
-                    <div class="row" style="margin-top: 10px">
+                    <div class="row" style="margin-top: 10px; display: none" id="emoji">
                         <div class="form-group">
                             <div class="col-md-2">
                                 <img src="<%= request.getContextPath() %>/pages/images/scala-0.png" class="nyeri"

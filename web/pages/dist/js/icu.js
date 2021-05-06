@@ -280,49 +280,58 @@ function saveICU(jenis, ket) {
         var canvasArea = document.getElementById('choice_emoji');
         var cvs = isCanvasBlank(canvasArea);
 
-        if (nyeri && skala != undefined && lokasi && skal != '') {
-
-            data.push({
-                'parameter': 'Apakah terdapat keluhan nyeri',
-                'jawaban': nyeri,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Lokasi',
-                'jawaban': lokasi,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Jenis',
-                'jawaban': skala,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Skala',
-                'jawaban': skal,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            if (!cvs) {
-                var canv = canvasArea.toDataURL("image/png"),
-                    canv = canv.replace(/^data:image\/(png|jpg);base64,/, "");
+        if (nyeri != '') {
+            var cecek = false;
+            if("Ya" == nyeri){
+                if(skala != undefined && lokasi && skal ){
+                    cecek = true;
+                }
+            }else{
+                cecek = true;
+            }
+            if(cecek){
                 data.push({
-                    'parameter': 'Scala Paint Nyeri',
-                    'jawaban': canv,
+                    'parameter': 'Apakah terdapat keluhan nyeri',
+                    'jawaban': nyeri,
                     'keterangan': jenis,
                     'jenis': ket,
-                    'tipe': 'gambar',
                     'id_detail_checkup': idDetailCheckup
                 });
+                data.push({
+                    'parameter': 'Lokasi',
+                    'jawaban': lokasi != '' ? lokasi : '-',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Jenis',
+                    'jawaban': skala != undefined ? skala : '-',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Skala',
+                    'jawaban': skal != '' ? skal : '-',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                if (!cvs) {
+                    var canv = canvasArea.toDataURL("image/png"),
+                        canv = canv.replace(/^data:image\/(png|jpg);base64,/, "");
+                    data.push({
+                        'parameter': 'Scala Paint Nyeri',
+                        'jawaban': canv,
+                        'keterangan': jenis,
+                        'jenis': ket,
+                        'tipe': 'gambar',
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                }
+                cek = true;
             }
-            cek = true;
         }
     }
 
@@ -1390,6 +1399,8 @@ function saveICU(jenis, ket) {
                         $('#warning_icu_' + ket).show().fadeOut(5000);
                         $('#msg_icu_' + ket).text("Berhasil menambahkan data ICU...");
                         $('#modal-icu-' + jenis).scrollTop(0);
+                        delRowICU(jenis);
+                        detailICU(jenis);
                     } else {
                         $('#save_icu_' + jenis).show();
                         $('#load_icu_' + jenis).hide();
@@ -1598,7 +1609,12 @@ function detailICU(jenis) {
 
 function delRowICU(id) {
     $('#del_icu_' + id).remove();
-    var url = contextPath + '/pages/images/icons8-plus-25.png';
+    var url = "";
+    if(id == "resiko_jatuh" || id == "decobitus" || id == "nyeri"){
+        url = contextPath + '/pages/images/icons8-add-list-25.png';
+    }else{
+        url = contextPath + '/pages/images/icons8-plus-25.png';
+    }
     $('#btn_icu_' + id).attr('src', url);
     $('#btn_icu_' + id).attr('onclick', 'detailICU(\'' + id + '\')');
 }
