@@ -144,10 +144,10 @@ function saveCPPT(jenis, ket, tipe) {
                 tempEWS = tempEWS + 'Nebulisasi : '+isi+', ';
             }
             if(o2 != ''){
-                var ket = $('#ket_o2').val();
+                var ketO2 = $('#ket_o2').val();
                 if("Ya" == o2){
                     totalEws = totalEws + 2;
-                    tempEWS = tempEWS + 'Oksigen : '+o2+', Ket: '+ket;
+                    tempEWS = tempEWS + 'Oksigen : '+o2+', Ket: '+ketO2;
                 }else{
                     totalEws = totalEws + 0;
                     tempEWS = tempEWS + 'Oksigen : '+o2;
@@ -291,10 +291,10 @@ function saveCPPT(jenis, ket, tipe) {
             }
 
             if(o2 != ''){
-                var ket = $('#ket_o2').val();
+                var ketO2 = $('#ket_o2').val();
                 if("Ya" == o2){
                     totalEws = totalEws + 2;
-                    tempEWS = tempEWS + 'Oksigen : '+o2+', Ket: '+ket;
+                    tempEWS = tempEWS + 'Oksigen : '+o2+', Ket: '+ketO2;
                 }else{
                     totalEws = totalEws + 0;
                     tempEWS = tempEWS + 'Oksigen : '+o2;
@@ -343,10 +343,10 @@ function saveCPPT(jenis, ket, tipe) {
             }
 
             if(o2 != ''){
-                var ket = $('#ket_o2').val();
+                var ketO2 = $('#ket_o2').val();
                 if("Ya" == o2){
                     totalEws = totalEws + 2;
-                    tempEWS = tempEWS + 'Oksigen : '+o2+', Ket: '+ket;
+                    tempEWS = tempEWS + 'Oksigen : '+o2+', Ket: '+ketO2;
                 }else{
                     totalEws = totalEws + 0;
                     tempEWS = tempEWS + 'Oksigen : '+o2;
