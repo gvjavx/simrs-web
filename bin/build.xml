@@ -14,9 +14,8 @@
     <property name="resources.home" value="${basedir}\resources"/>
     <property name="web.home" value="${basedir}/web"/>
     <property name="classes" value="${build.home}/WEB-INF/classes"/>
-    <!--<property name="tomcat.home.webapps" value="${env.CATALINA_HOME}/webapps"/>-->
-    <property name="tomcat.home.webapps" value="/opt/tomcat/webapps"/>
-
+    <property name="tomcat.home.webapps" value="${env.CATALINA_HOME}/webapps"/>
+    <!--<property name="tomcat.home.webapps" value="/opt/tomcat/webapps"/>-->
     <!-- Default Classpath for all targets -->
     <path id="classpath_default">
         <pathelement path="${classes}"/>

@@ -12,6 +12,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.util.Iterator;
@@ -61,6 +62,10 @@ public class PaymentGatewayInvoiceDao  extends GenericDao<ItPgInvoiceEntity, Str
 
             if (mapCriteria.get("status")!=null) {
                 criteria.add(Restrictions.eq("status", (String) mapCriteria.get("status")));
+            }
+
+            if (mapCriteria.get("trx_amount")!=null) {
+                criteria.add(Restrictions.eq("trxAmount", (BigDecimal) mapCriteria.get("trx_amount")));
             }
 
             if (mapCriteria.get("invoice_date_from")!=null && mapCriteria.get("invoice_date_to")!=null) {
