@@ -376,13 +376,10 @@ function saveICU(jenis, ket) {
         var kriteria2 = $('[name=kriteria2]');
         var parameter = $('[name=parameter]');
         var dpjp = document.getElementById("ttd_dpjp");
-        var pasien = document.getElementById("ttd_pasien");
 
         var cekTtd1 = isCanvasBlank(dpjp);
-        var cekTtd2 = isCanvasBlank(pasien);
         var nama1 = $('#nama_terang_dokter').val();
         var sip1 = $('#sip_dokter').val();
-        var nama2 = $('#nama_terang_pasien').val();
 
         $.each(parameter, function (i, item) {
 
@@ -415,12 +412,10 @@ function saveICU(jenis, ket) {
             }
         });
 
-        if (data.length > 0 && !cekTtd1 && !cekTtd2 && nama1 && nama2 && sip1 != '') {
+        if (data.length > 0 && !cekTtd1 && nama1 && sip1 != '') {
 
             var canv1 = dpjp.toDataURL("image/png"),
                 canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
-            var canv2 = pasien.toDataURL("image/png"),
-                canv2 = canv2.replace(/^data:image\/(png|jpg);base64,/, "");
 
             data.push({
                 'parameter': 'TTD DPJP',
@@ -430,15 +425,6 @@ function saveICU(jenis, ket) {
                 'tipe': 'ttd',
                 'nama_terang': nama1,
                 'sip': sip1,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'TTD Pasien/Keluarga',
-                'jawaban': canv2,
-                'keterangan': jenis,
-                'jenis': ket,
-                'tipe': 'ttd',
-                'nama_terang': nama2,
                 'id_detail_checkup': idDetailCheckup
             });
 
@@ -1179,6 +1165,7 @@ function saveICU(jenis, ket) {
         var sip3 = $('#sip_ttd3').val();
         var nama4 = $('#nama_terang_ttd4').val();
         var nama5 = $('#nama_terang_ttd5').val();
+        var sip5 = $('#sip_ttd5').val();
 
         var cekTtd1 = isCanvasBlank(ttd1);
         var cekTtd2 = isCanvasBlank(ttd2);
@@ -1366,7 +1353,7 @@ function saveICU(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Saksi I',
+                'parameter': 'Saksi Keluarga',
                 'jawaban': canv4,
                 'keterangan': jenis,
                 'jenis': persetujuan,
@@ -1375,7 +1362,7 @@ function saveICU(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Saksi II',
+                'parameter': 'Perawat Pendamping',
                 'jawaban': canv5,
                 'keterangan': jenis,
                 'jenis': persetujuan,

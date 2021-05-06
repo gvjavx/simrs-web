@@ -254,12 +254,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "hd.tgl_lahir,\n"+
                     "dt.tindak_lanjut \n"+
                     "FROM it_simrs_header_checkup hd\n" +
-                    "INNER JOIN (" +
-                    "SELECT a.* FROM(\n" +
-                    "SELECT *, rank() OVER (PARTITION BY no_checkup ORDER BY created_date DESC) as rank \n" +
-                    "FROM it_simrs_header_detail_checkup\n" +
-                    ") a WHERE a.rank = 1 " +
-                    ")dt ON dt.no_checkup = hd.no_checkup\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup dt ON dt.no_checkup = hd.no_checkup\n" +
                     "INNER JOIN im_simrs_status_pasien st ON st.id_status_pasien = dt.status_periksa\n" +
                     "INNER JOIN im_simrs_jenis_periksa_pasien jp ON dt.id_jenis_periksa_pasien = jp.id_jenis_periksa_pasien \n" +
                     "INNER JOIN (SELECT\n" +

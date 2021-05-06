@@ -3225,11 +3225,12 @@ function saveAnamnese() {
     var suhu = $('#fisik_suhu').val();
     var nadi = $('#fisik_nadi').val();
     var rr = $('#fisik_rr').val();
-    if (auto && hetero && tensi && suhu && nadi && rr != '') {
+    var klinis = $('#kinis').val();
+    if (auto && hetero && tensi && suhu && nadi && rr && klinis != '') {
         if (!cekSession()) {
             $('#save_fisik').hide();
             $('#load_fisik').show();
-            CheckupAction.saveAnamnese(auto, hetero, noCheckup, idDetailCheckup, tensi, suhu, nadi, rr, {
+            CheckupAction.saveAnamnese(auto, hetero, noCheckup, idDetailCheckup, tensi, suhu, nadi, rr, klinis, {
                 callback: function (response) {
                     if (response.status == "success") {
                         $('#suc_anamnese').show().fadeOut(5000);

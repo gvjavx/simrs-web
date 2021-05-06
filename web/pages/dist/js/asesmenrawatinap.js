@@ -661,7 +661,16 @@ function saveAsesmenRawatInap(jenis, ket) {
         }
         var cvs1 = isCanvasBlank(nyeri);
 
-        if (va1 && va2 != undefined && va3 && lokasi != '') {
+        var yeye = false;
+        if(va1 == "Ya"){
+            if(va2 != undefined && va3 && lokasi != '' && !cvs1){
+                yeye = true;
+            }
+        }else{
+            yeye = true;
+        }
+
+        if (va1 && yeye) {
             data.push({
                 'parameter': 'Nyeri',
                 'jawaban': va1,
@@ -671,34 +680,36 @@ function saveAsesmenRawatInap(jenis, ket) {
             });
             data.push({
                 'parameter': 'Lokasi',
-                'jawaban': lokasi,
+                'jawaban': lokasi != '' ? lokasi : '-',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Jenis',
-                'jawaban': va2,
+                'jawaban': va2 != undefined ? va2 : '-',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Intensitas',
-                'jawaban': va3,
+                'jawaban': va3 != '' ? va3 : '-',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
-            var canv1 = convertToDataURL(nyeri);
-            data.push({
-                'parameter': tipe,
-                'jawaban': canv1,
-                'keterangan': jenis,
-                'jenis': ket,
-                'tipe': 'gambar',
-                'id_detail_checkup': idDetailCheckup
-            });
+            if(!cvs1){
+                var canv1 = convertToDataURL(nyeri);
+                data.push({
+                    'parameter': tipe,
+                    'jawaban': canv1,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'tipe': 'gambar',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
             cek = true;
         }
     }
@@ -2194,6 +2205,7 @@ function saveAsesmenRawatInap(jenis, ket) {
         var sip3 = $('#sip_ttd3').val();
         var nama4 = $('#nama_terang_ttd4').val();
         var nama5 = $('#nama_terang_ttd5').val();
+        var sip5 = $('#sip_ttd5').val();
 
         var cekTtd1 = isCanvasBlank(ttd1);
         var cekTtd2 = isCanvasBlank(ttd2);
@@ -2381,7 +2393,7 @@ function saveAsesmenRawatInap(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Saksi I',
+                'parameter': 'Saksi Keluarga',
                 'jawaban': canv4,
                 'keterangan': jenis,
                 'jenis': persetujuan,
@@ -2390,12 +2402,13 @@ function saveAsesmenRawatInap(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Saksi II',
+                'parameter': 'Perawat Pendamping',
                 'jawaban': canv5,
                 'keterangan': jenis,
                 'jenis': persetujuan,
                 'tipe': 'ttd',
                 'nama_terang':nama5,
+                'sip': sip5,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -2934,7 +2947,7 @@ function saveAsesmenRawatInap(jenis, ket) {
 
         if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 &&
             va11 && va12 && va13 && va14 && va15 && va16 && va17 && va18 && va19 && va20 &&
-            va21 && va22 && va23 && va24 && va25 && va26 && va27 && nama1 && nama2 && waktu && nip1 && nip2 != '' && !cek1 && !cek2) {
+            va21 && va22 && va23 && va24 && va25 && va26 && va27 && nama1 && waktu && nip1 && !cek1) {
 
             data.push({
                 'parameter': 'Waktu',
@@ -3125,9 +3138,14 @@ function saveAsesmenRawatInap(jenis, ket) {
                 'sip': nip1,
                 'id_detail_checkup': idDetailCheckup
             });
+
+            var ttp = "";
+            if(!cek2){
+                ttp = cvs2;
+            }
             data.push({
                 'parameter': 'Penerima Operan',
-                'jawaban': cvs2,
+                'jawaban': ttp,
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
@@ -3543,9 +3561,15 @@ function detailAsesmenRawatInap(jenis) {
                                         '<td>' + jwb + '</td>' +
                                         '</tr>';
                                 } else if ("ttd" == item.tipe) {
+                                    var temp = '';
+                                    if(item.jawaban != '' && item.jawaban != null){
+                                        temp = '<img style="width: 50%; height: 200px" src="' + item.jawaban + '">';
+                                    }else{
+                                        temp = '<i onclick="setTtd(\''+item.idAsesmenKeperawatanRawatInap+'\', \''+jenis+'\')" class="fa fa-pencil hvr-grow" style="cursor: pointer; color: #1ab7ea; margin-bottom: 10px"></i><br>';
+                                    }
                                     body += '<tr>' +
                                         '<td>' + item.parameter + '</td>' +
-                                        '<td>' + '<img src="' + item.jawaban + '" style="width: 100px">' +
+                                        '<td>' + temp +
                                         '<p style="margin-top: -3px">' + cekItemIsNull(item.namaTerang) + '</p>' +
                                         '<p style="margin-top: -7px">' + cekItemIsNull(item.sip) + '</p>' +
                                         '</td>' +
@@ -3658,7 +3682,12 @@ function detailAsesmenRawatInap(jenis) {
 
 function delRowAsesmenRawatInap(id) {
     $('#del_ina_' + id).remove();
-    var url = contextPath + '/pages/images/icons8-plus-25.png';
+    var url = "";
+    if(id == 'hand_over_jaga'){
+        url = contextPath + '/pages/images/icons8-add-list-25.png';
+    }else{
+        url = contextPath + '/pages/images/icons8-plus-25.png';
+    }
     $('#btn_ina_' + id).attr('src', url);
     $('#btn_ina_' + id).attr('onclick', 'detailAsesmenRawatInap(\'' + id + '\')');
 }
@@ -4675,6 +4704,20 @@ function radioEdukasiPasien(jenis) {
         edukasi.push({'edukasi': 'Manajemen Nyeri, Hand Hygiene, Informasi Fungsi Identitas Pasien'});
         edukasi.push({'edukasi': 'Pemberi informasi pasang (infus, cateter, NGT), pencegahan resiko jatuh'});
         edukasi.push({'edukasi': 'Fasilitas kamar, Jam kunjung dan visite Pasien'});
+        edukasi.push({'edukasi': ''});
+        edukasi.push({'edukasi': ''});
+    }
+    if ("ept_igd" == jenis) {
+        edukasi.push({'edukasi': 'Penjelasan Pemakaian Gelang Identitas'});
+        edukasi.push({'edukasi': 'Resiko Jatuh'});
+        edukasi.push({'edukasi': 'Hak Kamar/Selisih/Asuransi'});
+        edukasi.push({'edukasi': ''});
+        edukasi.push({'edukasi': ''});
+    }
+    if ("ept_dokter_igd" == jenis) {
+        edukasi.push({'edukasi': 'Diagnosa Masuk'});
+        edukasi.push({'edukasi': 'Rencana Pelayanan Dan Tindakan'});
+        edukasi.push({'edukasi': 'plc|DPJP yang merawat Dr.'});
         edukasi.push({'edukasi': ''});
         edukasi.push({'edukasi': ''});
     }
@@ -5984,27 +6027,27 @@ function setSideValue(id, value) {
 }
 
 function saveTransferPasien(id, i, parameter) {
-    var nilai = $('#serah_'+i).val();
-    if(id != '' && nilai != ''){
+    var nilai = $('#serah_' + i).val();
+    if (id != '' && nilai != '') {
         var jawaban = "";
-        if("Tekanan Darah" == parameter){
-            jawaban = replaceUnderLine(nilai)+" mmHg";
-        }else if("Suhu" == parameter){
-            jawaban = nilai+" ˚C";
-        }else if("Nadi" == parameter){
-            jawaban = nilai+" x/mnt";
-        }else if("RR" == parameter){
-            jawaban = nilai+" x/mnt";
-        }else if("Saturasi" == parameter){
-            jawaban = nilai+" %";
-        }else{
+        if ("Tekanan Darah" == parameter) {
+            jawaban = replaceUnderLine(nilai) + " mmHg";
+        } else if ("Suhu" == parameter) {
+            jawaban = nilai + " ˚C";
+        } else if ("Nadi" == parameter) {
+            jawaban = nilai + " x/mnt";
+        } else if ("RR" == parameter) {
+            jawaban = nilai + " x/mnt";
+        } else if ("Saturasi" == parameter) {
+            jawaban = nilai + " %";
+        } else {
             jawaban = nilai;
         }
         dwr.engine.setAsync(true);
         AsesmenRawatInapAction.saveAsesmenRI(id, jawaban, {
             callback: function (res) {
                 if (res.status == "success") {
-                    $('#set_serah_'+i).html('<span>'+jawaban+'</span>');
+                    $('#set_serah_' + i).html('<span>' + jawaban + '</span>');
                     $('#warning_ina_transfer_pasien').show().fadeOut(5000);
                     $('#msg_ina_transfer_pasien').text("Data berhasil disimpan...!");
                 } else {
@@ -6015,3 +6058,54 @@ function saveTransferPasien(id, i, parameter) {
         });
     }
 }
+
+
+    function setTtd(id, jenis, ket, tipe){
+        setDataPasien();
+        $('#modal-ina-ttd').modal({show: true, backdrop: 'static'});
+        $('#save_ttd').attr('onclick','saveTtd(\''+id+'\', \''+jenis+'\')');
+    }
+
+    function saveTtd(id, jenis){
+        var nama = $('#nama_ttd').val();
+        var sip = $('#sip_ttd').val();
+        var ttd = document.getElementById("ttd_edit");
+        var cek = isCanvasBlank(ttd);
+        if(nama && sip != '' && !cek){
+            if(!cekSession()){
+                var ttd1 = ttd.toDataURL("image/png"),
+                    ttd1 = ttd1.replace(/^data:image\/(png|jpg);base64,/, "");
+                var dataPasien = {
+                    'id_asesmen': id,
+                    'nama': nama,
+                    'sip': sip,
+                    'ttd': ttd1
+                }
+                delRowAsesmenRawatInap(jenis);
+                var result = JSON.stringify(dataPasien);
+                $('#save_ttd').hide();
+                $('#load_ttd').show();
+                dwr.engine.setAsync(true);
+                AsesmenRawatInapAction.updateTTD(result, {
+                    callback: function (res) {
+                        if (res.status == "success") {
+                            $('#modal-ina-ttd').modal('hide');
+                            $('#save_ttd').show();
+                            $('#load_ttd').hide();
+                            $('#warning_ina_hand_over').show().fadeOut(5000);
+                            $('#msg_ina_hand_over').text("Berhasil mengupdate data...");
+                            detailAsesmenRawatInap(jenis);
+                        } else {
+                            $('#warning_ina_ttd').show().fadeOut(5000);
+                            $('#msg_ina_ttd').text(res.msg);
+                            $('#save_ttd').show();
+                            $('#load_ttd').hide();
+                        }
+                    }
+                });
+            }
+        }else {
+            $('#warning_ina_hand_over').show().fadeOut(5000);
+            $('#msg_ina_hand_over').text("Silahkan cek kembali inputan anda...!");
+        }
+    }

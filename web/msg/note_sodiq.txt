@@ -2639,6 +2639,14 @@ INSERT INTO im_func_roles VALUES
 ALTER TABLE it_simrs_header_detail_checkup
 ADD COLUMN indikasi VARCHAR(100);
 
+ALTER TABLE it_simrs_catatan_terintegrasi
+ADD COLUMN kesadaran VARCHAR(10),
+ADD COLUMN spo2 VARCHAR(10),
+ADD COLUMN o2 VARCHAR(10),
+ADD COLUMN ews VARCHAR(10);
+
+ALTER TABLE it_simrs_header_checkup
+ADD COLUMN catatan_klinis TEXT;
 
 
 

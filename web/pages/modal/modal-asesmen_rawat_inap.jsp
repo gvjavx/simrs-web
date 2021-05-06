@@ -1120,29 +1120,31 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Lokasi</label>
-                            <div class="col-md-7">
-                                <input class="form-control" style="margin-top: 7px;" id="y_lokasi">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3">Jenis</label>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Akut" id="ny21" name="ny2" /><label for="ny21">Akut</label>
+                        <div id="apakah_nyeri" style="display: none">
+                            <div class="form-group">
+                                <label class="col-md-3" style="margin-top: 7px">Lokasi</label>
+                                <div class="col-md-7">
+                                    <input class="form-control" style="margin-top: 7px;" id="y_lokasi">
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="custom02">
-                                    <input type="radio" value="Kronis" id="ny22" name="ny2" /><label for="ny22">Kronis</label>
+                            <div class="form-group">
+                                <label class="col-md-3">Jenis</label>
+                                <div class="col-md-2">
+                                    <div class="custom02">
+                                        <input type="radio" value="Akut" id="ny21" name="ny2" /><label for="ny21">Akut</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="custom02">
+                                        <input type="radio" value="Kronis" id="ny22" name="ny2" /><label for="ny22">Kronis</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3">Intensitas</label>
-                            <div class="col-md-7">
-                                <input class="form-control" id="ny3">
+                            <div class="form-group">
+                                <label class="col-md-3">Intensitas</label>
+                                <div class="col-md-7">
+                                    <input class="form-control" id="ny3">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1150,74 +1152,7 @@
                     <input id="temp_jenis" type="hidden">
                     <canvas id="choice_emoji" style="display: none"></canvas>
                     <hr class="garis">
-                    <div id="set_nyeri"></div>
-                    <%--<input id="temp_scala" type="hidden">--%>
-                    <%--<canvas id="choice_emoji" style="display: none"></canvas>--%>
-                    <%--<hr class="garis">--%>
-                    <%--<div class="row" style="margin-top: 10px">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<div class="col-md-2">--%>
-                                <%--<img src="<%= request.getContextPath() %>/pages/images/scala-0.png" class="nyeri"--%>
-                                     <%--style="width: 100%; cursor: no-drop;" id="0">--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: 10px">0</p>--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: -10px">Tidak Nyeri</p>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-2">--%>
-                                <%--<img src="<%= request.getContextPath() %>/pages/images/scala-2.png" class="nyeri"--%>
-                                     <%--style="width: 100%; cursor: no-drop" id="2" >--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: 10px">2</p>--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: -10px">Sedikit Nyeri</p>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-2">--%>
-                                <%--<img src="<%= request.getContextPath() %>/pages/images/scala-4.png" class="nyeri"--%>
-                                     <%--style="width: 100%; cursor: no-drop" id="4" >--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: 10px">4</p>--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: -10px">Sedikit Lebih Nyeri</p>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-2">--%>
-                                <%--<img src="<%= request.getContextPath() %>/pages/images/scala-6.png" class="nyeri"--%>
-                                     <%--style="width: 100%; cursor: no-drop" id="6" >--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: 10px">6</p>--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: -10px">Lebih Nyeri</p>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-2">--%>
-                                <%--<img src="<%= request.getContextPath() %>/pages/images/scala-8.png" class="nyeri"--%>
-                                     <%--style="width: 100%; cursor: no-drop" id="8" >--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: 10px">8</p>--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: -10px">Sangat Nyeri</p>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-2">--%>
-                                <%--<img src="<%= request.getContextPath() %>/pages/images/scala-10.png" class="nyeri"--%>
-                                     <%--style="width: 100%; cursor: no-drop" id="10" >--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: 10px">10</p>--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: -10px">Nyeri Sangat Hebat</p>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<hr class="garis">--%>
-                    <%--<div class="row">--%>
-                        <%--<div class="col-md-12">--%>
-                            <%--<img src="<%= request.getContextPath() %>/pages/images/scala-nyeri-number.jpg" style="width: 100%;">--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<hr class="garis">--%>
-                    <%--<div class="row">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<div class="col-md-12">--%>
-                                <%--<label>Nomeric Rating Scale</label>--%>
-                                <%--<img src="<%= request.getContextPath() %>/pages/images/rating-scale.png" style="width: 100%">--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<hr class="garis">--%>
-                    <%--<div class="row">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<div class="col-md-12">--%>
-                                <%--<label>Wong Baker Paint Scale</label>--%>
-                                <%--<img src="<%= request.getContextPath() %>/pages/images/paint-scale.png" style="width: 100%">--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
+                    <div id="set_nyeri" style="display: none"></div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">

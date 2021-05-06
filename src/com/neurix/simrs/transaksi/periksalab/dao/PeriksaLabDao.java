@@ -463,7 +463,12 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
             String namaPelayanan = "";
             for (Object[] obj : result) {
                 PeriksaLab lab = new PeriksaLab();
-                if(!namaPelayanan.equalsIgnoreCase(obj[4].toString())){
+                String namaPel = "";
+                if(obj[4] != null){
+                    namaPel = obj[4].toString();
+                }
+
+                if(!namaPelayanan.equalsIgnoreCase(namaPel)){
                     namaPelayanan = obj[4].toString();
                     lab.setCreatedDate(obj[8] == null ? null : (Timestamp) obj[8]);
                 }

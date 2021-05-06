@@ -86,6 +86,17 @@
         <property name="planning">
             <column name="planning"/>
         </property>
-
+        <property name="kesadaran">
+            <column name="kesadaran"/>
+        </property>
+        <property name="spo2">
+            <column name="spo2"/>
+        </property>
+        <property name="o2">
+            <column name="o2"/>
+        </property>
+        <property name="ews">
+            <column name="ews"/>
+        </property>
     </class>
 </hibernate-mapping>
