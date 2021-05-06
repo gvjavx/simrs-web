@@ -1790,3 +1790,13 @@ ADD COLUMN parent_id VARCHAR(30);
     ALTER TABLE it_simrs_pembayaran_online
     ADD COLUMN no_jurnal VARCHAR(100);
 --
+
+-- 2021-05-06
+
+    ALTER TABLE it_akun_jurnal
+    ADD COLUMN registered_user_id VARCHAR(100);
+
+    ALTER TABLE it_akun_jurnal
+    ADD COLUMN metode_bayar VARCHAR(20);
+
+--
