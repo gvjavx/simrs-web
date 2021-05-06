@@ -725,9 +725,9 @@
                          name="image_indicator_write">
                 </div>
 
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin_waiting">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin_waiting_search_payroll">
                     <h4><i class="icon fa fa-ban"></i> Warning! Found Error when saving, please check to your admin...</h4>
-                    <p id="msg_fin_error_waiting"></p>
+                    <p id="msg_fin_error_waiting_search_payroll"></p>
                 </div>
             </div>
             <div class="modal-footer">
@@ -774,7 +774,7 @@
                 $("#modal-loading-dialog").modal('show');
                 $("#waiting-content").hide();
                 $("#warning_fin_waiting").show();
-//            $("#msg_fin_error_waiting").text("Error. perbaikan");
+                $("#msg_fin_error_waiting").text("");
             }
             if (tipe == "success"){
                 $("#modal-loading-dialog").modal('hide');

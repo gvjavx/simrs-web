@@ -3165,7 +3165,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 //
 //                            String noJurnal = itJurnalEntity.getNoJurnal();
 //
-                            //update payroll header, approval aks = Y dan no jurnal
+////                            update payroll header, approval aks = Y dan no jurnal
 //                            itHrisPayrollHeaderEntity.setNoJurnal(noJurnal);
                             itHrisPayrollHeaderEntity.setAction("U");
                             itHrisPayrollHeaderEntity.setApprovalAksFlag("Y");
@@ -3181,9 +3181,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
                                 logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Error, " + e.getMessage());
                                 throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Found problem when save update payroll header set approval sdm YES, dan no jurnal, please inform to your admin...," + e.getMessage());
                             }
-//
-//
-//
+
 //                        } else {
 //
 //                            logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Tidak ditemukan jurnal yang akan di buat.");

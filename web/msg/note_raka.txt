@@ -1,3 +1,87 @@
+------ 2021-05-05 ===> update table trans (tidak drop)
+-- im_akun_trans
+    ALTER TABLE im_akun_trans
+      ADD COLUMN tipe_jurnal_id varchar(10),
+      ADD COLUMN is_otomatis varchar(1),
+    --  DROP COLUMN tipe_pembayaran,
+    --  DROP COLUMN master_id,
+    --  DROP COLUMN biaya,
+    --  DROP COLUMN no_nota,
+    --  DROP COLUMN divisi_id;
+-- akun trans Payroll
+    update im_akun_trans set trans_name = 'Pembayaran Gaji Bulanan dan Tunjangan'  where trans_id = '37';
+    update im_akun_trans set tipe_jurnal_id = 'JKK', is_otomatis = 'Y' where trans_id = '37';
+    insert into im_akun_trans (trans_id, trans_name, flag, action, created_who, last_update_who, created_date, last_update, flag_sumber_baru, master, flag_pengajuan_biaya, tipe_jurnal_id, is_otomatis)
+    values	('64','Pembayaran THR','Y','C','admin','admin',now(),now(),'Y',null,'N','JKK','Y'),
+		    ('65','Pembayaran Insentive','Y','C','admin','admin',now(),now(),'Y',null,'N','JKK','Y'),
+		    ('87','Pembayaran Jasop','Y','C','admin','admin',now(),now(),'Y',null,'N','JKK','Y'),
+		    ('94','Pembayaran Cuti','Y','C','admin','admin',now(),now(),'Y',null,'N','JKK','Y');
+
+
+-- im_akun_mapping_jurnal
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ011','5.0.00.00.06','D','Y','C','admin','admin',now(),now(),'N','N','91','N','tunj_hariraya_dekom','Y','Y','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ012','5.0.00.01.06','D','Y','C','admin','admin',now(),now(),'N','N','91','N','tunj_hariraya_direksi','Y','Y','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ013','5.0.00.05.07','D','Y','C','admin','admin',now(),now(),'N','N','91','N','tunj_hari_raya_keagamaan','Y','Y','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ014','1.1.01.02.03','K','Y','C','admin','admin',now(),now(),'N','N','91','N','kas','N','N','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ015','2.1.03.00.02','K','Y','C','admin','admin',now(),now(),'Y','Y','91','N','pph_thr','Y','N','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ016','5.0.00.00.02','D','Y','C','admin','admin',now(),now(),'N','N','91','N','tunj_pph_hariraya_dekom','Y','Y','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ017','5.0.00.01.02','D','Y','C','admin','admin',now(),now(),'N','N','91','N','tunj_pph_hariraya_direksi','Y','Y','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ018','5.0.00.02.04','D','Y','C','admin','admin',now(),now(),'N','N','91','N','tunj_pajak_karyawan_tetap','Y','Y','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ019','5.0.00.03.04','D','Y','C','admin','admin',now(),now(),'N','N','91','N','tunj_pajak_karyawan_tidak_tetap','Y','Y','N');
+
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ021','5.0.00.05.05','D','Y','C','admin','admin',now(),now(),'N','N','92','N','tunj_insentive','Y','Y','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ022','1.1.01.02.03','K','Y','C','admin','admin',now(),now(),'N','N','92','N','kas','N','N','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ023','2.1.03.00.02','K','Y','C','admin','admin',now(),now(),'Y','Y','92','N','pph_insentive','Y','N','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ024','5.0.00.02.04','D','Y','C','admin','admin',now(),now(),'N','N','92','N','tunj_pajak_karyawan_tetap','Y','Y','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ025','5.0.00.03.04','D','Y','C','admin','admin',now(),now(),'N','N','92','N','tunj_pajak_karyawan_tidak_tetap','Y','Y','N');
+
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ031','5.0.00.05.04','D','Y','C','admin','admin',now(),now(),'N','N','93','N','tunj_jasa_operasional','Y','Y','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ032','1.1.01.02.03','K','Y','C','admin','admin',now(),now(),'N','N','93','N','kas','N','N','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ033','2.1.03.00.02','K','Y','C','admin','admin',now(),now(),'Y','Y','93','N','pph_jasop','Y','N','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ034','5.0.00.02.04','D','Y','C','admin','admin',now(),now(),'N','N','93','N','tunj_pajak_karyawan_tetap','Y','Y','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ035','5.0.00.03.04','D','Y','C','admin','admin',now(),now(),'N','N','93','N','tunj_pajak_karyawan_tidak_tetap','Y','Y','N');
+
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ041','5.0.00.06.03','D','Y','C','admin','admin',now(),now(),'N','N','94','N','uang_cuti','Y','Y','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ042','1.1.01.02.03','K','Y','C','admin','admin',now(),now(),'N','N','94','N','kas','N','N','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ043','2.1.03.00.02','K','Y','C','admin','admin',now(),now(),'Y','Y','94','N','pph_cuti','Y','N','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ044','5.0.00.02.04','D','Y','C','admin','admin',now(),now(),'N','N','94','N','tunj_pajak_karyawan_tetap','Y','Y','N');
+
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ001','5.0.00.06.08','D','Y','C','admin','admin',now(),now(),'N','N','37','N','tunj_pemondokan_karyawan_tetap','Y','Y','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ002','2.1.10.00.09','K','Y','C','admin','admin',now(),now(),'Y','Y','37','N','titipan_iuran_bpjs_tk','Y','N','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ003','2.1.10.00.08','K','Y','C','admin','admin',now(),now(),'Y','Y','37','N','titipan_iuran_bpjs_ks','Y','N','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ004','2.1.10.00.10','K','Y','C','admin','admin',now(),now(),'Y','Y','37','N','titipan_potongan_karyawan','Y','N','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ005','2.1.10.00.05','K','Y','C','admin','admin',now(),now(),'Y','Y','37','N','titipan_iuran_dapenbun','Y','N','N');
+    insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
+    ) values('MPJ006','2.1.10.00.07','K','Y','C','admin','admin',now(),now(),'Y','Y','37','N','titipan_iuran_dplk','Y','N','N');
+
 ------ 2021-05-04 ===> query edit untuk payroll
 -- update sg bod
     update im_hris_payroll_skala_gaji_bod
