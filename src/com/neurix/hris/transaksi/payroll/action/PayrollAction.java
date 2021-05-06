@@ -74,6 +74,16 @@ public class PayrollAction extends BaseTransactionAction {
     private String approvedSdm;
     private String approvedAks;
 
+    private String tipe;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
+
     public String getApprovedSdm() {
         return approvedSdm;
     }
@@ -11913,7 +11923,8 @@ public class PayrollAction extends BaseTransactionAction {
 //
 //        return hasil;
 //    }
-//
+
+    //RAKA-04MEI2021 ==> recover by Raka (maintenance)
 //    public String payrollReportExcelEspt() {
 //        PayrollAction.logger.info((Object)"[payrollAction.payrollReportExcelEspt] start process >>>");
 //        final String tahun = this.getTahun();
@@ -12319,6 +12330,7 @@ public class PayrollAction extends BaseTransactionAction {
 //        PayrollAction.logger.info((Object)"[payrollAction.payrollReportExcelEspt] end process <<<");
 //        return "downloadXlsRekapGaji";
 //    }
+    //RAKA-end
 
     //Perhitungan Hutang Pajak
 //    private BigDecimal hitungHutangPajak(BigDecimal pkp){
