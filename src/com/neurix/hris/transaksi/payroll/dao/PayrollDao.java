@@ -2280,7 +2280,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                     else 0 end                                                               as tunj_bbm,\n" +
                 "                   case\n" +
                 "                     when tunj_struktural.tunj_jabatan is null then 0\n" +
-                "                     else (tunj_struktural.tunj_jabatan * jenis_pegawai.persen_gaji)/100 end           as tunj_jabatan,\n" + //RAKA-update disini
+                "                     else tunj_struktural.tunj_jabatan end                                    as tunj_jabatan,\n" +
                 "                   case\n" +
                 "                     when tunj_struktural.tunj_struktural is null then 0\n" +
                 "                     else (tunj_struktural.tunj_struktural * jenis_pegawai.persen_gaji)/100 end        as tunj_struktural,\n" +
@@ -2698,7 +2698,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                     else 0 end                                                               as tunj_bbm,\n" +
                 "                   case\n" +
                 "                     when tunj_struktural.tunj_jabatan is null then 0\n" +
-                "                     else (tunj_struktural.tunj_jabatan * jenis_pegawai.persen_gaji) / 100 end         as tunj_jabatan,\n" + //RAKA-update disini
+                "                     else tunj_struktural.tunj_jabatan end                                    as tunj_jabatan,\n" +
                 "                   case\n" +
                 "                     when tunj_struktural.tunj_struktural is null then 0\n" +
                 "                     else (tunj_struktural.tunj_struktural * jenis_pegawai.persen_gaji) / 100 end      as tunj_struktural,\n" +
