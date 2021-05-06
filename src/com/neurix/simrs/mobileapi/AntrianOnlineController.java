@@ -370,7 +370,6 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                 return listOfAntrianOnline;
             default: return model;
         }
-
     }
 
     public HttpHeaders create() {
