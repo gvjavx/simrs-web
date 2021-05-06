@@ -998,6 +998,7 @@ function showModal(select) {
         $('#load_lab, #warning_lab, #war_kategori_lab, #war_lab, #war_parameter').hide();
         $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
         $('#modal-lab').modal({show: true, backdrop: 'static'});
+        $("#btn-add-lab-luar").hide();
     } else if (select == 5) {
         $('.remove_cek').attr('checked', false);
         $('#untuk1').prop('checked', true);
@@ -1554,9 +1555,11 @@ function setCheck(id, tipe, idDetail){
         } else {
             $(".check-penunjang-"+id).removeAttr('checked');
         }
+        saveListPenunjang(id);
     } else {
         var splitid = idDetail.split('-');
         var idLab = splitid[1];
+        saveListPenunjang(idLab);
     }
 }
 
@@ -1587,11 +1590,14 @@ function saveListParam() {
     for (var i = 0 ; i < param.length ; i++) {
         //console.log(param[i].value +" "+$("#label-param-"+param[i].value).text());
         var idparam = param[i].id;
-        var idSplit = idparam.split(1);
+        var idSplit = idparam.split('-')[1];
         var namaParam = $("#label-param-" + param[i].value).text();
         listParam.push({"iddetail": param[i].value, "namadetail": namaParam, "idlab": idSplit});
         listParamValue.push(param[i].value);
     }
+    console.log(listPenunjang);
+    console.log(listParam);
+    console.log(listParamValue);
     var listOfPenunjang = [];
     $.each(listPenunjang, function (i, item) {
         var listDetail = listParam.filter(param => param.idlab == item.idlab);
@@ -1604,7 +1610,7 @@ function saveListParam() {
             $.each(listDetail, function (i, item) {
                 listNamaParam = listNamaParam == "" ? item.namadetail : listNamaParam + "#" + item.namadetail;
                 listIdParam = listIdParam == "" ? item.iddetail : listIdParam + "#" + item.iddetail;
-                listLiParam = '<li>'+item.namadetail+'</li>';
+                listLiParam += '<li>'+item.namadetail+'</li>';
             });
         }
 
@@ -1654,8 +1660,7 @@ function saveListParam() {
         $('#cek_luar').css('cursor', 'no-drop');
         $('#cek_pending').css('cursor', 'no-drop');
         $('#tarif_luar_lab').attr('disabled', true);
-
-    alert("succes");
+        $("#modal-list-penunjang").modal('hide');
 }
 
 function listSelectParameter(idLab) {
@@ -4821,10 +4826,13 @@ function refreshTable(id, tipe) {
 function isLuar(id) {
     var cek = $('#' + id).is(':checked');
     if (cek) {
-        $('#form_lab_luar, #form_tarif_lab_luar').show();
+        $('#form_lab_luar, #form_tarif_lab_luar, #btn-add-lab-luar').show();
+        $('##btn-add-lab-dalam').hide();
         $('#form_lab_dalam').hide();
         $('#tarif_luar_lab, #h_total_tarif').val('');
     } else {
+        $('#btn-add-lab-luar').hide();
+        $('#btn-add-lab-dalam').show();
         $('#form_lab_luar, #form_tarif_lab_luar').hide();
         $('#form_lab_dalam').show();
         $('#tarif_luar_lab, #h_total_tarif').val('');
