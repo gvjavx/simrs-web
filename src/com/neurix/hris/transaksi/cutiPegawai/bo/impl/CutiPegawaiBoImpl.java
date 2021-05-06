@@ -1881,6 +1881,27 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     }
                 }
                 listComboSisaCutiPegawai.add(itemComboCutiPegawai);
+            } else {
+                CutiPegawai itemComboCutiPegawai = new CutiPegawai();
+                itemComboCutiPegawai.setSisaCutiHari(BigInteger.valueOf(0));
+                itemComboCutiPegawai.setCutiId(cutiId);
+
+                if ((lamaKerja) > 5) {
+                    ImCutiEntity cuti;
+//                    try {
+//                        cuti = cutiDao.getById("cutiId", cutiId);
+//                    } catch (HibernateException e) {
+//                        logger.error("[CutiPegawaiBoImpl.getComboSisaCutiPegawaiWithCriteria] Error, " + e.getMessage());
+//                        throw new GeneralBOException("Error when retrieving Cuti by ID, " + e.getMessage());
+//                    }
+
+//                    if (cuti != null) {
+//                        itemComboCutiPegawai.setSisaCutiHari(BigInteger.valueOf(cuti.getJumlahCuti()));
+//                    }
+                    itemComboCutiPegawai.setSisaCutiHari(BigInteger.valueOf(30));
+
+                }
+                listComboSisaCutiPegawai.add(itemComboCutiPegawai);
             }
         }
         logger.info("[UserBoImpl.getComboUserWithCriteria] end process <<<");
