@@ -3438,9 +3438,9 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
     var li = "";
     var jenisRm = "";
     if (jenis == "igd") {
-        if (parseInt(umur) >= 0 && parseInt(umur) <= 17) {
+        if (parseInt(umur) >= 0 && parseInt(umur) <= 16) {
             jenisRm = 'ugd_anak';
-        } else if (parseInt(umur) >= 18 && parseInt(umur) <= 55) {
+        } else if (parseInt(umur) >= 17 && parseInt(umur) <= 55) {
             jenisRm = 'ugd_dewasa';
         } else if (parseInt(umur) > 56) {
             jenisRm = 'ugd_geriatri';

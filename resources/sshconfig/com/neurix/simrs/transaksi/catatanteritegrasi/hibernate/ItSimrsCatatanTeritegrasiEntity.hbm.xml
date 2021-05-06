@@ -98,5 +98,14 @@
         <property name="ews">
             <column name="ews"/>
         </property>
+        <property name="kesimpulan">
+            <column name="kesimpulan"/>
+        </property>
+        <property name="monitoring">
+            <column name="monitoring"/>
+        </property>
+        <property name="dataEws">
+            <column name="data_ews"/>
+        </property>
     </class>
 </hibernate-mapping>

@@ -2271,6 +2271,11 @@
                             </div>
                         </div>
                     </div>
+                    <hr>
+                    <div class="alert alert-info alert-dismissible">
+                        <p id="msg_ews">Early Warning System (EWS) Anak-Anak</p>
+                    </div>
+                    <input id="tipe_ews" value="anak_anak" type="hidden">
                     <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-3" ><b>O</b>bjective</label>
@@ -2287,8 +2292,11 @@
                     <div class="row jarak">
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-4">
-                                <span>Nadi </span> <small>(x/menit)</small>
-                                <input class="form-control nadi-pasien" id="cppt5_nadi" type="number">
+                                <span>Apakah Merintih?</span>
+                                <select class="form-control" id="merintih" onchange="setRR(this.value, 'cppt5_rr')">
+                                    <option value="Tidak">Tidak</option>
+                                    <option value="Ya">Ya</option>
+                                </select>
                             </div>
                             <div class="col-md-4">
                                 <span>RR </span> <small>(x/menit)</small>
@@ -2299,12 +2307,8 @@
                     <div class="row jarak">
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-4">
-                                <span>Tingkat Kesadaran </span>
-                                <select class="form-control" id="tk">
-                                    <option value="-">-</option>
-                                    <option value="Alert">Alert</option>
-                                    <option value="V/P/U">V/P/U</option>
-                                </select>
+                                <span>Nadi </span> <small>(x/menit)</small>
+                                <input class="form-control nadi-pasien" id="cppt5_nadi" type="number">
                             </div>
                             <div class="col-md-4">
                                 <span>SpO2 </span> <small>(x/menit)</small>
@@ -2315,22 +2319,123 @@
                     <div class="row jarak">
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-4">
-                                <span>Oksigen </span>
-                                <select class="form-control" id="o2">
-                                    <option value="-">-</option>
-                                    <option value="Ya">Ya</option>
+                                <span>Alat Bantu O2</span>
+                                <select class="form-control" id="o2" onchange="setHideShow(this.value, 'form_al')">
                                     <option value="Tidak">Tidak</option>
+                                    <option value="Ya">Ya</option>
                                 </select>
+                            </div>
+                            <div class="col-md-4" style="display: none" id="form_al">
+                                <span>Keterangan Alat Bantu</span>
+                                <input class="form-control" id="ket_o2">
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-8">
-                                <textarea class="form-control" id="ket_cppt5"></textarea>
+                                <textarea class="form-control" id="ket_cppt5" placeholder="Keterangan Objective"></textarea>
                             </div>
                         </div>
                     </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-md-4">Perilaku</label>
+                                    <div class="col-md-8">
+                                        <div class="custom02">
+                                            <input type="radio" value="Bermain|0" id="ews31" name="ews3" /><label for="ews31">Bermain</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-offset-4 col-md-8">
+                                        <div class="custom02">
+                                            <input type="radio" value="Tidur|1" id="ews32" name="ews3" /><label for="ews32">Tidur</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-offset-4 col-md-8">
+                                        <div class="custom02">
+                                            <input type="radio" value="Iritabel|2" id="ews33" name="ews3" /><label for="ews33">Iritabel</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-offset-4 col-md-8">
+                                        <div class="custom02">
+                                            <input type="radio" value="Letargi|3" id="ews34" name="ews3" /><label for="ews34">Letargi</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-md-4">Kardiovaskuler</label>
+                                    <div class="col-md-8">
+                                        <div class="custom02">
+                                            <input type="radio" value="Merah Jambu|0" id="ews41" name="ews4" /><label for="ews41">Merah Jambu</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-offset-4 col-md-8">
+                                        <div class="custom02">
+                                            <input type="radio" value="Pucat|1" id="ews42" name="ews4" /><label for="ews42">Pucat</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-offset-4 col-md-8">
+                                        <div class="custom02">
+                                            <input type="radio" value="Abu Abu, CRT 4|2" id="ews43" name="ews4" /><label for="ews43">Abu Abu, CRT 4</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-offset-4 col-md-8">
+                                        <div class="custom02">
+                                            <input type="radio" value="Abu Abu, CRT >= 5|3" id="ews44" name="ews4" /><label for="ews44">Abu Abu, CRT >= 5</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-6">Nebulisasi 15 mt / muntah persisten</label>
+                            <div class="col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" value="Tidak|0" id="ews61" name="ews6" /><label for="ews61">Tidak</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" value="Ya|2" id="ews62" name="ews6" /><label for="ews62">Ya</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
                     <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-3" ><b>A</b>ssesment</label>

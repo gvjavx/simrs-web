@@ -35,6 +35,33 @@ public class ItSimrsCatatanTerintegrasiEntity implements Serializable {
     private String spo2;
     private String o2;
     private String ews;
+    private String kesimpulan;
+    private String monitoring;
+    private String dataEws;
+
+    public String getDataEws() {
+        return dataEws;
+    }
+
+    public void setDataEws(String dataEws) {
+        this.dataEws = dataEws;
+    }
+
+    public String getKesimpulan() {
+        return kesimpulan;
+    }
+
+    public void setKesimpulan(String kesimpulan) {
+        this.kesimpulan = kesimpulan;
+    }
+
+    public String getMonitoring() {
+        return monitoring;
+    }
+
+    public void setMonitoring(String monitoring) {
+        this.monitoring = monitoring;
+    }
 
     public String getKesadaran() {
         return kesadaran;

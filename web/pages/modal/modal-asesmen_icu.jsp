@@ -737,7 +737,7 @@
                         <div class="col-md-6">
                             <select class="form-control select2" style="width: 100%" id="gc2">
                                 <option value="">[Select One]</option>
-                                <option value="Orientasi|5">Orientasi</option>
+                                <option value="Orientasi|5">Orientasi Baik</option>
                                 <option value="Apatis|4">Apatis</option>
                                 <option value="Disorientasi|3">Disorientasi</option>
                                 <option value="Mengarang|2">Mengarang</option>
@@ -928,7 +928,7 @@
                                     <option value="Rinue Rhytme">Sinue Rhytme</option>
                                     <option value="Takiakrdi">Takiakrdi</option>
                                     <option value="Bradikardi">Bradikardi</option>
-                                    <option value="Aritmia Asistole">Aritmia Asistole</option>
+                                    <option value="Aritmia">Aritmia</option>
                                 </select>
                             </div>
                         </div>

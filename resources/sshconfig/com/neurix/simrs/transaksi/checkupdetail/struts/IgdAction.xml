@@ -84,6 +84,27 @@
                 <param name="reportParameters">reportParams</param>
             </result>
 
+            <result name="print_gelang_pasien" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printGelangPasien.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_checkup_ulang" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printCheckupUlang.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_pindah_rs" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printSuratPernyataanRujuk.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
             <result name="print_lab" type="jasper">
                 <param name="location">/pages/report/com/neurix/simrs/printHasilPeriksaLab.jasper</param>
                 <param name="connection">connection</param>
@@ -98,15 +119,15 @@
                 <param name="reportParameters">reportParams</param>
             </result>
 
-            <result name="print_pindah_rs" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/printSuratPernyataanRujuk.jasper</param>
+            <result name="print_rujukan" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printSuratRujukanInternal.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>
 
-            <result name="print_checkup_ulang" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/printCheckupUlang.jasper</param>
+            <result name="print_no_antrian" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/noAntrian.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>

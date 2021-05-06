@@ -118,66 +118,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row jarak">
-                            <div class="form-group">
-                                <label class="col-md-3" ><b>O</b>bjective</label>
-                                <div class="col-md-4">
-                                    <span>Tensi </span> <small>(mmHg)</small>
-                                    <input class="form-control tensi-pasien" id="cppt5_tensi" data-inputmask="'mask': ['999/999']" data-mask="">
-                                </div>
-                                <div class="col-md-4">
-                                    <span>Suhu </span> <small>(&#8451)</small>
-                                    <input class="form-control suhu-pasien" id="cppt5_suhu" type="number">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row jarak">
-                            <div class="form-group">
-                                <div class="col-md-offset-3 col-md-4">
-                                    <span>Nadi </span> <small>(x/menit)</small>
-                                    <input class="form-control nadi-pasien" id="cppt5_nadi" type="number">
-                                </div>
-                                <div class="col-md-4">
-                                    <span>RR </span> <small>(x/menit)</small>
-                                    <input class="form-control rr-pasien" id="cppt5_rr" type="number">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row jarak">
-                            <div class="form-group">
-                                <div class="col-md-offset-3 col-md-4">
-                                    <span>Tingkat Kesadaran </span>
-                                    <select class="form-control" id="tk">
-                                        <option value="-">-</option>
-                                        <option value="Alert">Alert</option>
-                                        <option value="V/P/U">V/P/U</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <span>SpO2 </span> <small>(x/menit)</small>
-                                    <input class="form-control" id="spo2" type="number">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row jarak">
-                            <div class="form-group">
-                                <div class="col-md-offset-3 col-md-4">
-                                    <span>Oksigen </span>
-                                    <select class="form-control" id="o2">
-                                        <option value="-">-</option>
-                                        <option value="Ya">Ya</option>
-                                        <option value="Tidak">Tidak</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row jarak">
-                            <div class="form-group">
-                                <div class="col-md-offset-3 col-md-8">
-                                    <textarea class="form-control" id="ket_cppt5"></textarea>
-                                </div>
-                            </div>
-                        </div>
+                        <hr>
+                        <div id="set_cppt"></div>
+                        <hr>
                         <div class="row jarak">
                             <div class="form-group">
                                 <label class="col-md-3" ><b>A</b>ssesment</label>

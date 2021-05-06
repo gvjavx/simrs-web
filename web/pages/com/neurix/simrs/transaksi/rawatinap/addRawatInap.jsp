@@ -1173,7 +1173,7 @@
                                         </s:elseif>
                                         <button class="btn btn-success hvr-icon-pulse-grow" onclick="confirmPemeriksaanPasien()"
                                                 style="margin-top: 15px;" id="save_ket"><i
-                                                class="fa fa-check hvr-icon"></i> Save
+                                                class="fa fa-check hvr-icon"></i> Selesai
                                         </button>
                                         <button style="display: none; cursor: no-drop; margin-top: 15px;" type="button"
                                                 class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
@@ -4509,6 +4509,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/KandunganAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/KasirRawatJalanAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenUgdAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>
@@ -4532,6 +4533,7 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/custome_form.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/rencana_asuahan.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/allhistory.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenUgd.js"/>'></script>
 
 
 <script type='text/javascript'>

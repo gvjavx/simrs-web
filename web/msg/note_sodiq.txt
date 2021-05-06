@@ -2648,6 +2648,13 @@ ADD COLUMN ews VARCHAR(10);
 ALTER TABLE it_simrs_header_checkup
 ADD COLUMN catatan_klinis TEXT;
 
+ALTER TABLE it_simrs_catatan_terintegrasi
+ADD COLUMN kesimpulan VARCHAR(100),
+ADD COLUMN monitoring VARCHAR(100);
+
+ALTER TABLE it_simrs_catatan_terintegrasi
+ADD COLUMN data_ews VARCHAR(100);
+
 
 
 

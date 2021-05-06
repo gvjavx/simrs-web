@@ -56,23 +56,31 @@ function showModalAsesmenRawatInap(jenis, idRM, isSetIdRM, flagHide, flagCheck) 
     }
 
     if("catatan_integrasi" == jenis){
-        var option = "";
-        if("gizi" == flagHide){
-            option = '<option value="Gizi">Gizi</option>';
-            $('#btn_ina_catatan_integrasi_pasien_ina').attr('onclick', 'detailCPPT(\'catatan_integrasi_pasien_ina\', \'catatan_terintegrasi_ina\', \'ina\', \'gizi\')');
-            $('#cppt5_tensi, #cppt5_suhu, #cppt5_nadi, #cppt5_rr').attr('disabled', true);
-            $('#form_ttd_dpjp').hide();
-        }else{
-            option = '<option value="">[Select One]</option>\n' +
-                '<option value="Dokter">Dokter</option>\n' +
-                '<option value="Perawat">Perawat</option>\n' +
-                '<option value="Apoteker">Apoteker</option>\n' +
-                '<option value="Bidan">Bidan</option>';
-            $('#btn_ina_catatan_integrasi_pasien_ina').attr('onclick', 'detailCPPT(\'catatan_integrasi_pasien_ina\', \'catatan_terintegrasi_ina\', \'ina\')');
-            $('#cppt5_tensi, #cppt5_suhu, #cppt5_nadi, #cppt5_rr').attr('disabled', false);
-            $('#form_ttd_dpjp').show();
+        var js = "";
+        if("rawatbersalin" == urlPage){
+            js = "obstetri";
         }
-        $('#cppt3').html(option);
+        setEWS(js, umur, 'set_cppt');
+        setTimeout(function () {
+            var option = "";
+            if("gizi" == flagHide){
+                option = '<option value="Gizi">Gizi</option>';
+                $('#btn_ina_catatan_integrasi_pasien_ina').attr('onclick', 'detailCPPT(\'catatan_integrasi_pasien_ina\', \'catatan_terintegrasi_ina\', \'ina\', \'gizi\')');
+                $('#cppt5_tensi, #cppt5_suhu, #cppt5_nadi, #cppt5_rr').attr('disabled', true);
+                $('#form_ttd_dpjp').hide();
+            }else{
+                option = '<option value="">[Select One]</option>\n' +
+                    '<option value="Dokter">Dokter</option>\n' +
+                    '<option value="Perawat">Perawat</option>\n' +
+                    '<option value="Apoteker">Apoteker</option>\n' +
+                    '<option value="Bidan">Bidan</option>';
+                $('#btn_ina_catatan_integrasi_pasien_ina').attr('onclick', 'detailCPPT(\'catatan_integrasi_pasien_ina\', \'catatan_terintegrasi_ina\', \'ina\')');
+                $('#cppt5_tensi, #cppt5_suhu, #cppt5_nadi, #cppt5_rr').attr('disabled', false);
+                $('#form_ttd_dpjp').show();
+            }
+
+            $('#cppt3').html(option);
+        }, 500);
     }
 
     radioEdukasiPasien(jenis);

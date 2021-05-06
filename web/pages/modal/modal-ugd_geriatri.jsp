@@ -2184,6 +2184,11 @@
                             </div>
                         </div>
                     </div>
+                    <hr>
+                    <div class="alert alert-info alert-dismissible">
+                        <p id="msg_ews">Early Warning System (EWS) Dewasa</p>
+                    </div>
+                    <input id="tipe_ews" value="dewasa" type="hidden">
                     <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-3" ><b>O</b>bjective</label>
@@ -2212,15 +2217,14 @@
                     <div class="row jarak">
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-4">
-                                <span>Tingkat Kesadaran </span>
+                                <span>Tingkat Kesadaran</span>
                                 <select class="form-control" id="tk">
-                                    <option value="-">-</option>
                                     <option value="Alert">Alert</option>
-                                    <option value="V/P/U">V/P/U</option>
+                                    <option value="V/P/U">V/P/U/Gelisah</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <span>SpO2 </span> <small>(x/menit)</small>
+                                <span>SpO2 </span> <small>(%)</small>
                                 <input class="form-control" id="spo2" type="number">
                             </div>
                         </div>
@@ -2228,22 +2232,26 @@
                     <div class="row jarak">
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-4">
-                                <span>Oksigen </span>
-                                <select class="form-control" id="o2">
-                                    <option value="-">-</option>
-                                    <option value="Ya">Ya</option>
+                                <span>Oksigen</span>
+                                <select class="form-control" id="o2" onchange="setHideShow(this.value, 'form_al')">
                                     <option value="Tidak">Tidak</option>
+                                    <option value="Ya">Ya</option>
                                 </select>
+                            </div>
+                            <div class="col-md-4" id="form_al" style="display: none">
+                                <span>Keterangan Oksigen</span>
+                                <input class="form-control" id="ket_o2">
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-8">
-                                <textarea class="form-control" id="ket_cppt5"></textarea>
+                                <textarea class="form-control" id="ket_cppt5" placeholder="Keterangan Objective"></textarea>
                             </div>
                         </div>
                     </div>
+                    <hr>
                     <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-3" ><b>A</b>ssesment</label>
