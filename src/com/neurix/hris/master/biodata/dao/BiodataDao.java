@@ -2177,4 +2177,27 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
 
         return personilPositions;
     }
+
+    public Integer lamaTahunKerja(Date tanggal, String nip){
+        Integer lamaKerja = 0;
+
+        String date4query = CommonUtil.convertDateToString2(tanggal);
+
+        String SQL = "select\n" +
+                "\tpegawai.nama_pegawai,\n" +
+                "\tpegawai.tanggal_masuk,\n" +
+                "\t(to_date( :tanggal , 'DD-MM-YYYY') - pegawai.tanggal_masuk) / 356 as masa\n" +
+                "from im_hris_pegawai pegawai\n" +
+                "where nip = :nip";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("nip", nip)
+                .setParameter("tanggal", date4query)
+                .list();
+
+        if(results.size() > 0){
+            lamaKerja = (Integer) results.get(0)[2];
+        }
+        return lamaKerja;
+    }
 }
