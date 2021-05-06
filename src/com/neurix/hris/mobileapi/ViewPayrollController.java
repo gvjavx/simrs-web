@@ -69,7 +69,9 @@ public class ViewPayrollController implements ModelDriven<Object> {
         }
 
 
-        BigDecimal gajiKotor = payrollEntity.getTotalA().add(payrollEntity.getTotalB().add(payrollEntity.getLainLain().add(payrollEntity.getTambahanLain())));
+//        BigDecimal gajiKotor = payrollEntity.getTotalA().add(payrollEntity.getTotalB().add(payrollEntity.getLainLain().add(payrollEntity.getTambahanLain())));
+        BigDecimal gajiKotor = payrollEntity.getTotalA().add(payrollEntity.getTotalB());
+
 
         if(payroll != null){
             ProfilPayroll returnPayroll;

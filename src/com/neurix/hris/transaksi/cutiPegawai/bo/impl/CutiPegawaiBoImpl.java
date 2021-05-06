@@ -1830,6 +1830,16 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 listComboSisaCutiPegawai.add(itemComboCutiPegawai);
             }
         } else if (listSisaCutiPegawai.size() == 0) {
+            Integer lamaKerja = 0;
+            Date tanggal = new Date(System.currentTimeMillis());
+
+            try{
+                lamaKerja = biodataDao.lamaTahunKerja(tanggal,nip);
+            }catch (HibernateException e){
+                logger.error("[CutiPegawaiBoImpl.getComboSisaCutiPegawaiWithCriteria] Error, " + e.getMessage());
+                throw new GeneralBOException("gagal menghitung Lama Tahun Kerja, " + e.getMessage());
+            }
+
             ImBiodataEntity biodataEntity;
             try {
                 biodataEntity = biodataDao.getById("nip", nip);
@@ -1838,37 +1848,40 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
             }
 
-            Calendar c = Calendar.getInstance();
-            java.util.Date tanggalSekarang = new java.util.Date(c.getTimeInMillis());
-            c.setTime(tanggalSekarang);
-            int year1 = c.get(Calendar.YEAR);
+            if(cutiId.equalsIgnoreCase(CommonConstant.CUTI_TAHUNAN)) {
+//                Calendar c = Calendar.getInstance();
+//                java.util.Date tanggalSekarang = new java.util.Date(c.getTimeInMillis());
+//                c.setTime(tanggalSekarang);
+//                int year1 = c.get(Calendar.YEAR);
+//
+//                Calendar d = Calendar.getInstance();
+//                java.util.Date tanggalAktif = new java.util.Date(c.getTimeInMillis());
+//                if (biodataEntity != null && biodataEntity.getTanggalMasuk() != null) {
+//                    tanggalAktif = new java.util.Date(biodataEntity.getTanggalMasuk().getTime());
+//                }
+//                d.setTime(tanggalAktif);
+//                int year2 = d.get(Calendar.YEAR);
 
-            Calendar d = Calendar.getInstance();
-            java.util.Date tanggalAktif = new java.util.Date(c.getTimeInMillis());
-            if(biodataEntity != null && biodataEntity.getTanggalMasuk() != null) {
-                tanggalAktif = new java.util.Date(biodataEntity.getTanggalMasuk().getTime());
-            }
-            d.setTime(tanggalAktif);
-            int year2 = d.get(Calendar.YEAR);
+                CutiPegawai itemComboCutiPegawai = new CutiPegawai();
+                itemComboCutiPegawai.setSisaCutiHari(BigInteger.valueOf(0));
+                itemComboCutiPegawai.setCutiId(cutiId);
 
-            CutiPegawai itemComboCutiPegawai = new CutiPegawai();
-            itemComboCutiPegawai.setSisaCutiHari(BigInteger.valueOf(0));
-            itemComboCutiPegawai.setCutiId(cutiId);
+//                if ((year1 - year2) > 0) {
+                if ((lamaKerja) > 0) {
+                    ImCutiEntity cuti;
+                    try {
+                        cuti = cutiDao.getById("cutiId", cutiId);
+                    } catch (HibernateException e) {
+                        logger.error("[CutiPegawaiBoImpl.getComboSisaCutiPegawaiWithCriteria] Error, " + e.getMessage());
+                        throw new GeneralBOException("Error when retrieving Cuti by ID, " + e.getMessage());
+                    }
 
-            if ((year1 - year2) > 0) {
-                ImCutiEntity cuti;
-                try {
-                    cuti = cutiDao.getById("cutiId", cutiId);
-                } catch (HibernateException e) {
-                    logger.error("[CutiPegawaiBoImpl.getComboSisaCutiPegawaiWithCriteria] Error, " + e.getMessage());
-                    throw new GeneralBOException("Error when retrieving Cuti by ID, " + e.getMessage());
+                    if (cuti != null) {
+                        itemComboCutiPegawai.setSisaCutiHari(BigInteger.valueOf(cuti.getJumlahCuti()));
+                    }
                 }
-
-                if (cuti != null) {
-                    itemComboCutiPegawai.setSisaCutiHari(BigInteger.valueOf(cuti.getJumlahCuti()));
-                }
+                listComboSisaCutiPegawai.add(itemComboCutiPegawai);
             }
-            listComboSisaCutiPegawai.add(itemComboCutiPegawai);
         }
         logger.info("[UserBoImpl.getComboUserWithCriteria] end process <<<");
         return listComboSisaCutiPegawai;
