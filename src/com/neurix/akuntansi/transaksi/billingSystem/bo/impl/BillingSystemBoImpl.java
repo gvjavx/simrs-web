@@ -106,7 +106,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
     protected static transient Logger logger = Logger.getLogger(BillingSystemBoImpl.class);
 
-    private MappingJurnalDao mappingJurnalDao;
+    protected MappingJurnalDao mappingJurnalDao;
     private String userLogin;
     private Timestamp updateTime;
     private TransDao transDao;
