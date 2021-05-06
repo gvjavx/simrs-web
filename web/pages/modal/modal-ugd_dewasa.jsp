@@ -2222,7 +2222,7 @@
                             </div>
                             <div class="col-md-4">
                                 <span>SpO2 </span> <small>(x/menit)</small>
-                                <input class="form-control rr-pasien" id="spo2" type="number">
+                                <input class="form-control" id="spo2" type="number">
                             </div>
                         </div>
                     </div>

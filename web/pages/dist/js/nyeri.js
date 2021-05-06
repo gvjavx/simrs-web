@@ -43,7 +43,7 @@ function setNyeri(id, tahun){
     var tipe    = "";
     if(parseInt(tahun) > 0 && parseInt(tahun) <= 18){
         jenis = '<div class="row" style="margin-top: 10px">\n' +
-            '<label class="col-md-12"><b>Wong Baker Pain Scale</b></label>'+
+            '<label class="col-md-12"><b>Wong Baker Pain Scale</b><small style="color: red"> (*Lingkari skla nyeri dibawah)</small></label>'+
             '<div class="form-group">\n' +
             '    <div class="col-md-2">\n' +
             '        <img src="'+contextPath+'/pages/images/scala-0.png" class="nyeri"\n' +
@@ -87,7 +87,7 @@ function setNyeri(id, tahun){
         tipe = "anak_anak";
     }else{
         jenis = '<div class="row">\n' +
-            '<label class="col-md-12" style="margin-left: 10px; margin-top: -10px; padding-bottom: 10px"><b>Nomeric Rating Scale</b></label>'+
+            '<label class="col-md-12" style="margin-left: 10px; margin-top: -10px; padding-bottom: 10px"><b>Nomeric Rating Scale</b> <small style="color: red">(*Coret skla nyeri dibawah)</small></label>'+
             '<div class="form-group" style="margin-top: 10px;">\n' +
             '<div class="col-md-1">\n' +
             '    <input type="color" style="margin-left: 9px; margin-top: -8px" class="js-color-picker-op  color-picker pull-left" value="#ff0000">\n' +

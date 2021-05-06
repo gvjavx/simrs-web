@@ -1077,15 +1077,6 @@ function saveAsesmenRawatInap(jenis, ket) {
         var va1 = $('[name=gen1]');
         var va2 = $('#catatan_gen').val();
         var temp = "";
-        var ttd1 = document.getElementById('gen2');
-        var ttd2 = document.getElementById('gen3');
-        var nama1 = $('#nama_terang_gen2').val();
-        var nama2 = $('#nama_terang_gen3').val();
-        var sip1 = $('#sip_gen2').val();
-        var sip2 = $('#sip_gen3').val();
-
-        var cek1 = isCanvasBlank(ttd1);
-        var cek2 = isCanvasBlank(ttd2);
 
         $.each(va1, function (i, item) {
             if (item.checked) {
@@ -1115,6 +1106,54 @@ function saveAsesmenRawatInap(jenis, ket) {
                     'id_detail_checkup': idDetailCheckup
                 });
             }
+            cek = true;
+        }
+    }
+
+    if("diagnosa_keperawatan" == jenis){
+        var ttd1 = document.getElementById('gen2');
+        var ttd2 = document.getElementById('gen3');
+        var nama1 = $('#nama_terang_gen2').val();
+        var nama2 = $('#nama_terang_gen3').val();
+        var sip1 = $('#sip_gen2').val();
+        var sip2 = $('#sip_gen3').val();
+
+        var cek1 = isCanvasBlank(ttd1);
+        var cek2 = isCanvasBlank(ttd2);
+
+
+        var va1 = $('[name=diagnosa_keperawatan]');
+        var jamngisi = $('#jam_ngisi').val();
+        var temp = "";
+
+        $.each(va1, function (i, item) {
+            if (item.checked) {
+                if (item.value != '') {
+                    if (temp != '') {
+                        temp = temp + '|' + item.value;
+                    } else {
+                        temp = item.value;
+                    }
+                }
+            }
+        });
+
+        if(temp != '' && jamngisi != '' && nama1 && nama2 && sip1 && sip2 != '' && !cek1 && !cek2){
+            data.push({
+                'parameter': 'Diagnosa Keperawatan',
+                'jawaban': temp,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Jam Selesai Asesmen',
+                'jawaban': jamngisi,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+
             var cvs1 = convertToDataURL(ttd1);
             var cvs2 = convertToDataURL(ttd2);
             data.push({
@@ -1393,7 +1432,20 @@ function saveAsesmenRawatInap(jenis, ket) {
             tin = "Tujuan|" + tin;
         }
 
-        if (va1 && va2 && va3 && va4 && va5 != '') {
+        var ttd1 = document.getElementById("ttd_dpjp");
+        var ttd2 = document.getElementById("ttd1_keluarga");
+        var ttd3 = document.getElementById("ttd_perawat");
+        var ttdCek1 = isBlank(ttd1);
+        var ttdCek2 = isBlank(ttd2);
+        var ttdCek3 = isBlank(ttd3);
+
+        var nama1 = $('#nama_dpjp').val();
+        var sip1 = $('#sip_dpjp').val();
+        var nama2 = $('#nama_keluarga').val();
+        var nama3 = $('#nama_perawat').val();
+        var sip3 = $('#sip_perawat').val();
+
+        if (va1 && va2 && va3 && va4 && va5 && nama1 && sip1 && nama2 && nama3 && sip3 != '') {
 
             data.push({
                 'parameter': 'Diperkirakan akan membutuhkan bantuan dalam aktivitas sehari hari, misal: Pasca Stroke, Gangguan penglihatan, Pasca operasi, dll',
@@ -1439,6 +1491,43 @@ function saveAsesmenRawatInap(jenis, ket) {
                 'jenis': 'discharge_planing',
                 'id_detail_checkup': idDetailCheckup
             });
+
+            var cvs1 = ttd1.toDataURL("image/png"),
+                cvs1 = cvs1.replace(/^data:image\/(png|jpg);base64,/, "");
+            var cvs2 = ttd1.toDataURL("image/png"),
+                cvs2 = cvs2.replace(/^data:image\/(png|jpg);base64,/, "");
+            var cvs3 = ttd1.toDataURL("image/png"),
+                cvs3 = cvs3.replace(/^data:image\/(png|jpg);base64,/, "");
+
+            data.push({
+                'parameter': 'TTD DPJP',
+                'jawaban': cvs1,
+                'keterangan': jenis,
+                'nama_terang': nama1,
+                'sip': sip1,
+                'tipe': 'ttd',
+                'jenis': 'discharge_planing',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'TTD Keluarga',
+                'jawaban': cvs2,
+                'keterangan': jenis,
+                'jenis': 'discharge_planing',
+                'nama_terang': nama2,
+                'tipe': 'ttd',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'TTD Perawat',
+                'jawaban': cvs3,
+                'keterangan': jenis,
+                'jenis': 'discharge_planing',
+                'nama_terang': nama3,
+                'sip': sip3,
+                'tipe': 'ttd',
+                'id_detail_checkup': idDetailCheckup
+            });
             cek = true;
         }
     }
@@ -1458,8 +1547,9 @@ function saveAsesmenRawatInap(jenis, ket) {
         var ttd = document.getElementById("ews12");
         var ttdCek = isBlank(ttd);
         var namaTerang = $('#nama_terang_ews12').val();
+        var sip = $('#sip_terang_ews12').val();
 
-        if (va1 && va2 && va3 && va4 != undefined && va5 && va6 && va7 && va8 && va9 && namaTerang != '' && !ttdCek) {
+        if (va1 && va2 && va3 && va4 != undefined && va5 && va6 && va7 && va8 && va9 && namaTerang && sip != '' && !ttdCek) {
             var isi1 = va1.split("|")[0];
             var isi2 = va2.split("|")[0];
             var isi3 = va3.split("|")[0];
@@ -1563,6 +1653,7 @@ function saveAsesmenRawatInap(jenis, ket) {
                 'jenis': 'early_warning',
                 'tipe': 'ttd',
                 'nama_terang': namaTerang,
+                'sip': sip,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -3230,7 +3321,11 @@ function detailAsesmenRawatInap(jenis) {
                                 '<td>' + jwb + '</td>' +
                                 '<td align="center" width="10%">' + skor + '</td>' +
                                 '</tr>';
-                        } else if ("kebutuhan_discharge_planing" == item.keterangan || "neurologi" == item.keterangan || "genitourinaria" == item.keterangan) {
+                        } else if ("kebutuhan_discharge_planing" == item.keterangan ||
+                            "neurologi" == item.keterangan ||
+                            "genitourinaria" == item.keterangan ||
+                            "diagnosa_keperawatan" == item.keterangan) {
+
                             var li = "";
                             var isi = jwb.split("|");
                             $.each(isi, function (i, item) {
@@ -3262,7 +3357,10 @@ function detailAsesmenRawatInap(jenis) {
                             if ("ttd" == item.tipe) {
                                 body += '<tr>' +
                                     '<td>' + item.parameter + '</td>' +
-                                    '<td>' + '<img style="height: 50px" src="' + jwb + '">' + '</td>' +
+                                    '<td>' + '<img style="height: 50px" src="' + jwb + '">' +
+                                    '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                    '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                    '</td>' +
                                     '<td width="10%" align="center">' + skor + '</td>' +
                                     '</tr>';
                             } else {
