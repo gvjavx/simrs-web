@@ -469,7 +469,7 @@ public class UserDao extends GenericDao<ImUsers,String> {
             flag = user.getFlag();
         }
         if (user.getUserId() != null && !"".equalsIgnoreCase(user.getUserId())){
-            condition += "AND a.user_id LIKE '"+user.getUserId()+"' \n";
+            condition += "AND a.user_id LIKE '%"+user.getUserId()+"%' \n";
         }
         if (user.getUsername() != null && !"".equalsIgnoreCase(user.getUsername())){
             condition += "AND a.user_name LIKE '%"+user.getUsername()+"%' \n";
