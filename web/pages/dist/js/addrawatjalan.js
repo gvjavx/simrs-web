@@ -1494,19 +1494,14 @@ function showModalListPenunjang() {
                         "</tr>";
                 });
                 $('#body-list-penunjang').html(str);
-                // $('#ckp_unit').html(option);
             } else {
                 $('#body-list-penunjang').html("<tr><td colspan='3' align='center'>Pemeriksaan Penunjang Belum Ada. / Belum Memilih Jenis Penunjang </td></tr>");
-                // $('#ckp_unit').html(option);
             }
         });
     } else {
         $('#body-list-penunjang').html("<tr><td colspan='3' align='center'>Pemeriksaan Penunjang Belum Ada. / Belum Memilih Jenis Penunjang </td></tr>");
-        // $('#ckp_unit').html(option);
     }
     $("#modal-list-penunjang").modal('show');
-    // $('#lab_parameter').html('');
-    // $('#ckp_parameter').html('');
 }
 
 function listParameterPenunjang(idLab){
@@ -1525,10 +1520,6 @@ function listParameterPenunjang(idLab){
                     "<td id='label-param-"+item.idLabDetail+"'>"+item.namaDetailPeriksa+"</td>" +
                     "</tr>";
             }
-            // str += "<tr>" +
-            //     "<td width='50px'><input type='checkbox' value='"+item.idLabDetail+"' class='expand param-lab check-penunjang-"+idLab+"' onclick=\"setCheck(\'"+item.idLabDetail+"\',\'detail\')\" /></td>" +
-            //     "<td>"+item.namaDetailPeriksa+"</td>" +
-            //     "</tr>";
         });
         str += "</table>";
         $("#space-detail-"+idLab).html(str);
