@@ -386,7 +386,7 @@ function saveRJ(jenis, ket) {
 
             var cecek = false;
             if(va1 == "Ya"){
-                if(va12 != undefined && va3 != '' && va4 != ''){
+                if(va2 != undefined && va3 != '' && va4 != ''){
                     cecek = true;
                 }
             }else{
