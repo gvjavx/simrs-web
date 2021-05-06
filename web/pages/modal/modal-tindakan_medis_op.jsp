@@ -219,7 +219,7 @@
                                 <canvas class="paint-canvas-ttd" id="ttd3" width="220" height="100"
                                         onmouseover="paintTtd('ttd3')"></canvas>
                                 <input class="form-control" id="nama_terang_ttd3" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_ttd3" placeholder="SIP">
+                                <%--<input style="margin-top: 3px" class="form-control" id="sip_ttd3" placeholder="SIP">--%>
                             </div>
                             <div class="col-md-1">
                                 <button style="margin-left: -100px; margin-top: 35px" type="button" class="btn btn-danger"
@@ -233,7 +233,7 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-5">
-                                <span>Saksi I</span>
+                                <span>Saksi Keluarga</span>
                                 <canvas class="paint-canvas-ttd" id="ttd4" width="220" height="100"
                                         onmouseover="paintTtd('ttd4')"></canvas>
                                 <input class="form-control" id="nama_terang_ttd4" placeholder="Nama Terang">
@@ -245,10 +245,11 @@
                                 </button>
                             </div>
                             <div class="col-md-5">
-                                <span>Saksi II</span>
+                                <span>Perawat Pendamping</span>
                                 <canvas class="paint-canvas-ttd" id="ttd5" width="220" height="100"
                                         onmouseover="paintTtd('ttd5')"></canvas>
                                 <input class="form-control" id="nama_terang_ttd5" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_ttd5" placeholder="SIP">
                             </div>
                             <div class="col-md-1">
                                 <button style="margin-left: -100px; margin-top: 10px" type="button" class="btn btn-danger"

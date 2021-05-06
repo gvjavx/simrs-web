@@ -125,6 +125,31 @@ public class PeriksaLabAction extends BaseTransactionAction {
                 periksaLab.setKeterangan(labData.getIsJustLab());
                 periksaLab.setIsJustLab(labData.getIsJustLab());
                 periksaLab.setNamaDokterPengirim(labData.getNamaDokterPengirim());
+                String hetero = "";
+                String auto = "";
+                String nadi = "";
+                String suhu = "";
+                String tensi = "";
+                String rr = "";
+                if(checkup.getHeteroanamnesis() != null && !"".equalsIgnoreCase(checkup.getHeteroanamnesis())){
+                    hetero = "Heteroanamnesis: "+checkup.getHeteroanamnesis();
+                }
+                if(checkup.getAutoanamnesis() != null && !"".equalsIgnoreCase(checkup.getAutoanamnesis())){
+                    auto = ", Autoanamnesis: "+checkup.getAutoanamnesis();
+                }
+                if(checkup.getNadi() != null && !"".equalsIgnoreCase(checkup.getNadi())){
+                    nadi = ", Nadi: "+checkup.getNadi();
+                }
+                if(checkup.getSuhu() != null && !"".equalsIgnoreCase(checkup.getSuhu())){
+                    suhu = ", Suhu: "+checkup.getSuhu();
+                }
+                if(checkup.getTensi() != null && !"".equalsIgnoreCase(checkup.getTensi())){
+                    tensi = ", Tensi: "+checkup.getTensi();
+                }
+                if(checkup.getPernafasan() != null && !"".equalsIgnoreCase(checkup.getPernafasan())){
+                    rr = ", RR: "+checkup.getPernafasan();
+                }
+                periksaLab.setCatatanKlinis(hetero+auto+nadi+suhu+tensi+rr);
                 setPeriksaLab(periksaLab);
 
                 PeriksaLab periksa = new PeriksaLab();
@@ -163,6 +188,7 @@ public class PeriksaLabAction extends BaseTransactionAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listPeriksaLabList);
+        setPeriksaLab(periksaLab);
         logger.info("[PeriksaLabAction.search] end process <<<");
         return "search";
     }
@@ -203,6 +229,12 @@ public class PeriksaLabAction extends BaseTransactionAction {
                     String waktuPending = obj.getString("waktu_pending");
                     String ttdPengirim = obj.getString("ttd_pengirim");
                     String jenisPemeriksaan = obj.getString("jenis_pemeriksaan");
+                    String tarifLabLuar = null;
+                    if(obj.has("tarif_lab_luar")){
+                        if(!"".equalsIgnoreCase(obj.getString("tarif_lab_luar"))){
+                            tarifLabLuar = obj.getString("tarif_lab_luar");
+                        }
+                    }
                     List<PeriksaLab> periksaLabList = new ArrayList<>();
 
                     if (listPemeriksaan != null) {
@@ -247,6 +279,9 @@ public class PeriksaLabAction extends BaseTransactionAction {
                     periksaLab.setIsLuar(isLuar);
                     periksaLab.setIsJustLab("N");
                     periksaLab.setJenisPeriksaPasien(jenisPemeriksaan);
+                    if(tarifLabLuar != null){
+                        periksaLab.setTarifLabLuar(new BigDecimal(tarifLabLuar));
+                    }
 
                     if (waktuPending != null && !"".equalsIgnoreCase(waktuPending)) {
                         periksaLab.setIsPending("Y");
@@ -509,6 +544,12 @@ public class PeriksaLabAction extends BaseTransactionAction {
                     String isPeriksaLuar = obj.getString("is_luar");
                     String idKategoriLab = obj.getString("id_kategori_lab");
                     String jenisPemeriksaan = obj.getString("jenis_pemeriksaan");
+                    String tarifLabLuar = null;
+                    if(obj.has("tarif_lab_luar")){
+                        if(!"".equalsIgnoreCase(obj.getString("tarif_lab_luar"))){
+                            tarifLabLuar = obj.getString("tarif_lab_luar");
+                        }
+                    }
                     List<PeriksaLab> periksaLabList = new ArrayList<>();
 
                     if (listPemeriksaan != null) {
@@ -554,6 +595,9 @@ public class PeriksaLabAction extends BaseTransactionAction {
                     periksaLab.setLastUpdate(updateTime);
                     periksaLab.setIdKategoriLab(idKategoriLab);
                     periksaLab.setJenisPeriksaPasien(jenisPemeriksaan);
+                    if(tarifLabLuar != null){
+                        periksaLab.setTarifLabLuar(new BigDecimal(tarifLabLuar));
+                    }
 
                     if (periksaLabList.size() > 0) {
                         periksaLab.setListLab(periksaLabList);
@@ -1322,6 +1366,22 @@ public class PeriksaLabAction extends BaseTransactionAction {
 
         }
         logger.info("[PeriksaLabAction.getPemeriksaanById] end process >>>");
+        return periksaLabList;
+    }
+
+    public List<UploadHasilPemeriksaan> getUploadHasilPemeriksaan(String idHeader) {
+        logger.info("[PeriksaLabAction.getUploadHasilPemeriksaan] start process >>>");
+        List<UploadHasilPemeriksaan> periksaLabList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+        if (!"".equalsIgnoreCase(idHeader) && idHeader != null) {
+            try {
+                periksaLabList = periksaLabBo.hasilUploadPemeriksaan(idHeader);
+            } catch (GeneralBOException e) {
+                logger.error("[PeriksaLabAction.getUploadHasilPemeriksaan] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+        }
+        logger.info("[PeriksaLabAction.getUploadHasilPemeriksaan] end process >>>");
         return periksaLabList;
     }
 

@@ -1042,6 +1042,9 @@ public class RawatInapBoImpl implements RawatInapBo {
                                             response.setMsg("Error When Saving data detail checkup " + e.getMessage());
                                             logger.error("[CheckupDetailBoImpl.saveRawatInap] Error when Update data ruangan ", e);
                                         }
+                                    }else{
+                                        response.setStatus("error");
+                                        response.setMsg("Data Tempat Tidur Tidak Ditemukan...!");
                                     }
 
                                 } catch (HibernateException e) {
@@ -1049,7 +1052,13 @@ public class RawatInapBoImpl implements RawatInapBo {
                                     response.setMsg(" Error when save add Rawat Inap " + e.getMessage());
                                     logger.error("[CheckupDetailBoImpl.saveRawatInap] Error when save add Rawat Inap ", e);
                                 }
+                            }else{
+                                response.setStatus("error");
+                                response.setMsg("Data Tempat Tidur Tidak Ditemukan...!");
                             }
+                        }else{
+                            response.setStatus("error");
+                            response.setMsg("Data Tempat Tidur Tidak Ditemukan...!");
                         }
                     }else{
                         response.setStatus("error");

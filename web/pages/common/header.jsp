@@ -26,6 +26,8 @@
 <!-- Theme style -->
 <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/AdminLTE.min.css"/>">
 <link rel="stylesheet" href="<s:url value="/pages/dist/css/timepicker.css"/>">
+<link rel="stylesheet" href="<s:url value="/pages/dist/css/yearpicker.css"/>" />
+
 <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
 page. However, you can choose any other skin. Make sure you
 apply the skin class to the body tag so the changes take effect.
@@ -85,6 +87,7 @@ apply the skin class to the body tag so the changes take effect.
 <!-- AdminLTE App -->
 <script src="<s:url value="/pages/dist/js/app.min.js"/>"></script>
 <script src="<s:url value="/pages/dist/js/timepicker.js"/>"></script>
+<script src="<s:url value="/pages/dist/js/yearpicker.js"/>" async></script>
 <%--TypeAhead--%>
 <script src="<s:url value="/pages/plugins/typeahead/bootstrap3-typeahead.js"/>"></script>
 <%--<script src="<s:url value="/pages/js/jquery-ui.js"/>"></script>--%>
@@ -178,6 +181,7 @@ apply the skin class to the body tag so the changes take effect.
         });
 
         $('#myTable').css('width', '100%');
+        $('#myTable-2').css('width', '100%');
         $('#sortTable').css('width', '100%');
 
         $("#tanggal_lahir").datepicker({

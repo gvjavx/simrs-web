@@ -201,6 +201,12 @@
                                             <table><s:label name="periksaLab.diagnosa"></s:label></table>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td><b>Catatan Klinis</b></td>
+                                        <td>
+                                            <table><s:label name="periksaLab.catatanKlinis"></s:label></table>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -329,22 +335,22 @@
                                     <div id="set_luar">
 
                                     </div>
-                                    <div class="row top_jarak">
-                                        <%--<div class="col-md-3">--%>
-                                            <%--<a class="btn btn-success" onclick="viewUpload('hasil_luar')"><i--%>
-                                                    <%--class="fa fa-image"></i> View Upload</a>--%>
+                                    <%--<div class="row top_jarak">--%>
+                                        <%--&lt;%&ndash;<div class="col-md-3">&ndash;%&gt;--%>
+                                            <%--&lt;%&ndash;<a class="btn btn-success" onclick="viewUpload('hasil_luar')"><i&ndash;%&gt;--%>
+                                                    <%--&lt;%&ndash;class="fa fa-image"></i> View Upload</a>&ndash;%&gt;--%>
+                                        <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+                                        <%--<div class="col-md-7">--%>
+                                            <%--<div class="input-group">--%>
+                                                <%--<div class="input-group-addon">--%>
+                                                    <%--Rp.--%>
+                                                <%--</div>--%>
+                                                <%--<input oninput="convertRpAtas(this.id, this.value, 'h_total_tarif')"--%>
+                                                       <%--id="total_tarif" class="form-control" placeholder="Total Tarif">--%>
+                                                <%--<input type="hidden" id="h_total_tarif">--%>
+                                            <%--</div>--%>
                                         <%--</div>--%>
-                                        <div class="col-md-7">
-                                            <div class="input-group">
-                                                <div class="input-group-addon">
-                                                    Rp.
-                                                </div>
-                                                <input oninput="convertRpAtas(this.id, this.value, 'h_total_tarif')"
-                                                       id="total_tarif" class="form-control" placeholder="Total Tarif">
-                                                <input type="hidden" id="h_total_tarif">
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <%--</div>--%>
                                 </div>
                             </div>
                         </div>
@@ -420,8 +426,8 @@
                             <canvas style="margin-left: -7px; cursor: pointer" class="ttd-paint-canvas" id="ttd_dokter"
                                     width="355" height="250"
                                     onmouseover="paintTtd(this.id)"></canvas>
-                            <input oninput="$(this).css('border', '')" class="form-control" id="nama_dokter" placeholder="Nama Terang">
-                            <input oninput="$(this).css('border', '')" class="form-control" id="sip_dokter" style="margin-top: 5px" placeholder="SIP/NIP">
+                            <input oninput="$(this).css('border', '')" class="form-control nama_petugas" id="nama_dokter" placeholder="Nama Terang">
+                            <input oninput="$(this).css('border', '')" class="form-control nip_petugas" id="sip_dokter" style="margin-top: 5px" placeholder="SIP/NIP">
                             <button style="margin-top: 5px" type="button" class="btn btn-danger"
                                     onclick="removePaint('ttd_dokter')"><i class="fa fa-trash"></i> Clear
                             </button>
@@ -868,6 +874,8 @@
             ride: false,
             pause: false
         });
+
+        cekLogin();
     });
 
     function showModal(select) {
@@ -1142,7 +1150,7 @@
         });
 
         if ("Y" == cekIsKeluar) {
-            if (cekLabLuar && totalTarif != '') {
+            if (cekLabLuar) {
                 $('#modal-confirm-dialog').modal('show');
                 $('#save_con').attr('onclick', 'savePeriksaLab()');
             } else {
@@ -1185,7 +1193,7 @@
         var nama2 = $('#nama_validator').val();
         var nip2 = $('#nip_validator').val();
         var isiParam = $('#tabel_radiologi').tableToJSON();
-        var totalTarif = $('#h_total_tarif').val();
+        var totalTarif = "";
         var cekIsKeluar = '<s:property value="periksaLab.isPeriksaLuar"/>';
         var tempDataFinal = "";
         var data = {
@@ -1342,7 +1350,7 @@
                     $('#btn_save_'+id).html('<a class="btn btn-warning" onclick="changeHasil(\''+id+'\', \''+text+'\', \''+namaPeriksa+'\')"><i class="fa fa-edit"></i> Edit Hasil</a>');
                     $('#h_'+id).val("Y");
                     CKEDITOR.instances[text].setReadOnly(true);
-                    listRadiologi();
+                    // listRadiologi();
                 }else{
                     $('#warning_ttd').show().fadeOut(5000);
                     $('#msg_ttd').text(res.msg);
@@ -1574,6 +1582,17 @@
                 });
             }
             $('#jenis_pemeriksaan').html(option);
+        });
+    }
+
+    function cekLogin() {
+        CheckupAction.cekLogin({
+            callback: function (res) {
+                if (res != '') {
+                    $('.nama_petugas').val(res.msg);
+                    $('.nip_petugas').val(res.status);
+                }
+            }
         });
     }
 

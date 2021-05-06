@@ -20,6 +20,15 @@ public class ItAkunNilaiParameterBudgetingEntity {
     private String lastUpdateWho;
     private String periode;
     private String tipe;
+    private String positionId;
+
+    public String getPositionId() {
+        return positionId;
+    }
+
+    public void setPositionId(String positionId) {
+        this.positionId = positionId;
+    }
 
     public String getTipe() {
         return tipe;

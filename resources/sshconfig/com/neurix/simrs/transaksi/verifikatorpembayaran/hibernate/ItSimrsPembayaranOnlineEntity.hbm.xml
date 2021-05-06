@@ -74,6 +74,12 @@
             <basic name="shiftId">
                 <column name="shift_id"/>
             </basic>
+            <basic name="tipeRekening">
+                <column name="tipe_rekening"/>
+            </basic>
+            <basic name="clientId">
+                <column name="client_id"/>
+            </basic>
 
         </attributes>
     </entity>

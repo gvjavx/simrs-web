@@ -34,6 +34,43 @@ public class CatatanTerintegrasi extends BaseModel {
     private String sipDokter;
     private String sipPetugas;
 
+    private String kesadaran;
+    private String spo2;
+    private String o2;
+    private String ews;
+
+    public String getKesadaran() {
+        return kesadaran;
+    }
+
+    public void setKesadaran(String kesadaran) {
+        this.kesadaran = kesadaran;
+    }
+
+    public String getSpo2() {
+        return spo2;
+    }
+
+    public void setSpo2(String spo2) {
+        this.spo2 = spo2;
+    }
+
+    public String getO2() {
+        return o2;
+    }
+
+    public void setO2(String o2) {
+        this.o2 = o2;
+    }
+
+    public String getEws() {
+        return ews;
+    }
+
+    public void setEws(String ews) {
+        this.ews = ews;
+    }
+
     public String getNadi() {
         return nadi;
     }

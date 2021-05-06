@@ -43,6 +43,24 @@ public class PembayaranOnline {
     private String flagUploadUlang;
     private Integer urutan;
     private Timestamp tanggalUpload;
+    private String tipeRekening;
+    private String clientId;
+
+    public String getTipeRekening() {
+        return tipeRekening;
+    }
+
+    public void setTipeRekening(String tipeRekening) {
+        this.tipeRekening = tipeRekening;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
 
     public Integer getUrutan() {
         return urutan;

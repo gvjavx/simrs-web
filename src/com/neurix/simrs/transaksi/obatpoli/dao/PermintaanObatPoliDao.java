@@ -238,7 +238,6 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
         String idTujuan = "%";
         String idObat = "%";
         String idPermintaanObatPoli = "%";
-        String idJenisObat = "%";
         String flag = "%";
         String tipePermintaan = "%";
         String jenisObat = "%";
@@ -257,9 +256,6 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
         }
         if (bean.getIdPermintaanObatPoli() != null && !"".equalsIgnoreCase(bean.getIdPermintaanObatPoli())) {
             idPermintaanObatPoli = bean.getIdPermintaanObatPoli();
-        }
-        if (bean.getIdJenisObat() != null && !"".equalsIgnoreCase(bean.getIdJenisObat())) {
-            idJenisObat = bean.getIdJenisObat();
         }
         if (bean.getTipePermintaan() != null && !"".equalsIgnoreCase(bean.getTipePermintaan())) {
             tipePermintaan = bean.getTipePermintaan();
@@ -333,12 +329,12 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
                 "\t) toda ON toda.id_approval_obat = ato.id_approval_obat \n" +
                 "\tINNER JOIN mt_simrs_transaksi_obat_detail tod \n" +
                 "\tON tod.id_approval_obat = toda.id_approval_obat AND tod.created_date = toda.created_date\n" +
-                "\tINNER JOIN im_simrs_obat_gejala og On og.id_obat = tod.id_obat\n" +
+                //"\tINNER JOIN im_simrs_obat_gejala og On og.id_obat = tod.id_obat\n" +
                 "\tWHERE pop.flag LIKE :flag\n" +
                 "\tAND tod.id_obat LIKE :idObat\n" +
                 "\tAND ato.tipe_permintaan LIKE :tipePermintaan\n" +
                 "\tAND pop.id_pelayanan LIKE :idPelayanan\n" +
-                "\tAND og.id_jenis_obat LIKE :idJenisObat\n" +
+                //"\tAND og.id_jenis_obat LIKE :idJenisObat\n" +
                 "\tAND pop.id_permintaan_obat_poli LIKE :idPermintaanObatPoli\n" +
                 "\tAND pop.tujuan_pelayanan LIKE :idTujuan\n" + andBranch + otherBranch +
                 "\tGROUP BY \n" +
@@ -373,7 +369,6 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
                 .setParameter("idTujuan", idTujuan)
                 .setParameter("idObat", idObat)
                 .setParameter("idPermintaanObatPoli", idPermintaanObatPoli)
-                .setParameter("idJenisObat", idJenisObat)
                 .setParameter("tipePermintaan", tipePermintaan)
                 .setParameter("flag", flag)
                 .setParameter("jenisObat", jenisObat)

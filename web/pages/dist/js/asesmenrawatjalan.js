@@ -40,6 +40,7 @@ function saveRJ(jenis, ket) {
         var va9 = $('#af9').val();
         var va10 = $('#af10').val();
         var va11 = $('#af11').val();
+        var ku = $('#keadaan_umum').val();
         var va12 = "";
         var va4d = $('[name=af4]:checked').val();
         if(va4d != undefined){
@@ -110,7 +111,7 @@ function saveRJ(jenis, ket) {
             });
             data.push({
                 'parameter': 'Keadaan Umum',
-                'jawaban': 'Tinggi Badan '+va6+' cm, Berat Badan '+va7+' kg',
+                'jawaban': ku+' Tinggi Badan '+va6+' cm, Berat Badan '+va7+' kg',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -381,62 +382,74 @@ function saveRJ(jenis, ket) {
         var cvs1 = isCanvasBlank(nyeri);
         var cvs2 = isCanvasBlank(ttd);
 
-        if(va1 && va3 != undefined && va2 && va4 && namaTerang && nip != '' && !cvs2){
-            data.push({
-                'parameter': 'Apakah terdapat keluhan nyeri',
-                'jawaban': va1,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Lokasi',
-                'jawaban': va2,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Jenis',
-                'jawaban': va3,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Intensitas',
-                'jawaban': va4,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
+        if(va1 != undefined){
 
-            if("Ya" == va1){
-                var canv1 = nyeri.toDataURL("image/png"),
-                    canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
-                data.push({
-                    'parameter': tipe,
-                    'jawaban': canv1,
-                    'keterangan': jenis,
-                    'jenis': ket,
-                    'tipe': 'gambar',
-                    'id_detail_checkup': idDetailCheckup
-                });
+            var cecek = false;
+            if(va1 == "Ya"){
+                if(va12 != undefined && va3 != '' && va4 != ''){
+                    cecek = true;
+                }
+            }else{
+                cecek = true;
             }
 
-            var canv2 = ttd.toDataURL("image/png"),
-                canv2 = canv2.replace(/^data:image\/(png|jpg);base64,/, "");
-            data.push({
-                'parameter': 'TTD Perawat',
-                'jawaban': canv2,
-                'keterangan': jenis,
-                'jenis': ket,
-                'tipe': 'ttd',
-                'nama_terang': namaTerang,
-                'sip': nip,
-                'id_detail_checkup': idDetailCheckup
-            });
-            cek = true;
+            if(cecek){
+                data.push({
+                    'parameter': 'Apakah terdapat keluhan nyeri',
+                    'jawaban': va1,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Lokasi',
+                    'jawaban': va2 != '' ? va2 : '',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Jenis',
+                    'jawaban': va3 != '' ? va3 : '',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Intensitas',
+                    'jawaban': va4 != '' ? va4 : '',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+
+                if("Ya" == va1){
+                    var canv1 = nyeri.toDataURL("image/png"),
+                        canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
+                    data.push({
+                        'parameter': tipe,
+                        'jawaban': canv1,
+                        'keterangan': jenis,
+                        'jenis': ket,
+                        'tipe': 'gambar',
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                }
+
+                var canv2 = ttd.toDataURL("image/png"),
+                    canv2 = canv2.replace(/^data:image\/(png|jpg);base64,/, "");
+                data.push({
+                    'parameter': 'TTD Perawat',
+                    'jawaban': canv2,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'tipe': 'ttd',
+                    'nama_terang': namaTerang,
+                    'sip': nip,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                cek = true;
+            }
         }
     }
 

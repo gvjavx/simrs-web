@@ -42,6 +42,24 @@ public class ParameterBudgeting {
     private String namaJenisBudgeting;
     private String namaKategoriBudgeting;
     private String namaParamRekening;
+    private String namaKodeRekening;
+    private String positionId;
+
+    public String getPositionId() {
+        return positionId;
+    }
+
+    public void setPositionId(String positionId) {
+        this.positionId = positionId;
+    }
+
+    public String getNamaKodeRekening() {
+        return namaKodeRekening;
+    }
+
+    public void setNamaKodeRekening(String namaKodeRekening) {
+        this.namaKodeRekening = namaKodeRekening;
+    }
 
     public String getNamaParamRekening() {
         return namaParamRekening;

@@ -325,6 +325,8 @@ public class PembayaranController implements ModelDriven<Object> {
                 if (rekeningTelemedicList.size() == 1){
                     pembayaranMobile.setNoRekening(rekeningTelemedicList.get(0).getNoRekening());
                     pembayaranMobile.setNamaRekening(rekeningTelemedicList.get(0).getNamaRekening());
+                    pembayaranMobile.setTipeRekening(rekeningTelemedicList.get(0).getTipeRekening());
+                    pembayaranMobile.setClientId(rekeningTelemedicList.get(0).getClientId());
                 }
 
                 pembayaranMobile.setWaktuBayar(CommonUtil.addJamBayar(item.getWaktuBayar()));

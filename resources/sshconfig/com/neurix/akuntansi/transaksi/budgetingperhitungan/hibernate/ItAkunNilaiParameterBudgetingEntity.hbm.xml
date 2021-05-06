@@ -50,6 +50,9 @@
             <basic name="tipe">
                 <column name="tipe_budgeting"/>
             </basic>
+            <basic name="positionId">
+                <column name="position_id"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

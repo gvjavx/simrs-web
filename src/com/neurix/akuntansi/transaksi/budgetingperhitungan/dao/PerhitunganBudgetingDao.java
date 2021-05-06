@@ -1,9 +1,12 @@
 package com.neurix.akuntansi.transaksi.budgetingperhitungan.dao;
 
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
+import com.neurix.akuntansi.transaksi.budgeting.model.BudgetingPeriode;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ItAkunPerhitunganBudgetingEntity;
 import com.neurix.akuntansi.master.parameterbudgeting.model.ParameterBudgeting;
 import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.PerhitunganBudgeting;
+import com.neurix.authorization.position.model.Position;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -681,4 +684,301 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
         return listOfResults;
     }
 
+    public List<ParameterBudgeting> getPositionFromParameterBudgeting(String jenisBudgeting, String rekeningId, String periode, String tahun, String branchId){
+
+        if ("all".equalsIgnoreCase(periode)){
+            periode = "%";
+        }
+
+        String SQL = "SELECT \n" +
+                "pb.position_id, \n" +
+                "ps.position_name,\n" +
+                "ps.kodering,\n" +
+                "SUM(npb.nilai_total) as nilai_total \n" +
+                "FROM im_akun_parameter_budgeting pb\n" +
+                "INNER JOIN im_position ps ON ps.position_id = pb.position_id\n" +
+                "INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = pb.rekening_id\n" +
+                "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE periode ILIKE '"+periode+"' AND tahun = '"+tahun+"' AND branch_id = '"+branchId+"') npb ON npb.id_parameter = pb.id \n" +
+                "WHERE pb.id_jenis_budgeting = :jenisBudgeting\n" +
+                "AND pb.rekening_id = :rekeningId\n" +
+                "AND pb.flag = 'Y' \n" +
+                "GROUP BY\n" +
+                "pb.position_id, \n" +
+                "ps.position_name,\n" +
+                "ps.kodering";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("jenisBudgeting", jenisBudgeting)
+                .setParameter("rekeningId", rekeningId)
+                .list();
+
+        List<ParameterBudgeting> positionList = new ArrayList<>();
+
+        if (list.size() > 0){
+            for (Object[] obj : list){
+                ParameterBudgeting position = new ParameterBudgeting();
+                position.setPositionId(obj[0].toString());
+                position.setNamaDivisi(obj[1].toString());
+                position.setDivisiId(obj[2].toString());
+                position.setNilaiTotal(escapeObjToBigdecimal(obj[3]));
+                positionList.add(position);
+
+            }
+        }
+
+        return positionList;
+    }
+
+    public List<ParameterBudgeting> getPositionFromParameterBudgetingBiaya(String jenisBudgeting, String rekeningId, String periode, String tahun, String branchId){
+
+        if ("all".equalsIgnoreCase(periode)){
+            periode = "%";
+        }
+
+        String SQL = "SELECT \n" +
+                "pb.position_id, \n" +
+                "ps.position_name,\n" +
+                "ps.kodering,\n" +
+                "SUM(npb.nilai_total) as nilai_total, \n" +
+                "pb.id \n" +
+                "FROM im_akun_parameter_budgeting pb\n" +
+                "INNER JOIN im_position ps ON ps.position_id = pb.position_id\n" +
+                "INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = pb.rekening_id\n" +
+                "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE periode ILIKE '"+periode+"' AND tahun = '"+tahun+"' AND branch_id = '"+branchId+"') npb ON npb.id_parameter = pb.id \n" +
+                "WHERE pb.id_jenis_budgeting = :jenisBudgeting\n" +
+                "AND pb.rekening_id = :rekeningId\n" +
+                "AND pb.flag = 'Y' \n" +
+                "GROUP BY\n" +
+                "pb.position_id, \n" +
+                "ps.position_name,\n" +
+                "ps.kodering, \n" +
+                "pb.id";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("jenisBudgeting", jenisBudgeting)
+                .setParameter("rekeningId", rekeningId)
+                .list();
+
+        List<ParameterBudgeting> positionList = new ArrayList<>();
+
+        if (list.size() > 0){
+            for (Object[] obj : list){
+                ParameterBudgeting position = new ParameterBudgeting();
+                position.setPositionId(obj[0].toString());
+                position.setNamaDivisi(obj[1].toString());
+                position.setDivisiId(obj[2].toString());
+                position.setNilaiTotal(escapeObjToBigdecimal(obj[3]));
+                position.setId(obj[4].toString());
+
+                if (position.getNilaiTotal().compareTo(new BigDecimal(0)) == 1){
+                    position.setStatus("edit");
+                    position.setIdNilaiParameter(
+                            getIdNilaiParameter(
+                                    position.getId(),
+                                    periode,
+                                    tahun,
+                                    branchId
+                            )
+                    );
+                } else {
+                    position.setStatus("add");
+                }
+
+                positionList.add(position);
+            }
+        }
+
+        return positionList;
+    }
+
+    private String getIdNilaiParameter(String idParam, String periode, String tahun, String branchId){
+
+        String SQL = "SELECT id FROM it_akun_nilai_parameter_budgeting \n" +
+                "WHERE flag = 'Y'\n" +
+                "AND id_parameter = '"+idParam+"'\n" +
+                "AND periode = '"+periode+"'\n" +
+                "AND tahun = '"+tahun+"'\n" +
+                "AND branch_id = '"+branchId+"'";
+
+        List<Object> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0) {
+            return list.get(0).toString();
+        }
+
+        return null;
+    }
+
+    public List<ParameterBudgeting> getListKodeRekeningInParameterBudgeting(String jenisBudgeting, String tahun, String branchId){
+
+        String SQL = "SELECT \n" +
+                "pb.rekening_id,\n" +
+                "kd.nama_kode_rekening,\n" +
+                "SUM(npb.nilai_total) as nilai_total \n" +
+                "FROM im_akun_parameter_budgeting pb\n" +
+                "INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = pb.rekening_id\n" +
+                "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE tahun = '"+tahun+"' AND branch_id = '"+branchId+"') npb ON npb.id_parameter = pb.id \n" +
+                "WHERE pb.flag = 'Y'\n" +
+                "AND pb.id_jenis_budgeting = :jenisBudgeting \n" +
+                "GROUP BY\n" +
+                "pb.rekening_id,\n" +
+                "kd.nama_kode_rekening";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("jenisBudgeting", jenisBudgeting)
+                .list();
+
+        List<ParameterBudgeting> kodeRekenings = new ArrayList<>();
+
+        if (list.size() > 0){
+
+            for (Object[] obj : list){
+                ParameterBudgeting kodeRekening = new ParameterBudgeting();
+                kodeRekening.setRekeningId(obj[0].toString());
+                kodeRekening.setNamaKodeRekening(obj[1].toString());
+                kodeRekening.setNilaiTotal(escapeObjToBigdecimal(obj[2]));
+                kodeRekenings.add(kodeRekening);
+            }
+        }
+
+        return kodeRekenings;
+    }
+
+    public List<ParameterBudgeting> getListKodeRekeningInParameterBudgetingInvestasi(String jenisBudgeting, String tahun, String branchId){
+
+        String SQL = "SELECT \n" +
+                "pb.rekening_id,\n" +
+                "kd.nama_kode_rekening,\n" +
+                "SUM(npb.nilai_total) as nilai_total,\n" +
+                "pb.id\n" +
+                "FROM im_akun_parameter_budgeting pb\n" +
+                "INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = pb.rekening_id\n" +
+                "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE tahun = '"+tahun+"' AND branch_id = '"+branchId+"') npb ON npb.id_parameter = pb.id \n" +
+                "WHERE pb.flag = 'Y'\n" +
+                "AND pb.id_jenis_budgeting = :jenisBudgeting \n" +
+                "GROUP BY\n" +
+                "pb.rekening_id,\n" +
+                "kd.nama_kode_rekening,\n" +
+                "pb.id";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("jenisBudgeting", jenisBudgeting)
+                .list();
+
+        List<ParameterBudgeting> kodeRekenings = new ArrayList<>();
+
+        if (list.size() > 0){
+
+            for (Object[] obj : list){
+                ParameterBudgeting kodeRekening = new ParameterBudgeting();
+                kodeRekening.setRekeningId(obj[0].toString());
+                kodeRekening.setNamaKodeRekening(obj[1].toString());
+                kodeRekening.setNilaiTotal(escapeObjToBigdecimal(obj[2]));
+                kodeRekening.setId(obj[3].toString());
+                kodeRekenings.add(kodeRekening);
+            }
+        }
+
+        return kodeRekenings;
+    }
+
+    public List<ParameterBudgeting> getListMasterInParameterBudgeting(String rekeningId, String positionId, String periode, String tahun, String branchId){
+
+        if ("all".equalsIgnoreCase(periode)){
+            periode = "%";
+        }
+
+        String SQL = "SELECT \n" +
+                "pb.master_id, \n" +
+                "ms.nama, \n" +
+                "pb.id, \n" +
+                "SUM(npb.nilai_total) as nilai_total\n" +
+                "FROM im_akun_parameter_budgeting pb\n" +
+                "INNER JOIN im_akun_master ms ON ms.nomor_master = pb.master_id \n" +
+                "LEFT JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE periode ILIKE '"+periode+"' AND tahun = '"+tahun+"' AND branch_id = '"+branchId+"') npb ON npb.id_parameter = pb.id \n" +
+                "WHERE pb.flag = 'Y'\n" +
+                "AND pb.position_id = :positionId \n" +
+                "AND pb.rekening_id = :rekeningId \n" +
+                "GROUP BY\n" +
+                "pb.master_id, \n" +
+                "ms.nama," +
+                "pb.id";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("positionId", positionId)
+                .setParameter("rekeningId", rekeningId)
+                .list();
+
+        List<ParameterBudgeting> masters = new ArrayList<>();
+        if (list.size() > 0){
+
+            for (Object[] obj : list){
+                ParameterBudgeting master = new ParameterBudgeting();
+                master.setMasterId(obj[0].toString());
+                master.setNamaMaster(obj[1].toString());
+                master.setId(obj[2].toString());
+                master.setNilaiTotal(escapeObjToBigdecimal(obj[3]));
+
+                if (master.getNilaiTotal().compareTo(new BigDecimal(0)) == 1){
+                    master.setStatus("edit");
+                    master.setIdNilaiParameter(
+                            getIdNilaiParameter(
+                                    master.getId(),
+                                    periode,
+                                    tahun,
+                                    branchId
+                            )
+                    );
+                } else {
+                    master.setStatus("add");
+                }
+                masters.add(master);
+            }
+        }
+        return masters;
+    }
+
+
+    public List<ParameterBudgeting> getListInvestasiByRekeningId(String jenisBudgeting, String rekeningId, String periode, String tahun, String branchId){
+
+        if ("all".equalsIgnoreCase(periode)){
+            periode = "%";
+        }
+
+        String SQL = "SELECT\n" +
+                "pp.id,\n" +
+                "pp.nama,\n" +
+                "pp.nilai_total\n" +
+                "FROM it_akun_nilai_parameter_pengadaan pp\n" +
+                "INNER JOIN (SELECT * FROM it_akun_nilai_parameter_budgeting WHERE periode ILIKE '"+periode+"' AND tahun = '"+tahun+"' AND branch_id = '"+branchId+"') npb ON npb.id = pp.id_nilai_param\n" +
+                "INNER JOIN im_akun_parameter_budgeting pb ON pb.id = npb.id_parameter\n" +
+                "WHERE pp.flag = 'Y'\n" +
+                "AND pb.id_jenis_budgeting = :jenisBudgeting \n" +
+                "AND pb.rekening_id = :rekeningId ";
+
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("jenisBudgeting", jenisBudgeting)
+                .setParameter("rekeningId", rekeningId)
+                .list();
+
+        List<ParameterBudgeting> parameterBudgetings = new ArrayList<>();
+
+        if (list.size() > 0){
+
+            for (Object[] obj : list){
+                ParameterBudgeting investasi = new ParameterBudgeting();
+                investasi.setId(obj[0].toString());
+                investasi.setNama(obj[1].toString());
+                investasi.setNilaiTotal(escapeObjToBigdecimal(obj[2]));
+                parameterBudgetings.add(investasi);
+            }
+        }
+
+        return parameterBudgetings;
+    }
+
+    private BigDecimal escapeObjToBigdecimal(Object obj){
+        return obj == null ? new BigDecimal(0) : new BigDecimal(obj.toString());
+    }
 }

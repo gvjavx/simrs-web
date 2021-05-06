@@ -300,9 +300,11 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Gudang Obat</label>
                         <div class="col-md-7">
-                            <select class="form-control select2" id="req_gudang_obat" style="width: 100%"
-                            onchange="$('#war_gudang_obat').is(':visible'); if (warn){$('#cor_gudang_obat').show().fadeOut(3000);$('#war_gudang_obat').hide()}">
-                            </select>
+                            <input type="text" class="form-control" id="label_gudang_obat" readonly/>
+                            <input type="hidden" id="req_gudang_obat"/>
+                            <%--<select class="form-control select2" id="req_gudang_obat" style="width: 100%"--%>
+                            <%--onchange="$('#war_gudang_obat').is(':visible'); if (warn){$('#cor_gudang_obat').show().fadeOut(3000);$('#war_gudang_obat').hide()}">--%>
+                            <%--</select>--%>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -354,7 +356,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Stok Tujuan</label>
+                        <label class="col-md-3" style="margin-top: 7px">Stok Gudang Farmasi</label>
                         <%--<label class="col-md-3" style="margin-top: 7px"></label>--%>
                         <%--<div class="col-md-2">--%>
                             <%--<label style="margin-top: 7px">Box</label>--%>
@@ -375,7 +377,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Stok Sendiri</label>
+                        <label class="col-md-3" style="margin-top: 7px">Stok Farmasi</label>
                         <%--<div class="col-md-2">--%>
                             <%--<label style="margin-top: 7px">Box</label>--%>
                             <%--<input class="form-control" readonly id="req_stok_box_sendiri">--%>
@@ -752,6 +754,28 @@
 
         if (idObat != '') {
 
+//            if (idObat.split('|')[0] != 'null' && idObat.split('|')[0] != '') {
+//                id = idObat.split('|')[0];
+//            }
+//            if (idObat.split('|')[1] != 'null' && idObat.split('|')[1] != '') {
+//                nama = idObat.split('|')[1];
+//            }
+//            if (idObat.split('|')[2] != 'null' && idObat.split('|')[2] != '') {
+//                qtyBox = idObat.split('|')[2];
+//            }
+//            if (idObat.split('|')[3] != 'null' && idObat.split('|')[3] != '') {
+//                qtyLembar = idObat.split('|')[3];
+//            }
+//            if (idObat.split('|')[4] != 'null' && idObat.split('|')[4] != '') {
+//                qtyBiji = idObat.split('|')[4];
+//            }
+//            if (idObat.split('|')[5] != 'null' && idObat.split('|')[5] != '') {
+//                lembarPerBox = idObat.split('|')[5];
+//            }
+//            if (idObat.split('|')[6] != 'null' && idObat.split('|')[6] != '') {
+//                bijiPerLembar = idObat.split('|')[6];
+//            }
+
             if (idObat.split('|')[0] != 'null' && idObat.split('|')[0] != '') {
                 id = idObat.split('|')[0];
             }
@@ -759,19 +783,7 @@
                 nama = idObat.split('|')[1];
             }
             if (idObat.split('|')[2] != 'null' && idObat.split('|')[2] != '') {
-                qtyBox = idObat.split('|')[2];
-            }
-            if (idObat.split('|')[3] != 'null' && idObat.split('|')[3] != '') {
-                qtyLembar = idObat.split('|')[3];
-            }
-            if (idObat.split('|')[4] != 'null' && idObat.split('|')[4] != '') {
-                qtyBiji = idObat.split('|')[4];
-            }
-            if (idObat.split('|')[5] != 'null' && idObat.split('|')[5] != '') {
-                lembarPerBox = idObat.split('|')[5];
-            }
-            if (idObat.split('|')[6] != 'null' && idObat.split('|')[6] != '') {
-                bijiPerLembar = idObat.split('|')[6];
+                qtyBiji = idObat.split('|')[2];
             }
         }
 
@@ -799,7 +811,8 @@
         }
 
         //set to biji semua
-        tempBijiTujuan = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar)) + (parseInt(qtyLembar) * parseInt(bijiPerLembar));
+        tempBijiTujuan = parseInt(qtyBiji);
+        //tempBijiTujuan = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar)) + (parseInt(qtyLembar) * parseInt(bijiPerLembar));
         //tempBijiSendiri = parseInt(stokQtyBiji) + ((parseInt(lembarPerBox * parseInt(stokQtyBox))) * parseInt(bijiPerLembar)) + (parseInt(stokQtylembar) * parseInt(bijiPerLembar));
         tempBijiSendiri = parseInt(stokQtyBiji);
 
@@ -836,6 +849,32 @@
         }
 
         if (obat != '' && qty != '' && jenisSatuan != '') {
+//
+//            if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
+//                id = obat.split('|')[0];
+//            }
+//            if (obat.split('|')[1] != 'null' && obat.split('|')[1] != '') {
+//                nama = obat.split('|')[1];
+//            }
+//            if (obat.split('|')[2] != 'null' && obat.split('|')[2] != '') {
+//                qtyBox = obat.split('|')[2];
+//            }
+//            if (obat.split('|')[3] != 'null' && obat.split('|')[3] != '') {
+//                qtyLembar = obat.split('|')[3];
+//            }
+//            if (obat.split('|')[4] != 'null' && obat.split('|')[4] != '') {
+//                qtyBiji = obat.split('|')[4];
+//            }
+//            if (obat.split('|')[5] != 'null' && obat.split('|')[5] != '') {
+//                lembarPerBox = obat.split('|')[5];
+//            }
+//            if (obat.split('|')[6] != 'null' && obat.split('|')[6] != '') {
+//                bijiPerLembar = obat.split('|')[6];
+//            }
+//            if (obat.split('|')[7] != 'null' && obat.split('|')[7] != '') {
+//                idPabrik = obat.split('|')[7];
+//            }
+
 
             if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
                 id = obat.split('|')[0];
@@ -844,25 +883,15 @@
                 nama = obat.split('|')[1];
             }
             if (obat.split('|')[2] != 'null' && obat.split('|')[2] != '') {
-                qtyBox = obat.split('|')[2];
+                qtyBiji = obat.split('|')[2];
             }
             if (obat.split('|')[3] != 'null' && obat.split('|')[3] != '') {
-                qtyLembar = obat.split('|')[3];
-            }
-            if (obat.split('|')[4] != 'null' && obat.split('|')[4] != '') {
-                qtyBiji = obat.split('|')[4];
-            }
-            if (obat.split('|')[5] != 'null' && obat.split('|')[5] != '') {
-                lembarPerBox = obat.split('|')[5];
-            }
-            if (obat.split('|')[6] != 'null' && obat.split('|')[6] != '') {
-                bijiPerLembar = obat.split('|')[6];
-            }
-            if (obat.split('|')[7] != 'null' && obat.split('|')[7] != '') {
-                idPabrik = obat.split('|')[7];
+                idPabrik = obat.split('|')[3];
             }
 
-            var stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar)) + (parseInt(qtyLembar) * parseInt(bijiPerLembar));
+            //var stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar)) + (parseInt(qtyLembar) * parseInt(bijiPerLembar));
+            var stok = parseInt(qtyBiji);
+            //alert("Stok : "+stok+" req : "+qty);
 
             if (parseInt(qty) <= parseInt(stok)) {
 
@@ -1394,12 +1423,18 @@
         CheckupAction.getListComboGudang(function (res) {
             if(res.length > 0){
                 $.each(res, function (i, item) {
-                    option += '<option value="'+item.idPelayanan+'">'+item.namaPelayanan+'</option>';
+                    //option += '<option value="'+item.idPelayanan+'">'+item.namaPelayanan+'</option>';
+
+                    $("#label_gudang_obat").val(item.namaPelayanan);
+                    $('#req_gudang_obat').val(item.idPelayanan);
+
                 });
-                $('#req_gudang_obat').html(option);
-            }else{
-                $('#req_gudang_obat').html('');
+                //$('#req_gudang_obat').html(option);
+                //$('#req_gudang_obat').attr("readOnly", "true");
             }
+            //else{
+                //$('#req_gudang_obat').html('');
+            //}
 
             getListObat();
         });
@@ -1408,14 +1443,14 @@
     function getListObat() {
 
         var option      = "<option value=''> - </option>";
-        var idPelayanan = $("#req_gudang_obat option:selected").val();
+       // var idPelayanan = $("#req_gudang_obat option:selected").val();
+        var idPelayanan = $("#req_gudang_obat").val();
         var jenisObat   = $("#id-jenis-obat").val() == '' ? $("#req_jenis_obat option:selected").val() : $("#id-jenis-obat").val();
 
         ObatAction.getListObat(idPelayanan,jenisObat, function (res) {
             if(res.length > 0){
                 $.each(res, function (i, item) {
-                    option += '<option value="'+item.idObat+ "|" +item.namaObat+ "|" +item.qtyBox+ "|" +item.qtyLembar+ "|" +item.qtyBiji+ "|" +
-                            "|" +item.lembarPerBox+ "|" +item.bijiPerLembar+ "|" +item.idPabrik+ '">'+item.namaObat+'</option>';
+                    option += '<option value="'+item.idObat+ "|" +item.namaObat+ "|" +item.qtyBiji+ "|"  +item.idPabrik+ '">'+item.namaObat+'</option>';
                 });
                 $('#req_nama_obat').html(option);
             }else{

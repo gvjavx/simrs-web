@@ -2,6 +2,9 @@ package com.neurix.simrs.transaksi.obatpoli.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.hargaobat.model.HargaObatPerKonsumen;
 import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsObatPoliEntity;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
@@ -11,6 +14,7 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -227,13 +231,14 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
         return stringList;
     }
 
+    // flagBpjs adalah = jenis pasien
     public List<ObatPoli> getIdObatGroupPoli(String idPelayanan, String branchId, String flagBpjs, String idJenisObat, String idDetailCheckup){
         List<ObatPoli> obatPoliList = new ArrayList<>();
         String queryJenisObat = "";
 
-        if (idJenisObat != null && !idJenisObat.equalsIgnoreCase("")) {
-            queryJenisObat = "AND d.id_jenis_obat = '" + idJenisObat + "' \n";
-        }
+//        if (idJenisObat != null && !idJenisObat.equalsIgnoreCase("")) {
+//            queryJenisObat = "AND d.id_jenis_obat = '" + idJenisObat + "' \n";
+//        }
 
         if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan) && branchId != null && !"".equalsIgnoreCase(branchId)){
 
@@ -248,69 +253,6 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                 whereQuery = "WHERE c.harga_jual > 0 \n" +
                         "AND c.harga_jual_umum > 0 \n";
             }
-
-
-//            String SQL = "SELECT \n" +
-//                    "b.id_pelayanan,\n" + //0
-//                    "a.id_obat,\n" + //1
-//                    "a.nama_obat,\n" + //2
-//                    "b.box,\n" + //3
-//                    "b.lembar,\n" + //4
-//                    "b.biji,\n" + //5
-//                    "a.lembar_per_box,\n" + //6
-//                    "a.biji_per_lembar,\n" + //7
-//                    "a.flag_kronis,\n" + //8
-//                    "c.harga_jual,\n" + //9
-//                    "c.harga_jual_umum,\n" + //10
-//                    "c.harga_jual_khusus_bpjs,\n" + //11
-//                    "c.harga_jual_umum_bpjs\n" + //12
-//                    "FROM (\n" +
-//                    "\tSELECT \n" +
-//                    "\ta.id_obat,\n" +
-//                    "\ta.nama_obat,\n" +
-//                    "\ta.flag_kronis,\n" +
-//                    "\ta.lembar_per_box,\n" +
-//                    "\ta.biji_per_lembar,\n" +
-//                    "\ta.flag_bpjs\n" +
-//                    "\tFROM im_simrs_header_obat a\n" +
-//                    "\tINNER JOIN (SELECT id_obat, flag_bpjs  FROM im_simrs_obat "+flag+" GROUP BY id_obat, flag_bpjs )\n" +
-//                    "\tb ON b.id_obat = a.id_obat\n" +
-//                    ") a\n" +
-//                    "INNER JOIN (\n" +
-//                    "\tSELECT\n" +
-//                    "\tid_obat,\n" +
-//                    "\tid_pelayanan,\n" +
-//                    "\tbranch_id,\n" +
-//                    "\tSUM(qty_box) as box,\n" +
-//                    "\tSUM(qty_lembar) as lembar,\n" +
-//                    "\tSUM(qty_biji) as biji\n" +
-//                    "\tFROM mt_simrs_obat_poli\n" +
-//                    "\tWHERE id_pelayanan = :idPelayanan \n" +
-//                    "\tAND branch_id = :branchId \n" +
-//                    "\tGROUP BY id_obat, id_pelayanan, branch_id\n" +
-//                    "\tHAVING SUM(qty_box) > 0 OR SUM(qty_lembar) > 0 OR SUM(qty_biji) > 0 \n" +
-//                    ") b ON a.id_obat = b.id_obat\n" +
-//                    "INNER JOIN mt_simrs_harga_obat c ON a.id_obat = c.id_obat\n" +
-//                    "LEFT JOIN (\n" +
-//                    "\tSELECT\n" +
-//                    "\tid_obat,\n" +
-//                    "\tid_jenis_obat\n" +
-//                    "\tFROM im_simrs_obat_gejala \n" +
-//                    ")d ON d.id_obat = b.id_obat \n" + whereQuery + queryJenisObat +
-//                    "GROUP BY \n" +
-//                    "b.id_pelayanan,\n" +
-//                    "a.id_obat,\n" +
-//                    "a.nama_obat,\n" +
-//                    "b.box,\n" +
-//                    "b.lembar,\n" +
-//                    "b.biji,\n" +
-//                    "a.lembar_per_box,\n" +
-//                    "a.biji_per_lembar,\n" +
-//                    "a.flag_kronis,\n" +
-//                    "c.harga_jual,\n" +
-//                    "c.harga_jual_umum,\n" +
-//                    "c.harga_jual_khusus_bpjs,\n" +
-//                    "c.harga_jual_umum_bpjs \n";
 
             String SQL = "SELECT \n" +
                     "b.id_pelayanan,\n" +
@@ -416,11 +358,84 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                             obatPoli.setHarga(obj[10] == null ? "" : obj[10].toString());
                         }
                     }
+
+                    // Sigit, 2021-04-29. penambahan untuk mencari data per konsumen pada resep;
+                    HeaderCheckup headerDetailCheckup = getHeaderCheckupData(idDetailCheckup);
+                    if (headerDetailCheckup != null){
+                        HargaObatPerKonsumen perKonsumen = getDataHargaPerKonsumen(obatPoli.getIdObat(), branchId, headerDetailCheckup.getIdJenisPeriksaPasien(), headerDetailCheckup.getIdAsuransi());
+                        if (perKonsumen != null){
+                            obatPoli.setHarga(perKonsumen.getHargaJual().toString());
+                        }
+                    }
                     obatPoliList.add(obatPoli);
                 }
             }
         }
         return obatPoliList;
+    }
+
+    private HeaderCheckup getHeaderCheckupData(String idHeaderCheckup){
+
+        String SQL = "SELECT \n" +
+                "id_detail_checkup, \n" +
+                "id_asuransi,\n" +
+                "id_jenis_periksa_pasien\n" +
+                "FROM \n" +
+                "it_simrs_header_detail_checkup\n" +
+                "WHERE id_asuransi is not null\n" +
+                "AND id_detail_checkup = '"+idHeaderCheckup+"'";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+            Object[] obj = list.get(0);
+            HeaderCheckup headerCheckup = new HeaderCheckup();
+            headerCheckup.setIdDetailCheckup(obj[0].toString());
+            headerCheckup.setIdAsuransi(obj[1].toString());
+            headerCheckup.setIdJenisPeriksaPasien(obj[2].toString());
+            return headerCheckup;
+        }
+
+        return null;
+    }
+
+    private HargaObatPerKonsumen getDataHargaPerKonsumen(String idObat, String branchId, String jenisKonsumen, String idRekanan){
+
+        String sqlRekanan = "";
+        if (idRekanan != null && !"".equalsIgnoreCase(idRekanan)){
+            sqlRekanan = "AND hopk.id_rekanan = '"+idRekanan+"' \n";
+        }
+
+        String SQL = "SELECT \n" +
+                "hopk.id_harga_obat, \n" +
+                "ho.branch_id, \n" +
+                "hopk.harga_jual \n" +
+                "FROM (SELECT * FROM mt_simrs_harga_obat_per_konsumen WHERE flag ='Y') hopk\n" +
+                "INNER JOIN mt_simrs_harga_obat ho ON ho.id_harga_obat = hopk.id_harga_obat \n" +
+                "WHERE ho.id_obat = '"+idObat+"'\n" +
+                "AND ho.branch_id = '"+branchId+"'\n" +
+                "AND hopk.jenis_konsumen = '"+jenisKonsumen+"'\n" + sqlRekanan;
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+            Object[] obj = list.get(0);
+            HargaObatPerKonsumen perKonsumen = new HargaObatPerKonsumen();
+            perKonsumen.setIdHargaObat(obj[0].toString());
+            perKonsumen.setBranchId(obj[1].toString());
+            perKonsumen.setHargaJual(objToBigDecimal(obj[2]));
+
+            return perKonsumen;
+        }
+
+        return null;
+    }
+
+    private BigDecimal objToBigDecimal(Object obj){
+        if (obj == null)
+            return new BigDecimal(0);
+        else
+            return new BigDecimal(obj.toString());
     }
 
     private Boolean cekIsKhusus(String idDetailCheckup){

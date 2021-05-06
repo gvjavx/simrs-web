@@ -245,6 +245,12 @@
                                             <table><s:label name="periksaLab.diagnosa"></s:label></table>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td><b>Catatan Klinis</b></td>
+                                        <td>
+                                            <table><s:label name="periksaLab.catatanKlinis"></s:label></table>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -372,22 +378,22 @@
                                     <div id="set_luar">
 
                                     </div>
-                                    <div class="row top_jarak">
-                                        <%--<div class="col-md-3">--%>
-                                            <%--<a class="btn btn-success" onclick="viewUpload('hasil_luar')"><i--%>
-                                                    <%--class="fa fa-image"></i> View Upload</a>--%>
+                                    <%--<div class="row top_jarak">--%>
+                                        <%--&lt;%&ndash;<div class="col-md-3">&ndash;%&gt;--%>
+                                            <%--&lt;%&ndash;<a class="btn btn-success" onclick="viewUpload('hasil_luar')"><i&ndash;%&gt;--%>
+                                                    <%--&lt;%&ndash;class="fa fa-image"></i> View Upload</a>&ndash;%&gt;--%>
+                                        <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+                                        <%--<div class="col-md-7">--%>
+                                            <%--<div class="input-group">--%>
+                                                <%--<div class="input-group-addon">--%>
+                                                    <%--Rp.--%>
+                                                <%--</div>--%>
+                                                <%--<input oninput="convertRpAtas(this.id, this.value, 'h_total_tarif')"--%>
+                                                       <%--id="total_tarif" class="form-control" placeholder="Total Tarif">--%>
+                                                <%--<input type="hidden" id="h_total_tarif">--%>
+                                            <%--</div>--%>
                                         <%--</div>--%>
-                                        <div class="col-md-7">
-                                            <div class="input-group">
-                                                <div class="input-group-addon">
-                                                    Rp.
-                                                </div>
-                                                <input oninput="convertRpAtas(this.id, this.value, 'h_total_tarif')"
-                                                       id="total_tarif" class="form-control" placeholder="Total Tarif">
-                                                <input type="hidden" id="h_total_tarif">
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <%--</div>--%>
                                 </div>
                             </div>
                         </div>
@@ -493,17 +499,17 @@
                                     <div class="col-md-offset-3 col-md-3">
                                         <canvas class="paint-canvas-ttd" id="ttd_petugas" width="260"
                                                 onmouseover="paintTtd('ttd_petugas')" style="margin-left: -8px"></canvas>
-                                        <input class="form-control nama_petugas" placeholder="Nama Petugas"
+                                        <input class="form-control" placeholder="Nama Petugas"
                                                id="nama_petugas">
-                                        <input class="form-control nip_petugas" placeholder="NIP/SIP"
+                                        <input class="form-control" placeholder="NIP/SIP"
                                                style="margin-top: 5px"
                                                id="nip_petugas">
                                     </div>
                                     <div class="col-md-3">
                                         <canvas class="paint-canvas-ttd" id="ttd_dokter" width="260"
                                                 onmouseover="paintTtd('ttd_dokter')" style="margin-left: -8px"></canvas>
-                                        <input class="form-control" placeholder="Nama Validator" id="nama_validator">
-                                        <input class="form-control" placeholder="NIP/SIP" style="margin-top: 5px"
+                                        <input class="form-control nama_petugas" placeholder="Nama Validator" id="nama_validator">
+                                        <input class="form-control nip_petugas" placeholder="NIP/SIP" style="margin-top: 5px"
                                                id="nip_validator">
                                     </div>
                                 </div>
@@ -524,7 +530,6 @@
             </div>
         </div>
     </section>
-    <!-- /.content -->
 </div>
 
 <div class="modal fade" id="modal-edit-parameter">
@@ -1003,7 +1008,7 @@
         });
 
         if ("Y" == cekIsKeluar) {
-            if (cekLabLuar && totalTarif != '') {
+            if (cekLabLuar) {
                 $('#modal-confirm-dialog').modal('show');
                 $('#save_con').attr('onclick', 'savePeriksaLab()');
             } else {
@@ -1056,7 +1061,7 @@
         var nip1 = $('#nip_petugas').val();
         var nama2 = $('#nama_validator').val();
         var nip2 = $('#nip_validator').val();
-        var totalTarif = $('#h_total_tarif').val();
+        var totalTarif = "";
         var keteranganHasil = CKEDITOR.instances['keterangan_hasil_lab'].getData();
         var cekIsKeluar = '<s:property value="periksaLab.isPeriksaLuar"/>';
 
@@ -1588,7 +1593,8 @@
                         $('#hasil_'+index).attr('disabled', true);
                         $('#kesan_'+index).attr('disabled', true);
                         $('#btn_save_'+index).html('<button onclick="editDetail(\''+id+'\', \''+index+'\')" class="btn btn-warning"><i class="fa fa-edit"></i> Edit</button>');
-                        listParameter();
+                        $('#status_pengisian_'+index).val("Y");
+                        // listParameter();
                     }else{
                         $('#warning_rad').show().fadeOut(5000);
                         $('#msg_rad').text(response.msg);

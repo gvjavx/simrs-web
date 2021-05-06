@@ -18,6 +18,9 @@
         $(document).ready(function () {
             $('#pel_ri_active, #rencana_kegiatan').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
+            $('#modal-add-plan').on('hidden.bs.modal.bs.modal', function (event) {
+                $('.modal-backdrop').remove();
+            });
         });
 
     </script>
@@ -50,8 +53,6 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <%--<s:form id="permintaanForm" method="post" namespace="/planrawat" action="search_checkup.action"--%>
-                            <%--theme="simple" cssClass="form-horizontal">--%>
                             <div class="form-group form-horizontal">
                                 <div class="row">
                                     <label class="control-label col-sm-4">ID Detail Chcekup</label>
@@ -72,21 +73,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <%--<div class="form-group form-horizontal">--%>
-                                <%--<div class="row">--%>
-                                    <%--<label class="control-label col-sm-4">Poli</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:action id="initComboPoli" namespace="/checkup"--%>
-                                                  <%--name="getComboPelayanan_checkup"/>--%>
-                                        <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                  <%--list="#initComboPoli.listOfPelayanan" id="idPelayanan"--%>
-                                                  <%--name="headerCheckup.idPelayanan" listKey="idPelayanan"--%>
-                                                  <%--listValue="namaPelayanan"--%>
-                                                  <%--headerKey="" headerValue="[Select one]"--%>
-                                                  <%--cssClass="form-control select2"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
                                 <div class="form-group" style="display: none">
                                     <div class="col-md-12">
                                         <sj:dialog id="waiting_dialog" openTopics="showDialogLoading"
@@ -112,7 +98,6 @@
                                                    buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
-                                                                                         window.location.reload(true);
                                                                                      }
                                                                             }"
                                         >
@@ -128,13 +113,6 @@
                                 <label class="control-label col-sm-4"></label>
                                 <div class="col-sm-6" style="margin-top: 7px">
                                     <button class="btn btn-primary" onclick="search()"><i class="fa fa-search"></i> Search</button>
-                                    <%--<sj:submit type="button" cssClass="btn btn-success" formIds="permintaanForm"--%>
-                                    <%--id="search" name="search"--%>
-                                    <%--onClickTopics="showDialogLoading"--%>
-                                    <%--onCompleteTopics="closeDialogLoading">--%>
-                                    <%--<i class="fa fa-search"></i>--%>
-                                    <%--Search--%>
-                                    <%--</sj:submit>--%>
                                     <a type="button" class="btn btn-danger" href="initForm_planrawat.action">
                                         <i class="fa fa-refresh"></i> Reset
                                     </a>
@@ -152,33 +130,13 @@
                             <tr bgcolor="#90ee90">
                                 <td>No. Pendaftaran</td>
                                 <td>No. RM</td>
-                                <td>Nama Pasien</td>
+                                <td width="40%">Nama Pasien</td>
                                 <td>Nama Pelayanan</td>
                                 <td>Diagnosa Terakhir</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody id="body-list-plan">
-                            <%--<s:iterator value="#session.listOfResult" status="listOfUsers">--%>
-                            <%--<tr>--%>
-                            <%--<td><s:property value="noCheckup"/></td>--%>
-                            <%--<td><s:property value="idPasien"/></td>--%>
-                            <%--<td><s:property value="nama"/></td>--%>
-                            <%--<td><s:property value="namaPelayanan"/></td>--%>
-                            <%--<td><s:property value="statusPeriksaName"/></td>--%>
-                            <%--<td align="center">--%>
-                            <%--<img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>" src="<s:url value="/pages/images/search_flat.png"/>"--%>
-                            <%--style="cursor: pointer; width: 25px; height: 25px" onclick="detail_pasien('<s:property value="noCheckup"/>')">--%>
-                            <%--<s:url var="edit" namespace="/checkup" action="edit_checkup" escapeAmp="false">--%>
-                            <%--<s:param name="id"><s:property value="noCheckup"/></s:param>--%>
-                            <%--</s:url>--%>
-                            <%--<s:a href="%{edit}">--%>
-                            <%--<img border="0" class="hvr-grow" src="<s:url value="/pages/images/edit-flat-new.png"/>"--%>
-                            <%--style="cursor: pointer; width: 25px; height: 25px">--%>
-                            <%--</s:a>--%>
-                            <%--</td>--%>
-                            <%--</tr>--%>
-                            <%--</s:iterator>--%>
                             </tbody>
                         </table>
                     </div>
@@ -190,7 +148,7 @@
 </div>
 
 <div class="modal fade" id="modal-view-plan">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -199,7 +157,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-4 col-md-offset-4">
+                    <div class="col-md-12">
                         <table class="table table-striped table-bordered">
                             <thead id="head-view-plan">
                             <tr>
@@ -231,7 +189,6 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> View Detail Rencana Rawat</h4>
             </div>
             <div class="modal-body" id="body-view-plan-detail">
-                <br>
                 <div id="body-list-plan-pagi"></div>
                 <br>
                 <div id="body-list-plan-siang"></div>
@@ -258,25 +215,30 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tambah Rencana Rawat </h4>
             </div>
             <div class="modal-body">
-
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_add-plan">
+                    <h4><i class="icon fa fa-ban"></i> Warning !</h4>
+                    <p id="msg_warning"></p>
+                </div>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_add-plan">
+                    <h4><i class="icon fa fa-info"></i> Info !</h4>
+                    <p id="msg_success"></p>
+                </div>
                 <div class="row">
                     <div class="col-md-2" style="margin-top: 7px;">
-                        <label>Tanggal Plan :</label>
+                        <label>Tanggal Plan</label>
                     </div>
                     <div class="col-md-4" style="margin-top: 7px;">
-                        <input type="date" class="form-control" id="tgl">
+                        <div class="input-group" style="cursor: pointer">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input style="background-color: white;" type="text" class="form-control datepicker2" id="tgl" readonly placeholder="dd-mm-yyyy">
+                        </div>
                         <input type="hidden" class="form-control" id="idPoli">
                     </div>
                 </div>
-                <br>
-
+               <hr>
                 <div style="margin-bottom:20px">
-                    <%--<button type="button" class="btn btn-success" onclick="showModalAdd('vitalsign')">--%>
-                        <%--<i class="fa fa-plus"></i> Add Monitoring Vital Sign--%>
-                    <%--</button>--%>
-                    <%--<button type="button" class="btn btn-info" onclick="showGrafVitalSign('<s:property value="rawatInap.idDetailCheckup"/>')">--%>
-                    <%--<i class="fa fa-pie-chart"></i> View Graf--%>
-                    <%--</button>--%>
                     <button type="button" class="btn btn-success" onclick="showModalAdd('cairan')">
                         <i class="fa fa-plus"></i> Add Monitoring Cairan
                     </button>
@@ -287,25 +249,12 @@
                         <i class="fa fa-plus"></i> Add Obat Non Parenteral
                     </button>
                 </div>
-                <br>
+                <hr>
 
                 <input type="hidden" id="idDetailCheckup">
 
-                <%--<h4> Vital Sign </h4>--%>
-                <%--<table class="table table-bordered" style="width: 50%">--%>
-                    <%--<thead>--%>
-                    <%--<td>Waktu</td>--%>
-                    <%--<td>Jam</td>--%>
-                    <%--<td>Catatan Dokter</td>--%>
-                    <%--</thead>--%>
-                    <%--<tbody id="body-list-vital-sign">--%>
-
-                    <%--</tbody>--%>
-                <%--</table>--%>
-                <%--<br>--%>
-
-                <h4> Monitoring Cairan </h4>
-                <table class="table table-bordered" style="font-size:11px;">
+                <div style="margin-bottom: 10px"> Monitoring Cairan </div>
+                <table class="table table-bordered" style="font-size:12px;">
                     <thead>
                     <td>Waktu</td>
                     <td>Macam Cairan</td>
@@ -324,10 +273,10 @@
 
                     </tbody>
                 </table>
-                <br>
+                <hr>
 
-                <h4> Obat Parenteral </h4>
-                <table class="table table-bordered">
+                <div style="margin-bottom: 10px"> Obat Parenteral </div>
+                <table class="table table-bordered" style="font-size:12px;">
                     <thead>
                     <td>Waktu</td>
                     <td>Nama Obat</td>
@@ -341,10 +290,10 @@
 
                     </tbody>
                 </table>
-                <br>
+                <hr>
 
-                <h4> Obat Non Parenteral </h4>
-                <table class="table table-bordered">
+                <div style="margin-bottom: 10px"> Obat Non Parenteral </div>
+                <table class="table table-bordered" style="font-size:12px;">
                     <thead>
                     <td>Waktu</td>
                     <td>Nama Obat</td>
@@ -412,23 +361,11 @@
                         </div>
                     </div>
                 </div>
-                <br>
-                <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_asesmen">
-                    <h4><i class="icon fa fa-info"></i> Success!</h4>
-                    <p>Data Berhasil Tersimpan</p>
-                </div>
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_asesmen">
-                    <h4><i class="icon fa fa-ban"></i> Error !</h4>
-                    <p id="error_ket_asesmen"></p>
-                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_asesmen" onclick="saveToList('vitalsign')"><i class="fa fa-arrow-right"></i> Save
-                </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_asesmen"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                <button type="button" class="btn btn-success" onclick="saveToList('vitalsign')"><i class="fa fa-check"></i> Save
                 </button>
             </div>
         </div>
@@ -576,7 +513,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" onclick="saveToList('cairan')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" onclick="saveToList('cairan')"><i class="fa fa-check"></i> Save
                 </button>
             </div>
         </div>
@@ -677,7 +614,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_vitalsign" onclick="saveUpdatePlan('vitalsign')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_vitalsign" onclick="saveUpdatePlan('vitalsign')"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_vitalsign"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -825,7 +762,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_cairan" onclick="saveUpdatePlan('cairan')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_cairan" onclick="saveUpdatePlan('cairan')"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_cairan"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -913,7 +850,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_asesmen" onclick="saveToList('nonparenteral')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" onclick="saveToList('nonparenteral')"><i class="fa fa-check"></i> Save
                 </button>
             </div>
         </div>
@@ -1013,7 +950,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_nonpar"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_nonpar"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_nonpar"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1127,7 +1064,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_asesmen" onclick="saveToList('parenteral')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_asesmen" onclick="saveToList('parenteral')"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_asesmen"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1166,46 +1103,47 @@
         var arrJson = [];
         arrJson.push({"id_pasien":idPasien, "id_detail_checkup":idDetail, "id_pelayanan":""});
         var stJson = JSON.stringify(arrJson);
-        $('#waiting_dialog').dialog('open');
-        dwr.engine.setAsync(true);
-        PlanKegiatanRawatAction.getSearchKegiatanRawat(stJson, function (response) {
-            dwr.engine.setAsync(false);
-            var str = "";
-            if (response.length > 0){
-                $.each(response, function (i, item) {
-                    str += "<tr>" +
-                        "<td>" + item.idDetailCheckup + "</td>" +
-                        "<td>" + item.idPasien + "</td>" +
-                        "<td>" + item.namaPasien + "</td>" +
-                        "<td>" + item.namaPelayanan + "</td>" +
-                        "<td>" + item.diagnosa + "</td>" +
-                        "<td align='center'>" +
-                        "<button class='btn btn-primary' onclick=\"viewAddPlan('"+item.idDetailCheckup+"', '"+item.idPelayanan+"')\"><i class='fa fa-plus'></i></button> " +
-                        "<button class='btn btn-primary' onclick=\"viewPlan('"+item.idDetailCheckup+"')\"><i class='fa fa-search'></i></button>" +
-                        "</td>" +
-                        "</tr>";
-                });
-                $("#body-list-plan").html(str);
-            } else {
-                $("#body-list-plan").html(str);
-            }
-            $('#waiting_dialog').dialog('close');
-        })
+        var table = $('#myTable').DataTable();
+        table.clear().draw();
+        if(!cekSession()){
+            $('#waiting_dialog').dialog('open'); //show dialog loading
+            dwr.engine.setAsync(true);
+            PlanKegiatanRawatAction.getSearchKegiatanRawat(stJson, {
+                callback: function (response) {
+                    var str = "";
+                    if (response.length > 0){
+                        $.each(response, function (i, item) {
+                            table.row.add([
+                                item.idDetailCheckup,
+                                item.idPasien,
+                                item.namaPasien,
+                                item.namaPelayanan,
+                                item.diagnosa,
+                                '<div style="align: center">' +
+                                "<button class='btn btn-primary' onclick=\"viewAddPlan('"+item.idDetailCheckup+"', '"+item.idPelayanan+"')\"><i class='fa fa-plus'></i></button> " +
+                                "<button class='btn btn-primary' onclick=\"viewPlan('"+item.idDetailCheckup+"')\"><i class='fa fa-search'></i></button>" +
+                                '</div>'
+                            ]).draw(false);
+                        });
+                    } else {
+                        table.clear().draw();
+                    }
+                    $('#waiting_dialog').dialog('close'); //close dialog loading
+                }
+            });
+        }
     }
 
     function viewPlan(idDetail){
-        $("#modal-view-plan").modal('show');
-
+        $("#modal-view-plan").modal({show: true, backdrop: 'static'});
         PlanKegiatanRawatAction.getListPlanKegiatan(idDetail, function (response) {
-
             var str = "";
             $.each(response, function (i, item) {
                 str += "<tr>" +
                     "<td>"+ item.stTglMulai +"</td>" +
                     "<td align='center'><button class='btn btn-primary' onclick=\"showModalPlan('"+item.idDetailCheckup+"','"+item.stTglMulai+"', 'admin')\"><i class='fa fa-search'></i></button></td>" +
                     "</tr>";
-            })
-
+            });
             $("#body-view-plan").html(str);
 
         })
@@ -1216,7 +1154,7 @@
         $("#idDetailCheckup").val(idDetail);
         $("#tgl").val(formatDate(Date.now()));
         $("#idPoli").val(idPoli);
-        $("#modal-add-plan").modal('show');
+        $("#modal-add-plan").modal({show: true, backdrop: 'static'});
     }
 
     function setAllListNull() {
@@ -1231,42 +1169,44 @@
     }
 
     function showModalAdd(param) {
-        var idDetail = $("#idDetailCheckup").val();
-        if (param == "vitalsign")
-            $("#modal-add-vital-sign").modal('show');
-        if (param == "cairan"){
+        if(!cekSession()){
+            var idDetail = $("#idDetailCheckup").val();
+            if (param == "vitalsign")
+                $("#modal-add-vital-sign").modal({show: true, backdrop: 'static'});
+            if (param == "cairan"){
 
-            $("#mcr_mulai").timepicker();
-            $("#mcr_selesai").timepicker();
-            $("#mcr_buang").timepicker();
+                $("#mcr_mulai").timepicker();
+                $("#mcr_selesai").timepicker();
+                $("#mcr_buang").timepicker();
 
-            $("#modal-add-cairan").modal('show');
-        }
-        if (param == "parenteral"){
+                $("#modal-add-cairan").modal({show: true, backdrop: 'static'});
+            }
+            if (param == "parenteral"){
 
-            var idPoli = $("#idPoli").val();
+                var idPoli = $("#idPoli").val();
 
-            RawatInapAction.getListObatParenteral(idDetail, function(response){
-                var str = "";
-                $.each(response, function(i, item) {
-                    str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+' ('+item.bentuk+')'+"</option>";
+                RawatInapAction.getListObatParenteral(idDetail, function(response){
+                    var str = "";
+                    $.each(response, function(i, item) {
+                        str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+' ('+item.bentuk+')'+"</option>";
+                    });
+                    $("#select_obat_par").html(str);
                 });
-                $("#select_obat_par").html(str);
-            });
 
-            $("#modal-add-pemberian-parenteral").modal('show');
-        }
-        if (param == "nonparenteral"){
+                $("#modal-add-pemberian-parenteral").modal({show: true, backdrop: 'static'});
+            }
+            if (param == "nonparenteral"){
 
-            RawatInapAction.getListObatNonParenteral(idDetail,  function(response){
-                var str = "";
-                $.each(response, function(i, item) {
-                    str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+' ('+item.bentuk+')'+"</option>";
+                RawatInapAction.getListObatNonParenteral(idDetail,  function(response){
+                    var str = "";
+                    $.each(response, function(i, item) {
+                        str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+' ('+item.bentuk+')'+"</option>";
+                    });
+                    $("#select_obat_nonpar").html(str);
                 });
-                $("#select_obat_nonpar").html(str);
-            });
 
-            $("#modal-add-pemberian-non-parenteral").modal('show');
+                $("#modal-add-pemberian-non-parenteral").modal({show: true, backdrop: 'static'});
+            }
         }
     }
 
@@ -1360,9 +1300,6 @@
     function setToListTable(param) {
 
         if(param == "vitalsign"){
-
-            console.log(listOfVitalSign);
-
             $("#body-list-vital-sign").html("");
             if(listOfVitalSign.length > 0) {
                 var str = "";
@@ -1438,30 +1375,28 @@
     }
 
     function savePlan(){
-
         var idDetail = $("#idDetailCheckup").val();
         var tglPlan = $("#tgl").val();
         var strVitalSign = JSON.stringify(listOfVitalSign);
         var strCairan = JSON.stringify(listOfCairan);
         var strParenteral = JSON.stringify(listOfParenteral);
         var strNonParenteral = JSON.stringify(listOfNonParenteral);
-
-        if (idDetail != "" && tglPlan != ""){
-            PlanKegiatanRawatAction.savePlanKegiatanRawat(idDetail, tglPlan, strVitalSign, strCairan, strParenteral, strNonParenteral, function(response) {
-                if (response.status == "success"){
-                    alert("success");
-                    $("#modal-add-plan").modal('hide');
-                    $("#search_iddetailcheckup").val(idDetail);
-                    search();
-                } else {
-                    alert(response.msg);
-                    $("#modal-add-plan").modal('hide');
-                    $("#search_iddetailcheckup").val(idDetail);
-                    search();
-                }
-            })
-        } else {
-            alert("kosong");
+        if(!cekSession()){
+            if (idDetail != "" && tglPlan != ""){
+                PlanKegiatanRawatAction.savePlanKegiatanRawat(idDetail, tglPlan, strVitalSign, strCairan, strParenteral, strNonParenteral, function(response) {
+                    if (response.status == "success"){
+                        $("#modal-add-plan").modal('hide');
+                        $('#info_dialog').dialog('open');
+                        $("#search_iddetailcheckup").val(idDetail);
+                        search();
+                    } else {
+                        $('#success_add-plan').show();
+                        $('#msg_success').text(response.msg);
+                    }
+                });
+            } else {
+                alert("kosong");
+            }
         }
     }
 

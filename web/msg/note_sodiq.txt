@@ -2554,7 +2554,99 @@ INSERT INTO im_functions VALUES
 INSERT INTO im_func_roles VALUES
 (6922, 32, 'Y', now(), now(), 'admin', 'admin');
 
+--SENIN 26-04-2021
+INSERT INTO im_functions VALUES
+(6923, 'add rawat igd', '/rawatinap/addRawatIgd_rawatinap.action', 1485, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6924, 'save rawat igd', '/rawatinap/saveAddRawatIgd_rawatinap.action', 1485, null, now(), 'admin', now(), 'admin', 'Y','C', null);
 
+INSERT INTO im_func_roles VALUES
+(6923, 32, 'Y', now(), now(), 'admin', 'admin'),
+(6924, 32, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE im_simrs_lab
+DROP COLUMN id_operator_lab,
+DROP COLUMN id_dokter,
+DROP COLUMN id_kategori_lab,
+DROP COLUMN branch_id;
+
+ALTER TABLE im_simrs_lab
+ADD COLUMN is_paket VARCHAR(1);
+
+UPDATE im_simrs_lab
+SET is_paket = 'N';
+
+UPDATE im_simrs_lab
+SET is_paket = 'Y'
+WHERE id_lab = 'LAB00000015';
+
+CREATE TABLE it_simrs_upload_pendukung_pemeriksaan(
+ id_upload VARCHAR(30) NOT NULL PRIMARY KEY,
+ id_detail_checkup VARCHAR(50),
+ keterangan VARCHAR(100),
+ url_img VARCHAR(100),
+ flag VARCHAR(1),
+ action VARCHAR(1),
+ created_who VARCHAR(100),
+ created_date TIMESTAMP WITHOUT TIME ZONE,
+ last_update_who VARCHAR(100),
+ last_update TIMESTAMP WITHOUT TIME ZONE
+);
+
+CREATE SEQUENCE seq_upload_pendukung_pemeriksaan;
+
+ALTER TABLE it_simrs_partograf
+ADD COLUMN lama_kontraksi VARCHAR(10);
+
+UPDATE im_simrs_rekam_medis_pelayanan
+SET urutan = '9'
+WHERE id_rekam_medis_pelayanan = 'RMP000000235';
+
+UPDATE im_simrs_rekam_medis_pelayanan
+SET urutan = '10'
+WHERE id_rekam_medis_pelayanan = 'RMP000000206';
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000273','RMM00000034','ruang_bersalin','9','Y','C','migrasi', now(), now(),'migrasi'),
+('RMP000000274','RMM00000041','ruang_bersalin','9','Y','C','migrasi', now(), now(),'migrasi'),
+('RMP000000275','RMM00000040','ruang_bersalin','9','Y','C','migrasi', now(), now(),'migrasi'),
+('RMP000000276','RMM00000029','ruang_bersalin','9','Y','C','migrasi', now(), now(),'migrasi'),
+('RMP000000277','RMM00000036','ruang_bersalin','9','Y','C','migrasi', now(), now(),'migrasi');
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000278','RMM00000045','ruang_bersalin','9','Y','C','migrasi', now(), now(),'migrasi'),
+('RMP000000279','RMM00000042','ruang_bersalin','9','Y','C','migrasi', now(), now(),'migrasi');
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000280','RMM00000082','tppri','5','Y','C','migrasi', now(), now(),'migrasi'),
+('RMP000000281','RMM00000081','tppri','6','Y','C','migrasi', now(), now(),'migrasi'),
+('RMP000000282','RMM00000080','tppri','7','Y','C','migrasi', now(), now(),'migrasi'),
+('RMP000000283','RMM00000079','tppri','8','Y','C','migrasi', now(), now(),'migrasi'),
+('RMP000000284','RMM00000078','tppri','9','Y','C','migrasi', now(), now(),'migrasi');
+
+INSERT INTO im_simrs_diet_gizi VALUES
+('BEN00000006','Tim Saring Kasar',0,'02','Y','C', now(),'migrasi', now(),'migrasi','N'),
+('BEN00000007','Tim Saring Halus',0,'02','Y','C', now(),'migrasi', now(),'migrasi','N'),
+('BEN00000008','Makanan Cincang',0,'02','Y','C', now(),'migrasi', now(),'migrasi','N');
+
+
+--NOTE DI MESS SAMPAI LEBARAN
+INSERT INTO im_functions VALUES
+(6925, 'print resep pasien', '/reseppoli/printResepPasien_reseppoli.action', 1543, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6925, 36, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN indikasi VARCHAR(100);
+
+ALTER TABLE it_simrs_catatan_terintegrasi
+ADD COLUMN kesadaran VARCHAR(10),
+ADD COLUMN spo2 VARCHAR(10),
+ADD COLUMN o2 VARCHAR(10),
+ADD COLUMN ews VARCHAR(10);
+
+ALTER TABLE it_simrs_header_checkup
+ADD COLUMN catatan_klinis TEXT;
 
 
 

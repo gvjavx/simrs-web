@@ -311,7 +311,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Stok Tujuan</label>
+                        <label class="col-md-3" style="margin-top: 7px">Stok Gudang Farmasi</label>
                         <div class="col-md-2">
                             <label style="margin-top: 7px">Box</label>
                             <input class="form-control" readonly id="req_stok_box">
@@ -326,7 +326,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Stok Sendiri</label>
+                        <label class="col-md-3" style="margin-top: 7px">Stok Farmasi</label>
                         <div class="col-md-2">
                             <label style="margin-top: 7px">Box</label>
                             <input class="form-control" readonly id="req_stok_box_sendiri">

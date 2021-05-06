@@ -7,6 +7,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.jenisperiksapasien.dao.AsuransiDao;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
+import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.transaksi.checkup.model.AlertPasien;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
@@ -934,11 +935,43 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setSuhu(hdr.getSuhu());
                     checkup.setNadi(hdr.getNadi());
                     checkup.setPernafasan(hdr.getPernafasan());
+                    checkup.setIdKelasRuangan(getDataRuangan(checkup.getIdRuangan()).getIdKelasRuangan());
+                    checkup.setKategoriRuangan(getDataRuangan(checkup.getIdRuangan()).getKategori());
                 }
             }
         }
 
         return checkup;
+    }
+
+    private Ruangan getDataRuangan(String idTT){
+        Ruangan res = new Ruangan();
+        if(idTT != null && !"".equalsIgnoreCase(idTT)){
+            String SQL = "SELECT\n" +
+                    "a.id_tempat_tidur,\n" +
+                    "b.id_ruangan,\n" +
+                    "b.id_kelas_ruangan,\n" +
+                    "c.kategori\n" +
+                    "FROM mt_simrs_ruangan_tempat_tidur a\n" +
+                    "INNER JOIN mt_simrs_ruangan b ON a.id_ruangan = b.id_ruangan\n" +
+                    "INNER JOIN im_simrs_kelas_ruangan c ON b.id_kelas_ruangan = c.id_kelas_ruangan\n"+
+                    "WHERE a.id_tempat_tidur = :id";
+
+            List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idTT)
+                    .list();
+
+            if(result.size() > 0){
+                Object[] obj = result.get(0);
+                if(obj[2] != null){
+                    res.setIdKelasRuangan(obj[2].toString());
+                }
+                if(obj[3] != null){
+                    res.setKategori(obj[3].toString());
+                }
+            }
+        }
+        return res;
     }
 
     public HeaderCheckup getAnamneseTBBB(String noCheckup){
@@ -1423,7 +1456,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "e.id_diagnosa,\n" +
                     "e.keterangan_diagnosa,\n" +
                     "f.is_periksa_luar,\n" +
-                    "f.id_header_pemeriksaan\n" +
+                    "f.id_header_pemeriksaan,\n" +
+                    "a.catatan_klinis\n" +
                     "FROM it_simrs_header_checkup  a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN it_simrs_riwayat_tindakan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
@@ -1471,6 +1505,12 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                         checkup.setKeteranganKeluar(obj[8] == null ? null : obj[8].toString());
                         checkup.setDiagnosa(obj[10] == null ? null : obj[10].toString()+"-");
                         checkup.setNamaDiagnosa(obj[11] == null ? null : obj[11].toString());
+                        Dokter dokter = getNamaSipDokter(checkup.getIdDetailCheckup(), "");
+                        if(dokter != null){
+                            checkup.setNamaDokter(dokter.getNamaDokter());
+                            checkup.setIdDokter(dokter.getIdDokter());
+                        }
+                        checkup.setCatatanKlinis(obj[14] == null ? null : obj[14].toString());
                     }
                     if (obj[4] != null) {
                         String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format((Timestamp) obj[4]);
