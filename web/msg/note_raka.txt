@@ -1,3 +1,21 @@
+------ 2021-05-06 ===> update im_company
+-- update im_company
+    update im_company set persen_cuti_panjang = 100, persen_cuti_tahunan=55;
+    update im_company set biaya_jabatan_persentase = 5 , param_biaya_jabatan = 500000;
+-- update skala_gaji_bod
+    update im_hris_payroll_skala_gaji_bod
+        set position_id = 'PS466'
+        where position_id = 'PS177'; -- komisaris
+    update im_hris_payroll_skala_gaji_bod
+        set position_id = 'PS467'
+        where position_id = 'PS178'; -- sekdekom
+    update im_hris_payroll_skala_gaji_bod
+        set position_id = 'PS468'
+        where position_id = 'PS179'; -- komite audit
+    update im_hris_payroll_skala_gaji_bod
+        set position_id = 'PS469'
+        where position_id = 'PS180'; -- direktur
+
 ------ 2021-05-05 ===> update table trans (tidak drop)
 -- im_akun_trans
     ALTER TABLE im_akun_trans
