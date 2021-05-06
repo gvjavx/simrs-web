@@ -181,6 +181,8 @@ function saveICU(jenis, ket) {
         var jatuh4 = $('[name=radio_aud_jatuh4]:checked').val();
         var jatuh5 = $('[name=radio_aud_jatuh5]:checked').val();
         var jatuh6 = $('[name=radio_aud_jatuh6]:checked').val();
+        var tgl = $('#tgl_'+jenis).val();
+        var jam = $('#jam_'+jenis).val();
 
         if (jatuh1 && jatuh2 && jatuh3 && jatuh4 && jatuh5 != undefined) {
 
@@ -198,6 +200,12 @@ function saveICU(jenis, ket) {
             var skor5 = jatuh5.split("|")[1];
             var skor6 = jatuh6.split("|")[1];
 
+            data.push({
+                'parameter': 'Tanggal Jam',
+                'jawaban': tgl+' '+jam,
+                'keterangan': jenis,
+                'id_detail_checkup': idDetailCheckup
+            });
             data.push({
                 'parameter': 'Riwayat Jatuh',
                 'jawaban': isi1,
@@ -245,7 +253,8 @@ function saveICU(jenis, ket) {
     }
 
     if ("decobitus" == jenis) {
-
+        var tgl = $('#tgl_'+jenis).val();
+        var jam = $('#jam_'+jenis).val();
         var va = $('[name=db]');
         var va1 = "";
         $.each(va, function (i, item) {
@@ -259,7 +268,12 @@ function saveICU(jenis, ket) {
         });
 
         if (va1 != '') {
-
+            data.push({
+                'parameter': 'Tanggal Jam',
+                'jawaban': tgl+' '+jam,
+                'keterangan': jenis,
+                'id_detail_checkup': idDetailCheckup
+            });
             data.push({
                 'parameter': 'Derajat Decubitus',
                 'jawaban': va1,
@@ -272,7 +286,8 @@ function saveICU(jenis, ket) {
     }
 
     if ("nyeri" == jenis) {
-
+        var tgl = $('#tgl_'+jenis).val();
+        var jam = $('#jam_'+jenis).val();
         var nyeri = $('[name=radio_aud_nyeri]:checked').val();
         var skala = $('[name=radio_aud_skala]:checked').val();
         var lokasi = $('#yer_lokasi').val();
@@ -290,6 +305,12 @@ function saveICU(jenis, ket) {
                 cecek = true;
             }
             if(cecek){
+                data.push({
+                    'parameter': 'Tanggal Jam',
+                    'jawaban': tgl+' '+jam,
+                    'keterangan': jenis,
+                    'id_detail_checkup': idDetailCheckup
+                });
                 data.push({
                     'parameter': 'Apakah terdapat keluhan nyeri',
                     'jawaban': nyeri,
@@ -336,43 +357,41 @@ function saveICU(jenis, ket) {
     }
 
     if ("gcs" == jenis) {
+        var tgl = $('#tgl_'+jenis).val();
+        var jam = $('#jam_'+jenis).val();
 
-        var gcs1 = $('#gc1').val();
-        var gcs2 = $('#gc2').val();
-        var gcs3 = $('#gc3').val();
+        var va2 = $('#res2').val();
+        var va3 = $('#res3').val();
+        var va4 = $('#res4').val();
+        var va5 = $('#res5').val();
+        var va6 = $('#res6').val();
+        var va7 = $('#res7').val();
+        var va8 = $('#res8').val();
+        var va9 = $('#res9').val();
+        var va10 = $('#res10').val();
+        var va11 = $('#res11').val();
+        var va12 = $('#res12').val();
 
-        if (gcs1 && gcs2 && gcs3 != '') {
-
-            var isi1 = gcs1.split("|")[0];
-            var isi2 = gcs2.split("|")[0];
-            var isi3 = gcs3.split("|")[0];
-
-            var skor1 = gcs1.split("|")[1];
-            var skor2 = gcs2.split("|")[1];
-            var skor3 = gcs3.split("|")[1];
-
+        if (va1 && va2 && va3 != '') {
             data.push({
-                'parameter': 'E = Eye (membuka mata)',
-                'jawaban': isi1,
+                'parameter': 'GCS',
+                'jawaban': 'E : '+va2 + ', V : ' + va3 + ', M : ' + va4,
                 'keterangan': jenis,
                 'jenis': ket,
-                'skor': skor1,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'V = Verbal (komunikasi)',
-                'jawaban': isi2,
+                'parameter': 'Diameter Pupil',
+                'jawaban': 'KA : '+va5 + ', KI : ' + va6,
                 'keterangan': jenis,
                 'jenis': ket,
-                'skor': skor2,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'M = Motorik (gerakan ekstimitas atas)',
-                'jawaban': isi3,
+                'parameter': 'Reflek Cahaya',
+                'jawaban': 'KA : '+va7 + ', KI : ' + va8+', TKA : '+va9 + ', TKA : ' + va10+', KKA : '+va11 + ', KKI : ' + va12,
                 'keterangan': jenis,
                 'jenis': ket,
-                'skor': skor3,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -1610,7 +1629,7 @@ function detailICU(jenis) {
 function delRowICU(id) {
     $('#del_icu_' + id).remove();
     var url = "";
-    if(id == "resiko_jatuh" || id == "decobitus" || id == "nyeri"){
+    if(id == "resiko_jatuh" || id == "decobitus" || id == "nyeri" || "alat_infasive" == id || "gcs" == id){
         url = contextPath + '/pages/images/icons8-add-list-25.png';
     }else{
         url = contextPath + '/pages/images/icons8-plus-25.png';
@@ -1855,17 +1874,6 @@ function saveRespirasi(jenis, ket) {
         'id_rm': tempidRm
     }
     var va1 = $('#res1').val();
-    var va2 = $('#res2').val();
-    var va3 = $('#res3').val();
-    var va4 = $('#res4').val();
-    var va5 = $('#res5').val();
-    var va6 = $('#res6').val();
-    var va7 = $('#res7').val();
-    var va8 = $('#res8').val();
-    var va9 = $('#res9').val();
-    var va10 = $('#res10').val();
-    var va11 = $('#res11').val();
-    var va12 = $('#res12').val();
     var va13 = $('#res13').val();
     var va14 = $('#res14').val();
     var va014 = $('#res014').val();
@@ -1886,15 +1894,10 @@ function saveRespirasi(jenis, ket) {
 
     var data = "";
 
-    if (va1 != '') {
+    if (va13 != '') {
         data = {
             'id_detail_checkup': idDetailCheckup,
             'waktu': va1,
-            'gcs': va2 + '|' + va3 + '|' + va4,
-            'diameter_pupil': va5 + '|' + va6,
-            'reflek_cahaya': va7 + '|' + va8,
-            'tk': va9 + '|' + va10,
-            'kk': va11 + '|' + va12,
             'o2': va13,
             'tipe_ventilasi': va14,
             'peep': va15,
@@ -1968,25 +1971,8 @@ function listRespirasi(jenis) {
                         }
                     }
 
-                    var gcs = item.gcs.split("|");
-                    var dp = item.diameterPupil.split("|");
-                    var rc = item.reflekCahaya.split("|");
-                    var tk = item.tk.split("|");
-                    var kk = item.kk.split("|");
-
                     body += '<tr>' +
                         '<td>' + tempTgl + '<span class="pull-right">' + cekItemIsNull(item.waktu) + '</span>' + '</td>' +
-                        '<td>' + gcs[0] + '</td>' +
-                        '<td>' + gcs[1] + '</td>' +
-                        '<td>' + gcs[2] + '</td>' +
-                        '<td>' + dp[0] + '</td>' +
-                        '<td>' + dp[1] + '</td>' +
-                        '<td>' + rc[0] + '</td>' +
-                        '<td>' + rc[1] + '</td>' +
-                        '<td>' + tk[0] + '</td>' +
-                        '<td>' + tk[1] + '</td>' +
-                        '<td>' + kk[0] + '</td>' +
-                        '<td>' + kk[1] + '</td>' +
                         '<td>' + cekItemIsNull(item.o2) + '</td>' +
                         '<td>' + cekItemIsNull(item.peep) + '</td>' +
                         '<td>' + cekItemIsNull(item.frekwensi) + '</td>' +
@@ -2013,10 +1999,6 @@ function listRespirasi(jenis) {
             if (cekData) {
                 head = '<tr>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">Tanggal Jam</td>\n' +
-                    '<td colspan="3" style="vertical-align: middle" align="center">GCS</td>\n' +
-                    '<td colspan="2" style="vertical-align: middle" align="center">DP</td>\n' +
-                    '<td colspan="2" style="vertical-align: middle" align="center">RC</td>\n' +
-                    '<td colspan="4" style="vertical-align: middle" align="center">EXTR</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">O2</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">PE</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">FR</td>\n' +
@@ -2033,20 +2015,7 @@ function listRespirasi(jenis) {
                     '<td rowspan="2" style="vertical-align: middle" align="center">SP</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">SE</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">Action</td>\n' +
-                    '                        </tr>\n' +
-                    '                        <tr>\n' +
-                    '<td align="center">E</td>\n' +
-                    '<td align="center">V</td>\n' +
-                    '<td align="center">M</td>\n' +
-                    '<td align="center">R</td>\n' +
-                    '<td align="center">L</td>\n' +
-                    '<td align="center">R</td>\n' +
-                    '<td align="center">L</td>\n' +
-                    '<td align="center">TR</td>\n' +
-                    '<td align="center">TL</td>\n' +
-                    '<td align="center">KR</td>\n' +
-                    '<td align="center">KL</td>\n' +
-                    '                        </tr>';
+                    '                        </tr>\n';
             }
             var table = '<table style="font-size: 10px" class="table table-bordered">' +
                 '<thead>' + head + '</thead>' +
