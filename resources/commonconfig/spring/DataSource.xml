@@ -34,6 +34,6 @@
           p:driverClassName="org.postgresql.Driver"
           p:url="jdbc:postgresql://localhost:5432/gomedsys"
           p:username="postgres"
-          p:password="123456"/>
+          p:password="postgres"/>
 
 </beans>
