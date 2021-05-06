@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printResepPasien" language="groovy" pageWidth="421" pageHeight="595" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="2.5937424601000223"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printResepPasien" language="groovy" pageWidth="297" pageHeight="421" columnWidth="257" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
+	<property name="ireport.zoom" value="1.3310000000000126"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="581"/>
+	<property name="ireport.y" value="10"/>
 	<parameter name="reportParams.resepId" class="java.lang.String"/>
 	<parameter name="reportParams.logo" class="java.lang.String"/>
 	<parameter name="reportParams.nik" class="java.lang.String"/>
@@ -19,14 +19,22 @@
 	<parameter name="reportParams.area" class="java.lang.String"/>
 	<parameter name="reportParams.idPasien" class="java.lang.String"/>
 	<parameter name="reportParams.petugas" class="java.lang.String"/>
-	<parameter name="reportParams.isKronis" class="java.lang.String"/>
 	<parameter name="reportParams.dokter" class="java.lang.String"/>
 	<parameter name="reportParams.ttdDokter" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="ttdPasien" class="java.lang.String"/>
 	<parameter name="ttdApoteker" class="java.lang.String"/>
 	<parameter name="idDokter" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT a.id_permintaan_resep, a.id_pasien, a.id_detail_checkup, b.id_obat, b.jenis_satuan, c.nama_obat, b.qty, b.keterangan FROM mt_simrs_permintaan_resep a
+		<![CDATA[SELECT
+a.id_permintaan_resep,
+a.id_pasien,
+a.id_detail_checkup,
+b.id_obat,
+b.jenis_satuan,
+c.nama_obat,
+b.qty,
+b.keterangan
+FROM mt_simrs_permintaan_resep a
 INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat
 INNER JOIN (SELECT id_obat, nama_obat FROM im_simrs_obat GROUP BY id_obat, nama_obat) c ON b.id_obat = c.id_obat
 WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
@@ -43,7 +51,7 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="148" splitType="Stretch">
+		<band height="201" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="98" width="90" height="15" uuid="6c44ef7d-db93-4127-8056-c6e5dc48fb34"/>
 				<textElement verticalAlignment="Middle">
@@ -59,14 +67,14 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 				<text><![CDATA[Tempat, Tanggal Lahir]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="214" y="68" width="60" height="15" uuid="f460e830-099e-4f5e-8a66-6c0df7fc255d"/>
+				<reportElement x="1" y="128" width="88" height="15" uuid="f460e830-099e-4f5e-8a66-6c0df7fc255d"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Jenis Kelamin]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="214" y="83" width="60" height="15" uuid="965ee103-5b85-4b9c-9f39-4912ae949d04"/>
+				<reportElement x="1" y="143" width="88" height="15" uuid="965ee103-5b85-4b9c-9f39-4912ae949d04"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -101,21 +109,21 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="274" y="68" width="5" height="15" uuid="64e71867-e434-4315-9330-2660670831dd"/>
+				<reportElement x="89" y="128" width="5" height="15" uuid="64e71867-e434-4315-9330-2660670831dd"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="274" y="83" width="5" height="15" uuid="90a2f6a7-3ca2-4703-b1fb-c39413a844c3"/>
+				<reportElement x="89" y="143" width="5" height="15" uuid="90a2f6a7-3ca2-4703-b1fb-c39413a844c3"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="94" y="83" width="110" height="15" uuid="ba387fca-a220-41d7-86a0-f7bdbc0958e7"/>
+				<reportElement x="94" y="83" width="163" height="15" uuid="ba387fca-a220-41d7-86a0-f7bdbc0958e7"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -123,7 +131,7 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 				<textFieldExpression><![CDATA[$P{reportParams.nik} == null ? "" : $P{reportParams.nik}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="94" y="98" width="110" height="15" uuid="85597b11-0127-46c5-9839-b72b43d88ddd"/>
+				<reportElement x="94" y="98" width="163" height="15" uuid="85597b11-0127-46c5-9839-b72b43d88ddd"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -131,7 +139,7 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="94" y="113" width="110" height="15" uuid="6ea987d3-b994-439c-849a-28abc91b7a06"/>
+				<reportElement x="94" y="113" width="163" height="15" uuid="6ea987d3-b994-439c-849a-28abc91b7a06"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -139,7 +147,7 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 				<textFieldExpression><![CDATA[$P{reportParams.tglLahir} == null ? "" : $P{reportParams.tglLahir}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="279" y="68" width="102" height="15" uuid="befa0515-1d3b-4974-8d29-6745a598e43e"/>
+				<reportElement x="94" y="128" width="163" height="15" uuid="befa0515-1d3b-4974-8d29-6745a598e43e"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -147,7 +155,7 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 				<textFieldExpression><![CDATA[$P{reportParams.jenisKelamin} == null ? "" : $P{reportParams.jenisKelamin}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="279" y="83" width="102" height="15" uuid="b26a9b04-6ba9-4730-bd24-ae3f8668c18e"/>
+				<reportElement x="94" y="143" width="163" height="15" uuid="b26a9b04-6ba9-4730-bd24-ae3f8668c18e"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -155,17 +163,17 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 				<textFieldExpression><![CDATA[$P{reportParams.jenisPasien} == null ? "" : $P{reportParams.jenisPasien}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="285" y="7" width="96" height="32" uuid="88d174f2-09b9-479a-9f51-eb778d78be6b"/>
+				<reportElement x="182" y="0" width="74" height="34" uuid="88d174f2-09b9-479a-9f51-eb778d78be6b"/>
 				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
 					<jr:codeExpression><![CDATA[$P{reportParams.resepId}]]></jr:codeExpression>
 				</jr:Code128>
 			</componentElement>
 			<image onErrorType="Icon">
-				<reportElement x="0" y="0" width="94" height="39" uuid="3db88b72-b9cb-4b42-a98b-e14127f84db9"/>
+				<reportElement x="0" y="0" width="84" height="43" uuid="3db88b72-b9cb-4b42-a98b-e14127f84db9"/>
 				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="248" y="39" width="59" height="19" uuid="3c3637e0-6fd2-4a08-b533-8300d9a210f7"/>
+				<reportElement x="198" y="34" width="59" height="11" uuid="3c3637e0-6fd2-4a08-b533-8300d9a210f7"/>
 				<textElement>
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
@@ -180,28 +188,28 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 				<textFieldExpression><![CDATA[$P{reportParams.area} == null ? "" : $P{reportParams.area}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy HH.mm.ss">
-				<reportElement x="306" y="39" width="75" height="19" uuid="e3b9414a-1edb-4492-833b-f989f0d441ae"/>
+				<reportElement x="182" y="43" width="75" height="19" uuid="e3b9414a-1edb-4492-833b-f989f0d441ae"/>
 				<textElement>
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="214" y="98" width="60" height="15" uuid="98b1884b-eff1-45f0-9d91-9a802216e734"/>
+				<reportElement x="1" y="158" width="88" height="15" uuid="98b1884b-eff1-45f0-9d91-9a802216e734"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Alamat]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="274" y="98" width="5" height="15" uuid="40fbfc0b-90f9-4335-943c-33a34f2c8b2e"/>
+				<reportElement x="89" y="158" width="5" height="15" uuid="40fbfc0b-90f9-4335-943c-33a34f2c8b2e"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="279" y="100" width="102" height="35" uuid="9286e946-ed3e-4a4f-8652-dcbabdd63657"/>
+				<reportElement x="94" y="158" width="163" height="35" uuid="9286e946-ed3e-4a4f-8652-dcbabdd63657"/>
 				<box topPadding="1" leftPadding="1"/>
 				<textElement verticalAlignment="Top">
 					<font size="8"/>
@@ -217,7 +225,7 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="1" y="64" width="380" height="1" uuid="fbe24f5f-46cb-4052-a33b-afb82fda86a2"/>
+				<reportElement x="1" y="64" width="256" height="1" uuid="fbe24f5f-46cb-4052-a33b-afb82fda86a2"/>
 			</line>
 			<staticText>
 				<reportElement x="0" y="68" width="90" height="15" uuid="04851baa-d546-4f24-bcef-ac66cb59ed10"/>
@@ -227,7 +235,7 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 				<text><![CDATA[Nomor RM]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="94" y="68" width="110" height="15" uuid="f82077cd-612c-4693-9cca-625e11f56869"/>
+				<reportElement x="94" y="68" width="163" height="15" uuid="f82077cd-612c-4693-9cca-625e11f56869"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -241,127 +249,33 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="94" y="9" width="191" height="20" uuid="612d454f-9532-4667-af7b-75659ba211cb"/>
-				<box leftPadding="0"/>
+			<staticText>
+				<reportElement x="84" y="8" width="90" height="15" uuid="dfd53aaa-aba0-4ba2-a0df-8dac38a34982"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.isKronis} == "Y" ? "Resep Pasien Obat Kronis" : "Resep Pasien"]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[Resep Pasien]]></text>
+			</staticText>
 		</band>
 	</title>
-	<columnHeader>
-		<band height="21" splitType="Stretch">
-			<staticText>
-				<reportElement mode="Opaque" x="226" y="1" width="59" height="20" backcolor="#FFFFFF" uuid="02d0f82e-8ef9-48d6-b4fb-eb08df635953"/>
-				<box>
-					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-				</box>
-				<textElement textAlignment="Justified" verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
-				</textElement>
-				<text><![CDATA[Jenis Satuan]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="285" y="1" width="96" height="20" backcolor="#FFFFFF" uuid="328a3724-a9b4-4851-aa2f-84112355f45c"/>
-				<box>
-					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-				</box>
-				<textElement textAlignment="Justified" verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
-				</textElement>
-				<text><![CDATA[Keterangan]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="73" y="1" width="119" height="20" backcolor="#FFFFFF" uuid="1bcd118f-b012-4f3f-89ec-483c3e4fe591"/>
-				<box>
-					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
-				</textElement>
-				<text><![CDATA[Nama Obat]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="192" y="1" width="34" height="20" backcolor="#FFFFFF" uuid="8121d0f2-d6d7-4811-bf8f-182ca34f5e8e"/>
-				<box>
-					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
-				</textElement>
-				<text><![CDATA[Qty]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="0" y="1" width="73" height="20" backcolor="#FFFFFF" uuid="00885b2a-122c-42e3-be07-15a8cfb7d05e"/>
-				<box>
-					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
-				</textElement>
-				<text><![CDATA[ID Obat]]></text>
-			</staticText>
-		</band>
-	</columnHeader>
 	<detail>
-		<band height="20" splitType="Stretch">
-			<textField>
-				<reportElement x="0" y="0" width="73" height="20" uuid="4e7867e8-1281-4ade-936e-b6ecd95d7bff"/>
-				<box>
-					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{id_obat}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="73" y="0" width="119" height="20" uuid="4a9896a4-6154-4c19-9e1a-80072f937aa7"/>
-				<box>
-					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-				</box>
+		<band height="40" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="94" height="20" isPrintWhenDetailOverflows="true" uuid="4a9896a4-6154-4c19-9e1a-80072f937aa7"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nama_obat}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="192" y="0" width="34" height="20" uuid="f425dc40-25fe-424a-a718-b7ff620b90d0"/>
-				<box>
-					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-				</box>
+				<reportElement x="94" y="0" width="34" height="20" uuid="f425dc40-25fe-424a-a718-b7ff620b90d0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="226" y="0" width="59" height="20" uuid="b7a12e95-f5e5-4431-af27-fa2be1d462e8"/>
-				<box>
-					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{jenis_satuan}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="285" y="0" width="96" height="20" uuid="ff5d77ce-10c8-421a-a6f7-b586b68ccc3c"/>
-				<box>
-					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-				</box>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="44" y="20" width="212" height="20" isPrintWhenDetailOverflows="true" uuid="ff5d77ce-10c8-421a-a6f7-b586b68ccc3c"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="false"/>
 				</textElement>
@@ -373,10 +287,10 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 		<band height="34"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="11" splitType="Stretch"/>
+		<band height="12" splitType="Stretch"/>
 	</pageFooter>
 	<lastPageFooter>
-		<band height="84">
+		<band height="160">
 			<staticText>
 				<reportElement x="1" y="0" width="100" height="13" uuid="497fff24-2bee-47aa-9109-80ac2641288a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -385,14 +299,14 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 				<text><![CDATA[Pasien]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="148" y="0" width="100" height="13" uuid="6ca8ed04-f00f-4be1-a826-a556328c25b0"/>
+				<reportElement x="140" y="0" width="100" height="13" uuid="6ca8ed04-f00f-4be1-a826-a556328c25b0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Dokter]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="281" y="0" width="100" height="13" uuid="0329329c-2319-491d-9e52-9fc8e1f2bc9f"/>
+				<reportElement x="66" y="88" width="107" height="13" uuid="0329329c-2319-491d-9e52-9fc8e1f2bc9f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -406,23 +320,23 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="148" y="70" width="100" height="1" uuid="7580d518-3958-4d82-b075-b845ae7813c8"/>
+				<reportElement x="140" y="70" width="100" height="1" uuid="7580d518-3958-4d82-b075-b845ae7813c8"/>
 			</line>
 			<line>
 				<reportElement x="1" y="70" width="100" height="1" uuid="c9d4fef4-60a0-42b7-af4c-5b727ac4baa1"/>
 			</line>
 			<line>
-				<reportElement x="279" y="70" width="100" height="1" uuid="d5313df2-f086-418b-b8dc-bc2d498f0656"/>
+				<reportElement x="71" y="158" width="100" height="1" uuid="d5313df2-f086-418b-b8dc-bc2d498f0656"/>
 			</line>
 			<textField>
-				<reportElement x="129" y="57" width="135" height="12" uuid="a2214fa4-47c0-45dc-a294-e25124a0c00d"/>
+				<reportElement x="121" y="57" width="135" height="12" uuid="a2214fa4-47c0-45dc-a294-e25124a0c00d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isUnderline="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.dokter} == null ? "" : $P{reportParams.dokter}]]></textFieldExpression>
 			</textField>
 			<image onErrorType="Blank">
-				<reportElement x="159" y="13" width="78" height="44" uuid="4a48a78f-1cec-4ccf-b85c-7b9794cac441"/>
+				<reportElement x="151" y="13" width="78" height="44" uuid="4a48a78f-1cec-4ccf-b85c-7b9794cac441"/>
 				<imageExpression><![CDATA[$P{reportParams.ttdDokter}]]></imageExpression>
 			</image>
 			<image onErrorType="Blank">
@@ -430,18 +344,18 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 				<imageExpression><![CDATA[$P{ttdPasien}]]></imageExpression>
 			</image>
 			<image onErrorType="Blank">
-				<reportElement x="292" y="13" width="78" height="44" uuid="cfdc166e-b353-43b5-b0f3-d56c0173a56a"/>
+				<reportElement x="84" y="101" width="78" height="44" uuid="cfdc166e-b353-43b5-b0f3-d56c0173a56a"/>
 				<imageExpression><![CDATA[$P{ttdApoteker}]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="274" y="57" width="107" height="12" uuid="1c5bce91-279f-467b-af74-2c5bc7e94f63"/>
+				<reportElement x="66" y="145" width="107" height="12" uuid="1c5bce91-279f-467b-af74-2c5bc7e94f63"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isUnderline="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.petugas} == null ? "" : $P{reportParams.petugas}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="129" y="71" width="135" height="12" uuid="b3f5aa62-3100-473a-9786-fc49fc99cfc9"/>
+				<reportElement x="121" y="71" width="135" height="12" uuid="b3f5aa62-3100-473a-9786-fc49fc99cfc9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isUnderline="false"/>
 				</textElement>

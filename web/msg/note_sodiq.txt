@@ -2629,6 +2629,29 @@ INSERT INTO im_simrs_diet_gizi VALUES
 ('BEN00000008','Makanan Cincang',0,'02','Y','C', now(),'migrasi', now(),'migrasi','N');
 
 
+--NOTE DI MESS SAMPAI LEBARAN
+INSERT INTO im_functions VALUES
+(6925, 'print resep pasien', '/reseppoli/printResepPasien_reseppoli.action', 1543, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6925, 36, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN indikasi VARCHAR(100);
+
+ALTER TABLE it_simrs_catatan_terintegrasi
+ADD COLUMN kesadaran VARCHAR(10),
+ADD COLUMN spo2 VARCHAR(10),
+ADD COLUMN o2 VARCHAR(10),
+ADD COLUMN ews VARCHAR(10);
+
+ALTER TABLE it_simrs_header_checkup
+ADD COLUMN catatan_klinis TEXT;
+
+
+
+
+
 
 
 

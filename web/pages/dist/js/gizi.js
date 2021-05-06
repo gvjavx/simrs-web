@@ -1134,16 +1134,40 @@ function setSkriningGizi(umur) {
             '        <label class="col-md-9">1. Apakah pasien mengalami penuruanan / peningkatan BB yang tidak di inginkan dalam 6 bulan terakhir ?</label>\n' +
             '        <div class="col-md-1">\n' +
             '            <div class="custom02">\n' +
-            '                <input type="radio" value="Ya|2" id="gz11" name="gz1" /><label for="gz11">Ya</label>\n' +
+            '                <input onclick="cekGizi(\'Ya\', \'form-penurunan\')" type="radio" value="Ya|2" id="gz11" name="gz1" /><label for="gz11">Ya</label>\n' +
             '            </div>\n' +
             '        </div>\n' +
             '        <div class="col-md-2">\n' +
             '            <div class="custom02">\n' +
-            '                <input type="radio" value="Tidak|0" id="gz12" name="gz1" /><label for="gz12">Tidak</label>\n' +
+            '                <input onclick="cekGizi(\'Tidak\', \'form-penurunan\')" type="radio" value="Tidak|0" id="gz12" name="gz1" /><label for="gz12">Tidak</label>\n' +
             '            </div>\n' +
             '        </div>\n' +
             '    </div>\n' +
             '</div>\n' +
+            '<div class="row" style="display: none;" id="form-penurunan">\n' +
+        '                            <div class="form-group">\n' +
+        '                                <div class="col-md-3">\n' +
+        '                                    <div class="custom02" style="margin-top: 7px">\n' +
+        '                                        <input type="radio" value="1 - 5 kg|1" id="aud_penurunan1" name="penurunan" /><label for="aud_penurunan1">1 - 5 kg</label>\n' +
+        '                                    </div>\n' +
+        '                                </div>\n' +
+        '                                <div class="col-md-3">\n' +
+        '                                    <div class="custom02" style="margin-top: 7px">\n' +
+        '                                        <input type="radio" value="6 - 10 kg|2" id="aud_penurunan2" name="penurunan" /><label for="aud_penurunan2">6 - 10 kg</label>\n' +
+        '                                    </div>\n' +
+        '                                </div>\n' +
+        '                                <div class="col-md-3">\n' +
+        '                                    <div class="custom02" style="margin-top: 7px">\n' +
+        '                                        <input type="radio" value="11 - 15 kg|3" id="aud_penurunan3" name="penurunan" /><label for="aud_penurunan3">11 - 15 kg</label>\n' +
+        '                                    </div>\n' +
+        '                                </div>\n' +
+        '                                <div class="col-md-3">\n' +
+        '                                    <div class="custom02" style="margin-top: 7px">\n' +
+        '                                        <input type="radio" value="> 15 kg|4" id="aud_penurunan4" name="penurunan" /><label for="aud_penurunan4">> 15 kg</label>\n' +
+        '                                    </div>\n' +
+        '                                </div>\n' +
+        '                            </div>\n' +
+        '                        </div>'+
             '<hr class="garis">\n' +
             '<div class="row">\n' +
             '    <div class="form-group">\n' +
@@ -1166,17 +1190,17 @@ function setSkriningGizi(umur) {
             '        <label class="col-md-9">3. Pasien dengan diagnosa khusus / kondisi khusus ?</label>\n' +
             '        <div class="col-md-1">\n' +
             '            <div class="custom02">\n' +
-            '                <input type="radio" value="Ya|3" id="gz31" name="gz3" /><label for="gz31">Ya</label>\n' +
+            '                <input onclick="cekGizi(\'Ya\', \'form-penyakit\')" type="radio" value="Ya|3" id="gz31" name="gz3" /><label for="gz31">Ya</label>\n' +
             '            </div>\n' +
             '        </div>\n' +
             '        <div class="col-md-2">\n' +
             '            <div class="custom02">\n' +
-            '                <input type="radio" value="Tidak|0" id="gz32" name="gz3" /><label for="gz32">Tidak</label>\n' +
+            '                <input onclick="cekGizi(\'Tidak\', \'form-penyakit\')" type="radio" value="Tidak|0" id="gz32" name="gz3" /><label for="gz32">Tidak</label>\n' +
             '            </div>\n' +
             '        </div>\n' +
             '    </div>\n' +
             '</div>\n' +
-            '<div class="row">\n' +
+            '<div class="row" id="form-penyakit" style="display: none">\n' +
             '    <div class="form-group">\n' +
             '        <label class="col-md-3">Penyakit : </label>\n' +
             '        <div class="col-md-9">\n' +
@@ -1289,4 +1313,14 @@ function setPengkajianGizi(umur) {
             '</div>';
     }
     $('#set_pengakajian').html(res);
+}
+
+
+function cekGizi(val, form){
+    console.log(val);
+    if(val == "Ya"){
+        $('#'+form).show();
+    }else{
+        $('#'+form).hide();
+    }
 }

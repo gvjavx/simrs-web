@@ -261,35 +261,37 @@ public class KeteranganObatBoImpl implements KeteranganObatBo{
                     p->p.getId() != "1"
             ).collect(Collectors.toList());
 
-            for (int i = maxlevel ; i > 0 ; i--){
+            results.addAll(listOfLevel2Keatas);
 
-                if (i == 1){
-                    break;
-                }
-
-                List<KeteranganObat> currentLevel = filteredByLevel(listOfLevel2Keatas, String.valueOf(i));
-                if (currentLevel == null)
-                    break;
-
-                int levelParent = i-1;
-                for (KeteranganObat keteranganObat : currentLevel){
-
-                    if (keteranganObat.getParentId() != null && !"".equalsIgnoreCase(keteranganObat.getParentId()))
-                        results.add(keteranganObat);
-                    else {
-
-                        List<KeteranganObat> parentLevel = filteredByLevel(listOfLevel2Keatas, String.valueOf(levelParent));
-                        if (parentLevel == null)
-                            break;
-
-                        for (KeteranganObat keteranganParent : parentLevel){
-                            keteranganObat.setParentId(keteranganParent.getId());
-                            results.add(keteranganObat);
-                        }
-                    }
-
-                }
-            }
+//            for (int i = maxlevel ; i > 0 ; i--){
+//
+//                if (i == 1){
+//                    break;
+//                }
+//
+//                List<KeteranganObat> currentLevel = filteredByLevel(listOfLevel2Keatas, String.valueOf(i));
+//                if (currentLevel == null)
+//                    break;
+//
+//                int levelParent = i-1;
+//                for (KeteranganObat keteranganObat : currentLevel){
+//
+//                    if (keteranganObat.getParentId() != null && !"".equalsIgnoreCase(keteranganObat.getParentId()))
+//                        results.add(keteranganObat);
+//                    else {
+//
+//                        List<KeteranganObat> parentLevel = filteredByLevel(listOfLevel2Keatas, String.valueOf(levelParent));
+//                        if (parentLevel == null)
+//                            break;
+//
+//                        for (KeteranganObat keteranganParent : parentLevel){
+//                            keteranganObat.setParentId(keteranganParent.getId());
+//                            results.add(keteranganObat);
+//                        }
+//                    }
+//
+//                }
+//            }
         }
 
 //        List<KeteranganObat> resultSigna = new ArrayList<>();

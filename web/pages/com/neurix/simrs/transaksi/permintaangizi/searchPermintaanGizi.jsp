@@ -98,17 +98,17 @@
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4" style="margin-top: 5px">Diet Sonde ?</label>
-                                    <div class="col-sm-4">
-                                        <div class="form-check" style="margin-top: 10px">
-                                            <input type="checkbox" onclick="setSonde('is_sonde', 'C')"
-                                                   id="is_sonde"
-                                                   value="Y">
-                                            <label for="is_sonde"></label>
-                                        </div>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4" style="margin-top: 5px">Diet Sonde ?</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<div class="form-check" style="margin-top: 10px">--%>
+                                            <%--<input type="checkbox" onclick="setSonde('is_sonde', 'C')"--%>
+                                                   <%--id="is_sonde"--%>
+                                                   <%--value="Y">--%>
+                                            <%--<label for="is_sonde"></label>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <s:hidden name="rawatInap.isSonde" id="val_sonde"></s:hidden>
                                 <div class="form-group" id="form_waktu">
                                     <label class="control-label col-sm-4">Waktu</label>

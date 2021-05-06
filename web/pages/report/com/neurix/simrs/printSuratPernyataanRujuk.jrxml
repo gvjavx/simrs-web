@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printSuratPernyataanRujuk" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.6105100000000077"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="192"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -339,7 +339,7 @@ WHERE id_detail_checkup = $P{idDetailCheckup}]]>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Mengerti bahwa pelayanan selama di RS. Dr. Soetomo dapat memakan waktu yang lama dan bersedia ditempatkan di ruangan bangsal ataupun di koridor/lorong tergantung kapasitas ruangan RS. Dr. Soetomo"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Mengerti bahwa pelayanan selama di RS. "+$F{rs_rujukan}+" dapat memakan waktu yang lama dan bersedia ditempatkan di ruangan bangsal ataupun di koridor/lorong tergantung kapasitas ruangan RS. "+$F{rs_rujukan}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="254" width="14" height="13" uuid="8a912a9c-03f5-460a-bbc7-e017b996d5c4"/>

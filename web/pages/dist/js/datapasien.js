@@ -80,7 +80,10 @@ function setDataPasien() {
 
         if (tgl > 0) {
             $('.tgl').datepicker({
-                dateFormat: 'dd-mm-yy'
+                dateFormat: 'dd-mm-yy',
+                autoclose: true,
+                changeMonth: true,
+                changeYear:true
             });
             $('.tgl').val(converterDate(new Date()));
             $('.tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
@@ -245,7 +248,10 @@ function setDataPasien() {
         }
         if (patTgl > 0) {
             $('.ptr-tgl').datepicker({
-                dateFormat: 'dd-mm-yy'
+                dateFormat: 'dd-mm-yy',
+                autoclose: true,
+                changeMonth: true,
+                changeYear:true,
             });
             $('.ptr-tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
         }

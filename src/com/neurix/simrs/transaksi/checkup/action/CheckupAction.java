@@ -3503,7 +3503,7 @@ public class CheckupAction extends BaseMasterAction {
         return checkupList;
     }
 
-    public CrudResponse saveAnamnese(String auto, String hetero, String noCheckup, String idDetailCheckup, String tensi, String suhu, String nadi, String rr) {
+    public CrudResponse saveAnamnese(String auto, String hetero, String noCheckup, String idDetailCheckup, String tensi, String suhu, String nadi, String rr, String klinis) {
         logger.info("[CheckupAction.savePenunjangPasien] start process >>>");
         CrudResponse response = new CrudResponse();
         HeaderCheckup headerCheckup = new HeaderCheckup();
@@ -3516,6 +3516,7 @@ public class CheckupAction extends BaseMasterAction {
         headerCheckup.setPernafasan(rr);
         headerCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
         headerCheckup.setLastUpdateWho(CommonUtil.userLogin());
+        headerCheckup.setCatatanKlinis(klinis);
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");

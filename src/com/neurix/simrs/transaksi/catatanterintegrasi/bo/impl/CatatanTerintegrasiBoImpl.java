@@ -74,6 +74,10 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
                     catatan.setNamaPetugas(entity.getNamaPetugas());
                     catatan.setSipDokter(entity.getSipDokter());
                     catatan.setSipPetugas(entity.getSipPetugas());
+                    catatan.setKesadaran(entity.getKesadaran());
+                    catatan.setSpo2(entity.getSpo2());
+                    catatan.setO2(entity.getO2());
+                    catatan.setEws(entity.getEws());
                     list.add(catatan);
                 }
             }
@@ -114,6 +118,10 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
             catatanTerintegrasiEntity.setNamaPetugas(bean.getNamaPetugas());
             catatanTerintegrasiEntity.setSipDokter(bean.getSipDokter());
             catatanTerintegrasiEntity.setSipPetugas(bean.getSipPetugas());
+            catatanTerintegrasiEntity.setKesadaran(bean.getKesadaran());
+            catatanTerintegrasiEntity.setSpo2(bean.getSpo2());
+            catatanTerintegrasiEntity.setO2(bean.getO2());
+            catatanTerintegrasiEntity.setEws(bean.getEws());
 
             try {
                 catatanTerintegrasiDao.addAndSave(catatanTerintegrasiEntity);

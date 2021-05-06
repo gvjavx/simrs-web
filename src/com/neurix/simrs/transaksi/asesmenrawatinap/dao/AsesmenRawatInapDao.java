@@ -74,6 +74,7 @@ public class AsesmenRawatInapDao extends GenericDao<ItSimrsAsesmenRawatInapEntit
                     "WHERE jenis = :jenis\n" +
                     "AND jawaban = :waktu\n" +
                     "AND id_detail_checkup = :id\n" +
+                    "AND flag = 'Y'\n" +
                     "AND CAST(created_date AS DATE) = CURRENT_DATE";
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

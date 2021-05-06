@@ -1456,7 +1456,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "e.id_diagnosa,\n" +
                     "e.keterangan_diagnosa,\n" +
                     "f.is_periksa_luar,\n" +
-                    "f.id_header_pemeriksaan\n" +
+                    "f.id_header_pemeriksaan,\n" +
+                    "a.catatan_klinis\n" +
                     "FROM it_simrs_header_checkup  a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN it_simrs_riwayat_tindakan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
@@ -1504,6 +1505,12 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                         checkup.setKeteranganKeluar(obj[8] == null ? null : obj[8].toString());
                         checkup.setDiagnosa(obj[10] == null ? null : obj[10].toString()+"-");
                         checkup.setNamaDiagnosa(obj[11] == null ? null : obj[11].toString());
+                        Dokter dokter = getNamaSipDokter(checkup.getIdDetailCheckup(), "");
+                        if(dokter != null){
+                            checkup.setNamaDokter(dokter.getNamaDokter());
+                            checkup.setIdDokter(dokter.getIdDokter());
+                        }
+                        checkup.setCatatanKlinis(obj[14] == null ? null : obj[14].toString());
                     }
                     if (obj[4] != null) {
                         String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format((Timestamp) obj[4]);

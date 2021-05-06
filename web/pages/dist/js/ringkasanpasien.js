@@ -665,15 +665,14 @@ function saveRingkasanPasien(jenis, ket) {
         var ttd1 = document.getElementById("et4");
         var ttd2 = document.getElementById("et5");
 
-        var nama1 = $('#nama_petugas').val();
-        var sip1 = $('#nip_petugas').val();
+        var nama1 = $('#nama_pasien').val();
         var nama2 = $('#nama_dokter').val();
         var sip2 = $('#sip_dokter').val();
 
         var cek1 = isCanvasBlank(ttd1);
         var cek2 = isCanvasBlank(ttd2);
 
-        if(check1 && check2 && check3 && check4 && check5 && check6 != undefined && nama1 && sip1 && nama2 && sip2 != '' && !cek1 && !cek2){
+        if(check1 && check2 && check3 && check4 && check5 && check6 != undefined && nama1 && nama2 && sip2 != '' && !cek1 && !cek2){
             var va1 = check1;
             var va2 = check2;
             var va3 = check3;
@@ -746,17 +745,16 @@ function saveRingkasanPasien(jenis, ket) {
             var cvs1 = convertToDataURL(ttd1);
             var cvs2 = convertToDataURL(ttd2);
             data.push({
-                'parameter': 'TTD Petugas',
+                'parameter': 'TTD Pasien',
                 'jawaban': cvs1,
                 'keterangan': jenis,
                 'jenis': 'admisi',
                 'nama_terang': nama1,
-                'sip':sip1,
                 'tipe': 'ttd',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'TTD Dokter',
+                'parameter': 'TTD Petugas',
                 'jawaban': cvs2,
                 'keterangan': jenis,
                 'jenis': 'admisi',

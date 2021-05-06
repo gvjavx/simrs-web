@@ -253,11 +253,11 @@
                         <div class="form-group">
                             <label class="col-md-3">HPHT</label>
                             <div class="col-md-3">
-                                <input class="form-control tgl" id="po23" onchange="setHPL('po24', this.id, 'po22')" readonly>
+                                <input style="cursor: pointer" class="form-control tgl" id="po23" onchange="setHPL('po24', this.id, 'po22')" readonly>
                             </div>
                             <label class="col-md-3">HPL</label>
                             <div class="col-md-3">
-                                <input class="form-control" id="po24" readonly>
+                                <input class="form-control ptr-tgl" id="po24">
                             </div>
                         </div>
                     </div>

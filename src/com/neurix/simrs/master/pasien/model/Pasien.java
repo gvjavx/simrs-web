@@ -2,6 +2,7 @@ package com.neurix.simrs.master.pasien.model;
 
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -71,6 +72,16 @@ public class Pasien {
     private String flagLogin;
     private String flagMeninggal;
     private Timestamp tglMeninggal;
+
+    private Date tanggalLahir;
+
+    public Date getTanggalLahir() {
+        return tanggalLahir;
+    }
+
+    public void setTanggalLahir(Date tanggalLahir) {
+        this.tanggalLahir = tanggalLahir;
+    }
 
     public String getFlagMeninggal() {
         return flagMeninggal;
