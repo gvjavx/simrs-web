@@ -68,6 +68,7 @@
                         <div class="col-md-12"><b>A. Antropmentri</b></div>
                     </div>
                     <div id="set_pengakajian"></div>
+                    <hr>
                     <div class="row jarak">
                         <label class="col-md-3">Status Gizi</label>
                         <div class="col-md-3">
