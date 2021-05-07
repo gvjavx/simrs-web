@@ -46,11 +46,10 @@
         <property name="flagPengajuanBiaya">
             <column name="flag_pengajuan_biaya" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="isOtomatis">
+            <column name="is_otomatis" sql-type="varchar" length="1" not-null="false" />
+        </property>
 
-        <!--<many-to-one name="imMappingJurnal" class="com.neurix.akuntansi.master.mappingJurnal.model.ImMappingJurnalEntity"-->
-                     <!--insert="false" update="false" fetch="select" cascade="all">-->
-            <!--<column name="trans_id"></column>-->
-        <!--</many-to-one>-->
 
         <set name = "imMappingJurnal" cascade="all">
             <key column = "trans_id"/>

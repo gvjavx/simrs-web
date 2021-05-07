@@ -97,6 +97,7 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 
 //updated by ferdi, 01-12-2020, handle billing system
@@ -430,7 +431,14 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
                         BigDecimal totalDebit = new BigDecimal(0);
                         BigDecimal totalKredit = new BigDecimal(0);
-                        for (ImMappingJurnalEntity imMappingJurnalEntity : imMappingJurnalEntitySet) {
+
+                        // Sigit, 2021-05-07 filter flag yg aktif
+                        List<ImMappingJurnalEntity> lisOfActiveMapping = imMappingJurnalEntitySet.stream().filter(
+                                p-> "Y".equalsIgnoreCase(p.getFlag())
+                        ).collect(Collectors.toList());
+
+                        // Sigit, 2021-05-07 sebelumnya imMappingJurnalEntitySet => lisOfActiveMapping
+                        for (ImMappingJurnalEntity imMappingJurnalEntity : lisOfActiveMapping) {
                             String parameterCoa = imMappingJurnalEntity.getParameterCoa();
                             String flagMasterId = imMappingJurnalEntity.getMasterId();
                             String flagBukti = imMappingJurnalEntity.getBukti();
@@ -438,6 +446,8 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                             String flagDivisiId = imMappingJurnalEntity.getDivisiId();
                             String coa = imMappingJurnalEntity.getKodeRekening();
                             String posisi = imMappingJurnalEntity.getPosisi();
+
+                            //String rekeningId = getRekeningForMappingOtomatis(coa);
 
                             if (dataMappingJurnal.get(parameterCoa)!=null) {
 
@@ -1080,7 +1090,6 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         }
 
         logger.info("[BillingSystemBoImpl.createJurnal] end process <<<");
-
         return resultJurnal;
     }
 

@@ -1799,4 +1799,21 @@ ADD COLUMN parent_id VARCHAR(30);
     ALTER TABLE it_akun_jurnal
     ADD COLUMN metode_bayar VARCHAR(20);
 
+    ALTER TABLE im_akun_mapping_jurnal
+    ALTER COLUMN parameter_coa TYPE VARCHAR(100);
+    UPDATE im_akun_mapping_jurnal a SET parameter_coa = a.keterangan;
+
+    ALTER TABLE im_akun_trans
+    ADD COLUMN is_otomatis VARCHAR(1);
+
+    UPDATE im_akun_mapping_jurnal SET
+    flag = 'N' WHERE mapping_jurnal_id = 'NPJ0000077';
+
+--
+
+--2021-05-07
+
+     ALTER TABLE it_akun_jurnal_detail
+     ALTER COLUMN rekening_id DROP NOT NULL;
+
 --
