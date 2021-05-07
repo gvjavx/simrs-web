@@ -3136,37 +3136,36 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 
                         }
 
-                        //prepare jurnal ke billing system
-
-//                        String catatanJurnal = "Pembayaran Payroll ( " + ketPayroll + " ) untuk periode :" + periodePayroll + "/" + tahunPayroll ;
-//                        buildDataBasedMappingJurnal.put("keterangan",catatanJurnal);
-//                        buildDataBasedMappingJurnal.put("user_id",createdWhoId);
-//                        buildDataBasedMappingJurnal.put("user_who",createdWho);
-
                         //RAKA01MEI2021==>Comment
-//                        ItJurnalEntity itJurnalEntity = null;
-//                        try {
-//                            itJurnalEntity = prepareCreateJurnal(transId, buildDataBasedMappingJurnal, branchId, "Y");
-//                        } catch (GeneralBOException e) {
-//                            logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Error, " + e.getMessage());
-//                            throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Found problem when preparing jurnal save payroll, please inform to your admin...," + e.getMessage());
-//                        }
-//
-////                        create jurnal
-//
-//                        if (itJurnalEntity!=null) {
-//
-//                            try {
-//                                jurnalDao.addAndSave(itJurnalEntity);
-//                            } catch (HibernateException e) {
-//                                logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Error, " + e.getMessage());
-//                                throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Found problem when saving jurnal payroll, please info to your admin..." + e.getMessage());
-//                            }
-//
-//                            String noJurnal = itJurnalEntity.getNoJurnal();
-//
-////                            update payroll header, approval aks = Y dan no jurnal
-//                            itHrisPayrollHeaderEntity.setNoJurnal(noJurnal);
+                        //prepare jurnal ke billing system
+                        String catatanJurnal = "Pembayaran Payroll ( " + ketPayroll + " ) untuk periode :" + periodePayroll + "/" + tahunPayroll ;
+                        buildDataBasedMappingJurnal.put("keterangan",catatanJurnal);
+                        buildDataBasedMappingJurnal.put("user_id",createdWhoId);
+                        buildDataBasedMappingJurnal.put("user_who",createdWho);
+
+                        ItJurnalEntity itJurnalEntity = null;
+                        try {
+                            itJurnalEntity = prepareCreateJurnal(transId, buildDataBasedMappingJurnal, branchId, "Y");
+                        } catch (GeneralBOException e) {
+                            logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Error, " + e.getMessage());
+                            throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Found problem when preparing jurnal save payroll, please inform to your admin...," + e.getMessage());
+                        }
+
+//                        create jurnal
+
+                        if (itJurnalEntity!=null) {
+
+                            try {
+                                jurnalDao.addAndSave(itJurnalEntity);
+                            } catch (HibernateException e) {
+                                logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Error, " + e.getMessage());
+                                throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Found problem when saving jurnal payroll, please info to your admin..." + e.getMessage());
+                            }
+
+                            String noJurnal = itJurnalEntity.getNoJurnal();
+
+//                            update payroll header, approval aks = Y dan no jurnal
+                            itHrisPayrollHeaderEntity.setNoJurnal(noJurnal);
                             itHrisPayrollHeaderEntity.setAction("U");
                             itHrisPayrollHeaderEntity.setApprovalAksFlag("Y");
                             itHrisPayrollHeaderEntity.setApprovalAksName(createdWho);
@@ -3182,12 +3181,12 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
                                 throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Found problem when save update payroll header set approval sdm YES, dan no jurnal, please inform to your admin...," + e.getMessage());
                             }
 
-//                        } else {
-//
-//                            logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Tidak ditemukan jurnal yang akan di buat.");
-//                            throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Tidak ditemukan jurnal yang akan di buat., please info to your admin...");
-//
-//                        }
+                        } else {
+
+                            logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Tidak ditemukan jurnal yang akan di buat.");
+                            throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Tidak ditemukan jurnal yang akan di buat., please info to your admin...");
+
+                        }
                     //RAKA-end
                     } else {
 

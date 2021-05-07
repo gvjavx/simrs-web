@@ -15,6 +15,23 @@
     update im_hris_payroll_skala_gaji_bod
         set position_id = 'PS469'
         where position_id = 'PS180'; -- direktur
+-- update im_akun_mapping_jurnal
+    alter table im_akun_mapping_jurnal
+        alter column parameter_coa type varchar(200);
+    update im_akun_mapping_jurnal
+        set parameter_coa = keterangan;
+-- master_id di im_branches
+    ALTER TABLE im_branches
+      ADD COLUMN master_id varchar(10) ;
+
+    update im_branches set master_id = '00.001' where branch_id = '01';
+    update im_branches set master_id = '00.002' where branch_id = '02';
+    update im_branches set master_id = '00.003' where branch_id = '03';
+    update im_branches set master_id = '00.004' where branch_id = '05';
+    update im_branches set master_id = '00.005' where branch_id = '04';
+    update im_branches set master_id = '00.099' where branch_id = '98';
+
+    -- update im_branches set tunj_pemondokan=500000 where branch_id = '01';
 
 ------ 2021-05-05 ===> update table trans (tidak drop)
 -- im_akun_trans

@@ -575,16 +575,6 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                                 itemJurnalDetailEntity.setJumlahDebit(new BigDecimal(0));
                                                 itemJurnalDetailEntity.setJumlahKredit(nilai);
 
-                                                logger.error("--------------------");
-                                                logger.error("parameterCoa = " + parameterCoa);
-                                                logger.error("nilai = " + nilai);
-                                                logger.error("--------------------");
-
-                                                if (parameterCoa.equalsIgnoreCase("pph_gaji")) {
-                                                    testPphNilai = testPphNilai.add(nilai);
-
-                                                }
-
                                                 totalKredit = totalKredit.add(nilai);
                                             }
 
