@@ -7,13 +7,15 @@
 	<queryString>
 		<![CDATA[SELECT
 nama_obat,
-merk
+merk,
+expired_date
 FROM im_simrs_obat
 WHERE id_barang = $P{reportParams.idBarang}
 LIMIT 1]]>
 	</queryString>
 	<field name="nama_obat" class="java.lang.String"/>
 	<field name="merk" class="java.lang.String"/>
+	<field name="expired_date" class="java.sql.Date"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -34,6 +36,20 @@ LIMIT 1]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nama_obat} != null ? $F{nama_obat}+"-"+$F{merk} : ""]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="0" y="-11" width="19" height="11" uuid="182d7285-bd1c-4f51-b721-7928c604c383"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[ED :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="-11" width="83" height="11" uuid="efb290eb-8ac2-4766-a0c2-9c74d619e8a8"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[$F{expired_date}.toString()]]></text>
+			</staticText>
 		</band>
 	</detail>
 </jasperReport>
