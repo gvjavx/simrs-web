@@ -23,15 +23,16 @@
 -- master_id di im_branches
     ALTER TABLE im_branches
       ADD COLUMN master_id varchar(10) ;
-
     update im_branches set master_id = '00.001' where branch_id = '01';
     update im_branches set master_id = '00.002' where branch_id = '02';
     update im_branches set master_id = '00.003' where branch_id = '03';
     update im_branches set master_id = '00.004' where branch_id = '05';
     update im_branches set master_id = '00.005' where branch_id = '04';
     update im_branches set master_id = '00.099' where branch_id = '98';
-
     -- update im_branches set tunj_pemondokan=500000 where branch_id = '01';
+-- it_akun_jurnal
+    alter table it_akun_jurnal
+        add column metode_bayar varchar(50);
 
 ------ 2021-05-05 ===> update table trans (tidak drop)
 -- im_akun_trans
