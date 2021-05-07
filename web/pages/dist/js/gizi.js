@@ -37,6 +37,7 @@ function saveGizi(jenis, ket) {
             var va3 = $('[name=gz3]:checked').val();
             var va4 = "";
             var va4d = $('[name=gz4]:checked').val();
+
             if (va4d != undefined) {
                 var a = $('#ket_gz4').val();
                 if (va4d == "Lain-Lain") {
