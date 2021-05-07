@@ -96,7 +96,9 @@ public class AsesmenIcuBoImpl implements AsesmenIcuBo {
             List<AsesmenIcu> asesmenIcus = getByCriteria(icu);
             if ("resiko_jatuh".equalsIgnoreCase(asesmenIcu.getKeterangan()) ||
                     "decobitus".equalsIgnoreCase(asesmenIcu.getKeterangan()) ||
-                    "nyeri".equalsIgnoreCase(asesmenIcu.getKeterangan())) {
+                    "nyeri".equalsIgnoreCase(asesmenIcu.getKeterangan()) ||
+                    "alat_infasive".equalsIgnoreCase(asesmenIcu.getKeterangan()) ||
+                    "gcs".equalsIgnoreCase(asesmenIcu.getKeterangan())) {
                 for (AsesmenIcu bean : list) {
                     ItSimrsAsesmenIcuEntity asesmenIcuEntity = new ItSimrsAsesmenIcuEntity();
                     asesmenIcuEntity.setIdAsesmenIcu("ICU" + asesmenIcuDao.getNextSeq());

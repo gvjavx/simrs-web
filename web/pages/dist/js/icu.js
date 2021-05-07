@@ -248,6 +248,29 @@ function saveICU(jenis, ket) {
                 'skor': skor6,
                 'id_detail_checkup': idDetailCheckup
             });
+            var totalSkor = parseInt(skor1) + parseInt(skor2) + parseInt(skor3) + parseInt(skor4) + parseInt(skor5) + parseInt(skor6);
+            var jwb = "";
+            if (totalSkor >= 0 && totalSkor <= 24) {
+                jwb = "Rendah";
+            } else if (totalSkor >= 25 && totalSkor <= 44) {
+                jwb = "Sedang";
+            } else if (totalSkor >= 45) {
+                jwb = "Tinggi";
+            }
+            data.push({
+                'parameter': 'Total',
+                'jawaban': ''+totalSkor,
+                'keterangan': jenis,
+                'tipe': 'total',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Resiko Jatuh',
+                'jawaban': jwb,
+                'keterangan': jenis,
+                'tipe': 'kesimpulan',
+                'id_detail_checkup': idDetailCheckup
+            });
             cek = true;
         }
     }
@@ -372,7 +395,13 @@ function saveICU(jenis, ket) {
         var va11 = $('#res11').val();
         var va12 = $('#res12').val();
 
-        if (va1 && va2 && va3 != '') {
+        if (va2 && va3 != '') {
+            data.push({
+                'parameter': 'Tanggal Jam',
+                'jawaban': tgl+' '+jam,
+                'keterangan': jenis,
+                'id_detail_checkup': idDetailCheckup
+            });
             data.push({
                 'parameter': 'GCS',
                 'jawaban': 'E : '+va2 + ', V : ' + va3 + ', M : ' + va4,
@@ -1462,7 +1491,7 @@ function detailICU(jenis) {
                             jwb = item.jawaban;
                         }
 
-                        if ("Alat" == item.parameter) {
+                        if ("Alat" == item.parameter || "Derajat Decubitus" == item.parameter) {
                             var val = jwb.split("|");
                             var li = "";
                             $.each(val, function (i, item) {
@@ -1540,14 +1569,6 @@ function detailICU(jenis) {
                                     '<td colspan="2">' + jwb + del + '</td>' +
                                     '</tr>';
                             }
-                        } else if (item.score != null) {
-                            body += '<tr>' +
-                                '<td>' + item.parameter + '</td>' +
-                                '<td>' + item.jawaban + '</td>' +
-                                '<td width="10%" align="center">' + item.score + '</td>' +
-                                '</tr>';
-                            totalSkor = parseInt(totalSkor) + parseInt(item.score);
-                            cekSkor = true;
                         } else if ("gambar" == item.tipe) {
                             body += '<tr>' +
                                 '<td width="40%">' + item.parameter + '</td>' +
@@ -1564,6 +1585,22 @@ function detailICU(jenis) {
                                         '</td>' +
                                         '</tr>';
                                 }
+                            } else if("resiko_jatuh" == jenis){
+                                if(item.tipe == "total"){
+                                    body += '<tr style="font-weight: bold"><td colspan="2">'+item.parameter+'</td><td align="center">' + item.jawaban + '</td></tr>';
+                                }else if(item.tipe == "kesimpulan"){
+                                    body += '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">'+item.parameter+'</td><td align="center">' + item.jawaban + '</td></tr>';
+                                }else if(item.parameter == "Tanggal Jam"){
+                                    body += '<tr style="font-weight: bold"><td>'+item.parameter+'</td><td colspan="2">' + item.jawaban + '</td></tr>' +
+                                            '<tr style="font-weight: bold"><td>Parameter</td><td>Jawaban</td><td align="center">Skor</td></tr>';
+                                }else{
+                                    body += '<tr>' +
+                                        '<td>' + item.parameter + '</td>' +
+                                        '<td>' + item.jawaban + '</td>' +
+                                        '<td width="10%" align="center">' + item.score + '</td>' +
+                                        '</tr>';
+                                }
+
                             } else {
                                 if ("ttd" == item.tipe) {
                                     forTTD += '<tr>' +
@@ -1591,29 +1628,9 @@ function detailICU(jenis) {
                         '</tr>';
                 }
 
-                if (cekSkor) {
-                    first = '<tr style="font-weight: bold"><td>Parameter</td><td>Jawaban</td><td align="center">Skor</td></tr>';
-                    last = '<tr style="font-weight: bold"><td colspan="2">Total</td><td align="center">' + totalSkor + '</td></tr>'
-
-                    if ("resiko_jatuh" == jenis) {
-                        var jwb = "";
-                        if (totalSkor >= 0 && totalSkor <= 24) {
-                            jwb = "Rendah";
-                        } else if (totalSkor >= 25 && totalSkor <= 44) {
-                            jwb = "Sedang";
-                        } else if (totalSkor >= 45) {
-                            jwb = "Tinggi";
-                        }
-
-                        if (isKesimpulan) {
-                            kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Resiko Jatuh</td><td align="center">' + jwb + '</td></tr>';
-                        }
-                    }
-                }
-
                 var table = '<table style="font-size: 12px" class="table table-bordered">' +
                     '<thead>' + head + '</thead>' +
-                    '<tbody>' + first + body + last + kesimpulan + forTTD + '</tbody>' +
+                    '<tbody>' + body + forTTD + '</tbody>' +
                     '</table>';
 
                 var newRow = $('<tr id="del_icu_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
@@ -2011,16 +2028,32 @@ function listRespirasi(jenis) {
                     '<td rowspan="2" style="vertical-align: middle" align="center">FL</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">FI</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">UE</td>\n' +
-                    '<td rowspan="2" style="vertical-align: middle" align="center">DE</td>\n' +
+                    '<td rowspan="2" style="vertical-align: middle" align="center">KE</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">SP</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">SE</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">Action</td>\n' +
                     '                        </tr>\n';
             }
-            var table = '<table style="font-size: 10px" class="table table-bordered">' +
+            var table = '<table style="font-size: 12px" class="table table-bordered">' +
                 '<thead>' + head + '</thead>' +
                 '<tbody>' + body + '</tbody>' +
-                '</table>';
+                '</table>' +
+                '<div class="row" style="font-size: 12px">\n' +
+                '<label class="col-md-3"> PE = Peep</label>\n' +
+                '<label class="col-md-3"> FR = Frekwensi/ Frekwensi Total</label>\n' +
+                '<label class="col-md-3"> TV = TV (1) TV (E)</label>\n' +
+                '<label class="col-md-3"> MV = MV (1) MV (E)</label>\n' +
+                '<label class="col-md-3"> PS = P-Support</label>\n' +
+                '<label class="col-md-3"> PI = P-Inspirasi/P-Control</label>\n' +
+                '<label class="col-md-3"> TR = Triger</label>\n' +
+                '<label class="col-md-3"> IN = Inspirasi Time</label>\n' +
+                '<label class="col-md-3"> FL = Flow</label>\n' +
+                '<label class="col-md-3"> FI = FIO 2/Konsentrasi O2</label>\n' +
+                '<label class="col-md-3"> UE = Ukuran ETT</label>\n' +
+                '<label class="col-md-3"> KE = Kedalaman ETT</label>\n' +
+                '<label class="col-md-3"> SP = SPO2</label>\n' +
+                '<label class="col-md-3"> SE = Secret/ Sputum</label>\n' +
+                '</div>';
 
             var newRow = $('<tr id="del_icu_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
             newRow.insertAfter($('table').find('#row_icu_' + jenis));
