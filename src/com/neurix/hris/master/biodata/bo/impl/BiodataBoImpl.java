@@ -1,11 +1,17 @@
 package com.neurix.hris.master.biodata.bo.impl;
 
+import com.neurix.authorization.company.dao.AreasBranchesUsersDao;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.company.model.ImAreasBranchesUsers;
 import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.authorization.position.model.Position;
+import com.neurix.authorization.role.model.ImRoles;
+import com.neurix.authorization.user.dao.UserDao;
+import com.neurix.authorization.user.dao.UserRoleDao;
+import com.neurix.authorization.user.model.*;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -54,7 +60,7 @@ import com.neurix.hris.transaksi.ijinKeluar.dao.IjinKeluarDao;
 import com.neurix.hris.transaksi.lembur.dao.LemburDao;
 import com.neurix.hris.transaksi.mutasi.dao.MutasiDao;
 import com.neurix.hris.transaksi.payroll.dao.PayrollDao;
-import com.neurix.hris.transaksi.payroll.model.ItPayrollEntity;
+import com.neurix.hris.transaksi.payroll.model.ItHrisPayrollEntity;
 import com.neurix.hris.transaksi.payroll.model.Payroll;
 import com.neurix.hris.transaksi.personilPosition.dao.HistoryJabatanPegawaiDao;
 import com.neurix.hris.transaksi.personilPosition.model.HistoryJabatanPegawai;
@@ -82,6 +88,7 @@ import org.springframework.web.context.ContextLoader;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -128,6 +135,21 @@ public class BiodataBoImpl implements BiodataBo {
     private MutasiDao mutasiDao;
     private DokterDao dokterDao;
     private TipePegawaiDao tipePegawaiDao;
+    private UserDao userDao;
+    private UserRoleDao userRoleDao;
+    private AreasBranchesUsersDao areasBranchesUsersDao;
+
+    public void setUserRoleDao(UserRoleDao userRoleDao) {
+        this.userRoleDao = userRoleDao;
+    }
+
+    public void setAreasBranchesUsersDao(AreasBranchesUsersDao areasBranchesUsersDao) {
+        this.areasBranchesUsersDao = areasBranchesUsersDao;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     public TipePegawaiDao getTipePegawaiDao() {
         return tipePegawaiDao;
@@ -137,24 +159,12 @@ public class BiodataBoImpl implements BiodataBo {
         this.tipePegawaiDao = tipePegawaiDao;
     }
 
-    public DokterDao getDokterDao() {
-        return dokterDao;
-    }
-
     public void setDokterDao(DokterDao dokterDao) {
         this.dokterDao = dokterDao;
     }
 
-    public MutasiDao getMutasiDao() {
-        return mutasiDao;
-    }
-
     public void setMutasiDao(MutasiDao mutasiDao) {
         this.mutasiDao = mutasiDao;
-    }
-
-    public ProfesiDao getProfesiDao() {
-        return profesiDao;
     }
 
     public void setProfesiDao(ProfesiDao profesiDao) {
@@ -169,32 +179,16 @@ public class BiodataBoImpl implements BiodataBo {
         this.strukturJabatanList = strukturJabatanList;
     }
 
-    public GolonganPkwtDao getGolonganPkwtDao() {
-        return golonganPkwtDao;
-    }
-
     public void setGolonganPkwtDao(GolonganPkwtDao golonganPkwtDao) {
         this.golonganPkwtDao = golonganPkwtDao;
-    }
-
-    public TunjLainPegawaiDao getTunjLainPegawaiDao() {
-        return tunjLainPegawaiDao;
     }
 
     public void setTunjLainPegawaiDao(TunjLainPegawaiDao tunjLainPegawaiDao) {
         this.tunjLainPegawaiDao = tunjLainPegawaiDao;
     }
 
-    public PelatihanJabatanUserDao getPelatihanJabatanUserDao() {
-        return pelatihanJabatanUserDao;
-    }
-
     public void setPelatihanJabatanUserDao(PelatihanJabatanUserDao pelatihanJabatanUserDao) {
         this.pelatihanJabatanUserDao = pelatihanJabatanUserDao;
-    }
-
-    public SmkHistoryGolonganDao getSmkHistoryGolonganDao() {
-        return smkHistoryGolonganDao;
     }
 
     public void setSmkHistoryGolonganDao(SmkHistoryGolonganDao smkHistoryGolonganDao) {
@@ -209,152 +203,76 @@ public class BiodataBoImpl implements BiodataBo {
         this.positionBagianDao = positionBagianDao;
     }
 
-    public StrukturJabatanDao getStrukturJabatanDao() {
-        return strukturJabatanDao;
-    }
-
     public void setStrukturJabatanDao(StrukturJabatanDao strukturJabatanDao) {
         this.strukturJabatanDao = strukturJabatanDao;
-    }
-
-    public SertifikatDao getSertifikatDao() {
-        return sertifikatDao;
     }
 
     public void setSertifikatDao(SertifikatDao sertifikatDao) {
         this.sertifikatDao = sertifikatDao;
     }
 
-    public RewardDao getRewardDao() {
-        return rewardDao;
-    }
-
     public void setRewardDao(RewardDao rewardDao) {
         this.rewardDao = rewardDao;
-    }
-
-    public PengalamanKerjaDao getPengalamanKerjaDao() {
-        return pengalamanKerjaDao;
     }
 
     public void setPengalamanKerjaDao(PengalamanKerjaDao pengalamanKerjaDao) {
         this.pengalamanKerjaDao = pengalamanKerjaDao;
     }
 
-    public PayrollDao getPayrollDao() {
-        return payrollDao;
-    }
-
     public void setPayrollDao(PayrollDao payrollDao) {
         this.payrollDao = payrollDao;
-    }
-
-    public PayrollDanaPensiunDao getDanaPensiunDao() {
-        return danaPensiunDao;
     }
 
     public void setDanaPensiunDao(PayrollDanaPensiunDao danaPensiunDao) {
         this.danaPensiunDao = danaPensiunDao;
     }
 
-    public HistoryJabatanPegawaiDao getHistoryJabatanPegawaiDao() {
-        return historyJabatanPegawaiDao;
-    }
-
     public void setHistoryJabatanPegawaiDao(HistoryJabatanPegawaiDao historyJabatanPegawaiDao) {
         this.historyJabatanPegawaiDao = historyJabatanPegawaiDao;
-    }
-
-    public StudyDao getStudyDao() {
-        return studyDao;
     }
 
     public void setStudyDao(StudyDao studyDao) {
         this.studyDao = studyDao;
     }
 
-    public KeluargaDao getKeluargaDao() {
-        return keluargaDao;
-    }
-
     public void setKeluargaDao(KeluargaDao keluargaDao) {
         this.keluargaDao = keluargaDao;
-    }
-
-    public ProvinsiDao getProvinsiDao() {
-        return provinsiDao;
     }
 
     public void setProvinsiDao(ProvinsiDao provinsiDao) {
         this.provinsiDao = provinsiDao;
     }
 
-    public BranchDao getBranchDao() {
-        return branchDao;
-    }
-
     public void setBranchDao(BranchDao branchDao) {
         this.branchDao = branchDao;
-    }
-
-    public DepartmentDao getDepartmentDao() {
-        return departmentDao;
     }
 
     public void setDepartmentDao(DepartmentDao departmentDao) {
         this.departmentDao = departmentDao;
     }
 
-    public LemburDao getLemburDao() {
-        return lemburDao;
-    }
-
     public void setLemburDao(LemburDao lemburDao) {
         this.lemburDao = lemburDao;
-    }
-
-    public RsKerjasamaDao getRsKerjasamaDao() {
-        return rsKerjasamaDao;
     }
 
     public void setRsKerjasamaDao(RsKerjasamaDao rsKerjasamaDao) {
         this.rsKerjasamaDao = rsKerjasamaDao;
     }
 
-    public PositionDao getPositionDao() {
-        return positionDao;
-    }
-
     public void setPositionDao(PositionDao positionDao) {
         this.positionDao = positionDao;
-    }
-
-    public RsKelasDao getRsKelasDao() {
-        return rsKelasDao;
     }
 
     public void setRsKelasDao(RsKelasDao rsKelasDao) {
         this.rsKelasDao = rsKelasDao;
     }
 
-    public TrainingDao getTrainingDao() {
-        return trainingDao;
-    }
-
     public void setTrainingDao(TrainingDao trainingDao) {
         this.trainingDao = trainingDao;
     }
 
-    public TrainingPersonDao getTrainingPersonDao() {
-        return trainingPersonDao;
-    }
-
     public void setTrainingPersonDao(TrainingPersonDao trainingPersonDao) {
         this.trainingPersonDao = trainingPersonDao;
-    }
-
-    public PersonilPositionDao getPersonilPositionDao() {
-        return personilPositionDao;
     }
 
     public void setPersonilPositionDao(PersonilPositionDao personilPositionDao) {
@@ -369,10 +287,6 @@ public class BiodataBoImpl implements BiodataBo {
         BiodataBoImpl.logger = logger;
     }
 
-    public BiodataDao getBiodataDao() {
-        return biodataDao;
-    }
-
     public void setBiodataDao(BiodataDao biodataDao) {
         this.biodataDao = biodataDao;
     }
@@ -380,11 +294,11 @@ public class BiodataBoImpl implements BiodataBo {
     @Override
     public List<Payroll> viewPayrollSys(String nip, String branchId, String bulan, String tahun, String payrollId) throws GeneralBOException {
         List<Payroll> payroll = new ArrayList<>();
-        List<ItPayrollEntity> itPayroll = null;
+        List<ItHrisPayrollEntity> itPayroll = null;
 
         itPayroll = payrollDao.getDataViewMobile(nip, branchId, bulan, tahun, payrollId);
         if (itPayroll.size() > 0) {
-            for (ItPayrollEntity itPayrollEntity : itPayroll) {
+            for (ItHrisPayrollEntity itPayrollEntity : itPayroll) {
                 Payroll payroll1 = new Payroll();
                 payroll1.setPayrollId(itPayrollEntity.getPayrollId());
                 payroll1.setBranchId(itPayrollEntity.getBranchId());
@@ -816,8 +730,9 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataHistoryEntity.setNoRekBank(imBiodataEntity.getNoRekBank());
                             imBiodataHistoryEntity.setCabangBank(imBiodataEntity.getCabangBank());
                             imBiodataHistoryEntity.setTanggalPraPensiun(imBiodataEntity.getTanggalPraPensiun());
-                            imBiodataHistoryEntity.setMasaKerjaGolongan(imBiodataEntity.getMasaKerjaGolongan());
-//                                imBiodataHistoryEntity.setGolonganDapenId(imBiodataEntity.getGolonganDapenId()); //RAKA-delete
+//                            imBiodataHistoryEntity.setMasaKerjaGolongan(imBiodataEntity.getMasaKerjaGolongan());
+//                            imBiodataHistoryEntity.setMasaKerjaGol(imBiodataEntity.getStMasaKerjaGol());
+                            imBiodataHistoryEntity.setGolonganDapenId(imBiodataEntity.getGolonganDapenId()); //RAKA-delete
 
                             if (bean.getFotoUpload() != null) {
                                 imBiodataHistoryEntity.setFotoUpload(imBiodataEntity.getFotoUpload());
@@ -899,16 +814,17 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataEntity.setNamaBank(bean.getNamaBank());
                             imBiodataEntity.setNoRekBank(bean.getNoRekBank());
                             imBiodataEntity.setCabangBank(bean.getCabangBank());
+                            imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId());
 
 //                                imBiodataEntity.setZakatProfesi(bean.getFlagZakat()); //RAKA-delete
                             imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
 
                             if (!"".equalsIgnoreCase(bean.getStTanggalPensiun()) && bean.getStTanggalPensiun() != null) {
                                 if (!"".equalsIgnoreCase(bean.getStMasaKerjaGol()) && bean.getStMasaKerjaGol() != null) {
-                                    imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
+                                    imBiodataEntity.setStMasaKerjaGol(bean.getStMasaKerjaGol());
                                 }
                             } else {
-                                imBiodataEntity.setMasaKerjaGolongan(0);
+                                imBiodataEntity.setStMasaKerjaGol("0");
                             }
 //                                imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId()); //RAKA-delete
 
@@ -1495,7 +1411,7 @@ public class BiodataBoImpl implements BiodataBo {
                         }
 
 //                            imBiodataHistoryEntity.setMasaKerjaGolongan(Integer.parseInt(imBiodataEntity.getStMasaKerjaGol()));
-                        imBiodataHistoryEntity.setMasaKerjaGolongan(imBiodataEntity.getMasaKerjaGolongan());
+//                        imBiodataHistoryEntity.setMasaKerjaGolongan(imBiodataEntity.getMasaKerjaGolongan());
                         imBiodataHistoryEntity.setGolonganDapenId(imBiodataEntity.getGolonganDapenId()); //RAKA-delete
 
                         if (bean.getFotoUpload() != null) {
@@ -1569,9 +1485,9 @@ public class BiodataBoImpl implements BiodataBo {
                         }
 
                         if (bean.getStMasaKerjaGol() != null && !"".equalsIgnoreCase(bean.getStMasaKerjaGol())) {
-                            imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
+                            imBiodataEntity.setStMasaKerjaGol(bean.getStMasaKerjaGol());
                         } else {
-                            imBiodataEntity.setMasaKerjaGolongan(0);
+                            imBiodataEntity.setStMasaKerjaGol("0");
                         }
                         imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId()); //RAKA-delete
 
@@ -2042,7 +1958,11 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setTanggalMasuk(bean.getTanggalMasuk());
                 imBiodataEntity.setTanggalAktif(bean.getTanggalAktif());
                 imBiodataEntity.setTempatLahir(bean.getTempatLahir());
-                imBiodataEntity.setTipePegawai(bean.getTipePegawai());
+                if ("Y".equalsIgnoreCase(bean.getFlagDokterKso())){
+                    imBiodataEntity.setTipePegawai("TP05"); //Tipe Pegawai : Dokter Tamu
+                }else {
+                    imBiodataEntity.setTipePegawai(bean.getTipePegawai());
+                }
                 imBiodataEntity.setFotoUpload(bean.getFotoUpload());
                 imBiodataEntity.setStatusCaption(bean.getStatusCaption());
                 imBiodataEntity.setKeterangan(bean.getKeterangan());
@@ -2050,15 +1970,16 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setStatusPegawai(bean.getStatusPegawai());
                 imBiodataEntity.setStatusKeluarga(bean.getStatusKeluarga());
                 imBiodataEntity.setGolongan(bean.getGolongan());
+                imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId());
                 if (!CommonConstant.PEGAWAI_PKWT.equalsIgnoreCase(bean.getTipePegawai())) {
 //                if ("N".equalsIgnoreCase(bean.getFlagDokterKso())){
                     if (!"".equalsIgnoreCase(bean.getStMasaKerjaGol()) && bean.getStMasaKerjaGol() != null) {
-                        imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
+                        imBiodataEntity.setStMasaKerjaGol(bean.getStMasaKerjaGol());
                     } else {
-                        imBiodataEntity.setMasaKerjaGolongan(0);
+                        imBiodataEntity.setStMasaKerjaGol("0");
                     }
                 } else {
-                    imBiodataEntity.setMasaKerjaGolongan(0);
+                    imBiodataEntity.setStMasaKerjaGol("0");
                 }
                 imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
                 imBiodataEntity.setShift(bean.getShift());
@@ -2941,9 +2862,9 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setFotoUpload(personalEntity.getFotoUpload());
                     returnBiodata.setStatusCaption(personalEntity.getStatusCaption());
                     returnBiodata.setKeterangan(personalEntity.getKeterangan());
-                    if ("N".equalsIgnoreCase(personalEntity.getFlagDokterKso()) && CommonConstant.PEGAWAI_TETAP.equalsIgnoreCase(personalEntity.getTipePegawai())) {
-                        returnBiodata.setStMasaKerjaGol(String.valueOf(personalEntity.getMasaKerjaGolongan()));
-                        returnBiodata.setMasaKerjaGolongan(personalEntity.getMasaKerjaGolongan());
+                    if ("N".equalsIgnoreCase(personalEntity.getFlagDokterKso()) && CommonConstant.TIPE_PEGAWAI_TETAP.equalsIgnoreCase(personalEntity.getTipePegawai())) {
+                        returnBiodata.setStMasaKerjaGol(personalEntity.getStMasaKerjaGol());
+                        returnBiodata.setMasaKerjaGolongan(Integer.parseInt(personalEntity.getStMasaKerjaGol()));
                     }
                     returnBiodata.setGolonganDapenId(personalEntity.getGolonganDapenId());
                     returnBiodata.setProfesiId(personalEntity.getProfesiId());
@@ -3083,6 +3004,7 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setKecamatanName(personalEntity.getKecamatanName());
                     returnBiodata.setDesaName(personalEntity.getDesaName());
                     returnBiodata.setGolonganId(personalEntity.getGolongan());
+                    returnBiodata.setGolonganDapenId(personalEntity.getGolonganDapenId());
                     returnBiodata.setFlagZakat(personalEntity.getZakatProfesi());
                     returnBiodata.setGender(personalEntity.getGender());
                     returnBiodata.setNpwp(personalEntity.getNpwp());
@@ -3344,9 +3266,9 @@ public class BiodataBoImpl implements BiodataBo {
         List<ImBiodataEntity> listPersonal = null;
         try {
             if (!"".equalsIgnoreCase(branchId)) {
-                listPersonal = biodataDao.getDataBiodata("", query, branchId, "", null, "", "Y");
+                listPersonal = biodataDao.forComboPersonil("", query, branchId, "", null, "", "Y");
             } else {
-                listPersonal = biodataDao.getDataBiodata("", query, "", "", null, "", "Y");
+                listPersonal = biodataDao.forComboPersonil("", query, "", "", null, "", "Y");
             }
         } catch (HibernateException e) {
             logger.error("[UserBoImpl.getComboUserWithCriteria] Error, " + e.getMessage());
@@ -3899,7 +3821,7 @@ public class BiodataBoImpl implements BiodataBo {
     public List<Payroll> searchPayrollSys(String nip) throws GeneralBOException {
         logger.info("[BiodataBoImpl.searchPayrollSys] START >>>>>>");
         List<Payroll> payroll = new ArrayList<>();
-        List<ItPayrollEntity> itPayroll = null;
+        List<ItHrisPayrollEntity> itPayroll = null;
 
         try {
             itPayroll = payrollDao.getAllPayroll(nip);
@@ -3908,7 +3830,7 @@ public class BiodataBoImpl implements BiodataBo {
             throw new GeneralBOException("Found problem when get All Payroll, please info to your admin..." + e.getMessage());
         }
         if (itPayroll.size() > 0) {
-            for (ItPayrollEntity itPayrollEntity : itPayroll) {
+            for (ItHrisPayrollEntity itPayrollEntity : itPayroll) {
                 Payroll payroll1 = new Payroll();
                 payroll1.setPayrollId(itPayrollEntity.getPayrollId());
                 payroll1.setBulan(itPayrollEntity.getBulan());
@@ -3930,18 +3852,20 @@ public class BiodataBoImpl implements BiodataBo {
 //                payroll1.setTotalJasProd(CommonUtil.numbericFormat(itPayrollEntity.getTotalJasProd(), "###,###"));
 //                payroll1.setTotalPensiun(CommonUtil.numbericFormat(itPayrollEntity.getTotalPensiun(), "###,###"));
 //                payroll1.setTotalJubileum(CommonUtil.numbericFormat(itPayrollEntity.getTotalJubileum(), "###,###"));
-//
-                payroll1.setFlagPayroll(itPayrollEntity.getFlagPayroll());
-                payroll1.setFlagRapel(itPayrollEntity.getFlagRapel());
-                payroll1.setFlagThr(itPayrollEntity.getFlagThr());
-                payroll1.setFlagPendidikan(itPayrollEntity.getFlagPendidikan());
-                payroll1.setFlagJasprod(itPayrollEntity.getFlagJasprod());
-                payroll1.setFlagPensiun(itPayrollEntity.getFlagPensiun());
-                payroll1.setFlagJubileum(itPayrollEntity.getFlagJubileum());
-                payroll1.setFlagInsentif(itPayrollEntity.getFlagInsentif());
-                payroll1.setFlagCutiPanjang(itPayrollEntity.getFlagCutiPanjang());
-                payroll1.setFlagCutiTahunan(itPayrollEntity.getFlagCutiTahunan());
 
+                payroll1.setTipePayroll(itPayrollEntity.getTipePayroll());
+                //RAKA-02MEI2021==> Merubahnya menjadi TipePayroll
+//                payroll1.setFlagPayroll(itPayrollEntity.getFlagPayroll());
+//                payroll1.setFlagRapel(itPayrollEntity.getFlagRapel());
+//                payroll1.setFlagThr(itPayrollEntity.getFlagThr());
+//                payroll1.setFlagPendidikan(itPayrollEntity.getFlagPendidikan());
+//                payroll1.setFlagJasprod(itPayrollEntity.getFlagJasprod());
+//                payroll1.setFlagPensiun(itPayrollEntity.getFlagPensiun());
+//                payroll1.setFlagJubileum(itPayrollEntity.getFlagJubileum());
+//                payroll1.setFlagInsentif(itPayrollEntity.getFlagInsentif());
+//                payroll1.setFlagCutiPanjang(itPayrollEntity.getFlagCutiPanjang());
+//                payroll1.setFlagCutiTahunan(itPayrollEntity.getFlagCutiTahunan());
+                //RAKA-end
                 payroll.add(payroll1);
             }
         }
@@ -4099,7 +4023,7 @@ public class BiodataBoImpl implements BiodataBo {
                             throw new GeneralBOException("Found problem when get Golongan PKWT by ID, please info to your admin..." + e.getMessage());
                         }
                         biodata.setGolonganName(golonganPkwtEntity.getGolonganPkwtName());
-                    } else if (CommonConstant.PEGAWAI_TETAP.equalsIgnoreCase(imBiodata.getTipePegawai())) {
+                    } else if (CommonConstant.TIPE_PEGAWAI_TETAP.equalsIgnoreCase(imBiodata.getTipePegawai())) {
                         biodata.setGolonganName(imBiodata.getImGolonganEntity().getGolonganName());
                     }
                     biodata.setGolongan(imBiodata.getGolongan());
@@ -4366,7 +4290,7 @@ public class BiodataBoImpl implements BiodataBo {
             }
             if (bean.getGolonganId() != null) {
                 if (!bean.getGolonganId().equalsIgnoreCase("")) {
-                    if (bean.getTipePegawaiId().equalsIgnoreCase(CommonConstant.PEGAWAI_TETAP)) {
+                    if (bean.getTipePegawaiId().equalsIgnoreCase(CommonConstant.TIPE_PEGAWAI_TETAP)) {
                         try {
                             golonganName = historyJabatanPegawaiDao.getGolonganById(bean.getGolonganId());
                         } catch (HibernateException e) {
@@ -4622,7 +4546,7 @@ public class BiodataBoImpl implements BiodataBo {
                     }
                     if (bean.getGolonganId() != null) {
                         if (!bean.getGolonganId().equalsIgnoreCase("")) {
-                            if (bean.getTipePegawaiId().equalsIgnoreCase(CommonConstant.PEGAWAI_TETAP)) {
+                            if (bean.getTipePegawaiId().equalsIgnoreCase(CommonConstant.TIPE_PEGAWAI_TETAP)) {
                                 golonganName = historyJabatanPegawaiDao.getGolonganById(bean.getGolonganId());
                             }
                             if (bean.getTipePegawaiId().equalsIgnoreCase(CommonConstant.PEGAWAI_PKWT)) {
@@ -6324,7 +6248,7 @@ public class BiodataBoImpl implements BiodataBo {
             if (tipePegawai == null) {
                 status = "false";
             } else {
-                if (CommonConstant.PEGAWAI_TETAP.equalsIgnoreCase(imBiodataEntity.getTipePegawai())) {
+                if (CommonConstant.TIPE_PEGAWAI_TETAP.equalsIgnoreCase(imBiodataEntity.getTipePegawai())) {
                     if (tipePegawai.equalsIgnoreCase(imBiodataEntity.getTipePegawai())) {
                         status = "true";
                     } else {
@@ -6721,6 +6645,187 @@ public class BiodataBoImpl implements BiodataBo {
 
     private void createHistoryjabatan() {
 
+    }
+
+    @Override
+    public void berhentikanKso(String nip){
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+        //Non-Active Biodata
+        ImBiodataEntity biodataEntity = new ImBiodataEntity();
+        try{
+            biodataEntity = biodataDao.getById("nip", nip);
+        }catch (HibernateException e){
+            logger.error("[BiodataBoImpl.berhentikanKso] Error, " + e.getMessage());
+            throw new GeneralBOException("Error when retrieving Biodata by ID, " + e.getMessage());
+        }
+
+        biodataEntity.setFlag("N");
+        biodataEntity.setAction("U");
+        biodataEntity.setLastUpdate(updateTime);
+        biodataEntity.setLastUpdateWho(userLogin);
+
+        try{
+            biodataDao.updateAndSave(biodataEntity);
+        }catch(HibernateException e){
+            logger.error("[BiodataBoImpl.berhentikanKso] Error, " + e.getMessage());
+            throw new GeneralBOException("Error when trying non-active  biodata KSO, " +e.getMessage());
+        }
+
+        //Non-Active Pegawai Position
+        List<ItPersonilPositionEntity> personilPositionEntityList = new ArrayList();
+        try{
+            personilPositionEntityList = personilPositionDao.getListNip(nip);
+        }catch (HibernateException e){
+            logger.error("[BiodataBoImpl.berhentikanKso] Error, " + e.getMessage());
+            throw new GeneralBOException("Error when retrieving Personil Position by ID, " + e.getMessage());
+        }
+
+        personilPositionEntityList.get(0).setFlag("N");
+        personilPositionEntityList.get(0).setAction("U");
+        personilPositionEntityList.get(0).setLastUpdate(updateTime);
+        personilPositionEntityList.get(0).setLastUpdateWho(userLogin);
+
+        try{
+            personilPositionDao.updateAndSave(personilPositionEntityList.get(0));
+        }catch (HibernateException e){
+            logger.error("[BiodataBoImpl.berhentikanKso] Error, " + e.getMessage());
+            throw new GeneralBOException("Error when trying non-active  personil position KSO, " +e.getMessage());
+        }
+
+        //Non-Active Dokter
+        List<ImSimrsDokterEntity> dokterEntityList = new ArrayList();
+
+        try{
+            dokterEntityList = dokterDao.getDataDokterById(nip);
+        }catch (HibernateException e){
+            logger.error("[BiodataBoImpl.berhentikanKso] Error, " + e.getMessage());
+            throw new GeneralBOException("Error when retrieving Dokter by ID, " + e.getMessage());
+        }
+
+        dokterEntityList.get(0).setFlag("N");
+        dokterEntityList.get(0).setAction("U");
+        dokterEntityList.get(0).setLastUpdate(updateTime);
+        dokterEntityList.get(0).setLastUpdateWho(userLogin);
+
+        try{
+            dokterDao.updateAndSave(dokterEntityList.get(0));
+        }catch (HibernateException e){
+            logger.error("[BiodataBoImpl.berhentikanKso] Error, " + e.getMessage());
+            throw new GeneralBOException("Error when trying non-active  Dokter KSO, " +e.getMessage());
+        }
+
+        //Non-Active User
+        User user = new User();
+        user.setUserId(nip);
+        user.setAction("D");
+        user.setFlag("N");
+        user.setLastUpdate(updateTime);
+        user.setLastUpdateWho(userLogin);
+        try {
+            deleteUser(user);
+        }catch (HibernateException e){
+            logger.error("[BiodataBoImpl.berhentikanKso] Error, " + e.getMessage());
+            throw new GeneralBOException("Error when trying non-active  User KSO, " +e.getMessage());
+        }
+
+        //Non-Active Dokter Kso
+
+    }
+
+    private void deleteUser(User usersDelete) throws GeneralBOException {
+        logger.info("[MutasiBoImpl.saveDelete] start process >>>");
+
+        if (usersDelete != null) {
+            String userId = usersDelete.getUserId();
+            ImUsersPK primaryKey = new ImUsersPK();
+            primaryKey.setId(userId);
+
+            ImUsers imUsersOld = null;
+            try {
+                imUsersOld = userDao.getById(primaryKey, "Y");
+            } catch (HibernateException e) {
+                logger.error("[MutasiBoImpl.saveDelete] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when saving delete data users, please info to your admin..." + e.getMessage());
+            }
+
+            if (imUsersOld != null) {
+                Map hsCriteria = new HashMap();
+                hsCriteria.put("user_id", userId);
+                hsCriteria.put("flag", "Y");
+
+                //cek into im_areas_branches_users
+                ImAreasBranchesUsers imAreasBranchesUsers = null;
+                try {
+                    imAreasBranchesUsers = areasBranchesUsersDao.getAreasBranchesUsersByUserId(userId, "Y");
+                } catch (HibernateException e) {
+                    logger.error("[MutasiBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving delete data users, please info to your admin..." + e.getMessage());
+                }
+
+                if (imAreasBranchesUsers != null) {
+                    imAreasBranchesUsers.setFlag("N");
+                    imAreasBranchesUsers.setLastUpdate(usersDelete.getLastUpdate());
+                    imAreasBranchesUsers.setLastUpdateWho(usersDelete.getLastUpdateWho());
+
+                    try {
+                        areasBranchesUsersDao.updateAndSave(imAreasBranchesUsers);
+                    } catch (HibernateException e) {
+                        logger.error("[MutasiBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving deactive data ara-branch-user, please info to your admin..." + e.getMessage());
+                    }
+
+                }
+
+                List<ImRoles> listOfImRoles = new ArrayList<ImRoles>(imUsersOld.getImRoles());
+                ImRoles itemImRoles = listOfImRoles.get(0);
+
+                ImUsersRolesPK primaryKeyUserRole = new ImUsersRolesPK();
+                primaryKeyUserRole.setUserId(userId);
+                primaryKeyUserRole.setRoleId(itemImRoles.getRoleId());
+
+                ImUsersRoles imUsersRolesOld = null;
+                try {
+                    imUsersRolesOld = userRoleDao.getByCompositeKey(primaryKeyUserRole, "Y");
+                } catch (HibernateException e) {
+                    logger.error("[MutasiBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving delete data users, please info to your admin..." + e.getMessage());
+                }
+
+                if (imUsersRolesOld != null) {
+                    imUsersRolesOld.setFlag("N");
+                    imUsersRolesOld.setLastUpdate(usersDelete.getLastUpdate());
+                    imUsersRolesOld.setLastUpdateWho(usersDelete.getLastUpdateWho());
+
+                    try {
+                        userRoleDao.updateAndSave(imUsersRolesOld);
+                    } catch (HibernateException e) {
+                        logger.error("[MutasiBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving deactive data user-role, please info to your admin..." + e.getMessage());
+                    }
+                }
+
+                imUsersOld.setFlag("N");
+                imUsersOld.setLastUpdate(usersDelete.getLastUpdate());
+                imUsersOld.setLastUpdateWho(usersDelete.getLastUpdateWho());
+                try {
+                    userDao.updateAndSave(imUsersOld);
+                } catch (HibernateException e) {
+                    logger.error("[MutasiBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving deactive data user, please info to your admin..." + e.getMessage());
+                }
+
+            } else {
+                logger.error("[MutasiBoImpl.saveDelete] Error, Found problem when deleting data users, cause no have userId in database, please info to your admin.");
+                throw new GeneralBOException("Found problem when deleting data users, cause np have userId in database, please info to your admin.");
+            }
+
+        } else {
+            logger.error("[MutasiBoImpl.saveDelete] Error, Found problem when deleting data users, cause no have userId in database, please info to your admin.");
+            throw new GeneralBOException("Found problem when deleting data users, cause np have userId in database, please info to your admin.");
+        }
+        logger.info("[MutasiBoImpl.saveDelete] end process <<<");
     }
 
 //    @Override

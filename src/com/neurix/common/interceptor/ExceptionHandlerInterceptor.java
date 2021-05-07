@@ -176,6 +176,8 @@ public class ExceptionHandlerInterceptor extends MethodFilterInterceptor {
                 logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
             } else if ("/mobileapi/versionmobile".equalsIgnoreCase(namespace)) {
                 logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
+            }else if (namespace.contains("/mobileapi/settlementinvoice")) { //updated by ferdi, 01-12-2020, for billing system payment gateway
+                logger.info("[ExceptionHandlerInterceptor.billingsystem] skiping token");
             }
 
             else {

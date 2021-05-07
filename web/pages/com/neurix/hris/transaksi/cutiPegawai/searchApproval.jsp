@@ -138,14 +138,14 @@
                                             <tr>
                                                 <td>
                                                     <sj:submit type="button" cssClass="btn btn-primary" formIds="searchForm" id="search" name="search"
-                                                               onClickTopics="showDialog" onCompleteTopics="closeDialog" onclick="showLoadingDialog();">
+                                                               onClickTopics="showDialog" onCompleteTopics="closeDialog" onclick="searchData(), showLoadingDialog();">
                                                         <i class="fa fa-search"></i>
                                                         Search
                                                     </sj:submit>
                                                 </td>
                                                 <td>
 
-                                                    <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_cutiPegawai"/>'">
+                                                    <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="viewNotifikasi_notifikasi.action?tipeNotif=TN66"/>'">
                                                         <i class="fa fa-repeat"></i> Reset
                                                     </button>
                                                 </td>
@@ -519,6 +519,18 @@
         }
 
     });
+
+    function searchData() {
+        var nip = $('#personId').val();
+        var cutiPegawaiId = $('#cutiPegawaiId').val();
+        var data = "viewNotifikasi_notifikasi.action?tipeNotif=TN66";
+        if(nip!=null && nip!="")
+            data = data + "&id=" + nip;
+        if(cutiPegawaiId!=null && cutiPegawaiId!='')
+            data = data + "&request=" + cutiPegawaiId;
+
+        $('#searchForm').attr('action',data);
+    }
 </script>
 
 

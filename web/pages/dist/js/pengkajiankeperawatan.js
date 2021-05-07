@@ -70,18 +70,9 @@ function savePengkajianKep(jenis, ket) {
             });
 
             if(totalSkor != ''){
-                data.push({
-                    'parameter': 'Score',
-                    'jawaban': ''+totalSkor,
-                    'kode': '2',
-                    'waktu': va1,
-                    'tanggal': tanggal,
-                    'keterangan': jenis,
-                    'jenis': 'pengkajian',
-                    'id_detail_checkup': idDetailCheckup
-                });
 
                 var kesimpulan = "";
+                var jenisResikoJatuh = "";
 
                 if(jenisResiko == "humpty_dumpty"){
                     if(parseInt(totalSkor) >= 7 && parseInt(totalSkor) <= 11){
@@ -89,6 +80,7 @@ function savePengkajianKep(jenis, ket) {
                     }else if (parseInt(totalSkor) >= 12) {
                         kesimpulan = "Tinggi";
                     }
+                    jenisResikoJatuh = "Humpty Dumpty";
                 }else if(jenisResiko == "skala_morse"){
                     if(parseInt(totalSkor) >= 0 && parseInt(totalSkor) <= 24){
                         kesimpulan = "Rendah";
@@ -97,6 +89,7 @@ function savePengkajianKep(jenis, ket) {
                     }else if (parseInt(totalSkor) >= 45) {
                         kesimpulan = "Tinggi";
                     }
+                    jenisResikoJatuh = "Skala Morse";
                 }else if(jenisResiko == "geriatri"){
                     if(parseInt(totalSkor) >= 0 && parseInt(totalSkor) <= 5){
                         kesimpulan = "Rendah";
@@ -105,11 +98,33 @@ function savePengkajianKep(jenis, ket) {
                     }else if (parseInt(totalSkor) >= 17) {
                         kesimpulan = "Tinggi";
                     }
+                    jenisResikoJatuh = "Geriatri";
                 }
+                data.push({
+                    'parameter': 'Jenis Resiko Jatuh',
+                    'jawaban': jenisResikoJatuh,
+                    'kode': '2',
+                    'waktu': va1,
+                    'tanggal': tanggal,
+                    'keterangan': jenis,
+                    'jenis': 'pengkajian',
+                    'id_detail_checkup': idDetailCheckup
+                });
+
+                data.push({
+                    'parameter': 'Score',
+                    'jawaban': ''+totalSkor,
+                    'kode': '3',
+                    'waktu': va1,
+                    'tanggal': tanggal,
+                    'keterangan': jenis,
+                    'jenis': 'pengkajian',
+                    'id_detail_checkup': idDetailCheckup
+                });
                 data.push({
                     'parameter': 'Tingkat Resiko',
                     'jawaban': kesimpulan,
-                    'kode': '3',
+                    'kode': '4',
                     'waktu': va1,
                     'tanggal': tanggal,
                     'keterangan': jenis,
@@ -118,7 +133,7 @@ function savePengkajianKep(jenis, ket) {
                 });
             }
         }
-        if(resikoJatuh.length == dataCek.length){
+        if(va1 != '' && resikoJatuh.length == dataCek.length){
             cek = true;
         }
     }
@@ -263,7 +278,7 @@ function savePengkajianKep(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Perjalanan',
+                'parameter': 'Penjalaran',
                 'jawaban': va5,
                 'kode': '2',
                 'waktu': va1,

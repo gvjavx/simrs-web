@@ -27,7 +27,7 @@ public interface PeriksaLabBo {
     public String getDivisiIdKodering(String idDetailCheckup, String tipeLab) throws GeneralBOException;
     public void saveEditStatusPeriksa(PeriksaLab bean) throws GeneralBOException;
     public List<Dokter> getListDokterLabRadiologi(String tipe) throws GeneralBOException;
-    public CrudResponse saveUpdateParameter(PeriksaLab bean, List<String> listParams) throws GeneralBOException;
+    public void saveUpdateParameter(PeriksaLab bean) throws GeneralBOException;
     public ItSimrsPeriksaLabEntity getPeriksaLabEntityById(String id) throws GeneralBOException;
     public List<PeriksaLab> getListLab(String noChekcup, String jenis) throws GeneralBOException;
     public List<PeriksaLab> pushListLab(String kategori, String branchId) throws GeneralBOException;
@@ -38,4 +38,5 @@ public interface PeriksaLabBo {
     public void deleteUpload(String id) throws GeneralBOException;
     public List<PeriksaLab> getByCriteriaHeaderPemeriksaan(PeriksaLab bean) throws GeneralBOException;
     public ItSimrsHeaderPemeriksaanEntity getEntityHeaderpemeriksaan(String id) throws GeneralBOException;
+    public List<UploadHasilPemeriksaan> hasilUploadPemeriksaan(String id) throws GeneralBOException;
 }

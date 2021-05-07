@@ -3,7 +3,7 @@ package com.neurix.akuntansi.transaksi.billingSystem.model;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.Date;
+import java.sql.Date;
 
 public class LogTransaction {
     private BigInteger pgLogTrxId;
@@ -13,6 +13,8 @@ public class LogTransaction {
     private String noVirtualAccount;
     private String noRekamMedik;
     private BigDecimal trxAmount;
+    private String stTrxAmount;
+
     private String namePerson;
     private String addressPerson;
     private String phonePerson;
@@ -46,11 +48,80 @@ public class LogTransaction {
     private String stSentDateTo;
 
     //RAKA-untuk search berdasarkan tanggal
-//    private Timestamp DateStr;
-//    private String stDateStr;
-//    private Timestamp DateEnd;
-//    private String stDateEnd;
+    private Timestamp DateStr;
+    private String stDateStr;
+    private Timestamp DateEnd;
+    private String stDateEnd;
 
+    private String stInvoiceDate;
+    private String stInvDateFrom;
+    private String stInvDateTo;
+
+    public String getStInvoiceDate() {
+        return stInvoiceDate;
+    }
+
+    public void setStInvoiceDate(String stInvoiceDate) {
+        this.stInvoiceDate = stInvoiceDate;
+    }
+
+    public String getStInvDateFrom() {
+        return stInvDateFrom;
+    }
+
+    public void setStInvDateFrom(String stInvDateFrom) {
+        this.stInvDateFrom = stInvDateFrom;
+    }
+
+    public String getStInvDateTo() {
+        return stInvDateTo;
+    }
+
+    public void setStInvDateTo(String stInvDateTo) {
+        this.stInvDateTo = stInvDateTo;
+    }
+
+    public Timestamp getDateStr() {
+        return DateStr;
+    }
+
+    public void setDateStr(Timestamp dateStr) {
+        DateStr = dateStr;
+    }
+
+    public String getStDateStr() {
+        return stDateStr;
+    }
+
+    public void setStDateStr(String stDateStr) {
+        this.stDateStr = stDateStr;
+    }
+
+    public Timestamp getDateEnd() {
+        return DateEnd;
+    }
+
+    public void setDateEnd(Timestamp dateEnd) {
+        DateEnd = dateEnd;
+    }
+
+    public String getStDateEnd() {
+        return stDateEnd;
+    }
+
+    public void setStDateEnd(String stDateEnd) {
+        this.stDateEnd = stDateEnd;
+    }
+
+    public String getStTrxAmount() {
+        return stTrxAmount;
+    }
+
+    public void setStTrxAmount(String stTrxAmount) {
+        this.stTrxAmount = stTrxAmount;
+    }
+
+    //RAKA-end
 
     public Timestamp getReceivedDateFrom() {
         return receivedDateFrom;

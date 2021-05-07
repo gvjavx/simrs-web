@@ -173,14 +173,15 @@
                                             </display:column>
 
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/payrollSkalaGajiDplkPegawai" action="delete_payrollSkalaGajiDplkPegawai" escapeAmp="false">
-                                                    <s:param name="id"><s:property value="#attr.row.skalaGajiPensiunId" /></s:param>
-                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                </s:url>
-                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                </sj:a>
-
+                                                <s:if test="#attr.row.flagYes">
+                                                    <s:url var="urlViewDelete" namespace="/payrollSkalaGajiDplkPegawai" action="delete_payrollSkalaGajiDplkPegawai" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="#attr.row.skalaGajiPensiunId" /></s:param>
+                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                    </s:url>
+                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                    </sj:a>
+                                                </s:if>
                                             </display:column>
                                             <display:column property="skalaGajiPensiunId" sortable="true" title="ID" />
                                             <display:column property="golonganName" sortable="true" title="Golongan"  />

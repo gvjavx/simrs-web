@@ -140,6 +140,18 @@ public class CatatanTerintegrasiAction {
                 if (obj.has("sip_petugas")) {
                     catatan.setSipPetugas(obj.getString("sip_petugas"));
                 }
+                if (obj.has("kesadaran")) {
+                    catatan.setKesadaran(obj.getString("kesadaran"));
+                }
+                if (obj.has("spo2")) {
+                    catatan.setSpo2(obj.getString("spo2"));
+                }
+                if (obj.has("o2")) {
+                    catatan.setO2(obj.getString("o2"));
+                }
+                if (obj.has("total_ews")) {
+                    catatan.setEws(obj.getString("total_ews"));
+                }
 
                 catatan.setAction("C");
                 catatan.setFlag("Y");

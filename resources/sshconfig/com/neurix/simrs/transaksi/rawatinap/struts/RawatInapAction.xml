@@ -76,6 +76,7 @@
             <result name="search">/pages/com/neurix/simrs/transaksi/rawatinap/searchRawatInap.jsp</result>
             <result name="init_add">/pages/com/neurix/simrs/transaksi/rawatinap/addRawatInap.jsp</result>
             <result name="search_tppri">/pages/com/neurix/simrs/transaksi/rawatinap/searchTppri.jsp</result>
+            <result name="init_add_igd">/pages/com/neurix/simrs/transaksi/igd/addPendaftaranIgd.jsp</result>
 
             <result name="print_resep" type="jasper">
                 <param name="location">/pages/report/com/neurix/simrs/printResepPasien.jasper</param>
@@ -105,12 +106,20 @@
                 <param name="reportParameters">reportParams</param>
             </result>
 
-        </action>
+            <result name="print_checkup_ulang" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printCheckupUlang.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
 
-        <action name="paging_displaytag_checkup"
-                class="com.neurix.simrs.transaksi.checkup.action.CheckupAction" method="paging">
-            <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/simrs/master/pasien/searchPasien.jsp</result>
+            <result name="print_pindah_rs" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printSuratPernyataanRujuk.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
         </action>
 
     </package>

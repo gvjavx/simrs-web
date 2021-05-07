@@ -1,10 +1,13 @@
 package com.neurix.simrs.transaksi.rawatinap.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
+import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
@@ -162,7 +165,9 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "um.id, " +
                     "um.id_detail_checkup, \n" +
                     "f.kategori, \n" +
-                    "jenis.keterangan as jenis_pasien\n" +
+                    "jenis.keterangan as jenis_pasien,\n" +
+                    "a.tgl_lahir,\n"+
+                    "b.tindak_lanjut \n"+
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_jenis_periksa_pasien jenis ON b.id_jenis_periksa_pasien = jenis.id_jenis_periksa_pasien\n" +
@@ -308,7 +313,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     rawatInap.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
                     rawatInap.setIdRawatInap(obj[10].toString());
                     rawatInap.setIdRuangan(obj[11].toString());
-                    rawatInap.setNoRuangan(obj[12].toString());
+                    rawatInap.setNoRuangan(obj[12] != null ? obj[12].toString() : "");
                     rawatInap.setNamaRangan(obj[13].toString());
                     rawatInap.setKelasRuanganName(obj[14].toString());
                     rawatInap.setIdKelas(obj[15].toString());
@@ -318,6 +323,11 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     rawatInap.setIdJenisPeriksa(obj[19] == null ? "" : obj[19].toString());
                     rawatInap.setKategoriRuangan(obj[23] == null ? "" : obj[23].toString());
                     rawatInap.setJenisPeriksaPasien(obj[24] == null ? "" : obj[24].toString());
+                    rawatInap.setTanggalLahir(obj[25] == null ? null : (java.sql.Date) obj[25]);
+                    if(rawatInap.getTanggalLahir() != null){
+                        rawatInap.setUmur(CommonUtil.calculateAge(rawatInap.getTanggalLahir(), true)+ " Tahun");
+                    }
+                    rawatInap.setTindakLanjut(obj[26] == null ? null : (String) obj[26]);
 
                     if (!"".equalsIgnoreCase(rawatInap.getDesaId())) {
                         List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());
@@ -572,7 +582,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     rawatInap.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
                     rawatInap.setIdRawatInap(obj[10].toString());
                     rawatInap.setIdRuangan(obj[11].toString());
-                    rawatInap.setNoRuangan(obj[12].toString());
+                    rawatInap.setNoRuangan(obj[12] == null ? "" : obj[12].toString());
                     rawatInap.setNamaRangan(obj[13].toString());
                     rawatInap.setKelasRuanganName(obj[14].toString());
                     rawatInap.setIdKelas(obj[15].toString());
@@ -689,40 +699,35 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
     public List<RawatInap> getListTppri(RawatInap bean) {
         List<RawatInap> response = new ArrayList<>();
         if (bean != null) {
-            String idPasien = "";
-            String nama = "";
-            String idDetailCheckup = "";
-            String branchId = "";
-            String tgl = "";
-            String flag = "";
+            String condition = "";
 
             if (bean.getFlagTppri() != null && !"".equalsIgnoreCase(bean.getFlagTppri())) {
-                flag = "AND b.flag_tppri = '" + bean.getFlagTppri() + "' \n";
+                condition += "AND b.flag_tppri = '" + bean.getFlagTppri() + "' \n";
             }else{
-                flag = "AND b.flag_tppri IS NULL \n";
+                condition += "AND b.flag_tppri IS NULL \n";
             }
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
-                idPasien = "AND a.id_pasien LIKE '%" + bean.getIdPasien() + "%' \n";
+                condition += "AND a.id_pasien LIKE '%" + bean.getIdPasien() + "%' \n";
             }
             if (bean.getNamaPasien() != null && !"".equalsIgnoreCase(bean.getNamaPasien())) {
-                nama = "AND a.nama ILIKE '%" + bean.getNamaPasien() + "%' \n";
+                condition += "AND a.nama ILIKE '%" + bean.getNamaPasien() + "%' \n";
             }
             if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
-                idDetailCheckup = "AND b.id_detail_checkup LIKE '%" + bean.getIdDetailCheckup() + "%' \n";
+                condition += "AND b.id_detail_checkup LIKE '%" + bean.getIdDetailCheckup() + "%' \n";
             }
             if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
-                branchId = "AND a.branch_id LIKE '" + bean.getBranchId() + "'";
+                condition += "AND a.branch_id LIKE '" + bean.getBranchId() + "'";
             } else {
-                branchId = "AND a.branch_id LIKE '%'";
+                condition += "AND a.branch_id LIKE '%'";
             }
 
             if (bean.getStTglTo() != null && !"".equalsIgnoreCase(bean.getStTglTo()) &&
                     bean.getStTglFrom() != null && !"".equalsIgnoreCase(bean.getStTglFrom())) {
-                tgl = "AND CAST(a.created_date AS date) >= to_date('" + bean.getStTglFrom() + "', 'dd-MM-yyyy') AND CAST(a.created_date AS date) <= to_date('" + bean.getStTglTo() + "', 'dd-MM-yyyy') \n";
+                condition += "AND CAST(a.created_date AS date) >= to_date('" + bean.getStTglFrom() + "', 'dd-MM-yyyy') AND CAST(a.created_date AS date) <= to_date('" + bean.getStTglTo() + "', 'dd-MM-yyyy') \n";
             } else if (bean.getStTglTo() != null && !"".equalsIgnoreCase(bean.getStTglTo())) {
-                tgl = "AND CAST(a.created_date AS date) <= to_date('" + bean.getStTglTo() + "', 'dd-MM-yyyy') \n";
+                condition += "AND CAST(a.created_date AS date) <= to_date('" + bean.getStTglTo() + "', 'dd-MM-yyyy') \n";
             } else if (bean.getStTglFrom() != null && !"".equalsIgnoreCase(bean.getStTglFrom())) {
-                tgl = "AND CAST(a.created_date AS date) >= to_date('" + bean.getStTglFrom() + "', 'dd-MM-yyyy') \n";
+                condition += "AND CAST(a.created_date AS date) >= to_date('" + bean.getStTglFrom() + "', 'dd-MM-yyyy') \n";
             }
 
             String SQL = "SELECT\n" +
@@ -743,14 +748,13 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_jenis_periksa_pasien c ON b.id_jenis_periksa_pasien = c.id_jenis_periksa_pasien\n" +
                     "LEFT JOIN it_simrs_rawat_inap d ON b.id_detail_checkup = d.id_detail_checkup\n" +
-                    "WHERE b.status_periksa = '3'\n" +
-                    "AND b.tindak_lanjut IN ('rawat_inap','rawat_intensif','rawat_isolasi','kamar_operasi','ruang_bersalin')\n" +
-                    "AND d.id_detail_checkup IS NULL \n" +
-                    flag + branchId + idPasien + nama + idDetailCheckup + tgl;
+                    "WHERE b.tindak_lanjut IN ('rawat_inap','rawat_intensif','rawat_isolasi','kamar_operasi','ruang_bersalin')\n" +
+                    "AND d.id_detail_checkup IS NULL \n" +condition;
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .list();
+
             if (result.size() > 0) {
                 for (Object[] obj : result) {
                     RawatInap rawatInap = new RawatInap();
@@ -769,14 +773,71 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     if(obj[11] != null){
                         String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format((Timestamp) obj[11]);
                         rawatInap.setFormatTglMasuk(formatDate);
-
                     }
                     rawatInap.setFlagTppri(obj[12] == null ? null : (String) obj[12]);
+                    rawatInap.setIsTindakanRawat(cekTindakanRawat(rawatInap.getNoCheckup()));
+                    rawatInap.setFlagBatal(getPeriksaInap(rawatInap.getNoCheckup()).getFlagBatal());
                     response.add(rawatInap);
                 }
             }
         }
         return response;
+    }
+
+    private String cekTindakanRawat(String id){
+        String res = "N";
+        if(id != null && !"".equalsIgnoreCase(id)){
+            String SQL = "SELECT\n" +
+                    "c.no_checkup,\n" +
+                    "a.id_detail_checkup\n" +
+                    "FROM it_simrs_tindakan_rawat a\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
+                    "INNER JOIN it_simrs_header_checkup c ON c.no_checkup = b.no_checkup\n" +
+                    "INNER JOIN im_simrs_pelayanan d ON b.id_pelayanan = d.id_pelayanan\n" +
+                    "INNER JOIN im_simrs_header_pelayanan e ON d.id_header_pelayanan = e.id_header_pelayanan\n" +
+                    "WHERE c.no_checkup = :id\n" +
+                    "AND e.tipe_pelayanan = 'rawat_inap'";
+            List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", id)
+                    .list();
+            if(result.size() > 0){
+                res = "Y";
+            }
+        }
+        return res;
+    }
+
+    public RawatInap getPeriksaInap(String id) {
+        RawatInap res = new RawatInap();
+        res.setFlagBatal("N");
+        if(id != null && !"".equalsIgnoreCase(id)){
+            String SQL = "SELECT\n" +
+                    "a.no_checkup,\n" +
+                    "b.id_detail_checkup,\n" +
+                    "e.id_rawat_inap,\n" +
+                    "e.flag\n" +
+                    "FROM it_simrs_header_checkup a\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                    "INNER JOIN im_simrs_header_pelayanan d ON c.id_header_pelayanan = d.id_header_pelayanan\n" +
+                    "INNER JOIN it_simrs_rawat_inap e ON b.id_detail_checkup = e.id_detail_checkup \n" +
+                    "WHERE a.no_checkup = :id \n" +
+                    "AND d.tipe_pelayanan = 'rawat_inap'";
+            List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", id)
+                    .list();
+            if(result.size() > 0){
+                Object[] obj = result.get(0);
+                res.setIdDetailCheckup(obj[1].toString());
+                res.setIdRawatInap(obj[2].toString());
+                if(obj[3] != null){
+                    if("N".equalsIgnoreCase(obj[3].toString())){
+                        res.setFlagBatal("Y");
+                    }
+                }
+            }
+        }
+        return res;
     }
 
     public List<RawatInap> getRuanganRawatInap(RawatInap bean) {

@@ -34,6 +34,15 @@ public class ItSimrsHeaderPemeriksaanEntity {
     private Timestamp createdDate;
     private String lastUpdateWho;
     private Timestamp lastUpdate;
+    private String jenisPasien;
+
+    public String getJenisPasien() {
+        return jenisPasien;
+    }
+
+    public void setJenisPasien(String jenisPasien) {
+        this.jenisPasien = jenisPasien;
+    }
 
     public String getIsPeriksaLuar() {
         return isPeriksaLuar;

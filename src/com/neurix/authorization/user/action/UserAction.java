@@ -172,6 +172,7 @@ public class UserAction extends BaseMasterAction {
             return "failure";
         }
 
+        listOfComboRoles.clear();
         listOfComboRoles.addAll(listOfRoles);
 
         return "init_combo_role";
@@ -222,6 +223,7 @@ public class UserAction extends BaseMasterAction {
             return "failure";
         }
 
+        listOfComboAreas.clear();
         listOfComboAreas.addAll(listOfAreas);
 
         return "init_combo_area";
@@ -1085,8 +1087,11 @@ public class UserAction extends BaseMasterAction {
                 logger.error(e.getMessage());
             }
 
-            if (userList.size() > 0) {
-                user = userList.get(0);
+            for(User eachUser : userList) {
+                if(eachUser.getUserId().equalsIgnoreCase(userId)){
+                    user = eachUser;
+                    break;
+                }
             }
         }
         return user;

@@ -2052,13 +2052,7 @@ function saveSPS(jenis, ket) {
         var va1 = $('[name=ag1]:checked').val();
         var va2 = $('[name=ag2]:checked').val();
         var va3 = $('[name=ag3]:checked').val();
-        var va4 = $('#ag4').val();
-        var va5 = $('#ag5').val();
-        var va6 = $('#ag6').val();
-        var va7 = $('#ag7').val();
-        var va8 = $('#ag8').val();
 
-        var ttd = document.getElementById("ag9");
         var gigiImg = document.getElementById("area_gigi1");
         var canvasCek = document.getElementById('area_cek');
 
@@ -2066,16 +2060,8 @@ function saveSPS(jenis, ket) {
         if (gigiImg.toDataURL() == canvasCek.toDataURL()) {
             gigi = "N";
         }
-        var cekTtd = isBlank(ttd);
-        var nama = $('#nama_terang_petugas').val();
-        var nip = $('#sip_petugas').val();
 
-        if (va1 && va2 && va3 != undefined &&
-            va4 && va5 && va6 && va7 && va8 && nama && nip != '' && !cekTtd) {
-
-            var ttd1 = ttd.toDataURL("image/png"),
-                ttd1 = ttd1.replace(/^data:image\/(png|jpg);base64,/, "");
-
+        if (va1 && va2 && va3 != undefined) {
             var img = gigiImg.toDataURL("image/png"),
                 img = img.replace(/^data:image\/(png|jpg);base64,/, "");
 
@@ -2110,6 +2096,36 @@ function saveSPS(jenis, ket) {
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
+            cek = true;
+        }
+    }
+
+    if ("asesmen_gigi_lanjut" == jenis) {
+        var va4 = $('#ag4').val();
+        var va5 = $('#ag5').val();
+        var va6 = $('#ag6').val();
+        var va7 = $('#ag7').val();
+        var va8 = $('#ag8').val();
+
+        var ttd = document.getElementById("ag9");
+        var gigiImg = document.getElementById("area_gigi1");
+        var canvasCek = document.getElementById('area_cek');
+
+        var gigi = "Y";
+        if (gigiImg.toDataURL() == canvasCek.toDataURL()) {
+            gigi = "N";
+        }
+        var cekTtd = isBlank(ttd);
+        var nama = $('#nama_terang_petugas').val();
+        var nip = $('#sip_petugas').val();
+
+        if (va4 && va5 && va6 && va7 && va8 && nama && nip != '' && !cekTtd) {
+
+            var ttd1 = ttd.toDataURL("image/png"),
+                ttd1 = ttd1.replace(/^data:image\/(png|jpg);base64,/, "");
+
+            var img = gigiImg.toDataURL("image/png"),
+                img = img.replace(/^data:image\/(png|jpg);base64,/, "");
             data.push({
                 'parameter': 'Diastema',
                 'jawaban': va4,

@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,14 +126,22 @@ public class ErrorLogAction extends BaseMasterAction {
         if (searchErrorLog.getStErrorTimestampFrom() != null && !"".equalsIgnoreCase(searchErrorLog.getStErrorTimestampFrom())) {
             searchErrorLog.setErrorTimestampFrom(CommonUtil.convertToTimestamp(searchErrorLog.getStErrorTimestampFrom()));
             if (searchErrorLog.getStErrorTimestampTo() != null && !"".equalsIgnoreCase(searchErrorLog.getStErrorTimestampTo())) {
-                searchErrorLog.setErrorTimestampTo(CommonUtil.convertToTimestamp(searchErrorLog.getStErrorTimestampTo()));
+                Timestamp timestampTo = CommonUtil.convertToTimestamp(searchErrorLog.getStErrorTimestampTo());
+                timestampTo.setDate(timestampTo.getDate() + 1);
+
+                searchErrorLog.setErrorTimestampTo(timestampTo);
             } else {
-                searchErrorLog.setErrorTimestampTo(searchErrorLog.getErrorTimestampFrom());
+                Timestamp timestampTo = CommonUtil.convertToTimestamp(searchErrorLog.getStErrorTimestampFrom());
+                timestampTo.setDate(timestampTo.getDate() + 1);
+                searchErrorLog.setErrorTimestampTo(timestampTo);
             }
 
         } else {
             if (searchErrorLog.getStErrorTimestampTo() != null && !"".equalsIgnoreCase(searchErrorLog.getStErrorTimestampTo())) {
-                searchErrorLog.setErrorTimestampTo(CommonUtil.convertToTimestamp(searchErrorLog.getStErrorTimestampTo()));
+                Timestamp timestampTo = CommonUtil.convertToTimestamp(searchErrorLog.getStErrorTimestampTo());
+                timestampTo.setDate(timestampTo.getDate() + 1);
+                searchErrorLog.setErrorTimestampTo(timestampTo);
+
                 searchErrorLog.setErrorTimestampFrom(searchErrorLog.getErrorTimestampTo());
             }
         }

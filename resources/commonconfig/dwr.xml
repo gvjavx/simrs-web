@@ -234,6 +234,9 @@
         <create creator="new">
             <param name="class" value="com.neurix.hris.master.shift.action.ShiftAction"/>
         </create>
+
+      <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.PegawaiPayroll"/>
+
         <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.Payroll"/>
         <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.PayrollPph"/>
         <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.PayrollJubileum"/>
@@ -474,7 +477,8 @@
         <convert converter="bean" match="com.neurix.simrs.master.obat.model.KandunganObat"/>
         <convert converter="bean" match="com.neurix.simrs.master.obat.model.ImSimrsKandunganObatEntity"/>
         <convert converter="bean" match="com.neurix.simrs.master.obat.model.ImSimrsKandunganObatDetailEntity"/>
-        <convert converter="bean" match="com.neurix.simrs.master.kategoripersediaan.model.ImSimrsKategoriPersediaanEntity"/>
+        <convert converter="bean" match="com.neurix.simrs.master.kategoripersediaan.model.ImSimrsKategoriPersediaanEntity"/>        <convert converter="bean" match="com.neurix.simrs.transaksi.hargaobat.model.HargaObatPerKonsumen"/>
+        <convert converter="bean" match="com.neurix.simrs.transaksi.hargaobat.model.HargaObatPerKonsumen"/>
 
         <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.CheckResponse"/>
         <convert converter="bean" match="com.neurix.simrs.transaksi.obatinap.model.ObatInap"/>
@@ -647,6 +651,7 @@
         <convert converter="bean"
                  match="com.neurix.akuntansi.transaksi.tutupperiod.model.ItSimrsBatasTutupPeriodEntity"/>
         <convert converter="bean" match="com.neurix.akuntansi.transaksi.tutupperiod.model.BatasTutupPeriod"/>
+      <convert converter="bean" match="com.neurix.hris.transaksi.payroll.model.Ptt"/>
 
         <create creator="new">
             <param name="class" value="com.neurix.simrs.transaksi.daftarulang.action.DaftarUlangAction"/>
@@ -1014,6 +1019,8 @@
         <convert converter="bean" match="com.neurix.simrs.transaksi.makananpendamping.model.ItSimrsHeaderPendampingMakananEntity"/>
         <convert converter="bean" match="com.neurix.simrs.transaksi.makananpendamping.model.ItSimrsDetailPendampingMakananEntity"/>
         <convert converter="bean" match="com.neurix.simrs.transaksi.periksalab.model.ItSimrsUploadHasilPemeriksaanEntity"/>
+        <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.UploadPendukungPemeriksaan"/>
+        <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity"/>
 
     </allow>
 </dwr>

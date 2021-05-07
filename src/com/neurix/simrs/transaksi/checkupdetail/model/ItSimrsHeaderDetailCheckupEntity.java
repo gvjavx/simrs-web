@@ -93,6 +93,15 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
 
     private String isEksekutif;
     private String isVaksin;
+    private String indikasi;
+
+    public String getIndikasi() {
+        return indikasi;
+    }
+
+    public void setIndikasi(String indikasi) {
+        this.indikasi = indikasi;
+    }
 
     public String getIsVaksin() {
         return isVaksin;

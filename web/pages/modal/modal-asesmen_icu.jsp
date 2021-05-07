@@ -804,113 +804,117 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-2 jarak">Sistole</label>
                             <div class="col-md-4">
-                                <select class="form-control select2" id="hemo3" style="width: 100%">
-                                    <option value="">[Select One]</option>
-                                    <option value="260">260</option>
-                                    <option value="250">250</option>
-                                    <option value="240">240</option>
-                                    <option value="220">230</option>
-                                    <option value="220">220</option>
-                                    <option value="210">210</option>
-                                    <option value="200">200</option>
-                                    <option value="190">190</option>
-                                    <option value="180">180</option>
-                                    <option value="170">170</option>
-                                    <option value="160">160</option>
-                                    <option value="150">150</option>
-                                    <option value="140">140</option>
-                                    <option value="130">130</option>
-                                    <option value="120">120</option>
-                                    <option value="110">110</option>
-                                    <option value="100">100</option>
-                                    <option value="90">90</option>
-                                    <option value="80">80</option>
-                                    <option value="70">70</option>
-                                    <option value="60">60</option>
-                                    <option value="50">50</option>
-                                    <option value="40">40</option>
-                                    <option value="30">30</option>
-                                    <option value="20">20</option>
-                                    <option value="20">10</option>
-                                    <option value="0">0</option>
-                                </select>
+                                <input class="form-control" id="hemo3" type="number"/>
+                                <%--<select class="form-control select2" id="" style="width: 100%">--%>
+                                    <%--<option value="">[Select One]</option>--%>
+                                    <%--<option value="260">260</option>--%>
+                                    <%--<option value="250">250</option>--%>
+                                    <%--<option value="240">240</option>--%>
+                                    <%--<option value="220">230</option>--%>
+                                    <%--<option value="220">220</option>--%>
+                                    <%--<option value="210">210</option>--%>
+                                    <%--<option value="200">200</option>--%>
+                                    <%--<option value="190">190</option>--%>
+                                    <%--<option value="180">180</option>--%>
+                                    <%--<option value="170">170</option>--%>
+                                    <%--<option value="160">160</option>--%>
+                                    <%--<option value="150">150</option>--%>
+                                    <%--<option value="140">140</option>--%>
+                                    <%--<option value="130">130</option>--%>
+                                    <%--<option value="120">120</option>--%>
+                                    <%--<option value="110">110</option>--%>
+                                    <%--<option value="100">100</option>--%>
+                                    <%--<option value="90">90</option>--%>
+                                    <%--<option value="80">80</option>--%>
+                                    <%--<option value="70">70</option>--%>
+                                    <%--<option value="60">60</option>--%>
+                                    <%--<option value="50">50</option>--%>
+                                    <%--<option value="40">40</option>--%>
+                                    <%--<option value="30">30</option>--%>
+                                    <%--<option value="20">20</option>--%>
+                                    <%--<option value="20">10</option>--%>
+                                    <%--<option value="0">0</option>--%>
+                                <%--</select>--%>
                             </div>
                             <label class="col-md-2 jarak">Diastole</label>
                             <div class="col-md-4">
-                                <select class="form-control select2" id="hemo4" style="width: 100%">
-                                    <option value="">[Select One]</option>
-                                    <option value="180">180</option>
-                                    <option value="170">170</option>
-                                    <option value="160">160</option>
-                                    <option value="150">150</option>
-                                    <option value="140">140</option>
-                                    <option value="130">130</option>
-                                    <option value="120">120</option>
-                                    <option value="110">110</option>
-                                    <option value="100">100</option>
-                                    <option value="90">90</option>
-                                    <option value="80">80</option>
-                                    <option value="70">70</option>
-                                    <option value="60">60</option>
-                                    <option value="50">50</option>
-                                    <option value="40">40</option>
-                                    <option value="30">30</option>
-                                    <option value="20">20</option>
-                                    <option value="20">10</option>
-                                    <option value="0">0</option>
-                                </select>
+                                <input class="form-control" id="hemo4" type="number"/>
+                                <%--<select class="form-control select2" id="hemo4" style="width: 100%">--%>
+                                    <%--<option value="">[Select One]</option>--%>
+                                    <%--<option value="180">180</option>--%>
+                                    <%--<option value="170">170</option>--%>
+                                    <%--<option value="160">160</option>--%>
+                                    <%--<option value="150">150</option>--%>
+                                    <%--<option value="140">140</option>--%>
+                                    <%--<option value="130">130</option>--%>
+                                    <%--<option value="120">120</option>--%>
+                                    <%--<option value="110">110</option>--%>
+                                    <%--<option value="100">100</option>--%>
+                                    <%--<option value="90">90</option>--%>
+                                    <%--<option value="80">80</option>--%>
+                                    <%--<option value="70">70</option>--%>
+                                    <%--<option value="60">60</option>--%>
+                                    <%--<option value="50">50</option>--%>
+                                    <%--<option value="40">40</option>--%>
+                                    <%--<option value="30">30</option>--%>
+                                    <%--<option value="20">20</option>--%>
+                                    <%--<option value="20">10</option>--%>
+                                    <%--<option value="0">0</option>--%>
+                                <%--</select>--%>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-2 jarak">HR</label>
                             <div class="col-md-4">
-                                <select class="form-control select2" id="hemo5" style="width: 100%">
-                                    <option value="">[Select One]</option>
-                                    <option value="200">200</option>
-                                    <option value="180">180</option>
-                                    <option value="160">160</option>
-                                    <option value="140">140</option>
-                                    <option value="120">120</option>
-                                    <option value="100">100</option>
-                                    <option value="80">80</option>
-                                    <option value="60">60</option>
-                                    <option value="40">40</option>
-                                    <option value="20">20</option>
-                                    <option value="0">0</option>
-                                </select>
+                                <input class="form-control" id="hemo5" type="number"/>
+                                <%--<select class="form-control select2" id="hemo5" style="width: 100%">--%>
+                                    <%--<option value="">[Select One]</option>--%>
+                                    <%--<option value="200">200</option>--%>
+                                    <%--<option value="180">180</option>--%>
+                                    <%--<option value="160">160</option>--%>
+                                    <%--<option value="140">140</option>--%>
+                                    <%--<option value="120">120</option>--%>
+                                    <%--<option value="100">100</option>--%>
+                                    <%--<option value="80">80</option>--%>
+                                    <%--<option value="60">60</option>--%>
+                                    <%--<option value="40">40</option>--%>
+                                    <%--<option value="20">20</option>--%>
+                                    <%--<option value="0">0</option>--%>
+                                <%--</select>--%>
                             </div>
                             <label class="col-md-2 jarak">RR</label>
                             <div class="col-md-4">
-                                <select class="form-control select2" id="hemo6" style="width: 100%">
-                                    <option value="">[Select One]</option>
-                                    <option value="100">100</option>
-                                    <option value="95">95</option>
-                                    <option value="90">90</option>
-                                    <option value="85">85</option>
-                                    <option value="80">80</option>
-                                    <option value="75">75</option>
-                                    <option value="70">70</option>
-                                    <option value="65">65</option>
-                                    <option value="60">60</option>
-                                    <option value="55">55</option>
-                                    <option value="50">50</option>
-                                    <option value="45">45</option>
-                                    <option value="40">40</option>
-                                    <option value="35">35</option>
-                                    <option value="30">30</option>
-                                    <option value="25">25</option>
-                                    <option value="20">20</option>
-                                    <option value="15">15</option>
-                                    <option value="10">10</option>
-                                    <option value="5">5</option>
-                                    <option value="0">0</option>
-                                </select>
+                                <input class="form-control" id="hemo6" type="number"/>
+                                <%--<select class="form-control select2" id="hemo6" style="width: 100%">--%>
+                                    <%--<option value="">[Select One]</option>--%>
+                                    <%--<option value="100">100</option>--%>
+                                    <%--<option value="95">95</option>--%>
+                                    <%--<option value="90">90</option>--%>
+                                    <%--<option value="85">85</option>--%>
+                                    <%--<option value="80">80</option>--%>
+                                    <%--<option value="75">75</option>--%>
+                                    <%--<option value="70">70</option>--%>
+                                    <%--<option value="65">65</option>--%>
+                                    <%--<option value="60">60</option>--%>
+                                    <%--<option value="55">55</option>--%>
+                                    <%--<option value="50">50</option>--%>
+                                    <%--<option value="45">45</option>--%>
+                                    <%--<option value="40">40</option>--%>
+                                    <%--<option value="35">35</option>--%>
+                                    <%--<option value="30">30</option>--%>
+                                    <%--<option value="25">25</option>--%>
+                                    <%--<option value="20">20</option>--%>
+                                    <%--<option value="15">15</option>--%>
+                                    <%--<option value="10">10</option>--%>
+                                    <%--<option value="5">5</option>--%>
+                                    <%--<option value="0">0</option>--%>
+                                <%--</select>--%>
                             </div>
                         </div>
                     </div>
@@ -928,59 +932,63 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-2 jarak">ICP</label>
                             <div class="col-md-4">
-                                <select class="form-control select2" id="hemo8" style="width: 100%">
-                                    <option value="">[Select One]</option>
-                                    <option value="50">50</option>
-                                    <option value="40">40</option>
-                                    <option value="30">30</option>
-                                    <option value="20">20</option>
-                                    <option value="10">10</option>
-                                    <option value="0">0</option>
-                                </select>
+                                <input class="form-control" id="hemo8" type="number"/>
+                                <%--<select class="form-control select2" id="hemo8" style="width: 100%">--%>
+                                    <%--<option value="">[Select One]</option>--%>
+                                    <%--<option value="50">50</option>--%>
+                                    <%--<option value="40">40</option>--%>
+                                    <%--<option value="30">30</option>--%>
+                                    <%--<option value="20">20</option>--%>
+                                    <%--<option value="10">10</option>--%>
+                                    <%--<option value="0">0</option>--%>
+                                <%--</select>--%>
                             </div>
                             <label class="col-md-2 jarak">IBP</label>
                             <div class="col-md-4">
-                                <select class="form-control select2" id="hemo9" style="width: 100%">
-                                    <option value="">[Select One]</option>
-                                    <option value="250">250</option>
-                                    <option value="200">200</option>
-                                    <option value="150">150</option>
-                                    <option value="100">100</option>
-                                    <option value="50">50</option>
-                                    <option value="0">0</option>
-                                </select>
+                                <input class="form-control" id="hemo9" type="number"/>
+                                <%--<select class="form-control select2" id="hemo9" style="width: 100%">--%>
+                                    <%--<option value="">[Select One]</option>--%>
+                                    <%--<option value="250">250</option>--%>
+                                    <%--<option value="200">200</option>--%>
+                                    <%--<option value="150">150</option>--%>
+                                    <%--<option value="100">100</option>--%>
+                                    <%--<option value="50">50</option>--%>
+                                    <%--<option value="0">0</option>--%>
+                                <%--</select>--%>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-2 jarak">CVP</label>
                             <div class="col-md-4">
-                                <select class="form-control select2" id="hemo10" style="width: 100%">
-                                    <option value="">[Select One]</option>
-                                    <option value="25">25</option>
-                                    <option value="20">20</option>
-                                    <option value="15">15</option>
-                                    <option value="10">10</option>
-                                    <option value="5">5</option>
-                                    <option value="0">0</option>
-                                </select>
+                                <input class="form-control" id="hemo10" type="number"/>
+                                <%--<select class="form-control select2" id="hemo10" style="width: 100%">--%>
+                                    <%--<option value="">[Select One]</option>--%>
+                                    <%--<option value="25">25</option>--%>
+                                    <%--<option value="20">20</option>--%>
+                                    <%--<option value="15">15</option>--%>
+                                    <%--<option value="10">10</option>--%>
+                                    <%--<option value="5">5</option>--%>
+                                    <%--<option value="0">0</option>--%>
+                                <%--</select>--%>
                             </div>
                             <label class="col-md-2 jarak">MAP</label>
                             <div class="col-md-4">
-                                <select class="form-control select2" id="hemo11" style="width: 100%">
-                                    <option value="">[Select One]</option>
-                                    <option value="140">140</option>
-                                    <option value="120">120</option>
-                                    <option value="100">100</option>
-                                    <option value="80">80</option>
-                                    <option value="60">60</option>
-                                    <option value="40">40</option>
-                                </select>
+                                <input class="form-control" id="hemo11" type="number"/>
+                                <%--<select class="form-control select2" id="hemo11" style="width: 100%">--%>
+                                    <%--<option value="">[Select One]</option>--%>
+                                    <%--<option value="140">140</option>--%>
+                                    <%--<option value="120">120</option>--%>
+                                    <%--<option value="100">100</option>--%>
+                                    <%--<option value="80">80</option>--%>
+                                    <%--<option value="60">60</option>--%>
+                                    <%--<option value="40">40</option>--%>
+                                <%--</select>--%>
                             </div>
                         </div>
                     </div>

@@ -130,16 +130,19 @@
                         <div class="col-md-12">
                             <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
                                 <div class="col-md-1">
-                                    <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker-op  color-picker pull-left">
+                                    <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker-op  color-picker pull-left" value="#ff0000">
                                 </div>
                             </div>
                             <div class="text-center">
-                                <canvas class="paint-canvas" id="area_canvas" onmouseover="paintTtd('area_canvas', true)"></canvas>
+                                <canvas class="paint-canvas" id="area_canvas" onmouseover="paintTtd('area_canvas', true)" style="cursor: pointer"></canvas>
                             </div>
                             <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                     onclick="removePaint('area_canvas')"><i
                                     class="fa fa-trash"></i> Clear
                             </button>
+                        </div>
+                        <div class="col-md-12">
+                            <textarea class="form-control" style="margin-top: 10px" id="ket_area_canvas"></textarea>
                         </div>
                     </div>
                     <hr class="garis">

@@ -242,12 +242,28 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
 
     @Override
     public ItSimrsTindakanRawatEntity getTindakanRawatEntityById(String id) throws GeneralBOException {
-        return tindakanRawatDao.getById("idTindakanRawat", id);
+        logger.info("[TindakanRawatBoImpl.getTindakanRawatEntityById] Start >>>>>>>");
+        ItSimrsTindakanRawatEntity entity = new ItSimrsTindakanRawatEntity();
+        try {
+            entity = tindakanRawatDao.getById("idTindakanRawat", id);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        logger.info("[TindakanRawatBoImpl.getTindakanRawatEntityById] End >>>>>>>");
+        return entity;
     }
 
     @Override
     public List<TindakanRawat> getListTindakanRawat(String noCheckup, String jenis) throws GeneralBOException {
-        return tindakanRawatDao.getListTindakanRawat(noCheckup, jenis);
+        logger.info("[TindakanRawatBoImpl.getListTindakanRawat] Start >>>>>>>");
+        List<TindakanRawat> tindakanRawatList = new ArrayList<>();
+        try {
+            tindakanRawatList = tindakanRawatDao.getListTindakanRawat(noCheckup, jenis);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        logger.info("[TindakanRawatBoImpl.getListTindakanRawat] End >>>>>>>");
+        return tindakanRawatList;
     }
 
     protected void updateDetailCheckup(TindakanRawat bean) throws GeneralBOException{

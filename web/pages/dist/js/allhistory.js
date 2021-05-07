@@ -43,22 +43,33 @@ function viewHistory() {
                                 'src="' + contextPath + '/pages/images/icons8-plus-25.png">';
                         }
                     }
+
+                    var a = "";
+                    var b = "";
+                    var c = "";
                     if (item.idDetailCheckup != null && item.idDetailCheckup != '') {
                         icon = '<a href="' + contextPath + '/rekammedis/detail_rekammedis.action?idPasien=' + idPasien + '&id=' + item.idDetailCheckup + '&idx='+idDetailCheckup+'&url='+urlPage+'"><i class="fa fa-search hvr-grow"></i></a>';
                         if (item.videoRm != null) {
                             tele = '<img style="cursor: pointer" src=' + contextPath + '"/pages/images/icons8-movie-beginning-30.png" onclick="viewTelemedic(\'' + item.videoRm + '\', \'' + item.tglTindakan + '\')">';
                         }
+                        a = '<i class="fa fa-hospital-o"></i> ';
+                        b = '<i class="fa fa-user"></i> ';
+                        c = '<i class="fa fa-circle-o"></i> ';
                     }
 
                     table += '<tr id="row_' + item.idRiwayatTindakan + '">' +
                         '<td><b>' + icon + ' ' + cekDataNull(item.idDetailCheckup) +
-                        '<p style="margin-left: 15px">' + cekDataNull(item.namaPelayanan) + '</p></b>' +
+                        '<p style="margin-left: 15px">' + a +cekDataNull(item.namaPelayanan) + '</p>' +
+                        '<p style="margin-left: 15px; margin-top: -9px">' + b +cekDataNull(item.namaDokter) + '</p>' +
+                        '<p style="margin-left: 15px; margin-top: -9px">' + c +cekDataNull(item.idDokter) + '</p>' + '</b>' +
                         '<p style="margin-left: 15px">' + cekDataNull(item.diagnosa) + cekDataNull(item.namaDiagnosa) + '</p>' +
                         '<textarea style="display: none" id="id_id' + item.idRiwayatTindakan + '">' + json + '</textarea>' +
                         '</td>' +
                         '<td>' + cekDataNull(item.tglTindakan) + '</td>' +
                         '<td>' + cekDataNull(item.namaTindakan) + ' <div class="pull-right">' + btn + btn2 + '</div></td>' +
-                        '<td>' + cekDataNull(item.keteranganKeluar) + '</td>' +
+                        '<td>' + cekDataNull(item.keteranganKeluar) +
+                        '<p>Klinis : '+cekDataNull(item.catatanKlinis)+'</p>'+
+                        '</td>' +
                         '<td align="center">' + tele + '</td>' +
                         '<tr>';
                 });

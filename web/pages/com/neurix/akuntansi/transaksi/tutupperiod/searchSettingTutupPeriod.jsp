@@ -54,10 +54,15 @@
                         <div class="form-group form-horizontal">
                             <label class="control-label col-sm-4">Tahun</label>
                             <div class="col-sm-4">
-                                <select class="form form-control" id="tahun">
-                                    <option value="2020">2020</option>
-                                    <option value="2021">2021</option>
-                                </select>
+
+                                <label class="control-label col-sm-2">Tahun</label>
+                                <div class="col-sm-2">
+                                    <input type="text" class="yearpicker form-control" id="tahun" value="">
+                                </div>
+                                <%--<select class="form form-control" id="tahun">--%>
+                                    <%--<option value="2020">2020</option>--%>
+                                    <%--<option value="2021">2021</option>--%>
+                                <%--</select>--%>
                             </div>
                             <div class="col-sm-4">
                                 <button class="btn btn-success" onclick="searchPeriod()"><i class="fa fa-check"></i> Choose</button>
@@ -114,20 +119,22 @@
 
 <script type='text/javascript'>
 
+//    $("#tahun").yearpicker();
+
     function searchPeriod(){
 
         var tahun = $("#tahun").val();
 
         var arrbodyperiod = [
-            {"bulan" : "Januari",   "id" : "1"},
-            {"bulan" : "February",  "id" : "2"},
-            {"bulan" : "Maret",     "id" : "3"},
-            {"bulan" : "April",     "id" : "4"},
-            {"bulan" : "Mei",       "id" : "5"},
-            {"bulan" : "Juni",      "id" : "6"},
-            {"bulan" : "Juli",      "id" : "7"},
-            {"bulan" : "Agustus",   "id" : "8"},
-            {"bulan" : "September", "id" : "9"},
+            {"bulan" : "Januari",   "id" : "01"},
+            {"bulan" : "February",  "id" : "02"},
+            {"bulan" : "Maret",     "id" : "03"},
+            {"bulan" : "April",     "id" : "04"},
+            {"bulan" : "Mei",       "id" : "05"},
+            {"bulan" : "Juni",      "id" : "06"},
+            {"bulan" : "Juli",      "id" : "07"},
+            {"bulan" : "Agustus",   "id" : "08"},
+            {"bulan" : "September", "id" : "09"},
             {"bulan" : "Oktober",   "id" : "10"},
             {"bulan" : "November",  "id" : "11"},
             {"bulan" : "Desember",  "id" : "12"}

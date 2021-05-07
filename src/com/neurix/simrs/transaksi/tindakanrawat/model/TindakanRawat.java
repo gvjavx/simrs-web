@@ -36,6 +36,15 @@ public class TindakanRawat extends BaseModel {
     private String idRuangan;
     private String namaPelayanan;
     private String flagKonsulGizi;
+    private String kategoriRuangan;
+
+    public String getKategoriRuangan() {
+        return kategoriRuangan;
+    }
+
+    public void setKategoriRuangan(String kategoriRuangan) {
+        this.kategoriRuangan = kategoriRuangan;
+    }
 
     public String getFlagKonsulGizi() {
         return flagKonsulGizi;

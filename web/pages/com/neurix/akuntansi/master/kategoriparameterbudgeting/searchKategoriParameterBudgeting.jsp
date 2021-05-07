@@ -57,7 +57,7 @@
                             <tr>
                                 <td align="center">
                                     <s:form id="pelayananForm" method="post"  theme="simple"
-                                            namespace="/pelayanan" action="search_pelayanan.action" cssClass="form-horizontal">
+                                            namespace="/kategoriparameterbudgeting" action="search_kategoriparameterbudgeting.action" cssClass="form-horizontal">
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">

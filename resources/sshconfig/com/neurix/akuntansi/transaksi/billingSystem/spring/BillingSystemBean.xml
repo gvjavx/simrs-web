@@ -7,17 +7,7 @@
 
     <bean id="billingSystemBo" class="com.neurix.akuntansi.transaksi.billingSystem.bo.impl.BillingSystemBoImpl"
           p:jurnalDao-ref="jurnalDao"
-          p:jurnalDetailDao-ref="jurnalDetailDao"
           p:kodeRekeningDao-ref="kodeRekeningDao"
-          p:jurnalDetailActivityDao-ref="jurnalDetailActivityDao"
-          p:batasTutupPeriodDao-ref="batasTutupPeriodDao"
-
-          p:jurnalDetailActivityPendingDao-ref="jurnalDetailActivityPendingDao"
-          p:jurnalDetailPendingDao-ref="jurnalDetailPendingDao"
-          p:jurnalPendingDao-ref="jurnalPendingDao"
-          p:saldoAkhirDetailDao-ref="saldoAkhirDetailDao"
-          p:tutupPeriodDao-ref="tutupPeriodDao"
-          p:saldoAkhirDao-ref="saldoAkhirDao"
           p:riwayatTindakanDao-ref="riwayatTindakanDao"
           p:checkupDetailDao-ref="checkupDetailDao"
           p:tindakanTransitorisDao-ref="tindakanTransitorisDao"
@@ -38,10 +28,13 @@
           p:transDao-ref="transDao"
           p:obatDao-ref="obatDao"
           p:branchDao-ref="branchDao"
-          p:saldoAkhirHistoryDao-ref="saldoAkhirHistoryDao"
-          p:saldoAkhirDetailHistoryDao-ref="saldoAkhirDetailHistoryDao"
           p:jurnalAkhirTahunDao-ref="jurnalAkhirTahunDao"
           p:jurnalDetailAkhirTahunDao-ref="jurnalDetailAkhirTahunDao"
+          p:jurnalDetailActivityDao-ref="jurnalDetailActivityDao"
+          p:batasTutupPeriodDao-ref="batasTutupPeriodDao"
+          p:jurnalDetailDao-ref="jurnalDetailDao"
+          p:logTrxDao-ref="logTrxDao"
+          p:paymentGatewayInvoiceDao-ref="paymentGatewayInvoiceDao"
     />
 
     <bean id="billingSystemBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -65,10 +58,17 @@
                 <prop key="saveTutupPeriod">PROPAGATION_REQUIRED</prop>
                 <prop key="updateSaldoAkhirBulanBerjalan">PROPAGATION_REQUIRED</prop>
                 <!--<prop key="generateAndSaveCurrentSaldoPersediaanToNextMonth">readOnly</prop>-->
+                <prop key="prepareCreateJurnal">readOnly</prop>
+                <!--<prop key="createInvoiceNumber">PROPAGATION_REQUIRED</prop>-->
+                <prop key="settlementPGInvoice">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>
 
+    <bean id="paymentGatewayInvoiceDao" class="com.neurix.akuntansi.transaksi.billingSystem.dao.PaymentGatewayInvoiceDao"
+          p:sessionFactory-ref="sessionFactory" />
 
+    <bean id="logTrxDao" class="com.neurix.akuntansi.transaksi.billingSystem.dao.LogTrxDao"
+          p:sessionFactory-ref="sessionFactory" />
 
 </beans>

@@ -134,6 +134,15 @@ public class TransaksiObatAction extends BaseMasterAction {
     private String idResep;
     private String idApprove;
     private String idPermintaan;
+    private String tipe;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
 
     public void setPelayananBoProxy(PelayananBo pelayananBoProxy) {
         this.pelayananBoProxy = pelayananBoProxy;
@@ -1479,7 +1488,7 @@ public class TransaksiObatAction extends BaseMasterAction {
 
                         if(tindakanList.size() > 0){
                             tin = tindakanList.get(0);
-                            riwayatTindakan.setIdRuangan(tin.getKategoriInaBpjs());
+                            riwayatTindakan.setKategoriTindakanBpjs(tin.getKategoriInaBpjs());
                         }
 
                         try {
@@ -3052,7 +3061,6 @@ public class TransaksiObatAction extends BaseMasterAction {
             preDownload();
         } catch (SQLException e) {
             logger.error("[ObatPoliAction.printReturePermintaanObat] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
             return "search";
         }
 
@@ -3065,10 +3073,14 @@ public class TransaksiObatAction extends BaseMasterAction {
         String id = getId();
         String idApprove = getIdApprove();
         String jk = "";
+        String logo = "";
 
-        TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+        PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+        TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
         List<TransaksiObatDetail> pembelianObatList = new ArrayList<>();
-        List<RiwayatTransaksiObat> riwayatList = new ArrayList<>();
         HeaderCheckup checkup = new HeaderCheckup();
         PermintaanResep permintaanResep = new PermintaanResep();
 
@@ -3094,29 +3106,6 @@ public class TransaksiObatAction extends BaseMasterAction {
                     pembelianObatList = transaksiObatBoProxy.listObatResepApprove(idApprove);
                 } catch (GeneralBOException e) {
                     logger.error("[TransaksiObatAction.pembelianObat] ERROR when search list obat, ", e);
-                    addActionError("[TransaksiObatAction.pembelianObat] ERROR when search list obat, " + e.getMessage());
-                }
-
-                List<MtSimrsRiwayatPembelianObat> pembelianObats = new ArrayList<>();
-
-                try {
-                    pembelianObats = transaksiObatBoProxy.getRiwayatPembelianObat(idApprove);
-                } catch (HibernateException e) {
-                    logger.error("[TransaksiObatAction.pembelianObat] ERROR when search riwayat transaksi obat, ", e);
-                    addActionError("[TransaksiObatAction.pembelianObat] ERROR when search riwayat transaksi obat, " + e.getMessage());
-                }
-
-                MtSimrsRiwayatPembelianObat riwayatPembelianObat = new MtSimrsRiwayatPembelianObat();
-                if (pembelianObats.size() > 0) {
-                    riwayatPembelianObat = pembelianObats.get(0);
-                    if (riwayatPembelianObat != null) {
-
-                        reportParams.put("permintaanId", idResep);
-                        reportParams.put("totalBayar", riwayatPembelianObat.getTotalBayar());
-                        reportParams.put("nominal", riwayatPembelianObat.getNominal());
-                        reportParams.put("kembalian", riwayatPembelianObat.getKembalian());
-                        reportParams.put("totalDibayar", riwayatPembelianObat.getTotalDibayar());
-                    }
                 }
 
                 JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(pembelianObatList);
@@ -3130,15 +3119,11 @@ public class TransaksiObatAction extends BaseMasterAction {
                     logger.error("Found Error when searhc branch logo");
                 }
 
-                String logo = "";
-
                 if (branches != null) {
                     logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
                 }
 
                 reportParams.put("logo", logo);
-                reportParams.put("unit", CommonUtil.userBranchNameLogin());
-                reportParams.put("area", CommonUtil.userAreaName());
                 reportParams.put("itemDataSource", itemData);
 
             }
@@ -3157,12 +3142,6 @@ public class TransaksiObatAction extends BaseMasterAction {
                 Pelayanan plyn = pelayananList.get(0);
                 reportParams.put("tipePelayanan", plyn.getTipePelayanan());
             }
-
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-            PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
-            PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
-            VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
-            TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
 
             Pasien pasienEntity = new Pasien();
             ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = new ItSimrsAntrianTelemedicEntity();
@@ -3187,51 +3166,121 @@ public class TransaksiObatAction extends BaseMasterAction {
             reportParams.put("idDokter", permintaanResep.getIdDokter());
             reportParams.put("dokter", permintaanResep.getNamaDokter());
             reportParams.put("ttdDokter", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + permintaanResep.getTtdDokter());
-            reportParams.put("resepId", idResep);
             reportParams.put("petugas", permintaanResep.getNamaApoteker());
             reportParams.put("ttdPasien", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_PASIEN + permintaanResep.getTtdPasien());
             reportParams.put("ttdApoteker", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_APOTEKER + permintaanResep.getTtdApoteker());
-            reportParams.put("idPasien", checkup.getIdPasien() == null ? pasienEntity.getIdPasien() : checkup.getIdPasien());
-            reportParams.put("nik", checkup.getNoKtp() == null ? pasienEntity.getNoKtp() : checkup.getNoKtp());
-            reportParams.put("nama", checkup.getNama() == null ? pasienEntity.getNama() : checkup.getNama());
-
-            String formatDate = "";
-            if (checkup.getTglLahir() != null || pasienEntity.getTglLahir() != null) {
-                if (pasienEntity.getTglLahir() != null) {
-                    Date dTgl = Date.valueOf(pasienEntity.getTglLahir());
-                    formatDate = new SimpleDateFormat("dd-MM-yyyy").format(dTgl);
-                } else {
-                    formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
-                }
+            reportParams.put("area", CommonUtil.userAreaName());
+            reportParams.put("unit", CommonUtil.userBranchNameLogin());
+            reportParams.put("idPasien", checkup.getIdPasien());
+            reportParams.put("resepId", idResep);
+            reportParams.put("nik", checkup.getNoKtp());
+            reportParams.put("nama", checkup.getNama());
+            if(checkup.getTglLahir() != null){
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+                reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
             }
 
-            reportParams.put("tglLahir", checkup.getTempatLahir() == null ? pasienEntity.getTempatLahir() : checkup.getTempatLahir() + ", " + formatDate);
-
-            if ("L".equalsIgnoreCase(checkup.getJenisKelamin() == null ? pasienEntity.getJenisKelamin() : checkup.getJenisKelamin())) {
+            if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
                 jk = "Laki-Laki";
             } else {
                 jk = "Perempuan";
             }
 
             reportParams.put("jenisKelamin", jk);
-            reportParams.put("jenisPasien", checkup.getStatusPeriksaName() == null ? antrianTelemedicEntity.getIdJenisPeriksaPasien() : checkup.getStatusPeriksaName());
-            reportParams.put("poli", checkup.getNamaPelayanan() == null ? "E-Obat" : checkup.getNamaPelayanan());
-            reportParams.put("provinsi", checkup.getNamaProvinsi() == null ? pasienEntity.getProvinsi() : checkup.getNamaProvinsi());
-            reportParams.put("kabupaten", checkup.getNamaKota() == null ? pasienEntity.getKota() : checkup.getNamaKota());
-            reportParams.put("kecamatan", checkup.getNamaKecamatan() == null ? pasienEntity.getKecamatan() : checkup.getNamaKecamatan());
-            reportParams.put("desa", checkup.getNamaDesa() == null ? pasienEntity.getDesa() : checkup.getNamaDesa());
-
+            reportParams.put("jenisPasien", checkup.getStatusPeriksaName());
+            reportParams.put("poli", checkup.getNamaPelayanan());
+            reportParams.put("provinsi", checkup.getNamaProvinsi());
+            reportParams.put("kabupaten", checkup.getNamaKota());
+            reportParams.put("kecamatan", checkup.getNamaKecamatan());
+            reportParams.put("desa", checkup.getNamaDesa());
         }
 
         try {
             preDownload();
         } catch (SQLException e) {
             logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
-            return "search";
         }
 
         return "print_struk_resep_pasien";
+
+    }
+
+    public String printResepPasien() {
+
+        HeaderCheckup checkup = new HeaderCheckup();
+        String idResep = getIdResep();
+        String id = getId();
+        String jk = "";
+
+        String branch = CommonUtil.userBranchLogin();
+        String logo = "";
+        Branch branches = new Branch();
+        PermintaanResep permintaanResep = new PermintaanResep();
+
+        try {
+            branches = branchBoProxy.getBranchById(branch, "Y");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when searhc branch logo");
+        }
+
+        if (branches != null) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+        }
+
+        try {
+            checkup = checkupBoProxy.getDataDetailPasien(id);
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when search data detail pasien " + e.getMessage());
+        }
+
+        try {
+            permintaanResep = checkupDetailBoProxy.getDataDokter(idResep);
+        } catch (HibernateException e) {
+            logger.error("Found Error " + e.getMessage());
+        }
+
+        if (checkup != null) {
+            reportParams.put("idDokter", permintaanResep.getIdDokter());
+            reportParams.put("dokter", permintaanResep.getNamaDokter());
+            reportParams.put("ttdDokter", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + permintaanResep.getTtdDokter());
+            reportParams.put("petugas", permintaanResep.getNamaApoteker());
+            reportParams.put("ttdPasien", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_PASIEN + permintaanResep.getTtdPasien());
+            reportParams.put("ttdApoteker", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_APOTEKER + permintaanResep.getTtdApoteker());
+            reportParams.put("area", CommonUtil.userAreaName());
+            reportParams.put("unit", CommonUtil.userBranchNameLogin());
+            reportParams.put("idPasien", checkup.getIdPasien());
+            reportParams.put("resepId", idResep);
+            reportParams.put("logo", logo);
+            reportParams.put("nik", checkup.getNoKtp());
+            reportParams.put("nama", checkup.getNama());
+            if(checkup.getTglLahir() != null){
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+                reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+            }
+
+            if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
+                jk = "Laki-Laki";
+            } else {
+                jk = "Perempuan";
+            }
+
+            reportParams.put("jenisKelamin", jk);
+            reportParams.put("jenisPasien", checkup.getStatusPeriksaName());
+            reportParams.put("poli", checkup.getNamaPelayanan());
+            reportParams.put("provinsi", checkup.getNamaProvinsi());
+            reportParams.put("kabupaten", checkup.getNamaKota());
+            reportParams.put("kecamatan", checkup.getNamaKecamatan());
+            reportParams.put("desa", checkup.getNamaDesa());
+
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+                return "search";
+            }
+        }
+
+        return "print_resep";
     }
 
     public String printLabelResepPasien() {

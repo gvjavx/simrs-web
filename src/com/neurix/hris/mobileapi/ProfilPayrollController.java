@@ -65,6 +65,9 @@ public class ProfilPayrollController implements ModelDriven<Object> {
                 returnPayroll.setFlagInsentif(personal.getFlagInsentif());
                 returnPayroll.setFlagCutiPanjang(personal.getFlagCutiPanjang());
                 returnPayroll.setFlagCutiTahunan(personal.getFlagCutiTahunan());
+
+                returnPayroll.setTipePayroll(personal.getTipePayroll());
+
                 listOfPayroll.add(returnPayroll);
             }
         }

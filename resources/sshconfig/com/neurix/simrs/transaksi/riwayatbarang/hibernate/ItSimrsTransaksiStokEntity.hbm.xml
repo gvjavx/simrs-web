@@ -65,6 +65,15 @@
         <property name="subTotalLalu">
             <column name="sub_total_lalu" sql-type="numeric" not-null="false"/>
         </property>
+        <property name="flagBpjs">
+            <column name="flag_bpjs" sql-type="varchar" not-null="false"/>
+        </property>
+        <property name="totalHargaBeli">
+            <column name="total_harga_beli" sql-type="numeric" not-null="false"/>
+        </property>
+        <property name="subTotalHargaBeli">
+            <column name="sub_total_harga_beli" sql-type="numeric" not-null="false"/>
+        </property>
 
     </class>
 </hibernate-mapping>

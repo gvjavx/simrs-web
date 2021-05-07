@@ -6,8 +6,10 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.mobileapi.model.PayrollPayment;
 import com.neurix.hris.transaksi.payroll.bo.PayrollBo;
+import com.neurix.hris.transaksi.payroll.model.ItHrisPayrollEntity;
 import com.neurix.hris.transaksi.payroll.model.ItPayrollEntity;
 import com.opensymphony.xwork2.ModelDriven;
+import io.agora.recording.common.Common;
 import net.sf.jasperreports.engine.*;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
@@ -49,7 +51,7 @@ public class PayrolController implements ModelDriven<PayrollPayment> {
 
     public HttpHeaders create() {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        ItPayrollEntity payroll = new ItPayrollEntity();
+        ItHrisPayrollEntity payroll = new ItHrisPayrollEntity(); //RAKA-30APR2021==> merubah ItPayrollEntity -> ItHrisPayrollEntity
         com.neurix.authorization.company.model.Branch branch = new Branch();
         Map reportParams=new HashMap();
 
@@ -66,18 +68,18 @@ public class PayrolController implements ModelDriven<PayrollPayment> {
         }
 
         String logo ="";
-        if (branchId.equalsIgnoreCase("RS01")){
+        if (branchId.equalsIgnoreCase(CommonConstant.BRANCH_RS01)){
             logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
-        }else if (branchId.equalsIgnoreCase("RS02")){
+        }else if (branchId.equalsIgnoreCase(CommonConstant.BRANCH_RS02)){
             logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
-        }else if (branchId.equalsIgnoreCase("RS03")){
+        }else if (branchId.equalsIgnoreCase(CommonConstant.BRANCH_RS03)){
             logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
-        }else{
+        }else if(branchId.equalsIgnoreCase(CommonConstant.BRANCH_KP)){
             logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU;
         }
 
         switch (tipePayroll){
-            case "payroll" :
+            case CommonConstant.CODE_PAYROLL :
                 reportParams.put("reportParams.urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
                 reportParams.put("reportParams.payrollId", idPayroll);
                 reportParams.put("reportParams.branchId", payroll.getBranchId());
@@ -93,7 +95,7 @@ public class PayrolController implements ModelDriven<PayrollPayment> {
 
                 break;
 
-            case "thr":
+            case CommonConstant.CODE_THR :
                 reportParams.put("reportParams.urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
                 reportParams.put("reportParams.payrollId", idPayroll);
                 reportParams.put("reportParams.branchId", payroll.getBranchId());
@@ -109,7 +111,7 @@ public class PayrolController implements ModelDriven<PayrollPayment> {
 
                 break;
 
-            case "cutiTahunan":
+            case CommonConstant.CODE_CUTI_TAHUNAN:
 
                 reportParams.put("reportParams.urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
                 reportParams.put("reportParams.payrollId", idPayroll);
@@ -126,7 +128,7 @@ public class PayrolController implements ModelDriven<PayrollPayment> {
 
                 break;
 
-            case "cutiPanjang":
+            case CommonConstant.CODE_CUTI_PANJANG:
 
                 reportParams.put("reportParams.urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
                 reportParams.put("reportParams.payrollId", idPayroll);
@@ -143,7 +145,7 @@ public class PayrolController implements ModelDriven<PayrollPayment> {
 
                 break;
 
-            case "insentif":
+            case CommonConstant.CODE_INSENTIF:
 
                 reportParams.put("reportParams.urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
                 reportParams.put("reportParams.payrollId", idPayroll);
@@ -160,7 +162,7 @@ public class PayrolController implements ModelDriven<PayrollPayment> {
 
                 break;
 
-            case "jasprod":
+            case CommonConstant.CODE_JASOP:
                 reportParams.put("reportParams.urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
                 reportParams.put("reportParams.payrollId", idPayroll);
                 reportParams.put("reportParams.branchId", payroll.getBranchId());

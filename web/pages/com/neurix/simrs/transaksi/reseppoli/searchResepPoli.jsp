@@ -262,7 +262,6 @@
                                                 <img class="hvr-grow" style="cursor: pointer;" src='<s:url value="/pages/images/icons8-autograph-20.png"/>' onclick="showttd('<s:property value="idPermintaanResep"/>')">
                                             </s:if>
 
-                                            <%--<s:url var="reture" namespace="/reseppoli" action="retureObatResep_reseppoli" escapeAmp="false">--%>
                                             <s:url var="reture" namespace="/reseppoli" action="searchResepReture_reseppoli" escapeAmp="false">
                                                 <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
                                                 <s:param name="idPermintaan"><s:property value="idPermintaanResep"/></s:param>
@@ -281,7 +280,9 @@
                                                 <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                             </s:a>
                                         </s:else>
-
+                                        <%--<a target="_blank" href="printResepPasien_reseppoli.action?id=<s:property value="idDetailCheckup"/>&idResep=<s:property value="idPermintaanResep"/>">--%>
+                                            <%--<img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25-yellow.png"/>" style="cursor: pointer;">--%>
+                                        <%--</a>--%>
                                     </td>
                                 </tr>
                             </s:iterator>

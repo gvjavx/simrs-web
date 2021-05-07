@@ -108,7 +108,6 @@ public class Payroll extends BaseModel {
     private BigDecimal iuranProfesiNilai;
     private BigDecimal potonganLainNilai;
 
-
     //flag tambahan irfan
     private String flagCutiTahunan;
     private String flagCutiPanjang;
@@ -159,14 +158,16 @@ public class Payroll extends BaseModel {
     private BigDecimal proporsiGaji;
 
     private String tipeName;
-    private boolean reproses=false;
 
-    public boolean isReproses() {
-        return reproses;
+    //RAKA-02MEI2021==> Menambahkan Tipe Payroll
+    private String tipePayroll;
+
+    public String getTipePayroll() {
+        return tipePayroll;
     }
 
-    public void setReproses(boolean reproses) {
-        this.reproses = reproses;
+    public void setTipePayroll(String tipePayroll) {
+        this.tipePayroll = tipePayroll;
     }
 
     public String getTipeName() {

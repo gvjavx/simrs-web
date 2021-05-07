@@ -529,7 +529,7 @@ public class LemburBoImpl implements LemburBo {
 
                 //RAKA-10MAR2021==> Validasi Hak Lembur Pegawai
                 Boolean hakLembur = cekHakLembur(personalEntity.getNip());
-//                if(CommonConstant.PEGAWAI_TETAP.equalsIgnoreCase(personalEntity.getTipePegawai())){
+//                if(CommonConstant.TIPE_PEGAWAI_TETAP.equalsIgnoreCase(personalEntity.getTipePegawai())){
 //                    hakLembur = cekHakLembur(personalEntity.getNip());
 //                }else if(CommonConstant.PEGAWAI_PKWT.equalsIgnoreCase(personalEntity.getTipePegawai())){
 //                    try {
@@ -1301,7 +1301,7 @@ public class LemburBoImpl implements LemburBo {
         if (biodataList.size() > 0) {
             Biodata bio = biodataList.get(0);
 
-            if (bio.getTipePegawai().equalsIgnoreCase(CommonConstant.PEGAWAI_TETAP)) {
+            if (bio.getTipePegawai().equalsIgnoreCase(CommonConstant.TIPE_PEGAWAI_TETAP)) {
                 try{
                     hakLembur = lemburDao.cekHakLembur(nip);
                 }catch(HibernateException e){

@@ -3,7 +3,7 @@ package com.neurix.akuntansi.transaksi.billingSystem.model;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Objects;
 
 public class ItPgLogTransactionEntity {

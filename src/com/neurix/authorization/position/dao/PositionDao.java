@@ -381,7 +381,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
 
     public List<ImPosition> getListPositionDekom () throws HibernateException {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
-                .add(Restrictions.eq("bagianId", CommonConstant.BAGIAN_ID_BOD_BOC))
+                .add(Restrictions.eq("bagianId", CommonConstant.BAGIAN_ID_BOC))
                 .add(Restrictions.eq("kelompokId", CommonConstant.KELOMPOK_ID_BOC))
                 .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("kodering"))
@@ -391,7 +391,8 @@ public class PositionDao extends GenericDao<ImPosition,String> {
 
     public List<ImPosition> getListPositionSelainDekomDanDirkom () throws HibernateException {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
-                .add(Restrictions.ne("bagianId", CommonConstant.BAGIAN_ID_BOD_BOC))
+                .add(Restrictions.ne("bagianId", CommonConstant.BAGIAN_ID_BOD))
+                .add(Restrictions.ne("bagianId", CommonConstant.BAGIAN_ID_BOC))
                 .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("kodering"))
                 .list();
@@ -399,7 +400,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
     }
     public List<ImPosition> getListPositionDireksi () throws HibernateException {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
-                .add(Restrictions.eq("bagianId", CommonConstant.BAGIAN_ID_BOD_BOC))
+                .add(Restrictions.eq("bagianId", CommonConstant.BAGIAN_ID_BOD))
                 .add(Restrictions.eq("kelompokId", CommonConstant.KELOMPOK_ID_BOD))
                 .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("kodering"))
@@ -475,13 +476,19 @@ public class PositionDao extends GenericDao<ImPosition,String> {
     }
 
     public List<ImPosition> getPositionBodBoc() {
-        String idBod = "KL44";
-        String idBoc = "KL43";
+        String idBod = "KL01";
+        String idBoc = "KL02";
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class);
         criteria.add(
                 Restrictions.or(
                         Restrictions.eq("kelompokId", "" + idBod + ""),
                         Restrictions.eq("kelompokId", "" + idBoc + "")
+                )
+        );
+        criteria.add(
+                Restrictions.or(
+                        Restrictions.eq("flagCostUnit", "N"),
+                        Restrictions.isNull("flagCostUnit")
                 )
         );
         criteria.add(Restrictions.eq("flag", "Y"));

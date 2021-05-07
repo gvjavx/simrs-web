@@ -31,6 +31,24 @@ public class ItSimrsPembayaranOnlineEntity {
     private String flagUploadUlang;
     private Timestamp tanggalUpload;
     private String shiftId;
+    private String tipeRekening;
+    private String clientId;
+
+    public String getTipeRekening() {
+        return tipeRekening;
+    }
+
+    public void setTipeRekening(String tipeRekening) {
+        this.tipeRekening = tipeRekening;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
 
     public String getShiftId() {
         return shiftId;

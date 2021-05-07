@@ -14,6 +14,12 @@
 
         $( document ).ready(function() {
             $('#igd').addClass('active');
+            $('#igdTable').DataTable({
+                "order": [[ 1, "asc" ]],
+                "columnDefs": [
+                    {"orderable": false, "targets": 0}
+                ]
+            });
         });
 
 
@@ -136,7 +142,7 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a href="addRawatIgd_igd.action" type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</a>
+                                        <%--<a href="addRawatIgd_igd.action" type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</a>--%>
                                         <a type="button" class="btn btn-danger" href="initForm_igd.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
@@ -178,12 +184,14 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Rawat IGD Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped" style="font-size: 13px">
+                        <table id="igdTable" class="table table-bordered table-striped" style="font-size: 13px">
                             <thead >
                             <tr bgcolor="#90ee90">
+                                <td align="center">Triase</td>
                                 <td>ID Detail Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
+                                <td>Umur</td>
                                 <td>Tanggal Masuk</td>
                                 <td>Desa</td>
                                 <td>Status</td>
@@ -194,9 +202,19 @@
                             <tbody>
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
+                                    <td align="center">
+                                        <script>
+                                            var warna = '<s:property value="triase"/>';
+                                            if(warna != ''){
+                                                warna = warna.split("|")[1];
+                                                document.write('<i class="fa fa-square fa-2x" style="color: '+warna+'"></i>');
+                                            }
+                                        </script>
+                                    </td>
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="umur"/></td>
                                     <td><s:property value="formatTglMasuk"/></td>
                                     <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>

@@ -154,7 +154,6 @@ public class LabDetailBoImpl implements LabDetailBo {
                     ImSimrsLabEntity entity = new ImSimrsLabEntity();
                     entity.setIdLab(id);
                     entity.setNamaLab(labDetail.getNamaLab());
-                    entity.setIdKategoriLab(labDetail.getIdKategoriLab());
                     entity.setFlag(labDetail.getFlag());
                     entity.setAction(labDetail.getAction());
                     entity.setCreatedWho(labDetail.getCreatedWho());

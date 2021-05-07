@@ -39,8 +39,9 @@ public class PayrollSkalaGajiDplkPegawaiDao extends GenericDao<ImPayrollSkalaGaj
             if (mapCriteria.get("golongan_id")!=null) {
                 criteria.add(Restrictions.eq("golonganId", (String) mapCriteria.get("golongan_id")));
             }
+            criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
 
-            criteria.add(Restrictions.eq("flag", "Y"));
+//            criteria.add(Restrictions.eq("flag", "Y"));
         }
         // Order by
         criteria.addOrder(Order.desc("skalaGajiPensiunId"));

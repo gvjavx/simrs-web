@@ -34,8 +34,12 @@ public class OrderPeriksaLabBoImpl implements OrderPeriksaLabBo {
                     OrderPeriksaLab orderPeriksaLab = new OrderPeriksaLab();
                     orderPeriksaLab.setIdOrderPeriksa(periksaLabEntity.getIdOrderPeriksa());
                     orderPeriksaLab.setIdDetailCheckup(periksaLabEntity.getIdDetailCheckup());
-                    orderPeriksaLab.setIdLab(periksaLabEntity.getIdLab());
+                    orderPeriksaLab.setIdPemeriksaan(periksaLabEntity.getIdPemeriksaan());
+                    orderPeriksaLab.setNamaPemeriksaan(periksaLabEntity.getNamaPemeriksaan());
                     orderPeriksaLab.setIdLabDetail(periksaLabEntity.getIdLabDetail());
+                    orderPeriksaLab.setNamaDetailPemeriksaan(periksaLabEntity.getNamaDetailPemeriksaan());
+                    orderPeriksaLab.setIdKategoriLab(periksaLabEntity.getIdKategoriLab());
+                    orderPeriksaLab.setKeterangan(periksaLabEntity.getKeterangan());
                     orderPeriksaLab.setIsPemeriksaan(periksaLabEntity.getIsPemeriksaan());
                     orderPeriksaLab.setFlag(periksaLabEntity.getFlag());
                     orderPeriksaLab.setAction(periksaLabEntity.getAction());
@@ -43,7 +47,6 @@ public class OrderPeriksaLabBoImpl implements OrderPeriksaLabBo {
                     orderPeriksaLab.setCreatedWho(periksaLabEntity.getCreatedWho());
                     orderPeriksaLab.setLastUpdate(periksaLabEntity.getLastUpdate());
                     orderPeriksaLab.setLastUpdateWho(periksaLabEntity.getLastUpdateWho());
-                    orderPeriksaLab.setKeterangan(periksaLabEntity.getKeterangan());
                     periksaLabList.add(orderPeriksaLab);
                 }
             }
@@ -62,16 +65,19 @@ public class OrderPeriksaLabBoImpl implements OrderPeriksaLabBo {
                 ItSimrsOrderPeriksaLabEntity entity = new ItSimrsOrderPeriksaLabEntity();
                 entity.setIdOrderPeriksa("OPL" + orderPeriksaLabDao.getNextId());
                 entity.setIdDetailCheckup(bean.getIdDetailCheckup());
-                entity.setIdLab(bean.getIdLab());
-                entity.setIsPemeriksaan(bean.getIsPemeriksaan());
+                entity.setIdPemeriksaan(bean.getIdPemeriksaan());
+                entity.setNamaPemeriksaan(bean.getNamaPemeriksaan());
                 entity.setIdLabDetail(bean.getIdLabDetail());
+                entity.setNamaDetailPemeriksaan(bean.getNamaDetailPemeriksaan());
+                entity.setIdKategoriLab(bean.getIdKategoriLab());
+                entity.setKeterangan(bean.getKeterangan());
+                entity.setIsPemeriksaan(bean.getIsPemeriksaan());
                 entity.setFlag(bean.getFlag());
                 entity.setAction(bean.getAction());
                 entity.setCreatedDate(bean.getCreatedDate());
                 entity.setCreatedWho(bean.getCreatedWho());
                 entity.setLastUpdate(bean.getLastUpdate());
                 entity.setLastUpdateWho(bean.getLastUpdateWho());
-                entity.setKeterangan(bean.getKeterangan());
 
                 try {
                     orderPeriksaLabDao.addAndSave(entity);
@@ -104,8 +110,8 @@ public class OrderPeriksaLabBoImpl implements OrderPeriksaLabBo {
             hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
         }
 
-        if (bean.getIdLab() != null && !"".equalsIgnoreCase(bean.getIdLab())) {
-            hsCriteria.put("id_lab", bean.getIdLab());
+        if (bean.getIdPemeriksaan() != null && !"".equalsIgnoreCase(bean.getIdPemeriksaan())) {
+            hsCriteria.put("id_lab", bean.getIdPemeriksaan());
         }
 
         if (bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())) {

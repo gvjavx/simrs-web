@@ -482,12 +482,13 @@
     }
 
     function listSelectRuangan(id){
-        var option = "<option value=''> - </option>";
+        //var option = "<option value=''> - </option>";
+        var option = "";
         if(id != ''){
-            CheckupDetailAction.listRuangan(id, false, { callback: function (response) {
+            CheckupDetailAction.listJustRuangan(id, { callback: function (response) {
                     if (response != null) {
                         $.each(response, function (i, item) {
-                            option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
+                            option += "<option value='" + item.idRuangan + "'>" + item.namaRuangan + "</option>";
                         });
                         $('#ruangan_ruang').html(option);
                     } else {

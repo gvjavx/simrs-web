@@ -123,6 +123,88 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String isCatatan;
     private List<UploadHasilPemeriksaan> uploadDalam = new ArrayList<>();
     private List<UploadHasilPemeriksaan> uploadLuar = new ArrayList<>();
+    private String umur;
+    private String isUpload;
+
+    private String hetero;
+    private String auto;
+    private String nadi;
+    private String suhu;
+    private String tensi;
+    private String rr;
+    private String catatanKlinis;
+
+    public String getCatatanKlinis() {
+        return catatanKlinis;
+    }
+
+    public void setCatatanKlinis(String catatanKlinis) {
+        this.catatanKlinis = catatanKlinis;
+    }
+
+    public String getHetero() {
+        return hetero;
+    }
+
+    public void setHetero(String hetero) {
+        this.hetero = hetero;
+    }
+
+    public String getAuto() {
+        return auto;
+    }
+
+    public void setAuto(String auto) {
+        this.auto = auto;
+    }
+
+    public String getNadi() {
+        return nadi;
+    }
+
+    public void setNadi(String nadi) {
+        this.nadi = nadi;
+    }
+
+    public String getSuhu() {
+        return suhu;
+    }
+
+    public void setSuhu(String suhu) {
+        this.suhu = suhu;
+    }
+
+    public String getTensi() {
+        return tensi;
+    }
+
+    public void setTensi(String tensi) {
+        this.tensi = tensi;
+    }
+
+    public String getRr() {
+        return rr;
+    }
+
+    public void setRr(String rr) {
+        this.rr = rr;
+    }
+
+    public String getIsUpload() {
+        return isUpload;
+    }
+
+    public void setIsUpload(String isUpload) {
+        this.isUpload = isUpload;
+    }
+
+    public String getUmur() {
+        return umur;
+    }
+
+    public void setUmur(String umur) {
+        this.umur = umur;
+    }
 
     public String getIsCatatan() {
         return isCatatan;

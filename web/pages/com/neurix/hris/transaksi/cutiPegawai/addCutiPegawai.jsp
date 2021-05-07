@@ -72,21 +72,6 @@
             var d = new Date(enddate),
                 year1 = '' + (d.getFullYear());
 
-            LemburAction.testTanggal(tanggalAwal,tanggalAkhir,nipid, function (data) {
-                if (data != "") {
-                    ket=data;
-                }
-            });
-            CutiPegawaiAction.cekNipCuti(nipid,function(data){
-                if (data!=""){
-                    cek = data;
-                }
-            });
-            CutiPegawaiAction.cekTahunCuti(tanggalAwal,tanggalAkhir,nipid,function(data){
-                if (data!=""){
-                    cekth = data;
-                }
-            });
             if (intSisaCuti - intLamaCuti < 0){
                 var sisaCutiMsg ='Maaf, Sisa cuti yang anda ajukan sudah habis / pengajuan melebihi sisa cuti.';
                 document.getElementById('errorMessageAddCuti').innerHTML = sisaCutiMsg;
@@ -95,6 +80,21 @@
 
             } else{
                 if ( nipid != ''&& cutiid != ''&& tanggalAkhir != '' && tanggalAwal != ''&&ket==""&&unitid!=""&&cek=="" && alamatCuti != "") {
+                    LemburAction.testTanggal(tanggalAwal,tanggalAkhir,nipid, function (data) {
+                        if (data != "") {
+                            ket=data;
+                        }
+                    });
+                    CutiPegawaiAction.cekNipCuti(nipid,function(data){
+                        if (data!=""){
+                            cek = data;
+                        }
+                    });
+                    CutiPegawaiAction.cekTahunCuti(tanggalAwal,tanggalAkhir,nipid,function(data){
+                        if (data!=""){
+                            cekth = data;
+                        }
+                    });
                     if (year == year1){
                         if (cekth == ''){
                             CutiPegawaiAction.cekLibur(tanggalAwal,tanggalAkhir,nipid,function(data){
@@ -717,11 +717,15 @@
             $('#info_dialog').dialog('close');
         }
     });
+    var limNow = new Date();
+    limNow.setDate(limNow.getDate() + 1);
     $('#tgl1').datepicker({
-        dateFormat: 'dd/mm/yy'
+        dateFormat: 'dd/mm/yy',
+        minDate: limNow
     });
     $('#tgl2').datepicker({
-        dateFormat: 'dd/mm/yy'
+        dateFormat: 'dd/mm/yy',
+        minDate: limNow
     });
 
     $('#tgl2').on('change', function(){

@@ -57,7 +57,6 @@ class CreatChannelRunnable implements Runnable {
     RecordingConfig config;
     RecordingEventHandler recordingEventHandler;
 
-
     public CreatChannelRunnable(RecordingSDK recordingSDK, String channelId, String uid, RecordingConfig config, RecordingEventHandler recordingEventHandler) {
         this.recordingSDK = recordingSDK;
         this.channelId = channelId;
@@ -72,17 +71,12 @@ class CreatChannelRunnable implements Runnable {
         recordingSDK.startService();
     }
 
-
     public boolean stop() {
         RecordingEngineProperties recordingEngineProperties = recordingSDK.getProperties();
         boolean isLeave = recordingSDK.leaveChannel();
         recordingSDK.unRegisterOberserver(recordingEventHandler);
         return isLeave;
     }
-
-
-
-
 }
 
 public class AntrianOnlineController implements ModelDriven<Object> {
@@ -97,6 +91,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
     private TelemedicBo telemedicBoProxy;
 
     private String idAntrianOnline;
+    private String idAntrianTelemedic;
     private String noCheckupOnline;
     private String idPelayanan;
     private String idDokter;
@@ -115,6 +110,14 @@ public class AntrianOnlineController implements ModelDriven<Object> {
     private String findNoAntrian;
 
     private String idPasien;
+
+    public String getIdAntrianTelemedic() {
+        return idAntrianTelemedic;
+    }
+
+    public void setIdAntrianTelemedic(String idAntrianTelemedic) {
+        this.idAntrianTelemedic = idAntrianTelemedic;
+    }
 
     public String getIdPaket() {
         return idPaket;
@@ -454,7 +457,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
             } catch (GeneralBOException e) {
 
             }
-            
+
 
             if (result.size() > 0){
                 int i = 1;
@@ -523,10 +526,19 @@ public class AntrianOnlineController implements ModelDriven<Object> {
             }
 
            recordThread = new Thread(new CreatChannelRunnable(RecordingSDKInstance, channelId, uid, config, recordingEventHandler));
-            recordThread.start();
-            if (recordThread.isAlive()) {
-                model.setMessage("Success");
-            }
+           recordThread.start();
+           if (recordThread.isAlive()) {
+               model.setMessage("Success");
+           }
+        }
+
+        if (action.equalsIgnoreCase("startRecordHandler")) {
+            String jsonString = "channelId="+channelId+"&idAntrianTelemedic="+idAntrianTelemedic+"&idDetailCheckup="+idDetailCheckup;
+            model.setMessage(CommonUtil.sendPostRequest("http://localhost:9090/api/video/record/start", jsonString));
+        }
+
+        if (action.equalsIgnoreCase("cekRestApi")) {
+            model.setMessage(CommonUtil.sendGetRequest("http://localhost:9090/api/video/search/id_detail_checkup/90709"));
         }
 
         if (action.equalsIgnoreCase("pauseRecord")) {

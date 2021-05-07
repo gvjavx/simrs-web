@@ -12,6 +12,10 @@ function saveCPPT(jenis, ket, tipe) {
     var tensi = $('#cppt5_tensi').val();
     var va5 = $('#ket_cppt5').val();
 
+    var kesadaran = $('#tk').val();
+    var spo2 = $('#spo2').val();
+    var o2 = $('#o2').val();
+
     var va6 = $('#cppt6').val();
     var va7 = $('#cppt7').val();
     var va8 = $('#cppt8').val();
@@ -34,13 +38,106 @@ function saveCPPT(jenis, ket, tipe) {
     }
 
     if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 &&
-        nP && sP && nadi && suhu && rr && tensi != '' &&
-        !va9) {
+        nP && sP && !va9) {
 
         var ttd1 = v9.toDataURL("image/png"),
             ttd1 = ttd1.replace(/^data:image\/(png|jpg);base64,/, "");
         var ttd2 = v10.toDataURL("image/png"),
             ttd2 = ttd2.replace(/^data:image\/(png|jpg);base64,/, "");
+
+        var totalEws = 0;
+        if(kesadaran != ''){
+            if("V/P/U" == kesadaran){
+                totalEws = totalEws + 3;
+            }else{
+                totalEws = totalEws + 0;
+            }
+        }
+
+        if(tensi != ''){
+            var sistole = tensi.split("/")[0];
+            if(parseInt(sistole) > 200){
+                totalEws = totalEws + 3;
+            }else if(parseInt(sistole) >= 110 && parseInt(sistole) <= 219){
+                totalEws = totalEws + 0;
+            }else if(parseInt(sistole) >= 101 && parseInt(sistole) <= 110){
+                totalEws = totalEws + 1;
+            }else if(parseInt(sistole) >= 91 && parseInt(sistole) <= 100){
+                totalEws = totalEws + 2;
+            }else if(parseInt(sistole) < 90){
+                totalEws = totalEws + 3;
+            }else {
+                totalEws = totalEws + 0;
+            }
+        }
+
+        if(nadi != ''){
+            if(parseInt(nadi) >= 131){
+                totalEws = totalEws + 3;
+            }else if(parseInt(nadi) >= 111 && parseInt(nadi) <= 130){
+                totalEws = totalEws + 2;
+            }else if(parseInt(nadi) >= 91 && parseInt(nadi) <= 110){
+                totalEws = totalEws + 1;
+            }else if(parseInt(nadi) >= 41 && parseInt(nadi) <= 90){
+                totalEws = totalEws + 0;
+            }else if(parseInt(nadi) <= 90){
+                totalEws = totalEws + 3;
+            }else {
+                totalEws = totalEws + 0;
+            }
+        }
+
+        if(rr != ''){
+            if(parseInt(rr) >= 25){
+                totalEws = totalEws + 3;
+            }else if(parseInt(rr) >= 21 && parseInt(rr) <= 24){
+                totalEws = totalEws + 2;
+            }else if(parseInt(rr) >= 12 && parseInt(rr) <= 20){
+                totalEws = totalEws + 0;
+            }else if(parseInt(rr) >= 9 && parseInt(rr) <= 11){
+                totalEws = totalEws + 1;
+            }else if(parseInt(rr) <= 8){
+                totalEws = totalEws + 3;
+            }else {
+                totalEws = totalEws + 0;
+            }
+        }
+
+        if(suhu != ''){
+            if(parseInt(suhu) <= 39){
+                totalEws = totalEws + 2;
+            }else if(parseInt(suhu) > 38 && parseInt(suhu) <= 39){
+                totalEws = totalEws + 1;
+            }else if(parseInt(suhu) > 35 && parseInt(suhu) <= 38){
+                totalEws = totalEws + 0;
+            }else if(parseInt(suhu) <= 35){
+                totalEws = totalEws + 3;
+            }else {
+                totalEws = totalEws + 0;
+            }
+        }
+
+        if(spo2 != ''){
+            if(parseInt(spo2) >= 96){
+                totalEws = totalEws + 0;
+            }else if(parseInt(spo2) >= 94 && parseInt(spo2) <= 95){
+                totalEws = totalEws + 1;
+            }else if(parseInt(spo2) >= 92 && parseInt(spo2) <= 93){
+                totalEws = totalEws + 2;
+            }else if(parseInt(spo2) <= 91){
+                totalEws = totalEws + 3;
+            }else {
+                totalEws = totalEws + 0;
+            }
+        }
+
+        if(o2 != ''){
+            if("Ya" == o2){
+                totalEws = totalEws + 2;
+            }else{
+                totalEws = totalEws + 0;
+            }
+        }
 
         if(va10){
             ttd2 = "";
@@ -55,6 +152,10 @@ function saveCPPT(jenis, ket, tipe) {
             'suhu': suhu,
             'rr': rr,
             'tensi': replaceUnderLine(tensi),
+            'kesadaran': kesadaran,
+            'spo2': spo2,
+            'o2': o2,
+            'total_ews': ''+totalEws,
             'objective': va5,
             'assesment': va6,
             'planning': va7,
@@ -83,6 +184,8 @@ function saveCPPT(jenis, ket, tipe) {
                         $('#warning_' + tipe + '_' + ket).show().fadeOut(5000);
                         $('#msg_' + tipe + '_' + ket).text("Berhasil menambahkan data ....");
                         $('#modal-' + tipe + '-' + jenis).scrollTop(0);
+                        delRowCPPT(jenis, ket, tipe);
+                        detailCPPT(jenis, ket, tipe);
 
                     } else {
                         $('#save_' + tipe + '_' + jenis).show();
@@ -137,13 +240,16 @@ function detailCPPT(jenis, ket, tipe, gizi) {
                         }
                     }
 
-                    var object = subject = 'Tensi : ' + item.tensi + ' mmHg, Nadi : ' + item.nadi +
-                        'x/menit, Suhu : ' + item.suhu + ' ˚C, RR : ' + item.rr + ' x/menit, Keterangan : ' + cekNullCppt(item.objective);
+                    var object =
+                        '<p>Tensi : ' + item.tensi + ' mmHg, Nadi : ' + item.nadi + ' x/menit</p>'+
+                        '<p>Suhu : ' + item.suhu + ' ˚C, RR : ' + item.rr + ' x/menit' +'</p>'+
+                        '<p>Keterangan : ' + cekNullCppt(item.objective)+'</p>'+
+                        '<br><p>Total EWS : '+cekNullCppt(item.ews)+'</p>';
                     body += '<tr>' +
                         '<td>' + converterDateTime(item.waktu) + '</td>' +
                         '<td>' + cekNullCppt(item.ppa) + '</td>' +
                         '<td>' + cekNullCppt(item.subjective) + '</td>' +
-                        '<td>' + object + '</td>' +
+                        '<td width="17%">' + object + '</td>' +
                         '<td>' + cekNullCppt(item.assesment) + '</td>' +
                         '<td>' + cekNullCppt(item.planning) + '</td>' +
                         '<td>' + cekNullCppt(item.intruksi) + '</td>' +
@@ -238,6 +344,8 @@ function delCPT(jenis, ket, tipe, id) {
                     stopIconSpin('delete_' + id);
                     $('#warning_' + tipe + '_' + ket).show().fadeOut(5000);
                     $('#msg_' + tipe + '_' + ket).text("Berhasil menghapus data...");
+                    delRowCPPT(jenis, ket, tipe);
+                    detailCPPT(jenis, ket, tipe);
                 } else {
                     stopSpin('delete_' + id);
                     $('#warn_' + ket).show().fadeOut(5000);

@@ -497,8 +497,8 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     BigInteger bijiPerLembar = new BigInteger(obj[5].toString());
                     BigInteger consBox = lembarPerBox.multiply(bijiPerLembar);
 
-                    System.out.println("loop ke : "+ i++ +" idobat : "+idObat+" box : "+totalBox+" lembar : "+totalLembar+" biji : "+totalBiji);
-                    System.out.println("    -> lembar / box : "+lembarPerBox+" biji / lembar : "+bijiPerLembar);
+//                    System.out.println("loop ke : "+ i++ +" idobat : "+idObat+" box : "+totalBox+" lembar : "+totalLembar+" biji : "+totalBiji);
+//                    System.out.println("    -> lembar / box : "+lembarPerBox+" biji / lembar : "+bijiPerLembar);
 
                     BigInteger boxToBiji = totalBiji.multiply(consBox);
                     BigInteger lembarToBiji = totalLembar.multiply(bijiPerLembar);
@@ -1162,5 +1162,61 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         }
 
         return null;
+    }
+
+    public List<Obat> getListStokGudangForRequest(String branchId, String flagBpjs){
+
+        String sqlFlagBpjs = "AND flag_bpjs != 'Y' \n";
+        if ("Y".equalsIgnoreCase(flagBpjs))
+            sqlFlagBpjs = "AND flag_bpjs = 'Y' \n";
+
+        String SQL = "SELECT \n" +
+                "ob.id_obat,\n" +
+                "ho.nama_obat,\n" +
+                "ho.id_pabrik,\n" +
+                "SUM(ob.qty_biji) as qty_biji\n" +
+                "FROM (\n" +
+                "\tSELECT \n" +
+                "\ta.id_obat,\n" +
+                "\ttotal_box_biji + total_lembar_biji + qty_biji as qty_biji\n" +
+                "\tFROM (\n" +
+                "\t\tSELECT \n" +
+                "\t\tid_obat, \n" +
+                "\t\t(qty_box * lembar_per_box) * biji_per_lembar as total_box_biji,\n" +
+                "\t\tqty_lembar * biji_per_lembar as total_lembar_biji,\n" +
+                "\t\tqty_biji\n" +
+                "\t\tFROM im_simrs_obat WHERE (qty_box, qty_lembar, qty_biji)\n" +
+                "\t\t!= (0,0,0)\n" +
+                "\t\tAND flag = 'Y'\n" +
+                "\t\tAND branch_id = '"+branchId+"'\n" + sqlFlagBpjs +
+                "\t) a\n" +
+                ") ob \n" +
+                "INNER JOIN (\n" +
+                "\tSELECT \n" +
+                "\tid_obat, \n" +
+                "\tnama_obat,\n" +
+                "\tid_pabrik\n" +
+                "\tFROM im_simrs_header_obat WHERE flag = 'Y'\n" +
+                ") ho ON \n" +
+                "ho.id_obat = ob.id_obat\n" +
+                "GROUP BY \n" +
+                "ob.id_obat,\n" +
+                "ho.nama_obat,\n" +
+                "ho.id_pabrik\n" +
+                "ORDER BY ob.id_obat";
+
+        List<Obat> obatList = new ArrayList<>();
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+        if (list.size() > 0){
+            for (Object[] obj : list){
+                Obat obat = new Obat();
+                obat.setIdObat(obj[0].toString());
+                obat.setNamaObat(obj[1] != null ? obj[1].toString() : "");
+                obat.setIdPabrik(obj[2] != null ? obj[2].toString() : "");
+                obat.setQtyBiji(obj[3] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[3].toString()));
+                obatList.add(obat);
+            }
+        }
+        return obatList;
     }
 }

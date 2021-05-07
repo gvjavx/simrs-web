@@ -68,7 +68,8 @@ public class PengkajianUlangKeperawatanDao extends GenericDao<ItSimrsPengkajianU
                     "WHERE id_detail_checkup = :id\n" +
                     "AND tanggal = :tanggal\n" +
                     "AND keterangan = :keterangan\n" +
-                    "AND jenis = :jenis";
+                    "AND jenis = :jenis\n" +
+                    "AND flag = 'Y'";
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

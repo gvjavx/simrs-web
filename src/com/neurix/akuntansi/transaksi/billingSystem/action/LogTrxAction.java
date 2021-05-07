@@ -166,7 +166,6 @@ public class LogTrxAction extends BaseMasterAction {
         LogTransaction viewLogTrx = new LogTransaction();
 
         if (itemFlag != null ) {
-
             try {
                 viewLogTrx = init(itemId, itemFlag);
             } catch (GeneralBOException e) {

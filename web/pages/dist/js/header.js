@@ -581,3 +581,11 @@ function converterDateTimeComplex(dateTime) {
     }
     return today;
 }
+
+function setLocalStoregeAtas(key, value){
+    localStorage.setItem(key, value);
+}
+
+function getLocalStorageAtas(key){
+    return localStorage.getItem(key);
+}

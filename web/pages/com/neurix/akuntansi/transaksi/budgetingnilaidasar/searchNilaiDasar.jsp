@@ -27,7 +27,6 @@
         /*.treegrid-expander-expanded{background-image: url(collapse.png); }
         .treegrid-expander-collapsed{background-image: url(expand.png);}*/
     </style>
-
     <script type='text/javascript' src='<s:url value="/dwr/interface/BranchAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/SettingTutupPeriodAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TutuPeriodAction.js"/>'></script>
@@ -42,6 +41,7 @@
         $( document ).ready(function() {
             $('#bayar_rawat_jalan, #pembayaran_active').addClass('active');
             $('#pembayaran_open').addClass('menu-open');
+            getSelectTahun('sel-tahun');
         });
 
     </script>
@@ -81,15 +81,6 @@
                                             <label class="control-label col-sm-2">Tahun</label>
                                             <div class="col-sm-2">
                                                 <select class="form-control" id="sel-tahun">
-                                                    <option value="">[Select One]</option>
-                                                    <option value="2020">2020</option>
-                                                    <option value="2021">2021</option>
-                                                    <option value="2022">2022</option>
-                                                    <option value="2023">2023</option>
-                                                    <option value="2023">2024</option>
-                                                    <option value="2023">2025</option>
-                                                    <option value="2023">2026</option>
-                                                    <option value="2023">2027</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -170,15 +161,8 @@
                         <div class="row">
                             <label class="control-label col-sm-4" style="text-align: right">Tahun</label>
                             <div class="col-sm-4">
-                                <select class="form-control" id="sel-add-tahun">
-                                    <option value="2020">2020</option>
-                                    <option value="2021">2021</option>
-                                    <option value="2022">2022</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2023">2024</option>
-                                    <option value="2023">2025</option>
-                                    <option value="2023">2026</option>
-                                    <option value="2023">2027</option>
+                                <select type="text" class="form-control" id="sel-add-tahun">
+
                                 </select>
                             </div>
                         </div>
@@ -211,14 +195,6 @@
                             <label class="control-label col-sm-4" style="text-align: right">Tahun</label>
                             <div class="col-sm-4">
                                 <select class="form-control" id="sel-edit-tahun" readonly="true">
-                                    <option value="2020">2020</option>
-                                    <option value="2021">2021</option>
-                                    <option value="2022">2022</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2023">2024</option>
-                                    <option value="2023">2025</option>
-                                    <option value="2023">2026</option>
-                                    <option value="2023">2027</option>
                                 </select>
                             </div>
                         </div>
@@ -353,6 +329,9 @@
 
 <script type='text/javascript'>
 
+    //    $('.yearpicker').yearpicker();
+//    $('#sel-tahun').yearpicker();
+
     var listOfId = [];
     // exemple : post('/contact/', {name: 'Johnny Bravo'});
     function post(path, params) {
@@ -462,6 +441,7 @@
     function modalAdd() {
         listOfId = [];
         $("#modal-add").modal('show');
+        getSelectTahun('sel-add-tahun');
         BudgetingNilaiDasarAction.getListNilaiDasarAdd(function (list) {
             var str = "";
             $.each(list, function (i, item) {
@@ -483,6 +463,7 @@
     function modalEdit(tahun) {
         listOfId = [];
         $("#modal-edit").modal('show');
+        getSelectTahun('sel-edit-tahun');
         BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {
             var str = "";
             $.each(list, function (i, item) {
@@ -496,6 +477,7 @@
                 listOfId.push({"id":"edit_"+item.idNilaiDasar});
             });
             $("#body-param-edit").html(str);
+            $("#sel-edit-tahun").val(tahun);
             //console.log(str);
             //console.log(listOfId);
         });
@@ -547,6 +529,20 @@
             $("#modal-loading-dialog").modal('hide');
             $("#modal-success-dialog").modal('show');
         }
+    }
+
+    function getSelectTahun(idelement) {
+
+        //var str = "<option value=''> - </option>";
+        var str = "";
+        TutuPeriodAction.getListTahunKedepan('5', function (res) {
+
+            $.each(res, function (i, item) {
+                str += "<option value='"+item+"'>" + item + "</option>";
+            });
+
+            $("#"+idelement).html(str);
+        });
     }
 
 </script>

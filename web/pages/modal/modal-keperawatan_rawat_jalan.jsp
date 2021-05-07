@@ -179,10 +179,19 @@
                     <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-3">Keadaan Umum</label>
+                            <div class="col-md-9">
+                                <textarea rows="3" class="form-control" id="keadaan_umum"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
                             <div class="col-md-4">
+                                <span>Tinggi Badan</span>
                                 <input type="number" class="form-control tinggi-pasien" id="af6" placeholder="Tingi Badan (Cm)">
                             </div>
                             <div class="col-md-4">
+                                <span>Berat Badan</span>
                                 <input type="number" class="form-control berat-pasien" id="af7" placeholder="Berat Badan (Kg)">
                             </div>
                         </div>
@@ -529,30 +538,32 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-5" style="margin-top: 7px">Lokasi</label>
-                            <div class="col-md-5">
-                                <input class="form-control" style="margin-top: 7px;" id="y_lokasi">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-5" style="margin-top: 7px">Jenis</label>
-                            <div class="col-md-5">
-                                <div class="custom02" style="margin-top: 7px">
-                                    <input type="radio" value="Akut" id="nyeri3" name="radio_nyeri_jenis" /><label for="nyeri3">Akut</label>
-                                    <input type="radio" value="Kronis" id="nyeri4" name="radio_nyeri_jenis" /><label for="nyeri4">Kronis</label>
+                    <div id="apakah_nyeri" style="display: none">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-5" style="margin-top: 7px">Lokasi</label>
+                                <div class="col-md-5">
+                                    <input class="form-control" style="margin-top: 7px;" id="y_lokasi">
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-5" style="margin-top: 7px">Intensitas</label>
-                            <div class="col-md-5">
-                                <input class="form-control" style="margin-top: 7px;" id="y_inten">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-5" style="margin-top: 7px">Jenis</label>
+                                <div class="col-md-5">
+                                    <div class="custom02" style="margin-top: 7px">
+                                        <input type="radio" value="Akut" id="nyeri3" name="radio_nyeri_jenis" /><label for="nyeri3">Akut</label>
+                                        <input type="radio" value="Kronis" id="nyeri4" name="radio_nyeri_jenis" /><label for="nyeri4">Kronis</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-5" style="margin-top: 7px">Intensitas</label>
+                                <div class="col-md-5">
+                                    <input class="form-control" style="margin-top: 7px;" id="y_inten">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -560,7 +571,7 @@
                     <input id="temp_jenis" type="hidden">
                     <canvas id="choice_emoji" style="display: none"></canvas>
                     <hr class="garis">
-                    <div id="set_nyeri"></div>
+                    <div id="set_nyeri" style="display: none"></div>
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">

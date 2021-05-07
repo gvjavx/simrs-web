@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) GO-MEDSYS(TM) 2020 created by MGI
+ */
+
 package com.neurix.akuntansi.transaksi.billingSystem.model;
 
 import java.math.BigDecimal;
@@ -8,7 +12,6 @@ import java.util.Objects;
 public class ItPgInvoiceEntity {
     private String pgInvoiceId;
     private String noInvoice;
-    private Date invoiceDate;
     private String noRekamMedik;
     private BigDecimal trxAmount;
     private String namePerson;
@@ -26,6 +29,16 @@ public class ItPgInvoiceEntity {
     private String action;
     private String flag;
     private String description;
+    private Date invoiceDate;
+    private String codeInvoice;
+
+    public String getCodeInvoice() {
+        return codeInvoice;
+    }
+
+    public void setCodeInvoice(String codeInvoice) {
+        this.codeInvoice = codeInvoice;
+    }
 
     public String getPgInvoiceId() {
         return pgInvoiceId;
@@ -211,11 +224,13 @@ public class ItPgInvoiceEntity {
                 Objects.equals(lastUpdateWho, that.lastUpdateWho) &&
                 Objects.equals(action, that.action) &&
                 Objects.equals(flag, that.flag) &&
-                Objects.equals(description, that.description);
+                Objects.equals(codeInvoice, that.codeInvoice) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(invoiceDate, that.invoiceDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pgInvoiceId, noInvoice, invoiceDate, noRekamMedik, trxAmount, namePerson, addressPerson, phonePerson, emailPerson, branchId, status, bankName, noVirtualAccount, createdDate, createdWho, lastUpdate, lastUpdateWho, action, flag, description);
+        return Objects.hash(pgInvoiceId,noInvoice, noRekamMedik, trxAmount, namePerson, addressPerson, phonePerson, emailPerson, branchId, status, bankName, noVirtualAccount, createdDate, createdWho, lastUpdate, lastUpdateWho, action, flag, description,codeInvoice, invoiceDate);
     }
 }
