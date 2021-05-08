@@ -271,7 +271,14 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
             }
         }
 
-
+//        if (action.equalsIgnoreCase("saveAdd")) {
+//            try {
+//                pasienBoProxy.saveAdd(model);
+//            } catch (GeneralBOException e) {
+//                logger.error("[PasienController.getByCriteria] Error when searching / inquiring data by criteria," + "[" + e + "] Found problem when searching data by criteria, please inform to your admin.", e);
+//                throw new GeneralBOException(e);
+//            }
+//        }
 
         logger.info("[PasienController.create] end process POST /loginpasien <<<");
         return new DefaultHttpHeaders("success")
