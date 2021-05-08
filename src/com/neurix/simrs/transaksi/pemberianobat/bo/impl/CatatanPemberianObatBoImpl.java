@@ -51,10 +51,10 @@ public class CatatanPemberianObatBoImpl implements CatatanPemberianObatBo {
                     catatan.setAturanPakai(entity.getAturanPakai());
                     catatan.setTanggalMulai(entity.getTanggalMulai());
                     catatan.setTanggalStop(entity.getTanggalStop());
-                    if(catatan.getTtdApoteker() != null && !"".equalsIgnoreCase(catatan.getTtdApoteker())){
+                    if(entity.getTtdApoteker() != null && !"".equalsIgnoreCase(entity.getTtdApoteker())){
                         catatan.setTtdApoteker(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getTtdApoteker());
                     }
-                    if(catatan.getTtdDokter() != null && !"".equalsIgnoreCase(catatan.getTtdDokter())){
+                    if(entity.getTtdDokter() != null && !"".equalsIgnoreCase(entity.getTtdDokter())){
                         catatan.setTtdDokter(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getTtdDokter());
                     }
                     catatan.setKeterangan(entity.getKeterangan());
@@ -172,7 +172,7 @@ public class CatatanPemberianObatBoImpl implements CatatanPemberianObatBo {
                 pemberianObatEntities1.setNamaTerangDokter(bean.getNamaTerangDokter());
                 pemberianObatEntities1.setNamaTerangPerawat(bean.getNamaTerangPerawat());
                 pemberianObatEntities1.setSipDokter(bean.getSipDokter());
-                pemberianObatEntities1.setFlag("U");
+                pemberianObatEntities1.setAction("U");
                 pemberianObatEntities1.setLastUpdate(bean.getLastUpdate());
                 pemberianObatEntities1.setLastUpdateWho(bean.getLastUpdateWho());
                 try {

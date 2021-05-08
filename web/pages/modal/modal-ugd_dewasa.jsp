@@ -186,7 +186,7 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="custom02" style="margin-left: -20px">
-                                    <input onclick="setDataTriase(this.value)" type="radio" value="Kuning|#e08e0b" id="triase2" name="radio_triase" /><label for="triase2">Kuning</label>
+                                    <input onclick="setDataTriase(this.value)" type="radio" value="Kuning|yellow" id="triase2" name="radio_triase" /><label for="triase2">Kuning</label>
                                 </div>
                             </div>
                         </div>

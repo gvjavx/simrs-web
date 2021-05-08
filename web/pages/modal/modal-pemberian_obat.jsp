@@ -28,7 +28,7 @@
                             <td>Nama Obat</td>
                             <td>Aturan Pakai</td>
                             <td>Keterangan</td>
-                            <td>TTD</td>
+                            <td align="center">TTD</td>
                             <%--<td>Tanggal Mulai</td>--%>
                             <%--<td>Tanggal Stop</td>--%>
                             <%--<td width="10%">TTD Dokter</td>--%>
@@ -218,6 +218,11 @@
                      id="warning_ina_action_pemberian_obat">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_ina_action_pemberian_obat"></p>
+                </div>
+                <div class="alert alert-success alert-dismissible" style="display: none"
+                     id="success_ina_action_pemberian_obat">
+                    <h4><i class="icon fa fa-info"></i> Success!</h4>
+                    <p id="msg_success_ina_action_pemberian_obat"></p>
                 </div>
                 <div class="box-body">
                     <div class="row">

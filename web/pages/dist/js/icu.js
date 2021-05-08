@@ -1584,6 +1584,11 @@ function detailICU(jenis) {
                                         '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
                                         '</td>' +
                                         '</tr>';
+                                }else{
+                                    body += '<tr>' +
+                                        '<td width="60%">' + item.parameter + '</td>' +
+                                        '<td align="center">' + cekIconsIsNotNull(item.jawaban) + '</td>' +
+                                        '</tr>';
                                 }
                             } else if("resiko_jatuh" == jenis){
                                 if(item.tipe == "total"){

@@ -4012,21 +4012,33 @@ function listCatatanPemberianObat() {
                         wawak = item.waktu;
                         action = '<i onclick="actionCPO(\''+item.idCatatanPemberianObat+'\', \''+item.waktu+'\')" class="fa fa-edit" style="font-size: 20px; cursor: pointer"></i>';
                         if(item.ttdApoteker != null && item.ttdDokter){
-                            ttd = '<span>Keluarga</span>'+
-                                '<img style="width: 30px; height: 20px" src="' + item.ttdApoteker + '">' +
-                                '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerangPerawat)+'</p>' +
-                                '<br>'+
-                                '<span>Perawat</span>'+
-                                '<img style="width: 30px; height: 20px" src="' + item.ttdDokter + '">' +
+                            ttd = '<span>Keluarga</span><br>'+
+                                '<img style="width: 70%; height: 50px" src="' + item.ttdDokter + '">' +
                                 '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerangDokter)+'</p>' +
-                                '<p style="margin-top: -3px">'+cekItemIsNull(item.sipDokter)+'</p>';
+                                '<p>-----------------------------------------</p>'+
+                                '<span>Perawat</span><br>'+
+                                '<img style="width: 70%; height: 50px" src="' + item.ttdApoteker + '">' +
+                                '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerangPerawat)+'</p>' +
+                                '<p style="margin-top: -9px;">'+cekItemIsNull(item.sipDokter)+'</p>';
+                        }
+                    }
+
+                    var ket = "";
+                    if(item.keterangan != null && item.keterangan != ''){
+                        var li = "";
+                        var plit = item.keterangan.split("|");
+                        $.each(plit, function (i, item) {
+                           li += '<li>'+item+' <i class="fa fa-check" style="color: green"></i></li>';
+                        });
+                        if(li != ''){
+                            ket = '<ul style="margin-left: 20px">'+li+'</ul>';
                         }
                     }
                     table += '<tr>' +
                         '<td>' + item.waktu + '</td>' +
                         '<td>' + cekNull(item.namaObat) + '</td>' +
                         '<td>' + cekNull(item.aturanPakai) + '</td>' +
-                        '<td>' + convertCek(item.keterangan) + '</td>' +
+                        '<td>' + ket + '</td>' +
                         '<td align="center">' + ttd +'</td>' +
                         '<td align="center">' + action + '</td>' +
                         '</tr>';
@@ -4047,8 +4059,8 @@ function saveCOP(id){
     var centeng = $('[name=centangan]');
     var ttdPasien = document.getElementById("cpo9");
     var ttdPerawat = document.getElementById("cpo10");
-    var nama1 = $('nama_terang_cpo9').val();
-    var nama2 = $('nama_terang_cpo10').val();
+    var nama1 = $('#nama_terang_cpo9').val();
+    var nama2 = $('#nama_terang_cpo10').val();
     var sip2 = $('#nip_cpo10').val();
     var cek1 = isBlank(ttdPasien);
     var cek2 = isBlank(ttdPerawat);
@@ -4064,23 +4076,47 @@ function saveCOP(id){
             }
         }
     });
+
+    var ttd1 = ttdPasien.toDataURL("image/png"),
+        ttd1 = ttd1.replace(/^data:image\/(png|jpg);base64,/, "");
+    var ttd2 = ttdPerawat.toDataURL("image/png"),
+        ttd2 = ttd2.replace(/^data:image\/(png|jpg);base64,/, "");
+
     var data = {
         'id': id,
-        'ttd_keluarga': ttdPasien,
-        'ttd_perawat': ttdPerawat,
+        'ttd_keluarga': ttd1,
+        'ttd_perawat': ttd2,
         'nama1': nama1,
         'nama2': nama2,
         'sip': sip2,
         'keterangan': temp,
         'waktu': waktu
     }
-    var result = JSON.stringify(data);
-    CatatanPemberianObatAction.saveUpdate(data, function (res) {
-        if(res.status = 'success'){
-            $('#modal-ina-action_pemberian_obat').modal('hide');
-        }else{
-        }
-    });
+
+    if(id != '' && !cek1 && !cek2 && nama1 && nama2 && sip2 && waktu && temp != ''){
+        $('#save_ina_action_pemberian_obat').hide();
+        $('#load_ina_action_pemberian_obat').show();
+        var result = JSON.stringify(data);
+        dwr.engine.setAsync(true);
+        CatatanPemberianObatAction.saveUpdate(result, {
+            callback:function (res) {
+                if(res.status = 'success'){
+                    $('#modal-ina-action_pemberian_obat').modal('hide');
+                    $('#save_ina_action_pemberian_obat').show();
+                    $('#load_ina_action_pemberian_obat').hide();
+                    $('#success_ina_action_pemberian_obat').show().fadeOut(5000);
+                    $('#msg_success_ina_action_pemberian_obat').text("Data berhasil tersimpan...!");
+                    listCatatanPemberianObat();
+                }else{
+                    $('#warning_ina_action_pemberian_obat').show().fadeOut(5000);
+                    $('#msg_ina_action_pemberian_obat').text(res.msg);
+                }
+            }
+        });
+    }else{
+        $('#warning_ina_action_pemberian_obat').show().fadeOut(5000);
+        $('#msg_ina_action_pemberian_obat').text("Silahkan cek kembali inputan anda...!");
+    }
 }
 
 function saveAsuhanKeperawatan(jenis, ket) {
