@@ -40,7 +40,7 @@
                     msg += 'Field <strong>Unit</strong> is required.' + '<br/>';
                 }
                 if (grupId =='') {
-                    msg += 'Field <strong>Grup</strong> is required.' + '<br/>';
+                    msg += 'Field <strong>Sub Divisi</strong> is required.' + '<br/>';
                 }
                 if (jamKerjaAwal =='') {
                     msg += 'Field <strong>Jam Awal Kerja</strong> is required.' + '<br/>';
@@ -172,7 +172,7 @@
     <div id="colShiftKasir" class="form-group">
         <label class="control-label col-sm-2">Tipe Shift Kasir:</label>
         <div class="col-sm-8">
-            <s:select list="#{'':'', 'kasir_operasional':'Kasir Operasional', 'kasir_telemedicine' : 'Kasir Telemedicine'}" id="tipeShiftKasir" name="shift.tipeShiftKasir"
+            <s:select list="#{'kasir_ri':'Kasir Rawat Inap', 'kasir_rj':'Kasir Rawat Jalan', 'kasir_telemedicine' : 'Kasir Telemedicine'}" id="tipeShiftKasir" name="shift.tipeShiftKasir"
                       cssClass="form-control" />
         </div>
     </div>

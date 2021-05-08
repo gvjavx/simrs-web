@@ -57,6 +57,7 @@ public class KeteranganKeluarBoImpl implements KeteranganKeluarBo {
                     keteranganKeluar.setCreatedWho(keteranganList.getCreatedWho());
                     keteranganKeluar.setLastUpdate(keteranganList.getLastUpdate());
                     keteranganKeluar.setLastUpdateWho(keteranganList.getLastUpdateWho());
+                    keteranganKeluar.setKategori(keteranganList.getKategori());
                     result.add(keteranganKeluar);
                 }
             }

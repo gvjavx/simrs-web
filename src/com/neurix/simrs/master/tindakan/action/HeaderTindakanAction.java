@@ -99,6 +99,7 @@ public class HeaderTindakanAction extends BaseTransactionAction {
                     }
                 }
                 headerTindakan.setFlagVaksin(object.getString("flag_vaksin"));
+                headerTindakan.setFlagKonsulGizi(object.getString("flag_gizi"));
                 headerTindakan.setCreatedWho(userLogin);
                 headerTindakan.setLastUpdate(updateTime);
                 headerTindakan.setCreatedDate(updateTime);
@@ -142,6 +143,7 @@ public class HeaderTindakanAction extends BaseTransactionAction {
                     }
                 }
                 headerTindakan.setLastUpdate(updateTime);
+                headerTindakan.setFlagKonsulGizi(object.getString("flag_gizi"));
                 headerTindakan.setLastUpdateWho(userLogin);
                 headerTindakan.setAction("U");
                 headerTindakan.setFlag("Y");

@@ -244,12 +244,24 @@ public class VerifikatorBoImpl implements VerifikatorBo {
     }
 
     public List<ImSimrsKategoriTindakanInaEntity> getAllKatTindakanInaList() throws GeneralBOException {
-        return kategoriTindakanInaDao.getByCriteria(new HashMap());
+        List<ImSimrsKategoriTindakanInaEntity> imSimrsKategoriTindakanInaEntityList = new ArrayList<>();
+        try {
+            imSimrsKategoriTindakanInaEntityList = kategoriTindakanInaDao.getByCriteria(new HashMap());
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return imSimrsKategoriTindakanInaEntityList;
     }
 
     @Override
     public List<HeaderDetailCheckup> getListVerifTransaksi(HeaderDetailCheckup detailCheckup) throws GeneralBOException {
-        return checkupDetailDao.getListVerifTransaksi(detailCheckup);
+        List<HeaderDetailCheckup> headerDetailCheckupList = new ArrayList<>();
+        try {
+            headerDetailCheckupList = checkupDetailDao.getListVerifTransaksi(detailCheckup);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return headerDetailCheckupList;
     }
 
     @Override

@@ -94,6 +94,189 @@ public class Obat extends BaseModel {
     private String flagParenteral;
     private String idJenisBentuk;
     private String idJenisSub;
+    private BigInteger qtyAllBiji;
+
+    private String nomorProduksi;
+    private String status;
+    private String msg;
+
+    private String idPabrikObat;
+    private String namaPabrikObat;
+    private String idHargaObat;
+
+    private BigDecimal hargaJualUmumNonBpjs;
+    private BigDecimal hargaJualKhususNonBpjs;
+    private BigDecimal hargaJualUmumBpjs;
+    private BigDecimal hargaJualKhususBpjs;
+    private BigDecimal hargaTerakhirUmumNonBpjs;
+    private BigDecimal hargaTerakhirKhususNonBpjs;
+    private BigDecimal hargaTerakhirUmumBpjs;
+    private BigDecimal hargaTerakhirKhususBpjs;
+    private Integer marginUmumNonBpjs;
+    private Integer marginKhususNonBpjs;
+    private Integer marginUmumBpjs;
+    private Integer marginKhususBpjs;
+    private String stLamaHari;
+
+    public String getStLamaHari() {
+        return stLamaHari;
+    }
+
+    public void setStLamaHari(String stLamaHari) {
+        this.stLamaHari = stLamaHari;
+    }
+
+    public Integer getMarginUmumNonBpjs() {
+        return marginUmumNonBpjs;
+    }
+
+    public void setMarginUmumNonBpjs(Integer marginUmumNonBpjs) {
+        this.marginUmumNonBpjs = marginUmumNonBpjs;
+    }
+
+    public Integer getMarginKhususNonBpjs() {
+        return marginKhususNonBpjs;
+    }
+
+    public void setMarginKhususNonBpjs(Integer marginKhususNonBpjs) {
+        this.marginKhususNonBpjs = marginKhususNonBpjs;
+    }
+
+    public Integer getMarginUmumBpjs() {
+        return marginUmumBpjs;
+    }
+
+    public void setMarginUmumBpjs(Integer marginUmumBpjs) {
+        this.marginUmumBpjs = marginUmumBpjs;
+    }
+
+    public Integer getMarginKhususBpjs() {
+        return marginKhususBpjs;
+    }
+
+    public void setMarginKhususBpjs(Integer marginKhususBpjs) {
+        this.marginKhususBpjs = marginKhususBpjs;
+    }
+
+    public BigDecimal getHargaJualUmumNonBpjs() {
+        return hargaJualUmumNonBpjs;
+    }
+
+    public void setHargaJualUmumNonBpjs(BigDecimal hargaJualUmumNonBpjs) {
+        this.hargaJualUmumNonBpjs = hargaJualUmumNonBpjs;
+    }
+
+    public BigDecimal getHargaJualKhususNonBpjs() {
+        return hargaJualKhususNonBpjs;
+    }
+
+    public void setHargaJualKhususNonBpjs(BigDecimal hargaJualKhususNonBpjs) {
+        this.hargaJualKhususNonBpjs = hargaJualKhususNonBpjs;
+    }
+
+    public BigDecimal getHargaJualUmumBpjs() {
+        return hargaJualUmumBpjs;
+    }
+
+    public void setHargaJualUmumBpjs(BigDecimal hargaJualUmumBpjs) {
+        this.hargaJualUmumBpjs = hargaJualUmumBpjs;
+    }
+
+    public BigDecimal getHargaJualKhususBpjs() {
+        return hargaJualKhususBpjs;
+    }
+
+    public void setHargaJualKhususBpjs(BigDecimal hargaJualKhususBpjs) {
+        this.hargaJualKhususBpjs = hargaJualKhususBpjs;
+    }
+
+    public BigDecimal getHargaTerakhirUmumNonBpjs() {
+        return hargaTerakhirUmumNonBpjs;
+    }
+
+    public void setHargaTerakhirUmumNonBpjs(BigDecimal hargaTerakhirUmumNonBpjs) {
+        this.hargaTerakhirUmumNonBpjs = hargaTerakhirUmumNonBpjs;
+    }
+
+    public BigDecimal getHargaTerakhirKhususNonBpjs() {
+        return hargaTerakhirKhususNonBpjs;
+    }
+
+    public void setHargaTerakhirKhususNonBpjs(BigDecimal hargaTerakhirKhususNonBpjs) {
+        this.hargaTerakhirKhususNonBpjs = hargaTerakhirKhususNonBpjs;
+    }
+
+    public BigDecimal getHargaTerakhirUmumBpjs() {
+        return hargaTerakhirUmumBpjs;
+    }
+
+    public void setHargaTerakhirUmumBpjs(BigDecimal hargaTerakhirUmumBpjs) {
+        this.hargaTerakhirUmumBpjs = hargaTerakhirUmumBpjs;
+    }
+
+    public BigDecimal getHargaTerakhirKhususBpjs() {
+        return hargaTerakhirKhususBpjs;
+    }
+
+    public void setHargaTerakhirKhususBpjs(BigDecimal hargaTerakhirKhususBpjs) {
+        this.hargaTerakhirKhususBpjs = hargaTerakhirKhususBpjs;
+    }
+
+    public String getIdHargaObat() {
+        return idHargaObat;
+    }
+
+    public void setIdHargaObat(String idHargaObat) {
+        this.idHargaObat = idHargaObat;
+    }
+
+    public String getIdPabrikObat() {
+        return idPabrikObat;
+    }
+
+    public void setIdPabrikObat(String idPabrikObat) {
+        this.idPabrikObat = idPabrikObat;
+    }
+
+    public String getNamaPabrikObat() {
+        return namaPabrikObat;
+    }
+
+    public void setNamaPabrikObat(String namaPabrikObat) {
+        this.namaPabrikObat = namaPabrikObat;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public String getNomorProduksi() {
+        return nomorProduksi;
+    }
+
+    public void setNomorProduksi(String nomorProduksi) {
+        this.nomorProduksi = nomorProduksi;
+    }
+
+    public BigInteger getQtyAllBiji() {
+        return qtyAllBiji;
+    }
+
+    public void setQtyAllBiji(BigInteger qtyAllBiji) {
+        this.qtyAllBiji = qtyAllBiji;
+    }
 
     public String getIdJenisBentuk() {
         return idJenisBentuk;

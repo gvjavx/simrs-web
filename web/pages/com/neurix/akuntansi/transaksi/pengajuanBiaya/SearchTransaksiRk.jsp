@@ -98,7 +98,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test='pengajuanBiaya.branchIdUser == "KP"'>
+                                                        <s:if test='pengajuanBiaya.branchIdUser == "01"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranchSelainKp_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pengajuanBiaya.branchId"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
@@ -186,7 +186,7 @@
                                                             Search
                                                         </sj:submit>
                                                     </td>
-                                                    <s:if test='pengajuanBiaya.branchIdUser == "KP"'>
+                                                    <s:if test='pengajuanBiaya.branchIdUser == "01"'>
                                                     <td>
                                                         <a href="add_pengajuanBiaya.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Transaksi RK</a>
                                                     </td>

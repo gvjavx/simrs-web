@@ -215,11 +215,13 @@
                                 <s:textfield  id="cutiId1" size="20" name="absensiPegawai.stBiayaLembur" required="false" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
-                        <td>
-                            <a href="javascript:void(0)">
-                                <img sizes="30" id="btnViewLembur" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_trash">
-                            </a>
-                        </td>
+                        <s:if test='absensiPegawai.lembur == "Y"'>
+                            <td>
+                                <a href="javascript:void(0)">
+                                    <img sizes="30" id="btnViewLembur" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_trash">
+                                </a>
+                            </td>
+                        </s:if>
                     </tr>
                 </table>
 
@@ -306,8 +308,8 @@
                     $('#pengajuanLembur').val(item.lamaLembur);
                     $('#realisasiLembur').val(item.realisasiJamLembur);
                     $('#jamLembur').val(item.jamLembur).change();
-                    $('#lemburPerJam').val(item.lemburPerJam).change();
-                    $('#jumlahUpahLembur').val(item.biayaLembur).change();
+                    $('#lemburPerJam').val(item.stBiayaLemburPerjam).change();
+                    $('#jumlahUpahLembur').val(item.stBiayaLembur).change();
                 });
             });
             $('#modal-view-lembur').find('.modal-title').text('View Lembur');

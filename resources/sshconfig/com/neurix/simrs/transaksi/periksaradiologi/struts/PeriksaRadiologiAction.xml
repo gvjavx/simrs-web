@@ -77,14 +77,14 @@
             <result name="init_add">/pages/com/neurix/simrs/transaksi/periksaradiologi/addPeriksaRadiologi.jsp</result>
 
             <result name="print_radiologi" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/printHasilPeriksaRadiologi.jasper</param>
+                <param name="location">/pages/report/com/neurix/simrs/printHasilPeriksaRadiologiBaru.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>
 
             <result name="print_label" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/labelLabRadiologi.jasper</param>
+                <param name="location">/pages/report/com/neurix/simrs/labelRadiologi.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>

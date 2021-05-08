@@ -392,11 +392,11 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Nama Obat</td>
-                                <td align="center">Qty</td>
-                                <td align="center">Qty App</td>
+                                <td align="center">Qty Request</td>
+                                <td align="center">Qty Approve</td>
                                 <td align="center">Satuan (Rp.)</td>
                                 <td align="center">Total (Rp.)</td>
-                                <td width="21%">Scan ID Obat</td>
+                                <td width="21%" align="center">Scan ID Obat</td>
                                 <td>Keterangan</td>
                             </tr>
                             </thead>
@@ -645,15 +645,15 @@
                     </tr>
                 </table>
                 <div class="box">
-                    <table class="table table-bordered" id="tabel_approve">
+                    <table class="table table-bordered" id="tabel_approve" style="font-size: 12px">
                         <thead>
                         <td>ID Barang</td>
+                        <td>Pabrik</td>
+                        <td>Merk</td>
                         <td>Expired Date</td>
-                        <td align="center">Qty BX</td>
-                        <td align="center">Qty LB</td>
-                        <td align="center">Qty BJ</td>
+                        <td align="center">Stok Biji</td>
                         <td align="center" width="25%">Scan ID Barang</td>
-                        <td width="12%" align="center">Qty AP</td>
+                        <td width="12%" align="center">Qty Approve</td>
                         <td>Jenis Satuan</td>
                         </thead>
                         <tbody id="body_approve">
@@ -672,7 +672,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_app"><i
-                        class="fa fa-arrow-right"></i> Konfirmasi
+                        class="fa fa-check"></i> Konfirmasi
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_app"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -754,7 +754,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-check"></i> Yes            </button>
             </div>
         </div>
     </div>
@@ -865,6 +865,9 @@
 
     function confirmObat(idObatVal, idObat, namaObat, qtyReq, jenisSatuan, idTransaksi) {
 
+        var jenisObat = '<s:property value="permintaanResep.idJenisPeriksa"/>';
+        jenisObat = jenisObat.toLowerCase();
+
         $('#load_app').hide();
         $('#save_app').show();
         $('#body_approve').html('');
@@ -880,7 +883,7 @@
         var lembarPerBox = "";
         var bijiPerLembar = "";
         if (idObatVal != "") {
-            TransaksiObatAction.listObatPoliEntity(idObatVal, {
+            TransaksiObatAction.listObatPoliEntity(idObatVal, jenisObat, {
                 callback: function (response) {
                     if (response.length > 0 && idObat == idObatVal) {
 
@@ -902,14 +905,20 @@
                             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
                             if (item.qtyBox != null) {
-                                qtyBox = item.qtyBox;
+                                qtyBox = item.qtyBox * item.lembarPerBox * item.bijiPerLembar;
                             }
                             if (item.qtyLembar != null) {
-                                qtyLembar = item.qtyLembar;
+                                qtyLembar = item.qtyLembar * item.bijiPerLembar;
                             }
                             if (item.qtyBiji != null) {
                                 qtyBiji = item.qtyBiji;
                             }
+
+//                            qtyBiji = qtyBiji + qtyLembar + qtyBox;
+                            console.log(qtyBiji + qtyLembar + qtyBox);
+                            console.log(qtyBiji);
+                            console.log(qtyLembar);
+                            console.log(qtyBox);
 
                             var warna = "";
                             var color = "";
@@ -940,9 +949,9 @@
                                     '<td>' + idBarang +
                                     '<input type="hidden" id=id_barang' + i + ' value='+item.idBarang+'>'+
                                     '</td>' +
+                                    '<td>' + item.namaPabrikObat + '</td>' +
+                                    '<td>' + item.merk + '</td>' +
                                     '<td>' + dateFormat + '</td>' +
-                                    '<td align="center">' + qtyBox + '</td>' +
-                                    '<td align="center">' + qtyLembar + '</td>' +
                                     '<td align="center">' + qtyBiji + '</td>' +
                                     '<td>' +
                                     '<div class="input-group">' +
@@ -1007,17 +1016,7 @@
             $('#msg_exp').text("Silahkan pilih Expired Date yang mau habis dulu...!");
         }
 
-        var stok = 0;
-
-        if ("box" == jenisSatuan) {
-            stok = qtyBox;
-        }
-        if ("lembar" == jenisSatuan) {
-            stok = parseInt(qtyLembar) + (parseInt(lembarPerBox * parseInt(qtyBox)));
-        }
-        if ("biji" == jenisSatuan) {
-            stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
-        }
+        var stok = qtyBiji;
 
         if (parseInt(value) <= parseInt(stok) && parseInt(value) <= parseInt(qtyReq)){
 
@@ -1073,42 +1072,22 @@
 
         $.each(data, function (i, item) {
             var id = data[i]["Expired Date"];
-            var box = data[i]["Qty BX"];
-            var lembar = data[i]["Qty LB"];
-            var biji = data[i]["Qty BJ"];
+            var biji = data[i]["Stok Biji"];
             var qty = $('#newQty' + i).val();
 
             if (qty == "") {
                 qty = 0;
             }
-            if (box == "") {
-                box = 0;
-            }
-            if (lembar == "") {
-                lembar = 0;
-            }
             if (biji == "") {
                 biji = 0;
             }
 
-            qtyBox = parseInt(qtyBox) + parseInt(box);
-            qtyLembar = parseInt(qtyLembar) + parseInt(lembar);
             qtyBiji = parseInt(qtyBiji) + parseInt(biji);
             qtyApp = parseInt(qtyApp) + parseInt(qty);
 
         });
 
-        var stok = 0;
-
-        if ("box" == jenisSatuan) {
-            stok = qtyBox;
-        }
-        if ("lembar" == jenisSatuan) {
-            stok = parseInt(qtyLembar) + (parseInt(lembarPerBox * parseInt(qtyBox)));
-        }
-        if ("biji" == jenisSatuan) {
-            stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
-        }
+        var stok = qtyBiji;
 
         var stringData = JSON.stringify(result);
 

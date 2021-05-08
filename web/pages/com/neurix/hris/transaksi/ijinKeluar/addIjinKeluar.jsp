@@ -236,7 +236,7 @@
 
                                     $.each(data, function (i, item) {
                                         var labelItem = item.nip+" "+item.namaPegawai;
-                                        mapped[labelItem] = {id: item.nip,nama:item.namaPegawai, label: labelItem, divisi:item.divisi,golongan:item.golongan,position:item.positionId};
+                                        mapped[labelItem] = {id: item.nip,nama:item.namaPegawai, label: labelItem, divisi:item.divisi,golongan:item.golongan,position:item.positionId,tipePegawai:item.tipePegawai};
                                         functions.push(labelItem);
                                     });
 
@@ -256,7 +256,15 @@
                                 $('#namaAddId').val(selectedObj.nama).change();
                                 $('#positionId12').val(selectedObj.position).change();
                                 $('#positionId33').val(selectedObj.position).change();
+                                if(selectedObj.tipePegawai != "TP04"){
+                                    $('#golonganId124').show();
+                                    $('#golonganIdPkwt124').hide();
+                                }else{
+                                    $('#golonganId124').hide();
+                                    $('#golonganIdPkwt124').show();
+                                }
                                 $('#golonganId124').val(selectedObj.golongan).change();
+                                $('#golonganIdPkwt124').val(selectedObj.golongan).change();
                                 $('#golonganId33').val(selectedObj.golongan).change();
                                 var nip = selectedObj.id;
                                 $('#ijinId1').empty();
@@ -318,6 +326,11 @@
                         </td>
                         <td>
                             <table>
+                                <%--PKWT--%>
+                                <s:action id="comboGolonganPkwt" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
+                                <s:select list="#comboGolonganPkwt.listComboGolonganPkwt" id="golonganIdPkwt124" name="ijinKeluar.golonganId"
+                                          listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" disabled="true" />
+                                <%--TETAP--%>
                                     <s:action id="comboGolongan" namespace="/golongan" name="initComboGolongan_golongan"/>
                                     <s:select list="#comboGolongan.listComboGolongan" id="golonganId124" name="ijinKeluar.golonganId"
                                               listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" disabled="true" />
@@ -387,7 +400,7 @@
                                     <i class="fa fa-calendar"></i>
                                 </div>
                                 <s:textfield id="tgl3" name="ijinKeluar.stTanggalAwal" cssClass="form-control pull-right"
-                                             required="false" onchange="getTanggalAkhir(this.value); getlastDate()" cssStyle=""/>
+                                             required="false" onchange="getTanggalAkhir(this.value);" cssStyle=""/>
                                     <%--<input type="text" class="form-control pull-right" id="loginTimestampFrom" name="userSessionLog.stLoginTimestampFrom">--%>
                             </div>
                         </td>
@@ -528,7 +541,7 @@
                                         <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); window.location.reload(true)}
+                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); /*window.location.reload(true)*/}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
@@ -570,6 +583,8 @@
     }
 
     $(document).ready(function() {
+        $('#golonganIdPkwt124').hide();
+
         if ($('#check').val()=="Y"){
             $('#branchId').attr('readonly','true');
             $('#branchId').attr('disabled','true');
@@ -620,6 +635,15 @@
    $('#tgl2').datepicker({
         dateFormat: 'dd/mm/yy'
    });
+    $('#tgl3').on('change',function() {
+        var strDate = $('#tgl3').datepicker('getDate');
+        var strDay = strDate.getDay();
+        if (strDay == 0 || strDay == 6){
+            alert ("tanggal awal ijin harus di hari kerja");
+            $('#tgl3').val("");
+        }
+    })
+
     $('#tgl2').on('change',function(){
         var nip=document.getElementById("nipId").value;
         var tglawal=document.getElementById("tgl3").value;
@@ -663,8 +687,14 @@
         var ijinId = $('#ijinId1').val();
         if (ijinId == 'IJ013'){
             var date = $('#tgl3').datepicker('getDate');
+            var strDate = $('#tgl3').datepicker('getDate');
             console.log(date);
             date.setDate(date.getDate()+45);
+            var dur = date.workingDaysFrom(strDate);
+            while(dur<45){
+                date.setDate(date.getDate()+1);
+                dur = date.workingDaysFrom(strDate);
+            }
             var d = new Date(date),
                     month = '' + (d.getMonth() + 1),
                     day = '' + (d.getDate()),
@@ -682,20 +712,49 @@
             console.log(startdate);
             console.log(enddate);
             if(startdate<enddate) {
-                var days   = (enddate - startdate)/1000/60/60/24;
-                $('#lamaId').val(days);
+                // var days   = (enddate - startdate)/1000/60/60/24;
+                $('#lamaId').val(dur);
             }
             else {
                 alert ("tanggal selesai kurang dari tanggal mulai , mohon ulangi ");
                 $('#tgl2').val("");
             }
+        }else{
+            getlastDate();
         }
+    };
+
+    Date.prototype.workingDaysFrom=function(fromDate){
+        // ensure that the argument is a valid and past date
+        if(!fromDate||isNaN(fromDate)||this<fromDate){return -1;}
+
+        // clone date to avoid messing up original date and time
+        var frD=new Date(fromDate.getTime()),
+            toD=new Date(this.getTime()),
+            numOfWorkingDays=1;
+
+        // reset time portion
+        frD.setHours(0,0,0,0);
+        toD.setHours(0,0,0,0);
+
+        while(frD<toD){
+            frD.setDate(frD.getDate()+1);
+            var day=frD.getDay();
+            if(day!=0&&day!=6){numOfWorkingDays++;}
+        }
+        return numOfWorkingDays;
     };
 
     window.getlastDate = function() {
         var tgl = $('#tgl3').datepicker('getDate');
+        var strTgl = $('#tgl3').datepicker('getDate');
         var maxIjin = parseInt($('#maxIjin').val());
         tgl.setDate(tgl.getDate() + maxIjin-1);
+        var dur = tgl.workingDaysFrom(strTgl);
+        while(dur<maxIjin){
+            tgl.setDate(tgl.getDate() + 1);
+            dur = tgl.workingDaysFrom(strTgl);
+        }
         var result = new Date(tgl);
         console.log(tgl);
 

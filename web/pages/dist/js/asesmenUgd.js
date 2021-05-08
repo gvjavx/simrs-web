@@ -40,10 +40,8 @@ function showAsesmenUgd(jenis, idRM, isSetIdRM) {
         tempidRm = idRM;
     }
     if(isReadRM){
-        $('#title').text(jenis);
         $('.btn-hide').hide();
     }else{
-        $('#title').text(title);
         $('.btn-hide').show();
     }
     $('#modal-aud_asesmen-ugd').modal({show: true, backdrop: 'static'});
@@ -1027,7 +1025,7 @@ function saveAsesmenUgd(jenis, keterangan) {
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
-                    'parameter': 'Saran',
+                    'parameter': 'Sasaran',
                     'jawaban': va15,
                     'keterangan': jenis,
                     'id_detail_checkup': idDetailCheckup
@@ -1416,7 +1414,7 @@ function saveAsesmenUgd(jenis, keterangan) {
             var va8 = $('#tr8').val();
             var va9 = $('#tr9').val();
             var va10 = $('#tr10').val();
-            var va11 = $('#tr11').val();
+            // var va11 = $('#tr11').val();
 
             var ny1 = $('[name=radio_nyeri_keluhan]:checked').val();
             var ny2 = $('#y_lokasi').val();
@@ -1440,8 +1438,7 @@ function saveAsesmenUgd(jenis, keterangan) {
 
             var cekTtd = isCanvasBlank(ttd);
 
-            if( va1 && ny1 && ny3 != undefined && va2 && va3 && va4 && va5 && va6 &&
-                va7 && va8 && va9 && va10 && va11 && ny2 && ny4 && nama && sip != '' && !cekTtd){
+            if(nama && sip != '' && !cekTtd){
 
                 var canv1 = convertToDataURL(nyeri);
                 var canv2 = convertToDataURL(ttd);
@@ -1511,21 +1508,21 @@ function saveAsesmenUgd(jenis, keterangan) {
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
-                    'parameter': 'Diagnosa',
+                    'parameter': 'SPO2',
                     'jawaban': va10,
                     'keterangan': jenis,
                     'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
+                // data.push({
+                //     'parameter': 'Terapi',
+                //     'jawaban': va11,
+                //     'keterangan': jenis,
+                //     'jenis': keterangan,
+                //     'id_detail_checkup': idDetailCheckup
+                // });
                 data.push({
-                    'parameter': 'Terapi',
-                    'jawaban': va11,
-                    'keterangan': jenis,
-                    'jenis': keterangan,
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'TTD Dokter IGD',
+                    'parameter': 'TTD Perawat',
                     'jawaban': canv2,
                     'keterangan': jenis,
                     'jenis': keterangan,

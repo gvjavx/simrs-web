@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.kasirrawatjalan.bo.impl;
 import com.neurix.akuntansi.master.pembayaran.dao.PembayaranDao;
 import com.neurix.akuntansi.master.pembayaran.model.ImAkunPembayaranEntity;
 import com.neurix.akuntansi.master.pembayaran.model.Pembayaran;
+import com.neurix.akuntansi.transaksi.billingSystem.bo.impl.BillingSystemBoImpl;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -31,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
+public class KasirRawatJalanBoImpl extends BillingSystemBoImpl implements KasirRawatJalanBo {
 
     private RiwayatTindakanDao riwayatTindakanDao;
     private RawatInapDao rawatInapDao;
@@ -469,7 +470,6 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
                     }catch (HibernateException e){
                         logger.error("Found Error");
                     }
-
                 }
             }
         }

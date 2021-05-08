@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  */
 public class TransaksiObatBatch {
 
-    private BigInteger id;
+    private String id;
     private String idTransaksiObatDetail;
     private Integer noBatch;
     private String jenisSatuan;
@@ -172,11 +172,11 @@ public class TransaksiObatBatch {
         this.idBarang = idBarang;
     }
 
-    public BigInteger getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(String id) {
         this.id = id;
     }
 

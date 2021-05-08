@@ -60,19 +60,42 @@
                                     action="search_permintaanpo.action" theme="simple"
                                     cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Permintaan Vendor</label>
+                                    <label class="control-label col-sm-4">ID PO</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_permintaan" cssStyle="margin-top: 7px"
                                                      name="permintaanVendor.idPermintaanVendor" required="false"
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">ID Approval</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:textfield id="nama_obat" name="permintaanVendor.idApprovalObat"--%>
+                                                     <%--required="false" readonly="false"--%>
+                                                     <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Approval</label>
+                                    <label class="control-label col-sm-4">Nama PBF</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama_obat" name="permintaanVendor.idApprovalObat"
-                                                     required="false" readonly="false"
-                                                     cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                        <s:action id="initVendor" namespace="/permintaanpo"
+                                                  name="getComboVendor_permintaanpo"/>
+                                        <s:select cssStyle="margin-top: 7px; width: 100%"
+                                                  list="#initVendor.listOfVendor" id="nama_vendor"
+                                                  name="permintaanVendor.idVendor" listKey="idVendor"
+                                                  listValue="namaVendor"
+                                                  headerKey="" headerValue=" - "
+                                                  cssClass="form-control select2"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Status</label>
+                                    <div class="col-sm-4">
+                                        <s:select list="#{'process':'Proses Verifikasi','dikonfirmasi':'Telah Dikonfirmasi'}"
+                                                  cssStyle="margin-top: 7px"
+                                                  id="status" name="permintaanVendor.status"
+                                                  headerKey="" headerValue=" - "
+                                                  cssClass="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -166,25 +189,28 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID PO</td>
-                                <td>Nama Vendor</td>
+                                <td>Nama PBF</td>
                                 <td>Tanggal Permintaan</td>
+                                <td>Jenis PO</td>
+                                <td align="center">Jumlah Obat</td>
                                 <td>Status</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody style="font-size: 13px">
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
                                     <td><s:property value="idPermintaanVendor"/></td>
                                     <td><s:property value="namaVendor"/></td>
                                     <td><s:property value="stCreatedDate"/></td>
+                                    <td><s:property value="jenisPo"/></td>
+                                    <td align="center"><span style="padding: 6px; background-color: #fbec88; color: black; border-radius: 20px"><s:property value="jumlahObat"/></span></td>
                                     <td><s:if test='#row.keterangan == "Telah Dikonfirmasi"'>
                                         <label class="label label-success"><s:property value="keterangan"/></label>
                                     </s:if><s:else>
                                         <label class="label label-warning"><s:property value="keterangan"/></label>
                                     </s:else></td>
                                     <td align="center">
-                                        <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>" onclick="printPo('<s:property value="idPermintaanVendor"/>','<s:property value="idApprovalObat"/>')">
                                         <s:if test='#row.keterangan == "Telah Dikonfirmasi"'>
                                             <%--<s:url var="print_po" namespace="/permintaanpo" action="printPermintaanPO_permintaanpo" escapeAmp="false">--%>
                                                 <%--<s:param name="id"><s:property value="idPermintaanVendor"/></s:param>--%>
@@ -207,6 +233,8 @@
                                                 <img class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                             </s:a>
                                         </s:else>
+                                        <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>" onclick="printPo('<s:property value="idPermintaanVendor"/>','<s:property value="idApprovalObat"/>')">
+
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -372,7 +400,7 @@
                 <div id="body-img">
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
             </div>
@@ -418,16 +446,18 @@
                         '<td align="center">'+item.noBatch+'</td>' +
                         '<td>'+item.stLastUpdateWho+'</td>' +
                         '<td align="center">' +
+                        '<img style="cursor: pointer" onclick="showDetailListObat(\''+idPermintaan+'\',\''+item.noBatch+'\',\''+item.noFaktur+'\',\''+tgl+'\',\''+item.noInvoice+'\',\''+item.noDo+'\',\''+item.urlDoc+'\')" src="<s:url value="/pages/images/icons8-search-25.png"/>">'+
                         '<a target="_blank" href="printPermintaanPO_permintaanpo?id='+idPermintaan+'&noBatch='+item.noBatch+'">' +
                         '<img src="<s:url value="/pages/images/icons8-print-25.png"/>">'+
                         '</a>'+
-                        '<img style="cursor: pointer" onclick="showDetailListObat(\''+idPermintaan+'\',\''+item.noBatch+'\',\''+item.noFaktur+'\',\''+tgl+'\',\''+item.noInvoice+'\',\''+item.noDo+'\',\''+item.urlDoc+'\')" src="<s:url value="/pages/images/icons8-search-25.png"/>"></td>' +
+                        '</td>' +
                         '</tr>';
                 });
                 $('#body_bat').html(table);
             }
         })
     }
+
     function showDetailListObat(idpermintaanPo, noBatch, noFaktur, tglFaktur, noInvoice, noDo, img){
         $('#modal-detail').modal({show:true, backdrop:'static'});
         $('#det_no_faktur').text(noFaktur);
@@ -496,7 +526,6 @@
     }
 
     function showDoc(img){
-        console.log(img);
         $('#img_surat_po').attr('src',img);
         $('#modal-doc').modal('show');
     }
@@ -548,9 +577,9 @@
                 $.each(list, function (i, item) {
                     var id = 'carousel-example-generic_'+item.idItem;
                     str += '<h5>'+item.jenisNomor.toUpperCase()+' - '+item.idItem+'</h5><div id="'+id+'" class="carousel slide" data-ride="carousel">\n' +
-                        '<ol class="carousel-indicators" id="li_'+item.idItem+'">\n' +
+                        '<ol class="carousel-indicators" id="li_'+item.idItem+item.jenisNomor+'">\n' +
                         '</ol>\n' +
-                        '<div class="carousel-inner" id="item_'+item.idItem+'">\n' +
+                        '<div class="carousel-inner" id="item_'+item.idItem+item.jenisNomor+'">\n' +
                         '</div>\n' +
                         '<a class="left carousel-control" href="#'+id+'" data-slide="prev">\n' +
                         '    <span class="fa fa-angle-left"></span>\n' +
@@ -559,7 +588,7 @@
                         '    <span class="fa fa-angle-right"></span>\n' +
                         '</a>\n' +
                         '</div><hr>';
-                    showImg(item.idItem);
+                    showImg(item.idItem, item.jenisNomor);
                 });
             }else{
                 str = '<b style="text-align: center">Foto tidak ada..!</b>'
@@ -568,7 +597,7 @@
         });
     }
 
-    function showImg(idItem){
+    function showImg(idItem, jenis){
         PermintaanVendorAction.getListImg(idItem, function (listimg) {
             var str = '';
             var li = '';
@@ -586,8 +615,8 @@
                     '</div>';
                 li += '<li data-target="#carousel-example-generic_'+idItem+'" data-slide-to="'+n+'" '+liAcktive+'></li>';
             });
-            $("#item_"+idItem).html(str);
-            $("#li_"+idItem).html(li);
+            $("#item_"+idItem+jenis).html(str);
+            $("#li_"+idItem+jenis).html(li);
         });
     }
 

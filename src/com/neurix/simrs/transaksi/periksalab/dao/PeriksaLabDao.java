@@ -4,9 +4,10 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.dokter.model.Dokter;
-import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.periksalab.model.ItSimrsPeriksaLabEntity;
+import com.neurix.simrs.transaksi.periksalab.model.ItSimrsUploadHasilPemeriksaanEntity;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
+import com.neurix.simrs.transaksi.periksalab.model.UploadHasilPemeriksaan;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -27,46 +28,27 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
     @Override
     public List<ItSimrsPeriksaLabEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsPeriksaLabEntity.class);
-
-        // Get Collection and sorting
         if (mapCriteria != null) {
             if (mapCriteria.get("id_periksa_lab") != null) {
                 criteria.add(Restrictions.eq("idPeriksaLab", (String) mapCriteria.get("id_periksa_lab")));
             }
-            if (mapCriteria.get("id_detail_checkup") != null) {
-                criteria.add(Restrictions.eq("idDetailCheckup", (String) mapCriteria.get("id_detail_checkup")));
+            if (mapCriteria.get("id_header_pemeriksaan") != null) {
+                criteria.add(Restrictions.eq("idHeaderPemeriksaan", (String) mapCriteria.get("id_header_pemeriksaan")));
             }
-            if (mapCriteria.get("tanggal_masuk_lab") != null) {
-                criteria.add(Restrictions.eq("tanggalMasukLab", (Date) mapCriteria.get("tanggal_masuk_lab")));
+            if (mapCriteria.get("id_pemeriksaan") != null) {
+                criteria.add(Restrictions.eq("idPemeriksaan", (String) mapCriteria.get("id_pemeriksaan")));
             }
-            if (mapCriteria.get("tanggal_selesai_periksa") != null) {
-                criteria.add(Restrictions.eq("tanggalSelesaiPeriksa", (Timestamp) mapCriteria.get("tanggal_selesai_periksa")));
+            if (mapCriteria.get("nama_pemeriksaan") != null) {
+                criteria.add(Restrictions.eq("namaPemeriksaan", (String) mapCriteria.get("nama_pemeriksaan")));
             }
-            if (mapCriteria.get("id_dokter_pengirim") != null) {
-                criteria.add(Restrictions.eq("idDokterPengirim", (String) mapCriteria.get("id_dokter_pengirim")));
-            }
-            if (mapCriteria.get("id_dokter") != null) {
-                criteria.add(Restrictions.eq("idDokter", (String) mapCriteria.get("id_dokter")));
-            }
-            if (mapCriteria.get("id_pemeriksa") != null) {
-                criteria.add(Restrictions.eq("idPemeriksa", (String) mapCriteria.get("id_pemeriksa")));
-            }
-            if (mapCriteria.get("id_lab") != null) {
-                criteria.add(Restrictions.eq("idLab", (String) mapCriteria.get("id_lab")));
-            }
-            if (mapCriteria.get("status") != null) {
-                criteria.add(Restrictions.eq("statusPeriksa", (String) mapCriteria.get("status")));
-            }
-            if (mapCriteria.get("approve_flag") != null) {
-                criteria.add(Restrictions.eq("approveFlag", (String) mapCriteria.get("approve_flag")));
+            if(mapCriteria.get("flag") != null){
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+            }else{
+                criteria.add(Restrictions.eq("flag", "Y"));
             }
         }
 
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
-
-        // Order by
         criteria.addOrder(Order.asc("idPeriksaLab"));
-
         List<ItSimrsPeriksaLabEntity> results = criteria.list();
         return results;
     }
@@ -83,7 +65,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 condition = "AND e.id_pasien = '" + bean.getIdPasien() + "' \n";
             }
             if (bean.getNamaPasien() != null && !"".equalsIgnoreCase(bean.getNamaPasien())) {
-                condition = condition + "AND e.nama ILIKE '%" + bean.getIdPasien() + "%' \n";
+                condition = condition + "AND d.nama ILIKE '%" + bean.getNamaPasien() + "%' \n";
             }
             if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
                 condition = condition + "AND a.id_detail_checkup = '" + bean.getIdDetailCheckup() + "' \n";
@@ -92,8 +74,9 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 condition = condition + "AND a.status_periksa = '" + bean.getStatusPeriksa() + "' \n";
             }
             if (bean.getIdKategoriLab() != null && !"".equalsIgnoreCase(bean.getIdKategoriLab())) {
-                condition = condition + "AND c.kategori = '" + bean.getIdKategoriLab() + "' \n";
+                condition = condition + "AND b.kategori = '" + bean.getIdKategoriLab() + "' \n";
             }
+
             if (bean.getStDateFrom() != null && !"".equalsIgnoreCase(bean.getStDateFrom()) && bean.getStDateTo() != null && !"".equalsIgnoreCase(bean.getStDateTo())) {
                 condition = condition + "AND CAST(a.created_date AS date) >= to_date('" + bean.getStDateFrom() + "', 'dd-MM-yyyy') AND CAST(a.created_date AS date) <= to_date('" + bean.getStDateTo() + "', 'dd-MM-yyyy') \n";
             }else if(bean.getStDateFrom() != null && !"".equalsIgnoreCase(bean.getStDateFrom())){
@@ -101,38 +84,46 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
             }else if(bean.getStDateTo() != null && !"".equalsIgnoreCase(bean.getStDateTo())){
                 condition = condition + "AND CAST(a.created_date AS date) <= to_date('" + bean.getStDateTo() + "', 'dd-MM-yyyy') \n";
             }
+
             if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
-                condition = condition + "AND e.branch_id = '" + bean.getBranchId() + "' \n";
+                condition = condition + "AND d.branch_id = '" + bean.getBranchId() + "' \n";
             }
-            if (bean.getIdPeriksaLab() != null && !"".equalsIgnoreCase(bean.getIdPeriksaLab())) {
-                condition = condition + "AND a.id_periksa_lab = '" + bean.getIdPeriksaLab() + "' \n";
+            if (bean.getIdHeaderPemeriksaan() != null && !"".equalsIgnoreCase(bean.getIdHeaderPemeriksaan())) {
+                condition = condition + "AND a.id_header_pemeriksaan = '" + bean.getIdHeaderPemeriksaan() + "' \n";
             }
 
             String SQL = "SELECT\n" +
-                    "a.id_periksa_lab,\n" +
-                    "a.id_lab,\n" +
-                    "b.nama_lab,\n" +
+                    "a.id_header_pemeriksaan,\n" +
                     "a.id_kategori_lab,\n" +
-                    "c.nama_kategori,\n" +
+                    "b.nama_kategori,\n" +
                     "a.created_date,\n" +
                     "a.status_periksa,\n" +
                     "a.id_detail_checkup,\n" +
                     "d.no_checkup,\n" +
-                    "e.nama,\n" +
-                    "e.id_pasien,\n" +
+                    "d.nama,\n" +
+                    "d.id_pasien,\n" +
                     "a.approve_flag, \n" +
-                    "a.keterangan,\n" +
-                    "d.id_jenis_periksa_pasien,\n"+
-                    "um.id, \n"+
-                    "um.status_bayar, \n"+
-                    "a.is_pending \n"+
-                    "FROM it_simrs_periksa_lab a\n" +
-                    "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
-                    "INNER JOIN im_simrs_kategori_lab c ON a.id_kategori_lab = c.id_kategori_lab\n" +
-                    "INNER JOIN it_simrs_header_detail_checkup d ON a.id_detail_checkup = d.id_detail_checkup\n" +
-                    "INNER JOIN it_simrs_header_checkup e ON d.no_checkup = e.no_checkup\n" +
+                    "a.catatan,\n" +
+                    "c.id_jenis_periksa_pasien,\n" +
+                    "um.id, \n" +
+                    "um.status_bayar,\n" +
+                    "a.is_pending,\n" +
+                    "a.is_periksa_luar,\n" +
+                    "a.is_just_lab,\n" +
+                    "pl.nama_pelayanan\n" +
+                    "FROM it_simrs_header_pemeriksaan a\n" +
+                    "INNER JOIN im_simrs_kategori_lab b ON a.id_kategori_lab = b.id_kategori_lab\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup c ON a.id_detail_checkup = c.id_detail_checkup\n" +
+                    "INNER JOIN it_simrs_header_checkup d ON c.no_checkup = d.no_checkup\n" +
+                    "LEFT JOIN (\n" +
+                    "SELECT\n" +
+                    "a.id_pelayanan,\n" +
+                    "b.nama_pelayanan\n" +
+                    "FROM im_simrs_pelayanan a\n" +
+                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
+                    ") pl ON c.id_pelayanan = pl.id_pelayanan\n"+
                     "LEFT JOIN it_simrs_uang_muka_pendaftaran um ON um.id_detail_checkup = a.id_detail_checkup\n" +
-                    "WHERE a.flag = :flag \n" + condition +
+                    "WHERE a.flag = :flag \n"+condition+
                     "ORDER BY a.created_date ASC";
 
             List<Object[]> results = new ArrayList<>();
@@ -143,28 +134,25 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
             if (results.size() > 0) {
                 for (Object[] obj : results) {
                     PeriksaLab dataLab = new PeriksaLab();
-                    dataLab.setIdPeriksaLab(obj[0] != null ? obj[0].toString() : null);
-                    dataLab.setIdLab(obj[1] != null ? obj[1].toString() : null);
-                    dataLab.setLabName(obj[2] != null ? obj[2].toString() : null);
-                    dataLab.setIdKategoriLab(obj[3] != null ? obj[3].toString() : null);
-                    dataLab.setKategoriLabName(obj[4] != null ? obj[4].toString() : null);
-                    dataLab.setCreatedDate(obj[5] != null ? (Timestamp) obj[5] : null);
-                    if(obj[5] != null){
+                    dataLab.setIdHeaderPemeriksaan(obj[0] != null ? obj[0].toString() : null);
+                    dataLab.setIdKategoriLab(obj[1] != null ? obj[1].toString() : null);
+                    dataLab.setKategoriLabName(obj[2] != null ? obj[2].toString() : null);
+                    dataLab.setCreatedDate(obj[3] != null ? (Timestamp) obj[3] : null);
+                    if(obj[3] != null){
                         String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(dataLab.getCreatedDate());
                         dataLab.setStCreatedDate(formatDate);
                     }
-                    dataLab.setStatusPeriksa(obj[6] != null ? obj[6].toString() : null);
-                    dataLab.setIdDetailCheckup(obj[7] != null ? obj[7].toString() : null);
-                    dataLab.setNoCheckup(obj[8] != null ? obj[8].toString() : null);
-                    dataLab.setNamaPasien(obj[9] != null ? obj[9].toString() : null);
-                    dataLab.setIdPasien(obj[10] != null ? obj[10].toString() : null);
-                    dataLab.setApproveFlag(obj[11] != null ? obj[11].toString() : null);
-                    dataLab.setKeterangan(obj[12] != null ? obj[12].toString() : null);
-                    dataLab.setIdJenisPeriksa(obj[13] != null ? obj[13].toString() : "");
-                    dataLab.setIsPending(obj[16] != null ? obj[16].toString() : "");
-                    if(obj[14] != null){
+                    dataLab.setStatusPeriksa(obj[4] != null ? obj[4].toString() : null);
+                    dataLab.setIdDetailCheckup(obj[5] != null ? obj[5].toString() : null);
+                    dataLab.setNoCheckup(obj[6] != null ? obj[6].toString() : null);
+                    dataLab.setNamaPasien(obj[7] != null ? obj[7].toString() : null);
+                    dataLab.setIdPasien(obj[8] != null ? obj[8].toString() : null);
+                    dataLab.setApproveFlag(obj[9] != null ? obj[9].toString() : null);
+                    dataLab.setCatatan(obj[10] != null ? obj[10].toString() : null);
+                    dataLab.setIdJenisPeriksa(obj[11] != null ? obj[11].toString() : "");
+                    if(obj[12] != null){
                         if("umum".equalsIgnoreCase(dataLab.getIdJenisPeriksa())){
-                            String bayar = (obj[15] != null ? obj[15].toString() : "");
+                            String bayar = (obj[13] != null ? obj[13].toString() : "");
                             if ("Y".equalsIgnoreCase(bayar)) {
                                 dataLab.setStatusBayar("Y");
                             } else {
@@ -173,6 +161,18 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                         }
                     }else{
                         dataLab.setStatusBayar("Y");
+                    }
+                    dataLab.setIsPending(obj[14] != null ? obj[14].toString() : "");
+                    dataLab.setIsLuar(obj[15] != null ? obj[15].toString() : "");
+                    dataLab.setIsJustLab(obj[16] != null ? obj[16].toString() : "");
+                    dataLab.setNamaPelayanan(obj[17] != null ? obj[17].toString() : "");
+                    if(obj[0] != null){
+                        dataLab.setTarif(getTotalTarif(obj[0].toString()));
+                        if(getListUploadHasilPemeriksaan(obj[0].toString()).size() > 0){
+                            dataLab.setIsUpload("Y");
+                        }else{
+                            dataLab.setIsUpload("N");
+                        }
                     }
                     checkupList.add(dataLab);
                 }
@@ -205,19 +205,21 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_periksa_lab')");
         Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%08d", iter.next());
-        return sId;
+        return "PRL"+sId;
     }
 
     public BigDecimal getTotalTarif(String idPeriksa) {
         BigDecimal res = null;
         if(idPeriksa != null && !"".equalsIgnoreCase(idPeriksa)){
             String SQL = "SELECT\n" +
-                    "id_periksa_lab,\n" +
-                    "SUM(tarif) as total\n" +
-                    "FROM it_simrs_periksa_lab_detail\n" +
-                    "WHERE id_periksa_lab = :id \n" +
-                    "AND flag = 'Y' \n" +
-                    "GROUP BY id_periksa_lab";
+                    "a.id_header_pemeriksaan,\n" +
+                    "SUM(c.tarif) as total\n" +
+                    "FROM it_simrs_header_pemeriksaan a\n" +
+                    "INNER JOIN it_simrs_periksa_lab b ON a.id_header_pemeriksaan = b.id_header_pemeriksaan\n" +
+                    "INNER JOIN it_simrs_periksa_lab_detail c ON b.id_periksa_lab = c.id_periksa_lab\n" +
+                    "WHERE a.id_header_pemeriksaan = :id\n" +
+                    "AND a.flag = 'Y'\n" +
+                    "GROUP BY a.id_header_pemeriksaan";
             List<Object[]> results = new ArrayList<>();
             results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", idPeriksa)
@@ -311,63 +313,10 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
         return dokterList;
     }
 
-    public PeriksaLab getNamaLab(String idPeriksa) {
-        PeriksaLab lab = new PeriksaLab();
-        if (idPeriksa != null && !"".equalsIgnoreCase(idPeriksa)) {
-            String SQL = "SELECT\n" +
-                    "a.id_periksa_lab, \n" +
-                    "a.id_lab,\n" +
-                    "b.nama_lab,\n" +
-                    "c.sip,\n" +
-                    "c.id_dokter,\n" +
-                    "c.nama_dokter,\n" +
-                    "a.ttd_dokter,\n" +
-                    "a.id_pemeriksa,\n" +
-                    "d.user_name,\n" +
-                    "a.ttd_petugas,\n" +
-                    "e.sip as sip_pengirim,\n" +
-                    "a.id_dokter_pengirim,\n" +
-                    "e.nama_dokter as pengirim,\n" +
-                    "a.ttd_pengirim, \n" +
-                    "a.created_date\n" +
-                    "FROM it_simrs_periksa_lab a\n" +
-                    "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
-                    "LEFT JOIN im_simrs_dokter c ON a.id_dokter = c.id_dokter\n" +
-                    "LEFT JOIN im_users d ON a.id_pemeriksa = d.user_id\n" +
-                    "LEFT JOIN im_simrs_dokter e ON a.id_dokter_pengirim = e.id_dokter\n" +
-                    "WHERE id_periksa_lab = :idPeriksaLab";
-            List<Objects[]> result = new ArrayList<>();
-            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                    .setParameter("idPeriksaLab", idPeriksa)
-                    .list();
-            if (result.size() > 0) {
-                Object[] objects = result.get(0);
-                lab.setIdPeriksaLab(objects[0] == null ? "" : objects[0].toString());
-                lab.setIdLab(objects[1] == null ? "" : objects[1].toString());
-                lab.setLabName(objects[2] == null ? "" : objects[2].toString());
-                lab.setSipDokter(objects[3] == null ? "" : objects[3].toString());
-                lab.setIdDokter(objects[4] == null ? "" : objects[4].toString());
-                lab.setNamaDokter(objects[5] == null ? "" : objects[5].toString());
-                lab.setTtdDokter(objects[6] == null ? "" : CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + objects[6].toString());
-                lab.setIdPemeriksa(objects[7] == null ? "" : objects[7].toString());
-                lab.setNamaPetugas(objects[8] == null ? "" : objects[8].toString());
-                lab.setTtdPetugas(objects[9] == null ? "" : CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + objects[9].toString());
-                lab.setSipPengirim(objects[10] == null ? "" : objects[10].toString());
-                lab.setIdPengirim(objects[11] == null ? "" : objects[11].toString());
-                lab.setDokterPengirim(objects[12] == null ? "" : objects[12].toString());
-                lab.setTtdPengirim(objects[13] == null ? "" : CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + objects[13].toString());
-                lab.setCreatedDate(objects[14] == null ? null : (Timestamp) objects[14]);
-            }
-        }
-        return lab;
-    }
-
     public List<PeriksaLab> getListLab(String noCheckup, String jenis) {
         List<PeriksaLab> labList = new ArrayList<>();
         String SQL = "SELECT \n" +
-                "a.id_periksa_lab,\n" +
-                "a.id_lab,\n" +
-                "d.nama_lab,\n" +
+                "a.id_header_pemeriksaan,\n" +
                 "a.status_periksa,\n" +
                 "a.id_detail_checkup,\n" +
                 "e.id_kategori_lab,\n" +
@@ -375,11 +324,12 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 "f.id_pelayanan,\n" +
                 "f.nama_pelayanan,\n" +
                 "a.created_date,\n" +
-                "e.kategori\n" +
-                "FROM it_simrs_periksa_lab a\n" +
+                "e.kategori,\n" +
+                "a.is_periksa_luar,\n" +
+                "a.tarif_lab_luar\n" +
+                "FROM it_simrs_header_pemeriksaan a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
-                "INNER JOIN im_simrs_lab d ON a.id_lab = d.id_lab\n" +
                 "INNER JOIN im_simrs_kategori_lab e ON a.id_kategori_lab = e.id_kategori_lab\n" +
                 "LEFT JOIN (SELECT\n" +
                 "a.id_pelayanan,\n" +
@@ -390,8 +340,10 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 "b.divisi_id,\n" +
                 "b.kode_vclaim\n" +
                 "FROM im_simrs_pelayanan a\n" +
-                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) f ON b.id_pelayanan = f.id_pelayanan\n" +
-                "WHERE c.no_checkup = :id AND b.id_jenis_periksa_pasien = :jen \n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
+                ") f ON b.id_pelayanan = f.id_pelayanan\n" +
+                "WHERE c.no_checkup = :id \n" +
+                "AND b.id_jenis_periksa_pasien = :jen \n" +
                 "AND a.flag = 'Y'\n" +
                 "ORDER BY a.id_detail_checkup ASC";
 
@@ -404,16 +356,20 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
             for (Object[] obj : result) {
                 PeriksaLab lab = new PeriksaLab();
                 lab.setIdPeriksaLab(obj[0] == null ? "" : obj[0].toString());
-                lab.setIdLab(obj[1] == null ? "" : obj[1].toString());
-                lab.setLabName(obj[2] == null ? "" : obj[2].toString());
-                lab.setStatusPeriksa(obj[3] == null ? "" : obj[3].toString());
-                lab.setIdDetailCheckup(obj[4] == null ? "" : obj[4].toString());
-                lab.setIdKategoriLab(obj[5] == null ? "" : obj[5].toString());
-                lab.setKategoriLabName(obj[6] == null ? "" : obj[6].toString());
-                lab.setIdPelayanan(obj[7] == null ? "" : obj[7].toString());
-                lab.setNamaPelayanan(obj[8] == null ? "" : obj[8].toString());
-                lab.setCreatedDate(obj[9] == null ? null : (Timestamp) obj[9]);
-                lab.setKategori(obj[10] == null ? null : (String) obj[10]);
+                lab.setStatusPeriksa(obj[1] == null ? "" : obj[1].toString());
+                lab.setIdDetailCheckup(obj[2] == null ? "" : obj[2].toString());
+                lab.setIdKategoriLab(obj[3] == null ? "" : obj[3].toString());
+                lab.setKategoriLabName(obj[4] == null ? "" : obj[4].toString());
+                lab.setIdPelayanan(obj[5] == null ? "" : obj[5].toString());
+                lab.setNamaPelayanan(obj[6] == null ? "" : obj[6].toString());
+                lab.setCreatedDate(obj[7] == null ? null : (Timestamp) obj[7]);
+                lab.setKategori(obj[8] == null ? null : (String) obj[8]);
+                lab.setIsPeriksaLuar(obj[9] == null ? null : (String) obj[9]);
+                lab.setTarifLabLuar(obj[10] == null ? new BigDecimal(0) : (BigDecimal) obj[10]);
+                if(obj[0] != null){
+                    lab.setTarif(getTotalTarif(obj[0].toString()));
+                    lab.setUploadDalam(getListUploadHasilPemeriksaan(obj[0].toString()));
+                }
                 labList.add(lab);
             }
         }
@@ -425,18 +381,18 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
         String SQL = "SELECT \n" +
                 "a.no_checkup,\n" +
                 "b.id_detail_checkup,\n" +
-                "c.id_periksa_lab,\n" +
+                "c.id_header_pemeriksaan,\n" +
                 "c.is_read,\n" +
                 "d.kategori,\n" +
                 "a.nama\n" +
                 "FROM it_simrs_header_checkup a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
-                "INNER JOIN it_simrs_periksa_lab c ON b.id_detail_checkup = c.id_detail_checkup\n" +
+                "INNER JOIN it_simrs_header_pemeriksaan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
                 "INNER JOIN im_simrs_kategori_lab d ON c.id_kategori_lab = d.id_kategori_lab\n" +
-                "WHERE a.branch_id = :branchId\n" +
+                "WHERE a.branch_id = :branchId \n" +
                 "AND c.is_read IS NULL\n" +
                 "AND c.status_periksa = '0'\n" +
-                "AND d.kategori = :kategori\n" +
+                "AND d.kategori = :kategori \n" +
                 "AND CAST(c.created_date AS DATE) = CURRENT_DATE \n" +
                 "ORDER BY c.created_date ASC";
 
@@ -450,7 +406,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 PeriksaLab lab = new PeriksaLab();
                 lab.setNoCheckup(obj[0] == null ? "" : obj[0].toString());
                 lab.setIdDetailCheckup(obj[1] == null ? "" : obj[1].toString());
-                lab.setIdPeriksaLab(obj[2] == null ? "" : obj[2].toString());
+                lab.setIdHeaderPemeriksaan(obj[2] == null ? "" : obj[2].toString());
                 lab.setIsRead(obj[3] == null ? "" : obj[3].toString());
                 lab.setKategori(obj[4] == null ? "" : obj[4].toString());
                 lab.setNamaPasien(obj[5] == null ? "" : obj[5].toString());
@@ -458,5 +414,158 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
             }
         }
         return labList;
+    }
+
+    public List<PeriksaLab> getHistoryLabRadiologi(String idPasien) {
+        List<PeriksaLab> labList = new ArrayList<>();
+        String SQL = "SELECT\n" +
+                "c.tanggal_masuk_periksa,\n" +
+                "a.id_pasien,\n" +
+                "b.id_detail_checkup,\n" +
+                "b.id_pelayanan,\n" +
+                "e.nama_pelayanan,\n" +
+                "c.id_header_pemeriksaan,\n" +
+                "f.nama_kategori,\n" +
+                "f.kategori,\n" +
+                "a.created_date, \n" +
+                "c.is_periksa_luar \n"+
+                "FROM it_simrs_header_checkup a\n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                "INNER JOIN it_simrs_header_pemeriksaan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
+                "INNER JOIN (\n" +
+                "SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "a.nama_pelayanan\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
+                ") e ON b.id_pelayanan = e.id_pelayanan\n" +
+                "INNER JOIN im_simrs_kategori_lab f ON c.id_kategori_lab = f.id_kategori_lab\n" +
+                "WHERE a.id_pasien = '"+idPasien+"'\n" +
+                "ORDER BY c.tanggal_masuk_periksa,\n" +
+                "b.id_pelayanan DESC";
+
+        List<Objects[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .list();
+
+        if (result.size() > 0) {
+            String namaPelayanan = "";
+            for (Object[] obj : result) {
+                PeriksaLab lab = new PeriksaLab();
+                if(!namaPelayanan.equalsIgnoreCase(obj[4].toString())){
+                    namaPelayanan = obj[4].toString();
+                    lab.setCreatedDate(obj[8] == null ? null : (Timestamp) obj[8]);
+                }
+                lab.setTanggalMasukLab(obj[0] == null ? null : (Timestamp) obj[0]);
+                lab.setIdPasien(obj[1] == null ? "" : obj[1].toString());
+                lab.setIdDetailCheckup(obj[2] == null ? "" : obj[2].toString());
+                lab.setIdPelayanan(obj[3] == null ? "" : obj[3].toString());
+                lab.setNamaPelayanan(namaPelayanan);
+                lab.setIdPeriksaLab(obj[5] == null ? "" : obj[5].toString());
+                lab.setKategoriLabName(obj[6] == null ? "" : obj[6].toString());
+                lab.setKeterangan(obj[7] == null ? "" : obj[7].toString());
+                lab.setIsPeriksaLuar(obj[9] == null ? "" : obj[9].toString());
+                if(lab.getIdPeriksaLab() != null){
+                    lab.setUploadDalam(getListUploadHasilPemeriksaan(lab.getIdPeriksaLab()));
+                }
+                labList.add(lab);
+            }
+        }
+        return labList;
+    }
+
+
+    public List<PeriksaLab> getListParameterPemeriksaan(String idHeader) {
+        List<PeriksaLab> labList = new ArrayList<>();
+        if(idHeader != null && !"".equalsIgnoreCase(idHeader)){
+            String SQL = "SELECT\n" +
+                    "a.id_header_pemeriksaan,\n" +
+                    "d.nama_kategori,\n" +
+                    "b.id_pemeriksaan,\n" +
+                    "b.nama_pemeriksaan,\n" +
+                    "c.id_lab_detail,\n" +
+                    "c.nama_detail_periksa,\n" +
+                    "b.id_periksa_lab,\n" +
+                    "c.id_periksa_lab_detail,\n" +
+                    "c.keterangan_acuan_l,\n" +
+                    "c.keterangan_acuan_p,\n" +
+                    "c.satuan,\n" +
+                    "c.hasil,\n" +
+                    "c.keterangan_periksa\n" +
+                    "FROM it_simrs_header_pemeriksaan a\n" +
+                    "INNER JOIN it_simrs_periksa_lab b ON a.id_header_pemeriksaan = b.id_header_pemeriksaan\n" +
+                    "INNER JOIN it_simrs_periksa_lab_detail c ON b.id_periksa_lab = c.id_periksa_lab\n" +
+                    "INNER JOIN im_simrs_kategori_lab d ON a.id_kategori_lab = d.id_kategori_lab\n" +
+                    "WHERE a.id_header_pemeriksaan = :id\n" +
+                    "ORDER BY b.id_periksa_lab, c.id_lab_detail ASC\n";
+
+            List<Objects[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idHeader)
+                    .list();
+
+            if (result.size() > 0) {
+                for (Object[] obj : result) {
+                    PeriksaLab lab = new PeriksaLab();
+                    lab.setIdHeaderPemeriksaan(obj[0] == null ? null : (String) obj[0]);
+                    lab.setKategoriLabName(obj[1] == null ? null : (String) obj[1]);
+                    lab.setIdPemeriksaan(obj[2] == null ? null : (String) obj[2]);
+                    lab.setNamaPemeriksaan(obj[3] == null ? null : (String) obj[3]);
+                    lab.setIdDetailPemeriksaan(obj[4] == null ? null : (String) obj[4]);
+                    lab.setNamaDetailPemeriksaan(obj[5] == null ? null : (String) obj[5]);
+                    lab.setIdPeriksaLab(obj[6] == null ? null : (String) obj[6]);
+                    lab.setIdPeriksaLabDetail(obj[7] == null ? null : (String) obj[7]);
+                    lab.setKeteranganAcuanL(obj[8] == null ? null : (String) obj[8]);
+                    lab.setKeteranganAcuanP(obj[9] == null ? null : (String) obj[9]);
+                    lab.setSatuan(obj[10] == null ? null : (String) obj[10]);
+                    lab.setHasil(obj[11] == null ? null : (String) obj[11]);
+                    lab.setKeteranganHasil(obj[12] == null ? null : (String) obj[12]);
+                    lab.setIsCatatan(cekDefultCatatan(obj[0].toString()));
+                    labList.add(lab);
+                }
+            }
+        }
+        return labList;
+    }
+
+    private String cekDefultCatatan(String id){
+        String res = "N";
+        if(id != null && !"".equalsIgnoreCase(id)){
+            String SQL = "SELECT \n" +
+                    "a.id_header_pemeriksaan,\n" +
+                    "b.id_pemeriksaan,\n" +
+                    "c.is_catatan\n" +
+                    "FROM it_simrs_header_pemeriksaan a\n" +
+                    "INNER JOIN it_simrs_periksa_lab b ON a.id_header_pemeriksaan = b.id_header_pemeriksaan\n" +
+                    "INNER JOIN im_simrs_lab c ON b.id_pemeriksaan = c.id_lab\n" +
+                    "WHERE a.id_header_pemeriksaan = :id";
+            List<Objects[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", id)
+                    .list();
+            if(result.size() > 0){
+                for (Object[] obj: result){
+                    if(obj[2] != null){
+                        if("Y".equalsIgnoreCase(obj[2].toString())){
+                            res = "Y";
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    public List<UploadHasilPemeriksaan> getListUploadHasilPemeriksaan(String id) {
+        List<UploadHasilPemeriksaan> list = new ArrayList<>();
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsUploadHasilPemeriksaanEntity.class);
+        criteria.add(Restrictions.eq("idHeaderPemeriksaan", id));
+        criteria.add(Restrictions.eq("flag", "Y"));
+        List<ItSimrsUploadHasilPemeriksaanEntity> listOfResult = criteria.list();
+        if(listOfResult.size() > 0){
+            for (ItSimrsUploadHasilPemeriksaanEntity entity: listOfResult){
+                UploadHasilPemeriksaan upload = new UploadHasilPemeriksaan();
+                upload.setUrlImg(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_PEMERIKSAAN+entity.getUrlImg());
+                list.add(upload);
+            }
+        }
+        return list;
     }
 }

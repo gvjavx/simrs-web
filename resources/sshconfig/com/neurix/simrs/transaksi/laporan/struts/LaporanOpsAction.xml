@@ -86,7 +86,7 @@
             </result>
 
             <result name="print_ply_unggulan" type="jasper">
-                <param name="location">/pages/report/com/neurix/akuntansi/laporanPelayananUnggulan.jasper</param>
+                <param name="location">/pages/report/com/neurix/simrs/laporanPelayananUnggulan.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>

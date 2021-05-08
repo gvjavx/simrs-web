@@ -311,7 +311,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Stok Tujuan</label>
+                        <label class="col-md-3" style="margin-top: 7px">Stok Gudang Farmasi</label>
                         <div class="col-md-2">
                             <label style="margin-top: 7px">Box</label>
                             <input class="form-control" readonly id="req_stok_box">
@@ -326,7 +326,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Stok Sendiri</label>
+                        <label class="col-md-3" style="margin-top: 7px">Stok Farmasi</label>
                         <div class="col-md-2">
                             <label style="margin-top: 7px">Box</label>
                             <input class="form-control" readonly id="req_stok_box_sendiri">
@@ -411,7 +411,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_request" onclick="saveAddRequest()"><i
-                        class="fa fa-arrow-right"></i> Request
+                        class="fa fa-check"></i> Request
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
                         id="load_request"><i
@@ -475,7 +475,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_req_detail" onclick="saveConfirm()"><i
-                        class="fa fa-arrow-right"></i> Konfirmasi
+                        class="fa fa-check"></i> Konfirmasi
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
                         id="load_req_detail"><i
@@ -558,7 +558,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_ret_detail" onclick="saveAddReture()"><i
-                        class="fa fa-arrow-right"></i> Reture
+                        class="fa fa-refresh"></i> Reture
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
                         id="load_ret_detail"><i

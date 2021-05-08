@@ -181,51 +181,63 @@ public class LiburBoImpl implements LiburBo {
         logger.info("[LiburBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
-
-            String liburId;
+            List<ImLiburEntity> liburList = new ArrayList();
             try {
-                // Generating ID, get from postgre sequence
-                liburId = liburDao.getNextLiburId();
+                liburList = liburDao.getLiburByDate(CommonUtil.convertTimestampToDate(bean.getTanggal()));
             } catch (HibernateException e) {
-                logger.error("[AlatBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
+                logger.error("[LiburBoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when getting data, please info to your admin..." + e.getMessage());
             }
 
-            // creating object entity serializable
-            ImLiburEntity imLiburEntity = new ImLiburEntity();
+            if (liburList.size() == 0) {
+                String liburId;
+                try {
+                    // Generating ID, get from postgre sequence
+                    liburId = liburDao.getNextLiburId();
+                } catch (HibernateException e) {
+                    logger.error("[LiburBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence Libur id, please info to your admin..." + e.getMessage());
+                }
 
-            imLiburEntity.setLiburId(liburId);
-            imLiburEntity.setLiburTahun(bean.getLiburTahun());
-            imLiburEntity.setTipeLiburId(bean.getTipeLiburId());
+                // creating object entity serializable
+                ImLiburEntity imLiburEntity = new ImLiburEntity();
 
-            try{
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                Date parsedDate = dateFormat.parse(bean.getStTanggal());
-                Timestamp timestamp = new Timestamp(parsedDate.getTime());
-                imLiburEntity.setTanggal(timestamp);
-            }catch (Exception e){
-                throw new GeneralBOException("Found problem when saving new data libur, please info to your admin..." + e.getMessage());
-            }
+                imLiburEntity.setLiburId(liburId);
+                imLiburEntity.setLiburTahun(bean.getLiburTahun());
+                imLiburEntity.setTipeLiburId(bean.getTipeLiburId());
 
-            imLiburEntity.setLiburKeterangan(bean.getLiburKeterangan());
+                try {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                    Date parsedDate = dateFormat.parse(bean.getStTanggal());
+                    Timestamp timestamp = new Timestamp(parsedDate.getTime());
+                    imLiburEntity.setTanggal(timestamp);
+                } catch (Exception e) {
+                    throw new GeneralBOException("Found problem when saving new data libur, please info to your admin..." + e.getMessage());
+                }
 
-            imLiburEntity.setFlag(bean.getFlag());
-            imLiburEntity.setAction(bean.getAction());
-            imLiburEntity.setCreatedWho(bean.getCreatedWho());
-            imLiburEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            imLiburEntity.setCreatedDate(bean.getCreatedDate());
-            imLiburEntity.setLastUpdate(bean.getLastUpdate());
+                imLiburEntity.setLiburKeterangan(bean.getLiburKeterangan());
 
-            try {
-                // insert into database
-                liburDao.addAndSave(imLiburEntity);
-            } catch (HibernateException e) {
-                logger.error("[AlatBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                imLiburEntity.setFlag(bean.getFlag());
+                imLiburEntity.setAction(bean.getAction());
+                imLiburEntity.setCreatedWho(bean.getCreatedWho());
+                imLiburEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imLiburEntity.setCreatedDate(bean.getCreatedDate());
+                imLiburEntity.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    // insert into database
+                    liburDao.addAndSave(imLiburEntity);
+                } catch (HibernateException e) {
+                    logger.error("[LiburBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data libur, please info to your admin..." + e.getMessage());
+                }
+            } else {
+                logger.error("[LiburBoImpl.saveAdd] Data pada tanggal tersebut sudah tersedia.");
+                throw new GeneralBOException("Data Libur pada tanggal tersebut sudah tersedia.");
             }
         }
 
-        logger.info("[AlatBoImpl.saveAdd] end process <<<");
+        logger.info("[LiburBoImpl.saveAdd] end process <<<");
         return null;
     }
 

@@ -105,7 +105,7 @@
         <action name="paging_displaytag_mappingPersenGaji"
                 class="com.neurix.hris.master.mappingpersengaji.action.MappingPersenGajiAction" method="paging">
             <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/simrs/master/ruangan/searchRuangan.jsp</result>
+            <result name="success">/pages/com/neurix/hris/master/mappingpersengaji/SearchMappingPersenGaji.jsp</result>
         </action>
 
     </package>

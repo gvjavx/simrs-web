@@ -14,15 +14,6 @@
         <property name="namaLab">
             <column name="nama_lab"/>
         </property>
-        <property name="idOperatorLab">
-            <column name="id_operator_lab"/>
-        </property>
-        <property name="idDokter">
-            <column name="id_dokter"/>
-        </property>
-        <property name="idKategoriLab">
-            <column name="id_kategori_lab"/>
-        </property>
         <property name="flag">
             <column name="flag"/>
         </property>
@@ -41,8 +32,11 @@
         <property name="lastUpdateWho">
             <column name="last_update_who"/>
         </property>
-        <property name="branchId">
-            <column name="branch_id"/>
+        <property name="isCatatan">
+            <column name="is_catatan"/>
+        </property>
+        <property name="isPaket">
+            <column name="is_paket"/>
         </property>
     </class>
 </hibernate-mapping>

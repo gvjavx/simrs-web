@@ -1,125 +1,19 @@
 package com.neurix.simrs.transaksi.periksalab.model;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Objects;
 
-public class ItSimrsPeriksaLabEntity implements Serializable {
-
+public class ItSimrsPeriksaLabEntity {
     private String idPeriksaLab;
-    private String idDetailCheckup;
-    private String idLab;
-    private Date tanggalMasukLab;
-    private Timestamp tanggalSelesaiPeriksa;
-    private String idDokterPengirim;
-    private String idDokter;
-    private String idPemeriksa;
+    private String idHeaderPemeriksaan;
+    private String idPemeriksaan;
+    private String namaPemeriksaan;
     private String flag;
     private String action;
-    private Timestamp createdDate;
     private String createdWho;
-    private Timestamp lastUpdate;
+    private Timestamp createdDate;
     private String lastUpdateWho;
-    private String statusPeriksa;
-    private String approveFlag;
-    private String keterangan;
-    private String urlImg;
-    private String ttdPengirim;
-    private String idKategoriLab;
-    private String ttdDokter;
-    private String ttdPetugas;
-    private String isPending;
-    private String isReading;
-
-    public String getIsReading() {
-        return isReading;
-    }
-
-    public void setIsReading(String isReading) {
-        this.isReading = isReading;
-    }
-
-    public String getIsPending() {
-        return isPending;
-    }
-
-    public void setIsPending(String isPending) {
-        this.isPending = isPending;
-    }
-
-    public String getTtdDokter() {
-        return ttdDokter;
-    }
-
-    public void setTtdDokter(String ttdDokter) {
-        this.ttdDokter = ttdDokter;
-    }
-
-    public String getTtdPetugas() {
-        return ttdPetugas;
-    }
-
-    public void setTtdPetugas(String ttdPetugas) {
-        this.ttdPetugas = ttdPetugas;
-    }
-
-    public String getIdKategoriLab() {
-        return idKategoriLab;
-    }
-
-    public void setIdKategoriLab(String idKategoriLab) {
-        this.idKategoriLab = idKategoriLab;
-    }
-
-    public String getTtdPengirim() {
-        return ttdPengirim;
-    }
-
-    public void setTtdPengirim(String ttdPengirim) {
-        this.ttdPengirim = ttdPengirim;
-    }
-
-    public String getUrlImg() {
-        return urlImg;
-    }
-
-    public void setUrlImg(String urlImg) {
-        this.urlImg = urlImg;
-    }
-
-    public String getKeterangan() {
-        return keterangan;
-    }
-
-    public void setKeterangan(String keterangan) {
-        this.keterangan = keterangan;
-    }
-
-
-    public String getApproveFlag() {
-        return approveFlag;
-    }
-
-    public void setApproveFlag(String approveFlag) {
-        this.approveFlag = approveFlag;
-    }
-
-    public String getIdLab() {
-        return idLab;
-    }
-
-    public void setIdLab(String idLab) {
-        this.idLab = idLab;
-    }
-
-    public String getStatusPeriksa() {
-        return statusPeriksa;
-    }
-
-    public void setStatusPeriksa(String statusPeriksa) {
-        this.statusPeriksa = statusPeriksa;
-    }
+    private Timestamp lastUpdate;
 
     public String getIdPeriksaLab() {
         return idPeriksaLab;
@@ -129,52 +23,28 @@ public class ItSimrsPeriksaLabEntity implements Serializable {
         this.idPeriksaLab = idPeriksaLab;
     }
 
-    public String getIdDetailCheckup() {
-        return idDetailCheckup;
+    public String getIdHeaderPemeriksaan() {
+        return idHeaderPemeriksaan;
     }
 
-    public void setIdDetailCheckup(String idDetailCheckup) {
-        this.idDetailCheckup = idDetailCheckup;
+    public void setIdHeaderPemeriksaan(String idHeaderPemeriksaan) {
+        this.idHeaderPemeriksaan = idHeaderPemeriksaan;
     }
 
-    public Date getTanggalMasukLab() {
-        return tanggalMasukLab;
+    public String getIdPemeriksaan() {
+        return idPemeriksaan;
     }
 
-    public void setTanggalMasukLab(Date tanggalMasukLab) {
-        this.tanggalMasukLab = tanggalMasukLab;
+    public void setIdPemeriksaan(String idPemeriksaan) {
+        this.idPemeriksaan = idPemeriksaan;
     }
 
-    public Timestamp getTanggalSelesaiPeriksa() {
-        return tanggalSelesaiPeriksa;
+    public String getNamaPemeriksaan() {
+        return namaPemeriksaan;
     }
 
-    public void setTanggalSelesaiPeriksa(Timestamp tanggalSelesaiPeriksa) {
-        this.tanggalSelesaiPeriksa = tanggalSelesaiPeriksa;
-    }
-
-    public String getIdDokterPengirim() {
-        return idDokterPengirim;
-    }
-
-    public void setIdDokterPengirim(String idDokterPengirim) {
-        this.idDokterPengirim = idDokterPengirim;
-    }
-
-    public String getIdDokter() {
-        return idDokter;
-    }
-
-    public void setIdDokter(String idDokter) {
-        this.idDokter = idDokter;
-    }
-
-    public String getIdPemeriksa() {
-        return idPemeriksa;
-    }
-
-    public void setIdPemeriksa(String idPemeriksa) {
-        this.idPemeriksa = idPemeriksa;
+    public void setNamaPemeriksaan(String namaPemeriksaan) {
+        this.namaPemeriksaan = namaPemeriksaan;
     }
 
     public String getFlag() {
@@ -193,14 +63,6 @@ public class ItSimrsPeriksaLabEntity implements Serializable {
         this.action = action;
     }
 
-    public Timestamp getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
-    }
-
     public String getCreatedWho() {
         return createdWho;
     }
@@ -209,12 +71,12 @@ public class ItSimrsPeriksaLabEntity implements Serializable {
         this.createdWho = createdWho;
     }
 
-    public Timestamp getLastUpdate() {
-        return lastUpdate;
+    public Timestamp getCreatedDate() {
+        return createdDate;
     }
 
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
+    public void setCreatedDate(Timestamp createdDate) {
+        this.createdDate = createdDate;
     }
 
     public String getLastUpdateWho() {
@@ -223,5 +85,13 @@ public class ItSimrsPeriksaLabEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 }

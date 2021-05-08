@@ -60,14 +60,14 @@ function dataForm(jenis){
     data.push({
         'jenis':'catatan',
         'parameter': '9. Masalah dalam kehamilan /persalinan ini',
-        'jawaban':'Gawat Darurat|Perdarahan|RDK|Infeksi|PMTCT',
+        'jawaban':'Gawat Darurat|Perdarahan|RDK|Infeksi|PMTCT|Tidak Ada',
         'class':'',
         'keterangan':'c'
     });
 
     data.push({
         'jenis':'kala1',
-        'parameter': '10. Partoraf melewati garis waspada',
+        'parameter': '10. Partograf melewati garis waspada',
         'jawaban':'Ya|Tidak',
         'class':'',
         'keterangan':'r'
@@ -146,7 +146,7 @@ function dataForm(jenis){
     });
     data.push({
         'jenis':'kala3',
-        'parameter': '21. Pemberian Oksitosin (2x)',
+        'parameter': '21. Pemberian Oksitosin',
         'jawaban':'Ya|Tidak',
         'class':'',
         'keterangan':'r'
@@ -310,7 +310,7 @@ function dataForm(jenis){
     });
     data.push({
         'jenis':'bayi_baru_lahir',
-        'parameter': 'Hipotensi, Tindakan',
+        'parameter': 'Hipotermi, Tindakan',
         'jawaban':'',
         'class':'',
         'keterangan':'t'

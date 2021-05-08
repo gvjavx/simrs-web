@@ -9,6 +9,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaLabAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/NotifikasiAdminAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/UserAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/KonsultasiGiziAction.js"/>'></script>
 <script type="text/javascript">
 
     function loadDataLogin() {
@@ -296,6 +297,13 @@
         }, 30000);
     }
 
+    function pushNotifGizi(){
+        cekNotifKonsultasiGizi();
+        setInterval(function () {
+            cekNotifKonsultasiGizi();
+        }, 30000);
+    }
+
     function cekNotifResep(){
         TransaksiObatAction.pushNotifResep(function (res) {
             var listResep = "";
@@ -317,8 +325,6 @@
                 if(res.length > parseInt(cekCount)){
                     $('#notif_sound').get(0).autoplay = true;
                     $('#notif_sound').get(0).load();
-                    // $('#notif_sound').get(0).muted = false;
-                    // console.log($('#notif_sound').get(0).preload);
                 }
             }else{
                 $('#inner2').html(listResep);
@@ -349,8 +355,6 @@
                 if(res.length > parseInt(cekCount)){
                     $('#notif_sound').get(0).autoplay = true;
                     $('#notif_sound').get(0).load();
-                    // $('#notif_sound').get(0).muted = false;
-                    // console.log($('#notif_sound').get(0).preload);
                 }
             }else{
                 $('#inner2').html(listResep);
@@ -371,15 +375,15 @@
                 $.each(res, function (i, item) {
                     var href = "";
                     if(item.kategori == "lab"){
-                        href = '/periksalab/add_periksalab.action?id='+item.idDetailCheckup+'&lab='+item.idPeriksaLab+'&ket=';
+                        href = '/periksalab/add_periksalab.action?id='+item.idDetailCheckup+'&lab='+item.idHeaderPemeriksaan+'&ket=';
                     }
                     if(item.kategori == "radiologi"){
-                        href = '/radiologi/add_radiologi.action?id='+item.idDetailCheckup+'&lab='+item.idPeriksaLab+'&ket=';
+                        href = '/radiologi/add_radiologi.action?id='+item.idDetailCheckup+'&lab='+item.idHeaderPemeriksaan+'&ket=';
                     }
                     if(item.kategori != null && item.kategori != '') {
                         listLab += '<li>' +
                             '<a href="<%= request.getContextPath() %>'+href+'">' +
-                            '<i class="fa fa-info-circle text-green"></i> <small style="margin-left: -8px">'+' ['+item.idPeriksaLab +']'+' '+item.namaPasien+'</small><br>' +
+                            '<i class="fa fa-info-circle text-green"></i> <small style="margin-left: -8px">'+' ['+item.idHeaderPemeriksaan +']'+' '+item.namaPasien+'</small><br>' +
                             '</a>' +
                             '</li>';
                     }
@@ -390,8 +394,6 @@
                 if(res.length > parseInt(cekCount)){
                     $('#notif_sound').get(0).autoplay = true;
                     $('#notif_sound').get(0).load();
-                    // $('#notif_sound').get(0).muted = false;
-                    // console.log($('#notif_sound').get(0).preload);
                 }
             }else{
                 $('#inner2').html(listLab);
@@ -399,6 +401,42 @@
                 $('#count3').html('');
             }
         });
+    }
+
+    function cekNotifKonsultasiGizi(){
+        KonsultasiGiziAction.pushNotif(function (res) {
+            var listKonsul = "";
+            var cekCount = $('#count2').text();
+            if(cekCount == ''){
+                cekCount = 0;
+            }
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    listKonsul += '<li>' +
+                        '<a style="cursor: pointer" onclick="choiceGizi(\''+item.idKonsultasiGizi+'\', \''+item.noCheckup+'\')">' +
+                        '<i class="fa fa-info-circle text-green"></i> <small style="margin-left: -8px">'+' ['+item.idPasien +']'+' '+item.nama+'</small><br>' +
+                        '</a>' +
+                        '</li>';
+                });
+                $('#inner2').html(listKonsul);
+                $('#count2').html(res.length);
+                $('#count3').html(res.length);
+                if(res.length > parseInt(cekCount)){
+                    $('#notif_sound').get(0).autoplay = true;
+                    $('#notif_sound').get(0).load();
+                }
+            }else{
+                $('#inner2').html(listKonsul);
+                $('#count2').html('');
+                $('#count3').html('');
+            }
+        });
+    }
+
+    function choiceGizi(idKonsulGizi, noCheckup) {
+        var form = { "konsultasiGizi.idKonsultasiGizi":idKonsulGizi, "konsultasiGizi.noCheckup":noCheckup };
+        var host = "<%= request.getContextPath() %>/konsultasigizi/search_konsultasigizi.action";
+        postAtas(host, form);
     }
 
     function cekRole(){
@@ -418,6 +456,9 @@
             if(res == "ADMIN RADIOLOGI"){
                 pushNotifLab('radiologi');
             }
+            if(res == "ADMIN GIZI"){
+                cekNotifKonsultasiGizi();
+            }
         })
     }
 
@@ -432,7 +473,6 @@
         loadPengajuanBiaya();
         loadRk();
         cekRole();
-        //cekNotifTele();
 
         $('.pemberitahuan').on('click', function() {
             var my = $(this).data('id');

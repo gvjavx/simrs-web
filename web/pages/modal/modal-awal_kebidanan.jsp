@@ -162,7 +162,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input onchange="setHPL('rb12', this.id, 'rb9')" class="form-control ptr-tgl" id="rb11" placeholder="HTPH" readonly style="cursor: pointer">
+                                    <input oninput="setHPL('rb12', this.id, 'rb9')" class="form-control ptr-tgl" id="rb11" placeholder="HTPH" readonly style="cursor: pointer">
                                 </div>
                             </div>
                         </div>

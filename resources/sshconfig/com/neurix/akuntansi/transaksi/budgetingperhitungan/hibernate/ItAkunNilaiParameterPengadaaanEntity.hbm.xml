@@ -3,7 +3,7 @@
         version="2.0">
 
     <entity class="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ItAkunNilaiParameterPengadaaanEntity">
-        <table name="it_akun_nilai_parameter_pengadaaan" schema="public"/>
+        <table name="it_akun_nilai_parameter_pengadaan" schema="public"/>
         <attributes>
             <id name="id">
                 <column name="id"/>

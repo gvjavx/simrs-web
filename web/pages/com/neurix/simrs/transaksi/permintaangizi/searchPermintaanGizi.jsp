@@ -11,16 +11,33 @@
     <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/radio_checkbox.css"/>">
     <script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanGiziAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/KeperawatanRawatJalanAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenGiziAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenGiziAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenRawatInapAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CatatanTerintegrasiAction.js"/>'></script>
+
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatjalan.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/nyeri.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/resikojatuh.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/gizi.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatinap.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/cppt.js"/>'></script>
 
     <script type='text/javascript'>
 
         $(document).ready(function () {
             $('#exampleGizi').dataTable({
                 "columnDefs": [
-                    {"orderable": false, "targets": 6}
+                    {"orderable": false, "targets": 9}
                 ]
             });
             $('#permintaan_gizi').addClass('active');
+            setSonde('is_sonde', '<s:property value="rawatInap.isSonde"/>');
+            <%--setTipe('<s:property value="rawatInap.tipePelayanan"/>');--%>
         });
 
     </script>
@@ -55,6 +72,16 @@
                         <div class="form-group">
                             <s:form id="giziForm" method="post" namespace="/ordergizi" action="search_ordergizi.action"
                                     theme="simple" cssClass="form-horizontal">
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Tipe Pelayanan</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:select list="#{'RI':'Rawat Inap'}" onchange="setTipe(this.value)"--%>
+                                                  <%--id="tipe_pelayanan" name="rawatInap.tipePelayanan"--%>
+                                                  <%--headerKey="RJ" headerValue="Rawat Jalan"--%>
+                                                  <%--cssClass="form-control select2"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <s:hidden name="rawatInap.tipePelayanan" value="RI"></s:hidden>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">No RM</label>
                                     <div class="col-sm-4">
@@ -72,40 +99,54 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="control-label col-sm-4" style="margin-top: 5px">Diet Sonde ?</label>
+                                    <div class="col-sm-4">
+                                        <div class="form-check" style="margin-top: 10px">
+                                            <input type="checkbox" onclick="setSonde('is_sonde', 'C')"
+                                                   id="is_sonde"
+                                                   value="Y">
+                                            <label for="is_sonde"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <s:hidden name="rawatInap.isSonde" id="val_sonde"></s:hidden>
+                                <div class="form-group" id="form_waktu">
                                     <label class="control-label col-sm-4">Waktu</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'siang':'Siang','malam':'Malam'}" cssStyle="margin-top: 7px"
-                                                  id="status" name="rawatInap.keterangan"
-                                                  headerKey="pagi" headerValue="Pagi"
+                                        <s:select list="#{'pagi':'Pagi','siang':'Siang','malam':'Malam'}" cssStyle="margin-top: 7px"
+                                                  id="status" name="rawatInap.waktu"
+                                                  headerKey="" headerValue="All"
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Kelas Ruangan</label>
-                                    <div class="col-sm-4">
-                                        <s:action id="initComboKelas" namespace="/checkupdetail"
-                                                  name="getListComboKelasRuangan_checkupdetail"/>
-                                        <s:select cssStyle="margin-top: 7px"
-                                                  onchange="$(this).css('border',''); listSelectRuangan(this.value)"
-                                                  list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"
-                                                  name="rawatInap.idKelas"
-                                                  listKey="idKelasRuangan"
-                                                  listValue="namaKelasRuangan"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control select2"/>
+                                <div style="display: block" id="form_ri">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4">Kelas Ruangan</label>
+                                        <div class="col-sm-4">
+                                            <s:action id="initComboKelas" namespace="/checkupdetail"
+                                                      name="getListComboKelasRuangan_checkupdetail"/>
+                                            <s:select cssStyle="margin-top: 7px"
+                                                      onchange="$(this).css('border',''); listSelectRuangan(this.value)"
+                                                      list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"
+                                                      name="rawatInap.idKelas"
+                                                      listKey="idKelasRuangan"
+                                                      listValue="namaKelasRuangan"
+                                                      headerKey="" headerValue="[Select one]"
+                                                      cssClass="form-control select2"/>
+                                        </div>
+                                        <div class="col-sm-3" style="display: none;" id="load_ruang">
+                                            <img border="0" src="<s:url value="/pages/images/spinner.gif"/>"
+                                                 style="cursor: pointer; width: 45px; height: 45px"><b
+                                                style="color: #00a157;">Sedang diproses...</b></div>
                                     </div>
-                                    <div class="col-sm-3" style="display: none;" id="load_ruang">
-                                        <img border="0" src="<s:url value="/pages/images/spinner.gif"/>"
-                                             style="cursor: pointer; width: 45px; height: 45px"><b
-                                            style="color: #00a157;">Sedang diproses...</b></div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Ruangan</label>
-                                    <div class="col-sm-4">
-                                        <select id="ruangan_ruang" style="margin-top: 7px" class="form-control select2"
-                                                id="nama_ruangan" name="rawatInap.idRuang">
-                                            <option value=''>[Select One]</option>
-                                        </select>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4">Ruangan</label>
+                                        <div class="col-sm-4">
+                                            <select id="ruangan_ruang" style="margin-top: 7px" class="form-control select2"
+                                                    id="nama_ruangan" name="rawatInap.idRuang">
+                                                <option value=''>[Select One]</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -214,18 +255,24 @@
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Permintaan Gizi</h3>
+                        <a target="_blank" href="printListGizi_ordergizi.action">
+                            <button class="btn btn-primary pull-right"><i class="fa fa-print"></i> Print</button>
+                        </a>
                     </div>
                     <div class="box-body">
-                        <table id="exampleGizi" class="table table-bordered table-striped" style="font-size: 14px">
+                        <table id="exampleGizi" class="table table-bordered table-striped" style="font-size: 12px">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>No RM</td>
                                 <td>Nama</td>
                                 <td>Ruangan</td>
                                 <td>Jenis Diet</td>
+                                <td>Bentuk Diet</td>
                                 <td>Alergi</td>
+                                <td>Diagnosa</td>
+                                <td>Waktu</td>
                                 <td width="15%">Status</td>
-                                <td align="center">
+                                <td align="center" width="9%">
                                     <div class="form-check">
                                         <input type="checkbox" id="select_all" value="all"
                                                onclick="setAll(this.id, 'id_order_gizi'); setSave('id_order_gizi')">
@@ -239,32 +286,121 @@
                                 <tr>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="namaRangan"/> [<s:property value="noRuangan"/>]</td>
+                                    <td>
+                                        <s:if test='#row.noRuangan != "" && #row.noRuangan != null'>
+                                            [<s:property value="noRuangan"/>] <s:property value="namaRangan"/>
+                                        </s:if>
+                                        <s:else>
+                                            <s:property value="namaRangan"/>
+                                        </s:else>
+                                    </td>
                                     <td><s:property value="jenisDiet"/></td>
+                                    <td><s:property value="bentukGizi"/></td>
                                     <td>
                                         <s:property value="alergi"/>
                                         <input type="hidden" id="no_checkup_<s:property value="idOrderGizi"/>" value="<s:property value="noCheckup"/>">
                                     </td>
+                                    <td><s:property value="namaDiagnosa"/></td>
                                     <td>
-                                        <s:if test='#row.approveFlag == "Y"'>
-                                            <span class="span-success">telah dikonfirmasi</span>
+                                        <script>
+                                            var waktu = '<s:property value="waktu"/>';
+                                            document.write(waktu.toUpperCase());
+                                        </script>
+                                    </td>
+                                    <td>
+                                        <s:if test='#row.diterimaFlag == "R"'>
+                                            <span class="span-danger">dibatalkan</span>
                                         </s:if>
                                         <s:else>
-                                            <span class="span-warning">menunggu konfirmasi</span>
+                                            <s:if test='#row.approveFlag == "Y"'>
+                                                <span class="span-success">telah dikonfirmasi</span>
+                                            </s:if>
+                                            <s:elseif test='#row.approveFlag == "N"'>
+                                                <span class="span-danger">ditolak</span>
+                                            </s:elseif>
+                                            <s:else>
+                                                <span class="span-warning">menunggu konfirmasi</span>
+                                            </s:else>
                                         </s:else>
                                     </td>
                                     <td align="center">
-                                        <s:if test='#row.approveFlag == "Y"'>
-                                            <img class="hvr-grow" onclick="printBarcodeGizi('<s:property value="noCheckup"/>', '<s:property value="idOrderGizi"/>')" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>">
+                                        <s:if test='#row.diterimaFlag == "R"'>
+                                            <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
+                                                 src="<s:url value="/pages/images/icons8-search-25.png"/>"
+                                                 style="cursor: pointer;"
+                                                 onclick="viewHistory('<s:property value="idPasien"/>',
+                                                         '<s:property value="namaPasien"/>',
+                                                         '<s:property value="jenisKelamin"/>',
+                                                         '<s:property value="umur"/>',
+                                                         '<s:property value="namaRangan"/>',
+                                                         '<s:property value="jenisDiet"/>',
+                                                         '<s:property value="bentukGizi"/>',
+                                                         '<s:property value="alergi"/>',
+                                                         '<s:property value="namaDiagnosa"/>',
+                                                         '<s:property value="idDetailCheckup"/>',
+                                                         '<s:property value="noCheckup"/>'
+                                                         )">
                                         </s:if>
                                         <s:else>
-                                            <div class="form-check">
-                                                <input onclick="setSave('id_order_gizi')" type="checkbox"
-                                                       name="id_order_gizi"
-                                                       id="id_order_gizi_<s:property value="idOrderGizi"/>"
-                                                       value="<s:property value="idOrderGizi"/>">
-                                                <label for="id_order_gizi_<s:property value="idOrderGizi"/>"></label>
-                                            </div>
+                                            <s:if test='#row.approveFlag == "Y"'>
+                                                <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
+                                                     src="<s:url value="/pages/images/icons8-search-25.png"/>"
+                                                     style="cursor: pointer;"
+                                                     onclick="viewHistory('<s:property value="idPasien"/>',
+                                                             '<s:property value="namaPasien"/>',
+                                                             '<s:property value="jenisKelamin"/>',
+                                                             '<s:property value="umur"/>',
+                                                             '<s:property value="namaRangan"/>',
+                                                             '<s:property value="jenisDiet"/>',
+                                                             '<s:property value="bentukGizi"/>',
+                                                             '<s:property value="alergi"/>',
+                                                             '<s:property value="namaDiagnosa"/>',
+                                                             '<s:property value="idDetailCheckup"/>',
+                                                             '<s:property value="noCheckup"/>'
+                                                             )">
+                                                <img class="hvr-grow" onclick="printBarcodeGizi('<s:property value="noCheckup"/>', '<s:property value="idOrderGizi"/>')" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>">
+                                            </s:if>
+                                            <s:elseif test='#row.approveFlag == "N"'>
+                                                <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
+                                                     src="<s:url value="/pages/images/icons8-search-25.png"/>"
+                                                     style="cursor: pointer;"
+                                                     onclick="viewHistory('<s:property value="idPasien"/>',
+                                                             '<s:property value="namaPasien"/>',
+                                                             '<s:property value="jenisKelamin"/>',
+                                                             '<s:property value="umur"/>',
+                                                             '<s:property value="namaRangan"/>',
+                                                             '<s:property value="jenisDiet"/>',
+                                                             '<s:property value="bentukGizi"/>',
+                                                             '<s:property value="alergi"/>',
+                                                             '<s:property value="namaDiagnosa"/>',
+                                                             '<s:property value="idDetailCheckup"/>',
+                                                             '<s:property value="noCheckup"/>'
+                                                             )">
+                                            </s:elseif>
+                                            <s:else>
+                                                <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
+                                                     src="<s:url value="/pages/images/icons8-search-25.png"/>"
+                                                     style="cursor: pointer;"
+                                                     onclick="viewHistory('<s:property value="idPasien"/>',
+                                                             '<s:property value="namaPasien"/>',
+                                                             '<s:property value="jenisKelamin"/>',
+                                                             '<s:property value="umur"/>',
+                                                             '<s:property value="namaRangan"/>',
+                                                             '<s:property value="jenisDiet"/>',
+                                                             '<s:property value="bentukGizi"/>',
+                                                             '<s:property value="alergi"/>',
+                                                             '<s:property value="namaDiagnosa"/>',
+                                                             '<s:property value="idDetailCheckup"/>',
+                                                             '<s:property value="noCheckup"/>'
+                                                             )">
+                                                <div class="form-check">
+                                                    <input onclick="setSave('id_order_gizi')" type="checkbox"
+                                                           name="id_order_gizi"
+                                                           id="id_order_gizi_<s:property value="idOrderGizi"/>"
+                                                           value="<s:property value="idOrderGizi"/>">
+                                                    <label for="id_order_gizi_<s:property value="idOrderGizi"/>"></label>
+                                                </div>
+                                            </s:else>
                                         </s:else>
                                     </td>
                                 </tr>
@@ -371,8 +507,208 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-history">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> All History Penunjang Medis</span>
+                </h4>
+            </div>
+            <div class="modal-body" style="height: 450px;overflow-y: scroll;">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-striped" style="font-size: 12px">
+                                <tr>
+                                    <td width="30%">NO RM</td>
+                                    <td><span id="det_no_rm"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Nama</td>
+                                    <td><span id="det_nama"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Jenis Kelamin</td>
+                                    <td><span id="det_jk"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Umur</td>
+                                    <td><span id="det_umur"></span></td>
+                                </tr>
+                                <tr>
+                                    <td >Ruangan</td>
+                                    <td><span id="det_ruangan"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table table-striped" style="font-size: 12px">
+                                <tr>
+                                    <td width="30%">Jenis Diet</td>
+                                    <td><span id="det_jenis_diet"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Bentuk Diet</td>
+                                    <td><span id="det_bentuk_diet"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Alergi</td>
+                                    <td><span id="det_alergi"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Diagnosa</td>
+                                    <td><span id="det_diagnosa"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="btn-group dropdown" style="margin-top: -20px">
+                                <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen
+                                </button>
+                                <button id="btn_ases" type="button" class="btn btn-primary dropdown-toggle"
+                                        data-toggle="dropdown" style="height: 34px">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu" id="asesmen_rj">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <table class="table table-bordered" style="font-size: 12px; margin-top: 20px">
+                        <thead>
+                        <tr style="font-weight: bold">
+                            <td width="30%">Pelayanan</td>
+                            <td width="15%">Waktu</td>
+                            <td>Keterangan</td>
+                        </tr>
+                        </thead>
+                        <tbody id="body_history">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-lab_luar">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="title_lab_luar"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img id="img_lab_luar" style="width: 100%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-temp"></div>
+
+<div class="modal fade" id="modal-hasil_lab">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-image"></i> <span
+                        id="title_hasil_lab"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="carousel-hasil_lab" class="carousel slide">
+                                <ol class="carousel-indicators" id="li_hasil_lab">
+
+                                </ol>
+                                <div class="carousel-inner" id="item_hasil_lab">
+
+                                </div>
+                                <a class="left carousel-control" href="#carousel-hasil_lab" data-slide="prev">
+                                    <span class="fa fa-angle-left"></span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel-hasil_lab" data-slide="next">
+                                    <span class="fa fa-angle-right"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-confirm-rm">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Konfirmasi
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-center" id="tanya"></h4>
+                <h4 class="text-center" id="print_form"></h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Tidak
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con_rm"><i class="fa fa-check"></i> Ya            </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
+
+    var idDetailCheckup = "";
+    var contextPath = '<%= request.getContextPath() %>';
+    var isReadRM = false;
+    var noCheckup = "";
+    var umur = "";
+    var namaRuanganPasien = "";
+    var tempBerat = "";
+    var tempTinggi = "";
+    var tempTensi = "";
+    var tempSuhu = "";
+    var tempNadi = "";
+    var tempRr = "";
+    var tempBerat = "";
+    var tempTinggi = "";
+    var tempAnmnesa = "";
+    var idPasien = "";
+    var tempidRm = "";
 
     function listOrderGizi(idRawatInap, noCheckup) {
         $('#modal-detail-pasien').modal({show: true, backdrop: 'static'});
@@ -594,6 +930,7 @@
                 PermintaanGiziAction.updateGizi(json, {
                     callback: function (res) {
                         if(res.status == "success"){
+                            $('#modal-not-approve').modal('hide');
                             $('#load_not_approve').hide();
                             $('#save_not_approve').show();
                             $('#info_dialog').dialog('open');
@@ -628,6 +965,294 @@
             });
         }
     }
+
+    function setTipe(val){
+        if("RI" == val){
+            $('#form_ri').show();
+        }else{
+            $('#form_ri').hide();
+        }
+    }
+
+    function viewHistory(idPas, namaPasien, jenisKelamin, um, ruangan, jenisDiet, betukDiet, alergi, diagnosa, iddetail, nocheckup) {
+        if(!cekSession()){
+            $('#btn_ases').attr('onclick', 'getListRekamMedis(\'gizi\',\'\',\''+iddetail+'\')');
+            idDetailCheckup = iddetail;
+            umur = um;
+            idPasien = idPas;
+            noCheckup = nocheckup;
+            $('#label_pasien').text(namaPasien);
+            $('#modal-history').modal({show: true, backdrop: 'static', keyboard: false});
+            var table = "";
+            $('#det_no_rm').html(idPas);
+            $('#det_nama').html(namaPasien);
+            $('#det_jk').html(jenisKelamin);
+            $('#det_umur').html(um);
+            $('#det_ruangan').html(ruangan);
+            $('#det_jenis_diet').html(jenisDiet);
+            $('#det_bentuk_diet').html(betukDiet);
+            $('#det_alergi').html(alergi);
+            $('#det_diagnosa').html(diagnosa);
+            PeriksaLabAction.getListHistoryLabRadiologi(idPas, function (res) {
+                if (res.length > 0) {
+                    $.each(res, function (i, item) {
+                        var btn = "";
+                        var icon = "";
+                        var tele = "";
+                        var keteranganTindakan = item.keterangan;
+                        if("lab" == item.keterangan){
+                            keteranganTindakan = "laboratorium";
+                        }
+
+                        var json = "";
+                        var btn2 = "";
+                        if(item.uploadDalam.length > 0){
+                            json = JSON.stringify(item.uploadDalam);
+                        }
+
+                        if ("laboratorium" == keteranganTindakan || "radiologi" == keteranganTindakan) {
+                            if ("laboratorium" == keteranganTindakan || "radiologi" == keteranganTindakan) {
+                                if ("Y" == item.isPeriksaLuar) {
+                                    btn = '<img onclick="showHasil(\'' + item.idPeriksaLab + '\', \'' + item.kategoriLabName + '\')" border="0" class="hvr-grow" src="' + contextPathHeader + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
+                                } else {
+                                    btn = '<img class="hvr-grow" id="btn_' + item.idPeriksaLab + '" \n' +
+                                        'onclick="detailTindakan(\'' + item.idPeriksaLab + '\',\'' + item.idPeriksaLab + '\',\'' + keteranganTindakan + '\')"\n' +
+                                        'src="' + contextPathHeader + '/pages/images/icons8-plus-25.png">';
+                                    if(json != ''){
+                                        btn2 = '<img onclick="showHasil(\'' + item.idPeriksaLab + '\', \'' + item.kategoriLabName + '\')" border="0" class="hvr-grow" src="' + contextPathHeader + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
+                                    }
+                                }
+                            }
+                        }
+
+                        var temp = '<b>'+ cekDataNull(item.idDetailCheckup) +
+                        '<p>' + cekDataNull(item.namaPelayanan) + '</p></b>';
+                        table += '<tr id="row_' + item.idPeriksaLab + '">' +
+                            '<td>' + temp +
+                            '<textarea style="display: none" id="id_id' + item.idPeriksaLab + '">' + json + '</textarea>' +
+                            '</td>' +
+                            '<td>' + converterDateTime(item.createdDate) + '</td>' +
+                            '<td>' + cekDataNull(item.kategoriLabName) + ' <div class="pull-right">' + btn + btn2 + '</div></td>' +
+                            '<tr>';
+                    });
+                    $('#body_history').html(table);
+                }
+            });
+        }
+    }
+
+    function detailTindakan(id, idTindakan, keterangan) {
+        if(!cekSession()){
+            if (id && idTindakan && keterangan != '') {
+                var head = "";
+                var body = "";
+                CheckupAction.getListDetailHistoryPasien(idTindakan, keterangan, function (res) {
+                    if (res.length > 0) {
+                        $.each(res, function (i, item) {
+                            if (keterangan == "radiologi") {
+                                body += '<tr>' +
+                                    '<td width="40%">' + cekDataNull(item.namaDetailLab) + '</td>' +
+                                    '<td><div style="margin-left: 25px">' + cekDataNull(item.kesimpulan) + '</div></td>' +
+                                    '</tr>';
+                            }
+                            if (keterangan == "laboratorium") {
+                                body += '<tr>' +
+                                    '<td>' + cekDataNull(item.namaDetailLab) + '</td>' +
+                                    '<td>' + cekDataNull(item.kesimpulan) + '</td>' +
+                                    '<td>' + cekDataNull(item.acuan) + '</td>' +
+                                    '<td>' + cekDataNull(item.satuan) + '</td>' +
+                                    '<td>' + cekDataNull(item.keterangan) + '</td>' +
+                                    '</tr>';
+                            }
+                        });
+                    }
+
+                    if (keterangan == "radiologi") {
+                        head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
+                            '<td width="40%">Pemeriksaan</td>' +
+                            '<td>Hasil</td>' +
+                            '</tr>';
+                    }
+                    if (keterangan == "laboratorium") {
+                        head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
+                            '<td>Pemeriksaan</td>' +
+                            '<td>Hasil</td>' +
+                            '<td>Nilai Normal</td>' +
+                            '<td>Satuan</td>' +
+                            '<td>Keterangan</td>' +
+                            '</tr>';
+                    }
+
+                    var table = '<table style="font-size: 12px" class="table table-bordered">' +
+                        '<thead>' + head + '</thead>' +
+                        '<tbody>' + body + '</tbody>' +
+                        '</table>';
+
+                    var newRow = $('<tr id="del_' + id + '"><td colspan="6">' + table + '</td></tr>');
+                    newRow.insertAfter($('table').find('#row_' + id));
+                    var url = contextPathHeader + '/pages/images/minus-allnew.png';
+                    $('#btn_' + id).attr('src', url);
+                    $('#btn_' + id).attr('onclick', 'delDetail(\'' + id + '\',\'' + idTindakan + '\', \'' + keterangan + '\')');
+                });
+            }
+        }
+    }
+
+    function delDetail(id, idTindakan, keterangan) {
+        $('#del_' + id).remove();
+        var url = contextPathHeader + '/pages/images/icons8-plus-25.png';
+        $('#btn_' + id).attr('src', url);
+        $('#btn_' + id).attr('onclick', 'detailTindakan(\'' + id + '\', \'' + idTindakan + '\', \'' + keterangan + '\')');
+    }
+
+    function cekDataNull(item) {
+        var data = "";
+        if (item != null && item != '') {
+            data = item;
+        }
+        return data;
+    }
+
+    function showHasil(id, nama) {
+        var data = $('#id_id' +id).val();
+        $('#item_hasil_lab').html('');
+        $('#li_hasil_lab').html('');
+        if (data != null && data != '') {
+            var result = JSON.parse(data);
+            $('#title_hasil_lab').html(nama);
+            if (result.length > 0) {
+                var set = '';
+                var li = '';
+                $.each(result, function (i, item) {
+                    var cla = 'class="item"';
+                    var claLi = '';
+                    if (i == 0) {
+                        cla = 'class="item active"';
+                        claLi = 'class="active"';
+                    }
+                    var x = item.urlImg;
+                    var tipe = x.split('.').pop();
+                    if("pdf" == tipe){
+                        set += '<div ' + cla + '>\n' +
+                            '<embed src="'+item.urlImg+'" style="width: 100%; height: 70%"/>'+
+                            '</div>';
+                    }else{
+                        set += '<div ' + cla + '>\n' +
+                            '<img src="' + item.urlImg + '" style="width: 100%">\n' +
+                            '</div>';
+                    }
+                    li += '<li data-target="#carousel-hasil_lab" data-slide-to="' + i + '" ' + claLi + '></li>';
+                });
+                $('#item_hasil_lab').html(set);
+                $('#li_hasil_lab').html(li);
+            }
+            $('#modal-hasil_lab').modal({show: true, backdrop: 'static'});
+        }
+    }
+
+    function loadModalRM(jenis, method, parameter, idRM, flag, flagHide) {
+        var context = contextPath + '/pages/modal/modal-default.jsp';
+        if (jenis != "") {
+            context = contextPath + '/pages/modal/modal-'+jenis+'.jsp';
+        }
+        $('#modal-temp').load(context, function (res, status, xhr) {
+            if(status == "success"){
+                var func = new Function(method+'(\''+parameter+'\', \''+idRM+'\', \''+flag+'\', \''+flagHide+'\')');
+                func();
+            }
+        });
+    }
+
+    function getListRekamMedis(tipePelayanan, jenis, id) {
+        var li = "";
+        var jenisRm = "";
+        if (jenis == "igd") {
+            if (umur >= 0 && umur <= 17) {
+                jenisRm = 'ugd_anak';
+            } else if (umur >= 18 && umur <= 55) {
+                jenisRm = 'ugd_dewasa';
+            } else if (umur > 56) {
+                jenisRm = 'ugd_geriatri';
+            }
+        } else {
+            jenisRm = jenis;
+        }
+        CheckupAction.getListRekammedisPasien(tipePelayanan, jenisRm, id, function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    var cek = "";
+                    var tgl = "";
+                    var icons = '<i class="fa fa-file-o"></i>';
+                    var icons2 = '<i class="fa fa-print"></i>';
+                    var tol = "";
+                    var tolText = "";
+                    var labelTerisi = "";
+                    var constan = 0;
+                    var terIsi = 0;
+                    var labelPrint = "";
+                    var terIsiPrint = "";
+                    var enter = '';
+
+                    if (item.jumlahKategori != null) {
+                        constan = item.jumlahKategori;
+                    }
+                    if (item.terisi != null && item.terisi != '') {
+                        terIsi = item.terisi;
+                        terIsiPrint = item.terisi;
+                    }
+
+                    if (constan == terIsi || parseInt(terIsi) > parseInt(constan)) {
+                        var conver = "";
+                        if (item.createdDate != null) {
+                            conver = converterDate(new Date(item.createdDate));
+                            tgl = '<label class="label label-success">' + conver + '</label>';
+                            tol = 'class="box-rm"';
+                            tolText = '<span class="box-rmtext">Tanggal mengisi ' + conver + '</span>';
+                        }
+                        icons = '<i class="fa fa-check" style="color: #449d44"></i>';
+                        icons2 = '<i class="fa fa-check" style="color: #449d44"></i>';
+                        enter = '<br>';
+                    }
+
+                    labelTerisi = '<span style="color: #367fa9; font-weight: bold">' + terIsi + '/' + constan + '</span>';
+
+                    if (item.keterangan == 'form') {
+                        li += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\', \'gizi\')">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'+enter;
+                    } else if (item.keterangan == "surat") {
+                        li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>'+enter;
+                    }
+                });
+                $('#asesmen_rj').html(li);
+            }
+        });
+    }
+
+    function setSonde(id, isSonde){
+        if("C" == isSonde){
+            if($('#'+id).is(':checked')){
+                $('#status').attr('disabled', true);
+                $('#form_waktu').hide();
+                $('#val_sonde').val('Y');
+            }else{
+                $('#status').attr('disabled', false);
+                $('#form_waktu').show();
+                $('#val_sonde').val('N');
+            }
+        }else{
+            if("Y" == isSonde){
+                $('#is_sonde').prop('checked', true);
+                $('#status').attr('disabled', true);
+                $('#form_waktu').hide();
+                $('#val_sonde').val('Y');
+            }else{
+                $('#is_sonde').prop('checked', false);
+                $('#status').attr('disabled', false);
+                $('#form_waktu').show();
+                $('#val_sonde').val('N');
+            }
+        }
+    }
+
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

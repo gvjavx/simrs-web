@@ -47,6 +47,41 @@
         <property name="lastUpdate">
             <column name="last_update" sql-type="date" not-null="false" />
         </property>
+        
+        <property name="flagTunjPeralihanGapok">
+            <column name="flag_tunj_peralihan_gapok" sql-type="varchar" length="2"/>
+        </property>
+        <property name="flagTunjPeralihanSankhus">
+            <column name="flag_tunj_peralihan_sankhus" sql-type="varchar" length="2"/>
+        </property>
+        <property name="flagTunjPeralihanTunjangan">
+            <column name="flag_tunj_peralihan_tunjangan" sql-type="varchar" length="2"/>
+        </property>
+        <property name="flagTunjPemondokan">
+            <column name="flag_tunj_pemondokan" sql-type="varchar" length="2"/>
+        </property>
+        <property name="tunjPeralihanGapok">
+            <column name="tunj_peralihan_gapok" sql-type="numeric" length="15" precision="2"/>
+        </property>
+        <property name="tunjPeralihanSankhus">
+            <column name="tunj_peralihan_sankhus" sql-type="numeric" length="15" precision="2"/>
+        </property>
+        <property name="tunjPeralihanTunjangan">
+            <column name="tunj_peralihan_tunjangan" sql-type="numeric" length="15" precision="2"/>
+        </property>
+
+        <property name="tunjSiaga">
+            <column name="tunj_siaga" sql-type="numeric" length="15" precision="2"/>
+        </property>
+        <property name="tunjSupervisi">
+            <column name="tunj_supervisi" sql-type="numeric" length="15" precision="2"/>
+        </property>
+        <property name="tunjLokasi">
+            <column name="tunj_lokasi" sql-type="numeric" length="15" precision="2"/>
+        </property>
+        <property name="tunjPemondokan">
+            <column name="tunj_pemondokan" sql-type="numeric" length="15" precision="2"/>
+        </property>
 
     </class>
 </hibernate-mapping>

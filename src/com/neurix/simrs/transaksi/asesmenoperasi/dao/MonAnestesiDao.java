@@ -37,11 +37,19 @@ public class MonAnestesiDao extends GenericDao<ItSimrsMonitoringAnestesiEntity, 
             if (mapCriteria.get("jenis")!=null) {
                 criteria.add(Restrictions.eq("jenis", (String) mapCriteria.get("jenis")));
             }
+
+            if(mapCriteria.get("flag") != null){
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+            }else{
+                criteria.add(Restrictions.eq("flag", "Y"));
+            }
+
+            if(mapCriteria.get("is_desc") != null){
+                criteria.addOrder(Order.desc("createdDate"));
+            }else{
+                criteria.addOrder(Order.asc("idMonitoringAnestesi"));
+            }
         }
-
-        criteria.add(Restrictions.eq("flag", "Y"));
-        criteria.addOrder(Order.asc("idMonitoringAnestesi"));
-
         List<ItSimrsMonitoringAnestesiEntity> results = criteria.list();
         return results;
     }

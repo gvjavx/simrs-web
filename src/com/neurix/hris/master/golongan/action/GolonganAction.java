@@ -590,16 +590,18 @@ public class GolonganAction extends BaseMasterAction{
 
             golonganPkwtBoProxy.saveDelete(deleteGolongan);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = golonganBoProxy.saveErrorMessage(e.getMessage(), "LiburBO.saveDelete");
-            } catch (GeneralBOException e1) {
-                logger.error("[AlatAction.saveDelete] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[AlatAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+//            Long logId = null;
+//            try {
+//                logId = golonganBoProxy.saveErrorMessage(e.getMessage(), "LiburBO.saveDelete");
+//            } catch (GeneralBOException e1) {
+//                logger.error("[AlatAction.saveDelete] Error when saving error,", e1);
+//                return ERROR;
+//            }
+//            logger.error("[AlatAction.saveDelete] Error when delete data," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+//            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+//            return ERROR;
+            logger.error("[GolonganAction.saveDeletePkwt] Error, " + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[AlatAction.saveDelete] end process <<<");
@@ -608,13 +610,12 @@ public class GolonganAction extends BaseMasterAction{
     }
 
     public String saveAdd(){
-        logger.info("[AlatAction.saveAdd] start process >>>");
+        logger.info("[GolonganAction.saveAdd] start process >>>");
 
         try {
             Golongan golongan = getGolongan();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
 
             golongan.setCreatedWho(userLogin);
             golongan.setLastUpdate(updateTime);
@@ -632,11 +633,11 @@ public class GolonganAction extends BaseMasterAction{
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
 
-        logger.info("[liburAction.saveAdd] end process >>>");
+        logger.info("[GolonganAction.saveAdd] end process >>>");
         return "success_save_add";
     }
     public String saveAddPkwt(){
-        logger.info("[AlatAction.saveAdd] start process >>>");
+        logger.info("[GolonganAction.saveAddPkwt] start process >>>");
 
         try {
             GolonganPkwt golongan = getGolonganPkwt();

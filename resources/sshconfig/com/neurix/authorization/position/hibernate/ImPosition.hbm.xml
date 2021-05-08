@@ -66,6 +66,10 @@
         <property name="bagianId">
             <column name="bagian_id" sql-type="varchar" length="10"/>
         </property>
+        <property name="flagCostUnit">
+            <column name="flag_cost_unit" sql-type="varchar" length="1"/>
+        </property>
+
         <property name="kategori">
             <column name="kategori" sql-type="varchar" length="20"/>
         </property>

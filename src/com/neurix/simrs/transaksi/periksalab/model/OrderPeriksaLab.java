@@ -1,13 +1,19 @@
 package com.neurix.simrs.transaksi.periksalab.model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class OrderPeriksaLab {
     private String idOrderPeriksa;
     private String idDetailCheckup;
-    private String idLab;
+    private String idPemeriksaan;
+    private String namaPemeriksaan;
     private String idLabDetail;
+    private String namaDetailPemeriksaan;
+    private String idKategoriLab;
+    private String keterangan;
     private String isPemeriksaan;
     private String flag;
     private String action;
@@ -15,7 +21,15 @@ public class OrderPeriksaLab {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private String keterangan;
+    private List<OrderPeriksaLab> detaiLab = new ArrayList<>();
+
+    public List<OrderPeriksaLab> getDetaiLab() {
+        return detaiLab;
+    }
+
+    public void setDetaiLab(List<OrderPeriksaLab> detaiLab) {
+        this.detaiLab = detaiLab;
+    }
 
     public String getIdOrderPeriksa() {
         return idOrderPeriksa;
@@ -33,12 +47,20 @@ public class OrderPeriksaLab {
         this.idDetailCheckup = idDetailCheckup;
     }
 
-    public String getIdLab() {
-        return idLab;
+    public String getIdPemeriksaan() {
+        return idPemeriksaan;
     }
 
-    public void setIdLab(String idLab) {
-        this.idLab = idLab;
+    public void setIdPemeriksaan(String idPemeriksaan) {
+        this.idPemeriksaan = idPemeriksaan;
+    }
+
+    public String getNamaPemeriksaan() {
+        return namaPemeriksaan;
+    }
+
+    public void setNamaPemeriksaan(String namaPemeriksaan) {
+        this.namaPemeriksaan = namaPemeriksaan;
     }
 
     public String getIdLabDetail() {
@@ -47,6 +69,30 @@ public class OrderPeriksaLab {
 
     public void setIdLabDetail(String idLabDetail) {
         this.idLabDetail = idLabDetail;
+    }
+
+    public String getNamaDetailPemeriksaan() {
+        return namaDetailPemeriksaan;
+    }
+
+    public void setNamaDetailPemeriksaan(String namaDetailPemeriksaan) {
+        this.namaDetailPemeriksaan = namaDetailPemeriksaan;
+    }
+
+    public String getIdKategoriLab() {
+        return idKategoriLab;
+    }
+
+    public void setIdKategoriLab(String idKategoriLab) {
+        this.idKategoriLab = idKategoriLab;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
     }
 
     public String getIsPemeriksaan() {
@@ -103,37 +149,5 @@ public class OrderPeriksaLab {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
-    }
-
-    public String getKeterangan() {
-        return keterangan;
-    }
-
-    public void setKeterangan(String keterangan) {
-        this.keterangan = keterangan;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        OrderPeriksaLab that = (OrderPeriksaLab) o;
-        return Objects.equals(idOrderPeriksa, that.idOrderPeriksa) &&
-                Objects.equals(idDetailCheckup, that.idDetailCheckup) &&
-                Objects.equals(idLab, that.idLab) &&
-                Objects.equals(idLabDetail, that.idLabDetail) &&
-                Objects.equals(isPemeriksaan, that.isPemeriksaan) &&
-                Objects.equals(flag, that.flag) &&
-                Objects.equals(action, that.action) &&
-                Objects.equals(createdDate, that.createdDate) &&
-                Objects.equals(createdWho, that.createdWho) &&
-                Objects.equals(lastUpdate, that.lastUpdate) &&
-                Objects.equals(lastUpdateWho, that.lastUpdateWho) &&
-                Objects.equals(keterangan, that.keterangan);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(idOrderPeriksa, idDetailCheckup, idLab, idLabDetail, isPemeriksaan, flag, action, createdDate, createdWho, lastUpdate, lastUpdateWho, keterangan);
     }
 }

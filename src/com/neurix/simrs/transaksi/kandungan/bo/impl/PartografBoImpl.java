@@ -68,6 +68,7 @@ public class PartografBoImpl implements PartografBo {
                     partograf.setNamaTerang(entity.getNamaTerang());
                     partograf.setSip(entity.getSip());
                     partograf.setTtd(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getTtd());
+                    partograf.setLamaKontraksi(entity.getLamaKontraksi());
                     list.add(partograf);
                 }
             }
@@ -109,6 +110,8 @@ public class PartografBoImpl implements PartografBo {
                 partografEntity.setTtd(bean.getTtd());
                 partografEntity.setNamaTerang(bean.getNamaTerang());
                 partografEntity.setSip(bean.getSip());
+                partografEntity.setLamaKontraksi(bean.getLamaKontraksi());
+
                 try {
                     partografDao.addAndSave(partografEntity);
                     response.setStatus("success");
@@ -155,7 +158,13 @@ public class PartografBoImpl implements PartografBo {
 
     @Override
     public List<Partograf> getListByDate(String idDetailCheckup, String tanggal) throws GeneralBOException {
-        return partografDao.getListByDate(idDetailCheckup, tanggal);
+        List<Partograf> partografList = new ArrayList<>();
+        try {
+            partografList = partografDao.getListByDate(idDetailCheckup, tanggal);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return partografList;
     }
 
     public static Logger getLogger() {

@@ -77,7 +77,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>NIP Dokter :</small></label>
+                                                    <label class="control-label"><small>ID Dokter :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -120,7 +120,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Master Id :</small></label>
+                                                    <label class="control-label"><small>Jenis Pasien :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -142,7 +142,7 @@
                                                             <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
                                                             <%--<s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId"--%>
                                                             <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
-                                                                <s:if test='dokterKso.branchUser == "KP"'>
+                                                                <s:if test='dokterKso.branchUser == "01"'>
                                                                     <s:action id="initComboBranch" namespace="/dokterkso" name="initComboBranch_dokterkso"/>
                                                                     <s:select list="#initComboBranch.listOfComboBranches" id="branchId" name="dokterKso.branchId"
                                                                               listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
@@ -202,7 +202,7 @@
                                         <br>
                                         <br>
                                         <center>
-                                            <table id="showdata" width="80%">
+                                            <table id="showdata" width="85%">
                                                 <tr>
                                                     <td align="center">
                                                         <sj:dialog id="waiting_dialog_loading" openTopics="showDialog"
@@ -276,19 +276,19 @@
                                                                 </s:if>
                                                             </display:column>
                                                             <display:column property="dokterKsoId" sortable="true" title="ID Dokter Tamu" />
-                                                            <display:column property="nip" sortable="true" title="NIP Dokter"  />
+                                                            <display:column property="nip" sortable="true" title="ID Dokter"  />
                                                             <display:column property="namaDokter" sortable="true" title="Nama Dokter"  />
                                                             <display:column property="branchName" sortable="true" title="Unit"  />
                                                             <display:column property="jenisKso" sortable="true" title="Jenis KSO"  />
-                                                            <display:column property="masterId" sortable="true" title="Master ID"  />
-                                                            <display:column property="tarifIna" sortable="true" title="TarifIna"  />
-                                                            <display:column property="persenKso" sortable="true" title="Persen KSO"  />
-                                                            <display:column property="persenKs" sortable="true" title="Persen KS"  />
+                                                            <display:column property="masterId" sortable="true" title="Jenis Pasien"  />
+                                                            <display:column property="tarifIna" sortable="true" title="Tarif Ina"  />
+                                                            <display:column property="persenKso" sortable="true" title="Persen KSO (%)"  />
+                                                            <display:column property="persenKs" sortable="true" title="Persen KS (%)"  />
                                                             <display:column property="kodering" sortable="true" title="Kodering"  />
                                                             <display:column property="flag" sortable="true" title="flag"  />
                                                             <display:column property="action" sortable="true" title="action"  />
-                                                            <display:column property="stCreatedDate" sortable="true" title="Created date"  />
-                                                            <display:column property="createdWho" sortable="true" title="Created who"  />
+                                                            <%--<display:column property="stCreatedDate" sortable="true" title="Created date"  />--%>
+                                                            <%--<display:column property="createdWho" sortable="true" title="Created who"  />--%>
                                                             <display:column property="stLastUpdate" sortable="true" title="Last update"  />
                                                             <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                                         </display:table>

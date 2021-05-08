@@ -10,11 +10,8 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.master.biodata.model.Biodata;
-import com.neurix.hris.master.cutiPanjang.model.CutiPanjang;
 import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
-import com.neurix.hris.master.positionBagian.model.positionBagian;
-import com.neurix.hris.master.strukturJabatan.bo.StrukturJabatanBo;
-import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
+import com.neurix.hris.master.positionBagian.model.PositionBagian;
 import com.neurix.hris.transaksi.indisipliner.bo.IndisiplinerBo;
 import com.neurix.hris.transaksi.indisipliner.model.Indisipliner;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
@@ -540,7 +537,7 @@ public class IndisiplinerAction extends BaseMasterAction {
         BranchBo branchBo= (BranchBo) ctx.getBean("branchBoProxy");
         PositionBagianBo positionBagianBo= (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
         Branch branch = new Branch();
-        positionBagian positionBagian = new positionBagian();
+        PositionBagian positionBagian = new PositionBagian();
         biodataList = biodataBo.getBiodataforAbsensi(getBranchId(),"","",getNip());
 
         for (Biodata biodata : biodataList){

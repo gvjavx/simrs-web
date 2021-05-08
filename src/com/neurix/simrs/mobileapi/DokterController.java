@@ -10,6 +10,10 @@ import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.mobileapi.model.DokterMobile;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
+import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
+import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.teamdokter.bo.TeamDokterBo;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
@@ -19,6 +23,8 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,6 +44,8 @@ public class DokterController implements ModelDriven<Object> {
     private BiodataBo biodataBoProxy;
     private TelemedicBo telemedicBoProxy;
     private PelayananBo pelayananBoProxy;
+    private RawatInapBo rawatInapBoProxy;
+    private CheckupBo checkupBoProxy;
 
     private String idDokter;
     private String namaDokter;
@@ -59,6 +67,37 @@ public class DokterController implements ModelDriven<Object> {
     private String idTeamDokter;
     private String keterangan;
     private String flagApprove;
+
+    private String tglAwal;
+    private String tglAkhir;
+
+    public String getTglAwal() {
+        return tglAwal;
+    }
+
+    public void setTglAwal(String tglAwal) {
+        this.tglAwal = tglAwal;
+    }
+
+    public String getTglAkhir() {
+        return tglAkhir;
+    }
+
+    public void setTglAkhir(String tglAkhir) {
+        this.tglAkhir = tglAkhir;
+    }
+
+    public void setCheckupBoProxy(CheckupBo checkupBoProxy) {
+        this.checkupBoProxy = checkupBoProxy;
+    }
+
+    public RawatInapBo getRawatInapBoProxy() {
+        return rawatInapBoProxy;
+    }
+
+    public void setRawatInapBoProxy(RawatInapBo rawatInapBoProxy) {
+        this.rawatInapBoProxy = rawatInapBoProxy;
+    }
 
     public String getKeterangan() {
         return keterangan;
@@ -423,12 +462,23 @@ public class DokterController implements ModelDriven<Object> {
 
             listOfDokter = new ArrayList<>();
             List<DokterTeam> listRequestDokter = new ArrayList<>();
-            DokterTeam dpjp1 = new DokterTeam();
-            List<Dokter> resultDokter = new ArrayList<>();
+            DokterTeam dpjp1 = null;
+            HeaderCheckup detailPasien = new HeaderCheckup();
+
+            Timestamp tsTglAwal = null;
+            Timestamp tsTglAkhir = null;
+            if (tglAwal != null && !"".equalsIgnoreCase(tglAwal)) {
+                Date dtTglAwal = CommonUtil.convertStringToDate(tglAwal);
+                tsTglAwal = new Timestamp(dtTglAwal.getTime());
+            }
+            if (tglAkhir != null && !"".equalsIgnoreCase(tglAkhir)) {
+                Date dtTglAkhir = CommonUtil.convertStringToDate(tglAkhir);
+                tsTglAkhir = new Timestamp(dtTglAkhir.getTime());
+            }
 
             //ambil request dpjp
             try {
-                listRequestDokter = teamDokterBoProxy.cekRequestDokterByIdDokter(idDokter, flagApprove);
+                listRequestDokter = teamDokterBoProxy.cekRequestDokterByIdDokter(idDokter, flagApprove, tsTglAwal, tsTglAkhir);
             } catch (GeneralBOException e){
                 logger.error("[DokterController.create] Error, " + e.getMessage());
             }
@@ -437,15 +487,23 @@ public class DokterController implements ModelDriven<Object> {
             if (listRequestDokter.size() > 0) {
                 for (DokterTeam item : listRequestDokter) {
 
+                    DokterMobile dokterMobile = new DokterMobile();
+                    if (!"dpjp_1".equalsIgnoreCase(item.getJenisDpjp())) {
+                        try {
+                            dpjp1 = teamDokterBoProxy.getNamaDokter(item.getIdDetailCheckup(), true);
+                        } catch (GeneralBOException e){
+                            logger.error("[DokterController.create] Error, " + e.getMessage());
+                        }
+                        dokterMobile.setIdDokterDpjp1(dpjp1.getIdDokter());
+                        dokterMobile.setNamaDokterDpjp1(dpjp1.getNamaDokter());
+                    }
+
                     try {
-                       dpjp1 = teamDokterBoProxy.getNamaDokter(item.getIdDetailCheckup());
-                    } catch (GeneralBOException e){
+                        detailPasien = checkupBoProxy.getDataDetailPasien(item.getIdDetailCheckup());
+                    } catch (GeneralBOException e) {
                         logger.error("[DokterController.create] Error, " + e.getMessage());
                     }
 
-                    DokterMobile dokterMobile = new DokterMobile();
-                    dokterMobile.setIdDokterDpjp1(dpjp1.getIdDokter());
-                    dokterMobile.setNamaDokterDpjp1(dpjp1.getNamaDokter());
                     dokterMobile.setFlagApprove(item.getFlagApprove());
                     dokterMobile.setKeterangan(item.getKeterangan());
                     dokterMobile.setIdPelayanan(item.getIdPelayanan());
@@ -453,7 +511,18 @@ public class DokterController implements ModelDriven<Object> {
                     dokterMobile.setJenisDpjp(item.getJenisDpjp());
                     dokterMobile.setIdDokterTeam(item.getIdTeamDokter());
                     dokterMobile.setNamaPelayanan(item.getNamaPelayanan());
+                    dokterMobile.setTipePelayanan(item.getTipePelayanan());
+                    dokterMobile.setCreatedDate(CommonUtil.convertTimestampToString(item.getCreatedDate()));
 
+                    dokterMobile.setIdPasien(detailPasien.getIdPasien());
+                    dokterMobile.setNamaPasien(detailPasien.getNama());
+                    dokterMobile.setTglLahir(detailPasien.getStTglLahir());
+                    dokterMobile.setNoRuangan(detailPasien.getNoRuangan());
+                    dokterMobile.setKelasRuangan(detailPasien.getNamaRuangan());
+                    dokterMobile.setTglLahir(CommonUtil.convertDateToString(detailPasien.getTglLahir()));
+                    dokterMobile.setUmur(CommonUtil.calculateAge(detailPasien.getTglLahir(),true));
+                    dokterMobile.setJalan(detailPasien.getJalan());
+                    dokterMobile.setJenisKelamin(detailPasien.getJenisKelamin());
                     listOfDokter.add(dokterMobile);
                 }
             }

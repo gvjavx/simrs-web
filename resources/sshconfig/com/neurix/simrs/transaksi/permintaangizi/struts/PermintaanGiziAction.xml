@@ -76,8 +76,15 @@
             <result name="search">/pages/com/neurix/simrs/transaksi/permintaangizi/searchPermintaanGizi.jsp</result>
 
             <result name="print_barcode_gizi" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/printBarcodeGizi.jasper</param>
+                <param name="location">/pages/report/com/neurix/simrs/labelGizi.jasper</param>
                 <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_list_gizi" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printListGizi.jasper</param>
+                <param name="dataSource">myList</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>

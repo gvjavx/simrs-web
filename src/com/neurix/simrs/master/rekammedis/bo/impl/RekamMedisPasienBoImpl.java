@@ -20,8 +20,8 @@ public class RekamMedisPasienBoImpl implements RekamMedisPasienBo {
 
     @Override
     public List<RekamMedisPasien> getByCriteria(RekamMedisPasien bean) throws GeneralBOException {
+        logger.info("[RekamMedisPasienBoImpl.getByCriteria] start process >>>");
         List<RekamMedisPasien> list = new ArrayList<>();
-
         if (bean != null) {
             Map hsCriteria = new HashMap();
             if (bean.getIdRekamMedisPasien() != null && !"".equalsIgnoreCase(bean.getIdRekamMedisPasien())) {
@@ -42,7 +42,7 @@ public class RekamMedisPasienBoImpl implements RekamMedisPasienBo {
             try {
                 entityList = rekamMedisPasienDao.getByCriteria(hsCriteria);
             } catch (HibernateException e) {
-                logger.error(e.getMessage());
+                logger.error("[RekamMedisPasienBoImpl.getByCriteria]"+e.getMessage());
             }
 
             if (entityList.size() > 0) {
@@ -65,23 +65,47 @@ public class RekamMedisPasienBoImpl implements RekamMedisPasienBo {
                 }
             }
         }
-
+        logger.info("[RekamMedisPasienBoImpl.getByCriteria] end process >>>");
         return list;
     }
 
     @Override
-    public List<RekamMedisPasien> getListRekamMedisByTipePelayanan(String tipePelayanan, String jenis, String id) throws GeneralBOException {
-        return rekamMedisPasienDao.getListRekamMedisByPelayanan(tipePelayanan, jenis, id);
+    public List<RekamMedisPasien> getListRekamMedisByTipePelayanan(RekamMedisPasien bean) throws GeneralBOException {
+        logger.info("[RekamMedisPasienBoImpl.getListRekamMedisByTipePelayanan] start process >>>");
+        List<RekamMedisPasien> rekamMedisPasienList = new ArrayList<>();
+        try {
+            rekamMedisPasienList = rekamMedisPasienDao.getListRekamMedisByPelayanan(bean);
+        }catch (HibernateException e){
+            logger.error("[RekamMedisPasienBoImpl.getListRekamMedisByTipePelayanan]"+e.getMessage());
+        }
+        logger.info("[RekamMedisPasienBoImpl.getListRekamMedisByTipePelayanan] end process >>>");
+        return rekamMedisPasienList;
     }
 
     @Override
     public List<RekamMedisPasien> getRiwayatListRekamMedis(String id, String tipePelayanan, String jenis) throws GeneralBOException {
-        return rekamMedisPasienDao.getRiwayatRekamMedis(id, tipePelayanan, jenis);
+        logger.info("[RekamMedisPasienBoImpl.getRiwayatListRekamMedis] start process >>>");
+        List<RekamMedisPasien> rekamMedisPasienList = new ArrayList<>();
+        try {
+            rekamMedisPasienList = rekamMedisPasienDao.getRiwayatRekamMedis(id, tipePelayanan, jenis);
+        }catch (HibernateException e){
+            logger.error("[RekamMedisPasienBoImpl.getRiwayatListRekamMedis]"+e.getMessage());
+        }
+        logger.info("[RekamMedisPasienBoImpl.getRiwayatListRekamMedis] end process >>>");
+        return rekamMedisPasienList;
     }
 
     @Override
     public List<RekamMedisPasien> getListRekamMedisLama(String id, String branchId) throws GeneralBOException {
-        return rekamMedisPasienDao.getRiwayatRekamMedisLama(id, branchId);
+        logger.info("[RekamMedisPasienBoImpl.getListRekamMedisLama] start process >>>");
+        List<RekamMedisPasien> rekamMedisPasienList = new ArrayList<>();
+        try {
+            rekamMedisPasienList = rekamMedisPasienDao.getRiwayatRekamMedisLama(id, branchId);
+        }catch (HibernateException e){
+            logger.error("[RekamMedisPasienBoImpl.getListRekamMedisLama]"+e.getMessage());
+        }
+        logger.info("[RekamMedisPasienBoImpl.getListRekamMedisLama] end process >>>");
+        return rekamMedisPasienList;
     }
 
     public static Logger getLogger() {

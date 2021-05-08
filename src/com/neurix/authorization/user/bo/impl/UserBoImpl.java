@@ -696,6 +696,10 @@ public class UserBoImpl implements UserBo {
                             menuNameString = "<li id=\"version\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-th-large\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Laporan")) {
                             menuNameString = "<li id=\"laporan_ops\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-th-large\"></i><span> " + menuName + "</span></a></li>";
+                        } else if (menuName.equalsIgnoreCase("Konsultasi Gizi")) {
+                            menuNameString = "<li id=\"konsultasi_gizi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-th-large\"></i><span> " + menuName + "</span></a></li>";
+                        } else if (menuName.equalsIgnoreCase("Makanan Pendamping")) {
+                            menuNameString = "<li id=\"makanan_pendamping\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-th-large\"></i><span> " + menuName + "</span></a></li>";
                         } else {
                             menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-th-large\"></i><span> " + menuName + "</span></a></li>";
                         }
@@ -809,6 +813,8 @@ public class UserBoImpl implements UserBo {
                         icon = "<i class=\"fa fa-plus-square-o\"></i>";
                     } else if (menuName.equalsIgnoreCase("Cuti")) {
                         icon = "<i class=\"fa fa-calendar-times-o\"></i>";
+                    } else {
+                        icon = "<i class=\"fa fa fa-circle-o\"></i>";
                     }
 
                     menuNameString +=
@@ -821,7 +827,7 @@ public class UserBoImpl implements UserBo {
                                     "<ul class=\"treeview-menu\">";
                 } else if (itemMenu.get(2).equals("4")) {
                     //menuNameString = "<li><a href=\"#\"><i class=\"fa fa-files-o\"></i><span><strong> "+ menuName + "</strong></span></a></li>";
-                    menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-gear\"></i><span> " + menuName + "</span></a></li>";
+                    menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     if (i < listdownMenu.size() - 1) {
                         itemMenuTmp = (List) listdownMenu.get(i + 1);
                         if (!itemMenuTmp.get(2).equals("4")) {
@@ -1866,6 +1872,7 @@ public class UserBoImpl implements UserBo {
         return listOfResultUsers;
     }
 
+    @Override
     public void saveAdd(User addUsers) throws GeneralBOException {
 
         logger.info("[UserBoImpl.saveAdd] start process >>>");

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.simrs.transaksi.periksalab.model.ItSimrsHeaderPemeriksaanEntity">
+        <table name="it_simrs_header_pemeriksaan" schema="public"/>
+        <attributes>
+            <id name="idHeaderPemeriksaan">
+                <column name="id_header_pemeriksaan"/>
+            </id>
+            <basic name="idDetailCheckup">
+                <column name="id_detail_checkup"/>
+            </basic>
+            <basic name="idKategoriLab">
+                <column name="id_kategori_lab"/>
+            </basic>
+            <basic name="idDokterPengirim">
+                <column name="id_dokter_pengirim"/>
+            </basic>
+            <basic name="namaDokterPengirim">
+                <column name="nama_dokter_pengirim"/>
+            </basic>
+            <basic name="ttdDokterPengirim">
+                <column name="ttd_dokter_pengirim"/>
+            </basic>
+            <basic name="idPetugas">
+                <column name="id_petugas"/>
+            </basic>
+            <basic name="namaPetugas">
+                <column name="nama_petugas"/>
+            </basic>
+            <basic name="ttdPetugas">
+                <column name="ttd_petugas"/>
+            </basic>
+            <basic name="idValidator">
+                <column name="id_validator"/>
+            </basic>
+            <basic name="namaValidator">
+                <column name="nama_validator"/>
+            </basic>
+            <basic name="ttdValidator">
+                <column name="ttd_validator"/>
+            </basic>
+            <basic name="statusPeriksa">
+                <column name="status_periksa"/>
+            </basic>
+            <basic name="catatan">
+                <column name="catatan"/>
+            </basic>
+            <basic name="tarifLabLuar">
+                <column name="tarif_lab_luar"/>
+            </basic>
+            <basic name="approveFlag">
+                <column name="approve_flag"/>
+            </basic>
+            <basic name="isJustLab">
+                <column name="is_just_lab"/>
+            </basic>
+            <basic name="isPending">
+                <column name="is_pending"/>
+            </basic>
+            <basic name="isPeriksaLuar">
+                <column name="is_periksa_luar"/>
+            </basic>
+            <basic name="isRead">
+                <column name="is_read"/>
+            </basic>
+            <basic name="tanggalMasukPeriksa">
+                <column name="tanggal_masuk_periksa"/>
+            </basic>
+            <basic name="tanggalSelesaiPeriksa">
+                <column name="tanggal_selesai_periksa"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="jenisPasien">
+                <column name="jenis_pasien"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

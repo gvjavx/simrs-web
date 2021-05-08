@@ -47,6 +47,24 @@ public class ImtSimrsTransaksiObatDetailEntity implements Serializable{
     private String idRacik;
     private String namaRacik;
     private String jenisResep;
+    private String idPabrikObat;
+    private String nomorProduksi;
+
+    public String getNomorProduksi() {
+        return nomorProduksi;
+    }
+
+    public void setNomorProduksi(String nomorProduksi) {
+        this.nomorProduksi = nomorProduksi;
+    }
+
+    public String getIdPabrikObat() {
+        return idPabrikObat;
+    }
+
+    public void setIdPabrikObat(String idPabrikObat) {
+        this.idPabrikObat = idPabrikObat;
+    }
 
     public String getJenisResep() {
         return jenisResep;

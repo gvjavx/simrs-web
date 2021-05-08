@@ -15,6 +15,9 @@ public class ImSimrsDokterKso implements Serializable{
     BigDecimal persenKso;
     BigDecimal persenKs;
     String kodering;
+    //RAKA-17MAR2021 ==> menambahkan
+    String positionId;
+    //RAKA-end
 
     private String flag;
     private String action;
@@ -141,5 +144,13 @@ public class ImSimrsDokterKso implements Serializable{
 
     public void setKodering(String kodering) {
         this.kodering = kodering;
+    }
+
+    public String getPositionId() {
+        return positionId;
+    }
+
+    public void setPositionId(String positionId) {
+        this.positionId = positionId;
     }
 }

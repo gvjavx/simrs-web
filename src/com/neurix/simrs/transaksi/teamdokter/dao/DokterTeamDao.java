@@ -9,6 +9,9 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -85,8 +88,14 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
         return res;
     }
 
-    public DokterTeam getNamaDokter(String idDetailCheckup) {
+    public DokterTeam getNamaDokter(String idDetailCheckup, boolean isMobile) {
         DokterTeam res = new DokterTeam();
+
+        String query = "";
+        if (isMobile) {
+            query = " AND a.jenis_dpjp = 'dpjp_1'";
+        }
+
         if(!"".equalsIgnoreCase(idDetailCheckup) && idDetailCheckup != null){
             String SQL = "SELECT \n" +
                     "a.id_dokter,\n" +
@@ -94,7 +103,7 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
                     "b.sip\n" +
                     "FROM it_simrs_dokter_team a\n" +
                     "INNER JOIN im_simrs_dokter b ON a.id_dokter = b.id_dokter\n" +
-                    "WHERE a.id_detail_checkup = :id\n";
+                    "WHERE a.id_detail_checkup = :id\n" +query;
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", idDetailCheckup)
@@ -117,30 +126,50 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
         return listOfResult;
     }
 
-    public List<DokterTeam> cekRequestDokterByIdDokter(String idDokter, String flagApprove){
+    public List<DokterTeam> cekRequestDokterByIdDokter(String idDokter, String flagApprove, Timestamp tglAwal, Timestamp tglAkhir){
 
-        String query = " AND dt.flag_approve IS NULL";
+        String query = "";
+        String queryTgl = "";
         if (flagApprove != null) {
             query = " AND dt.flag_approve = '" + flagApprove + "' ";
         }
-
+        if (tglAwal != null && tglAkhir != null) {
+            queryTgl = " AND CAST(dt.created_date as date) >= TO_DATE('"+ tglAwal + "', 'yyyy-MM-dd') \n" +
+                    "AND CAST(dt.created_date as date) <= TO_DATE('" + tglAkhir + "', 'yyyy-MM-dd') \n";
+        } else if (tglAwal != null) {
+            queryTgl =" AND CAST(dt.created_date as date) >= TO_DATE('"+ tglAwal + "', 'yyyy-MM-dd')";
+        } else if (tglAkhir != null) {
+           queryTgl = " AND CAST(dt.created_date as date) <= TO_DATE('" + tglAkhir + "', 'yyyy-MM-dd')";
+        }
 
         List<DokterTeam> listOfResult = new ArrayList<>();
 
-        String sql = "SELECT dt.id_team_dokter, dk.nama_dokter, dt.id_dokter, dt.id_detail_checkup, dt.jenis_dpjp, dt.flag_approve, dt.keterangan, pl.nama_pelayanan \n" +
+        String sql ="SELECT dt.id_team_dokter,\n" +
+                "dk.nama_dokter,\n" +
+                "dt.id_dokter,\n" +
+                "dt.id_detail_checkup,\n" +
+                "dt.jenis_dpjp,\n" +
+                "dt.flag_approve,\n" +
+                "dt.keterangan,\n" +
+                "pl.nama_pelayanan,\n" +
+                "pl.tipe_pelayanan,\n" +
+                "dt.created_date\n" +
                 "FROM it_simrs_dokter_team dt\n" +
-                "JOIN im_simrs_dokter dk ON dk.id_dokter = dt.id_dokter\n" +
-                "JOIN (SELECT\n" +
+                "INNER JOIN im_simrs_dokter dk ON dk.id_dokter = dt.id_dokter\n" +
+                "INNER JOIN it_simrs_header_detail_checkup dc ON dt.id_detail_checkup = dc.id_detail_checkup\n" +
+                "INNER JOIN (SELECT\n" +
                 "a.id_pelayanan,\n" +
                 "b.nama_pelayanan,\n" +
                 "b.tipe_pelayanan,\n" +
                 "b.kategori_pelayanan,\n" +
                 "b.divisi_id,\n" +
-                "a.branch_id,"+
+                "a.branch_id,\n" +
                 "b.kode_vclaim\n" +
                 "FROM im_simrs_pelayanan a\n" +
-                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) pl ON pl.id_pelayanan = dt.id_pelayanan\n" +
-                "WHERE dt.id_dokter = :id" + query;
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
+                ") pl ON pl.id_pelayanan = dc.id_pelayanan\n" +
+                "WHERE dt.id_dokter = :id " + query + queryTgl +
+                "ORDER BY dt.created_date DESC";
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(sql)
                 .setParameter("id", idDokter)
@@ -152,10 +181,12 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
                 dokterTeam.setNamaDokter(item[1].toString());
                 dokterTeam.setIdDokter(item[2].toString());
                 dokterTeam.setIdDetailCheckup(item[3].toString());
-                dokterTeam.setJenisDpjp(item[4].toString());
+                dokterTeam.setJenisDpjp(item[4] != null ? item[4].toString() : "");
                 dokterTeam.setFlagApprove(item[5] != null ? item[5].toString() : "");
                 dokterTeam.setKeterangan(item[6] != null ? item[6].toString() : "");
                 dokterTeam.setNamaPelayanan(item[7].toString());
+                dokterTeam.setTipePelayanan(item[8].toString());
+                dokterTeam.setCreatedDate(Timestamp.valueOf(item[9].toString()));
 
                 listOfResult.add(dokterTeam);
             }

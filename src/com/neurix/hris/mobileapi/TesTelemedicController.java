@@ -4,6 +4,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.kurir.bo.KurirBo;
 import com.neurix.simrs.master.kurir.model.Kurir;
+import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.parameterketeranganobat.bo.ParameterKeteranganObatBo;
 import com.neurix.simrs.master.parameterketeranganobat.bo.impl.ParameterKeteranganObatBoImpl;
 import com.neurix.simrs.master.parameterketeranganobat.model.ParameterKeteranganObat;
@@ -59,6 +60,11 @@ public class TesTelemedicController implements ModelDriven<Object> {
     private PelayananBo pelayananBoProxy;
     private TeamDokterBo teamDokterBoProxy;
     private ParameterKeteranganObatBo parameterKeteranganObatBoProxy;
+    private ObatBo obatBoProxy;
+
+    public void setObatBoProxy(ObatBo obatBoProxy) {
+        this.obatBoProxy = obatBoProxy;
+    }
 
     public void setParameterKeteranganObatBoProxy(ParameterKeteranganObatBo parameterKeteranganObatBoProxy) {
         this.parameterKeteranganObatBoProxy = parameterKeteranganObatBoProxy;
@@ -232,6 +238,9 @@ public class TesTelemedicController implements ModelDriven<Object> {
                 break;
             case "tes-keterangan-obat":
                 searchParameterKeterangan();
+                break;
+            case "tes-sum-obat":
+                testSumObat();
                 break;
             default:
                 logger.info("==========NO ONE CARE============");
@@ -603,7 +612,7 @@ public class TesTelemedicController implements ModelDriven<Object> {
         if ("pelayanan".equalsIgnoreCase(this.result)){
 
             try {
-                resultDokter  = teamDokterBoProxy.getNamaDokter(id);
+                resultDokter  = teamDokterBoProxy.getNamaDokter(id, true);
             } catch (GeneralBOException e){
                 logger.error("[TesTelemedicController.tesDokterTeam] Test dokter team. dokter",e);
             }
@@ -623,5 +632,17 @@ public class TesTelemedicController implements ModelDriven<Object> {
 
         System.out.println("ISI -> "+listParam.size());
         logger.info("[TesTelemedicController.searchParameterKeterangan] END <<<");
+    }
+
+    public void testSumObat(){
+        logger.info("[TesTelemedicController.testSumObat] START >>>");
+
+        try {
+            obatBoProxy.testSumPersediaanObat(this.id, "", "RS01");
+        } catch (GeneralBOException e){
+            logger.error("[TesTelemedicController.searchParameterKeterangan] ERROR. ",e);
+        }
+
+        logger.info("[TesTelemedicController.testSumObat] END <<<");
     }
 }

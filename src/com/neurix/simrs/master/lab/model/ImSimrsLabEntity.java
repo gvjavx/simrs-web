@@ -1,30 +1,35 @@
 package com.neurix.simrs.master.lab.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class ImSimrsLabEntity implements Serializable {
 
     private String idLab;
     private String namaLab;
-    private String idOperatorLab;
-    private String idDokter;
-    private String idKategoriLab;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private String branchId;
+    private String isCatatan;
+    private String isPaket;
 
-    public String getBranchId() {
-        return branchId;
+    public String getIsPaket() {
+        return isPaket;
     }
 
-    public void setBranchId(String branchId) {
-        this.branchId = branchId;
+    public void setIsPaket(String isPaket) {
+        this.isPaket = isPaket;
+    }
+
+    public String getIsCatatan() {
+        return isCatatan;
+    }
+
+    public void setIsCatatan(String isCatatan) {
+        this.isCatatan = isCatatan;
     }
 
     public String getIdLab() {
@@ -41,30 +46,6 @@ public class ImSimrsLabEntity implements Serializable {
 
     public void setNamaLab(String namaLab) {
         this.namaLab = namaLab;
-    }
-
-    public String getIdOperatorLab() {
-        return idOperatorLab;
-    }
-
-    public void setIdOperatorLab(String idOperatorLab) {
-        this.idOperatorLab = idOperatorLab;
-    }
-
-    public String getIdDokter() {
-        return idDokter;
-    }
-
-    public void setIdDokter(String idDokter) {
-        this.idDokter = idDokter;
-    }
-
-    public String getIdKategoriLab() {
-        return idKategoriLab;
-    }
-
-    public void setIdKategoriLab(String idKategoriLab) {
-        this.idKategoriLab = idKategoriLab;
     }
 
     public String getFlag() {

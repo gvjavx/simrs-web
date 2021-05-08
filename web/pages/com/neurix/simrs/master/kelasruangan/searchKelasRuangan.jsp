@@ -81,8 +81,8 @@ To change this template use File | Settings | File Templates.
                                     </table>
                                     <table>
                                         <tr >
-                                            <td  width="20%">
-                                                <label class="control-label"><small>ID Kelas Ruangan :</small></label>
+                                            <td  width="40%">
+                                                <label class="control-label"><small>ID Kelas Ruangan </small></label>
                                             </td>
                                             <td>
                                                 <table>
@@ -95,7 +95,7 @@ To change this template use File | Settings | File Templates.
 
                                         <tr>
                                             <td>
-                                                <label class="control-label"><small>Nama Kelas Ruangan :</small></label>
+                                                <label class="control-label"><small>Kelas Ruangan </small></label>
                                             </td>
                                             <td>
                                                 <table>
@@ -108,7 +108,7 @@ To change this template use File | Settings | File Templates.
 
                                         <tr>
                                             <td>
-                                                <label class="control-label"><small>Divisi :</small></label>
+                                                <label class="control-label"><small>Divisi </small></label>
                                             </td>
                                             <td>
                                                 <table>
@@ -124,7 +124,7 @@ To change this template use File | Settings | File Templates.
                                         </tr>
                                         <tr>
                                             <td>
-                                                <label class="control-label"><small>Flag :</small></label>
+                                                <label class="control-label"><small>Flag </small></label>
                                             </td>
                                             <td>
                                                 <table>
@@ -203,9 +203,9 @@ To change this template use File | Settings | File Templates.
                                                         <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                     </sj:dialog>
                                                     <s:set name="listOfKelas" value="#session.listOfResultRuanganKelas" scope="request" />
-                                                    <display:table name="listOfKelas" class=" tableRekruitmen table table-condensed table-striped table-hover"
+                                                    <display:table name="listOfKelas" class="tableRekruitmen table table-condensed table-striped table-hover"
                                                                    requestURI="paging_displaytag_kelasruangan.action" export="true"
-                                                                   id="row" pagesize="14" style="font-size:12">
+                                                                   id="row" pagesize="10" style="font-size:12">
                                                         <%--<display:column property="calonPegawaiId" sortable="true" title="Cal Peg ID"  />--%>
                                                         <display:column media="html" title="Edit">
                                                             <s:if test='#attr.row.flag == "Y"'>

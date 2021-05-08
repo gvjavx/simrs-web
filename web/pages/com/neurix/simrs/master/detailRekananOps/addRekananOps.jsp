@@ -60,8 +60,6 @@
         );
 
         $.subscribe('errorDialogAdd', function (event, data) {
-
-//            alert(event.originalEvent.request.getResponseHeader('message'));
             document.getElementById('errorMessageAdd').innerHTML = "Status = "
                 + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
             $.publish('showErrorDialogAdd');
@@ -101,41 +99,43 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Nama rekanan :</small></label>
+                            <label class="control-label"><small>Nama Rekanan</small></label>
                         </td>
                         <td width="70%">
                             <table>
                                 <s:action id="initComboRekanan" namespace="/detailrekananops" name="initComboRekanan_detailrekananops"/>
                                 <s:select list="#initComboRekanan.listOfComboRekananOps" id="namarekananadd" name="detailRekananOps.idRekananOps" 
-                                          listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue="[Select one]"
-                                          cssClass="form-control" cssStyle="margin-top: 5px"/>
+                                          listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue=" - "
+                                          cssClass="form-control" cssStyle="margin-top: 5px" />
+
                             </table>
                         </td>
                     </tr>
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>branch:</small></label>
+                            <label class="control-label"><small>Unit:</small></label>
                         </td>
                         <td width="70%">
                             <table>
                                 <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
                                 <s:select list="#comboBranch.listOfComboBranches" id="branchIdadd" name="detailRekananOps.branchId"
                                           cssStyle="margin-top: 5px"
-                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
-                                          cssClass="form-control" />
+                                          listKey="branchId" listValue="branchName" headerKey="" headerValue=" - "
+                                          cssClass="form-control" disabled="true" />
+                                <s:hidden name="detailRekananOps.branchId"></s:hidden>
                             </table>
                         </td>
                     </tr>
 
                     <tr>
                         <td width="18%">
-                            <label class="control-label"><small> diskon :</small></label>
+                            <label class="control-label"><small> Diskon</small></label>
                         </td>
                         <td>
                             <table>
                                 <s:textfield cssStyle="margin-top: 7px"
-                                             id="diskonadd"
+                                             id="diskonadd" type="number"
                                              name="detailRekananOps.diskon"
                                              required="false"
                                              readonly="false" cssClass="form-control"/>
@@ -145,12 +145,12 @@
 
                     <tr>
                         <td width="20%">
-                            <label class="control-label"><small>is bpjs :</small></label>
+                            <label class="control-label"><small>Cover BPJS</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:select list="#{'N':'Non-Active'}" id="bpjs" name="detailRekananOps.isBpjs"
-                                          headerKey="Y" headerValue="Active" cssClass="form-control select2"
+                                <s:select list="#{'Y':'Ya'}" id="bpjs" name="detailRekananOps.isBpjs"
+                                          headerKey="N" headerValue="Tidak" cssClass="form-control select2"
                                           cssStyle="margin-top: 5px"/>
                             </table>
                         </td>

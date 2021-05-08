@@ -4,7 +4,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-md"></i> Persetujuan Tindakan Medis
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> Persetujuan Tindakan Medis Anestesi
                 </h4>
             </div>
             <div class="modal-body">
@@ -23,7 +23,7 @@
                     <table class="table" id="tabel_op_tindakan_medis_op">
                         <tbody>
                         <tr id="row_op_tindakan_medis_op">
-                            <td>Persetujuan Tindakan Medis</td>
+                            <td>Persetujuan Tindakan Medis Anestesi</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_tindakan_medis_op" class="hvr-grow"
                                      onclick="detailOperasi('tindakan_medis_op')"
@@ -48,7 +48,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Persetujuan Tindakan Medis
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Persetujuan Tindakan Medis Anestesi
                 </h4>
             </div>
             <div class="modal-body">
@@ -88,7 +88,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Dokter Pelaksana Tindakan</label>
                             <div class="col-md-6">
-                                <input class="form-control" id="op2">
+                                <input class="form-control nama_dokter_ri" id="op2">
                             </div>
                         </div>
                     </div>
@@ -157,9 +157,10 @@
                         </div>
                     </div>
                     <hr class="garis">
-                    <div class="row jarak">
+                    <input type="hidden" id="h_is_biaya">
+                    <div class="row jarak" style="display: none" id="form_biaya">
                         <div class="form-group">
-                            <label class="col-md-12" style="text-align: justify">Biaya adalah perkiraan biaya yang harus dibayarkan oleh pihak pasien erdasarkan perkiraan dalam kasus-kasus sewajarnya dan tidak mengikat kedua belah pihak apabila ada perluasan</label>
+                            <label class="col-md-12" style="text-align: justify">Biaya adalah perkiraan biaya yang harus dibayarkan oleh pihak pasien berdasarkan perkiraan dalam kasus-kasus sewajarnya dan tidak mengikat kedua belah pihak apabila ada perluasan</label>
                         </div>
                     </div>
                     <div class="row jarak">
@@ -218,7 +219,7 @@
                                 <canvas class="paint-canvas-ttd" id="ttd3" width="220" height="100"
                                         onmouseover="paintTtd('ttd3')"></canvas>
                                 <input class="form-control" id="nama_terang_ttd3" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_ttd3" placeholder="SIP">
+                                <%--<input style="margin-top: 3px" class="form-control" id="sip_ttd3" placeholder="SIP">--%>
                             </div>
                             <div class="col-md-1">
                                 <button style="margin-left: -100px; margin-top: 35px" type="button" class="btn btn-danger"

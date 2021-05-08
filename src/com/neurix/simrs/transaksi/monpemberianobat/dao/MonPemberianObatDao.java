@@ -40,6 +40,7 @@ public class MonPemberianObatDao extends GenericDao<ItSimrsMonPemberianObatEntit
             criteria.add(Restrictions.eq("kategori", mapCriteria.get("kategori").toString()));
         }
 
+        criteria.add(Restrictions.eq("flag", "Y"));
         criteria.addOrder(Order.desc("createdDate"));
         List<ItSimrsMonPemberianObatEntity> results = criteria.list();
         return results;
@@ -63,7 +64,7 @@ public class MonPemberianObatDao extends GenericDao<ItSimrsMonPemberianObatEntit
                 "INNER JOIN im_simrs_bentuk_barang d ON c.id_bentuk = d.id_bentuk\n" +
                 "WHERE a.id_detail_checkup = '"+idDetailCheckup+"'\n" +
                 "AND a.status = '3'\n" +
-                "AND c.flag_parenteral IS NULL OR c.flag_parenteral = 'N' \n" +
+                "AND c.flag_parenteral = 'N' \n" +
                 "GROUP BY b.id_obat,\n" +
                 "c.nama_obat,\n" +
                 "d.bentuk";

@@ -41,7 +41,7 @@ public class HemodinamikaAction {
             hemodinamika.setWaktu(waktu);
 
             if(!"".equalsIgnoreCase(obj.getString("tensi"))){
-                hemodinamika.setTensi(new Integer(String.valueOf(obj.getString("tensi"))));
+                hemodinamika.setTensi(obj.getString("tensi"));
             }
             if(!"".equalsIgnoreCase(obj.getString("st"))){
                 hemodinamika.setSistole(new Integer(String.valueOf(obj.getString("st"))));

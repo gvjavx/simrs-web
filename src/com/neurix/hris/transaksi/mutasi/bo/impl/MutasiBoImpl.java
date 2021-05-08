@@ -1,8 +1,17 @@
 package com.neurix.hris.transaksi.mutasi.bo.impl;
 
+import com.neurix.authorization.company.dao.AreasBranchesUsersDao;
+import com.neurix.authorization.company.dao.BranchDao;
+import com.neurix.authorization.company.model.AreaBranchUser;
+import com.neurix.authorization.company.model.ImAreasBranchesUsers;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.authorization.position.model.Position;
+import com.neurix.authorization.role.model.ImRoles;
+import com.neurix.authorization.user.dao.UserDao;
+import com.neurix.authorization.user.dao.UserRoleDao;
+import com.neurix.authorization.user.model.*;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
@@ -10,6 +19,10 @@ import com.neurix.hris.master.biodata.dao.BiodataDao;
 import com.neurix.hris.master.biodata.dao.PelatihanJabatanUserDao;
 import com.neurix.hris.master.biodata.dao.TunjLainPegawaiDao;
 import com.neurix.hris.master.biodata.model.*;
+import com.neurix.hris.master.golongan.dao.GolonganDao;
+import com.neurix.hris.master.golongan.model.ImGolonganEntity;
+import com.neurix.hris.master.golonganPkwt.dao.GolonganPkwtDao;
+import com.neurix.hris.master.golonganPkwt.model.ImGolonganPkwtEntity;
 import com.neurix.hris.master.jenisPegawai.dao.JenisPegawaiDao;
 import com.neurix.hris.master.jenisPegawai.model.ImHrisJenisPegawaiEntity;
 import com.neurix.hris.master.jenisPegawai.model.JenisPegawai;
@@ -22,8 +35,10 @@ import com.neurix.hris.master.kualifikasiCalonPejabat.model.KualifikasiCalonPeja
 import com.neurix.hris.master.payrollSkalaGaji.dao.PayrollSkalaGajiDao;
 import com.neurix.hris.master.payrollSkalaGaji.model.ImPayrollSkalaGajiEntity;
 import com.neurix.hris.master.pelatihanJabatan.model.PelatihanJabatan;
+import com.neurix.hris.master.profesi.dao.ProfesiDao;
 import com.neurix.hris.master.sertifikat.dao.SertifikatDao;
 import com.neurix.hris.master.sertifikat.model.ImSertifikatEntity;
+import com.neurix.hris.master.sertifikat.model.Sertifikat;
 import com.neurix.hris.master.statusMutasi.dao.StatusMutasiDao;
 import com.neurix.hris.master.statusMutasi.model.ImHrisStatusMutasiEntity;
 import com.neurix.hris.master.strukturJabatan.dao.StrukturJabatanDao;
@@ -59,6 +74,8 @@ import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity
 import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import com.neurix.hris.transaksi.smk.dao.SmkHistoryGolonganDao;
 import com.neurix.hris.transaksi.smk.model.ImtHistorySmkGolonganEntity;
+import com.neurix.simrs.master.dokter.dao.DokterDao;
+import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImJenisPeriksaPasienEntity;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -108,6 +125,48 @@ public class MutasiBoImpl implements MutasiBo {
     private KeluargaDao keluargaDao;
     private StudyJurusanDao studyJurusanDao;
     private TunjLainPegawaiDao tunjLainPegawaiDao;
+    private GolonganDao golonganDao;
+    private GolonganPkwtDao golonganPkwtDao;
+
+    private UserDao userDao;
+    private AreasBranchesUsersDao areasBranchesUsersDao;
+    private UserRoleDao userRoleDao;
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    public void setAreasBranchesUsersDao(AreasBranchesUsersDao areasBranchesUsersDao) {
+        this.areasBranchesUsersDao = areasBranchesUsersDao;
+    }
+
+    public void setUserRoleDao(UserRoleDao userRoleDao) {
+        this.userRoleDao = userRoleDao;
+    }
+
+    public void setGolonganDao(GolonganDao golonganDao) {
+        this.golonganDao = golonganDao;
+    }
+
+    public void setGolonganPkwtDao(GolonganPkwtDao golonganPkwtDao) {
+        this.golonganPkwtDao = golonganPkwtDao;
+    }
+
+    private ProfesiDao profesiDao;
+    private DokterDao dokterDao;
+    private BranchDao branchDao;
+
+    public void setBranchDao(BranchDao branchDao) {
+        this.branchDao = branchDao;
+    }
+
+    public void setDokterDao(DokterDao dokterDao) {
+        this.dokterDao = dokterDao;
+    }
+
+    public void setProfesiDao(ProfesiDao profesiDao) {
+        this.profesiDao = profesiDao;
+    }
 
     public void setStudyJurusanDao(StudyJurusanDao studyJurusanDao) {
         this.studyJurusanDao = studyJurusanDao;
@@ -395,10 +454,41 @@ public class MutasiBoImpl implements MutasiBo {
             if(mutasiList != null){
                 for (Mutasi mutasi: mutasiList) {
 
+                    mutasi.setLastUpdate(bean.getLastUpdate());
+                    mutasi.setLastUpdateWho(bean.getLastUpdateWho());
                     ItMutasiEntity itMutasiEntity = new ItMutasiEntity();
                     ItMutasiDocEntity itDoc = new ItMutasiDocEntity();
+                    String mutasiId;
+                    try {
+                        mutasiId = mutasiDao.getNextMutasiId();
+                    }catch (HibernateException e){
+                        logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                        throw new GeneralBOException("Error when retrieving Next Mutasi Id, " + e.getMessage());
+                    }
 
-                    String mutasiId = mutasiDao.getNextMutasiId() ;
+                    ImBiodataEntity biodataEntity = new ImBiodataEntity();
+                    try{
+                        biodataEntity = biodataDao.getById("nip", mutasi.getNip());
+                    }catch (HibernateException e){
+                        logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                        throw new GeneralBOException("Error when retrieving Biodata by ID, " + e.getMessage());
+                    }
+                    String level = "-";
+                    if(biodataEntity.getGolongan() != null && !"".equalsIgnoreCase(biodataEntity.getGolongan())) {
+                        try {
+                            if (biodataEntity.getTipePegawai().equalsIgnoreCase(CommonConstant.PEGAWAI_PKWT)) {
+                                ImGolonganPkwtEntity golongan = golonganPkwtDao.getById("golonganPkwtId", biodataEntity.getGolongan());
+                                level = golongan.getGolonganPkwtName();
+                            } else {
+                                ImGolonganEntity golongan = golonganDao.getById("golonganId", biodataEntity.getGolongan());
+                                level = golongan.getGolonganName();
+                            }
+                        } catch (HibernateException e) {
+                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                            throw new GeneralBOException("Error when retrieving Golongan by ID, " + e.getMessage());
+                        }
+                    }
+
                     itMutasiEntity.setMutasiId(mutasiId);
                     itMutasiEntity.setNip(mutasi.getNip());
                     itMutasiEntity.setBranchLamaId(mutasi.getBranchLamaId());
@@ -409,8 +499,13 @@ public class MutasiBoImpl implements MutasiBo {
                     itMutasiEntity.setMenggantikanNip(mutasi.getPenggantiNip());
                     itMutasiEntity.setStatus(mutasi.getStatus());
                     itMutasiEntity.setTipeMutasi(mutasi.getTipeMutasi());
-                    itMutasiEntity.setLevelLama(mutasi.getLevelLama());
-                    itMutasiEntity.setLevelLamaName(mutasi.getLevelLamaName());
+                    itMutasiEntity.setLevelLama(level);
+                    itMutasiEntity.setLevelLamaName(level);
+                    itMutasiEntity.setLevelBaru(level);
+                    itMutasiEntity.setLevelBaruName(level);
+//                    itMutasiEntity.setLevelLama(mutasi.getLevelLama());
+//                    itMutasiEntity.setLevelLamaName(mutasi.getLevelLamaName());
+
 
                     if("M".equalsIgnoreCase(mutasi.getStatus()) || "R".equalsIgnoreCase(mutasi.getStatus())){
                         itMutasiEntity.setBranchBaruId(mutasi.getBranchBaruId());
@@ -434,7 +529,76 @@ public class MutasiBoImpl implements MutasiBo {
                     itMutasiEntity.setLastUpdate(bean.getLastUpdate());
                     itMutasiEntity.setNoSk(mutasi.getNoSk());
 
-                    itDoc.setDocMutasiId(mutasiDocDao.getNextId());
+                    //RAKA-13APR2021 ==> Handle Perubahan Profesi Dokter [BELUM DIUJI]
+                    String profLamaIsDokter, profBaruIsDokter = "";
+                    try{
+                        profLamaIsDokter = profesiDao.cekTipeProfesi(mutasi.getProfesiLamaId(),"dokter");
+                        profBaruIsDokter = profesiDao.cekTipeProfesi(mutasi.getProfesiBaruId(),"dokter");
+                    }catch (HibernateException e){
+                        logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                        throw new GeneralBOException("Error when check Tipe Profesi, " + e.getMessage());
+                    }
+                    /*
+                    List<ImSimrsDokterEntity> dokterEntities = new ArrayList();
+                    if("true".equalsIgnoreCase(profLamaIsDokter) && !"true".equalsIgnoreCase(profBaruIsDokter)){
+                        try{
+                            dokterEntities = dokterDao.getDataDokterById(mutasi.getNip());
+                        }catch (HibernateException e){
+                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                            throw new GeneralBOException("Error when retrieving Dokter by ID, " + e.getMessage());
+                        }
+
+                        if(dokterEntities.size()>0){
+                            dokterEntities.get(0).setFlag("N");
+                            dokterEntities.get(0).setAction("U");
+                            dokterEntities.get(0).setLastUpdate(mutasi.getLastUpdate());
+                            dokterEntities.get(0).setLastUpdateWho(mutasi.getLastUpdateWho());
+
+                            try {
+                                dokterDao.updateAndSave(dokterEntities.get(0));
+                            }catch (HibernateException e){
+                                logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                                throw new GeneralBOException("Error when update and save Dokter, " + e.getMessage());
+                            }
+                        }
+                    } else
+                    */
+                    if(!"true".equalsIgnoreCase(profLamaIsDokter) && "true".equalsIgnoreCase(profBaruIsDokter)){
+                        ImBiodataEntity biodata = new ImBiodataEntity();
+                        List<ItPersonilPositionEntity> personilPosition = new ArrayList();
+                        try{
+                            biodata = biodataDao.getById("nip", mutasi.getNip());
+                        }catch (HibernateException e){
+                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                            throw new GeneralBOException("Error when retrieving Biodata by ID, " + e.getMessage());
+                        }
+                        try{
+                            Map criteria = new HashMap();
+                            criteria.put("nip", mutasi.getNip());
+                            criteria.put("flag", "Y");
+                            personilPosition = personilPositionDao.getByCriteria(criteria);
+                        }catch (HibernateException e){
+                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                            throw new GeneralBOException("Error when retrieving Personil Position by ID, " + e.getMessage());
+                        }
+
+                        try {
+                            createDokter(biodata, personilPosition.get(0), mutasi);
+                        }catch (HibernateException e){
+                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                            throw new GeneralBOException("Error when create Dokter, " + e.getMessage());
+                        }
+                    }
+                    //RAKA-end
+
+                    String mutDocId;
+                    try{
+                        mutDocId = mutasiDocDao.getNextId();
+                    }catch (HibernateException e){
+                        logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                        throw new GeneralBOException("Error when retrieving Next Mutasi Doc ID, " + e.getMessage());
+                    }
+                    itDoc.setDocMutasiId(mutDocId);
                     itDoc.setMutasiId(mutasiId);
                     itDoc.setFlag(bean.getFlag());
                     itDoc.setAction(bean.getAction());
@@ -446,16 +610,26 @@ public class MutasiBoImpl implements MutasiBo {
                     String tgl[] = CommonUtil.convertTimestampToString(bean.getCreatedDate()).split("-");
                     bean.setStTahun(tgl[2]);
                     if (("M").equalsIgnoreCase(mutasi.getStatus())||("R").equalsIgnoreCase(mutasi.getStatus())){
-
                         // cek apakah update golongan sudah diiinsert
-                        List<ImtHistorySmkGolonganEntity> smkGolongan = historyGolonganDao.getHistoryJabatan(mutasi.getNip(), tgl[2]);
+                        List<ImtHistorySmkGolonganEntity> smkGolongan = new ArrayList<>();
+                        try{
+                            smkGolongan = historyGolonganDao.getHistoryJabatan(mutasi.getNip(), tgl[2]);
+                        }catch (HibernateException e){
+                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                            throw new GeneralBOException("Error when retrieving History Jabatan");
+                        }
                         if(smkGolongan.size() > 0){
                             for(ImtHistorySmkGolonganEntity smkGolonganLoop: smkGolongan){
-                                ImtHistorySmkGolonganEntity smkGolonganEntity = historyGolonganDao.getById("idHistorySmkGolongan", smkGolonganLoop.getIdHistorySmkGolongan());
-                                smkGolonganEntity.setFlagMutasi("Y");
-                                smkGolonganEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                                smkGolonganEntity.setLastUpdate(bean.getLastUpdate());
-                                historyGolonganDao.updateAndSave(smkGolonganEntity);
+                                try {
+                                    ImtHistorySmkGolonganEntity smkGolonganEntity = historyGolonganDao.getById("idHistorySmkGolongan", smkGolonganLoop.getIdHistorySmkGolongan());
+                                    smkGolonganEntity.setFlagMutasi("Y");
+                                    smkGolonganEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                                    smkGolonganEntity.setLastUpdate(bean.getLastUpdate());
+                                    historyGolonganDao.updateAndSave(smkGolonganEntity);
+                                }catch (HibernateException e){
+                                    logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                                    throw new GeneralBOException("Error when update History Golongan");
+                                }
                             }
                         }
 
@@ -511,7 +685,7 @@ public class MutasiBoImpl implements MutasiBo {
                                 // matikan posisi lama
                                 personilPositionEntity.setFlag("N");
                                 personilPositionEntity.setAction("U");
-                                personilPositionEntity.setLastUpdate(mutasi.getLastUpdate());
+                                personilPositionEntity.setLastUpdate(bean.getLastUpdate());
 
                                 try {
                                     personilPositionDao.updateAndSave(personilPositionEntity);
@@ -551,7 +725,7 @@ public class MutasiBoImpl implements MutasiBo {
 
                                     personilPositionEntity.setFlagDigaji("Y");
                                     personilPositionEntity.setPositionId(mutasi.getUpdatePosisiId());
-                                    personilPositionEntity.setLastUpdate(mutasi.getLastUpdate());
+                                    personilPositionEntity.setLastUpdate(bean.getLastUpdate());
 
                                     try {
                                         personilPositionDao.updateAndSave(personilPositionEntity);
@@ -587,7 +761,7 @@ public class MutasiBoImpl implements MutasiBo {
                         personilPositionEntity.setAction("C");
                         personilPositionEntity.setCreatedDate(mutasi.getLastUpdate());
                         personilPositionEntity.setCreatedWho(mutasi.getLastUpdateWho());
-                        personilPositionEntity.setLastUpdate(mutasi.getLastUpdate());
+                        personilPositionEntity.setLastUpdate(bean.getLastUpdate());
                         personilPositionEntity.setLastUpdateWho(mutasi.getLastUpdateWho());
 
                         try {
@@ -734,6 +908,7 @@ public class MutasiBoImpl implements MutasiBo {
                     }
 
 
+                    returnMutasi.setStatus(itMutasiEntity.getStatus());
                     returnMutasi.setCreatedWho(itMutasiEntity.getCreatedWho());
                     returnMutasi.setCreatedDate(itMutasiEntity.getCreatedDate());
                     returnMutasi.setLastUpdate(itMutasiEntity.getLastUpdate());
@@ -890,24 +1065,44 @@ public class MutasiBoImpl implements MutasiBo {
         Mutasi resultMutasi = new Mutasi();
         List<Mutasi> mutasiList = null;
 
-        try {
-            mutasiList = mutasiDao.getDataReportMutasi(mutasiId);
-        } catch (HibernateException e){
+//        try {
+//            mutasiList = mutasiDao.getDataReportMutasi(mutasiId);
+//        } catch (HibernateException e){
+//            logger.error("[MutasiBoImpl.getDataReportMutasi] Error, " + e.getMessage());
+//            throw new GeneralBOException("Found problem when get data mutasi, please info to your admin..." + e.getMessage());
+//        }
+//        if(mutasiList != null){
+//            for(Mutasi mutasi : mutasiList){
+//                resultMutasi.setNama(mutasi.getNama());
+//                resultMutasi.setPositionLamaName(mutasi.getPositionLamaName());
+//                resultMutasi.setBranchLamaName(mutasi.getBranchLamaName());
+//                resultMutasi.setBranchBaruName(mutasi.getBranchBaruName());
+//                resultMutasi.setPositionBaruName(mutasi.getPositionBaruName());
+//                resultMutasi.setStTanggalEfektif(mutasi.getStTanggalEfektif());
+//                resultMutasi.setNoSk(mutasi.getNoSk());
+//            }
+//        }
+
+        ItMutasiEntity mutasiEntity = new ItMutasiEntity();
+        try{
+            mutasiEntity = mutasiDao.getById("mutasiId", mutasiId);
+        }catch (HibernateException e){
             logger.error("[MutasiBoImpl.getDataReportMutasi] Error, " + e.getMessage());
-            throw new GeneralBOException("Found problem when get data mutasi, please info to your admin..." + e.getMessage());
+            throw new GeneralBOException("Error when retrieving Mutasi by ID, " + e.getMessage());
         }
-        if(mutasiList != null){
-            for(Mutasi mutasi : mutasiList){
-                resultMutasi.setNama(mutasi.getNama());
-                resultMutasi.setPositionLamaName(mutasi.getPositionLamaName());
-                resultMutasi.setBranchLamaName(mutasi.getBranchLamaName());
-                resultMutasi.setBranchBaruName(mutasi.getBranchBaruName());
-                resultMutasi.setPositionBaruName(mutasi.getPositionBaruName());
-                resultMutasi.setLevelBaruName(mutasi.getLevelBaruName());
-                resultMutasi.setLevelBaru(mutasi.getLevelBaru());
-                resultMutasi.setStTanggalEfektif(mutasi.getStTanggalEfektif());
-            }
-        }
+
+        resultMutasi.setMutasiId(mutasiEntity.getMutasiId());
+        resultMutasi.setNip(mutasiEntity.getNip());
+        resultMutasi.setNoSk(mutasiEntity.getNoSk());
+        resultMutasi.setTanggalEfektif(mutasiEntity.getTanggalEfektif());
+        resultMutasi.setBranchLamaId(mutasiEntity.getBranchLamaId());
+        resultMutasi.setBranchBaruId(mutasiEntity.getBranchBaruId());
+        resultMutasi.setDivisiLamaId(mutasiEntity.getDivisiLamaId());
+        resultMutasi.setDivisiBaruId(mutasiEntity.getDivisiBaruId());
+        resultMutasi.setPositionLamaId(mutasiEntity.getPositionLamaId());
+        resultMutasi.setPositionBaruId(mutasiEntity.getPositionBaruId());
+        resultMutasi.setStatus(mutasiEntity.getStatus());
+
 
         logger.info("[MutasiBoImpl.getDataReportMutasi] start process <<<");
         return resultMutasi;
@@ -1106,6 +1301,30 @@ public class MutasiBoImpl implements MutasiBo {
         return studyEntities;
     }
 
+    private List<ImSertifikatEntity> getListPelatihanEntity(Sertifikat bean){
+        logger.info("[MutasiBoImpl.getListPelatihanEntity] START >>>");
+
+        List<ImSertifikatEntity> pelatianEntities = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        if (bean.getSertifikatId() != null && !"".equalsIgnoreCase(bean.getSertifikatId()))
+            hsCriteria.put("pelatihan_id", bean.getSertifikatId());
+        if (bean.getNip() != null && !"".equalsIgnoreCase(bean.getNip()))
+            hsCriteria.put("nip", bean.getNip());
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag()))
+            hsCriteria.put("flag", bean.getFlag());
+
+        try {
+            pelatianEntities = sertifikatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[MutasiBoImpl.getListPelatihanEntity] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when get list study entity, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[MutasiBoImpl.getListPelatihanEntity] END <<<");
+        return pelatianEntities;
+    }
+
     private List<ItTunjLainPegawaiEntity> getListTunjanganEntity(TunjLainPegawai bean){
         logger.info("[MutasiBoImpl.getListTunjanganEntity] START >>>");
 
@@ -1150,7 +1369,7 @@ public class MutasiBoImpl implements MutasiBo {
             biodataEntity.setAction("U");
             biodataEntity.setLastUpdate(mutasi.getLastUpdate());
             biodataEntity.setLastUpdateWho(mutasi.getLastUpdateWho());
-            biodataEntity.setKeterangan("Telah nonaktif pada tanggal " + biodataEntity.getTanggalKeluar());
+//            biodataEntity.setKeterangan("Telah nonaktif pada tanggal " + biodataEntity.getTanggalKeluar());
 
             try {
                 biodataDao.updateAndSave(biodataEntity);
@@ -1236,6 +1455,31 @@ public class MutasiBoImpl implements MutasiBo {
             }
             // END
 
+            // Update flag N pada semua pelatihan berdasarkan nip
+            Sertifikat pelatihan = new Sertifikat();
+            pelatihan.setNip(mutasi.getNip());
+            pelatihan.setFlag("Y");
+
+            List<ImSertifikatEntity> pelatihanEntities = getListPelatihanEntity(pelatihan);
+
+            if (pelatihanEntities.size() > 0){
+                for (ImSertifikatEntity pelatihanEntity : pelatihanEntities){
+
+                    pelatihanEntity.setFlag("N");
+                    pelatihanEntity.setAction("U");
+                    pelatihanEntity.setLastUpdate(mutasi.getLastUpdate());
+                    pelatihanEntity.setLastUpdateWho(mutasi.getLastUpdateWho());
+
+                    try {
+                        sertifikatDao.updateAndSave(pelatihanEntity);
+                    } catch (HibernateException e){
+                        logger.error("[MutasiBoImpl.nonAktifAllPegawaiByCriteria] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when update data pelatihan, please inform to your admin...," + e.getMessage());
+                    }
+                }
+            }
+            // END
+
             // Update flag N pada semua tunjangan lain berdasarkan nip
             TunjLainPegawai tunjLainPegawai = new TunjLainPegawai();
             tunjLainPegawai.setNip(mutasi.getNip());
@@ -1258,6 +1502,45 @@ public class MutasiBoImpl implements MutasiBo {
                         throw new GeneralBOException("Found problem when update data study, please inform to your admin...," + e.getMessage());
                     }
                 }
+            }
+            // END
+
+            // Update flag N pada Dokter berdasarkan nip / id dokter
+            List<ImSimrsDokterEntity> dokterEntities = new ArrayList();
+            try{
+                dokterEntities = dokterDao.getDataDokterById(mutasi.getNip());
+            }catch (HibernateException e){
+                logger.error("[MutasiBoImpl.nonAktifAllPegawaiByCriteria] Error, " + e.getMessage());
+                throw new GeneralBOException("Error when retrieving Dokter by ID, " + e.getMessage());
+            }
+
+            if(dokterEntities.size()>0){
+                dokterEntities.get(0).setFlag("N");
+                dokterEntities.get(0).setAction("U");
+                dokterEntities.get(0).setLastUpdate(mutasi.getLastUpdate());
+                dokterEntities.get(0).setLastUpdateWho(mutasi.getLastUpdateWho());
+
+                try {
+                    dokterDao.updateAndSave(dokterEntities.get(0));
+                }catch (HibernateException e){
+                    logger.error("[MutasiBoImpl.nonAktifAllPegawaiByCriteria] Error, " + e.getMessage());
+                    throw new GeneralBOException("Error when update and save Dokter, " + e.getMessage());
+                }
+            }
+            // END
+
+            // Update flag N pada user berdasarkan nip / user_id
+            User user = new User();
+            user.setUserId(mutasi.getNip());
+            user.setAction("D");
+            user.setFlag("N");
+            user.setLastUpdate(mutasi.getLastUpdate());
+            user.setLastUpdateWho(mutasi.getLastUpdateWho());
+            try {
+                deleteUser(user);
+            }catch (HibernateException e){
+                logger.error("[MutasiBoImpl.nonAktifAllPegawaiByCriteria] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when update data User, please inform to your admin...," + e.getMessage());
             }
             // END
         }
@@ -1351,8 +1634,6 @@ public class MutasiBoImpl implements MutasiBo {
                 pengalamanLama.setJabatanFlag("N");
                 historyJabatanPegawaiDao.updateAndSave(pengalamanLama);
             }
-
-
         } catch (HibernateException e) {
             logger.error("[PengalamanKerjaBoImpl.saveEdit] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data Pengalaman by Kode Pengalaman, please inform to your admin...," + e.getMessage());
@@ -1389,7 +1670,7 @@ public class MutasiBoImpl implements MutasiBo {
             historyJabatanPegawai.setGolonganId(golonganId);
         }catch (HibernateException e) {
             logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
-            throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data [mutasi] Golongan by NIP, please inform to your admin...," + e.getMessage());
         }
 
         historyJabatanPegawai.setFlag(bean.getFlag());
@@ -1413,7 +1694,11 @@ public class MutasiBoImpl implements MutasiBo {
             historyJabatanPegawai.setPositionName(positionname);
             divisiName = historyJabatanPegawaiDao.getDivisiById(mutasi.getDivisiBaruId());
             historyJabatanPegawai.setDivisiName(divisiName);
-            golonganName = historyJabatanPegawaiDao.getGolonganById(golonganId);
+            if(golonganId != null) {
+                golonganName = historyJabatanPegawaiDao.getGolonganById(golonganId);
+            }else{
+                golonganName = "-";
+            }
             historyJabatanPegawai.setGolonganName(golonganName);
             historyJabatanPegawai.setTanggal(bean.getStTanggalEfektif());
 
@@ -1447,5 +1732,165 @@ public class MutasiBoImpl implements MutasiBo {
         }
 
         logger.info("[MutasiBoImpl.saveHistoryJabatan] END <<<");
+    }
+
+    private void deleteUser(User usersDelete) throws GeneralBOException {
+        logger.info("[MutasiBoImpl.saveDelete] start process >>>");
+
+        if (usersDelete != null) {
+            String userId = usersDelete.getUserId();
+            ImUsersPK primaryKey = new ImUsersPK();
+            primaryKey.setId(userId);
+
+            ImUsers imUsersOld = null;
+            try {
+                imUsersOld = userDao.getById(primaryKey, "Y");
+            } catch (HibernateException e) {
+                logger.error("[MutasiBoImpl.saveDelete] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when saving delete data users, please info to your admin..." + e.getMessage());
+            }
+
+            if (imUsersOld != null) {
+                Map hsCriteria = new HashMap();
+                hsCriteria.put("user_id", userId);
+                hsCriteria.put("flag", "Y");
+
+                //cek into im_areas_branches_users
+                ImAreasBranchesUsers imAreasBranchesUsers = null;
+                try {
+                    imAreasBranchesUsers = areasBranchesUsersDao.getAreasBranchesUsersByUserId(userId, "Y");
+                } catch (HibernateException e) {
+                    logger.error("[MutasiBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving delete data users, please info to your admin..." + e.getMessage());
+                }
+
+                if (imAreasBranchesUsers != null) {
+                    imAreasBranchesUsers.setFlag("N");
+                    imAreasBranchesUsers.setLastUpdate(usersDelete.getLastUpdate());
+                    imAreasBranchesUsers.setLastUpdateWho(usersDelete.getLastUpdateWho());
+
+                    try {
+                        areasBranchesUsersDao.updateAndSave(imAreasBranchesUsers);
+                    } catch (HibernateException e) {
+                        logger.error("[MutasiBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving deactive data ara-branch-user, please info to your admin..." + e.getMessage());
+                    }
+
+                }
+
+                List<ImRoles> listOfImRoles = new ArrayList<ImRoles>(imUsersOld.getImRoles());
+                ImRoles itemImRoles = listOfImRoles.get(0);
+
+                ImUsersRolesPK primaryKeyUserRole = new ImUsersRolesPK();
+                primaryKeyUserRole.setUserId(userId);
+                primaryKeyUserRole.setRoleId(itemImRoles.getRoleId());
+
+                ImUsersRoles imUsersRolesOld = null;
+                try {
+                    imUsersRolesOld = userRoleDao.getByCompositeKey(primaryKeyUserRole, "Y");
+                } catch (HibernateException e) {
+                    logger.error("[MutasiBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving delete data users, please info to your admin..." + e.getMessage());
+                }
+
+                if (imUsersRolesOld != null) {
+                    imUsersRolesOld.setFlag("N");
+                    imUsersRolesOld.setLastUpdate(usersDelete.getLastUpdate());
+                    imUsersRolesOld.setLastUpdateWho(usersDelete.getLastUpdateWho());
+
+                    try {
+                        userRoleDao.updateAndSave(imUsersRolesOld);
+                    } catch (HibernateException e) {
+                        logger.error("[MutasiBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving deactive data user-role, please info to your admin..." + e.getMessage());
+                    }
+                }
+
+                imUsersOld.setFlag("N");
+                imUsersOld.setLastUpdate(usersDelete.getLastUpdate());
+                imUsersOld.setLastUpdateWho(usersDelete.getLastUpdateWho());
+                try {
+                    userDao.updateAndSave(imUsersOld);
+                } catch (HibernateException e) {
+                    logger.error("[MutasiBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving deactive data user, please info to your admin..." + e.getMessage());
+                }
+
+            } else {
+                logger.error("[MutasiBoImpl.saveDelete] Error, Found problem when deleting data users, cause no have userId in database, please info to your admin.");
+                throw new GeneralBOException("Found problem when deleting data users, cause np have userId in database, please info to your admin.");
+            }
+
+        } else {
+            logger.error("[MutasiBoImpl.saveDelete] Error, Found problem when deleting data users, cause no have userId in database, please info to your admin.");
+            throw new GeneralBOException("Found problem when deleting data users, cause np have userId in database, please info to your admin.");
+        }
+        logger.info("[MutasiBoImpl.saveDelete] end process <<<");
+    }
+
+    private void createDokter(ImBiodataEntity biodata, ItPersonilPositionEntity personilPosition, Mutasi bean) throws GeneralBOException{
+        List<ImSimrsDokterEntity> cekDokter = new ArrayList<>();
+        try {
+            cekDokter = dokterDao.getDataDokterById(biodata.getNip());
+        } catch (HibernateException e) {
+            logger.error("[BiodataBoImpl.saveAdd] Error When Cek Dokter By ID. ", e);
+            throw new GeneralBOException("[BiodataBoImpl.saveAdd] Error When Get Dokter By ID. ", e);
+        }
+
+        if (cekDokter.size() == 0) {
+            String kodering = "";
+            try {
+                String seqKodering = dokterDao.getNextKodering();
+
+                Map map = new HashMap<>();
+                map.put("position_id", personilPosition.getPositionId());
+                String koderingPosition = positionDao.getKodringPosition(map).split("\\.")[2];
+
+                Map map1 = new HashMap<>();
+                map1.put("branch_id", personilPosition.getBranchId());
+                String koderingBranch = branchDao.getKodringBranches(map1);
+
+                kodering = koderingBranch + "." + koderingPosition + "." + seqKodering;
+            }catch (HibernateException e){
+                logger.error("[MutasiBoImpl.createDokter] Error, " +e.getMessage());
+                throw new GeneralBOException("Error when retrieving kodering for kodering dokter, " + e.getMessage());
+            }
+
+            // creating object entity serializable
+            ImSimrsDokterEntity entity = new ImSimrsDokterEntity();
+            String namaDgnGelar = biodata.getNamaPegawai();
+            if (biodata.getGelarDepan() != null && !"".equalsIgnoreCase(biodata.getGelarDepan())) {
+                namaDgnGelar = biodata.getGelarDepan() + ". " + namaDgnGelar;
+            }
+            if (biodata.getGelarBelakang() != null && !"".equalsIgnoreCase(biodata.getGelarBelakang())) {
+                namaDgnGelar = namaDgnGelar + ", " + biodata.getGelarBelakang();
+            }
+
+            entity.setIdDokter(biodata.getNip());
+            entity.setNamaDokter(namaDgnGelar);
+            entity.setIdPelayanan("");
+            entity.setKuota("");
+            entity.setKodering(kodering);
+            entity.setLat("");
+            entity.setLon("");
+            entity.setFlagCall("");
+            entity.setFlagTele("");
+            entity.setKuotaTele("");
+
+            entity.setFlag("Y");
+            entity.setAction("C");
+            entity.setCreatedWho(bean.getLastUpdateWho());
+            entity.setLastUpdateWho(bean.getLastUpdateWho());
+            entity.setCreatedDate(bean.getLastUpdate());
+            entity.setLastUpdate(bean.getLastUpdate());
+
+            try {
+                // insert into database
+                dokterDao.addAndSave(entity);
+            } catch (HibernateException e) {
+                logger.error("[MutasiBoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when saving new data Dokter, please info to your admin..." + e.getMessage());
+            }
+        }
     }
 }

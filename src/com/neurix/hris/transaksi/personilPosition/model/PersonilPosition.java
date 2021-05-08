@@ -27,6 +27,15 @@ public class PersonilPosition extends BaseModel {
     private String jenisPegawaiName;
     private String flagEdited;
     private String positionIdLama;
+    private String tipeProfesi;
+
+    public String getTipeProfesi() {
+        return tipeProfesi;
+    }
+
+    public void setTipeProfesi(String tipeProfesi) {
+        this.tipeProfesi = tipeProfesi;
+    }
 
     public String getPositionIdLama() {
         return positionIdLama;

@@ -5,6 +5,7 @@ import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.master.dao.MasterDao;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
+import com.neurix.akuntansi.master.tipeRekening.model.TipeRekening;
 import com.neurix.akuntansi.transaksi.budgeting.bo.BudgetingBo;
 import com.neurix.akuntansi.transaksi.budgeting.dao.BudgetingDao;
 import com.neurix.akuntansi.transaksi.budgeting.dao.BudgetingDetailDao;
@@ -24,6 +25,7 @@ import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.tipepegawai.model.TipePegawai;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -1604,6 +1606,24 @@ public class BudgetingBoImpl implements BudgetingBo {
             }
         }
         return listOfResults;
+    }
+
+    @Override
+    public List<TipeRekening> getAllTipeRekening() {
+
+        logger.info("[BudgetingBoIml.getAllTipeRekening] START >>>");
+
+        List<TipeRekening> tipeRekeningList = new ArrayList<>();
+
+        try {
+            tipeRekeningList = budgetingDao.getAllListTipeKoderekening();
+        } catch (HibernateException e){
+            logger.error("[BudgetingBoImpl.getAllTipeRekening] ERROR. ",e);
+            throw new GeneralBOException("[BudgetingBoImpl.getAllTipeRekening] ERROR. ",e);
+        }
+
+        logger.info("[BudgetingBoIml.getAllTipeRekening] END <<<");
+        return tipeRekeningList;
     }
 
     @Override

@@ -20,6 +20,33 @@ public class KeteranganObat {
     private String warnaBackground;
     private String idJenis;
     private String namaJenis;
+    private String level;
+    private String jenis;
+    private String parentId;
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getJenis() {
+        return jenis;
+    }
+
+    public void setJenis(String jenis) {
+        this.jenis = jenis;
+    }
 
     public String getIdJenis() {
         return idJenis;

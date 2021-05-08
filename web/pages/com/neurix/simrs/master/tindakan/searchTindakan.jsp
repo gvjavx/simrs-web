@@ -115,7 +115,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
-                                    <div class="col-sm-6" style="margin-top: 7px">
+                                    <div class="col-sm-8" style="margin-top: 7px">
                                         <sj:submit type="button" cssClass="btn btn-success" formIds="tindakanForm"
                                                    id="search" name="search"
                                                    onClickTopics="showDialogLoading"
@@ -335,6 +335,8 @@
                                 <i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_set_nama_tindakan"><i class="fa fa-check"></i> correct</p>
+                            <p id="loading_add" style="color: green; margin-top: 12px; display: none; margin-left: -25px">
+                                <i class="fa fa-circle-o-notch fa-spin"></i> sedang mencari...</p>
                         </div>
                     </div>
                 </div>
@@ -397,7 +399,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_add"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_add"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -546,6 +548,8 @@
                         <div class="col-md-7">
                             <select class="form-control select2" id="edit_nama_tindakan" style="width: 100%"
                                     onchange="var warn =$('#war_edit_nama_tindakan').is(':visible'); if (warn){$('#cor_edit_nama_tindakan').show().fadeOut(3000);$('#war_edit_nama_tindakan').hide()}"></select>
+                            <span id="loading_edit" style="color: green;">
+                                <i class="fa fa-circle-o-notch fa-spin"></i> sedang mencari...</span>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -643,7 +647,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_edit"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_edit"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -668,7 +672,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-check"></i> Yes
                 </button>
             </div>
         </div>
@@ -916,8 +920,9 @@
                 if (namaUnit && namaPelayanan && namaTindakan != '' && dataPelayanan.length > 0) {
                     if (dataPelayanan.length > 0) {
                         var dataSave = [];
-                        $('#save_add').hide();
-                        $('#load_add').show();
+                        var cekTarif = false;
+                        var cekTarifBpjs = false;
+                        var cekDiskon = false;
                         $.each(dataPelayanan, function (i, item) {
                             var idHeaderTindakan = $('#id_tindakan_' + i).val();
                             var namaHeaderTindakan = $('#nama_tindakan_'+i).val();
@@ -950,26 +955,46 @@
                                 'is_ina': ina,
                                 'is_elektif': elektif,
                             });
-                        });
-                        var dataString = JSON.stringify(dataSave);
-                        dwr.engine.setAsync(true);
-                        TindakanAction.saveAdd(dataString, {
-                            callback: function (response) {
-                                if (response.status == "success") {
-                                    $('#modal-add').modal('hide');
-                                    $('#info_dialog').dialog('open');
-                                    $('#save_add').show();
-                                    $('#load_add').hide();
-                                    $('body').scrollTop(0);
 
-                                } else {
-                                    $('#warning_add').show().fadeOut(5000);
-                                    $('#msg_add').text(response.msg);
-                                    $('#save_add').show();
-                                    $('#load_add').hide();
-                                }
+                            if(parseInt(tarif) < 0 || tarif == ''){
+                                cekTarif = true;
                             }
+
+                            if(parseInt(tarifBpjs) < 0 || tarifBpjs == ''){
+                                cekTarifBpjs = true;
+                            }
+                            if(parseInt(diskon) < 0 || diskon == ''){
+                                cekDiskon = true;
+                            }
+
                         });
+
+                        if(cekTarif || cekTarifBpjs || diskon){
+                            $('#warning_add').show().fadeOut(5000);
+                            $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
+                        }else{
+                            $('#save_add').hide();
+                            $('#load_add').show();
+                            var dataString = JSON.stringify(dataSave);
+                            dwr.engine.setAsync(true);
+                            TindakanAction.saveAdd(dataString, {
+                                callback: function (response) {
+                                    if (response.status == "success") {
+                                        $('#modal-add').modal('hide');
+                                        $('#info_dialog').dialog('open');
+                                        $('#save_add').show();
+                                        $('#load_add').hide();
+                                        $('body').scrollTop(0);
+
+                                    } else {
+                                        $('#warning_add').show().fadeOut(5000);
+                                        $('#msg_add').text(response.msg);
+                                        $('#save_add').show();
+                                        $('#load_add').hide();
+                                    }
+                                }
+                            });
+                        }
                     } else {
                         $('#warning_add').show().fadeOut(5000);
                         $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
@@ -1041,6 +1066,7 @@
     }
 
     function getPelayanan(idPelayanan) {
+        var tempIdPelayanan = '<s:property value="tindakan.idPelayanan"/>';
         if(idPelayanan != ''){
             $('#h_branch_id').val(idPelayanan);
             var option = '<option value="">[Select One]</option>';
@@ -1053,21 +1079,32 @@
                 $('#set_nama_pelayanan').html(option);
                 $('#edit_nama_pelayanan').html(option);
                 $('#pelayanan').html(option);
+                if(tempIdPelayanan != null && tempIdPelayanan != ''){
+                    $('#pelayanan').val(tempIdPelayanan).trigger('change');
+                }
             });
         }
     }
 
     function getTindakan() {
         var option = '<option value="">[Select One]</option>';
-        TindakanAction.getComboTindakan(function (res) {
-            if (res.length > 0) {
-                $.each(res, function (i, item) {
-                    option += '<option value="' + item.idHeaderTindakan + '">' + item.namaTindakan + '</option>'
-                });
-            }
-            $('#set_nama_tindakan').html(option);
-            $('#edit_nama_tindakan').html(option);
-        });
+        $('#loading_add').show();
+        $('#loading_edit').show();
+        setTimeout(function () {
+            TindakanAction.getComboTindakan(function (res) {
+                if (res.length > 0) {
+                    $.each(res, function (i, item) {
+                        option += '<option value="' + item.idHeaderTindakan + '">' + item.namaTindakan + '</option>'
+                    });
+                }
+                $('#set_nama_tindakan').html(option);
+                $('#edit_nama_tindakan').html(option);
+
+                $('#loading_add').hide();
+
+                $('#loading_edit').hide();
+            });
+        },500);
     }
 
     function getDataTindakan(id) {
@@ -1089,7 +1126,9 @@
                     $('#edit_nama_unit').val(res.branchId).trigger('change');
                     $('#edit_nama_pelayanan').val(res.idPelayanan).trigger('change');
                     $('#edit_kategori_tindakan').val(res.idKategoriTindakan).trigger('change');
-                    $('#edit_nama_tindakan').val(res.idHeaderTindakan).trigger('change');
+                    setTimeout(function () {
+                        $('#edit_nama_tindakan').val(res.idHeaderTindakan).trigger('change');
+                    },1000);
                     $('#edit_tarif').val(formatRupiahAtas(res.tarif));
                     $('#h_tarif').val(res.tarif);
                     $('#edit_tarif_bpjs').val(formatRupiahAtas(res.tarifBpjs));

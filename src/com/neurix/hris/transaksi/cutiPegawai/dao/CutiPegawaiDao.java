@@ -104,7 +104,7 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
                 "                from  \n" +
                 "                im_hris_cuti cuti \n" +
                 "                where \n " +
-                "                cuti.cuti_id != 'CT005'";
+                "                cuti.cuti_id != 'CT007'"; //sebelumnya hardcode CT005 ==> tidak ada cuti dgn ID tersebut, Raka ganti selain Cuti Diluar Tanggungan
         resultsCuti = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query1)
                 .list();
@@ -116,7 +116,8 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
             result.setJumlahCuti(BigInteger.valueOf(Integer.valueOf(row[2].toString())));
 
             List<Object[]> results = new ArrayList<Object[]>();
-            String query2 = "select  nip,sisa_hari_cuti\n" +
+            String query2 = "select  nip," +
+                    "        sisa_hari_cuti\n" +
                     "        from  it_hris_cuti_pegawai cuti\n" +
                     "        WHERE nip='"+nip+"' AND cuti_id='"+result.getCutiId()+"' AND approval_flag='Y' \n" +
                     "        ORDER BY cuti_pegawai_id DESC\t\n" +
@@ -126,7 +127,7 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
                     .list();
 
             if (results.size()==0){
-                result.setSisaCutiHari(BigInteger.valueOf(0));
+                result.setSisaCutiHari((BigInteger) row[2]);
             }else{
                 for(Object[] row1:results){
                     result.setSisaCutiHari((BigInteger) row1[1]);
@@ -370,7 +371,7 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
     public List<ImBiodataEntity> getPegawaiCuti(String unit) throws HibernateException {
         List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
                 .add(Restrictions.eq("flag","Y"))
-                .add(Restrictions.eq("tipePegawai","TP01"))
+                .add(Restrictions.eq("tipePegawai",CommonConstant.PEGAWAI_TETAP))
                 .add(Restrictions.isNotNull("pin"))
                 .list();
         return results;
@@ -481,9 +482,14 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
                 }
             }
 
-            String query = "SELECT DISTINCT cuti.* FROM  \n" +
-                    "                    ( SELECT * FROM it_hris_notifikasi ) notifikasi LEFT JOIN  \n" +
-                    "                    ( SELECT * FROM it_hris_cuti_pegawai ) cuti ON notifikasi.no_request=cuti.cuti_pegawai_id" +
+//            String query = "SELECT cuti.* FROM  \n" +
+//                    "                    ( SELECT * FROM it_hris_notifikasi ) notifikasi LEFT JOIN  \n" +
+//                    "                    ( SELECT * FROM it_hris_cuti_pegawai ) cuti ON notifikasi.no_request=cuti.cuti_pegawai_id" +
+//                    " WHERE notifikasi.tipe_notif_id='TN66' AND cuti.flag='Y' "+searchAtasan+searchNip+searchCutiPegawaiId+" ORDER BY cuti.cuti_pegawai_id DESC";
+
+            String query = "SELECT cuti.* FROM  \n" +
+                    "                    it_hris_notifikasi notifikasi LEFT JOIN  \n" +
+                    "                    it_hris_cuti_pegawai cuti ON notifikasi.no_request=cuti.cuti_pegawai_id" +
                     " WHERE notifikasi.tipe_notif_id='TN66' AND cuti.flag='Y' "+searchAtasan+searchNip+searchCutiPegawaiId+" ORDER BY cuti.cuti_pegawai_id DESC";
 
             results = this.sessionFactory.getCurrentSession()
@@ -809,7 +815,8 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
                 "\tim_hris_pegawai b\n" +
                 "\tleft join it_hris_pegawai_position pp ON b.nip=pp.nip\n" +
                 "\tleft join im_position p ON p.position_id = pp.position_id\n" +
-                "\tleft join (select * from it_hris_cuti_pegawai where cuti_id='"+CommonConstant.CUTI_TAHUNAN+"' and cancel_flag='N' order by tanggal_dari desc) cp ON cp.nip=b.nip AND cp.cuti_pegawai_id = (select cuti_pegawai_id from it_hris_cuti_pegawai where nip=b.nip and cuti_id='"+CommonConstant.CUTI_TAHUNAN+"' and cancel_flag='N' order by tanggal_dari desc limit 1)\n" +
+                "\tleft join (select * from it_hris_cuti_pegawai where cuti_id='"+CommonConstant.CUTI_TAHUNAN+"' and cancel_flag='N' order by tanggal_dari desc) cp \n" +
+                "\tON cp.nip=b.nip AND cp.cuti_pegawai_id = (select cuti_pegawai_id from it_hris_cuti_pegawai where nip=b.nip and cuti_id='"+CommonConstant.CUTI_TAHUNAN+"' and cancel_flag='N' order by tanggal_dari desc limit 1)\n" +
                 "where\n" +
                 "\tpp.branch_id='"+unit+"'\n" +
                 "\tand b.flag='Y'\n" +

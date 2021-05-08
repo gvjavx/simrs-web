@@ -215,12 +215,12 @@
                                     <td><s:property value="namaTempatTidur"/></td>
                                     <td align="center">
                                         <s:if test='#row.status == "Y"'>
-                                            <span style="color: white; background-color: #0F9E5E; padding: 4px; border-radius: 5px">
+                                            <span style="color: white; background-color: #0F9E5E; padding: 4px; border-radius: 5px; font-size: 12px">
                                                 Tersedia
                                             </span>
                                         </s:if>
                                         <s:else>
-                                            <span style="color: white; background-color: #d33724; padding: 4px; border-radius: 5px">
+                                            <span style="color: white; background-color: #d33724; padding: 4px; border-radius: 5px; font-size: 12px">
                                                 Tidak Tersedia
                                             </span>
                                         </s:else>
@@ -805,6 +805,7 @@
 
     function getKelasKamar() {
         var option = '<option value="">[Select One]</option>';
+        var kelas = '<s:property value="tempatTidur.idKelasRuangan"/>';
         dwr.engine.setAsync(true);
         CheckupDetailAction.getListKelasKamar(null, function (res) {
             if (res.length > 0) {
@@ -812,6 +813,7 @@
                     option += '<option value="' + item.idKelasRuangan + '">' + item.namaKelasRuangan + '</option>';
                 });
                 $('#kelas_kamar').html(option);
+                $('#kelas_kamar').val(kelas).trigger('change');
                 $('#set_id_kelas').html(option);
                 $('#edit_id_kelas').html(option);
             } else {
@@ -822,6 +824,7 @@
 
     function listSelectRuangan(id, add) {
         var option = "<option value=''>[Select One]</option>";
+        var ruang = '<s:property value="tempatTidur.idRuangan"/>';
         TempatTidurAction.getRuanganByBranch(id, {
             callback: function (response) {
                 if (response.length > 0) {
@@ -829,14 +832,17 @@
                         option += "<option value='" + item.idRuangan + "'>" + item.namaRuangan + "</option>";
                     });
                     if(add == "Y"){
-                        option = option + "<option value='new'>Lainnya</option>";
+                        option = option + "<option value='new'>Ruangan Baru</option>";
                         $('#set_id_ruangan').html(option);
                     }else{
                         $('#ruangan').html(option);
+                        $('#ruangan').val(ruang).trigger('change');
                         $('#edit_id_ruangan').html(option);
                     }
                 } else {
                     $('#ruangan').html(option);
+                    option = option + "<option value='new'>Ruangan Baru</option>";
+                    $('#set_id_ruangan').html(option);
                 }
             }
         });

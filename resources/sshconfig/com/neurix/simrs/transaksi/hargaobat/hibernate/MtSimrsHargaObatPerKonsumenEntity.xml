@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatPerKonsumenEntity">
+        <table name="mt_simrs_harga_obat_per_konsumen" schema="public"/>
+        <attributes>
+            <id name="id">
+                <column name="id"/>
+            </id>
+            <basic name="idHargaObat">
+                <column name="id_harga_obat"/>
+            </basic>
+            <basic name="jenisKonsumen">
+                <column name="jenis_konsumen"/>
+            </basic>
+            <basic name="idRekanan">
+                <column name="id_rekanan"/>
+            </basic>
+            <basic name="hargaBruto">
+                <column name="harga_bruto"/>
+            </basic>
+            <basic name="margin">
+                <column name="margin"/>
+            </basic>
+            <basic name="hargaJual">
+                <column name="harga_jual"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

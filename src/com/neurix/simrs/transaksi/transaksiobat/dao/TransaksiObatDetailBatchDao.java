@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * Created by reza on 14/01/20.
  */
-public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObatDetailBatchEntity, BigInteger> {
+public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObatDetailBatchEntity, String> {
 
     @Override
     protected Class<MtSimrsTransaksiObatDetailBatchEntity> getEntityClass() {

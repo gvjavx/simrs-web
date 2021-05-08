@@ -130,27 +130,60 @@ public class TempatTidurBoImpl implements TempatTidurBo {
                 logger.error(e.getMessage());
             }
             if(tempatTidurEntity != null){
-                if(bean.getNamaTempatTidur() != null){
-                    tempatTidurEntity.setNamaTempatTidur(bean.getNamaTempatTidur());
-                }
-                if(bean.getIdRuangan() != null){
-                    tempatTidurEntity.setIdRuangan(bean.getIdRuangan());
-                }
-                if(bean.getStatus() != null){
-                    tempatTidurEntity.setStatus(bean.getStatus());
-                }
-                tempatTidurEntity.setFlag(bean.getFlag());
-                tempatTidurEntity.setAction(bean.getAction());
-                tempatTidurEntity.setLastUpdate(bean.getLastUpdate());
-                tempatTidurEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                if("D".equals(bean.getAction())){
+                    if("Y".equals(tempatTidurEntity.getStatus())){
+                        if(bean.getNamaTempatTidur() != null){
+                            tempatTidurEntity.setNamaTempatTidur(bean.getNamaTempatTidur());
+                        }
+                        if(bean.getIdRuangan() != null){
+                            tempatTidurEntity.setIdRuangan(bean.getIdRuangan());
+                        }
+                        if(bean.getStatus() != null){
+                            tempatTidurEntity.setStatus(bean.getStatus());
+                        }
+                        tempatTidurEntity.setFlag(bean.getFlag());
+                        tempatTidurEntity.setAction(bean.getAction());
+                        tempatTidurEntity.setLastUpdate(bean.getLastUpdate());
+                        tempatTidurEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
-                try {
-                    tempatTidurDao.updateAndSave(tempatTidurEntity);
-                }catch (HibernateException e){
-                    response.setStatus("error");
-                    response.setMsg("Mohon maaf error saat insert database...!, "+e.getMessage());
-                    logger.error(e.getMessage());
+                        try {
+                            tempatTidurDao.updateAndSave(tempatTidurEntity);
+                        }catch (HibernateException e){
+                            response.setStatus("error");
+                            response.setMsg("Mohon maaf error saat insert database...!, "+e.getMessage());
+                            logger.error(e.getMessage());
+                        }
+                    }else{
+                        response.setStatus("error");
+                        response.setMsg("Mohon maaf data ruangan sedang dipakai oleh pasien");
+                        logger.error("Mohon maaf data ruangan sedang dipakai oleh pasien");
+                    }
+                }else{
+                    if(bean.getNamaTempatTidur() != null){
+                        tempatTidurEntity.setNamaTempatTidur(bean.getNamaTempatTidur());
+                    }
+                    if(bean.getIdRuangan() != null){
+                        tempatTidurEntity.setIdRuangan(bean.getIdRuangan());
+                    }
+                    if(bean.getStatus() != null){
+                        tempatTidurEntity.setStatus(bean.getStatus());
+                    }
+                    tempatTidurEntity.setFlag(bean.getFlag());
+                    tempatTidurEntity.setAction(bean.getAction());
+                    tempatTidurEntity.setLastUpdate(bean.getLastUpdate());
+                    tempatTidurEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    try {
+                        tempatTidurDao.updateAndSave(tempatTidurEntity);
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMsg("Mohon maaf error saat insert database...!, "+e.getMessage());
+                        logger.error(e.getMessage());
+                    }
                 }
+            }else{
+                response.setStatus("error");
+                response.setMsg("Mohon maaf data tidak ditemukan...!");
             }
         }
         return response;

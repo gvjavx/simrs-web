@@ -30,6 +30,51 @@ public class ItSimrsTransaksiStokEntity implements Serializable {
     private BigInteger qtyLalu;
     private BigDecimal totalLalu;
     private BigDecimal subTotalLalu;
+    private String flagBpjs;
+    private BigDecimal totalHargaBeli;
+    private BigDecimal subTotalHargaBeli;
+    private BigDecimal totalHargaBeliLalu;
+    private BigDecimal subTotalHargaBeliLalu;
+
+    public BigDecimal getTotalHargaBeliLalu() {
+        return totalHargaBeliLalu;
+    }
+
+    public void setTotalHargaBeliLalu(BigDecimal totalHargaBeliLalu) {
+        this.totalHargaBeliLalu = totalHargaBeliLalu;
+    }
+
+    public BigDecimal getSubTotalHargaBeliLalu() {
+        return subTotalHargaBeliLalu;
+    }
+
+    public void setSubTotalHargaBeliLalu(BigDecimal subTotalHargaBeliLalu) {
+        this.subTotalHargaBeliLalu = subTotalHargaBeliLalu;
+    }
+
+    public String getFlagBpjs() {
+        return flagBpjs;
+    }
+
+    public void setFlagBpjs(String flagBpjs) {
+        this.flagBpjs = flagBpjs;
+    }
+
+    public BigDecimal getTotalHargaBeli() {
+        return totalHargaBeli;
+    }
+
+    public void setTotalHargaBeli(BigDecimal totalHargaBeli) {
+        this.totalHargaBeli = totalHargaBeli;
+    }
+
+    public BigDecimal getSubTotalHargaBeli() {
+        return subTotalHargaBeli;
+    }
+
+    public void setSubTotalHargaBeli(BigDecimal subTotalHargaBeli) {
+        this.subTotalHargaBeli = subTotalHargaBeli;
+    }
 
     public String getIdPelayanan() {
         return idPelayanan;

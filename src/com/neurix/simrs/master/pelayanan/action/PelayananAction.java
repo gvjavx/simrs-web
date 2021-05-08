@@ -179,7 +179,7 @@ public class PelayananAction extends BaseTransactionAction {
         logger.info("[PelayananAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         Pelayanan pelayanan = new Pelayanan();
-        if (!"KP".equalsIgnoreCase(CommonUtil.roleAsLogin()) || !"01".equalsIgnoreCase(CommonUtil.roleAsLogin())) {
+        if (!"01".equalsIgnoreCase(CommonUtil.roleAsLogin())) {
             pelayanan.setBranchId(CommonUtil.userBranchLogin());
         }
         setPelayanan(pelayanan);
@@ -308,5 +308,24 @@ public class PelayananAction extends BaseTransactionAction {
         }
         logger.info("[PelayananAction.getHeaderPelayanan] END process >>>");
         return headerPelayananList;
+    }
+
+    public List<Pelayanan> getListPelayananByBranch(String branchId) {
+        logger.info("[PelayananAction.getListPelayananByBranch] START >>>");
+
+        List<Pelayanan> pelayananList = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+
+        try {
+            pelayananList = pelayananBo.getListPelayananByBranch(branchId);
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getListPelayananByBranch] ERROR when get data for pelayanan ", e);
+            throw new GeneralBOException("ERROR when get data for pelayanan ", e);
+        }
+
+        logger.info("[PelayananAction.getListPelayananByBranch] END <<<");
+        return pelayananList;
     }
 }

@@ -144,7 +144,7 @@
                         <div class="form-group">
                             <label class="col-md-5">Lama</label>
                             <div class="col-md-3">
-                                <input onchange="setHPL('rb11', 'rb6', this.id)" class="form-control" id="rb9" type="number" placeholder="hari">
+                                <input oninput="setHPL('rb11', 'rb6', this.id)" class="form-control" id="rb9" type="number" placeholder="hari">
                             </div>
                             <div class="col-md-2">
                                 <div class="custom02">
@@ -221,10 +221,10 @@
                         <div class="form-group">
                             <label class="col-md-3">Kehamilan dan Persalinan dulu</label>
                             <div class="col-md-3">
-                                <input class="form-control" id="rb18" type="number" placeholder="P">
+                                <input class="form-control" id="rb18" type="number" placeholder="G">
                             </div>
                             <div class="col-md-3">
-                                <input class="form-control" id="rb19" type="number" placeholder="G">
+                                <input class="form-control" id="rb19" type="number" placeholder="P">
                             </div>
                             <div class="col-md-3">
                                 <input class="form-control" id="rb20" type="number" placeholder="Ab">
@@ -242,7 +242,7 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-3">
-                                <input class="form-control tahun" placeholder="No. Tahun">
+                                <input class="form-control tahun" placeholder="Tahun">
                             </div>
                             <div class="col-md-3">
                                 <input class="form-control hamil" placeholder="Kehamilan">
@@ -326,7 +326,7 @@
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-3">Obat yang tidak tahan</label>
+                            <label class="col-md-3">Riwayat alergi obat</label>
                             <div class="col-md-9">
                                 <input class="form-control" id="rb29">
                             </div>

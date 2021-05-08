@@ -218,12 +218,17 @@ public class UpdateGolonganBoImpl implements UpdateGolonganBo {
                     for(ImBiodataEntity biodataLoop: imBiodataEntity){
                         ImtHistorySmkGolonganEntity imtHistorySmkGolonganEntity = new ImtHistorySmkGolonganEntity();
 
-                        String idSmkHistory = smkHistoryGolonganDao.getNextId(bean.getPeriode());
-                        imtHistorySmkGolonganEntity.setIdHistorySmkGolongan(idSmkHistory);
+                        try {
+                            String idSmkHistory = smkHistoryGolonganDao.getNextId(bean.getPeriode());
+                            imtHistorySmkGolonganEntity.setIdHistorySmkGolongan(idSmkHistory);
+                        }catch (HibernateException e){
+                            logger.error("[UpdateGolonganBoImpl.saveAdd] Error, " + e.getMessage());
+                            throw new GeneralBOException("Error when retrieving Next History Golongan, " + e.getMessage());
+                        }
                         imtHistorySmkGolonganEntity.setNip(biodataLoop.getNip());
                         imtHistorySmkGolonganEntity.setGolonganId(biodataLoop.getGolongan());
                         imtHistorySmkGolonganEntity.setPoin(biodataLoop.getPoint());
-                        imtHistorySmkGolonganEntity.setPoinLebih(biodataLoop.getPoinLebih());
+//                        imtHistorySmkGolonganEntity.setPoinLebih(biodataLoop.getPoinLebih());
 
                         imtHistorySmkGolonganEntity.setNilaiAngka(BigDecimal.valueOf(0));
                         imtHistorySmkGolonganEntity.setNilaiHuruf("");
@@ -239,7 +244,13 @@ public class UpdateGolonganBoImpl implements UpdateGolonganBo {
                         imtHistorySmkGolonganEntity.setStatus("Tetap");
 
                         // cek apakah pernah mutasi
-                        List<Mutasi> mutasiEntities = mutasiDao.getDataMutasi(biodataLoop.getNip(), bean.getPeriode());
+                        List<Mutasi> mutasiEntities = new ArrayList<>();
+                        try {
+                            mutasiEntities = mutasiDao.getDataMutasi(biodataLoop.getNip(), bean.getPeriode());
+                        }catch (HibernateException e){
+                            logger.error("[UpdateGolonganBoImpl.saveAdd] Error, " + e.getMessage());
+                            throw new GeneralBOException("Error when retrieving Data Mutasi, " + e.getMessage());
+                        }
                         if(mutasiEntities.size() > 0){
                             for(Mutasi mutasiEntity: mutasiEntities){
                                 imtHistorySmkGolonganEntity.setFlagMutasi("Y");
@@ -638,7 +649,7 @@ public class UpdateGolonganBoImpl implements UpdateGolonganBo {
 
                 biodata.setGolongan(golonganLoop.getGolonganId());
                 biodata.setPoint(golonganLoop.getPoin());
-                biodata.setPoinLebih(golonganLoop.getPoinLebih());
+//                biodata.setPoinLebih(golonganLoop.getPoinLebih());
                 biodataDao.updateAndSave(biodata);
             }
         }

@@ -19,6 +19,10 @@ function showModalHD(jenis, idRM, isSetIdRM) {
     if("tindakan_medis_hd" == jenis){
         selectOptionTM('hd', jenis);
     }
+
+    if("observasi_tindakan" == jenis){
+        $('#obs1, #obs2, #obs3, #obs4, #obs5, #obs6, #obs7, #obs8, #obs9, #obs10, #obs11, #obs12, #obs13').val('');
+    }
     setDataPasien();
     $('#modal-hd-' + jenis).modal({show: true, backdrop: 'static'});
 }
@@ -529,7 +533,7 @@ function saveMonHD(jenis, ket) {
             && va10 && va15 && namaTerang != '' && !cekTtd){
             data.push({
                 'parameter': 'Resep HD',
-                'jawaban1': va1+', HD : '+va2+' jam, QB : '+va3+' ml/menit, QD : '+va4+' ml/menit, UF Gaol: '+va5+' ml',
+                'jawaban1': va1+', HD : '+va2+' jam, QB : '+replaceUnderLine(va3)+' ml/menit, QD : '+replaceUnderLine(va4)+' ml/menit, UF Goal: '+va5+' ml',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -1723,7 +1727,7 @@ function saveMonHD(jenis, ket) {
             }
             data.push({
                 'parameter': 'Perencanaan Hemodialisa',
-                'jawaban1': 'Sebanyak ' + va5 + ' kali/minggu|' + 'Lama Hemodialisa ' + va6 + ' Jam ' + va7 + ' Menit|' + 'UF ' + va8 + ' Liter, Heparin ' + va9 + '|QB ' + va10 + ', BD ' + va11,
+                'jawaban1': 'Sebanyak ' + va5 + ' kali/minggu|' + 'Lama Hemodialisa ' + va6 + ' Jam ' + va7 + ' Menit|' + 'UF ' + va8 + ' Liter, Heparin ' + va9 + '|QB ' + replaceUnderLine(va10) + ', BD ' + va11,
                 'keterangan': jenis,
                 'jenis': 'perencanaan_hemodialisa',
                 'id_detail_checkup': idDetailCheckup
@@ -1781,7 +1785,7 @@ function saveMonHD(jenis, ket) {
         var sip1 = $('#sip_ttd1').val();
         var nama2 = $('#nama_terang_ttd2').val();
         var nama3 = $('#nama_terang_ttd3').val();
-        var sip3 = $('#sip_ttd3').val();
+        var sip3 = "";
         var nama4 = $('#nama_terang_ttd4').val();
         var nama5 = $('#nama_terang_ttd5').val();
 
@@ -1947,7 +1951,7 @@ function saveMonHD(jenis, ket) {
                     'Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan seperti diatas ' +
                     'kepada saya termasuk resiko dan komplikasi yang timbul ' +
                     'Saya juga menyadari bahwa oleh karena itu ilmu kedokteran bukan ilmu pasti, maka keberhasilan tindakan ' +
-                    'kedokteran bukan keniscayaan, tetapi tergantung kepada izin Tuhan Yang maha Esa. Tanggal ' + converterDate(new Date) + ', Jam ' + converterTime(new Date()),
+                    'kedokteran bukan keniscayaan, tetapi tergantung kepada izin Tuhan Yang maha Esa. Tanggal ' + converterDate(new Date) + ', Jam ' + converterTime(new Date()) +' WIB',
                 'keterangan': ket,
                 'jenis': persetujuan,
                 'tipe': 'colspan',
@@ -1960,7 +1964,6 @@ function saveMonHD(jenis, ket) {
                 'jenis': persetujuan,
                 'tipe': 'ttd',
                 'nama_terang': nama3,
-                'sip': sip3,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -2001,7 +2004,6 @@ function saveMonHD(jenis, ket) {
                         $('#warning_hd_' + ket).show().fadeOut(5000);
                         $('#msg_hd_' + ket).text("Berhasil menambahkan data hd...");
                         $('#modal-hd-' + jenis).scrollTop(0);
-                        getListRekamMedis('rawat_jalan', tipePelayanan, idDetailCheckup);
                     } else {
                         $('#save_hd_' + jenis).show();
                         $('#load_hd_' + jenis).hide();
@@ -2424,7 +2426,7 @@ function saveObservasi(jenis, ket){
             data.push({
                 'waktu': va1+' '+va2,
                 'observasi': va3,
-                'qb': va4,
+                'qb': replaceUnderLine(va4),
                 'tensi': replaceUnderLine(va5),
                 'nadi': va6,
                 'suhu': va7,

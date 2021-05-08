@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printBarcodeGizi" language="groovy" pageWidth="150" pageHeight="90" columnWidth="110" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a5ab152-c524-4ad6-b41f-7f1dddf50e80">
-	<property name="ireport.zoom" value="2.5937424601000036"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printBarcodeGizi" language="groovy" pageWidth="150" pageHeight="130" columnWidth="110" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a5ab152-c524-4ad6-b41f-7f1dddf50e80">
+	<property name="ireport.zoom" value="4.177248169415659"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="53"/>
 	<parameter name="reportParams.idOrderGizi" class="java.lang.String"/>
 	<parameter name="reportParams.ruang" class="java.lang.String"/>
 	<parameter name="reportParams.nama" class="java.lang.String"/>
+	<parameter name="idPasien" class="java.lang.String"/>
+	<parameter name="tglLahir" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT * FROM im_simrs_pasien LIMIT 1]]>
 	</queryString>
@@ -35,27 +37,41 @@
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="50" splitType="Stretch">
+		<band height="90" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="-13" width="110" height="12" uuid="6309df77-360c-4ff8-8968-757809ab04fc"/>
-				<textElement verticalAlignment="Top">
+				<reportElement x="0" y="24" width="110" height="12" uuid="6309df77-360c-4ff8-8968-757809ab04fc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.nama}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{tglLahir}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="-2" width="110" height="12" uuid="e70fbc19-741b-487a-afdd-3f1c2c889463"/>
-				<textElement verticalAlignment="Top">
+				<reportElement x="0" y="36" width="110" height="12" uuid="e70fbc19-741b-487a-afdd-3f1c2c889463"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.ruang}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="-5" y="10" width="110" height="35" uuid="88bc66bd-a62b-4f03-958b-83f8f4fe426a"/>
+				<reportElement positionType="Float" x="0" y="50" width="110" height="40" uuid="88bc66bd-a62b-4f03-958b-83f8f4fe426a"/>
 				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
 					<jr:codeExpression><![CDATA[$P{reportParams.idOrderGizi}]]></jr:codeExpression>
 				</jr:Code128>
 			</componentElement>
+			<textField>
+				<reportElement x="0" y="12" width="110" height="12" uuid="fc6e2ae8-b0aa-40ea-9113-e6c831de4562"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{idPasien}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="110" height="12" uuid="6e97ebeb-3dd4-4530-9af1-1c54ffcd8eab"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.nama}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 </jasperReport>

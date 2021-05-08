@@ -145,9 +145,8 @@
                         </div>
                     </div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i>
-                            List kategori Budgeting Biaya <strong><span id="label-tahun"></span> - <span id="label-branch"></span></strong>
-                        </h3>
+                        <i class="fa fa-th-list"></i>
+                            List kategori Budgeting Biaya <strong><span id="label-tahun"></span></strong>
                     </div>
                     <div class="box-body">
 
@@ -167,14 +166,14 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-8 col-md-offset-2">
-                                <table class="table table-bordered table-striped tree">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped tree" style="font-size: 13px;">
                                     <thead id="head-budgeting">
-                                    <tr bgcolor="#90ee90">
+                                    <tr>
                                         <%--<td style="width: 20%">COA</td>--%>
-                                        <td align="">Kategori Biaya</td>
+                                        <td align="">Item Biaya</td>
                                         <td align="">Nilai</td>
-                                        <td align="center">Action</td>
+                                        <td align="center" width="100px">Action</td>
                                         <%--<td align="center">Action</td>--%>
                                     </tr>
                                     </thead>
@@ -197,8 +196,7 @@
                         </div>
                         <div class="form-group" style="margin-top: 10px">
                             <div class="col-md-4 col-md-offset-5">
-                                <button class="btn btn-warning" onclick="initForm()"><i class="fa fa-arrow-left"></i> Back</button>
-                                <button class="btn btn-success" id="btn-save" onclick="saveAdd()"><i class="fa fa-check"></i> Save </button>
+                                <button class="btn btn-warning" onclick="initForm()"><i class="fa fa-arrow-left"></i> Kembali</button>
                             </div>
                         </div>
                     </div>
@@ -423,24 +421,20 @@
 
     function choose() {
         var labelBranch = $("#sel-unit option:selected").text();
-        BgNominasiAction.getListKategoriParameter("BYA", tahun, unit, function (res) {
+        BgNominasiAction.getListKodeRekeningInParameterBudgeting("BYA", tahun, unit, function (res) {
             var str = "";
-            $.each(res.list, function (i, item) {
+            $.each(res, function (i, item) {
                 str += "<tr>" +
-                        "<td>"+item.nama+"</td>" +
+                        "<td>"+item.namaKodeRekening+"</td>" +
                         "<td align='right'>"+ formatRupiah(nullEscape(item.nilaiTotal)) +"</td>" +
                         "<td align='center'>" +
-                        "<button class='btn btn-sm btn-primary' onclick=\"add(\'"+item.id+"\',\'"+unit+"\',\'"+tahun+"\',\'"+ item.nama +"\')\"><i class='fa fa-edit'></i></button> " +
-//                        "<button class='btn btn-sm btn-success'><i class='fa fa-search'></i></button>" +
+                        "<button class='btn btn-sm btn-primary' onclick=\"add(\'"+item.rekeningId+"\',\'"+unit+"\',\'"+tahun+"\',\'"+ item.namaKodeRekening +"\')\"><i class='fa fa-arrow-right'></i> Pilih</button> " +
                         "</td>" +
                         "</tr>";
             });
             $("#body-budgeting").html(str);
             $("#label-tahun").text(tahun);
             $("#label-branch").text(labelBranch);
-//            $('#ok_con').on('click', function () {
-//                showDialog('close');
-//            });
         });
 
         BudgetingNilaiDasarAction.getListNilaiDasarEdit(tahun, function (list) {

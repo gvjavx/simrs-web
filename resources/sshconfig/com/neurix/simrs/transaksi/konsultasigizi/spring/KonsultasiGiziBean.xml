@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="konsultasiGiziAction" class="com.neurix.simrs.transaksi.konsultasigizi.action.KonsultasiGiziAction"
+          p:konsultasiGiziBoProxy-ref="konsultasiGiziBo"
+    />
+
+    <bean id="konsultasiGiziBo" class="com.neurix.simrs.transaksi.konsultasigizi.bo.impl.KonsultasiGiziBoImpl"
+          p:konsultasiGiziDao-ref="konsultasiGiziDao"
+    />
+
+    <bean id="konsultasiGiziBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="konsultasiGiziBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionDiagnosaRawatInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionDiagnosaRawatInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
+                <prop key="saveEdit">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="konsultasiGiziDao" class="com.neurix.simrs.transaksi.konsultasigizi.dao.KonsultasiGiziDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>

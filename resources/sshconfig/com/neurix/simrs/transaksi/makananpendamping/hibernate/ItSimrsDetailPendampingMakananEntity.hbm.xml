@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.simrs.transaksi.makananpendamping.model.ItSimrsDetailPendampingMakananEntity">
+        <table name="it_simrs_detail_pendamping_makanan" schema="public"/>
+        <attributes>
+            <id name="idDetailPendampingMakanan">
+                <column name="id_detail_pendamping_makanan"/>
+            </id>
+            <basic name="idHeaderPendampingMakanan">
+                <column name="id_header_pendamping_makanan"/>
+            </basic>
+            <basic name="nama">
+                <column name="nama"/>
+            </basic>
+            <basic name="qty">
+                <column name="qty"/>
+            </basic>
+            <basic name="tarif">
+                <column name="tarif"/>
+            </basic>
+            <basic name="totalTarif">
+                <column name="total_tarif"/>
+            </basic>
+            <basic name="keterangan">
+                <column name="keterangan"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

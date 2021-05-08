@@ -30,4 +30,6 @@ public interface LemburBo extends BaseMasterBo<Lembur> {
     List<Object[]> findAllConfirmByAtasan(String id, String flag) throws GeneralBOException;
 
     public void saveCancel(Lembur bean) throws GeneralBOException;
+
+    public Boolean cekHakLembur(String nip) throws GeneralBOException;
 }

@@ -3,7 +3,7 @@
         version="2.0">
 
     <entity class="com.neurix.simrs.transaksi.laporan.model.ImSimrsLaporanOpsEntity">
-        <table name="im_simrs_laporan_ops" schema="public" catalog="gomedsys_nmu_prod"/>
+        <table name="im_simrs_laporan_ops" schema="public"/>
         <attributes>
             <id name="idLaporanOps">
                 <column name="id_laporan_ops"/>

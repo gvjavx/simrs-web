@@ -18,189 +18,67 @@
     />
 
     <bean id="payrollBo" class="com.neurix.hris.transaksi.payroll.bo.impl.PayrollBoImpl"
+          p:payrollHeaderDao-ref="payrollHeaderDao"
           p:payrollDao-ref="payrollDao"
-          p:payrollSkalaGajiDao-ref="skalaGajiDao"
-          p:payrollTunjanganJabatanStrukturalDao-ref="tunjanganJabatanStrukturalDao"
-          p:payrollTunjanganStrukturalDao-ref="payrollTunjanganStrukturalDao"
-          p:payrollTunjanganUmkDao-ref="payrollTunjanganUmkDao"
-          p:payrollTunjanganAirListrikDao-ref="payrollAirListrikDao"
-          p:strukturJabatanDao-ref="strukturJabatanDao"
-          p:payrollTunjanganStrategisDao-ref="tunjanganStrategisDao"
-          p:payrollTunjanganPerumahanDao-ref="payrollTunjanganPerumahanDao"
           p:branchDao-ref="branchDao"
-          p:payrollFaktorKeluargaDao-ref="payrollFaktorKeluargaDao"
-          p:medicalRecordDao-ref="medicalRecordDao"
-          p:payrollRapelDao-ref="payrollRapelDao"
-          p:payrollRapelThrDao-ref="payrollRapelThrDao"
-          p:payrollRapelPendidikanDao-ref="rapelPendidikanDao"
-          p:payrollThrDao-ref="payrollThr"
-          p:payrollPendidikanDao-ref="payrollPendidikanDao"
-          p:payrollJasprodDao-ref="payrollJasprodDao"
-          p:payrollBpjsDao-ref="payrollBpjsDao"
-          p:payrollPtkpDao-ref="payrollPtkpDao"
           p:companyDao-ref="companyDao"
-          p:payrollBajuDinasDao-ref="payrollBajuDinasDao"
           p:absensiPegawaiDao-ref="absensiPegawaiDao"
-          p:biodataDao-ref="biodataDao"
-          p:biodataHistoryDao-ref="biodataHistoryDao"
-          p:cutiPegawaiDao-ref="cutiPegawaiDao"
-          p:payrollJubileumDao-ref="jubileumDao"
           p:payrollPphDao-ref="payrollPphDao"
-          p:danaPensiunDao-ref="payrollDanaPensiunDao"
-          p:payrollPotonganLainDao-ref="payrollPotonganLainDao"
-          p:masaKerjaPensiunDao-ref="PayrollMasaKerjaPensiunDao"
-          p:payrollPensiunDao-ref="payrollPensiunDao"
-          p:payrollUpahHarianDao-ref="upahHarianDao"
-          p:smkHistoryEvaluasiPegawaiDao-ref="smkHistoryEvaluasiPegawaiDao"
-          p:payrollMinimumPromosiDao-ref="payrollMinimumPromosiDao"
-          p:masaTanamDao-ref="masaTanamDao"
-          p:payrollSkalaGajiPensiunDao-ref="payrollSkalaGajiPensiunDao"
-          p:personilPositionDao-ref="personilPositionDao"
-          p:payrollSkalaGajiPensiunRniDao-ref="payrollSkalaGajiPensiunRniDao"
-          p:positionDao-ref="positionDao4"
-          p:payrollInsentifDao-ref="payrollInsentifDao"
-          p:payrollInsentifNilaiSmkDao-ref="payrollInsentifNilaiSmkDao"
-          p:positionBagianDao-ref="positionBagianDao2"
-          p:keluargaDao-ref="keluargaDao"
-          p:smkDao-ref="smkDao"
-          p:smkPersenSmkNilaiDao-ref="smkPersenSmkNilaiDao"
-          p:payrollRapelLemburDao-ref="rapelLemburDao"
-          p:payrollRapelInsentifDao-ref="rapelInsentifDao"
-          p:payrollRapelJubileumDao-ref="rapelJubileumDao"
-          p:smkHistoryGolonganDao-ref="smkHistoryGolonganDao2"
-          p:payrollRapelDetailDao-ref="payrollRapelDetailDao"
-          p:payrollMasterInsentifDao-ref="payrollMasterInsentifDao"
-          p:golonganDapenDao-ref="golonganDapenDao"
-          p:payrollSkalaGajiPkwtDao-ref="payrollSkalaGajiPkwtDao"
-          p:payrollTunjanganLainDao-ref="payrollTunjanganLainDao"
-          p:golonganPkwtDao-ref="golonganPkwtDao"
-          p:payrollJasoprDao-ref="payrollJasoprDao"
-          p:tunjLainPegawaiDao-ref="tunjLainPegawaiDao"
-          p:payrollCutiDao-ref="payrollCutiDao"
-          p:historyJabatanPegawaiDao-ref="historyJabatanPegawaiDao"
-          p:payrollSkalaGajiPensiunDplkDao-ref="payrollSkalaGajiPensiunDplkDao"
-          p:profesiDao-ref="profesiDao"
-          p:payrollSkalaGajiBodDao-ref="payrollSkalaGajiBodDao"
-          p:payrollPttDao-ref="payrollPttDao"
-          p:payrollParamBpjsDao-ref="payrollParamBpjsDao"
+          p:payrollTempDao-ref="payrollTempDao"
+          p:payrollPphTempDao-ref="payrollPphTempDao"
           p:mappingPersenGajiDao-ref="mappingPersenGajiDao"
           p:mappingJurnalDao-ref="mappingJurnalDao"
-          p:kodeRekeningDao-ref="kodeRekeningDao"
-          p:payrollDanaPensiunDao-ref="payrollDanaPensiunDao"
+          p:jurnalDao-ref="jurnalDao"
+          p:transDao-ref="transDao"
+          p:jurnalDetailActivityDao-ref="jurnalDetailActivityDao"
+          p:batasTutupPeriodDao-ref="batasTutupPeriodDao"
+          p:jurnalDetailDao-ref="jurnalDetailDao"
+          p:logTrxDao-ref="logTrxDao"
+          p:paymentGatewayInvoiceDao-ref="paymentGatewayInvoiceDao"
     />
 
     <bean id="payrollBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="payrollBo">
         <property name="interceptorNames">
             <list>
-                <value>transactionUserInterceptor</value>
+                <value>transactionPayrollInterceptor</value>
                 <value>hibernateInterceptor</value>
             </list>
         </property>
     </bean>
 
-    <bean id="transactionUserInterceptor"
+    <bean id="transactionPayrollInterceptor"
           class="org.springframework.transaction.interceptor.TransactionInterceptor"
           p:transactionManager-ref="transactionManager">
         <property name="transactionAttributes">
             <props>
-                <prop key="getByCriteria">readOnly</prop>
+                <prop key="getListAbsensiLembur">readOnly</prop>
+                <prop key="refreshAllCalculatePayroll">PROPAGATION_REQUIRED</prop>
+                <prop key="editAllCalculatePayroll">PROPAGATION_REQUIRED</prop>
+                <prop key="searchCalculatePayroll">readOnly</prop>
+                <prop key="viewAllCalculatePayroll">readOnly</prop>
+                <prop key="saveInitialCalculatePayroll">PROPAGATION_REQUIRED</prop>
+                <prop key="saveApprovalSdmPayroll">PROPAGATION_REQUIRED</prop>
+                <prop key="saveEditItemCalculatePayroll">PROPAGATION_REQUIRED</prop>
+                <prop key="savePostingAllCalculatePayroll">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>
 
+    <bean id="payrollHeaderDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollHeaderDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="payrollTempDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollTempDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="payrollPphTempDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollPphTempDao"
+          p:sessionFactory-ref="sessionFactory" />
     <bean id="payrollDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="skalaGajiDao" class="com.neurix.hris.master.payrollSkalaGaji.dao.PayrollSkalaGajiDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollSkalaGajiPensiunRniDao" class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.dao.PayrollSkalaGajiPensiunRniDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollSkalaGajiPensiunDplkDao" class="com.neurix.hris.master.payrollSkalaGajiPensiunDplk.dao.PayrollSkalaGajiPensiunDplkDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="tunjanganJabatanStrukturalDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollTunjanganJabatanStrukturalDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="tunjanganStrategisDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollTunjanganStrategisDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="branchDao" class="com.neurix.authorization.company.dao.BranchDao"
           p:sessionFactory-ref="sessionFactory" />
-    <bean id="medicalRecordDao" class="com.neurix.hris.transaksi.medicalrecord.dao.MedicalRecordDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollRapelDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollRapelDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollThr" class="com.neurix.hris.transaksi.payroll.dao.PayrollThrDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollPendidikanDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollPendidikanDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollJasprodDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollJasprodDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollBpjsDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollBpjsDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollPtkpDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollPtkpDao"
-          p:sessionFactory-ref="sessionFactory" />
     <bean id="companyDao" class="com.neurix.authorization.company.dao.CompanyDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollBajuDinasDao" class="com.neurix.hris.master.payrollBajuDinas.dao.PayrollBajuDinasDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="absensiPegawaiDao" class="com.neurix.hris.transaksi.absensi.dao.AbsensiPegawaiDao"
           p:sessionFactory-ref="sessionFactory" />
-    <bean id="biodataHistoryDao" class="com.neurix.hris.master.biodata.dao.BiodataHistoryDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="jubileumDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollJubileumDao"
-          p:sessionFactory-ref="sessionFactory" />
     <bean id="payrollPphDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollPphDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollPotonganLainDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollPotonganLainDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollPensiunDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollPensiunDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="upahHarianDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollUpahHarianDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollMinimumPromosiDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollMinimumPromosiDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="masaTanamDao" class="com.neurix.hris.master.masaTanam.dao.MasaTanamDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollSkalaGajiPensiunDao" class="com.neurix.hris.master.payrollSkalaGajiPensiun.dao.PayrollSkalaGajiPensiunDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="positionDao4" class="com.neurix.authorization.position.dao.PositionDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollInsentifDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollInsentifDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="positionBagianDao2" class="com.neurix.hris.master.positionBagian.dao.PositionBagianDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollInsentifNilaiSmkDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollInsentifNilaiSmkDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollRapelThrDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollRapelThrDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="rapelPendidikanDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollRapelPendidikanDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="rapelLemburDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollRapelLemburDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="rapelInsentifDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollRapelInsentifDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="rapelJubileumDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollRapelJubileumDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="smkHistoryGolonganDao2" class="com.neurix.hris.transaksi.smk.dao.SmkHistoryGolonganDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollRapelDetailDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollRapelDetailDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollMasterInsentifDao" class="com.neurix.hris.master.payrollMasterInsentif.dao.PayrollMasterInsentifDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollTunjanganLainDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollTunjanganLainDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollSkalaGajiPkwtDao" class="com.neurix.hris.master.payrollSkalaGajiPkwt.dao.PayrollSkalaGajiPkwtDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="golonganPkwtDao" class="com.neurix.hris.master.golonganPkwt.dao.GolonganPkwtDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollJasoprDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollJasoprDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollCutiDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollCutiDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="historyJabatanPegawaiDao" class="com.neurix.hris.transaksi.personilPosition.dao.HistoryJabatanPegawaiDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="profesiDao" class="com.neurix.hris.master.profesi.dao.ProfesiDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollPttDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollPttDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollParamBpjsDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollParamBpjsDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

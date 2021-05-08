@@ -439,13 +439,21 @@ public class    LemburController implements ModelDriven<Object> {
             JamKerja search = new JamKerja();
             search.setFlag("Y");
             List<JamKerja> jamKerjaList = jamKerjaBoProxy.getByCriteria(search);
-            for (JamKerja jamKerja : jamKerjaList){
-                sJamKerjaAwalDb=jamKerja.getJamAwalKerja();
-                sJamKerjaAkhirDb=jamKerja.getJamAkhirKerja();
-                iJamAwalDb=Integer.parseInt(sJamKerjaAwalDb.replace(":",""));
-                iJamAkhirDb=Integer.parseInt(sJamKerjaAkhirDb.replace(":",""));
-                break;
-            }
+
+            JamKerja jamKerja = jamKerjaList.get(0);
+            sJamKerjaAwalDb=jamKerja.getJamAwalKerja();
+            sJamKerjaAkhirDb=jamKerja.getJamAkhirKerja();
+            iJamAwalDb=Integer.parseInt(sJamKerjaAwalDb.replace(":",""));
+            iJamAkhirDb=Integer.parseInt(sJamKerjaAkhirDb.replace(":",""));
+
+//            for (JamKerja jamKerja : jamKerjaList){
+//                sJamKerjaAwalDb=jamKerja.getJamAwalKerja();
+//                sJamKerjaAkhirDb=jamKerja.getJamAkhirKerja();
+//                iJamAwalDb=Integer.parseInt(sJamKerjaAwalDb.replace(":",""));
+//                iJamAkhirDb=Integer.parseInt(sJamKerjaAkhirDb.replace(":",""));
+//                break;
+//            }
+
             if (iJamAwalKerja<iJamAwalDb){
                 hasil=hasil+SubtractJamAwalDanJamAkhir (jamAwal,sJamKerjaAwalDb,"positif");
                 if (iJamAkhirKerja>iJamAkhirDb){
@@ -479,10 +487,14 @@ public class    LemburController implements ModelDriven<Object> {
         timeInSeconds = timeInSeconds - (hours * 3600);
         minutes = timeInSeconds / 60;
         double hasil=hours;
-        if (minutes<15){hasil=hasil+0;}
-        else if (minutes<30){hasil=hasil+0.25;}
-        else if (minutes<45){hasil=hasil+0.50;}
-        else if (minutes<60){hasil=hasil+0.75;}
+        if (minutes<15)
+            hasil=hasil+0;
+        else if (minutes<30)
+            hasil=hasil+0;
+        else if (minutes<45)
+            hasil=hasil+0.50;
+        else if (minutes<60)
+            hasil=hasil+0.50;
         return hasil;
     }
     @Override

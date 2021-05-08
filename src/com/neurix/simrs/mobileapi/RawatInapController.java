@@ -800,6 +800,7 @@ public class RawatInapController implements ModelDriven<Object> {
             model.setNik(headerCheckups.get(0).getNoKtp());
             model.setUrlKtp(headerCheckups.get(0).getUrlKtp());
             model.setNoSep(result.get(0).getNoSep());
+            model.setUmur(CommonUtil.calculateAge(headerCheckups.get(0).getTglLahir(), true));
 
             if (headerCheckups.get(0).getJenisKelamin() != null){
                 switch (headerCheckups.get(0).getJenisKelamin()){
@@ -1055,9 +1056,10 @@ public class RawatInapController implements ModelDriven<Object> {
                     orderGiziMobile.setBentukDiet(item.getBentukDiet());
                     orderGiziMobile.setIdDietGizi(item.getIdDietGizi());
                     orderGiziMobile.setKeterangan(item.getKeterangan());
+                    orderGiziMobile.setWaktu(item.getWaktu());
 
                     if (item.getTglOrder() != null) {
-                        orderGiziMobile.setTglOrder(item.getTglOrder().toString());
+                        orderGiziMobile.setTglOrder(CommonUtil.convertDateToString(item.getTglOrder()));
                     }
 
                     listOfOrderGizi.add(orderGiziMobile);

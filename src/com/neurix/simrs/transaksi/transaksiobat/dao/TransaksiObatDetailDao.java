@@ -893,7 +893,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
 
         List<TransaksiObatDetail> transaksiObatDetailList = new ArrayList<>();
 
-        if (!"".equalsIgnoreCase(idApprove) && idApprove != null){
+        if (idApprove != null && !"".equalsIgnoreCase(idApprove)){
 
             String SQL = "SELECT\n" +
                     "a.id_permintaan_resep,\n" +
@@ -904,7 +904,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                     "b.jenis_satuan,\n" +
                     "c.qty,\n" +
                     "d.harga_jual,\n" +
-                    "(d.harga_jual * c.qty) as total,\n" +
+                    "d.harga_jual_umum,\n" +
                     "e.id_pelayanan,\n" +
                     "f.no_checkup,\n" +
                     "f.id_pasien,\n" +
@@ -923,6 +923,8 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                     .setParameter("idApp", idApprove)
                     .list();
 
+            boolean cekKhusus = checkRekananKhusus(idApprove);
+
             if (results.size() > 0){
 
                 for (Object[] objects: results){
@@ -934,8 +936,20 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                     transaksiObatDetail.setNamaObat(objects[4] == null ? "" : objects[4].toString());
                     transaksiObatDetail.setJenisSatuan(objects[5] == null ? "" : objects[5].toString());
                     transaksiObatDetail.setQty(objects[6] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(objects[6].toString()));
-                    transaksiObatDetail.setHarga(objects[7] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(objects[7].toString()));
-                    transaksiObatDetail.setTotalHarga(objects[8] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(objects[8].toString()));
+
+                    BigInteger harga = new BigInteger(String.valueOf("0"));
+                    if(cekKhusus){
+                        if(objects[7] != null){
+                            harga = new BigInteger(objects[7].toString());
+                        }
+                    }else{
+                        if(objects[8] != null){
+                            harga = new BigInteger(objects[8].toString());
+                        }
+                    }
+                    transaksiObatDetail.setHarga(harga);
+                    transaksiObatDetail.setTotalHarga(harga.multiply(transaksiObatDetail.getQty()));
+
                     transaksiObatDetail.setIdPelayanan(objects[9] == null ? "" : objects[9].toString());
                     transaksiObatDetail.setNoCheckup(objects[10] == null ? "" : objects[10].toString());
                     transaksiObatDetail.setIdPasien(objects[11] == null ? "" : objects[11].toString());
@@ -1024,7 +1038,26 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         return res;
     }
 
-
+    public BigInteger sumApproveQty(String idDetail){
+        BigInteger res = new BigInteger(String.valueOf("0"));
+        if(idDetail != null && !"".equalsIgnoreCase(idDetail)){
+            String SQL = "SELECT\n" +
+                    "id_transaksi_obat_detail,\n" +
+                    "CAST(SUM(qty_approve) AS BIGINT) as approve\n" +
+                    "FROM mt_simrs_transaksi_obat_detail_batch\n" +
+                    "WHERE id_transaksi_obat_detail = :id\n" +
+                    "GROUP BY id_transaksi_obat_detail";
+            List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idDetail).list();
+            if(result.size() > 0){
+                Object[] obj = result.get(0);
+                if(obj[1] != null){
+                    res = (BigInteger) obj[1];
+                }
+            }
+        }
+        return res;
+    }
 
     public String getNextId(){
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_transaksi_obat_detail')");

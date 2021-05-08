@@ -247,7 +247,7 @@
         CheckupAction.getListComboBranch(areaId, function (response) {
             if(response.length > 0){
                 $.each(response, function (i, item) {
-                    if(item.branchId != 'KP'){
+                    if(item.branchId != '01'){
                         option += '<option value="'+item.branchId+'">'+item.branchName+'</option>';
                     }
                 });

@@ -67,14 +67,21 @@
             var flag                = document.getElementById("flagAktif").value;
             var shift               = document.getElementById("shift").value;
             var tglMasuk            = document.getElementById("tanggalMasuk").value;
-            var tglAktif            = document.getElementById("tanggalAktif").value;
+            var tglAkhir            = document.getElementById("tanggalAkhirKontrak").value;
+            var profesi             = $("#profesi1").val();
+            var posisi              = $("#positionId1").val();
 
-            if ( nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tanggalLahir != '' && branch != '' && tglMasuk !='' && tglAktif!='') {
+            if ( nip != '' && posisi != '' && profesi != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tanggalLahir != '' && branch != '' && tglMasuk !='' && tglAkhir) {
                 if(flag == 'N'){
                     alert("Non Aktifkan User");
                 }
 
                 if (confirm('Do you want to save this record?')) {
+                    <s:if test="isAdd()">
+                    alert("Pegawai akan secara otomatis dibuatka Akun User!" +
+                        "\n> USER ID : " + nip + "\n> PASSWORD : 123\n> ROLE : Dokter\n" +
+                        "Lakukan Pengaturan lanjut melalui Setting->User");
+                    </s:if>
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
                 } else {
@@ -106,11 +113,17 @@
                 if (branch == '') {
                     msg += 'Field <strong>Unit</strong> is required.' + '<br/>';
                 }
+                if (profesi == '') {
+                    msg += 'Field <strong>Profesi</strong> is required.' + '<br/>';
+                }
+                if (posisi == '') {
+                    msg += 'Field <strong>Jabatan</strong> is required.' + '<br/>';
+                }
                 if (tglMasuk == '') {
                     msg += 'Field <strong>Tanggal Masuk</strong> is required.' + '<br/>';
                 }
-                if (tglAktif == '') {
-                    msg += 'Field <strong>Tanggal Aktif / Pengangkatan </strong> is required.' + '<br/>';
+                if (tglAkhir == '') {
+                    msg += 'Field <strong>Tanggal Akhir Kontrak </strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -300,6 +313,7 @@
                     <s:hidden name="addOrEdit"/>
                     <s:hidden id="add" name="add"/>
                     <s:hidden name="delete"/>
+                    <s:hidden id="nip1" name="biodata.nip"/>
 
                     <div class="tab-content well box-shadowed">
                         <div id="biodata" class="tab-pane fade in active">
@@ -319,22 +333,6 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <table style="width:100%;">
-                                            <tr>
-                                                <td>
-                                                    <label><small>NIP <span style="color:red;">*</span> :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <%--<s:if test="isAdd()">--%>
-                                                            <%--<s:textfield id="nip1" name="biodata.nip"  required="true" disabled="false" cssClass="form-control"/>--%>
-                                                        <%--</s:if>--%>
-                                                        <%--<s:else>--%>
-                                                            <s:textfield id="nip1" name="biodata.nip" required="true" disabled="false" cssClass="form-control" readonly="true"/>
-                                                        <%--</s:else>--%>
-                                                    </table>
-                                                </td>
-                                            </tr>
-
                                             <tr>
                                                 <td>
                                                     <label><small>Nama <span style="color:red;">*</span> :</small></label>
@@ -441,7 +439,7 @@
                                                                 <%--<s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" onchange="listPosisi()"--%>
                                                                 <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
 
-                                                                <s:if test='biodata.branch == "KP"'>
+                                                                <s:if test='biodata.branch == "01"'>
                                                                     <s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" onchange="listPosisi()"
                                                                               listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                                 </s:if>
@@ -464,7 +462,7 @@
                                                     <td>
                                                         <table>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                            <s:if test='biodata.branch == "KP"'>
+                                                            <s:if test='biodata.branch == "01"'>
                                                                 <s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" onchange="listPosisi()"
                                                                           listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                             </s:if>
@@ -551,11 +549,11 @@
                                             <s:if test="isDelete()">
                                                 <tr>
                                                     <td>
-                                                        <label><small>Profesi :</small></label>
+                                                        <label><small>Profesi <span style="color:red;">*</span> :</small></label>
                                                     </td>
                                                     <td>
                                                         <table>
-                                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesiDokter_profesi"/>
                                                             <s:if test="isDelete()">
                                                                 <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId" disabled="true" readonly="true"
                                                                           listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
@@ -571,16 +569,38 @@
                                             <s:else>
                                                 <tr>
                                                     <td>
-                                                        <label><small>Profesi :</small></label>
+                                                        <label><small>Profesi <span style="color:red;">*</span> :</small></label>
                                                     </td>
                                                     <td>
                                                         <table>
-                                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesiDokter_profesi"/>
                                                             <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId"
                                                                       listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
                                                         </table>
                                                     </td>
                                                 </tr>
+                                                <s:if test="isAdd()">
+                                                    <tr>
+                                                        <td>
+                                                            <label><small>Kode DPJP :</small></label>
+                                                        </td>
+                                                        <td>
+                                                            <table>
+                                                                <s:textfield id="kodeDpjp" type="number" name="biodata.dpjpDokter" required="true" cssClass="form-control"/>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label><small>SIP :</small></label>
+                                                        </td>
+                                                        <td>
+                                                            <table>
+                                                                <s:textfield id="sip" type="number" name="biodata.sipDokter" required="true" cssClass="form-control"/>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </s:if>
                                             </s:else>
                                             <tr>
                                                 <td>
@@ -931,23 +951,21 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="label-tanggal-aktif"><small>Tanggal Aktif <span style="color:red;">*</span> :</small></label>
+                                                    <label class="label-tanggal-akhir-kontrak"><small>Tanggal Akhir Kontrak <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
                                                         <s:if test="isAdd()">
                                                             <s:textfield cssStyle="text-align: left;"
-                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" />
+                                                                         cssClass="form-control" id="tanggalAkhirKontrak" name="biodata.stTanggalAkhirKontrak" />
                                                         </s:if>
                                                         <s:elseif test="isDelete()">
                                                             <s:textfield cssStyle="text-align: left;"
-                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true" readonly="true"/>
+                                                                         cssClass="form-control" id="tanggalAkhirKontrak" name="biodata.stTanggalAkhirKontrak" disabled="true" readonly="true"/>
                                                         </s:elseif>
                                                         <s:else>
                                                             <s:textfield cssStyle="text-align: left;"
-                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="false"/>
-                                                            <s:hidden name="biodata.stTanggalAktif" id="tanggalAktifHid"/>
-                                                            <s:hidden id="tanggalAktifTmp"/>
+                                                                         cssClass="form-control" id="tanggalAkhirKontrak" name="biodata.stTanggalAkhirKontrak" disabled="false"/>
                                                         </s:else>
 
                                                     </table>
@@ -962,8 +980,13 @@
                                                         <s:if test="isAdd()">
                                                             <s:textfield cssStyle="text-align: left;" readonly="true" value="Y" cssClass="form-control" id="shift" name="biodata.shift" />
                                                         </s:if>
-                                                        <s:else>
+                                                        <s:elseif test="isDelete()">
                                                             <s:textfield cssStyle="text-align: left;" readonly="true" cssClass="form-control" id="shift" name="biodata.shift" />
+                                                        </s:elseif>
+                                                            <%--RAKA-30MAR2021 ==> //membuka akses edit shift (handle salah inject)--%>
+                                                        <s:else>
+                                                            <s:select list="#{'Y':'Y'}" id="shift" name="biodata.shift"
+                                                                      headerKey="N" headerValue="N" cssClass="form-control" />
                                                         </s:else>
 
                                                     </table>
@@ -1010,6 +1033,10 @@
                                                     </table>
                                                 </td>
                                             </tr>
+
+                                            <s:if test="isAdd()">
+                                                <s:textfield cssStyle="display: none" id="createUser" name="biodata.createUser" value="Y" />
+                                            </s:if>
 
                                             <tr>
                                                 <td>
@@ -1175,7 +1202,11 @@
                             <s:a action="ksoToKaryawan_biodata.action" cssClass="btn btn-info" id="kso2karyawan">
                                 <s:param name="id"><s:property value="biodata.nip" /></s:param>
                                 <s:param name="flag"><s:property value="biodata.flag" /></s:param>
-                                <i class="fa fa-user"></i>  Jadikan Karyawan Tetap
+                                <i class="fa fa-user"></i>  Jadikan Karyawan Kantor
+                            </s:a>
+                            <s:a action="berhentikanKso_biodata.action" cssClass="btn btn-warning" id="berhentikanKso">
+                                <s:param name="id"><s:property value="biodata.nip" /></s:param>
+                                <i class="fa fa-user"></i>  Berhentikan Dokter KSO
                             </s:a>
                         </s:if>
                     </s:if>
@@ -1608,7 +1639,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Profesi : </label>
+                        <label class="control-label col-sm-4" >Profesi <span style="color:red;">*</span> : </label>
                         <div class="col-sm-8">
                             <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
                             <s:select list="#comboProfesi.listComboProfesi" id="profesi3" name="biodata.profesiId"
@@ -2485,23 +2516,18 @@
     }
 
     window.changePegawai = function (id) {
-        if (id == "TP01") {
+        if (id == "TP03") {
             $('#golongan1Group').show();
             $('#golongan2Group').hide();
             $('#golongan3').val("");
-            $('#tanggalAktif').removeAttr('disabled');
-            $('tanggalAktifTmp').val($('#tanggalAktifHid').val());
-            $('#tanggalAktifHid').val("");
         } else {
             $('#golongan1Group').hide();
             $('#golongan2Group').show();
             $('#point').prop('disabled', 'true');
-            $('#tanggalAktif').prop('disabled', 'true');
-            $('tanggalAktifHid').val($('#tanggalAktifTmp').val());
         }
     }
     window.changePegawaiHistory = function (id) {
-        if (id == "TP01") {
+        if (id == "TP03") {
             $('#golonganHistory1Group').show();
             $('#golonganHistory2Group').hide();
         } else {
@@ -2512,7 +2538,7 @@
 
     function loadStatusPegawai(){
         var statusPegawai = $('#tipePegawai1').val();
-        if (statusPegawai=="TP03"){
+        if (statusPegawai=="TP04"){
             $('.label-prapensiun').html("<small>Tgl Pra Kontak Berakhir</small>");
             $('.label-pensiun').html("<small>Tgl Kontrak Berakhir</small>");
             $('.label-tanggal-masuk').html("<small>Tanggal Kontrak</small>");
@@ -3653,10 +3679,10 @@
             var tanggal = document.getElementById("pengalamanTanggalMasuk").value;
             var tanggalKeluar = document.getElementById("pengalamanTanggalKeluar").value;
             var tipePegawaiId = document.getElementById("pengalamanTipePegawaiId").value;
-            if(tipePegawaiId=="TP01"){
+            if(tipePegawaiId=="TP03"){
                 var golonganId = document.getElementById("pengalamanGolonganId1").value;
             }
-            if(tipePegawaiId=="TP03"){
+            if(tipePegawaiId=="TP04"){
                 var golonganId = document.getElementById("golonganHistory3").value;
             }
             var pjsFlag = document.getElementById("pjsFlag1").value;
@@ -4492,12 +4518,12 @@
                 $('#pengalamanTanggalMasuk').val(listdata.tanggalMasuk);
                 $('#pengalamanTanggalKeluar').val(listdata.tanggalKeluar);
                 $('#pengalamanTipePegawaiId').val(listdata.tipePegawaiId).change();
-                if(listdata.tipePegawaiId == "TP01"){
+                if(listdata.tipePegawaiId == "TP03"){
                     $('#pengalamanGolonganId1').val(listdata.golonganId).change();
                     $('#golonganHistory1Group').show();
                     $('#golonganHistory2Group').hide();
                 }
-                if(listdata.tipePegawaiId == "TP03"){
+                if(listdata.tipePegawaiId == "TP04"){
                     $('#golonganHistory3').val(listdata.golonganId).change();
                     $('#golonganHistory1Group').hide();
                     $('#golonganHistory2Group').show();
@@ -5023,11 +5049,11 @@
             yearRange: "-50:+10"
         });
 
-        $('#tanggalAktif').datepicker({
+        $('#tanggalAkhirKontrak').datepicker({
             dateFormat: 'dd-mm-yy',
             changeMonth: true,
             changeYear: true,
-            yearRange: "-50:+10"
+            yearRange: "-30:+30"
         });
 
         $('#tanggalPraPensiun').datepicker({

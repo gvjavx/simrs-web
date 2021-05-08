@@ -40,6 +40,44 @@ public class ParameterPemeriksaanBoImpl implements ParameterPemeriksaanBo {
                 response.setMsg("Mohon Maaf Data Parameter Pemeriksaan "+bean.getNamaPemeriksaan()+" sudah ada...!");
                 logger.error("");
             }else{
+                String idKategoriLab = bean.getIdKategoriLab();
+                if("new".equalsIgnoreCase(bean.getIdKategoriLab())){
+                    List<ImSimrsKategoriLabEntity> labEntities = new ArrayList<>();
+                    try {
+                        labEntities = kategoriLabDao.getDataKategoriLab(bean.getNamaKategori());
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMsg("Error when search kategori lab!"+e.getMessage());
+                        return response;
+                    }
+                    if(labEntities.size() > 0){
+                        response.setStatus("error");
+                        response.setMsg("Mohon Maaf Data Kategori Pemeriksaan "+bean.getNamaKategori()+" sudah ada...!");
+                        return response;
+                    }else{
+                        ImSimrsKategoriLabEntity entity = new ImSimrsKategoriLabEntity();
+                        entity.setIdKategoriLab(kategoriLabDao.getNextLabKategoriId());
+                        entity.setNamaKategori(bean.getNamaKategori());
+                        entity.setFlag(bean.getFlag());
+                        entity.setAction(bean.getAction());
+                        entity.setCreatedWho(bean.getCreatedWho());
+                        entity.setCreatedDate(bean.getCreatedDate());
+                        entity.setLastUpdateWho(bean.getLastUpdateWho());
+                        entity.setCreatedDate(bean.getCreatedDate());
+                        entity.setLastUpdate(bean.getLastUpdate());
+
+                        try {
+                            kategoriLabDao.addAndSave(entity);
+                            idKategoriLab = entity.getIdKategoriLab();
+                        } catch (HibernateException e) {
+                            logger.error("[KategoriLabBoImpl.saveAdd] Error, " + e.getMessage());
+                            response.setStatus("error");
+                            response.setMsg("Error "+e.getMessage());
+                            return response;
+                        }
+                    }
+                }
+
                 try {
                     id = parameterPemeriksaanDao.getNextId();
                     response.setStatus("success");
@@ -49,9 +87,10 @@ public class ParameterPemeriksaanBoImpl implements ParameterPemeriksaanBo {
                     response.setMsg("Mohon maaf error saat mencari ID...!, "+e.getMessage());
                     logger.error(e.getMessage());
                 }
+
                 if(id != null){
                     pemeriksaanEntity.setIdParameterPemeriksaan(id);
-                    pemeriksaanEntity.setIdKategoriLab(bean.getIdKategoriLab());
+                    pemeriksaanEntity.setIdKategoriLab(idKategoriLab);
                     pemeriksaanEntity.setNamaPemeriksaan(bean.getNamaPemeriksaan());
                     pemeriksaanEntity.setKeteranganAcuanL(bean.getKeteranganAcuanL());
                     pemeriksaanEntity.setKeteranganAcuanP(bean.getKeteranganAcuanP());
@@ -83,7 +122,27 @@ public class ParameterPemeriksaanBoImpl implements ParameterPemeriksaanBo {
     public CrudResponse saveEdit(ParameterPemeriksaan bean) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
         if(bean != null){
+
+            ImSimrsKategoriLabEntity kategoriLabEntity = kategoriLabDao.getById("idKategoriLab", bean.getIdKategoriLab());
+            if(kategoriLabEntity != null){
+                kategoriLabEntity.setNamaKategori(bean.getNamaKategori());
+                kategoriLabEntity.setFlag(bean.getFlag());
+                kategoriLabEntity.setAction(bean.getAction());
+                kategoriLabEntity.setCreatedDate(bean.getCreatedDate());
+                kategoriLabEntity.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    kategoriLabDao.updateAndSave(kategoriLabEntity);
+                } catch (HibernateException e) {
+                    logger.error("Error, " + e.getMessage());
+                    response.setStatus("error");
+                    response.setMsg("Error "+e.getMessage());
+                    return response;
+                }
+            }
+
             ImSimrsParameterPemeriksaanEntity pemeriksaanEntity = new ImSimrsParameterPemeriksaanEntity();
+
             try {
                 pemeriksaanEntity = parameterPemeriksaanDao.getById("idParameterPemeriksaan", bean.getIdParameterPemeriksaan());
                 response.setStatus("success");
@@ -93,6 +152,7 @@ public class ParameterPemeriksaanBoImpl implements ParameterPemeriksaanBo {
                 response.setMsg("Mohon maaf error saat mencari ID...!, "+e.getMessage());
                 logger.error(e.getMessage());
             }
+
             if(pemeriksaanEntity != null){
                 if(bean.getIdKategoriLab() != null){
                     pemeriksaanEntity.setIdKategoriLab(bean.getIdKategoriLab());

@@ -1558,19 +1558,23 @@
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">
-                            <div class="col-md-3">
+                            <div class="col-md-offset-1 col-md-5">
                                 <span>HD<small> (jam)</small></span>
                                 <input class="form-control" id="im2" type="number">
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-5">
                                 <span>QB<small> (ml/menit)</small></span>
-                                <input class="form-control" id="im3" type="number">
+                                <input class="form-control" id="im3" data-inputmask="'mask': ['9999-9999']" data-mask="">
                             </div>
-                            <div class="col-md-3">
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <div class="col-md-offset-1 col-md-5">
                                 <span>QD<small> (ml/menit)</small></span>
-                                <input class="form-control" id="im4" type="number">
+                                <input class="form-control" id="im4" data-inputmask="'mask': ['9999-9999']" data-mask="">
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-5">
                                 <span>UF Goal<small> (ml)</small></span>
                                 <input class="form-control" id="im5" type="number">
                             </div>
@@ -1817,7 +1821,7 @@
                                     <option value="Pre HD">Pre HD</option>
                                     <option value="Intra HD">Intra HD</option>
                                     <option value="Post HD">Post HD</option>
-                                    <option value="Ovo HD">Ovo HD</option>
+                                    <option value="CVC HD">CVC HD</option>
                                 </select>
                             </div>
                         </div>
@@ -1826,7 +1830,7 @@
                         <div class="form-group">
                             <label class="col-md-3">QB (ml/menit)</label>
                             <div class="col-md-3">
-                                <input class="form-control" id="obs4" type="number">
+                                <input class="form-control" id="obs4" data-inputmask="'mask': ['999-999']" data-mask="">
                             </div>
                             <label class="col-md-3">Tek. Darah (mmHg)</label>
                             <div class="col-md-3">
@@ -1872,7 +1876,7 @@
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-3">UF Gaol</label>
+                            <label class="col-md-3">UF Goal</label>
                             <div class="col-md-3">
                                 <input class="form-control" id="obs12" type="number">
                             </div>
@@ -2644,7 +2648,7 @@
                                 <canvas class="paint-canvas-ttd" id="ttd3" width="220" height="100"
                                         onmouseover="paintTtd('ttd3')"></canvas>
                                 <input class="form-control" id="nama_terang_ttd3" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_ttd3" placeholder="SIP">
+                                <%--<input style="margin-top: 3px" class="form-control" id="sip_ttd3" placeholder="SIP">--%>
                             </div>
                             <div class="col-md-1">
                                 <button style="margin-left: -100px; margin-top: 35px" type="button" class="btn btn-danger"
@@ -3488,7 +3492,7 @@
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">QB</label>
                             <div class="col-md-3">
-                                <input type="number" class="form-control" id="ph10" style="margin-top: 7px">
+                                <input class="form-control" id="ph10" style="margin-top: 7px" data-inputmask="'mask': ['999-999']" data-mask="">
                             </div>
                         </div>
                     </div>
@@ -3496,7 +3500,7 @@
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">QD</label>
                             <div class="col-md-3">
-                                <input type="number" class="form-control" id="ph11" style="margin-top: 7px">
+                                <input class="form-control" id="ph11" style="margin-top: 7px" data-inputmask="'mask': ['999-999']" data-mask="">
                             </div>
                             <label class="col-md-1" style="margin-top: 12px; margin-left: -20px">Unit</label>
                         </div>

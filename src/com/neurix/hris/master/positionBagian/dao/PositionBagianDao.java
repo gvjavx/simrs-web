@@ -4,15 +4,13 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.master.department.model.Department;
 import com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity;
 import com.neurix.hris.master.positionBagian.model.ImPositionBagianHistoryEntity;
-import com.neurix.hris.master.positionBagian.model.positionBagian;
-import com.neurix.hris.transaksi.payroll.model.ItPayrollEntity;
+import com.neurix.hris.master.positionBagian.model.PositionBagian;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -55,7 +53,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
 
         // Order by
 
-        criteria.addOrder(Order.desc("bagianId"));
+        criteria.addOrder(Order.asc("kodering"));
 
         List<ImPositionBagianEntity> results = criteria.list();
 
@@ -132,9 +130,11 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         List<ImPositionBagianEntity> listOfResult = new ArrayList<ImPositionBagianEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
-                "\tbagian_id, nama_bagian\n" +
+                "\tbagian_id, nama_bagian,\n" +
+                "\tkodering\n" +
                 "from\n" +
-                "\tim_hris_position_bagian";
+                "\tim_hris_position_bagian\n" +
+                "\torder by kodering asc";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -156,7 +156,8 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         String query = "select\n" +
                 "\tbagian.bagian_id,\n" +
                 "\tbagian.nama_bagian,\n" +
-                "\tsmk.nip\n" +
+                "\tsmk.nip,\n" +
+                "\tbagian.kodering\n" +
                 "from\n" +
                 "\tit_hris_smk_evaluasi_pegawai smk\n" +
                 "\tleft join im_hris_position_bagian bagian on bagian.bagian_id = smk.bagian_id\n" +
@@ -164,7 +165,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "\tsmk.flag = 'Y'\n" +
                 "\tand periode = '" + periode + "'\n" +
                 "order by \n" +
-                "\tbagian.bagian_id";
+                "\tbagian.kodering";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -232,9 +233,11 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         List<ImPositionBagianEntity> listOfResult = new ArrayList<ImPositionBagianEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
-                "\tbagian_id, nama_bagian\n" +
+                "\tbagian_id, nama_bagian,\n" +
+                "\tkodering\n" +
                 "from\n" +
                 "\tim_hris_position_bagian\n" +
+                "\torder by kodering asc\n" +
                 txtWhere;
 
         results = this.sessionFactory.getCurrentSession()
@@ -377,7 +380,8 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "\tposisi.position_name,\n" +
                 "\thistory.nip,\n" +
                 "\tpegawai.nama_pegawai,\n" +
-                "\thistory.branch_id\n" +
+                "\thistory.branch_id,\n" +
+                "\tposisi.kodering\n" +
                 "from\n" +
                 "\timt_hris_history_smk_golongan history\n" +
                 "\tleft join im_hris_pegawai pegawai on pegawai.nip = history.nip\n" +
@@ -386,7 +390,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "\thistory.update_golongan_id = '" + id + "'\n" +
                 "\tand posisi.bagian_id = '" + bagianId + "'\n" +
                 "order by\n" +
-                "\tposisi.bagian_id";
+                "\tposisi.kodering";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -572,13 +576,14 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         String query = "select\n" +
                 " \n" +
                 "                bagian_id, \n" +
-                "                nama_bagian \n" +
+                "                nama_bagian, \n" +
+                "                kodering\n" +
                 "                from \n" +
                 "                im_hris_position_bagian \n" +
                 "                where \n" +
                 "                bagian_id is not null and divisi_id = '" + divisiId + "'  \n" +
                 "                order by \n" +
-                "                \tnama_bagian";
+                "                \tkodering";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -594,8 +599,8 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         return listOfResult;
     }
 
-    public List<positionBagian> getDataDevisiId(positionBagian bean) {
-        List<positionBagian> positionBagianList = new ArrayList<>();
+    public List<PositionBagian> getDataDevisiId(PositionBagian bean) {
+        List<PositionBagian> positionBagianList = new ArrayList<>();
         String departementId = "%";
         if (bean.getDivisiId() != null && !"".equalsIgnoreCase(bean.getDivisiId())) {
             departementId = bean.getDivisiId();
@@ -605,20 +610,23 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "im_hris_position_bagian.bagian_id ,\n" +//0
                 "im_hris_position_bagian.nama_bagian,\n" +//1
                 "im_hris_department.department_id,  \n" +//2
-                "im_hris_department.department_name\n" +//3
+                "im_hris_department.department_name,\n" +//3
+                "im_hris_position_bagian.kodering,\n" +
+                "im_hris_department.kodering\n" +
                 "FROM \n" +
                 "im_hris_department \n" +
                 "INNER JOIN im_hris_position_bagian ON im_hris_department.department_id = im_hris_position_bagian.divisi_id \n" +
                 "where\n" +
                 "im_hris_department.department_id LIKE :id \n" +
                 "ORDER BY\n" +
-                "im_hris_department.department_id,im_hris_position_bagian.bagian_id";
+//                "im_hris_department.department_id,im_hris_position_bagian.bagian_id";
+                "im_hris_department.kodering,im_hris_position_bagian.kodering";
 
         List<Object[]> datatree = new ArrayList<>();
         datatree = this.sessionFactory.getCurrentSession().createSQLQuery(sql).setParameter("id", departementId).list();
         if (datatree.size() > 0) {
             for (Object[] obj : datatree) {
-                positionBagian pb = new positionBagian();
+                PositionBagian pb = new PositionBagian();
                 pb.setBagianId(obj[0] != null ? obj[0].toString() : "");
                 pb.setBagianName(obj[1] != null ? obj[1].toString() : "");
                 pb.setDivisiId(obj[2] != null ? obj[2].toString() : "");
@@ -631,7 +639,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         return positionBagianList;
     }
 
-    public List<Department> getHeadDepartent(positionBagian positionBagian) {
+    public List<Department> getHeadDepartent(PositionBagian positionBagian) {
         List<Department> positionBagianList = new ArrayList<>();
 
         String bagianId = "%";
@@ -660,7 +668,8 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "a.created_date,\n" +
                 "a.created_who,\n" +
                 "a.last_update,\n" +
-                "a.last_update_who\n" +
+                "a.last_update_who,\n" +
+                "a.kodering\n" +
                 "FROM im_hris_department a\n" +
                 "INNER JOIN (\n" +
                 "\tSELECT\n" +
@@ -675,7 +684,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "\tGROUP BY a.department_id\n" +
                 "\tORDER BY a.department_name ASC\t\n" +
                 ") b ON a.department_id = b.department_id\n" +
-                "ORDER BY a.department_id ASC";
+                "ORDER BY a.kodering ASC";
 
         List<Object[]> datatree = new ArrayList<>();
         datatree = this.sessionFactory.getCurrentSession().createSQLQuery(sql)
@@ -696,6 +705,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 department.setLastUpdate(obj[4] == null ?  null : (Timestamp) obj[4]);
                 department.setStLastUpdate(obj[4] != null ? obj[4].toString() : "");
                 department.setLastUpdateWho(obj[5] != null ? obj[5].toString() : "");
+                department.setKodering(obj[6] != null ? obj[6].toString() : "");
 
                 positionBagianList.add(department);
             }
@@ -712,6 +722,23 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 .list();
 
         return results;
+    }
+
+    public PositionBagian getPositionBagianById(String id){
+
+        String SQL = "SELECT bagian_id, nama_bagian, kodering FROM im_hris_position_bagian WHERE bagian_id = '"+id+"' AND flag = 'Y'\n";
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (results.size() > 0){
+            Object[] obj = results.get(0);
+            PositionBagian positionBagian = new PositionBagian();
+            positionBagian.setBagianId(obj[0].toString());
+            positionBagian.setBagianName(obj[1].toString());
+            positionBagian.setKodering(obj[2] == null ? "" : obj[2].toString());
+            return positionBagian;
+        }
+
+        return null;
     }
 
 }

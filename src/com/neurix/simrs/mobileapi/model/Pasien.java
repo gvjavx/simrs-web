@@ -44,6 +44,25 @@ public class Pasien implements Serializable, Comparable<Pasien> {
 
     private String actionError;
 
+    private String flagMeninggal;
+    private String tanggalMeninggal;
+
+    public String getFlagMeninggal() {
+        return flagMeninggal;
+    }
+
+    public void setFlagMeninggal(String flagMeninggal) {
+        this.flagMeninggal = flagMeninggal;
+    }
+
+    public String getTanggalMeninggal() {
+        return tanggalMeninggal;
+    }
+
+    public void setTanggalMeninggal(String tanggalMeninggal) {
+        this.tanggalMeninggal = tanggalMeninggal;
+    }
+
     public String getActionError() {
         return actionError;
     }

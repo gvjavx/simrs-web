@@ -153,14 +153,14 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input class="form-control tgl" id="pt8">
+                                <input class="form-control ptr-tgl" id="pt8">
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <label class="col-md-4">Indikasi Rawat Inap</label>
                         <div class="col-md-8">
-                            <input class="form-control anamnese" id="pt9">
+                            <input class="form-control" id="pt9">
                         </div>
                     </div>
                 </div>

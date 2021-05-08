@@ -158,6 +158,7 @@
             <column name="warna" sql-type="varchar" length="100"/>
         </property>
 
+
         <set name="imAreasBranchesUsers" inverse="true" lazy="true" where="flag='Y'">
             <key>
                 <column name="branch_id"/>

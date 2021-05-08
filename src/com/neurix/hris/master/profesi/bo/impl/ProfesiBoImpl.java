@@ -201,6 +201,7 @@ public class ProfesiBoImpl implements ProfesiBo {
 
                 imProfesiEntity.setProfesiId(profesiId);
                 imProfesiEntity.setProfesiName(bean.getProfesiName());
+                imProfesiEntity.setTipeProfesi(bean.getTipeProfesi());
                 imProfesiEntity.setFlag(bean.getFlag());
                 imProfesiEntity.setAction(bean.getAction());
                 imProfesiEntity.setCreatedWho(bean.getCreatedWho());
@@ -239,6 +240,9 @@ public class ProfesiBoImpl implements ProfesiBo {
             }
             if (searchBean.getProfesiName() != null && !"".equalsIgnoreCase(searchBean.getProfesiName())) {
                 hsCriteria.put("profesi_name", searchBean.getProfesiName());
+            }
+            if (searchBean.getTipeProfesi() != null && !"".equalsIgnoreCase(searchBean.getTipeProfesi())) {
+                hsCriteria.put("tipe_profesi", searchBean.getTipeProfesi());
             }
 
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
@@ -335,5 +339,26 @@ public class ProfesiBoImpl implements ProfesiBo {
             status="notExits";
         }
         return status;
+    }
+
+    @Override
+    public String getTipeProfesi(String profesiId) throws GeneralBOException{
+        String tipeProfesi = "";
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("profesi_id", profesiId);
+        hsCriteria.put("flag", "Y");
+        List<ImProfesiEntity> profesiEntityList = new ArrayList<>();
+        try{
+            profesiEntityList = profesiDao.getByCriteria(hsCriteria);
+        }catch (HibernateException e){
+            logger.error("[ProfesiBoImpl.getTipeProfesi] Error, " + e.getMessage() );
+            throw new GeneralBOException("Found problem when receiving profesi using criteria, " + e.getMessage());
+        }
+        for(ImProfesiEntity profesi : profesiEntityList){
+            if(profesi.getTipeProfesi() != null) {
+                tipeProfesi = profesi.getTipeProfesi();
+            }
+        }
+        return tipeProfesi;
     }
 }

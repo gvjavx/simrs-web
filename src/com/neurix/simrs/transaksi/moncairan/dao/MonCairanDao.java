@@ -30,6 +30,7 @@ public class MonCairanDao extends GenericDao<ItSimrsMonCairanEntity, String> {
         if (mapCriteria.get("id_detail_checkup") != null)
             criteria.add(Restrictions.eq("idDetailCheckup", mapCriteria.get("id_detail_checkup").toString()));
 
+        criteria.add(Restrictions.eq("flag", "Y"));
         List<ItSimrsMonCairanEntity> results = criteria.list();
         return results;
     }

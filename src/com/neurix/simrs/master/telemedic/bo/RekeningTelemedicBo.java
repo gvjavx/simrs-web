@@ -3,6 +3,7 @@ package com.neurix.simrs.master.telemedic.bo;
 import com.neurix.common.bo.GeneralBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.kurir.model.Kurir;
+import com.neurix.simrs.master.telemedic.model.ImSimrsRekeningTelemedicEntity;
 import com.neurix.simrs.master.telemedic.model.RekeningTelemedic;
 
 import java.util.List;
@@ -14,4 +15,5 @@ import java.util.List;
 public interface RekeningTelemedicBo {
     public List<RekeningTelemedic> getByCriteria(RekeningTelemedic bean) throws GeneralBOException;
     public void saveAdd(RekeningTelemedic rekeningTelemedic) throws GeneralBOException;
+    public ImSimrsRekeningTelemedicEntity getRekeningTelemedicById(String id) throws GeneralBOException;
 }
