@@ -218,6 +218,7 @@ public class CommonConstant {
 
     //TELEMEDICINE
     public static final int ADD_JAM_BAYAR = 30; //MENIT
+    public static final String URL_RECORDING = CommonUtil.getPropertyParams("recording.handler.baseurl");
 
     public final static String posisiKabidKeuanganKp = CommonUtil.getPropertyParams("posisi.kabid.keuangan.kp");
     public final static String posisiKasubbidKeuanganKp = CommonUtil.getPropertyParams("posisi.kasubbid.keuangan.kp");
