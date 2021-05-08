@@ -35,7 +35,7 @@ function saveCPPT(jenis, ket, tipe) {
         'id_rm': tempidRm
     }
 
-    if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 &&
+    if (va1 && va2 && va3 && va4 && va6 && va7 && va8 &&
         nP && sP && !va9) {
 
         var tipeEWS = $('#tipe_ews').val();

@@ -687,18 +687,20 @@ function saveRingkasanPasien(jenis, ket) {
 
         var hslAlergi = "";
 
-        if (alergi != '' && ketAlergi != '') {
-            hslAlergi = alergi + ', ' + ketAlergi;
-        } else {
-            if (alergi != '') {
-                hslAlergi = alergi;
+        if(check6 == "Ya"){
+            if (alergi != '' && ketAlergi != '') {
+                hslAlergi = alergi + ', ' + ketAlergi;
+            } else {
+                if (alergi != '') {
+                    hslAlergi = alergi;
+                }
             }
         }
 
         var ttd1 = document.getElementById("et4");
         var ttd2 = document.getElementById("et5");
 
-        var nama1 = $('#nama_pasien').val();
+        var nama1 = $('#nama_keluarga').val();
         var nama2 = $('#nama_dokter').val();
         var sip2 = $('#sip_dokter').val();
 

@@ -1220,7 +1220,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 .list();
         if (result.size() > 0){
             Object[] obj = result.get(0);
-            res = obj[1].toString();
+            res = obj[0].toString()+"-"+obj[1].toString();
         }
         return res;
     }

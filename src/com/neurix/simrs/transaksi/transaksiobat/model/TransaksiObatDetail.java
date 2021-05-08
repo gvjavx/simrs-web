@@ -108,6 +108,15 @@ public class TransaksiObatDetail extends BaseModel {
     private String idBatch;
     private String nomorProduksi;
     private String flagBpjs;
+    private String frekuensi;
+
+    public String getFrekuensi() {
+        return frekuensi;
+    }
+
+    public void setFrekuensi(String frekuensi) {
+        this.frekuensi = frekuensi;
+    }
 
     public String getFlagBpjs() {
         return flagBpjs;

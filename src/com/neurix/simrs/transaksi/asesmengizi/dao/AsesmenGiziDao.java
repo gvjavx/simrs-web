@@ -39,6 +39,9 @@ public class AsesmenGiziDao extends GenericDao<ItSimrsAsesmenGiziEntity, String>
             if (mapCriteria.get("jenis")!=null) {
                 criteria.add(Restrictions.eq("jenis", (String) mapCriteria.get("jenis")));
             }
+            if (mapCriteria.get("created_date")!=null) {
+                criteria.add(Restrictions.eq("createdDate", (String) mapCriteria.get("created_date")));
+            }
         }
 
         criteria.add(Restrictions.eq("flag", "Y"));

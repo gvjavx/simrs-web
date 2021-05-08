@@ -17,6 +17,8 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenGiziAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenRawatInapAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CatatanTerintegrasiAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/RawatInapAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/OrderGiziAction.js"/>'></script>
 
     <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatjalan.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
@@ -260,7 +262,7 @@
                         </a>
                     </div>
                     <div class="box-body">
-                        <table id="exampleGizi" class="table table-bordered table-striped" style="font-size: 12px">
+                        <table id="exampleGizi" class="table table-bordered table-striped" style="font-size: 12px; width: 100%">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>No RM</td>
@@ -323,7 +325,7 @@
                                             </s:else>
                                         </s:else>
                                     </td>
-                                    <td align="center">
+                                    <td align="center" width="10%">
                                         <s:if test='#row.diterimaFlag == "R"'>
                                             <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
                                                  src="<s:url value="/pages/images/icons8-search-25.png"/>"
@@ -338,7 +340,8 @@
                                                          '<s:property value="alergi"/>',
                                                          '<s:property value="namaDiagnosa"/>',
                                                          '<s:property value="idDetailCheckup"/>',
-                                                         '<s:property value="noCheckup"/>'
+                                                         '<s:property value="noCheckup"/>',
+                                                         '<s:property value="tglLahir"/>'
                                                          )">
                                         </s:if>
                                         <s:else>
@@ -356,7 +359,8 @@
                                                              '<s:property value="alergi"/>',
                                                              '<s:property value="namaDiagnosa"/>',
                                                              '<s:property value="idDetailCheckup"/>',
-                                                             '<s:property value="noCheckup"/>'
+                                                             '<s:property value="noCheckup"/>',
+                                                             '<s:property value="tglLahir"/>'
                                                              )">
                                                 <img class="hvr-grow" onclick="printBarcodeGizi('<s:property value="noCheckup"/>', '<s:property value="idOrderGizi"/>')" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>">
                                             </s:if>
@@ -374,10 +378,12 @@
                                                              '<s:property value="alergi"/>',
                                                              '<s:property value="namaDiagnosa"/>',
                                                              '<s:property value="idDetailCheckup"/>',
-                                                             '<s:property value="noCheckup"/>'
+                                                             '<s:property value="noCheckup"/>',
+                                                             '<s:property value="tglLahir"/>'
                                                              )">
                                             </s:elseif>
                                             <s:else>
+                                                <img onclick="editDiet('<s:property value="idOrderGizi"/>', '<s:property value="idBentukGizi"/>', '<s:property value="keterangan"/>', '<s:property value="namaPasien"/>', '<s:property value="idPasien"/>')" style="cursor: pointer" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>">
                                                 <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
                                                      src="<s:url value="/pages/images/icons8-search-25.png"/>"
                                                      style="cursor: pointer;"
@@ -391,7 +397,8 @@
                                                              '<s:property value="alergi"/>',
                                                              '<s:property value="namaDiagnosa"/>',
                                                              '<s:property value="idDetailCheckup"/>',
-                                                             '<s:property value="noCheckup"/>'
+                                                             '<s:property value="noCheckup"/>',
+                                                             '<s:property value="tglLahir"/>'
                                                              )">
                                                 <div class="form-check">
                                                     <input onclick="setSave('id_order_gizi')" type="checkbox"
@@ -535,7 +542,7 @@
                                 </tr>
                                 <tr>
                                     <td>Umur</td>
-                                    <td><span id="det_umur"></span></td>
+                                    <td><span id="det_umur"></span> Tahun</td>
                                 </tr>
                                 <tr>
                                     <td >Ruangan</td>
@@ -626,6 +633,77 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-diet-edit">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Edit Order Gizi <span id="nama_text"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_edit_diet">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_edit_diet"></p>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 10px">Bentuk Diet</label>
+                        <div class="col-md-7">
+                            <s:action id="comboDiet0" namespace="/rawatinap"
+                                      name="getComboBoxDietGizi_rawatinap"/>
+                            <s:select list="#comboDiet0.listOfDietGizi" listKey="idDietGizi" listValue="namaDietGizi" id="edit_bentuk_diet"
+                                      onchange="var warn =$('#war_edit_bentuk_diet').is(':visible'); if (warn){$('#cor_edit_bentuk_diet').show().fadeOut(3000);$('#war_edit_bentuk_diet').hide()}"
+                                      headerKey="" headerValue=" - " cssClass="form-control select2" cssStyle="width: 100%"/>
+
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_edit_bentuk_diet"><i
+                                    class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_edit_bentuk_diet">
+                                <i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 10px">Jenis Diet</label>
+                        <div class="col-md-7">
+                            <select id="edit_jenis_diet" class="form-control select2" multiple style="width: 100%"
+                                    onchange="var warn =$('#war_edit_jenis_diet').is(':visible'); if (warn){$('#cor_edit_jenis_diet').show().fadeOut(3000);$('#war_edit_jenis_diet').hide()}">
+
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_edit_jenis_diet"><i
+                                    class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_edit_jenis_diet">
+                                <i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak">
+                    <div class="form-group">
+                        <label class="col-md-3">Keterangan</label>
+                        <div class="col-md-7">
+                            <textarea rows="3" class="form-control" id="edit_keterangan"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="edit_save_diet"><i class="fa fa-check"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="edit_load_diet"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="modal-temp"></div>
 
 <div class="modal fade" id="modal-hasil_lab">
@@ -709,6 +787,8 @@
     var tempAnmnesa = "";
     var idPasien = "";
     var tempidRm = "";
+    var tglLahir = "";
+    var urlPage = "";
 
     function listOrderGizi(idRawatInap, noCheckup) {
         $('#modal-detail-pasien').modal({show: true, backdrop: 'static'});
@@ -974,13 +1054,14 @@
         }
     }
 
-    function viewHistory(idPas, namaPasien, jenisKelamin, um, ruangan, jenisDiet, betukDiet, alergi, diagnosa, iddetail, nocheckup) {
+    function viewHistory(idPas, namaPasien, jenisKelamin, um, ruangan, jenisDiet, betukDiet, alergi, diagnosa, iddetail, nocheckup, lahir) {
         if(!cekSession()){
             $('#btn_ases').attr('onclick', 'getListRekamMedis(\'gizi\',\'\',\''+iddetail+'\')');
             idDetailCheckup = iddetail;
             umur = um;
             idPasien = idPas;
             noCheckup = nocheckup;
+            tglLahir = lahir;
             $('#label_pasien').text(namaPasien);
             $('#modal-history').modal({show: true, backdrop: 'static', keyboard: false});
             var table = "";
@@ -1252,6 +1333,79 @@
             }
         }
     }
+
+    function editDiet(id, idDietGizi, keterangan, nama, idPasien) {
+        getListComboJenisDiet();
+        var idJenis = [];
+        RawatInapAction.getComboBoxOrderJenisGizi(id, function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    idJenis.push(item.idJenisDiet);
+                });
+                $('#edit_jenis_diet').val(idJenis).trigger('change');
+            }
+        });
+        $('#edit_load_diet, #warning_edit_jenis_diet, #war_edit_bentuk_diet, #war_edit_keterangan_diet').hide();
+        $('#edit_bentuk_diet').val(idDietGizi).trigger('change');
+        $('#edit_keterangan').val(keterangan);
+        $('#nama_text').text(nama);
+        $('#edit_save_diet').attr('onclick', 'saveDiet(\'' + id + '\', \''+idPasien+'\')').show();
+        $('#modal-diet-edit').modal({show: true, backdrop: 'static'});
+    }
+
+    function saveDiet(id, idPasien) {
+        if (id != null && id != '') {
+            if(!cekSession()){
+                var bentukDiet = $('#edit_bentuk_diet').val();
+                var jenisDiet = $('#edit_jenis_diet').val();
+                if (bentukDiet && jenisDiet != '') {
+                    $('#edit_save_diet').hide();
+                    $('#edit_load_diet').show();
+                    dwr.engine.setAsync(true);
+                    OrderGiziAction.editOrderGizi(id, bentukDiet, jenisDiet, function (response) {
+                        if (response.status == "success") {
+                            dwr.engine.setAsync(false);
+                            $('#modal-diet-edit').modal('hide');
+                            $('#info_dialog').dialog('open');
+                            $('#edit_save_diet').show();
+                            $('#edit_load_diet').hide();
+                            setTimeout(function () {
+                                $('#id_pasien').val(idPasien);
+                                document.giziForm.submit();
+                            },100);
+                        } else {
+                            $('#edit_save_diet').show();
+                            $('#edit_load_diet').hide();
+                            $('#warning_edit_diet').show().fadeOut(5000);
+                            $('#msg_edit_diet').text(response.message);
+                        }
+                    });
+                } else {
+                    $('#warning_edit_diet').show().fadeOut(5000);
+                    $('#msg_edit_diet').text("Silahkan cek kembali inputan anda...!");
+                    if (bentukDiet == '') {
+                        $('#war_edit_bentuk_diet').show();
+                    }
+                    if (jenisDiet == '' || jenisDiet == null) {
+                        $('#war_edit_jenis_diet').show();
+                    }
+                }
+            }
+        }
+    }
+
+    function getListComboJenisDiet() {
+        var option = '';
+        RawatInapAction.getComboBoxJenisGizi(function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    option += '<option value="' + item.idJenisDiet + '">' + item.namaJenisDiet + '</option>'
+                });
+                $('#edit_jenis_diet').html(option);
+            }
+        });
+    }
+
 
 </script>
 

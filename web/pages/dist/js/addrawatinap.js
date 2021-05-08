@@ -2831,6 +2831,26 @@ function addObatToList() {
     var harga = "";
     var namaRacik = $('#nama_racik').val();
     var isRacik = false;
+    var waktuResep = $('[name=waktu_resep]');
+
+    var tempWak = "";
+    var liWak = "";
+    var ulWak = "";
+
+    $.each(waktuResep, function (i, item) {
+        if(item.checked){
+            if(tempWak != ''){
+                tempWak = tempWak+'#'+item.value;
+            }else{
+                tempWak = item.value;
+            }
+            liWak += '<li>'+item.value+'</li>';
+        }
+    });
+
+    if(liWak != ''){
+        ulWak = '<ul style="margin-left: 20px">'+liWak+'</ul>';
+    }
 
     if($('#racik_racik').is(':checked')){
         if(namaRacik != ''){
@@ -3008,9 +3028,12 @@ function addObatToList() {
                     '<input type="hidden" value="'+flagCicik+'" id="is_racik_'+count+'">'+
                     '<input type="hidden" value="'+nameRacik+'" id="nama_racik_'+count+'">'+
                     '<input type="hidden" value="'+idRacik+'" id="id_racik_'+count+'">'+
+                    '<input type="hidden" value="'+tempWak+'" id="temp_waktu_'+count+'">'+
                     '</td>' +
                     '<td align="center">' + qty +' ' +jenisSatuan+'</td>' +
-                    '<td><div id="body_ket_'+ count +'"></div><br>' +
+                    '<td>' + ulWak+ '<br>'+
+                    '<div id="body_ket_'+ count +'"></div>' +
+                    '<br>' +
                     '<button class="btn btn-sm btn-warning" onclick="showModalKeterangan(\''+count+'\')">Tambah</button>' +
                     '<button class="btn btn-sm btn-danger" onclick="hapusKeterangan(\''+count+'\')">Hapus</button>' +
                     '</td>' +
@@ -3223,6 +3246,8 @@ function saveResepObat() {
                 var isRacik = $('#is_racik_'+i).val();
                 var namaRacik = $('#nama_racik_'+i).val();
                 var idRacik = $('#id_racik_'+i).val();
+                var waktu = $('#temp_waktu_'+i).val();
+
                 dataObat.push({
                     'id_obat':idObat,
                     'qty': qty,
@@ -3233,7 +3258,8 @@ function saveResepObat() {
                     'hari_kronis': hariKronis,
                     'nama_racik': namaRacik,
                     'id_racik': idRacik,
-                    'is_racik': isRacik
+                    'is_racik': isRacik,
+                    'waktu_resep': waktu
                 });
 
             });

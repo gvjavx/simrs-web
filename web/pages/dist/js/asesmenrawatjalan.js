@@ -201,18 +201,48 @@ function saveRJ(jenis, ket) {
         var va3 = $('[name=gz3]:checked').val();
         var va4 = undefined;
         var va4d = $('[name=gz4]:checked').val();
+
+        var vaCek = "";
+        var ketVa1 = $('[name=penurunan]:checked').val();
+        if(va1 != undefined){
+            if(va1 == "Ya|2"){
+                if(ketVa1 != undefined){
+                    vaCek = ketVa1;
+                }
+            }else{
+                vaCek = va1;
+            }
+        }
+
         if(va4d != undefined){
             var a = $('#ket_gz4').val();
             if(va4d == "Lain-Lain"){
                 if(a != ''){
-                    va4 = a;
+                    va4 = 'Penyakit, '+a;
                 }
             }else{
-                va4 = va4d;
+                va4 = 'Penyakit, '+va4d;
             }
         }
 
-        if (va1 && va2 && va3 && va4 != undefined) {
+        var va3Cek = "";
+        if(va3 != undefined){
+            if("Ya|2" == va3){
+                if(va4 != undefined){
+                    va3Cek = va4;
+                }
+            }else{
+                va3Cek = va3;
+            }
+        }
+
+        var berat = "";
+
+        if(ketVa1 != undefined){
+            berat = ketVa1;
+        }
+
+        if (vaCek && va3Cek != '' && va2 != undefined) {
             var isi1 = va1.split("|")[0];
             var isi2 = va2.split("|")[0];
             var isi3 = va3.split("|")[0];
@@ -222,7 +252,7 @@ function saveRJ(jenis, ket) {
             var skor3 = va3.split("|")[1];
 
             data.push({
-                'parameter': '1. Apakah pasien mengalami penuruanan / peningkatan BB yang tidak di inginkan dalam 6 bulan terakhir ?',
+                'parameter': '1. Apakah pasien mengalami penuruanan / peningkatan BB yang tidak di inginkan dalam 6 bulan terakhir ? '+berat,
                 'jawaban': isi1,
                 'skor': skor1,
                 'keterangan': jenis,
@@ -238,7 +268,7 @@ function saveRJ(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': '3. Pasien dengan diagnosa khusus / kondisi khusus ? Penyakit ',
+                'parameter': '3. Pasien dengan diagnosa khusus / kondisi khusus ? '+va4,
                 'jawaban': isi3,
                 'skor': skor3,
                 'keterangan': jenis,
@@ -247,7 +277,6 @@ function saveRJ(jenis, ket) {
             });
 
             var total = (parseInt(skor1) + parseInt(skor2) + parseInt(skor3));
-            console.log(total);
             data.push({
                 'parameter': 'Total',
                 'jawaban': '',
@@ -270,8 +299,8 @@ function saveRJ(jenis, ket) {
                 'tipe': 'kesimpulan',
                 'id_detail_checkup': idDetailCheckup
             });
-            cek = true;
             console.log(data);
+            cek = true;
         }
     }
 
@@ -632,5 +661,13 @@ function delKepRJ(jenis, ket) {
                 detailRJ(jenis);
             }
         });
+    }
+}
+
+function cekGiziRJ(val, form){
+    if(val == "Ya|2"){
+        $('#'+form).show();
+    }else{
+        $('#'+form).hide();
     }
 }

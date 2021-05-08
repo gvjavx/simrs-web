@@ -2519,6 +2519,34 @@
                         </select>
                     </div>
                 </div>
+                <div class="row jarak">
+                    <div class="col-md-offset-3 col-md-3">
+                        <div class="form-check">
+                            <input type="checkbox" name="waktu_resep" id="waktu_resep1" value="07:00">
+                            <label for="waktu_resep1"></label> 07:00
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input type="checkbox" name="waktu_resep" id="waktu_resep2" value="12:00">
+                            <label for="waktu_resep2"></label> 12:00
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input type="checkbox" name="waktu_resep" id="waktu_resep3" value="04:00">
+                            <label for="waktu_resep3"></label> 04:00
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-3">
+                        <div class="form-check">
+                            <input type="checkbox" name="waktu_resep" id="waktu_resep4" value="08:00">
+                            <label for="waktu_resep4"></label> 08:00
+                        </div>
+                    </div>
+                </div>
                 <hr/>
                 <%--Keterangan Obat Berdasarkan Jenis Obat--%>
                 <%--<div class="row" style="margin-top: -7px">--%>
@@ -2569,7 +2597,7 @@
                               <%--id="cor_rep_cek_waktu"><i class="fa fa-check"></i> correct</span>--%>
                     <%--</div>--%>
                 <%--</div>--%>
-                <hr/>
+                <%--<hr/>--%>
                 <div class="row" style="margin-top: -10px">
                     <div class="col-md-12">
                         <button class="btn btn-success" onclick="addObatToList()"><i class="fa fa-plus"></i> Tambah

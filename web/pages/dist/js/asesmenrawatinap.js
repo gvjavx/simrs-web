@@ -4004,30 +4004,83 @@ function listCatatanPemberianObat() {
         var table = "";
         CatatanPemberianObatAction.getListCatatanPemberianObat(idDetailCheckup, function (res) {
             if (res.length > 0) {
+                var wawak = "";
                 $.each(res, function (i, item) {
+                    var action = '';
+                    var ttd = '';
+                    if(wawak != item.waktu){
+                        wawak = item.waktu;
+                        action = '<i onclick="actionCPO(\''+item.idCatatanPemberianObat+'\', \''+item.waktu+'\')" class="fa fa-edit" style="font-size: 20px; cursor: pointer"></i>';
+                        if(item.ttdApoteker != null && item.ttdDokter){
+                            ttd = '<span>Keluarga</span>'+
+                                '<img style="width: 30px; height: 20px" src="' + item.ttdApoteker + '">' +
+                                '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerangPerawat)+'</p>' +
+                                '<br>'+
+                                '<span>Perawat</span>'+
+                                '<img style="width: 30px; height: 20px" src="' + item.ttdDokter + '">' +
+                                '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerangDokter)+'</p>' +
+                                '<p style="margin-top: -3px">'+cekItemIsNull(item.sipDokter)+'</p>';
+                        }
+                    }
                     table += '<tr>' +
                         '<td>' + item.waktu + '</td>' +
-                        '<td>' + cekNull(item.namaDokter) + '</td>' +
                         '<td>' + cekNull(item.namaObat) + '</td>' +
                         '<td>' + cekNull(item.aturanPakai) + '</td>' +
-                        '<td>' + formaterDate(item.tanggalMulai) + '</td>' +
-                        '<td>' + formaterDate(item.tanggalStop) + '</td>' +
-                        '<td align="center">' +
-                        '<img style="width: 30px; height: 20px" src="' + item.ttdDokter + '">' +
-                        '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerangDokter)+'</p>' +
-                        '<p style="margin-top: -10px">'+cekItemIsNull(item.sipDokter)+'</p>' +
-                        '</td>' +
-                        '<td align="center">' +
-                        '<img style="width: 30px; height: 20px" src="' + item.ttdApoteker + '">' +
-                        '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerangPerawat)+'</p>' +
-                        '</td>' +
-                        '<td align="center">' + convertCek(item.status) + '</td>' +
+                        '<td>' + convertCek(item.keterangan) + '</td>' +
+                        '<td align="center">' + ttd +'</td>' +
+                        '<td align="center">' + action + '</td>' +
                         '</tr>';
                 });
                 $('#body_catatan_pemberian').html(table);
             }
         });
     }
+}
+
+function actionCPO(id, waktu){
+    $('#jam').val(waktu);
+    $('#modal-ina-action_pemberian_obat').modal({show:true, backdrop:'static'});
+    $('#save_ina_action_pemberian_obat').attr('onclick', 'saveCOP(\''+id+'\')');
+}
+
+function saveCOP(id){
+    var centeng = $('[name=centangan]');
+    var ttdPasien = document.getElementById("cpo9");
+    var ttdPerawat = document.getElementById("cpo10");
+    var nama1 = $('nama_terang_cpo9').val();
+    var nama2 = $('nama_terang_cpo10').val();
+    var sip2 = $('#nip_cpo10').val();
+    var cek1 = isBlank(ttdPasien);
+    var cek2 = isBlank(ttdPerawat);
+    var waktu = $('#jam').val();
+
+    var temp = "";
+    $.each(centeng, function (i, item) {
+        if(item.checked){
+            if(temp != ''){
+                temp = temp +'|'+item.value;
+            }else{
+                temp = item.value;
+            }
+        }
+    });
+    var data = {
+        'id': id,
+        'ttd_keluarga': ttdPasien,
+        'ttd_perawat': ttdPerawat,
+        'nama1': nama1,
+        'nama2': nama2,
+        'sip': sip2,
+        'keterangan': temp,
+        'waktu': waktu
+    }
+    var result = JSON.stringify(data);
+    CatatanPemberianObatAction.saveUpdate(data, function (res) {
+        if(res.status = 'success'){
+            $('#modal-ina-action_pemberian_obat').modal('hide');
+        }else{
+        }
+    });
 }
 
 function saveAsuhanKeperawatan(jenis, ket) {

@@ -2655,6 +2655,8 @@ ADD COLUMN monitoring VARCHAR(100);
 ALTER TABLE it_simrs_catatan_terintegrasi
 ADD COLUMN data_ews VARCHAR(100);
 
+ALTER TABLE mt_simrs_transaksi_obat_detail
+ADD COLUMN frekuensi VARCHAR(100);
 
 
 

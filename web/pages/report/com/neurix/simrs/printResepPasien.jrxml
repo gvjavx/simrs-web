@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printResepPasien" language="groovy" pageWidth="297" pageHeight="421" columnWidth="257" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.3310000000000126"/>
+	<property name="ireport.zoom" value="2.143588810000021"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="10"/>
+	<property name="ireport.y" value="200"/>
 	<parameter name="reportParams.resepId" class="java.lang.String"/>
 	<parameter name="reportParams.logo" class="java.lang.String"/>
 	<parameter name="reportParams.nik" class="java.lang.String"/>
@@ -51,7 +51,7 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="201" splitType="Stretch">
+		<band height="194" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="98" width="90" height="15" uuid="6c44ef7d-db93-4127-8056-c6e5dc48fb34"/>
 				<textElement verticalAlignment="Middle">
@@ -256,19 +256,22 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 				</textElement>
 				<text><![CDATA[Resep Pasien]]></text>
 			</staticText>
+			<line>
+				<reportElement x="1" y="193" width="256" height="1" uuid="9912a6b9-a3b8-4d26-8c3e-1338b6ca9521"/>
+			</line>
 		</band>
 	</title>
 	<detail>
 		<band height="40" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="94" height="20" isPrintWhenDetailOverflows="true" uuid="4a9896a4-6154-4c19-9e1a-80072f937aa7"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="15" y="0" width="94" height="20" isPrintWhenDetailOverflows="true" uuid="4a9896a4-6154-4c19-9e1a-80072f937aa7"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nama_obat}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="94" y="0" width="34" height="20" uuid="f425dc40-25fe-424a-a718-b7ff620b90d0"/>
+				<reportElement x="109" y="0" width="34" height="20" uuid="f425dc40-25fe-424a-a718-b7ff620b90d0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="false"/>
 				</textElement>
@@ -280,6 +283,13 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 					<font size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{keterangan} == null ? "" : $F{keterangan}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="15" height="20" uuid="7f35ab7e-c5a1-4b4c-85d3-056dd84aee49"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["R/"]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

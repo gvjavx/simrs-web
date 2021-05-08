@@ -181,7 +181,7 @@
                                 </div>
                             </div>
                             <div class="col-md-1">
-                                <i class="fa fa-square fa-2x" style="color: #e08e0b"></i>
+                                <i class="fa fa-square fa-2x" style="color: yellow"></i>
                             </div>
                             <div class="col-md-2">
                                 <div class="custom02" style="margin-left: -20px">

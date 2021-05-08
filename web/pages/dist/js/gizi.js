@@ -368,9 +368,34 @@ function saveGizi(jenis, ket) {
         var nama2 = $('#nama_gizi21').val();
         var sip2 = $('#sip_dokter').val();
 
+        if(va2 == ''){
+            va2 = ' -';
+        }
+        if(va3 == ''){
+            va3 = ' -';
+        }
+        if(va4 == ''){
+            va4 = ' -';
+        }
+        if(va5 == ''){
+            va5 = ' -';
+        }
+        if(va6 == ''){
+            va6 = ' -';
+        }
+        if(va7 == ''){
+            va7 = ' -';
+        }
+        if(va8 == ''){
+            va8 = ' -';
+        }
+        if(va10 == ''){
+            va10 = ' -';
+        }
+
         if (va1 && tempVa15 && nama1 && nama2 && sip2 != '' && va11 && va12 && va13 != undefined && !cekTtd1 && !cekTtd2) {
             temp = 'BB : ' + va1 + ' Kg' + '|' + 'TB : ' + va2 + ' Cm' + '|' + 'LLA : ' + va3 + ' Kg' + '|' + 'BBI ' + va4 + '|' + '%BBI ' + va5 + '|' + 'BB/U' + va6 + '|' + 'TB/U ' + va7 + '|' + 'BB/TB ' + va8 + '|' + 'LLA/U ' + va10 + '|' + 'Status Gizi : ' + va11;
-            if (parseInt(umur) >= 18) {
+            if (parseInt(umur) >= 16) {
                 temp = 'BB : ' + va1 + ' Kg' + '|' + 'TB : ' + va2 + ' Cm' + '|' + 'BBI : ' + va3 + ' Kg' + '|' + 'IMT ' + va4 + ' Kg/m2' + '|' + 'TL ' + va5 + ' Cm' + '|' + 'TB Est' + va6 + ' Cm' + '|' + 'LLA ' + va7 + ' Cm' + '|' + '%LLA ' + va8 + ' %' + '|' + 'Status Gizi : ' + va11;
             }
             data.push({
@@ -392,7 +417,7 @@ function saveGizi(jenis, ket) {
             });
             data.push({
                 'parameter': 'C. Fisik - Klinik',
-                'jawaban': va12,
+                'jawaban': va13,
                 'keterangan': jenis,
                 'jenis': ket,
                 'no_checkup': noCheckup,
@@ -821,6 +846,10 @@ function detailGizi(jenis) {
                                 }
                             } else {
                                 if ("li" == item.tipe) {
+                                    var btn = "";
+                                    if("A. Antropmentri" == item.parameter){
+                                        btn = '<i onclick="conGizi(\''+jenis+'\', \''+item.jenis+'\', \''+item.idAsesmenGizi+'\')" class="fa fa-trash hvr-grow" style="font-size: 20px; color: red"></i>';
+                                    }
                                     if (jwb != '') {
                                         var temp = jwb.split("|");
                                         var liTemp = "";
@@ -829,7 +858,10 @@ function detailGizi(jenis) {
                                         });
                                         body += '<tr>' +
                                             '<td width="40%">' + item.parameter + '</td>' +
-                                            '<td><ul style="margin-left: 10px">' + liTemp + '</ul></td>' +
+                                            '<td>' +
+                                            '<div class="pull-right">'+btn+'</div>'+
+                                            '<ul style="margin-left: 10px">' + liTemp + '</ul>' +
+                                            '</td>' +
                                             '</tr>';
                                     }
                                 } else if ("ttd" == item.tipe) {
@@ -883,7 +915,7 @@ function detailGizi(jenis) {
 function delRowGizi(id) {
     $('#del_gizi_' + id).remove();
     var url = "";
-    if (id == "add_asuhan_gizi" || id == "add_evaluasi_gizi") {
+    if (id == "add_asuhan_gizi" || id == "add_evaluasi_gizi" || id == "add_pengkajian_gizi") {
         url = contextPath + '/pages/images/icons8-add-list-25.png';
     } else {
         url = contextPath + '/pages/images/icons8-plus-25.png';
@@ -895,11 +927,16 @@ function delRowGizi(id) {
 function conGizi(jenis, ket, idAsesmen) {
     $('#tanya').text("Yakin mengahapus data ini ?");
     $('#modal-confirm-rm').modal({show: true, backdrop: 'static'});
-    if (idAsesmen != undefined && idAsesmen != '' && idAsesmen != null) {
-        $('#save_con_rm').attr('onclick', 'delAsuhanMon(\'' + jenis + '\', \'' + ket + '\', \'' + idAsesmen + '\')');
-    } else {
-        $('#save_con_rm').attr('onclick', 'delGizi(\'' + jenis + '\', \'' + ket + '\')');
+    if("add_pengkajian_gizi" == jenis){
+        $('#save_con_rm').attr('onclick', 'delGizi(\'' + jenis + '\', \'' + ket + '\', \''+idAsesmen+'\')');
+    }else{
+        if (idAsesmen != undefined && idAsesmen != '' && idAsesmen != null) {
+            $('#save_con_rm').attr('onclick', 'delAsuhanMon(\'' + jenis + '\', \'' + ket + '\', \'' + idAsesmen + '\')');
+        } else {
+            $('#save_con_rm').attr('onclick', 'delGizi(\'' + jenis + '\', \'' + ket + '\')');
+        }
     }
+
 }
 
 function delAsuhanMon(jenis, ket, idAsesmen) {
@@ -954,7 +991,7 @@ function delAsuhanMon(jenis, ket, idAsesmen) {
     }
 }
 
-function delGizi(jenis, ket) {
+function delGizi(jenis, ket, idAsesmen) {
     $('#modal-confirm-rm').modal('hide');
     if (!cekSession()) {
         var dataPasien = {
@@ -967,7 +1004,7 @@ function delGizi(jenis, ket) {
         var result = JSON.stringify(dataPasien);
         startSpin('delete_' + jenis);
         dwr.engine.setAsync(true);
-        AsesmenGiziAction.saveDeleteAsesmen(idDetailCheckup, jenis, result, {
+        AsesmenGiziAction.saveDeleteAsesmen(idDetailCheckup, jenis, result, idAsesmen, {
             callback: function (res) {
                 if (res.status == "success") {
                     stopSpin('delete_' + jenis);

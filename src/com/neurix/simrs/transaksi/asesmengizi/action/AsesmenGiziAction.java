@@ -429,7 +429,7 @@ public class AsesmenGiziAction {
         return list;
     }
 
-    public CrudResponse saveDeleteAsesmen(String idDetailCheckup, String keterangan, String dataPasien) {
+    public CrudResponse saveDeleteAsesmen(String idDetailCheckup, String keterangan, String dataPasien, String idAsesmen) {
         logger.info("[AsesmenGiziAction.saveDeleteAsesmen] End >>>>>>>");
         CrudResponse response = new CrudResponse();
         String userLogin = CommonUtil.userLogin();
@@ -443,6 +443,7 @@ public class AsesmenGiziAction {
                 asesmenGizi.setKeterangan(keterangan);
                 asesmenGizi.setLastUpdate(time);
                 asesmenGizi.setLastUpdateWho(userLogin);
+                asesmenGizi.setIdAsesmenGizi(idAsesmen);
                 asesmenGiziBo.saveDelete(asesmenGizi);
                 try {
                     JSONObject obj = new JSONObject(dataPasien);

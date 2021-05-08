@@ -246,7 +246,8 @@
                                                      '<s:property value="noCheckup"/>',
                                                      '<s:property value="idDetailCheckup"/>',
                                                      '<s:property value="idKonsultasiGizi"/>',
-                                                     '<s:property value="status"/>'
+                                                     '<s:property value="status"/>',
+                                                     '<s:property value="tglLahir"/>'
                                                      )">
                                     </td>
                                 </tr>
@@ -291,7 +292,7 @@
                                 </tr>
                                 <tr>
                                     <td>Umur</td>
-                                    <td><span id="det_umur"></span></td>
+                                    <td><span id="det_umur"></span> Tahun</td>
                                 </tr>
                             </table>
                         </div>
@@ -385,13 +386,18 @@
     var tempTinggi = "";
     var tempAnmnesa = "";
     var idPasien = "";
+    var tempidRm = "";
+    var tglLahir = "";
+    var urlPage = "";
+    var tipePelayanan = "";
 
-    function viewDetail(idPas, nama, namaPelayanan, jenisKelamin, um, alergi, diagnosa, tglLahir, nocheckup, iddetail, idGizi, status) {
+    function viewDetail(idPas, nama, namaPelayanan, jenisKelamin, um, alergi, diagnosa, tglLahir, nocheckup, iddetail, idGizi, status, lahir) {
         if(!cekSession()){
             idDetailCheckup = iddetail;
             noCheckup = nocheckup;
             umur = um;
             idPasien = idPas;
+            tglLahir = lahir;
             $('#det_no_rm').html(idPas);
             $('#det_nama').html(nama);
             $('#det_jk').html(jenisKelamin);
@@ -482,7 +488,9 @@
                             li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-television"></i>' + item.namaRm + '</a></li>'
                         } else {
                             if (item.keterangan == 'form') {
-                                li += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'+enter;
+                                if("keperawatan_rawat_jalan" == item.jenis || "catatan_integrasi" == item.jenis){
+                                    li += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'+enter;
+                                }
                             } else if (item.keterangan == "surat") {
                                 li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>'+enter;
                             }

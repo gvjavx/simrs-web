@@ -374,12 +374,36 @@
                             <label class="col-md-8">1. Apakah pasien mengalami penuruanan / peningkatan BB yang tidak di inginkan dalam 6 bulan terakhir ?</label>
                             <div class="col-md-2">
                                 <div class="custom02">
-                                    <input type="radio" value="Ya|2" id="gz11" name="gz1" /><label for="gz11">Ya</label>
+                                    <input onclick="cekGiziRJ(this.value, 'form-ina-penurunan')" type="radio" value="Ya|2" id="gz11" name="gz1" /><label for="gz11">Ya</label>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="custom02">
-                                    <input type="radio" value="Tidak|0" id="gz12" name="gz1" /><label for="gz12">Tidak</label>
+                                    <input onclick="cekGiziRJ(this.value, 'form-ina-penurunan')" type="radio" value="Tidak|0" id="gz12" name="gz1" /><label for="gz12">Tidak</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="display: none;" id="form-ina-penurunan">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="1 - 5 kg" id="aud_penurunan1" name="penurunan" /><label for="aud_penurunan1">1 - 5 kg</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="6 - 10 kg" id="aud_penurunan2" name="penurunan" /><label for="aud_penurunan2">6 - 10 kg</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="11 - 15 kg" id="aud_penurunan3" name="penurunan" /><label for="aud_penurunan3">11 - 15 kg</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="> 15 kg" id="aud_penurunan4" name="penurunan" /><label for="aud_penurunan4">> 15 kg</label>
                                 </div>
                             </div>
                         </div>
@@ -404,17 +428,17 @@
                             <label class="col-md-8">3. Pasien dengan diagnosa khusus / kondisi khusus ?</label>
                             <div class="col-md-2">
                                 <div class="custom02">
-                                    <input type="radio" value="Ya|2" id="gz31" name="gz3" /><label for="gz31">Ya</label>
+                                    <input onclick="cekGiziRJ(this.value, 'form-sakit')" type="radio" value="Ya|2" id="gz31" name="gz3" /><label for="gz31">Ya</label>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="custom02">
-                                    <input type="radio" value="Tidak|0" id="gz32" name="gz3" /><label for="gz32">Tidak</label>
+                                    <input onclick="cekGiziRJ(this.value, 'form-sakit')" type="radio" value="Tidak|0" id="gz32" name="gz3" /><label for="gz32">Tidak</label>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="display: none" id="form-sakit">
                         <div class="form-group">
                             <label class="col-md-3">Penyakit : </label>
                             <div class="col-md-9">
