@@ -61,7 +61,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 criteria.add(Restrictions.eq("positionId", (String) mapCriteria.get("position_id")));
             }
             if (mapCriteria.get("from")!=null) {
-                criteria.add(Restrictions.ne("tipePegawai", CommonConstant.PEGAWAI_TETAP));
+                criteria.add(Restrictions.ne("tipePegawai", CommonConstant.TIPE_PEGAWAI_TETAP));
             }
             if (mapCriteria.get("pin")!=null) {
                 criteria.add(Restrictions.eq("pin", (String) mapCriteria.get("pin")));
@@ -1197,7 +1197,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
     //for Cuti
     public List<ImBiodataEntity> findAllUserCuti() throws HibernateException {
         List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
-//                .add(Restrictions.eq("tipePegawai",CommonConstant.PEGAWAI_TETAP))
+//                .add(Restrictions.eq("tipePegawai",CommonConstant.TIPE_PEGAWAI_TETAP))
 //                .add(Restrictions.isNotNull("pin"))
                 .add(Restrictions.eq("flag","Y"))
                 .addOrder(Order.asc("nip"))
@@ -1208,7 +1208,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
     public List<ImBiodataEntity> findUserCuti(String nip) throws HibernateException {
         List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
                 .add(Restrictions.eq("nip",nip))
-//                .add(Restrictions.eq("tipePegawai",CommonConstant.PEGAWAI_TETAP))
+//                .add(Restrictions.eq("tipePegawai",CommonConstant.TIPE_PEGAWAI_TETAP))
 //                .add(Restrictions.isNotNull("pin"))
                 .add(Restrictions.eq("flag","Y"))
                 .addOrder(Order.asc("nip"))
@@ -1219,7 +1219,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
     public List<ImBiodataEntity> getByNip(String nip) throws  HibernateException{
         List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
                 .add(Restrictions.eq("nip", nip))
-                .add(Restrictions.eq("tipePegawai", CommonConstant.PEGAWAI_TETAP))
+                .add(Restrictions.eq("tipePegawai", CommonConstant.TIPE_PEGAWAI_TETAP))
                 .add(Restrictions.isNotNull("tanggalAktif"))
                 .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("nip"))
@@ -2176,5 +2176,28 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         }
 
         return personilPositions;
+    }
+
+    public Integer lamaTahunKerja(Date tanggal, String nip){
+        Integer lamaKerja = 0;
+
+        String date4query = CommonUtil.convertDateToString2(tanggal);
+
+        String SQL = "select\n" +
+                "\tpegawai.nama_pegawai,\n" +
+                "\tpegawai.tanggal_masuk,\n" +
+                "\t(to_date( :tanggal , 'DD-MM-YYYY') - pegawai.tanggal_masuk) / 356 as masa\n" +
+                "from im_hris_pegawai pegawai\n" +
+                "where nip = :nip";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("nip", nip)
+                .setParameter("tanggal", date4query)
+                .list();
+
+        if(results.size() > 0){
+            lamaKerja = (Integer) results.get(0)[2];
+        }
+        return lamaKerja;
     }
 }

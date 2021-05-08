@@ -30,8 +30,17 @@ public class RekeningTelemedicController implements ModelDriven<Object> {
     String namaRekening;
     String coa;
     String branchId;
+    String tipeRekening;
 
     String action;
+
+    public String getTipeRekening() {
+        return tipeRekening;
+    }
+
+    public void setTipeRekening(String tipeRekening) {
+        this.tipeRekening = tipeRekening;
+    }
 
     public String getBranchId() {
         return branchId;
@@ -133,6 +142,7 @@ public class RekeningTelemedicController implements ModelDriven<Object> {
             bean.setBranchId(branchId);
             bean.setCoa(coa);
             bean.setPembayaranId(pembayaranId);
+            bean.setTipeRekening(tipeRekening);
 
             List<RekeningTelemedic> result = new ArrayList<>();
             listOfRekeningMobile = new ArrayList<>();
@@ -153,6 +163,9 @@ public class RekeningTelemedicController implements ModelDriven<Object> {
                     rekeningTelemedicMobile.setNoRekening(item.getNoRekening());
                     rekeningTelemedicMobile.setNamaRekening(item.getNamaRekening());
                     rekeningTelemedicMobile.setCoa(item.getCoa());
+                    rekeningTelemedicMobile.setTipeRekening(item.getTipeRekening());
+                    rekeningTelemedicMobile.setClientId(item.getClientId());
+                    rekeningTelemedicMobile.setKeterangan(item.getKeterangan());
 
                     listOfRekeningMobile.add(rekeningTelemedicMobile);
                 }

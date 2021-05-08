@@ -371,7 +371,7 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
     public List<ImBiodataEntity> getPegawaiCuti(String unit) throws HibernateException {
         List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
                 .add(Restrictions.eq("flag","Y"))
-                .add(Restrictions.eq("tipePegawai",CommonConstant.PEGAWAI_TETAP))
+                .add(Restrictions.eq("tipePegawai",CommonConstant.TIPE_PEGAWAI_TETAP))
                 .add(Restrictions.isNotNull("pin"))
                 .list();
         return results;

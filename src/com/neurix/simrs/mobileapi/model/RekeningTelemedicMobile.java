@@ -20,8 +20,35 @@ public class RekeningTelemedicMobile {
     private String lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+    private String clientId;
+    private String keterangan;
+    private String tipeRekening;
 
     private String message;
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getTipeRekening() {
+        return tipeRekening;
+    }
+
+    public void setTipeRekening(String tipeRekening) {
+        this.tipeRekening = tipeRekening;
+    }
 
     public String getMessage() {
         return message;

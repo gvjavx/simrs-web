@@ -14,6 +14,8 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.exception.GenerateBoLog;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.biodata.dao.BiodataDao;
+import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.mappingpersengaji.dao.MappingPersenGajiDao;
 import com.neurix.hris.master.mappingpersengaji.model.ImHrisMappingPersenGaji;
 import com.neurix.hris.master.mappingpersengaji.model.MappingPersenGaji;
@@ -52,6 +54,12 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
     private AbsensiPegawaiDao absensiPegawaiDao;
 
     private MappingJurnalDao mappingJurnalDao;
+
+    private BiodataDao biodataDao;
+
+    public void setBiodataDao(BiodataDao biodataDao) {
+        this.biodataDao = biodataDao;
+    }
 
     @Override
     public void setMappingJurnalDao(MappingJurnalDao mappingJurnalDao) {
@@ -3157,25 +3165,23 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 //
 //                            String noJurnal = itJurnalEntity.getNoJurnal();
 //
-//                            //update payroll header, approval aks = Y dan no jurnal
+////                            update payroll header, approval aks = Y dan no jurnal
 //                            itHrisPayrollHeaderEntity.setNoJurnal(noJurnal);
-//                            itHrisPayrollHeaderEntity.setAction("U");
-//                            itHrisPayrollHeaderEntity.setApprovalAksFlag("Y");
-//                            itHrisPayrollHeaderEntity.setApprovalAksName(createdWho);
-//                            itHrisPayrollHeaderEntity.setKeteranganAks("Telah Approval Gaji.");
-//                            itHrisPayrollHeaderEntity.setApprovalAksDate(CommonUtil.getCurrentDateTimes());
-//                            itHrisPayrollHeaderEntity.setLastUpdate(CommonUtil.getCurrentDateTimes());
-//                            itHrisPayrollHeaderEntity.setLastUpdateWho(createdWho);
-//
+                            itHrisPayrollHeaderEntity.setAction("U");
+                            itHrisPayrollHeaderEntity.setApprovalAksFlag("Y");
+                            itHrisPayrollHeaderEntity.setApprovalAksName(createdWho);
+                            itHrisPayrollHeaderEntity.setKeteranganAks("Telah Approval Gaji.");
+                            itHrisPayrollHeaderEntity.setApprovalAksDate(CommonUtil.getCurrentDateTimes());
+                            itHrisPayrollHeaderEntity.setLastUpdate(CommonUtil.getCurrentDateTimes());
+                            itHrisPayrollHeaderEntity.setLastUpdateWho(createdWho);
+
                             try {
                                 payrollHeaderDao.updateAndSave(itHrisPayrollHeaderEntity);
                             } catch (HibernateException e) {
                                 logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Error, " + e.getMessage());
                                 throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Found problem when save update payroll header set approval sdm YES, dan no jurnal, please inform to your admin...," + e.getMessage());
                             }
-//
-//
-//
+
 //                        } else {
 //
 //                            logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Tidak ditemukan jurnal yang akan di buat.");
@@ -27545,6 +27551,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 //    }
 
 
+    //RAKA-04MEI2021 ==> recover by raka (maintenance)
 //    @Override
 //    public List<PayrollEsptDTO> searchReportEsptSys(String tahun, String unit) throws GeneralBOException {
 //        List<PayrollEsptDTO> listOfResult = new ArrayList<>();
@@ -27613,6 +27620,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 //        }
 //        return listOfResult;
 //    }
+    //RAKA-end
 
 
 

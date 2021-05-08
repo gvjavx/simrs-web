@@ -45,6 +45,9 @@ public class RekeningTelemedicDao extends GenericDao<ImSimrsRekeningTelemedicEnt
             if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
             }
+            if (mapCriteria.get("tipe_rekening") != null) {
+                criteria.add(Restrictions.eq("tipeRekening", mapCriteria.get("tipe_rekening").toString()));
+            }
         }
 
         criteria.addOrder(Order.desc("createdDate"));

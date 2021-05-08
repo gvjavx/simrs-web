@@ -126,15 +126,15 @@
         var tahun = $("#tahun").val();
 
         var arrbodyperiod = [
-            {"bulan" : "Januari",   "id" : "1"},
-            {"bulan" : "February",  "id" : "2"},
-            {"bulan" : "Maret",     "id" : "3"},
-            {"bulan" : "April",     "id" : "4"},
-            {"bulan" : "Mei",       "id" : "5"},
-            {"bulan" : "Juni",      "id" : "6"},
-            {"bulan" : "Juli",      "id" : "7"},
-            {"bulan" : "Agustus",   "id" : "8"},
-            {"bulan" : "September", "id" : "9"},
+            {"bulan" : "Januari",   "id" : "01"},
+            {"bulan" : "February",  "id" : "02"},
+            {"bulan" : "Maret",     "id" : "03"},
+            {"bulan" : "April",     "id" : "04"},
+            {"bulan" : "Mei",       "id" : "05"},
+            {"bulan" : "Juni",      "id" : "06"},
+            {"bulan" : "Juli",      "id" : "07"},
+            {"bulan" : "Agustus",   "id" : "08"},
+            {"bulan" : "September", "id" : "09"},
             {"bulan" : "Oktober",   "id" : "10"},
             {"bulan" : "November",  "id" : "11"},
             {"bulan" : "Desember",  "id" : "12"}

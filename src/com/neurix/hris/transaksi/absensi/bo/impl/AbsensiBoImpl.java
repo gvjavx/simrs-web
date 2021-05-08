@@ -1001,7 +1001,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                         hsCriteria4.put("flag", "Y");
                         List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                         List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
-                        if (biodataEntity.getTipePegawai().equalsIgnoreCase(CommonConstant.PEGAWAI_TETAP)) {
+                        if (biodataEntity.getTipePegawai().equalsIgnoreCase(CommonConstant.TIPE_PEGAWAI_TETAP)) {
                             try {
                                 payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodataEntity.getGolongan(), tahunGaji);
                             } catch (HibernateException e) {
@@ -1511,7 +1511,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                 double faktor = 0;
                 List<PengaliFaktorLemburEntity> pengaliFaktorLemburEntityList = new ArrayList<>();
                 Map hsCriteria4 = new HashMap();
-                hsCriteria4.put("tipe_pegawai_id", CommonConstant.PEGAWAI_TETAP);
+                hsCriteria4.put("tipe_pegawai_id", CommonConstant.TIPE_PEGAWAI_TETAP);
                 hsCriteria4.put("flag", "Y");
                 try{
                     pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
@@ -3831,7 +3831,7 @@ public class AbsensiBoImpl implements AbsensiBo {
 
                     List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                     List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
-                    if (tipePegawai.equalsIgnoreCase(CommonConstant.PEGAWAI_TETAP)) {
+                    if (tipePegawai.equalsIgnoreCase(CommonConstant.TIPE_PEGAWAI_TETAP)) {
                         try{
                             payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(golongan, tahunGaji);
                         }catch (HibernateException e){
@@ -5413,7 +5413,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     }
                 }
             }
-            if ((CommonConstant.PEGAWAI_TETAP).equalsIgnoreCase(pegawai.getTipePegawai())) {
+            if ((CommonConstant.TIPE_PEGAWAI_TETAP).equalsIgnoreCase(pegawai.getTipePegawai())) {
                 result.setJatahCuti("12");
             } else {
                 result.setJatahCuti("0");
@@ -6667,7 +6667,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                 List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                 List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
 
-                if (CommonConstant.PEGAWAI_TETAP.equalsIgnoreCase(biodata.getTipePegawai())) {
+                if (CommonConstant.TIPE_PEGAWAI_TETAP.equalsIgnoreCase(biodata.getTipePegawai())) {
                     try{
                         payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(), tahunGaji);
                     }catch (HibernateException e){
@@ -6964,7 +6964,7 @@ public class AbsensiBoImpl implements AbsensiBo {
             hsCriteria4.put("flag", "Y");
             List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
             List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
-            if (biodata.getTipePegawai().equalsIgnoreCase(CommonConstant.PEGAWAI_TETAP)) {
+            if (biodata.getTipePegawai().equalsIgnoreCase(CommonConstant.TIPE_PEGAWAI_TETAP)) {
                 try {
                     payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(), tahunGaji);
                 } catch (HibernateException e) {
@@ -7103,7 +7103,7 @@ public class AbsensiBoImpl implements AbsensiBo {
             hsCriteria4.put("flag", "Y");
             List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
             List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
-            if (biodata.getTipePegawai().equalsIgnoreCase(CommonConstant.PEGAWAI_TETAP)) {
+            if (biodata.getTipePegawai().equalsIgnoreCase(CommonConstant.TIPE_PEGAWAI_TETAP)) {
                 try {
                     payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(), tahunGaji);
                 } catch (HibernateException e) {
