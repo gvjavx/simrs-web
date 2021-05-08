@@ -2658,6 +2658,11 @@ ADD COLUMN data_ews VARCHAR(100);
 ALTER TABLE mt_simrs_transaksi_obat_detail
 ADD COLUMN frekuensi VARCHAR(100);
 
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000293','RMM00000054','pindah_ri','5','Y','C','migrasi', now(), now(),'migrasi');
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000294','RMM00000030','rawat_inap','10','Y','C','migrasi', now(), now(),'migrasi');
 
 
 
