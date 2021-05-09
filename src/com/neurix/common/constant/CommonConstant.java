@@ -417,6 +417,11 @@ public class CommonConstant {
     //PATH NEW RM LAMA
     public final static String URL_RM_LAMA = CommonUtil.getPropertyParams("path.rm.lama");
 
+    public final static String CODE_VA_BSI = CommonUtil.getPropertyParams("code.va.bsi");
+    public final static String DESC_VA_TELE = CommonUtil.getPropertyParams("desc.va.telemedic");
+    public final static String CODE_INVOICE_VA_TELE = CommonUtil.getPropertyParams("code.invoice.telemedic");
+    public final static String JENIS_PEMBAYARAN_TRANSFER_TUNAI = CommonUtil.getPropertyParams("jenis.pembayaran.tt");
+    public final static String JENIS_PEMBAYARAN_VA = CommonUtil.getPropertyParams("jenis.pembayaran.va");
 
 
 }

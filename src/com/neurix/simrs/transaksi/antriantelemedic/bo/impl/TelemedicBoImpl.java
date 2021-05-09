@@ -34,6 +34,7 @@ import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
+import com.neurix.simrs.master.telemedic.model.RekeningTelemedic;
 import com.neurix.simrs.master.tindakan.dao.HeaderTindakanDao;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsHeaderTindakanEntity;
@@ -778,6 +779,7 @@ public class TelemedicBoImpl implements TelemedicBo {
     public void generateListPembayaran(ItSimrsAntrianTelemedicEntity bean, String branchId, String tipe, String kodeBank, String jenisPeriksa, String jenisPembayaran) throws GeneralBOException{
         logger.info("[TelemedicBoIml.generateListPembayaran] START >>>");
 
+        ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = new ItSimrsPembayaranOnlineEntity();
         if ("konsultasi".equalsIgnoreCase(tipe)){
 
             // mencari tindakan konsultasi;
@@ -812,7 +814,7 @@ public class TelemedicBoImpl implements TelemedicBo {
                         tindakanEntity = tindakanEntities.get(0);
                     }
 
-                    ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = new ItSimrsPembayaranOnlineEntity();
+                    pembayaranOnlineEntity = new ItSimrsPembayaranOnlineEntity();
                     pembayaranOnlineEntity.setId(getSeqPembayaranOnline(bean.getId()));
                     pembayaranOnlineEntity.setIdAntrianTelemedic(bean.getId());
                     pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
@@ -857,7 +859,7 @@ public class TelemedicBoImpl implements TelemedicBo {
 
         } else if ("resep".equalsIgnoreCase(tipe)){
             // for resep
-            ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = new ItSimrsPembayaranOnlineEntity();
+            pembayaranOnlineEntity = new ItSimrsPembayaranOnlineEntity();
             pembayaranOnlineEntity.setId(getSeqPembayaranOnline(bean.getId()));
             pembayaranOnlineEntity.setIdAntrianTelemedic(bean.getId());
             pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
@@ -877,7 +879,8 @@ public class TelemedicBoImpl implements TelemedicBo {
             }
         }
 
-        insertIntoPgInvoice(bean);
+        if (CommonConstant.JENIS_PEMBAYARAN_VA.equalsIgnoreCase(jenisPembayaran))
+        insertIntoPgInvoice(bean, pembayaranOnlineEntity);
 
         logger.info("[TelemedicBoIml.generateListPembayaran] END <<<");
     }
@@ -2014,10 +2017,38 @@ public class TelemedicBoImpl implements TelemedicBo {
         return response;
     }
 
-    private void insertIntoPgInvoice(ItSimrsAntrianTelemedicEntity bean) throws GeneralBOException{
+    private void insertIntoPgInvoice(ItSimrsAntrianTelemedicEntity tele, ItSimrsPembayaranOnlineEntity pembayaran) throws GeneralBOException{
         logger.info("[TelemedicBoImpl.insertIntoPgInvoice] Start >>>");
 
-        ImSimrsPasienEntity pasienEntity = getPasienById(bean.getIdPasien());
+        if (pembayaran == null){
+            logger.error("[TelemedicBoImpl.insertIntoPgInvoice] ERROR. data transaksi not found");
+            throw new GeneralBOException("[TelemedicBoImpl.insertIntoPgInvoice] ERROR data transaksi not found");
+        }
+
+        if (pembayaran.getIdRekening() == null){
+            logger.error("[TelemedicBoImpl.insertIntoPgInvoice] ERROR. bank code request not found");
+            throw new GeneralBOException("[TelemedicBoImpl.insertIntoPgInvoice] ERROR bank code request not found");
+        }
+
+        RekeningTelemedic rekeningTelemedic = new RekeningTelemedic();
+        try {
+            rekeningTelemedic = telemedicDao.getRekeningTelemedic(pembayaran.getIdRekening());
+        } catch (HibernateException e){
+            logger.error("[TelemedicBoImpl.insertIntoPgInvoice] ERROR. ", e);
+            throw new GeneralBOException("[TelemedicBoImpl.insertIntoPgInvoice] ERROR. ", e);
+        }
+
+        if (rekeningTelemedic == null){
+            logger.error("[TelemedicBoImpl.insertIntoPgInvoice] ERROR. va bank data not found");
+            throw new GeneralBOException("[TelemedicBoImpl.insertIntoPgInvoice] ERROR va bank data not found");
+        }
+
+        if (rekeningTelemedic.getInitVaName() == null){
+            logger.error("[TelemedicBoImpl.insertIntoPgInvoice] ERROR. va bank code not found");
+            throw new GeneralBOException("[TelemedicBoImpl.insertIntoPgInvoice] ERROR. va bank code not found");
+        }
+
+        ImSimrsPasienEntity pasienEntity = getPasienById(tele.getIdPasien());
 
         if (pasienEntity == null){
             logger.error("[TelemedicBoImpl.insertIntoPgInvoice] ERROR Pasien Id null");
@@ -2029,12 +2060,35 @@ public class TelemedicBoImpl implements TelemedicBo {
         String[] splitDate      = stDate.split("-");
         String tahun            = splitDate[0];
         String bulan            = splitDate[1];
-
-        String id = getNextIdPg(bean.getBranchId(), tahun, bulan);
+        String id               = getNextIdPg(tele.getBranchId(), tahun, bulan);
+        boolean isConcateVa     = isConcateVaByVaBankCode(rekeningTelemedic.getInitVaName());
 
         ItPgInvoiceEntity pgInvoiceEntity = new ItPgInvoiceEntity();
         pgInvoiceEntity.setPgInvoiceId(id);
+        pgInvoiceEntity.setTrxAmount(pembayaran.getNominal());
+        pgInvoiceEntity.setInvoiceDate(new java.sql.Date(System.currentTimeMillis()));
+        pgInvoiceEntity.setStatus("01");
+        pgInvoiceEntity.setDescription(CommonConstant.DESC_VA_TELE);
+        pgInvoiceEntity.setCodeInvoice(CommonConstant.CODE_INVOICE_VA_TELE);
 
+        if (isConcateVa)
+            pgInvoiceEntity.setNoVirtualAccount(rekeningTelemedic.getClientId() +""+ tele.getIdPasien());
+        pgInvoiceEntity.setNoVirtualAccount(rekeningTelemedic.getClientId() +""+ tele.getIdPasien());
+
+        pgInvoiceEntity.setBankName(rekeningTelemedic.getInitVaName());
+        pgInvoiceEntity.setBranchId(tele.getBranchId());
+        pgInvoiceEntity.setNoRekamMedik(tele.getIdPasien());
+        pgInvoiceEntity.setNoInvoice(pembayaran.getId());
+        pgInvoiceEntity.setAddressPerson(pasienEntity.getJalan());
+        pgInvoiceEntity.setNamePerson(pasienEntity.getNama());
+        pgInvoiceEntity.setPhonePerson(pasienEntity.getNoTelp());
+        pgInvoiceEntity.setEmailPerson(pasienEntity.getEmail());
+        pgInvoiceEntity.setFlag("Y");
+        pgInvoiceEntity.setAction("C");
+        pgInvoiceEntity.setCreatedDate(pembayaran.getLastUpdate());
+        pgInvoiceEntity.setLastUpdate(pembayaran.getLastUpdate());
+        pgInvoiceEntity.setCreatedWho(pembayaran.getLastUpdateWho());
+        pgInvoiceEntity.setLastUpdateWho(pembayaran.getLastUpdateWho());
 
         try {
             paymentGatewayInvoiceDao.addAndSave(pgInvoiceEntity);
@@ -2044,6 +2098,12 @@ public class TelemedicBoImpl implements TelemedicBo {
         }
 
         logger.info("[TelemedicBoImpl.insertIntoPgInvoice] End <<<");
+    }
+
+    private boolean isConcateVaByVaBankCode(String vaBankCode){
+        if (CommonConstant.CODE_VA_BSI.equalsIgnoreCase(vaBankCode))
+            return false;
+        return true;
     }
 
     private String getNextIdPg(String branchId, String tahun, String bulan){
