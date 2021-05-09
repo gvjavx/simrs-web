@@ -423,9 +423,6 @@ ADD tipe_rekening character varying(100)
 ALTER TABLE it_simrs_pembayaran_online
 ADD client_id character varying(20)
 
-ALTER TABLE it_simrs_pembayaran_online
-ADD keterangan text
-
 --2021-09-05
 INSERT INTO public.im_simrs_rekening_telemedic(
 	id_rekening, pembayaran_id, pembayaran_name, no_rekening, nama_rekening, coa, branch_id, flag, action, created_date, created_who, last_update, last_update_who, tipe_rekening, client_id, keterangan)
