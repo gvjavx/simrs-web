@@ -1057,7 +1057,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                             pembayaranOnlineEntity.setNoJurnal(noJurnal);
 
                             //do action ops (sigit) to update no jurnal for telemedicine
-                            updateAndNotifApprovedVaTele(pembayaranOnlineEntity);
+                            updateAndNotifApprovedVaTele(pembayaranOnlineEntity, antrianTelemedicEntity);
 
 
                         } else {
@@ -1105,10 +1105,11 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         CrudResponse response = new CrudResponse();
 
         ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = getPembayaranOnlineEntityByCriteria(pembayaranOnline).get(0);
+        ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = getAntrianTelemedicEntityById(pembayaranOnlineEntity.getIdAntrianTelemedic());
         pembayaranOnlineEntity.setNoJurnal("2345565");
 
         try {
-            updateAndNotifApprovedVaTele(pembayaranOnlineEntity);
+            updateAndNotifApprovedVaTele(pembayaranOnlineEntity, antrianTelemedicEntity);
             response.hasSuccess("Berhasil");
         } catch (HibernateException e){
             logger.error("[BillingSystemBoImpl.cobaVa] ERROR", e);
@@ -1118,7 +1119,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         return response;
     }
 
-    private void updateAndNotifApprovedVaTele(ItSimrsPembayaranOnlineEntity pembayaranEntity){
+    private void updateAndNotifApprovedVaTele(ItSimrsPembayaranOnlineEntity pembayaranEntity, ItSimrsAntrianTelemedicEntity antrianTelemedicEntity){
         logger.info("[BillingSystemBoImpl.settlementPGInvoice] Start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
@@ -1133,7 +1134,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         String userLogin = "";
         String branchId = "";
 
-        ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicBo.getAntrianTelemedicEntityById(pembayaranEntity.getIdAntrianTelemedic());
+//      ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicBo.getAntrianTelemedicEntityById(pembayaranEntity.getIdAntrianTelemedic());
 
         if (pembayaranEntity.getCreatedWho() == null || "".equalsIgnoreCase(pembayaranEntity.getCreatedWho())){
             userLogin = CommonUtil.userIdLogin();
