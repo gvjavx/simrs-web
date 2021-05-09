@@ -1054,7 +1054,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                             pembayaranOnlineEntity.setNoJurnal(noJurnal);
 
                             //do action ops (sigit) to update no jurnal for telemedicine
-                            updateAndNotifApprovedVa(pembayaranOnlineEntity);
+                            updateAndNotifApprovedVaTele(pembayaranOnlineEntity);
 
 
                         } else {
@@ -1095,7 +1095,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         logger.info("[BillingSystemBoImpl.settlementPGInvoice] end process <<<");
     }
 
-    private void updateAndNotifApprovedVa(ItSimrsPembayaranOnlineEntity pembayaranEntity){
+    private void updateAndNotifApprovedVaTele(ItSimrsPembayaranOnlineEntity pembayaranEntity){
         logger.info("[BillingSystemBoImpl.settlementPGInvoice] Start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
@@ -1472,17 +1472,6 @@ public class BillingSystemBoImpl implements BillingSystemBo {
             }
         } else {
             logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. tidak ditemukan data transaksi.");
-        }
-
-
-        pembayaranEntity.setApprovedFlag("Y");
-        pembayaranEntity.setApprovedWho(pembayaranEntity.getCreatedWho());
-
-        try {
-            verifikatorPembayaranDao.updateAndSave(pembayaranEntity);
-        } catch (HibernateException e){
-            logger.error("[BillingSystemBoImpl.updateAndNotifApprovedVa] Error, " + e.getMessage());
-            throw new GeneralBOException("[BillingSystemBoImpl.updateAndNotifApprovedVa] Error, " + e.getMessage());
         }
 
         logger.info("[BillingSystemBoImpl.settlementPGInvoice] End process <<<");
