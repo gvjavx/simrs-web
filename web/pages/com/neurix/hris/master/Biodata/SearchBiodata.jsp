@@ -1168,7 +1168,7 @@
                 "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
-                var link = "<s:property value="appname" />payroll/printReportPayroll_payroll.action?id=" + item.payrollId + "&tipe=PR";
+                var link = "<s:property value="appname" />payroll/printReportPayroll_payroll.action?id=" + item.payrollId + "&tipePayroll=PY";
                 tmp_table += '<tr  style="font-size: 12px">' +
                     '<td ><a href="'+link+'" >Download</a></td>' +
                     '<td >' + item.bulan+ '</td>' +
@@ -1351,7 +1351,7 @@
                 "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
-                var link = "<s:property value="appname" />payroll/printReportPayroll_payroll.action?id=" + item.payrollId + "&tipe=PR";
+                var link = "<s:property value="appname" />payroll/printReportPayroll_payroll.action?id=" + item.payrollId + "&tipePayroll=PY";
                 tmp_table += '<tr  style="font-size: 12px">' +
                     '<td ><a href="'+link+'" >Download</a></td>' +
                     '<td >' + item.bulan+ '</td>' +

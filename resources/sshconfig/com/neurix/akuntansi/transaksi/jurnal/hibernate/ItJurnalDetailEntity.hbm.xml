@@ -13,8 +13,8 @@
         <property name="noJurnal">
             <column name="no_jurnal" sql-type="varchar" length="12" not-null="true" />
         </property>
-        <property name="rekeningId">
-            <column name="rekening_id" sql-type="varchar" length="12" not-null="true" />
+        <property name="nomorRekening">
+            <column name="nomor_rekening" sql-type="varchar" length="20" not-null="true" />
         </property>
         <property name="masterId">
             <column name="master_id" sql-type="varchar" length="17" not-null="false" />
@@ -33,9 +33,6 @@
         </property>
         <property name="pasienId">
             <column name="pasien_id" sql-type="varchar" length="30" not-null="false" />
-        </property>
-        <property name="nomorRekening">
-            <column name="nomor_rekening" sql-type="varchar" length="30" not-null="false" />
         </property>
         <property name="divisiId">
             <column name="divisi_id" sql-type="varchar" length="10" not-null="false" />
@@ -59,6 +56,14 @@
         <property name="lastUpdate">
             <column name="last_update" sql-type="date" not-null="false" />
         </property>
+
+        <set name="itJurnalDetailActivity" inverse="true" lazy="true" fetch="select" cascade="all" >
+            <key>
+                <column name="jurnal_detail_id" not-null="true"/>
+            </key>
+            <one-to-many not-found="ignore" class="com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalDetailActivityEntity"/>
+        </set>
+
 
     </class>
 </hibernate-mapping>

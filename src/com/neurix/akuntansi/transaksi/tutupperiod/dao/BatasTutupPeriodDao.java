@@ -44,7 +44,8 @@ public class BatasTutupPeriodDao extends GenericDao<ItSimrsBatasTutupPeriodEntit
         return sId;
     }
 
-    public List<ItSimrsBatasTutupPeriodEntity> getBatasTutupPeriod(String unit,String bulan,String tahun) throws HibernateException {
+    //updated by ferdi, 01-12-2020, to get only one data
+    public ItSimrsBatasTutupPeriodEntity getBatasTutupPeriod(String unit,String bulan,String tahun) throws HibernateException {
 
         List<ItSimrsBatasTutupPeriodEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsBatasTutupPeriodEntity.class)
                 .add(Restrictions.eq("unit", unit))
@@ -53,8 +54,14 @@ public class BatasTutupPeriodDao extends GenericDao<ItSimrsBatasTutupPeriodEntit
                 .addOrder(Order.desc("createdDate"))
                 .list();
 
-        return results;
+        if (!results.isEmpty()) {
+            return results.get(0);
+        } else {
+            return null;
+        }
+
     }
+
     public List<ItSimrsBatasTutupPeriodEntity> getBatasPeriodeDitutup(String unit,String bulan,String tahun) throws HibernateException {
 
         List<ItSimrsBatasTutupPeriodEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsBatasTutupPeriodEntity.class)

@@ -2302,7 +2302,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                                     updateAddStockPoli(detail, bean.getIdPelayanan());
 
                                     // SAVE TO STOCK TRANSAKSI
-                                    saveTransaksiStokRequestObatPoli(detail);
+//                                    saveTransaksiStokRequestObatPoli(detail);
                                 }
                             } else {
                                 batchEntity.setApproveFlag("N");

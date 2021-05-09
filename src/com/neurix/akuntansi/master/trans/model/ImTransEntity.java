@@ -1,7 +1,10 @@
 package com.neurix.akuntansi.master.trans.model;
 
+import com.neurix.akuntansi.master.mappingJurnal.model.ImMappingJurnalEntity;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,6 +19,12 @@ public class ImTransEntity implements Serializable {
     private String transName;
     private String tipePembayaran;
 
+    //updated by ferdi, 01-12-2020
+    private String tipeJurnalId;
+    private String isOtomatis;
+    private String flagPengajuanBiaya;
+    private String flagSumberBaru;
+
     private String master;
 
     private String flag;
@@ -24,6 +33,47 @@ public class ImTransEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+    private Set<ImMappingJurnalEntity> imMappingJurnal;
+
+    public Set<ImMappingJurnalEntity> getImMappingJurnal() {
+        return imMappingJurnal;
+    }
+
+    public void setImMappingJurnal(Set<ImMappingJurnalEntity> imMappingJurnal) {
+        this.imMappingJurnal = imMappingJurnal;
+    }
+
+    public String getFlagSumberBaru() {
+        return flagSumberBaru;
+    }
+
+    public void setFlagSumberBaru(String flagSumberBaru) {
+        this.flagSumberBaru = flagSumberBaru;
+    }
+
+    public String getFlagPengajuanBiaya() {
+        return flagPengajuanBiaya;
+    }
+
+    public void setFlagPengajuanBiaya(String flagPengajuanBiaya) {
+        this.flagPengajuanBiaya = flagPengajuanBiaya;
+    }
+
+    public String getTipeJurnalId() {
+        return tipeJurnalId;
+    }
+
+    public void setTipeJurnalId(String tipeJurnalId) {
+        this.tipeJurnalId = tipeJurnalId;
+    }
+
+    public String getIsOtomatis() {
+        return isOtomatis;
+    }
+
+    public void setIsOtomatis(String isOtomatis) {
+        this.isOtomatis = isOtomatis;
+    }
 
     public String getMaster() {
         return master;

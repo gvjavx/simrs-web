@@ -31,6 +31,15 @@ public class ItSimrsPembayaranOnlineEntity {
     private String flagUploadUlang;
     private Timestamp tanggalUpload;
     private String shiftId;
+    private String noJurnal;
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
 
     public String getShiftId() {
         return shiftId;

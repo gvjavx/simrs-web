@@ -3,6 +3,7 @@ package com.neurix.akuntansi.transaksi.jurnal.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,6 +32,17 @@ public class ItJurnalDetailEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    //updated by ferdi, 01-12-2020
+    private Set<ItJurnalDetailActivityEntity> itJurnalDetailActivity;
+
+    public Set<ItJurnalDetailActivityEntity> getItJurnalDetailActivity() {
+        return itJurnalDetailActivity;
+    }
+
+    public void setItJurnalDetailActivity(Set<ItJurnalDetailActivityEntity> itJurnalDetailActivity) {
+        this.itJurnalDetailActivity = itJurnalDetailActivity;
+    }
 
     public String getDivisiId() {
         return divisiId;

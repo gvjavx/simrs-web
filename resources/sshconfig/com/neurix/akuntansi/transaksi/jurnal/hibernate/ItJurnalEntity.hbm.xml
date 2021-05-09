@@ -52,8 +52,8 @@
         <property name="registeredUser">
             <column name="registered_user" sql-type="varchar" length="30" not-null="false" />
         </property>
-        <property name="registerId">
-            <column name="register_id" sql-type="varchar" length="15" not-null="false" />
+        <property name="registeredUserId">
+            <column name="registered_user_id" sql-type="varchar" length="15" not-null="false" />
         </property>
         <property name="spumId">
             <column name="spum_id" sql-type="varchar" length="100" not-null="false" />
@@ -119,6 +119,16 @@
         <property name="lastUpdate">
             <column name="last_update" sql-type="date" not-null="false" />
         </property>
+        <property name="metodeBayar">
+            <column name="metode_bayar" sql-type="varchar" length="20" not-null="false" />
+        </property>
+
+        <set name="itJurnalDetail" inverse="true" lazy="true" fetch="select" cascade="all" >
+            <key>
+                <column name="no_jurnal" not-null="true"/>
+            </key>
+            <one-to-many not-found="ignore" class="com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalDetailEntity"/>
+        </set>
 
     </class>
 </hibernate-mapping>

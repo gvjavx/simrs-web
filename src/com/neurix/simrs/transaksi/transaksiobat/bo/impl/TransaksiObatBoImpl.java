@@ -1338,7 +1338,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                                     newObatDetail.setBranchId(CommonUtil.userBranchLogin());
                                     newObatDetail.setCreatedDate(bean.getCreatedDate());
                                     newObatDetail.setCreatedWho(bean.getCreatedWho());
-                                    saveTransaksiStok(newObatDetail);
+//                                    saveTransaksiStok(newObatDetail);
 
                                     // update substract stock in apotik
                                     updateSubstractStockObatApotek(newObatDetail, bean.getIdPelayanan(), bean.getBranchId());
@@ -1933,7 +1933,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                 dataTransaksiStok.setIdObat(obatDetail.getIdObat());
 
                 // save to transaksi stok
-                saveTransaksiStok(dataTransaksiStok);
+//                saveTransaksiStok(dataTransaksiStok);
 
 
                 try {

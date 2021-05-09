@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -51,6 +52,35 @@ public class ItJurnalEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    //updated by ferdi, 01-12-2020
+    private Set<ItJurnalDetailEntity> itJurnalDetail;
+    private String metodeBayar;
+    private String registeredUserId;
+
+    public String getRegisteredUserId() {
+        return registeredUserId;
+    }
+
+    public void setRegisteredUserId(String registeredUserId) {
+        this.registeredUserId = registeredUserId;
+    }
+
+    public String getMetodeBayar() {
+        return metodeBayar;
+    }
+
+    public void setMetodeBayar(String metodeBayar) {
+        this.metodeBayar = metodeBayar;
+    }
+
+    public Set<ItJurnalDetailEntity> getItJurnalDetail() {
+        return itJurnalDetail;
+    }
+
+    public void setItJurnalDetail(Set<ItJurnalDetailEntity> itJurnalDetail) {
+        this.itJurnalDetail = itJurnalDetail;
+    }
 
     public String getPengajuanBiayaId() {
         return pengajuanBiayaId;
