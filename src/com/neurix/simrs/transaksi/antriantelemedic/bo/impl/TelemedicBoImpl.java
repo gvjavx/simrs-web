@@ -2080,7 +2080,7 @@ public class TelemedicBoImpl implements TelemedicBo {
         if (isConcateVa)
             pgInvoiceEntity.setNoVirtualAccount(rekeningTelemedic.getClientId() +""+ tele.getIdPasien());
         else
-            pgInvoiceEntity.setNoVirtualAccount(rekeningTelemedic.getClientId());
+            pgInvoiceEntity.setNoVirtualAccount(tele.getIdPasien());
 
         pgInvoiceEntity.setBankName(rekeningTelemedic.getInitVaName());
         pgInvoiceEntity.setBranchId(tele.getBranchId());
@@ -2094,8 +2094,8 @@ public class TelemedicBoImpl implements TelemedicBo {
         pgInvoiceEntity.setAction("C");
         pgInvoiceEntity.setCreatedDate(pembayaran.getLastUpdate());
         pgInvoiceEntity.setLastUpdate(pembayaran.getLastUpdate());
-        pgInvoiceEntity.setCreatedWho(pembayaran.getLastUpdateWho());
-        pgInvoiceEntity.setLastUpdateWho(pembayaran.getLastUpdateWho());
+        pgInvoiceEntity.setCreatedWho("PAYMENT_GATEWAY");
+        pgInvoiceEntity.setLastUpdateWho("PAYMENT_GATEWAY");
 
         try {
             paymentGatewayInvoiceDao.addAndSave(pgInvoiceEntity);
