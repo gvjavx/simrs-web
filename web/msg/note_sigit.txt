@@ -1832,5 +1832,6 @@ ADD COLUMN parent_id VARCHAR(30);
     UPDATE im_simrs_rekening_telemedic a SET init_va_name = 'BSI'
     WHERE id_rekening = 'RKN00013';
 
-    UO
+    UPDATE im_akun_trans
+    SET is_otomatis = 'Y' WHERE trans_id = '04';
 --
