@@ -9,6 +9,8 @@ import com.googlecode.mp4parser.authoring.builder.DefaultMp4Builder;
 import com.googlecode.mp4parser.authoring.container.mp4.MovieCreator;
 import com.googlecode.mp4parser.authoring.tracks.AppendTrack;
 import com.lowagie.text.BadElementException;
+import com.neurix.akuntansi.transaksi.billingSystem.dao.PaymentGatewayInvoiceDao;
+import com.neurix.akuntansi.transaksi.billingSystem.model.ItPgInvoiceEntity;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.common.constant.CommonConstant;
@@ -112,6 +114,11 @@ public class TelemedicBoImpl implements TelemedicBo {
     private NotifikasiAdminTelemedicDao notifikasiAdminTelemedicDao;
     private VideoRmDao videoRmDao;
     private HeaderTindakanDao headerTindakanDao;
+    private PaymentGatewayInvoiceDao paymentGatewayInvoiceDao;
+
+    public void setPaymentGatewayInvoiceDao(PaymentGatewayInvoiceDao paymentGatewayInvoiceDao) {
+        this.paymentGatewayInvoiceDao = paymentGatewayInvoiceDao;
+    }
 
     public void setHeaderTindakanDao(HeaderTindakanDao headerTindakanDao) {
         this.headerTindakanDao = headerTindakanDao;
@@ -869,6 +876,8 @@ public class TelemedicBoImpl implements TelemedicBo {
                 throw new GeneralBOException("[TelemedicBoIml.generateListPembayaran] ERROR. ",e);
             }
         }
+
+        insertIntoPgInvoice(bean);
 
         logger.info("[TelemedicBoIml.generateListPembayaran] END <<<");
     }
@@ -2003,5 +2012,52 @@ public class TelemedicBoImpl implements TelemedicBo {
         }
 
         return response;
+    }
+
+    private void insertIntoPgInvoice(ItSimrsAntrianTelemedicEntity bean) throws GeneralBOException{
+        logger.info("[TelemedicBoImpl.insertIntoPgInvoice] Start >>>");
+
+        ImSimrsPasienEntity pasienEntity = getPasienById(bean.getIdPasien());
+
+        if (pasienEntity == null){
+            logger.error("[TelemedicBoImpl.insertIntoPgInvoice] ERROR Pasien Id null");
+            throw new GeneralBOException("[TelemedicBoImpl.insertIntoPgInvoice] ERROR Pasien Id null");
+        }
+
+        java.sql.Date dateNow   = new java.sql.Date(System.currentTimeMillis());
+        String stDate           = String.valueOf(dateNow);
+        String[] splitDate      = stDate.split("-");
+        String tahun            = splitDate[0];
+        String bulan            = splitDate[1];
+
+        String id = getNextIdPg(bean.getBranchId(), tahun, bulan);
+
+        ItPgInvoiceEntity pgInvoiceEntity = new ItPgInvoiceEntity();
+        pgInvoiceEntity.setPgInvoiceId(id);
+
+
+        try {
+            paymentGatewayInvoiceDao.addAndSave(pgInvoiceEntity);
+        } catch (HibernateException e){
+            logger.error("[TelemedicBoImpl.insertIntoPgInvoice] ERROR ", e);
+            throw new GeneralBOException("[TelemedicBoImpl.insertIntoPgInvoice] ERROR "+ e);
+        }
+
+        logger.info("[TelemedicBoImpl.insertIntoPgInvoice] End <<<");
+    }
+
+    private String getNextIdPg(String branchId, String tahun, String bulan){
+        logger.info("[TelemedicBoImpl.getNextIdPg] Start >>>");
+        String id = "";
+
+        try {
+            id = paymentGatewayInvoiceDao.getNextPGInvoiceId(bulan, tahun, branchId);
+        } catch (HibernateException e){
+            logger.error("[TelemedicBoImpl.getNextIdPg] ERROR ", e);
+            throw new GeneralBOException("[TelemedicBoImpl.getNextIdPg] ERROR ", e);
+        }
+
+        logger.info("[TelemedicBoImpl.getNextIdPg] End <<<");
+        return id;
     }
 }
