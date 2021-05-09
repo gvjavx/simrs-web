@@ -52,6 +52,15 @@ public class TesTelemedicController implements ModelDriven<Object> {
     private BigDecimal tindakan;
     private BigDecimal resep;
     private BigDecimal pasien;
+    private String pembayaran;
+
+    public String getPembayaran() {
+        return pembayaran;
+    }
+
+    public void setPembayaran(String pembayaran) {
+        this.pembayaran = pembayaran;
+    }
 
     private TelemedicBo telemedicBoProxy;
     private KurirBo kurirBoProxy;
@@ -253,6 +262,7 @@ public class TesTelemedicController implements ModelDriven<Object> {
         logger.info("[TesTelemedicController.insertDataTelemedic] START >>>");
 
         Timestamp time = new Timestamp(System.currentTimeMillis());
+        String jenisPembayaran = this.pembayaran;
 
         ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = new ItSimrsAntrianTelemedicEntity();
         antrianTelemedicEntity.setBranchId("RS01");
@@ -288,7 +298,7 @@ public class TesTelemedicController implements ModelDriven<Object> {
         antrianTelemedicEntity.setJenisPengambilan("kirim");
 
         try {
-            telemedicBoProxy.saveAdd(antrianTelemedicEntity, "RS01", "1.1.01.02.01");
+            telemedicBoProxy.saveAdd(antrianTelemedicEntity, "03", "1.1.01.02.01", jenisPembayaran);
         } catch (GeneralBOException e){
             logger.error("[TesTelemedicController.insertDataTelemedic] ERROR. ",e);
             throw new GeneralBOException("[TesTelemedicController.insertDataTelemedic] ERROR. ", e);
@@ -305,6 +315,7 @@ public class TesTelemedicController implements ModelDriven<Object> {
         logger.info("[TesTelemedicController.insertDataTelemedic] START >>>");
 
         Timestamp time = new Timestamp(System.currentTimeMillis());
+        String jenisPembayaran = this.pembayaran;
 
         ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = new ItSimrsAntrianTelemedicEntity();
         antrianTelemedicEntity.setBranchId("RS01");
@@ -330,7 +341,7 @@ public class TesTelemedicController implements ModelDriven<Object> {
         antrianTelemedicEntity.setJenisPengambilan("kirim");
 
         try {
-            telemedicBoProxy.saveAdd(antrianTelemedicEntity, "RS01", "");
+            telemedicBoProxy.saveAdd(antrianTelemedicEntity, "RS01", "", this.pembayaran);
         } catch (GeneralBOException e){
             logger.error("[TesTelemedicController.insertDataTelemedic] ERROR. ",e);
             throw new GeneralBOException("[TesTelemedicController.insertDataTelemedic] ERROR. ", e);

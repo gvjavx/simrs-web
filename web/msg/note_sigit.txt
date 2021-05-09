@@ -1817,3 +1817,10 @@ ADD COLUMN parent_id VARCHAR(30);
      ALTER COLUMN rekening_id DROP NOT NULL;
 
 --
+
+--2021-05-08
+
+    ALTER TABLE it_simrs_pembayaran_online
+    ADD COLUMN tipe_pembayaran VARCHAR(100);
+
+--
