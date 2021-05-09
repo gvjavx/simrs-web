@@ -517,7 +517,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setFlag("Y");
 
             try {
-                String msg = telemedicBoProxy.saveAdd(bean, branchId, kodeBank);
+                String msg = telemedicBoProxy.saveAdd(bean, branchId, kodeBank, "transfer_tunai");
                 model.setMessage(msg);
             } catch (GeneralBOException e) {
                 logger.error("[TelemedicineController.create] Error, " + e.getMessage());
@@ -645,7 +645,7 @@ public class TelemedicineController implements ModelDriven<Object> {
                 if (pembayaranOnlineListResep.size() == 0 && telemedicList.size() > 0){
 
                     try {
-                        telemedicBoProxy.generateListPembayaran(telemedicList.get(0), telemedicList.get(0).getBranchId(), "resep","", telemedicList.get(0).getIdJenisPeriksaPasien());
+                        telemedicBoProxy.generateListPembayaran(telemedicList.get(0), telemedicList.get(0).getBranchId(), "resep","", telemedicList.get(0).getIdJenisPeriksaPasien(), "transfer_tunai");
                     } catch (GeneralBOException e){
                         logger.error("[TelemedicineController.create] Error, " + e.getMessage());
                     }
@@ -658,7 +658,6 @@ public class TelemedicineController implements ModelDriven<Object> {
                         logger.error("[TelemedicineController.create] Error, " + e.getMessage());
                     }
                 }
-
             }
 
             // Y => N

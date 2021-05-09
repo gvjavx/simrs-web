@@ -32,6 +32,15 @@ public class ItSimrsPembayaranOnlineEntity {
     private Timestamp tanggalUpload;
     private String shiftId;
     private String noJurnal;
+    private String tipePembayaran;
+
+    public String getTipePembayaran() {
+        return tipePembayaran;
+    }
+
+    public void setTipePembayaran(String tipePembayaran) {
+        this.tipePembayaran = tipePembayaran;
+    }
 
     public String getNoJurnal() {
         return noJurnal;
