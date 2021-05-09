@@ -150,4 +150,40 @@ public class VerifikatorPembayaranDao extends GenericDao<ItSimrsPembayaranOnline
             return antrianTelemedics.stream().filter(p->p.getStatusTransaksi().equalsIgnoreCase(statusTransaksi)).collect(Collectors.toList());
         }
     }
+
+    public String getIdDetailCheckupByIdTransaksi(String idTransaksi){
+
+        String SQL = "SELECT\n" +
+                "dc.id_detail_checkup\n" +
+                "FROM \n" +
+                "it_simrs_header_detail_checkup dc\n" +
+                "WHERE\n" +
+                "dc.id_transaksi_online = '"+idTransaksi+"'";
+
+        List<Object> obj = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (obj.size() > 0){
+            return obj.toString();
+        }
+
+        return null;
+    }
+
+    public String getJenisPasien(String idTransaksi){
+
+        String SQL = "  SELECT\n" +
+                "    dc.id_jenis_periksa_pasien\n" +
+                "            FROM\n" +
+                "    it_simrs_header_detail_checkup dc\n" +
+                "    WHERE\n" +
+                "    dc.id_transaksi_online = '"+idTransaksi+"'";
+
+        List<Object> obj = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (obj.size() > 0){
+            return obj.toString();
+        }
+
+        return null;
+    }
 }

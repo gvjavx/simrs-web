@@ -1156,8 +1156,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 masterId = jenisPeriksaPasienEntity.getMasterId();
             }
         }
-
-
         return masterId;
     }
 

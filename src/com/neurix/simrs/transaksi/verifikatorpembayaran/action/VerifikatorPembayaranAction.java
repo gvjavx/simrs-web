@@ -1021,104 +1021,6 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             if ("success".equalsIgnoreCase(response.getStatus())) {
                 saveAddToRiwayatTindakan(idDetailCheckup, jenisPasien, user);
             }
-
-//            if ("asuransi".equalsIgnoreCase(jenisPasien)) {
-//
-//                ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
-//                if (detailCheckupEntity != null) {
-//                    BigDecimal cover = detailCheckupEntity.getCoverBiaya() == null ? new BigDecimal(0) : detailCheckupEntity.getCoverBiaya();
-//                    BigDecimal jumlahAllTindakanAsuransi = checkupDetailBo.getSumJumlahTindakanByJenis(idDetailCheckup, jenisPasien, "");
-//                    if (jumlahAllTindakanAsuransi.compareTo(cover) == 1) {
-//                        RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
-//                        riwayatTindakan.setIdDetailCheckup(idDetailCheckup);
-//                        riwayatTindakan.setJenisPasien(jenisPasien);
-////                        riwayatTindakan.setNotResep("Y");
-//                        List<ItSimrsRiwayatTindakanEntity> riwayatTindakanEntities = riwayatTindakanBo.getListEntityRiwayatTindakan(riwayatTindakan);
-//
-//                        if (riwayatTindakanEntities.size() > 0) {
-//                            BigDecimal jumlahBiaya = new BigDecimal(0);
-//                            for (ItSimrsRiwayatTindakanEntity riwayatTindakanEntity : riwayatTindakanEntities) {
-//
-//                                jumlahBiaya = jumlahBiaya.add(riwayatTindakanEntity.getTotalTarif());
-//
-//                                // jika jumlahBiaya Lebih besar dari pada yg di cover maka;
-//                                // tindakan dialihkan ke umum;
-//                                if (jumlahBiaya.compareTo(cover) == 1) {
-//
-//                                    // newTarif = cover - (total tarif melebihi - tarif tindakan)
-//                                    BigDecimal newTarif = cover.subtract(jumlahBiaya.subtract(riwayatTindakanEntity.getTotalTarif()));
-//
-//                                    // jika newTarif lebih besar dari 0
-//                                    // maka update tindakan dengan tarif tindakan sisa (newTarif)
-//                                    // membuat tindakan umum baru dari tindakan tarif - newTarif
-//                                    if (newTarif.compareTo(BigDecimal.ZERO) == 1) {
-//
-//                                        BigDecimal tarifAwal = riwayatTindakanEntity.getTotalTarif();
-//
-//                                        riwayatTindakanEntity.setTotalTarif(newTarif);
-//                                        riwayatTindakanEntity.setAction("U");
-//                                        riwayatTindakanEntity.setLastUpdate(updateTime);
-//                                        riwayatTindakanEntity.setLastUpdateWho(user);
-//
-//                                        try {
-//                                            riwayatTindakanBo.updateByEntity(riwayatTindakanEntity);
-//                                        } catch (GeneralBOException e) {
-//                                            logger.error("[VerifikatorPembayaranAction.saveApproveAllTindakanRawatJalan] ERROR. ", e);
-//                                            response.setStatus("error");
-//                                            response.setMessage("[VerifikatorPembayaranAction.saveApproveAllTindakanRawatJalan] ERROR. " + e);
-//                                        }
-//
-//                                        // sisa tarif masuk ke umum adalah tindakan asli / tarifAwal - newTarif
-//                                        BigDecimal newTarifTindakanUmum = tarifAwal.subtract(newTarif);
-//
-//                                        RiwayatTindakan riwayatTindakanEntityNew = new RiwayatTindakan();
-//                                        riwayatTindakanEntityNew.setIdTindakan(riwayatTindakanEntity.getIdTindakan());
-//                                        riwayatTindakanEntityNew.setNamaTindakan(riwayatTindakanEntity.getNamaTindakan());
-//                                        riwayatTindakanEntityNew.setKeterangan(riwayatTindakanEntity.getKeterangan());
-//                                        riwayatTindakanEntityNew.setJenisPasien("umum");
-//                                        riwayatTindakanEntityNew.setTotalTarif(newTarifTindakanUmum);
-//                                        riwayatTindakanEntityNew.setTanggalTindakan(riwayatTindakanEntity.getTanggalTindakan());
-//                                        riwayatTindakanEntityNew.setIdDetailCheckup(riwayatTindakanEntity.getIdDetailCheckup());
-//                                        riwayatTindakanEntityNew.setKategoriTindakanBpjs(riwayatTindakanEntity.getKategoriTindakanBpjs());
-//                                        riwayatTindakanEntityNew.setApproveBpjsFlag(riwayatTindakanEntity.getApproveBpjsFlag());
-//                                        riwayatTindakanEntityNew.setFlag("Y");
-//                                        riwayatTindakanEntityNew.setAction("C");
-//                                        riwayatTindakanEntityNew.setCreatedDate(updateTime);
-//                                        riwayatTindakanEntityNew.setCreatedWho(user);
-//                                        riwayatTindakanEntityNew.setLastUpdate(updateTime);
-//                                        riwayatTindakanEntityNew.setLastUpdateWho(user);
-//
-//                                        try {
-//                                            riwayatTindakanBo.saveAdd(riwayatTindakanEntityNew);
-//                                        } catch (GeneralBOException e) {
-//                                            logger.error("[VerifikatorPembayaranAction.saveApproveAllTindakanRawatJalan] ERROR. ", e);
-//                                            response.setStatus("error");
-//                                            response.setMessage("[VerifikatorPembayaranAction.saveApproveAllTindakanRawatJalan] ERROR. " + e);
-//                                        }
-//                                    } else {
-//
-//                                        // jika tindakan newTarif == tindakan tarif || newTarif > tindakan tarif
-//                                        // maka hanya mengupdate jenis pasien menjadi umum
-//
-//                                        riwayatTindakanEntity.setJenisPasien("umum");
-//                                        riwayatTindakanEntity.setAction("U");
-//                                        riwayatTindakanEntity.setLastUpdate(updateTime);
-//                                        riwayatTindakanEntity.setLastUpdateWho(user);
-//
-//                                        try {
-//                                            riwayatTindakanBo.updateByEntity(riwayatTindakanEntity);
-//                                        } catch (GeneralBOException e) {
-//                                            logger.error("[VerifikatorPembayaranAction.saveApproveAllTindakanRawatJalan] ERROR. ", e);
-//                                            response.setStatus("error");
-//                                            response.setMessage("[VerifikatorPembayaranAction.saveApproveAllTindakanRawatJalan] ERROR. " + e);
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
         }
 
         logger.info("[VerifikatorPembayaranAction.saveApproveAllTindakanRawatJalan] END process >>>");
@@ -1666,7 +1568,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                     listMapPiutang.add(mapPiutang);
 
                     mapJurnal.put("pendapatan_rawat_jalan_bpjs", listOfTindakan);
-                    mapJurnal.put("piutang_pasien_bpjs", listMapPiutang);
+                    mapJurnal.put("piutang_pasien_bpjs", mapPiutang);
                     transId = "06";
                 } else {
 
