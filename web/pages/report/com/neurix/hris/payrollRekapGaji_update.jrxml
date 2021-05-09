@@ -81,7 +81,13 @@ where head.bulan = $P{reportParams.bulan}
   and head.tipe_payroll = 'PY'
   and head.approval_aks_flag = 'Y'
   and head.flag = 'Y'
-order by py.position_id;]]>
+order by
+  (  case
+       when dept.department_id = 'D07' then 1
+       else 2
+     end
+   ),
+py.position_id;]]>
 	</queryString>
 	<field name="department_id" class="java.lang.String"/>
 	<field name="department_name" class="java.lang.String"/>
