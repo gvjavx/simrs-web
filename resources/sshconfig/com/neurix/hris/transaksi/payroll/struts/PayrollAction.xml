@@ -137,11 +137,19 @@
             </result>
 
             <result name="success_print_report_branch_payroll" type="jasper">
-                <param name="location">/pages/report/com/neurix/hris/reportPayrollBranch.jasper</param>
+                <param name="location">/pages/report/com/neurix/hris/payrollRekapGaji_update.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>
+
+            <!--<result name="success_print_report_branch_payroll" type="jasper">-->
+                <!--<param name="location">/pages/report/com/neurix/hris/reportPayrollBranch.jasper</param>-->
+                <!--<param name="connection">connection</param>-->
+                <!--<param name="format">PDF</param>-->
+                <!--<param name="reportParameters">reportParams</param>-->
+            <!--</result>-->
+
             <result name="success_print_report_payroll_cuti_tahunan" type="jasper">
                 <param name="location">/pages/report/com/neurix/hris/reportPayrollCutiTahunanBranch3.jasper</param>
                 <param name="connection">connection</param>

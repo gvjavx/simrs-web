@@ -1,3 +1,15 @@
+------ 2021-05-07 ===> update sg_pensiun
+    UPDATE im_hris_payroll_skala_gaji_pensiun
+        SET golongan_id = 'IVD'
+        WHERE skala_gaji_pensiun_id in ('SGP00001', 'SGP00002', 'SGP00003', 'SGP00004', 'SGP00005', 'SGP00006', 'SGP00007');
+    UPDATE im_hris_payroll_skala_gaji_pensiun
+        SET golongan_id = 'IVC'
+        WHERE skala_gaji_pensiun_id in ('SGP00008', 'SGP00009', 'SGP00010', 'SGP00011', 'SGP00012', 'SGP00013', 'SGP00014', 'SGP00015', 'SGP00016', 'SGP00017');
+
+------ 2021-05-07 ===> for MBT
+    alter table it_hris_pegawai_position
+        add column flag_mbt varchar(5);
+
 ------ 2021-05-06 ===> update im_company
 -- update im_company
     update im_company set persen_cuti_panjang = 100, persen_cuti_tahunan=55;

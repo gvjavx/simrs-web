@@ -1108,12 +1108,16 @@
             $("#panel_tanggal_keluar").hide();
         }else{
 
-            if (status == "L" || status == "RS"){
+            if (status == "L" || status == "RS" || status == "BT"){
                 $("#panel_jenis_jabatan").hide();
                 if (status == "RS"){
                     $("#panel_tanggal_keluar").show();
                     $("#panel_sk").hide();
                     $("#panel_ket_resign").show();
+                } else if (status == "BT") {
+                    $("#panel_tanggal_keluar").hide();
+                    $("#panel_sk").show();
+                    $("#panel_ket_resign").hide();
                 } else {
                     $("#panel_tanggal_keluar").hide();
                     $("#panel_sk").show();
