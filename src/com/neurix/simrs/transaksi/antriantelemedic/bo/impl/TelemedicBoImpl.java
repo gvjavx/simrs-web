@@ -823,7 +823,10 @@ public class TelemedicBoImpl implements TelemedicBo {
                         pembayaranOnlineEntity.setIdItem(tindakanEntity.getIdTindakan());
 
                         // jika umum generate 3 digit jenis angka untuk penambahan pada nominal;
-                        if ("umum".equalsIgnoreCase(jenisPeriksa))
+                        if ("umum".equalsIgnoreCase(jenisPeriksa) &&
+                                jenisPembayaran != null
+                                && !CommonConstant.JENIS_PEMBAYARAN_VA.equalsIgnoreCase(jenisPembayaran)
+                                )
                             pembayaranOnlineEntity.setNominal(new BigDecimal(tindakanEntity.getTarif()).add(generateRandomNumBigDecimal()));
                         else
                             pembayaranOnlineEntity.setNominal(new BigDecimal(tindakanEntity.getTarif()));
@@ -883,7 +886,7 @@ public class TelemedicBoImpl implements TelemedicBo {
         }
 
         if (CommonConstant.JENIS_PEMBAYARAN_VA.equalsIgnoreCase(jenisPembayaran))
-        insertIntoPgInvoice(bean, pembayaranOnlineEntity);
+            insertIntoPgInvoice(bean, pembayaranOnlineEntity);
 
         logger.info("[TelemedicBoIml.generateListPembayaran] END <<<");
     }
@@ -2076,7 +2079,8 @@ public class TelemedicBoImpl implements TelemedicBo {
 
         if (isConcateVa)
             pgInvoiceEntity.setNoVirtualAccount(rekeningTelemedic.getClientId() +""+ tele.getIdPasien());
-        pgInvoiceEntity.setNoVirtualAccount(rekeningTelemedic.getClientId() +""+ tele.getIdPasien());
+        else
+            pgInvoiceEntity.setNoVirtualAccount(rekeningTelemedic.getClientId());
 
         pgInvoiceEntity.setBankName(rekeningTelemedic.getInitVaName());
         pgInvoiceEntity.setBranchId(tele.getBranchId());
