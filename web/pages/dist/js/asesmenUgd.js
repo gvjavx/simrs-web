@@ -1185,6 +1185,7 @@ function saveAsesmenUgd(jenis, keterangan) {
             var va6 = $('#ki6').val();
             var va7 = $('#ki7').val();
             var va8 = $('#ki8').val();
+            var kasus = $('#kasus').val();
             var va9 = "";
             var v9 = $('#ki9').val();
             var v9Text = $('#ki9 option:selected').text();
@@ -1261,6 +1262,12 @@ function saveAsesmenUgd(jenis, keterangan) {
                 data.push({
                     'parameter': 'Tanggal dan Jam Keluar',
                     'jawaban': va7 +', '+va8,
+                    'keterangan': jenis,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Jenis Kasus',
+                    'jawaban': kasus,
                     'keterangan': jenis,
                     'id_detail_checkup': idDetailCheckup
                 });

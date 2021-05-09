@@ -81,6 +81,15 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
                     catatan.setKesimpulan(entity.getKesimpulan());
                     catatan.setMonitoring(entity.getMonitoring());
                     catatan.setDataEws(entity.getDataEws());
+                    catatan.setNamaPemberi(entity.getNamaPemberi());
+                    catatan.setSipPemberi(entity.getSipPemberi());
+                    catatan.setTtdPemberi(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getTtdPemberi());
+                    catatan.setNamaPemberi(entity.getNamaPenerima());
+                    catatan.setSipPenerima(entity.getSipPenerima());
+                    if(entity.getTtdPenerima() != null && !"".equalsIgnoreCase(entity.getTtdPenerima())){
+                        catatan.setTtdPenerima(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getNamaPenerima());
+                    }
+                    catatan.setTipe(entity.getTipe());
                     list.add(catatan);
                 }
             }
@@ -128,6 +137,15 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
             catatanTerintegrasiEntity.setKesimpulan(bean.getKesimpulan());
             catatanTerintegrasiEntity.setMonitoring(bean.getMonitoring());
             catatanTerintegrasiEntity.setDataEws(bean.getDataEws());
+
+            catatanTerintegrasiEntity.setNamaPemberi(bean.getNamaPemberi());
+            catatanTerintegrasiEntity.setSipPemberi(bean.getSipPemberi());
+            catatanTerintegrasiEntity.setTtdPemberi(bean.getTtdPemberi());
+
+            catatanTerintegrasiEntity.setNamaPenerima(bean.getNamaPenerima());
+            catatanTerintegrasiEntity.setSipPenerima(bean.getNamaPenerima());
+            catatanTerintegrasiEntity.setTtdPenerima(bean.getTtdPenerima());
+            catatanTerintegrasiEntity.setTipe(bean.getTipe());
 
             try {
                 catatanTerintegrasiDao.addAndSave(catatanTerintegrasiEntity);
@@ -185,13 +203,26 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
             throw new GeneralBOException("Error when get id cppt, "+e.getMessage());
         }
         if (entity != null) {
-            entity.setTtdDpjp(bean.getTtdDpjp());
+            if(bean.getTtdDpjp() != null && !"".equalsIgnoreCase(bean.getTtdDpjp())){
+                entity.setTtdDpjp(bean.getTtdDpjp());
+            }
             if(bean.getNamaDokter() != null && !"".equalsIgnoreCase(bean.getNamaDokter())){
                 entity.setNamaDokter(bean.getNamaDokter());
             }
             if(bean.getSipDokter() != null && !"".equalsIgnoreCase(bean.getSipDokter())){
                 entity.setSipDokter(bean.getSipDokter());
             }
+
+            if(bean.getTtdPenerima() != null && !"".equalsIgnoreCase(bean.getTtdPenerima())){
+                entity.setTtdPenerima(bean.getTtdPenerima());
+            }
+            if(bean.getNamaPemberi() != null && !"".equalsIgnoreCase(bean.getNamaPemberi())){
+                entity.setNamaPenerima(bean.getNamaPemberi());
+            }
+            if(bean.getSipPemberi() != null && !"".equalsIgnoreCase(bean.getSipPemberi())){
+                entity.setSipPenerima(bean.getSipPemberi());
+            }
+
             entity.setFlag("Y");
             entity.setAction("U");
             entity.setLastUpdate(bean.getLastUpdate());

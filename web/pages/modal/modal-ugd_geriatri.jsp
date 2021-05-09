@@ -2414,6 +2414,21 @@
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
+                            <label class="col-md-3">Jenis Kasus</label>
+                            <div class="col-md-9">
+                                <select class="form-control select2" id="kasus" style="width: 100%">
+                                    <option value="">-</option>
+                                    <option value="BEDAH">BEDAH</option>
+                                    <option value="NON BEDAH">NON BEDAH</option>
+                                    <option value="KEBIDANAN">KEBIDANAN</option>
+                                    <option value="PSIKIANTRIK">PSIKIANTRIK</option>
+                                    <option value="ANAK">ANAK</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
                             <label class="col-md-3">Instruksi Tindak Lanjut</label>
                             <div class="col-md-9">
                                 <select class="form-control select2" id="ki9" style="width: 100%" onchange="showKetIntruksi(this.value)">
