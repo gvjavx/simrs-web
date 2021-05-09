@@ -546,8 +546,14 @@
                                 </div>
                                 <div class="row jarak">
                                     <div class="col-md-12">
+                                        <span>Catatan Klinis</span>
+                                        <s:textarea id="kinis" name="headerDetailCheckup.catatanKlinis" cssClass="form-control" rows="4" placeholder="Catatan Klinis"></s:textarea>
+                                    </div>
+                                </div>
+                                <div class="row jarak">
+                                    <div class="col-md-12">
                                         <button id="save_fisik" class="btn btn-success pull-right" onclick="saveAnamnese()"><i class="fa fa-check"></i> Save</button>
-                                        <button style="display: none; cursor: no-drop; margin-top: 25px" type="button" class="btn btn-success" id="load_fisik"> <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                                        <button style="display: none; cursor: no-drop;" type="button" class="btn btn-success pull-right" id="load_fisik"> <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                                         </button>
                                     </div>
                                 </div>
@@ -1267,7 +1273,7 @@
                                     <div class="col-md-offset-4 col-md-4 text-center">
                                         <a class="btn btn-warning" href="initForm_checkupdetail.action"><i class="fa fa-arrow-left"></i> Back</a>
                                         <%--<a class="btn btn-primary" onclick="printGelangPasien()"><i class="fa fa-print"></i> Print</a>--%>
-                                        <a class="btn btn-success" id="save_ket" onclick="confirmPemeriksaanPasien()"><i class="fa fa-check"></i> Save</a>
+                                        <a class="btn btn-success" id="save_ket" onclick="confirmPemeriksaanPasien()"><i class="fa fa-check"></i> Selesai</a>
                                         <button style="display: none; cursor: no-drop;" type="button"
                                                 class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
                                             Sedang Menyimpan...
@@ -3219,7 +3225,8 @@
         if(jenisPeriksaPasien == 'paket_perusahaan' || jenisPeriksaPasien == 'paket_individu'){
             showDetailPaket();
         }
-        setKeteranganPeriksa();
+
+        setKeteranganPeriksa('keterangan');
 
         $('.carousel').carousel({
             interval: false,

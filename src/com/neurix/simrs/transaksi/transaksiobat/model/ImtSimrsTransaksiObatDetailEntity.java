@@ -49,6 +49,15 @@ public class ImtSimrsTransaksiObatDetailEntity implements Serializable{
     private String jenisResep;
     private String idPabrikObat;
     private String nomorProduksi;
+    private String frekuensi;
+
+    public String getFrekuensi() {
+        return frekuensi;
+    }
+
+    public void setFrekuensi(String frekuensi) {
+        this.frekuensi = frekuensi;
+    }
 
     public String getNomorProduksi() {
         return nomorProduksi;

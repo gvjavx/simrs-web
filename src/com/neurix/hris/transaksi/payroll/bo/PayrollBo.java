@@ -3,10 +3,7 @@ package com.neurix.hris.transaksi.payroll.bo;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.transaksi.absensi.model.AbsensiPegawai;
-import com.neurix.hris.transaksi.payroll.model.ItHrisPayrollEntity;
-import com.neurix.hris.transaksi.payroll.model.Payroll;
-import com.neurix.hris.transaksi.payroll.model.PayrollHeader;
-import com.neurix.hris.transaksi.payroll.model.PegawaiPayroll;
+import com.neurix.hris.transaksi.payroll.model.*;
 
 import java.util.List;
 

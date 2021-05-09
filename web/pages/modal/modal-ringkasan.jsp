@@ -347,6 +347,32 @@
                         </div>
                         <div id="temp-terapi"></div>
                     </div>
+                    <hr>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-6 text-center">
+                                <label>TTD Keluarga</label>
+                                <canvas class="paint-canvas-ttd" id="gen2" width="220"
+                                        onmouseover="paintTtd('gen2')"></canvas>
+                                <input class="form-control nama_petugas" id="nama_terang_gen2" placeholder="Nama Terang">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('gen2')"><i
+                                        class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <label>TTD DPJP</label>
+                                <canvas class="paint-canvas-ttd" id="gen3" width="220"
+                                        onmouseover="paintTtd('gen3')"></canvas>
+                                <input class="form-control nama_dokter_ri" id="nama_terang_gen3" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter_ri" id="sip_gen3" placeholder="SIP">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('gen3')"><i
+                                        class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">

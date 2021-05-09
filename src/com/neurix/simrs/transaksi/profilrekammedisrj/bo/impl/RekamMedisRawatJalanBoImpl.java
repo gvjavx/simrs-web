@@ -69,15 +69,22 @@ public class RekamMedisRawatJalanBoImpl implements RekamMedisRawatJalanBo {
     public CrudResponse saveAdd(RekamMedisRawatJalan bean) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
         if (bean != null) {
-
             ItSimrsRekamMedisRawatJalanEntity rekamMedisRawatJalanEntity = new ItSimrsRekamMedisRawatJalanEntity();
             rekamMedisRawatJalanEntity.setIdProfilRekamMedisRj("RMJ" + rekamMedisRawatJalanDao.getNextSeq());
             rekamMedisRawatJalanEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
             rekamMedisRawatJalanEntity.setWaktu(bean.getWaktu());
-            rekamMedisRawatJalanEntity.setAnamnese(bean.getAnamnese());
-            rekamMedisRawatJalanEntity.setPemeriksaanFisik(bean.getPemeriksaanFisik());
-            rekamMedisRawatJalanEntity.setDiagnosa(bean.getDiagnosa());
-            rekamMedisRawatJalanEntity.setPlaning(bean.getPlaning());
+            if (bean.getAnamnese() != null) {
+                rekamMedisRawatJalanEntity.setAnamnese(bean.getAnamnese());
+            }
+            if (bean.getPemeriksaanFisik() != null) {
+                rekamMedisRawatJalanEntity.setPemeriksaanFisik(bean.getPemeriksaanFisik());
+            }
+            if (bean.getDiagnosa() != null) {
+                rekamMedisRawatJalanEntity.setDiagnosa(bean.getDiagnosa());
+            }
+            if (bean.getPlaning() != null) {
+                rekamMedisRawatJalanEntity.setPlaning(bean.getPlaning());
+            }
             rekamMedisRawatJalanEntity.setKeterangan("ringkasan_rj_pasien");
             rekamMedisRawatJalanEntity.setAction(bean.getAction());
             rekamMedisRawatJalanEntity.setFlag(bean.getFlag());

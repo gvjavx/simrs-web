@@ -181,6 +181,8 @@ function saveICU(jenis, ket) {
         var jatuh4 = $('[name=radio_aud_jatuh4]:checked').val();
         var jatuh5 = $('[name=radio_aud_jatuh5]:checked').val();
         var jatuh6 = $('[name=radio_aud_jatuh6]:checked').val();
+        var tgl = $('#tgl_'+jenis).val();
+        var jam = $('#jam_'+jenis).val();
 
         if (jatuh1 && jatuh2 && jatuh3 && jatuh4 && jatuh5 != undefined) {
 
@@ -198,6 +200,12 @@ function saveICU(jenis, ket) {
             var skor5 = jatuh5.split("|")[1];
             var skor6 = jatuh6.split("|")[1];
 
+            data.push({
+                'parameter': 'Tanggal Jam',
+                'jawaban': tgl+' '+jam,
+                'keterangan': jenis,
+                'id_detail_checkup': idDetailCheckup
+            });
             data.push({
                 'parameter': 'Riwayat Jatuh',
                 'jawaban': isi1,
@@ -240,12 +248,36 @@ function saveICU(jenis, ket) {
                 'skor': skor6,
                 'id_detail_checkup': idDetailCheckup
             });
+            var totalSkor = parseInt(skor1) + parseInt(skor2) + parseInt(skor3) + parseInt(skor4) + parseInt(skor5) + parseInt(skor6);
+            var jwb = "";
+            if (totalSkor >= 0 && totalSkor <= 24) {
+                jwb = "Rendah";
+            } else if (totalSkor >= 25 && totalSkor <= 44) {
+                jwb = "Sedang";
+            } else if (totalSkor >= 45) {
+                jwb = "Tinggi";
+            }
+            data.push({
+                'parameter': 'Total',
+                'jawaban': ''+totalSkor,
+                'keterangan': jenis,
+                'tipe': 'total',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Resiko Jatuh',
+                'jawaban': jwb,
+                'keterangan': jenis,
+                'tipe': 'kesimpulan',
+                'id_detail_checkup': idDetailCheckup
+            });
             cek = true;
         }
     }
 
     if ("decobitus" == jenis) {
-
+        var tgl = $('#tgl_'+jenis).val();
+        var jam = $('#jam_'+jenis).val();
         var va = $('[name=db]');
         var va1 = "";
         $.each(va, function (i, item) {
@@ -259,7 +291,12 @@ function saveICU(jenis, ket) {
         });
 
         if (va1 != '') {
-
+            data.push({
+                'parameter': 'Tanggal Jam',
+                'jawaban': tgl+' '+jam,
+                'keterangan': jenis,
+                'id_detail_checkup': idDetailCheckup
+            });
             data.push({
                 'parameter': 'Derajat Decubitus',
                 'jawaban': va1,
@@ -272,7 +309,8 @@ function saveICU(jenis, ket) {
     }
 
     if ("nyeri" == jenis) {
-
+        var tgl = $('#tgl_'+jenis).val();
+        var jam = $('#jam_'+jenis).val();
         var nyeri = $('[name=radio_aud_nyeri]:checked').val();
         var skala = $('[name=radio_aud_skala]:checked').val();
         var lokasi = $('#yer_lokasi').val();
@@ -280,90 +318,109 @@ function saveICU(jenis, ket) {
         var canvasArea = document.getElementById('choice_emoji');
         var cvs = isCanvasBlank(canvasArea);
 
-        if (nyeri && skala != undefined && lokasi && skal != '') {
-
-            data.push({
-                'parameter': 'Apakah terdapat keluhan nyeri',
-                'jawaban': nyeri,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Lokasi',
-                'jawaban': lokasi,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Jenis',
-                'jawaban': skala,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Skala',
-                'jawaban': skal,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            if (!cvs) {
-                var canv = canvasArea.toDataURL("image/png"),
-                    canv = canv.replace(/^data:image\/(png|jpg);base64,/, "");
+        if (nyeri != '') {
+            var cecek = false;
+            if("Ya" == nyeri){
+                if(skala != undefined && lokasi && skal ){
+                    cecek = true;
+                }
+            }else{
+                cecek = true;
+            }
+            if(cecek){
                 data.push({
-                    'parameter': 'Scala Paint Nyeri',
-                    'jawaban': canv,
+                    'parameter': 'Tanggal Jam',
+                    'jawaban': tgl+' '+jam,
                     'keterangan': jenis,
-                    'jenis': ket,
-                    'tipe': 'gambar',
                     'id_detail_checkup': idDetailCheckup
                 });
+                data.push({
+                    'parameter': 'Apakah terdapat keluhan nyeri',
+                    'jawaban': nyeri,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Lokasi',
+                    'jawaban': lokasi != '' ? lokasi : '-',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Jenis',
+                    'jawaban': skala != undefined ? skala : '-',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Skala',
+                    'jawaban': skal != '' ? skal : '-',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                if (!cvs) {
+                    var canv = canvasArea.toDataURL("image/png"),
+                        canv = canv.replace(/^data:image\/(png|jpg);base64,/, "");
+                    data.push({
+                        'parameter': 'Scala Paint Nyeri',
+                        'jawaban': canv,
+                        'keterangan': jenis,
+                        'jenis': ket,
+                        'tipe': 'gambar',
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                }
+                cek = true;
             }
-            cek = true;
         }
     }
 
     if ("gcs" == jenis) {
+        var tgl = $('#tgl_'+jenis).val();
+        var jam = $('#jam_'+jenis).val();
 
-        var gcs1 = $('#gc1').val();
-        var gcs2 = $('#gc2').val();
-        var gcs3 = $('#gc3').val();
+        var va2 = $('#res2').val();
+        var va3 = $('#res3').val();
+        var va4 = $('#res4').val();
+        var va5 = $('#res5').val();
+        var va6 = $('#res6').val();
+        var va7 = $('#res7').val();
+        var va8 = $('#res8').val();
+        var va9 = $('#res9').val();
+        var va10 = $('#res10').val();
+        var va11 = $('#res11').val();
+        var va12 = $('#res12').val();
 
-        if (gcs1 && gcs2 && gcs3 != '') {
-
-            var isi1 = gcs1.split("|")[0];
-            var isi2 = gcs2.split("|")[0];
-            var isi3 = gcs3.split("|")[0];
-
-            var skor1 = gcs1.split("|")[1];
-            var skor2 = gcs2.split("|")[1];
-            var skor3 = gcs3.split("|")[1];
-
+        if (va2 && va3 != '') {
             data.push({
-                'parameter': 'E = Eye (membuka mata)',
-                'jawaban': isi1,
+                'parameter': 'Tanggal Jam',
+                'jawaban': tgl+' '+jam,
                 'keterangan': jenis,
-                'jenis': ket,
-                'skor': skor1,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'V = Verbal (komunikasi)',
-                'jawaban': isi2,
+                'parameter': 'GCS',
+                'jawaban': 'E : '+va2 + ', V : ' + va3 + ', M : ' + va4,
                 'keterangan': jenis,
                 'jenis': ket,
-                'skor': skor2,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'M = Motorik (gerakan ekstimitas atas)',
-                'jawaban': isi3,
+                'parameter': 'Diameter Pupil',
+                'jawaban': 'KA : '+va5 + ', KI : ' + va6,
                 'keterangan': jenis,
                 'jenis': ket,
-                'skor': skor3,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Reflek Cahaya',
+                'jawaban': 'KA : '+va7 + ', KI : ' + va8+', TKA : '+va9 + ', TKA : ' + va10+', KKA : '+va11 + ', KKI : ' + va12,
+                'keterangan': jenis,
+                'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -376,13 +433,10 @@ function saveICU(jenis, ket) {
         var kriteria2 = $('[name=kriteria2]');
         var parameter = $('[name=parameter]');
         var dpjp = document.getElementById("ttd_dpjp");
-        var pasien = document.getElementById("ttd_pasien");
 
         var cekTtd1 = isCanvasBlank(dpjp);
-        var cekTtd2 = isCanvasBlank(pasien);
         var nama1 = $('#nama_terang_dokter').val();
         var sip1 = $('#sip_dokter').val();
-        var nama2 = $('#nama_terang_pasien').val();
 
         $.each(parameter, function (i, item) {
 
@@ -415,12 +469,10 @@ function saveICU(jenis, ket) {
             }
         });
 
-        if (data.length > 0 && !cekTtd1 && !cekTtd2 && nama1 && nama2 && sip1 != '') {
+        if (data.length > 0 && !cekTtd1 && nama1 && sip1 != '') {
 
             var canv1 = dpjp.toDataURL("image/png"),
                 canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
-            var canv2 = pasien.toDataURL("image/png"),
-                canv2 = canv2.replace(/^data:image\/(png|jpg);base64,/, "");
 
             data.push({
                 'parameter': 'TTD DPJP',
@@ -430,15 +482,6 @@ function saveICU(jenis, ket) {
                 'tipe': 'ttd',
                 'nama_terang': nama1,
                 'sip': sip1,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'TTD Pasien/Keluarga',
-                'jawaban': canv2,
-                'keterangan': jenis,
-                'jenis': ket,
-                'tipe': 'ttd',
-                'nama_terang': nama2,
                 'id_detail_checkup': idDetailCheckup
             });
 
@@ -1179,6 +1222,7 @@ function saveICU(jenis, ket) {
         var sip3 = $('#sip_ttd3').val();
         var nama4 = $('#nama_terang_ttd4').val();
         var nama5 = $('#nama_terang_ttd5').val();
+        var sip5 = $('#sip_ttd5').val();
 
         var cekTtd1 = isCanvasBlank(ttd1);
         var cekTtd2 = isCanvasBlank(ttd2);
@@ -1366,7 +1410,7 @@ function saveICU(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Saksi I',
+                'parameter': 'Saksi Keluarga',
                 'jawaban': canv4,
                 'keterangan': jenis,
                 'jenis': persetujuan,
@@ -1375,7 +1419,7 @@ function saveICU(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Saksi II',
+                'parameter': 'Perawat Pendamping',
                 'jawaban': canv5,
                 'keterangan': jenis,
                 'jenis': persetujuan,
@@ -1403,6 +1447,8 @@ function saveICU(jenis, ket) {
                         $('#warning_icu_' + ket).show().fadeOut(5000);
                         $('#msg_icu_' + ket).text("Berhasil menambahkan data ICU...");
                         $('#modal-icu-' + jenis).scrollTop(0);
+                        delRowICU(jenis);
+                        detailICU(jenis);
                     } else {
                         $('#save_icu_' + jenis).show();
                         $('#load_icu_' + jenis).hide();
@@ -1445,7 +1491,7 @@ function detailICU(jenis) {
                             jwb = item.jawaban;
                         }
 
-                        if ("Alat" == item.parameter) {
+                        if ("Alat" == item.parameter || "Derajat Decubitus" == item.parameter) {
                             var val = jwb.split("|");
                             var li = "";
                             $.each(val, function (i, item) {
@@ -1523,14 +1569,6 @@ function detailICU(jenis) {
                                     '<td colspan="2">' + jwb + del + '</td>' +
                                     '</tr>';
                             }
-                        } else if (item.score != null) {
-                            body += '<tr>' +
-                                '<td>' + item.parameter + '</td>' +
-                                '<td>' + item.jawaban + '</td>' +
-                                '<td width="10%" align="center">' + item.score + '</td>' +
-                                '</tr>';
-                            totalSkor = parseInt(totalSkor) + parseInt(item.score);
-                            cekSkor = true;
                         } else if ("gambar" == item.tipe) {
                             body += '<tr>' +
                                 '<td width="40%">' + item.parameter + '</td>' +
@@ -1546,7 +1584,28 @@ function detailICU(jenis) {
                                         '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
                                         '</td>' +
                                         '</tr>';
+                                }else{
+                                    body += '<tr>' +
+                                        '<td width="60%">' + item.parameter + '</td>' +
+                                        '<td align="center">' + cekIconsIsNotNull(item.jawaban) + '</td>' +
+                                        '</tr>';
                                 }
+                            } else if("resiko_jatuh" == jenis){
+                                if(item.tipe == "total"){
+                                    body += '<tr style="font-weight: bold"><td colspan="2">'+item.parameter+'</td><td align="center">' + item.jawaban + '</td></tr>';
+                                }else if(item.tipe == "kesimpulan"){
+                                    body += '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">'+item.parameter+'</td><td align="center">' + item.jawaban + '</td></tr>';
+                                }else if(item.parameter == "Tanggal Jam"){
+                                    body += '<tr style="font-weight: bold"><td>'+item.parameter+'</td><td colspan="2">' + item.jawaban + '</td></tr>' +
+                                            '<tr style="font-weight: bold"><td>Parameter</td><td>Jawaban</td><td align="center">Skor</td></tr>';
+                                }else{
+                                    body += '<tr>' +
+                                        '<td>' + item.parameter + '</td>' +
+                                        '<td>' + item.jawaban + '</td>' +
+                                        '<td width="10%" align="center">' + item.score + '</td>' +
+                                        '</tr>';
+                                }
+
                             } else {
                                 if ("ttd" == item.tipe) {
                                     forTTD += '<tr>' +
@@ -1574,29 +1633,9 @@ function detailICU(jenis) {
                         '</tr>';
                 }
 
-                if (cekSkor) {
-                    first = '<tr style="font-weight: bold"><td>Parameter</td><td>Jawaban</td><td align="center">Skor</td></tr>';
-                    last = '<tr style="font-weight: bold"><td colspan="2">Total</td><td align="center">' + totalSkor + '</td></tr>'
-
-                    if ("resiko_jatuh" == jenis) {
-                        var jwb = "";
-                        if (totalSkor >= 0 && totalSkor <= 24) {
-                            jwb = "Rendah";
-                        } else if (totalSkor >= 25 && totalSkor <= 44) {
-                            jwb = "Sedang";
-                        } else if (totalSkor >= 45) {
-                            jwb = "Tinggi";
-                        }
-
-                        if (isKesimpulan) {
-                            kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Resiko Jatuh</td><td align="center">' + jwb + '</td></tr>';
-                        }
-                    }
-                }
-
                 var table = '<table style="font-size: 12px" class="table table-bordered">' +
                     '<thead>' + head + '</thead>' +
-                    '<tbody>' + first + body + last + kesimpulan + forTTD + '</tbody>' +
+                    '<tbody>' + body + forTTD + '</tbody>' +
                     '</table>';
 
                 var newRow = $('<tr id="del_icu_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
@@ -1611,7 +1650,12 @@ function detailICU(jenis) {
 
 function delRowICU(id) {
     $('#del_icu_' + id).remove();
-    var url = contextPath + '/pages/images/icons8-plus-25.png';
+    var url = "";
+    if(id == "resiko_jatuh" || id == "decobitus" || id == "nyeri" || "alat_infasive" == id || "gcs" == id){
+        url = contextPath + '/pages/images/icons8-add-list-25.png';
+    }else{
+        url = contextPath + '/pages/images/icons8-plus-25.png';
+    }
     $('#btn_icu_' + id).attr('src', url);
     $('#btn_icu_' + id).attr('onclick', 'detailICU(\'' + id + '\')');
 }
@@ -1852,17 +1896,6 @@ function saveRespirasi(jenis, ket) {
         'id_rm': tempidRm
     }
     var va1 = $('#res1').val();
-    var va2 = $('#res2').val();
-    var va3 = $('#res3').val();
-    var va4 = $('#res4').val();
-    var va5 = $('#res5').val();
-    var va6 = $('#res6').val();
-    var va7 = $('#res7').val();
-    var va8 = $('#res8').val();
-    var va9 = $('#res9').val();
-    var va10 = $('#res10').val();
-    var va11 = $('#res11').val();
-    var va12 = $('#res12').val();
     var va13 = $('#res13').val();
     var va14 = $('#res14').val();
     var va014 = $('#res014').val();
@@ -1883,15 +1916,10 @@ function saveRespirasi(jenis, ket) {
 
     var data = "";
 
-    if (va1 != '') {
+    if (va13 != '') {
         data = {
             'id_detail_checkup': idDetailCheckup,
             'waktu': va1,
-            'gcs': va2 + '|' + va3 + '|' + va4,
-            'diameter_pupil': va5 + '|' + va6,
-            'reflek_cahaya': va7 + '|' + va8,
-            'tk': va9 + '|' + va10,
-            'kk': va11 + '|' + va12,
             'o2': va13,
             'tipe_ventilasi': va14,
             'peep': va15,
@@ -1965,25 +1993,8 @@ function listRespirasi(jenis) {
                         }
                     }
 
-                    var gcs = item.gcs.split("|");
-                    var dp = item.diameterPupil.split("|");
-                    var rc = item.reflekCahaya.split("|");
-                    var tk = item.tk.split("|");
-                    var kk = item.kk.split("|");
-
                     body += '<tr>' +
                         '<td>' + tempTgl + '<span class="pull-right">' + cekItemIsNull(item.waktu) + '</span>' + '</td>' +
-                        '<td>' + gcs[0] + '</td>' +
-                        '<td>' + gcs[1] + '</td>' +
-                        '<td>' + gcs[2] + '</td>' +
-                        '<td>' + dp[0] + '</td>' +
-                        '<td>' + dp[1] + '</td>' +
-                        '<td>' + rc[0] + '</td>' +
-                        '<td>' + rc[1] + '</td>' +
-                        '<td>' + tk[0] + '</td>' +
-                        '<td>' + tk[1] + '</td>' +
-                        '<td>' + kk[0] + '</td>' +
-                        '<td>' + kk[1] + '</td>' +
                         '<td>' + cekItemIsNull(item.o2) + '</td>' +
                         '<td>' + cekItemIsNull(item.peep) + '</td>' +
                         '<td>' + cekItemIsNull(item.frekwensi) + '</td>' +
@@ -2010,10 +2021,6 @@ function listRespirasi(jenis) {
             if (cekData) {
                 head = '<tr>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">Tanggal Jam</td>\n' +
-                    '<td colspan="3" style="vertical-align: middle" align="center">GCS</td>\n' +
-                    '<td colspan="2" style="vertical-align: middle" align="center">DP</td>\n' +
-                    '<td colspan="2" style="vertical-align: middle" align="center">RC</td>\n' +
-                    '<td colspan="4" style="vertical-align: middle" align="center">EXTR</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">O2</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">PE</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">FR</td>\n' +
@@ -2026,29 +2033,32 @@ function listRespirasi(jenis) {
                     '<td rowspan="2" style="vertical-align: middle" align="center">FL</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">FI</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">UE</td>\n' +
-                    '<td rowspan="2" style="vertical-align: middle" align="center">DE</td>\n' +
+                    '<td rowspan="2" style="vertical-align: middle" align="center">KE</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">SP</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">SE</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">Action</td>\n' +
-                    '                        </tr>\n' +
-                    '                        <tr>\n' +
-                    '<td align="center">E</td>\n' +
-                    '<td align="center">V</td>\n' +
-                    '<td align="center">M</td>\n' +
-                    '<td align="center">R</td>\n' +
-                    '<td align="center">L</td>\n' +
-                    '<td align="center">R</td>\n' +
-                    '<td align="center">L</td>\n' +
-                    '<td align="center">TR</td>\n' +
-                    '<td align="center">TL</td>\n' +
-                    '<td align="center">KR</td>\n' +
-                    '<td align="center">KL</td>\n' +
-                    '                        </tr>';
+                    '                        </tr>\n';
             }
-            var table = '<table style="font-size: 10px" class="table table-bordered">' +
+            var table = '<table style="font-size: 12px" class="table table-bordered">' +
                 '<thead>' + head + '</thead>' +
                 '<tbody>' + body + '</tbody>' +
-                '</table>';
+                '</table>' +
+                '<div class="row" style="font-size: 12px">\n' +
+                '<label class="col-md-3"> PE = Peep</label>\n' +
+                '<label class="col-md-3"> FR = Frekwensi/ Frekwensi Total</label>\n' +
+                '<label class="col-md-3"> TV = TV (1) TV (E)</label>\n' +
+                '<label class="col-md-3"> MV = MV (1) MV (E)</label>\n' +
+                '<label class="col-md-3"> PS = P-Support</label>\n' +
+                '<label class="col-md-3"> PI = P-Inspirasi/P-Control</label>\n' +
+                '<label class="col-md-3"> TR = Triger</label>\n' +
+                '<label class="col-md-3"> IN = Inspirasi Time</label>\n' +
+                '<label class="col-md-3"> FL = Flow</label>\n' +
+                '<label class="col-md-3"> FI = FIO 2/Konsentrasi O2</label>\n' +
+                '<label class="col-md-3"> UE = Ukuran ETT</label>\n' +
+                '<label class="col-md-3"> KE = Kedalaman ETT</label>\n' +
+                '<label class="col-md-3"> SP = SPO2</label>\n' +
+                '<label class="col-md-3"> SE = Secret/ Sputum</label>\n' +
+                '</div>';
 
             var newRow = $('<tr id="del_icu_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
             newRow.insertAfter($('table').find('#row_icu_' + jenis));

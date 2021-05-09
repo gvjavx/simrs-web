@@ -112,16 +112,16 @@
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-4">Haid Manarche</label>
-                            <div class="col-md-3">
+                            <label class="col-md-3">Haid Manarche</label>
+                            <div class="col-md-4">
                                 <input class="form-control" id="rb6" type="number" placeholder="tahun">
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4">Cyclus</label>
-                            <div class="col-md-3">
+                            <label class="col-md-3">Cyclus</label>
+                            <div class="col-md-4">
                                 <input class="form-control" id="rb7" type="number" placeholder="hari">
                             </div>
                             <div class="col-md-2">
@@ -129,7 +129,7 @@
                                     <input type="radio" value="Teratur" id="rb81" name="rb8"/><label for="rb81">Teratur</label>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="custom02">
                                     <input type="radio" value="Tidak" id="rb82" name="rb8"/><label for="rb82">Tidak Teratur</label>
                                 </div>
@@ -138,9 +138,9 @@
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4">Lama</label>
-                            <div class="col-md-3">
-                                <input onchange="setHPL('rb12', 'rb11', this.id)" class="form-control" id="rb9" type="number" placeholder="hari">
+                            <label class="col-md-3">Lama</label>
+                            <div class="col-md-4">
+                                <input class="form-control" id="rb9" type="number" placeholder="hari">
                             </div>
                             <div class="col-md-2">
                                 <div class="custom02">
@@ -156,26 +156,26 @@
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4">HPHT</label>
-                            <div class="col-md-4">
+                            <label class="col-md-3">HPHT</label>
+                            <div class="col-md-5">
                                 <div class="input-group">
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input oninput="setHPL('rb12', this.id, 'rb9')" class="form-control ptr-tgl" id="rb11" placeholder="HTPH" readonly style="cursor: pointer">
+                                    <input onchange="setHPL('rb12', this.id)" class="form-control ptr-tgl" id="rb11" placeholder="HPHT" readonly style="cursor: pointer">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4">HPL</label>
-                            <div class="col-md-4">
+                            <label class="col-md-3">HPL</label>
+                            <div class="col-md-5">
                                 <div class="input-group">
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control" id="rb12" readonly>
+                                    <input class="form-control ptr-tgl" id="rb12" style="cursor: pointer">
                                 </div>
                             </div>
                         </div>
@@ -185,10 +185,14 @@
                         <div class="form-group">
                             <label class="col-md-3">Darah Putih</label>
                             <div class="col-md-3">
-                                <input class="form-control" id="rb13">
+                                <select class="form-control" id="rb13">
+                                    <option value="-">-</option>
+                                    <option value="Ya">Ya</option>
+                                    <option value="Tidak">Tidak</option>
+                                </select>
                             </div>
                             <label class="col-md-2">Banyaknya</label>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <input class="form-control" id="rb14" type="number">
                             </div>
                         </div>
@@ -200,8 +204,8 @@
                                 <input class="form-control" id="rb15" type="number">
                             </div>
                             <label class="col-md-2">Warnanya</label>
-                            <div class="col-md-3">
-                                <input class="form-control" id="rb16" type="number">
+                            <div class="col-md-4">
+                                <input class="form-control" id="rb16">
                             </div>
                         </div>
                     </div>
@@ -209,10 +213,14 @@
                         <div class="form-group">
                             <label class="col-md-3">Baunya</label>
                             <div class="col-md-3">
-                                <input class="form-control" id="rb17" type="number">
+                                <select class="form-control" id="rb17">
+                                    <option value="-">-</option>
+                                    <option value="Ya">Ya</option>
+                                    <option value="Tidak">Tidak</option>
+                                </select>
                             </div>
                             <label class="col-md-2">Contact Bleeding</label>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <input class="form-control" id="rb18" type="number">
                             </div>
                         </div>

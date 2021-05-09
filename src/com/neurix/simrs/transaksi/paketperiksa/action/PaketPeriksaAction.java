@@ -381,7 +381,14 @@ public class PaketPeriksaAction extends BaseTransactionAction {
                     }
                 }
                 try {
-                    Boolean cekNik = pasienBo.cekNikPasien(dataPasien.getNoKtp());
+                    String nik = dataPasien.getNoKtp().replace("_","");
+                    Boolean cekNik = true;
+                    if("000000".equalsIgnoreCase(nik)){
+                        cekNik = false;
+                    }else{
+                        cekNik = pasienBo.cekNikPasien(dataPasien.getNoKtp());
+                    }
+
                     if (cekNik) {
                         pasien.setStatus("error");
                         pasien.setMsg("NIK " + dataPasien.getNoKtp() + " sudah ada...!");

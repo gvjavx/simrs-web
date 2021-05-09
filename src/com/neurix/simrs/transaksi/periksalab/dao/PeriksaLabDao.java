@@ -110,7 +110,13 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     "a.is_pending,\n" +
                     "a.is_periksa_luar,\n" +
                     "a.is_just_lab,\n" +
-                    "pl.nama_pelayanan\n" +
+                    "pl.nama_pelayanan,\n" +
+                    "d.autoanamnesis,\n" +
+                    "d.heteroanamnesis,\n" +
+                    "d.tensi,\n" +
+                    "d.suhu,\n" +
+                    "d.nadi,\n" +
+                    "d.rr\n" +
                     "FROM it_simrs_header_pemeriksaan a\n" +
                     "INNER JOIN im_simrs_kategori_lab b ON a.id_kategori_lab = b.id_kategori_lab\n" +
                     "INNER JOIN it_simrs_header_detail_checkup c ON a.id_detail_checkup = c.id_detail_checkup\n" +
@@ -174,6 +180,12 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                             dataLab.setIsUpload("N");
                         }
                     }
+                    dataLab.setAuto(obj[18] != null ? obj[18].toString() : "");
+                    dataLab.setHetero(obj[19] != null ? obj[19].toString() : "");
+                    dataLab.setTensi(obj[20] != null ? obj[20].toString() : "");
+                    dataLab.setSuhu(obj[21] != null ? obj[21].toString() : "");
+                    dataLab.setNadi(obj[22] != null ? obj[22].toString() : "");
+                    dataLab.setRr(obj[23] != null ? obj[23].toString() : "");
                     checkupList.add(dataLab);
                 }
             }
@@ -451,7 +463,12 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
             String namaPelayanan = "";
             for (Object[] obj : result) {
                 PeriksaLab lab = new PeriksaLab();
-                if(!namaPelayanan.equalsIgnoreCase(obj[4].toString())){
+                String namaPel = "";
+                if(obj[4] != null){
+                    namaPel = obj[4].toString();
+                }
+
+                if(!namaPelayanan.equalsIgnoreCase(namaPel)){
                     namaPelayanan = obj[4].toString();
                     lab.setCreatedDate(obj[8] == null ? null : (Timestamp) obj[8]);
                 }

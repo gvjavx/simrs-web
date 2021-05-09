@@ -56,7 +56,6 @@ function saveRekamMedisRJ(jenis, ket) {
 
         if(!cekSession()){
             var result = JSON.stringify(data);
-
             $('#save_rj_' + jenis).hide();
             $('#load_rj_' + jenis).show();
             dwr.engine.setAsync(true);

@@ -40,6 +40,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatICD9Action.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/OrderGiziAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/RawatInapAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PelayananAction.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -525,26 +526,45 @@
                                 </div>
                                 <div class="row jarak">
                                     <div class="col-md-12">
+                                        <span>Catatan Klinis</span>
+                                        <s:textarea id="kinis" name="headerDetailCheckup.catatanKlinis" cssClass="form-control" rows="4" placeholder="Catatan Klinis"></s:textarea>
+                                    </div>
+                                </div>
+                                <div class="row jarak">
+                                    <div class="col-md-12">
                                         <button id="save_fisik" class="btn btn-success pull-right" onclick="saveAnamnese()"><i class="fa fa-check"></i> Save</button>
-                                        <button style="display: none; cursor: no-drop; margin-top: 25px" type="button" class="btn btn-success" id="load_fisik"> <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                                        <button style="display: none; cursor: no-drop;" type="button" class="btn btn-success pull-right" id="load_fisik"> <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                                         </button>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="btn-group dropdown">
-                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen
-                                    </button>
-                                    <button onclick="setRekamMedis()" type="button" class="btn btn-primary dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu" id="asesmen_rj">
-                                    </ul>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="btn-group dropdown">
+                                            <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen
+                                            </button>
+                                            <button onclick="setRekamMedis()" type="button" class="btn btn-primary dropdown-toggle"
+                                                    data-toggle="dropdown" style="height: 34px">
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu" id="asesmen_rj">
+                                            </ul>
+                                        </div>
+                                        <button type="button" onclick="viewHistory()" class="btn btn-info hvr-icon-spin"><i class="fa fa-history hvr-icon"></i> All History</button>
+                                        <button class="btn btn-info" onclick="uploadPemeriksaan()"><i class="fa fa-line-chart"></i> Upload Pemeriksaan</button>
+                                    </div>
                                 </div>
-                                <button type="button" onclick="viewHistory()" class="btn btn-info hvr-icon-spin"><i class="fa fa-history hvr-icon"></i> All History</button>
-                                <button class="btn btn-info" onclick="uploadPemeriksaan()"><i class="fa fa-line-chart"></i> Upload Pemeriksaan</button>
+                                <div class="row jarak">
+                                    <div class="col-md-12">
+                                        <div class="box-body">
+                                            <table class="table table-hover" style="font-size: 12px">
+                                                <tbody id="temp_kesimpulan"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1018,32 +1038,6 @@
                                         <div class="col-md-8">
                                             <select class="form-control select2" id="keterangan" style="width: 100%"
                                                     onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this.value)">
-                                                    <option value="">[Select One]</option>
-                                                <%--<s:if test='headerDetailCheckup.idJenisPeriksaPasien == "umum" || headerDetailCheckup.idJenisPeriksaPasien == "ptpn"'>--%>
-                                                    <%--<option value="selesai">Selesai</option>--%>
-                                                    <%--<option value="rawat_inap">Rawat Inap</option>--%>
-                                                    <%--<option value="rawat_intensif">Rawat Intensif</option>--%>
-                                                    <%--<option value="rawat_isolasi">Rawat Isolasi</option>--%>
-                                                    <%--<option value="kamar_operasi">Kamar Operasi</option>--%>
-                                                    <%--<option value="ruang_bersalin">Ruang Bersalin</option>--%>
-                                                    <%--<option value="rujuk_rs_lain">Dirujuk</option>--%>
-                                                    <%--<option value="kontrol_ulang">Kontrol Ulang</option>--%>
-                                                <%--</s:if>--%>
-                                                <%--<s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs" || headerDetailCheckup.idJenisPeriksaPasien == "asuransi"'>--%>
-                                                    <%--<option value="selesai">Selesai</option>--%>
-                                                    <%--<option value="rawat_inap">Rawat Inap</option>--%>
-                                                    <%--<option value="rawat_intensif">Rawat Intensif</option>--%>
-                                                    <%--<option value="rawat_isolasi">Rawat Isolasi</option>--%>
-                                                    <%--<option value="kamar_operasi">Kamar Operasi</option>--%>
-                                                    <%--<option value="ruang_bersalin">Ruang Bersalin</option>--%>
-                                                    <%--<option value="rujuk_rs_lain">Dirujuk</option>--%>
-                                                    <%--<option value="kontrol_ulang">Kontrol Ulang</option>--%>
-                                                    <%--<option value="lanjut_biaya">Lanjut Biaya</option>--%>
-                                                <%--</s:elseif>--%>
-                                                <%--<s:else>--%>
-                                                    <%--<option value="selesai">Selesai</option>--%>
-                                                    <%--<option value="kontrol_ulang">Kontrol Ulang</option>--%>
-                                                <%--</s:else>--%>
                                             </select>
                                         </div>
                                     </div>
@@ -1075,6 +1069,37 @@
                                                 <option value="Paliatif">Paliatif</option>
                                                 <option value="Rehabilitatif">Rehabilitatif</option>
                                             </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="display: none" id="form-pindah_poli">
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Poli</label>
+                                        <div class="col-md-8">
+                                            <s:action id="initComboPoli" namespace="/checkup"
+                                                      name="getComboPelayanan_checkup"/>
+                                            <s:select
+                                                    list="#initComboPoli.listOfPelayanan" id="poli_lain"
+                                                    name="headerCheckup.idPelayanan" listKey="idPelayanan"
+                                                    listValue="namaPelayanan" cssStyle="width: 100%"
+                                                    onchange="listDokterKeterangan(this.value);"
+                                                    headerKey="" headerValue="[Select one]"
+                                                    cssClass="form-control select2"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Dokter</label>
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <input readonly class="form-control" id="nama_dokter"
+                                                       style="cursor: pointer; margin-top: 7px" onclick="showJadwalDokter()"
+                                                       placeholder="*klik untuk jadwal dokter">
+                                                <div class="input-group-btn">
+                                                    <a class="btn btn-success" onclick="showJadwalDokter()" style="margin-left: -3px">
+                                                        <span id="btn-dokter"><i class="fa fa-search" ></i> Dokter</span></a>
+                                                </div>
+                                                <input type="hidden" id="list_dokter">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1179,7 +1204,7 @@
                                     <div class="col-md-offset-4 col-md-4 text-center">
                                         <a class="btn btn-warning" href="initForm_igd.action"><i class="fa fa-arrow-left"></i> Back</a>
                                         <%--<a class="btn btn-primary" onclick="printGelangPasien()"><i class="fa fa-print"></i> Print</a>--%>
-                                        <a class="btn btn-success" id="save_ket" onclick="confirmPemeriksaanPasien()"><i class="fa fa-check"></i> Save</a>
+                                        <a class="btn btn-success" id="save_ket" onclick="confirmPemeriksaanPasien()"><i class="fa fa-check"></i> Selesai</a>
                                         <button style="display: none; cursor: no-drop;" type="button"
                                                 class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
                                             Sedang Menyimpan...
@@ -2741,6 +2766,45 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-jadwal-dokter">
+    <div class="modal-dialog" style="width: 57%">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Jadwal Dokter <span
+                        id="dokter_pelayanan"></span> Hari Ini</h4>
+            </div>
+            <div class="modal-body" id="temp_jd">
+                <div class="box-body">
+                    <div class="col-md-12 text-center" style="display:inline; padding-left: 6%">
+                        <div class="btn-wrapper">
+                            <div id="jadwal_dokter"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-offset-9 col-md-3">
+                        <ul style="list-style-type: none">
+                            <li>
+                                <span style="color: white; background-color: #ec971f; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">Kuota Non BPJS</span>
+                            </li>
+                            <li>
+                                <span style="margin-left: 5px;color: white; background-color: #00a65a; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">Kuota BPJS</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <span onclick="cekScrol('fa_temp_jd', 'temp_jd')" class="pull-left hvr-grow" style="color: black; margin-top: 11px; cursor: pointer">
+                    <i id="fa_temp_jd" class="fa fa-unlock"></i>
+                </span>
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -2796,6 +2860,8 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenRawatInapAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/KandunganAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenIcuAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/RekonsiliasiObatAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenUgd.js"/>'></script>
@@ -2808,6 +2874,7 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/allhistory.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/kandungan.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/icu.js"/>'></script>
 
 <script type='text/javascript'>
 
@@ -2942,13 +3009,16 @@
         if(jenisPeriksaPasien == 'paket_perusahaan' || jenisPeriksaPasien == 'paket_individu'){
             showDetailPaket();
         }
-        setKeteranganPeriksa();
+        setKeteranganPeriksa('keterangan');
 
         $('.carousel').carousel({
             interval: false,
             ride: false,
             pause: false
         });
+
+        kesimpulanAsesmen();
+        setTindakLanjut();
 
     });
 

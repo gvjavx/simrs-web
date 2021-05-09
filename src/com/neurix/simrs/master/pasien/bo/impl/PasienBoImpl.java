@@ -166,6 +166,7 @@ public class PasienBoImpl implements PasienBo {
             if (data.getTglLahir() != null) {
                 String strDate = formatter.format(data.getTglLahir());
                 pasien.setTglLahir(strDate);
+                pasien.setTanggalLahir(data.getTglLahir());
             }
 
             if(data.getDesaId() != null ) {
@@ -248,12 +249,6 @@ public class PasienBoImpl implements PasienBo {
             String id = getIdPasien();
             SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
 
-            try {
-                date = formater.parse(pasien.getTglLahir());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
             pasienEntity.setIdPasien(CommonUtil.userBranchLogin() + dateFormater("yy") + id);
             pasienEntity.setNama(pasien.getNama());
             pasienEntity.setJenisKelamin(pasien.getJenisKelamin());
@@ -262,7 +257,7 @@ public class PasienBoImpl implements PasienBo {
             pasienEntity.setTempatLahir(pasien.getTempatLahir());
 
             pasienEntity.setNoTelp(pasien.getNoTelp());
-            pasienEntity.setTglLahir(date);
+            pasienEntity.setTglLahir(java.sql.Date.valueOf(pasien.getTglLahir()));
             BigInteger bigInteger = new BigInteger(pasien.getDesaId());
             pasienEntity.setDesaId(bigInteger);
             pasienEntity.setJalan(pasien.getJalan());
@@ -410,16 +405,6 @@ public class PasienBoImpl implements PasienBo {
             }
 
             if (entity != null) {
-
-                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
-
-                try {
-                    date = formater.parse(bean.getTglLahir());
-//                tglLahir = formater.format(date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
                 // Modify from bean to entity serializable
                 entity.setNama(bean.getNama());
                 entity.setJenisKelamin(bean.getJenisKelamin());
@@ -427,7 +412,7 @@ public class PasienBoImpl implements PasienBo {
                 entity.setNoBpjs(bean.getNoBpjs());
                 entity.setTempatLahir(bean.getTempatLahir());
 
-                entity.setTglLahir(date);
+                entity.setTglLahir(java.sql.Date.valueOf(bean.getTglLahir()));
                 BigInteger bigInteger = new BigInteger(bean.getDesaId());
                 entity.setDesaId(bigInteger);
                 entity.setJalan(bean.getJalan());
@@ -916,7 +901,7 @@ public class PasienBoImpl implements PasienBo {
             pasienEntity.setIdPasien(CommonUtil.userBranchLogin() + dateFormater("yy") + id);
             pasienEntity.setNama(pasien.getNama());
             pasienEntity.setJenisKelamin(pasien.getJenisKelamin());
-            pasienEntity.setNoKtp(pasien.getNoKtp());
+            pasienEntity.setNoKtp(pasien.getNoKtp().replace("_",""));
             pasienEntity.setNoBpjs(pasien.getNoBpjs());
             pasienEntity.setTempatLahir(pasien.getTempatLahir());
             if(pasien.getNoTelp() != null && !"".equalsIgnoreCase(pasien.getNoTelp())){

@@ -1759,9 +1759,9 @@ public class TelemedicBoImpl implements TelemedicBo {
 
                 List<Movie> listMovie = new ArrayList<>();
 
-                for (int i = 0; i < itSimrsVideoRmEntityList.size(); i++) {
+                for (ItSimrsVideoRmEntity item : itSimrsVideoRmEntityList) {
                     Movie movie = new Movie();
-                    path = itSimrsVideoRmEntityList.get(i).getPath();
+                    path = item.getPath();
                     try {
                         movie = MovieCreator.build(CommonUtil.getPropertyParams("upload.folder") + path);
                     } catch (IOException e){

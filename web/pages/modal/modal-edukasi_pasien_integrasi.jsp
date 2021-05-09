@@ -31,6 +31,10 @@
                                     class="fa fa-plus"></i> TPPRI</a></li>
                             <li><a onclick="showModalAsesmenRawatInap('ept_perawat')" style="cursor: pointer"><i
                                     class="fa fa-plus"></i> Perawat</a></li>
+                            <li><a onclick="showModalAsesmenRawatInap('ept_igd')" style="cursor: pointer"><i
+                                    class="fa fa-plus"></i> IGD</a></li>
+                            <li><a onclick="showModalAsesmenRawatInap('ept_dokter_igd')" style="cursor: pointer"><i
+                                    class="fa fa-plus"></i> Dokter IGD</a></li>
                             <li><a onclick="showModalAsesmenRawatInap('ept_dpjp')" style="cursor: pointer"><i
                                     class="fa fa-plus"></i> DPJP</a></li>
                             <li><a onclick="showModalAsesmenRawatInap('ept_nutrisionis')" style="cursor: pointer"><i
@@ -67,6 +71,24 @@
                                      onclick="listEdukasiPasien('ept_perawat')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                                 <img id="delete_ept_perawat" class="hvr-grow btn-hide" onclick="conRI('ept_perawat', 'edukasi_pasien_terintegrasi', '0', 'edukasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                            </td>
+                        </tr>
+                        <tr id="row_ina_ept_igd">
+                            <td>IGD</td>
+                            <td width="20%" align="center">
+                                <img id="btn_ina_ept_perawat" class="hvr-grow"
+                                     onclick="listEdukasiPasien('ept_igd')"
+                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_ept_perawat" class="hvr-grow btn-hide" onclick="conRI('ept_igd', 'edukasi_pasien_terintegrasi', '0', 'edukasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                            </td>
+                        </tr>
+                        <tr id="row_ina_ept_dokter_igd">
+                            <td>Dokter IGD</td>
+                            <td width="20%" align="center">
+                                <img id="btn_ina_ept_perawat" class="hvr-grow"
+                                     onclick="listEdukasiPasien('ept_dokter_igd')"
+                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_ept_perawat" class="hvr-grow btn-hide" onclick="conRI('ept_dokter_igd', 'edukasi_pasien_terintegrasi', '0', 'edukasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_ept_dpjp">
@@ -230,6 +252,100 @@
                     Save
                 </button>
                 <button id="load_ina_ept_perawat" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-ina-ept_igd">
+    <div class="modal-dialog" style="width: 63%">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> IGD
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_ina_ept_igd">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_ina_ept_igd"></p>
+                </div>
+                <div class="box-body">
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <table class="table table-bordered table-striped" style="font-size: 12px" id="table_ept_igd">
+                                <thead id="head_ept_igd">
+                                </thead>
+                                <tbody id="body_ept_igd">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="q_ept_igd"></div>
+                    <hr class="garis">
+                    <div id="temp_ept_igd"></div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_ina_ept_igd" class="btn btn-success pull-right"
+                        onclick="saveEdukasiPasien('ept_igd','edukasi_pasien_terintegrasi')"><i class="fa fa-check"></i>
+                    Save
+                </button>
+                <button id="load_ina_ept_igd" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-ina-ept_dokter_igd">
+    <div class="modal-dialog" style="width: 63%">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Dokter IGD
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_ina_ept_dokter_igd">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_ina_ept_dokter_igd"></p>
+                </div>
+                <div class="box-body">
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <table class="table table-bordered table-striped" style="font-size: 12px" id="table_ept_dokter_igd">
+                                <thead id="head_ept_dokter_igd">
+                                </thead>
+                                <tbody id="body_ept_dokter_igd">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="q_ept_dokter_igd"></div>
+                    <hr class="garis">
+                    <div id="temp_ept_dokter_igd"></div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_ina_ept_dokter_igd" class="btn btn-success pull-right"
+                        onclick="saveEdukasiPasien('ept_dokter_igd','edukasi_pasien_terintegrasi')"><i class="fa fa-check"></i>
+                    Save
+                </button>
+                <button id="load_ina_ept_dokter_igd" style="display: none; cursor: no-drop" type="button"
                         class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>

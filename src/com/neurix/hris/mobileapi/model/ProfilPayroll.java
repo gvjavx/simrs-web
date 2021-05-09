@@ -52,6 +52,16 @@ public class ProfilPayroll implements Serializable {
     private String potonganLain;
     private String tunjanganLemburNilai;
 
+    private String tipePayroll;
+
+    public String getTipePayroll() {
+        return tipePayroll;
+    }
+
+    public void setTipePayroll(String tipePayroll) {
+        this.tipePayroll = tipePayroll;
+    }
+
     public String getTunjanganLemburNilai() {
         return tunjanganLemburNilai;
     }

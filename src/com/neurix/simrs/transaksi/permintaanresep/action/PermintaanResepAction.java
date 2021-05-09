@@ -134,6 +134,11 @@ public class PermintaanResepAction extends BaseMasterAction{
                                     detail.setHariKronis(new Integer(objt.getString("hari_kronis")));
                                 }
 
+                                if(objt.has("waktu_resep")){
+                                    detail.setFrekuensi(objt.getString("waktu_resep"));
+                                }
+
+
                                 List<ItSimrsKeteranganResepEntity> resepEntityList = new ArrayList<>();
                                 if(objt.has("keterangan_detail")){
                                     if(objt.getString("keterangan_detail") != null && !"".equalsIgnoreCase(objt.getString("keterangan_detail"))){
