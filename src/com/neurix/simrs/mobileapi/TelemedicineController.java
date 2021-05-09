@@ -518,7 +518,7 @@ public class TelemedicineController implements ModelDriven<Object> {
 
             // TO CHALIP, buatkan param jenisPembayaran transfer_tunai / virtual_account
             try {
-                String msg = telemedicBoProxy.saveAdd(bean, branchId, kodeBank, "transfer_tunai");
+                String msg = telemedicBoProxy.saveAdd(bean, branchId, kodeBank, bean.getJenisPembayaran());
                 model.setMessage(msg);
             } catch (GeneralBOException e) {
                 logger.error("[TelemedicineController.create] Error, " + e.getMessage());

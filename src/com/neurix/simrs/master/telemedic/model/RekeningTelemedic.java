@@ -27,6 +27,15 @@ public class RekeningTelemedic {
     private String tipeRekening;
     private String keterangan;
     private String clientId;
+    private String initVaName;
+
+    public String getInitVaName() {
+        return initVaName;
+    }
+
+    public void setInitVaName(String initVaName) {
+        this.initVaName = initVaName;
+    }
 
     public String getTipeRekening() {
         return tipeRekening;

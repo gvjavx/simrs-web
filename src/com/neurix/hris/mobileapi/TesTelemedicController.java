@@ -1,5 +1,6 @@
 package com.neurix.hris.mobileapi;
 
+import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.kurir.bo.KurirBo;
@@ -70,6 +71,15 @@ public class TesTelemedicController implements ModelDriven<Object> {
     private TeamDokterBo teamDokterBoProxy;
     private ParameterKeteranganObatBo parameterKeteranganObatBoProxy;
     private ObatBo obatBoProxy;
+    private BillingSystemBo billingSystemBoProxy;
+
+    public void setTeamDokterBoProxy(TeamDokterBo teamDokterBoProxy) {
+        this.teamDokterBoProxy = teamDokterBoProxy;
+    }
+
+    public void setBillingSystemBoProxy(BillingSystemBo billingSystemBoProxy) {
+        this.billingSystemBoProxy = billingSystemBoProxy;
+    }
 
     public void setObatBoProxy(ObatBo obatBoProxy) {
         this.obatBoProxy = obatBoProxy;
@@ -250,6 +260,9 @@ public class TesTelemedicController implements ModelDriven<Object> {
                 break;
             case "tes-sum-obat":
                 testSumObat();
+                break;
+            case "tes-approve-va":
+                testApproveVa();
                 break;
             default:
                 logger.info("==========NO ONE CARE============");
@@ -655,5 +668,19 @@ public class TesTelemedicController implements ModelDriven<Object> {
         }
 
         logger.info("[TesTelemedicController.testSumObat] END <<<");
+    }
+
+    public void testApproveVa(){
+        logger.info("[TesTelemedicController.testApproveVa] START >>>");
+
+        String id = this.id;
+
+        try {
+            billingSystemBoProxy.testApproveVA(id);
+        } catch (GeneralBOException e){
+            logger.error("[TesTelemedicController.testApproveVa] ERROR. ",e);
+        }
+
+        logger.info("[TesTelemedicController.testApproveVa] END <<<");
     }
 }

@@ -9,7 +9,7 @@
 <hibernate-mapping>
 
     <class name="com.neurix.akuntansi.transaksi.billingSystem.model.ItPgLogTransactionEntity" table="it_pg_log_transaction"
-           schema="public" catalog="go-medsys">
+           schema="public">
         <id name="pgLogTrxId">
             <column name="pg_log_trx_id" sql-type="bigint" not-null="true"/>
         </id>
@@ -56,7 +56,7 @@
             <column name="channel" sql-type="varchar(1000)" length="1000" />
         </property>
         <property name="invoiceDate">
-            <column name="invoice_date" sql-type="timestamp" />
+            <column name="invoice_date" sql-type="date" />
         </property>
         <property name="invoiceNumber">
             <column name="invoice_number" sql-type="bigint" />
