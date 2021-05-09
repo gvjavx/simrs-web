@@ -87,7 +87,7 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
                     catatan.setNamaPemberi(entity.getNamaPenerima());
                     catatan.setSipPenerima(entity.getSipPenerima());
                     if(entity.getTtdPenerima() != null && !"".equalsIgnoreCase(entity.getTtdPenerima())){
-                        catatan.setTtdPenerima(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getNamaPenerima());
+                        catatan.setTtdPenerima(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getTtdPenerima());
                     }
                     catatan.setTipe(entity.getTipe());
                     list.add(catatan);
