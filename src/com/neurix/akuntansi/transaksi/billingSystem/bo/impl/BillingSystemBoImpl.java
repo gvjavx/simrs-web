@@ -68,6 +68,7 @@ import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.JurnalResponse;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
+import com.neurix.simrs.transaksi.antriantelemedic.bo.impl.TelemedicBoImpl;
 import com.neurix.simrs.transaksi.antriantelemedic.dao.TelemedicDao;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
@@ -115,7 +116,9 @@ import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+import com.neurix.simrs.transaksi.verifikatorasuransi.bo.impl.VerifikatorAsuransiBoImpl;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaranBo;
+import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.impl.VerifikatorPembayaranBoImpl;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.dao.VerifikatorPembayaranDao;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.PembayaranOnline;
@@ -1095,6 +1098,26 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         logger.info("[BillingSystemBoImpl.settlementPGInvoice] end process <<<");
     }
 
+    public CrudResponse testApproveVA(String idTrans) throws GeneralBOException{
+        PembayaranOnline pembayaranOnline = new PembayaranOnline();
+        pembayaranOnline.setId(idTrans);
+
+        CrudResponse response = new CrudResponse();
+
+        ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = getPembayaranOnlineEntityByCriteria(pembayaranOnline).get(0);
+        pembayaranOnlineEntity.setNoJurnal("2345565");
+
+        try {
+            updateAndNotifApprovedVaTele(pembayaranOnlineEntity);
+            response.hasSuccess("Berhasil");
+        } catch (HibernateException e){
+            logger.error("[BillingSystemBoImpl.cobaVa] ERROR", e);
+            response.hasError(e.getCause().toString());
+        }
+
+        return response;
+    }
+
     private void updateAndNotifApprovedVaTele(ItSimrsPembayaranOnlineEntity pembayaranEntity){
         logger.info("[BillingSystemBoImpl.settlementPGInvoice] Start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -1250,6 +1273,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                             FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Resep", "Pembayaran resep telah dikonfirmasi", "WL", notifikasiFcm.get(0).getOs(), null);
                         } catch (GeneralBOException e){
                             logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
+                            throw new GeneralBOException("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
                         }
                     }
 
@@ -1321,6 +1345,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                         idDetailCheckup = verifikatorPembayaranBo.approveTransaksi(headerCheckup);
                     } catch (GeneralBOException e){
                         logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
+                        throw new GeneralBOException("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
                     }
                 }
 
@@ -1354,7 +1379,8 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                 // dimasukan ke antrian WL;
 
                 if ("WL".equalsIgnoreCase(antrianTelemedicEntity.getStatus())){
-                    ItSimrsAntrianTelemedicEntity firstOrderAntrian = telemedicBo.getAntrianTelemedicFirstOrder(antrianTelemedicEntity.getIdPelayanan(), antrianTelemedicEntity.getIdDokter(), "LL");
+
+                    ItSimrsAntrianTelemedicEntity firstOrderAntrian = getAntrianTelemedicFirstOrder(antrianTelemedicEntity.getIdPelayanan(), antrianTelemedicEntity.getIdDokter(), "LL");
 
                     if (firstOrderAntrian != null){
 
@@ -1429,6 +1455,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 //
                     } catch (GeneralBOException e){
                         logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
+                        throw new GeneralBOException("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
                     }
 
                     // --- Update WL to SL
@@ -1459,6 +1486,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                             response.setStatus("success");
                         } catch (GeneralBOException e){
                             logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
+                            throw new GeneralBOException("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
                         }
                     }
                     // --- END
@@ -1475,6 +1503,33 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         }
 
         logger.info("[BillingSystemBoImpl.settlementPGInvoice] End process <<<");
+    }
+
+    private ItSimrsAntrianTelemedicEntity getAntrianTelemedicFirstOrder(String idPelayanan, String idDokter, String status) throws GeneralBOException {
+        logger.info("[VerifikatorPembayaranBoImpl.ItSimrsAntrianTelemedicEntity] START >>>");
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_pelayanan", idPelayanan);
+        hsCriteria.put("id_dokter", idDokter);
+        hsCriteria.put("status", status);
+        hsCriteria.put("flag", "Y");
+        hsCriteria.put("acs_limit_1", "Y");
+
+        List<ItSimrsAntrianTelemedicEntity> antrianTelemedicEntities = new ArrayList<>();
+        try {
+            antrianTelemedicEntities = telemedicDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[VerifikatorPembayaranBoImpl.ItSimrsAntrianTelemedicEntity] ERROR. ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.getSearchEntityByCriteria] ERROR. ", e);
+        }
+
+        if (antrianTelemedicEntities.size() > 0){
+            logger.info("[VerifikatorPembayaranBoImpl.ItSimrsAntrianTelemedicEntity] END <<<");
+            return antrianTelemedicEntities.get(0);
+        }
+
+        logger.info("[VerifikatorPembayaranBoImpl.ItSimrsAntrianTelemedicEntity] END <<<");
+        return null;
     }
 
     public CheckResponse saveApproveAllTindakanRawatJalan(String idDetailCheckup, String jenisPasien, String user) {

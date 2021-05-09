@@ -63,6 +63,7 @@
                 <prop key="prepareCreateJurnal">readOnly</prop>
                 <!--<prop key="createInvoiceNumber">PROPAGATION_REQUIRED</prop>-->
                 <prop key="settlementPGInvoice">PROPAGATION_REQUIRED</prop>
+                <prop key="cobaVa">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

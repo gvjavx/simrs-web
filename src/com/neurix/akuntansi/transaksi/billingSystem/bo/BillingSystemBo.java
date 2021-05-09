@@ -5,6 +5,7 @@ import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.TutupPeriod;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 
 import java.util.ArrayList;
@@ -31,4 +32,5 @@ public interface BillingSystemBo {
 
     //RAKA-30APR2021==> mencoba membantu
     public void saveUpdateNoJuran(HeaderDetailCheckup bean) throws GeneralBOException;
+    public CrudResponse testApproveVA(String idTrans) throws GeneralBOException;
 }
