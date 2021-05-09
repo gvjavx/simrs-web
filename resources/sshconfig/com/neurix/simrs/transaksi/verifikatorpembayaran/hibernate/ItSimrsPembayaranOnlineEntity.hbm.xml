@@ -80,7 +80,12 @@
             <basic name="clientId">
                 <column name="client_id"/>
             </basic>
-
+            <basic name="noJurnal">
+                <column name="no_jurnal"/>
+            </basic>
+            <basic name="tipePembayaran">
+                <column name="tipe_pembayaran"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>
