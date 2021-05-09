@@ -40,7 +40,7 @@
     update im_branches set master_id = '00.003' where branch_id = '03';
     update im_branches set master_id = '00.004' where branch_id = '05';
     update im_branches set master_id = '00.005' where branch_id = '04';
-    update im_branches set master_id = '00.099' where branch_id = '98';
+    update im_branches set master_id = '00.099' where branch_id = '99';
     -- update im_branches set tunj_pemondokan=500000 where branch_id = '01';
 -- it_akun_jurnal
     alter table it_akun_jurnal
@@ -49,7 +49,7 @@
 ------ 2021-05-05 ===> update table trans (tidak drop)
 -- im_akun_trans
     ALTER TABLE im_akun_trans
-      ADD COLUMN tipe_jurnal_id varchar(10),
+    --  ADD COLUMN tipe_jurnal_id varchar(10),
       ADD COLUMN is_otomatis varchar(1),
     --  DROP COLUMN tipe_pembayaran,
     --  DROP COLUMN master_id,
@@ -129,6 +129,11 @@
     ) values('MPJ005','2.1.10.00.05','K','Y','C','admin','admin',now(),now(),'Y','Y','37','N','titipan_iuran_dapenbun','Y','N','N');
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
     ) values('MPJ006','2.1.10.00.07','K','Y','C','admin','admin',now(),now(),'Y','Y','37','N','titipan_iuran_dplk','Y','N','N');
+
+
+-------------------------------------------------
+---------     SAMPAI SINI SAJA      -------------
+-------------------------------------------------
 
 ------ 2021-05-04 ===> query edit untuk payroll
 -- update sg bod
