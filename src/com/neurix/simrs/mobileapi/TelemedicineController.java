@@ -516,6 +516,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setAction("C");
             bean.setFlag("Y");
 
+            // TO CHALIP, buatkan param jenisPembayaran transfer_tunai / virtual_account
             try {
                 String msg = telemedicBoProxy.saveAdd(bean, branchId, kodeBank, "transfer_tunai");
                 model.setMessage(msg);
