@@ -10,15 +10,28 @@
     <%@ include file="/pages/common/header.jsp" %>
     <style>
         .modal { overflow-y: auto}
+        .ui-datepicker-calendar{
+            display: none;
+        }
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/BranchAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/SettingTutupPeriodAction.js"/>'></script>
     <script type='text/javascript'>
 
-        $( document ).ready(function() {
-            $('#bayar_rawat_jalan, #pembayaran_active').addClass('active');
-            $('#pembayaran_open').addClass('menu-open');
+        $(function() {
+            $('.date-picker-year').datepicker({
+                changeYear: true,
+                showButtonPanel: true,
+                dateFormat: 'yy',
+                onClose: function(dateText, inst) {
+                    var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                    $(this).datepicker('setDate', new Date(year, 1));
+                }
+            });
+            $(".date-picker-year").focus(function () {
+                $(".ui-datepicker-month").hide();
+            });
         });
 
 
@@ -57,13 +70,15 @@
 
                                 <label class="control-label col-sm-2">Tahun</label>
                                 <div class="col-sm-2">
-                                    <%--<input type="text" class="yearpicker form-control" id="tahun" value="">--%>
-                                <%--</div>--%>
-                                <select class="form form-control" id="tahun">
-                                    <option value="2020">2020</option>
-                                    <option value="2021">2021</option>
-                                </select>
-                            </div>
+                                    <%--<select class="form-control select2 tgl_maju" id="tahun">--%>
+                                    <%--</select>--%>
+                                    <input class="form-control date-picker-year" id="tahun">
+                                </div>
+                                <%--<select class="form form-control" id="tahun">--%>
+                                    <%--<option value="2020">2020</option>--%>
+                                    <%--<option value="2021">2021</option>--%>
+                                <%--</select>--%>
+                            <%--</div>--%>
                             <div class="col-sm-4">
                                 <button class="btn btn-success" onclick="searchPeriod()"><i class="fa fa-check"></i> Choose</button>
                             </div>
@@ -76,7 +91,7 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <table id="sortTable" class="table table-bordered table-striped">
+                                <table id="tabel_periode" class="table table-bordered table-striped">
                                     <thead id="head-period">
                                     <%--<tr bgcolor="#90ee90" id="head-period"></tr>--%>
                                     </thead>
@@ -118,8 +133,6 @@
 </div>
 
 <script type='text/javascript'>
-
-   // $("#tahun").yearpicker();
 
     function searchPeriod(){
 
@@ -203,10 +216,9 @@
 
        var arperiod = [];
        for (i=1; i <= indexperiod; i++){
-
+           if(i<10) i = "0"+i;
            for (n=1; n < arbranch.length ; n++){
                var valperiod = $("#"+i+"_"+arbranch[n]).val();
-               console.log("val period = " + valperiod)
                if (valperiod != ""){
                    arperiod.push({"tahun" : tahun, "bulan" : i, "unit": arbranch[n], "tgl" : valperiod});
                }
