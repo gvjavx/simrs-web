@@ -8423,7 +8423,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                pos.position_name AS namajabatan, \n" +
                 "                sum(p.gaji_pokok) as jumlah1gaji, \n" +
                 "                sum(p.tunjangan_pph) as jumlah2tunjpph, \n" +
-                "                sum(p.tunjangan_umk+p.tunjangan_jabatan_struktural+p.tunjangan_struktural+p.tunjangan_strategis+p.tunjangan_peralihan+p.tunjangan_lain+p.tunjangan_tambahan+p.tunjangan_lembur+p.tunjangan_pemondokan+p.tunjangan_komunikasi+p.total_rlab+p.tunjangan_dapen+p.tunjangan_bpjs_ks+p.tunjangan_bpjs_tk) as jumlah3tunjanganlemburlainnya, \n" +
+                "                sum(p.tunjangan_jabatan_struktural+p.tunjangan_struktural+p.tunjangan_peralihan+p.tunjangan_lain+p.tunjangan_tambahan+p.tunjangan_lembur+p.tunjangan_pemondokan+p.tunjangan_komunikasi+p.total_rlab+p.tunjangan_dapen+p.tunjangan_bpjs_ks+p.tunjangan_bpjs_tk) as jumlah3tunjanganlemburlainnya, \n" +
                 "                sum(p.iuran_dapen_kary+p.iuran_bpjs_tk_kary+p.iuran_bpjs_ks_kary) as jumlah10iuranpensiunthtjht, \n" +
                 "                p.nip,  \n" +
                 "                pph.ptkp  \n" +
@@ -8451,7 +8451,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                peg.status_keluarga, \n" +
                 "                peg.jumlah_anak, \n" +
                 "                pos.position_name, \n" +
-                "                pos.kelompok_id \n" +
+                "                pos.kelompok_id, \n" +
+                "                pph.ptkp \n" +
                 "                order by \n" +
                 "                pos.kelompok_id ";
 
@@ -8780,7 +8781,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "from it_hris_payroll py\n" +
                 "    left join it_hris_payroll_header hd on hd.payroll_header_id = py.payroll_header_id\n" +
                 "    left join it_hris_payroll_pph pph on pph.payroll_id = py.payroll_id\n" +
-                "where hd.nip = '"+ nip +"'\n" +
+                "where py.nip = '"+ nip +"'\n" +
                 "\tand hd.tahun='"+tahun+"'\n" +
                 "\tand hd.flag='Y'\n" +
                 "\tand py.tipe_payroll='PY'\n" +
@@ -8803,7 +8804,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "from it_hris_payroll py\n" +
                 "    left join it_hris_payroll_header hd on hd.payroll_header_id = py.payroll_header_id\n" +
                 "    left join it_hris_payroll_pph pph on pph.payroll_id = py.payroll_id\n" +
-                "where hd.nip = '"+ nip +"'\n" +
+                "where py.nip = '"+ nip +"'\n" +
                 "\tand hd.tahun='"+ tahun +"'\n" +
                 "\tand hd.flag='Y'\n" +
                 "\tand py.tipe_payroll not in ('PY','PN')\n" +

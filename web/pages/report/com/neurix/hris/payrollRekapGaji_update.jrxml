@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportPayroll" language="groovy" pageWidth="1684" pageHeight="1190" orientation="Landscape" columnWidth="1662" leftMargin="11" rightMargin="11" topMargin="20" bottomMargin="20" uuid="03e04395-8f92-4fcc-a2df-614fdfb1af97">
-	<property name="ireport.zoom" value="0.6830134553650747"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.3310000000000088"/>
+	<property name="ireport.x" value="1069"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="reportParams.titleReport" class="java.lang.String">
 		<defaultValueExpression><![CDATA["Slip Gaji"]]></defaultValueExpression>
@@ -344,7 +344,7 @@ order by py.position_id;]]>
 		<groupFooter>
 			<band height="20">
 				<textField>
-					<reportElement x="250" y="0" width="95" height="20" uuid="a30be691-7e75-41c8-aee9-f26231f85748"/>
+					<reportElement x="250" y="0" width="158" height="20" uuid="a30be691-7e75-41c8-aee9-f26231f85748"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="0.0" lineStyle="Dashed"/>
@@ -358,7 +358,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA["Jumlah :"]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1482" y="0" width="60" height="20" uuid="401d9a0d-9ca3-4c38-a0d8-eca17b5234bd"/>
+					<reportElement x="1491" y="0" width="57" height="20" uuid="401d9a0d-9ca3-4c38-a0d8-eca17b5234bd"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -373,7 +373,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumPph}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1602" y="0" width="60" height="20" uuid="5542104e-272a-4e18-8027-44cebc8e2067"/>
+					<reportElement x="1605" y="0" width="57" height="20" uuid="5542104e-272a-4e18-8027-44cebc8e2067"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -388,7 +388,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTHP}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1542" y="0" width="60" height="20" uuid="062b8ca5-d95e-4e77-b01d-924391832b9d"/>
+					<reportElement x="1548" y="0" width="57" height="20" uuid="062b8ca5-d95e-4e77-b01d-924391832b9d"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -403,7 +403,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTotC}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1422" y="0" width="60" height="20" uuid="c23a3792-0bd5-485e-8d88-d078a4ec2380"/>
+					<reportElement x="1434" y="0" width="57" height="20" uuid="c23a3792-0bd5-485e-8d88-d078a4ec2380"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -418,7 +418,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumPotLain}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1362" y="0" width="60" height="20" uuid="3bd79572-3cbc-4868-96f1-64e36fdaf708"/>
+					<reportElement x="1377" y="0" width="57" height="20" uuid="3bd79572-3cbc-4868-96f1-64e36fdaf708"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -433,7 +433,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumIurPeg}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1302" y="0" width="60" height="20" uuid="3e7c8c4e-00eb-4435-820f-bd3d76c4ac6a"/>
+					<reportElement x="1320" y="0" width="57" height="20" uuid="3e7c8c4e-00eb-4435-820f-bd3d76c4ac6a"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -448,7 +448,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTotB} + $V{sumTunjPph}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1245" y="0" width="57" height="20" uuid="94e50550-e500-4cdc-8069-ee7a97b467d2"/>
+					<reportElement x="1263" y="0" width="57" height="20" uuid="94e50550-e500-4cdc-8069-ee7a97b467d2"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -463,7 +463,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjPph}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1185" y="0" width="60" height="20" uuid="e417b9a9-c31e-4d74-bcdf-25c427004473"/>
+					<reportElement x="1206" y="0" width="57" height="20" uuid="e417b9a9-c31e-4d74-bcdf-25c427004473"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -478,7 +478,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjBpjsTk}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1125" y="0" width="60" height="20" uuid="2469f1a3-0fb2-4802-b78b-2ed99c841b87"/>
+					<reportElement x="1149" y="0" width="57" height="20" uuid="2469f1a3-0fb2-4802-b78b-2ed99c841b87"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -493,7 +493,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjBpjsKs}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1065" y="0" width="60" height="20" uuid="5f0c24c5-3d13-4aff-a49b-7c5ceec7f244"/>
+					<reportElement x="1092" y="0" width="57" height="20" uuid="5f0c24c5-3d13-4aff-a49b-7c5ceec7f244"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -508,7 +508,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjDapen}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1005" y="0" width="60" height="20" uuid="5c44729c-1b5c-4b2a-a98d-70db85f0aa91"/>
+					<reportElement x="1035" y="0" width="57" height="20" uuid="5c44729c-1b5c-4b2a-a98d-70db85f0aa91"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -523,7 +523,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTotRlab}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="945" y="0" width="60" height="20" uuid="b6938ce4-bf55-4aba-8a0f-e0241b5d3588"/>
+					<reportElement x="978" y="0" width="57" height="20" uuid="b6938ce4-bf55-4aba-8a0f-e0241b5d3588"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -538,7 +538,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTotGaji}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="885" y="0" width="60" height="20" uuid="eeac2bc9-892c-41e6-a217-ef60d8d211e6"/>
+					<reportElement x="921" y="0" width="57" height="20" uuid="eeac2bc9-892c-41e6-a217-ef60d8d211e6"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -553,7 +553,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjKom}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="825" y="0" width="60" height="20" uuid="043d8423-ffc3-4077-ad60-99a18aecccdd"/>
+					<reportElement x="864" y="0" width="57" height="20" uuid="043d8423-ffc3-4077-ad60-99a18aecccdd"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -568,7 +568,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjLembur}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="765" y="0" width="60" height="20" uuid="c8ba5195-964b-4709-ad94-e6c6368b6654"/>
+					<reportElement x="807" y="0" width="57" height="20" uuid="c8ba5195-964b-4709-ad94-e6c6368b6654"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -583,7 +583,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjTamb}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="705" y="0" width="60" height="20" uuid="a987ce4c-2cfb-41d9-944b-ea50ec146c88"/>
+					<reportElement x="750" y="0" width="57" height="20" uuid="a987ce4c-2cfb-41d9-944b-ea50ec146c88"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -598,7 +598,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjLain}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="645" y="0" width="60" height="20" uuid="3a95ae76-b976-417c-a24c-b782019c08b4"/>
+					<reportElement x="693" y="0" width="57" height="20" uuid="3a95ae76-b976-417c-a24c-b782019c08b4"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -613,7 +613,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjPeralihan}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="585" y="0" width="60" height="20" uuid="3c4ede8a-3f2f-4a8c-acbf-5010745ffe2f"/>
+					<reportElement x="636" y="0" width="57" height="20" uuid="3c4ede8a-3f2f-4a8c-acbf-5010745ffe2f"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -628,7 +628,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjFung}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="525" y="0" width="60" height="20" uuid="bd6b30fb-6164-4dc9-9ee2-f7d0ccddd30a"/>
+					<reportElement x="579" y="0" width="57" height="20" uuid="bd6b30fb-6164-4dc9-9ee2-f7d0ccddd30a"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -643,7 +643,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjStruk}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="465" y="0" width="60" height="20" uuid="06602c61-dfdb-4173-b995-b0cd09795c70"/>
+					<reportElement x="522" y="0" width="57" height="20" uuid="06602c61-dfdb-4173-b995-b0cd09795c70"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -658,7 +658,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjJab}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="405" y="0" width="60" height="20" uuid="b00d5152-589d-405e-8fd9-f249c987b084"/>
+					<reportElement x="465" y="0" width="57" height="20" uuid="b00d5152-589d-405e-8fd9-f249c987b084"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -670,10 +670,10 @@ order by py.position_id;]]>
 						<font size="8" isBold="true"/>
 						<paragraph rightIndent="2"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{tunjungan_sankhus}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{sumSankhus}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="345" y="0" width="60" height="20" uuid="826ab5cc-e766-42ea-9f55-f819b87ec144"/>
+					<reportElement x="408" y="0" width="57" height="20" uuid="826ab5cc-e766-42ea-9f55-f819b87ec144"/>
 					<box>
 						<pen lineWidth="1.0" lineStyle="Dashed"/>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -729,7 +729,7 @@ order by py.position_id;]]>
 		<groupFooter>
 			<band height="20">
 				<textField>
-					<reportElement x="250" y="0" width="95" height="20" uuid="84ead363-c148-4297-b2a9-a502947f0d38"/>
+					<reportElement x="250" y="0" width="158" height="20" uuid="84ead363-c148-4297-b2a9-a502947f0d38"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="0.0" lineStyle="Dashed"/>
@@ -743,7 +743,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA["Jumlah :"]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="345" y="0" width="60" height="20" uuid="8f9ef461-1154-4b05-b851-ce3ea7ee941b"/>
+					<reportElement x="408" y="0" width="57" height="20" uuid="8f9ef461-1154-4b05-b851-ce3ea7ee941b"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -757,7 +757,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumGapok_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="405" y="0" width="60" height="20" uuid="b5964321-7525-4703-803d-97656d1ac143"/>
+					<reportElement x="465" y="0" width="57" height="20" uuid="b5964321-7525-4703-803d-97656d1ac143"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -771,7 +771,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumSankhus_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="465" y="0" width="60" height="20" uuid="f3145d9e-f640-40d8-9741-f2157d1b3b43"/>
+					<reportElement x="522" y="0" width="57" height="20" uuid="f3145d9e-f640-40d8-9741-f2157d1b3b43"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -785,7 +785,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjJab_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="525" y="0" width="60" height="20" uuid="b3c6bd35-d85a-41f5-be8a-3482844a4236"/>
+					<reportElement x="579" y="0" width="57" height="20" uuid="b3c6bd35-d85a-41f5-be8a-3482844a4236"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -799,7 +799,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjStruk_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="585" y="0" width="60" height="20" uuid="5301c74f-4262-4878-a20e-3d1b7ccb8093"/>
+					<reportElement x="636" y="0" width="57" height="20" uuid="5301c74f-4262-4878-a20e-3d1b7ccb8093"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -813,7 +813,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjFung_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="645" y="0" width="60" height="20" uuid="ae73cc6d-fc01-4573-ba84-3864eaf163bb"/>
+					<reportElement x="693" y="0" width="57" height="20" uuid="ae73cc6d-fc01-4573-ba84-3864eaf163bb"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -827,7 +827,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjPeralihan_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="705" y="0" width="60" height="20" uuid="9674b0f3-f858-496b-b409-f0bd3311de42"/>
+					<reportElement x="750" y="0" width="57" height="20" uuid="9674b0f3-f858-496b-b409-f0bd3311de42"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -841,7 +841,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjLain_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="765" y="0" width="60" height="20" uuid="b225cb0f-b9e9-4d21-b3e0-26b818af223b"/>
+					<reportElement x="807" y="0" width="57" height="20" uuid="b225cb0f-b9e9-4d21-b3e0-26b818af223b"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -855,7 +855,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjTamb_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="825" y="0" width="60" height="20" uuid="50ab75c7-f9b9-4e35-ab04-733be93ceaae"/>
+					<reportElement x="864" y="0" width="57" height="20" uuid="50ab75c7-f9b9-4e35-ab04-733be93ceaae"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -869,7 +869,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjLembur_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="885" y="0" width="60" height="20" uuid="95a804e7-da66-415a-bdc4-c2379fbdc937"/>
+					<reportElement x="921" y="0" width="57" height="20" uuid="95a804e7-da66-415a-bdc4-c2379fbdc937"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -883,7 +883,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjKom_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="945" y="0" width="60" height="20" uuid="62fa716b-e60e-4301-b12e-797f181a376b"/>
+					<reportElement x="978" y="0" width="57" height="20" uuid="62fa716b-e60e-4301-b12e-797f181a376b"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -897,7 +897,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTotGaji_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1005" y="0" width="60" height="20" uuid="74fc5734-3dc1-4274-91f2-87de7a1a5f9f"/>
+					<reportElement x="1035" y="0" width="57" height="20" uuid="74fc5734-3dc1-4274-91f2-87de7a1a5f9f"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -911,7 +911,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTotRlab_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1065" y="0" width="60" height="20" uuid="424c9771-2f7f-4bee-9095-49e32ede3b39"/>
+					<reportElement x="1092" y="0" width="57" height="20" uuid="424c9771-2f7f-4bee-9095-49e32ede3b39"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -925,7 +925,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjDapen_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1125" y="0" width="60" height="20" uuid="55cdc5ab-520d-4a66-88c3-ca3bea0f1ddd"/>
+					<reportElement x="1149" y="0" width="57" height="20" uuid="55cdc5ab-520d-4a66-88c3-ca3bea0f1ddd"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -939,7 +939,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjBpjsKs_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1185" y="0" width="60" height="20" uuid="16109fb3-5441-4830-a5d0-7924b197b66d"/>
+					<reportElement x="1206" y="0" width="57" height="20" uuid="16109fb3-5441-4830-a5d0-7924b197b66d"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -953,7 +953,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjBpjsTk_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1302" y="0" width="60" height="20" uuid="3a0aad90-c8c8-474f-9a05-5e869a7ef0bb"/>
+					<reportElement x="1320" y="0" width="57" height="20" uuid="3a0aad90-c8c8-474f-9a05-5e869a7ef0bb"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -964,10 +964,10 @@ order by py.position_id;]]>
 						<font size="8" isBold="true"/>
 						<paragraph rightIndent="2"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{sumTotB_1}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{sumTotB_1} + $V{sumTunjPph_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1245" y="0" width="57" height="20" uuid="dec0433e-ca6d-4a4f-877b-92179e011add"/>
+					<reportElement x="1263" y="0" width="57" height="20" uuid="dec0433e-ca6d-4a4f-877b-92179e011add"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -981,7 +981,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTunjPph_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1362" y="0" width="60" height="20" uuid="5a7010bf-3d37-4f3c-910e-9efa2e5d6532"/>
+					<reportElement x="1377" y="0" width="57" height="20" uuid="5a7010bf-3d37-4f3c-910e-9efa2e5d6532"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -995,7 +995,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumIurPeg_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1422" y="0" width="60" height="20" uuid="8b1f8e63-989c-42a9-9596-71bb03bbfa04"/>
+					<reportElement x="1434" y="0" width="57" height="20" uuid="8b1f8e63-989c-42a9-9596-71bb03bbfa04"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1009,7 +1009,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumPotLain_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1542" y="0" width="60" height="20" uuid="9d2ac335-1169-4f02-a8a3-51c6e4ce5b1a"/>
+					<reportElement x="1548" y="0" width="57" height="20" uuid="9d2ac335-1169-4f02-a8a3-51c6e4ce5b1a"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1023,7 +1023,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumTotC_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1482" y="0" width="60" height="20" uuid="9a9a61dd-07a8-461a-8dac-a656aef9da16"/>
+					<reportElement x="1491" y="0" width="57" height="20" uuid="9a9a61dd-07a8-461a-8dac-a656aef9da16"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1037,7 +1037,7 @@ order by py.position_id;]]>
 					<textFieldExpression><![CDATA[$V{sumPph_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="###,###">
-					<reportElement x="1602" y="0" width="60" height="20" uuid="c5998eaf-b66e-44e9-b2ed-de006c0cc895"/>
+					<reportElement x="1605" y="0" width="57" height="20" uuid="c5998eaf-b66e-44e9-b2ed-de006c0cc895"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Dashed"/>
 						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1122,7 +1122,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[NIP]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="70" y="0" width="105" height="40" uuid="dbe01261-ebf0-454a-be6d-a5a97dc78fd4"/>
+				<reportElement x="70" y="0" width="120" height="40" uuid="dbe01261-ebf0-454a-be6d-a5a97dc78fd4"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1136,7 +1136,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Nama Pegawai]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="175" y="0" width="75" height="40" uuid="8bbf463f-3e53-42d6-89ed-124637db648f"/>
+				<reportElement x="190" y="0" width="120" height="40" uuid="8bbf463f-3e53-42d6-89ed-124637db648f"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1150,7 +1150,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Jabatan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="345" y="0" width="60" height="40" uuid="d4a3ed97-06ef-4f6d-bf36-b7316e6dbb28"/>
+				<reportElement x="408" y="0" width="57" height="40" uuid="d4a3ed97-06ef-4f6d-bf36-b7316e6dbb28"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1164,7 +1164,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Gaji Pokok]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="405" y="0" width="60" height="40" uuid="8e34e525-c1e5-4a18-b657-518f40f2f28a"/>
+				<reportElement x="465" y="0" width="57" height="40" uuid="8e34e525-c1e5-4a18-b657-518f40f2f28a"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1178,7 +1178,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Sankhus]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="465" y="0" width="60" height="40" uuid="15706db1-f649-4065-becf-69399d61bb0c"/>
+				<reportElement x="522" y="0" width="57" height="40" uuid="15706db1-f649-4065-becf-69399d61bb0c"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1192,7 +1192,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Tunj. Jabatan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="525" y="0" width="60" height="40" uuid="b53f5873-401c-4a70-b0b2-eedca45046f7"/>
+				<reportElement x="579" y="0" width="57" height="40" uuid="b53f5873-401c-4a70-b0b2-eedca45046f7"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1206,7 +1206,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Tunj. Struktural]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="585" y="0" width="60" height="40" uuid="678c3a45-1654-49eb-93c5-a902daf40bc2"/>
+				<reportElement x="636" y="0" width="57" height="40" uuid="678c3a45-1654-49eb-93c5-a902daf40bc2"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1220,7 +1220,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Tunj. Fungsional]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="645" y="0" width="60" height="40" uuid="796cd938-cc5e-4a91-b5e9-639b45869bcb"/>
+				<reportElement x="693" y="0" width="57" height="40" uuid="796cd938-cc5e-4a91-b5e9-639b45869bcb"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1234,7 +1234,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Total Tunj. Peralihan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="825" y="0" width="60" height="40" uuid="25df80fb-7d63-4169-b7e8-38142595575c"/>
+				<reportElement x="864" y="0" width="57" height="40" uuid="25df80fb-7d63-4169-b7e8-38142595575c"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1248,7 +1248,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Tunj. Lembur]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="765" y="0" width="60" height="40" uuid="ab8259fa-b253-481a-9b46-260e58cc0db2"/>
+				<reportElement x="807" y="0" width="57" height="40" uuid="ab8259fa-b253-481a-9b46-260e58cc0db2"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1262,7 +1262,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Tunj. Tambahan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="705" y="0" width="60" height="40" uuid="570477b2-721d-4fae-bed2-72beeec83f85"/>
+				<reportElement x="750" y="0" width="57" height="40" uuid="570477b2-721d-4fae-bed2-72beeec83f85"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1276,7 +1276,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Total Tunj. Lain]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1005" y="0" width="60" height="40" uuid="45c2aa0d-5a04-408e-b058-3c9878efcdbb"/>
+				<reportElement x="1035" y="0" width="57" height="40" uuid="45c2aa0d-5a04-408e-b058-3c9878efcdbb"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1290,7 +1290,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Tot. RLAB]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="885" y="0" width="60" height="40" uuid="0f2dd5a0-1db9-48df-b058-da8f908066ea"/>
+				<reportElement x="921" y="0" width="57" height="40" uuid="0f2dd5a0-1db9-48df-b058-da8f908066ea"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1304,7 +1304,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Tunj. Komunikasi]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1065" y="0" width="60" height="40" uuid="33aac2a6-21c5-4987-8233-0f6ae03262f9"/>
+				<reportElement x="1092" y="0" width="57" height="40" uuid="33aac2a6-21c5-4987-8233-0f6ae03262f9"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1318,7 +1318,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Tunj. Dapen]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1125" y="0" width="60" height="40" uuid="dbf2eee1-5203-4988-b730-f11ff805c081"/>
+				<reportElement x="1149" y="0" width="57" height="40" uuid="dbf2eee1-5203-4988-b730-f11ff805c081"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1332,7 +1332,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Tunj. BPJS Ks]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1185" y="0" width="60" height="40" uuid="b15af1ed-148b-4552-bbba-9193d3507e1c"/>
+				<reportElement x="1206" y="0" width="57" height="40" uuid="b15af1ed-148b-4552-bbba-9193d3507e1c"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1346,7 +1346,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Tunj. BPJS Tk]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1362" y="0" width="60" height="40" uuid="e42b2aa4-b5e6-45a5-b332-a300a46b6f6b"/>
+				<reportElement x="1377" y="0" width="57" height="40" uuid="e42b2aa4-b5e6-45a5-b332-a300a46b6f6b"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1360,7 +1360,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Tot. Iuran Pegawai]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1422" y="0" width="60" height="40" uuid="aaee916b-4d1a-43e6-a61f-e5322bfd9740"/>
+				<reportElement x="1434" y="0" width="57" height="40" uuid="aaee916b-4d1a-43e6-a61f-e5322bfd9740"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1374,7 +1374,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Tot. Potongan Lain]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1602" y="0" width="60" height="40" uuid="1395a55d-c297-405e-a45d-49e8658a028c"/>
+				<reportElement x="1605" y="0" width="57" height="40" uuid="1395a55d-c297-405e-a45d-49e8658a028c"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1388,7 +1388,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[THP]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="250" y="0" width="35" height="40" uuid="8cd3e1a1-0be5-45ca-b2b5-d9f34f3953be"/>
+				<reportElement x="310" y="0" width="38" height="40" uuid="8cd3e1a1-0be5-45ca-b2b5-d9f34f3953be"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1402,7 +1402,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Gol.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1482" y="0" width="60" height="40" uuid="bee85a86-0653-4c9c-85a5-4ff3acef3e24"/>
+				<reportElement x="1491" y="0" width="57" height="40" uuid="bee85a86-0653-4c9c-85a5-4ff3acef3e24"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1416,7 +1416,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Potongan Pph]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1542" y="0" width="60" height="40" uuid="b577acf6-053d-4600-9f9e-91252f3986e5"/>
+				<reportElement x="1548" y="0" width="57" height="40" uuid="b577acf6-053d-4600-9f9e-91252f3986e5"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1430,7 +1430,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Total Potongan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1302" y="0" width="60" height="40" uuid="e0adad1d-ecc3-442f-a046-89a6f120372a"/>
+				<reportElement x="1320" y="0" width="57" height="40" uuid="e0adad1d-ecc3-442f-a046-89a6f120372a"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1444,7 +1444,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Total Tunj. RLAB dan Sansos]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="945" y="0" width="60" height="40" uuid="7a6c261b-6fec-440d-b7b9-5337eb51e27c"/>
+				<reportElement x="978" y="0" width="57" height="40" uuid="7a6c261b-6fec-440d-b7b9-5337eb51e27c"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1458,7 +1458,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Total Gaji Kotor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="285" y="0" width="60" height="40" uuid="d5a277e7-9fbf-449a-a3c3-250eaa4c8b45"/>
+				<reportElement x="348" y="0" width="60" height="40" uuid="d5a277e7-9fbf-449a-a3c3-250eaa4c8b45"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1472,7 +1472,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Tipe Pegawai]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1245" y="0" width="57" height="40" uuid="dbdd370c-7e39-4a3f-80b2-c15b3919ae1c"/>
+				<reportElement x="1263" y="0" width="57" height="40" uuid="dbdd370c-7e39-4a3f-80b2-c15b3919ae1c"/>
 				<box bottomPadding="2">
 					<pen lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1505,7 +1505,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{nip}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="70" y="0" width="105" height="20" uuid="197e3b66-9946-4ccc-a68f-8007a07f1d2f"/>
+				<reportElement x="70" y="0" width="120" height="20" uuid="197e3b66-9946-4ccc-a68f-8007a07f1d2f"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1520,7 +1520,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{nama_pegawai}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="175" y="0" width="75" height="20" uuid="25bef709-04cd-4d1b-9900-3655e07e9c85"/>
+				<reportElement x="190" y="0" width="120" height="20" uuid="25bef709-04cd-4d1b-9900-3655e07e9c85"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1535,7 +1535,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{position_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="250" y="0" width="35" height="20" uuid="415d3bbc-e551-49d8-bf56-ef9995d6ba9c"/>
+				<reportElement x="310" y="0" width="38" height="20" uuid="415d3bbc-e551-49d8-bf56-ef9995d6ba9c"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1550,7 +1550,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{golongan_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="345" y="0" width="60" height="20" uuid="39a7f585-b058-4950-8882-892499c59230"/>
+				<reportElement x="408" y="0" width="57" height="20" uuid="39a7f585-b058-4950-8882-892499c59230"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1565,7 +1565,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{gaji_pokok}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="405" y="0" width="60" height="20" uuid="abe87e5b-7787-491b-826d-4e0d8285153a"/>
+				<reportElement x="465" y="0" width="57" height="20" uuid="abe87e5b-7787-491b-826d-4e0d8285153a"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1580,7 +1580,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{tunjungan_sankhus}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="465" y="0" width="60" height="20" uuid="0d0c2674-026f-45bb-aaee-f6d43c45a7df"/>
+				<reportElement x="522" y="0" width="57" height="20" uuid="0d0c2674-026f-45bb-aaee-f6d43c45a7df"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1595,7 +1595,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{tunjangan_jabatan}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="525" y="0" width="60" height="20" uuid="a321fe9a-2181-4ca2-80d5-64c9d311f57f"/>
+				<reportElement x="579" y="0" width="57" height="20" uuid="a321fe9a-2181-4ca2-80d5-64c9d311f57f"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1610,7 +1610,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{tunjangan_struktural}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="585" y="0" width="60" height="20" uuid="bd2e1e9b-16da-482b-b549-0ea1d63aea0b"/>
+				<reportElement x="636" y="0" width="57" height="20" uuid="bd2e1e9b-16da-482b-b549-0ea1d63aea0b"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1625,7 +1625,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{tunjangan_fungsional}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="645" y="0" width="60" height="20" uuid="a7a8fc21-b97c-49ff-9395-502139c726c6"/>
+				<reportElement x="693" y="0" width="57" height="20" uuid="a7a8fc21-b97c-49ff-9395-502139c726c6"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1640,7 +1640,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{tot_tunj_peralihan}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="825" y="0" width="60" height="20" uuid="b4ea3c2c-076b-484f-a54e-836d087ba9cf"/>
+				<reportElement x="864" y="0" width="57" height="20" uuid="b4ea3c2c-076b-484f-a54e-836d087ba9cf"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1655,7 +1655,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{tunjangan_lembur}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="765" y="0" width="60" height="20" uuid="e030de0d-88d5-43ac-b4b0-c927ecbb32c5"/>
+				<reportElement x="807" y="0" width="57" height="20" uuid="e030de0d-88d5-43ac-b4b0-c927ecbb32c5"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1670,7 +1670,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{tunjangan_tambahan}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="885" y="0" width="60" height="20" uuid="1ee5e305-5f81-4f32-9fe7-a9b78e025e4f"/>
+				<reportElement x="921" y="0" width="57" height="20" uuid="1ee5e305-5f81-4f32-9fe7-a9b78e025e4f"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1685,7 +1685,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{tunjangan_komunikasi}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="705" y="0" width="60" height="20" uuid="73f5b241-426f-498f-8cde-b33bbfaefc3b"/>
+				<reportElement x="750" y="0" width="57" height="20" uuid="73f5b241-426f-498f-8cde-b33bbfaefc3b"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1700,7 +1700,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{tot_tunj_lain}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="1005" y="0" width="60" height="20" uuid="a0aeef83-f412-4e7d-980d-4de6af82ac74"/>
+				<reportElement x="1035" y="0" width="57" height="20" uuid="a0aeef83-f412-4e7d-980d-4de6af82ac74"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1715,7 +1715,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{total_rlab}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="1065" y="0" width="60" height="20" uuid="6715cd22-40da-458c-8e23-e4f34d9d3bce"/>
+				<reportElement x="1092" y="0" width="57" height="20" uuid="6715cd22-40da-458c-8e23-e4f34d9d3bce"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1730,7 +1730,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{tunjangan_dapen}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="1125" y="0" width="60" height="20" uuid="4a5976e3-e4db-424a-bc93-d4bb99856260"/>
+				<reportElement x="1149" y="0" width="57" height="20" uuid="4a5976e3-e4db-424a-bc93-d4bb99856260"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1745,7 +1745,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{tunjangan_bpjs_ks}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="1185" y="0" width="60" height="20" uuid="83afb0b1-a8eb-48a4-816b-d959328e2a4f"/>
+				<reportElement x="1206" y="0" width="57" height="20" uuid="83afb0b1-a8eb-48a4-816b-d959328e2a4f"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1760,7 +1760,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{tunjangan_bpjs_tk}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="1362" y="0" width="60" height="20" uuid="6dc168a3-bdad-4df6-ac97-b16502685196"/>
+				<reportElement x="1377" y="0" width="57" height="20" uuid="6dc168a3-bdad-4df6-ac97-b16502685196"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1775,7 +1775,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{tot_iuran_pegawai}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="1422" y="0" width="60" height="20" uuid="93597908-beef-430c-8ea4-3f76979673b7"/>
+				<reportElement x="1434" y="0" width="57" height="20" uuid="93597908-beef-430c-8ea4-3f76979673b7"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1790,7 +1790,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{tot_potongan_lain}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="1482" y="0" width="60" height="20" uuid="ad4675c0-5391-4687-8ea3-3d31891d435a"/>
+				<reportElement x="1491" y="0" width="57" height="20" uuid="ad4675c0-5391-4687-8ea3-3d31891d435a"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1805,7 +1805,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{pph_gaji}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="1602" y="0" width="60" height="20" uuid="4a98f55e-9584-4465-89e3-a5e164944b12"/>
+				<reportElement x="1605" y="0" width="57" height="20" uuid="4a98f55e-9584-4465-89e3-a5e164944b12"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1820,7 +1820,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{thp}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="285" y="0" width="60" height="20" uuid="96030024-bd42-4135-9d3e-6bb1dfaf679e"/>
+				<reportElement x="348" y="0" width="60" height="20" uuid="96030024-bd42-4135-9d3e-6bb1dfaf679e"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1830,12 +1830,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="8"/>
-					<paragraph leftIndent="4" rightIndent="2"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tipe_pegawai_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="945" y="0" width="60" height="20" uuid="eb0d0b28-30ef-49ae-9d2e-d90364d4ccf7"/>
+				<reportElement x="978" y="0" width="57" height="20" uuid="eb0d0b28-30ef-49ae-9d2e-d90364d4ccf7"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1850,7 +1850,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{total_a}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="1302" y="0" width="60" height="20" uuid="81e98ae8-a605-4916-821d-a7dcf85d4217"/>
+				<reportElement x="1320" y="0" width="57" height="20" uuid="81e98ae8-a605-4916-821d-a7dcf85d4217"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1862,10 +1862,10 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<font size="8" isBold="true"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{total_b}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{total_b}+$F{tunjangan_pph}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="1245" y="0" width="57" height="20" uuid="479d3a40-3945-488d-a410-4e8cf94b6c12"/>
+				<reportElement x="1263" y="0" width="57" height="20" uuid="479d3a40-3945-488d-a410-4e8cf94b6c12"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1877,10 +1877,10 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<font size="8"/>
 					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{total_b}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tunjangan_pph}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="1542" y="0" width="60" height="20" uuid="24c85d85-d089-4445-aa06-bc97c3c999f7"/>
+				<reportElement x="1548" y="0" width="57" height="20" uuid="24c85d85-d089-4445-aa06-bc97c3c999f7"/>
 				<box rightPadding="3">
 					<pen lineStyle="Dashed"/>
 					<topPen lineStyle="Dashed"/>
@@ -1899,7 +1899,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 	<summary>
 		<band height="26">
 			<textField pattern="###,###">
-				<reportElement x="1602" y="6" width="60" height="20" uuid="594d4b76-3239-4cb5-ad1c-c668a618ace3"/>
+				<reportElement x="1605" y="6" width="57" height="20" uuid="594d4b76-3239-4cb5-ad1c-c668a618ace3"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1908,11 +1908,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumTHP_1_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="1542" y="6" width="60" height="20" uuid="d47a18b0-d266-410c-958c-1c6a3d69539f"/>
+				<reportElement x="1548" y="6" width="57" height="20" uuid="d47a18b0-d266-410c-958c-1c6a3d69539f"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1921,11 +1922,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumTotC_1_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="345" y="6" width="60" height="20" uuid="98b6872d-9a99-4787-a3ff-abee5a7ce5c1"/>
+				<reportElement x="408" y="6" width="57" height="20" uuid="98b6872d-9a99-4787-a3ff-abee5a7ce5c1"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1934,11 +1936,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumGapok_1_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="405" y="6" width="60" height="20" uuid="970eb762-ab56-4a9c-a419-71b36fe58fb4"/>
+				<reportElement x="465" y="6" width="57" height="20" uuid="970eb762-ab56-4a9c-a419-71b36fe58fb4"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1947,11 +1950,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumSankhus_1_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="465" y="6" width="60" height="20" uuid="4678f758-ff99-439d-8f72-7b18d7454561"/>
+				<reportElement x="522" y="6" width="57" height="20" uuid="4678f758-ff99-439d-8f72-7b18d7454561"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1960,11 +1964,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumTunjJab_1_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="525" y="6" width="60" height="20" uuid="54c98a3d-b62e-4db3-8310-d9799eafa38a"/>
+				<reportElement x="579" y="6" width="57" height="20" uuid="54c98a3d-b62e-4db3-8310-d9799eafa38a"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1973,11 +1978,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumTunjStruk_1_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="585" y="6" width="60" height="20" uuid="f2d59dfa-4125-4dbd-98b3-a8b03de34153"/>
+				<reportElement x="636" y="6" width="57" height="20" uuid="f2d59dfa-4125-4dbd-98b3-a8b03de34153"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1986,11 +1992,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumTunjFung_1_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="645" y="6" width="60" height="20" uuid="ae011b89-b005-4ef7-b0a1-b1567d112204"/>
+				<reportElement x="693" y="6" width="57" height="20" uuid="ae011b89-b005-4ef7-b0a1-b1567d112204"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -1999,11 +2006,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumTunjPeralihan_1_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="705" y="6" width="60" height="20" uuid="6491785c-d4a8-4154-8860-c5e45f020a95"/>
+				<reportElement x="750" y="6" width="57" height="20" uuid="6491785c-d4a8-4154-8860-c5e45f020a95"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -2012,11 +2020,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumTunjLain_1_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="765" y="6" width="60" height="20" uuid="efdf3b8d-33ce-4ecf-932d-353b0b9e6c2d"/>
+				<reportElement x="807" y="6" width="57" height="20" uuid="efdf3b8d-33ce-4ecf-932d-353b0b9e6c2d"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -2025,11 +2034,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumTunjTamb_1_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="825" y="6" width="60" height="20" uuid="4981cc19-e4c5-4eb2-94be-879ab4795c0d"/>
+				<reportElement x="864" y="6" width="57" height="20" uuid="4981cc19-e4c5-4eb2-94be-879ab4795c0d"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -2038,11 +2048,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumTunjLembur_1_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="885" y="6" width="60" height="20" uuid="0f5f9a18-8ffa-4d1b-bd35-9d09bae46768"/>
+				<reportElement x="921" y="6" width="57" height="20" uuid="0f5f9a18-8ffa-4d1b-bd35-9d09bae46768"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -2051,11 +2062,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumTunjKom_1_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="945" y="6" width="60" height="20" uuid="f89faae8-ac66-4c05-8f43-1e9ca3cd9ed1"/>
+				<reportElement x="978" y="6" width="57" height="20" uuid="f89faae8-ac66-4c05-8f43-1e9ca3cd9ed1"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -2064,11 +2076,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumTotGaji_1_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="1005" y="6" width="60" height="20" uuid="86fa3213-50b2-4451-85f0-276b0c1f2674"/>
+				<reportElement x="1035" y="6" width="57" height="20" uuid="86fa3213-50b2-4451-85f0-276b0c1f2674"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -2077,11 +2090,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumTotRlab_1_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="1065" y="6" width="60" height="20" uuid="5c5047f9-5344-4c73-ba0a-7f263b7dafbe"/>
+				<reportElement x="1092" y="6" width="57" height="20" uuid="5c5047f9-5344-4c73-ba0a-7f263b7dafbe"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -2090,11 +2104,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumTunjDapen_1_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="1125" y="6" width="60" height="20" uuid="6a0c53c2-5ceb-43a4-915b-7d2834aee0bb"/>
+				<reportElement x="1149" y="6" width="57" height="20" uuid="6a0c53c2-5ceb-43a4-915b-7d2834aee0bb"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -2103,11 +2118,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumTunjBpjsKs_1_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="1185" y="6" width="60" height="20" uuid="9c992f47-2cd8-428d-abb7-56cd7dc9f3e4"/>
+				<reportElement x="1206" y="6" width="57" height="20" uuid="9c992f47-2cd8-428d-abb7-56cd7dc9f3e4"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -2116,11 +2132,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumTunjBpjsTk_1_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="1245" y="6" width="57" height="20" uuid="1f182ec6-17c7-4018-a9fd-abd1ef8bbbd5"/>
+				<reportElement x="1263" y="6" width="57" height="20" uuid="1f182ec6-17c7-4018-a9fd-abd1ef8bbbd5"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -2129,11 +2146,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumTunjPph_1_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="1302" y="6" width="60" height="20" uuid="f2cac25e-66a3-4528-a912-4d7d7dbd774b"/>
+				<reportElement x="1320" y="6" width="57" height="20" uuid="f2cac25e-66a3-4528-a912-4d7d7dbd774b"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -2142,11 +2160,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{sumTotB_1_2}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{sumTotB_1_2} + $V{sumTunjPph_1_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="1362" y="6" width="60" height="20" uuid="e86105cf-5ae1-4fd0-9382-ed98e68f7e69"/>
+				<reportElement x="1377" y="6" width="57" height="20" uuid="e86105cf-5ae1-4fd0-9382-ed98e68f7e69"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -2155,11 +2174,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumIurPeg_1_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="1422" y="6" width="60" height="20" uuid="80fc47b7-c18e-42ca-83fd-07d9ec7ebe36"/>
+				<reportElement x="1434" y="6" width="57" height="20" uuid="80fc47b7-c18e-42ca-83fd-07d9ec7ebe36"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -2168,11 +2188,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumPotLain_1_2}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###,###">
-				<reportElement x="1482" y="6" width="60" height="20" uuid="ddd65ec5-0106-47d1-b1a1-a1829f82e3cd"/>
+				<reportElement x="1491" y="6" width="57" height="20" uuid="ddd65ec5-0106-47d1-b1a1-a1829f82e3cd"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -2181,11 +2202,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{sumPph_1_2}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="6" width="345" height="20" uuid="1ee915f7-e786-406c-a13d-64882a2f0966"/>
+				<reportElement x="0" y="6" width="408" height="20" uuid="1ee915f7-e786-406c-a13d-64882a2f0966"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Dashed"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
@@ -2194,7 +2216,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
-					<paragraph rightIndent="4"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Jumlah Keseluruhan :"]]></textFieldExpression>
 			</textField>

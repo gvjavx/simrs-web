@@ -1,5 +1,6 @@
 package com.neurix.common.action;
 
+import com.neurix.common.constant.CommonConstant;
 import com.opensymphony.xwork2.ActionSupport;
 
 import javax.sql.DataSource;
@@ -20,6 +21,7 @@ public abstract class BaseTransactionAction extends ActionSupport {
 
     protected InputStream excelStream;
     protected String contentDisposition;
+    protected String documentFormat = CommonConstant.EXCEL;
 
     public InputStream getExcelStream() {
         return excelStream;
@@ -35,6 +37,14 @@ public abstract class BaseTransactionAction extends ActionSupport {
 
     public void setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
+    }
+
+    public String getDocumentFormat() {
+        return documentFormat;
+    }
+
+    public void setDocumentFormat(String documentFormat) {
+        this.documentFormat = documentFormat;
     }
 
     public Map getReportParams() {
