@@ -491,6 +491,39 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
 
     }
 
+    public AntrianTelemedic getAntrianFirstOrder(String idPelayanan, String idDokter, String status){
+
+        String SQL = "SELECT \n" +
+                "id, \n" +
+                "branch_id,\n" +
+                "kode_bank,\n" +
+                "id_pasien\n" +
+                "FROM\n" +
+                "it_simrs_antrian_telemedic\n" +
+                "WHERE \n" +
+                "id_pelayanan = '"+idPelayanan+"'\n" +
+                "AND id_dokter = '"+idDokter+"'\n" +
+                "AND status = '"+status+"'\n" +
+                "AND flag = 'Y'\n" +
+                "ORDER BY created_date ASC LIMIT 1";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+
+            Object[] obj = list.get(0);
+
+            AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
+            antrianTelemedic.setId(stringNulEscape(obj[0]));
+            antrianTelemedic.setBranchId(stringNulEscape(obj[1]));
+            antrianTelemedic.setKodeBank(stringNulEscape(obj[2]));
+            antrianTelemedic.setIdPasien(stringNulEscape(obj[3]));
+            return antrianTelemedic;
+        }
+
+        return null;
+    }
+
     private String stringNulEscape(Object obj) {
         if (obj == null)
             return null;

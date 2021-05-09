@@ -65,6 +65,7 @@ import com.neurix.simrs.master.ruangan.dao.RuanganDao;
 import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
 import com.neurix.simrs.master.ruangan.model.TempatTidur;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.mobileapi.antrian.model.Antrian;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.JurnalResponse;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
@@ -1381,7 +1382,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
                 if ("WL".equalsIgnoreCase(antrianTelemedicEntity.getStatus())){
 
-                    ItSimrsAntrianTelemedicEntity firstOrderAntrian = getAntrianTelemedicFirstOrder(antrianTelemedicEntity.getIdPelayanan(), antrianTelemedicEntity.getIdDokter(), "LL");
+                    AntrianTelemedic firstOrderAntrian = getAntrianTelemedicFirstOrder(antrianTelemedicEntity.getIdPelayanan(), antrianTelemedicEntity.getIdDokter(), "LL");
 
                     if (firstOrderAntrian != null){
 
@@ -1506,32 +1507,49 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         logger.info("[BillingSystemBoImpl.settlementPGInvoice] End process <<<");
     }
 
-    private ItSimrsAntrianTelemedicEntity getAntrianTelemedicFirstOrder(String idPelayanan, String idDokter, String status) throws GeneralBOException {
-        logger.info("[VerifikatorPembayaranBoImpl.ItSimrsAntrianTelemedicEntity] START >>>");
+//    private ItSimrsAntrianTelemedicEntity getAntrianTelemedicFirstOrder(String idPelayanan, String idDokter, String status) throws GeneralBOException {
+//        logger.info("[VerifikatorPembayaranBoImpl.ItSimrsAntrianTelemedicEntity] START >>>");
+//
+//        Map hsCriteria = new HashMap();
+//        hsCriteria.put("id_pelayanan", idPelayanan);
+//        hsCriteria.put("id_dokter", idDokter);
+//        hsCriteria.put("status", status);
+//        hsCriteria.put("flag", "Y");
+//        hsCriteria.put("acs_limit_1", "Y");
+//
+//        List<ItSimrsAntrianTelemedicEntity> antrianTelemedicEntities = new ArrayList<>();
+//        try {
+//            antrianTelemedicEntities = telemedicDao.getByCriteria(hsCriteria);
+//        } catch (HibernateException e){
+//            logger.error("[VerifikatorPembayaranBoImpl.ItSimrsAntrianTelemedicEntity] ERROR. ", e);
+//            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.getSearchEntityByCriteria] ERROR. ", e);
+//        }
+//
+//        if (antrianTelemedicEntities.size() > 0){
+//            logger.info("[VerifikatorPembayaranBoImpl.ItSimrsAntrianTelemedicEntity] END <<<");
+//            return antrianTelemedicEntities.get(0);
+//        }
+//
+//        logger.info("[VerifikatorPembayaranBoImpl.ItSimrsAntrianTelemedicEntity] END <<<");
+//        return null;
+//    }
 
-        Map hsCriteria = new HashMap();
-        hsCriteria.put("id_pelayanan", idPelayanan);
-        hsCriteria.put("id_dokter", idDokter);
-        hsCriteria.put("status", status);
-        hsCriteria.put("flag", "Y");
-        hsCriteria.put("acs_limit_1", "Y");
+    private AntrianTelemedic getAntrianTelemedicFirstOrder(String idPelayanan, String idDokter, String status) throws GeneralBOException {
+        logger.info("[VerifikatorPembayaranBoImpl.getAntrianTelemedicFirstOrder] START >>>");
 
-        List<ItSimrsAntrianTelemedicEntity> antrianTelemedicEntities = new ArrayList<>();
+        AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
+
         try {
-            antrianTelemedicEntities = telemedicDao.getByCriteria(hsCriteria);
+            antrianTelemedic = telemedicDao.getAntrianFirstOrder(idPelayanan, idDokter, status);
         } catch (HibernateException e){
-            logger.error("[VerifikatorPembayaranBoImpl.ItSimrsAntrianTelemedicEntity] ERROR. ", e);
-            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.getSearchEntityByCriteria] ERROR. ", e);
+            logger.error("[VerifikatorPembayaranBoImpl.getAntrianTelemedicFirstOrder] ERROR. ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.getAntrianTelemedicFirstOrder] ERROR. ", e);
         }
 
-        if (antrianTelemedicEntities.size() > 0){
-            logger.info("[VerifikatorPembayaranBoImpl.ItSimrsAntrianTelemedicEntity] END <<<");
-            return antrianTelemedicEntities.get(0);
-        }
-
-        logger.info("[VerifikatorPembayaranBoImpl.ItSimrsAntrianTelemedicEntity] END <<<");
-        return null;
+        logger.info("[VerifikatorPembayaranBoImpl.getAntrianTelemedicFirstOrder] END <<<");
+        return antrianTelemedic;
     }
+
 
     public CheckResponse saveApproveAllTindakanRawatJalan(String idDetailCheckup, String jenisPasien, String user) {
 
