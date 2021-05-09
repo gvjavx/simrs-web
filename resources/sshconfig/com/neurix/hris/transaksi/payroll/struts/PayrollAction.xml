@@ -88,7 +88,7 @@
             <!--<result name="reportTransferGaji_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportTransferGaji.jsp</result>-->
             <!--<result name="reportJubileum_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportJubileum.jsp</result>-->
             <!--<result name="reportPensiun_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportPensiun.jsp</result>-->
-            <!--<result name="reportEspt_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportEspt.jsp</result>-->
+            <result name="reportEspt_payroll">/pages/com/neurix/hris/transaksi/payroll/ReportEspt.jsp</result>
 
             <!--<result name="error">/pages/com/neurix/hris/transaksi/payroll/addPayrollV2.jsp</result>-->
 

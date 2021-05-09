@@ -3,6 +3,7 @@ package com.neurix.common.action;
 import com.opensymphony.xwork2.ActionSupport;
 
 import javax.sql.DataSource;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -16,6 +17,25 @@ public abstract class BaseTransactionAction extends ActionSupport {
     protected Connection connection;
     protected DataSource dataSource;
     protected Map reportParams=new HashMap();
+
+    protected InputStream excelStream;
+    protected String contentDisposition;
+
+    public InputStream getExcelStream() {
+        return excelStream;
+    }
+
+    public void setExcelStream(InputStream excelStream) {
+        this.excelStream = excelStream;
+    }
+
+    public String getContentDisposition() {
+        return contentDisposition;
+    }
+
+    public void setContentDisposition(String contentDisposition) {
+        this.contentDisposition = contentDisposition;
+    }
 
     public Map getReportParams() {
         return reportParams;

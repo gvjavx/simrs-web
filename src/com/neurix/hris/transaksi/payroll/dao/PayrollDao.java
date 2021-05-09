@@ -8425,12 +8425,14 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                sum(p.tunjangan_pph) as jumlah2tunjpph, \n" +
                 "                sum(p.tunjangan_umk+p.tunjangan_jabatan_struktural+p.tunjangan_struktural+p.tunjangan_strategis+p.tunjangan_peralihan+p.tunjangan_lain+p.tunjangan_tambahan+p.tunjangan_lembur+p.tunjangan_pemondokan+p.tunjangan_komunikasi+p.total_rlab+p.tunjangan_dapen+p.tunjangan_bpjs_ks+p.tunjangan_bpjs_tk) as jumlah3tunjanganlemburlainnya, \n" +
                 "                sum(p.iuran_dapen_kary+p.iuran_bpjs_tk_kary+p.iuran_bpjs_ks_kary) as jumlah10iuranpensiunthtjht, \n" +
-                "                p.nip  \n" +
+                "                p.nip,  \n" +
+                "                pph.ptkp  \n" +
                 "                from \n" +
                 "                it_hris_payroll p \n" +
                 "                left join it_hris_pegawai_position pp on p.nip = pp.nip \n" +
                 "                left join im_position pos on pp.position_id = pos.position_id \n" +
                 "                left join im_hris_pegawai peg on peg.nip = p.nip \n" +
+                "                left join it_hris_payroll_pph pph on pph.payroll_id = p.payroll_id\n" +
                 "                where \n" +
                 "                pp.branch_id= '"+ unit +"' \n" +
                 "                and peg.flag ='Y' \n" +
@@ -8471,6 +8473,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
             result.setJumlah3(BigDecimal.valueOf(Double.valueOf(row[12].toString())));
             result.setJumlah10(BigDecimal.valueOf(Double.valueOf(row[13].toString())));
             result.setNip((String)row[14]);
+            result.setJumlah15(BigDecimal.valueOf(Double.valueOf(row[15].toString())));
             listOfResult.add(result);
         }
         return listOfResult;
@@ -8769,48 +8772,51 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
 //        }
 //        return total;
 //    }
-//    public BigDecimal getPPhGaji12Bulan(String tahun,String nip){
-//        BigDecimal total = new BigDecimal(0);
-//        String query="select \n" +
-//                "\tsum(pph_gaji\n" +
-//                "\t\t  ) as jumlah\n" +
-//                "\tfrom it_hris_payroll\n" +
-//                "\t\twhere nip = '"+nip+"'\n" +
-//                "\t\tand tahun='"+tahun+"'\n" +
-//                "\t\tand flag='Y'\n" +
-//                "\t\tand flag_payroll='Y'\n" +
-//                "\t\tand approval_flag='Y'";
-//        Object results = this.sessionFactory.getCurrentSession()
-//                .createSQLQuery(query).uniqueResult();
-//        if (results!=null){
-//            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
-//        }else{
-//            total = BigDecimal.valueOf(0);
-//        }
-//        return total;
-//    }
+    public BigDecimal getPPhGaji12Bulan(String tahun,String nip){
+        BigDecimal total = new BigDecimal(0);
+        String query="select\n" +
+                "\tsum(pph.pph_gaji\n" +
+                "\t  ) as jumlah\n" +
+                "from it_hris_payroll py\n" +
+                "    left join it_hris_payroll_header hd on hd.payroll_header_id = py.payroll_header_id\n" +
+                "    left join it_hris_payroll_pph pph on pph.payroll_id = py.payroll_id\n" +
+                "where hd.nip = '"+ nip +"'\n" +
+                "\tand hd.tahun='"+tahun+"'\n" +
+                "\tand hd.flag='Y'\n" +
+                "\tand py.tipe_payroll='PY'\n" +
+                "\tand hd.approval_aks_flag='Y'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
+    }
 //
-//    public BigDecimal getPPhGajiBonusSetahun(String tahun,String nip){
-//        BigDecimal total = new BigDecimal(0);
-//        String query="select \n" +
-//                "\tsum(pph_gaji\n" +
-//                "\t\t  ) as jumlah\n" +
-//                "\tfrom it_hris_payroll\n" +
-//                "\t\twhere nip = '"+nip+"'\n" +
-//                "\t\tand tahun='"+tahun+"'\n" +
-//                "\t\tand flag='Y'\n" +
-//                "\t\tand flag_payroll<>'Y'\n" +
-//                "\t\tand flag_pensiun<>'Y'\n" +
-//                "\t\tand approval_flag='Y'";
-//        Object results = this.sessionFactory.getCurrentSession()
-//                .createSQLQuery(query).uniqueResult();
-//        if (results!=null){
-//            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
-//        }else{
-//            total = BigDecimal.valueOf(0);
-//        }
-//        return total;
-//    }
+    public BigDecimal getPPhGajiBonusSetahun(String tahun,String nip){
+        BigDecimal total = new BigDecimal(0);
+        String query="select\n" +
+                "\tsum(pph.pph_gaji\n" +
+                "\t  ) as jumlah\n" +
+                "from it_hris_payroll py\n" +
+                "    left join it_hris_payroll_header hd on hd.payroll_header_id = py.payroll_header_id\n" +
+                "    left join it_hris_payroll_pph pph on pph.payroll_id = py.payroll_id\n" +
+                "where hd.nip = '"+ nip +"'\n" +
+                "\tand hd.tahun='"+ tahun +"'\n" +
+                "\tand hd.flag='Y'\n" +
+                "\tand py.tipe_payroll not in ('PY','PN')\n" +
+                "\tand hd.approval_aks_flag='Y';";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
+    }
 //
 //    public BigDecimal getTunjanganPPhGaji11Bulan(String tahun,String nip){
 //        BigDecimal total = new BigDecimal(0);
@@ -8852,27 +8858,28 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
         return total;
     }
 //
-//    public BigDecimal getTotalBonusSetahun(String tahun,String nip){
-//        BigDecimal total = new BigDecimal(0);
-//        String query="select \n" +
-//                "\tsum(tambahan_lain\n" +
-//                "\t\t  ) as jumlah\n" +
-//                "\tfrom it_hris_payroll\n" +
-//                "\t\twhere nip = '"+nip+"'\n" +
-//                "\t\tand tahun='"+tahun+"'\n" +
-//                "\t\tand flag='Y'\n" +
-//                "\t\tand flag_payroll<>'Y'\n" +
-//                "\t\tand flag_pensiun<>'Y'\n" +
-//                "\t\tand approval_flag='Y'";
-//        Object results = this.sessionFactory.getCurrentSession()
-//                .createSQLQuery(query).uniqueResult();
-//        if (results!=null){
-//            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
-//        }else{
-//            total = BigDecimal.valueOf(0);
-//        }
-//        return total;
-//    }
+    public BigDecimal getTotalBonusSetahun(String tahun,String nip){
+        BigDecimal total = new BigDecimal(0);
+        String query="select\n" +
+                "sum(py.thp\n" +
+                "  ) as jumlah\n" +
+                "from it_hris_payroll py\n" +
+                "left join it_hris_payroll_header head on head.payroll_header_id = py.payroll_header_id\n" +
+                "left join it_hris_payroll_pph pph on pph.payroll_id = py.payroll_id\n" +
+                "where py.nip = '" + nip + "'\n" +
+                "and head.tahun ='" + tahun + "'\n" +
+                "and head.flag='Y'\n" +
+                "and approval_aks_flag = 'Y'\n" +
+                "and py.tipe_payroll not in ('PY', 'PN');";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
+    }
 //    public BigDecimal getIuran11Bulan(String tahun,String nip){
 //        BigDecimal total = new BigDecimal(0);
 //        String query="select \n" +
