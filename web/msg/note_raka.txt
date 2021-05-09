@@ -64,6 +64,7 @@
 		    ('65','Pembayaran Insentive','Y','C','admin','admin',now(),now(),'Y',null,'N','JKK','Y'),
 		    ('87','Pembayaran Jasop','Y','C','admin','admin',now(),now(),'Y',null,'N','JKK','Y'),
 		    ('94','Pembayaran Cuti','Y','C','admin','admin',now(),now(),'Y',null,'N','JKK','Y');
+    alter table it_akun_jurnal_detail alter column rekening_id drop not null;
 
 
 -- im_akun_mapping_jurnal

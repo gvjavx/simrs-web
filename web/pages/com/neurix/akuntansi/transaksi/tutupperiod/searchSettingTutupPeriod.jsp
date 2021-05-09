@@ -57,13 +57,13 @@
 
                                 <label class="control-label col-sm-2">Tahun</label>
                                 <div class="col-sm-2">
-                                    <input type="text" class="yearpicker form-control" id="tahun" value="">
-                                </div>
-                                <%--<select class="form form-control" id="tahun">--%>
-                                    <%--<option value="2020">2020</option>--%>
-                                    <%--<option value="2021">2021</option>--%>
-                                <%--</select>--%>
-                            <%--</div>--%>
+                                    <%--<input type="text" class="yearpicker form-control" id="tahun" value="">--%>
+                                <%--</div>--%>
+                                <select class="form form-control" id="tahun">
+                                    <option value="2020">2020</option>
+                                    <option value="2021">2021</option>
+                                </select>
+                            </div>
                             <div class="col-sm-4">
                                 <button class="btn btn-success" onclick="searchPeriod()"><i class="fa fa-check"></i> Choose</button>
                             </div>
@@ -150,6 +150,7 @@
                 $.each(response, function (i, item) {
                     strHead += "<td>"+item.branchName+"</td>";
                     indexbranch += "_"+item.branchId;
+                    console.log("idx branch = " + indexbranch)
                 });
 
                 $.each(arrbodyperiod, function (i, item) {
@@ -205,6 +206,7 @@
 
            for (n=1; n < arbranch.length ; n++){
                var valperiod = $("#"+i+"_"+arbranch[n]).val();
+               console.log("val period = " + valperiod)
                if (valperiod != ""){
                    arperiod.push({"tahun" : tahun, "bulan" : i, "unit": arbranch[n], "tgl" : valperiod});
                }
