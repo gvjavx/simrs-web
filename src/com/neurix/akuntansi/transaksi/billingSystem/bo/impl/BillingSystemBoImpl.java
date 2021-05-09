@@ -1382,7 +1382,16 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
                 if ("WL".equalsIgnoreCase(antrianTelemedicEntity.getStatus())){
 
-                    AntrianTelemedic firstOrderAntrian = getAntrianTelemedicFirstOrder(antrianTelemedicEntity.getIdPelayanan(), antrianTelemedicEntity.getIdDokter(), "LL");
+                    AntrianTelemedic firstOrderAntrian = new AntrianTelemedic();
+
+                    try {
+                        firstOrderAntrian = telemedicDao.getAntrianFirstOrder(antrianTelemedicEntity.getIdPelayanan(), antrianTelemedicEntity.getIdDokter(), "LL");
+                    } catch (HibernateException e){
+                        logger.error("[VerifikatorPembayaranBoImpl.getAntrianTelemedicFirstOrder] ERROR. ", e);
+                        throw new GeneralBOException("[VerifikatorPembayaranBoImpl.getAntrianTelemedicFirstOrder] ERROR. ", e);
+                    }
+
+//                    AntrianTelemedic firstOrderAntrian = getAntrianTelemedicFirstOrder(antrianTelemedicEntity.getIdPelayanan(), antrianTelemedicEntity.getIdDokter(), "LL");
 
                     if (firstOrderAntrian != null){
 
