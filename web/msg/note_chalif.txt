@@ -496,3 +496,8 @@ ALTER TABLE public.it_pg_log_transaction
   OWNER TO postgres;
 
 INSERT INTO public.it_pg_invoice (pg_invoice_id, no_invoice, no_rekam_medik, trx_amount, name_person, address_person, phone_person, email_person, branch_id, status, bank_name, no_virtual_account, created_date, created_who, last_update, last_update_who, action, flag, description, invoice_date) VALUES ('PG0100001', 'INV01', '010619000088', 121000.00, 'Mr.Tahir', 'Surabaya', '031-909090', 'admin@nmu.co.id', '01', '02', 'BSI', '010619000088', '2021-04-04 23:53:18.772008', 'admin_pg', '2021-04-12 02:11:01.793230', 'PAYMENT_GATEWAY', 'U', 'Y', 'TELEMEDIC-NMU', '2021-04-10');
+
+create sequence seq_pg_log_trx;
+
+alter sequence seq_pg_log_trx
+  owner to postgres;

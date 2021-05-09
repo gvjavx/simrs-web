@@ -934,7 +934,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
             Map hsCriteria = new HashMap<>();
             hsCriteria.put("bank_name", bankName);
-            hsCriteria.put("invoice_number", Long.valueOf(invoiceNum));
+            hsCriteria.put("invoice_number", new BigInteger(invoiceNum));
             hsCriteria.put("status_bank", "00");
             hsCriteria.put("status", "in");
             hsCriteria.put("tipe_trx", "create");
