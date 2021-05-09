@@ -840,7 +840,10 @@ public class TelemedicBoImpl implements TelemedicBo {
                     pembayaranOnlineEntity.setKodeBank(kodeBank);
                     pembayaranOnlineEntity.setIdRekening(bean.getIdRekening());
                     pembayaranOnlineEntity.setWaktuBayar(bean.getLastUpdate());
-                    pembayaranOnlineEntity.setTipePembayaran(jenisPembayaran);
+
+                    if (jenisPembayaran != null && !"".equalsIgnoreCase(jenisPembayaran)){
+                        pembayaranOnlineEntity.setTipePembayaran(jenisPembayaran);
+                    }
 
                     try {
                         verifikatorPembayaranDao.addAndSave(pembayaranOnlineEntity);
