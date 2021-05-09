@@ -153,7 +153,7 @@
                         <div class="col-md-6">
                             <label>TTD Pasien</label>
                             <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('et4')" class="paint-canvas-ttd" id="et4"></canvas>
-                            <input class="form-control" id="nama_pasien" placeholder="Nama Terang">
+                            <input class="form-control" id="nama_keluarga" placeholder="Nama Terang">
                             <%--<input style="margin-top: 3px" class="form-control nip_petugas" id="nip_petugas" placeholder="NIP">--%>
                             <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('et4')"><i class="fa fa-trash"></i> Clear
                             </button>

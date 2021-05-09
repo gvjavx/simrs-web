@@ -31,12 +31,14 @@ function saveGizi(jenis, ket) {
     }
 
     if ("add_skrining_gizi" == jenis) {
-        if (parseInt(umur) >= 18) {
+        var tipe = $('#tipe_gizi').val();
+        if ("dewasa" == tipe) {
             var va1 = $('[name=gz1]:checked').val();
             var va2 = $('[name=gz2]:checked').val();
             var va3 = $('[name=gz3]:checked').val();
             var va4 = "";
             var va4d = $('[name=gz4]:checked').val();
+
             if (va4d != undefined) {
                 var a = $('#ket_gz4').val();
                 if (va4d == "Lain-Lain") {
@@ -48,7 +50,30 @@ function saveGizi(jenis, ket) {
                 }
             }
 
-            if (va1 && va2 && va3 != undefined) {
+            var cek = "";
+            var ketVa1 = $('[name=penurunan]:checked').val();
+            if(va1 != undefined){
+                if(va1 == "Ya|2"){
+                    if(ketVa1 != undefined){
+                        cek = ketVa1;
+                    }
+                }else{
+                    cek = va1;
+                }
+            }
+
+            var cek2 = "";
+            if(va3 != undefined){
+                if(va3 == "Ya|3"){
+                    if(va4d != undefined){
+                        cek2 = va4d;
+                    }
+                }else{
+                    cek2 = va4d;
+                }
+            }
+
+            if (cek != '' && cek2 != '' && va2 != undefined) {
                 var isi1 = va1.split("|")[0];
                 var isi2 = va2.split("|")[0];
                 var isi3 = va3.split("|")[0];
@@ -57,8 +82,15 @@ function saveGizi(jenis, ket) {
                 var skor2 = va2.split("|")[1];
                 var skor3 = va3.split("|")[1];
 
+                var berat = "";
+                var penyakit = "";
+
+                if(ketVa1 != undefined){
+                    berat = ketVa1;
+                }
+
                 data.push({
-                    'parameter': '1. Apakah pasien mengalami penuruanan / peningkatan BB yang tidak di inginkan dalam 6 bulan terakhir ?',
+                    'parameter': '1. Apakah pasien mengalami penuruanan / peningkatan BB yang tidak di inginkan dalam 6 bulan terakhir ? '+berat,
                     'jawaban': isi1,
                     'skor': skor1,
                     'keterangan': jenis,
@@ -336,9 +368,34 @@ function saveGizi(jenis, ket) {
         var nama2 = $('#nama_gizi21').val();
         var sip2 = $('#sip_dokter').val();
 
+        if(va2 == ''){
+            va2 = ' -';
+        }
+        if(va3 == ''){
+            va3 = ' -';
+        }
+        if(va4 == ''){
+            va4 = ' -';
+        }
+        if(va5 == ''){
+            va5 = ' -';
+        }
+        if(va6 == ''){
+            va6 = ' -';
+        }
+        if(va7 == ''){
+            va7 = ' -';
+        }
+        if(va8 == ''){
+            va8 = ' -';
+        }
+        if(va10 == ''){
+            va10 = ' -';
+        }
+
         if (va1 && tempVa15 && nama1 && nama2 && sip2 != '' && va11 && va12 && va13 != undefined && !cekTtd1 && !cekTtd2) {
             temp = 'BB : ' + va1 + ' Kg' + '|' + 'TB : ' + va2 + ' Cm' + '|' + 'LLA : ' + va3 + ' Kg' + '|' + 'BBI ' + va4 + '|' + '%BBI ' + va5 + '|' + 'BB/U' + va6 + '|' + 'TB/U ' + va7 + '|' + 'BB/TB ' + va8 + '|' + 'LLA/U ' + va10 + '|' + 'Status Gizi : ' + va11;
-            if (parseInt(umur) >= 18) {
+            if (parseInt(umur) >= 16) {
                 temp = 'BB : ' + va1 + ' Kg' + '|' + 'TB : ' + va2 + ' Cm' + '|' + 'BBI : ' + va3 + ' Kg' + '|' + 'IMT ' + va4 + ' Kg/m2' + '|' + 'TL ' + va5 + ' Cm' + '|' + 'TB Est' + va6 + ' Cm' + '|' + 'LLA ' + va7 + ' Cm' + '|' + '%LLA ' + va8 + ' %' + '|' + 'Status Gizi : ' + va11;
             }
             data.push({
@@ -360,7 +417,7 @@ function saveGizi(jenis, ket) {
             });
             data.push({
                 'parameter': 'C. Fisik - Klinik',
-                'jawaban': va12,
+                'jawaban': va13,
                 'keterangan': jenis,
                 'jenis': ket,
                 'no_checkup': noCheckup,
@@ -789,6 +846,10 @@ function detailGizi(jenis) {
                                 }
                             } else {
                                 if ("li" == item.tipe) {
+                                    var btn = "";
+                                    if("A. Antropmentri" == item.parameter){
+                                        btn = '<i onclick="conGizi(\''+jenis+'\', \''+item.jenis+'\', \''+item.idAsesmenGizi+'\')" class="fa fa-trash hvr-grow" style="font-size: 20px; color: red"></i>';
+                                    }
                                     if (jwb != '') {
                                         var temp = jwb.split("|");
                                         var liTemp = "";
@@ -797,7 +858,10 @@ function detailGizi(jenis) {
                                         });
                                         body += '<tr>' +
                                             '<td width="40%">' + item.parameter + '</td>' +
-                                            '<td><ul style="margin-left: 10px">' + liTemp + '</ul></td>' +
+                                            '<td>' +
+                                            '<div class="pull-right">'+btn+'</div>'+
+                                            '<ul style="margin-left: 10px">' + liTemp + '</ul>' +
+                                            '</td>' +
                                             '</tr>';
                                     }
                                 } else if ("ttd" == item.tipe) {
@@ -851,7 +915,7 @@ function detailGizi(jenis) {
 function delRowGizi(id) {
     $('#del_gizi_' + id).remove();
     var url = "";
-    if (id == "add_asuhan_gizi" || id == "add_evaluasi_gizi") {
+    if (id == "add_asuhan_gizi" || id == "add_evaluasi_gizi" || id == "add_pengkajian_gizi") {
         url = contextPath + '/pages/images/icons8-add-list-25.png';
     } else {
         url = contextPath + '/pages/images/icons8-plus-25.png';
@@ -863,11 +927,16 @@ function delRowGizi(id) {
 function conGizi(jenis, ket, idAsesmen) {
     $('#tanya').text("Yakin mengahapus data ini ?");
     $('#modal-confirm-rm').modal({show: true, backdrop: 'static'});
-    if (idAsesmen != undefined && idAsesmen != '' && idAsesmen != null) {
-        $('#save_con_rm').attr('onclick', 'delAsuhanMon(\'' + jenis + '\', \'' + ket + '\', \'' + idAsesmen + '\')');
-    } else {
-        $('#save_con_rm').attr('onclick', 'delGizi(\'' + jenis + '\', \'' + ket + '\')');
+    if("add_pengkajian_gizi" == jenis){
+        $('#save_con_rm').attr('onclick', 'delGizi(\'' + jenis + '\', \'' + ket + '\', \''+idAsesmen+'\')');
+    }else{
+        if (idAsesmen != undefined && idAsesmen != '' && idAsesmen != null) {
+            $('#save_con_rm').attr('onclick', 'delAsuhanMon(\'' + jenis + '\', \'' + ket + '\', \'' + idAsesmen + '\')');
+        } else {
+            $('#save_con_rm').attr('onclick', 'delGizi(\'' + jenis + '\', \'' + ket + '\')');
+        }
     }
+
 }
 
 function delAsuhanMon(jenis, ket, idAsesmen) {
@@ -922,7 +991,7 @@ function delAsuhanMon(jenis, ket, idAsesmen) {
     }
 }
 
-function delGizi(jenis, ket) {
+function delGizi(jenis, ket, idAsesmen) {
     $('#modal-confirm-rm').modal('hide');
     if (!cekSession()) {
         var dataPasien = {
@@ -935,7 +1004,7 @@ function delGizi(jenis, ket) {
         var result = JSON.stringify(dataPasien);
         startSpin('delete_' + jenis);
         dwr.engine.setAsync(true);
-        AsesmenGiziAction.saveDeleteAsesmen(idDetailCheckup, jenis, result, {
+        AsesmenGiziAction.saveDeleteAsesmen(idDetailCheckup, jenis, result, idAsesmen, {
             callback: function (res) {
                 if (res.status == "success") {
                     stopSpin('delete_' + jenis);
@@ -996,6 +1065,7 @@ function setSkriningGizi(umur) {
         '        </div>\n' +
         '    </div>\n' +
         '</div>\n' +
+        '<input type="hidden" id="tipe_gizi" value="anak_anak">'+
         '<hr class="garis">\n' +
         '<div class="row">\n' +
         '    <div class="form-group">\n' +
@@ -1128,7 +1198,7 @@ function setSkriningGizi(umur) {
         '    </div>\n' +
         '</div>';
 
-    if (parseInt(umur) >= 5) {
+    if (parseInt(umur) >= 16) {
         res = '<div class="row">\n' +
             '    <div class="form-group">\n' +
             '        <label class="col-md-9">1. Apakah pasien mengalami penuruanan / peningkatan BB yang tidak di inginkan dalam 6 bulan terakhir ?</label>\n' +
@@ -1144,26 +1214,27 @@ function setSkriningGizi(umur) {
             '        </div>\n' +
             '    </div>\n' +
             '</div>\n' +
+            '<input id="tipe_gizi" type="hidden" value="dewasa">'+
             '<div class="row" style="display: none;" id="form-penurunan">\n' +
         '                            <div class="form-group">\n' +
         '                                <div class="col-md-3">\n' +
         '                                    <div class="custom02" style="margin-top: 7px">\n' +
-        '                                        <input type="radio" value="1 - 5 kg|1" id="aud_penurunan1" name="penurunan" /><label for="aud_penurunan1">1 - 5 kg</label>\n' +
+        '                                        <input type="radio" value="1 - 5 kg" id="aud_penurunan1" name="penurunan" /><label for="aud_penurunan1">1 - 5 kg</label>\n' +
         '                                    </div>\n' +
         '                                </div>\n' +
         '                                <div class="col-md-3">\n' +
         '                                    <div class="custom02" style="margin-top: 7px">\n' +
-        '                                        <input type="radio" value="6 - 10 kg|2" id="aud_penurunan2" name="penurunan" /><label for="aud_penurunan2">6 - 10 kg</label>\n' +
+        '                                        <input type="radio" value="6 - 10 kg" id="aud_penurunan2" name="penurunan" /><label for="aud_penurunan2">6 - 10 kg</label>\n' +
         '                                    </div>\n' +
         '                                </div>\n' +
         '                                <div class="col-md-3">\n' +
         '                                    <div class="custom02" style="margin-top: 7px">\n' +
-        '                                        <input type="radio" value="11 - 15 kg|3" id="aud_penurunan3" name="penurunan" /><label for="aud_penurunan3">11 - 15 kg</label>\n' +
+        '                                        <input type="radio" value="11 - 15 kg" id="aud_penurunan3" name="penurunan" /><label for="aud_penurunan3">11 - 15 kg</label>\n' +
         '                                    </div>\n' +
         '                                </div>\n' +
         '                                <div class="col-md-3">\n' +
         '                                    <div class="custom02" style="margin-top: 7px">\n' +
-        '                                        <input type="radio" value="> 15 kg|4" id="aud_penurunan4" name="penurunan" /><label for="aud_penurunan4">> 15 kg</label>\n' +
+        '                                        <input type="radio" value="> 15 kg" id="aud_penurunan4" name="penurunan" /><label for="aud_penurunan4">> 15 kg</label>\n' +
         '                                    </div>\n' +
         '                                </div>\n' +
         '                            </div>\n' +
@@ -1317,7 +1388,6 @@ function setPengkajianGizi(umur) {
 
 
 function cekGizi(val, form){
-    console.log(val);
     if(val == "Ya"){
         $('#'+form).show();
     }else{

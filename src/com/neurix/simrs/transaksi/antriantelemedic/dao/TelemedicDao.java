@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.antriantelemedic.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.master.shift.model.Shift;
+import com.neurix.simrs.master.telemedic.model.RekeningTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
 import org.hibernate.Criteria;
@@ -422,5 +423,111 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
         }
 
         return shifts;
+    }
+
+    public RekeningTelemedic getRekeningTelemedic(String idRekening){
+
+        String SQL = "SELECT \n" +
+                "pembayaran_name, \n" +
+                "client_id,\n" +
+                "init_va_name\n" +
+                "FROM im_simrs_rekening_telemedic \n" +
+                "WHERE id_rekening = '"+idRekening+"'";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+
+            RekeningTelemedic rekeningTelemedic = new RekeningTelemedic();
+            Object[] obj = list.get(0);
+            rekeningTelemedic.setPembayaranId(stringNulEscape(obj[0]));
+            rekeningTelemedic.setClientId(stringNulEscape(obj[1]));
+            rekeningTelemedic.setInitVaName(stringNulEscape(obj[2]));
+            return rekeningTelemedic;
+
+        }
+        return null;
+    }
+
+    public String getNoMasterFromTelemedic(String id){
+
+        String SQL = "SELECT \n" +
+                "jpp.master_id\n" +
+                "FROM \n" +
+                "it_simrs_antrian_telemedic at\n" +
+                "INNER JOIN im_simrs_jenis_periksa_pasien jpp ON jpp.id_jenis_periksa_pasien = at.id_jenis_periksa_pasien\n" +
+                "WHERE at.id = '"+id+"'";
+
+        List<Object> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+
+            return list.get(0).toString();
+        }
+
+        return null;
+
+    }
+
+    public String getNoKoderingDivisiFromTelemedic(String id){
+
+        String SQL = "SELECT \n" +
+                "ps.kodering\n" +
+                "FROM \n" +
+                "it_simrs_antrian_telemedic at\n" +
+                "INNER JOIN im_simrs_pelayanan pl ON pl.id_pelayanan = at.id_pelayanan\n" +
+                "INNER JOIN im_simrs_header_pelayanan hp ON hp.id_header_pelayanan = pl.id_header_pelayanan\n" +
+                "INNER JOIN im_position ps ON ps.position_id = hp.divisi_id\n" +
+                "WHERE at.id = '"+id+"'";
+
+        List<Object> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+
+            return list.get(0).toString();
+        }
+
+        return null;
+
+    }
+
+    public AntrianTelemedic getAntrianFirstOrder(String idPelayanan, String idDokter, String status){
+
+        String SQL = "SELECT \n" +
+                "id, \n" +
+                "branch_id,\n" +
+                "kode_bank,\n" +
+                "id_pasien\n" +
+                "FROM\n" +
+                "it_simrs_antrian_telemedic\n" +
+                "WHERE \n" +
+                "id_pelayanan = '"+idPelayanan+"'\n" +
+                "AND id_dokter = '"+idDokter+"'\n" +
+                "AND status = '"+status+"'\n" +
+                "AND flag = 'Y'\n" +
+                "ORDER BY created_date ASC LIMIT 1";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+
+            Object[] obj = list.get(0);
+
+            AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
+            antrianTelemedic.setId(stringNulEscape(obj[0]));
+            antrianTelemedic.setBranchId(stringNulEscape(obj[1]));
+            antrianTelemedic.setKodeBank(stringNulEscape(obj[2]));
+            antrianTelemedic.setIdPasien(stringNulEscape(obj[3]));
+            return antrianTelemedic;
+        }
+
+        return null;
+    }
+
+    private String stringNulEscape(Object obj) {
+        if (obj == null)
+            return null;
+        else
+            return obj.toString();
     }
 }

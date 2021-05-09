@@ -135,6 +135,15 @@ public class RawatInap {
     private Date tanggalLahir;
     private String isTindakanRawat;
     private String flagBatal;
+    private String idBentukGizi;
+
+    public String getIdBentukGizi() {
+        return idBentukGizi;
+    }
+
+    public void setIdBentukGizi(String idBentukGizi) {
+        this.idBentukGizi = idBentukGizi;
+    }
 
     public String getFlagBatal() {
         return flagBatal;

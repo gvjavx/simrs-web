@@ -126,21 +126,44 @@ public class AsesmenGiziBoImpl implements AsesmenGiziBo {
         logger.info("[AsesmenGiziBoImpl.saveDelete] start >>>>>>>");
         if(bean != null){
             try {
-                HashMap hsCriteria = new HashMap();
-                hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
-                hsCriteria.put("keterangan", bean.getKeterangan());
-                List<ItSimrsAsesmenGiziEntity> entityList = new ArrayList<>();
-                entityList = asesmenGiziDao.getByCriteria(hsCriteria);
-                if(entityList.size() > 0){
-                    for (ItSimrsAsesmenGiziEntity entity: entityList){
-                        entity.setFlag("N");
-                        entity.setAction("D");
-                        entity.setLastUpdate(bean.getLastUpdate());
-                        entity.setLastUpdateWho(bean.getLastUpdateWho());
-                        asesmenGiziDao.updateAndSave(entity);
+                if(bean.getIdAsesmenGizi() != null && !"".equalsIgnoreCase(bean.getIdAsesmenGizi())){
+                    ItSimrsAsesmenGiziEntity entity = asesmenGiziDao.getById("idAsesmenGizi", bean.getIdAsesmenGizi());
+                    if(entity != null){
+                        HashMap hsCriteria = new HashMap();
+                        hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+                        hsCriteria.put("keterangan", bean.getKeterangan());
+                        hsCriteria.put("created_date", entity.getCreatedDate());
+                        List<ItSimrsAsesmenGiziEntity> entityList = new ArrayList<>();
+                        entityList = asesmenGiziDao.getByCriteria(hsCriteria);
+                        if(entityList.size() > 0){
+                            for (ItSimrsAsesmenGiziEntity giziEntity: entityList){
+                                giziEntity.setFlag("N");
+                                giziEntity.setAction("D");
+                                giziEntity.setLastUpdate(bean.getLastUpdate());
+                                giziEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                                asesmenGiziDao.updateAndSave(giziEntity);
+                            }
+                        }else{
+                            throw new GeneralBOException("Data tidak ada ditemukan @_@");
+                        }
                     }
                 }else{
-                    throw new GeneralBOException("Data tidak ada ditemukan @_@");
+                    HashMap hsCriteria = new HashMap();
+                    hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+                    hsCriteria.put("keterangan", bean.getKeterangan());
+                    List<ItSimrsAsesmenGiziEntity> entityList = new ArrayList<>();
+                    entityList = asesmenGiziDao.getByCriteria(hsCriteria);
+                    if(entityList.size() > 0){
+                        for (ItSimrsAsesmenGiziEntity entity: entityList){
+                            entity.setFlag("N");
+                            entity.setAction("D");
+                            entity.setLastUpdate(bean.getLastUpdate());
+                            entity.setLastUpdateWho(bean.getLastUpdateWho());
+                            asesmenGiziDao.updateAndSave(entity);
+                        }
+                    }else{
+                        throw new GeneralBOException("Data tidak ada ditemukan @_@");
+                    }
                 }
             }catch (HibernateException e){
                 logger.error("[AsesmenGiziBoImpl.saveDelete] Error, "+e.getMessage());

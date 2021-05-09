@@ -1173,7 +1173,7 @@
                                         </s:elseif>
                                         <button class="btn btn-success hvr-icon-pulse-grow" onclick="confirmPemeriksaanPasien()"
                                                 style="margin-top: 15px;" id="save_ket"><i
-                                                class="fa fa-check hvr-icon"></i> Save
+                                                class="fa fa-check hvr-icon"></i> Selesai
                                         </button>
                                         <button style="display: none; cursor: no-drop; margin-top: 15px;" type="button"
                                                 class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
@@ -1579,42 +1579,42 @@
                 </div>
                 <hr>
                 <div id="form_lab_dalam">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Jenis Pemeriksaan</label>
-                            <div class="col-md-7">
-                                <select class="form-control select2" style="margin-top: 7px; width: 100%" id="lab_lab"
-                                        onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this.value);">
-                                    <option value=''> - </option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_lab"><i
-                                        class="fa fa-times"></i> required</p>
-                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_lab"><i
-                                        class="fa fa-check"></i> correct</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <input type="hidden" id="jenis_lab">
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Parameter</label>
-                            <div class="col-md-7">
-                                <select class="form-control select2 parameter" multiple style="margin-top: 7px; width: 100%"
-                                        id="lab_parameter"
-                                        onchange="var warn =$('#war_parameter').is(':visible'); if (warn){$('#cor_parameter').show().fadeOut(3000);$('#war_parameter').hide()};">
-                                    <option value=''> - </option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                                   id="war_parameter"><i class="fa fa-times"></i> required</p>
-                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                                   id="cor_parameter"><i class="fa fa-check"></i> correct</p>
-                            </div>
-                        </div>
-                    </div>
+                    <%--<div class="row">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-md-3" style="margin-top: 7px">Jenis Pemeriksaan</label>--%>
+                            <%--<div class="col-md-7">--%>
+                                <%--<select class="form-control select2" style="margin-top: 7px; width: 100%" id="lab_lab"--%>
+                                        <%--onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this.value);">--%>
+                                    <%--<option value=''> - </option>--%>
+                                <%--</select>--%>
+                            <%--</div>--%>
+                            <%--<div class="col-md-2">--%>
+                                <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_lab"><i--%>
+                                        <%--class="fa fa-times"></i> required</p>--%>
+                                <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_lab"><i--%>
+                                        <%--class="fa fa-check"></i> correct</p>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<div class="row">--%>
+                        <%--<input type="hidden" id="jenis_lab">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-md-3" style="margin-top: 7px">Parameter</label>--%>
+                            <%--<div class="col-md-7">--%>
+                                <%--<select class="form-control select2 parameter" multiple style="margin-top: 7px; width: 100%"--%>
+                                        <%--id="lab_parameter"--%>
+                                        <%--onchange="var warn =$('#war_parameter').is(':visible'); if (warn){$('#cor_parameter').show().fadeOut(3000);$('#war_parameter').hide()};">--%>
+                                    <%--<option value=''> - </option>--%>
+                                <%--</select>--%>
+                            <%--</div>--%>
+                            <%--<div class="col-md-2">--%>
+                                <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
+                                   <%--id="war_parameter"><i class="fa fa-times"></i> required</p>--%>
+                                <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
+                                   <%--id="cor_parameter"><i class="fa fa-check"></i> correct</p>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                 </div>
                 <div id="form_lab_luar" style="display: none">
                     <div class="row">
@@ -1702,7 +1702,10 @@
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-offset-3 col-md-9">
-                            <button onclick="addListPemeriksaan()" class="btn btn-success"><i class="fa fa-plus"></i> Tambah</button>
+                            <button class="btn btn-success" id="btn-add-lab-dalam" onclick="showModalListPenunjang()">
+                                <i class="fa fa-plus"></i> Tambah Pemeriksaan
+                            </button>
+                            <button onclick="addListPemeriksaan()" class="btn btn-success" id="btn-add-lab-luar"><i class="fa fa-plus"></i> Tambah</button>
                             <button onclick="resetPemeriksaan()" class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>
                         </div>
                     </div>
@@ -2516,6 +2519,34 @@
                         </select>
                     </div>
                 </div>
+                <div class="row jarak">
+                    <div class="col-md-offset-3 col-md-3">
+                        <div class="form-check">
+                            <input type="checkbox" name="waktu_resep" id="waktu_resep1" value="07:00">
+                            <label for="waktu_resep1"></label> 07:00
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input type="checkbox" name="waktu_resep" id="waktu_resep2" value="12:00">
+                            <label for="waktu_resep2"></label> 12:00
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input type="checkbox" name="waktu_resep" id="waktu_resep3" value="04:00">
+                            <label for="waktu_resep3"></label> 04:00
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-3">
+                        <div class="form-check">
+                            <input type="checkbox" name="waktu_resep" id="waktu_resep4" value="08:00">
+                            <label for="waktu_resep4"></label> 08:00
+                        </div>
+                    </div>
+                </div>
                 <hr/>
                 <%--Keterangan Obat Berdasarkan Jenis Obat--%>
                 <%--<div class="row" style="margin-top: -7px">--%>
@@ -2566,7 +2597,7 @@
                               <%--id="cor_rep_cek_waktu"><i class="fa fa-check"></i> correct</span>--%>
                     <%--</div>--%>
                 <%--</div>--%>
-                <hr/>
+                <%--<hr/>--%>
                 <div class="row" style="margin-top: -10px">
                     <div class="col-md-12">
                         <button class="btn btn-success" onclick="addObatToList()"><i class="fa fa-plus"></i> Tambah
@@ -4491,6 +4522,30 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-list-penunjang">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> List Pemeriksaan</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table" style="font-size: 13px;" width="100%">
+                    <tbody id="body-list-penunjang">
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-success" onclick="saveListParam()"><i class="fa fa-check"></i> Save
+                </button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type='text/javascript' src='<s:url value="/dwr/interface/MppAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/MonitoringTransfusiDarahAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/AppendecitomyAction.js"/>'></script>
@@ -4509,6 +4564,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/KandunganAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/KasirRawatJalanAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenUgdAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>
@@ -4532,6 +4588,7 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/custome_form.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/rencana_asuahan.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/allhistory.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenUgd.js"/>'></script>
 
 
 <script type='text/javascript'>

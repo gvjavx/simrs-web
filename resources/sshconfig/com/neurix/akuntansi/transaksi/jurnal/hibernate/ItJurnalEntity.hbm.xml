@@ -52,8 +52,8 @@
         <property name="registeredUser">
             <column name="registered_user" sql-type="varchar" length="30" not-null="false" />
         </property>
-        <property name="registerId">
-            <column name="register_id" sql-type="varchar" length="15" not-null="false" />
+        <property name="registeredUserId">
+            <column name="registered_user_id" sql-type="varchar" length="15" not-null="false" />
         </property>
         <property name="spumId">
             <column name="spum_id" sql-type="varchar" length="100" not-null="false" />

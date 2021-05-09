@@ -46,13 +46,14 @@
         <property name="flagPengajuanBiaya">
             <column name="flag_pengajuan_biaya" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="isOtomatis">
+            <column name="is_otomatis" sql-type="varchar" length="1" not-null="false" />
+        </property>
 
-        <set name="imMappingJurnal" inverse="true" lazy="true" fetch="select" cascade="all" >
-            <key>
-                <column name="trans_id" not-null="true"/>
-            </key>
-            <one-to-many not-found="ignore" class="com.neurix.akuntansi.master.mappingJurnal.model.ImMappingJurnalEntity"/>
+
+        <set name = "imMappingJurnal" cascade="all">
+            <key column = "trans_id"/>
+            <one-to-many class="com.neurix.akuntansi.master.mappingJurnal.model.ImMappingJurnalEntity"/>
         </set>
-
     </class>
 </hibernate-mapping>

@@ -233,15 +233,17 @@
             <filter-chain pattern="/mobileapi/version" filters="none" />
             <filter-chain pattern="/mobileapi/versionmobile" filters="none" />
 
+            <filter-chain pattern="/mobileapi/settlementinvoice/*/**" filters="none" />
+
             <filter-chain pattern="/**/*"
                           filters="
-                        	concurrentSessionFilter, 
-                        	securityContextPersistenceFilter, 
-                        	logoutFilter, 
+                        	concurrentSessionFilter,
+                        	securityContextPersistenceFilter,
+                        	logoutFilter,
                         	authenticationFilter,
-                        	rememberMeFilter, 
-                        	securityRequestFilter, 
-                        	exceptionTranslationFilter, 
+                        	rememberMeFilter,
+                        	securityRequestFilter,
+                        	exceptionTranslationFilter,
                         	filterSecurityInterceptor" />
 
         </filter-chain-map>

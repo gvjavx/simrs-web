@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.permintaanvendor.action;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.billingSystem.model.MappingDetail;
 import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.authorization.company.bo.AreaBo;
 import com.neurix.authorization.company.bo.BranchBo;
@@ -829,7 +830,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 addActionError(" Error when save data approve PO" + e.getMessage());
             }
 
-            List<Map> listMapPersediaan = new ArrayList<>();
+            List<MappingDetail> listMapPersediaan = new ArrayList<>();
             BigDecimal hutangUsaha = new BigDecimal(0);
             BigDecimal ppn = new BigDecimal(0);
             if (transaksiObatDetails.size() > 0) {
@@ -873,9 +874,9 @@ public class PermintaanVendorAction extends BaseMasterAction {
                         ppn = ppn.add(hargaPpn);
                     }
 
-                    Map mapHutangUsaha = new HashMap();
-                    mapHutangUsaha.put("kd_barang", trans.getIdBarang());
-                    mapHutangUsaha.put("nilai", hargaTotal.subtract(hargaPpn));
+                    MappingDetail mapHutangUsaha = new MappingDetail();
+                    mapHutangUsaha.setKodeBarang(trans.getIdBarang());
+                    mapHutangUsaha.setNilai(hargaTotal.subtract(hargaPpn));
                     listMapPersediaan.add(mapHutangUsaha);
                 }
             }
@@ -903,32 +904,41 @@ public class PermintaanVendorAction extends BaseMasterAction {
                     }
                 }
 
-                Map mapBiaya = new HashMap();
-                mapBiaya.put("divisi_id", divisiId);
-                mapBiaya.put("nilai", hutangUsaha);
+                List<MappingDetail> listMapBiaya = new ArrayList<>();
+
+                MappingDetail mapBiaya = new MappingDetail();
+                mapBiaya.setMasterId(divisiId);
+                mapBiaya.setNilai(hutangUsaha);
+                listMapBiaya.add(mapBiaya);
 
                 jurnalMap.put("divisi_id", divisiId);
                 jurnalMap.put("persediaan_gudang", listMapPersediaan);
-                jurnalMap.put("biaya_persediaan_obat", mapBiaya);
+                jurnalMap.put("biaya_persediaan_obat", listMapBiaya);
 
                 catatan = "Pengganti Barang No. Transaksi "+idPermintaanVendor+". Retur Vendor ke Gudang dari Vendor " + requestVendor.getIdVendor() + " - " + namaVendor;
                 transId = "36";
             } else {
 
-                Map mapPajakObat = new HashMap();
-                mapPajakObat.put("bukti", noFaktur);
-                mapPajakObat.put("nilai", ppn);
-                mapPajakObat.put("master_id", requestVendor.getIdVendor());
+                List<MappingDetail> listMapPajakObat = new ArrayList<>();
 
-                Map mapHutangVendor = new HashMap();
-                mapHutangVendor.put("bukti", noDo);
-                mapHutangVendor.put("nilai", hutangUsaha);
-                mapHutangVendor.put("master_id", requestVendor.getIdVendor());
-                mapHutangVendor.put("divisi_id", divisiId);
+                MappingDetail mapPajakObat = new MappingDetail();
+                mapPajakObat.setBukti(noFaktur);
+                mapPajakObat.setNilai(ppn);
+                mapPajakObat.setMasterId(requestVendor.getIdVendor());
+                listMapPajakObat.add(mapPajakObat);
+
+                List<MappingDetail> listMapHutangVendor = new ArrayList<>();
+
+                MappingDetail mapHutangVendor = new MappingDetail();
+                mapHutangVendor.setBukti(noDo);
+                mapHutangVendor.setNilai(hutangUsaha);
+                mapHutangVendor.setMasterId(requestVendor.getIdVendor());
+                mapHutangVendor.setDivisiId(divisiId);
+                listMapHutangVendor.add(mapHutangVendor);
 
                 jurnalMap.put("persediaan_gudang", listMapPersediaan);
-                jurnalMap.put("hutang_farmasi_vendor", mapHutangVendor);
-                jurnalMap.put("ppn_masukan", mapPajakObat);
+                jurnalMap.put("hutang_farmasi_vendor", listMapHutangVendor);
+                jurnalMap.put("ppn_masukan", listMapPajakObat);
 
                 catatan = "Penerimaan Barang Gudang dari Vendor " + requestVendor.getIdVendor() + " - " + namaVendor;
                 transId = "27";

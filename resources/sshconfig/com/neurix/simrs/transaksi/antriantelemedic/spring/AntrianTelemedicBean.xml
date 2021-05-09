@@ -26,6 +26,7 @@
           p:notifikasiAdminTelemedicDao-ref="notifikasiAdminTelemedicDao"
           p:videoRmDao-ref="videoRmDao"
           p:headerTindakanDao-ref="headerTindakanDao"
+          p:paymentGatewayInvoiceDao-ref="paymentGatewayInvoiceDao"
     />
 
     <bean id="telemedicineController" class="com.neurix.simrs.mobileapi.TelemedicineController"

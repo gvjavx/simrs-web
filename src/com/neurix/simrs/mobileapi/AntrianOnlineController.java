@@ -370,7 +370,6 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                 return listOfAntrianOnline;
             default: return model;
         }
-
     }
 
     public HttpHeaders create() {
@@ -534,7 +533,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
 
         if (action.equalsIgnoreCase("startRecordHandler")) {
             String jsonString = "channelId="+channelId+"&idAntrianTelemedic="+idAntrianTelemedic+"&idDetailCheckup="+idDetailCheckup;
-            model.setMessage(CommonUtil.sendPostRequest("http://localhost:9090/api/video/record/start", jsonString));
+            model.setMessage(CommonUtil.sendPostRequest(CommonConstant.URL_RECORDING+"record/start", jsonString));
         }
 
         if (action.equalsIgnoreCase("cekRestApi")) {

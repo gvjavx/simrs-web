@@ -176,6 +176,7 @@ public class PayrolController implements ModelDriven<PayrollPayment> {
                 model = new PayrollPayment();
                 model.setUrl(path);
 
+                break;
         }
 
         return new DefaultHttpHeaders("show");

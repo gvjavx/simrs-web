@@ -152,6 +152,15 @@ public class CatatanTerintegrasiAction {
                 if (obj.has("total_ews")) {
                     catatan.setEws(obj.getString("total_ews"));
                 }
+                if (obj.has("kesimpulan")) {
+                    catatan.setKesimpulan(obj.getString("kesimpulan"));
+                }
+                if (obj.has("frekuensi")) {
+                    catatan.setMonitoring(obj.getString("frekuensi"));
+                }
+                if (obj.has("data_ews")) {
+                    catatan.setDataEws(obj.getString("data_ews"));
+                }
 
                 catatan.setAction("C");
                 catatan.setFlag("Y");

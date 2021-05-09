@@ -44,6 +44,7 @@
     -- update im_branches set tunj_pemondokan=500000 where branch_id = '01';
 -- it_akun_jurnal
     alter table it_akun_jurnal
+        add column registered_user_id varchar(20),
         add column metode_bayar varchar(50);
 
 ------ 2021-05-05 ===> update table trans (tidak drop)

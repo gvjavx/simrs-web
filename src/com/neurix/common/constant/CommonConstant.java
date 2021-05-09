@@ -218,6 +218,7 @@ public class CommonConstant {
 
     //TELEMEDICINE
     public static final int ADD_JAM_BAYAR = 30; //MENIT
+    public static final String URL_RECORDING = CommonUtil.getPropertyParams("recording.handler.baseurl");
 
     public final static String posisiKabidKeuanganKp = CommonUtil.getPropertyParams("posisi.kabid.keuangan.kp");
     public final static String posisiKasubbidKeuanganKp = CommonUtil.getPropertyParams("posisi.kasubbid.keuangan.kp");
@@ -416,6 +417,11 @@ public class CommonConstant {
     //PATH NEW RM LAMA
     public final static String URL_RM_LAMA = CommonUtil.getPropertyParams("path.rm.lama");
 
+    public final static String CODE_VA_BSI = CommonUtil.getPropertyParams("code.va.bsi");
+    public final static String DESC_VA_TELE = CommonUtil.getPropertyParams("desc.va.telemedic");
+    public final static String CODE_INVOICE_VA_TELE = CommonUtil.getPropertyParams("code.invoice.telemedic");
+    public final static String JENIS_PEMBAYARAN_TRANSFER_TUNAI = CommonUtil.getPropertyParams("jenis.pembayaran.tt");
+    public final static String JENIS_PEMBAYARAN_VA = CommonUtil.getPropertyParams("jenis.pembayaran.va");
 
 
 }

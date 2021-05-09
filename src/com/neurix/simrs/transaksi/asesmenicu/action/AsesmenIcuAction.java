@@ -172,7 +172,7 @@ public class AsesmenIcuAction {
                 asesmenIcu.setKeterangan(keterangan);
                 asesmenIcu.setLastUpdate(time);
                 asesmenIcu.setLastUpdateWho(userLogin);
-                if(date != null && !"".equalsIgnoreCase(date)){
+                if(date != null && !"".equalsIgnoreCase(date) && !"undefined".equalsIgnoreCase(date)){
                     asesmenIcu.setCreatedDate(Timestamp.valueOf(date));
                 }
                 response = asesmenIcuBo.saveDelete(asesmenIcu);

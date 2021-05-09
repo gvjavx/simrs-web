@@ -31,9 +31,9 @@
                             <li><a onclick="showModalICU('resiko_jatuh')" style="cursor: pointer"><i class="fa fa-plus"></i> Skala Resiko Jatuh</a></li>
                             <li><a onclick="showModalICU('decobitus')" style="cursor: pointer"><i class="fa fa-plus"></i> Derajat Decobitus</a></li>
                             <li><a onclick="showModalICU('nyeri')" style="cursor: pointer"><i class="fa fa-plus"></i> Skala Nyeri</a></li>
-                            <li><a onclick="showModalICU('gcs')" style="cursor: pointer"><i class="fa fa-plus"></i> Glasgow Coma Scale</a></li>
+                            <li><a onclick="showModalICU('gcs')" style="cursor: pointer"><i class="fa fa-plus"></i>  Status Neurologi</a></li>
                             <li><a onclick="showModalICU('hemodinamika_icu')" style="cursor: pointer"><i class="fa fa-plus"></i> Hemodinamika</a></li>
-                            <li><a onclick="showModalICU('respirasi_icu')" style="cursor: pointer"><i class="fa fa-plus"></i> Respirasi</a></li>
+                            <li><a onclick="showModalICU('respirasi_icu')" style="cursor: pointer"><i class="fa fa-plus"></i> Respirator Mode</a></li>
                             <li><a onclick="showModalICU('keseimbangan_icu')" style="cursor: pointer"><i class="fa fa-plus"></i> Keseimbangan</a></li>
                             <%--<li><a onclick="showModalICU('injeksi_icu')" style="cursor: pointer"><i--%>
                                     <%--class="fa fa-plus"></i> Ijeksi</a></li>--%>
@@ -62,36 +62,36 @@
                         <tr id="row_icu_alat_infasive">
                             <td>Alat Infasive</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_alat_infasive" class="hvr-grow" onclick="detailICU('alat_infasive')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_alat_infasive" class="hvr-grow btn-hide" onclick="conICU('alat_infasive', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="btn_icu_alat_infasive" class="hvr-grow" onclick="detailICU('alat_infasive')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
+                                <%--<img id="delete_alat_infasive" class="hvr-grow btn-hide" onclick="conICU('alat_infasive', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">--%>
                             </td>
                         </tr>
                         <tr id="row_icu_resiko_jatuh">
                             <td>Skala Resiko Jatuh</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_resiko_jatuh" class="hvr-grow" onclick="detailICU('resiko_jatuh')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_resiko_jatuh" class="hvr-grow btn-hide" onclick="conICU('resiko_jatuh', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="btn_icu_resiko_jatuh" class="hvr-grow" onclick="detailICU('resiko_jatuh')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
+                                <%--<img id="delete_resiko_jatuh" class="hvr-grow btn-hide" onclick="conICU('resiko_jatuh', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">--%>
                             </td>
                         </tr>
                         <tr id="row_icu_decobitus">
                             <td>Derajat Decobitus</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_decobitus" class="hvr-grow" onclick="detailICU('decobitus')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_decobitus" class="hvr-grow btn-hide" onclick="conICU('decobitus', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="btn_icu_decobitus" class="hvr-grow" onclick="detailICU('decobitus')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
+                                <%--<img id="delete_decobitus" class="hvr-grow btn-hide" onclick="conICU('decobitus', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">--%>
                             </td>
                         </tr>
                         <tr id="row_icu_nyeri">
                             <td>Skala Nyeri</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_nyeri" class="hvr-grow" onclick="detailICU('nyeri')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_nyeri" class="hvr-grow btn-hide" onclick="conICU('nyeri', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="btn_icu_nyeri" class="hvr-grow" onclick="detailICU('nyeri')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
+                                <%--<img id="delete_nyeri" class="hvr-grow btn-hide" onclick="conICU('nyeri', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">--%>
                             </td>
                         </tr>
                         <tr id="row_icu_gcs">
-                            <td>GCS <small>(Glasgow Coma Scale)</small></td>
+                            <td>Status Neurologi</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_gcs" class="hvr-grow" onclick="detailICU('gcs')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_gcs" class="hvr-grow btn-hide" onclick="conICU('gcs', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="btn_icu_gcs" class="hvr-grow" onclick="detailICU('gcs')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
+                                <%--<img id="delete_gcs" class="hvr-grow btn-hide" onclick="conICU('gcs', 'asesmen_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">--%>
                             </td>
                         </tr>
                         <tr id="row_icu_hemodinamika_icu">
@@ -101,7 +101,7 @@
                             </td>
                         </tr>
                         <tr id="row_icu_respirasi_icu">
-                            <td>Respirasi</td>
+                            <td>Respirator Mode</td>
                             <td width="20%" align="center">
                                 <img id="btn_icu_respirasi_icu" class="hvr-grow" onclick="listRespirasi('respirasi_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
@@ -380,6 +380,29 @@
                     </div>
                     <div class="col-md-12">
                         <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-3">Tanggal</label>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input class="form-control tgl" id="tgl_resiko_jatuh">
+                                    </div>
+                                </div>
+                                <label class="col-md-1">Jam</label>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
+                                        <input class="form-control jam" id="jam_resiko_jatuh">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
                             <div class="col-md-6">
                                 <div class="row">
                                     <div class="form-group">
@@ -544,6 +567,29 @@
                         <p id="msg_icu_decobitus"></p>
                     </div>
                     <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3">Tanggal</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control tgl" id="tgl_decobitus">
+                                </div>
+                            </div>
+                            <label class="col-md-1">Jam</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control jam" id="jam_decobitus">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
                         <div class="col-md-12">
                             <div class="form-check">
                                 <input type="checkbox" name="db" id="db1" value="I : Kulit utuh kemerahan adema">
@@ -605,6 +651,29 @@
                         <p id="msg_icu_nyeri"></p>
                     </div>
                     <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3">Tanggal</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control tgl" id="tgl_nyeri">
+                                </div>
+                            </div>
+                            <label class="col-md-1">Jam</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control jam" id="jam_nyeri">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="col-md-5" style="margin-top: 7px">Apakah terdapat keluhan nyeri</label>
@@ -619,38 +688,39 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-md-5" style="margin-top: 7px">Lokasi</label>
-                                <div class="col-md-7">
-                                    <input class="form-control" id="yer_lokasi">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-5" style="margin-top: 7px">Jenis</label>
-                                <div class="col-md-2">
-                                    <div class="custom02" style="margin-top: 7px">
-                                        <input type="radio" value="Akut" id="aud_skala1" name="radio_aud_skala" /><label for="aud_skala1">Akut</label>
+                            <div id="apakah_nyeri" style="display: none">
+                                <div class="form-group">
+                                    <label class="col-md-5" style="margin-top: 7px">Lokasi</label>
+                                    <div class="col-md-7">
+                                        <input class="form-control" id="yer_lokasi">
                                     </div>
                                 </div>
-                                <div class="col-md-5">
-                                    <div class="custom02" style="margin-top: 7px">
-                                        <input type="radio" value="Kronis" id="aud_skala2" name="radio_aud_skala" /><label for="aud_skala2">Kronis</label>
+                                <div class="form-group">
+                                    <label class="col-md-5" style="margin-top: 7px">Jenis</label>
+                                    <div class="col-md-2">
+                                        <div class="custom02" style="margin-top: 7px">
+                                            <input type="radio" value="Akut" id="aud_skala1" name="radio_aud_skala" /><label for="aud_skala1">Akut</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="custom02" style="margin-top: 7px">
+                                            <input type="radio" value="Kronis" id="aud_skala2" name="radio_aud_skala" /><label for="aud_skala2">Kronis</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5" style="margin-top: 7px">Skala</label>
+                                    <div class="col-md-7">
+                                        <input class="form-control" id="skala_nyeri" readonly>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-md-5" style="margin-top: 7px">Skala</label>
-                                <div class="col-md-7">
-                                    <input class="form-control" id="skala_nyeri" readonly>
-                                </div>
-                            </div>
-                            <%--<img src="<%= request.getContextPath() %>/pages/images/asesmen-nyeri.jpg" style="width: 100%; margin-top: 20px">--%>
                         </div>
                     </div>
                     <hr class="garis">
                     <input id="temp_scala" type="hidden">
                     <canvas id="choice_emoji" style="display: none"></canvas>
-                    <div class="row" style="margin-top: 10px">
+                    <div class="row" style="margin-top: 10px; display: none" id="emoji">
                         <div class="form-group">
                             <div class="col-md-2">
                                 <img src="<%= request.getContextPath() %>/pages/images/scala-0.png" class="nyeri"
@@ -710,7 +780,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> GCS
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i>  Status Neurologi
                 </h4>
             </div>
             <div class="modal-body">
@@ -720,42 +790,145 @@
                         <p id="msg_icu_gcs"></p>
                     </div>
                     <div class="row">
-                        <label class="col-md-6 jarak">E = Eye (membuka mata)</label>
-                        <div class="col-md-6">
-                            <select class="form-control select2" style="width: 100%" id="gc1">
-                                <option value="">[Select One]</option>
-                                <option value="Spontan|4">Spontan</option>
-                                <option value="Dengan Panggilan|3">Dengan Panggilan</option>
-                                <option value="Dengan rangsangan nyeri|2">Dengan rangsangan nyeri</option>
-                                <option value="Tidak ada respon|1">Tidak ada respon</option>
-                            </select>
+                        <div class="form-group">
+                            <label class="col-md-3">Tanggal</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control tgl" id="tgl_gcs">
+                                </div>
+                            </div>
+                            <label class="col-md-1">Jam</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control jam" id="jam_gcs">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3 jarak">GCS (EVM)</label>
+                            <div class="col-md-9">
+                                <select class="form-control select2" style="width: 100%" id="res2">
+                                    <option value="">[Select One E]</option>
+                                    <option value="4">Spontan</option>
+                                    <option value="3">Dengan Panggilan</option>
+                                    <option value="2">Dengan rangsangan nyeri</option>
+                                    <option value="1">Tidak ada respon</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-9">
+                                <select class="form-control select2" style="width: 100%" id="res3">
+                                    <option value="">[Select One V]</option>
+                                    <option value="5">Orientasi Baik</option>
+                                    <option value="4">Apatis</option>
+                                    <option value="3">Disorientasi</option>
+                                    <option value="2">Mengarang</option>
+                                    <option value="1">Tidak ada</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-9">
+                                <select class="form-control select2" style="width: 100%" id="res4">
+                                    <option value="">[Select One M]</option>
+                                    <option value="6">Spontan</option>
+                                    <option value="5">Terlokalisir</option>
+                                    <option value="4">Fleksi</option>
+                                    <option value="3">Deserebrasi</option>
+                                    <option value="2">Dekortasi</option>
+                                    <option value="1">Tak ada respon</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3 jarak">Diameter Pupil KA</label>
+                            <div class="col-md-3">
+                                <select class="form-control select2" id="res5" style="width: 100%">
+                                    <option value="">[Select]</option>
+                                    <option value="8">8</option>
+                                    <option value="7">7</option>
+                                    <option value="6">6</option>
+                                    <option value="5">5</option>
+                                    <option value="4">4</option>
+                                    <option value="3">3</option>
+                                    <option value="2">2</option>
+                                    <option value="1">1</option>
+                                </select>
+                            </div>
+                            <label class="col-md-3 jarak">Diameter Pupil KI</label>
+                            <div class="col-md-3">
+                                <select class="form-control select2" id="res6" style="width: 100%">
+                                    <option value="">[Select]</option>
+                                    <option value="8">8</option>
+                                    <option value="7">7</option>
+                                    <option value="6">6</option>
+                                    <option value="5">5</option>
+                                    <option value="4">4</option>
+                                    <option value="3">3</option>
+                                    <option value="2">2</option>
+                                    <option value="1">1</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3 jarak">Reflek Cahaya KA</label>
+                            <div class="col-md-3">
+                                <select class="form-control select2" id="res7" style="width: 100%">
+                                    <option value="">[Select]</option>
+                                    <option value="+">+</option>
+                                    <option value="-">-</option>
+                                </select>
+                            </div>
+                            <label class="col-md-3 jarak">Reflek Cahaya KI</label>
+                            <div class="col-md-3">
+                                <select class="form-control select2" id="res8" style="width: 100%">
+                                    <option value="">[Select]</option>
+                                    <option value="+">+</option>
+                                    <option value="-">-</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="row jarak">
-                        <label class="col-md-6 jarak">V = Verbal (komunikasi)</label>
-                        <div class="col-md-6">
-                            <select class="form-control select2" style="width: 100%" id="gc2">
-                                <option value="">[Select One]</option>
-                                <option value="Orientasi|5">Orientasi</option>
-                                <option value="Apatis|4">Apatis</option>
-                                <option value="Disorientasi|3">Disorientasi</option>
-                                <option value="Mengarang|2">Mengarang</option>
-                                <option value="Tidak ada|1">Tidak ada</option>
-                            </select>
+                        <div class="form-group">
+                            <label class="col-md-3">TKA</label>
+                            <div class="col-md-3">
+                                <input class="form-control" type="number" id="res9">
+                            </div>
+                            <label class="col-md-3">TKI</label>
+                            <div class="col-md-3">
+                                <input class="form-control" type="number" id="res10">
+                            </div>
                         </div>
                     </div>
                     <div class="row jarak">
-                        <label class="col-md-6 jarak">M = Motorik (gerakan ekstimitas atas)</label>
-                        <div class="col-md-6">
-                            <select class="form-control select2" style="width: 100%" id="gc3">
-                                <option value="">[Select One]</option>
-                                <option value="Spontan|6">Spontan</option>
-                                <option value="Terlokalisir|5">Terlokalisir</option>
-                                <option value="Fleksi|4">Fleksi</option>
-                                <option value="Deserebrasi|3">Deserebrasi</option>
-                                <option value="Dekortasi|2">Dekortasi</option>
-                                <option value="Tak ada respon|1">Tak ada respon</option>
-                            </select>
+                        <div class="form-group">
+                            <label class="col-md-3">KKA</label>
+                            <div class="col-md-3">
+                                <input class="form-control" type="number" id="res11">
+                            </div>
+                            <label class="col-md-3">KKI</label>
+                            <div class="col-md-3">
+                                <input class="form-control" type="number" id="res12">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -927,7 +1100,7 @@
                                     <option value="Rinue Rhytme">Sinue Rhytme</option>
                                     <option value="Takiakrdi">Takiakrdi</option>
                                     <option value="Bradikardi">Bradikardi</option>
-                                    <option value="Aritmia Asistole">Aritmia Asistole</option>
+                                    <option value="Aritmia">Aritmia</option>
                                 </select>
                             </div>
                         </div>
@@ -1078,7 +1251,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Tambah Data Respirasi
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Tambah Data Respirator Mode
                 </h4>
             </div>
             <div class="modal-body">
@@ -1100,125 +1273,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3 jarak">GCS (EVM)</label>
-                            <div class="col-md-9">
-                                <select class="form-control select2" style="width: 100%" id="res2">
-                                    <option value="">[Select One E]</option>
-                                    <option value="4">Spontan</option>
-                                    <option value="3">Dengan Panggilan</option>
-                                    <option value="2">Dengan rangsangan nyeri</option>
-                                    <option value="1">Tidak ada respon</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-offset-3 col-md-9">
-                                <select class="form-control select2" style="width: 100%" id="res3">
-                                    <option value="">[Select One V]</option>
-                                    <option value="5">Orientasi</option>
-                                    <option value="4">Apatis</option>
-                                    <option value="3">Disorientasi</option>
-                                    <option value="2">Mengarang</option>
-                                    <option value="1">Tidak ada</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-offset-3 col-md-9">
-                                <select class="form-control select2" style="width: 100%" id="res4">
-                                    <option value="">[Select One M]</option>
-                                    <option value="6">Spontan</option>
-                                    <option value="5">Terlokalisir</option>
-                                    <option value="4">Fleksi</option>
-                                    <option value="3">Deserebrasi</option>
-                                    <option value="2">Dekortasi</option>
-                                    <option value="1">Tak ada respon</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3 jarak">Diameter Pupil KA</label>
-                            <div class="col-md-3">
-                                <select class="form-control select2" id="res5" style="width: 100%">
-                                    <option value="">[Select]</option>
-                                    <option value="8">8</option>
-                                    <option value="7">7</option>
-                                    <option value="6">6</option>
-                                    <option value="5">5</option>
-                                    <option value="4">4</option>
-                                    <option value="3">3</option>
-                                    <option value="2">2</option>
-                                    <option value="1">1</option>
-                                </select>
-                            </div>
-                            <label class="col-md-3 jarak">Diameter Pupil KI</label>
-                            <div class="col-md-3">
-                                <select class="form-control select2" id="res6" style="width: 100%">
-                                    <option value="">[Select]</option>
-                                    <option value="8">8</option>
-                                    <option value="7">7</option>
-                                    <option value="6">6</option>
-                                    <option value="5">5</option>
-                                    <option value="4">4</option>
-                                    <option value="3">3</option>
-                                    <option value="2">2</option>
-                                    <option value="1">1</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3 jarak">Reflek Cahaya KA</label>
-                            <div class="col-md-3">
-                                <select class="form-control select2" id="res7" style="width: 100%">
-                                    <option value="">[Select]</option>
-                                    <option value="+">+</option>
-                                    <option value="-">-</option>
-                                </select>
-                            </div>
-                            <label class="col-md-3 jarak">Reflek Cahaya KI</label>
-                            <div class="col-md-3">
-                                <select class="form-control select2" id="res8" style="width: 100%">
-                                    <option value="">[Select]</option>
-                                    <option value="+">+</option>
-                                    <option value="-">-</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">TKA</label>
-                            <div class="col-md-3">
-                                <input class="form-control" type="number" id="res9">
-                            </div>
-                            <label class="col-md-3">TKI</label>
-                            <div class="col-md-3">
-                                <input class="form-control" type="number" id="res10">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">KKA</label>
-                            <div class="col-md-3">
-                                <input class="form-control" type="number" id="res11">
-                            </div>
-                            <label class="col-md-3">KKI</label>
-                            <div class="col-md-3">
-                                <input class="form-control" type="number" id="res12">
-                            </div>
-                        </div>
-                    </div>
+                    <hr>
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">O2</label>

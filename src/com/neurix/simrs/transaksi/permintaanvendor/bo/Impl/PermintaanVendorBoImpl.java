@@ -432,7 +432,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             Map hsCriteria = new HashMap();
             hsCriteria.put("id_seq_obat", obat.getIdSeqObat());
             hsCriteria.put("flag", "Y");
-
             try {
                 obatEntities = obatDao.getByCriteria(hsCriteria);
             } catch (HibernateException e) {
@@ -444,7 +443,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                 return obatEntities.get(0);
             }
         }
-
         logger.info("[TransaksiObatBoImpl.getLastEntityObatById] END <<<<<<<<<<");
         return null;
     }
@@ -1059,7 +1057,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         newObatEntity.setExpiredDate(bean.getExpDate());
         newObatEntity.setLembarPerBox(lembarPerBoxBatch);
         newObatEntity.setBijiPerLembar(bijiPerLembarBatch);
-        newObatEntity.setMinStok(obatEntity.getMinStok());
+        newObatEntity.setMinStok(obatEntity != null ? obatEntity.getMinStok() : null);
         newObatEntity.setHargaTerakhir(hargaBijianPadaBatch);
         newObatEntity.setMerk(pabrikObat.getNama());
 

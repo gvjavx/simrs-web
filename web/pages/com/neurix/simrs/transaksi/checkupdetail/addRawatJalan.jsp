@@ -1273,7 +1273,7 @@
                                     <div class="col-md-offset-4 col-md-4 text-center">
                                         <a class="btn btn-warning" href="initForm_checkupdetail.action"><i class="fa fa-arrow-left"></i> Back</a>
                                         <%--<a class="btn btn-primary" onclick="printGelangPasien()"><i class="fa fa-print"></i> Print</a>--%>
-                                        <a class="btn btn-success" id="save_ket" onclick="confirmPemeriksaanPasien()"><i class="fa fa-check"></i> Save</a>
+                                        <a class="btn btn-success" id="save_ket" onclick="confirmPemeriksaanPasien()"><i class="fa fa-check"></i> Selesai</a>
                                         <button style="display: none; cursor: no-drop;" type="button"
                                                 class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
                                             Sedang Menyimpan...
@@ -1708,50 +1708,40 @@
                 <div id="form_lab_dalam">
                     <%--<div class="row">--%>
                         <%--<div class="form-group">--%>
-                            <%--<label class="col-md-3" style="margin-top: 7px"></label>--%>
+                            <%--<label class="col-md-3" style="margin-top: 7px">Jenis Pemeriksaan</label>--%>
                             <%--<div class="col-md-7">--%>
-                                <%--<button class="btn btn-success" onclick="showModalListPenunjang()">--%>
-                                    <%--<i class="fa fa-plus"></i> Tambah Pemeriksaan--%>
-                                <%--</button>--%>
+                                <%--<select class="form-control select2" style="margin-top: 7px; width: 100%" id="lab_lab"--%>
+                                        <%--onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this.value);">--%>
+                                    <%--<option value=''> - </option>--%>
+                                <%--</select>--%>
+                            <%--</div>--%>
+                            <%--<div class="col-md-2">--%>
+                                <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_lab"><i--%>
+                                        <%--class="fa fa-times"></i> required</p>--%>
+                                <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_lab"><i--%>
+                                        <%--class="fa fa-check"></i> correct</p>--%>
                             <%--</div>--%>
                         <%--</div>--%>
                     <%--</div>--%>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Jenis Pemeriksaan</label>
-                            <div class="col-md-7">
-                                <select class="form-control select2" style="margin-top: 7px; width: 100%" id="lab_lab"
-                                        onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this.value);">
-                                    <option value=''> - </option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_lab"><i
-                                        class="fa fa-times"></i> required</p>
-                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_lab"><i
-                                        class="fa fa-check"></i> correct</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <input type="hidden" id="jenis_lab">
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Parameter</label>
-                            <div class="col-md-7">
-                                <select class="form-control select2 parameter" multiple style="margin-top: 7px; width: 100%"
-                                        id="lab_parameter"
-                                        onchange="var warn =$('#war_parameter').is(':visible'); if (warn){$('#cor_parameter').show().fadeOut(3000);$('#war_parameter').hide()};">
-                                    <option value=''> - </option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                                   id="war_parameter"><i class="fa fa-times"></i> required</p>
-                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                                   id="cor_parameter"><i class="fa fa-check"></i> correct</p>
-                            </div>
-                        </div>
-                    </div>
+                    <%--<div class="row">--%>
+                        <%--<input type="hidden" id="jenis_lab">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-md-3" style="margin-top: 7px">Parameter</label>--%>
+                            <%--<div class="col-md-7">--%>
+                                <%--<select class="form-control select2 parameter" multiple style="margin-top: 7px; width: 100%"--%>
+                                        <%--id="lab_parameter"--%>
+                                        <%--onchange="var warn =$('#war_parameter').is(':visible'); if (warn){$('#cor_parameter').show().fadeOut(3000);$('#war_parameter').hide()};">--%>
+                                    <%--<option value=''> - </option>--%>
+                                <%--</select>--%>
+                            <%--</div>--%>
+                            <%--<div class="col-md-2">--%>
+                                <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
+                                   <%--id="war_parameter"><i class="fa fa-times"></i> required</p>--%>
+                                <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
+                                   <%--id="cor_parameter"><i class="fa fa-check"></i> correct</p>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                 </div>
                 <div id="form_lab_luar" style="display: none">
                     <div class="row">
@@ -1836,10 +1826,21 @@
                         </div>
                     </div>
                 </div>
+                <%--<div class="row">--%>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="col-md-3" style="margin-top: 7px"></label>--%>
+                        <%--<div class="col-md-7">--%>
+                            <%----%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-offset-3 col-md-9">
-                            <button onclick="addListPemeriksaan()" class="btn btn-success"><i class="fa fa-plus"></i> Tambah</button>
+                            <button class="btn btn-success" id="btn-add-lab-dalam" onclick="showModalListPenunjang()">
+                                <i class="fa fa-plus"></i> Tambah Pemeriksaan
+                            </button>
+                            <button onclick="addListPemeriksaan()" id="btn-add-lab-luar" class="btn btn-success"><i class="fa fa-plus"></i> Tambah</button>
                             <button onclick="resetPemeriksaan()" class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>
                         </div>
                     </div>

@@ -1204,7 +1204,7 @@
                                     <div class="col-md-offset-4 col-md-4 text-center">
                                         <a class="btn btn-warning" href="initForm_igd.action"><i class="fa fa-arrow-left"></i> Back</a>
                                         <%--<a class="btn btn-primary" onclick="printGelangPasien()"><i class="fa fa-print"></i> Print</a>--%>
-                                        <a class="btn btn-success" id="save_ket" onclick="confirmPemeriksaanPasien()"><i class="fa fa-check"></i> Save</a>
+                                        <a class="btn btn-success" id="save_ket" onclick="confirmPemeriksaanPasien()"><i class="fa fa-check"></i> Selesai</a>
                                         <button style="display: none; cursor: no-drop;" type="button"
                                                 class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
                                             Sedang Menyimpan...
@@ -2861,6 +2861,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/KandunganAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenIcuAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/RekonsiliasiObatAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenUgd.js"/>'></script>
