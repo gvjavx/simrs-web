@@ -612,6 +612,7 @@ public class PegawaiPayroll extends BasePayroll {
         //iuran pegawai = biaya yang dibayarkan pegawai (iuran pensiun dan bpjs tk)
         BigDecimal iuranPegawai = new BigDecimal(0);
         iuranPegawai = iuranPegawai.add(totalIuranBpjsTkKaryNilai)
+                .add(iuranBpjsKsKaryNilai) //RAKA-mencoba menambahkan
                 .add(iuranDapenKaryNilai);
 
         //menghitung bruto = gaji pokok + tunj.yang diperhitungkan pph + tunj.pph

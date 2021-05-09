@@ -23,6 +23,7 @@
           p:branchDao-ref="branchDao"
           p:companyDao-ref="companyDao"
           p:absensiPegawaiDao-ref="absensiPegawaiDao"
+          p:biodataDao-ref="biodataDao"
           p:payrollPphDao-ref="payrollPphDao"
           p:payrollTempDao-ref="payrollTempDao"
           p:payrollPphTempDao-ref="payrollPphTempDao"

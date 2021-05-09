@@ -407,4 +407,27 @@ ALTER TABLE it_simrs_antian_online ADD id_paket character varying(50)
 --2021-03-10
 ALTER TABLE it_simrs_antrian_telemedic ADD COLUMN flag_call VARCHAR(1)
 
+--2021-04-27
+ALTER TABLE im_simrs_rekening_telemedic
+ADD tipe_rekening character varying(100)
+
+ALTER TABLE im_simrs_rekening_telemedic
+ADD client_id character varying(20)
+
+ALTER TABLE im_simrs_rekening_telemedic
+ADD Keterangan text
+
+ALTER TABLE it_simrs_pembayaran_online
+ADD tipe_rekening character varying(100)
+
+ALTER TABLE it_simrs_pembayaran_online
+ADD client_id character varying(20)
+
+ALTER TABLE it_simrs_pembayaran_online
+ADD keterangan text
+
+--2021-09-05
+INSERT INTO public.im_simrs_rekening_telemedic(
+	id_rekening, pembayaran_id, pembayaran_name, no_rekening, nama_rekening, coa, branch_id, flag, action, created_date, created_who, last_update, last_update_who, tipe_rekening, client_id, keterangan)
+	VALUES ('RKN00013', 'APM00000009', 'BANK SYARIAH MANDIRI','','VA BANK SYARIAH MANDIRI','1.1.01.02.09','02','Y','C',now(), 'admin', now(), 'admin', 'virtual_account', '1108', '	Pilih Client ID : NMU (1108)');
 

@@ -243,11 +243,6 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 //    public void setKodeRekeningDao(KodeRekeningDao kodeRekeningDao) {
 //        this.kodeRekeningDao = kodeRekeningDao;
 //    }
-
-    public MappingJurnalDao getMappingJurnalDao() {
-        return mappingJurnalDao;
-    }
-
     public void setMappingJurnalDao(MappingJurnalDao mappingJurnalDao) {
         this.mappingJurnalDao = mappingJurnalDao;
     }

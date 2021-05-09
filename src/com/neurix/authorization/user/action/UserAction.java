@@ -1087,8 +1087,11 @@ public class UserAction extends BaseMasterAction {
                 logger.error(e.getMessage());
             }
 
-            if (userList.size() > 0) {
-                user = userList.get(0);
+            for(User eachUser : userList) {
+                if(eachUser.getUserId().equalsIgnoreCase(userId)){
+                    user = eachUser;
+                    break;
+                }
             }
         }
         return user;

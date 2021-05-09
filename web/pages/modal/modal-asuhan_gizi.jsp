@@ -72,33 +72,57 @@
                     <div class="row jarak">
                         <div class="col-md-offset-3 col-md-9">
                             <div class="form-check">
-                                <input type="checkbox" name="gizi1" id="gizi12" value="Status gizi">
+                                <input onclick="isCek(this.id, 'form_gizi1')" type="checkbox" name="gizi1" id="gizi12" value="Status gizi">
                                 <label for="gizi12"></label>  Status gizi
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="col-md-offset-3 col-md-9">
+                            <input class="form-control" oninput="$('#gizi12').val(''); $('#gizi12').val('Status gizi, '+this.value);"
+                                   style="display: none" id="form_gizi1" placeholder="Keterangan Status Gizi">
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="col-md-offset-3 col-md-9">
                             <div class="form-check">
-                                <input type="checkbox" name="gizi1" id="gizi13" value="Nilai laboratorium">
+                                <input onclick="isCek(this.id, 'form_gizi13')" type="checkbox" name="gizi1" id="gizi13" value="Nilai laboratorium">
                                 <label for="gizi13"></label>  Nilai laboratorium
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="col-md-offset-3 col-md-9">
+                            <input class="form-control" oninput="$('#gizi13').val(''); $('#gizi13').val('Nilai laboratorium, '+this.value);"
+                                   style="display: none" id="form_gizi13" placeholder="Keterangan Nilai laboratorium">
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="col-md-offset-3 col-md-9">
                             <div class="form-check">
-                                <input type="checkbox" name="gizi1" id="gizi14" value="Fisik/klinis">
+                                <input onclick="isCek(this.id, 'form_gizi14')" type="checkbox" name="gizi1" id="gizi14" value="Fisik/klinis">
                                 <label for="gizi14"></label>  Fisik/klinis
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="col-md-offset-3 col-md-9">
+                            <input class="form-control" oninput="$('#gizi14').val(''); $('#gizi14').val('Fisik/klinis, '+this.value);"
+                                   style="display: none" id="form_gizi14" placeholder="Keterangan Fisik/klinis">
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="col-md-offset-3 col-md-9">
                             <div class="form-check">
-                                <input type="checkbox" name="gizi1" id="gizi15" value="Asupan makan">
+                                <input onclick="isCek(this.id, 'form_gizi15')" type="checkbox" name="gizi1" id="gizi15" value="Asupan makan">
                                 <label for="gizi15"></label>  Asupan makan
                             </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="col-md-offset-3 col-md-9">
+                            <input class="form-control" oninput="$('#gizi15').val(''); $('#gizi15').val('Asupan makan, '+this.value);"
+                                   style="display: none" id="form_gizi15" placeholder="Keterangan Asupan makan">
                         </div>
                     </div>
                     <hr class="garis">

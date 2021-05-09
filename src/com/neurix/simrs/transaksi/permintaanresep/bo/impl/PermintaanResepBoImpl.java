@@ -241,6 +241,8 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
                 detail.setCreatedWho(bean.getCreatedWho());
                 detail.setLastUpdate(bean.getCreatedDate());
                 detail.setLastUpdateWho(bean.getCreatedWho());
+                detail.setFrekuensi(detailObat.getFrekuensi());
+
                 if(detailObat.getFlagRacik() != null && !"".equalsIgnoreCase(detailObat.getFlagRacik())){
                     detail.setFlagRacik(detailObat.getFlagRacik());
                     detail.setNamaRacik(detailObat.getNamaRacik());
@@ -297,6 +299,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         if (bean.getHariKronis() != null && bean.getHariKronis().compareTo(0) == 1){
             obatDetailEntity.setHariKronis(bean.getHariKronis());
         }
+        obatDetailEntity.setFrekuensi(bean.getFrekuensi());
         try {
             transaksiObatDetailDao.addAndSave(obatDetailEntity);
             response.setStatus("success");

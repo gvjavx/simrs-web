@@ -358,10 +358,75 @@ public class AsesmenRawatInapAction {
                 asesmenRawatInap.setJawaban(jawaban);
                 asesmenRawatInap.setLastUpdate(time);
                 asesmenRawatInap.setLastUpdateWho(userLogin);
+                asesmenRawatInap.setTipe("tipe");
                 response = asesmenRawatInapBo.saveEdit(asesmenRawatInap);
             } catch (GeneralBOException e) {
                 logger.error("Found Error" + e.getMessage());
             }
+        }
+        return response;
+    }
+
+    public CrudResponse updateTTD(String data) {
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        AsesmenRawatInapBo asesmenRawatInapBo = (AsesmenRawatInapBo) ctx.getBean("asesmenRawatInapBoProxy");
+        try {
+            if(data != null && !"".equalsIgnoreCase(data)){
+                JSONObject obj = new JSONObject(data);
+                if(obj != null){
+                    if (obj.has("ttd")) {
+                        if (!"".equalsIgnoreCase(obj.getString("ttd")) && obj.getString("ttd") != null) {
+                            BASE64Decoder decoder = new BASE64Decoder();
+                            byte[] decodedBytes2 = decoder.decodeBuffer(obj.getString("ttd"));
+                            String wkt = time.toString();
+                            String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                            String fileName2 = obj.getString("id_asesmen") + "-" + "-" + patten + ".png";
+                            String uploadFile2 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName2;
+                            BufferedImage image2 = ImageIO.read(new ByteArrayInputStream(decodedBytes2));
+
+                            if (image2 == null) {
+                                logger.error("Buffered Image is null");
+                                response.setStatus("error");
+                                response.setMsg("Buffered Image is null");
+                                return response;
+                            } else {
+                                File f2 = new File(uploadFile2);
+                                ImageIO.write(image2, "png", f2);
+                                AsesmenRawatInap asesmenRawatInap = new AsesmenRawatInap();
+                                asesmenRawatInap.setIdAsesmenKeperawatanRawatInap(obj.getString("id_asesmen"));
+                                asesmenRawatInap.setJawaban(fileName2);
+                                asesmenRawatInap.setNamaTerang(obj.getString("nama"));
+                                asesmenRawatInap.setSip(obj.getString("sip"));
+                                asesmenRawatInap.setLastUpdate(time);
+                                asesmenRawatInap.setLastUpdateWho(userLogin);
+                                try {
+                                    asesmenRawatInapBo.saveEdit(asesmenRawatInap);
+                                    response.setStatus("success");
+                                    response.setMsg("OK!");
+                                } catch (GeneralBOException e) {
+                                    logger.error("Found Error" + e.getMessage());
+                                    response.setStatus("error");
+                                    response.setMsg("Error"+e.getMessage());
+                                }
+                            }
+                        }
+                    }else{
+                        response.setStatus("error");
+                        response.setMsg("Tidak ada data yang dikirim...!");
+                    }
+                }else{
+                    response.setStatus("error");
+                    response.setMsg("Tidak ada data yang dikirim...!");
+                }
+            }else{
+                response.setStatus("error");
+                response.setMsg("Tidak ada data yang dikirim...!");
+            }
+        }catch (Exception e){
+            response.setStatus("error");
+            response.setMsg("Tidak ada data yang dikirim...!");
+            logger.error(e.getMessage());
         }
         return response;
     }

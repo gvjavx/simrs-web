@@ -582,7 +582,7 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 jadwalPelayananDTO.setKuotaTerpakaiBpjs(obj[12] != null ? (BigInteger) obj[12] : new BigInteger(String.valueOf("0")));
                 jadwalPelayananDTO.setKuotaBpjs(obj[13] != null ? (BigInteger) obj[13] : new BigInteger(String.valueOf("0")));
                 if(obj[14] != null && !"".equalsIgnoreCase(obj[14].toString())){
-                    jadwalPelayananDTO.setUrlImg(obj[14] != null ? CommonConstant.RESOURCE_PATH_USER_PHOTO+(String) obj[14] : "");
+                    jadwalPelayananDTO.setUrlImg(obj[14] != null ? CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_PHOTO_PROFILE +(String) obj[14] : "");
                 }
                 pelayananDTOList.add(jadwalPelayananDTO);
             }

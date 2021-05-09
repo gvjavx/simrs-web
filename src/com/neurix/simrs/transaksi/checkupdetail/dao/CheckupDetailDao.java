@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.checkupdetail.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.transaksi.asesmenugd.model.ItSimrsAsesmenUgdEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.KlaimFpkDTO;
@@ -9,6 +10,7 @@ import com.neurix.simrs.transaksi.checkupdetail.model.RiwayatTindakanDTO;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
+import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Criterion;
@@ -252,12 +254,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "hd.tgl_lahir,\n"+
                     "dt.tindak_lanjut \n"+
                     "FROM it_simrs_header_checkup hd\n" +
-                    "INNER JOIN (" +
-                    "SELECT a.* FROM(\n" +
-                    "SELECT *, rank() OVER (PARTITION BY no_checkup ORDER BY created_date DESC) as rank \n" +
-                    "FROM it_simrs_header_detail_checkup\n" +
-                    ") a WHERE a.rank = 1 " +
-                    ")dt ON dt.no_checkup = hd.no_checkup\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup dt ON dt.no_checkup = hd.no_checkup\n" +
                     "INNER JOIN im_simrs_status_pasien st ON st.id_status_pasien = dt.status_periksa\n" +
                     "INNER JOIN im_simrs_jenis_periksa_pasien jp ON dt.id_jenis_periksa_pasien = jp.id_jenis_periksa_pasien \n" +
                     "INNER JOIN (SELECT\n" +
@@ -389,11 +386,43 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                         }
                     }
                     headerDetailCheckup.setAlamat(jalan);
+                    headerDetailCheckup.setIsTindakan(isTindakanRawat(obj[0].toString()));
+                    headerDetailCheckup.setTriase(triase(obj[0].toString()));
                     checkupList.add(headerDetailCheckup);
                 }
             }
         }
         return checkupList;
+    }
+
+    public String isTindakanRawat(String id){
+        String res = "N";
+        if(id != null && !"".equalsIgnoreCase(id)){
+            Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsTindakanRawatEntity.class);
+            criteria.add(Restrictions.eq("idDetailCheckup", id));
+            criteria.add(Restrictions.eq("flag", "Y"));
+            List<ItSimrsTindakanRawatEntity> listOfResult = criteria.list();
+            if(listOfResult.size() > 0){
+                res = "Y";
+            }
+        }
+        return res;
+    }
+
+    public String triase(String id){
+        String res = "";
+        if(id != null && !"".equalsIgnoreCase(id)){
+            Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsAsesmenUgdEntity.class);
+            criteria.add(Restrictions.eq("idDetailCheckup", id));
+            criteria.add(Restrictions.eq("tipe", "triase"));
+            criteria.add(Restrictions.eq("flag", "Y"));
+            List<ItSimrsAsesmenUgdEntity> listOfResult = criteria.list();
+            if(listOfResult.size() > 0){
+                ItSimrsAsesmenUgdEntity entity = listOfResult.get(0);
+                res = entity.getJawaban();
+            }
+        }
+        return res;
     }
 
     public List<HeaderDetailCheckup> getSearchVerifikasiRawatJalan(HeaderDetailCheckup bean) {

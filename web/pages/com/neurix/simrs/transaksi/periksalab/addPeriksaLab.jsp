@@ -245,6 +245,12 @@
                                             <table><s:label name="periksaLab.diagnosa"></s:label></table>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td><b>Catatan Klinis</b></td>
+                                        <td>
+                                            <table><s:label name="periksaLab.catatanKlinis"></s:label></table>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
                             <!-- /.col -->

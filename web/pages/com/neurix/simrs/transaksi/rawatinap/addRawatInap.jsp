@@ -471,32 +471,30 @@
                     </div>
                     <div class="box-body">
                        <div class="row">
-                           <s:if test='rawatInap.kategoriRuangan == "rawat_inap" || rawatInap.kategoriRuangan == "ruang_bersalin"'>
-                               <div class="col-md-6">
-                                   <button class="btn btn-primary" onclick="showModalPlan('<s:property value="rawatInap.idDetailCheckup"/>','','suster')">
-                                       <i class="fa fa-calendar"></i> Schedule Rawat
+                           <div class="col-md-6">
+                               <button class="btn btn-primary" onclick="showModalPlan('<s:property value="rawatInap.idDetailCheckup"/>','','suster')">
+                                   <i class="fa fa-calendar"></i> Schedule Rawat
+                               </button>
+                               <div class="btn-group dropdown">
+                                   <button type="button" class="btn btn-info"><i class="fa fa-edit"></i> Observasi dan Pemberian
                                    </button>
-                                   <div class="btn-group dropdown">
-                                       <button type="button" class="btn btn-info"><i class="fa fa-edit"></i> Observasi dan Pemberian
-                                       </button>
-                                       <button type="button" class="btn btn-info dropdown-toggle"
-                                               data-toggle="dropdown" style="height: 34px">
-                                           <span class="caret"></span>
-                                           <span class="sr-only">Toggle Dropdown</span>
-                                       </button>
-                                       <ul class="dropdown-menu" role="menu">
-                                           <li><a onclick="showModalCairan('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
-                                                   class="fa fa-file-o"></i> Observasi Cairan</a></li>
-                                           <li><a onclick="showModalMonVitalSign('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
-                                                   class="fa fa-file-o"></i> Chart Vital Sign</a></li>
-                                           <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','parenteral')" style="cursor: pointer"><i
-                                                   class="fa fa-file-o"></i> Pemberian Obat Parenteral</a></li>
-                                           <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','nonparenteral')" style="cursor: pointer"><i
-                                                   class="fa fa-file-o"></i> Pemberian Obat Non Parenteral</a></li>
-                                       </ul>
-                                   </div>
+                                   <button type="button" class="btn btn-info dropdown-toggle"
+                                           data-toggle="dropdown" style="height: 34px">
+                                       <span class="caret"></span>
+                                       <span class="sr-only">Toggle Dropdown</span>
+                                   </button>
+                                   <ul class="dropdown-menu" role="menu">
+                                       <li><a onclick="showModalCairan('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
+                                               class="fa fa-file-o"></i> Observasi Cairan</a></li>
+                                       <li><a onclick="showModalMonVitalSign('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
+                                               class="fa fa-file-o"></i> Chart Vital Sign</a></li>
+                                       <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','parenteral')" style="cursor: pointer"><i
+                                               class="fa fa-file-o"></i> Pemberian Obat Parenteral</a></li>
+                                       <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','nonparenteral')" style="cursor: pointer"><i
+                                               class="fa fa-file-o"></i> Pemberian Obat Non Parenteral</a></li>
+                                   </ul>
                                </div>
-                           </s:if>
+                           </div>
                            <div class="col-md-6">
                                <div class="btn-group dropdown">
                                    <button onclick="setRekamMedis()" type="button" class="btn btn-primary hvr-icon-down"><i class="fa fa-edit"></i> Asesmen
@@ -678,8 +676,6 @@
                             </tbody>
                         </table>
                     </div>
-
-                    <s:if test='rawatInap.kategoriRuangan == "rawat_inap" || rawatInap.kategoriRuangan == "ruang_bersalin"'>
                     <div class="box-header with-border" id="pos_lab">
                     </div>
                     <div class="box-header with-border">
@@ -737,34 +733,32 @@
                         </table>
                     </div>
 
-                        <div class="box-header with-border" id="pos_pendamping">
-                        </div>
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><i class="fa fa-stethoscope"></i> Makanan Pendamping</h3>
-                        </div>
-                        <div class="box-body">
-                            <button class="btn btn-success btn-outline hvr-icon-spin" style="margin-bottom: 10px; width: 150px"
-                                    onclick="showModal(9)"><i class="fa fa-plus hvr-icon"></i> Makanan
-                            </button>
-                            <button class="btn btn-primary" style="margin-bottom: 10px;"
-                                    onclick="refreshTable('pendamping_ref', 'pendamping')"><i class="fa fa-refresh" id="pendamping_ref"></i> Refresh
-                            </button>
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                <tr bgcolor="#90ee90" style="height: 20px">
-                                    <td>Tanggal</td>
-                                    <td>No. Pesanan</td>
-                                    <td align="center">Status</td>
-                                    <td align="center"width="18%">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody id="body_pendamping">
+                    <div class="box-header with-border" id="pos_pendamping">
+                    </div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Makanan Pendamping</h3>
+                    </div>
+                    <div class="box-body">
+                        <button class="btn btn-success btn-outline hvr-icon-spin" style="margin-bottom: 10px; width: 150px"
+                                onclick="showModal(9)"><i class="fa fa-plus hvr-icon"></i> Makanan
+                        </button>
+                        <button class="btn btn-primary" style="margin-bottom: 10px;"
+                                onclick="refreshTable('pendamping_ref', 'pendamping')"><i class="fa fa-refresh" id="pendamping_ref"></i> Refresh
+                        </button>
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr bgcolor="#90ee90" style="height: 20px">
+                                <td>Tanggal</td>
+                                <td>No. Pesanan</td>
+                                <td align="center">Status</td>
+                                <td align="center"width="18%">Action</td>
+                            </tr>
+                            </thead>
+                            <tbody id="body_pendamping">
 
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </s:if>
+                            </tbody>
+                        </table>
+                    </div>
                     <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
                     <div class="box-header with-border" id="pos_ruangan">
                     </div>
@@ -1179,7 +1173,7 @@
                                         </s:elseif>
                                         <button class="btn btn-success hvr-icon-pulse-grow" onclick="confirmPemeriksaanPasien()"
                                                 style="margin-top: 15px;" id="save_ket"><i
-                                                class="fa fa-check hvr-icon"></i> Save
+                                                class="fa fa-check hvr-icon"></i> Selesai
                                         </button>
                                         <button style="display: none; cursor: no-drop; margin-top: 15px;" type="button"
                                                 class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
@@ -2525,6 +2519,34 @@
                         </select>
                     </div>
                 </div>
+                <div class="row jarak">
+                    <div class="col-md-offset-3 col-md-3">
+                        <div class="form-check">
+                            <input type="checkbox" name="waktu_resep" id="waktu_resep1" value="07:00">
+                            <label for="waktu_resep1"></label> 07:00
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input type="checkbox" name="waktu_resep" id="waktu_resep2" value="12:00">
+                            <label for="waktu_resep2"></label> 12:00
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input type="checkbox" name="waktu_resep" id="waktu_resep3" value="04:00">
+                            <label for="waktu_resep3"></label> 04:00
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-3">
+                        <div class="form-check">
+                            <input type="checkbox" name="waktu_resep" id="waktu_resep4" value="08:00">
+                            <label for="waktu_resep4"></label> 08:00
+                        </div>
+                    </div>
+                </div>
                 <hr/>
                 <%--Keterangan Obat Berdasarkan Jenis Obat--%>
                 <%--<div class="row" style="margin-top: -7px">--%>
@@ -2575,7 +2597,7 @@
                               <%--id="cor_rep_cek_waktu"><i class="fa fa-check"></i> correct</span>--%>
                     <%--</div>--%>
                 <%--</div>--%>
-                <hr/>
+                <%--<hr/>--%>
                 <div class="row" style="margin-top: -10px">
                     <div class="col-md-12">
                         <button class="btn btn-success" onclick="addObatToList()"><i class="fa fa-plus"></i> Tambah
@@ -4542,6 +4564,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/KandunganAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/KasirRawatJalanAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenUgdAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>
@@ -4565,6 +4588,7 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/custome_form.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/rencana_asuahan.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/allhistory.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenUgd.js"/>'></script>
 
 
 <script type='text/javascript'>

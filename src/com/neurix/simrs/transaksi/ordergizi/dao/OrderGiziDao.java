@@ -143,7 +143,9 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                         "d.tgl_order,\n" +
                         "d.approve_flag,\n" +
                         "d.diterima_flag,\n" +
-                        "c.no_ruangan\n" +
+                        "c.no_ruangan,\n" +
+                        "d.id_diet_gizi,\n"+
+                        "d.keterangan\n"+
                         "FROM it_simrs_header_checkup a\n" +
                         "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                         "INNER JOIN (\n" +
@@ -212,6 +214,8 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                     rawatInap.setNamaDiagnosa(getDiagnosa(obj[5].toString()));
                     if("RI".equalsIgnoreCase(bean.getTipePelayanan())){
                         rawatInap.setNoRuangan(obj[15] == null ? "" : obj[15].toString());
+                        rawatInap.setIdBentukGizi(obj[16] == null ? "" : obj[16].toString());
+                        rawatInap.setKeterangan(obj[17] == null ? "" : obj[17].toString());
                     }
                     rawatInapList.add(rawatInap);
                 }

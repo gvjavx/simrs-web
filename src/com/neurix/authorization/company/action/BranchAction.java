@@ -559,7 +559,8 @@ public class BranchAction extends BaseMasterAction {
 
         Branch branch = new Branch();
         branch.setAreaId(CommonUtil.userAreaId());
-        return branchBo.getByCriteria(branch);
+        List<Branch> results = branchBo.getByCriteria(branch);
+        return results;
     }
 
     public List<Branch> getComboBranchByArea(String area){

@@ -30,10 +30,10 @@
                             <td width="20%" align="center">
                                 <img id="btn_gizi_add_pengkajian_gizi" class="hvr-grow"
                                      onclick="detailGizi('add_pengkajian_gizi')"
-                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_add_pengkajian_gizi" class="hvr-grow btn-hide"
-                                     onclick="conGizi('add_pengkajian_gizi', 'pengkajian_gizi')"
-                                     src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                     src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
+                                <%--<img id="delete_add_pengkajian_gizi" class="hvr-grow btn-hide"--%>
+                                     <%--onclick="conGizi('add_pengkajian_gizi', 'pengkajian_gizi')"--%>
+                                     <%--src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">--%>
                             </td>
                         </tr>
                         </tbody>
@@ -68,6 +68,7 @@
                         <div class="col-md-12"><b>A. Antropmentri</b></div>
                     </div>
                     <div id="set_pengakajian"></div>
+                    <hr>
                     <div class="row jarak">
                         <label class="col-md-3">Status Gizi</label>
                         <div class="col-md-3">

@@ -71,7 +71,7 @@
                         </div>
                     </div>
                     <div class="row text-center">
-                        <div class="col-md-6">
+                        <div class="col-md-offset-3 col-md-6">
                             <label >TTD DPJP</label>
                             <canvas class="paint-canvas-ttd" id="ttd_dpjp"
                                     onmouseover="paintTtd('ttd_dpjp')"></canvas>
@@ -82,16 +82,16 @@
                                 Clear
                             </button>
                         </div>
-                        <div class="col-md-6">
-                            <label >TTD Pasien/Keluarga</label>
-                            <canvas class="paint-canvas-ttd" id="ttd_pasien"
-                                    onmouseover="paintTtd('ttd_pasien')"></canvas>
-                            <input class="form-control" id="nama_terang_pasien" placeholder="Nama Terang">
-                            <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                    onclick="removePaint('ttd_pasien')"><i class="fa fa-trash"></i>
-                                Clear
-                            </button>
-                        </div>
+                        <%--<div class="col-md-6">--%>
+                            <%--<label >TTD Pasien/Keluarga</label>--%>
+                            <%--<canvas class="paint-canvas-ttd" id="ttd_pasien"--%>
+                                    <%--onmouseover="paintTtd('ttd_pasien')"></canvas>--%>
+                            <%--<input class="form-control" id="nama_terang_pasien" placeholder="Nama Terang">--%>
+                            <%--<button style="margin-left: 8px" type="button" class="btn btn-danger"--%>
+                                    <%--onclick="removePaint('ttd_pasien')"><i class="fa fa-trash"></i>--%>
+                                <%--Clear--%>
+                            <%--</button>--%>
+                        <%--</div>--%>
                     </div>
                 </div>
             </div>

@@ -2629,6 +2629,43 @@ INSERT INTO im_simrs_diet_gizi VALUES
 ('BEN00000008','Makanan Cincang',0,'02','Y','C', now(),'migrasi', now(),'migrasi','N');
 
 
+--NOTE DI MESS SAMPAI LEBARAN
+INSERT INTO im_functions VALUES
+(6925, 'print resep pasien', '/reseppoli/printResepPasien_reseppoli.action', 1543, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6925, 36, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN indikasi VARCHAR(100);
+
+ALTER TABLE it_simrs_catatan_terintegrasi
+ADD COLUMN kesadaran VARCHAR(10),
+ADD COLUMN spo2 VARCHAR(10),
+ADD COLUMN o2 VARCHAR(10),
+ADD COLUMN ews VARCHAR(10);
+
+ALTER TABLE it_simrs_header_checkup
+ADD COLUMN catatan_klinis TEXT;
+
+ALTER TABLE it_simrs_catatan_terintegrasi
+ADD COLUMN kesimpulan VARCHAR(100),
+ADD COLUMN monitoring VARCHAR(100);
+
+ALTER TABLE it_simrs_catatan_terintegrasi
+ADD COLUMN data_ews VARCHAR(100);
+
+ALTER TABLE mt_simrs_transaksi_obat_detail
+ADD COLUMN frekuensi VARCHAR(100);
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000293','RMM00000054','pindah_ri','5','Y','C','migrasi', now(), now(),'migrasi');
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000294','RMM00000030','rawat_inap','10','Y','C','migrasi', now(), now(),'migrasi');
+
+
+
 
 
 

@@ -40,6 +40,7 @@ function saveRJ(jenis, ket) {
         var va9 = $('#af9').val();
         var va10 = $('#af10').val();
         var va11 = $('#af11').val();
+        var ku = $('#keadaan_umum').val();
         var va12 = "";
         var va4d = $('[name=af4]:checked').val();
         if(va4d != undefined){
@@ -110,7 +111,7 @@ function saveRJ(jenis, ket) {
             });
             data.push({
                 'parameter': 'Keadaan Umum',
-                'jawaban': 'Tinggi Badan '+va6+' cm, Berat Badan '+va7+' kg',
+                'jawaban': ku+' Tinggi Badan '+va6+' cm, Berat Badan '+va7+' kg',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -200,18 +201,48 @@ function saveRJ(jenis, ket) {
         var va3 = $('[name=gz3]:checked').val();
         var va4 = undefined;
         var va4d = $('[name=gz4]:checked').val();
+
+        var vaCek = "";
+        var ketVa1 = $('[name=penurunan]:checked').val();
+        if(va1 != undefined){
+            if(va1 == "Ya|2"){
+                if(ketVa1 != undefined){
+                    vaCek = ketVa1;
+                }
+            }else{
+                vaCek = va1;
+            }
+        }
+
         if(va4d != undefined){
             var a = $('#ket_gz4').val();
             if(va4d == "Lain-Lain"){
                 if(a != ''){
-                    va4 = a;
+                    va4 = 'Penyakit, '+a;
                 }
             }else{
-                va4 = va4d;
+                va4 = 'Penyakit, '+va4d;
             }
         }
 
-        if (va1 && va2 && va3 && va4 != undefined) {
+        var va3Cek = "";
+        if(va3 != undefined){
+            if("Ya|2" == va3){
+                if(va4 != undefined){
+                    va3Cek = va4;
+                }
+            }else{
+                va3Cek = va3;
+            }
+        }
+
+        var berat = "";
+
+        if(ketVa1 != undefined){
+            berat = ketVa1;
+        }
+
+        if (vaCek && va3Cek != '' && va2 != undefined) {
             var isi1 = va1.split("|")[0];
             var isi2 = va2.split("|")[0];
             var isi3 = va3.split("|")[0];
@@ -221,7 +252,7 @@ function saveRJ(jenis, ket) {
             var skor3 = va3.split("|")[1];
 
             data.push({
-                'parameter': '1. Apakah pasien mengalami penuruanan / peningkatan BB yang tidak di inginkan dalam 6 bulan terakhir ?',
+                'parameter': '1. Apakah pasien mengalami penuruanan / peningkatan BB yang tidak di inginkan dalam 6 bulan terakhir ? '+berat,
                 'jawaban': isi1,
                 'skor': skor1,
                 'keterangan': jenis,
@@ -237,7 +268,7 @@ function saveRJ(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': '3. Pasien dengan diagnosa khusus / kondisi khusus ? Penyakit ',
+                'parameter': '3. Pasien dengan diagnosa khusus / kondisi khusus ? '+va4,
                 'jawaban': isi3,
                 'skor': skor3,
                 'keterangan': jenis,
@@ -246,7 +277,6 @@ function saveRJ(jenis, ket) {
             });
 
             var total = (parseInt(skor1) + parseInt(skor2) + parseInt(skor3));
-            console.log(total);
             data.push({
                 'parameter': 'Total',
                 'jawaban': '',
@@ -269,8 +299,8 @@ function saveRJ(jenis, ket) {
                 'tipe': 'kesimpulan',
                 'id_detail_checkup': idDetailCheckup
             });
-            cek = true;
             console.log(data);
+            cek = true;
         }
     }
 
@@ -381,62 +411,74 @@ function saveRJ(jenis, ket) {
         var cvs1 = isCanvasBlank(nyeri);
         var cvs2 = isCanvasBlank(ttd);
 
-        if(va1 && va3 != undefined && va2 && va4 && namaTerang && nip != '' && !cvs2){
-            data.push({
-                'parameter': 'Apakah terdapat keluhan nyeri',
-                'jawaban': va1,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Lokasi',
-                'jawaban': va2,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Jenis',
-                'jawaban': va3,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Intensitas',
-                'jawaban': va4,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
+        if(va1 != undefined){
 
-            if("Ya" == va1){
-                var canv1 = nyeri.toDataURL("image/png"),
-                    canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
-                data.push({
-                    'parameter': tipe,
-                    'jawaban': canv1,
-                    'keterangan': jenis,
-                    'jenis': ket,
-                    'tipe': 'gambar',
-                    'id_detail_checkup': idDetailCheckup
-                });
+            var cecek = false;
+            if(va1 == "Ya"){
+                if(va2 != undefined && va3 != '' && va4 != ''){
+                    cecek = true;
+                }
+            }else{
+                cecek = true;
             }
 
-            var canv2 = ttd.toDataURL("image/png"),
-                canv2 = canv2.replace(/^data:image\/(png|jpg);base64,/, "");
-            data.push({
-                'parameter': 'TTD Perawat',
-                'jawaban': canv2,
-                'keterangan': jenis,
-                'jenis': ket,
-                'tipe': 'ttd',
-                'nama_terang': namaTerang,
-                'sip': nip,
-                'id_detail_checkup': idDetailCheckup
-            });
-            cek = true;
+            if(cecek){
+                data.push({
+                    'parameter': 'Apakah terdapat keluhan nyeri',
+                    'jawaban': va1,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Lokasi',
+                    'jawaban': va2 != '' ? va2 : '',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Jenis',
+                    'jawaban': va3 != '' ? va3 : '',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Intensitas',
+                    'jawaban': va4 != '' ? va4 : '',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+
+                if("Ya" == va1){
+                    var canv1 = nyeri.toDataURL("image/png"),
+                        canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
+                    data.push({
+                        'parameter': tipe,
+                        'jawaban': canv1,
+                        'keterangan': jenis,
+                        'jenis': ket,
+                        'tipe': 'gambar',
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                }
+
+                var canv2 = ttd.toDataURL("image/png"),
+                    canv2 = canv2.replace(/^data:image\/(png|jpg);base64,/, "");
+                data.push({
+                    'parameter': 'TTD Perawat',
+                    'jawaban': canv2,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'tipe': 'ttd',
+                    'nama_terang': namaTerang,
+                    'sip': nip,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                cek = true;
+            }
         }
     }
 
@@ -619,5 +661,13 @@ function delKepRJ(jenis, ket) {
                 detailRJ(jenis);
             }
         });
+    }
+}
+
+function cekGiziRJ(val, form){
+    if(val == "Ya|2"){
+        $('#'+form).show();
+    }else{
+        $('#'+form).hide();
     }
 }

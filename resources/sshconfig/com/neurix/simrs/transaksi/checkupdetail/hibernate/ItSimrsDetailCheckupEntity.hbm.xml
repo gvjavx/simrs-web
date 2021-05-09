@@ -226,5 +226,8 @@
         <property name="isVaksin">
             <column name="is_vaksin"/>
         </property>
+        <property name="indikasi">
+            <column name="indikasi"/>
+        </property>
     </class>
 </hibernate-mapping>

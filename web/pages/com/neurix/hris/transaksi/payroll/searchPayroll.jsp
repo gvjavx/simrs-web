@@ -725,9 +725,9 @@
                          name="image_indicator_write">
                 </div>
 
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin_waiting">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin_waiting_search_payroll">
                     <h4><i class="icon fa fa-ban"></i> Warning! Found Error when saving, please check to your admin...</h4>
-                    <p id="msg_fin_error_waiting"></p>
+                    <p id="msg_fin_error_waiting_search_payroll"></p>
                 </div>
             </div>
             <div class="modal-footer">
@@ -740,7 +740,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-success-dialog">
+<div class="modal fade" id="modal-success-search-payroll">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
@@ -757,7 +757,7 @@
             <div class="modal-footer">
                 <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
                 <%--</button>--%>
-                <button type="button" class="btn btn-sm btn-success" id="ok_con"><i class="fa fa-check"></i> Ok
+                <button type="button" class="btn btn-sm btn-success" data-dismiss="modal" id="ok_con"><i class="fa fa-check"></i> Ok
                 </button>
             </div>
         </div>
@@ -774,11 +774,11 @@
                 $("#modal-loading-dialog").modal('show');
                 $("#waiting-content").hide();
                 $("#warning_fin_waiting").show();
-//            $("#msg_fin_error_waiting").text("Error. perbaikan");
+                $("#msg_fin_error_waiting").text("");
             }
             if (tipe == "success"){
                 $("#modal-loading-dialog").modal('hide');
-                $("#modal-success-dialog").modal('show');
+                $("#modal-success-search-payroll").modal('show');
             }
         }
 
@@ -850,7 +850,7 @@
                     dwr.engine.setAsync(false);
                     if (status == '00') {
                         alert('Payroll Berhasil Tidak Di Approve');
-                        $('#modal-approve').modal('hide');
+                        $('#modal-approve-keu').modal('hide');
                         showDialog("success");
                         $('#myForm')[0].reset();
                         window.location.href="<s:url action='initForm_payroll.action'/>";
@@ -891,7 +891,7 @@
                 PayrollAction.approvePayrollSdm(payrollHeaderId, branchId, bulan, tahun, tipe, function(status){
                     dwr.engine.setAsync(false);
                     if (status == '00') {
-                        $('#modal-approve').modal('hide');
+                        $('#modal-approve-sdm').modal('hide');
                         showDialog("success");
                     } else {
                         showDialog("error");

@@ -3406,11 +3406,12 @@ function saveAnamnese() {
     var suhu = $('#fisik_suhu').val();
     var nadi = $('#fisik_nadi').val();
     var rr = $('#fisik_rr').val();
-    if (auto && hetero && tensi && suhu && nadi && rr != '') {
+    var klinis = $('#kinis').val();
+    if (auto && hetero && tensi && suhu && nadi && rr && klinis != '') {
         if (!cekSession()) {
             $('#save_fisik').hide();
             $('#load_fisik').show();
-            CheckupAction.saveAnamnese(auto, hetero, noCheckup, idDetailCheckup, tensi, suhu, nadi, rr, {
+            CheckupAction.saveAnamnese(auto, hetero, noCheckup, idDetailCheckup, tensi, suhu, nadi, rr, klinis, {
                 callback: function (response) {
                     if (response.status == "success") {
                         $('#suc_anamnese').show().fadeOut(5000);
@@ -3618,9 +3619,9 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
     var li = "";
     var jenisRm = "";
     if (jenis == "igd") {
-        if (parseInt(umur) >= 0 && parseInt(umur) <= 17) {
+        if (parseInt(umur) >= 0 && parseInt(umur) <= 16) {
             jenisRm = 'ugd_anak';
-        } else if (parseInt(umur) >= 18 && parseInt(umur) <= 55) {
+        } else if (parseInt(umur) >= 17 && parseInt(umur) <= 55) {
             jenisRm = 'ugd_dewasa';
         } else if (parseInt(umur) > 56) {
             jenisRm = 'ugd_geriatri';
@@ -4165,7 +4166,7 @@ function showDetailPaket() {
     });
 }
 
-function setKeteranganPeriksa() {
+function setKeteranganPeriksa(id) {
     var option = '<option value=""> - </option>';
     if (jenisPeriksaPasien == 'umum' || jenisPeriksaPasien == 'rekanan' || jenisPeriksaPasien == 'bpjs_rekanan') {
         option = option + ' <option value="selesai">Selesai</option>';
@@ -4206,7 +4207,7 @@ function setKeteranganPeriksa() {
                 '<option value="kontrol_ulang">Kontrol Ulang</option>';
         }
     }
-    $('#keterangan').html(option);
+    $('#'+id).html(option);
 }
 
 function setDiskonHarga(id) {
@@ -5434,4 +5435,32 @@ function doneUplod(){
     $('#ket_upload_pemeriksan_0, #upload_pemeriksan_0, #label_upload_pemeriksan_0').val('');
     $('#set_upload_pemeriksan').html('');
     $('#label_upload_pemeriksan_0').css('border-bottom','');
+}
+
+function setTindakLanjut(){
+    dwr.engine.setAsync(true);
+    CheckupDetailAction.getDetailCheckup(idDetailCheckup, function (res) {
+        console.log(res);
+        if(res.tindakLanjut != null && res.tindakLanjut != ''){
+            $('#keterangan').val(res.tindakLanjut).trigger('change');
+            $('#keterangan').attr('disabled', true);
+            if(res.tindakLanjut == 'selesai'){
+                var kete = $('#ket_selesai option');
+                var ketse = "";
+                $.each(kete, function (i, item) {
+                    if(item.innerHTML == res.keteranganSelesai){
+                        ketse = item.value;
+                    }
+                });
+                $('#ket_selesai').val(ketse).trigger('change');
+                $('#ket_selesai').attr('disabled', true);
+            }else if(res.tindakLanjut == 'rawat_inap' || res.tindakLanjut == 'rawat_isolasi' || res.tindakLanjut == 'rawat_intensif'){
+                $('#keterangan_rw').val(res.indikasi).trigger('change');
+                $('#keterangan_rw').attr('disabled', true);
+            }else if(res.tindakLanjut == 'rujuk_rs_lain'){
+                $('#rs_rujukan').val(res.rsRujukan);
+                $('#rs_rujukan').attr('disabled', true);
+            }
+        }
+    });
 }
