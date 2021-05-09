@@ -426,5 +426,8 @@ ADD client_id character varying(20)
 ALTER TABLE it_simrs_pembayaran_online
 ADD keterangan text
 
-
+--2021-09-05
+INSERT INTO public.im_simrs_rekening_telemedic(
+	id_rekening, pembayaran_id, pembayaran_name, no_rekening, nama_rekening, coa, branch_id, flag, action, created_date, created_who, last_update, last_update_who, tipe_rekening, client_id, keterangan)
+	VALUES ('RKN00013', 'APM00000009', 'BANK SYARIAH MANDIRI','','VA BANK SYARIAH MANDIRI','1.1.01.02.09','02','Y','C',now(), 'admin', now(), 'admin', 'virtual_account', '1108', '	Pilih Client ID : NMU (1108)');
 
