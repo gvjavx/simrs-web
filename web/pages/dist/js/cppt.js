@@ -605,7 +605,7 @@ function detailCPPT(jenis, ket, tipe, gizi) {
                             '<p>Suhu : ' + item.suhu + ' ˚C</p>' +
                             '<p>RR : ' + item.rr + ' x/menit' +'</p>'+
                             '<p>Keterangan : ' + cekNullCppt(item.objective)+'</p>'+
-                            '<p>-------------------------------</p>' +
+                            '<p>-----------------------</p>' +
                             '<p>Total Skor EWS : '+cekNullCppt(item.ews)+'</p>' +
                             '<p>Kesimpulan : '+cekNullCppt(item.kesimpulan)+'</p>' +
                             '<p>Monitoring : '+cekNullCppt(item.monitoring)+'</p>';
