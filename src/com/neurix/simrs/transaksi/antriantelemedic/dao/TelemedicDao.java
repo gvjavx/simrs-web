@@ -5,6 +5,7 @@ import com.neurix.hris.master.shift.model.Shift;
 import com.neurix.simrs.master.telemedic.model.RekeningTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
+import com.neurix.simrs.transaksi.verifikatorpembayaran.model.PembayaranOnline;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -393,6 +394,15 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
         }
         return antrianTelemedicList;
     }
+
+//    private PembayaranOnline getListPembayaranOnlineById(String idTrans, String keterangan){
+//
+//        String SQL = "SELECT no_jurnal, tipe_pembayaran FROM it_simrs_pembayaran_online WHERE id_antrian_telemedic = '"+idTrans+"' \n" +
+//                "AND keterangan = '"+keterangan+"' \n";
+//        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery();
+//
+//
+//    }
 
     public List<Shift> getJadwalShiftKasirTelemedicineByDate(String branchId, String stDate, String shiftId){
 
