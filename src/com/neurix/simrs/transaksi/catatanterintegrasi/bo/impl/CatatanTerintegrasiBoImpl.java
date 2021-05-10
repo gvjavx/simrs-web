@@ -84,7 +84,7 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
                     catatan.setNamaPemberi(entity.getNamaPemberi());
                     catatan.setSipPemberi(entity.getSipPemberi());
                     catatan.setTtdPemberi(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getTtdPemberi());
-                    catatan.setNamaPemberi(entity.getNamaPenerima());
+                    catatan.setNamaPenerima(entity.getNamaPenerima());
                     catatan.setSipPenerima(entity.getSipPenerima());
                     if(entity.getTtdPenerima() != null && !"".equalsIgnoreCase(entity.getTtdPenerima())){
                         catatan.setTtdPenerima(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getTtdPenerima());
@@ -143,7 +143,7 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
             catatanTerintegrasiEntity.setTtdPemberi(bean.getTtdPemberi());
 
             catatanTerintegrasiEntity.setNamaPenerima(bean.getNamaPenerima());
-            catatanTerintegrasiEntity.setSipPenerima(bean.getNamaPenerima());
+            catatanTerintegrasiEntity.setSipPenerima(bean.getSipPenerima());
             catatanTerintegrasiEntity.setTtdPenerima(bean.getTtdPenerima());
             catatanTerintegrasiEntity.setTipe(bean.getTipe());
 
@@ -216,11 +216,11 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
             if(bean.getTtdPenerima() != null && !"".equalsIgnoreCase(bean.getTtdPenerima())){
                 entity.setTtdPenerima(bean.getTtdPenerima());
             }
-            if(bean.getNamaPemberi() != null && !"".equalsIgnoreCase(bean.getNamaPemberi())){
-                entity.setNamaPenerima(bean.getNamaPemberi());
+            if(bean.getNamaPenerima() != null && !"".equalsIgnoreCase(bean.getNamaPenerima())){
+                entity.setNamaPenerima(bean.getNamaPenerima());
             }
-            if(bean.getSipPemberi() != null && !"".equalsIgnoreCase(bean.getSipPemberi())){
-                entity.setSipPenerima(bean.getSipPemberi());
+            if(bean.getSipPenerima() != null && !"".equalsIgnoreCase(bean.getSipPenerima())){
+                entity.setSipPenerima(bean.getSipPenerima());
             }
 
             entity.setFlag("Y");

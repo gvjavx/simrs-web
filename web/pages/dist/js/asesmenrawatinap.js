@@ -64,7 +64,7 @@ function showModalAsesmenRawatInap(jenis, idRM, isSetIdRM, flagHide, flagCheck) 
         setTimeout(function () {
             var option = "";
             if("gizi" == flagHide){
-                option = '<option value="Gizi">Gizi</option>';
+                option = '<option value="Ahli Gizi">Ahli Gizi</option>';
                 $('#btn_ina_catatan_integrasi_pasien_ina').attr('onclick', 'detailCPPT(\'catatan_integrasi_pasien_ina\', \'catatan_terintegrasi_ina\', \'ina\', \'gizi\')');
                 $('#cppt5_tensi, #cppt5_suhu, #cppt5_nadi, #cppt5_rr').attr('disabled', true);
                 $('#form_ttd_dpjp').hide();
@@ -73,6 +73,8 @@ function showModalAsesmenRawatInap(jenis, idRM, isSetIdRM, flagHide, flagCheck) 
                     '<option value="Dokter">Dokter</option>\n' +
                     '<option value="Perawat">Perawat</option>\n' +
                     '<option value="Apoteker">Apoteker</option>\n' +
+                    '<option value="Fisioterapi">Fisioterapi</option>\n' +
+                    '<option value="Ahli Gizi">Ahli Gizi</option>\n' +
                     '<option value="Bidan">Bidan</option>';
                 $('#btn_ina_catatan_integrasi_pasien_ina').attr('onclick', 'detailCPPT(\'catatan_integrasi_pasien_ina\', \'catatan_terintegrasi_ina\', \'ina\')');
                 $('#cppt5_tensi, #cppt5_suhu, #cppt5_nadi, #cppt5_rr').attr('disabled', false);

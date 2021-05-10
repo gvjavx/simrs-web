@@ -2462,17 +2462,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" style="display: none" id="int-ket2">
-                        <div class="form-group">
-                            <div class="col-md-offset-4 col-md-8">
-                                <s:action id="initKet" namespace="/checkupdetail"
-                                          name="getListComboKeteranganKeluar_checkupdetail"/>
-                                <s:select list="#initKet.listOfKeterangan" id="ket_ki92" listKey="idKeterangan" listValue="keterangan" cssStyle="width: 100%"
-                                          headerKey="" headerValue="[Select one]"
-                                          cssClass="form-control select2"/>
-                            </div>
-                        </div>
-                    </div>
+                    <%--<div class="row" style="display: none" id="int-ket2">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<div class="col-md-offset-4 col-md-8">--%>
+                                <%--<s:action id="initKet" namespace="/checkupdetail"--%>
+                                          <%--name="getListComboKeteranganKeluar_checkupdetail"/>--%>
+                                <%--<s:select list="#initKet.listOfKeterangan" id="ket_ki92" listKey="idKeterangan" listValue="keterangan" cssStyle="width: 100%"--%>
+                                          <%--headerKey="" headerValue="[Select one]"--%>
+                                          <%--cssClass="form-control select2"/>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <div class="row jarak" style="display: none" id="int-ket3">
                         <div class="form-group">
                             <div class="col-md-offset-4 col-md-8">

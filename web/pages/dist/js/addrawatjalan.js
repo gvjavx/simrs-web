@@ -971,7 +971,7 @@ function showModal(select) {
         $('#is_luar, #is_pending_lab').prop('checked', false);
         $('#is_luar, #is_pending_lab, #tarif_luar_lab').attr('disabled', false);
         $('#form_pending, #form_lab_luar, #form_tarif_lab_luar').hide();
-        $('#form_lab_dalam').show();
+        $('#btn-add-lab-dalam').show();
         $('#lab_luar, #lab_parameter_luar').val('');
         $('#tarif_luar_lab, #h_total_tarif').val('');
         var par = $('.parameter_luar');
@@ -2233,7 +2233,7 @@ function editLab(id, idKategoriLab, isLuar, statusPeriksa, tanggal, jenisPasien,
         });
         $('#form_is_luar').show();
         $('#form_lab_luar').show();
-        $('#form_lab_dalam').hide();
+        $('#btn-add-lab-dalam').hide();
         $('#form_tarif_lab_luar').show();
         $('#tarif_luar_lab').val(formatRupiahAtas2(tarif));
         $('#tarif_luar_lab').attr('disabled', false);
@@ -2243,7 +2243,7 @@ function editLab(id, idKategoriLab, isLuar, statusPeriksa, tanggal, jenisPasien,
         $('#is_luar').attr('checked', false);
         $('#form_is_luar').hide();
         $('#form_lab_luar').hide();
-        $('#form_lab_dalam').show();
+        $('#btn-add-lab-dalam').show();
         $('#form_tarif_lab_luar').hide();
         $('#tarif_luar_lab, #h_total_tarif').val('');
     }
@@ -4844,14 +4844,12 @@ function isLuar(id) {
     var cek = $('#' + id).is(':checked');
     if (cek) {
         $('#form_lab_luar, #form_tarif_lab_luar, #btn-add-lab-luar').show();
-        $('##btn-add-lab-dalam').hide();
-        $('#form_lab_dalam').hide();
+        $('#btn-add-lab-dalam').hide();
         $('#tarif_luar_lab, #h_total_tarif').val('');
     } else {
         $('#btn-add-lab-luar').hide();
-        $('#btn-add-lab-dalam').show();
         $('#form_lab_luar, #form_tarif_lab_luar').hide();
-        $('#form_lab_dalam').show();
+        $('#btn-add-lab-dalam').show();
         $('#tarif_luar_lab, #h_total_tarif').val('');
     }
 }

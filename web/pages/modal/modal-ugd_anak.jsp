@@ -2640,13 +2640,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row jarak" style="display: none" id="int-ket2">
-                        <div class="form-group">
-                            <div class="col-md-offset-3 col-md-9">
-                                <input class="form-control" id="ket_ki92" placeholder="Keterangan">
-                            </div>
-                        </div>
-                    </div>
+                    <%--<div class="row jarak" style="display: none" id="int-ket2">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<div class="col-md-offset-3 col-md-9">--%>
+                                <%--<input class="form-control" id="ket_ki92" placeholder="Keterangan">--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <div class="row jarak" style="display: none" id="int-ket3">
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-4">

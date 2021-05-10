@@ -594,7 +594,7 @@ function detailCPPT(jenis, ket, tipe, gizi) {
                             '<p style="margin-top: -10px">' + cekNullCppt(item.sipPemberi) + '</p>' +
                             '</td>' +
                             '<td colspan="4" align="center">' + setTtd +
-                            '<p style="margin-top: -5px">' + cekNullCppt(item.namaPemberi) + '</p>' +
+                            '<p style="margin-top: -5px">' + cekNullCppt(item.namaPenerima) + '</p>' +
                             '<p style="margin-top: -10px">' + cekNullCppt(item.sipPenerima) + '</p>' +
                             '</td>' +
                             '<td align="center">' + tempDel + '</td></tr>';
