@@ -8479,6 +8479,196 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
         }
         return listOfResult;
     }
+
+    public List<ReportPayroll> reportRekapPayroll(String bulan, String tahun, String unit){
+        List<ReportPayroll> listOfResult = new ArrayList<>();
+        List<Object[]> results;
+        final String query = "select\n" +
+                "       py.nip,\n" +            // 0
+                "       py.nama_pegawai,\n" +   // 1
+                "       py.golongan_name,\n" +  // 2
+                "       py.npwp,\n" +           // 3
+                "       case\n" +
+                "         when py.tipe_pegawai_id = 'TP03' then concat(py.golongan_dapen, '/', py.masa_kerja_gol)\n" +
+                "         else py.golongan_dapen\n" +
+                "           end as golongan_pens,\n" +  // 4
+                "       py.tipe_pegawai_name,\n" +      // 5
+                "       '-' as no_cek,\n" +     // 6
+                "       concat(py.status_keluarga, '/', py.jumlah_anak) as status_keluarga,\n" +    // 7
+                "       py.gaji_pokok,\n" +         // 8
+                "       py.tunjungan_sankhus,\n" +  // 9
+                "       py.tunjangan_jabatan_struktural as tunjangan_jabatan,\n" +  // 10
+                "       py.tunjangan_struktural,\n" +   // 11
+                "       py.tunjangan_fungsional,\n" +   // 12
+                "       py.tunjangan_strategis as tunjangan_profesional,\n" +   // 13
+                "       py.peralihan_gapok,\n" +        // 14
+                "       py.peralihan_sankhus,\n" +      // 15
+                "       py.peralihan_tunjangan,\n" +    // 16
+                "       py.tunjangan_peralihan as tot_tunj_peralihan,\n" +  // 17
+                "       0 as rpl_gaji,\n" +         // 18
+                "       0 as rpl_sankhus,\n" +      // 19
+                "       0 as rpl_tjjab,\n" +        // 20
+                "       0 as rpl_tjstr,\n" +        // 21
+                "       0 as rpl_tjfung,\n" +       // 22
+                "       0 as rpl_tjprof,\n" +       // 23
+                "       0 as rpl_tjalih,\n" +       // 24
+                "       py.tunjangan_komunikasi,\n" +   // 25
+                "       py.tunjangan_tambahan,\n" +     // 26
+                "       (py.tunjangan_siaga + py.tunjangan_lokal + py.tunjangan_supervisi + py.tunjangan_pemondokan) as tot_tunj_lain,\n" + // 27
+                "       py.tunjangan_lokal,\n" +    // 28
+                "       0 as jam_lembur,\n" +       // 29
+                "       0 as fak_lembur,\n" +       // 30
+                "       0 as by_lembur,\n" +        // 31
+                "       py.tunjangan_lembur,\n" +   // 32
+                "       py.tunjangan_perumahan,\n" +    // 33
+                "       py.tunjangan_listrik,\n" +  // 34
+                "       py.tunjangan_air,\n" +      // 35
+                "       py.tunjangan_bbm,\n" +      // 36
+                "       0 as tunj_sos,\n" +         // 37
+                "       (py.tunjangan_dapen + py.tunjangan_bpjs_tk +py.tunjangan_bpjs_ks) as tot_tunj_sos,\n" + // 38
+                "       py.total_rlab,\n" +         // 39
+                "       py.tunjangan_siaga,\n" +    // 40
+                "       py.tunjangan_dapen,\n" +    // 41
+                "       py.tunjangan_bpjs_tk,\n" +  // 42
+                "       py.tunjangan_bpjs_ks,\n" +  // 43
+                "       0 as pend_rutin,\n" +       // 44
+                "       0 as pend_tdk_rutin,\n" +   // 45
+                "       py.pph_gaji,\n" +   // 46
+                "       0 as poypks,\n" +   // 47
+                "       py.iuran_dapen_kary,\n" +   // 48
+                "       py.iuran_dapen_pers,\n" +   // 49
+                "       py.total_iuran_bpjs_tk_kary,\n" +   // 50
+                "       py.total_iuran_bpjs_tk_pers,\n" +   // 51
+                "       py.iuran_bpjs_ks_kary,\n" +     // 52
+                "       py.iuran_bpjs_ks_pers,\n" +     // 53
+                "       (py.iuran_kopkar + py.iuran_sp + py.iuran_piikb + py.iuran_bank_bri + py.iuran_bank_mandiri + py.iuran_infaq +\n" +
+                "        py.iuran_perkes_dan_obat + py.iuran_listrik + py.iuran_potongan_lain) as tot_potongan_lain,\n" +   // 54
+                "       '-' as perkbayar,\n" +  // 55
+                "       '-' as klomperk,\n" +   // 56
+                "       '-' as kdpoli,\n" +     // 57
+                "       '-' as bkodeb,\n" +     // 58
+                "       '-' as pgol,\n" +       // 59
+                "       '-' as pruang,\n" +     // 60
+                "       '-' as pmasa,\n" +      // 61
+                "       '-' as noskdapen,\n" +  // 62
+                "       '-' as noskgaji,\n" +   // 63
+                "       '-' as noidbio,\n" +    // 64
+                "       '-' as prypks,\n" +     // 65
+                "       '-' as prdapenp,\n" +   // 66
+                "       '-' as prdapeng,\n" +   // 67
+                "       '-' as prbpjstp,\n" +   // 68
+                "       '-' as prbpjstg,\n" +   // 69
+                "       '-' as prbpjssp,\n" +   // 70
+                "       '-' as prbpjssg,\n" +   // 71
+                "       0 as rpl_rlab,\n" +   // 72
+                "       py.department_id,\n" +
+                "       py.department_name,\n" +
+                "       dept.kodering as dep_kodering,\n" +
+                "       py.sub_divisi,\n" +
+                "       py.sub_divisi_name,\n" +
+                "       bag.kodering as bag_kodering,\n" +
+                "       py.position_id,\n" +
+                "       py.position_name\n" +
+                "\n" +
+                "from it_hris_payroll_header head\n" +
+                "       left join it_hris_payroll py on py.payroll_header_id = head.payroll_header_id\n" +
+                "       left join it_hris_payroll_pph pph on pph.payroll_id = py.payroll_id\n" +
+                "       left join im_hris_department dept on dept.department_id = py.department_id\n" +
+                "       left join im_hris_position_bagian bag on bag.bagian_id = py.sub_divisi\n" +
+                "where head.bulan = '"+ bulan +"'\n" +
+                "    and head.tahun = '"+ tahun +"'\n" +
+                "    and head.branch_id = '"+ unit +"'\n" +
+                "    and head.tipe_payroll = 'PY'\n" +
+                "    and head.approval_aks_flag = 'Y'\n" +
+                "    and head.flag = 'Y'\n" +
+                "    order by\n" +
+                "    (  case\n" +
+                "    when dept.department_id = 'D07' then 1\n" +
+                "    else 2\n" +
+                "    end\n" +
+                "    ),\n" +
+                "    py.position_id;";
+
+        results = (List<Object[]>)this.sessionFactory.getCurrentSession().createSQLQuery(query).list();
+        for (Object[] row : results) {
+            ReportPayroll result = new ReportPayroll();
+
+            result.setNip((String) row[0]);
+            result.setNama((String) row[1]);
+            result.setGolKary((String) row[2]);
+            result.setNpwp((String) row[3]);
+            result.setGolPens((String) row[4]);
+            result.setStatPeg((String) row[5]);
+            result.setNoCek((String) row[6]);
+            result.setStatKeluarga((String) row[7]);
+            result.setGaji((BigDecimal) row[8]);
+            result.setSankhus((BigDecimal) row[9]);
+            result.setTunjJab((BigDecimal) row[10]);
+            result.setTunjStruk((BigDecimal) row[11]);
+            result.setTunjFung((BigDecimal) row[12]);
+            result.setTunjProf((BigDecimal) row[13]);
+            result.setTjAlihGapok((BigDecimal) row[14]);
+            result.setTjAlihSankhus((BigDecimal) row[15]);
+            result.setTjAlihTunj((BigDecimal) row[16]);
+            result.setTunjAlihTot((BigDecimal) row[17]);
+            result.setRplGaji((BigDecimal) row[18]);
+            result.setRplSankhus((BigDecimal) row[19]);
+            result.setRplTunjJab((BigDecimal) row[20]);
+            result.setRplTunjStr((BigDecimal) row[21]);
+            result.setRplTunjFung((BigDecimal) row[22]);
+            result.setRplTunjProf((BigDecimal) row[23]);
+            result.setRplTunjAlih((BigDecimal) row[24]);
+            result.setTunjKom((BigDecimal) row[25]);
+            result.setTunjTbh((BigDecimal) row[26]);
+            result.setTunjLain((BigDecimal) row[27]);
+            result.setTunjLok((BigDecimal) row[28]);
+            result.setJamLbr((BigDecimal) row[29]);
+            result.setfJamLbr((BigDecimal) row[30]);
+            result.setByLembur((BigDecimal) row[31]);
+            result.setUpahLembur((BigDecimal) row[32]);
+            result.setTunjRmh((BigDecimal) row[33]);
+            result.setTunjList((BigDecimal) row[34]);
+            result.setTunjAir((BigDecimal) row[35]);
+            result.setTunjBbm((BigDecimal) row[36]);
+            result.setTunjSos((BigDecimal) row[37]);
+            result.setRplRlab((BigDecimal) row[72]);
+            result.setTunjSiaga((BigDecimal) row[40]);
+            result.setTjPensiunPers((BigDecimal) row[41]);
+            result.setTjBpjsTkPers((BigDecimal) row[42]);
+            result.setTjBpjsKsPers((BigDecimal) row[43]);
+            result.setPendRutin((BigDecimal) row[44]);
+            result.setPendTdkRutin((BigDecimal) row[45]);
+            result.setPoPph((BigDecimal) row[46]);
+            result.setPoYpks((BigDecimal) row[47]);
+            result.setIurPensiunPeg((BigDecimal) row[48]);
+            result.setIurPensiunPers((BigDecimal) row[49]);
+            result.setIurBpjsTkPeg((BigDecimal) row[50]);
+            result.setIurBpjsTkPers((BigDecimal) row[51]);
+            result.setIurBpjsKsPeg((BigDecimal) row[52]);
+            result.setIurBpjsKsPers((BigDecimal) row[53]);
+            result.setPoLain((BigDecimal) row[54]);
+            result.setPerkbayar((String) row[55]);
+            result.setKlomperk((String) row[56]);
+            result.setKdpoli((String) row[57]);
+            result.setBkodeb((String) row[58]);
+            result.setPgol((String) row[59]);
+            result.setPruang((String) row[60]);
+            result.setPmasa((String) row[61]);
+            result.setNoskdapen((String) row[62]);
+            result.setNoskgaji((String) row[63]);
+            result.setNoidbio((String) row[64]);
+            result.setNoidbio((String) row[65]);
+            result.setPrypks((String) row[66]);
+            result.setPrdapeng((String) row[67]);
+            result.setPrbpjstp((String) row[68]);
+            result.setPrbpjstg((String) row[69]);
+            result.setPrbpjssp((String) row[70]);
+            result.setPrbpjssg((String) row[71]);
+
+            listOfResult.add(result);
+        }
+        return listOfResult;
+    }
     //RAKA-end
 //
 //    public List<ItPayrollEntity> searchReportTarikanPendapatanPPH(final String tahun, final String unit) {

@@ -27621,6 +27621,17 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
     }
     //RAKA-end
 
+    @Override
+    public List<ReportPayroll> searchReportPayroll (String bulan, String tahun, String unit) throws GeneralBOException {
+        List<ReportPayroll> listOfResult = new ArrayList<>();
+        try{
+            List<ReportPayroll> dataPayroll = payrollDao.reportRekapPayroll(bulan, tahun, unit);
+        }catch (HibernateException e){
+            logger.error("[PayrollBoImpl.searchPayroll] Error, " + e);
+            throw new GeneralBOException(e);
+        }
+        return listOfResult;
+    }
 
 
 

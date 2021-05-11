@@ -12342,6 +12342,127 @@ public class PayrollAction extends BaseTransactionAction {
     }
     //RAKA-end
 
+    public String payrollRekapReportExcel(){
+        final String tahun = this.getTahun();
+        final String bulan = this.getBulan();
+        final String unit = this.getBranchId();
+        String titleReport = "";
+        String filename = "";
+        final ApplicationContext ctx = (ApplicationContext)ContextLoader.getCurrentWebApplicationContext();
+        final PayrollBo payrollBo = (PayrollBo)ctx.getBean("payrollBoProxy");
+        final BranchBo branchBo = (BranchBo)ctx.getBean("branchBoProxy");
+        Branch branch = new Branch();
+        branch = branchBo.getBranchById(unit, "Y");
+        List<ReportPayroll> listData = new ArrayList<ReportPayroll>();
+        List listOfData = new ArrayList();
+        List listOfColumn = new ArrayList();
+        String periode = " Periode " + bulan + " - " + tahun;
+
+        titleReport = "Rekap Payroll " + branch.getBranchName() + periode;
+        filename = "Rekap Payroll " + branch.getBranchName() + periode;
+        listData = payrollBo.searchReportPayroll(bulan, tahun, unit);
+
+        listOfColumn.add("nip");
+        listOfColumn.add("nama pegawai");
+        listOfColumn.add("gol. kary");
+        listOfColumn.add("gol. pens");
+        listOfColumn.add("status");
+        listOfColumn.add("no. cek");
+        listOfColumn.add("st. kel");
+        listOfColumn.add("gaji");
+        listOfColumn.add("sankhus");
+        listOfColumn.add("tj. jab");
+        listOfColumn.add("tj. struk");
+        listOfColumn.add("tj. fung");
+        listOfColumn.add("tj. prof");
+        listOfColumn.add("tj.al. gapok");
+        listOfColumn.add("tj.al. sankhus");
+        listOfColumn.add("tj.al. tunj");
+        listOfColumn.add("tj. alih");
+        listOfColumn.add("rpl. gaji");
+        listOfColumn.add("rpl. sankhus");
+        listOfColumn.add("rpl.tj. jab");
+        listOfColumn.add("rpl.tj. struk");
+        listOfColumn.add("rpl.tj. fung");
+        listOfColumn.add("rpl.tj. prof");
+        listOfColumn.add("rpl.tj. alih");
+        listOfColumn.add("tj. kom");
+        listOfColumn.add("tj. tambah");
+        listOfColumn.add("tj. lain");
+        listOfColumn.add("tj. lokasi");
+        listOfColumn.add("jam. lembur");
+        listOfColumn.add("f.jam. lembur");
+        listOfColumn.add("by. lembur");
+        listOfColumn.add("upah lembur");
+        listOfColumn.add("tj. rumah");
+        listOfColumn.add("tj. listrik");
+        listOfColumn.add("tj. air");
+        listOfColumn.add("tj. bbm");
+        listOfColumn.add("tj. sos");
+        listOfColumn.add("rpl. rlab");
+        listOfColumn.add("tj. siaga");
+        listOfColumn.add("tj.pens. pers");
+        listOfColumn.add("tj.bpjstk. pers");
+        listOfColumn.add("tj.bpjsks. pers");
+        listOfColumn.add("pd. rutin");
+        listOfColumn.add("pd. tdk rutin");
+        listOfColumn.add("pot. pph");
+        listOfColumn.add("pot. ypks");
+        listOfColumn.add("iur.pens. peg");
+        listOfColumn.add("iur.pens. pers");
+        listOfColumn.add("iur.bpjstk. peg");
+        listOfColumn.add("iur.bpjstk. pers");
+        listOfColumn.add("iur.bpjsks. peg");
+        listOfColumn.add("iur.bpjsks. pers");
+        listOfColumn.add("pot. lain");
+        listOfColumn.add("perk. bayar");
+        listOfColumn.add("klom. perk");
+        listOfColumn.add("kd. poli");
+        listOfColumn.add("b.kode");
+        listOfColumn.add("");
+        listOfColumn.add("");
+        listOfColumn.add("");
+        listOfColumn.add("no.sk. dapen");
+        listOfColumn.add("no.sk. gaji");
+        listOfColumn.add("no.sk. gaji");
+
+        for(ReportPayroll data : listData){
+            RowData rowData = new RowData();
+            List listOfCell = new ArrayList();
+            CellDetail cellDetail = new CellDetail();
+
+            //masa Pajak
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(0);
+            cellDetail.setValueCell(data.getNip());
+            cellDetail.setAlignmentCell(2);
+            listOfCell.add(cellDetail);
+        }
+
+
+        HSSFWorkbook wb = DownloadUtil.generateExcelOutput(titleReport, periode, listOfColumn, listOfData, null);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            wb.write(baos);
+        }
+        catch (IOException e) {
+            Long logId = null;
+            try {
+                logId = this.payrollBoProxy.saveErrorMessage(e.getMessage(), "payrollAction.payrollRekapReportExcel");
+            }
+            catch (GeneralBOException e2) {
+                logger.error((Object)"[payrollAction.payrollRekapReportExcel] Error when downloading,", (Throwable)e2);
+            }
+            logger.error((Object)("[payrollAction.payrollRekapReportExcel] Error when downloading data of function,[" + logId + "] Found problem when downloading data, please inform to your admin."), (Throwable)e);
+            addActionError("Error, [code=" + logId + "] Found problem when downloding data, please inform to your admin.");
+            throw new GeneralBOException(e.getMessage());
+        }
+        setExcelStream((InputStream)new ByteArrayInputStream(baos.toByteArray()));
+        setContentDisposition("filename=\"" + filename + ".${documentFormat}\"");
+        PayrollAction.logger.info((Object)"[payrollAction.payrollRekapReportExcel] end process <<<");
+        return "downloadXlsRekapPayroll";
+    }
+
     //Perhitungan Hutang Pajak
 //    private BigDecimal hitungHutangPajak(BigDecimal pkp){
 //        BigDecimal hasil = new BigDecimal(0) ;
