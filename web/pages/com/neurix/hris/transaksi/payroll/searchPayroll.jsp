@@ -431,6 +431,22 @@
                                                                     </a>
                                                                 </s:if>
                                                             </display:column>
+                                                            <display:column media="html" title="Rekap Payroll">
+                                                                <s:if test="#attr.row.flagSlip">
+                                                                    <s:if test='#attr.row.tipePayroll == "PY"'>
+                                                                        <a href="javascript:;"
+                                                                           draftId="<s:property value="%{#attr.row.payrollHeaderId}"/>"
+                                                                           draftBulan="<s:property value="%{#attr.row.bulan}"/>"
+                                                                           draftTahun="<s:property value="%{#attr.row.tahun}"/>"
+                                                                           draftBranchId="<s:property value="%{#attr.row.branchId}"/>"
+                                                                           draftBranchName="<s:property value="%{#attr.row.branchName}"/>"
+                                                                           draftTipe="<s:property value="%{#attr.row.tipePayroll}"/>"
+                                                                           class="item-rekap">
+                                                                            <img border="0" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" name="icon_slip">
+                                                                        </a>
+                                                                    </s:if>
+                                                                </s:if>
+                                                            </display:column>
                                                             <%--<display:column property="payrollHeaderId" title="Id"  />--%>
                                                             <display:column property="branchName" title="Unit"  />
                                                             <display:column property="bulan" title="Bulan"  />
@@ -1092,6 +1108,19 @@
 
             if (confirm('Apakah Anda ingin mencetak slip?')) {
                 window.location.href = 'printReportPayrollByBranch_payroll?branchId='+branchId+'&tahun='+tahun+'&bulan='+bulan+'&tipePayroll='+tipePayroll+'&branchName='+branchName+'&idPayrollHeader='+idPayrollHeader;
+            }
+        });
+
+        $('.tablePayroll').on('click', '.item-rekap', function(){
+            var idPayrollHeader = $(this).attr('draftId');
+            var bulan = $(this).attr('draftBulan');
+            var tahun = $(this).attr('draftTahun');
+            var branchId = $(this).attr('draftBranchId');
+            var branchName = $(this).attr('draftBranchName');
+            var tipePayroll = $(this).attr('draftTipe');
+
+            if (confirm('Apakah Anda ingin mencetak detail rekap payroll?')) {
+                window.location.href = 'payrollRekapReportExcel_payroll?branchId='+branchId+'&tahun='+tahun+'&bulan='+bulan;
             }
         });
 

@@ -12418,27 +12418,520 @@ public class PayrollAction extends BaseTransactionAction {
         listOfColumn.add("perk. bayar");
         listOfColumn.add("klom. perk");
         listOfColumn.add("kd. poli");
-        listOfColumn.add("b.kode");
-        listOfColumn.add("");
-        listOfColumn.add("");
-        listOfColumn.add("");
+        listOfColumn.add("b.kode.b");
+        listOfColumn.add("p.gol");
+        listOfColumn.add("p.ruang");
+        listOfColumn.add("p.masa");
         listOfColumn.add("no.sk. dapen");
         listOfColumn.add("no.sk. gaji");
         listOfColumn.add("no.sk. gaji");
+        listOfColumn.add("no.id. bio");
+        listOfColumn.add("pr.dapen.p");
+        listOfColumn.add("pr.dapen.g");
+        listOfColumn.add("pr.bpjs.tp");
+        listOfColumn.add("pr.bpjs.tg");
+        listOfColumn.add("pr.bpjs.sp");
+        listOfColumn.add("pr.bpjs.sg");
 
         for(ReportPayroll data : listData){
             RowData rowData = new RowData();
             List listOfCell = new ArrayList();
             CellDetail cellDetail = new CellDetail();
 
-            //masa Pajak
+            // nik
             cellDetail = new CellDetail();
             cellDetail.setCellID(0);
             cellDetail.setValueCell(data.getNip());
-            cellDetail.setAlignmentCell(2);
+            cellDetail.setAlignmentCell(1);
             listOfCell.add(cellDetail);
-        }
 
+            // namabio
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(1);
+            cellDetail.setValueCell(data.getNama());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            // golkary
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(2);
+            cellDetail.setValueCell(data.getGolKary());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            // golpens
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(3);
+            cellDetail.setValueCell(data.getGolPens());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            // noidsts
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(4);
+            cellDetail.setValueCell(data.getStatPeg());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            // nocek
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(5);
+            cellDetail.setValueCell(data.getNoCek());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            // tkkwn
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(6);
+            cellDetail.setValueCell(data.getStatKeluarga());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            // gaji
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(7);
+            cellDetail.setValueCell(data.getGaji().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // sankhus
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(8);
+            cellDetail.setValueCell(data.getSankhus().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // tunjjab
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(8);
+            cellDetail.setValueCell(data.getTunjJab().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // tunjstruk
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(10);
+            cellDetail.setValueCell(data.getTunjStruk().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // tunjfung
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(11);
+            cellDetail.setValueCell(data.getTunjFung().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // tunjprof
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(12);
+            cellDetail.setValueCell(data.getTunjProf().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // tjalihg
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(13);
+            cellDetail.setValueCell(data.getTjAlihGapok().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // tjalihs
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(14);
+            cellDetail.setValueCell(data.getTjAlihSankhus().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // tjaliht
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(15);
+            cellDetail.setValueCell(data.getTjAlihTunj().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // tunjalih
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(16);
+            cellDetail.setValueCell(data.getTjAlihGapok().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // rplgaji
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(17);
+            cellDetail.setValueCell(data.getRplGaji().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // rplsankhus
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(18);
+            cellDetail.setValueCell(data.getRplSankhus().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // rpltunjjab
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(19);
+            cellDetail.setValueCell(data.getRplTunjJab().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // rpltunjstr
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(20);
+            cellDetail.setValueCell(data.getRplTunjStr().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // rpltunjfung
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(21);
+            cellDetail.setValueCell(data.getRplTunjFung().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // rpltunjprof
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(22);
+            cellDetail.setValueCell(data.getRplTunjProf().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // rpltunjalih
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(23);
+            cellDetail.setValueCell(data.getRplTunjAlih().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // tunjkom
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(24);
+            cellDetail.setValueCell(data.getTunjKom().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // tunjtbh
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(25);
+            cellDetail.setValueCell(data.getTunjTbh().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // tunjlain
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(26);
+            cellDetail.setValueCell(data.getTunjLain().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // tunjlok
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(27);
+            cellDetail.setValueCell(data.getTunjLok().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // jamlbr
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(28);
+            cellDetail.setValueCell(data.getJamLbr().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // fjamlbr
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(29);
+            cellDetail.setValueCell(data.getfJamLbr().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // bylembur
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(30);
+            cellDetail.setValueCell(data.getByLembur().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // upahlembur
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(31);
+            cellDetail.setValueCell(data.getUpahLembur().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // tunjrmh
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(32);
+            cellDetail.setValueCell(data.getTunjRmh().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // tunjlist
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(33);
+            cellDetail.setValueCell(data.getTunjList().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // tunjair
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(34);
+            cellDetail.setValueCell(data.getTunjAir().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // tunjbbm
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(35);
+            cellDetail.setValueCell(data.getTunjBbm().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // tunjsos
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(36);
+            cellDetail.setValueCell(data.getTunjSos().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // rplrlab
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(37);
+            cellDetail.setValueCell(data.getRplRlab().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // tunjsiaga
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(38);
+            cellDetail.setValueCell(data.getTunjSiaga().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // tjpensiun_pers
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(39);
+            cellDetail.setValueCell(data.getTjPensiunPers().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // tjbpjstk_pers
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(40);
+            cellDetail.setValueCell(data.getTjBpjsTkPers().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // tjbpjsks_pers
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(41);
+            cellDetail.setValueCell(data.getTjBpjsKsPers().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // pendrutin
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(42);
+            cellDetail.setValueCell(data.getPendRutin().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // pendtdkrutin
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(43);
+            cellDetail.setValueCell(data.getPendTdkRutin().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // popph
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(44);
+            cellDetail.setValueCell(data.getPoPph().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // poypks
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(45);
+            cellDetail.setValueCell(data.getPoYpks().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // iurpensiun_peg
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(46);
+            cellDetail.setValueCell(data.getIurPensiunPeg().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // iurpensiun_pers
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(47);
+            cellDetail.setValueCell(data.getIurPensiunPers().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // iurbpjstk_peg
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(48);
+            cellDetail.setValueCell(data.getIurBpjsTkPeg().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // iurbpjstk_pers
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(49);
+            cellDetail.setValueCell(data.getIurBpjsTkPers().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // iurbpjsks_peg
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(50);
+            cellDetail.setValueCell(data.getIurBpjsKsPeg().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // iurbpjsks_pers
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(51);
+            cellDetail.setValueCell(data.getIurBpjsKsPers().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // polain
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(52);
+            cellDetail.setValueCell(data.getPoLain().doubleValue());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // perkbayar
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(53);
+            cellDetail.setValueCell(data.getPerkbayar());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // klomperk
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(54);
+            cellDetail.setValueCell(data.getKlomperk());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // kdpoli
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(55);
+            cellDetail.setValueCell(data.getKdpoli());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // bkodeb
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(56);
+            cellDetail.setValueCell(data.getBkodeb());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // pgol
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(57);
+            cellDetail.setValueCell(data.getPgol());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // pruang
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(58);
+            cellDetail.setValueCell(data.getPruang());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // pmasa
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(59);
+            cellDetail.setValueCell(data.getPmasa());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // noskdapen
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(60);
+            cellDetail.setValueCell(data.getNoskdapen());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // noskgaji
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(61);
+            cellDetail.setValueCell(data.getNoskgaji());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // noidbio
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(62);
+            cellDetail.setValueCell(data.getNoidbio());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // prypks
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(63);
+            cellDetail.setValueCell(data.getPrypks());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // prdapenp
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(64);
+            cellDetail.setValueCell(data.getPrdapenp());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // prdapeng
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(65);
+            cellDetail.setValueCell(data.getPrdapeng());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // prbpjstp
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(66);
+            cellDetail.setValueCell(data.getPrbpjstp());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // prbpjstg
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(67);
+            cellDetail.setValueCell(data.getPrbpjstg());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // prbpjssp
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(68);
+            cellDetail.setValueCell(data.getPrbpjssp());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // prbpjssg
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(69);
+            cellDetail.setValueCell(data.getPrbpjssg());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            rowData.setListOfCell(listOfCell);
+            listOfData.add(rowData);
+
+        }
 
         HSSFWorkbook wb = DownloadUtil.generateExcelOutput(titleReport, periode, listOfColumn, listOfData, null);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

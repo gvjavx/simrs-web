@@ -53,7 +53,7 @@ public interface PayrollBo extends BaseMasterBo<Payroll> {
 //    public List<Payroll> getCsvPajak(Payroll bean) throws GeneralBOException;
     List<PayrollEsptDTO> searchReportEsptSys(String tahun, String unit) throws GeneralBOException;
 
-    List<ReportPayroll> searchReportPayroll (String bulan, String tahun, String unit) throws GeneralBOException;
+    List<ReportPayroll> searchReportPayroll(String bulan, String tahun, String unit) throws GeneralBOException;
 //    public void saveDelete(Payroll bean) throws GeneralBOException;
 //    public void saveAddData(List<Payroll> payroll, Payroll bean) throws GeneralBOException;
 //    public List<Payroll> getSearchHome(Payroll bean) throws GeneralBOException;

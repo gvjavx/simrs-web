@@ -1,6 +1,7 @@
 package com.neurix.hris.transaksi.payroll.model;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 
 /**
  * Created by Aji Noor on 11/05/2021
@@ -78,6 +79,8 @@ public class ReportPayroll {
     private	String prbpjssg;
 
     private String npwp;
+    private Date tglAwalLbr;
+    private Date tglAkhirLbr;
 
     public String getNip() {
         return nip;
@@ -645,5 +648,21 @@ public class ReportPayroll {
 
     public void setNpwp(String npwp) {
         this.npwp = npwp;
+    }
+
+    public Date getTglAwalLbr() {
+        return tglAwalLbr;
+    }
+
+    public void setTglAwalLbr(Date tglAwalLbr) {
+        this.tglAwalLbr = tglAwalLbr;
+    }
+
+    public Date getTglAkhirLbr() {
+        return tglAkhirLbr;
+    }
+
+    public void setTglAkhirLbr(Date tglAkhirLbr) {
+        this.tglAkhirLbr = tglAkhirLbr;
     }
 }
