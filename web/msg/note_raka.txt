@@ -1,3 +1,9 @@
+------ 2021-05-15 ===> keperluan MBT
+-- penambahan status mutasi
+    insert into im_hris_status_mutasi(
+    	status_mutasi_id, status_mutasi_name, action, flag, created_date, created_who, last_update, last_update_who, flag_gaji_proporsional)
+    	VALUES ('BT', 'Bebas Tugas', 'C', 'Y', now(), 'admin', now(), 'admin', null);
+
 ------ 2021-05-09 ===> jurnal payroll tidak balance
 delete from im_akun_mapping_jurnal where trans_id = '37';
 
