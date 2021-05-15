@@ -870,7 +870,7 @@
         var positionBaruId      = "";
         var positionBaruName    = "";
         var positionPengganti   = "";
-        if (status == "L" || status == "RS"){
+        if (status == "L" || status == "RS" || status == 'BT'){
             positionBaruId      = $("#sel_position_pengganti option:selected").val();
             if (positionBaruId == "" || positionBaruId == null)
                 positionBaruId  = positionLamaId;

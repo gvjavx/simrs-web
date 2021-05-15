@@ -671,7 +671,7 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
                 " from \n" +
                 "     im_hris_struktur_jabatan jabatan\n" +
                 "     left join it_hris_pegawai_position itPosisi on itPosisi.position_id = jabatan.position_id and itPosisi.flag = 'Y' and jabatan.branch_id = itPosisi.branch_id\n" +
-                "          and (itPosisi.flag_mbt is null or itPosisi.flag_mbt != 'Y')\n" +
+                "          and (itPosisi.flag_mbt is null or itPosisi.flag_mbt = 'N')\n" +
                 "     left join im_hris_pegawai pegawai on pegawai.nip = itPosisi.nip \n" +
                 "     left join im_position posisi on posisi.position_id = jabatan.position_id\n" +
                 "\t LEFT JOIN im_hris_jenis_pegawai jenis ON jenis.jenis_pegawai_id = itPosisi.jenis_pegawai\n" +
