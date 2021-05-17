@@ -1291,7 +1291,7 @@ function listTindakan() {
             $.each(data, function (i, item) {
 
                 var tanggal = item.createdDate;
-                var dateFormat = converterDate(new Date(tanggal));
+                var dateFormat = converterDateTime(new Date(tanggal));
                 var tarif = "-";
                 var tarifTotal = "-";
                 var trfTotal = 0;
@@ -1433,7 +1433,7 @@ function listDiagnosa() {
                 var ket = "-";
                 var jen = "-";
                 var tanggal = item.createdDate;
-                var dateFormat = converterDate(new Date(tanggal));
+                var dateFormat = converterDateTime(new Date(tanggal));
 
                 if (item.idDiagnosa != null) {
                     id = item.idDiagnosa;
@@ -1875,7 +1875,7 @@ function listLab() {
                 var status = "-";
                 var lab = "-";
                 var tanggal = item.createdDate;
-                var dateFormat = converterDate(new Date(tanggal));
+                var dateFormat = converterDateTime(new Date(tanggal));
                 var btn = '';
                 var crn = '<img border="0" class="hvr-grow" onclick="detailLab(\'' + item.idHeaderPemeriksaan + '\',\'' + item.kategoriLabName + '\')" src="' + contextPath + '/pages/images/icons8-search-25.png" style="cursor: pointer;">';
                 var tipe = "";
@@ -2092,7 +2092,7 @@ function listObat() {
         if (data != null) {
             $.each(data, function (i, item) {
                 var tanggal = item.createdDate;
-                var dateFormat = converterDate(new Date(tanggal));
+                var dateFormat = converterDateTime(new Date(tanggal));
                 var id = "-";
                 var obat = "-";
                 var qty = "-";
@@ -3037,7 +3037,7 @@ function listResepPasien() {
             $.each(response, function (i, item) {
                 var idResep = "";
                 var tanggal = item.createdDate;
-                var dateFormat = converterDate(new Date(tanggal));
+                var dateFormat = converterDateTime(new Date(tanggal));
                 var status = item.status;
 
                 if (item.idPermintaanResep != null) {
@@ -3557,7 +3557,7 @@ function listICD9() {
                 var id = "-";
                 var ket = "-";
                 var tanggal = item.createdDate;
-                var dateFormat = converterDate(new Date(tanggal));
+                var dateFormat = converterDateTime(new Date(tanggal));
 
                 if (item.idIcd9 != null) {
                     id = item.idIcd9;
@@ -4643,7 +4643,7 @@ function listDiet() {
         if (data != null) {
             $.each(data, function (i, item) {
                 var tanggal = item.tglOrder;
-                var dateFormat = converterDate(new Date(tanggal));
+                var dateFormat = converterDateTime(new Date(tanggal));
                 var label = "";
                 var btn = "";
 
@@ -5534,7 +5534,7 @@ function addToListTindakan(id) {
                 '<td>'+namaTindakan+'</td>' +
                 '<td align="center">'+qty+'</td>' +
                 '<td align="right">'+tarif+'</td>' +
-                '<td align="right">'+total+'</td>' +
+                '<td align="right">'+formatRupiahAtas((parseInt(replaceTitik(total))*qty))+'</td>' +
                 '<td align="center">'+'<img onclick="delListTindakan(\'rowTindakan_'+count+'\')" style="cursor: pointer" src="'+contextPath+'/pages/images/cancel-flat-new.png" class="hvr-row">'+'</td>' +
                 '</tr>';
             if(temp != ''){

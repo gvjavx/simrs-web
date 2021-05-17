@@ -678,7 +678,7 @@
                                 </button>
                                 <table class="table table-bordered table-striped table-hover" id="tabel_alergi">
                                     <thead>
-                                    <tr>
+                                    <tr bgcolor="#90ee90">
                                         <td>Jenis</td>
                                         <td>Alergi</td>
                                         <td align="center" width="20%">Action</td>
@@ -696,7 +696,7 @@
                                 </s:if>
                                 <table class="table table-bordered table-striped table-hover" id="tabel_dokter" style="margin-top: 50px">
                                     <thead>
-                                    <tr>
+                                    <tr bgcolor="#90ee90">
                                         <td>ID Dokter</td>
                                         <td>Nama</td>
                                         <%--<td>Spesialis</td>--%>
@@ -721,8 +721,8 @@
                         </button>
                         <table class="table table-bordered table-striped table-hover" id="tabel_diagnosa">
                             <thead>
-                            <tr>
-                                <td>Tanggal</td>
+                            <tr bgcolor="#90ee90">
+                                <td width="14%">Waktu</td>
                                 <td>Kode ICD10</td>
                                 <td>Keterangan</td>
                                 <td>Jenis Diagnosa</td>
@@ -793,8 +793,8 @@
                         </button>
                         <table class="table table-bordered table-striped table-hover" id="tabel_icd9">
                             <thead>
-                            <tr>
-                                <td>Tanggal</td>
+                            <tr bgcolor="#90ee90">
+                                <td width="14%">Waktu</td>
                                 <td>Kode ICD9</td>
                                 <td>Keterangan</td>
                                 <td align="center">Action</td>
@@ -819,8 +819,8 @@
                         </button>
                             <table class="table table-bordered table-striped table-hover" id="tabel_tindakan">
                                 <thead>
-                                <tr style="color: black">
-                                    <td>Tanggal</td>
+                                <tr bgcolor="#90ee90">
+                                    <td width="14%">Waktu</td>
                                     <td>Tindakan</td>
                                     <td>Dokter</td>
                                     <td align="center">Tarif (Rp.)</td>
@@ -840,7 +840,7 @@
                             <table class="table table-bordered table-striped table-hover" id="tabel_tindakan">
                                 <thead>
                                 <tr>
-                                    <td>Tanggal</td>
+                                    <td width="14%">Waktu</td>
                                     <td>Tindakan</td>
                                     <td align="center" width="10%">Action</td>
                                 </tr>
@@ -866,8 +866,8 @@
                         <%--</s:if>--%>
                         <table class="table table-bordered table-striped table-hover" id="tabel_penunjang_medis">
                             <thead>
-                            <tr>
-                                <td>Tanggal Order</td>
+                            <tr bgcolor="#90ee90">
+                                <td width="14%">Waktu</td>
                                 <td>Jenis Penunjang</td>
                                 <%--<td>Pemeriksaan</td>--%>
                                 <td>Status</td>
@@ -893,8 +893,8 @@
                         </button>
                         <table class="table table-bordered table-striped table-hover" >
                             <thead>
-                            <tr>
-                                <td>Tanggal</td>
+                            <tr bgcolor="#90ee90">
+                                <td width="14%">Waktu</td>
                                 <td>ID Resep</td>
                                 <td>Status</td>
                                 <td align="center">Action</td>
@@ -2142,56 +2142,6 @@
                     </div>
                 </div>
                 <hr/>
-                <%--Keterangan Obat Berdasarkan Jenis Obat--%>
-                <%--<div class="row" style="margin-top: -7px">--%>
-                    <%--<div class="col-md-offset-2 col-md-8">--%>
-                        <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="w_keterangan">--%>
-                            <%--<p id="p_keterangan"></p>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="col-md-3">--%>
-                        <%--<label style="margin-bottom: -7px">Waktu</label>--%>
-                        <%--<select class="form-control select2" style="width: 100%" id="waktu_param">--%>
-                            <%--<option value=""> - </option>--%>
-                        <%--</select>--%>
-                    <%--</div>--%>
-                    <%--<div class="col-md-4">--%>
-                        <%--<label style="margin-bottom: -7px">Parameter Keterangan</label>--%>
-                        <%--<select onchange="getComboKeteranganObat(this.value)" class="form-control select2" style="width: 100%" id="param_ket">--%>
-                            <%--<option value=""> - </option>--%>
-                        <%--</select>--%>
-                    <%--</div>--%>
-                    <%--<div class="col-md-4">--%>
-                        <%--<label style="margin-bottom: -7px">Keterangan</label>--%>
-                        <%--<select class="select2 form-control" multiple style="width: 100%" id="ket_param">--%>
-                        <%--</select>--%>
-                    <%--</div>--%>
-                    <%--<div class="col-md-1">--%>
-                        <%--<button style="margin-top: 20px; margin-left: -25px" class="btn btn-warning" onclick="addKeterangan()"><i class="fa fa-plus"></i></button>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-                <%--<div class="row" style="margin-top: 10px">--%>
-                    <%--<div class="col-md-12">--%>
-                        <%--<table class="table table-bordered" style="font-size: 14px" id="table_keterangan">--%>
-                            <%--<thead>--%>
-                            <%--<tr>--%>
-                                <%--<td>Waktu</td>--%>
-                                <%--<td>Keterangan</td>--%>
-                                <%--<td align="center" width="5%">Action</td>--%>
-                            <%--</tr>--%>
-                            <%--</thead>--%>
-                            <%--<tbody id="body_keterangan">--%>
-                            <%--</tbody>--%>
-                        <%--</table>--%>
-                    <%--</div>--%>
-                    <%--<div class="col-md-2">--%>
-                        <%--<span style="color: red; margin-top: 12px; display: none;"--%>
-                              <%--id="war_rep_cek_waktu"><i class="fa fa-times"></i> required</span>--%>
-                        <%--<span style="color: green; margin-top: 12px; display: none;"--%>
-                              <%--id="cor_rep_cek_waktu"><i class="fa fa-check"></i> correct</span>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-                <%--<hr/>--%>
                 <div class="row" style="margin-top: -10px">
                     <div class="col-md-12">
                         <button class="btn btn-success" onclick="addObatToList()"><i class="fa fa-plus"></i> Tambah
@@ -2441,7 +2391,7 @@
                             <%--<td>No Transaksi</td>--%>
                             <td width="15%">Waktu</td>
                             <td>Keterangan</td>
-                            <td width="16%">Catatan</td>
+                            <td width="14%">Catatan</td>
                             <td width="8%">Telemedic</td>
                         </tr>
                         </thead>

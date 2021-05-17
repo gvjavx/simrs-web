@@ -2684,6 +2684,16 @@ ADD COLUMN tipe VARCHAR(100);
 1. Perbaikan tindakan (Tambah tindakan bisa lebih dari 1)
 2.
 
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+---------------------------------B E L U M - D I P R O D -------------------------------------------------------
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+
+INSERT INTO im_simrs_rekam_medis_pasien VALUES
+('RMM00000116','RB 003','Asesmen Pra Bedah','form','pra_bedah','pra_bedah','showModalOperasi','Y','C','migrasi',now(), now(),'migrasi','1');
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000295','RMM00000116','kamar_operasi','1','Y','C','migrasi', now(), now(),'migrasi');
+
 
 
 

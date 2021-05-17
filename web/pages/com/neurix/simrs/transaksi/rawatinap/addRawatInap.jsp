@@ -565,7 +565,7 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Tanggal</td>
+                                <td width="14%">Waktu</td>
                                 <td>ID Diagnosa</td>
                                 <td>Keterangan</td>
                                 <td>Jenis Diagnosa</td>
@@ -590,7 +590,7 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Tanggal</td>
+                                <td width="14%">Waktu</td>
                                 <td>ID ICD9</td>
                                 <td>Nama ICD9</td>
                                 <td align="center">Action</td>
@@ -662,7 +662,7 @@
                         <table class="table table-bordered table-striped" id="tabel_tindakan">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Tanggal</td>
+                                <td width="14%">Waktu</td>
                                 <td>Tindakan</td>
                                 <td>Dokter</td>
                                 <td align="center">Tarif (Rp.)</td>
@@ -748,7 +748,7 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90" style="height: 20px">
-                                <td>Tanggal</td>
+                                <td width="14%">Waktu</td>
                                 <td>No. Pesanan</td>
                                 <td align="center">Status</td>
                                 <td align="center"width="18%">Action</td>
@@ -800,7 +800,7 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Tanggal</td>
+                                <td width="14%">Waktu</td>
                                 <td>ID Resep</td>
                                 <td>Status</td>
                                 <td align="center">Action</td>
@@ -834,7 +834,7 @@
                                         <div class="col-md-8">
                                             <select class="form-control select2" id="keterangan" style="width: 100%"
                                                     onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this.value)">
-                                                <option value="">[Select One]</option>
+                                                <option value="">-</option>
                                                 <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
                                                     <s:if test='rawatInap.idJenisPeriksa == "umum" || rawatInap.idJenisPeriksa == "rekanan"'>
                                                         <option value="selesai">Selesai</option>
@@ -951,7 +951,7 @@
                                                       listKey="idKeterangan"
                                                       listValue="keterangan" cssStyle="width: 100%"
                                                       onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()};"
-                                                      headerKey="" headerValue="[Select one]"
+                                                      headerKey="" headerValue="-"
                                                       cssClass="form-control select2"/>
                                         </div>
                                     </div>
@@ -961,7 +961,7 @@
                                         <label class="col-md-4" style="margin-top: 10px">Keterangan</label>
                                         <div class="col-md-8">
                                             <select class="form-control select2" id="keterangan_rw" style="width: 100%">
-                                                <option value="">[Select One]</option>
+                                                <option value="">-</option>
                                                 <option value="Preventif">Preventif</option>
                                                 <option value="Kuratif">Kuratif</option>
                                                 <option value="Variatif">Variatif</option>
@@ -976,7 +976,7 @@
                                         <label class="col-md-4" style="margin-top: 10px">Kelas Kamar</label>
                                         <div class="col-md-8">
                                             <select class="form-control select2" id="kelas_kamar" style="width: 100%">
-                                                <option value=''>[Select One]</option>
+                                                <option value=''>-</option>
                                             </select>
                                         </div>
                                     </div>
@@ -986,7 +986,7 @@
                                         <label class="col-md-4" style="margin-top: 10px"><span id="label_kamar"></span></label>
                                         <div class="col-md-8">
                                             <select class="form-control select2" id="kamar" style="width: 100%">
-                                                <option value=''>[Select One]</option>
+                                                <option value=''>-</option>
                                             </select>
                                         </div>
                                     </div>
@@ -1041,7 +1041,7 @@
                                                       list="#comboLab2.listOfKategoriLab" id="ckp_kategori"
                                                       listKey="idKategoriLab"
                                                       listValue="namaKategori"
-                                                      headerKey="" headerValue="[Select one]"
+                                                      headerKey="" headerValue="-"
                                                       cssClass="form-control select2"/>
                                         </div>
                                     </div>
@@ -1050,7 +1050,7 @@
                                         <div class="col-md-8">
                                             <select class="form-control select2" style="margin-top: 7px; width: 100%" id="ckp_unit"
                                                     onchange="listSelectParameter(this.value);">
-                                                <option value=''>[Select One]</option>
+                                                <option value=''>-</option>
                                             </select>
                                         </div>
                                     </div>
@@ -1058,7 +1058,7 @@
                                         <label class="col-md-4" style="margin-top: 7px">Parameter</label>
                                         <div class="col-md-8">
                                             <select class="form-control select2" multiple style="margin-top: 7px; width: 100%" id="ckp_parameter">
-                                                <option value=''>[Select One]</option>
+                                                <option value=''>-</option>
                                             </select>
                                         </div>
                                     </div>
@@ -1234,7 +1234,7 @@
                         <div class="col-md-7">
                             <select id="dok_jenis_dpjp" style="width: 100%" class="form-control select2"
                                     onchange="var warn =$('#war_dok_jenis_dpjp').is(':visible'); if (warn){$('#cor_dok_jenis_dpjp').show().fadeOut(3000);$('#war_dok_jenis_dpjp').hide()}">
-                                <option value="">[Select One]</option>
+                                <option value="">-</option>
                                 <option value="konsultasi">Konsultasi</option>
                                 <option value="rawat_bersama">Rawat Bersama</option>
                                 <option value="rawat_ali">Rawat Alih</option>
@@ -1287,7 +1287,7 @@
                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                     id="tin_id_dokter_dpjp"
                                     onchange="listSelectTindakanKategori(this.value); var warn =$('#war_dpjp').is(':visible'); if (warn){$('#cor_dpjp').show().fadeOut(3000);$('#war_dpjp').hide()}">
-                                <option value=''>[Select One]</option>
+                                <option value=''>-</option>
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -1303,7 +1303,7 @@
                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                     id="tin_id_ketgori_tindakan"
                                     onchange="listSelectTindakan(this.value); var warn =$('#war_kategori').is(':visible'); if (warn){$('#cor_kategori').show().fadeOut(3000);$('#war_kategori').hide()}">
-                                <option value=''>[Select One]</option>
+                                <option value=''>-</option>
                             </select>
                         </div>
                         <div class="col-md-2">
