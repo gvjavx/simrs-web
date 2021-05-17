@@ -12426,12 +12426,13 @@ public class PayrollAction extends BaseTransactionAction {
         listOfColumn.add("no.sk. gaji");
         listOfColumn.add("no.sk. gaji");
         listOfColumn.add("no.id. bio");
-        listOfColumn.add("pr.dapen.p");
-        listOfColumn.add("pr.dapen.g");
-        listOfColumn.add("pr.bpjs.tp");
-        listOfColumn.add("pr.bpjs.tg");
-        listOfColumn.add("pr.bpjs.sp");
-        listOfColumn.add("pr.bpjs.sg");
+        //RAKA-17MEI2021 ===> tidak perlu ditampilkan
+//        listOfColumn.add("pr.dapen.p");
+//        listOfColumn.add("pr.dapen.g");
+//        listOfColumn.add("pr.bpjs.tp");
+//        listOfColumn.add("pr.bpjs.tg");
+//        listOfColumn.add("pr.bpjs.sp");
+//        listOfColumn.add("pr.bpjs.sg");
 
         for(ReportPayroll data : listData){
             RowData rowData = new RowData();
@@ -12879,54 +12880,57 @@ public class PayrollAction extends BaseTransactionAction {
             cellDetail.setAlignmentCell(3);
             listOfCell.add(cellDetail);
 
-            // prypks
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(63);
-            cellDetail.setValueCell(data.getPrypks());
-            cellDetail.setAlignmentCell(3);
-            listOfCell.add(cellDetail);
+            //RAKA-17MEI2021 ===> Tidak perlu ditampilkan
+//            // prypks
+//            cellDetail = new CellDetail();
+//            cellDetail.setCellID(63);
+//            cellDetail.setValueCell(data.getPrypks());
+//            cellDetail.setAlignmentCell(3);
+//            listOfCell.add(cellDetail);
+//
+//            // prdapenp
+//            cellDetail = new CellDetail();
+//            cellDetail.setCellID(64);
+//            cellDetail.setValueCell(data.getPrdapenp());
+//            cellDetail.setAlignmentCell(3);
+//            listOfCell.add(cellDetail);
+//
+//            // prdapeng
+//            cellDetail = new CellDetail();
+//            cellDetail.setCellID(65);
+//            cellDetail.setValueCell(data.getPrdapeng());
+//            cellDetail.setAlignmentCell(3);
+//            listOfCell.add(cellDetail);
+//
+//            // prbpjstp
+//            cellDetail = new CellDetail();
+//            cellDetail.setCellID(66);
+//            cellDetail.setValueCell(data.getPrbpjstp());
+//            cellDetail.setAlignmentCell(3);
+//            listOfCell.add(cellDetail);
+//
+//            // prbpjstg
+//            cellDetail = new CellDetail();
+//            cellDetail.setCellID(67);
+//            cellDetail.setValueCell(data.getPrbpjstg());
+//            cellDetail.setAlignmentCell(3);
+//            listOfCell.add(cellDetail);
+//
+//            // prbpjssp
+//            cellDetail = new CellDetail();
+//            cellDetail.setCellID(68);
+//            cellDetail.setValueCell(data.getPrbpjssp());
+//            cellDetail.setAlignmentCell(3);
+//            listOfCell.add(cellDetail);
+//
+//            // prbpjssg
+//            cellDetail = new CellDetail();
+//            cellDetail.setCellID(69);
+//            cellDetail.setValueCell(data.getPrbpjssg());
+//            cellDetail.setAlignmentCell(3);
+//            listOfCell.add(cellDetail);
 
-            // prdapenp
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(64);
-            cellDetail.setValueCell(data.getPrdapenp());
-            cellDetail.setAlignmentCell(3);
-            listOfCell.add(cellDetail);
-
-            // prdapeng
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(65);
-            cellDetail.setValueCell(data.getPrdapeng());
-            cellDetail.setAlignmentCell(3);
-            listOfCell.add(cellDetail);
-
-            // prbpjstp
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(66);
-            cellDetail.setValueCell(data.getPrbpjstp());
-            cellDetail.setAlignmentCell(3);
-            listOfCell.add(cellDetail);
-
-            // prbpjstg
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(67);
-            cellDetail.setValueCell(data.getPrbpjstg());
-            cellDetail.setAlignmentCell(3);
-            listOfCell.add(cellDetail);
-
-            // prbpjssp
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(68);
-            cellDetail.setValueCell(data.getPrbpjssp());
-            cellDetail.setAlignmentCell(3);
-            listOfCell.add(cellDetail);
-
-            // prbpjssg
-            cellDetail = new CellDetail();
-            cellDetail.setCellID(69);
-            cellDetail.setValueCell(data.getPrbpjssg());
-            cellDetail.setAlignmentCell(3);
-            listOfCell.add(cellDetail);
+            //RAKA-end
 
             rowData.setListOfCell(listOfCell);
             listOfData.add(rowData);
