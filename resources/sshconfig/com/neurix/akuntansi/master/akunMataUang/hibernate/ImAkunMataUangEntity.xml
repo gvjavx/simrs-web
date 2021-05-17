@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.akuntansi.master.akunMataUang.model.ImAkunMataUangEntity">
+        <table name="im_akun_mata_uang" schema="public" />
+        <attributes>
+            <id name="mataUangId">
+                <column name="mata_uang_id"/>
+            </id>
+            <basic name="kodeMataUang">
+                <column name="kode_mata_uang"/>
+            </basic>
+            <basic name="namaMataUang">
+                <column name="nama_mata_uang"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="userName">
+                <column name="user_name"/>
+            </basic>
+            <basic name="workStation">
+                <column name="work_station"/>
+            </basic>
+            <basic name="cabangId">
+                <column name="cabang_id"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

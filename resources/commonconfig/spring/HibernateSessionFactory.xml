@@ -435,10 +435,29 @@
                 <value>sshconfig/com/neurix/akuntansi/master/tipeRekening/hibernate/ImTipeRekeningEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/trans/hibernate/ImTransEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/master/hibernate/ImMasterEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/akuntansi/transaksi/laporanAkuntansi/hibernate/ItLaporanAkuntansiEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/hibernate/ImPembayaranUtangPiutangEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/hibernate/ImPembayaranUtangPiutangDetailEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/hibernate/ItAkunLampiranEntity.hbm.xml</value>
+                <value>
+                    sshconfig/com/neurix/akuntansi/transaksi/laporanAkuntansi/hibernate/ItLaporanAkuntansiEntity.hbm.xml
+                </value>
+                <!--<value>-->
+                    <!--sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/hibernate/ImPembayaranUtangPiutangEntity.hbm.xml-->
+                <!--</value>-->
+                <!--<value>-->
+                    <!--sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/hibernate/ImPembayaranUtangPiutangDetailEntity.hbm.xml-->
+                <!--</value>-->
+                <!--<value>-->
+                    <!--sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/hibernate/ItAkunLampiranEntity.hbm.xml-->
+                <!--</value>-->
+
+                <value>
+                    sshconfig/com/neurix/akuntansi/transaksi/kas/hibernate/ItAkunKasEntity.xml
+                </value>
+                <value>
+                    sshconfig/com/neurix/akuntansi/transaksi/kas/hibernate/ItAkunKasDetailEntity.xml
+                </value>
+                <value>
+                    sshconfig/com/neurix/akuntansi/transaksi/kas/hibernate/ItAkunLampiranEntity.hbm.xml
+                </value>
+
                 <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalPendingEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalDetailEntity.hbm.xml</value>
@@ -481,10 +500,6 @@
                 <value>sshconfig/com/neurix/akuntansi/master/parameterbudgeting/hibernate/ImAkunParameterBudgetingRekeningEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/budgetingperhitungan/hibernate/ItAkunNilaiParameterPengadaaanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/budgetingperhitungan/hibernate/ItAkunNilaiBiayaRutinEntity.hbm.xml</value>
-
-                <!--Hibernate Config For Billing System, ferdi 01-12-2020 -->
-                <value>sshconfig/com/neurix/akuntansi/transaksi/billingSystem/hibernate/ItPgInvoiceEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/akuntansi/transaksi/billingSystem/hibernate/ItPgLogTransactionEntity.hbm.xml</value>
 
                 <!--Hibernate Config For updated payroll, ferdi 01-12-2020 -->
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItHrisPayrollHeaderEntity.hbm.xml</value>
@@ -562,9 +577,20 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/rekakmedik/hibernate/ItSimrsStatusPengisianRekamMedisEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/periksalab/hibernate/ItSimrsOrderPeriksaLabEntity.hbm.xml</value>
 
-                <value>sshconfig/com/neurix/simrs/transaksi/asesmenrawatjalan/hibernate/ItSimrsAsesmenKeperawatanRawatJalanEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/simrs/transaksi/hemodialisa/hibernate/ItSimrsObservasiTindakanHdEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/akuntansi/transaksi/penyewaanLahan/hibernate/ItAkunPenyewaanLahanEntity.hbm.xml</value>
+                <value>
+                    sshconfig/com/neurix/simrs/transaksi/asesmenrawatjalan/hibernate/ItSimrsAsesmenKeperawatanRawatJalanEntity.hbm.xml
+                </value>
+                <value>
+                    sshconfig/com/neurix/simrs/transaksi/hemodialisa/hibernate/ItSimrsObservasiTindakanHdEntity.hbm.xml
+                </value>
+                <!--<value>
+                    sshconfig/com/neurix/akuntansi/transaksi/sewaLahan/hibernate/ItAkunPenyewaanLahanEntity.hbm.xml
+                </value>-->
+                <value>sshconfig/com/neurix/akuntansi/transaksi/sewaLahan/hibernate/ItAkunSewaLahanEntity.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/koreksi/hibernate/ItAkunKoreksiDetailEntity.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/koreksi/hibernate/ItAkunKoreksiEntity.xml</value>
+
+
                 <value>sshconfig/com/neurix/hris/master/payrollPtkp/hibernate/ImHrisPayrollPtkpEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/tipeLaporan/hibernate/ImAkunTipeLaporanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/tipePayroll/hibernate/ImHrisTipePayrollEntity.hbm.xml</value>
@@ -575,6 +601,7 @@
                 <value>sshconfig/com/neurix/akuntansi/master/tipeLaporan/hibernate/ImAkunTipeLaporanHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanSetor/hibernate/ItAkunPerhitunganKembaliUnitEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanBiaya/hibernate/ItAkunPengajuanBiayaRkEntity.hbm.xml</value>
+
                 <value>sshconfig/com/neurix/simrs/transaksi/asesmenrawatinap/hibernate/ItSimrsImplementasiPerawatEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/kandungan/hibernate/ItSimrsPartografEntity.hbm.xml</value>
 
@@ -619,8 +646,15 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/periksalab/hibernate/ItSimrsHeaderPemeriksaanEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/transaksi/logcron/hibernate/ItLogCronEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/billingSystem/hibernate/ItPgLogTransactionEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/billingSystem/hibernate/ItPgInvoiceEntity.hbm.xml</value>
+
                 <value>sshconfig/com/neurix/simrs/transaksi/checkupdetail/hibernate/ItSimrsUploadPendukungPemeriksaanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/hargaobat/hibernate/MtSimrsHargaObatPerKonsumenEntity.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/master/akunMataUang/hibernate/ImAkunMataUangEntity.xml</value>
+
+
+
             </list>
 
         </property>

@@ -416,6 +416,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                                 Restrictions.ilike("positionName", "%" + key + "%")
                         )
                 )
+                .add(Restrictions.eq("flagCostUnit", "Y"))
                 .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("kodering"))
                 .list();

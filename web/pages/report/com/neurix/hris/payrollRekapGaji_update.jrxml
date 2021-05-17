@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportPayroll" language="groovy" pageWidth="1684" pageHeight="1190" orientation="Landscape" columnWidth="1662" leftMargin="11" rightMargin="11" topMargin="20" bottomMargin="20" uuid="03e04395-8f92-4fcc-a2df-614fdfb1af97">
 	<property name="ireport.zoom" value="1.3310000000000088"/>
-	<property name="ireport.x" value="1069"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="reportParams.titleReport" class="java.lang.String">
 		<defaultValueExpression><![CDATA["Slip Gaji"]]></defaultValueExpression>

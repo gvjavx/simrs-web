@@ -284,7 +284,6 @@ public class MasterVendorBoImpl implements MasterVendorBo {
 
             List<ImMasterVendorEntity> imVendorEntity = null;
             try {
-
                 imVendorEntity = masterVendorDao.getByCriteria(hsCriteria);
             } catch (HibernateException e) {
                 logger.error("[VendorBoImpl.getSearchVendorByCriteria] Error, " + e.getMessage());

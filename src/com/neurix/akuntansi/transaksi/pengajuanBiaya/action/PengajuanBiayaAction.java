@@ -40,6 +40,9 @@ import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -1089,13 +1092,19 @@ public class PengajuanBiayaAction extends BaseMasterAction {
                 byte[] decodedBytes = decoder.decodeBuffer(gambar);
                 logger.info("Decoded upload data : " + decodedBytes.length);
                 String fileName = pengajuanId+"-"+dateFormater("MM")+dateFormater("yy")+".png";
-                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_IPA+fileName;
+                String pathFolder = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_IPA;
+                String uploadFile = pathFolder+fileName;
                 logger.info("File save path : " + uploadFile);
                 BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
                 if (image == null) {
                     logger.error("Buffered Image is null");
                 }else{
+                    Path path = Paths.get(pathFolder);
+                    if (!Files.exists(path)) {
+                        File file = new File(pathFolder);
+                        file.mkdirs();
+                    }
                     File f = new File(uploadFile);
                     // write the image
                     ImageIO.write(image, "png", f);
@@ -1450,14 +1459,16 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         logger.info("[PengajuanBiayaAction.cariPengajuanBiayaDetail] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
-        return pengajuanBiayaBo.cariPengajuanBiayaDetail(pengajuanBiayaDetailId);
+        List<PengajuanBiayaDetail> pengajuanBiayaDetails = pengajuanBiayaBo.cariPengajuanBiayaDetail(pengajuanBiayaDetailId);
+        return pengajuanBiayaDetails;
     }
 
     public List<PengajuanBiayaDetail> cariPengajuanBiayaDetailUangMuka(String pengajuanBiayaDetailId) {
         logger.info("[PengajuanBiayaAction.cariPengajuanBiayaDetail] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
-        return pengajuanBiayaBo.cariPengajuanBiayaDetailUangMuka(pengajuanBiayaDetailId);
+        List<PengajuanBiayaDetail> pengajuanBiayaDetails = pengajuanBiayaBo.cariPengajuanBiayaDetailUangMuka(pengajuanBiayaDetailId);
+        return pengajuanBiayaDetails;
     }
 
     public String cetakSurat(){
@@ -1654,8 +1665,8 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         logger.info("[PengajuanBiayaAction.getForModalPopUpDetail] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PengajuanBiayaBo pengajuanBiayaBo = (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
-
-        return pengajuanBiayaBo.modalPopUpDetail(pengajuanBiayaDetailId);
+        PengajuanBiayaDetail pengajuanBiayaDetail = pengajuanBiayaBo.modalPopUpDetail(pengajuanBiayaDetailId);
+        return pengajuanBiayaDetail;
     }
 
     public PengajuanBiayaRk getForModalPopUpDo(String pengajuanBiayaRkId) {
@@ -1682,7 +1693,8 @@ public class PengajuanBiayaAction extends BaseMasterAction {
     private String dateFormater(String type) {
         java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
         DateFormat df = new SimpleDateFormat(type);
-        return df.format(date);
+        String result =  df.format(date);
+        return result;
     }
 
     public String searchPembayaranDo() {

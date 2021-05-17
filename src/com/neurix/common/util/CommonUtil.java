@@ -1,5 +1,7 @@
 package com.neurix.common.util;
 
+import com.neurix.akuntansi.transaksi.kas.model.ItAkunLampiranEntity;
+import com.neurix.akuntansi.transaksi.kas.model.Lampiran;
 import com.neurix.authorization.role.model.Roles;
 import com.neurix.authorization.user.model.UserDetailsLogin;
 import com.neurix.common.constant.CommonConstant;
@@ -12,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import sun.misc.BASE64Decoder;
 
 import javax.imageio.*;
 import javax.imageio.stream.ImageInputStream;
@@ -30,6 +33,7 @@ import java.math.RoundingMode;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
 import java.sql.Time;
@@ -429,9 +433,21 @@ public class  CommonUtil {
 
     public static String numbericFormat(BigDecimal number,String pattern) {
 //        NumberFormat nf = NumberFormat.getNumberInstance(Locale.GERMANY); //for indo money format
+        //edited by Aji Noor 07-03-2021 ~ handle jika number bernilai null default jadi 0
+        if(number == null){number = BigDecimal.ZERO;}
         NumberFormat nf = NumberFormat.getNumberInstance(Locale.US); //for international money format
         DecimalFormat df = (DecimalFormat)nf;
         df.applyPattern(pattern);
+        return df.format(number);
+    }
+
+    public static String numbericFormatIndo(BigDecimal number) {
+        NumberFormat nf = NumberFormat.getNumberInstance(Locale.GERMANY); //for indo money format
+        //edited by Aji Noor 07-03-2021 ~ handle jika number bernilai null default jadi 0
+        if(number == null){number = BigDecimal.ZERO;}
+//        NumberFormat nf = NumberFormat.getNumberInstance(Locale.US); //for international money format
+        DecimalFormat df = (DecimalFormat)nf;
+        df.applyPattern("###,###");
         return df.format(number);
     }
 
@@ -1484,6 +1500,38 @@ public class  CommonUtil {
         int m1 = date1.getYear() * 12 + date1.getMonth();
         int m2 = date2.getYear() * 12 + date2.getMonth();
         return m2 - m1 + 1;
+    }
+
+    public static String uploadImage(Lampiran lampiran) throws IOException {
+        String result = null;
+        BASE64Decoder decoder = new BASE64Decoder();
+        byte[] decodedBytes;
+        decodedBytes = decoder.decodeBuffer(lampiran.getUploadFile());
+        logger.info("Decoded upload data : " + decodedBytes.length);
+        String potNama = lampiran.getNamaLampiran().replace(" ", "");
+        if (potNama.length() > 20) {
+            potNama = potNama.substring(0, 20);
+        }
+        String randomNumber = "-" + String.valueOf(CommonUtil.getRandomNumberInts(1, 999)) + "-";
+        String fileName = potNama + randomNumber + convertDateToString(new java.util.Date()) + ".png";
+        String folder = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_LAMPIRAN;
+        String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_LAMPIRAN + fileName;
+        Path path = Paths.get(folder);
+        if (!Files.exists(path)) {
+            File file = new File(folder);
+            file.mkdirs();
+        }
+        logger.info("File save path : " + uploadFile);
+        BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+        if (image == null) {
+            logger.error("Buffered Image is null");
+        } else {
+            File f = new File(uploadFile);
+            // write the image
+            ImageIO.write(image, "png", f);
+            result = fileName;
+        }
+        return result;
     }
 
     public static BigDecimal StringDenganFormatToBigDecimal(String number){

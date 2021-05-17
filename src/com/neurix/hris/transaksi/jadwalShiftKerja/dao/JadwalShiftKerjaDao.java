@@ -392,8 +392,8 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "\ts.shift_name\n" +
                 "FROM\n" +
                 "\tit_hris_jadwal_shift_kerja_detail jd INNER JOIN\n" +
-                "\tit_hris_jadwal_shift_kerja jk ON jd.jadwal_shift_kerja_id=jk.jadwal_shift_kerja_id INNER JOIN\n" +
-                "\tim_hris_shift s ON s.shift_id=jd.shift_id " +
+                "\tit_hris_jadwal_shift_kerja jk ON jd.jadwal_shift_kerja_id=jk.jadwal_shift_kerja_id\n" +
+                "\tINNER JOIN im_hris_shift s ON s.shift_id=jd.shift_id " +
                 "WHERE\n" +
                 "\tjd.flag='Y'\n" +
                 "\tAND jk.flag='Y'\n" +

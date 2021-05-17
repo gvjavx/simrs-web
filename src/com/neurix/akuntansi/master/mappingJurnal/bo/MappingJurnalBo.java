@@ -4,6 +4,9 @@ import com.neurix.akuntansi.master.mappingJurnal.model.MappingJurnal;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
 
+import java.sql.Timestamp;
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * User: gondok
@@ -13,4 +16,6 @@ import com.neurix.common.exception.GeneralBOException;
  */
 public interface MappingJurnalBo extends BaseMasterBo<MappingJurnal> {
     public void saveDelete(MappingJurnal bean) throws GeneralBOException;
+
+    public void saveAddList(List<MappingJurnal> listBean, MappingJurnal data , String userLogin, Timestamp updateTime) throws GeneralBOException;
 }

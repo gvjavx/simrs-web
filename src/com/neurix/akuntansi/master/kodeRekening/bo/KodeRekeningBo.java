@@ -23,6 +23,7 @@ public interface KodeRekeningBo extends BaseMasterBo<KodeRekening> {
     List<KodeRekening> getKodeRekeningLawanByTransId(String transId, String tipeBayar) throws GeneralBOException;
     List<KodeRekening> getPostByKodeRekening(String coa) throws GeneralBOException;
     public ImKodeRekeningEntity getKodeRekeningById(String id) throws GeneralBOException;
+    ImKodeRekeningEntity getKodeRekeningByCoa(String coa) throws GeneralBOException;
     List<ImKodeRekeningEntity> getListKodeRekeningByLevel(String coa, Long level) throws GeneralBOException;
     public List<String> getListRekeningIdsByTipeBudgeting(String tipeBudgeting) throws GeneralBOException;
     List<ImKodeRekeningEntity> getListKodeRekeningByLevelAndTipeBudgeting(String coa, Long level, String tipeBudgeting) throws GeneralBOException;

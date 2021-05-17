@@ -1912,7 +1912,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
         java.sql.Date tglFrom = CommonUtil.convertStringToDate(stTglFrom);
         java.sql.Date tglTo = CommonUtil.convertStringToDate(stTglTo);
-        String profesiId="PR018";
+        String profesiId="PR018"; //Staf Keuangan
         try {
             detailList=jadwalShiftKerjaBo.getJadwalShiftKerjaByUnitAndProfesiAndTanggal(branchId,tglFrom,tglTo,profesiId);
         } catch (GeneralBOException e) {
