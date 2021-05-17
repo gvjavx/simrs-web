@@ -1348,7 +1348,11 @@
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_tindakan">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                   <p id="msg_tindakan"></p>
+                    <p id="msg_tindakan"></p>
+                </div>
+                <div class="alert alert-info alert-dismissible" style="display: none" id="warning_konsul">
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
+                    <p id="msg_konsul"></p>
                 </div>
                 <div class="row">
                     <div class="form-group">
@@ -1382,6 +1386,7 @@
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_kategori"><i class="fa fa-check"></i> correct</p>
                         </div>
+
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>
@@ -1389,7 +1394,7 @@
                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                     id="tin_id_tindakan"
                                     onchange="var warn =$('#war_tindakan').is(':visible'); if (warn){$('#cor_tindakan').show().fadeOut(3000);$('#war_tindakan').hide()}; setDiskonHarga(this.value)">
-                                <option value=''>[Select One]</option>
+                                <option value=''> - </option>
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -1400,15 +1405,21 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Diskon</label>
+                        <label class="col-md-3" style="margin-top: 7px">Diskon (%)</label>
                         <div class="col-md-7">
                             <input style="margin-top: 7px" class="form-control" readonly id="h_diskon">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Harga</label>
-                        <div class="col-md-7">
+                        <label class="col-md-3" style="margin-top: 7px">Harga (Rp.)</label>
+                        <div class="col-md-3">
                             <input style="margin-top: 7px" class="form-control" readonly id="h_harga">
+                        </div>
+                        <div class="col-md-1">
+                            <i class="fa fa-arrow-right" style="margin-top: 15px"></i>
+                        </div>
+                        <div class="col-md-3">
+                            <input style="margin-top: 7px" class="form-control" readonly id="h_harga_after">
                         </div>
                     </div>
                     <div class="form-group">
@@ -1426,6 +1437,31 @@
                             <input type="number" min="1" class="form-control" style="margin-top: 7px" id="tin_qty_elektif"
                                    oninput="$(this).css('border','')" onchange="$(this).css('border','')">
                         </div>
+                    </div>
+                    <div class="form-group" id="form-btn-add" style="display: none">
+                        <div class="col-md-offset-3 col-md-9">
+                            <button onclick="addToListTindakan()" class="btn btn-success"><i class="fa fa-plus"></i> Tambah</button>
+                            <button onclick="resetListTindakan()" class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>
+                        </div>
+                    </div>
+                    <div class="form-group" id="form-list" style="display: none">
+                        <label class="col-md-12">
+                            <table id="table_list_tindakan" class="table table-bordered table-hover" style="font-size: 12px; margin-top: 20px">
+                                <thead>
+                                <tr>
+                                    <td>Dokter</td>
+                                    <td>Tindakan</td>
+                                    <td align="center">Qty</td>
+                                    <td align="right">Tarif (Rp.)</td>
+                                    <td align="right">Total (Rp.)</td>
+                                    <td align="center">Action</td>
+                                </tr>
+                                </thead>
+                                <tbody id="body_temp_tindakan">
+
+                                </tbody>
+                            </table>
+                        </label>
                     </div>
                 </div>
             </div>

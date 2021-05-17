@@ -498,7 +498,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                 if ("P".equalsIgnoreCase(checkup.getJenisKelamin())) {
                     jk = "Perempuan";
                 } else {
-                    jk = "laki-Laki";
+                    jk = "Laki-Laki";
                 }
             }
             resep.setJenisKelamin(jk);
