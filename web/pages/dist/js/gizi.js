@@ -368,36 +368,68 @@ function saveGizi(jenis, ket) {
         var nama2 = $('#nama_gizi21').val();
         var sip2 = $('#sip_dokter').val();
 
-        if(va2 == ''){
-            va2 = ' -';
+        if(va1 != ''){
+            temp = 'BB : ' + va1+ ' Kg';
         }
-        if(va3 == ''){
-            va3 = ' -';
+        if(va2 != ''){
+            temp = temp+'|TB : ' + va2 + ' Cm';
         }
-        if(va4 == ''){
-            va4 = ' -';
+        if(va3 != ''){
+            temp = temp+'|LLA : ' + va3 + ' Kg'
         }
-        if(va5 == ''){
-            va5 = ' -';
+        if(va4 != ''){
+            temp = temp+'|BBI ' + va4;
         }
-        if(va6 == ''){
-            va6 = ' -';
+        if(va5 != ''){
+            temp = temp+'|%BBI ' + va5;
         }
-        if(va7 == ''){
-            va7 = ' -';
+        if(va6 != ''){
+            temp = temp+'|BB/U' + va6;
         }
-        if(va8 == ''){
-            va8 = ' -';
+        if(va7 != ''){
+            temp = temp+'|TB/U ' + va7;
         }
-        if(va10 == ''){
-            va10 = ' -';
+        if(va8 != ''){
+            temp = temp+'|BB/TB ' + va8;
+        }
+        if(va10 != ''){
+            temp = temp+'|LLA/U ' + va10;
+        }
+        if(va11 != undefined){
+            temp = temp+'|Status Gizi : ' + va11;
         }
 
-        if (va1 && tempVa15 && nama1 && nama2 && sip2 != '' && va11 && va12 && va13 != undefined && !cekTtd1 && !cekTtd2) {
-            temp = 'BB : ' + va1 + ' Kg' + '|' + 'TB : ' + va2 + ' Cm' + '|' + 'LLA : ' + va3 + ' Kg' + '|' + 'BBI ' + va4 + '|' + '%BBI ' + va5 + '|' + 'BB/U' + va6 + '|' + 'TB/U ' + va7 + '|' + 'BB/TB ' + va8 + '|' + 'LLA/U ' + va10 + '|' + 'Status Gizi : ' + va11;
-            if (parseInt(umur) >= 16) {
-                temp = 'BB : ' + va1 + ' Kg' + '|' + 'TB : ' + va2 + ' Cm' + '|' + 'BBI : ' + va3 + ' Kg' + '|' + 'IMT ' + va4 + ' Kg/m2' + '|' + 'TL ' + va5 + ' Cm' + '|' + 'TB Est' + va6 + ' Cm' + '|' + 'LLA ' + va7 + ' Cm' + '|' + '%LLA ' + va8 + ' %' + '|' + 'Status Gizi : ' + va11;
+        if (parseInt(umur) >= 16) {
+            if(va1 != ''){
+                temp = 'BB : ' + va1+ ' Kg';
             }
+            if(va2 != ''){
+                temp = temp+'|TB : ' + va2 + ' Cm';
+            }
+            if(va3 != ''){
+                temp = temp+'|BBI : ' + va3;
+            }
+            if(va4 != ''){
+                temp = temp+'|IMT ' + va4+' Kg/m2';
+            }
+            if(va5 != ''){
+                temp = temp+'|TL ' + va5 + ' Cm';
+            }
+            if(va6 != ''){
+                temp = temp+'|TB Est' + va6 + ' Cm';
+            }
+            if(va7 != ''){
+                temp = temp+'|LLA ' + va7 + ' Cm';
+            }
+            if(va8 != ''){
+                temp = temp+'|%LLA ' + va8 + ' %';
+            }
+            if(va11 != undefined){
+                temp = temp+'|Status Gizi : ' + va11;
+            }
+        }
+
+        if (va1 && tempVa15 && nama1 && nama2 && sip2 != '' && va12 && va13 != undefined && !cekTtd1 && !cekTtd2) {
             data.push({
                 'parameter': 'A. Antropmentri',
                 'jawaban': temp,

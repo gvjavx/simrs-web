@@ -701,6 +701,22 @@
                         </div>
                     </div>
                 </div>
+                    <hr>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-6 text-center">
+                                <label>Perawat Pengirim</label>
+                                <canvas class="paint-canvas-ttd" id="perawat_pengirim" width="220"
+                                        onmouseover="paintTtd('perawat_pengirim')"></canvas>
+                                <input class="form-control nama_petugas" id="nama_terang_pengirim" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control nip_petugas" id="nip_perawat_pengirim" placeholder="NIP">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('perawat_pengirim')"><i
+                                        class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -711,6 +727,69 @@
                     Save
                 </button>
                 <button id="load_ina_kondisi_serah_terima" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-ina-ttd">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> TTD Penerima
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_ina_ttd">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_ina_ttd"></p>
+                </div>
+                <div class="modal-body">
+                    <div class="box-body">
+                        <div class="form-group" style="display: none">
+                            <div class="col-md-1">
+                                <input type="color" style="margin-left: -6px; margin-top: -8px"
+                                       class="js-color-picker  color-picker pull-left">
+                            </div>
+                            <div class="col-md-9">
+                                <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72"
+                                       value="1">
+                            </div>
+                            <div class="col-md-2">
+                                <div style="margin-top: -8px;" class="js-range-value">1 px</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-8">
+                                    <label>TTD Penerima</label>
+                                    <canvas class="paint-canvas-ttd del-canvas" id="ttd_edit" width="300"
+                                            onmouseover="paintTtd('ttd_edit')"></canvas>
+                                    <input class="form-control nama_petugas" id="nama_ttd" placeholder="Nama Terang">
+                                    <input style="margin-top: 3px" class="form-control nip_petugas" id="sip_ttd" placeholder="SIP">
+                                    <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                            onclick="removePaint('ttd_edit')"><i
+                                            class="fa fa-trash"></i> Clear
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_ttd" class="btn btn-success pull-right"><i class="fa fa-check"></i>
+                    Save
+                </button>
+                <button id="load_ttd" style="display: none; cursor: no-drop" type="button"
                         class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
