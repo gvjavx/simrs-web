@@ -423,6 +423,25 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
         return null;
     }
 
+    public Boolean foundNumbDocumentPo(String idItem, String idPo, String jenisNomor, String noBatch){
+
+        String SQL = "SELECT \n" +
+                "id_item \n" +
+                "FROM it_simrs_doc_po\n" +
+                "WHERE id_item = '"+idItem+"'\n" +
+                "AND id_permintaan_obat_vendor = '"+idPo+"'\n" +
+                "AND jenis_nomor = '"+jenisNomor+"'\n" +
+                "AND no_batch = '"+noBatch+"'";
+
+        List<Object> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+            return true;
+        }
+
+        return false;
+    }
+
     public String getNextSeq() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('sq_permintaan_vendor')");
         Iterator<BigInteger> iter = query.list().iterator();

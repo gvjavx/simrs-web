@@ -790,12 +790,12 @@ public class PermintaanVendorAction extends BaseMasterAction {
             }
         }
 
-        permintaanVendor.setNoFaktur(noFaktur);
-        permintaanVendor.setTanggalFaktur(Date.valueOf(tglFaktur));
+        permintaanVendor.setNoFaktur(noFaktur != null && !"".equalsIgnoreCase(noFaktur) ? noFaktur : null);
+        permintaanVendor.setTanggalFaktur(tglFaktur != null && !"".equalsIgnoreCase(tglFaktur) ? Date.valueOf(tglFaktur) : null);
         permintaanVendor.setTglInvoice( "".equalsIgnoreCase(tglInvoice) ? null : Date.valueOf(tglInvoice));
         permintaanVendor.setTglDo( "".equalsIgnoreCase(tglDo) ? null : Date.valueOf(tglDo));
-        permintaanVendor.setNoInvoice(noInvoice);
-        permintaanVendor.setNoDo(noDo);
+        permintaanVendor.setNoInvoice(noInvoice != null && !"".equalsIgnoreCase(noInvoice) ? noInvoice : null);
+        permintaanVendor.setNoDo(noDo != null && !"".equalsIgnoreCase(noDo) ? noDo : null);
         permintaanVendor.setIdPelayanan(pelayananId);
 
         List<PermintaanVendor> permintaanVendorList = new ArrayList<>();
@@ -959,6 +959,91 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         logger.info("[PermintaanVendorAction.saveApproveBatch] START >>>>>>>");
         return checkObatResponse;
+    }
+
+    public CrudResponse saveDocPo(String idPermintaanVendor, String noBatch, String listImg) throws JSONException, IOException{
+        logger.info("[PermintaanVendorAction.saveDocPo] Start >>>");
+
+        String userLogin    = CommonUtil.userLogin();
+        Timestamp time      = CommonUtil.getCurrentDateTimes();
+
+        CrudResponse response = new CrudResponse();
+
+        List<ItSimrsDocPoEntity> docPoEntities = new ArrayList<>();
+
+        if (idPermintaanVendor == null || "".equalsIgnoreCase(idPermintaanVendor)){
+            response.hasError("Tidak Ditemukan No. Permintaan");
+            return response;
+        }
+
+        if (noBatch == null || "".equalsIgnoreCase(noBatch)){
+            response.hasError("Tidak Ditemukan No. Batch");
+            return response;
+        }
+
+        if (listImg == null || "".equalsIgnoreCase(listImg)){
+            response.hasError("Tidak Ditemukan list Document Dikirim.");
+            return response;
+        }
+
+        JSONArray json = new JSONArray(listImg);
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            ItSimrsDocPoEntity docPoEntity = new ItSimrsDocPoEntity();
+            if (!"".equalsIgnoreCase(obj.get("jenisnomor").toString())) {
+                docPoEntity.setJenisNomor(obj.get("jenisnomor") == null ? "" : obj.get("jenisnomor").toString());
+            }
+            if (!"".equalsIgnoreCase(obj.get("iditem").toString())) {
+                docPoEntity.setIdItem(obj.get("iditem") == null ? null : obj.get("iditem").toString());
+            }
+            // upload img
+            if (!"".equalsIgnoreCase(obj.get("img").toString())) {
+
+                BASE64Decoder decoder = new BASE64Decoder();
+                byte[] decodedBytes = decoder.decodeBuffer(obj.getString("img"));
+                logger.info("Decoded upload data : " + decodedBytes.length);
+                String fileName = i + docPoEntity.getIdItem() + "-" + dateFormater("MM") + dateFormater("yy") + ".jpg";
+                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_PO + fileName;
+                logger.info("File save path : " + uploadFile);
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                if (image == null) {
+                    logger.error("Buffered Image is null");
+                } else {
+                    response = CommonUtil.compressImage(image, "png", uploadFile);
+                    if ("success".equalsIgnoreCase(response.getStatus())) {
+                        docPoEntity.setUrlImg(fileName);
+                    } else {
+                        response.hasError("Kompress IMG Error, " + response.getMsg());
+                    }
+                }
+            }
+
+            docPoEntity.setTipe("IMG");
+            docPoEntity.setIdPermintaanObatVendor(idPermintaanVendor);
+            docPoEntity.setNoBatch(Integer.valueOf(noBatch));
+            docPoEntity.setFlag("Y");
+            docPoEntity.setAction("C");
+            docPoEntity.setCreatedDate(time);
+            docPoEntity.setCreatedWho(userLogin);
+            docPoEntity.setLastUpdate(time);
+            docPoEntity.setLastUpdateWho(userLogin);
+            docPoEntities.add(docPoEntity);
+        }
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+
+        try {
+            permintaanVendorBo.saveListDocVendor(docPoEntities);
+            response.hasSuccess("Berhasil Menyimpan");
+        } catch (GeneralBOException e) {
+            logger.error("[PermintaanVendorAction.saveApproveBatch] ERROR error when save DOC PO. ", e);
+            addActionError("[PermintaanVendorAction.saveApproveBatch] ERROR error when save DOC PO. " + e.getMessage());
+        }
+
+        logger.info("[PermintaanVendorAction.saveDocPo] END <<<");
+        return response;
     }
 
     public List<TransaksiObatDetail> searchNewListObat(String idApproval) {
