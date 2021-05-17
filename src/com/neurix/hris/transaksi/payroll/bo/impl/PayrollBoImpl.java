@@ -27633,8 +27633,6 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         return listOfResult;
     }
 
-
-
     @Override
     public void saveDelete(Payroll bean) throws GeneralBOException {
 
