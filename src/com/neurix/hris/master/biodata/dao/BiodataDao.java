@@ -2211,8 +2211,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         String SQL = "select\n" +
                 "\tpegawai.nama_pegawai,\n" +
                 "\tpegawai.tanggal_aktif,\n" +
-                "\tcase when pegawai.tanggal_aktif is not null then\n" +
-                "\t(to_date( :tanggal , 'YYYY-MM-DD') - pegawai.tanggal_aktif) / 356\n" +
+                "\tcase when pegawai.tanggal_masuk is not null then\n" +
+                "\t(to_date( :tanggal , 'YYYY-MM-DD') - pegawai.tanggal_masuk) / 356\n" +
                 "\telse 0 end as masa\n" +
                 "from im_hris_pegawai pegawai\n" +
                 "where nip = :nip";

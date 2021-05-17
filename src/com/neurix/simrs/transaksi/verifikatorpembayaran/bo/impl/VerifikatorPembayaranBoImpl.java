@@ -1283,6 +1283,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
         return transaksiStokDao.getNextSeq();
     }
 
+    @Override
     public List<AntrianTelemedic> reportVa (String dateFrom, String dateTo, String branchId) throws GeneralBOException {
         logger.info("[VerifikatorPembayaranBoImpl.reportVa] START >>>>>>");
         List<AntrianTelemedic> listResult = new ArrayList<>();
