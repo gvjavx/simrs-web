@@ -188,7 +188,7 @@ public class CommonConstant {
     public final static String ROLE_ID_ADMIN_DIVISI = CommonUtil.getPropertyParams("role.id.admin.divisi");
     public final static String ROLE_ID_ADMIN = CommonUtil.getPropertyParams("role.id.admin");
     public final static String ROLE_ID_ADMIN_SDM = CommonUtil.getPropertyParams("role.id.admin.sdm");
-    public final static String ID_KANPUS = "KP";
+//    public final static String ID_KANPUS = "KP";
     public final static String MASTER_PAJAK_OBAT = "03.00";
 
     //updated by ferdi, 01-12-2020
