@@ -1072,7 +1072,7 @@ public class KoreksiBoImpl implements KoreksiBo {
         logger.info("[KoreksiBoImpl.getSearchNotaKas] start process >>>");
         List<KoreksiDetail> listOfResult = new ArrayList<>();
         String unit = "";
-        if ((CommonConstant.ID_KANPUS).equalsIgnoreCase(branchId)) {
+        if ((CommonConstant.BRANCH_KP).equalsIgnoreCase(branchId)) {
             List<ImBranches> branchList = new ArrayList<>();
             branchList = branchDao.getAllBranch();
             String filteredList = branchList.stream().map(ImBranches::getPrimaryKey).toString(); //coba

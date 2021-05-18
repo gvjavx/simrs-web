@@ -360,10 +360,10 @@ INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, pos
 
 ------ 2021-05-07 ===> update sg_pensiun
     UPDATE im_hris_payroll_skala_gaji_pensiun
-        SET golongan_id = 'IVD'
+        SET golongan_id = 'IVD', flag = 'N'
         WHERE skala_gaji_pensiun_id in ('SGP00001', 'SGP00002', 'SGP00003', 'SGP00004', 'SGP00005', 'SGP00006', 'SGP00007');
     UPDATE im_hris_payroll_skala_gaji_pensiun
-        SET golongan_id = 'IVC'
+        SET golongan_id = 'IVC', flag = 'N'
         WHERE skala_gaji_pensiun_id in ('SGP00008', 'SGP00009', 'SGP00010', 'SGP00011', 'SGP00012', 'SGP00013', 'SGP00014', 'SGP00015', 'SGP00016', 'SGP00017');
 
 ------ 2021-05-07 ===> for MBT

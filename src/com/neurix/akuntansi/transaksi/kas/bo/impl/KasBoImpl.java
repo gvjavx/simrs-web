@@ -438,7 +438,7 @@ public class KasBoImpl implements KasBo {
         logger.info("[KasBoImpl.getSearchNotaKas] start process >>>");
         List<KasDetail> listOfResult = new ArrayList<>();
         String unit="";
-        if ((CommonConstant.ID_KANPUS).equalsIgnoreCase(branchId)){
+        if ((CommonConstant.BRANCH_KP).equalsIgnoreCase(branchId)){
             List<ImBranches> branchList = new ArrayList<>();
             branchList = branchDao.getAllBranch();
             int i = 1;
