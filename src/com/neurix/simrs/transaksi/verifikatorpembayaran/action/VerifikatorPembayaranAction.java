@@ -158,6 +158,26 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
     private String tipe;
     private String notifid;
 
+    //RAKA-17MEI2021 ===> untuk ambil range print report
+    private String dateFrom;
+    private String dateTo;
+
+    public String getDateFrom() {
+        return dateFrom;
+    }
+
+    public void setDateFrom(String dateFrom) {
+        this.dateFrom = dateFrom;
+    }
+
+    public String getDateTo() {
+        return dateTo;
+    }
+
+    public void setDateTo(String dateTo) {
+        this.dateTo = dateTo;
+    }
+
     public String getNotifid() {
         return notifid;
     }
@@ -3993,6 +4013,207 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
 
         logger.info("[VerifikatorPembayaranAction.print] END <<<");
         return "downloadXls";
+    }
+
+    public String reportVaExcel(){
+        logger.info("[VerifikatorPembayaranAction.reportVaExcel] START >>>");
+
+        String dateFrom = getDateFrom();
+        String dateTo = getDateTo();
+        String branchId = CommonUtil.userBranchLogin();
+        String currTime = new Timestamp(System.currentTimeMillis()).toString();
+        String branchName = CommonUtil.userBranchNameLogin();
+
+        List<AntrianTelemedic> antrianTelemedicList = new ArrayList<>();
+        try {
+            antrianTelemedicList = verifikatorPembayaranBoProxy.reportVa(dateFrom, dateTo, branchId);
+        } catch (GeneralBOException e){
+            logger.error("[VerifikatorPembayaranAction.reportVaExcel] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+        }
+
+        BigDecimal jumlah = new BigDecimal(0);
+        CellDetail cellDetail;
+        RowData rowData;
+        List listOfData = new ArrayList();
+        List listOfCell;
+        List listOfColumn = new ArrayList();
+        String titleReport = "Report Transaksi VA  " + branchName + " : Tanggal " + dateFrom +" - " + dateTo ;
+
+        listOfColumn.add("No. Transaksi");
+        listOfColumn.add("No. RM");
+        listOfColumn.add("Nama Pasien");
+        listOfColumn.add("Jenis Pemeriksaan");
+        listOfColumn.add("Keterangan");
+        listOfColumn.add("Nama Bank");
+        listOfColumn.add("Nominal");
+        listOfColumn.add("Tgl. Trans");
+        listOfColumn.add("Pelayanan");
+        listOfColumn.add("Dokter");
+        listOfColumn.add("Petugas Posting");
+
+        String userName = CommonUtil.userLogin();
+
+        for (AntrianTelemedic data : antrianTelemedicList){
+            rowData = new RowData();
+            listOfCell = new ArrayList();
+
+            //no.trans
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(0);
+            cellDetail.setValueCell(data.getId());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            //No. RM
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(1);
+            cellDetail.setValueCell(data.getIdPasien());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            //Nama Pasien
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(2);
+            cellDetail.setValueCell(data.getNamaPasien());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            //jenis Pemeriksaan
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(3);
+            cellDetail.setValueCell(data.getIdJenisPeriksaPasien().toUpperCase());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            //Keterangan
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(4);
+            cellDetail.setValueCell(data.getKeterangan());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            //Nama Bank
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(5);
+            cellDetail.setValueCell(data.getNamaBank());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            //Nominal
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(6);
+            cellDetail.setValueCell(data.getNominal().toString());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_RIGHT);
+            listOfCell.add(cellDetail);
+
+            //Tanggal Transaksi
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(7);
+            cellDetail.setValueCell(data.getStLastUpdate());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            //Pelayanan
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(8);
+            cellDetail.setValueCell(data.getNamaPelayanan());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            //Dokter
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(9);
+            cellDetail.setValueCell(data.getNamaDokter());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            //Petugas Posting
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(10);
+            cellDetail.setValueCell(userName);
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            rowData.setListOfCell(listOfCell);
+            listOfData.add(rowData);
+
+            // tambahkan ke jumlah untuk sum
+            jumlah = jumlah.add(data.getNominal());
+        }
+
+        // Tambahkan Kolom SUM, START
+        rowData = new RowData();
+        listOfCell = new ArrayList();
+
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(0);
+        cellDetail.setValueCell("");
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+        //No. RM
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(1);
+        cellDetail.setValueCell("");
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+        //Nama Pasien
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(2);
+        cellDetail.setValueCell("");
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+        //Jenis Pemeriksaan
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(3);
+        cellDetail.setValueCell("");
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+        //Keterangan
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(4);
+        cellDetail.setValueCell("");
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+        //Nama bank
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(5);
+        cellDetail.setValueCell("");
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+        //Nominal
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(6);
+        cellDetail.setValueCell(jumlah.toString());
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_RIGHT);
+        listOfCell.add(cellDetail);
+
+        rowData.setListOfCell(listOfCell);
+        listOfData.add(rowData);
+
+        // END
+
+        HSSFWorkbook wb = DownloadUtil.generateExcelOutput(titleReport, currTime, listOfColumn, listOfData, null);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            wb.write(baos);
+        } catch (IOException e) {
+            logger.error("[VerifikatorPembayaranAction.downloadXls] Error when downloading data of telemedicine, Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "Found problem when downloding data, please inform to your admin.");
+            return ERROR;
+        }
+
+        setExcelStream(new ByteArrayInputStream(baos.toByteArray()));
+        setContentDisposition("filename=\"LaporanVA_"+branchName+".${documentFormat}\"");
+
+        logger.info("[VerifikatorPembayaranAction.reportVaExcel] END <<<");
+        return "reportVaXls";
     }
 
     private String getShiftName(String shiftId){

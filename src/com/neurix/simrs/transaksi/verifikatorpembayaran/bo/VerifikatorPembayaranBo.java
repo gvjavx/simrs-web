@@ -34,5 +34,6 @@ public interface VerifikatorPembayaranBo {
     public String getShifIdByNipAndTanggal(String nip, String tanggal, String tipeRole, String branchId);
     public List<Shift> getListShiftByIdTanggal(String branchId, String stDate, String shiftId);
     public List<AntrianTelemedic> getListKasMasukByShift(String shiftId, String stDate, String branchId, String status, String jenisPasien);
+    public List<AntrianTelemedic> reportVa (String dateFrom, String dateTo, String branchId) throws GeneralBOException;
 
 }

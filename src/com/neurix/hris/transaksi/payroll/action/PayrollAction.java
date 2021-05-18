@@ -439,7 +439,7 @@ public class PayrollAction extends BaseTransactionAction {
 
         if (branchId!=null) {
             payrollHeader.setBranchId(branchId);
-            if (CommonConstant.ID_KANPUS.equalsIgnoreCase(branchId)){
+            if (CommonConstant.BRANCH_KP.equalsIgnoreCase(branchId)){
                 payrollHeader.setKantorPusat(true);
             } else {
                 payrollHeader.setKantorPusat(false);
@@ -474,7 +474,7 @@ public class PayrollAction extends BaseTransactionAction {
         if (branchId!=null) {
 
             payrollHeader.setBranchId(branchId);
-            if (CommonConstant.ID_KANPUS.equalsIgnoreCase(branchId)){
+            if (CommonConstant.BRANCH_KP.equalsIgnoreCase(branchId)){
                 payrollHeader.setKantorPusat(true);
             } else {
                 payrollHeader.setKantorPusat(false);
@@ -532,7 +532,7 @@ public class PayrollAction extends BaseTransactionAction {
 
         String branchId = CommonUtil.userBranchLogin();
 
-        if ((CommonConstant.ID_KANPUS).equalsIgnoreCase(branchId)){
+        if ((CommonConstant.BRANCH_KP).equalsIgnoreCase(branchId)){
             searchPayroll.setKantorPusat(true);
         }
 
@@ -1184,7 +1184,7 @@ public class PayrollAction extends BaseTransactionAction {
         String branchId = CommonUtil.userBranchLogin();
         searchPayroll.setBranchId(branchId);
 
-        if ((CommonConstant.ID_KANPUS).equalsIgnoreCase(branchId)){
+        if ((CommonConstant.BRANCH_KP).equalsIgnoreCase(branchId)){
             searchPayroll.setKantorPusat(true);
         }
 

@@ -1282,4 +1282,19 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
     public String generateIdSementara() {
         return transaksiStokDao.getNextSeq();
     }
+
+    @Override
+    public List<AntrianTelemedic> reportVa (String dateFrom, String dateTo, String branchId) throws GeneralBOException {
+        logger.info("[VerifikatorPembayaranBoImpl.reportVa] START >>>>>>");
+        List<AntrianTelemedic> listResult = new ArrayList<>();
+
+        try{
+            listResult = verifikatorPembayaranDao.reportVa(dateFrom, dateTo, branchId);
+        }catch (HibernateException e){
+            logger.error("[VerifikatorPembayaranBoImpl] Error, " + e.getMessage());
+            throw new GeneralBOException("Error when retrieving data for report VA, " + e.getMessage());
+        }
+        logger.info("[VerifikatorPembayaranBoImpl.reportVa]  END  <<<<<<");
+        return listResult;
+    }
 }
