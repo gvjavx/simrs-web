@@ -768,8 +768,7 @@
             'no_do': noDo,
             'tgl_faktur': tgl,
             'tgl_invoice': tglInvoice,
-            'tgl_do': tglDo,
-            'img_url': ""
+            'tgl_do': tglDo
         };
 
         var cekFaktur = $('.faktur');
@@ -819,8 +818,9 @@
         };
 
         var listimg = JSON.stringify(listOfimg);
+        var stData  = JSON.stringify(data);
 
-        PermintaanVendorAction.saveDocPo(idPermintaan, noBatch, listimg, function (res) {
+        PermintaanVendorAction.saveDocPo(idPermintaan, noBatch, listimg, stData, function (res) {
             alert(res.msg);
             if (res.status == "success"){
                 $("#modal-upload").modal('hide');

@@ -654,4 +654,50 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
         }
         return "";
     }
+
+    public TransaksiObatBatch getNumbDocInTrans(String idPermintaan, String noBatch){
+
+        String SQL = "SELECT \n" +
+                "odb.no_faktur,\n" +
+                "odb.no_invoice,\n" +
+                "odb.no_do,\n" +
+                "odb.tanggal_faktur,\n" +
+                "odb.tgl_invoice,\n" +
+                "odb.tgl_do\n" +
+                "FROM mt_simrs_transaksi_obat_detail_batch odb\n" +
+                "INNER JOIN mt_simrs_transaksi_obat_detail od ON od.id_transaksi_obat_detail = odb.id_transaksi_obat_detail\n" +
+                "INNER JOIN mt_simrs_permintaan_obat_vendor ov ON ov.id_approval_obat = od.id_approval_obat\n" +
+                "WHERE ov.id_permintaan_obat_vendor = '"+idPermintaan+"'\n" +
+                "AND odb.no_batch = '"+noBatch+"'\n" +
+                "AND odb.approve_flag = 'Y' \n" +
+                "GROUP BY \n" +
+                "odb.no_faktur,\n" +
+                "odb.no_invoice,\n" +
+                "odb.no_do,\n" +
+                "odb.tanggal_faktur,\n" +
+                "odb.tgl_invoice,\n" +
+                "odb.tgl_do;";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+            Object[] obj = list.get(0);
+            TransaksiObatBatch obatBatch = new TransaksiObatBatch();
+            obatBatch.setNoFaktur(objToString(obj[0]));
+            obatBatch.setNoInvoice(objToString(obj[1]));
+            obatBatch.setNoDo(objToString(obj[2]));
+            obatBatch.setStTglFaktur(objToString(obj[3]));
+            obatBatch.setStTglInvoice(objToString(obj[4]));
+            obatBatch.setStTglDo(objToString(obj[5]));
+            return obatBatch;
+        }
+        return null;
+    }
+
+    private String objToString(Object obj){
+        if (obj == null)
+            return null;
+        else
+            return obj.toString();
+    }
 }

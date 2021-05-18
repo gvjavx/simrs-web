@@ -64,6 +64,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Toshiba on 27/12/2019.
@@ -961,7 +962,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return checkObatResponse;
     }
 
-    public CrudResponse saveDocPo(String idPermintaanVendor, String noBatch, String listImg) throws JSONException, IOException{
+    public CrudResponse saveDocPo(String idPermintaanVendor, String noBatch, String listImg, String objData) throws JSONException, IOException{
         logger.info("[PermintaanVendorAction.saveDocPo] Start >>>");
 
         String userLogin    = CommonUtil.userLogin();
@@ -982,10 +983,16 @@ public class PermintaanVendorAction extends BaseMasterAction {
         }
 
         if (listImg == null || "".equalsIgnoreCase(listImg)){
-            response.hasError("Tidak Ditemukan list Document Dikirim.");
+            response.hasError("Tidak Ditemukan list Document Dikirim");
             return response;
         }
 
+        if (objData == null || "".equalsIgnoreCase(objData)){
+            response.hasError("Tidak Ditemukan data No. Document");
+            return response;
+        }
+
+        // passing data uploaded document to list document entity
         JSONArray json = new JSONArray(listImg);
         for (int i = 0; i < json.length(); i++) {
             JSONObject obj = json.getJSONObject(i);
@@ -1030,19 +1037,95 @@ public class PermintaanVendorAction extends BaseMasterAction {
             docPoEntity.setLastUpdateWho(userLogin);
             docPoEntities.add(docPoEntity);
         }
+        // END
+
+        // set json object to object BatchPermintaanObat
+        BatchPermintaanObat batchPermintaanObat = new BatchPermintaanObat();
+        JSONObject obj = new JSONObject(objData);
+
+        batchPermintaanObat.setNoFaktur(obj.getString("no_faktur"));
+        batchPermintaanObat.setNoInvoice(obj.getString("no_invoice"));
+        batchPermintaanObat.setNoDo(obj.getString("no_do"));
+        batchPermintaanObat.setTanggalFaktur(obj.getString("tgl_faktur") == null ? null : CommonUtil.convertStringToDate2(obj.getString("tgl_faktur")));
+        batchPermintaanObat.setTglInvoice(obj.getString("tgl_invoice") == null ? null : CommonUtil.convertStringToDate2(obj.getString("tgl_invoice")));
+        batchPermintaanObat.setTglDo(obj.getString("tgl_do") == null ? null : CommonUtil.convertStringToDate2(obj.getString("tgl_do")));
+        batchPermintaanObat.setIdPermintaan(idPermintaanVendor);
+        batchPermintaanObat.setStNoBatch(noBatch);
+        batchPermintaanObat.setLastUpdate(time);
+        batchPermintaanObat.setLastUpdateWho(userLogin);
+        // END
+
+        // check jika list dokumen tidak ada nomor dokumen
+        response = checkDocumentNumb(docPoEntities, batchPermintaanObat);
+        if ("error".equalsIgnoreCase(response.getStatus())){
+            return response;
+        }
+        // END
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
 
         try {
-            permintaanVendorBo.saveListDocVendor(docPoEntities);
+            permintaanVendorBo.saveUploadDocPoAfterApprove(docPoEntities, batchPermintaanObat);
             response.hasSuccess("Berhasil Menyimpan");
         } catch (GeneralBOException e) {
             logger.error("[PermintaanVendorAction.saveApproveBatch] ERROR error when save DOC PO. ", e);
-            addActionError("[PermintaanVendorAction.saveApproveBatch] ERROR error when save DOC PO. " + e.getMessage());
+            response.hasError("[PermintaanVendorAction.saveApproveBatch] ERROR error when save DOC PO. " + e.getMessage());
+            return response;
         }
 
         logger.info("[PermintaanVendorAction.saveDocPo] END <<<");
+        return response;
+    }
+
+    private CrudResponse checkDocumentNumb(List<ItSimrsDocPoEntity> docPoEntities, BatchPermintaanObat batchObat){
+        logger.info("[PermintaanVendorAction.checkDocumentNumb] Start >>>");
+        CrudResponse response = new CrudResponse();
+
+        if (batchObat.getNoFaktur() == null
+                || "".equalsIgnoreCase(batchObat.getNoFaktur())
+                || batchObat.getTanggalFaktur() == null )
+        {
+            List<ItSimrsDocPoEntity> filterdList = docPoEntities.stream().filter(
+                    p->p.getJenisNomor().equalsIgnoreCase("faktur")
+            ).collect(Collectors.toList());
+
+            if (filterdList.size() > 0){
+                response.hasError("Tidak ditemukan no. faktur pada list faktur yang dikirim");
+                return response;
+            }
+        }
+
+        if (batchObat.getNoInvoice() == null
+                || "".equalsIgnoreCase(batchObat.getNoInvoice())
+                || batchObat.getTglInvoice() == null)
+        {
+            List<ItSimrsDocPoEntity> filterdList = docPoEntities.stream().filter(
+                    p->p.getJenisNomor().equalsIgnoreCase("invoice")
+            ).collect(Collectors.toList());
+
+            if (filterdList.size() > 0){
+                response.hasError("Tidak ditemukan no. invoice pada list invoice yang dikirim");
+                return response;
+            }
+        }
+
+        if (batchObat.getNoDo() == null
+                || "".equalsIgnoreCase(batchObat.getNoDo())
+                || batchObat.getTglDo() == null)
+        {
+            List<ItSimrsDocPoEntity> filterdList = docPoEntities.stream().filter(
+                    p->p.getJenisNomor().equalsIgnoreCase("do")
+            ).collect(Collectors.toList());
+
+            if (filterdList.size() > 0){
+                response.hasError("Tidak ditemukan no. invoice pada list invoice yang dikirim");
+                return response;
+            }
+        }
+
+        response.setStatus("success");
+        logger.info("[PermintaanVendorAction.checkDocumentNumb] End <<<");
         return response;
     }
 
