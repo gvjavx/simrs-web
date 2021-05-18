@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="15"/>
+	<property name="ireport.y" value="144"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -48,7 +48,7 @@
        master_id as            nomor_master,
        u.nama_kode_rekening,
        keterangan,
-       u.no_jurnal,
+       no_jurnal,
        no_nota,
        tanggal_jurnal,
        coalesce(debitnow, 0)   debitnow,
@@ -58,55 +58,55 @@
 from (select y.master_id,
              kd_barang,
              m.nama,
-    $P{periode}                  periode,
-    x.keterangan,
-    x.no_jurnal,
-    y.no_nota,
-    y.nomor_rekening as        kode_rekening,
-    coalesce(jumlah_debit, 0)  debitnow,
-    coalesce(jumlah_kredit, 0) kreditnow,
-    null                       pastdebit,
-    null                       pastkredit,
-    kodering.nama_kode_rekening,
-    x.tanggal_jurnal
+             $P{periode}                  periode,
+             x.keterangan,
+             x.no_jurnal,
+             y.no_nota,
+             y.nomor_rekening as        kode_rekening,
+             coalesce(jumlah_debit, 0)  debitnow,
+             coalesce(jumlah_kredit, 0) kreditnow,
+             null                       pastdebit,
+             null                       pastkredit,
+             kodering.nama_kode_rekening,
+             x.tanggal_jurnal
 
-    from it_akun_jurnal x
-    inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
-    join im_akun_kode_rekening kodering on kodering.kode_rekening = y.nomor_rekening
-    left join im_akun_master m on m.nomor_master = y.master_id
-    left join im_akun_mata_uang mu ON (x.mata_uang_id = mu.mata_uang_id)
-    where to_char(x.tanggal_jurnal, 'MM-yyyy') = $P{periode}
-    and x.registered_flag = 'Y'
-    and x.branch_id IN ($P{reportParams.branchId})
+      from it_akun_jurnal x
+             inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
+             join im_akun_kode_rekening kodering on kodering.kode_rekening = y.nomor_rekening
+             left join im_akun_master m on m.nomor_master = y.master_id
+             left join im_akun_mata_uang mu ON (x.mata_uang_id = mu.mata_uang_id)
+      where to_char(x.tanggal_jurnal, 'MM-yyyy') = $P{periode} and kode_rekening = $P{kode_rekening}
+        and x.registered_flag = 'Y'
+        and x.branch_id IN ($P!{reportParams.branchId})
       union all
-    select a.master_id,
-    d.kd_barang,
-    m.nama,
-    a.periode                    periode,
-    ''                           keterangan,
-    null                         no_jurnal,
-    ''                           no_nota,
-    a.kode_rekening,
-    coalesce(null, 0)            debitnow,
-    coalesce(null, 0)            kreditnow,
-    coalesce(d.jumlah_debit, 0)  pastdebit,
-    coalesce(d.jumlah_kredit, 0) pastkredit,
-    ''                           nama_kode_rekening,
-    null                         tanggal_jurnal
-    from it_akun_saldo_akhir a
-    join it_akun_saldo_akhir_detail d on a.saldo_akhir_id = d.saldo_akhir_id
-    left join im_akun_master m on m.nomor_master = d.master_id
-    where to_date(a.periode, 'MM-yyyy') = to_date($P{periode}, 'MM-yyyy') - Interval '1 month'
-    and a.branch_id in ($P{reportParams.branchId})) u
-where u.kode_rekening = $P{kode_rekening}
-    and (kd_barang ilike '%' or master_id ilike '%' or (kd_barang isnull
-    and master_id isnull))
-    order by u.no_jurnal asc]]>
+      select a.master_id,
+             d.kd_barang,
+             m.nama,
+             a.periode                    periode,
+             ''                           keterangan,
+             null                           no_jurnal,
+             ''                           no_nota,
+             a.kode_rekening,
+             coalesce(null, 0)            debitnow,
+             coalesce(null, 0)            kreditnow,
+             coalesce(d.jumlah_debit, 0)  pastdebit,
+             coalesce(d.jumlah_kredit, 0) pastkredit,
+             ''                           nama_kode_rekening,
+             null                         tanggal_jurnal
+      from it_akun_saldo_akhir a
+             join it_akun_saldo_akhir_detail d on a.saldo_akhir_id = d.saldo_akhir_id
+             left join im_akun_master m on m.nomor_master = d.master_id
+      where to_date(a.periode,'MM-yyyy') = to_date($P{periode}, 'MM-yyyy') - Interval '1 month'
+     and a.branch_id in ($P!{reportParams.branchId}) and a.kode_rekening = $P{kode_rekening}
+)  u
+where (kd_barang ilike '%' or master_id ilike '%' or (kd_barang isnull or master_id isnull))
+order by u.no_jurnal]]>
 	</queryString>
 	<field name="kode_rekening" class="java.lang.String"/>
 	<field name="group" class="java.lang.String"/>
 	<field name="periode" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[
+]]></fieldDescription>
 	</field>
 	<field name="kd_barang" class="java.lang.String"/>
 	<field name="nomor_master" class="java.lang.String">
@@ -533,7 +533,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</graphicElement>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-5" x="55" y="21" width="510" height="12" uuid="82b073c5-2955-48a0-af51-c0630a2372fd">
+				<reportElement key="textField-5" x="55" y="12" width="187" height="12" uuid="82b073c5-2955-48a0-af51-c0630a2372fd">
 					<printWhenExpression><![CDATA[!$P{nomor_master}.equalsIgnoreCase("")]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -548,7 +548,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[": " +  $P{nomor_master} + "    " + $F{group}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-6" x="55" y="0" width="510" height="21" uuid="ff5b1f3b-1b92-4940-a339-bd74cefadc60"/>
+				<reportElement key="textField-6" x="55" y="0" width="187" height="12" uuid="ff5b1f3b-1b92-4940-a339-bd74cefadc60"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -561,7 +561,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[": " + $P{kode_rekening} + "    " + $F{nama_kode_rekening}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-34" mode="Transparent" x="0" y="0" width="55" height="21" forecolor="#000000" backcolor="#FFFFFF" uuid="6174535b-fb25-413a-b0ba-cc90a713d8b6"/>
+				<reportElement key="staticText-34" mode="Transparent" x="0" y="0" width="55" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="6174535b-fb25-413a-b0ba-cc90a713d8b6"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -574,7 +574,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Buku Besar]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-35" mode="Transparent" x="0" y="21" width="55" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="9a21fd3d-47c2-44a6-9fd6-cad1e0363e25">
+				<reportElement key="staticText-35" mode="Transparent" x="0" y="12" width="55" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="9a21fd3d-47c2-44a6-9fd6-cad1e0363e25">
 					<printWhenExpression><![CDATA[!$P{nomor_master}.equalsIgnoreCase("")]]></printWhenExpression>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
@@ -642,7 +642,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{no_jurnal} == null ? null : $F{kreditnow}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{no_jurnal}.isEmpty() || $F{no_jurnal} == null ? null : $F{kreditnow}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField" stretchType="RelativeToTallestObject" x="212" y="0" width="189" height="22" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="5ada4f00-6ef4-45ef-bed2-b0add8540f62"/>

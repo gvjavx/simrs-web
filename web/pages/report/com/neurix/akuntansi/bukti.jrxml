@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="buktiJKM" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="a49a14d5-e3a4-4699-826c-3b998a58d949">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="0.9313819845887328"/>
+	<property name="ireport.zoom" value="1.1269722013523669"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="192"/>
+	<property name="ireport.y" value="359"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -113,7 +113,7 @@ where
 				<reportElement key="line-1" x="0" y="481" width="535" height="1" uuid="3482d4cd-980e-4de2-8f83-57f78276a90f"/>
 			</line>
 			<subreport isUsingCache="true">
-				<reportElement key="subreport-1" positionType="Float" stretchType="RelativeToTallestObject" x="2" y="250" width="528" height="214" uuid="cc7c147c-cff4-4378-b14d-e0002f3e5dbb"/>
+				<reportElement key="subreport-1" positionType="Float" stretchType="RelativeToTallestObject" x="2" y="243" width="528" height="239" uuid="cc7c147c-cff4-4378-b14d-e0002f3e5dbb"/>
 				<subreportParameter name="noJurnal">
 					<subreportParameterExpression><![CDATA[$P{noJurnal}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -796,7 +796,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{approval_keuangan_name}.substring(0, 1).toUpperCase() + $F{approval_keuangan_name}.substring(1).toLowerCase()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{approval_keuangan_name} == null ? "" : $F{approval_keuangan_name}.substring(0, 1).toUpperCase() + $F{approval_keuangan_name}.substring(1).toLowerCase()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-1" x="214" y="560" width="93" height="15" uuid="6a4c1937-aae0-4c93-a8c5-0ca8eb1c688c"/>
@@ -819,7 +819,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{approval_kasub_keuangan_name}.substring(0, 1).toUpperCase() + $F{approval_kasub_keuangan_name}.substring(1).toLowerCase()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{approval_kasub_keuangan_name} == null ? "" : $F{approval_kasub_keuangan_name}.substring(0, 1).toUpperCase() + $F{approval_kasub_keuangan_name}.substring(1).toLowerCase()]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

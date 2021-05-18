@@ -20,7 +20,7 @@
 	c.nama
 from
 	it_akun_jurnal_detail a LEFT JOIN
-	im_akun_kode_rekening b ON a.rekening_id=b.rekening_id LEFT JOIN
+	im_akun_kode_rekening b ON a.nomor_rekening=b.kode_rekening LEFT JOIN
 	( select DISTINCT nomor_master,nama from im_akun_master) c ON c.nomor_master=a.master_id
 where
 	no_jurnal=$P{noJurnal} AND
@@ -28,7 +28,7 @@ where
 ORDER BY jumlah_debit DESC]]>
 	</queryString>
 	<field name="no_jurnal" class="java.lang.String"/>
-	<field name="rekening_id" class="java.lang.String"/>
+	<field name="nomor_rekening" class="java.lang.String"/>
 	<field name="master_id" class="java.lang.String"/>
 	<field name="no_nota" class="java.lang.String"/>
 	<field name="jumlah_debit" class="java.math.BigDecimal"/>
@@ -43,13 +43,10 @@ ORDER BY jumlah_debit DESC]]>
 	<field name="jurnal_detail_id" class="java.lang.String"/>
 	<field name="kd_barang" class="java.lang.String"/>
 	<field name="pasien_id" class="java.lang.String"/>
-	<field name="nomor_rekening" class="java.lang.String"/>
 	<field name="divisi_id" class="java.lang.String"/>
 	<field name="kode_rekening" class="java.lang.String"/>
 	<field name="nama_kode_rekening" class="java.lang.String"/>
-	<field name="nama" class="java.lang.String">
-		<fieldDescription><![CDATA[Nama Master]]></fieldDescription>
-	</field>
+	<field name="nama" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

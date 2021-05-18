@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MutasiJurnal" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" isFloatColumnFooter="true" uuid="772f1804-f1af-4e5f-8cf2-ffcc355aa079">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.100000000000002"/>
+	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="48"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -21,41 +21,40 @@
 	<parameter name="reportParams.branchId" class="java.lang.String"/>
 	<parameter name="reportParams.areaId" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT distinct
-  a.no_jurnal,
-  a.tanggal_jurnal,
-  c.kode_rekening,
-  c.nama_kode_rekening,
-  b.master_id,
-  b.jurnal_detail_id,
-  m.nama,
-  b.divisi_id,
-  dv.position_name,
-  a.keterangan,
-  i.activity_id,
-  t.nama_tindakan,
-  i.person_id,
-  dok.kodering,
-  dok.nama_dokter,
-  i.jumlah
+		<![CDATA[SELECT
+       akunJurnal.no_jurnal,
+       akunJurnal.tanggal_jurnal,
+       c.kode_rekening,
+       c.nama_kode_rekening,
+       coalesce(jurnalDetail.master_id, ' ') as master_id,
+       jurnalDetail.jurnal_detail_id,
+       coalesce(master.nama, ' ') nama,
+       coalesce(jurnalDetail.divisi_id, ' ') as divisi_id,
+       coalesce(position.position_name, ' ') as position_name,
+       akunJurnal.keterangan,
+       detailActivity.activity_id,
+       riwayatTindakan.nama_tindakan,
+       detailActivity.person_id,
+       dok.kodering,
+       dok.nama_dokter,
+       detailActivity.jumlah
 FROM
-  it_akun_jurnal a
-  INNER JOIN it_akun_jurnal_detail b ON (a.no_jurnal = b.no_jurnal)
-  LEFT JOIN it_akun_jurnal_detail_activity i ON (b.jurnal_detail_id = i.jurnal_detail_id)
-  INNER JOIN im_akun_tipe_jurnal h ON (a.tipe_jurnal_id = h.tipe_jurnal_id)
-  LEFT OUTER JOIN im_akun_kode_rekening c ON (b.rekening_id = c.rekening_id)
-  LEFT JOIN im_simrs_dokter dok ON i.person_id = dok.id_dokter
-  LEFT JOIN it_simrs_riwayat_tindakan t ON t.id_tindakan = i.activity_id
-  LEFT JOIN	im_akun_master m ON m.nomor_master = b.master_id
-  LEFT JOIN im_position dv ON dv.kodering=b.divisi_id
+     it_akun_jurnal akunJurnal
+            INNER JOIN it_akun_jurnal_detail jurnalDetail ON (akunJurnal.no_jurnal = jurnalDetail.no_jurnal)
+            LEFT JOIN it_akun_jurnal_detail_activity detailActivity ON (jurnalDetail.jurnal_detail_id = detailActivity.jurnal_detail_id)
+            INNER JOIN im_akun_tipe_jurnal h ON (akunJurnal.tipe_jurnal_id = h.tipe_jurnal_id)
+            LEFT OUTER JOIN im_akun_kode_rekening c ON (jurnalDetail.nomor_rekening = c.kode_rekening)
+            LEFT JOIN im_simrs_dokter dok ON detailActivity.person_id = dok.id_dokter
+            LEFT JOIN it_simrs_riwayat_tindakan riwayatTindakan ON riwayatTindakan.id_tindakan = detailActivity.activity_id
+            LEFT JOIN	im_akun_master master ON master.nomor_master = jurnalDetail.master_id
+            LEFT JOIN im_position position ON position.kodering=jurnalDetail.divisi_id
 WHERE
-  h.tipe_jurnal_id = $P{jurnalType}
-  AND to_char(a.tanggal_jurnal, 'MM-yyyy') = $P{periode}
-  and a.registered_flag = 'Y' and a.flag='Y'
-  and a.branch_id IN ($P!{reportParams.branchId})
-  and i.activity_id is not null
-order by
-	a.no_jurnal DESC,b.master_id ASC,c.kode_rekening]]>
+    h.tipe_jurnal_id = $P{jurnalType}
+    AND to_char(akunJurnal.tanggal_jurnal, 'MM-yyyy') = $P{periode}
+    and akunJurnal.registered_flag = 'Y' and akunJurnal.flag='Y'
+    and akunJurnal.branch_id IN ($P!{reportParams.branchId})
+    --  and detailActivity.activity_id is not null
+    order by akunJurnal.no_jurnal ,jurnalDetail.master_id ASC,c.kode_rekening]]>
 	</queryString>
 	<field name="no_jurnal" class="java.lang.String"/>
 	<field name="tanggal_jurnal" class="java.sql.Date"/>
@@ -63,9 +62,7 @@ order by
 	<field name="nama_kode_rekening" class="java.lang.String"/>
 	<field name="master_id" class="java.lang.String"/>
 	<field name="jurnal_detail_id" class="java.lang.String"/>
-	<field name="nama" class="java.lang.String">
-		<fieldDescription><![CDATA[Nama Master]]></fieldDescription>
-	</field>
+	<field name="nama" class="java.lang.String"/>
 	<field name="divisi_id" class="java.lang.String"/>
 	<field name="position_name" class="java.lang.String"/>
 	<field name="keterangan" class="java.lang.String"/>

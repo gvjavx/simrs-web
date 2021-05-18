@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="buktiJKM" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="a49a14d5-e3a4-4699-826c-3b998a58d949">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.415765000000005"/>
-	<property name="ireport.x" value="522"/>
-	<property name="ireport.y" value="1416"/>
+	<property name="ireport.zoom" value="1.2396694214876054"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -41,10 +41,10 @@
 	<parameter name="reportParams.areaId" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select
-	*
+    *
 from
-	it_akun_jurnal j LEFT JOIN
-	it_akun_pembayaran_utang_piutang up ON j.no_jurnal=up.no_jurnal
+     it_akun_jurnal j LEFT JOIN
+         it_akun_kas up ON j.no_jurnal=up.no_jurnal
 where
 	j.no_jurnal = $P{noJurnal}]]>
 	</queryString>
@@ -69,7 +69,7 @@ where
 	<field name="registered_date" class="java.sql.Date"/>
 	<field name="registered_flag" class="java.lang.String"/>
 	<field name="registered_user" class="java.lang.String"/>
-	<field name="register_id" class="java.lang.String"/>
+	<field name="registered_user_id" class="java.lang.String"/>
 	<field name="spum_id" class="java.lang.String"/>
 	<field name="print_count" class="java.math.BigDecimal"/>
 	<field name="print_register_count" class="java.math.BigDecimal"/>
@@ -87,15 +87,15 @@ where
 	<field name="last_update_who" class="java.lang.String"/>
 	<field name="action" class="java.lang.String"/>
 	<field name="pengajuan_biaya_id" class="java.lang.String"/>
-	<field name="pembayaran_utang_piutang_id" class="java.lang.String"/>
+	<field name="metode_bayar" class="java.lang.String"/>
+	<field name="kas_id" class="java.lang.String"/>
 	<field name="tipe_transaksi" class="java.lang.String"/>
 	<field name="tanggal" class="java.sql.Date"/>
-	<field name="metode_bayar" class="java.lang.String"/>
+	<field name="coa_kas" class="java.lang.String"/>
 	<field name="bayar" class="java.math.BigDecimal"/>
 	<field name="no_slip_bank" class="java.lang.String"/>
 	<field name="registered_who" class="java.lang.String"/>
-	<field name="bank" class="java.lang.String"/>
-	<field name="tipe_pembayaran" class="java.lang.String"/>
+	<field name="tipe_kas" class="java.lang.String"/>
 	<field name="approval_keuangan_flag" class="java.lang.String"/>
 	<field name="approval_keuangan_id" class="java.lang.String"/>
 	<field name="approval_keuangan_name" class="java.lang.String"/>
@@ -104,6 +104,8 @@ where
 	<field name="approval_kasub_keuangan_id" class="java.lang.String"/>
 	<field name="approval_kasub_keuangan_name" class="java.lang.String"/>
 	<field name="approval_kasub_keuangan_date" class="java.sql.Timestamp"/>
+	<field name="metode_pembayaran" class="java.lang.String"/>
+	<field name="currencyid" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
