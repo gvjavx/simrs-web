@@ -105,14 +105,17 @@
                                     </div>
 
                                     <input type="hidden" id="status-transaksi" value="finish"/>
-                                    <br>
-                                    <div class="form-group col-md-offset-2">
-                                        <button class="btn btn-success" id="btn-search"><i class="fa fa-search"></i> Search </button>
-                                        <button class="btn btn-success" id="btn-print"><i class="fa fa-print"></i> Print Sumary</button>
-                                        <a type="button" class="btn btn-danger" href="initForm_onlinepaymentverif.action">
-                                            <i class="fa fa-refresh"></i> Back
-                                        </a>
-                                    </div>
+
+                                </div>
+
+                                <br>
+                                <div class="form-group col-md-offset-1">
+                                    <button class="btn btn-success" id="btn-search"><i class="fa fa-search"></i> Search </button>
+                                    <button class="btn btn-success" id="btn-print"><i class="fa fa-print"></i> Print Sumary</button>
+                                    <button class="btn btn-success" id="btn-print-va" onclick="modalPrintVA()"><i class="fa fa-print"></i> Print Report VA</button>
+                                    <a type="button" class="btn btn-danger" href="initForm_onlinepaymentverif.action">
+                                        <i class="fa fa-refresh"></i> Back
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -207,6 +210,44 @@
                 <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
                 <%--</button>--%>
                 <button type="button" class="btn btn-sm btn-success" id="ok_con"><i class="fa fa-check"></i> Ok
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%--Modal Print Report VA--%>
+<div class="modal fade" id="modal-print-va">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Cetak Report VA
+                </h4>
+            </div>
+            <div class="modal-body" style="text-align: left">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-offset-1 col-sm-4">Mulai Tanggal :</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control datepicker" id="tgl_from_report_va">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-offset-1 col-sm-4">Hingga Tanggal :</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control datepicker" id="tgl_to_report_va">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
+                <%--</button>--%>
+                <button type="button" class="btn btn-sm btn-success" id="btn_rep-va" onclick="cetakReportVA()"><i class="fa fa-print"></i> Cetak Report
                 </button>
             </div>
         </div>
@@ -349,6 +390,23 @@
             $("#alert-shift").show().fadeOut(5000);
         }
     });
+
+    function modalPrintVA() {
+        $("#modal-print-va").modal('show');
+    }
+
+    function cetakReportVA() {
+        var tglFrom = $("#tgl_from_report_va").val();
+        var tglTo   = $("#tgl_to_report_va").val();
+
+        if(tglFrom != "" && tglTo != ""){
+            if (confirm('Apakah Anda ingin mencetak report VA?')) {
+                window.location.href = 'reportVaExcel_onlinepaymentverif?dateFrom='+tglFrom+'&dateTo='+tglTo;
+            }
+        } else {
+            alert("Mohon isi tanggal secara lengkap!");
+        }
+    }
 
     function printInvoice(id) {
         var url = '<s:url  namespace="/onlinepaymentverif" action="print_onlinepaymentverif"/>';
