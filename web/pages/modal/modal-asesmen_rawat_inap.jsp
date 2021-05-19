@@ -45,6 +45,8 @@
                                     class="fa fa-plus"></i> Psiko Sosial</a></li>
                             <li><a onclick="showModalAsesmenRawatInap('skrining_nutrisi')" style="cursor: pointer"><i
                                     class="fa fa-plus"></i> Skrining Nutrisi</a></li>
+                            <li><a onclick="showModalAsesmenRawatInap('skrining_farmasi')" style="cursor: pointer"><i
+                                    class="fa fa-plus"></i> Skrining Farmasi</a></li>
                             <li><a onclick="showModalAsesmenRawatInap('neurologi')" style="cursor: pointer"><i
                                     class="fa fa-plus"></i> Neurologi</a></li>
                             <li><a onclick="showModalAsesmenRawatInap('genitourinaria')" style="cursor: pointer"><i
@@ -136,6 +138,15 @@
                                      onclick="detailAsesmenRawatInap('skrining_nutrisi')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                                 <img id="delete_skrining_nutrisi" class="hvr-grow btn-hide" onclick="conRI('skrining_nutrisi', 'asesmen_keperawatan_ri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                            </td>
+                        </tr>
+                        <tr id="row_ina_skrining_farmasi">
+                            <td>Skrining Farmasi</td>
+                            <td width="20%" align="center">
+                                <img id="btn_ina_skrining_farmasi" class="hvr-grow"
+                                     onclick="detailAsesmenRawatInap('skrining_farmasi')"
+                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_skrining_farmasi" class="hvr-grow btn-hide" onclick="conRI('skrining_farmasi', 'asesmen_keperawatan_ri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_neurologi">
@@ -1649,6 +1660,87 @@
                     Save
                 </button>
                 <button id="load_ina_skrining_nutrisi" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-ina-skrining_farmasi">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Skrining Farmasi</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_ina_skrining_farmasi">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_ina_skrining_farmasi"></p>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="farmasi" id="farmasi1" value="Pasien Baru">
+                                <label for="farmasi1"></label> Pasien Baru
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="farmasi" id="farmasi2" value="Pasien dalam perawatan intensif">
+                                <label for="farmasi2"></label> Pasien dalam perawatan intensif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="farmasi" id="farmasi3" value="Pasien yang menerima lebih dari 5 macam obat">
+                                <label for="farmasi3"></label> Pasien yang menerima lebih dari 5 macam obat
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="farmasi" id="farmasi4" value="Pasien yang mangalami penuruan fungsi organ">
+                                <label for="farmasi4"></label> Pasien yang mangalami penuruan fungsi organ
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="farmasi" id="farmasi5" value="Pasien hasil pmeriksaan laborat mencapai nilai kritis">
+                                <label for="farmasi5"></label> Pasien hasil pmeriksaan laborat mencapai nilai kritis
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="farmasi" id="farmasi6" value="Pasien yang mendapat obat indeks terapi sempit">
+                                <label for="farmasi6"></label> Pasien yang mendapat obat indeks terapi sempit
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_ina_skrining_farmasi" class="btn btn-success pull-right"
+                        onclick="saveAsesmenRawatInap('skrining_farmasi','asesmen_keperawatan_ri')"><i class="fa fa-check"></i>
+                    Save
+                </button>
+                <button id="load_ina_skrining_farmasi" style="display: none; cursor: no-drop" type="button"
                         class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>

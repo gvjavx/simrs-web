@@ -42,10 +42,10 @@ function showModalSPS(jenis, idRM, isSetIdRM) {
         loadImgToCanvas(url, 'area_gigi1');
     }
 
-    if ("rencana_gigi_pasien" == jenis) {
-        var url = contextPath + '/pages/images/scala-gigi-new.png';
-        loadImgToCanvas(url, 'area_gigi2');
-    }
+    // if ("rencana_gigi_pasien" == jenis) {
+    //     var url = contextPath + '/pages/images/scala-gigi-new.png';
+    //     loadImgToCanvas(url, 'area_gigi2');
+    // }
 
     if("pemeriksaan_kk" == jenis){
         var url = "";
@@ -2052,16 +2052,30 @@ function saveSPS(jenis, ket) {
         var va1 = $('[name=ag1]:checked').val();
         var va2 = $('[name=ag2]:checked').val();
         var va3 = $('[name=ag3]:checked').val();
+        var va4 = $('[name=ag4]:checked').val();
+        var va5 = $('[name=ag5]:checked').val();
+        var va6 = $('[name=ag6]:checked').val();
+        var lain = $('#ag_lain_lain').val();
+        var D = $('#ag_d').val();
+        var M = $('#ag_m').val();
+        var F = $('#ag_f').val();
+        var p1 = $('#ag_p1').val();
+        var p2 = $('#ag_p2').val();
 
         var gigiImg = document.getElementById("area_gigi1");
         var canvasCek = document.getElementById('area_cek');
+
+        var ttd = document.getElementById("ttd_ag9");
+        var cekTtd = isBlank(ttd);
+        var nama = $('#ttd_nama_terang_petugas').val();
+        var nip = $('#ttd_sip_petugas').val();
 
         var gigi = "Y";
         if (gigiImg.toDataURL() == canvasCek.toDataURL()) {
             gigi = "N";
         }
 
-        if (va1 && va2 && va3 != undefined) {
+        if (va1 && va2 && va3 != undefined && !cekTtd) {
             var img = gigiImg.toDataURL("image/png"),
                 img = img.replace(/^data:image\/(png|jpg);base64,/, "");
 
@@ -2083,17 +2097,79 @@ function saveSPS(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Torus',
+                'parameter': 'Torus Palatinus',
                 'jawaban': va2,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Palatum',
+                'parameter': 'Torus Mandibularis',
                 'jawaban': va3,
                 'keterangan': jenis,
                 'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Palatum',
+                'jawaban': va4,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Diastema',
+                'jawaban': va5,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Gigi Anomali',
+                'jawaban': va6,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Lain-Lain',
+                'jawaban': lain,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '',
+                'jawaban': 'D :'+D+', M : '+M+', F : '+F,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Jumlah photo yang diambil',
+                'jawaban': p1,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Jumlah rontgen photo yang diambil',
+                'jawaban': p2,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            var ttd1 = ttd.toDataURL("image/png"),
+                ttd1 = ttd1.replace(/^data:image\/(png|jpg);base64,/, "");
+            data.push({
+                'parameter': 'TTD Pemeriksa',
+                'jawaban': ttd1,
+                'tipe': 'ttd',
+                'keterangan': jenis,
+                'jenis': ket,
+                'nama_terang': nama,
+                'sip': nip,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;

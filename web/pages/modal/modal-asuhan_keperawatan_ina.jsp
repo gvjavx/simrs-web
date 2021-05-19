@@ -107,7 +107,7 @@
                         <thead>
                         <tr style="font-weight: bold">
                             <td width="20%">Diagnosis</td>
-                            <td width="20%">Hasil</td>
+                            <td width="20%">Tujuan dan Kriteria Hasil</td>
                             <td width="20%">Planning</td>
                             <td width="20%">Implementasi</td>
                             <td width="20%">Evaluasi</td>

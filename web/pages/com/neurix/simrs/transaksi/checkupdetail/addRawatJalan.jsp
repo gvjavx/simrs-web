@@ -1705,7 +1705,7 @@
                     </div>
                 </div>
                 <hr>
-                <div id="form_lab_dalam">
+                <%--<div id="form_lab_dalam">--%>
                     <%--<div class="row">--%>
                         <%--<div class="form-group">--%>
                             <%--<label class="col-md-3" style="margin-top: 7px">Jenis Pemeriksaan</label>--%>
@@ -1742,7 +1742,7 @@
                             <%--</div>--%>
                         <%--</div>--%>
                     <%--</div>--%>
-                </div>
+                <%--</div>--%>
                 <div id="form_lab_luar" style="display: none">
                     <div class="row">
                         <div class="form-group">

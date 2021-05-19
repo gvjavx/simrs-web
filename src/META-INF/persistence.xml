@@ -2,5 +2,16 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
 
     <persistence-unit name="NewPersistenceUnit">
+      <class>com.neurix.simrs.master.pasien.model.ImSimrsPasienSementaraEntity</class>
+      <properties>
+        <property name="toplink.jdbc.url" value="jdbc:postgresql://localhost:5432/gomedsys"/>
+        <property name="toplink.jdbc.driver" value="org.postgresql.Driver"/>
+        <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/gomedsys"/>
+        <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+        <property name="openjpa.ConnectionURL" value="jdbc:postgresql://localhost:5432/gomedsys"/>
+        <property name="openjpa.ConnectionDriverName" value="org.postgresql.Driver"/>
+        <property name="eclipselink.jdbc.url" value="jdbc:postgresql://localhost:5432/gomedsys"/>
+        <property name="eclipselink.jdbc.driver" value="org.postgresql.Driver"/>
+      </properties>
     </persistence-unit>
 </persistence>
