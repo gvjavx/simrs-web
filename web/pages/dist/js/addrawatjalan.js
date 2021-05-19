@@ -1020,12 +1020,14 @@ function showModal(select) {
             $("#tabel_rese_detail_racik").hide();
             $("#tabel_rese_detail").show();
             $("#sec-total-harga").show();
+            $("#form-nama-racik").hide();
         if (select == 10){
             $('#title-resep').html("Tambah Resep Racik");
             $("#sec-jumlah-resep").hide();
             $("#tabel_rese_detail").hide();
             $("#tabel_rese_detail_racik").show();
             $("#sec-total-harga").hide();
+            $("#form-nama-racik").show();
         }
 
         $('#resep_jenis_obat').val('').trigger('change');
@@ -1035,7 +1037,7 @@ function showModal(select) {
         $('#resep_qty').val('');
         $('#resep_jenis_satuan').val('biji').trigger('change');
         $('#resep_stok_box, #resep_stok_lembar, #resep_stok_biji').val('');
-        $('#body_detail').html('');
+        // $('#body_detail').html('');
         $('#desti_apotek').html('');
         $('#save_resep_head').show();
         $('#load_resep_head').hide();
