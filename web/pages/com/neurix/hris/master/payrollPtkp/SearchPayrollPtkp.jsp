@@ -186,7 +186,7 @@
                         <br>
                         <br>
                         <center>
-                            <table id="showdata" width="40%">
+                            <table id="showdata" width="60%">
                                 <tr>
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
@@ -199,13 +199,13 @@
                                         <display:table name="listOfsearchPayrollPtkp" class="table table-condensed table-striped table-hover"
                                                        requestURI="paging_displaytag_payrollPtkp.action" export="true" id="row"
                                                        pagesize="14" style="font-size:10">
-                                            <display:column media="html" title="View">
-                                                <s:url var="urlView" namespace="/payrollPtkp" action="view_payrollPtkp" escapeAmp="false">
+                                            <display:column media="html" title="Delete">
+                                                <s:url var="urlDelete" namespace="/payrollPtkp" action="delete_payrollPtkp" escapeAmp="false">
                                                     <s:param name="id"><s:property value="#attr.row.idPtkp"/></s:param>
                                                     <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                 </s:url>
-                                                <sj:a onClickTopics="showDialogMenu" href="%{urlView}">
-                                                    <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
+                                                <sj:a onClickTopics="showDialogMenu" href="%{urlDelete}">
+                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_delete">
                                                 </sj:a>
                                             </display:column>
                                             <display:column media="html" title="Edit">

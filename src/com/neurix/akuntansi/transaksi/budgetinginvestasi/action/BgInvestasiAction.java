@@ -88,7 +88,7 @@ public class BgInvestasiAction {
     public String initForm(){
         String userBranchId = CommonUtil.userBranchLogin();
         Budgeting budgeting = new Budgeting();
-        budgeting.setFlagKp(userBranchId.equalsIgnoreCase(CommonConstant.ID_KANPUS) ? "Y" : "N");
+        budgeting.setFlagKp(userBranchId.equalsIgnoreCase(CommonConstant.BRANCH_KP) ? "Y" : "N");
         budgeting.setBranchId(userBranchId);
         setBudgeting(budgeting);
         eraseAllSession();
@@ -168,7 +168,7 @@ public class BgInvestasiAction {
             budgetingNew.setIdParam(budgeting.getIdParam());
         }
         if (budgetingNew.getBranchId() == null || "".equalsIgnoreCase(budgetingNew.getBranchId())){
-            budgetingNew.setFlagKp(branchId.equalsIgnoreCase(CommonConstant.ID_KANPUS) ? "Y" : "N");
+            budgetingNew.setFlagKp(branchId.equalsIgnoreCase(CommonConstant.BRANCH_KP) ? "Y" : "N");
             budgetingNew.setBranchId(branchId);
         }
 

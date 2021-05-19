@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 
 /**
  * Created by IntelliJ IDEA.
- * User: gondok
+ * User: gondoksea
  * Updated by Ferdi, 01-12-2020
  * Date: 06/09/17
  * Time: 13:55
@@ -53,7 +53,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
     private CompanyDao companyDao;
     private AbsensiPegawaiDao absensiPegawaiDao;
 
-    private MappingJurnalDao mappingJurnalDao;
+//    private MappingJurnalDao mappingJurnalDao;
 
     private BiodataDao biodataDao;
 
@@ -61,10 +61,10 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         this.biodataDao = biodataDao;
     }
 
-    @Override
-    public void setMappingJurnalDao(MappingJurnalDao mappingJurnalDao) {
-        this.mappingJurnalDao = mappingJurnalDao;
-    }
+//    @Override
+//    public void setMappingJurnalDao(MappingJurnalDao mappingJurnalDao) {
+//        this.mappingJurnalDao = mappingJurnalDao;
+//    }
 
     //updated by ferdi, 01-12-2020
     private PayrollTempDao payrollTempDao;
@@ -3136,37 +3136,36 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 
                         }
 
-                        //prepare jurnal ke billing system
-
-//                        String catatanJurnal = "Pembayaran Payroll ( " + ketPayroll + " ) untuk periode :" + periodePayroll + "/" + tahunPayroll ;
-//                        buildDataBasedMappingJurnal.put("keterangan",catatanJurnal);
-//                        buildDataBasedMappingJurnal.put("user_id",createdWhoId);
-//                        buildDataBasedMappingJurnal.put("user_who",createdWho);
-
                         //RAKA01MEI2021==>Comment
-//                        ItJurnalEntity itJurnalEntity = null;
-//                        try {
-//                            itJurnalEntity = prepareCreateJurnal(transId, buildDataBasedMappingJurnal, branchId, "Y");
-//                        } catch (GeneralBOException e) {
-//                            logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Error, " + e.getMessage());
-//                            throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Found problem when preparing jurnal save payroll, please inform to your admin...," + e.getMessage());
-//                        }
-//
-////                        create jurnal
-//
-//                        if (itJurnalEntity!=null) {
-//
-//                            try {
-//                                jurnalDao.addAndSave(itJurnalEntity);
-//                            } catch (HibernateException e) {
-//                                logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Error, " + e.getMessage());
-//                                throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Found problem when saving jurnal payroll, please info to your admin..." + e.getMessage());
-//                            }
-//
-//                            String noJurnal = itJurnalEntity.getNoJurnal();
-//
-////                            update payroll header, approval aks = Y dan no jurnal
-//                            itHrisPayrollHeaderEntity.setNoJurnal(noJurnal);
+                        //prepare jurnal ke billing system
+                        String catatanJurnal = "Pembayaran Payroll ( " + ketPayroll + " ) untuk periode :" + periodePayroll + "/" + tahunPayroll ;
+                        buildDataBasedMappingJurnal.put("keterangan",catatanJurnal);
+                        buildDataBasedMappingJurnal.put("user_id",createdWhoId);
+                        buildDataBasedMappingJurnal.put("user_who",createdWho);
+
+                        ItJurnalEntity itJurnalEntity = null;
+                        try {
+                            itJurnalEntity = prepareCreateJurnal(transId, buildDataBasedMappingJurnal, branchId, "Y");
+                        } catch (GeneralBOException e) {
+                            logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Error, " + e.getMessage());
+                            throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Found problem when preparing jurnal save payroll, please inform to your admin...," + e.getMessage());
+                        }
+
+//                        create jurnal
+
+                        if (itJurnalEntity!=null) {
+
+                            try {
+                                jurnalDao.addAndSave(itJurnalEntity);
+                            } catch (HibernateException e) {
+                                logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Error, " + e.getMessage());
+                                throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Found problem when saving jurnal payroll, please info to your admin..." + e.getMessage());
+                            }
+
+                            String noJurnal = itJurnalEntity.getNoJurnal();
+
+//                            update payroll header, approval aks = Y dan no jurnal
+                            itHrisPayrollHeaderEntity.setNoJurnal(noJurnal);
                             itHrisPayrollHeaderEntity.setAction("U");
                             itHrisPayrollHeaderEntity.setApprovalAksFlag("Y");
                             itHrisPayrollHeaderEntity.setApprovalAksName(createdWho);
@@ -3182,12 +3181,12 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
                                 throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Found problem when save update payroll header set approval sdm YES, dan no jurnal, please inform to your admin...," + e.getMessage());
                             }
 
-//                        } else {
-//
-//                            logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Tidak ditemukan jurnal yang akan di buat.");
-//                            throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Tidak ditemukan jurnal yang akan di buat., please info to your admin...");
-//
-//                        }
+                        } else {
+
+                            logger.error("[PayrollBoImpl.savePostingAllCalculatePayroll] Tidak ditemukan jurnal yang akan di buat.");
+                            throw new GeneralBOException("[PayrollBoImpl.savePostingAllCalculatePayroll] Tidak ditemukan jurnal yang akan di buat., please info to your admin...");
+
+                        }
                     //RAKA-end
                     } else {
 
@@ -7882,69 +7881,69 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 //        return hasil;
 //    }
 //
-//    private BigDecimal hitungPajakSetahunSimRs(BigDecimal pkp,String npwp){
-//        /*BigDecimal hasil = new BigDecimal(0) ;
-//        BigDecimal sisaPkp = pkp;
-//        //jika kurang dr 50jt, jika lebih maka sisapkp - 50jt
-//        if(pkp.compareTo(BigDecimal.valueOf(50000000)) <= 0){
-//            hasil = hasil.add(BigDecimal.valueOf(0.05).multiply(sisaPkp));
-//        }
-//        if(pkp.compareTo(BigDecimal.valueOf(50000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(250000000)) <= 0){
-//            //hitung pkp 50jt dlu
-//            hasil = hasil.add(BigDecimal.valueOf(0.05).multiply(BigDecimal.valueOf(50000000)));
-//            sisaPkp = sisaPkp.subtract(BigDecimal.valueOf(50000000));
-//            //hitung pkp - 50jt
-//            hasil = hasil.add(BigDecimal.valueOf(0.15).multiply(sisaPkp));
-//        }
-//        if(pkp.compareTo(BigDecimal.valueOf(250000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(500000000)) <= 0){
-//            //hitung pkp 50jt dlu
-//            hasil = hasil.add(BigDecimal.valueOf(0.05).multiply(BigDecimal.valueOf(50000000)));
-//            sisaPkp = sisaPkp.subtract(BigDecimal.valueOf(50000000));
-//            //hitung pkp - 50jt
-//            hasil = hasil.add(BigDecimal.valueOf(0.15).multiply(BigDecimal.valueOf(200000000)));
-//            sisaPkp = sisaPkp.subtract(BigDecimal.valueOf(200000000));
-//            //hitung pkp - 250jt
-//            hasil = hasil.add(BigDecimal.valueOf(0.25).multiply(sisaPkp));
-//        }
-//        if(pkp.compareTo(BigDecimal.valueOf(500000000)) > 0){
-//            //hitung pkp 50jt dlu
-//            hasil = hasil.add(BigDecimal.valueOf(0.05).multiply(BigDecimal.valueOf(50000000)));
-//            sisaPkp = sisaPkp.subtract(BigDecimal.valueOf(50000000));
-//            //hitung pkp - 50jt
-//            hasil = hasil.add(BigDecimal.valueOf(0.15).multiply(BigDecimal.valueOf(200000000)));
-//            sisaPkp = sisaPkp.subtract(BigDecimal.valueOf(200000000));
-//            //hitung pkp - 250jt
-//            hasil = hasil.add(BigDecimal.valueOf(0.25).multiply(sisaPkp));
-//            sisaPkp = sisaPkp.subtract(BigDecimal.valueOf(500000000));
-//            hasil = hasil.add(BigDecimal.valueOf(0.30).multiply(sisaPkp));
-//        }*/
-//
-//
-//        BigDecimal hasil = new BigDecimal(0) ;
-//        if (!"".equalsIgnoreCase(npwp)){
-//            if(pkp.compareTo(BigDecimal.valueOf(50000000)) <= 0){
-//                hasil = BigDecimal.valueOf(0.05).multiply(pkp);
-//            }else if(pkp.compareTo(BigDecimal.valueOf(50000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(200000000)) <= 0){
-//                hasil = BigDecimal.valueOf(2500000).add((BigDecimal.valueOf(0.15).multiply(pkp.subtract(BigDecimal.valueOf(50000000))))) ;
-//            }else if(pkp.compareTo(BigDecimal.valueOf(200000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(500000000)) <= 0){
-//                hasil = BigDecimal.valueOf(30000000).add((BigDecimal.valueOf(0.25).multiply((pkp.subtract(BigDecimal.valueOf(250000000))))));
-//            }else{
-//                hasil = BigDecimal.valueOf(95000000).add(BigDecimal.valueOf(0.3).multiply(pkp.subtract(BigDecimal.valueOf(500000000))));
-//            }
-//        }else{
-//            if(pkp.compareTo(BigDecimal.valueOf(50000000)) <= 0){
-//                hasil = BigDecimal.valueOf(0.06).multiply(pkp);
-//            }else if(pkp.compareTo(BigDecimal.valueOf(50000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(200000000)) <= 0){
-//                hasil = BigDecimal.valueOf(2500000).add((BigDecimal.valueOf(0.18).multiply(pkp.subtract(BigDecimal.valueOf(50000000))))) ;
-//            }else if(pkp.compareTo(BigDecimal.valueOf(200000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(500000000)) <= 0){
-//                hasil = BigDecimal.valueOf(30000000).add((BigDecimal.valueOf(0.3).multiply((pkp.subtract(BigDecimal.valueOf(250000000))))));
-//            }else{
-//                hasil = BigDecimal.valueOf(95000000).add(BigDecimal.valueOf(0.36).multiply(pkp.subtract(BigDecimal.valueOf(500000000))));
-//            }
-//        }
-//
-//        return hasil.setScale(2, BigDecimal.ROUND_HALF_UP);
-//    }
+    private BigDecimal hitungPajakSetahunSimRs(BigDecimal pkp,String npwp){
+        /*BigDecimal hasil = new BigDecimal(0) ;
+        BigDecimal sisaPkp = pkp;
+        //jika kurang dr 50jt, jika lebih maka sisapkp - 50jt
+        if(pkp.compareTo(BigDecimal.valueOf(50000000)) <= 0){
+            hasil = hasil.add(BigDecimal.valueOf(0.05).multiply(sisaPkp));
+        }
+        if(pkp.compareTo(BigDecimal.valueOf(50000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(250000000)) <= 0){
+            //hitung pkp 50jt dlu
+            hasil = hasil.add(BigDecimal.valueOf(0.05).multiply(BigDecimal.valueOf(50000000)));
+            sisaPkp = sisaPkp.subtract(BigDecimal.valueOf(50000000));
+            //hitung pkp - 50jt
+            hasil = hasil.add(BigDecimal.valueOf(0.15).multiply(sisaPkp));
+        }
+        if(pkp.compareTo(BigDecimal.valueOf(250000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(500000000)) <= 0){
+            //hitung pkp 50jt dlu
+            hasil = hasil.add(BigDecimal.valueOf(0.05).multiply(BigDecimal.valueOf(50000000)));
+            sisaPkp = sisaPkp.subtract(BigDecimal.valueOf(50000000));
+            //hitung pkp - 50jt
+            hasil = hasil.add(BigDecimal.valueOf(0.15).multiply(BigDecimal.valueOf(200000000)));
+            sisaPkp = sisaPkp.subtract(BigDecimal.valueOf(200000000));
+            //hitung pkp - 250jt
+            hasil = hasil.add(BigDecimal.valueOf(0.25).multiply(sisaPkp));
+        }
+        if(pkp.compareTo(BigDecimal.valueOf(500000000)) > 0){
+            //hitung pkp 50jt dlu
+            hasil = hasil.add(BigDecimal.valueOf(0.05).multiply(BigDecimal.valueOf(50000000)));
+            sisaPkp = sisaPkp.subtract(BigDecimal.valueOf(50000000));
+            //hitung pkp - 50jt
+            hasil = hasil.add(BigDecimal.valueOf(0.15).multiply(BigDecimal.valueOf(200000000)));
+            sisaPkp = sisaPkp.subtract(BigDecimal.valueOf(200000000));
+            //hitung pkp - 250jt
+            hasil = hasil.add(BigDecimal.valueOf(0.25).multiply(sisaPkp));
+            sisaPkp = sisaPkp.subtract(BigDecimal.valueOf(500000000));
+            hasil = hasil.add(BigDecimal.valueOf(0.30).multiply(sisaPkp));
+        }*/
+
+
+        BigDecimal hasil = new BigDecimal(0) ;
+        if (!"".equalsIgnoreCase(npwp)){
+            if(pkp.compareTo(BigDecimal.valueOf(50000000)) <= 0){
+                hasil = BigDecimal.valueOf(0.05).multiply(pkp);
+            }else if(pkp.compareTo(BigDecimal.valueOf(50000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(200000000)) <= 0){
+                hasil = BigDecimal.valueOf(2500000).add((BigDecimal.valueOf(0.15).multiply(pkp.subtract(BigDecimal.valueOf(50000000))))) ;
+            }else if(pkp.compareTo(BigDecimal.valueOf(200000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(500000000)) <= 0){
+                hasil = BigDecimal.valueOf(30000000).add((BigDecimal.valueOf(0.25).multiply((pkp.subtract(BigDecimal.valueOf(250000000))))));
+            }else{
+                hasil = BigDecimal.valueOf(95000000).add(BigDecimal.valueOf(0.3).multiply(pkp.subtract(BigDecimal.valueOf(500000000))));
+            }
+        }else{
+            if(pkp.compareTo(BigDecimal.valueOf(50000000)) <= 0){
+                hasil = BigDecimal.valueOf(0.06).multiply(pkp);
+            }else if(pkp.compareTo(BigDecimal.valueOf(50000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(200000000)) <= 0){
+                hasil = BigDecimal.valueOf(2500000).add((BigDecimal.valueOf(0.18).multiply(pkp.subtract(BigDecimal.valueOf(50000000))))) ;
+            }else if(pkp.compareTo(BigDecimal.valueOf(200000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(500000000)) <= 0){
+                hasil = BigDecimal.valueOf(30000000).add((BigDecimal.valueOf(0.3).multiply((pkp.subtract(BigDecimal.valueOf(250000000))))));
+            }else{
+                hasil = BigDecimal.valueOf(95000000).add(BigDecimal.valueOf(0.36).multiply(pkp.subtract(BigDecimal.valueOf(500000000))));
+            }
+        }
+
+        return hasil.setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
 //
 //    //Perhitungan Tunjangan PPH Bagi Kabid Keatas
 //    private BigDecimal hitungTunjanganPph(BigDecimal pkp){
@@ -27552,78 +27551,87 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 
 
     //RAKA-04MEI2021 ==> recover by raka (maintenance)
-//    @Override
-//    public List<PayrollEsptDTO> searchReportEsptSys(String tahun, String unit) throws GeneralBOException {
-//        List<PayrollEsptDTO> listOfResult = new ArrayList<>();
-//        try {
-//            List<PayrollEsptDTO> itPayrollEntities = payrollDao.searchReportEspt(tahun, unit);
-//            if (itPayrollEntities.size() > 0) {
-//                for (PayrollEsptDTO data : itPayrollEntities) {
-//                    ImBiodataEntity biodataEntity = biodataDao.getById("nip",data.getNip());
-//                    data.setTahunPajak(tahun);
-//                    //jumlah2 jumlah tunj pph + tunj pph bonus
-//                    data.setJumlah2(data.getJumlah2().add(payrollDao.getTunjanganPPhGajiBonusSetahun(tahun,data.getNip())));
-//                    //jumlah4 belum tau
-//                    data.setJumlah4(BigDecimal.ZERO);
-//                    //jumlah5 belum tau
-//                    data.setJumlah5(BigDecimal.ZERO);
-//                    //jumlah6 belum tau
-//                    data.setJumlah6(BigDecimal.ZERO);
-//                    //bonus
-//                    data.setJumlah7(payrollDao.getTotalBonusSetahun(tahun,data.getNip()));
-//                    //bruto
-//                    data.setJumlah8(data.getJumlah1().add(data.getJumlah2()).add(data.getJumlah3()).add(data.getJumlah4()).add(data.getJumlah5()).add(data.getJumlah6()).add(data.getJumlah7()));
-//                    //bijab
-//                    if ((CommonUtil.percentage(data.getJumlah8(), BigDecimal.valueOf(5))).compareTo(BigDecimal.valueOf(6000000))<1){
-//                        data.setJumlah9(CommonUtil.percentage(data.getJumlah8(), BigDecimal.valueOf(5)));
-//                    }else{
-//                        data.setJumlah9(new BigDecimal(6000000));
-//                    }
-//                    //reduce
-//                    data.setJumlah11(data.getJumlah9().add(data.getJumlah10()));
-//                    //netto
-//                    data.setJumlah12(data.getJumlah8().subtract(data.getJumlah11()));
-//                    //jumlah 13 belum tau implementasinya
-//                    data.setJumlah13(BigDecimal.ZERO);
-//                    //jumlah 14 netto sesungguhnya
-//                    data.setJumlah14(data.getJumlah12().add(data.getJumlah13()));
-//                    //ptkp
+    @Override
+    public List<PayrollEsptDTO> searchReportEsptSys(String tahun, String unit) throws GeneralBOException {
+        List<PayrollEsptDTO> listOfResult = new ArrayList<>();
+        try {
+            List<PayrollEsptDTO> itPayrollEntities = payrollDao.searchReportEspt(tahun, unit);
+            if (itPayrollEntities.size() > 0) {
+                for (PayrollEsptDTO data : itPayrollEntities) {
+                    ImBiodataEntity biodataEntity = biodataDao.getById("nip",data.getNip());
+                    data.setTahunPajak(tahun);
+                    //jumlah2 jumlah tunj pph + tunj pph bonus
+                    data.setJumlah2(data.getJumlah2().add(payrollDao.getTunjanganPPhGajiBonusSetahun(tahun,data.getNip())));
+                    //jumlah4 belum tau
+                    data.setJumlah4(BigDecimal.ZERO);
+                    //jumlah5 belum tau
+                    data.setJumlah5(BigDecimal.ZERO);
+                    //jumlah6 belum tau
+                    data.setJumlah6(BigDecimal.ZERO);
+                    //bonus
+                    data.setJumlah7(payrollDao.getTotalBonusSetahun(tahun,data.getNip()));
+                    //bruto
+                    data.setJumlah8(data.getJumlah1().add(data.getJumlah2()).add(data.getJumlah3()).add(data.getJumlah4()).add(data.getJumlah5()).add(data.getJumlah6()).add(data.getJumlah7()));
+                    //bijab
+                    if ((CommonUtil.percentage(data.getJumlah8(), BigDecimal.valueOf(5))).compareTo(BigDecimal.valueOf(6000000))<1){
+                        data.setJumlah9(CommonUtil.percentage(data.getJumlah8(), BigDecimal.valueOf(5)));
+                    }else{
+                        data.setJumlah9(new BigDecimal(6000000));
+                    }
+                    //reduce
+                    data.setJumlah11(data.getJumlah9().add(data.getJumlah10()));
+                    //netto
+                    data.setJumlah12(data.getJumlah8().subtract(data.getJumlah11()));
+                    //jumlah 13 belum tau implementasinya
+                    data.setJumlah13(BigDecimal.ZERO);
+                    //jumlah 14 netto sesungguhnya
+                    data.setJumlah14(data.getJumlah12().add(data.getJumlah13()));
+                    //ptkp
 //                    data.setJumlah15(getPtkp(data.getStatusPtkp(),Integer.parseInt(data.getJumlahTanggungan()),data.getJenisKelamin()));
-//                    //pkp
-//                    if (data.getJumlah14().compareTo(data.getJumlah15())<=0){
-//                        data.setJumlah16(BigDecimal.ZERO);
-//                    }else{
-//                        data.setJumlah16(data.getJumlah14().subtract(data.getJumlah15()));
-//                    }
-//                    //pajak setahun
-//                    data.setJumlah17(hitungPajakSetahunSimRs(data.getJumlah16(),biodataEntity.getNpwp()));
-//                    //jumlah 18 belum tau implementasinya
-//                    data.setJumlah18(BigDecimal.ZERO);
-//                    // pajak setahun aslinya
-//                    data.setJumlah19(data.getJumlah19().subtract(data.getJumlah18()));
-//                    //pajak yang telah dipotong / dilunasi
-//                    data.setJumlah20(payrollDao.getPPhGaji12Bulan(tahun,data.getNip()).add(payrollDao.getPPhGajiBonusSetahun(tahun,data.getNip())));
-//                    //selisih
-//                    data.setSelisih21(data.getJumlah20().subtract(data.getJumlah19()));
-//                    //kurang bayar
-//                    if (data.getSelisih21().compareTo(BigDecimal.ZERO)<0){
-//                        data.setKurangBayar21(BigDecimal.ZERO);
-//                    }else{
-//                        data.setKurangBayar21(data.getSelisih21().subtract(data.getJumlah20()));
-//                    }
-//                    listOfResult.add(data);
-//                }
-//            }
-//        }catch (HibernateException e) {
-//            PayrollBoImpl.logger.error((Object)("[PayrollBoImpl.searchReportEsptSys] Error, " + e.getMessage()));
-//            throw new GeneralBOException("Found problem , please inform to your admin...," + e.getMessage());
-//        }
-//        return listOfResult;
-//    }
+                    //pkp
+                    if (data.getJumlah14().compareTo(data.getJumlah15())<=0){
+                        data.setJumlah16(BigDecimal.ZERO);
+                    }else{
+                        data.setJumlah16(data.getJumlah14().subtract(data.getJumlah15()));
+                    }
+                    //pajak setahun
+                    data.setJumlah17(hitungPajakSetahunSimRs(data.getJumlah16(),biodataEntity.getNpwp()));
+                    //jumlah 18 belum tau implementasinya
+                    data.setJumlah18(BigDecimal.ZERO);
+                    // pajak setahun aslinya
+                    data.setJumlah19(data.getJumlah19().subtract(data.getJumlah18()));
+                    //pajak yang telah dipotong / dilunasi
+                    data.setJumlah20(payrollDao.getPPhGaji12Bulan(tahun,data.getNip()).add(payrollDao.getPPhGajiBonusSetahun(tahun,data.getNip())));
+                    //selisih
+                    data.setSelisih21(data.getJumlah20().subtract(data.getJumlah19()));
+                    //kurang bayar
+                    if (data.getSelisih21().compareTo(BigDecimal.ZERO)<0){
+                        data.setKurangBayar21(BigDecimal.ZERO);
+                    }else{
+                        data.setKurangBayar21(data.getSelisih21().subtract(data.getJumlah20()));
+                    }
+                    listOfResult.add(data);
+                }
+            }
+        }catch (HibernateException e) {
+            PayrollBoImpl.logger.error((Object)("[PayrollBoImpl.searchReportEsptSys] Error, " + e.getMessage()));
+            throw new GeneralBOException("Found problem , please inform to your admin...," + e.getMessage());
+        }
+        return listOfResult;
+    }
     //RAKA-end
 
-
-
+    @Override
+    public List<ReportPayroll> searchReportPayroll (String bulan, String tahun, String unit) throws GeneralBOException {
+        List<ReportPayroll> listOfResult = new ArrayList<>();
+        try{
+            listOfResult = payrollDao.reportRekapPayroll(bulan, tahun, unit);
+        }catch (HibernateException e){
+            logger.error("[PayrollBoImpl.searchPayroll] Error, " + e);
+            throw new GeneralBOException(e);
+        }
+        return listOfResult;
+    }
 
     @Override
     public void saveDelete(Payroll bean) throws GeneralBOException {

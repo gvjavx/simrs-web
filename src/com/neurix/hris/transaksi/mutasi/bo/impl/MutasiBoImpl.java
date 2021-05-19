@@ -84,6 +84,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
+import sun.java2d.loops.GeneralRenderer;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
@@ -745,6 +746,28 @@ public class MutasiBoImpl implements MutasiBo {
                         // jika mengundurkan diri
                         nonAktifAllPegawaiByCriteria(mutasi);
 
+                    } else if("BT".equalsIgnoreCase(mutasi.getStatus())) {
+                        List<ItPersonilPositionEntity> personilPositionList = new ArrayList<>();
+                        try {
+                            personilPositionList = personilPositionDao.getPosisi(mutasi.getNip(),mutasi.getPositionLamaId());
+                        }catch (HibernateException e){
+                            logger.error("[MutasiBoImpl.saveMutasi] error, " + e.getMessage());
+                            throw new GeneralBOException(e);
+                        }
+
+                        for(ItPersonilPositionEntity personPosition : personilPositionList){
+                            personPosition.setAction(bean.getAction());
+                            personPosition.setLastUpdate(bean.getLastUpdate());
+                            personPosition.setLastUpdateWho(bean.getLastUpdateWho());
+                            personPosition.setFlagMbt("Y");
+
+                            try {
+                                personilPositionDao.updateAndSave(personPosition);
+                            } catch (HibernateException e){
+                                logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem save data status lepas jabatan, please inform to your admin...," + e.getMessage());
+                            }
+                        }
                     } else {
 
                         // Sigit 2020-01-08

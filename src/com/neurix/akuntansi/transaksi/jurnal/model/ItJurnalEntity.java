@@ -29,7 +29,7 @@ public class ItJurnalEntity implements Serializable {
     private Date registeredDate;
     private String registeredFlag;
     private String registeredUser;
-    private String registerId;
+//    private String registerId;
     private String spumId;
     private BigDecimal printCount;
     private BigDecimal printRegisterCount;
@@ -282,13 +282,13 @@ public class ItJurnalEntity implements Serializable {
         this.registeredUser = registeredUser;
     }
 
-    public String getRegisterId() {
-        return registerId;
-    }
+//    public String getRegisterId() {
+//        return registerId;
+//    }
 
-    public void setRegisterId(String registerId) {
-        this.registerId = registerId;
-    }
+//    public void setRegisterId(String registerId) {
+//        this.registerId = registerId;
+//    }
 
     public String getSpumId() {
         return spumId;

@@ -451,7 +451,7 @@ public class BranchAction extends BaseMasterAction {
         }
 
         for (Branch branch : listOfSearchBranch){
-            if (!(CommonConstant.ID_KANPUS).equalsIgnoreCase(branch.getBranchId())){
+            if (!(CommonConstant.BRANCH_KP).equalsIgnoreCase(branch.getBranchId())){
                 listOfSearch.add(branch);
             }
         }

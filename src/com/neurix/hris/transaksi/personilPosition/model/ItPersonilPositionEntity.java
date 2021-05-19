@@ -47,6 +47,16 @@ public class ItPersonilPositionEntity implements Serializable {
 
     private Timestamp tanggalAktif;
 
+    private String flagMbt;
+
+    public String getFlagMbt() {
+        return flagMbt;
+    }
+
+    public void setFlagMbt(String flagMbt) {
+        this.flagMbt = flagMbt;
+    }
+
     public String getJenisPegawai() {
         return jenisPegawai;
     }

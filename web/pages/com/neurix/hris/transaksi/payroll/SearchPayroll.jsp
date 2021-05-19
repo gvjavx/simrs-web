@@ -431,6 +431,22 @@
                                                                     </a>
                                                                 </s:if>
                                                             </display:column>
+                                                            <display:column media="html" title="Rekap Payroll">
+                                                                <s:if test="#attr.row.flagSlip">
+                                                                    <s:if test='#attr.row.tipePayroll == "PY"'>
+                                                                        <a href="javascript:;"
+                                                                           draftId="<s:property value="%{#attr.row.payrollHeaderId}"/>"
+                                                                           draftBulan="<s:property value="%{#attr.row.bulan}"/>"
+                                                                           draftTahun="<s:property value="%{#attr.row.tahun}"/>"
+                                                                           draftBranchId="<s:property value="%{#attr.row.branchId}"/>"
+                                                                           draftBranchName="<s:property value="%{#attr.row.branchName}"/>"
+                                                                           draftTipe="<s:property value="%{#attr.row.tipePayroll}"/>"
+                                                                           class="item-rekap">
+                                                                            <img border="0" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" name="icon_slip">
+                                                                        </a>
+                                                                    </s:if>
+                                                                </s:if>
+                                                            </display:column>
                                                             <%--<display:column property="payrollHeaderId" title="Id"  />--%>
                                                             <display:column property="branchName" title="Unit"  />
                                                             <display:column property="bulan" title="Bulan"  />
@@ -703,7 +719,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="modal-loading-dialog">
+<div class="modal fade" id="modal-loading-dialog-search-payroll">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
@@ -713,7 +729,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <div id="waiting-content" style="text-align: center">
+                <div id="waiting-content-search-payroll" style="text-align: center">
                     <h4>Please don't close this window, server is processing your request ...</h4>
                     <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
                          src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
@@ -766,18 +782,18 @@
 
 <script>
     $(document).ready(function() {
-        function showDialog(tipe) {
+        function showDialogPy(tipe) {
             if (tipe == "loading"){
-                $("#modal-loading-dialog").modal('show');
+                $("#modal-loading-dialog-search-payroll").modal('show');
             }
             if (tipe == "error"){
-                $("#modal-loading-dialog").modal('show');
-                $("#waiting-content").hide();
-                $("#warning_fin_waiting").show();
-                $("#msg_fin_error_waiting").text("");
+                $("#modal-loading-dialog-search-payroll").modal('show');
+                $("#waiting-content-search-payroll").hide();
+                $("#warning_fin_waiting_search_payroll").show();
+                $("#msg_fin_error_waiting_search_payroll").text("");
             }
             if (tipe == "success"){
-                $("#modal-loading-dialog").modal('hide');
+                $("#modal-loading-dialog-search-payroll").modal('hide');
                 $("#modal-success-search-payroll").modal('show');
             }
         }
@@ -820,15 +836,15 @@
                 var statusApprove = "Y";
                 var keteranganKeu = "";
 
-                showDialog("loading");
+                showDialogPy("loading");
                 dwr.engine.setAsync(true);
                 PayrollAction.approvePayrollKeu(payrollHeaderId, branchId, bulan, tahun, statusApprove, tipe, keteranganKeu, function(status){
                     dwr.engine.setAsync(false);
                     if (status == '00') {
                         $('#modal-approve-keu').modal('hide');
-                        showDialog("success");
+                        showDialogPy("success");
                     } else {
-                        showDialog("error");
+                        showDialogPy("error");
                     }
                 });
             }
@@ -844,18 +860,18 @@
                 var keteranganKeu = document.getElementById("keteranganKeu").value;
                 var statusApprove = "N";
 
-                showDialog("loading");
+                showDialogPy("loading");
                 dwr.engine.setAsync(true);
                 PayrollAction.approvePayrollKeu(payrollHeaderId, branchId, bulan, tahun, statusApprove, tipe, keteranganKeu, function(status){
                     dwr.engine.setAsync(false);
                     if (status == '00') {
                         alert('Payroll Berhasil Tidak Di Approve');
                         $('#modal-approve-keu').modal('hide');
-                        showDialog("success");
+                        showDialogPy("success");
                         $('#myForm')[0].reset();
                         window.location.href="<s:url action='initForm_payroll.action'/>";
                     } else {
-                        showDialog("error");
+                        showDialogPy("error");
                     }
 
                 });
@@ -886,15 +902,15 @@
                 var tahun = document.getElementById("approveTahunSdm").value;
                 var tipe = document.getElementById("tipePayrollSdm").value;
 
-                showDialog("loading");
+                showDialogPy("loading");
                 dwr.engine.setAsync(true);
                 PayrollAction.approvePayrollSdm(payrollHeaderId, branchId, bulan, tahun, tipe, function(status){
                     dwr.engine.setAsync(false);
                     if (status == '00') {
                         $('#modal-approve-sdm').modal('hide');
-                        showDialog("success");
+                        showDialogPy("success");
                     } else {
-                        showDialog("error");
+                        showDialogPy("error");
                     }
 
                 });
@@ -1092,6 +1108,19 @@
 
             if (confirm('Apakah Anda ingin mencetak slip?')) {
                 window.location.href = 'printReportPayrollByBranch_payroll?branchId='+branchId+'&tahun='+tahun+'&bulan='+bulan+'&tipePayroll='+tipePayroll+'&branchName='+branchName+'&idPayrollHeader='+idPayrollHeader;
+            }
+        });
+
+        $('.tablePayroll').on('click', '.item-rekap', function(){
+            var idPayrollHeader = $(this).attr('draftId');
+            var bulan = $(this).attr('draftBulan');
+            var tahun = $(this).attr('draftTahun');
+            var branchId = $(this).attr('draftBranchId');
+            var branchName = $(this).attr('draftBranchName');
+            var tipePayroll = $(this).attr('draftTipe');
+
+            if (confirm('Apakah Anda ingin mencetak detail rekap payroll?')) {
+                window.location.href = 'payrollRekapReportExcel_payroll?branchId='+branchId+'&tahun='+tahun+'&bulan='+bulan;
             }
         });
 

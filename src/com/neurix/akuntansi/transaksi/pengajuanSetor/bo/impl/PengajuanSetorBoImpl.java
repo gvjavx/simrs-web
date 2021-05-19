@@ -1131,7 +1131,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         //menghapus kantor pusat
         int i=0;
         for (ImBranches branches : branchesList){
-            if (CommonConstant.ID_KANPUS.equalsIgnoreCase(branches.getPrimaryKey().getId())){
+            if (CommonConstant.BRANCH_KP.equalsIgnoreCase(branches.getPrimaryKey().getId())){
                 branchesList.remove(i);
                 break;
             }
@@ -1208,7 +1208,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         logger.info("[PengajuanSetorBoImpl.listPPh21Pengajuan] start process >>>");
         String status="";
         ProsesPpnKd direksi = new ProsesPpnKd();
-        List<ItPengajuanSetorEntity> itPengajuanSetorEntityListKp = pengajuanSetorDao.getListPengajuanSetorByBulanTahunDanBranch(data.getBulan(),data.getTahun(),CommonConstant.ID_KANPUS);
+        List<ItPengajuanSetorEntity> itPengajuanSetorEntityListKp = pengajuanSetorDao.getListPengajuanSetorByBulanTahunDanBranch(data.getBulan(),data.getTahun(),CommonConstant.BRANCH_KP);
 
         if (itPengajuanSetorEntityListKp.size()!=0){
             for (ItPengajuanSetorEntity pengajuanSetorEntity : itPengajuanSetorEntityListKp) {
@@ -1259,7 +1259,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         //menghapus kantor pusat
         int i=0;
         for (ImBranches branches : branchesList){
-            if (CommonConstant.ID_KANPUS.equalsIgnoreCase(branches.getPrimaryKey().getId())){
+            if (CommonConstant.BRANCH_KP.equalsIgnoreCase(branches.getPrimaryKey().getId())){
                 branchesList.remove(i);
                 break;
             }
@@ -1349,7 +1349,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         //menghapus kantor pusat
         int i=0;
         for (ImBranches branches : branchesList){
-            if (CommonConstant.ID_KANPUS.equalsIgnoreCase(branches.getPrimaryKey().getId())){
+            if (CommonConstant.BRANCH_KP.equalsIgnoreCase(branches.getPrimaryKey().getId())){
                 branchesList.remove(i);
                 break;
             }
@@ -1440,7 +1440,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         List<PerhitunganKembaliPpn> perhitunganKembaliPpnList = new ArrayList<>();
         PerhitunganKembaliPpn perhitunganKembaliPpnKd = new PerhitunganKembaliPpn();
         // SET MILIK BRANCH ID PERHITUNGAN PPN
-        perhitunganKembaliPpnKd.setBranchId(CommonConstant.ID_KANPUS);
+        perhitunganKembaliPpnKd.setBranchId(CommonConstant.BRANCH_KP);
 
         // AMBIL PPN YANG SUDAH DI BAYARKAN ATAU DI KREDITKAN
         perhitunganKembaliPpnKd.setPpnPpnMasukanYangTelahDikreditkan(perhitunganPpnKdDao.getPpnMasukanYangTelahDikreditkan(search));
@@ -1477,7 +1477,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
 
         //menghitung perhitungan kembali ke 1
         for (ImBranches branches : branchesList){
-            if (!CommonConstant.ID_KANPUS.equalsIgnoreCase(branches.getPrimaryKey().getId())){
+            if (!CommonConstant.BRANCH_KP.equalsIgnoreCase(branches.getPrimaryKey().getId())){
                 search.setBranchId(branches.getPrimaryKey().getId());
                 PerhitunganKembaliUnit perhitunganKembaliUnit = new PerhitunganKembaliUnit();
 

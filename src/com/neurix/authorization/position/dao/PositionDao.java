@@ -548,7 +548,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
     public PersonilPosition getPersonilPositionAktif(String branchId, String positionId){
 
         String SQL = "SELECT a.nip, b.nama_pegawai \n" +
-                "FROM (SELECT * FROM it_hris_pegawai_position WHERE flag = 'Y') a\n" +
+                "FROM (SELECT * FROM it_hris_pegawai_position WHERE flag = 'Y' and (flag_mbt is null or flag_mbt = 'N')) a\n" +
                 "INNER JOIN (SELECT nip, nama_pegawai FROM im_hris_pegawai WHERE flag = 'Y') b ON b.nip = a.nip\n" +
                 "WHERE a.position_id LIKE :positionid \n" +
                 "AND a.branch_id LIKE :unit ";

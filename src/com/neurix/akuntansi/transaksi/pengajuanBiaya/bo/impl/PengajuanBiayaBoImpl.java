@@ -850,11 +850,11 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                     kelompokId = imPosition.getKelompokId();
                 }
 
-                if (CommonConstant.ROLE_ID_ADMIN_AKS.equalsIgnoreCase(CommonUtil.roleIdAsLogin())&&!CommonConstant.ID_KANPUS.equalsIgnoreCase(CommonUtil.userBranchLogin())&&"Y".equalsIgnoreCase(pengajuanBiayaDetailEntity.getApprovalKeuanganKpFlag())){
+                if (CommonConstant.ROLE_ID_ADMIN_AKS.equalsIgnoreCase(CommonUtil.roleIdAsLogin())&&!CommonConstant.BRANCH_KP.equalsIgnoreCase(CommonUtil.userBranchLogin())&&"Y".equalsIgnoreCase(pengajuanBiayaDetailEntity.getApprovalKeuanganKpFlag())){
                     returnPengajuanBiayaDetail.setStatusUserApproval("TKE");
-                }else if (CommonConstant.ROLE_ID_ADMIN_AKS.equalsIgnoreCase(CommonUtil.roleIdAsLogin())&&!CommonConstant.ID_KANPUS.equalsIgnoreCase(CommonUtil.userBranchLogin())){
+                }else if (CommonConstant.ROLE_ID_ADMIN_AKS.equalsIgnoreCase(CommonUtil.roleIdAsLogin())&&!CommonConstant.BRANCH_KP.equalsIgnoreCase(CommonUtil.userBranchLogin())){
                     returnPengajuanBiayaDetail.setStatusUserApproval("KE");
-                }else if (CommonConstant.ROLE_ID_ADMIN_AKS.equalsIgnoreCase(CommonUtil.roleIdAsLogin())&&CommonConstant.ID_KANPUS.equalsIgnoreCase(CommonUtil.userBranchLogin())){
+                }else if (CommonConstant.ROLE_ID_ADMIN_AKS.equalsIgnoreCase(CommonUtil.roleIdAsLogin())&&CommonConstant.BRANCH_KP.equalsIgnoreCase(CommonUtil.userBranchLogin())){
                     returnPengajuanBiayaDetail.setStatusUserApproval("KEKP");
                 }else{
                     if (kelompokId.equalsIgnoreCase(CommonConstant.KELOMPOK_ID_PEJABAT_MUDA)){
@@ -1101,7 +1101,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                     pengajuanBiayaDetailEntity.setApprovalKeuanganDate(bean.getApprovalKeuanganDate());
                     pengajuanBiayaDetailEntity.setStatusKeuangan(bean.getStatusKeuangan());
                     pengajuanBiayaDetailEntity.setTanggalRealisasi(bean.getTanggalRealisasi());
-                    userList.addAll(userDao.getUserByBranchAndRole(CommonConstant.ID_KANPUS,CommonConstant.ROLE_ID_ADMIN_AKS));
+                    userList.addAll(userDao.getUserByBranchAndRole(CommonConstant.BRANCH_KP,CommonConstant.ROLE_ID_ADMIN_AKS));
                     break;
             }
 
@@ -1468,38 +1468,38 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
         }else if ("N".equalsIgnoreCase(data.getApprovalKeuanganFlag())){
             returnData.setStatusSaatIni("Tidak diapprove oleh Admin Keuangan");
         }else if ("N".equalsIgnoreCase(data.getApprovalGmFlag())) {
-            if (!CommonConstant.ID_KANPUS.equalsIgnoreCase(data.getBranchId())) {
+            if (!CommonConstant.BRANCH_KP.equalsIgnoreCase(data.getBranchId())) {
                 returnData.setStatusSaatIni("Tidak diapprove oleh Kepala Rumah Sakit");
             } else {
                 returnData.setStatusSaatIni("Tidak diapprove oleh Direktur Keuangan");
             }
         }else if ("N".equalsIgnoreCase(data.getApprovalKadivFlag())){
-            if (!CommonConstant.ID_KANPUS.equalsIgnoreCase(data.getBranchId())){
+            if (!CommonConstant.BRANCH_KP.equalsIgnoreCase(data.getBranchId())){
                 returnData.setStatusSaatIni("Tidak diapprove oleh Kepala Divisi");
             }else {
                 returnData.setStatusSaatIni("Tidak diapprove oleh Kepala Bidang");
             }
         }else if ("N".equalsIgnoreCase(data.getApprovalKasubdivFlag())){
-            if (!CommonConstant.ID_KANPUS.equalsIgnoreCase(data.getBranchId())){
+            if (!CommonConstant.BRANCH_KP.equalsIgnoreCase(data.getBranchId())){
                 returnData.setStatusSaatIni("Tidak diapprove oleh Kepala Sub Divisi");
             }else {
                 returnData.setStatusSaatIni("Tidak diapprove oleh Kepala Sub Bidang");
             }
         }else {
             if (data.getApprovalKasubdivFlag()==null){
-                if (!CommonConstant.ID_KANPUS.equalsIgnoreCase(data.getBranchId())){
+                if (!CommonConstant.BRANCH_KP.equalsIgnoreCase(data.getBranchId())){
                     returnData.setStatusSaatIni("Menunggu approval Kepala Sub Divisi");
                 }else {
                     returnData.setStatusSaatIni("Menunggu approval Kepala Sub Bidang");
                 }
             }else if (data.getApprovalKadivFlag()==null){
-                if (!CommonConstant.ID_KANPUS.equalsIgnoreCase(data.getBranchId())){
+                if (!CommonConstant.BRANCH_KP.equalsIgnoreCase(data.getBranchId())){
                     returnData.setStatusSaatIni("Menunggu approval Kepala Divisi");
                 }else {
                     returnData.setStatusSaatIni("Menunggu approval Kepala Bidang");
                 }
             }else if (data.getApprovalGmFlag()==null){
-                if (!CommonConstant.ID_KANPUS.equalsIgnoreCase(data.getBranchId())){
+                if (!CommonConstant.BRANCH_KP.equalsIgnoreCase(data.getBranchId())){
                     returnData.setStatusSaatIni("Menunggu approval Kepala Rumah Sakit");
                 }else {
                     returnData.setStatusSaatIni("Menunggu approval Direktur Keuangan");
@@ -1761,7 +1761,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
         PengajuanBiaya pengajuanBiaya = new PengajuanBiaya();
         ImPengajuanBiayaEntity pengajuanBiayaEntity = pengajuanBiayaDao.getById("pengajuanBiayaId",pengajuanId);
 
-        if (!CommonConstant.ID_KANPUS.equalsIgnoreCase(CommonUtil.userBranchLogin())){
+        if (!CommonConstant.BRANCH_KP.equalsIgnoreCase(CommonUtil.userBranchLogin())){
             if ("Y".equalsIgnoreCase(pengajuanBiayaEntity.getRkDikirim())){
                 pengajuanBiaya.setShowTerimaRk(true);
             }
@@ -1769,7 +1769,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
 
         List<ItPengajuanBiayaDetailEntity> pengajuanBiayaDetailEntityList = pengajuanBiayaDetailDao.getByPengajuanBiayaId(pengajuanId);
         for (ItPengajuanBiayaDetailEntity pengajuanBiayaDetailEntity : pengajuanBiayaDetailEntityList){
-            if(!"Y".equalsIgnoreCase(pengajuanBiayaDetailEntity.getClosed())||!CommonUtil.userBranchLogin().equalsIgnoreCase(CommonConstant.ID_KANPUS)||!CommonConstant.ROLE_ID_ADMIN_AKS.equalsIgnoreCase(CommonUtil.roleIdAsLogin())||"Y".equalsIgnoreCase(pengajuanBiayaEntity.getRkDikirim())){
+            if(!"Y".equalsIgnoreCase(pengajuanBiayaDetailEntity.getClosed())||!CommonUtil.userBranchLogin().equalsIgnoreCase(CommonConstant.BRANCH_KP)||!CommonConstant.ROLE_ID_ADMIN_AKS.equalsIgnoreCase(CommonUtil.roleIdAsLogin())||"Y".equalsIgnoreCase(pengajuanBiayaEntity.getRkDikirim())){
                 pengajuanBiaya.setShowBuatRk(false);
                 break;
             }

@@ -82,7 +82,7 @@ public class BgEksploitasiAction {
     public String initForm(){
         String userBranchId = CommonUtil.userBranchLogin();
         Budgeting budgeting = new Budgeting();
-        budgeting.setFlagKp(userBranchId.equalsIgnoreCase(CommonConstant.ID_KANPUS) ? "Y" : "N");
+        budgeting.setFlagKp(userBranchId.equalsIgnoreCase(CommonConstant.BRANCH_KP) ? "Y" : "N");
         budgeting.setBranchId(userBranchId);
         setBudgeting(budgeting);
         eraseAllSession();

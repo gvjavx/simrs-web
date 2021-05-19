@@ -225,7 +225,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         logger.info("[PengajuanBiayaAction.add] start process >>>");
         PengajuanBiaya addPengajuanBiaya = new PengajuanBiaya();
         String branchId = CommonUtil.userBranchLogin();
-        addPengajuanBiaya.setBranchIdKanpus(CommonConstant.ID_KANPUS);
+        addPengajuanBiaya.setBranchIdKanpus(CommonConstant.BRANCH_KP);
         if (branchId!=null){
             addPengajuanBiaya.setBranchId(branchId);
         }else{
@@ -572,10 +572,10 @@ public class PengajuanBiayaAction extends BaseMasterAction {
             String branchId = "";
             String transId= "";
             if (("SMK").equalsIgnoreCase(pengajuanBiaya.getTransaksi())){
-                branchId = CommonConstant.ID_KANPUS;
+                branchId = CommonConstant.BRANCH_KP;
                 transId = CommonConstant.TRANSAKSI_ID_KIRIM_RK;
             }else if (("PDU").equalsIgnoreCase(pengajuanBiaya.getTransaksi())){
-                branchId = CommonConstant.ID_KANPUS;
+                branchId = CommonConstant.BRANCH_KP;
                 transId = CommonConstant.TRANSAKSI_ID_PENERIMAAN_PENDAPATAN_DARI_UNIT;
             }
 
@@ -1338,7 +1338,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
 
         if ("K".equalsIgnoreCase(status)){
             //membuat jurnal RK dari kantor pusat
-            billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_KIRIM_RK,dataRk,CommonConstant.ID_KANPUS,getKeteranganPembuatanRk(idPengajuan,status,coaKas,branchId).getKeterangan(),"Y");
+            billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_KIRIM_RK,dataRk,CommonConstant.BRANCH_KP,getKeteranganPembuatanRk(idPengajuan,status,coaKas,branchId).getKeterangan(),"Y");
             pengajuanBiayaBo.setRkSudahDikirim(idPengajuan,coaKas);
 
         }
