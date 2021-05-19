@@ -38,6 +38,69 @@ public class ItSimrsCatatanTerintegrasiEntity implements Serializable {
     private String kesimpulan;
     private String monitoring;
     private String dataEws;
+    private String namaPemberi;
+    private String sipPemberi;
+    private String ttdPemberi;
+    private String namaPenerima;
+    private String sipPenerima;
+    private String ttdPenerima;
+    private String tipe;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
+
+    public String getNamaPemberi() {
+        return namaPemberi;
+    }
+
+    public void setNamaPemberi(String namaPemberi) {
+        this.namaPemberi = namaPemberi;
+    }
+
+    public String getSipPemberi() {
+        return sipPemberi;
+    }
+
+    public void setSipPemberi(String sipPemberi) {
+        this.sipPemberi = sipPemberi;
+    }
+
+    public String getTtdPemberi() {
+        return ttdPemberi;
+    }
+
+    public void setTtdPemberi(String ttdPemberi) {
+        this.ttdPemberi = ttdPemberi;
+    }
+
+    public String getNamaPenerima() {
+        return namaPenerima;
+    }
+
+    public void setNamaPenerima(String namaPenerima) {
+        this.namaPenerima = namaPenerima;
+    }
+
+    public String getSipPenerima() {
+        return sipPenerima;
+    }
+
+    public void setSipPenerima(String sipPenerima) {
+        this.sipPenerima = sipPenerima;
+    }
+
+    public String getTtdPenerima() {
+        return ttdPenerima;
+    }
+
+    public void setTtdPenerima(String ttdPenerima) {
+        this.ttdPenerima = ttdPenerima;
+    }
 
     public String getDataEws() {
         return dataEws;

@@ -107,5 +107,28 @@
         <property name="dataEws">
             <column name="data_ews"/>
         </property>
+
+        <property name="namaPemberi">
+            <column name="nama_pemberi"/>
+        </property>
+        <property name="sipPemberi">
+            <column name="sip_pemberi"/>
+        </property>
+        <property name="ttdPemberi">
+            <column name="ttd_pemberi"/>
+        </property>
+
+        <property name="namaPenerima">
+            <column name="nama_penerima"/>
+        </property>
+        <property name="sipPenerima">
+            <column name="sip_penerima"/>
+        </property>
+        <property name="ttdPenerima">
+            <column name="ttd_penerima"/>
+        </property>
+        <property name="tipe">
+            <column name="tipe"/>
+        </property>
     </class>
 </hibernate-mapping>

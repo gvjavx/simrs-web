@@ -7,11 +7,9 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.cuti.model.ImCutiEntity;
 import com.neurix.hris.master.provinsi.dao.ProvinsiDao;
 
+import com.neurix.simrs.master.license.model.Email;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
-import com.neurix.simrs.master.pasien.dao.FingerDataDao;
-import com.neurix.simrs.master.pasien.dao.PasienDao;
-import com.neurix.simrs.master.pasien.dao.RekamMedicLamaDao;
-import com.neurix.simrs.master.pasien.dao.UploadRekamMedicLamaDao;
+import com.neurix.simrs.master.pasien.dao.*;
 import com.neurix.simrs.master.pasien.model.*;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
@@ -43,6 +41,7 @@ public class PasienBoImpl implements PasienBo {
     private HeaderCheckupDao headerCheckupDao;
     private RekamMedicLamaDao rekamMedicLamaDao;
     private UploadRekamMedicLamaDao uploadRekamMedicLamaDao;
+    private PasienSementaraDao pasienSementaraDao;
 
     public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
         this.headerCheckupDao = headerCheckupDao;
@@ -1100,8 +1099,167 @@ public class PasienBoImpl implements PasienBo {
         return pasien;
     }
 
+    @Override
+    public PasienSementara saveAddPasienSementara(PasienSementara bean) throws GeneralBOException {
+        ImSimrsPasienSementaraEntity entity = new ImSimrsPasienSementaraEntity();
+        String id = pasienSementaraDao.getNextIdPasienSementara();
+        bean.setId("PSS" + id);
+        entity.setId("PSS" + id);
+        entity.setNama(bean.getNama());
+        entity.setNoKtp(bean.getNoKtp());
+        entity.setNoTelp(bean.getNoTelp());
+        entity.setJenisKelamin(bean.getJenisKelamin());
+        entity.setTempatLahir(bean.getTempatLahir());
+        entity.setTglLahir(bean.getTglLahir());
+        entity.setSuku(bean.getSuku());
+        entity.setEmail(bean.getEmail());
+        entity.setPassword(bean.getPassword());
+        entity.setAgama(bean.getAgama());
+        entity.setDesaId(bean.getDesaId());
+        entity.setJalan(bean.getJalan());
+        entity.setFlag(bean.getFlag());
+        entity.setAction(bean.getAction());
+        entity.setCreatedDate(bean.getCreatedDate());
+        entity.setLastUpdate(bean.getLastUpdate());
+        entity.setCreatedWho(bean.getCreatedWho());
+        entity.setLastUpdateWho(bean.getLastUpdateWho());
+        entity.setFlagLogin(bean.getFlagLogin());
+        entity.setUrlKtp(bean.getUrlKtp());
+        entity.setProfesi(bean.getProfesi());
+        try {
+            pasienSementaraDao.addAndSave(entity);
+        } catch (GeneralBOException e) {
+            logger.error("[PasienBoImpl.saveAddPasienSementara] Error when saving data pasien data sementara is null");
+            throw new GeneralBOException(" Error when saving data pasien data sementara is null");
+        }
+        //send email license
+        String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(entity.getCreatedDate());
+        Email email = new Email();
+        email.setFrom(CommonConstant.EMAIL_USERNAME);
+        email.setPassword(CommonConstant.EMAIL_PASSWORD);
+        email.setTo(entity.getEmail());
+        email.setSubject("[GO-MEDSYS MOBILE] User ID untuk login ke aplikasi");
+        email.setMsg("<h2>GO-MEDSYS MOBILE</h2>\n" +
+                "=========================================\n" +
+                "<h3>Gunakan User ID berikut beserta password yang telah ada inputkan ketika registrasi untuk login ke aplikasi GO-MEDSYS</h3>\n" +
+                "<br> \n" +
+                "<h3>User ID berikut bersifat sementara, anda akan mendapatkan User ID baru setelah melakukan verifikasi pendaftaran online di Rumah Sakit yang anda tuju<h3>\n" +
+                "<br> \n" +
+                "<table width=\"100%\">\n" +
+                "<tr>\n" +
+                "<td width=\"20%\">User ID</td>\n" +
+                "<td>: " + entity.getId() + "</td>\n" +
+                "</tr>\n" +
+                "<tr>\n" +
+                "<td>Nama</td>\n" +
+                "<td>: " + entity.getNama() + "</td>\n" +
+                "</tr>\n" +
+                "<tr>\n" +
+                "<td>No. KTP</td>\n" +
+                "<td>: " + entity.getNoKtp() + "</td>\n" +
+                "</tr>\n" +
+                "<tr>\n" +
+                "</table>\n" +
+                "=========================================\n" +
+                "<br> \n" +
+                "<br>\n");
+        CommonUtil.sendEmail(email);
+
+        return bean;
+    }
+
+    @Override
+    public List<PasienSementara> getPasienSementaraByCriteria(PasienSementara bean) throws GeneralBOException {
+        List<PasienSementara> result = new ArrayList<>();
+        List<ImSimrsPasienSementaraEntity> entities;
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id", bean.getId());
+        hsCriteria.put("nama", bean.getNama());
+        hsCriteria.put("desa_id", bean.getDesaId());
+        hsCriteria.put("no_ktp", bean.getNoKtp());
+        hsCriteria.put("flag", bean.getFlag());
+        hsCriteria.put("email", bean.getEmail());
+
+        try {
+            entities = pasienSementaraDao.getByCriteria(hsCriteria);
+        } catch (GeneralBOException e) {
+            logger.error("[PasienBoImpl.getPasienSementaraByCriteria]");
+            throw new GeneralBOException(" Error when getPasienByCriteria " + e.getMessage());
+        }
+
+        if (entities != null) {
+            for(ImSimrsPasienSementaraEntity item : entities) {
+                PasienSementara pasienSementara = new PasienSementara();
+                pasienSementara.setId(item.getId());
+                pasienSementara.setNama(item.getNama());
+                pasienSementara.setJenisKelamin(item.getJenisKelamin());
+                pasienSementara.setNoKtp(item.getNoKtp());
+                pasienSementara.setTempatLahir(item.getTempatLahir());
+                pasienSementara.setTglLahir(item.getTglLahir());
+                pasienSementara.setDesaId(item.getDesaId());
+                pasienSementara.setJalan(item.getJalan());
+                pasienSementara.setSuku(item.getSuku());
+                pasienSementara.setAgama(item.getAgama());
+                pasienSementara.setNoTelp(item.getNoTelp());
+                pasienSementara.setUrlKtp(item.getUrlKtp());
+                pasienSementara.setFlag(item.getFlag());
+                pasienSementara.setAction(item.getAction());
+                pasienSementara.setCreatedDate(item.getCreatedDate());
+                pasienSementara.setLastUpdate(item.getLastUpdate());
+                pasienSementara.setCreatedWho(item.getCreatedWho());
+                pasienSementara.setLastUpdateWho(item.getLastUpdateWho());
+                pasienSementara.setFlagLogin(item.getFlagLogin());
+                pasienSementara.setEmail(item.getEmail());
+                pasienSementara.setPassword(item.getPassword());
+                pasienSementara.setProfesi(item.getProfesi());
+
+                result.add(pasienSementara);
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public void saveEditPasienSementara (PasienSementara bean) throws GeneralBOException {
+        ImSimrsPasienSementaraEntity entity = new ImSimrsPasienSementaraEntity();
+        entity.setId(bean.getId());
+        entity.setNama(bean.getNama());
+        entity.setJenisKelamin(bean.getJenisKelamin());
+        entity.setNoKtp(bean.getNoKtp());
+        entity.setTempatLahir(bean.getTempatLahir());
+        entity.setTglLahir(bean.getTglLahir());
+        entity.setDesaId(bean.getDesaId());
+        entity.setJalan(bean.getJalan());
+        entity.setSuku(bean.getSuku());
+        entity.setAgama(bean.getAgama());
+        entity.setNoTelp(bean.getNoTelp());
+        entity.setUrlKtp(bean.getUrlKtp());
+        entity.setFlag(bean.getFlag());
+        entity.setAction("U");
+        entity.setCreatedWho(bean.getNama());
+        entity.setLastUpdateWho(bean.getNama());
+        entity.setCreatedDate(bean.getCreatedDate());
+        entity.setLastUpdate(bean.getLastUpdate());
+        entity.setFlagLogin(bean.getFlagLogin());
+        entity.setEmail(bean.getEmail());
+        entity.setPassword(bean.getPassword());
+        try {
+            pasienSementaraDao.updateAndSave(entity);
+        } catch (GeneralBOException e) {
+            logger.error("[PasienBoImpl.getPasienSementaraByCriteria]");
+            throw new GeneralBOException(" Error when getPasienByCriteria " + e.getMessage());
+        }
+    }
+
+
     public void setPasienDao(PasienDao pasienDao) {
         this.pasienDao = pasienDao;
+    }
+
+    public void setPasienSementaraDao(PasienSementaraDao pasienSementaraDao) {
+        this.pasienSementaraDao = pasienSementaraDao;
     }
 
     @Override

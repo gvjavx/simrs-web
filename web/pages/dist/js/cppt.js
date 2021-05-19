@@ -561,7 +561,7 @@ function detailCPPT(jenis, ket, tipe, gizi) {
                     if(item.ttdDpjp != '' && item.ttdDpjp != null){
                         setTtd = '<img style="width: 100%; height: 50px" src="' + item.ttdDpjp + '">';
                     }else{
-                        setTtd = '<i onclick="setTtdDpjp(\''+item.idCatatanTerintegrasi+'\', \''+jenis+'\', \''+ket+'\', \''+tipe+'\')" class="fa fa-pencil hvr-grow" style="cursor: pointer; color: #1ab7ea; margin-bottom: 10px"></i>';
+                        setTtd = '<i onclick="setTtdDpjp(\''+item.idCatatanTerintegrasi+'\', \''+jenis+'\', \''+ket+'\', \''+tipe+'\',\'dokter\')" class="fa fa-pencil hvr-grow" style="cursor: pointer; color: #1ab7ea; margin-bottom: 10px"></i>';
                     }
 
                     var del = '<i id="delete_' + item.idCatatanTerintegrasi + '" onclick="conCPT(\'' + jenis + '\', \'' + ket + '\', \'' + tipe + '\', \'' + item.idCatatanTerintegrasi + '\')" style="color: red" class="fa fa-trash fa-1x hvr-grow"></i>';
@@ -580,35 +580,54 @@ function detailCPPT(jenis, ket, tipe, gizi) {
                         }
                     }
 
-                    var object =
-                        '<p>Tensi : ' + item.tensi + ' mmHg</p>' +
-                        '<p>Nadi : ' + item.nadi + ' x/menit</p>'+
-                        '<p>Suhu : ' + item.suhu + ' ˚C</p>' +
-                        '<p>RR : ' + item.rr + ' x/menit' +'</p>'+
-                        '<p>Keterangan : ' + cekNullCppt(item.objective)+'</p>'+
-                        '<p>-------------------------------</p>' +
-                        '<p>Total Skor EWS : '+cekNullCppt(item.ews)+'</p>' +
-                        '<p>Kesimpulan : '+cekNullCppt(item.kesimpulan)+'</p>' +
-                        '<p>Monitoring : '+cekNullCppt(item.monitoring)+'</p>';
-                    body += '<tr>' +
-                        '<td width="10%">' + converterDateTime(item.waktu) + '</td>' +
-                        '<td>' + cekNullCppt(item.ppa) + '</td>' +
-                        '<td>' + cekNullCppt(item.subjective) + '</td>' +
-                        '<td width="17%">' + object + '</td>' +
-                        '<td>' + cekNullCppt(item.assesment) + '</td>' +
-                        '<td>' + cekNullCppt(item.planning) + '</td>' +
-                        '<td>' + cekNullCppt(item.intruksi) + '</td>' +
-                        '<td>' + '<img style="width: 100%; height: 50px" src="' + item.ttdPetugas + '">' +
-                        '<p style="margin-top: -5px">' + cekNullCppt(item.namaPetugas) + '</p>' +
-                        '<p style="margin-top: -10px">' + cekNullCppt(item.sipPetugas) + '</p>' +
-                        '</td>' +
-                        '<td>' + setTtd +
-                        '<p style="margin-top: -5px">' + cekNullCppt(item.namaDokter) + '</p>' +
-                        '<p style="margin-top: -10px">' + cekNullCppt(item.sipDokter) + '</p>' +
-                        '</td>' +
-                        '<td align="center">' + tempDel + '</td>'
-                    '</tr>';
-                    cekData = true;
+                    if("hand_over" == item.tipe){
+                        if(item.ttdPenerima != '' && item.ttdPenerima != null){
+                            setTtd = '<img style="width: 50%; height: 50px" src="' + item.ttdPenerima + '">';
+                        }else{
+                            setTtd = '<i onclick="setTtdDpjp(\''+item.idCatatanTerintegrasi+'\', \''+jenis+'\', \''+ket+'\', \''+tipe+'\')" class="fa fa-pencil hvr-grow" style="cursor: pointer; color: #1ab7ea; margin-bottom: 10px"></i>';
+                        }
+                        body += '<tr>' +
+                            '<td width="10%">' + converterDateTime(item.waktu) + '</td>' +
+                            '<td colspan="4" align="center">' +
+                            '<img style="width: 50%; height: 50px" src="' + item.ttdPemberi + '">' +
+                            '<p style="margin-top: -5px">' + cekNullCppt(item.namaPemberi) + '</p>' +
+                            '<p style="margin-top: -10px">' + cekNullCppt(item.sipPemberi) + '</p>' +
+                            '</td>' +
+                            '<td colspan="4" align="center">' + setTtd +
+                            '<p style="margin-top: -5px">' + cekNullCppt(item.namaPenerima) + '</p>' +
+                            '<p style="margin-top: -10px">' + cekNullCppt(item.sipPenerima) + '</p>' +
+                            '</td>' +
+                            '<td align="center">' + tempDel + '</td></tr>';
+                    }else{
+                        var object =
+                            '<p>Tensi : ' + item.tensi + ' mmHg</p>' +
+                            '<p>Nadi : ' + item.nadi + ' x/menit</p>'+
+                            '<p>Suhu : ' + item.suhu + ' ˚C</p>' +
+                            '<p>RR : ' + item.rr + ' x/menit' +'</p>'+
+                            '<p>Keterangan : ' + cekNullCppt(item.objective)+'</p>'+
+                            '<p>-----------------------</p>' +
+                            '<p>Total Skor EWS : '+cekNullCppt(item.ews)+'</p>' +
+                            '<p>Kesimpulan : '+cekNullCppt(item.kesimpulan)+'</p>' +
+                            '<p>Monitoring : '+cekNullCppt(item.monitoring)+'</p>';
+                        body += '<tr>' +
+                            '<td width="10%">' + converterDateTime(item.waktu) + '</td>' +
+                            '<td>' + cekNullCppt(item.ppa) + '</td>' +
+                            '<td>' + cekNullCppt(item.subjective) + '</td>' +
+                            '<td width="17%">' + object + '</td>' +
+                            '<td>' + cekNullCppt(item.assesment) + '</td>' +
+                            '<td>' + cekNullCppt(item.planning) + '</td>' +
+                            '<td>' + cekNullCppt(item.intruksi) + '</td>' +
+                            '<td>' + '<img style="width: 100%; height: 50px" src="' + item.ttdPetugas + '">' +
+                            '<p style="margin-top: -5px">' + cekNullCppt(item.namaPetugas) + '</p>' +
+                            '<p style="margin-top: -10px">' + cekNullCppt(item.sipPetugas) + '</p>' +
+                            '</td>' +
+                            '<td>' + setTtd +
+                            '<p style="margin-top: -5px">' + cekNullCppt(item.namaDokter) + '</p>' +
+                            '<p style="margin-top: -10px">' + cekNullCppt(item.sipDokter) + '</p>' +
+                            '</td>' +
+                            '<td align="center">' + tempDel + '</td></tr>';
+                        cekData = true;
+                    }
                 });
             } else {
                 body = '<tr>' +
@@ -700,10 +719,15 @@ function delCPT(jenis, ket, tipe, id) {
     }
 }
 
-function setTtdDpjp(id, jenis, ket, tipe){
+function setTtdDpjp(id, jenis, ket, tipe, jen){
     setDataPasien();
-    $('#modal-ina-ttd_dpjp').modal({show: true, backdrop: 'static'});
-    $('#save_ttd_dpjp').attr('onclick','saveTtdDpjp(\''+id+'\', \''+jenis+'\', \''+ket+'\', \''+tipe+'\')');
+    if("dokter" == jen){
+        $('#modal-ina-ttd_dpjp').modal({show: true, backdrop: 'static'});
+        $('#save_ttd_dpjp').attr('onclick','saveTtdDpjp(\''+id+'\', \''+jenis+'\', \''+ket+'\', \''+tipe+'\')');
+    }else{
+        $('#modal-ina-ttd_penerima').modal({show: true, backdrop: 'static'});
+        $('#save_ttd_penerima').attr('onclick','saveTtdPenerima(\''+id+'\', \''+jenis+'\', \''+ket+'\', \''+tipe+'\')');
+    }
 }
 
 function saveTtdDpjp(id, jenis, ket, tipe){
@@ -747,6 +771,53 @@ function saveTtdDpjp(id, jenis, ket, tipe){
     }else {
         $('#warning_ina_ttd_dpjp').show().fadeOut(5000);
         $('#msg_ina_ttd_dpjp').text("Silahkan cek kembali inputan anda...!");
+    }
+}
+
+function saveTtdPenerima(id, jenis, ket, tipe){
+    var nama = $('#nama_ttd_penerima').val();
+    var sip = $('#sip_ttd_penerima').val();
+    var ttd = document.getElementById("ttd_penerima");
+    var cek = isCanvasBlank(ttd);
+    console.log(nama)
+    console.log(sip)
+    console.log(cek)
+    if(nama && sip != '' && !cek){
+        if(!cekSession()){
+            var ttd1 = ttd.toDataURL("image/png"),
+                ttd1 = ttd1.replace(/^data:image\/(png|jpg);base64,/, "");
+            var dataPasien = {
+                'id_catatan_integrasi': id,
+                'nama_penerima': nama,
+                'sip_penerima': sip,
+                'ttd_penerima': ttd1
+            }
+            delRowCPPT(jenis, ket, tipe);
+            var result = JSON.stringify(dataPasien);
+            $('#save_ttd_penerima').hide();
+            $('#load_ttd_penerima').show();
+            dwr.engine.setAsync(true);
+            CatatanTerintegrasiAction.updateTtdDpjp(result, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#modal-ina-ttd_penerima').modal('hide');
+                        $('#save_ttd_penerima').show();
+                        $('#load_ttd_penerima').hide();
+                        $('#warning_ina_catatan_terintegrasi_ina').show().fadeOut(5000);
+                        $('#msg_ina_catatan_terintegrasi_ina').text("Berhasil mengupdate data...");
+                        detailCPPT(jenis, ket, tipe);
+                    } else {
+                        $('#warning_ina_ttd_penerima').show().fadeOut(5000);
+                        $('#msg_ina_ttd_penerima').text(res.msg);
+                        $('#save_ttd_penerima').show();
+                        $('#load_ttd_penerima').hide();
+                    }
+                }
+            });
+        }
+    }else {
+        $('#warning_ina_ttd_penerima').show().fadeOut(5000);
+        $('#msg_ina_ttd_penerima').text("Silahkan cek kembali inputan anda...!");
     }
 }
 
@@ -1099,5 +1170,78 @@ function setEWS(jenis, umur, id){
     }
     if(set != ''){
         $('#'+id).html(set);
+    }
+}
+
+function saveHandOver(jenis, ket, tipe) {
+    var data = "";
+    var va1 = $('#tgl_ttd_hand_over').val();
+    var va2 = $('#jam_ttd_hand_over').val();
+    var nama1 = $('#nama_hand_over_pemberi').val();
+    var nama2 = $('#nama_ttd_hand_over_penerima').val();
+    var sip1 = $('#sip_hand_over_pemberi').val();
+    var sip2 = $('#sip_ttd_hand_over_penerima').val();
+
+    var v9 = document.getElementById("ttd_hand_over_pemberi");
+    var v10 = document.getElementById("ttd_hand_over_penerima");
+
+    var va9 = isCanvasBlank(v9);
+    var va10 = isCanvasBlank(v10);
+
+    if (nama1 && sip1 != '' && !va9) {
+        var ttd1 = v9.toDataURL("image/png"),
+            ttd1 = ttd1.replace(/^data:image\/(png|jpg);base64,/, "");
+        var ttd2 = v10.toDataURL("image/png"),
+            ttd2 = ttd2.replace(/^data:image\/(png|jpg);base64,/, "");
+
+        if(v10){
+            ttd2 = "";
+        }
+
+        data = {
+            'id_detail_checkup': idDetailCheckup,
+            'waktu': va1.split("-").reverse().join("-") + ' ' + va2 + ':00',
+            'nama_pemberi': nama1,
+            'sip_pemberi': sip1,
+            'nama_penerima': nama2,
+            'sip_penerima': sip2,
+            'ttd_pemberi': ttd1,
+            'ttd_penerima': ttd2,
+            'keterangan': ket
+        }
+
+        if(!cekSession()){
+            var result = JSON.stringify(data);
+            $('#save_' + tipe + '_' + jenis).hide();
+            $('#load_' + tipe + '_' + jenis).show();
+            dwr.engine.setAsync(true);
+            CatatanTerintegrasiAction.saveHandOver(result, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#save_' + tipe + '_' + jenis).show();
+                        $('#load_' + tipe + '_' + jenis).hide();
+                        $('#modal-' + tipe + '-' + jenis).modal('hide');
+                        $('#warning_' + tipe + '_' + ket).show().fadeOut(5000);
+                        $('#msg_' + tipe + '_' + ket).text("Berhasil menambahkan data ....");
+                        $('#modal-' + tipe + '-' + jenis).scrollTop(0);
+                        delRowCPPT(jenis, ket, tipe);
+                        detailCPPT(jenis, ket, tipe);
+
+                    } else {
+                        $('#save_' + tipe + '_' + jenis).show();
+                        $('#load_' + tipe + '_' + jenis).hide();
+                        $('#warning_' + tipe + '_' + jenis).show().fadeOut(5000);
+                        $('#msg_' + tipe + '_' + jenis).text(res.msg);
+                        $('#modal-' + tipe + '-' + jenis).scrollTop(0);
+                    }
+                }
+            });
+        }
+    } else {
+        $('#save_' + tipe + '_' + jenis).show();
+        $('#load_' + tipe + '_' + jenis).hide();
+        $('#warning_' + tipe + '_' + jenis).show().fadeOut(5000);
+        $('#msg_' + tipe + '_' + jenis).text("Silahkan cek kembali data inputan anda...");
+        $('#modal-' + tipe + '-' + jenis).scrollTop(0);
     }
 }
