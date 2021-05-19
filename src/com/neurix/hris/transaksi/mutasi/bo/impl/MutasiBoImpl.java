@@ -480,9 +480,11 @@ public class MutasiBoImpl implements MutasiBo {
                             if (biodataEntity.getTipePegawai().equalsIgnoreCase(CommonConstant.PEGAWAI_PKWT)) {
                                 ImGolonganPkwtEntity golongan = golonganPkwtDao.getById("golonganPkwtId", biodataEntity.getGolongan());
                                 level = golongan.getGolonganPkwtName();
-                            } else {
+                            } else if (biodataEntity.getTipePegawai().equalsIgnoreCase(CommonConstant.PEGAWAI_TETAP)){
                                 ImGolonganEntity golongan = golonganDao.getById("golonganId", biodataEntity.getGolongan());
                                 level = golongan.getGolonganName();
+                            } else {
+                                level = biodataEntity.getGolongan();
                             }
                         } catch (HibernateException e) {
                             logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());

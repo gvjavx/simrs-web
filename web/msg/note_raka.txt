@@ -1,3 +1,10 @@
+------ 2021-05-19 ===> Kebutuhan Report Closing kasir
+INSERT INTO public.im_akun_report_detail (report_detail_id, report_id, rekening_id, flag, action, created_who, last_update_who, created_date, last_update, tipe_laporan) VALUES ('RD00058', 'RPT19', '00005', 'Y', 'C', 'Elvi Sukaisi', 'Elvi Sukaisi', '2021-03-31 16:18:10.025000', '2021-03-31 16:18:10.025000', null);
+INSERT INTO public.im_akun_report_detail (report_detail_id, report_id, rekening_id, flag, action, created_who, last_update_who, created_date, last_update, tipe_laporan) VALUES ('RD00059', 'RPT19', '00006', 'Y', 'C', 'Elvi Sukaisi', 'Elvi Sukaisi', '2021-03-31 16:18:10.076000', '2021-03-31 16:18:10.076000', null);
+INSERT INTO public.im_akun_report_detail (report_detail_id, report_id, rekening_id, flag, action, created_who, last_update_who, created_date, last_update, tipe_laporan) VALUES ('RD00060', 'RPT19', '00008', 'Y', 'C', 'Elvi Sukaisi', 'Elvi Sukaisi', '2021-03-31 16:18:10.122000', '2021-03-31 16:18:10.122000', null);
+INSERT INTO public.im_akun_report_detail (report_detail_id, report_id, rekening_id, flag, action, created_who, last_update_who, created_date, last_update, tipe_laporan) VALUES ('RD00061', 'RPT19', '00010', 'Y', 'C', 'Elvi Sukaisi', 'Elvi Sukaisi', '2021-03-31 16:18:10.171000', '2021-03-31 16:18:10.171000', null);
+--------------------------------
+
 ------ 2021-04-29 ===> sql harian
 -- menambahkan column pada it_akun_pengajuan_biaya_detail
     alter table it_akun_pengajuan_biaya_detail

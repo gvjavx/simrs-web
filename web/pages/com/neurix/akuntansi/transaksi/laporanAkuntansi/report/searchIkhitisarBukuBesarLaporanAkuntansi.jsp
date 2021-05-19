@@ -33,10 +33,11 @@
             var periodeTahun = document.getElementById("periodeTahun").value;
             var periodeBulan = document.getElementById("periodeBulan").value;
             var tipeLaporan = "neraca_mutasi";
+            var reportId = document.getElementById("reportId").value;
 
-            if ( unit != '' && periodeTahun != ''&& periodeBulan != '') {
+            if ( unit != '' && periodeTahun != ''&& periodeBulan != ''&&reportId!='') {
                 event.originalEvent.options.submit = false;
-                var url = "printReportIkhtisarBukuBesar_laporanAkuntansi.action?tipeLaporan="+tipeLaporan+"&laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan;
+                var url = "printReportIkhtisarBukuBesar_laporanAkuntansi.action?tipeLaporan="+tipeLaporan+"&laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.reportId="+reportId;
                 window.open(url,'_blank');
             } else {
                 event.originalEvent.options.submit = false;
@@ -49,6 +50,9 @@
                 }
                 if ( periodeBulan == '') {
                     msg += 'Field <strong>Bulan </strong> masih belum dipilih' + '<br/>';
+                }
+                if ( reportId == '') {
+                    msg += 'Field <strong>Error </strong> hubungi admin' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -112,7 +116,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test='laporanAkuntansi.unit == "01"'>
+                                                        <s:if test='laporanAkuntansi.unit == "KP"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranchAkuntansi_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
@@ -123,6 +127,8 @@
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                             <s:hidden id="branchId" name="laporanAkuntansi.unit" />
                                                         </s:else>
+                                                        <s:hidden name="laporanAkuntansi.reportId" id="reportId" />
+
                                                     </table>
                                                 </td>
                                             </tr>

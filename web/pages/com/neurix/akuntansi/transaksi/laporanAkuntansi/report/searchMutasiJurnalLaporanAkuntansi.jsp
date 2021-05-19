@@ -36,11 +36,10 @@
             var periodeTahun = document.getElementById("periodeTahun").value;
             var periodeBulan = document.getElementById("periodeBulan").value;
             var tipeJurnalId = document.getElementById("tipe_jurnal_id").value;
-            var tipeLaporan = document.getElementById("tipeLaporan").value;
 
             if ( unit != '' && periodeTahun != ''&& periodeBulan != ''&&tipeJurnalId!='') {
                 event.originalEvent.options.submit = false;
-                var url = "printReportMutasiJurnal_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.tipeJurnalId="+tipeJurnalId+"&laporanAkuntansi.tipeLaporan="+tipeLaporan;
+                var url = "printReportMutasiJurnal_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.tipeJurnalId="+tipeJurnalId;
                 window.open(url,'_blank');
             } else {
                 event.originalEvent.options.submit = false;
@@ -119,7 +118,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test='laporanAkuntansi.unit == 01'>
+                                                        <s:if test='laporanAkuntansi.unit == "01"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranchAkuntansi_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
@@ -168,18 +167,6 @@
                                                         <s:action id="initComboTipeJurnal" namespace="/tipeJurnal" name="initComboTipeJurnal_tipeJurnal"/>
                                                         <s:select list="#initComboTipeJurnal.listOfComboTipeJurnal" id="tipe_jurnal_id" name="laporanAkuntansi.tipeJurnalId"
                                                                   listKey="tipeJurnalId" listValue="tipeJurnalName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Tipe Laporan :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:select list="#{'da':'Mutasi Per Tindakan'}"
-                                                                  id="tipeLaporan"
-                                                                  headerKey="m" headerValue="Mutasi" cssClass="form-control" />
                                                     </table>
                                                 </td>
                                             </tr>

@@ -21,6 +21,7 @@ public class JadwalShiftKerjaDetail extends BaseModel {
     private String shiftGroupId;
     private String onCall;
     private String flagLibur;
+    private String tipeShiftKasir;//khusus kasir
 
     private String positionName;
     private String shiftName;
@@ -31,6 +32,14 @@ public class JadwalShiftKerjaDetail extends BaseModel {
     private String panggilWho;
     private Timestamp panggilDate;
     private String keteranganPanggil;
+
+    public String getTipeShiftKasir() {
+        return tipeShiftKasir;
+    }
+
+    public void setTipeShiftKasir(String tipeShiftKasir) {
+        this.tipeShiftKasir = tipeShiftKasir;
+    }
 
     public String getKeteranganPanggil() {
         return keteranganPanggil;
