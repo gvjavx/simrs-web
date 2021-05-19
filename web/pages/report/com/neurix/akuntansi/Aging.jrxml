@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.4615378250000033"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.y" value="53"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -227,7 +227,7 @@
 					<textElement>
 						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{kodeRekening}+" "+$F{namaRekening}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{kodeRekening}+" "+ $F{namaRekening} == null ?  ' ' : $F{namaRekening}]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement key="line-8" x="0" y="24" width="260" height="1" uuid="77fd997f-35fc-4def-a290-5018b13f0d67"/>

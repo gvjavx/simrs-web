@@ -1253,7 +1253,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     String noNota = "";
                     String withObat = obj.getString("with_obat");
                     String metodeBayar = obj.getString("metode_bayar");
-                    String kodeBank = obj.getString("kode_bank");
+                    String kodeBank =  "tunai".equalsIgnoreCase(metodeBayar) ? CommonConstant.KAS_TUNAI : obj.getString("kode_bank");
                     String type = obj.getString("type");
                     String jenis = obj.getString("jenis");
                     String noRekening = obj.getString("no_rekening");

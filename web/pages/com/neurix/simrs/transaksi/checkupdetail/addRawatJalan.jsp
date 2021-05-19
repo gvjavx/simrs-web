@@ -896,9 +896,9 @@
                                 <li onclick="showModal(7)">
                                     <a href="#"><i class="fa fa-tag"></i> Resep</a>
                                 </li>
-                                <li onclick="showModal(10)">
-                                    <a href="#"><i class="fa fa-tag"></i> Resep Racik</a>
-                                </li>
+                                <%--<li onclick="showModal(10)">--%>
+                                    <%--<a href="#"><i class="fa fa-tag"></i> Resep Racik</a>--%>
+                                <%--</li>--%>
                             </ul>
                         </div>
                         <%--<button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"--%>
