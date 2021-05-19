@@ -5198,7 +5198,7 @@ function searchDiagnosaAskep(id, tipe) {
                             if (item.keteranganDiagnosis == "P") {
                                 diagnosis += '<p class="jarak">' + item.diagnosis + '</p><input type="hidden" value="' + item.diagnosis + '" name="diag">';
                             } else if (item.keteranganDiagnosis == "I") {
-                                diagnosis += '<input style="font-size: 12px" class="form-control jarak" name="diag" id="diag' + i + '" placeholder="' + item.diagnosis + '" onchange="$(\'#diag' + i + '\').val(\'' + item.diagnosis + '\'+\'' + " " + '\'+this.value)">';
+                                diagnosis += '<input autocomplete="off" style="font-size: 12px" class="form-control jarak" name="diag" id="diag' + i + '" placeholder="' + item.diagnosis + '" onchange="$(\'#diag' + i + '\').val(\'' + item.diagnosis + '\'+\'' + " " + '\'+this.value)">';
                             } else if (item.keteranganDiagnosis == "R") {
                                 diagnosis += '<div class="row">' +
                                     '<div class="col-md-1">' +
@@ -5216,8 +5216,10 @@ function searchDiagnosaAskep(id, tipe) {
                                     '<input type="radio" value="(M) ' + item.diagnosis + '" id="diag' + i + '3" name="diag"/><label for="diag' + i + '3">M</label>\n' +
                                     '</div>' +
                                     '</div>' +
-                                    '<div class="col-md-9">' +
-                                    '<label>' + item.diagnosis + '</label>' +
+                                    '</div>' +
+                                    '<div class="row">' +
+                                    '<div class="col-md-12">' +
+                                    '<label><b>' + item.diagnosis + '</b></label>' +
                                     '</div>' +
                                     '</div>';
                             } else {
@@ -5235,7 +5237,7 @@ function searchDiagnosaAskep(id, tipe) {
                             if (item.keteranganHasil == "P") {
                                 hasil += '<p class="jarak">' + item.hasil + '</p><input type="hidden" value="' + item.hasil + '" name="hasil">';
                             } else if (item.keteranganHasil == "I") {
-                                hasil += '<input style="font-size: 12px" class="form-control jarak" name="hasil" id="hasil' + i + '" placeholder="' + item.hasil + '" onchange="$(\'#hasil' + i + '\').val(\'' + item.hasil + '\'+\'' + " " + '\'+this.value)">';
+                                hasil += '<input autocomplete="off" style="font-size: 12px" class="form-control jarak" name="hasil" id="hasil' + i + '" placeholder="' + item.hasil + '" onchange="$(\'#hasil' + i + '\').val(\'' + item.hasil + '\'+\'' + " " + '\'+this.value)">';
                             } else {
                                 hasil +=
                                     '<div class="row">' +
@@ -5283,7 +5285,7 @@ function searchDiagnosaAskep(id, tipe) {
                             if (item.keteranganEvaluasi == "P") {
                                 evaluasi += '<p class="jarak">' + item.evaluasi + '</p><input type="hidden" value="' + item.evaluasi + '" name="eva">';
                             } else if (item.keteranganEvaluasi == "I") {
-                                evaluasi += '<input style="font-size: 12px" class="form-control jarak" name="eva" id="eva' + i + '" placeholder="' + item.evaluasi + '" onchange="$(\'#eva' + i + '\').val(\'' + item.evaluasi + '\'+\'' + " " + '\'+this.value)">';
+                                evaluasi += '<input autocomplete="off" style="font-size: 12px" class="form-control jarak" name="eva" id="eva' + i + '" placeholder="' + item.evaluasi + '" onchange="$(\'#eva' + i + '\').val(\'' + item.evaluasi + '\'+\'' + " " + '\'+this.value)">';
                             } else {
                                 evaluasi +=
                                     '<div class="row">' +
@@ -5307,6 +5309,7 @@ function searchDiagnosaAskep(id, tipe) {
                         '            <label style="margin-left: 7px"><b>' + labelTtd + '</b></label>\n' +
                         '            <canvas style="margin-left: 7px; margin-top: -7px" width="150" onmouseover="paintTtd(\'ttd_perawat\')" class="paint-canvas-ttd" id="ttd_perawat"></canvas>' +
                         '            <input class="form-control" id="nama_terang_perawat" placeholder="Nama Terang">' +
+                        '            <input autocomplete="off" class="form-control" id="nip_perawat" placeholder="NIP">' +
                         '            <button style="margin-left: 7px" type="button" class="btn btn-danger" onclick="removePaint(\'ttd_perawat\')"><i class="fa fa-trash"></i> Clear\n' +
                         '            </button>\n' +
                         '        </div>\n' +

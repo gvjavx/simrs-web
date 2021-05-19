@@ -28,6 +28,13 @@
                 opacity: 0;
             }
         }
+
+        .modal-xtra {
+            width: 90%;
+            height: 90%;
+            margin: auto;
+            padding: auto;
+        }
     </style>
 
     <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/radio_checkbox.css"/>">
@@ -566,7 +573,7 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td width="14%">Waktu</td>
-                                <td>ID Diagnosa</td>
+                                <td>Kode ICD10</td>
                                 <td>Keterangan</td>
                                 <td>Jenis Diagnosa</td>
                                 <td align="center">Action</td>
@@ -591,8 +598,8 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td width="14%">Waktu</td>
-                                <td>ID ICD9</td>
-                                <td>Nama ICD9</td>
+                                <td>Kode ICD9</td>
+                                <td>Keterangan</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>

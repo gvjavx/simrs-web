@@ -2683,6 +2683,9 @@ ADD COLUMN tipe VARCHAR(100);
 =================================================================================================================
 1. Perbaikan tindakan (Tambah tindakan bisa lebih dari 1)
 2. Penambahan Asesmen Pra Bedah
+3. Perbaikan Rencana Asuah Keperawatan Di ICU
+4. Perbaikan Signature Bisa melalui device tablet
+
 
 /=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
 ---------------------------------B E L U M - D I P R O D -------------------------------------------------------
@@ -2693,6 +2696,42 @@ INSERT INTO im_simrs_rekam_medis_pasien VALUES
 
 INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ('RMP000000295','RMM00000116','kamar_operasi','1','Y','C','migrasi', now(), now(),'migrasi');
+
+UPDATE im_simrs_detail_asuhan_keperawatan
+SET diagnosis = 'Data Subyektif'
+WHERE diagnosis = 'Data Sublektif';
+
+UPDATE im_simrs_detail_asuhan_keperawatan
+SET evaluasi = 'Subyektif'
+WHERE evaluasi = 'Subyektif ';
+
+UPDATE im_simrs_detail_asuhan_keperawatan
+SET evaluasi = 'Obyektif'
+WHERE evaluasi = 'Obyektif ';
+
+CREATE TABLE public.it_simrs_keseimbangan_icu
+(
+  id_keseimbangan_icu character varying(30) NOT NULL,
+  id_detail_checkup character varying(50),
+  waktu character varying(100),
+  jenis character varying(1000),
+  keterangan character varying(1000),
+  nilai character varying(100),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_keseimbangan_icu PRIMARY KEY (id_keseimbangan_icu)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_keseimbangan_icu
+  OWNER TO postgres;
+
+CREATE SEQUENCE seq_keseimbangan_icu;
 
 
 

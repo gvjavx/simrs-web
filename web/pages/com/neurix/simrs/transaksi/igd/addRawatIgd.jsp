@@ -723,7 +723,7 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td width="14%">Waktu</td>
-                                <td>ID Diagnosa</td>
+                                <td>Kode ICD10</td>
                                 <td>Keterangan</td>
                                 <td>Jenis Diagnosa</td>
                                 <td align="center">Action</td>
@@ -795,8 +795,8 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td width="14%">Waktu</td>
-                                <td>ID ICD9</td>
-                                <td>Nama ICD9</td>
+                                <td>Kode ICD9</td>
+                                <td>Keterangan</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -823,7 +823,6 @@
                                     <td width="14%">Waktu</td>
                                     <td>Tindakan</td>
                                     <td>Dokter</td>
-                                        <%--<td>Perawat</td>--%>
                                     <td align="center">Tarif (Rp.)</td>
                                     <td align="center">Qty</td>
                                     <td align="center">Total (Rp.)</td>
