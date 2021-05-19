@@ -49,4 +49,8 @@ public interface PasienBo extends GeneralBo {
     public List<Pasien> getComboRmLama(String rm) throws GeneralBOException;
 
     public Pasien getDetailPasien(String id) throws GeneralBOException;
+
+    public PasienSementara saveAddPasienSementara(PasienSementara bean) throws GeneralBOException;
+    public List<PasienSementara> getPasienSementaraByCriteria(PasienSementara bean) throws GeneralBOException;
+    public void saveEditPasienSementara(PasienSementara bean) throws GeneralBOException;
 }

@@ -2694,7 +2694,8 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
     public List<CutiPegawai> getListSetCuti(String nip) {
         List<ItCutiPegawaiEntity> cutiPegawaiEntityList = new ArrayList<>();
         List<CutiPegawai> listOfResult = new ArrayList<>();
-        CutiPegawai result = new CutiPegawai();
+        CutiPegawai cutiTahunan = new CutiPegawai();
+        CutiPegawai cutiPanjang = new CutiPegawai();
         BigInteger sisaCutiTahunan = BigInteger.valueOf(0);
         BigInteger sisaCutiPanjang = BigInteger.valueOf(0);
         try {
@@ -2716,29 +2717,25 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 sisaCutiTahunan = cutiPegawaiEntity.getSisaCutiHari();
             }
         }
-        if (sisaCutiTahunan.equals(BigInteger.valueOf(0))) {
-            try {
-                cutiPegawaiEntityList = cutiPegawaiDao.getListSisaCutiPegawai(nip, "CT006");
-            } catch (HibernateException e) {
-                logger.error("[CutiPegawaiBoImpl.getListSetCuti] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when retieving list , please info to your admin..." + e.getMessage());
-            }
 
-            for (ItCutiPegawaiEntity cutiPegawaiEntity : cutiPegawaiEntityList) {
-                sisaCutiPanjang = cutiPegawaiEntity.getSisaCutiHari();
-            }
-            if (sisaCutiPanjang.equals(BigInteger.valueOf(0))) {
-                result.setSisaCutiHari(sisaCutiTahunan);
-                result.setCutiId("CT002");
-            } else {
-                result.setSisaCutiHari(sisaCutiPanjang);
-                result.setCutiId("CT006");
-            }
-        } else {
-            result.setSisaCutiHari(sisaCutiTahunan);
-            result.setCutiId("CT002");
+        try {
+            cutiPegawaiEntityList = cutiPegawaiDao.getListSisaCutiPegawai(nip, "CT006");
+        } catch (HibernateException e) {
+            logger.error("[CutiPegawaiBoImpl.getListSetCuti] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retieving list , please info to your admin..." + e.getMessage());
         }
-        listOfResult.add(result);
+
+        for (ItCutiPegawaiEntity cutiPegawaiEntity : cutiPegawaiEntityList) {
+            sisaCutiPanjang = cutiPegawaiEntity.getSisaCutiHari();
+        }
+
+        cutiTahunan.setSisaCutiHari(sisaCutiTahunan);
+        cutiTahunan.setCutiId("CT002");
+        listOfResult.add(cutiTahunan);
+        cutiPanjang.setSisaCutiHari(sisaCutiPanjang);
+        cutiPanjang.setCutiId("CT006");
+        listOfResult.add(cutiPanjang);
+
         return listOfResult;
     }
 
