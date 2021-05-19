@@ -54,7 +54,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Pengakajian Gizi
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Pengkajian Gizi
                 </h4>
             </div>
             <div class="modal-body">

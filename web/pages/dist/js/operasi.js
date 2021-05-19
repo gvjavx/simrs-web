@@ -33,9 +33,7 @@ function saveDataOperasi(jenis, ket) {
     var data = [];
     var cek = false;
     var mlt = false;
-    var dataPasien = "";
-
-    dataPasien = {
+    var dataPasien = {
         'no_checkup': noCheckup,
         'id_detail_checkup': idDetailCheckup,
         'id_pasien': idPasien,
@@ -473,15 +471,6 @@ function saveDataOperasi(jenis, ket) {
         var anme3 = $('[name=cek_anamnesa3]:checked').val();
         var anme4 = $('[name=cek_anamnesa4]:checked').val();
         var anme5 = $('#cek_anamnesa5').val();
-        // var tAnme1 = "";
-        // if (anme1 == "Ya") {
-        //     var t = $('#cek_ket_anamnesa2').val();
-        //     if (t != '') {
-        //         tAnme1 = "Ya, " + t;
-        //     }
-        // } else {
-        //     tAnme1 = t;
-        // }
         if (anme2 && anme3 && anme4 != undefined && anme5 && anme1 != '') {
             data.push({
                 'parameter': 'Alergi',
@@ -2596,6 +2585,108 @@ function saveDataOperasi(jenis, ket) {
                 canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
             data.push({
                 'parameter': 'TTD Perawat Ruang Recovery',
+                'jawaban1': canv1,
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe': 'ttd',
+                'nama_terang': nama,
+                'sip': sip,
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
+    if ("add_pra_bedah" == jenis) {
+        var tgl = $('#tgl1').val();
+        var jam = $('#jam1').val();
+        var pa1 = $('#pra1').val();
+        var pa2 = $('#pra2').val();
+        var pa3 = $('#pra3').val();
+        var pa4 = $('#pra4').val();
+        var pa5 = $('#pra5').val();
+        var pa6 = $('#pra6').val();
+        var pa7 = $('#pra7').val();
+        var pa8 = $('#pra8').val();
+        var pa9 = $('#pra9').val();
+        var pa10 = $('#pra10').val();
+        var pa11 = $('#pra11').val();
+        var pa12 = $('[name=pra12]:checked').val();
+        var pa13 = $('#pra13').val();
+        var pa14 = $('#pra14').val();
+
+        var nama = $('#nama_dpjp_edit').val();
+        var sip = $('#sip_dpjp_edit').val();
+
+        var ttd1 = document.getElementById("ttd_edit");
+        var cekTtd1 = isBlank(ttd1);
+
+        if (nama && sip && pa1 && pa2 && pa3 && pa4 && pa5 && pa6 &&
+            pa7 && pa8 && pa9 && pa10 && pa11 && pa13 && pa14 != ''
+            && !cekTtd1 && pa12 != undefined) {
+
+            data.push({
+                'parameter': 'Tanggal',
+                'jawaban1': tgl+' '+jam,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '1. Keluahan',
+                'jawaban1': pa1,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '2. Riwayat penyakit pasien dan keluarga',
+                'jawaban1': pa2,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '3. Riwayat Alergi',
+                'jawaban1': 'Obat-obatan : '+pa3+', Makanan : '+pa4+', Suhu/cuaca : '+pa5,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '4. Pemeriksaan Fisik',
+                'jawaban1': pa6,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '5. Keadaan Pra Bedah',
+                'jawaban1': 'Tinggi Badan : '+pa7+' Cm, Berat Badan : '+pa9+' Kg, Tekanan Darah : '+replaceUnderLine(pa11)+' mmHg, Nadi : '+pa8+' x/menit, Suhu : '+pa10+' ˚C, Status Gizi : '+pa12,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '6. Pemeriksaan Penunjang',
+                'jawaban1': pa13,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '7. Analisa Data dan Rencana Tindakan',
+                'jawaban1': pa14,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            var canv1 = ttd1.toDataURL("image/png"),
+                canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
+
+            data.push({
+                'parameter': 'TTD DPJP',
                 'jawaban1': canv1,
                 'keterangan': jenis,
                 'jenis': ket,

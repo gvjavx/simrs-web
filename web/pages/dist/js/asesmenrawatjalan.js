@@ -141,6 +141,30 @@ function saveRJ(jenis, ket) {
         var va4 = $('#ps4').val();
         var va5 = $('#ps5').val();
         var va6 = $('#ps6').val();
+
+        var ps1 = $('#ket_ps1').val();
+        var ps2 = $('#ket_ps2').val();
+
+        if(va1 == "Lainnya"){
+            if(ps1 != ''){
+                va1 = va1+', '+ps1;
+            }else {
+                va1 = "";
+            }
+        }else{
+            va1 = va1;
+        }
+
+        if(va2 == "Lainnya"){
+            if(ps2 != ''){
+                va2 = va2+', '+ps2;
+            }else {
+                va2 = "";
+            }
+        }else{
+            va2 = va2;
+        }
+
         if (va1 && va2 && va3 && va4 && va5 && va6 != '') {
             data.push({
                 'parameter': 'Persepsi Klien terhadap penyakitnya',
@@ -665,7 +689,7 @@ function delKepRJ(jenis, ket) {
 }
 
 function cekGiziRJ(val, form){
-    if(val == "Ya|2"){
+    if(val == "Ya|2" || val == "Lainnya"){
         $('#'+form).show();
     }else{
         $('#'+form).hide();

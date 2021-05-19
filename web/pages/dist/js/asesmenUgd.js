@@ -17,15 +17,15 @@ function showKetUgd2(val, id){
 function showKetIntruksi(val){
     if(val == "rawat_inap" || val == "rawat_isolasi" || val == "rawat_intensif"){
         $('#int-ket1').show();
-        $('#int-ket2').hide();
+        // $('#int-ket2').hide();
         $('#int-ket3').hide();
     }else if ("selesai" == val) {
         $('#int-ket1').hide();
-        $('#int-ket2').show();
+        // $('#int-ket2').show();
         $('#int-ket3').hide();
     }else if ("rujuk_rs_lain" == val) {
         $('#int-ket1').hide();
-        $('#int-ket2').hide();
+        // $('#int-ket2').hide();
         $('#int-ket3').show();
     }else{
         $('#int-ket1').hide();
@@ -1185,18 +1185,18 @@ function saveAsesmenUgd(jenis, keterangan) {
             var va6 = $('#ki6').val();
             var va7 = $('#ki7').val();
             var va8 = $('#ki8').val();
+            var kasus = $('#kasus').val();
             var va9 = "";
             var v9 = $('#ki9').val();
             var v9Text = $('#ki9 option:selected').text();
             if(v9 != "") {
                 var ket1 = $('#ket_ki91').val();
-                var ket2 = $('#ket_ki92 option:selected').text();
                 var ket3 = $('#ket_ki93').val();
 
                 if ("rawat_inap" == v9 || "rawat_isolasi" == v9 || "rawat_intensif" == v9) {
                     va9 = v9Text + ', ' + ket1;
                 } else if ("selesai" == v9) {
-                    va9 = ket2;
+                    va9 = v9;
                 } else if ("rujuk_rs_lain" == v9){
                     va9 = v9 + ','+ ket3;
                 } else {
@@ -1210,6 +1210,8 @@ function saveAsesmenUgd(jenis, keterangan) {
                     'rujuk_rs': ket3
                 }
             }
+
+            console.log(va9);
 
             var ttd1 = document.getElementById("ki10");
             var ttd2 = document.getElementById("ki11");
@@ -1261,6 +1263,12 @@ function saveAsesmenUgd(jenis, keterangan) {
                 data.push({
                     'parameter': 'Tanggal dan Jam Keluar',
                     'jawaban': va7 +', '+va8,
+                    'keterangan': jenis,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Jenis Kasus',
+                    'jawaban': kasus,
                     'keterangan': jenis,
                     'id_detail_checkup': idDetailCheckup
                 });
@@ -1725,17 +1733,7 @@ function saveAsesmenUgd(jenis, keterangan) {
                                             kesimpulanAsesmen();
                                             $('#keterangan').val(sendTppri.tindak_lanjut).trigger('change');
                                             $('#keterangan').attr('disabled', true);
-                                            if(sendTppri.tindak_lanjut == 'selesai'){
-                                                var kete = $('#ket_selesai option');
-                                                var ketse = "";
-                                                $.each(kete, function (i, item) {
-                                                    if(item.innerHTML == sendTppri.keterangan){
-                                                        ketse = item.value;
-                                                    }
-                                                });
-                                                $('#ket_selesai').val(ketse).trigger('change');
-                                                $('#ket_selesai').attr('disabled', true);
-                                            }else if(sendTppri.tindak_lanjut == 'rawat_inap' || sendTppri.tindak_lanjut == 'rawat_isolasi' || sendTppri.tindak_lanjut == 'rawat_intensif'){
+                                            if(sendTppri.tindak_lanjut == 'rawat_inap' || sendTppri.tindak_lanjut == 'rawat_isolasi' || sendTppri.tindak_lanjut == 'rawat_intensif'){
                                                 $('#keterangan_rw').val(sendTppri.indikasi).trigger('change');
                                                 $('#keterangan_rw').attr('disabled', true);
                                             }else if(sendTppri.tindak_lanjut == 'rujuk_rs_lain'){

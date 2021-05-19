@@ -288,22 +288,34 @@
                     <div class="row">
                         <label class="col-md-6">Persepsi Klien terhadap penyakitnya</label>
                         <div class="col-md-6">
-                            <select class="form-control" id="ps1">
+                            <select class="form-control" id="ps1" onchange="cekGiziRJ(this.value, 'form-1')">
                                 <option value="">[Select One]</option>
                                 <option value="Cobaan Tuhan">Cobaan Tuhan</option>
                                 <option value="Hukuman">Hukuman</option>
+                                <option value="Lainnya">Lainnya</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="row jarak" style="display: none" id="form-1">
+                        <div class="col-md-offset-6 col-md-6">
+                            <input class="form-control" id="ket_ps1">
                         </div>
                     </div>
                     <div class="row jarak">
                         <label class="col-md-6">Ekspresi klien terhadap penyakitnya</label>
                         <div class="col-md-6">
-                            <select class="form-control" id="ps2">
+                            <select class="form-control" id="ps2" onchange="cekGiziRJ(this.value, 'form-2')">
                                 <option value="">[Select One]</option>
                                 <option value="Murung/Diam">Murung/Diam</option>
                                 <option value="Gelisah">Gelisah</option>
                                 <option value="Marah/Menangis">Marah/Menangis</option>
+                                <option value="Lainnya">Lainnya</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="row jarak" style="display: none" id="form-2">
+                        <div class="col-md-offset-6 col-md-6">
+                            <input class="form-control" id="ket_ps2">
                         </div>
                     </div>
                     <div class="row jarak">

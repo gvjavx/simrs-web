@@ -54,8 +54,12 @@ public class RencanaAsuhanKeperawatanBoImpl implements RencanaAsuhanKeperawatanB
                     asuhan.setIntervensi(entity.getIntervensi());
                     asuhan.setImplementasi(entity.getImplementasi());
                     asuhan.setEvaluasi(entity.getEvaluasi());
-                    asuhan.setTtdPerawat(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getTtdPerawat());
-                    asuhan.setTtdDokter(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getTtdDokter());
+                    if(entity.getTtdDokter() != null){
+                        asuhan.setTtdDokter(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getTtdDokter());
+                    }
+                    if(entity.getTtdPerawat() != null){
+                        asuhan.setTtdPerawat(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getTtdPerawat());
+                    }
                     asuhan.setKeterangan(entity.getKeterangan());
                     asuhan.setAction(entity.getAction());
                     asuhan.setFlag(entity.getFlag());
