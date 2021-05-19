@@ -1253,7 +1253,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     String noNota = "";
                     String withObat = obj.getString("with_obat");
                     String metodeBayar = obj.getString("metode_bayar");
-                    String kodeBank = obj.getString("kode_bank");
+                    String kodeBank =  "tunai".equalsIgnoreCase(metodeBayar) ? CommonConstant.KAS_TUNAI : obj.getString("kode_bank");
                     String type = obj.getString("type");
                     String jenis = obj.getString("jenis");
                     String noRekening = obj.getString("no_rekening");
@@ -1708,6 +1708,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                     // kas
                     mapJurnal.put("kas", listMapKas);
+                    mapJurnal.put("user_id", CommonUtil.userIdLogin());
+                    mapJurnal.put("user_who", CommonUtil.userLogin());
 
                     if (!"".equalsIgnoreCase(transId)) {
                         try {
@@ -1736,7 +1738,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                                     detailCheckup.setNoJurnal(jurnal.getNoJurnal());
                                     list.add(detailCheckup);
                                 }
-
                                 checkupDetailBo.updateStatusBayarDetailCheckup(list);
                             }
                             response.setStatus("success");

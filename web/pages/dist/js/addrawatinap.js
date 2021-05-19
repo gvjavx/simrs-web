@@ -161,7 +161,7 @@ function hitungStatusBiaya() {
 }
 
 function listSelectDokter(isi) {
-    var option = "<option value=''>[Select One]</option>";
+    var option = "<option value=''>-</option>";
     CheckupAction.getListDokterByBranchId(isi, function (response) {
         if (response.length > 0) {
             $.each(response, function (i, item) {
@@ -185,7 +185,7 @@ function listSelectRuangan(id) {
     var option = "";
     if (id != '' && id != null) {
         CheckupDetailAction.listRuangan(id, flag, function (response) {
-            option = "<option value=''>[Select One]</option>";
+            option = "<option value=''>-</option>";
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idTempatTidur + "'>[" + item.noRuangan + "]-" + item.namaRuangan + "-[" + item.namaTempatTidur + "]</option>";
@@ -584,7 +584,7 @@ function saveKeterangan(idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_ce
 }
 
 function listSelectTindakan(idKtg) {
-    var option = "<option value=''>[Select One]</option>";
+    var option = "<option value=''>-</option>";
     if (idKtg != '') {
         dwr.engine.setAsync(true);
         CheckupDetailAction.getListComboTindakan(idKtg, idKelasRuangan, null, {
@@ -605,7 +605,7 @@ function listSelectTindakan(idKtg) {
 }
 
 function listSelectTindakanKategori(val) {
-    var option = "<option value=''>[Select One]</option>";
+    var option = "<option value=''>-</option>";
     var idDokter = "";
     var idPelayanan = "";
     var def = "";
@@ -706,6 +706,7 @@ function showModal(select) {
         $('#modal-dokter').modal({show: true, backdrop: 'static'});
 
     } else if (select == 2) {
+        $('#form-btn-add, #form-list').show();
         $('#h_harga, #h_diskon').val(null);
         $('#is_edit').val("N");
         $('#form_elektif').hide();
@@ -1050,54 +1051,23 @@ function listDokterKeterangan(idPelayanan) {
 }
 
 function saveTindakan(id) {
-
     var idKategori = $('#tin_id_ketgori_tindakan').val();
     var idTindakan = $('#tin_id_tindakan').val();
     var idDokter = $('#tin_id_dokter_dpjp').val();
     var qty = $('#tin_qty').val();
     var idJenisPeriksa = $('#id_jenis_pasien').val();
-    var isElektif = $('#is_elektif').val();
-    var qtyJam = $('#tin_qty_elektif').val();
-    var qtyPerkali = 1;
     var idDok = "";
     var idPelayanan = "";
-    if(isElektif == "Y"){
-        qtyPerkali = qtyJam;
-    }
-
-    if (idDetailCheckup != '' && idTindakan != '' && idDokter && qty != '' && parseInt(qty) > 0 && idKategori != '' && qtyPerkali != '' && parseInt(qtyPerkali) > 0) {
-        if(!cekSession()){
-            qty = qty * qtyPerkali;
-            $('#save_tindakan').hide();
-            $('#load_tindakan').show();
-            idDok = idDokter.split("|")[0];
-            idPelayanan = idDokter.split("|")[1];
-
-            if (id != '') {
+    var count = $('#table_list_tindakan').tableToJSON().length;
+    if(id != ''){
+        if (idDetailCheckup != '' && idTindakan != '' && idTindakan != null && idDokter != '' && qty > 0 && idKategori != '' && idKategori != null) {
+            if (!cekSession()) {
+                idDok = idDokter.split("|")[0];
+                idPelayanan = idDokter.split("|")[1];
+                $('#save_tindakan').hide();
+                $('#load_tindakan').show();
                 dwr.engine.setAsync(true);
-                TindakanRawatAction.editTindakanRawat(id, idDetailCheckup, idTindakan, idDok, "RI", qty, idJenisPeriksa, idPelayanan, {
-                    callback: function (response) {
-                        if (response.status == "success") {
-                            dwr.engine.setAsync(false);
-                            listTindakan();
-                            hitungStatusBiaya();
-                            hitungCoverBiaya();
-                            $('#modal-tindakan').modal('hide');
-                            $('#info_dialog').dialog('open');
-                            $('#close_pos').val(2);
-                            $('#save_tindakan').show();
-                            $('#load_tindakan').hide();
-                        } else {
-                            $('#warning_tindakan').show().fadeOut(5000);
-                            $('#msg_tindakan').text(response.msg);
-                            $('#save_tindakan').show();
-                            $('#load_tindakan').hide();
-                        }
-                    }
-                });
-            } else {
-                dwr.engine.setAsync(true);
-                TindakanRawatAction.saveTindakanRawat(idDetailCheckup, idTindakan, idDok, "RI", qty, idJenisPeriksa, idPelayanan, idRuangan, {
+                TindakanRawatAction.editTindakanRawat(id, idDetailCheckup, idTindakan, idDok, "RJ", qty, idJenisPeriksa, idPelayanan, {
                     callback: function (response) {
                         if (response.status == "success") {
                             dwr.engine.setAsync(false);
@@ -1118,28 +1088,71 @@ function saveTindakan(id) {
                     }
                 });
             }
-        }
-    } else {
-        $('#warning_tindakan').show().fadeOut(5000);
-        $('#msg_tindakan').text('Silahkan cek kembali data inputan dan jumlah harus lebih dari 0..!');
+        } else {
+            $('#warning_tindakan').show().fadeOut(5000);
+            $('#msg_tindakan').text('Silahkan cek kembali data inputan dan jumlah harus lebih dari 0..!');
 
-        if (idKategori == '') {
-            $('#war_kategori').show();
+            if (idDokter == '') {
+                $('#war_dpjp').show();
+            }
+            if (idKategori == '' || idKategori == null) {
+                $('#war_kategori').show();
+            }
+            if (idTindakan == '' || idTindakan == null) {
+                $('#war_tindakan').show();
+            }
+            if (qty <= 0 || qty == '') {
+                $('#tin_qty').css('border', 'red solid 1px');
+            }
         }
-        if (idTindakan == '') {
-            $('#war_tindakan').show();
-        }
-        if (idDokter == '') {
-            $('#war_dpjp').show();
-        }
-        if (qty <= 0 || qty == '') {
-            $('#tin_qty').css('border', 'red solid 1px');
-        }
-        if (qtyJam <= 0 || qtyJam == '') {
-            $('#tin_qty_elektif').css('border', 'red solid 1px');
+    }else{
+        if(count > 0){
+            var idDokter = $('.tindakan_dokter');
+            var idPelayanan = $('.tindakan_id_pelayanan');
+            var idTindakan = $('.tindakan_id_tindakan');
+            var qty = $('.tindakan_qty');
+            var data = [];
+            $.each(idDokter, function (i, item) {
+                data.push({
+                    'id_detail_checkup': idDetailCheckup,
+                    'id_tindakan': idTindakan[i].value,
+                    'id_dokter': item.value,
+                    'qty': qty[i].value,
+                    'jenis_pasien': idJenisPeriksa,
+                    'id_pelayanan': idPelayanan[i].value,
+                    'id_ruangan': ''
+                });
+            });
+            $('#save_tindakan').hide();
+            $('#load_tindakan').show();
+            var result = JSON.stringify(data);
+            dwr.engine.setAsync(true);
+            TindakanRawatAction.saveTindakanRawat(result, {
+                callback: function (response) {
+                    if (response.status == "success") {
+                        dwr.engine.setAsync(false);
+                        listTindakan();
+                        hitungStatusBiaya();
+                        $('#modal-tindakan').modal('hide');
+                        $('#info_dialog').dialog('open');
+                        $('#close_pos').val(2);
+                        $('#save_tindakan').show();
+                        $('#load_tindakan').hide();
+                    } else {
+                        $('#warning_tindakan').show().fadeOut(5000);
+                        $('#msg_tindakan').text(response.msg);
+                        $('#save_tindakan').show();
+                        $('#load_tindakan').hide();
+                    }
+                }
+            });
+        }else{
+            $('#warning_tindakan').show().fadeOut(5000);
+            $('#msg_tindakan').text("Silahkan cek kembali inputan tindakan...!");
         }
     }
 }
+
 
 function listDokterTindakan() {
 
@@ -1169,7 +1182,7 @@ function listTindakan() {
             $.each(data, function (i, item) {
 
                 var tanggal = item.createdDate;
-                var dateFormat = converterDate(new Date(tanggal));
+                var dateFormat = converterDateTime(new Date(tanggal));
                 var tarif = "-";
                 var tarifTotal = "-";
                 var trfTotal = 0;
@@ -1291,7 +1304,7 @@ function listDiagnosa() {
                 var ket = "-";
                 var jen = "-";
                 var tanggal = item.createdDate;
-                var dateFormat = converterDate(new Date(tanggal));
+                var dateFormat = converterDateTime(new Date(tanggal));
 
                 if (item.idDiagnosa != null) {
                     id = item.idDiagnosa;
@@ -1742,7 +1755,7 @@ function listLab() {
                 var status = "-";
                 var lab = "-";
                 var tanggal = item.createdDate;
-                var dateFormat = converterDate(new Date(tanggal));
+                var dateFormat = converterDateTime(new Date(tanggal));
                 var btn = '';
                 var crn = '<img border="0" class="hvr-grow" onclick="detailLab(\'' + item.idHeaderPemeriksaan + '\',\'' + item.kategoriLabName + '\')" src="' + contextPath + '/pages/images/icons8-search-25.png" style="cursor: pointer;">';
                 var tipe = "";
@@ -2274,7 +2287,7 @@ function listDiet() {
         if (data != null) {
             $.each(data, function (i, item) {
                 var tanggal = item.tglOrder;
-                var dateFormat = converterDate(new Date(tanggal));
+                var dateFormat = converterDateTime(new Date(tanggal));
                 var label = "";
                 var btn = "";
 
@@ -2357,13 +2370,16 @@ function editDokter(id, idDokter, idPelayanan) {
 }
 
 function editTindakan(id, idTindakan, idKategori, idPerawat, qty, idDokter, idPelayanan) {
+    $('#form-btn-add, #form-list').hide();
     $('#is_edit').val('Y');
     $('#form_elektif').hide();
     getListNamaDokter('edit');
     $('#load_tindakan, #warning_tindakan, #war_kategori, #war_tindakan, #war_perawat').hide();
     $('#tin_id_dokter_dpjp').val(idDokter + '|' + idPelayanan).trigger('change');
     $('#tin_id_ketgori_tindakan').val(idKategori).trigger('change');
-    $('#tin_id_tindakan').val(idTindakan).trigger('change');
+    setTimeout(function () {
+        $('#tin_id_tindakan').val(idTindakan).trigger('change');
+    },500);
     $('#tin_qty').val(qty);
     $('#save_tindakan').attr('onclick', 'saveTindakan(\'' + id + '\')').show();
     $('#modal-tindakan').modal({show: true, backdrop: 'static'});
@@ -3320,7 +3336,7 @@ function listResepPasien() {
             $.each(response, function (i, item) {
                 var idResep = "";
                 var tanggal = item.createdDate;
-                var dateFormat = converterDate(new Date(tanggal));
+                var dateFormat = converterDateTime(new Date(tanggal));
                 var status = item.status;
 
                 if (item.idPermintaanResep != null) {
@@ -3809,7 +3825,7 @@ function listICD9() {
                 var id = "-";
                 var ket = "-";
                 var tanggal = item.createdDate;
-                var dateFormat = converterDate(new Date(tanggal));
+                var dateFormat = converterDateTime(new Date(tanggal));
 
                 if (item.idIcd9 != null) {
                     id = item.idIcd9;
@@ -4557,36 +4573,49 @@ function setDiskonHarga(id) {
         TindakanAction.initTindakan(id, function (res) {
             if (res.idTindakan != '') {
                 var disk = 0;
+                var tarif = 0;
                 if (res.diskon != '' && res.diskon != null) {
                     disk = res.diskon;
                 }
                 if (jenisPeriksaPasien == "bpjs") {
-                    $('#h_harga').val("Rp. " + formatRupiahAtas(res.tarifBpjs));
+                    tarif = res.tarifBpjs;
                 } else if (jenisPeriksaPasien == "bpjs_rekanan" || jenisPeriksaPasien == "rekanan"){
-
                     TindakanRawatAction.getTarifDetailRekanaOps(idDetailCheckup, id, function (res2) {
-
                         if (jenisPeriksaPasien == "bpjs_rekanan"){
                             disk = res2.diskonBpjs;
-                            $('#h_harga').val("Rp. " + formatRupiahAtas(res2.tarifBpjs));
+                            tarif = res2.tarifBpjs;
                         }
 
                         if (jenisPeriksaPasien == "rekanan"){
                             disk = res2.diskonNonBpjs;
-                            $('#h_harga').val("Rp. " + formatRupiahAtas(res2.tarif));
+                            tarif = res2.tarif;
                         }
                     });
 
                 } else {
-                    $('#h_harga').val("Rp. " + formatRupiahAtas(res.tarif));
+                    tarif = res.tarif;
                 }
+
+                var persen = (100 - disk);
+                var after  = persen/100;
+                var total  = after*tarif;
+                $('#h_harga').val(formatRupiahAtas(tarif));
+                $('#h_harga_after').val(formatRupiahAtas(total));
                 $('#h_diskon').val(disk);
-                if("Y" == res.isElektif){
+
+                if ("Y" == res.isElektif) {
                     $('#form_elektif').show();
                     $('#is_elektif').val("Y");
-                }else{
+                } else {
                     $('#form_elektif').hide();
                     $('#is_elektif').val("N");
+                }
+
+                if ("Y" == res.flagKonsulGizi) {
+                    $('#warning_konsul').fadeIn(1000);
+                    $('#msg_konsul').text("Anda memilih tindakan Konsultasi Gizi. Setelah menambahkan tindakan ini, infokan kepada Pasien untuk melakukan Konsultasi Gizi ke Unit Gizi...!");
+                } else {
+                    $('#warning_konsul').hide();
                 }
             }
         });
@@ -5176,7 +5205,7 @@ function listMakananPendamping() {
         if (response.length > 0) {
             $.each(response, function (i, item) {
                 var status = "-";
-                var dateFormat = converterDate(item.createdDate);
+                var dateFormat = converterDateTime(item.createdDate);
                 var btn = '<img border="0" class="hvr-grow" onclick="detailMakananPendamping(\'' + item.idHeaderPendampingMakanan + '\', \''+item.status+'\')" src="' + contextPath + '/pages/images/icons8-search-25.png" style="cursor: pointer;">';
                 if("0" == item.status){
                     status = '<span class="span-warning">Proses</span>';
@@ -5708,4 +5737,66 @@ function doneUplod(){
     $('#label_upload_pemeriksan_0').css('border-bottom','');
 }
 
+function addToListTindakan(id) {
+    var idKategori = $('#tin_id_ketgori_tindakan').val();
+    var idTindakan = $('#tin_id_tindakan').val();
+    var namaTindakan = $('#tin_id_tindakan option:selected').text();
+    var idDokter = $('#tin_id_dokter_dpjp').val();
+    var namaDokter = $('#tin_id_dokter_dpjp option:selected').text();
+    var qty = $('#tin_qty').val();
+    var tarif = $('#h_harga').val();
+    var total = $('#h_harga_after').val();
+    var count = $('#table_list_tindakan').tableToJSON().length;
+
+    if (idDetailCheckup != '' && idTindakan != '' && idTindakan != null && idDokter != '' && qty > 0 && idKategori != '' && idKategori != null) {
+        if (!cekSession()) {
+            var idDok = idDokter.split("|")[0];
+            var idPelayanan = idDokter.split("|")[1];
+            var temp = '<tr id="rowTindakan_'+count+'">' +
+                '<td>'+namaDokter+
+                '<input class="tindakan_dokter" type="hidden" value="'+idDok+'">'+
+                '<input class="tindakan_id_pelayanan" type="hidden" value="'+idPelayanan+'">'+
+                '<input class="tindakan_id_tindakan" type="hidden" value="'+idTindakan+'">'+
+                '<input class="tindakan_qty" type="hidden" value="'+qty+'">'+
+                '</td>' +
+                '<td>'+namaTindakan+'</td>' +
+                '<td align="center">'+qty+'</td>' +
+                '<td align="right">'+tarif+'</td>' +
+                '<td align="right">'+formatRupiahAtas((parseInt(replaceTitik(total))*qty))+'</td>' +
+                '<td align="center">'+'<img onclick="delListTindakan(\'rowTindakan_'+count+'\')" style="cursor: pointer" src="'+contextPath+'/pages/images/cancel-flat-new.png" class="hvr-row">'+'</td>' +
+                '</tr>';
+            if(temp != ''){
+                $('#body_temp_tindakan').append(temp);
+            }
+        }
+    } else {
+        $('#warning_tindakan').show().fadeOut(5000);
+        $('#msg_tindakan').text('Silahkan cek kembali data inputan dan jumlah harus lebih dari 0..!');
+
+        if (idDokter == '') {
+            $('#war_dpjp').show();
+        }
+        if (idKategori == '' || idKategori == null) {
+            $('#war_kategori').show();
+        }
+        if (idTindakan == '' || idTindakan == null) {
+            $('#war_tindakan').show();
+        }
+        if (qty <= 0 || qty == '') {
+            $('#tin_qty').css('border', 'red solid 1px');
+        }
+    }
+}
+
+function delListTindakan(id){
+    $('#'+id).remove();
+}
+
+function resetListTindakan(){
+    $('#body_temp_tindakan').html('');
+    $('#tin_id_tindakan').val('').trigger('change');
+    $('#tin_qty').val('1');
+    $('#h_harga').val('');
+    $('#h_harga_after').val('');
+}
 

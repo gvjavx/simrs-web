@@ -998,7 +998,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                         ItSimrsAntrianTelemedicEntity antrianTelemedicEntity    = getAntrianTelemedicEntityById(pembayaranOnlineEntity.getIdAntrianTelemedic());
 
                         MappingDetail kasDetail = new MappingDetail();
-                        kasDetail.setCoa(pembayaranOnline.getKodeBank()); //get dari table telemedicine (chalif)
+                        kasDetail.setCoa(pembayaranOnlineEntity.getKodeBank()); //get dari table telemedicine (chalif)
                         kasDetail.setMetodeBayar(CommonConstant.METODE_TRANSFER_VA);
                         kasDetail.setNilai(trxAmount);
 

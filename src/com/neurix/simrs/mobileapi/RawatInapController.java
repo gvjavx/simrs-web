@@ -1472,6 +1472,8 @@ public class RawatInapController implements ModelDriven<Object> {
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
 
+            //sodiq, change params save add tindakan to list
+            List<TindakanRawat> tindakanRawatList = new ArrayList<>();
             TindakanRawat tindakanRawat = new TindakanRawat();
             tindakanRawat.setIdDetailCheckup(idDetailCheckup);
             tindakanRawat.setIdTindakan(idTindakan);
@@ -1488,10 +1490,14 @@ public class RawatInapController implements ModelDriven<Object> {
 
             if (idJenisPeriksaPasien.equalsIgnoreCase("bpjs") || idJenisPeriksaPasien.equalsIgnoreCase("ptpn")){
                 tindakanRawat.setTarif(result.get(0).getTarifBpjs());
-            } else tindakanRawat.setTarif(result.get(0).getTarif());
+            } else {
+                tindakanRawat.setTarif(result.get(0).getTarif());
+            }
+
+            tindakanRawatList.add(tindakanRawat);
 
             try {
-                tindakanRawatBoProxy.saveAdd(tindakanRawat);
+                tindakanRawatBoProxy.saveAdd(tindakanRawatList);
                 model.setMessage("Success");
             } catch (GeneralBOException e){
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());

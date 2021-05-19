@@ -60,15 +60,12 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
     }
 
     @Override
-    public CrudResponse saveAdd(TindakanRawat bean) throws GeneralBOException {
+    public void saveAdd(List<TindakanRawat> list) throws GeneralBOException {
         logger.info("[TindakanRawatBoImpl.saveAdd] Start >>>>>>>");
-        CrudResponse response = new CrudResponse();
-
-        if (bean != null ){
-            String id = getNextTindakanRawatId();
-            if (id != null && !"".equalsIgnoreCase(id)) {
+        if (list.size() > 0 ){
+            for (TindakanRawat bean: list){
                 ItSimrsTindakanRawatEntity tindakanRawatEntity = new ItSimrsTindakanRawatEntity();
-                tindakanRawatEntity.setIdTindakanRawat("TDR" + id);
+                tindakanRawatEntity.setIdTindakanRawat("TDR" + getNextTindakanRawatId());
                 tindakanRawatEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
                 tindakanRawatEntity.setIdTindakan(bean.getIdTindakan());
                 tindakanRawatEntity.setNamaTindakan(bean.getNamaTindakan());
@@ -86,10 +83,8 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
                 tindakanRawatEntity.setApproveFlag(bean.getApproveFlag());
                 tindakanRawatEntity.setIdPelayanan(bean.getIdPelayanan());
                 tindakanRawatEntity.setIdRuangan(bean.getIdRuangan());
-
                 try {
                     tindakanRawatDao.addAndSave(tindakanRawatEntity);
-
                     //sodiq, trigger menuju ke unit konsultasi gizi ketika flag gizi Y, 18,03,2021
                     if("Y".equalsIgnoreCase(bean.getFlagKonsulGizi())){
                         ItSimrsKonsultasiGiziEntity entity = new ItSimrsKonsultasiGiziEntity();
@@ -110,17 +105,15 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
                             throw new GeneralBOException("No Checkup tidak ditemukan...!");
                         }
                     }
-                    response.setStatus("success");
-                    response.setMsg("Berhasil");
                 } catch (HibernateException e) {
                     logger.error("[TindakanRawatBoImpl.saveAdd] Error when insert tindakan rawat ", e);
-                    response.setStatus("error");
-                    response.setMsg(e.getMessage());
+                    throw new GeneralBOException("Error when insert tindakan rawat");
                 }
             }
+        }else{
+            throw new GeneralBOException("Error, tidak ada data");
         }
         logger.info("[TindakanRawatBoImpl.saveAdd] End <<<<<<");
-        return response;
     }
 
     private void insertKonsultasiGizi(ItSimrsKonsultasiGiziEntity bean){

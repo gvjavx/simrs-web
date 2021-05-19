@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface TindakanRawatBo {
     public List<TindakanRawat> getByCriteria(TindakanRawat bean)throws GeneralBOException;
-    public CrudResponse saveAdd(TindakanRawat bean)throws GeneralBOException;
+    public void saveAdd(List<TindakanRawat> list)throws GeneralBOException;
     public CrudResponse saveEdit(TindakanRawat bean)throws GeneralBOException;
     public List<TindakanRawat> cekTodayTindakanTarifKamar(String idDetail, String tanggal) throws GeneralBOException;
     public CheckResponse updateFlagApproveTindakan(TindakanRawat bean) throws GeneralBOException;
