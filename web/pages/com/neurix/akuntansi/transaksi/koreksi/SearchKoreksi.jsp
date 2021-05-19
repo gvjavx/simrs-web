@@ -85,7 +85,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Unit </label>
                                     <div class="col-sm-4">
-                                        <s:if test='koreksi.branchIdUser == "KP"'>
+                                        <s:if test='koreksi.branchIdUser == "01"'>
                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="koreksi.branchId"
                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>

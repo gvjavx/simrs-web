@@ -770,7 +770,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                  skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol\n" +
                 "             left join im_hris_payroll_skala_gaji_dplk_pegawai skala_gaji_dplk_pegawai\n" +
                 "               on skala_gaji_dplk_pegawai.golongan_id = pegawai.golongan_id\n" +
-                "             left join im_hris_payroll_bpjs param_bpjs on param_bpjs.branch_id = 'KP' and param_bpjs.flag = 'Y'\n" +
+                "             left join im_hris_payroll_bpjs param_bpjs on param_bpjs.branch_id = '01' and param_bpjs.flag = 'Y'\n" +
                 "             left join (select nip, sum(biaya_lembur) as tunj_lembur\n" +
                 "                        from it_hris_absensi_pegawai\n" +
                 "                        where tanggal between to_date(:tglAwalLembur, 'DD-MM-YYYY') and to_date(:tglAkhirLembur, 'DD-MM-YYYY') and flag = 'Y'\n" +

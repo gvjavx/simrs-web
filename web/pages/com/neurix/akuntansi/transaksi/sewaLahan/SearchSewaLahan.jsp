@@ -71,7 +71,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Unit </label>
                                     <div class="col-sm-4">
-                                        <s:if test='sewaLahan.branchIdUser == "KP"'>
+                                        <s:if test='sewaLahan.branchIdUser == "01"'>
                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="sewaLahan.branchId"
                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
@@ -931,7 +931,7 @@
         $('#btnAddSewaLahan').click(function () {
             selectPembayaran();
             var branchId= $('#branchId').val();
-            if (branchId!="KP"){
+            if (branchId!="01"){
                 $('#mod_add_branch_id').attr("disabled", true);
                 $('#mod_add_branch_id').val(branchId);
             }else{

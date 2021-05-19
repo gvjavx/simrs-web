@@ -108,7 +108,7 @@
                                             <label class="col-md-4" style="margin-top: 7px">Unit</label>
                                             <div class="col-md-7">
                                                 <s:hidden name="kas.KasId"/>
-                                                <s:if test='kas.branchId == "KP"'>
+                                                <s:if test='kas.branchId == "01"'>
                                                     <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
                                                     <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branch_id"  onchange="isiKeteterangan()" name="kas.branchId" required="true"
                                                               listKey="branchId" listValue="branchName" headerKey="" headerValue="" />

@@ -116,7 +116,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test='laporanAkuntansi.unit == "KP"'>
+                                                        <s:if test='laporanAkuntansi.unit == "01"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>

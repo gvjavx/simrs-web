@@ -93,7 +93,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Unit </label>
                                     <div class="col-sm-4">
-                                        <s:if test='kas.branchIdUser == "KP"'>
+                                        <s:if test='kas.branchIdUser == "01"'>
                                             <s:action id="initComboBranch" namespace="/admin/branch"
                                                       name="initComboBranch_branch"/>
                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId"

@@ -118,7 +118,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test='laporanAkuntansi.unit == "KP"'>
+                                                        <s:if test='laporanAkuntansi.unit == "01"'>
                                                             <s:select list="#{'U':'Laporan Arus Kas Per Unit', 'K' : 'Laporan Arus Kas Konsolidasi'}" onchange="changeTipe()"
                                                                       id="tipePendapatan" name="laporanAkuntansi.tipeLaporan"
                                                                       headerKey="" headerValue="[Select One]" cssClass="form-control" />
@@ -137,7 +137,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test='laporanAkuntansi.unit == "KP"'>
+                                                        <s:if test='laporanAkuntansi.unit == "01"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranchAkuntansi_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
