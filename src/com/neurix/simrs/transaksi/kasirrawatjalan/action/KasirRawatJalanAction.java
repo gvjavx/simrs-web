@@ -1736,7 +1736,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                                     detailCheckup.setNoJurnal(jurnal.getNoJurnal());
                                     list.add(detailCheckup);
                                 }
-                                //checkupDetailBo.updateStatusBayarDetailCheckup(list);
+
+                                checkupDetailBo.updateStatusBayarDetailCheckup(list);
                             }
                             response.setStatus("success");
                         } catch (GeneralBOException e) {

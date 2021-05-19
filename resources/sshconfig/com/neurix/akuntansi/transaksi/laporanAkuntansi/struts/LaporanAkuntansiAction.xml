@@ -155,7 +155,7 @@
                 <param name="reportParameters">reportParams</param>
             </result>
             <result name="print_report_closing_kasir" type="jasper">
-                <param name="location">/pages/report/com/neurix/akuntansi/ClosingKasir.jasper</param>
+                <param name="location">/pages/report/com/neurix/akuntansi/ClosedKasir.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
