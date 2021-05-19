@@ -161,36 +161,41 @@ public class PayrollSkalaGajiDplkPegawaiBoImpl implements PayrollSkalaGajiDplkPe
         logger.info("[PayrollSkalaGajiDplkPegawaiBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
+            List<ImPayrollSkalaGajiDplkPegawaiEntity> cekData = payrollSkalaGajiDplkPegawaiDao.getSkalaGajiPensiunSimRs(bean.getGolonganId());
+            if(cekData.size()>0){
+                logger.error("[PayrollSkalaGajiDplkPegawaiBoImpl.saveAdd] Data sudah tersedia, tidak bisa menambahkan data yg sama.");
+                throw new GeneralBOException("Data sudah tersedia, tidak dapat menambahkan data yang sama");
+            }else {
+                String payrollSkalaGajiPensiunId;
+                try {
+                    // Generating ID, get from postgre sequence
+                    payrollSkalaGajiPensiunId = payrollSkalaGajiDplkPegawaiDao.getNextSkalaGajiPensiun();
+                } catch (HibernateException e) {
+                    logger.error("[PayrollSkalaGajiDplkPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence payrollSkalaGajiPensiunId id, please info to your admin..." + e.getMessage());
+                }
 
-            String payrollSkalaGajiPensiunId;
-            try {
-                // Generating ID, get from postgre sequence
-                payrollSkalaGajiPensiunId = payrollSkalaGajiDplkPegawaiDao.getNextSkalaGajiPensiun();
-            } catch (HibernateException e) {
-                logger.error("[PayrollSkalaGajiDplkPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence payrollSkalaGajiPensiunId id, please info to your admin..." + e.getMessage());
-            }
+                // creating object entity serializable
+                ImPayrollSkalaGajiDplkPegawaiEntity imPayrollSkalaGajiDplkPegawaiEntity = new ImPayrollSkalaGajiDplkPegawaiEntity();
 
-            // creating object entity serializable
-            ImPayrollSkalaGajiDplkPegawaiEntity imPayrollSkalaGajiDplkPegawaiEntity = new ImPayrollSkalaGajiDplkPegawaiEntity();
+                imPayrollSkalaGajiDplkPegawaiEntity.setSkalaGajiPensiunId(payrollSkalaGajiPensiunId);
+                imPayrollSkalaGajiDplkPegawaiEntity.setGolonganId(bean.getGolonganId());
+                imPayrollSkalaGajiDplkPegawaiEntity.setPoin(bean.getPoin());
+                imPayrollSkalaGajiDplkPegawaiEntity.setNilai(bean.getNilai());
+                imPayrollSkalaGajiDplkPegawaiEntity.setFlag(bean.getFlag());
+                imPayrollSkalaGajiDplkPegawaiEntity.setAction(bean.getAction());
+                imPayrollSkalaGajiDplkPegawaiEntity.setCreatedWho(bean.getCreatedWho());
+                imPayrollSkalaGajiDplkPegawaiEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imPayrollSkalaGajiDplkPegawaiEntity.setCreatedDate(bean.getCreatedDate());
+                imPayrollSkalaGajiDplkPegawaiEntity.setLastUpdate(bean.getLastUpdate());
 
-            imPayrollSkalaGajiDplkPegawaiEntity.setSkalaGajiPensiunId(payrollSkalaGajiPensiunId);
-            imPayrollSkalaGajiDplkPegawaiEntity.setGolonganId(bean.getGolonganId());
-            imPayrollSkalaGajiDplkPegawaiEntity.setPoin(bean.getPoin());
-            imPayrollSkalaGajiDplkPegawaiEntity.setNilai(bean.getNilai());
-            imPayrollSkalaGajiDplkPegawaiEntity.setFlag(bean.getFlag());
-            imPayrollSkalaGajiDplkPegawaiEntity.setAction(bean.getAction());
-            imPayrollSkalaGajiDplkPegawaiEntity.setCreatedWho(bean.getCreatedWho());
-            imPayrollSkalaGajiDplkPegawaiEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            imPayrollSkalaGajiDplkPegawaiEntity.setCreatedDate(bean.getCreatedDate());
-            imPayrollSkalaGajiDplkPegawaiEntity.setLastUpdate(bean.getLastUpdate());
-
-            try {
-                // insert into database
-                payrollSkalaGajiDplkPegawaiDao.addAndSave(imPayrollSkalaGajiDplkPegawaiEntity);
-            } catch (HibernateException e) {
-                logger.error("[PayrollSkalaGajiDplkPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data PayrollSkalaGajiPensiun, please info to your admin..." + e.getMessage());
+                try {
+                    // insert into database
+                    payrollSkalaGajiDplkPegawaiDao.addAndSave(imPayrollSkalaGajiDplkPegawaiEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PayrollSkalaGajiDplkPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data PayrollSkalaGajiPensiun, please info to your admin..." + e.getMessage());
+                }
             }
         }
 
