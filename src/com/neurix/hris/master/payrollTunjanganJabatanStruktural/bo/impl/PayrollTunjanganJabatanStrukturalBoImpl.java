@@ -358,14 +358,17 @@ public class PayrollTunjanganJabatanStrukturalBoImpl implements PayrollTunjangan
                         returnPayrollTunjanganJabatanStruktural.setStCreatedDate(createdDate);
                     }
                     returnPayrollTunjanganJabatanStruktural.setCreatedDate(payrollTunjanganJabatanStrukturalEntity.getCreatedDate());
+                    if (payrollTunjanganJabatanStrukturalEntity.getCreatedDate() != null){
+                        String createdDate = dateFormat.format(payrollTunjanganJabatanStrukturalEntity.getCreatedDate());
+                        returnPayrollTunjanganJabatanStruktural.setStCreatedDate(createdDate);
+                    }
                     returnPayrollTunjanganJabatanStruktural.setCreatedWho(payrollTunjanganJabatanStrukturalEntity.getCreatedWho());
 
                     returnPayrollTunjanganJabatanStruktural.setLastUpdate(payrollTunjanganJabatanStrukturalEntity.getLastUpdate());
                     if (payrollTunjanganJabatanStrukturalEntity.getLastUpdate() != null){
                         String lastUpdate = dateFormat.format(payrollTunjanganJabatanStrukturalEntity.getLastUpdate());
-                        returnPayrollTunjanganJabatanStruktural.setStCreatedDate(lastUpdate);
+                        returnPayrollTunjanganJabatanStruktural.setStLastUpdate(lastUpdate);
                     }
-
                     returnPayrollTunjanganJabatanStruktural.setLastUpdateWho(payrollTunjanganJabatanStrukturalEntity.getLastUpdateWho());
 
                     returnPayrollTunjanganJabatanStruktural.setAction(payrollTunjanganJabatanStrukturalEntity.getAction());

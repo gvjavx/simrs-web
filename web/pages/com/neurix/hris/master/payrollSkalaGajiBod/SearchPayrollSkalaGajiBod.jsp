@@ -154,7 +154,7 @@
                         <br>
                         <br>
                         <center>
-                            <table id="showdata" width="40%">
+                            <table id="showdata" width="60%">
                                 <tr>
                                     <td align="center">
                                         <%--<sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"--%>
@@ -209,10 +209,10 @@
                                             </display:column>
                                             <display:column property="payrollSkalaGajiBodId" sortable="true" title="Skala Gaji BOD ID" />
                                             <display:column property="positionName" sortable="true" title="Posisi"  />
-                                            <display:column property="gajiBod" sortable="true" title="Gaji"  />
-                                            <display:column property="tunjRumah" sortable="true" title="Tunj.Rumah"  />
-                                            <display:column property="tunjTelekomunikasi" sortable="true" title="Tunj.Telekomunikasi"  />
-                                            <display:column property="jumlahPengasilanBulan" sortable="true" title="Jum.Penghasilan"  />
+                                            <display:column property="stGajiBod" sortable="true" title="Gaji"  />
+                                            <display:column property="stTunjRumah" sortable="true" title="Tunj.Rumah"  />
+                                            <display:column property="stTunjTelekomunikasi" sortable="true" title="Tunj.Telekomunikasi"  />
+                                            <display:column property="stJumlahPenghasilanBulan" sortable="true" title="Jum.Penghasilan"  />
                                             <display:column property="tahun" sortable="true" title="Tahun"  />
                                             <display:column property="flag" sortable="true" title="flag"  />
                                             <display:column property="action" sortable="true" title="action"  />
