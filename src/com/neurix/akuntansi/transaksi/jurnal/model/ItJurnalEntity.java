@@ -282,14 +282,6 @@ public class ItJurnalEntity implements Serializable {
         this.registeredUser = registeredUser;
     }
 
-//    public String getRegisterId() {
-//        return registerId;
-//    }
-
-//    public void setRegisterId(String registerId) {
-//        this.registerId = registerId;
-//    }
-
     public String getSpumId() {
         return spumId;
     }
