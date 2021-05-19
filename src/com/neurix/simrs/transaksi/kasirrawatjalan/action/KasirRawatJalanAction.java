@@ -1708,6 +1708,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                     // kas
                     mapJurnal.put("kas", listMapKas);
+                    mapJurnal.put("user_id", CommonUtil.userIdLogin());
+                    mapJurnal.put("user_who", CommonUtil.userLogin());
 
                     if (!"".equalsIgnoreCase(transId)) {
                         try {
