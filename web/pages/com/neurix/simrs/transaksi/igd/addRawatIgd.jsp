@@ -861,13 +861,13 @@
                                     onclick="refreshTable('lab_ref', 'lab')"><i class="fa fa-refresh" id="lab_ref"></i> Refresh
                             </button>
                         </s:if>
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Tanggal Order</td>
+                                <td width="14%">Waktu</td>
+                                <td>No Order</td>
                                 <td>Pemeriksaan</td>
                                 <td>Status</td>
-                                <%--<td>Jenis Lab</td>--%>
                                 <td align="center" width="10%">Action</td>
                             </tr>
                             </thead>
@@ -2732,15 +2732,19 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> List Pemeriksaan</h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_list-penunjang">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_list-penunjang"></p>
+                </div>
                 <table class="table" style="font-size: 13px;" width="100%">
                     <tbody id="body-list-penunjang">
                     </tbody>
                 </table>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-success" onclick="saveListParam()"><i class="fa fa-check"></i> Save
-                </button>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" onclick="saveListParam()"><i class="fa fa-check"></i> Save
                 </button>
             </div>
         </div>

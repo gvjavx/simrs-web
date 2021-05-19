@@ -2647,6 +2647,8 @@ function saveInputan(jenis, ket) {
                     $('#warning_icu_' + ket).show().fadeOut(5000);
                     $('#msg_icu_' + ket).text("Berhasil menambahkan data ICU...");
                     $('#modal-icu-' + jenis).scrollTop(0);
+                    delRowICU(jenis);
+                    listInputan(jenis);
                 } else {
                     $('#save_icu_' + jenis).show();
                     $('#load_icu_' + jenis).hide();
@@ -2670,13 +2672,18 @@ function listInputan(jenis) {
     var output = [];
     var head = "";
     var body = "";
+    var table1 = "";
+    var table2 = "";
+    var table3 = "";
+    var table4 = "";
+    var table5 = "";
 
     AsesmenIcuAction.getListDetailKeseimbangan(idDetailCheckup, function (res) {
         if (res.length > 0) {
-            console.log(res);
             $.each(res, function (i, item) {
                 if (item.keterangan == "parenteral") {
                     parenteral.push({
+                        'id': item.idKeseimbanganIcu,
                         'jam': item.waktu,
                         'tanggal': converterDate(item.createdDate),
                         'jenis': item.jenis,
@@ -2685,6 +2692,7 @@ function listInputan(jenis) {
                 }
                 if (item.keterangan == "obat") {
                     obat.push({
+                        'id': item.idKeseimbanganIcu,
                         'jam': item.waktu,
                         'tanggal': converterDate(item.createdDate),
                         'jenis': item.jenis,
@@ -2693,6 +2701,7 @@ function listInputan(jenis) {
                 }
                 if (item.keterangan == "enteral") {
                     enteral.push({
+                        'id': item.idKeseimbanganIcu,
                         'jam': item.waktu,
                         'tanggal': converterDate(item.createdDate),
                         'jenis': item.jenis,
@@ -2701,6 +2710,7 @@ function listInputan(jenis) {
                 }
                 if (item.keterangan == "output") {
                     output.push({
+                        'id': item.idKeseimbanganIcu,
                         'jam': item.waktu,
                         'tanggal': converterDate(item.createdDate),
                         'jenis': item.jenis,
@@ -2708,48 +2718,251 @@ function listInputan(jenis) {
                     });
                 }
             });
+
+            var total123 = 0;
+            var total4 = 0;
+
+            if(parenteral.length > 0){
+                var bod = "";
+                var jumlah = 0;
+                $.each(parenteral, function (ix, itemx) {
+                    var tanggal = itemx.tanggal;
+                    var tempTgl = "";
+                    if (ix == 0) {
+                        tempTgl = tanggal;
+                    } else {
+                        var tgl = parenteral[ix - 1]["tanggal"];
+                        var tglB = tgl;
+                        if (tanggal == tglB) {
+                            tempTgl = "";
+                        } else {
+                            tempTgl = tanggal;
+                        }
+                    }
+                    bod += '<tr>'+
+                        '<td><div class="row">' +
+                        '<div class="col-md-6">' +tempTgl+
+                        '</div>' +
+                        '<div class="col-md-4">' + itemx.jam +
+                        '</div>' +
+                        '</div></td>'+
+                        '<td>'+itemx.jenis+'</td>'+
+                        '<td>'+itemx.nilai+'</td>'+
+                        '<td align="center"><i id="delete_' + itemx.id + '" onclick="conICU(\''+jenis+'\', \'asesmen_icu\', \''+itemx.id+'\')" class="fa fa-trash hvr-grow" style="color: red"></i></td>'+
+                        '</tr>';
+                    jumlah = jumlah + parseInt(itemx.nilai);
+                });
+                if(parseInt(jumlah) > 0){
+                    total123 = total123 + parseInt(jumlah);
+                    bod += '<tr bgcolor="#ffebcd">'+
+                        '<td colspan="2">Total Parenteral</td>'+
+                        '<td colspan="2">'+jumlah+'</td>'+
+                        '</tr>';
+                }
+                table1 = '<div style="margin-bottom: -20px; font-size: 14px"><b>I. Parenteral</b></div>' +
+                    '<table style="font-size: 12px" class="table table-bordered">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<td width="20%">Waktu</td>' +
+                    '<td>Jenis Parenteral</td>' +
+                    '<td width="20%">Nilai</td>' +
+                    '<td width="10%" align="center">Action</td>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>' + bod + '</tbody>' +
+                    '</table>';
+            }
+
+            if(obat.length > 0){
+                var bod = "";
+                var jumlah = 0;
+                $.each(obat, function (ix, itemx) {
+                    var tanggal = itemx.tanggal;
+                    var tempTgl = "";
+                    if (ix == 0) {
+                        tempTgl = tanggal;
+                    } else {
+                        var tgl = obat[ix - 1]["tanggal"];
+                        var tglB = tgl;
+                        if (tanggal == tglB) {
+                            tempTgl = "";
+                        } else {
+                            tempTgl = tanggal;
+                        }
+                    }
+                    bod += '<tr>'+
+                        '<td><div class="row">' +
+                        '<div class="col-md-6">' +tempTgl+
+                        '</div>' +
+                        '<div class="col-md-4">' + itemx.jam +
+                        '</div>' +
+                        '</div></td>'+
+                        '<td>'+itemx.jenis+'</td>'+
+                        '<td>'+itemx.nilai+'</td>'+
+                        '<td align="center"><i id="delete_' + itemx.id + '" onclick="conICU(\''+jenis+'\', \'asesmen_icu\', \''+itemx.id+'\')" class="fa fa-trash hvr-grow" style="color: red"></i></td>'+
+                        '</tr>';
+                    jumlah = jumlah + parseInt(itemx.nilai);
+                });
+                if(parseInt(jumlah) > 0){
+                    total123 = total123 + parseInt(jumlah);
+                    bod += '<tr bgcolor="#ffebcd">'+
+                        '<td colspan="2">Total Obat-Obatan</td>'+
+                        '<td colspan="2">'+jumlah+'</td>'+
+                        '</tr>';
+                }
+                table2 = '<div style="font-size: 14px"><b>II. Obat-Obatan</b></div>' +
+                    '<table style="font-size: 12px" class="table table-bordered">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<td width="20%">Waktu</td>' +
+                    '<td>Jenis Obat</td>' +
+                    '<td width="20%">Nilai</td>' +
+                    '<td width="10%" align="center">Action</td>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>' + bod + '</tbody>' +
+                    '</table>';
+            }
+
+            if(enteral.length > 0){
+                var bod = "";
+                var jumlah = 0;
+                $.each(enteral, function (ix, itemx) {
+                    var tanggal = itemx.tanggal;
+                    var tempTgl = "";
+                    if (ix == 0) {
+                        tempTgl = tanggal;
+                    } else {
+                        var tgl = enteral[ix - 1]["tanggal"];
+                        var tglB = tgl;
+                        if (tanggal == tglB) {
+                            tempTgl = "";
+                        } else {
+                            tempTgl = tanggal;
+                        }
+                    }
+                    bod += '<tr>'+
+                        '<td><div class="row">' +
+                        '<div class="col-md-6">' +tempTgl+
+                        '</div>' +
+                        '<div class="col-md-4">' + itemx.jam +
+                        '</div>' +
+                        '</div></td>'+
+                        '<td>'+itemx.jenis+'</td>'+
+                        '<td>'+itemx.nilai+'</td>'+
+                        '<td align="center"><i id="delete_' + itemx.id + '" onclick="conICU(\''+jenis+'\', \'asesmen_icu\', \''+itemx.id+'\')" class="fa fa-trash hvr-grow" style="color: red"></i></td>'+
+                        '</tr>';
+                    jumlah = jumlah + parseInt(itemx.nilai);
+                });
+                if(parseInt(jumlah) > 0){
+                    total123 = total123 + parseInt(jumlah);
+                    bod += '<tr bgcolor="#ffebcd">'+
+                        '<td colspan="2">Total Enteral</td>'+
+                        '<td colspan="2">'+jumlah+'</td>'+
+                        '</tr>';
+                }
+                table3 = '<div style="font-size: 14px"><b>III. Enteral</b></div>' +
+                    '<table style="font-size: 12px" class="table table-bordered">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<td width="20%">Waktu</td>' +
+                    '<td>Jenis Enteral</td>' +
+                    '<td width="20%">Nilai</td>' +
+                    '<td width="10%" align="center">Action</td>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>' + bod + '</tbody>' +
+                    '</table>';
+            }
+
+            if(output.length > 0){
+                var bod = "";
+                var jumlah = 0;
+                $.each(output, function (ix, itemx) {
+                    var tanggal = itemx.tanggal;
+                    var tempTgl = "";
+                    if (ix == 0) {
+                        tempTgl = tanggal;
+                    } else {
+                        var tgl = output[ix - 1]["tanggal"];
+                        var tglB = tgl;
+                        if (tanggal == tglB) {
+                            tempTgl = "";
+                        } else {
+                            tempTgl = tanggal;
+                        }
+                    }
+                    bod += '<tr>'+
+                        '<td><div class="row">' +
+                        '<div class="col-md-6">' +tempTgl+
+                        '</div>' +
+                        '<div class="col-md-4">' + itemx.jam +
+                        '</div>' +
+                        '</div></td>'+
+                        '<td>'+itemx.jenis+'</td>'+
+                        '<td>'+itemx.nilai+'</td>'+
+                        '<td align="center"><i id="delete_' + itemx.id + '" onclick="conICU(\''+jenis+'\', \'asesmen_icu\', \''+itemx.id+'\')" class="fa fa-trash hvr-grow" style="color: red"></i></td>'+
+                        '</tr>';
+                    jumlah = jumlah + parseInt(itemx.nilai);
+                });
+                if(parseInt(jumlah) > 0){
+                    total4 = total4 + parseInt(jumlah);
+                    bod += '<tr bgcolor="#ffebcd">'+
+                        '<td colspan="2">Total Output</td>'+
+                        '<td colspan="2">'+jumlah+'</td>'+
+                        '</tr>';
+                }
+                table4 = '<div style="font-size: 14px"><b>IV. Output</b></div>' +
+                    '<table style="font-size: 12px" class="table table-bordered">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<td width="20%">Waktu</td>' +
+                    '<td>Jenis Output</td>' +
+                    '<td width="20%">Nilai</td>' +
+                    '<td width="10%" align="center">Action</td>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>' + bod + '</tbody>' +
+                    '</table>';
+            }
+
+            var kes = "";
+            if(total123 == total4){
+                kes = '<span class="span-success">Seimbang</span>';
+            }else{
+                kes = '<span class="span-danger">Tidak Seimbang</span>';
+            }
+            table5 = '<div style="font-size: 14px"><b>Kesimpulan</b></div>' +
+                '<table style="font-size: 12px" class="table table-bordered">' +
+                '<thead>' +
+                '<tr>' +
+                '<td width="40%">Total Parenteral+Obat-Obatan+Enteral</td>' +
+                '<td width="40%">Total Output</td>' +
+                '<td align="center">Kesimpulan</td>' +
+                '</tr>' +
+                '</thead>' +
+                '<tbody><tr bgcolor="#ffebcd" style="font-weight: bold">' +
+                '<td>'+total123+'</td>' +
+                '<td>'+total4+'</td>' +
+                '<td align="center">'+kes+'</td>' +
+                '</tr></tbody>' +
+                '</table>';
+
+            body = table1 + table2 + table3 + table4 + table5;
+        }else{
+            body = '<tr><td>Belum ada data</td></tr>';
         }
-    });
 
-    var table1 = "";
-    var table2 = "";
-    var table3 = "";
-    var table4 = "";
-
-    console.log(parenteral);
-
-    if(parenteral.length > 0){
-        var bod = "";
-        $.each(parenteral, function (ix, itemx) {
-            bod += '<tr>'+
-                '<td>'+itemx.tanggal+' '+itemx.waktu+'</td>'+
-                '<td>'+itemx.jenis+'</td>'+
-                '<td>'+itemx.nilai+'</td>'+
-                '</tr>';
-        });
-        table1 = '<table style="font-size: 12px" class="table table-bordered">' +
-            '<thead>' +
-            '<tr>' +
-                '<td>Waktu</td>' +
-                '<td>Jenis</td>' +
-                '<td>Nilai</td>' +
-            '</tr>' +
-            '</thead>' +
-                '<tbody>' + bod + '</tbody>' +
+        var table = '<table style="font-size: 12px" class="table table-bordered">' +
+            '<tbody>' + body + '</tbody>' +
             '</table>';
-        body = table1;
-    }
 
-    var table = '<table style="font-size: 12px" class="table table-bordered">' +
-        '<thead></thead>' +
-        '<tbody>' + body + '</tbody>' +
-        '</table>';
-
-    var newRow = $('<tr id="del_icu_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
-    newRow.insertAfter($('table').find('#row_icu_' + jenis));
-    var url = contextPath + '/pages/images/minus-allnew.png';
-    $('#btn_icu_' + jenis).attr('src', url);
-    $('#btn_icu_' + jenis).attr('onclick', 'delRowICCU(\'' + jenis + '\')');
+        var newRow = $('<tr id="del_icu_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+        newRow.insertAfter($('table').find('#row_icu_' + jenis));
+        var url = contextPath + '/pages/images/minus-allnew.png';
+        $('#btn_icu_' + jenis).attr('src', url);
+        $('#btn_icu_' + jenis).attr('onclick', 'delRowICCU(\'' + jenis + '\')');
+    });
 }
 
 function searcHead(kategori) {
@@ -3351,10 +3564,46 @@ function tindakanICU(jenis) {
 function conICU(jenis, ket, idAsesmen, tipe, date) {
     $('#tanya').text("Yakin mengahapus data ini ?");
     $('#modal-confirm-rm').modal({show: true, backdrop: 'static'});
-    if (idAsesmen != undefined && idAsesmen != '') {
-        $('#save_con_rm').attr('onclick', 'delICUS(\'' + jenis + '\', \'' + ket + '\', \'' + idAsesmen + '\', \'' + tipe + '\')');
-    } else {
-        $('#save_con_rm').attr('onclick', 'delICU(\'' + jenis + '\', \'' + ket + '\', \''+date+'\')');
+    if(jenis == "keseimbangan_icu"){
+        $('#save_con_rm').attr('onclick', 'delKes(\'' + jenis + '\', \'' + ket + '\', \'' + idAsesmen + '\')');
+    }else{
+        if (idAsesmen != undefined && idAsesmen != '') {
+            $('#save_con_rm').attr('onclick', 'delICUS(\'' + jenis + '\', \'' + ket + '\', \'' + idAsesmen + '\', \'' + tipe + '\')');
+        } else {
+            $('#save_con_rm').attr('onclick', 'delICU(\'' + jenis + '\', \'' + ket + '\', \''+date+'\')');
+        }
+    }
+}
+
+function delKes(jenis, ket, idAsesmen) {
+    $('#modal-confirm-rm').modal('hide');
+    if(!cekSession()){
+        var dataPasien = {
+            'no_checkup': noCheckup,
+            'id_detail_checkup': idDetailCheckup,
+            'id_pasien': idPasien,
+            'id_rm': tempidRm
+        }
+        var result = JSON.stringify(dataPasien);
+        startIconSpin('delete_' + idAsesmen);
+        dwr.engine.setAsync(true);
+        AsesmenIcuAction.saveDeleteKeseimbangan(idAsesmen, {
+            callback: function (res) {
+                if (res.status == "success") {
+                    stopIconSpin('delete_' + idAsesmen);
+                    $('#modal-icu-' + ket).scrollTop(0);
+                    $('#warning_icu_' + ket).show().fadeOut(5000);
+                    $('#msg_icu_' + ket).text("Berhasil menghapus data...");
+                } else {
+                    stopIconSpin('delete_' + idAsesmen);
+                    $('#modal-icu-' + ket).scrollTop(0);
+                    $('#warn_' + ket).show().fadeOut(5000);
+                    $('#msg_' + ket).text(res.msg);
+                }
+                delRowICU(jenis);
+                listInputan(jenis);
+            }
+        });
     }
 }
 

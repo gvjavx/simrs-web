@@ -33,6 +33,24 @@ public class HeaderPemeriksaan {
     private String lastUpdateWho;
     private Timestamp lastUpdate;
     private String isPeriksaLuar;
+    private String isCito;
+    private String isReadHasil;
+
+    public String getIsReadHasil() {
+        return isReadHasil;
+    }
+
+    public void setIsReadHasil(String isReadHasil) {
+        this.isReadHasil = isReadHasil;
+    }
+
+    public String getIsCito() {
+        return isCito;
+    }
+
+    public void setIsCito(String isCito) {
+        this.isCito = isCito;
+    }
 
     public String getIsPeriksaLuar() {
         return isPeriksaLuar;

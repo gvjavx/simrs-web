@@ -695,12 +695,12 @@
                         <button class="btn btn-primary" style="margin-bottom: 10px;"
                                 onclick="refreshTable('lab_ref', 'lab')"><i class="fa fa-refresh" id="lab_ref"></i> Refresh
                         </button>
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Tanggal Order</td>
+                                <td width="14%">Waktu</td>
+                                <td>No Order</td>
                                 <td>Jenis Penunjang</td>
-                                <%--<td>Pemeriksaan</td>--%>
                                 <td>Status</td>
                                 <td align="center">Action</td>
                             </tr>
@@ -726,7 +726,7 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90" style="height: 20px">
-                                <td >Tanggal</td>
+                                <td width="14%">Waktu</td>
                                 <td >Jenis Diet</td>
                                 <td >Bentuk Diet</td>
                                 <td >Keterangan</td>
@@ -1597,6 +1597,21 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-9">
+                            <div class="form-check jarak">
+                                <input type="checkbox" id="is_cito" value="yes">
+                                <label for="is_cito"></label>
+                                Centang Jika Pemeriksaan Darurat (CITO)
+                                <i class="fa fa-question-circle box-rm" style="font-size: 18px">
+                                    <span class="box-rmtext" style="font-size: 12px; font-family: Calibri">
+                                        Centang untuk menandai pemeriksaan dengan CITO
+                                    </span></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row" style="display: none" id="form_tarif_lab_luar">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Tarif Lab Luar</label>
@@ -1619,44 +1634,6 @@
                     </div>
                 </div>
                 <hr>
-                <div id="form_lab_dalam">
-                    <%--<div class="row">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<label class="col-md-3" style="margin-top: 7px">Jenis Pemeriksaan</label>--%>
-                            <%--<div class="col-md-7">--%>
-                                <%--<select class="form-control select2" style="margin-top: 7px; width: 100%" id="lab_lab"--%>
-                                        <%--onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this.value);">--%>
-                                    <%--<option value=''> - </option>--%>
-                                <%--</select>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-2">--%>
-                                <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_lab"><i--%>
-                                        <%--class="fa fa-times"></i> required</p>--%>
-                                <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_lab"><i--%>
-                                        <%--class="fa fa-check"></i> correct</p>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="row">--%>
-                        <%--<input type="hidden" id="jenis_lab">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<label class="col-md-3" style="margin-top: 7px">Parameter</label>--%>
-                            <%--<div class="col-md-7">--%>
-                                <%--<select class="form-control select2 parameter" multiple style="margin-top: 7px; width: 100%"--%>
-                                        <%--id="lab_parameter"--%>
-                                        <%--onchange="var warn =$('#war_parameter').is(':visible'); if (warn){$('#cor_parameter').show().fadeOut(3000);$('#war_parameter').hide()};">--%>
-                                    <%--<option value=''> - </option>--%>
-                                <%--</select>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-2">--%>
-                                <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
-                                   <%--id="war_parameter"><i class="fa fa-times"></i> required</p>--%>
-                                <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
-                                   <%--id="cor_parameter"><i class="fa fa-check"></i> correct</p>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                </div>
                 <div id="form_lab_luar" style="display: none">
                     <div class="row">
                         <div class="form-group">
@@ -4412,9 +4389,6 @@
                                 </div>
                                 <span style="color: red; font-size: 12px">* format file upload (.jpg/.jpeg/.png)</span>
                             </div>
-                            <%--<div class="col-md-1">--%>
-                            <%--<button onclick="addUpload('upload_pemeriksan', 'set_upload_pemeriksan')" class="btn btn-success" style="margin-left: -20px; margin-top: 9px"><i class="fa fa-plus"></i></button>--%>
-                            <%--</div>--%>
                         </div>
                     </div>
                     <div id="set_upload_pemeriksan">
@@ -4522,15 +4496,19 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> List Pemeriksaan</h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_list-penunjang">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_list-penunjang"></p>
+                </div>
                 <table class="table" style="font-size: 13px;" width="100%">
                     <tbody id="body-list-penunjang">
                     </tbody>
                 </table>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-success" onclick="saveListParam()"><i class="fa fa-check"></i> Save
-                </button>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" onclick="saveListParam()"><i class="fa fa-check"></i> Save
                 </button>
             </div>
         </div>

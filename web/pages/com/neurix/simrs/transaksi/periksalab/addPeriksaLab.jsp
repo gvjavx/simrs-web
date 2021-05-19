@@ -187,6 +187,16 @@
                                             </table>
                                         </td>
                                     </tr>
+                                    <s:if test='periksaLab.isCito == "Y"'>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <table>
+                                                    <span class="span-warning">CITO</span>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
                                 </table>
                             </div>
                             <!-- /.col -->

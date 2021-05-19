@@ -969,7 +969,7 @@ function showModal(select) {
         dokterDpjp();
         getJenisResep('select-jenis-pemeriksaan');
         $('#body_pemeriksaan').html('');
-        $('#is_luar, #is_pending_lab').prop('checked', false);
+        $('#is_luar, #is_pending_lab, #is_cito').prop('checked', false);
         $('#is_luar, #is_pending_lab, #tarif_luar_lab').attr('disabled', false);
         $('#form_pending, #form_lab_luar, #form_tarif_lab_luar').hide();
         $('#btn-add-lab-dalam').show();
@@ -1000,6 +1000,7 @@ function showModal(select) {
         $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
         $('#modal-lab').modal({show: true, backdrop: 'static'});
         $("#btn-add-lab-luar").hide();
+        $('#is_cito').attr('disabled', false);
     } else if (select == 5) {
         $('.remove_cek').attr('checked', false);
         $('#untuk1').prop('checked', true);
@@ -1556,6 +1557,7 @@ function setCheck(id, tipe, idDetail){
         if ($('#lab-'+id).is(":checked")){
             spanRow(id);
         } else {
+            unSpanRow(id);
             $(".check-penunjang-"+id).removeAttr('checked');
         }
         saveListPenunjang(id);
@@ -1591,16 +1593,12 @@ function saveListParam() {
     var listParam = [];
     var listParamValue = [];
     for (var i = 0 ; i < param.length ; i++) {
-        //console.log(param[i].value +" "+$("#label-param-"+param[i].value).text());
         var idparam = param[i].id;
         var idSplit = idparam.split('-')[1];
         var namaParam = $("#label-param-" + param[i].value).text();
         listParam.push({"iddetail": param[i].value, "namadetail": namaParam, "idlab": idSplit});
         listParamValue.push(param[i].value);
     }
-    console.log(listPenunjang);
-    console.log(listParam);
-    console.log(listParamValue);
     var listOfPenunjang = [];
     $.each(listPenunjang, function (i, item) {
         var listDetail = listParam.filter(param => param.idlab == item.idlab);
@@ -1628,7 +1626,8 @@ function saveListParam() {
     });
 
     var count = $('#tabel_pemeriksaan').tableToJSON().length;
-        var row = "";
+    var row = "";
+    if(listOfPenunjang.length > 0){
         $.each(listOfPenunjang, function(i,item){
             row +=
                 '<tr id="row_'+count+'">' +
@@ -1654,6 +1653,7 @@ function saveListParam() {
         $('#lab_parameter_luar').val(null);
         $('#lab_luar').val(null);
         $('#select-jenis-pemeriksaan').attr('disabled', true);
+        $('#is_cito').attr('disabled', true);
         var par = $('.parameter_luar');
         $.each(par, function (i, item) {
             if (i != 0) {
@@ -1664,6 +1664,11 @@ function saveListParam() {
         $('#cek_pending').css('cursor', 'no-drop');
         $('#tarif_luar_lab').attr('disabled', true);
         $("#modal-list-penunjang").modal('hide');
+    }else{
+        $('#modal-list-penunjang').scrollTop(0);
+        $('#warning_list-penunjang').show().fadeOut(5000);
+        $('#msg_list-penunjang').text("Silahkan pilih parameter pemeriksaan dahulu...!");
+    }
 }
 
 function listSelectParameter(idLab) {
@@ -1702,10 +1707,17 @@ function listSelectParameter(idLab) {
 function saveLab(id) {
     var table = $('#tabel_pemeriksaan').tableToJSON().length;
     var cekLuar = $('#is_luar').is(':checked');
+    var cekCito = $('#is_cito').is(':checked');
     var isLuar = "N";
     if(cekLuar){
         isLuar = "Y";
     }
+
+    var isCito = "N";
+    if(cekCito){
+        isCito = "Y";
+    }
+
     var canvas = document.getElementById('ttd_dokter_pengirim');
     var ttdPengirim = convertToDataURLAtas(canvas);
     var ttd = isBlank(canvas);
@@ -1786,7 +1798,8 @@ function saveLab(id) {
                         'is_luar': isLuar,
                         'id_kategori_lab': idKategori,
                         'jenis_pemeriksaan': jenisPemeriksaan,
-                        'tarif_lab_luar': tarifLabLuar
+                        'tarif_lab_luar': tarifLabLuar,
+                        'is_cito': isCito
                     }
                     var result = JSON.stringify(data);
                     $('#save_lab').hide();
@@ -1818,7 +1831,8 @@ function saveLab(id) {
                         'waktu_pending': waktu,
                         'ttd_pengirim': ttdPengirim,
                         'jenis_pemeriksaan': jenisPemeriksaan,
-                        'tarif_lab_luar': tarifLabLuar
+                        'tarif_lab_luar': tarifLabLuar,
+                        'is_cito': isCito
                     }
                     var result = JSON.stringify(data);
                     $('#save_lab').hide();
@@ -1912,6 +1926,11 @@ function listLab() {
                     periksa = '<span class="span-warning">Periksa Luar</span>';
                 }
 
+                var cito = "";
+                if("Y" == item.isCito){
+                    cito = '<span class="span-warning">CITO</span>';
+                }
+
                 var print = "";
 
                 if ("Pending" == item.statusPeriksaName) {
@@ -1926,24 +1945,25 @@ function listLab() {
                 if ("paket_perusahaan" == jenisPeriksaPasien || "paket_individu" == jenisPeriksaPasien) {
                     table += "<tr>" +
                         "<td>" + dateFormat + "</td>" +
-                        "<td>" + item.kategoriLabName + ' ' +periksa+ "</td>" +
+                        "<td>" + item.kategoriLabName + ' ' +periksa+ ' ' +cito+ "</td>" +
                         "<td>" + status + "</td>" +
                         "<td align='center'>" + print + crn + "</td>" +
                         "</tr>";
                 } else {
                     table += "<tr>" +
-                        "<td>" +
-                        dateFormat +
+                        "<td>" + dateFormat +
                         '<textarea style="display: none" id="dalam_' + item.idHeaderPemeriksaan + '">' + hiddeDalam + '</textarea>' +
                         '<textarea style="display: none" id="luar_' + item.idHeaderPemeriksaan + '">' + hiddeLuar + '</textarea>' +
                         "</td>" +
-                        "<td>" + item.kategoriLabName+ ' ' +periksa+ "</td>" +
+                        '<td>'+item.idHeaderPemeriksaan+'</td>'+
+                        "<td>" + item.kategoriLabName+ ' ' +periksa+ ' ' +cito+ "</td>" +
                         "<td>" + status + "</td>" +
                         "<td align='center'>" + btn + dalam + luar + crn + "</td>" +
                         "</tr>";
                 }
             });
             $('#body_lab').html(table);
+            pushNotifHasil();
         }
     });
 }
@@ -5101,14 +5121,6 @@ function addListPemeriksaan(){
                 tempParameterLi += '<li>'+item.innerHTML+'</li>';
             });
         }
-
-        console.log(idPemeriksaan);
-        console.log(idParameter);
-        console.log(tempPemeriksaan);
-        console.log(tempIdPemeriksan);
-        console.log(tempIdParameter);
-        console.log(tempParameter);
-        console.log(tempParameterLi);
     }
 
 
@@ -5198,6 +5210,7 @@ function delPemeriksaan(id){
         $('#cek_pending').css('cursor', 'pointer');
         $('#select-jenis-pemeriksaan').attr('disabled', false);
         $('#tarif_luar_lab').attr('disabled', false);
+        $('#is_cito').attr('disabled', false);
     }
 }
 
@@ -5222,6 +5235,7 @@ function resetPemeriksaan(){
     $('#cek_pending').css('cursor', 'pointer');
     $('#select-jenis-pemeriksaan').attr('disabled', false);
     $('#tarif_luar_lab').attr('disabled', false);
+    $('#is_cito').attr('disabled', false);
 }
 
 function addOrderListPemeriksaan(){
@@ -5484,7 +5498,6 @@ function doneUplod(){
 function setTindakLanjut(){
     dwr.engine.setAsync(true);
     CheckupDetailAction.getDetailCheckup(idDetailCheckup, function (res) {
-        console.log(res);
         if(res.tindakLanjut != null && res.tindakLanjut != ''){
             $('#keterangan').val(res.tindakLanjut).trigger('change');
             $('#keterangan').attr('disabled', true);
@@ -5570,4 +5583,64 @@ function resetListTindakan(){
     $('#tin_qty').val('1');
     $('#h_harga').val('');
     $('#h_harga_after').val('');
+}
+
+function cekNotifHasil(){
+    PeriksaLabAction.pushNotifHasil(idDetailCheckup, function (res) {
+        var listLab = "";
+        var cekCount = $('#count2').text();
+        if(cekCount == ''){
+            cekCount = 0;
+        }
+        if(res.length > 0){
+            $.each(res, function (i, item) {
+                if(item.kategori != null && item.kategori != '') {
+                    listLab += '<li>' +
+                        '<a style="cursor: pointer" onclick="readHasil(\''+item.idHeaderPemeriksaan+'\')">' +
+                        '<i class="fa fa-info-circle text-green"></i> <small style="margin-left: -8px">'+' ['+item.idHeaderPemeriksaan +']'+' '+item.kategori.toUpperCase()+'</small><br>' +
+                        '</a>' +
+                        '</li>';
+                }
+            });
+            $('#inner2').html(listLab);
+            $('#count2').html(res.length);
+            $('#count3').html(res.length);
+            if(res.length > parseInt(cekCount)){
+                $('#notif_sound').get(0).autoplay = true;
+                $('#notif_sound').get(0).load();
+            }
+        }else{
+            $('#inner2').html(listLab);
+            $('#count2').html('');
+            $('#count3').html('');
+        }
+    });
+}
+
+function pushNotifHasil(){
+    cekNotifHasil();
+    setInterval(function () {
+        cekNotifHasil();
+    }, 30000);
+}
+
+function readHasil(id){
+    listLab();
+    updateRead(id);
+}
+
+function updateRead(id){
+    dwr.engine.setAsync(true);
+    PeriksaLabAction.updateReadHasil(id, function (res) {
+        pushNotifHasil();
+        $('html, body').animate({
+            scrollTop: $('#pos_lab').offset().top
+        }, 0);
+        $('#'+id).attr('bgcolor', '#ffebcd');
+        $('#'+id).attr('class', 'blink_me_atas');
+        setTimeout(function () {
+            $('#'+id).removeAttr('bgcolor');
+            $('#'+id).removeAttr('class');
+        }, 5000);
+    });
 }

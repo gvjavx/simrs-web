@@ -215,6 +215,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 periksaLab.setKeterangan(labData.getIsJustLab());
                 periksaLab.setIsJustLab(labData.getIsJustLab());
                 periksaLab.setNamaDokterPengirim(labData.getNamaDokterPengirim());
+                periksaLab.setIsCito(labData.getIsCito());
                 String hetero = "";
                 String auto = "";
                 String nadi = "";
