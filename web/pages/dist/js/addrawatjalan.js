@@ -1010,10 +1010,24 @@ function showModal(select) {
         $('#save_diet').attr('onclick', 'saveDiet(\'' + id + '\')').show();
         $('#load_diet, #warning_diet, #war_bentuk_diet, #war_keterangan_diet').hide();
         $('#modal-diet').modal({show: true, backdrop: 'static'});
-    } else if (select == 7) {
+    } else if (select == 7 || select == 10) {
         resetAll();
         cekRekakanops();
         getApotekRawatJalan();
+        if (select == 7)
+            $('#title-resep').html("Tambah Resep Pasien");
+            $("#sec-jumlah-resep").show();
+            $("#tabel_rese_detail_racik").hide();
+            $("#tabel_rese_detail").show();
+            $("#sec-total-harga").show();
+        if (select == 10){
+            $('#title-resep').html("Tambah Resep Racik");
+            $("#sec-jumlah-resep").hide();
+            $("#tabel_rese_detail").hide();
+            $("#tabel_rese_detail_racik").show();
+            $("#sec-total-harga").hide();
+        }
+
         $('#resep_jenis_obat').val('').trigger('change');
         // $('#resep_apotek').val('').trigger('change').attr('disabled', false);
         $('#resep_nama_obat').val('').trigger('change');

@@ -885,9 +885,25 @@
                         <h3 class="box-title"><i class="fa fa-medkit"></i> Order Resep Obat</h3>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(7)"><i class="fa fa-plus"></i> Tambah Resep
-                        </button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-success btn-outline dropdown-toggle" data-toggle="dropdown" style="margin-bottom: 10px; width: 150px"><i class="fa fa-plus"></i> Tambah Resep</button>
+                            <%--<button type="button" class="btn btn-success dropdown-toggle"--%>
+                                    <%--data-toggle="dropdown" style="height: 34px">--%>
+                                <%--<span class="caret"></span>--%>
+                                <%--<span class="sr-only">Toggle Dropdown</span>--%>
+                            <%--</button>--%>
+                            <ul class="dropdown-menu" role="menu">
+                                <li onclick="showModal(7)">
+                                    <a href="#"><i class="fa fa-tag"></i> Resep</a>
+                                </li>
+                                <li onclick="showModal(10)">
+                                    <a href="#"><i class="fa fa-tag"></i> Resep Racik</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <%--<button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"--%>
+                                <%--onclick="showModal(7)"><i class="fa fa-plus"></i> Tambah Resep--%>
+                        <%--</button>--%>
                         <button class="btn btn-primary" style="margin-bottom: 10px;"
                                 onclick="refreshTable('resep_ref', 'resep')"><i class="fa fa-refresh" id="resep_ref"></i> Refresh
                         </button>
@@ -1956,26 +1972,26 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tambah Resep Pasien</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="title-resep"></span></h4>
             </div>
             <div class="modal-body" id="temp_resep-head">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_resep_head">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_resep"></p>
                 </div>
-                <div class="row">
-                    <label class="col-md-3" style="margin-top: 7px">Obat Racik ?</label>
-                    <div class="col-md-9">
-                        <div class="form-check" style="margin-top: 7px;">
-                            <input type="checkbox" name="cek_racik" id="racik_racik" value="Y" onclick="var warn = $('#war_rep_racik').is(':visible'); if (warn){$('#cor_rep_racik').show().fadeOut(3000);$('#war_rep_racik').hide()}; cekRacik(this.id)">
-                            <label for="racik_racik"></label> Ya
-                        </div>
-                        <span style="color: red; margin-top: 12px; display: none;"
-                              id="war_rep_racik"><i class="fa fa-times"></i> required</span>
-                        <span style="color: green; margin-top: 12px; display: none;"
-                              id="cor_rep_racik"><i class="fa fa-check"></i> correct</span>
-                    </div>
-                </div>
+                <%--<div class="row">--%>
+                    <%--<label class="col-md-3" style="margin-top: 7px">Obat Racik ?</label>--%>
+                    <%--<div class="col-md-9">--%>
+                        <%--<div class="form-check" style="margin-top: 7px;">--%>
+                            <%--<input type="checkbox" name="cek_racik" id="racik_racik" value="Y" onclick="var warn = $('#war_rep_racik').is(':visible'); if (warn){$('#cor_rep_racik').show().fadeOut(3000);$('#war_rep_racik').hide()}; cekRacik(this.id)">--%>
+                            <%--<label for="racik_racik"></label> Ya--%>
+                        <%--</div>--%>
+                        <%--<span style="color: red; margin-top: 12px; display: none;"--%>
+                              <%--id="war_rep_racik"><i class="fa fa-times"></i> required</span>--%>
+                        <%--<span style="color: green; margin-top: 12px; display: none;"--%>
+                              <%--id="cor_rep_racik"><i class="fa fa-check"></i> correct</span>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
                 <div class="row" id="form-nama-racik" style="display: none">
                     <label class="col-md-3" style="margin-top: 7px;">Nama Racik</label>
                     <div class="col-md-9">
@@ -2105,7 +2121,7 @@
                               id="cor_rep_jenis_satuan"><i class="fa fa-check"></i> correct</span>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" id="sec-jumlah-resep">
                     <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                     <div class="col-md-9">
                         <div class="input-group" style="margin-top: 7px;">
@@ -2172,18 +2188,30 @@
                         <tbody id="body_detail">
                         </tbody>
                     </table>
+
+                    <table class="table table-striped table-bordered" id="tabel_rese_detail_racik" style="font-size: 13px;">
+                        <thead>
+                        <td>Nama Obat</td>
+                        <td width="50%">Dosis</td>
+                        <td align="center" width="5%">Action</td>
+                        </thead>
+                        <tbody id="body_detail_racik">
+                        </tbody>
+                    </table>
                 </div>
                 <div class="box-header with-border">
                 </div>
                 <div class="row" style="margin-top: 10px">
                     <div class="form-group">
                         <div class="col-md-6">
-                            <label><b>Total Harga</b></label>
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    Rp.
+                            <div id="sec-total-harga">
+                                <label><b>Total Harga</b></label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        Rp.
+                                    </div>
+                                    <input class="form-control" id="total_harga_obat" readonly>
                                 </div>
-                                <input class="form-control" id="total_harga_obat" readonly>
                             </div>
                         </div>
                         <div class="col-md-6">
