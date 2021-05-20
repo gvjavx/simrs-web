@@ -111,6 +111,14 @@ public class CommonConstant {
     public final static String ROLE_ADMIN_IGD = "ADMIN IGD";
     public final static String ROLE_ADMIN_APOTEK = "ADMIN APOTEK";
 
+
+    //JENIS PEGAWAI
+    public final static String JP_NORMAL = CommonUtil.getPropertyParams("jenis.pegawai.normal");
+    public final static String JP_PLT = CommonUtil.getPropertyParams("jenis.pegawai.plt");
+    public final static String JP_PJS = CommonUtil.getPropertyParams("jenis.pegawai.pjs");
+    public final static String JP_PERCOBAAN = CommonUtil.getPropertyParams("jenis.pegawai.percobaan");
+
+
     //BPJS
     public final static String APP_NAME = ServletActionContext.getRequest().getContextPath();
 //    public final static String APP_NAME = "simrs";

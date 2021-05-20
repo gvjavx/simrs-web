@@ -25,6 +25,7 @@ import com.neurix.hris.transaksi.absensi.model.AbsensiPegawaiEntity;
 import com.neurix.hris.transaksi.payroll.bo.PayrollBo;
 import com.neurix.hris.transaksi.payroll.dao.*;
 import com.neurix.hris.transaksi.payroll.model.*;
+import io.agora.recording.common.Common;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -1615,7 +1616,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 
         logger.info("[PayrollBoImpl.refreshInitialPegawaiPayrollTemp] start process >>>");
 
-        if ("plt".equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = plt
+        if (CommonConstant.JP_PLT.equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = plt
 
             List<MappingPersenGaji> filterdMappingPersenGaji = listOfMappingPersenGaji.stream().filter(
                     p -> p.getNamaMappingPersenGaji().equalsIgnoreCase("plt")
@@ -1624,7 +1625,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             //mapping ke model mapping persen gaji
             itemPegawaiPayroll.setListOfMappingPersenGaji(filterdMappingPersenGaji);
 
-        } else if ("pjs".equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = pjs
+        } else if (CommonConstant.JP_PJS.equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = pjs
 
             List<MappingPersenGaji> filterdMappingPersenGaji = listOfMappingPersenGaji.stream().filter(
                     p -> p.getNamaMappingPersenGaji().equalsIgnoreCase("pjs")
@@ -1633,7 +1634,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             //mapping ke model mapping persen gaji
             itemPegawaiPayroll.setListOfMappingPersenGaji(filterdMappingPersenGaji);
 
-        } else if ("percobaan".equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = percobaan
+        } else if (CommonConstant.JP_PERCOBAAN.equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = percobaan
 
             List<MappingPersenGaji> filterdMappingPersenGaji = listOfMappingPersenGaji.stream().filter(
                     p -> p.getNamaMappingPersenGaji().equalsIgnoreCase("percobaan")
@@ -1704,7 +1705,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 
         for (PegawaiPayroll itemPegawaiPayroll : listOfInitialPayroll) {
 
-            if ("plt".equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = plt
+            if (CommonConstant.JP_PLT.equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = plt
 
                 List<MappingPersenGaji> filterdMappingPersenGaji = listOfMappingPersenGaji.stream().filter(
                         p -> p.getNamaMappingPersenGaji().equalsIgnoreCase("plt")
@@ -1713,7 +1714,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
                 //mapping ke model mapping persen gaji
                 itemPegawaiPayroll.setListOfMappingPersenGaji(filterdMappingPersenGaji);
 
-            } else if ("pjs".equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = pjs
+            } else if (CommonConstant.JP_PJS.equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = pjs
 
                 List<MappingPersenGaji> filterdMappingPersenGaji = listOfMappingPersenGaji.stream().filter(
                         p -> p.getNamaMappingPersenGaji().equalsIgnoreCase("pjs")
@@ -1722,7 +1723,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
                 //mapping ke model mapping persen gaji
                 itemPegawaiPayroll.setListOfMappingPersenGaji(filterdMappingPersenGaji);
 
-            } else if ("percobaan".equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = percobaan
+            } else if (CommonConstant.JP_PERCOBAAN.equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = percobaan
 
                 List<MappingPersenGaji> filterdMappingPersenGaji = listOfMappingPersenGaji.stream().filter(
                         p -> p.getNamaMappingPersenGaji().equalsIgnoreCase("percobaan")
