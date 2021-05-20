@@ -450,7 +450,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                     if (("Y").equalsIgnoreCase(flagRegister)){
                         if (isNormalPeriode) itJurnalEntity.setRegisteredFlag("Y");
                         itJurnalEntity.setRegisteredUser(userName);
-                        itJurnalEntity.setRegisterId(userId);
+                        itJurnalEntity.setRegisteredUserId(userId);
                         itJurnalEntity.setRegisteredDate(tanggalTransaksi);
                     }
 
