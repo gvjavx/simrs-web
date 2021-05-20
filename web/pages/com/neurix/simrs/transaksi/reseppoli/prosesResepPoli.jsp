@@ -263,7 +263,9 @@
                                         <td width="45%"><b>No Resep</b></td>
                                         <td>
                                             <table>
-                                                <s:label name="permintaanResep.idPermintaanResep"></s:label></table>
+                                                <s:label name="permintaanResep.idPermintaanResep"></s:label>
+                                                <s:hidden name="permintaanResep.flagRacik" id="flag-racik"/>
+                                            </table>
                                         </td>
                                     </tr>
 
@@ -382,6 +384,9 @@
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border" id="top_top">
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Obat Resep</h3>
+                        <s:if test='permintaanResep.flagRacik == "Y"'>
+                            <span style="padding: 5px; border-radius: 3px; background-color: lightgrey">Racik</span>
+                        </s:if>
                     </div>
                     <div class="box-body">
                         <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_list_obat">
@@ -1055,6 +1060,8 @@
         var qtyBox = 0;
         var qtyLembar = 0;
         var qtyBiji = 0;
+        var flagRacik = $("#flag-racik").val();
+        alert(flagRacik);
 
         $.each(data, function (i, item) {
             var expired = data[i]["Expired Date"];
@@ -1092,7 +1099,7 @@
         var stringData = JSON.stringify(result);
 
         if (qtyApp > 0) {
-            if (parseInt(qtyApp) <= parseInt(stok) && parseInt(qtyApp) <= parseInt(qtyReq)) {
+            if (parseInt(qtyApp) <= parseInt(stok) && parseInt(qtyApp) <= parseInt(qtyReq) || flagRacik == "Y") {
                 $('#modal-confirm-dialog').modal('show');
                 $('#save_con').attr('onclick','saveApprove(\'' + idObat + '\',\'' + idTransaksi + '\',\'' + stringData + '\',\'' + qtyApp + '\',\''+jenisSatuan+'\')');
             } else {

@@ -2749,6 +2749,23 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         return listObatBatch;
     }
 
+    @Override
+    public String getFlagIsRacikInTransaksiObatDetail(String idPermintaan) throws GeneralBOException {
+        logger.info("[TransaksiObatBoImpl.getFlagIsRacikInTransaksiObatDetail] Start >>>");
+
+        String flag = "";
+
+        try {
+            flag = transaksiObatDetailDao.getFlagIsRacikInTransaksiObatDetail(idPermintaan);
+        } catch (HibernateException e){
+            logger.error("[TransaksiObatBoImpl.getFlagIsRacikInTransaksiObatDetail] ERROR.", e);
+            throw new GeneralBOException("[TransaksiObatBoImpl.getFlagIsRacikInTransaksiObatDetail] ERROR." + e.getMessage());
+        }
+
+        logger.info("[TransaksiObatBoImpl.getFlagIsRacikInTransaksiObatDetail] End <<<");
+        return flag;
+    }
+
     private void saveTransaksiStokObatMasukKarnaReture(TransaksiObatDetail bean){
 
         logger.info("[TransaksiObatBoImpl.saveTransaksiStokRequestObatPoli] START >>>");

@@ -1979,6 +1979,7 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_resep"></p>
                 </div>
+                <input type="hidden" id="tipe-trans-resep"/>
                 <%--<div class="row">--%>
                     <%--<label class="col-md-3" style="margin-top: 7px">Obat Racik ?</label>--%>
                     <%--<div class="col-md-9">--%>
@@ -2013,17 +2014,17 @@
                 <div class="row" id="form-nama-racik" style="display: none">
                     <label class="col-md-3" style="margin-top: 7px;">Nama Racik</label>
                     <div class="col-md-9">
-                        <input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"
-                               class="form-control" type="text"
-                               id="nama_racik">
-                        <%--<div class="input-group" style="margin-top: 7px;">--%>
                         <%--<input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"--%>
-                        <%--class="form-control" type="text"--%>
-                        <%--id="nama_racik">--%>
-                        <%--<div class="input-group-addon">--%>
-                        <%--<input type="color" id="color_racik" style="height: 20px;">--%>
-                        <%--</div>--%>
-                        <%--</div>--%>
+                               <%--class="form-control" type="text"--%>
+                               <%--id="nama_racik">--%>
+                        <div class="input-group" style="margin-top: 7px;">
+                            <input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"
+                            class="form-control" type="text"
+                            id="nama_racik">
+                            <div class="input-group-addon">
+                                <input type="color" id="color_racik" style="height: 20px;">
+                            </div>
+                        </div>
                         <span style="color: red; margin-top: 12px; display: none;"
                               id="war_nama_racik"><i class="fa fa-times"></i> required</span>
                         <span style="color: green; margin-top: 12px; display: none;"
@@ -2161,7 +2162,7 @@
                     </div>
                 </div>
                 <hr/>
-                <div class="row" style="margin-top: -10px">
+                <div class="row" style="margin-top: -10px" id="btn-add-resep">
                     <div class="col-md-12">
                         <button class="btn btn-success" onclick="addObatToList()"><i class="fa fa-plus"></i> Tambah
                         </button>

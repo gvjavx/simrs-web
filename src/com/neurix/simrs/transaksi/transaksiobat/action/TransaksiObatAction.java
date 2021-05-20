@@ -327,6 +327,15 @@ public class TransaksiObatAction extends BaseMasterAction {
                     jk = "Laki-Laki";
                 }
             }
+
+            String flagRacik = "";
+            try {
+                flagRacik = transaksiObatBoProxy.getFlagIsRacikInTransaksiObatDetail(idPermintaan);
+            } catch (GeneralBOException e){
+                logger.error("[TransaksiObatAction.searchResep] ERROR. ", e);
+                addActionError("[TransaksiObatAction.searchResep] ERROR. " + e.getMessage());
+            }
+            resep.setFlagRacik(flagRacik);
             resep.setJenisKelamin(jk);
             resep.setTempatLahir(checkup.getTempatLahir());
             resep.setTglLahir(checkup.getTglLahir() == null ? null : checkup.getTglLahir().toString());
