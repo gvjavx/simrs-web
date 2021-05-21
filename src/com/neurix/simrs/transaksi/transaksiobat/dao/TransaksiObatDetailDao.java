@@ -1059,6 +1059,23 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         return res;
     }
 
+    public String getFlagIsRacikInTransaksiObatDetail(String idPermintaan){
+
+        String SQL = "SELECT \n" +
+                "a.id_racik \n" +
+                "FROM mt_simrs_transaksi_obat_detail a\n" +
+                "INNER JOIN mt_simrs_permintaan_resep b ON b.id_approval_obat = a.id_approval_obat\n" +
+                "WHERE b.id_permintaan_resep = '"+idPermintaan+"'\n" +
+                "AND a.id_racik is not null";
+
+        List<Object> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+            return "Y";
+        }
+        return "N";
+    }
+
     public String getNextId(){
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_transaksi_obat_detail')");
         Iterator<BigInteger> iter=query.list().iterator();

@@ -1835,3 +1835,13 @@ ADD COLUMN parent_id VARCHAR(30);
     UPDATE im_akun_trans
     SET is_otomatis = 'Y' WHERE trans_id = '04';
 --
+
+-- 2021-05-21
+
+    ALTER TABLE mt_simrs_permintaan_resep
+    ADD COLUMN nama_racik TEXT,
+    ADD COLUMN signa_racik TEXT,
+    ADD COLUMN kemasan_racik VARCHAR(100),
+    ADD COLUMN qty_kemasan_racik integer;
+
+--

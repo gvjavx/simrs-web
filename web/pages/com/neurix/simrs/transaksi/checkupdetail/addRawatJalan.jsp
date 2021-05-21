@@ -1992,6 +1992,7 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_resep"></p>
                 </div>
+                <input type="hidden" id="tipe-trans-resep"/>
                 <%--<div class="row">--%>
                     <%--<label class="col-md-3" style="margin-top: 7px">Obat Racik ?</label>--%>
                     <%--<div class="col-md-9">--%>
@@ -2026,17 +2027,17 @@
                 <div class="row" id="form-nama-racik" style="display: none">
                     <label class="col-md-3" style="margin-top: 7px;">Nama Racik</label>
                     <div class="col-md-9">
-                        <input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"
-                               class="form-control" type="text"
-                               id="nama_racik">
-                        <%--<div class="input-group" style="margin-top: 7px;">--%>
                         <%--<input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"--%>
-                        <%--class="form-control" type="text"--%>
-                        <%--id="nama_racik">--%>
-                        <%--<div class="input-group-addon">--%>
-                        <%--<input type="color" id="color_racik" style="height: 20px;">--%>
-                        <%--</div>--%>
-                        <%--</div>--%>
+                               <%--class="form-control" type="text"--%>
+                               <%--id="nama_racik">--%>
+                        <div class="input-group" style="margin-top: 7px;">
+                            <input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"
+                            class="form-control" type="text"
+                            id="nama_racik">
+                            <div class="input-group-addon">
+                                <input type="color" id="color_racik" style="height: 20px;">
+                            </div>
+                        </div>
                         <span style="color: red; margin-top: 12px; display: none;"
                               id="war_nama_racik"><i class="fa fa-times"></i> required</span>
                         <span style="color: green; margin-top: 12px; display: none;"
@@ -2044,7 +2045,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
+                    <label class="col-md-3" style="margin-top: 7px">Pilih Obat</label>
                     <div class="col-md-9">
                         <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                 id="resep_nama_obat">
@@ -2097,7 +2098,7 @@
                     <div class="row">
                         <label class="col-md-12" style="color: black"><b class="blink_me">Obat Kandungan Serupa</b></label>
                         <input type="hidden" value="N" id="flag-obat-serupa">
-                        <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
+                        <label class="col-md-3" style="margin-top: 7px">Pilih Obat</label>
                         <div class="col-md-9">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                     id="resep_nama_obat_serupa">
@@ -2174,7 +2175,7 @@
                     </div>
                 </div>
                 <hr/>
-                <div class="row" style="margin-top: -10px">
+                <div class="row" style="margin-top: -10px" id="btn-add-resep">
                     <div class="col-md-12">
                         <button class="btn btn-success" onclick="addObatToList()"><i class="fa fa-plus"></i> Tambah
                         </button>
@@ -2214,9 +2215,43 @@
                         <tbody id="body_detail_racik">
                         </tbody>
                     </table>
+
+                    <div id="informasi-racik">
+                        <div class="row">
+                            <div class="col-md-3">
+                                Signa
+                            </div>
+                            <div class="col-md-5">
+                                <%--<button class="btn btn-sm btn-warning" onclick="showModalKeterangan('0')">Tambah</button>--%>
+                                <%--<button class="btn btn-sm btn-danger" onclick="hapusKeterangan('0')">Hapus</button>--%>
+                                <textarea cols="100%" rows="3" class="form-control" id="signa-racik">
+                            </textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                Qty Kemasan
+                            </div>
+                            <div class="col-md-3">
+                                    <input type="number" class="form-control" id="qty-kemasan-racik"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                Kemasan
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-control" id="kemasan-racik">
+                                    <option value="Capsule"> Capsule </option>
+                                    <option value="Puser"> Puyer </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
                 </div>
-                <div class="box-header with-border">
-                </div>
+                <%--<div class="box-header with-border">--%>
+                <%--</div>--%>
                 <div class="row" style="margin-top: 10px">
                     <div class="form-group">
                         <div class="col-md-6">

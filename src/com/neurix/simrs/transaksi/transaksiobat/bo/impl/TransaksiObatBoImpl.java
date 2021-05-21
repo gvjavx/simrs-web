@@ -108,15 +108,16 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                 transaksiObatDetail.setIdRacik(obatDetailEntity.getIdRacik());
                 transaksiObatDetail.setNamaRacik(obatDetailEntity.getNamaRacik());
                 transaksiObatDetail.setHariKronis(obatDetailEntity.getHariKronis());
+                transaksiObatDetail.setKeterangan(obatDetailEntity.getKeterangan());
 
-                if("Y".equalsIgnoreCase(obatDetailEntity.getFlagRacik())){
-                    if(!obatDetailEntity.getIdRacik().equalsIgnoreCase(idRacik)){
-                        idRacik = obatDetailEntity.getIdRacik();
-                        transaksiObatDetail.setKeterangan(obatDetailEntity.getKeterangan());
-                    }
-                }else{
-                    transaksiObatDetail.setKeterangan(obatDetailEntity.getKeterangan());
-                }
+//                if("Y".equalsIgnoreCase(obatDetailEntity.getFlagRacik())){
+//                    if(!obatDetailEntity.getIdRacik().equalsIgnoreCase(idRacik)){
+//                        idRacik = obatDetailEntity.getIdRacik();
+//                        transaksiObatDetail.setKeterangan(obatDetailEntity.getKeterangan());
+//                    }
+//                }else{
+//                    transaksiObatDetail.setKeterangan(obatDetailEntity.getKeterangan());
+//                }
 
                 ImSimrsObatEntity obatEntity = getObatById(obatDetailEntity.getIdObat());
                 if (obatEntity != null) {
@@ -2747,6 +2748,23 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         }
 
         return listObatBatch;
+    }
+
+    @Override
+    public String getFlagIsRacikInTransaksiObatDetail(String idPermintaan) throws GeneralBOException {
+        logger.info("[TransaksiObatBoImpl.getFlagIsRacikInTransaksiObatDetail] Start >>>");
+
+        String flag = "";
+
+        try {
+            flag = transaksiObatDetailDao.getFlagIsRacikInTransaksiObatDetail(idPermintaan);
+        } catch (HibernateException e){
+            logger.error("[TransaksiObatBoImpl.getFlagIsRacikInTransaksiObatDetail] ERROR.", e);
+            throw new GeneralBOException("[TransaksiObatBoImpl.getFlagIsRacikInTransaksiObatDetail] ERROR." + e.getMessage());
+        }
+
+        logger.info("[TransaksiObatBoImpl.getFlagIsRacikInTransaksiObatDetail] End <<<");
+        return flag;
     }
 
     private void saveTransaksiStokObatMasukKarnaReture(TransaksiObatDetail bean){
