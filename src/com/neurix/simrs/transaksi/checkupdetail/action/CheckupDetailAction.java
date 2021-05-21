@@ -5091,13 +5091,13 @@ public class CheckupDetailAction extends BaseMasterAction {
                     if(headerCheckup != null){
                         reportParams.put("ttdPasien", headerCheckup.getTtdPasien());
                         reportParams.put("ttdDokter", headerCheckup.getTtdDokter());
-                        reportParams.put("lab", headerCheckup.getPenunjangLab());
-                        reportParams.put("radiologi", headerCheckup.getPenunjangRadiologi());
+                        reportParams.put("penunjangLab", headerCheckup.getPenunjangLab());
+                        reportParams.put("penunjangRadiologi", headerCheckup.getPenunjangRadiologi());
                         reportParams.put("kondisiPulang", headerCheckup.getKondisiPulang());
                         reportParams.put("keadaanPulang", headerCheckup.getKeadaanPulang());
                         reportParams.put("penyakit", headerCheckup.getPenyakitDahulu());
                         reportParams.put("tglKeluar", headerCheckup.getStTglKeluar());
-                        reportParams.put("terapi", headerCheckup.getTerapi());
+                        reportParams.put("terapiPulang", headerCheckup.getTerapi());
                         reportParams.put("tindakLanjut", headerCheckup.getTindakLanjut());
                     }
                 }

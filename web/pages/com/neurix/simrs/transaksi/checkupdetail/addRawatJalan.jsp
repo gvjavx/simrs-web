@@ -831,7 +831,7 @@
                             </button>
                             <table class="table table-bordered table-striped table-hover" id="tabel_tindakan">
                                 <thead>
-                                <tr>
+                                <tr bgcolor="#90ee90">
                                     <td width="14%">Waktu</td>
                                     <td>Tindakan</td>
                                     <td align="center" width="10%">Action</td>

@@ -1939,6 +1939,7 @@ function listLab() {
                 if ("paket_perusahaan" == jenisPeriksaPasien || "paket_individu" == jenisPeriksaPasien) {
                     table += "<tr>" +
                         "<td>" + dateFormat + "</td>" +
+                        '<td>'+item.idHeaderPemeriksaan+'</td>'+
                         "<td>" + item.kategoriLabName + ' ' +periksa+ ' ' +cito+ "</td>" +
                         "<td>" + status + "</td>" +
                         "<td align='center'>" + print + crn + "</td>" +

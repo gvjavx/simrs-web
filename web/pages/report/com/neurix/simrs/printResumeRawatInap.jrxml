@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printResumeRawatInap" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.7715610000000115"/>
 	<property name="ireport.x" value="19"/>
-	<property name="ireport.y" value="732"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -82,9 +82,9 @@
 	<parameter name="alasan" class="java.lang.String"/>
 	<parameter name="penyakit" class="java.lang.String"/>
 	<parameter name="pemeriksaanFisik" class="java.lang.String"/>
-	<parameter name="lab" class="java.lang.String"/>
-	<parameter name="radiologi" class="java.lang.String"/>
-	<parameter name="terapi" class="java.lang.String"/>
+	<parameter name="penunjangLab" class="java.lang.String"/>
+	<parameter name="penunjangRadiologi" class="java.lang.String"/>
+	<parameter name="terapiPulang" class="java.lang.String"/>
 	<parameter name="indikasi" class="java.lang.String"/>
 	<parameter name="catatanKlinis" class="java.lang.String"/>
 	<parameter name="keadaanPulang" class="java.lang.String"/>
@@ -414,7 +414,7 @@ WHERE id_detail_checkup = $P{reportParams.idDetailCheckup}]]>
 				<textElement verticalAlignment="Top" markup="html">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{terapi} == null ? "" : $P{terapi}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{terapiPulang} == null ? "" : $P{terapiPulang}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="430" width="90" height="15" uuid="f018a776-9c80-4c3d-a3a8-5fda82a52326"/>
