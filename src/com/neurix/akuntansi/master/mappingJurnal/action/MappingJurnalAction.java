@@ -3,6 +3,8 @@ package com.neurix.akuntansi.master.mappingJurnal.action;
 //import com.neurix.authorization.company.bo.AreaBo;
 import com.neurix.akuntansi.master.mappingJurnal.bo.MappingJurnalBo;
 import com.neurix.akuntansi.master.mappingJurnal.model.MappingJurnal;
+import com.neurix.akuntansi.master.trans.bo.TransBo;
+import com.neurix.akuntansi.master.trans.model.Trans;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -16,6 +18,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Ferdi on 05/02/2015.
@@ -24,8 +27,18 @@ import java.util.List;
 public class MappingJurnalAction extends BaseMasterAction {
     protected static transient Logger logger = Logger.getLogger(MappingJurnalAction.class);
     private MappingJurnalBo mappingJurnalBoProxy;
+    private TransBo transBoProxy;
     private MappingJurnal mappingJurnal;
     private String transId;
+
+
+    public TransBo getTransBoProxy() {
+        return transBoProxy;
+    }
+
+    public void setTransBoProxy(TransBo transBoProxy) {
+        this.transBoProxy = transBoProxy;
+    }
 
     public String getTransId() {
         return transId;
@@ -123,7 +136,7 @@ public class MappingJurnalAction extends BaseMasterAction {
     public String edit() {
         logger.info("[MappingJurnalAction.edit] start process >>>");
         String transId = getTransId();
-        List<MappingJurnal> mappingJurnalList = new ArrayList<>();
+        List<MappingJurnal> mappingJurnalList;
         MappingJurnal search = new MappingJurnal();
         search.setTransId(transId);
         search.setFlag("Y");
@@ -141,13 +154,25 @@ public class MappingJurnalAction extends BaseMasterAction {
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
             return ERROR;
         }
+
+        Trans trans = transBoProxy.getByTransId(transId);
+        if (trans != null) {
         MappingJurnal edit = new MappingJurnal();
         for (MappingJurnal mappingJurnal1 : mappingJurnalList){
             edit.setTransId(mappingJurnal1.getTransId());
             edit.setTipeJurnalId(mappingJurnal1.getTipeJurnalId());
             break;
         }
+            edit.setTransName(trans.getTransName());
+            edit.setIsPengajuanBiaya(trans.getFlagPengajuanBiaya());
+            edit.setTipeJurnalId(trans.getTipeJurnalId());
+            edit.setIsOtomatis(trans.getIsOtomatis());
+            edit.setIsSumberBaru(trans.getFlagSumberBaru());
+            edit.setCreatedWho(trans.getCreatedWho());
+            edit.setCreatedDate(trans.getCreatedDate());
+            edit.setMaster(trans.getMaster());
         mappingJurnal=edit;
+        }
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.setAttribute("listOfResultMapping",mappingJurnalList);
 
@@ -168,7 +193,7 @@ public class MappingJurnalAction extends BaseMasterAction {
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = mappingJurnalBoProxy.saveErrorMessage(e.getMessage(), "liburBO.delete");
+                logId = mappingJurnalBoProxy.saveErrorMessage(e.getMessage(), "mappingJurnalBoProxy.delete");
             } catch (GeneralBOException e1) {
                 logger.error("[MappingJurnalAction.delete] Error when saving error,", e1);
                 return ERROR;
@@ -177,13 +202,26 @@ public class MappingJurnalAction extends BaseMasterAction {
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
             return ERROR;
         }
+
+        Trans trans = transBoProxy.getByTransId(transId);
+        if (trans != null) {
         MappingJurnal delete = new MappingJurnal();
         for (MappingJurnal mappingJurnal1 : mappingJurnalList){
             delete.setTransId(mappingJurnal1.getTransId());
             delete.setTipeJurnalId(mappingJurnal1.getTipeJurnalId());
             break;
         }
+            delete.setTransName(trans.getTransName());
+            delete.setIsPengajuanBiaya(trans.getFlagPengajuanBiaya());
+            delete.setTipeJurnalId(trans.getTipeJurnalId());
+            delete.setIsOtomatis(trans.getIsOtomatis());
+            delete.setIsSumberBaru(trans.getFlagSumberBaru());
+            delete.setCreatedWho(trans.getCreatedWho());
+            delete.setCreatedDate(trans.getCreatedDate());
+            delete.setMaster(trans.getMaster());
         mappingJurnal=delete;
+
+        }
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.setAttribute("listOfResultMapping",mappingJurnalList);
 
@@ -195,7 +233,7 @@ public class MappingJurnalAction extends BaseMasterAction {
     public String view() {
         logger.info("[MappingJurnalAction.view] start process >>>");
         String transId = getTransId();
-        List<MappingJurnal> mappingJurnalList = new ArrayList<>();
+        List<MappingJurnal> mappingJurnalList;
         MappingJurnal search = new MappingJurnal();
         search.setTransId(transId);
         search.setFlag("Y");
@@ -204,22 +242,33 @@ public class MappingJurnalAction extends BaseMasterAction {
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = mappingJurnalBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
+                logId = mappingJurnalBoProxy.saveErrorMessage(e.getMessage(), "mappingJurnalBoProxy.getByCriteria");
             } catch (GeneralBOException e1) {
-                logger.error("[liburAction.saveAdd] Error when saving error,", e1);
+                logger.error("[mappingJurnalAction.view] Error when view error,", e1);
                 return ERROR;
             }
-            logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            logger.error("[mappingJurnalAction.view] Error when adding item ," + "[" + logId + "] Found problem when view data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when view data, please inform to your admin.\n" + e.getMessage());
             return ERROR;
         }
+        Trans trans = transBoProxy.getByTransId(transId);
+        if (trans != null) {
         MappingJurnal view = new MappingJurnal();
         for (MappingJurnal mappingJurnal1 : mappingJurnalList){
             view.setTransId(mappingJurnal1.getTransId());
             view.setTipeJurnalId(mappingJurnal1.getTipeJurnalId());
             break;
         }
+            view.setTransName(trans.getTransName());
+            view.setIsPengajuanBiaya(trans.getFlagPengajuanBiaya());
+            view.setTipeJurnalId(trans.getTipeJurnalId());
+            view.setIsOtomatis(trans.getIsOtomatis());
+            view.setIsSumberBaru(trans.getFlagSumberBaru());
+            view.setCreatedWho(trans.getCreatedWho());
+            view.setCreatedDate(trans.getCreatedDate());
+            view.setMaster(trans.getMaster());
         mappingJurnal=view;
+        }
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.setAttribute("listOfResultMapping",mappingJurnalList);
 
@@ -232,7 +281,7 @@ public class MappingJurnalAction extends BaseMasterAction {
         return null;
     }
 
-    public String saveEdit(){
+    /*public String saveAndEdit() {
         logger.info("[MappingJurnalAction.saveEdit] start process >>>");
         try {
             MappingJurnal dataMapping = getMappingJurnal();
@@ -252,12 +301,13 @@ public class MappingJurnalAction extends BaseMasterAction {
                 for (MappingJurnal dataLama : mappingLama){
                     //jika sama hanya diupdate
                     if (dataBaru.getKodeRekening().equalsIgnoreCase(dataLama.getKodeRekening())){
+                        dataBaru.setTipeJurnalId(dataLama.getTipeJurnalId());
+                        dataBaru.setTransName(dataLama.getTransName());
                         dataBaru.setMappingJurnalId(dataLama.getMappingJurnalId());
                         dataBaru.setDivisiId(dataLama.getDivisiId());
                         dataBaru.setCreatedWho(dataLama.getCreatedWho());
                         dataBaru.setCreatedDate(dataLama.getCreatedDate());
                         dataBaru.setTransId(dataLama.getTransId());
-                        dataBaru.setTipeJurnalId(dataLama.getTipeJurnalId());
                         dataBaru.setLastUpdateWho(userLogin);
                         dataBaru.setLastUpdate(updateTime);
                         dataBaru.setAction("U");
@@ -322,7 +372,158 @@ public class MappingJurnalAction extends BaseMasterAction {
         logger.info("[MappingJurnalAction.saveEdit] end process <<<");
 
         return "success_save_edit";
+    }*/
+
+
+    public String saveEdit() {
+        logger.info("[MappingJurnalAction.saveEdit] start process >>>");
+        try {
+            MappingJurnal dataMapping = getMappingJurnal();
+            HttpSession session = ServletActionContext.getRequest().getSession();
+            List<MappingJurnal> mappingBaru = (List<MappingJurnal>) session.getAttribute("listOfResultMapping");
+
+            Map<String, MappingJurnal> mappingJurnal = mappingJurnalBoProxy.getListMappingJurnal(dataMapping.getTransId());
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            for (MappingJurnal dataBaru : mappingBaru) {
+                MappingJurnal old = mappingJurnal.get(dataBaru.getKodeRekening());
+                if (old != null && dataBaru.getKodeRekening().equalsIgnoreCase(old.getKodeRekening())) {
+                    dataBaru.setMappingJurnalId(old.getMappingJurnalId());
+                    dataBaru.setDivisiId(old.getDivisiId());
+                    dataBaru.setCreatedWho(old.getCreatedWho());
+                    dataBaru.setCreatedDate(old.getCreatedDate());
+                    dataBaru.setTransId(old.getTransId());
+                    dataBaru.setTipeJurnalId(old.getTipeJurnalId());
+                    dataBaru.setLastUpdateWho(userLogin);
+                    dataBaru.setLastUpdate(updateTime);
+                    dataBaru.setAction("U");
+                    dataBaru.setFlag("Y");
+                    mappingJurnalBoProxy.saveEdit(dataBaru);
+
+                    mappingJurnal.remove(old.getKodeRekening());
+                } else {
+                    dataBaru.setTipeJurnalId(dataMapping.getTipeJurnalId());
+                    dataBaru.setTransId(dataMapping.getTransId());
+                    dataBaru.setCreatedWho(userLogin);
+                    dataBaru.setLastUpdate(updateTime);
+                    dataBaru.setCreatedDate(updateTime);
+                    dataBaru.setLastUpdateWho(userLogin);
+                    dataBaru.setAction("C");
+                    dataBaru.setFlag("Y");
+                    mappingJurnalBoProxy.saveAdd(dataBaru);
+                }
+
+            }
+            //jika data tidak ada pada data baru maka dihapus
+            if (mappingJurnal.size() > 0) {
+                mappingJurnal.forEach((k, dataLama) -> {
+                    dataLama.setLastUpdateWho(userLogin);
+                    dataLama.setLastUpdate(updateTime);
+                    dataLama.setAction("D");
+                    dataLama.setFlag("N");
+                    mappingJurnalBoProxy.saveDelete(dataLama);
+                });
+
+            }
+
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = mappingJurnalBoProxy.saveErrorMessage(e.getMessage(), "MappingJurnalBO.saveEdit");
+            } catch (GeneralBOException e1) {
+                logger.error("[MappingJurnalAction.saveEdit] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[MappingJurnalAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[MappingJurnalAction.saveEdit] end process <<<");
+
+        return "success_save_edit";
     }
+
+
+    public String saveEditMappingTransaction() {
+        logger.info("[MappingJurnalAction.saveEditMappingTransaction] start process >>>");
+        MappingJurnal dataMapping = getMappingJurnal();
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<MappingJurnal> mappingBaru = (List<MappingJurnal>) session.getAttribute("listOfResultMapping");
+
+        Map<String, MappingJurnal> mappingJurnal = mappingJurnalBoProxy.getListMappingJurnal(dataMapping.getTransId());
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+        List<MappingJurnal> detail = new ArrayList<>();
+        for (MappingJurnal dataBaru : mappingBaru) {
+            MappingJurnal old = mappingJurnal.get(dataBaru.getKodeRekening());
+            if (old != null && dataBaru.getKodeRekening().equalsIgnoreCase(old.getKodeRekening())) {
+                dataBaru.setMappingJurnalId(old.getMappingJurnalId());
+                dataBaru.setDivisiId(old.getDivisiId());
+                dataBaru.setTransId(old.getTransId());
+                dataBaru.setTipeJurnalId(old.getTipeJurnalId());
+                dataBaru.setLastUpdateWho(userLogin);
+                dataBaru.setLastUpdate(updateTime);
+                dataBaru.setAction("U");
+                dataBaru.setFlag("Y");
+//                    mappingJurnalBoProxy.saveEdit(dataBaru);
+                detail.add(dataBaru);
+                mappingJurnal.remove(old.getKodeRekening());
+            } else {
+                dataBaru.setTipeJurnalId(dataMapping.getTipeJurnalId());
+                dataBaru.setTransId(dataMapping.getTransId());
+                dataBaru.setCreatedWho(userLogin);
+                dataBaru.setLastUpdate(updateTime);
+                dataBaru.setCreatedDate(updateTime);
+                dataBaru.setLastUpdateWho(userLogin);
+                dataBaru.setAction("C");
+                dataBaru.setFlag("Y");
+                detail.add(dataBaru);
+//                    mappingJurnalBoProxy.saveAdd(dataBaru);
+            }
+
+        }
+        //jika data tidak ada pada data baru maka dihapus
+        if (mappingJurnal.size() > 0) {
+            mappingJurnal.forEach((k, dataLama) -> {
+                MappingJurnal old = mappingJurnalBoProxy.getMappingJurnalById(dataLama.getMappingJurnalId());
+                old.setLastUpdateWho(userLogin);
+                old.setLastUpdate(updateTime);
+                old.setAction("D");
+                old.setFlag("N");
+                detail.add(old);
+//                    mappingJurnalBoProxy.saveDelete(dataLama);
+            });
+
+        }
+        try {
+            MappingJurnal status = mappingJurnalBoProxy.editMappingJurnalTransaction(dataMapping,detail);
+
+            if (status.getTransId() != null) {
+                session.setAttribute("param_id",status.getTransId());
+                return SUCCESS;
+            }
+
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = mappingJurnalBoProxy.saveErrorMessage(e.getMessage(), "MappingJurnalBO.saveEdit");
+            } catch (GeneralBOException e1) {
+                logger.error("[MappingJurnalAction.saveEditMappingTransaction] Error when saving error,", e1);
+                return ERROR;
+    }
+            logger.error("[MappingJurnalAction.saveEditMappingTransaction] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[MappingJurnalAction.saveEditMappingTransaction] end process <<<");
+
+        return "success_save_edit";
+    }
+
 
     public String saveDelete(){
         logger.info("[MappingJurnalAction.saveDelete] start process >>>");
@@ -356,56 +557,151 @@ public class MappingJurnalAction extends BaseMasterAction {
 
         return "success_save_delete";
     }
+    public String saveDeleteMappingTransaction() {
+        logger.info("[MappingJurnalAction.saveDeleteMappingTransaction] start process >>>");
+        try {
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            HttpSession session = ServletActionContext.getRequest().getSession();
+            MappingJurnal dataMapping = getMappingJurnal();
+            List<MappingJurnal> listOfResult = (List<MappingJurnal>) session.getAttribute("listOfResultMapping");
+            for (MappingJurnal delete : listOfResult) {
+                delete.setLastUpdate(updateTime);
+                delete.setLastUpdateWho(userLogin);
+                delete.setAction("D");
+                delete.setFlag("N");
+
+                mappingJurnalBoProxy.saveDeleteMappingTransaction(dataMapping, listOfResult);
+            }
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = mappingJurnalBoProxy.saveErrorMessage(e.getMessage(), "MappingJurnalBO.saveDeleteMappingTransaction");
+            } catch (GeneralBOException e1) {
+                logger.error("[MappingJurnalAction.saveDeleteMappingTransaction] Error when delete error,", e1);
+                return ERROR;
+            }
+            logger.error("[MappingJurnalAction.saveDeleteMappingTransaction] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving delete data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[MappingJurnalAction.saveDeleteMappingTransaction] end process <<<");
+
+        return "success_save_delete";
+    }
+
+    public String saveAddMappingJurnalTransaction() {
+        logger.info("[MappingJurnalAction.saveAddMappingJurnalTransaction] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<MappingJurnal> listOfResult = (List<MappingJurnal>) session.getAttribute("listOfResultMapping");
+
+        List<MappingJurnal> detail = new ArrayList<>();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        String resultBack = "";
+        MappingJurnal data = getMappingJurnal();
+
+        for (MappingJurnal mappingJurnal : listOfResult) {
+            mappingJurnal.setTipeJurnalId(data.getTipeJurnalId());
+            mappingJurnal.setTransName(data.getTransName());
+            mappingJurnal.setCreatedWho(userLogin);
+            mappingJurnal.setLastUpdate(updateTime);
+            mappingJurnal.setCreatedDate(updateTime);
+            mappingJurnal.setLastUpdateWho(userLogin);
+            mappingJurnal.setAction("C");
+            mappingJurnal.setFlag("Y");
+            detail.add(mappingJurnal);
+        }
+        try {
+            MappingJurnal status = mappingJurnalBoProxy.saveMappingJurnalTransaction(data, detail);
+            if (status.getTransId() != null) {
+                session.setAttribute("param_id",status.getTransId());
+                return SUCCESS;
+            }
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = mappingJurnalBoProxy.saveErrorMessage(e.getMessage(), "mappingJurnalBoProxy.saveAdd");
+            } catch (GeneralBOException e1) {
+                logger.error("[mappingJurnalAction.saveAddMappingJurnalTransaction] Error when saving error,", e1);
+                resultBack = ERROR;
+                return resultBack;
+            }
+            logger.error("[mappingJurnalAction.saveAddMappingJurnalTransaction] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            resultBack = ERROR;
+            return resultBack;
+        }
+        session.removeAttribute("listOfResult");
+
+        logger.info("[mappingJurnalAction.saveAddMappingJurnalTransaction] end process >>>");
+        return resultBack;
+    }
 
     public String saveAdd(){
         logger.info("[MappingJurnalAction.saveAdd] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<MappingJurnal> listOfResult = (List<MappingJurnal>) session.getAttribute("listOfResultMapping");
-        MappingJurnal data = getMappingJurnal();
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
+        String resultBack = "";
+        MappingJurnal data = getMappingJurnal();
         try {
-            //RAKA-28APR2021 ===> looping dalam BO agar tidak ada kemungkinan hanya sebagian data yg berhasil disimpan
-            mappingJurnalBoProxy.saveAddList(listOfResult, data, userLogin, updateTime);
+            if (!resultBack.equals(ERROR)) {
+                for (MappingJurnal mappingJurnal : listOfResult) {
+                    mappingJurnal.setTipeJurnalId(data.getTipeJurnalId());
+                    mappingJurnal.setCreatedWho(userLogin);
+                    mappingJurnal.setLastUpdate(updateTime);
+                    mappingJurnal.setCreatedDate(updateTime);
+                    mappingJurnal.setLastUpdateWho(userLogin);
+                    mappingJurnal.setAction("C");
+                    mappingJurnal.setFlag("Y");
 
-//            for (MappingJurnal mappingJurnal : listOfResult){
-//                mappingJurnal.setTipeJurnalId(data.getTipeJurnalId());
-//                mappingJurnal.setTransId(data.getTransId());
-//                mappingJurnal.setCreatedWho(userLogin);
-//                mappingJurnal.setLastUpdate(updateTime);
-//                mappingJurnal.setCreatedDate(updateTime);
-//                mappingJurnal.setLastUpdateWho(userLogin);
-//                mappingJurnal.setAction("C");
-//                mappingJurnal.setFlag("Y");
-//
-//                mappingJurnalBoProxy.saveAdd(mappingJurnal);
-//            }
-
+                    mappingJurnal.setTransId(transId);
+                    mappingJurnal.setTransName(data.getTransName());
+                    mappingJurnalBoProxy.saveAdd(mappingJurnal);
+                    resultBack = "success_save_add";
+                }
+            }
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = mappingJurnalBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
+                logId = mappingJurnalBoProxy.saveErrorMessage(e.getMessage(), "mappingJurnalBoProxy.saveAdd");
             } catch (GeneralBOException e1) {
-                logger.error("[liburAction.saveAdd] Error when saving error,", e1);
-                return ERROR;
+                logger.error("[mappingJurnalAction.saveAdd] Error when saving error,", e1);
+                resultBack = ERROR;
+                return resultBack;
             }
-            logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            logger.error("[mappingJurnalAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            resultBack = ERROR;
+            return resultBack;
         }
 
         session.removeAttribute("listOfResult");
 
-        logger.info("[liburAction.saveAdd] end process >>>");
-        return "success_save_add";
+        logger.info("[mappingJurnalAction.saveAdd] end process >>>");
+        return resultBack;
     }
 
     @Override
     public String search() {
         logger.info("[MappingJurnalAction.search] start process >>>");
-        MappingJurnal searchMappingJurnal = getMappingJurnal();
-        List<MappingJurnal> listOfsearchMappingJurnal = new ArrayList();
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        Object param = session.getAttribute("param_id");
+        MappingJurnal searchMappingJurnal;
+        if(param != null){
+            searchMappingJurnal = new MappingJurnal();
+            searchMappingJurnal.setTransId(param.toString());
+            searchMappingJurnal.setFlag("Y");
+            session.removeAttribute("param_id");
+        }
+        else {
+            searchMappingJurnal = getMappingJurnal();
+        }
+
+        List<MappingJurnal> listOfsearchMappingJurnal;
         try {
             listOfsearchMappingJurnal = mappingJurnalBoProxy.getByCriteria(searchMappingJurnal);
         } catch (GeneralBOException e) {
@@ -421,7 +717,6 @@ public class MappingJurnalAction extends BaseMasterAction {
             return ERROR;
         }
 
-        HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultMapping");
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfsearchMappingJurnal);
@@ -467,7 +762,7 @@ public class MappingJurnalAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public void saveKodeRekeningSession(String kodeRekening , String posisi,String master,String bukti, String kodeBarang,String listKirim,String parameter,String kodeRekeningName,String divisiId,String editBiaya) {
+    public void saveKodeRekeningSession(String tipeJurnalId,String kodeRekening, String posisi, String master, String bukti, String kodeBarang, String listKirim, String parameter, String kodeRekeningName, String divisiId, String editBiaya) {
         logger.info("[MappingJurnalAction.savePegawaiShift] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<MappingJurnal> listOfResult = (List<MappingJurnal>) session.getAttribute("listOfResultMapping");
@@ -476,9 +771,17 @@ public class MappingJurnalAction extends BaseMasterAction {
             listOfResult= new ArrayList<>();
         }else{
             for (MappingJurnal mappingJurnal : listOfResult){
-                if (parameter.equalsIgnoreCase(mappingJurnal.getKeterangan())){
-                    save=false;
+                //edited by Aji Noor
+                //penambahan kondisi untuk JKR dibolehkan jika D dan K punya coa sama
+                if(tipeJurnalId.equalsIgnoreCase("JKR") && !posisi.equalsIgnoreCase(mappingJurnal.getPosisi())){
+                    save = true;
                 }
+                else if(!tipeJurnalId.equalsIgnoreCase("JKR") && kodeRekening.equalsIgnoreCase(mappingJurnal.getKodeRekening())){
+                    save = false;
+                }
+                /*if (parameter.equalsIgnoreCase(mappingJurnal.getKeterangan())) {
+                    save=false;
+                }*/
             }
         }
         if (save){
@@ -509,9 +812,9 @@ public class MappingJurnalAction extends BaseMasterAction {
 
     public String cekBeforeSave(String tipeJurnal,String transId,String metode){
         String status="";
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        MappingJurnalBo mappingJurnalBo= (MappingJurnalBo) ctx.getBean("mappingJurnalBoProxy");
+        /*ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         List<MappingJurnal> mappingJurnalList = new ArrayList<>();
+        MappingJurnalBo mappingJurnalBo = (MappingJurnalBo) ctx.getBean("mappingJurnalBoProxy");
         MappingJurnal search = new MappingJurnal();
         search.setFlag("Y");
         search.setTransId(transId);
@@ -525,6 +828,7 @@ public class MappingJurnalAction extends BaseMasterAction {
         if (mappingJurnalList.size()!=0){
             status="Transaksi Billing ini sudah ada , gunakan edit";
         }else{
+        */
             HttpSession session = ServletActionContext.getRequest().getSession();
             List<MappingJurnal> listOfsearch= (List<MappingJurnal>) session.getAttribute("listOfResultMapping");
             boolean adaDebit=false;
@@ -546,18 +850,20 @@ public class MappingJurnalAction extends BaseMasterAction {
                     status="belum ada kode rekening dengan posisi kredit";
                 }
             }
-        }
+//        }
         return status;
     }
 
     public String deleteSessionKodeRekening(String kodeRekening) {
         logger.info("[MappingJurnalAction.deleteDetailPembayaran] start process >>>");
         String status="";
+        String coa = kodeRekening.split(",")[0];
+        String posisi = kodeRekening.split(",")[1];
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<MappingJurnal> mappingJurnalList = (List<MappingJurnal>) session.getAttribute("listOfResultMapping");
         List<MappingJurnal> mappingJurnalArrayList = new ArrayList<>();
         for (MappingJurnal mappingJurnal:mappingJurnalList){
-            if (mappingJurnal.getKodeRekening().equalsIgnoreCase(kodeRekening)){
+            if (mappingJurnal.getKodeRekening().equalsIgnoreCase(coa) && mappingJurnal.getPosisi().equalsIgnoreCase(posisi)) {
             }else{
                 mappingJurnalArrayList.add(mappingJurnal);
             }

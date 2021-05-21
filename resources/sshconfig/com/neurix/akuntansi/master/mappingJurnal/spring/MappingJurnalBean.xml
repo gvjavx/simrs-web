@@ -6,7 +6,9 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
     <bean id="mappingJurnalAction" class="com.neurix.akuntansi.master.mappingJurnal.action.MappingJurnalAction"
-          p:mappingJurnalBoProxy-ref="mappingJurnalBoProxy" />
+          p:mappingJurnalBoProxy-ref="mappingJurnalBoProxy"
+          p:transBoProxy-ref="transBoProxy"
+    />
 
     <bean id="mappingJurnalBo" class="com.neurix.akuntansi.master.mappingJurnal.bo.impl.MappingJurnalBoImpl"
           p:mappingJurnalDao-ref="mappingJurnalDao"
@@ -31,6 +33,11 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="getByCriteria">readOnly</prop>
+                <prop key="getListMappingJurnal">readOnly</prop>
+                <prop key="saveDelete">PROPAGATION_REQUIRED</prop>
+                <prop key="saveDelete">PROPAGATION_REQUIRED</prop>
+                <prop key="saveEditMappingTransaction">PROPAGATION_REQUIRED</prop>
+                <prop key="saveAddMappingJurnalTransaction">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

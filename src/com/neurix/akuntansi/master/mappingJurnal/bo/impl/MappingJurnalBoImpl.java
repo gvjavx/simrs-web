@@ -12,14 +12,14 @@ import com.neurix.akuntansi.master.tipeJurnal.model.ImTipeJurnalEntity;
 import com.neurix.akuntansi.master.trans.dao.TransDao;
 import com.neurix.akuntansi.master.trans.model.ImTransEntity;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import org.apache.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
 
+import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -36,24 +36,13 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
     private TransDao transDao;
     private KodeRekeningDao kodeRekeningDao;
 
-    public KodeRekeningDao getKodeRekeningDao() {
-        return kodeRekeningDao;
-    }
 
     public void setKodeRekeningDao(KodeRekeningDao kodeRekeningDao) {
         this.kodeRekeningDao = kodeRekeningDao;
     }
 
-    public TipeJurnalDao getTipeJurnalDao() {
-        return tipeJurnalDao;
-    }
-
     public void setTipeJurnalDao(TipeJurnalDao tipeJurnalDao) {
         this.tipeJurnalDao = tipeJurnalDao;
-    }
-
-    public TransDao getTransDao() {
-        return transDao;
     }
 
     public void setTransDao(TransDao transDao) {
@@ -68,22 +57,19 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
         MappingJurnalBoImpl.logger = logger;
     }
 
-    public MappingJurnalDao getMappingJurnalDao() {
-        return mappingJurnalDao;
-    }
-
     public void setMappingJurnalDao(MappingJurnalDao mappingJurnalDao) {
         this.mappingJurnalDao = mappingJurnalDao;
     }
 
     @Override
     public void saveDelete(MappingJurnal bean) throws GeneralBOException {
-        logger.info("[saveDelete.saveDelete] start process >>>");
+        logger.info("[MappingJurnalBoImpl.saveDelete] start process >>>");
         if (bean!=null) {
-            ImMappingJurnalEntity imMappingJurnalEntity = new ImMappingJurnalEntity();
+            ImMappingJurnalEntity imMappingJurnalEntity;
             try {
                 // Get data from database by ID
-                imMappingJurnalEntity = mappingJurnalDao.getById("mappingJurnalId", bean.getMappingJurnalId());
+                String mappinfgJurnalId = bean.getMappingJurnalId();
+                imMappingJurnalEntity = mappingJurnalDao.getById("mappingJurnalId", mappinfgJurnalId);
             } catch (HibernateException e) {
                 logger.error("[MappingJurnalBoImpl.saveDelete] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
@@ -114,6 +100,227 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
     }
 
     @Override
+    public MappingJurnal saveMappingJurnalTransaction(MappingJurnal header, List<MappingJurnal> detail) throws GeneralBOException {
+        String transId = transDao.getNextTransId();
+        MappingJurnal result = null;
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        //simpan transaksi
+        ImTransEntity imTransEntity = new ImTransEntity();
+        imTransEntity.setTransId(transId);
+        imTransEntity.setTransName(header.getTransName());
+        imTransEntity.setMaster(header.getMaster());
+        imTransEntity.setFlagSumberBaru(header.getIsSumberBaru() == null ? "N" : "Y");
+        imTransEntity.setIsOtomatis(header.getIsOtomatis() == null ? "N" : "Y");
+        imTransEntity.setFlagPengajuanBiaya(header.getIsPengajuanBiaya() == null ? "N" : "Y");
+
+        imTransEntity.setTipeJurnalId(header.getTipeJurnalId());
+        imTransEntity.setFlag("Y");
+        imTransEntity.setAction("C");
+        imTransEntity.setCreatedWho(userLogin);
+        imTransEntity.setLastUpdateWho(userLogin);
+        imTransEntity.setCreatedDate(updateTime);
+        imTransEntity.setLastUpdate(updateTime);
+        try {
+            // insert into database
+            transDao.addAndSave(imTransEntity);
+        } catch (Exception e) {
+            logger.error("[MappingJurnalBoImpl.saveMappingJurnalTransaction] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when save data transaksi , please inform to your admin...," + e.getMessage());
+        }
+
+        if (detail.size() > 0) {
+            for (MappingJurnal mappingJurnal : detail) {
+                // creating object entity serializable
+                mappingJurnal.setTransId(transId);
+                try {
+                    saveAdd(mappingJurnal);
+                } catch (HibernateException e) {
+                    logger.error("[MappingJurnalBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data MappingJurnal, please info to your admin..." + e.getMessage());
+                }
+                result = mappingJurnal;
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public MappingJurnal editMappingJurnalTransaction(MappingJurnal header, List<MappingJurnal> detail) throws GeneralBOException {
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        String transId = header.getTransId();
+        ImTransEntity transEntity = null;
+        try {
+            transEntity = transDao.getById("transId",transId);
+            if(transEntity == null){
+                throw new Exception();
+            }
+        } catch (Exception e) {
+            logger.error("[MappingJurnalBoImpl.editMappingJurnalTransaction] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when save data transaksi , please inform to your admin...," + e.getMessage());
+        }
+        transEntity.setTransName(header.getTransName());
+        transEntity.setMaster(header.getMaster());
+        transEntity.setFlagSumberBaru(header.getIsSumberBaru() == null ? "N" : "Y");
+        transEntity.setIsOtomatis(header.getIsOtomatis() == null ? "N" : "Y");
+        transEntity.setFlagPengajuanBiaya(header.getIsPengajuanBiaya() == null ? "N" : "Y");
+
+        transEntity.setTipeJurnalId(header.getTipeJurnalId());
+        transEntity.setFlag("Y");
+        transEntity.setAction("U");
+        transEntity.setCreatedWho(userLogin);
+        transEntity.setLastUpdateWho(userLogin);
+        transEntity.setCreatedDate(updateTime);
+        transEntity.setLastUpdate(updateTime);
+        try {
+            // insert into database
+            transDao.addAndSave(transEntity);
+        } catch (Exception e) {
+            logger.error("[MappingJurnalBoImpl.editMappingJurnalTransaction] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when save data transaksi , please inform to your admin...," + e.getMessage());
+        }
+        if (detail.size() > 0) {
+            for (MappingJurnal mappingJurnal : detail) {
+                // creating object entity serializable
+                mappingJurnal.setTransId(transId);
+                try {
+                    if(mappingJurnal.getAction().equalsIgnoreCase("C")){
+                        saveAdd(mappingJurnal);
+                    }
+                    else if(mappingJurnal.getAction().equalsIgnoreCase("U")){
+                        saveEdit(mappingJurnal);
+                    }
+                    else {
+                        saveDelete(mappingJurnal);
+                    }
+                } catch (HibernateException e) {
+                    logger.error("[MappingJurnalBoImpl.editMappingJurnalTransaction] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data MappingJurnal, please info to your admin..." + e.getMessage());
+                }
+            }
+            HttpSession session = ServletActionContext.getRequest().getSession();
+            session.setAttribute("param_id",transId);
+        }
+
+        return header;
+    }
+
+    @Override
+    public Boolean saveDeleteMappingTransaction(MappingJurnal header, List<MappingJurnal> detail) throws GeneralBOException {
+        Boolean result = false;
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        String transId = header.getTransId();
+        ImTransEntity transEntity = null;
+        try {
+            transEntity = transDao.getById("transId",transId);
+            if(transEntity == null){ throw new Exception(); }
+        } catch (Exception e) {
+            logger.error("[MappingJurnalBoImpl.editMappingJurnalTransaction] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when save data transaksi , please inform to your admin...," + e.getMessage());
+        }
+        transEntity.setFlag("N");
+        transEntity.setAction("D");
+        transEntity.setLastUpdateWho(userLogin);
+        transEntity.setLastUpdate(updateTime);
+        try {
+            // insert into database
+            transDao.updateAndSave(transEntity);
+        } catch (Exception e) {
+            logger.error("[MappingJurnalBoImpl.editMappingJurnalTransaction] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when save data transaksi , please inform to your admin...," + e.getMessage());
+        }
+        if (detail.size() > 0) {
+            for (MappingJurnal mappingJurnal : detail) {
+                // creating object entity serializable
+                mappingJurnal.setTransId(transId);
+                mappingJurnal.setAction("D");
+                mappingJurnal.setFlag("N");
+                mappingJurnal.setLastUpdateWho(userLogin);
+                mappingJurnal.setLastUpdate(updateTime);
+                try {
+                        saveDelete(mappingJurnal);
+                } catch (HibernateException e) {
+                    logger.error("[MappingJurnalBoImpl.editMappingJurnalTransaction] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data MappingJurnal, please info to your admin..." + e.getMessage());
+                }
+            }
+            result = true;
+        }
+
+        return result;
+    }
+
+    @Override
+    public Map<String, MappingJurnal> getListMappingJurnal(String transId) {
+        logger.info("[MappingJurnalBoImpl.getListMappingJurnal] start process >>>");
+        Map<String, MappingJurnal> resultList = new HashMap<>();
+        List<ImMappingJurnalEntity> mappingJurnalList;
+        try {
+            mappingJurnalList = mappingJurnalDao.getMappingByTransId(transId);
+        } catch (Exception e) {
+            logger.error("[MappingJurnalBoImpl.getListMappingJurnal] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data MappingJurnal by transaksiId , please inform to your admin...," + e.getMessage());
+        }
+        if (mappingJurnalList.size() > 0) {
+            for (ImMappingJurnalEntity imMappingJurnalEntity : mappingJurnalList) {
+                MappingJurnal mappingJurnal = new MappingJurnal();
+                mappingJurnal.setBukti(imMappingJurnalEntity.getBukti());
+                mappingJurnal.setDivisiId(imMappingJurnalEntity.getDivisiId());
+                mappingJurnal.setEditBiaya(imMappingJurnalEntity.getEditBiaya());
+                mappingJurnal.setKeterangan(imMappingJurnalEntity.getKeterangan());
+                mappingJurnal.setKirimList(imMappingJurnalEntity.getKirimList());
+                mappingJurnal.setKodeBarang(imMappingJurnalEntity.getKodeBarang());
+                mappingJurnal.setKodeRekening(imMappingJurnalEntity.getKodeRekening());
+                mappingJurnal.setTransId(imMappingJurnalEntity.getTransId());
+                mappingJurnal.setMappingJurnalId(imMappingJurnalEntity.getMappingJurnalId());
+                mappingJurnal.setMasterId(imMappingJurnalEntity.getMasterId());
+                mappingJurnal.setPosisi(imMappingJurnalEntity.getPosisi());
+                mappingJurnal.setTipeJurnalId(imMappingJurnalEntity.getTipeJurnalId());
+                resultList.put(mappingJurnal.getKodeRekening(), mappingJurnal);
+            }
+        }
+        logger.info("[MappingJurnalBoImpl.getListMappingJurnal] end process <<<");
+        return resultList;
+    }
+
+    @Override
+    public MappingJurnal getMappingJurnalById(String mappingJurnalId) {
+        MappingJurnal mappingJurnalReturn = null;
+        try {
+            ImMappingJurnalEntity imMappingJurnalEntity = mappingJurnalDao.getById("mappingJurnalId",mappingJurnalId);
+            mappingJurnalReturn = new MappingJurnal();
+            mappingJurnalReturn.setBukti(imMappingJurnalEntity.getBukti());
+            mappingJurnalReturn.setDivisiId(imMappingJurnalEntity.getDivisiId());
+            mappingJurnalReturn.setEditBiaya(imMappingJurnalEntity.getEditBiaya());
+            mappingJurnalReturn.setKeterangan(imMappingJurnalEntity.getKeterangan());
+            mappingJurnalReturn.setKirimList(imMappingJurnalEntity.getKirimList());
+            mappingJurnalReturn.setKodeBarang(imMappingJurnalEntity.getKodeBarang());
+            mappingJurnalReturn.setKodeRekening(imMappingJurnalEntity.getKodeRekening());
+            mappingJurnalReturn.setTransId(imMappingJurnalEntity.getTransId());
+            mappingJurnalReturn.setMappingJurnalId(imMappingJurnalEntity.getMappingJurnalId());
+            mappingJurnalReturn.setMasterId(imMappingJurnalEntity.getMasterId());
+            mappingJurnalReturn.setPosisi(imMappingJurnalEntity.getPosisi());
+            mappingJurnalReturn.setTipeJurnalId(imMappingJurnalEntity.getTipeJurnalId());
+
+            mappingJurnalReturn.setAction(imMappingJurnalEntity.getAction());
+            mappingJurnalReturn.setFlag(imMappingJurnalEntity.getFlag());
+            mappingJurnalReturn.setCreatedDate(imMappingJurnalEntity.getCreatedDate());
+            mappingJurnalReturn.setCreatedWho(imMappingJurnalEntity.getCreatedWho());
+            mappingJurnalReturn.setLastUpdate(imMappingJurnalEntity.getLastUpdate());
+            mappingJurnalReturn.setLastUpdateWho(imMappingJurnalEntity.getLastUpdateWho());
+
+        }catch (Exception e){
+
+        }
+        return mappingJurnalReturn;
+    }
+
+    @Override
     public void saveEdit(MappingJurnal bean) throws GeneralBOException {
         logger.info("[MappingJurnalBoImpl.saveEdit] start process >>>");
 
@@ -121,7 +328,8 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
             ImMappingJurnalEntity imMappingJurnalEntity = null;
             try {
                 // Get data from database by ID
-                imMappingJurnalEntity = mappingJurnalDao.getById("mappingJurnalId", bean.getMappingJurnalId());
+                String mappingJurnalId = bean.getMappingJurnalId();
+                imMappingJurnalEntity = mappingJurnalDao.getById("mappingJurnalId", mappingJurnalId);
             } catch (HibernateException e) {
                 logger.error("[MappingJurnalBoImpl.saveEdit] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data MappingJurnal by Kode MappingJurnal, please inform to your admin...," + e.getMessage());
@@ -153,24 +361,6 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
         }
         logger.info("[MappingJurnalBoImpl.saveEdit] end process <<<");
     }
-
-    //RAKA-28APR2021 ===> melakukan looping save add di BO
-    @Override
-    public void saveAddList(List<MappingJurnal> listBean, MappingJurnal data , String userLogin, Timestamp updateTime) throws GeneralBOException {
-        for (MappingJurnal mappingJurnal : listBean){
-            mappingJurnal.setTipeJurnalId(data.getTipeJurnalId());
-            mappingJurnal.setTransId(data.getTransId());
-            mappingJurnal.setCreatedWho(userLogin);
-            mappingJurnal.setLastUpdate(updateTime);
-            mappingJurnal.setCreatedDate(updateTime);
-            mappingJurnal.setLastUpdateWho(userLogin);
-            mappingJurnal.setAction("C");
-            mappingJurnal.setFlag("Y");
-
-            saveAdd(mappingJurnal);
-        }
-    }
-    //RAKA-end
 
     @Override
     public MappingJurnal saveAdd(MappingJurnal bean) throws GeneralBOException {
@@ -230,11 +420,17 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
         if (searchBean != null) {
             Map hsCriteria = new HashMap();
 
+            if (searchBean.getKodeRekening() != null && !"".equalsIgnoreCase(searchBean.getKodeRekening())) {
+                hsCriteria.put("kode_rekening", searchBean.getKodeRekening());
+            }
             if (searchBean.getTipeJurnalId() != null && !"".equalsIgnoreCase(searchBean.getTipeJurnalId())) {
                 hsCriteria.put("tipe_jurnal_id", searchBean.getTipeJurnalId());
             }
             if (searchBean.getTransId() != null && !"".equalsIgnoreCase(searchBean.getTransId())) {
                 hsCriteria.put("trans_id", searchBean.getTransId());
+            }
+            if (searchBean.getPosisi() != null && !"".equalsIgnoreCase(searchBean.getPosisi())) {
+                hsCriteria.put("posisi", searchBean.getTransId());
             }
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBean.getFlag())) {
@@ -290,6 +486,8 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
                     returnMappingJurnal.setKeterangan(mappingJurnalEntity.getKeterangan());
                     returnMappingJurnal.setKirimList(mappingJurnalEntity.getKirimList());
                     returnMappingJurnal.setKodeRekening(mappingJurnalEntity.getKodeRekening());
+                    returnMappingJurnal.setKodeRekeningBintang(CommonUtil.formatKodeRekeningBintang(mappingJurnalEntity.getKodeRekening()));
+
                     if (mappingJurnalEntity.getKodeRekening()!=null){
                         List<ImKodeRekeningEntity> kodeRekeningList = new ArrayList<>();
                         try {
@@ -311,6 +509,7 @@ public class MappingJurnalBoImpl implements MappingJurnalBo {
                     returnMappingJurnal.setCreatedWho(mappingJurnalEntity.getCreatedWho());
                     returnMappingJurnal.setCreatedDate(mappingJurnalEntity.getCreatedDate());
                     returnMappingJurnal.setLastUpdate(mappingJurnalEntity.getLastUpdate());
+                    returnMappingJurnal.setLastUpdateWho(mappingJurnalEntity.getLastUpdateWho());
                     returnMappingJurnal.setAction(mappingJurnalEntity.getAction());
                     returnMappingJurnal.setFlag(mappingJurnalEntity.getFlag());
 

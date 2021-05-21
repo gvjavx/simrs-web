@@ -44,6 +44,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -1785,6 +1786,40 @@ public class  CommonUtil {
         } catch (Exception e){
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    /*Aji Noor common getComboYear*/
+    public static List<List> initComboPeriode(Integer batasBawah, Integer batasAtas) {
+        List<List> listOfComboPeriode = new ArrayList<>();
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        List listOfPeriode = new ArrayList();
+        int yearBawah = year-batasBawah;
+        int yearAtas = year+batasAtas;
+
+        while (yearBawah <= yearAtas){
+            listOfPeriode.add(yearBawah++);
+        }
+        listOfComboPeriode.addAll(listOfPeriode);
+        return listOfComboPeriode;
+    }
+
+    public static String formatKodeRekeningBintang(String kodeRekening) {
+        String result=kodeRekening;
+        String [] splitKode  =kodeRekening.split("\\.");
+        if(splitKode.length < 5 ) {
+            result="";
+            for (int i = 0; i <= 4; i++) {
+                if (i <= splitKode.length - 1) {
+                    result += splitKode[i];
+                } else {
+                    result += "*";
+                }
+                if (i < 4) {
+                    result += ".";
+                }
+            }
+        }
+        return result;
     }
 
 }

@@ -1,3 +1,6 @@
+------ 2021-05-21 ===> anggap saja titipan
+alter sequence seq_detail_rekanan_ops restart 21;
+
 ------ 2021-05-19 ===> Kebutuhan Report Closing kasir
 INSERT INTO public.im_akun_report_detail (report_detail_id, report_id, rekening_id, flag, action, created_who, last_update_who, created_date, last_update, tipe_laporan) VALUES ('RD00058', 'RPT19', '00005', 'Y', 'C', 'Elvi Sukaisi', 'Elvi Sukaisi', '2021-03-31 16:18:10.025000', '2021-03-31 16:18:10.025000', null);
 INSERT INTO public.im_akun_report_detail (report_detail_id, report_id, rekening_id, flag, action, created_who, last_update_who, created_date, last_update, tipe_laporan) VALUES ('RD00059', 'RPT19', '00006', 'Y', 'C', 'Elvi Sukaisi', 'Elvi Sukaisi', '2021-03-31 16:18:10.076000', '2021-03-31 16:18:10.076000', null);

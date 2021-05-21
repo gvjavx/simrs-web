@@ -8,6 +8,7 @@
 <html>
 <head>
     <%@ include file="/pages/common/header.jsp" %>
+    <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/addrawatpasien.css"/>">
     <script type='text/javascript' src='<s:url value="/dwr/interface/MappingJurnalAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
@@ -118,7 +119,7 @@
                                     <s:form id="mappingJurnalForm" method="post"  theme="simple" namespace="/mappingJurnal" action="saveAdd_mappingJurnal.action" cssClass="form-horizontal">
                                         <s:hidden name="addOrEdit"/>
                                         <s:hidden name="delete"/>
-                                        <table>
+                                        <table >
                                             <tr>
                                                 <td width="10%" align="center">
                                                     <%@ include file="/pages/common/message.jsp" %>
@@ -126,8 +127,100 @@
                                             </tr>
                                         </table>
 
-                                        <table >
+                                        <table width="60%">
                                             <tr>
+                                                <td width="25%">
+                                                    <label class="control-label">
+                                                        <small>Id Transaksi :</small>
+                                                    </label>
+                                                </td>
+                                                <td >
+                                                    <s:textfield id="transId" name="mappingJurnal.transId"
+                                                                 cssClass="form-control" cssStyle="margin-top: 7px"
+                                                                 readonly="true" disabled="true" />
+                                                    <s:hidden id="transId" name="mappingJurnal.transId"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label">
+                                                        <small>Nama Transaksi :</small>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <s:textfield id="transNama" name="mappingJurnal.transName" readonly="true"
+                                                                 cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label">
+                                                        <small>Pengajuan Biaya :</small>
+                                                    </label>
+                                                </td>
+                                                <td class="form-check">
+                                                    <input onclick="isPengajuanBiaya(this.id)" type="checkbox"
+                                                           id="is_pengajuan_biaya" value="Y"
+                                                           name="mappingJurnal.isPengajuanBiaya">
+                                                    <label for="is_pengajuan_biaya"></label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label">
+                                                        <small>Tipe Jurnal :</small>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:action id="initComboTipeJurnal" namespace="/tipeJurnal"
+                                                                  name="initComboTipeJurnal_tipeJurnal"/>
+                                                        <s:select list="#initComboTipeJurnal.listOfComboTipeJurnal"
+                                                                  id="tipeJurnalId" name="mappingJurnal.tipeJurnalId"
+                                                                  listKey="tipeJurnalId" listValue="tipeJurnalName" readonly="true"
+                                                                  headerKey="" headerValue="[Select one]" disabled="true"
+                                                                  onchange="isOtomatis(this.id)"
+                                                                  cssClass="form-control"/>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label">
+                                                        <small>Otomatis :</small>
+                                                    </label>
+                                                </td>
+                                                <td class="form-check">
+                                                    <input onclick="isOtomatis(this.id)" type="checkbox"
+                                                           id="is_otomatis" name="mappingJurnal.isOtomatis" value="Y">
+                                                    <label for="is_otomatis"></label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label">
+                                                        <small>Sumber Baru :</small>
+                                                    </label>
+                                                </td>
+                                                <td class="form-check">
+                                                    <input type="checkbox" id="is_sumber_baru"
+                                                           name="mappingJurnal.isSumberBaru" value="Y">
+                                                    <label for="is_sumber_baru"></label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label">
+                                                        <small>Kelompok Master :</small>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <s:textfield id="master" name="mappingJurnal.master" disabled="true"
+                                                                 cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                                </td>
+                                            </tr>
+
+                                            <%--<tr>
                                                 <td>
                                                     <label class="control-label"><small>Tipe Jurnal :</small></label>
                                                 </td>
@@ -151,14 +244,17 @@
                                                                   listKey="transId" listValue="transName" headerKey="" headerValue="[ Select One ]" cssClass="form-control" />
                                                     </table>
                                                 </td>
-                                            </tr>
+                                            </tr>--%>
+
+
+
                                         </table>
                                         <br>
                                         <br>
                                         <center>
                                             <table id="showdata" width="100%">
                                                 <tr>
-                                                    <td align="center">
+                                                    <td>
                                                         <table style="width: 100%;" class="kodeRekeningTable table table-bordered" id="kodeRekeningTable">
                                                         </table>
                                                     </td>
@@ -196,6 +292,24 @@
 </html>
 <script>
     $(document).ready(function() {
+        var checkPengajuan = '<s:property value="mappingJurnal.isPengajuanBiaya"/>'
+        var checkOtomatis = '<s:property value="mappingJurnal.isOtomatis"/>'
+        var checkSumberBaru = '<s:property value="mappingJurnal.isSumberBaru"/>'
+        if(checkPengajuan == 'Y'){
+            $('#is_pengajuan_biaya').prop('checked', true);
+        }
+        if(checkOtomatis == 'Y'){
+            $('#is_otomatis').prop('checked', true);
+        }
+        if(checkSumberBaru == 'Y'){
+            $('#is_sumber_baru').prop('checked', true);
+        }
+
+
+        $('#is_otomatis').prop('disabled', true);
+        $('#is_pengajuan_biaya').prop('disabled', true);
+        $('#is_sumber_baru').prop('disabled', true);
+
         window.listResult= function () {
             $('.kodeRekeningTable').empty();
             dwr.engine.setAsync(false);
@@ -217,7 +331,7 @@
                 $.each(listdata, function (i, item) {
                     tmp_table += '<tr style="font-size: 12px;" ">' +
                         '<td align="center">' + (i + 1) + '</td>' +
-                        '<td align="center">' + item.kodeRekening + '</td>' +
+                        '<td align="left">' + formatBintangKodeRekening(item.kodeRekening)  + '</td>' +
                         '<td align="center">' + item.kodeRekeningName + '</td>' +
                         '<td align="center">' + item.posisi + '</td>' +
                         '<td align="center">' + item.masterId+ '</td>' +

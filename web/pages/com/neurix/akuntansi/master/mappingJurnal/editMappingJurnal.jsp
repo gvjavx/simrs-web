@@ -8,17 +8,20 @@
 <html>
 <head>
     <%@ include file="/pages/common/header.jsp" %>
+    <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/addrawatpasien.css"/>">
     <script type='text/javascript' src='<s:url value="/dwr/interface/MappingJurnalAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/TipeJurnalAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
 
     <style>
-        .pagebanner{
+        .pagebanner {
             background-color: #ededed;
             width: 100%;
             font-size: 14px;
         }
-        .pagelinks{
+
+        .pagelinks {
             background-color: #ededed;
             width: 100%;
             font-size: 14px;
@@ -26,8 +29,8 @@
         }
     </style>
     <script type='text/javascript'>
-        function link(){
-            window.location.href="<s:url action='initForm_mappingJurnal'/>";
+        function link() {
+            window.location.href = "<s:url action='initForm_mappingJurnal'/>";
         }
 
         $.subscribe('successDialog', function (event, data) {
@@ -37,24 +40,52 @@
             }
         });
 
-        $(document).ready(function() {
-            window.close = function() {
+        $(document).ready(function () {
+            var checkPengajuan = '<s:property value="mappingJurnal.isPengajuanBiaya"/>'
+            var checkOtomatis = '<s:property value="mappingJurnal.isOtomatis"/>'
+            var checkSumberBaru = '<s:property value="mappingJurnal.isSumberBaru"/>'
+            if(checkPengajuan == 'Y'){
+                $('#is_pengajuan_biaya').prop('checked', true);
+            }
+            if(checkOtomatis == 'Y'){
+                $('#is_otomatis').prop('checked', true);
+                $('#master').prop('disabled', false);
+            }
+            if(checkSumberBaru == 'Y'){
+                $('#is_sumber_baru').prop('checked', true);
+            }
+            $('.selectedId').change(function () {
+                var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
+                $('#selectall').prop("checked", check);
+
+                var checkbox = document.getElementsByName('selectedId');
+                var fpk = $('#no_fpk_search').val();
+
+                var ln = 0;
+                for (var i = 0; i < checkbox.length; i++) {
+                    if (checkbox[i].checked)
+                        ln++
+                }
+
+            });
+
+            window.close = function () {
                 //$('#waiting_dialog').dialog('close');
                 $('#view_dialog_menu').dialog('close');
                 $('#info_dialog').dialog('close');
-                window.location.href="<s:url action='search_mappingJurnal.action'/>";
+                window.location.href = "<s:url action='search_mappingJurnal.action'/>";
             };
 
             $.subscribe('beforeProcessSave', function (event, data) {
                 var tipeJurnalId = document.getElementById("tipeJurnalId").value;
                 var transId = document.getElementById("transId").value;
-                if (tipeJurnalId!=""&&transId!="") {
-                    var status ="";
+                if (tipeJurnalId != "" && transId != "") {
+                    var status = "";
                     dwr.engine.setAsync(false);
-                    MappingJurnalAction.cekBeforeSave(tipeJurnalId,transId,"edit",function (listData) {
-                        status=listData;
+                    MappingJurnalAction.cekBeforeSave(tipeJurnalId, transId, "edit", function (listData) {
+                        status = listData;
                     });
-                    if (status==""){
+                    if (status == "") {
                         if (confirm('Do you want to save this record?')) {
                             event.originalEvent.options.submit = true;
                             $.publish('showDialog');
@@ -62,7 +93,7 @@
                             // Cancel Submit comes with 1.8.0
                             event.originalEvent.options.submit = false;
                         }
-                    }else{
+                    } else {
                         event.originalEvent.options.submit = false;
                         document.getElementById('errorValidationMessage').innerHTML = status;
                         $.publish('showErrorValidationDialog');
@@ -71,23 +102,14 @@
                 } else {
                     event.originalEvent.options.submit = false;
                     var msg = "";
-                    if ( tipeJurnalId== '') {
+                    if (tipeJurnalId == '') {
                         msg += 'Field <strong>Tipe Jurnal</strong> is required.' + '<br/>';
                     }
-                    if ( transId== '') {
+                    if (transId == '') {
                         msg += 'Field <strong>Transaksi Billing</strong> is required.' + '<br/>';
                     }
                     document.getElementById('errorValidationMessage').innerHTML = msg;
                     $.publish('showErrorValidationDialog');
-                }
-            });
-            $.subscribe('beforeProcessAddPerson', function (event, data) {
-                if (confirm('Do you want to save this record?')) {
-                    event.originalEvent.options.submit = true;
-                    $.publish('showDialog');
-                } else {
-                    // Cancel Submit comes with 1.8.0
-                    event.originalEvent.options.submit = false;
                 }
             });
         });
@@ -96,7 +118,7 @@
     </script>
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini" >
+<body class="hold-transition skin-blue sidebar-mini">
 
 <%@ include file="/pages/common/headerNav.jsp" %>
 
@@ -122,7 +144,9 @@
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="mappingJurnalForm" method="post"  theme="simple" namespace="/mappingJurnal" action="saveEdit_mappingJurnal.action" cssClass="form-horizontal">
+                                    <s:form id="mappingJurnalForm" method="post" theme="simple"
+                                            namespace="/mappingJurnal" action="saveEditMappingTransaction_mappingJurnal.action"
+                                            cssClass="form-horizontal">
                                         <s:hidden name="addOrEdit"/>
                                         <s:hidden name="delete"/>
                                         <table>
@@ -133,75 +157,152 @@
                                             </tr>
                                         </table>
 
-                                        <table >
+                                        <table>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tipe Jurnal :</small></label>
+                                                    <label class="control-label">
+                                                        <small>Id Transaksi :</small>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <s:textfield id="transId" name="mappingJurnal.transId"
+                                                                 cssClass="form-control" cssStyle="margin-top: 7px"
+                                                                 readonly="true" disabled="true"/>
+                                                    <s:hidden id="transId" name="mappingJurnal.transId"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label">
+                                                        <small>Nama Transaksi :</small>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <s:textfield id="transNama" name="mappingJurnal.transName"
+                                                                 cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label">
+                                                        <small>Pengajuan Biaya :</small>
+                                                    </label>
+                                                </td>
+                                                <td class="form-check">
+                                                    <input onclick="isPengajuanBiaya(this.id)" type="checkbox"
+                                                           id="is_pengajuan_biaya" value="Y"
+                                                           name="mappingJurnal.isPengajuanBiaya">
+                                                    <label for="is_pengajuan_biaya"></label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label">
+                                                        <small>Tipe Jurnal :</small>
+                                                    </label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:action id="initComboTipeJurnal" namespace="/tipeJurnal" name="initComboTipeJurnal_tipeJurnal"/>
-                                                        <s:select list="#initComboTipeJurnal.listOfComboTipeJurnal" id="tipeJurnalId" name="mappingJurnal.tipeJurnalId" disabled="true"
-                                                                  listKey="tipeJurnalId" listValue="tipeJurnalName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                        <s:hidden name="mappingJurnal.tipeJurnalId"/>
+                                                        <s:action id="initComboTipeJurnal" namespace="/tipeJurnal"
+                                                                  name="initComboTipeJurnal_tipeJurnal"/>
+                                                        <s:select list="#initComboTipeJurnal.listOfComboTipeJurnal"
+                                                                  id="tipeJurnalId" name="mappingJurnal.tipeJurnalId"
+                                                                  listKey="tipeJurnalId" listValue="tipeJurnalName"
+                                                                  headerKey="" headerValue="[Select one]"
+                                                                  onchange="isOtomatis(this.id)"
+                                                                  cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Transaksi Billing :</small></label>
+                                                    <label class="control-label">
+                                                        <small>Otomatis :</small>
+                                                    </label>
+                                                </td>
+                                                <td class="form-check">
+                                                    <input onclick="isOtomatis(this.id)" type="checkbox"
+                                                           id="is_otomatis" name="mappingJurnal.isOtomatis" value="Y">
+                                                    <label for="is_otomatis"></label>
+                                                    <s:hidden id="otomatisVal" name="mappingJurnal.isOtomatis"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label">
+                                                        <small>Sumber Baru :</small>
+                                                    </label>
+                                                </td>
+                                                <td class="form-check">
+                                                    <input type="checkbox" id="is_sumber_baru"
+                                                           name="mappingJurnal.isSumberBaru" value="Y">
+                                                    <label for="is_sumber_baru"></label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label">
+                                                        <small>Kelompok Master :</small>
+                                                    </label>
                                                 </td>
                                                 <td>
-                                                    <table>
-                                                        <s:action id="comboTrans" namespace="/trans" name="initComboTrans_trans"/>
-                                                        <s:select list="#comboTrans.listOfComboTrans" id="transId" name="mappingJurnal.transId"
-                                                                  onchange="$(this).css('border','')" disabled="true"
-                                                                  listKey="transId" listValue="transName" headerKey="" headerValue="[ Select One ]" cssClass="form-control" />
-                                                        <s:hidden name="mappingJurnal.transId"/>
-                                                    </table>
+                                                    <s:select list="#{'vendor':'vendor','dokter':'Dokter','pasien':'Pasien','karyawan':'Karyawan'}"
+                                                              id="master" name="mappingJurnal.master" disabled="true" cssStyle="margin-top: 7px"
+                                                              headerKey="" headerValue="[Select One]" cssClass="form-control" />
                                                 </td>
                                             </tr>
                                         </table>
                                         <br>
                                         <br>
+
                                         <h3>
                                             Add Kode Rekening
                                             <button
-                                                    id="btnAddKodeRekening" type="button" class="btn btn-default btn-info" data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-plus"></i>
+                                                    id="btnAddKodeRekening" type="button"
+                                                    class="btn btn-default btn-info"
+                                                    data-toggle="modal" data-target="#modal-tambah"><i
+                                                    class="fa fa-plus"></i>
                                             </button>
                                         </h3>
+
                                         <br>
-                                        <center>
-                                            <table id="showdata" width="100%">
-                                                <tr>
-                                                    <td align="center">
-                                                        <table style="width: 100%;" class="kodeRekeningTable table table-bordered" id="kodeRekeningTable">
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </center>
+                                        <table id="showdata" width="100%">
+                                            <tr>
+                                                <td>
+                                                    <table style="width: 100%;"
+                                                           class="kodeRekeningTable table table-bordered"
+                                                           id="kodeRekeningTable">
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
                                         <br>
                                         <div id="actions" class="form-actions">
                                             <table align="center">
                                                 <tr>
                                                     <td>
-                                                        <sj:submit targets="o" type="button" cssClass="btn btn-primary" formIds="mappingJurnalForm" id="save" name="save"
-                                                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
-                                                                   onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
+                                                        <sj:submit targets="o" type="button" cssClass="btn btn-primary"
+                                                                   formIds="mappingJurnalForm" id="save" name="save"
+                                                                   onBeforeTopics="beforeProcessSave"
+                                                                   onCompleteTopics="closeDialog,successDialog"
+                                                                   onSuccessTopics="successDialog"
+                                                                   onErrorTopics="errorDialog">
                                                             <i class="fa fa-check"></i>
                                                             Save
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="search_mappingJurnal.action"/>'">
+                                                        <button type="button" class="btn btn-danger"
+                                                                onclick="window.location.href='<s:url
+                                                                        action="search_mappingJurnal.action"/>'">
                                                             <i class="fa fa-arrow-left"></i> Back
                                                         </button>
                                                     </td>
                                                 </tr>
                                             </table>
                                         </div>
-                                        <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog"
+                                                   modal="true"
                                                    resizable="false"
                                                    height="350" width="600" autoOpen="false" title="Saving ...">
                                             Please don't close this window, server is processing your request ...
@@ -218,7 +319,8 @@
                                             </center>
                                         </sj:dialog>
 
-                                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
+                                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true"
+                                                   resizable="false"
                                                    height="200" width="400" autoOpen="false" title="Infomation Dialog"
                                                    buttons="{
                                                               'OK':function() {
@@ -226,11 +328,13 @@
                                                                    }
                                                             }"
                                         >
-                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
+                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                                                 name="icon_success">
                                             Record has been saved successfully.
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true"
+                                                   resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
                                                                         'OK':function() { $('#error_dialog').dialog('close'); }
@@ -238,12 +342,15 @@
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                         name="icon_error"> System Found : <p id="errorMessage"></p>
                                                 </label>
                                             </div>
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
+                                        <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog"
+                                                   modal="true"
+                                                   resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
                                                                         'OK':function() { $('#error_validation_dialog').dialog('close'); }
@@ -251,9 +358,12 @@
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                         name="icon_error"> Please check this field :
                                                     <br/>
-                                                    <center><div id="errorValidationMessage"></div></center>
+                                                    <center>
+                                                        <div id="errorValidationMessage"></div>
+                                                    </center>
                                                 </label>
                                             </div>
                                         </sj:dialog>
@@ -294,7 +404,7 @@
                                              maxlength="12"
                                 />
                                 <script>
-                                    $(document).ready(function() {
+                                    $(document).ready(function () {
                                         var functions, mapped;
                                         $('#modKodeRekening').typeahead({
                                             minLength: 1,
@@ -303,22 +413,57 @@
                                                 mapped = {};
                                                 var data = [];
                                                 dwr.engine.setAsync(false);
-                                                KodeRekeningAction.initTypeaheadKodeRekening(query,function (listdata) {
+                                                KodeRekeningAction.initTypeaheadKodeRekening(query, function (listdata) {
                                                     data = listdata;
                                                 });
                                                 $.each(data, function (i, item) {
                                                     var labelItem = item.kodeRekening + " | " + item.namaKodeRekening;
                                                     mapped[labelItem] = {
                                                         id: item.kodeRekening,
-                                                        nama: item.namaKodeRekening
+                                                        nama: item.namaKodeRekening,
+                                                        tipe: item.tipeCoa
                                                     };
                                                     functions.push(labelItem);
                                                 });
                                                 process(functions);
                                             },
+
                                             updater: function (item) {
                                                 var selectedObj = mapped[item];
-                                                $('#modeKodeRekeningName').val(selectedObj.nama);
+                                                var nama = selectedObj.nama;
+
+                                                $('#modKeterangan').attr("disabled", false);
+                                                $('#modeKodeRekeningName').val(nama);
+                                                if (nama != "" && !$('#is_otomatis').is(':checked')) {
+                                                    var param = nama.toLowerCase();
+                                                    param = param.replaceAll(" ", "_");
+                                                    $('#modKeterangan').val(param);
+                                                    $('#modKeterangan').attr("disabled", true);
+
+                                                }
+
+                                                $('#modKodeRekening').on("input", function () {
+                                                    if ($('#modKodeRekening').val() == "") {
+                                                        $('#modeKodeRekeningName').val('');
+                                                        $('#modKeterangan').val('');
+                                                        $('#modDivisi').val('N');
+                                                        $('#modDivisi').attr("readonly", false);
+                                                        $('#modDivisi').attr("disabled", false);
+                                                    }
+
+                                                })
+
+                                                if (selectedObj.tipe == "02" || selectedObj.tipe == "03") {
+                                                    $('#modDivisi').val('Y');
+                                                    $('#modDivisi').attr("readonly", true);
+                                                    $('#modDivisi').attr("disabled", true);
+                                                }
+                                                else {
+                                                    $('#modDivisi').val('N');
+                                                    $('#modDivisi').attr("readonly", false);
+                                                    $('#modDivisi').attr("disabled", false);
+
+                                                }
                                                 return selectedObj.id;
                                             }
                                         });
@@ -341,7 +486,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <s:select list="#{'D':'Debit'}" id="modPosisi"
-                                          headerKey="K" headerValue="Kredit" cssClass="form-control" />
+                                          headerKey="K" headerValue="Kredit" cssClass="form-control"/>
                             </div>
                         </div>
                         <div class="row" style="margin-top: 7px">
@@ -350,7 +495,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <s:select list="#{'Y':'Y'}" id="modMasterId"
-                                          headerKey="N" headerValue="N" cssClass="form-control" />
+                                          headerKey="N" headerValue="N" cssClass="form-control"/>
                             </div>
                         </div>
                         <div class="row" style="margin-top: 7px">
@@ -359,7 +504,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <s:select list="#{'Y':'Y'}" id="modBukti"
-                                          headerKey="N" headerValue="N" cssClass="form-control" />
+                                          headerKey="N" headerValue="N" cssClass="form-control"/>
                             </div>
                         </div>
                         <div class="row" style="margin-top: 7px">
@@ -368,7 +513,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <s:select list="#{'Y':'Y'}" id="modKdBarang"
-                                          headerKey="N" headerValue="N" cssClass="form-control" />
+                                          headerKey="N" headerValue="N" cssClass="form-control"/>
                             </div>
                         </div>
                         <div class="row" style="margin-top: 7px">
@@ -377,7 +522,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <s:select list="#{'Y':'Y'}" id="modDivisi"
-                                          headerKey="N" headerValue="N" cssClass="form-control" />
+                                          headerKey="N" headerValue="N" cssClass="form-control"/>
                             </div>
                         </div>
                         <div class="row" style="margin-top: 7px">
@@ -386,7 +531,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <s:select list="#{'Y':'Y'}" id="modListKirim"
-                                          headerKey="N" headerValue="N" cssClass="form-control" />
+                                          headerKey="N" headerValue="N" cssClass="form-control"/>
                             </div>
                         </div>
                         <div class="row" style="margin-top: 7px">
@@ -403,7 +548,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <s:select list="#{'Y':'Y'}" id="modEditBiaya"
-                                          headerKey="N" headerValue="N" cssClass="form-control" />
+                                          headerKey="N" headerValue="N" cssClass="form-control"/>
                             </div>
                         </div>
                         <br>
@@ -420,33 +565,33 @@
     </div>
 </div>
 <script>
-    $(document).ready(function() {
-        window.listResult= function () {
+    $(document).ready(function () {
+        window.listResult = function () {
             $('.kodeRekeningTable').empty();
             dwr.engine.setAsync(false);
-            MappingJurnalAction.searchKodeRekeningSession(function(listdata) {
-                tmp_table = "<thead><tr class='active'>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Kode Rekening</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Nama Kode Rekening</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Posisi</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Master</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Bukti</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Kode Barang</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Divisi ID</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>List Kirim</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Parameter</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Edit Biaya</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Delete</th>"+
+            MappingJurnalAction.searchKodeRekeningSession(function (listdata) {
+                tmp_table = "<thead><tr class='active'>" +
+                    "<th style='text-align: center; background-color:  #90ee90'>No</th>" +
+                    "<th style='text-align: center; background-color:  #90ee90'>Kode Rekening</th>" +
+                    "<th style='text-align: center; background-color:  #90ee90'>Nama Kode Rekening</th>" +
+                    "<th style='text-align: center; background-color:  #90ee90'>Posisi</th>" +
+                    "<th style='text-align: center; background-color:  #90ee90'>Master</th>" +
+                    "<th style='text-align: center; background-color:  #90ee90'>Bukti</th>" +
+                    "<th style='text-align: center; background-color:  #90ee90'>Kode Barang</th>" +
+                    "<th style='text-align: center; background-color:  #90ee90'>Divisi ID</th>" +
+                    "<th style='text-align: center; background-color:  #90ee90'>List Kirim</th>" +
+                    "<th style='text-align: center; background-color:  #90ee90'>Parameter</th>" +
+                    "<th style='text-align: center; background-color:  #90ee90'>Edit Biaya</th>" +
+                    "<th style='text-align: center; background-color:  #90ee90'>Delete</th>" +
                     "</tr></thead>";
                 var i = i;
                 $.each(listdata, function (i, item) {
                     tmp_table += '<tr style="font-size: 12px;" ">' +
                         '<td align="center">' + (i + 1) + '</td>' +
-                        '<td align="center">' + item.kodeRekening + '</td>' +
+                        '<td align="left">' + formatBintangKodeRekening(item.kodeRekening) + '</td>' +
                         '<td align="center">' + item.kodeRekeningName + '</td>' +
                         '<td align="center">' + item.posisi + '</td>' +
-                        '<td align="center">' + item.masterId+ '</td>' +
+                        '<td align="center">' + item.masterId + '</td>' +
                         '<td align="center">' + item.bukti + '</td>' +
                         '<td align="center">' + item.kodeBarang + '</td>' +
                         '<td align="center">' + item.divisiId + '</td>' +
@@ -463,7 +608,7 @@
                 $('.kodeRekeningTable').append(tmp_table);
                 $('#kodeRekeningTable').DataTable({
                     "pageLength": 20,
-                    "bDestroy":true
+                    "bDestroy": true
                 });
             });
         };
@@ -478,65 +623,123 @@
             var kodeRekening = $('#modKodeRekening').val();
             var kodeRekeningname = $('#modeKodeRekeningName').val();
             var posisi = $('#modPosisi').val();
-            var master =$('#modMasterId').val();
+            var master = $('#modMasterId').val();
             var bukti = $('#modBukti').val();
             var kodeBarang = $('#modKdBarang').val();
             var divisiId = $('#modDivisi').val();
             var listKirim = $('#modListKirim').val();
             var keterangan = $('#modKeterangan').val();
             var editBiaya = $('#modEditBiaya').val();
+            var tipeJurnalId = $('#tipeJurnalId').val();
+
             dwr.engine.setAsync(false);
-            if(kodeRekening!=''&&posisi!=''&&master!=''&&bukti!=''&&kodeBarang!=''&&listKirim!=''&&keterangan!=''&&kodeRekeningname!=''&&divisiId!=''){
-                MappingJurnalAction.saveKodeRekeningSession(kodeRekening,posisi,master,bukti,kodeBarang,listKirim,keterangan,kodeRekeningname,divisiId,editBiaya,function() {
+            if (kodeRekening != '' && posisi != '' && master != '' && bukti != '' && kodeBarang != '' && listKirim != '' && keterangan != '' && kodeRekeningname != '' && divisiId != '') {
+                MappingJurnalAction.saveKodeRekeningSession(tipeJurnalId,kodeRekening, posisi, master, bukti, kodeBarang, listKirim, keterangan, kodeRekeningname, divisiId, editBiaya, function () {
                     listResult();
                 });
                 $('#modal-edit').modal('hide');
-            }else {
-                var msg="";
-                if (kodeRekening==""){
-                    msg+="Kode Rekening masih kosong \n";
+            } else {
+                var msg = "";
+                if (kodeRekening == "") {
+                    msg += "Kode Rekening masih kosong \n";
                 }
-                if (kodeRekeningname==""){
-                    msg+="Kode Rekening tidak ditemukan\n";
+                if (kodeRekeningname == "") {
+                    msg += "Kode Rekening tidak ditemukan\n";
                 }
-                if (posisi==""){
-                    msg+="Posisi masih kosong \n";
+                if (posisi == "") {
+                    msg += "Posisi masih kosong \n";
                 }
-                if (master==""){
-                    msg+="Master masih kosong \n";
+                if (master == "") {
+                    msg += "Master masih kosong \n";
                 }
-                if (bukti==""){
-                    msg+="Bukti masih kosong \n";
+                if (bukti == "") {
+                    msg += "Bukti masih kosong \n";
                 }
-                if (kodeBarang==""){
-                    msg+="Kode barang masih kosong \n";
+                if (kodeBarang == "") {
+                    msg += "Kode barang masih kosong \n";
                 }
-                if (listKirim==""){
-                    msg+="List Kirim masih kosong \n";
+                if (listKirim == "") {
+                    msg += "List Kirim masih kosong \n";
                 }
-                if (keterangan==""){
-                    msg+="Parameter masih kosong \n";
+                if (keterangan == "") {
+                    msg += "Parameter masih kosong \n";
                 }
-                if (divisiId==""){
-                    msg+="Divisi ID masih kosong \n";
+                if (divisiId == "") {
+                    msg += "Divisi ID masih kosong \n";
                 }
                 alert(msg);
             }
         })
         $('.kodeRekeningTable').on('click', '.item-delete-data', function () {
             var id = $(this).attr('data');
-            if (id!=''){
-                MappingJurnalAction.deleteSessionKodeRekening(id,function (result) {
+            if (id != '') {
+                MappingJurnalAction.deleteSessionKodeRekening(id, function (result) {
                     alert("data berhasil dihapus");
                     listResult();
                 });
-            } else{
-                var msg="";
-                if (id==""){
-                    msg+="Kode rekening tidak ditemukan \n";
+            } else {
+                var msg = "";
+                if (id == "") {
+                    msg += "Kode rekening tidak ditemukan \n";
                 }
                 alert(msg);
             }
         });
     })
+
+    function isPengajuanBiaya(id) {
+        console.log(id);
+        var option = "<option value=''>[Select One]</option>";
+        TipeJurnalAction.comboTipeJurnal(function (response) {
+            if (response != null) {
+                $.each(response, function (i, item) {
+                    if ($('#' + id).is(':checked')) {
+                        $('#is_otomatis').prop('readonly', true);
+                        $('#is_otomatis').prop('disabled', true);
+                        $('#is_otomatis').css('cursor', 'no-drop');
+                        if (item.tipeJurnalId == "JKK") {
+                            option = "<option value='" + item.tipeJurnalId + "'>" + item.tipeJurnalName + "</option>";
+                            $('#tipeJurnalId').html(option);
+                            $('#is_otomatis').prop('checked', false);
+                            $('#master').prop('disabled', true);
+                            $('#master').val('pengajuan_biaya');
+                        }
+                    }
+                    else {
+                        option += "<option value='" + item.tipeJurnalId + "'>" + item.tipeJurnalName + "</option>";
+                        $('#tipeJurnalId').html(option);
+                        $('#is_otomatis').prop('disabled', false);
+                        $('#master').val('');
+                    }
+                });
+            }
+        });
+    }
+
+    function isOtomatis(id) {
+
+        if (id == "tipeJurnalId") {
+            var idTipeJurnal = $('#tipeJurnalId').val()
+            TipeJurnalAction.getByIdTipeJurnal(idTipeJurnal, function (response) {
+                if (response != null && response.isOperasional != null && response.isOperasional == 'Y') {
+                    $('#is_otomatis').prop('checked', true);
+                    $('#is_otomatis').prop('disabled', true);
+                    isOtomatis("is_otomatis");
+                }
+                else {
+                    $('#is_otomatis').prop('checked', false);
+                    $('#is_otomatis').prop('disabled', false);
+                    isOtomatis("is_otomatis");
+                }
+            });
+        }
+        if ("is_otomatis") {
+            $('#master').prop('disabled', true);
+            $('#master').val('');
+            if ($('#is_otomatis').is(':checked')) {
+                $('#otomatisVal').val("Y");
+                $('#master').prop('disabled', false);
+            }
+        }
+    }
 </script>

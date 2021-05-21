@@ -68,8 +68,8 @@
         <action name="*_mappingJurnal"
                 class="com.neurix.akuntansi.master.mappingJurnal.action.MappingJurnalAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
-            <result name="input">/pages/com/neurix/akuntansi/master/mappingJurnal/SearchMappingJurnal.jsp</result>
-            <result name="success">/pages/com/neurix/akuntansi/master/mappingJurnal/SearchMappingJurnal.jsp</result>
+            <result name="input">/pages/com/neurix/akuntansi/master/mappingJurnal/searchMappingJurnal.jsp</result>
+            <result name="success">/pages/com/neurix/akuntansi/master/mappingJurnal/searchMappingJurnal.jsp</result>
 
             <result name="error">/pages/com/neurix/akuntansi/master/mappingJurnal/addMappingJurnal.jsp</result>
             <result name="init_add">/pages/com/neurix/akuntansi/master/mappingJurnal/addMappingJurnal.jsp</result>
@@ -86,7 +86,7 @@
         <action name="paging_displaytag_mappingJurnal"
                 class="com.neurix.akuntansi.master.mappingJurnal.action.MappingJurnalAction" method="paging">
             <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/akuntansi/master/mappingJurnal/SearchMappingJurnal.jsp</result>
+            <result name="success">/pages/com/neurix/akuntansi/master/mappingJurnal/searchMappingJurnal.jsp</result>
         </action>
 
     </package>
