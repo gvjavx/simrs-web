@@ -59,6 +59,7 @@ function saveRingkasanPasien(jenis, ket) {
         var pe23 = $('#rps23').val();
         var spo1 = $('#spo1').val();
         var spo2 = $('#spo2').val();
+        var hasilRadiologi = $('#hasil_radiologi').val();
 
         var ttd1 = document.getElementById('gen2');
         var ttd2 = document.getElementById('gen3');
@@ -85,6 +86,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe2,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'tgl_keluar',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -99,6 +101,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe4,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'riwayat_penyakit',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -150,10 +153,19 @@ function saveRingkasanPasien(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Pemeriksaan Penunjang/Diagnotik Terpeing',
+                'parameter': 'Pemeriksaan Lab',
                 'jawaban': pe10,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'pemeriksaan_lab',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Pemeriksaan Radiologi',
+                'jawaban': hasilRadiologi,
+                'keterangan': jenis,
+                'jenis': 'ringkasan_pulang',
+                'tipe': 'pemeriksaan_radiologi',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -202,6 +214,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe16 + ' C',
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'suhu',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -209,6 +222,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe17 + ' x/mnt',
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'nadi',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -216,6 +230,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe18 + ' x/mnt',
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'rr',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -223,6 +238,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': replaceUnderLine(pe19) + ' mmHg',
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'tensi',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -230,6 +246,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe20,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'gcs',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -237,6 +254,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': spo2,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'spo2',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -244,6 +262,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe21,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'keadaan_pulang',
                 'id_detail_checkup': idDetailCheckup
             });
             if(pe22 != undefined){
@@ -260,6 +279,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe23,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'instruksi_lanjut',
                 'id_detail_checkup': idDetailCheckup
             });
 

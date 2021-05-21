@@ -34,36 +34,63 @@ function paintTtd(id, change){
         y = 0;
     let isMouseDown = false;
 
-    const stopDrawing = function () {
-        isMouseDown = false;
-    };
+    if ('ontouchstart' in document.documentElement) {
+        var rect = paintCanvas.getBoundingClientRect();
 
-    const startDrawing = function (evt) {
-        isMouseDown = true;
-        [x, y] = [evt.offsetX, evt.offsetY];
-    };
+        const stopDrawing = function () {
+            isMouseDown = false;
+        };
 
-    const drawLine = function (evt) {
-        if (isMouseDown) {
-            const newX = evt.offsetX;
-            const newY = evt.offsetY;
-            context.beginPath();
-            context.moveTo(x, y);
-            context.lineTo(newX, newY);
-            context.stroke();
-            x = newX;
-            y = newY;
-        }
-    };
+        const startDrawing = function (evt) {
+            isMouseDown = true;
+            [x, y] = [evt.touches[0].clientX - rect.left, evt.touches[0].clientY - rect.top];
+        };
 
-    paintCanvas.addEventListener("mousedown", startDrawing);
-    paintCanvas.addEventListener("mousemove", drawLine);
-    paintCanvas.addEventListener("mouseup", stopDrawing);
-    paintCanvas.addEventListener("mouseout", stopDrawing);
+        const drawLine = function (evt) {
+            if (isMouseDown) {
+                const newX = evt.touches[0].clientX - rect.left;
+                const newY = evt.touches[0].clientY - rect.top;
+                context.beginPath();
+                context.moveTo(x, y);
+                context.lineTo(newX, newY);
+                context.stroke();
+                x = newX;
+                y = newY;
+            }
+        };
 
-    paintCanvas.addEventListener("touchstart", startDrawing);
-    paintCanvas.addEventListener("touchmove", drawLine);
-    paintCanvas.addEventListener("touchend", stopDrawing);
+        paintCanvas.addEventListener("touchstart", startDrawing);
+        paintCanvas.addEventListener("touchmove", drawLine);
+        paintCanvas.addEventListener("touchend", stopDrawing);
+
+    }else{
+        const stopDrawing = function () {
+            isMouseDown = false;
+        };
+
+        const startDrawing = function (evt) {
+            isMouseDown = true;
+            [x, y] = [evt.offsetX, evt.offsetY];
+        };
+
+        const drawLine = function (evt) {
+            if (isMouseDown) {
+                const newX = evt.offsetX;
+                const newY = evt.offsetY;
+                context.beginPath();
+                context.moveTo(x, y);
+                context.lineTo(newX, newY);
+                context.stroke();
+                x = newX;
+                y = newY;
+            }
+        };
+
+        paintCanvas.addEventListener("mousedown", startDrawing);
+        paintCanvas.addEventListener("mousemove", drawLine);
+        paintCanvas.addEventListener("mouseup", stopDrawing);
+        paintCanvas.addEventListener("mouseout", stopDrawing);
+    }
 }
 
 function removePaint(id){

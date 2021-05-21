@@ -992,6 +992,7 @@ public class RawatInapBoImpl implements RawatInapBo {
             detailCheckup.setTindakLanjut(bean.getTindakLanjut());
             detailCheckup.setLastUpdate(bean.getLastUpdate());
             detailCheckup.setLastUpdateWho(bean.getLastUpdateWho());
+            detailCheckup.setIndikasi(bean.getIndikasi());
             if("Y".equalsIgnoreCase(bean.getIsStay())){
                 detailCheckup.setIsStay(bean.getIsStay());
             }
@@ -1209,6 +1210,9 @@ public class RawatInapBoImpl implements RawatInapBo {
                     }else{
                         entity.setIsStay(bean.getIsStay());
                     }
+                }
+                if(bean.getIndikasi() != null){
+                    entity.setIndikasi(bean.getIndikasi());
                 }
                 try {
                     checkupDetailDao.updateAndSave(entity);

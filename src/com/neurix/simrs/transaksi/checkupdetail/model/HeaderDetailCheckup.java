@@ -168,6 +168,15 @@ public class HeaderDetailCheckup extends BaseModel{
     private String isTindakan;
     private String indikasi;
     private String triase;
+    private String catatanKlinis;
+
+    public String getCatatanKlinis() {
+        return catatanKlinis;
+    }
+
+    public void setCatatanKlinis(String catatanKlinis) {
+        this.catatanKlinis = catatanKlinis;
+    }
 
     public String getTriase() {
         return triase;

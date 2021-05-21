@@ -19,15 +19,13 @@ function countDownNumber(){
             jumlah--;
         } else {
             clearInterval(interval);
-            var contextPath = '<%= request.getContextPath() %>';
-            document.location = contextPath + '/loginUser.action';
+            document.location = contextPathHeader + '/loginUser.action';
         }
     }, 500);
 }
 
 function toLogin(){
-    var contextPath = '<%= request.getContextPath() %>';
-    document.location = contextPath + '/loginUser.action';
+    document.location = contextPathHeader + '/loginUser.action';
 }
 
 window.checkDec = function(el){

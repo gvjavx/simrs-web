@@ -210,6 +210,105 @@ public class HeaderCheckup {
     private String kategoriRuangan;
     private String tipeRekanan;
     private String catatanKlinis;
+    private String penunjangLab;
+    private String penunjangRadiologi;
+    private String ttdPasien;
+    private String ttdDokter;
+    private String indikasi;
+    private String penyakitDahulu;
+    private String terapi;
+    private String kondisiPulang;
+    private String keadaanPulang;
+    private String stTglKeluar;
+    private String tindakLanjut;
+
+    public String getTindakLanjut() {
+        return tindakLanjut;
+    }
+
+    public void setTindakLanjut(String tindakLanjut) {
+        this.tindakLanjut = tindakLanjut;
+    }
+
+    public String getStTglKeluar() {
+        return stTglKeluar;
+    }
+
+    public void setStTglKeluar(String stTglKeluar) {
+        this.stTglKeluar = stTglKeluar;
+    }
+
+    public String getPenyakitDahulu() {
+        return penyakitDahulu;
+    }
+
+    public void setPenyakitDahulu(String penyakitDahulu) {
+        this.penyakitDahulu = penyakitDahulu;
+    }
+
+    public String getTerapi() {
+        return terapi;
+    }
+
+    public void setTerapi(String terapi) {
+        this.terapi = terapi;
+    }
+
+    public String getKondisiPulang() {
+        return kondisiPulang;
+    }
+
+    public void setKondisiPulang(String kondisiPulang) {
+        this.kondisiPulang = kondisiPulang;
+    }
+
+    public String getKeadaanPulang() {
+        return keadaanPulang;
+    }
+
+    public void setKeadaanPulang(String keadaanPulang) {
+        this.keadaanPulang = keadaanPulang;
+    }
+
+    public String getIndikasi() {
+        return indikasi;
+    }
+
+    public void setIndikasi(String indikasi) {
+        this.indikasi = indikasi;
+    }
+
+    public String getTtdPasien() {
+        return ttdPasien;
+    }
+
+    public void setTtdPasien(String ttdPasien) {
+        this.ttdPasien = ttdPasien;
+    }
+
+    public String getTtdDokter() {
+        return ttdDokter;
+    }
+
+    public void setTtdDokter(String ttdDokter) {
+        this.ttdDokter = ttdDokter;
+    }
+
+    public String getPenunjangLab() {
+        return penunjangLab;
+    }
+
+    public void setPenunjangLab(String penunjangLab) {
+        this.penunjangLab = penunjangLab;
+    }
+
+    public String getPenunjangRadiologi() {
+        return penunjangRadiologi;
+    }
+
+    public void setPenunjangRadiologi(String penunjangRadiologi) {
+        this.penunjangRadiologi = penunjangRadiologi;
+    }
 
     public String getCatatanKlinis() {
         return catatanKlinis;

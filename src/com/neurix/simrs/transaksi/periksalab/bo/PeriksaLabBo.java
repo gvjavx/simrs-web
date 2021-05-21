@@ -22,7 +22,7 @@ public interface PeriksaLabBo {
     public CrudResponse saveUpdateHasilLab(PeriksaLabDetail bean) throws GeneralBOException;
     public List<PeriksaLab> getListParameterLab(String idHeader) throws GeneralBOException;
     public void selesaiPemeriksaan(PeriksaLab bean) throws GeneralBOException;
-    public CheckResponse updateFlagApprovePeriksaLab (PeriksaLab bean) throws GeneralBOException;
+    public void updateIsReadHasil (PeriksaLab bean) throws GeneralBOException;
     public BigDecimal getTarifTotalPemeriksaan(String idPeriksaan) throws GeneralBOException;
     public String getDivisiIdKodering(String idDetailCheckup, String tipeLab) throws GeneralBOException;
     public void saveEditStatusPeriksa(PeriksaLab bean) throws GeneralBOException;
@@ -39,4 +39,5 @@ public interface PeriksaLabBo {
     public List<PeriksaLab> getByCriteriaHeaderPemeriksaan(PeriksaLab bean) throws GeneralBOException;
     public ItSimrsHeaderPemeriksaanEntity getEntityHeaderpemeriksaan(String id) throws GeneralBOException;
     public List<UploadHasilPemeriksaan> hasilUploadPemeriksaan(String id) throws GeneralBOException;
+    public List<PeriksaLab> pushListHasil(String id, String branchId) throws GeneralBOException;
 }

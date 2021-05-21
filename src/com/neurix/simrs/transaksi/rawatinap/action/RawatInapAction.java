@@ -2004,6 +2004,7 @@ public class RawatInapAction extends BaseMasterAction {
                                 headerDetailCheckup.setIdDokter(idDokterDpjp);
                                 headerDetailCheckup.setTindakLanjut(tindakLanjut);
                                 headerDetailCheckup.setIdKelas(detailCheckup.getIdKelas());
+                                headerDetailCheckup.setIndikasi(detailCheckup.getIndikasi());
 
                                 if ("umum".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
                                     if (uangMuka != null && !"".equalsIgnoreCase(uangMuka)) {
@@ -2115,6 +2116,7 @@ public class RawatInapAction extends BaseMasterAction {
                 String idRuanganLama = null;
                 String isMeninggal = "";
                 String listPemeriksaan = null;
+                String indikasi = null;
 
                 if (object.has("id_ruangan")) {
                     idRuangan = object.getString("id_ruangan");
@@ -2142,6 +2144,9 @@ public class RawatInapAction extends BaseMasterAction {
                 }
                 if (object.has("is_meninggal")) {
                     isMeninggal = object.getString("is_meninggal");
+                }
+                if (object.has("indikasi")) {
+                    indikasi = object.getString("indikasi");
                 }
 
                 if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup) && idRawatInap != null && !"".equalsIgnoreCase(idRawatInap)) {
@@ -2214,6 +2219,7 @@ public class RawatInapAction extends BaseMasterAction {
                     rawatInap.setIdRuangLama(idRuanganLama);
                     rawatInap.setIdJenisPeriksa(jenisPasien);
                     rawatInap.setIsMeninggal(isMeninggal);
+                    rawatInap.setIndikasi(indikasi);
 
                     saveApproveAllTindakan(idDetailCheckup, jenisPasien);
                     response = rawatInapBo.saveAdd(rawatInap);

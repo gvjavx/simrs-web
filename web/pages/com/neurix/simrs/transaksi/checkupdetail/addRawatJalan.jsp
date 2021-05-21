@@ -243,14 +243,14 @@
                                         </tr>
                                     </s:if>
                                     <tr>
-                                        <td><b>No RM</b></td>
+                                        <td width="45%"><b>No RM</b></td>
                                         <td>
                                             <table><s:label
                                                     name="headerDetailCheckup.idPasien"></s:label></table>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="45%"><b>No Checkup</b></td>
+                                        <td><b>No Checkup</b></td>
                                         <td>
                                             <table>
                                                 <s:label name="headerDetailCheckup.noCheckup"></s:label></table>
@@ -300,31 +300,30 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>No Telp. Penanggung Jawab</b></td>
+                                        <td><b>No HP. Penanggung Jawab</b></td>
                                         <td>
                                             <table>
-                                                <s:label name="headerDetailCheckup.noTelp"></s:label>
+                                                <script>
+                                                    var noHp = '<s:property value="headerDetailCheckup.noTelp"/>';
+                                                    var temp = "";
+                                                    if(noHp != '' && noHp.length > 0){
+                                                        for (var i = 0; i < noHp.length; i++) {
+                                                            if(i == 3){
+                                                                temp = temp+noHp[i]+'-';
+                                                            }else if(i == 7){
+                                                                temp = temp+noHp[i]+'-';
+                                                            }else{
+                                                                temp = temp+noHp[i];
+                                                            }
+                                                        }
+                                                    }
+                                                    document.write(temp);
+                                                </script>
                                             </table>
                                         </td>
                                     </tr>
-                                    <%--<s:if test='headerDetailCheckup.metodePembayaran != null && headerDetailCheckup.metodePembayaran != ""'>--%>
-                                        <%--<tr>--%>
-                                            <%--<td><b>Metode Pembayaran</b></td>--%>
-                                            <%--<td>--%>
-                                                <%--<table>--%>
-                                                    <%--<script>--%>
-                                                        <%--var metode = '<s:property value="headerDetailCheckup.metodePembayaran"/>';--%>
-                                                        <%--var met = metode.replace("_", " ");--%>
-                                                        <%--var meto = convertSentenceCase(met);--%>
-                                                        <%--document.write(meto);--%>
-                                                    <%--</script>--%>
-                                                <%--</table>--%>
-                                            <%--</td>--%>
-                                        <%--</tr>--%>
-                                    <%--</s:if>--%>
                                 </table>
                             </div>
-                            <!-- /.col -->
                             <s:hidden value="headerDetailCheckup.jenisPeriksaPasien" id="jenis_periksa"></s:hidden>
 
                             <div class="col-md-6">
@@ -333,7 +332,7 @@
                                 </script>
                                 <table class="table table-striped">
                                     <tr id="row_jenis_pasien">
-                                        <td width="30%"><b>Jenis Pasien</b></td>
+                                        <td width="45%"><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
                                                 <script>
@@ -369,7 +368,7 @@
                                         </tr>
                                     </s:if>
                                     <tr>
-                                        <td><b>Poli</b></td>
+                                        <td><b>Pelayanan</b></td>
                                         <td>
                                             <table>
                                                 <s:property value="headerDetailCheckup.namaPelayanan"/>
@@ -485,29 +484,15 @@
                                 </table>
                             </div>
                         </div>
-                        <%--<div class="row">--%>
-                            <%--<div class="form-group">--%>
-                                <%--<div class="col-md-12">--%>
-                                    <%--<a href="<%= request.getContextPath() %>/rekammedik/initRekamMedik_rekammedik.action?id=<s:property value="headerDetailCheckup.idDetailCheckup"/>&tipe=RJ" class="btn btn-primary pull-left"><i class="fa fa-user-plus"></i> E-Rekam Medik</a>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
                     </div>
-                    <div class="box-header with-border">
-                    </div>
-                    <div class="box-header with-border" id="pos_rm">
-                        <div class="row">
-                            <div class="col-md-6">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box-header with-border" id="pos_rm"></div>
+                            <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-stethoscope"></i> Anamnesa & Pemeriksaan Fisik</h3>
                             </div>
-                            <div class="col-md-6">
-                                <h3 class="box-title"><i class="fa fa-medkit"></i> Rekam Medis</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-6">
+                            <div class="box-body">
                                 <div class="alert alert-danger alert-dismissible" style="display: none" id="war_anamnese">
                                     <p id="msg_war"></p>
                                 </div>
@@ -558,39 +543,48 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="btn-group dropdown">
-                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen
-                                    </button>
-                                    <button onclick="setRekamMedis()" type="button" class="btn btn-primary dropdown-toggle"
-                                            data-toggle="dropdown" style="height: 34px">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu" id="asesmen_rj">
-                                    </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box-header with-border"></div>
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-medkit"></i> Rekam Medis</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="btn-group dropdown">
+                                            <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen
+                                            </button>
+                                            <button onclick="setRekamMedis()" type="button" class="btn btn-primary dropdown-toggle"
+                                                    data-toggle="dropdown" style="height: 34px">
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu" id="asesmen_rj">
+                                            </ul>
+                                        </div>
+                                        <button type="button" onclick="viewHistory()" class="btn btn-info hvr-icon-spin"><i class="fa fa-history hvr-icon"></i> All History</button>
+                                        <button class="btn btn-info" onclick="uploadPemeriksaan()"><i class="fa fa-line-chart"></i> Upload Pemeriksaan</button>
+                                    </div>
                                 </div>
-                                <button type="button" onclick="viewHistory()" class="btn btn-info hvr-icon-spin"><i class="fa fa-history hvr-icon"></i> All History
-                                </button>
-                                <button class="btn btn-info" onclick="uploadPemeriksaan()"><i class="fa fa-line-chart"></i> Upload Pemeriksaan</button>
+                                <div class="row" style="margin-top: 20px">
+                                    <div class="col-md-12">
+                                        <table class="table table-hover" style="font-size: 12px">
+                                            <tbody id="temp_kesimpulan"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="box-header with-border" id="pos_alergi">
-                    </div>
-                    <div class="box-header with-border">
-                        <div class="row">
-                            <div class="col-md-6">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box-header with-border" id="pos_alergi"></div>
+                            <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Tinggi & Berat Badan</h3>
                             </div>
-                            <div class="col-md-6">
-                                <h3 class="box-title"><i class="fa fa-heartbeat"></i> Hasil BMI (Body Mass Index)</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-6">
+                            <div class="box-body">
                                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_penunjang">
                                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                                     Silahkan cek kembali data inputan!
@@ -626,21 +620,27 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                                <button style="margin-top: 25px" id="save_penunjang" onclick="savePenunjangPasien()"
-                                                        class="btn btn-success"><i
-                                                        class="fa fa-check"></i>
-                                                    Save
-                                                </button>
-                                                <button style="display: none; cursor: no-drop; margin-top: 25px" type="button"
-                                                        class="btn btn-success"
-                                                        id="load_penunjang">
-                                                    <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                                                </button>
+                                            <button style="margin-top: 25px" id="save_penunjang" onclick="savePenunjangPasien()"
+                                                    class="btn btn-success"><i
+                                                    class="fa fa-check"></i>
+                                                Save
+                                            </button>
+                                            <button style="display: none; cursor: no-drop; margin-top: 25px" type="button"
+                                                    class="btn btn-success"
+                                                    id="load_penunjang">
+                                                <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box-header with-border"></div>
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-heartbeat"></i> Hasil BMI (Body Mass Index)</h3>
+                            </div>
+                            <div class="box-body">
                                 <div style="padding-top: 15px">
                                     <div class="progress">
                                         <div id="bar_bmi"></div>
@@ -659,24 +659,17 @@
                         </div>
                     </div>
 
-                    <div class="box-header with-border"></div>
-                    <div class="box-header with-border" id="pos_dok">
-                        <div class="row">
-                            <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box-header with-border"></div>
+                            <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Alergi</h3>
                             </div>
-                            <div class="col-md-6">
-                                <h3 class="box-title"><i class="fa fa-user-md"></i> Dokter</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-6">
+                            <div class="box-body">
                                 <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                         onclick="showModal(8)"><i class="fa fa-plus"></i> Tambah Alergi
                                 </button>
-                                <table class="table table-bordered table-striped" id="tabel_alergi">
+                                <table class="table table-bordered table-striped">
                                     <thead>
                                     <tr bgcolor="#90ee90">
                                         <td>Jenis</td>
@@ -688,19 +681,18 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-md-6">
-                                <s:if test='headerDetailCheckup.idJenisPeriksaPasien != "paket_individu" && headerDetailCheckup.idJenisPeriksaPasien != "paket_perusahaan"'>
-                                    <%--<button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"--%>
-                                            <%--onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Dokter--%>
-                                    <%--</button>--%>
-                                </s:if>
-                                <table class="table table-bordered table-striped" id="tabel_dokter">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box-header with-border"></div>
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-user-md"></i> Dokter</h3>
+                            </div>
+                            <div class="box-body">
+                                <table class="table table-bordered table-striped" id="tabel_dokter" style="margin-top: 50px">
                                     <thead>
                                     <tr bgcolor="#90ee90">
                                         <td>ID Dokter</td>
                                         <td>Nama</td>
-                                        <%--<td>Spesialis</td>--%>
-                                        <%--<td align="center">Action</td>--%>
                                     </tr>
                                     </thead>
                                     <tbody id="body_dokter">
@@ -710,8 +702,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-header with-border" id="pos_nosa">
-                    </div>
+
+                    <div class="box-header with-border" id="pos_nosa"></div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-stethoscope"></i> Diagnosa</h3>
                     </div>
@@ -719,11 +711,11 @@
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                 onclick="showModal(3)"><i class="fa fa-plus"></i> Tambah Diagnosa
                         </button>
-                        <table class="table table-bordered table-striped" id="tabel_diagnosa">
+                        <table class="table table-bordered table-striped table-hover" id="tabel_diagnosa">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Tanggal</td>
-                                <td>ID Diagnosa</td>
+                                <td width="14%">Waktu</td>
+                                <td>Kode ICD10</td>
                                 <td>Keterangan</td>
                                 <td>Jenis Diagnosa</td>
                                 <td align="center">Action</td>
@@ -782,55 +774,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <%--<div id="status_asuransi" style="display: none">--%>
-                        <%--<div class="box-header with-border">--%>
-                        <%--</div>--%>
-                        <%--<div class="box-header with-border">--%>
-                            <%--<h3 class="box-title"><i class="fa fa-line-chart"></i> Status Biaya Tindakan</h3>--%>
-                        <%--</div>--%>
-                        <%--<div class="box-body">--%>
-                            <%--<div class="row">--%>
-                                <%--<div class="col-md-offset-2 col-md-8">--%>
-                                    <%--<h5>--%>
-                                        <%--Cover Biaya Asuransi--%>
-                                        <%--<small class="pull-right" style="margin-top: 7px">Rp. <span id="b_asuransi"></span>--%>
-                                        <%--</small>--%>
-                                    <%--</h5>--%>
-                                    <%--<div class="progress">--%>
-                                        <%--<div id="sts_cover_biaya_asuransi">--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--<h5>--%>
-                                        <%--Total Biaya Tindakan--%>
-                                        <%--<small class="pull-right" style="margin-top: 7px">Rp. <span--%>
-                                                <%--id="b_tindakan_asuransi"></span></small>--%>
-                                    <%--</h5>--%>
-                                    <%--<div class="progress">--%>
-                                        <%--<div id="sts_biaya_tindakan_asuransi">--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--<ul style="list-style-type: none">--%>
-                                        <%--<li><i class="fa fa-square" style="color: #337ab7"></i> Total biaya cover Asuransi--%>
-                                        <%--</li>--%>
-                                        <%--<li><i class="fa fa-square" style="color: #5cb85c"></i> Total biaya tindakan <--%>
-                                            <%--50% dari cover biaya Asuransi--%>
-                                        <%--</li>--%>
-                                        <%--<li><i class="fa fa-square" style="color: #f0ad4e"></i> Total biaya tindakan >--%>
-                                            <%--50% dan < 70% dari cover biaya Asuransi--%>
-                                        <%--</li>--%>
-                                        <%--<li><i class="fa fa-square" style="color: #d9534f"></i> Total biaya tindakan >--%>
-                                            <%--70% dari cover biaya Asuransi--%>
-                                        <%--</li>--%>
-                                    <%--</ul>--%>
-                                <%--</div>--%>
-                                <%--<div class="col-md-2">--%>
-
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-
                     <div class="box-header with-border" id="pos_icd9">
                     </div>
                     <div class="box-header with-border">
@@ -840,12 +783,12 @@
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                 onclick="showModal(9)"><i class="fa fa-plus"></i> Tambah ICD9
                         </button>
-                        <table class="table table-bordered table-striped" id="tabel_icd9">
+                        <table class="table table-bordered table-striped table-hover" id="tabel_icd9">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Tanggal</td>
-                                <td>ID ICD9</td>
-                                <td>Nama ICD9</td>
+                                <td width="14%">Waktu</td>
+                                <td>Kode ICD9</td>
+                                <td>Keterangan</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -866,13 +809,12 @@
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                 onclick="showModal(2)"><i class="fa fa-plus"></i> Tambah Tindakan
                         </button>
-                            <table class="table table-bordered table-striped" id="tabel_tindakan">
+                            <table class="table table-bordered table-striped table-hover" id="tabel_tindakan">
                                 <thead>
                                 <tr bgcolor="#90ee90">
-                                    <td>Tanggal</td>
+                                    <td width="14%">Waktu</td>
                                     <td>Tindakan</td>
                                     <td>Dokter</td>
-                                        <%--<td>Perawat</td>--%>
                                     <td align="center">Tarif (Rp.)</td>
                                     <td align="center">Qty</td>
                                     <td align="center">Total (Rp.)</td>
@@ -887,10 +829,10 @@
                             <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                     onclick="showModal(2)"><i class="fa fa-plus"></i> Tambah Tindakan
                             </button>
-                            <table class="table table-bordered table-striped" id="tabel_tindakan">
+                            <table class="table table-bordered table-striped table-hover" id="tabel_tindakan">
                                 <thead>
                                 <tr bgcolor="#90ee90">
-                                    <td>Tanggal</td>
+                                    <td width="14%">Waktu</td>
                                     <td>Tindakan</td>
                                     <td align="center" width="10%">Action</td>
                                 </tr>
@@ -914,12 +856,12 @@
                                     onclick="refreshTable('lab_ref', 'lab')"><i class="fa fa-refresh" id="lab_ref"></i> Refresh
                             </button>
                         <%--</s:if>--%>
-                        <table class="table table-bordered table-striped" id="tabel_penunjang_medis">
+                        <table class="table table-bordered" id="tabel_penunjang_medis">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Tanggal Order</td>
+                                <td width="14%">Waktu</td>
+                                <td>No Order</td>
                                 <td>Jenis Penunjang</td>
-                                <%--<td>Pemeriksaan</td>--%>
                                 <td>Status</td>
                                 <td align="center" width="10%">Action</td>
                             </tr>
@@ -941,10 +883,10 @@
                         <button class="btn btn-primary" style="margin-bottom: 10px;"
                                 onclick="refreshTable('resep_ref', 'resep')"><i class="fa fa-refresh" id="resep_ref"></i> Refresh
                         </button>
-                        <table class="table table-bordered table-striped" >
+                        <table class="table table-bordered table-striped table-hover" >
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Tanggal</td>
+                                <td width="14%">Waktu</td>
                                 <td>ID Resep</td>
                                 <td>Status</td>
                                 <td align="center">Action</td>
@@ -955,36 +897,6 @@
                             </tbody>
                         </table>
                     </div>
-
-                    <%--<div class="box-header with-border" id="pos_diet">--%>
-                    <%--</div>--%>
-                    <%--<div class="box-header with-border">--%>
-                        <%--<h3 class="box-title"><i class="fa fa-stethoscope"></i> Order Gizi</h3>--%>
-                    <%--</div>--%>
-                    <%--<div class="box-body">--%>
-                        <%--<button class="btn btn-success btn-outline hvr-icon-spin" style="margin-bottom: 10px; width: 150px"--%>
-                                <%--onclick="showModal(5)"><i class="fa fa-plus hvr-icon"></i> Order Gizi--%>
-                        <%--</button>--%>
-                        <%--<button class="btn btn-primary" style="margin-bottom: 10px;"--%>
-                                <%--onclick="refreshTable('gizi_ref', 'gizi')"><i class="fa fa-refresh" id="gizi_ref"></i> Refresh--%>
-                        <%--</button>--%>
-                        <%--<table class="table table-bordered table-striped">--%>
-                            <%--<thead>--%>
-                            <%--<tr bgcolor="#90ee90" style="height: 20px">--%>
-                                <%--<td >Tanggal</td>--%>
-                                <%--<td >Jenis Diet</td>--%>
-                                <%--<td >Bentuk Diet</td>--%>
-                                <%--<td >Keterangan</td>--%>
-                                <%--<td align="center">Status</td>--%>
-                                <%--<td align="center"width="18%">Action</td>--%>
-                            <%--</tr>--%>
-                            <%--</thead>--%>
-                            <%--<tbody id="body_diet">--%>
-
-                            <%--</tbody>--%>
-                        <%--</table>--%>
-                    <%--</div>--%>
-
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-navicon"></i> Keterangan (Jika sudah pulang / selesai pemeriksaan)</h3>
                     </div>
@@ -1474,15 +1386,21 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Diskon</label>
+                        <label class="col-md-3" style="margin-top: 7px">Diskon (%)</label>
                         <div class="col-md-7">
                             <input style="margin-top: 7px" class="form-control" readonly id="h_diskon">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Harga</label>
-                        <div class="col-md-7">
+                        <label class="col-md-3" style="margin-top: 7px">Harga (Rp.)</label>
+                        <div class="col-md-3">
                             <input style="margin-top: 7px" class="form-control" readonly id="h_harga">
+                        </div>
+                        <div class="col-md-1">
+                            <i class="fa fa-arrow-right" style="margin-top: 15px"></i>
+                        </div>
+                        <div class="col-md-3">
+                            <input style="margin-top: 7px" class="form-control" readonly id="h_harga_after">
                         </div>
                     </div>
                     <div class="form-group">
@@ -1500,6 +1418,31 @@
                             <input type="number" min="1" class="form-control" style="margin-top: 7px" id="tin_qty_elektif"
                                    oninput="$(this).css('border','')" onchange="$(this).css('border','')">
                         </div>
+                    </div>
+                    <div class="form-group" id="form-btn-add" style="display: none">
+                        <div class="col-md-offset-3 col-md-9">
+                            <button onclick="addToListTindakan()" class="btn btn-success"><i class="fa fa-plus"></i> Tambah</button>
+                            <button onclick="resetListTindakan()" class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>
+                        </div>
+                    </div>
+                    <div class="form-group" id="form-list" style="display: none">
+                        <label class="col-md-12">
+                            <table id="table_list_tindakan" class="table table-bordered table-hover" style="font-size: 12px; margin-top: 20px">
+                                <thead>
+                                <tr>
+                                    <td>Dokter</td>
+                                    <td>Tindakan</td>
+                                    <td align="center">Qty</td>
+                                    <td align="right">Tarif (Rp.)</td>
+                                    <td align="right">Total (Rp.)</td>
+                                    <td align="center">Action</td>
+                                </tr>
+                                </thead>
+                                <tbody id="body_temp_tindakan">
+
+                                </tbody>
+                            </table>
+                        </label>
                     </div>
                 </div>
             </div>
@@ -1531,7 +1474,6 @@
                     Silahkan cek kembali data inputan!
                 </div>
                 <div class="row">
-                    <%--<s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs" || headerDetailCheckup.idJenisPeriksaPasien == "ptpn"'>--%>
                         <div class="form-group">
                         <label class="col-md-3">Diagnosa</label>
                         <div class="col-md-7">
@@ -1547,6 +1489,8 @@
                                    id="cor_diagnosa_bpjs"><i class="fa fa-check"></i> correct</p>
                             </div>
                         </div>
+                </div>
+                <div class="row">
                         <input type="hidden" id="val_jenis_diagnosa">
                         <div class="form-group">
                         <div class="col-md-offset-3 col-md-7">
@@ -1556,6 +1500,26 @@
                                     cssClass="form-control"></s:textarea>
                         </div>
                         </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3">Jenis Diagnosa</label>
+                        <div class="col-md-7">
+                            <select class="form-control select2" style="margin-top: 7px; width: 100%"
+                                    id="nosa_jenis_diagnosa"
+                                    onchange="var warn =$('#war_jenis_diagnosa').is(':visible'); if (warn){$('#cor_jenis_diagnosa').show().fadeOut(3000);$('#war_jenis_diagnosa').hide()}">
+                                <option value=""> - </option>
+                                <option value="diagnosa_primer">Diagnosa Primer</option>
+                                <option value="diagnosa_sekunder">Diagnosa Sekunder</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_jenis_diagnosa"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_jenis_diagnosa"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -1588,7 +1552,7 @@
                 <input type="hidden" id="id_edit_icd9">
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3">ICD9</label>
+                        <label class="col-md-3">Kode ICD9</label>
                         <div class="col-md-7">
                             <s:textfield id="id_icd9" style="margin-top: 7px" autocomplete="off"
                                          onkeypress="var warn =$('#war_id_icd9').is(':visible'); if (warn){$('#cor_id_icd9').show().fadeOut(3000);$('#war_id_icd9').hide()}; searchICD9(this.id)"
@@ -1705,44 +1669,6 @@
                     </div>
                 </div>
                 <hr>
-                <%--<div id="form_lab_dalam">--%>
-                    <%--<div class="row">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<label class="col-md-3" style="margin-top: 7px">Jenis Pemeriksaan</label>--%>
-                            <%--<div class="col-md-7">--%>
-                                <%--<select class="form-control select2" style="margin-top: 7px; width: 100%" id="lab_lab"--%>
-                                        <%--onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this.value);">--%>
-                                    <%--<option value=''> - </option>--%>
-                                <%--</select>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-2">--%>
-                                <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_lab"><i--%>
-                                        <%--class="fa fa-times"></i> required</p>--%>
-                                <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_lab"><i--%>
-                                        <%--class="fa fa-check"></i> correct</p>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="row">--%>
-                        <%--<input type="hidden" id="jenis_lab">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<label class="col-md-3" style="margin-top: 7px">Parameter</label>--%>
-                            <%--<div class="col-md-7">--%>
-                                <%--<select class="form-control select2 parameter" multiple style="margin-top: 7px; width: 100%"--%>
-                                        <%--id="lab_parameter"--%>
-                                        <%--onchange="var warn =$('#war_parameter').is(':visible'); if (warn){$('#cor_parameter').show().fadeOut(3000);$('#war_parameter').hide()};">--%>
-                                    <%--<option value=''> - </option>--%>
-                                <%--</select>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-2">--%>
-                                <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
-                                   <%--id="war_parameter"><i class="fa fa-times"></i> required</p>--%>
-                                <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
-                                   <%--id="cor_parameter"><i class="fa fa-check"></i> correct</p>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
                 <div id="form_lab_luar" style="display: none">
                     <div class="row">
                         <div class="form-group">
@@ -2098,19 +2024,6 @@
                               id="cor_rep_apotek"><i class="fa fa-check"></i> correct</span>
                     </div>
                 </div>
-                <%--<div class="row">--%>
-                    <%--<label class="col-md-3" style="margin-top: 7px">Kategori</label>--%>
-                    <%--<div class="col-md-9">--%>
-                        <%--<select class="form-control select2" style="margin-top: 7px; width: 100%"--%>
-                                <%--id="resep_jenis_obat">--%>
-                            <%--<option value=""> - </option>--%>
-                        <%--</select>--%>
-                        <%--<span style="color: red; margin-top: 12px; display: none;"--%>
-                              <%--id="war_jenis_obat"><i class="fa fa-times"></i> required</span>--%>
-                        <%--<span style="color: green; margin-top: 12px; display: none;"--%>
-                              <%--id="cor_jenis_obat"><i class="fa fa-check"></i> correct</span>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
                 <div class="row">
                     <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                     <div class="col-md-9">
@@ -2242,56 +2155,6 @@
                     </div>
                 </div>
                 <hr/>
-                <%--Keterangan Obat Berdasarkan Jenis Obat--%>
-                <%--<div class="row" style="margin-top: -7px">--%>
-                    <%--<div class="col-md-offset-2 col-md-8">--%>
-                        <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="w_keterangan">--%>
-                            <%--<p id="p_keterangan"></p>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="col-md-3">--%>
-                        <%--<label style="margin-bottom: -7px">Waktu</label>--%>
-                        <%--<select class="form-control select2" style="width: 100%" id="waktu_param">--%>
-                            <%--<option value=""> - </option>--%>
-                        <%--</select>--%>
-                    <%--</div>--%>
-                    <%--<div class="col-md-4">--%>
-                        <%--<label style="margin-bottom: -7px">Parameter Keterangan</label>--%>
-                        <%--<select onchange="getComboKeteranganObat(this.value)" class="form-control select2" style="width: 100%" id="param_ket">--%>
-                            <%--<option value=""> - </option>--%>
-                        <%--</select>--%>
-                    <%--</div>--%>
-                    <%--<div class="col-md-4">--%>
-                        <%--<label style="margin-bottom: -7px">Keterangan</label>--%>
-                        <%--<select class="select2 form-control" multiple style="width: 100%" id="ket_param">--%>
-                        <%--</select>--%>
-                    <%--</div>--%>
-                    <%--<div class="col-md-1">--%>
-                        <%--<button style="margin-top: 20px; margin-left: -25px" class="btn btn-warning" onclick="addKeterangan()"><i class="fa fa-plus"></i></button>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-                <%--<div class="row" style="margin-top: 10px">--%>
-                    <%--<div class="col-md-12">--%>
-                        <%--<table class="table table-bordered" style="font-size: 14px" id="table_keterangan">--%>
-                            <%--<thead>--%>
-                            <%--<tr>--%>
-                                <%--<td>Waktu</td>--%>
-                                <%--<td>Keterangan</td>--%>
-                                <%--<td align="center" width="5%">Action</td>--%>
-                            <%--</tr>--%>
-                            <%--</thead>--%>
-                            <%--<tbody id="body_keterangan">--%>
-                            <%--</tbody>--%>
-                        <%--</table>--%>
-                    <%--</div>--%>
-                    <%--<div class="col-md-2">--%>
-                        <%--<span style="color: red; margin-top: 12px; display: none;"--%>
-                              <%--id="war_rep_cek_waktu"><i class="fa fa-times"></i> required</span>--%>
-                        <%--<span style="color: green; margin-top: 12px; display: none;"--%>
-                              <%--id="cor_rep_cek_waktu"><i class="fa fa-check"></i> correct</span>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-                <%--<hr/>--%>
                 <div class="row" style="margin-top: -10px">
                     <div class="col-md-12">
                         <button class="btn btn-success" onclick="addObatToList()"><i class="fa fa-plus"></i> Tambah
@@ -2541,7 +2404,7 @@
                             <%--<td>No Transaksi</td>--%>
                             <td width="15%">Waktu</td>
                             <td>Keterangan</td>
-                            <td width="16%">Catatan</td>
+                            <td width="14%">Catatan</td>
                             <td width="8%">Telemedic</td>
                         </tr>
                         </thead>
@@ -2967,6 +2830,70 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-input_resume">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Inputan Data Resume Medis</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_input_resume">
+                        <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                        <p id="msg_input_resume"></p>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span>Penunjang Lab</span>
+                            <textarea class="form-control" rows="3" id="p1"></textarea>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="col-md-12">
+                            <span>Penunjang Radiologi</span>
+                            <textarea class="form-control" rows="3" id="p2"></textarea>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-6 text-center">
+                                <label>TTD Keluarga</label>
+                                <canvas class="paint-canvas-ttd" id="ttd_keluarga" width="220"
+                                        onmouseover="paintTtd('ttd_keluarga')"></canvas>
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('ttd_keluarga')"><i
+                                        class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <label>TTD DPJP</label>
+                                <canvas class="paint-canvas-ttd" id="ttd_penjaga" width="220"
+                                        onmouseover="paintTtd('ttd_penjaga')"></canvas>
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('ttd_penjaga')"><i
+                                        class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_resume"><i class="fa fa-check"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_resume"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -3042,15 +2969,19 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> List Pemeriksaan</h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_list-penunjang">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_list-penunjang"></p>
+                </div>
                 <table class="table" style="font-size: 13px;" width="100%">
                     <tbody id="body-list-penunjang">
                     </tbody>
                 </table>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-success" onclick="saveListParam()"><i class="fa fa-check"></i> Save
-                </button>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" onclick="saveListParam()"><i class="fa fa-check"></i> Save
                 </button>
             </div>
         </div>

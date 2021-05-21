@@ -178,7 +178,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                     if ("P".equalsIgnoreCase(checkup.getJenisKelamin())) {
                         jk = "Perempuan";
                     } else {
-                        jk = "laki-Laki";
+                        jk = "Laki-Laki";
                     }
                 }
                 periksaLab.setJenisKelamin(jk);
@@ -215,6 +215,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 periksaLab.setKeterangan(labData.getIsJustLab());
                 periksaLab.setIsJustLab(labData.getIsJustLab());
                 periksaLab.setNamaDokterPengirim(labData.getNamaDokterPengirim());
+                periksaLab.setIsCito(labData.getIsCito());
                 String hetero = "";
                 String auto = "";
                 String nadi = "";

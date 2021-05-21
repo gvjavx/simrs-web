@@ -323,7 +323,6 @@ function saveRJ(jenis, ket) {
                 'tipe': 'kesimpulan',
                 'id_detail_checkup': idDetailCheckup
             });
-            console.log(data);
             cek = true;
         }
     }

@@ -188,18 +188,15 @@
                             <tbody>
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
-                                    <td><s:property value="stCreatedDate"/></td>
+                                    <td>
+                                        <s:property value="stCreatedDate"/>
+                                        <s:if test='#row.isCito == "Y"'>
+                                            <span class="span-warning">CITO</span>
+                                        </s:if>
+                                    </td>
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="namaPelayanan"/></td>
-                                    <%--<td>--%>
-                                        <%--<s:if test='#row.isLuar == "Y"'>--%>
-                                            <%--<s:property value="namaLabLuar"/>--%>
-                                        <%--</s:if>--%>
-                                        <%--<s:else>--%>
-                                            <%--<s:property value="labName"/>--%>
-                                        <%--</s:else>--%>
-                                    <%--</td>--%>
                                     <td align="center">
                                         <s:if test='#row.statusPeriksa == "3"'>
                                             <a target="_blank" href="printRadiologi_radiologi.action?id=<s:property value="idDetailCheckup"/>&lab=<s:property value="idHeaderPemeriksaan"/>">

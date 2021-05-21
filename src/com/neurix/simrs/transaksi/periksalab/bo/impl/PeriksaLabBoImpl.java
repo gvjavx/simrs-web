@@ -297,6 +297,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
             if(bean.getTarifLabLuar() != null){
                 pemeriksaanEntity.setTarifLabLuar(bean.getTarifLabLuar());
             }
+            pemeriksaanEntity.setIsCito(bean.getIsCito());
 
             try {
                 headerPemeriksaanDao.addAndSave(pemeriksaanEntity);
@@ -475,6 +476,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                 entity.setStatusPeriksa("3");
                 entity.setApproveFlag("Y");
                 entity.setCatatan(bean.getCatatan());
+                entity.setIsReadHasil("N");
             }
 
             try {
@@ -490,32 +492,23 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
     }
 
     @Override
-    public CheckResponse updateFlagApprovePeriksaLab(PeriksaLab bean) throws GeneralBOException {
-        logger.info("[PeriksaLabBoImpl.updateFlagApprovePeriksaLab] START <<<<<<<<<");
-
-        CheckResponse response = new CheckResponse();
+    public void updateIsReadHasil(PeriksaLab bean) throws GeneralBOException {
+        logger.info("[PeriksaLabBoImpl.updateIsReadHasil] START <<<<<<<<<");
         if (bean != null) {
-            List<ItSimrsPeriksaLabEntity> entityList = getListEntityPeriksaLab(bean);
-            if (entityList.size() > 0) {
-                for (ItSimrsPeriksaLabEntity entity : entityList) {
-                    entity.setLastUpdate(bean.getLastUpdate());
-                    entity.setLastUpdateWho(bean.getLastUpdateWho());
-
-                    try {
-                        periksaLabDao.updateAndSave(entity);
-                        response.setStatus("success");
-                        response.setMessage("Berhasil update periksa lab");
-                    } catch (HibernateException e) {
-                        response.setMessage("error");
-                        response.setMessage("Error when update periksa lab : " + e.getMessage());
-                        logger.error("[PeriksaLabBoImpl.updateFlagApprovePeriksaLab] Error when update periksa lab ", e);
-                        throw new GeneralBOException("Error when update periksa lab " + e.getMessage());
-                    }
+            ItSimrsHeaderPemeriksaanEntity entity = headerPemeriksaanDao.getById("idHeaderPemeriksaan", bean.getIdHeaderPemeriksaan());
+            if (entity != null) {
+                entity.setIsReadHasil("Y");
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    headerPemeriksaanDao.updateAndSave(entity);
+                } catch (HibernateException e) {
+                    logger.error("[PeriksaLabBoImpl.updateIsReadHasil] Error when update periksa lab ", e);
+                    throw new GeneralBOException("Error when update periksa lab " + e.getMessage());
                 }
             }
         }
-        logger.info("[PeriksaLabBoImpl.updateFlagApprovePeriksaLab] END <<<<<<<<<");
-        return response;
+        logger.info("[PeriksaLabBoImpl.updateIsReadHasil] END <<<<<<<<<");
     }
 
     @Override
@@ -1155,6 +1148,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                     periksaLab.setLastUpdateWho(entity.getLastUpdateWho());
                     periksaLab.setLastUpdate(entity.getLastUpdate());
                     periksaLab.setJenisPeriksaPasien(entity.getJenisPasien());
+                    periksaLab.setIsCito(entity.getIsCito());
 
                     List<UploadHasilPemeriksaan> tempDalam = new ArrayList<>();
                     List<ItSimrsUploadHasilPemeriksaanEntity> dalam = new ArrayList<>();
@@ -1230,6 +1224,17 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
             logger.error(e.getMessage());
         }
         return entity;
+    }
+
+    @Override
+    public List<PeriksaLab> pushListHasil(String id, String branchId) throws GeneralBOException {
+        List<PeriksaLab> periksaLabList = new ArrayList<>();
+        try {
+            periksaLabList = periksaLabDao.pushNotifHasil(id, branchId);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return periksaLabList;
     }
 
     public void setUploadHasilPeriksaDao(UploadHasilPeriksaDao uploadHasilPeriksaDao) {

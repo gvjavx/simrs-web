@@ -754,6 +754,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 entity.setUrlDocRujuk(bean.getSuratRujukan());
             }
             entity.setRsRujukan(bean.getRsRujukan());
+            entity.setIndikasi(bean.getIndikasi());
 
             try {
                 checkupDetailDao.updateAndSave(entity);
@@ -953,6 +954,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setFlagKunjungan(bean.getFlagKunjungan());
         detailCheckupEntity.setIsEksekutif(bean.getIsEksekutif());
         detailCheckupEntity.setIsVaksin(bean.getIsVaksin());
+        detailCheckupEntity.setIndikasi(bean.getIndikasi());
 
         if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
             detailCheckupEntity.setMetodePembayaran("non_tunai");
