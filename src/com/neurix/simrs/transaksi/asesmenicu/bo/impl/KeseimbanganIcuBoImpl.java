@@ -50,6 +50,7 @@ public class KeseimbanganIcuBoImpl implements KeseimbanganIcuBo {
                     KeseimbanganIcu asesmenIcu = new KeseimbanganIcu();
                     asesmenIcu.setIdKeseimbanganIcu(entity.getIdKeseimbanganIcu());
                     asesmenIcu.setIdDetailCheckup(entity.getIdDetailCheckup());
+                    asesmenIcu.setWaktu(entity.getWaktu());
                     asesmenIcu.setJenis(entity.getJenis());
                     asesmenIcu.setKeterangan(entity.getKeterangan());
                     asesmenIcu.setNilai(entity.getNilai());
@@ -103,7 +104,7 @@ public class KeseimbanganIcuBoImpl implements KeseimbanganIcuBo {
     public void saveDelete(KeseimbanganIcu bean) throws GeneralBOException {
         Map hsCriteria = new HashMap();
         if(bean.getIdKeseimbanganIcu() != null){
-            hsCriteria.put("id_keseimbangan_icu", bean.getIdDetailCheckup());
+            hsCriteria.put("id_keseimbangan_icu", bean.getIdKeseimbanganIcu());
         }
         if(bean.getIdDetailCheckup() != null){
             hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());

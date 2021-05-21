@@ -253,14 +253,14 @@
                                     <s:hidden id="id_resep" name="permintaanResep.idPermintaanResep"></s:hidden>
                                     <s:hidden id="jenis_pasien" name="permintaanResep.idJenisPeriksa"></s:hidden>
                                     <tr>
-                                        <td width="45%"><b>No RM</b></td>
+                                        <td><b>No RM</b></td>
                                         <td>
                                             <table>
                                                 <s:label name="permintaanResep.idPasien"></s:label></table>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="45%"><b>No Resep</b></td>
+                                        <td width="40%"><b>No Resep</b></td>
                                         <td>
                                             <table>
                                                 <s:label name="permintaanResep.idPermintaanResep"></s:label></table>
@@ -269,7 +269,7 @@
 
                                     <s:if test='permintaanResep.flagEresep != "Y"'>
                                         <tr>
-                                            <td width="45%"><b>No Checkup</b></td>
+                                            <td><b>No Checkup</b></td>
                                             <td>
                                                 <table>
                                                     <s:label name="permintaanResep.noCheckup"></s:label></table>
@@ -328,7 +328,7 @@
                                 <table class="table table-striped">
                                     <s:if test='permintaanResep.flagEresep != "Y"'>
                                         <tr>
-                                            <td><b>Poli</b></td>
+                                            <td><b>Pelayanan</b></td>
                                             <td>
                                                 <table>
                                                     <s:label name="permintaanResep.namaPelayanan"></s:label></table>
@@ -336,7 +336,7 @@
                                         </tr>
                                     </s:if>
                                     <tr>
-                                        <td><b>Alamat</b></td>
+                                        <td width="40%"><b>Alamat</b></td>
                                         <td>
                                             <table><s:label name="permintaanResep.alamat"></s:label></table>
                                         </td>
