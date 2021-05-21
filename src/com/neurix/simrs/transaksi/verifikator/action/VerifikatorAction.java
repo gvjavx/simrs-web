@@ -3080,28 +3080,35 @@ public class VerifikatorAction extends BaseTransactionAction {
                                 // jika ada resep dan ppn untuk debit piutang
                                 jumlah = jumlah.add(ppnObat);
 
+                                List<MappingDetail> listOfMapPiutang = new ArrayList<>();
+
                                 // create list map piutang
-                                Map mapPiutang = new HashMap();
+                                MappingDetail mapPiutang = new MappingDetail();
 //                                mapPiutang.put("bukti", invoice);
-                                mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
-                                mapPiutang.put("master_id", masterId);
+                                mapPiutang.setNilai(jumlah.subtract(jumlahUm));
+                                mapPiutang.setMasterId(masterId);
+                                listOfMapPiutang.add(mapPiutang);
 
                                 // debit piutang pasien asuransi
-                                hsCriteria.put("piutang_pasien_asuransi", mapPiutang);
+                                hsCriteria.put("piutang_pasien_asuransi", listOfMapPiutang);
 
                                 transId = "17";
 
                             } else {
 
+                                List<MappingDetail> listOfMapPiutang = new ArrayList<>();
+
                                 // create list map piutang
-                                Map mapPiutang = new HashMap();
+                                MappingDetail mapPiutang = new MappingDetail();
 //                                mapPiutang.put("bukti", invoice);
-                                mapPiutang.put("nilai", jumlah.subtract(jumlahUm));
-                                mapPiutang.put("master_id", masterId);
+                                mapPiutang.setNilai(jumlah.subtract(jumlahUm));
+                                mapPiutang.setMasterId(masterId);
 //                                mapPiutang.put("pasien_id", idPasien);
+                                listOfMapPiutang.add(mapPiutang);
+
 
                                 // debit piutang pasien asuransi
-                                hsCriteria.put("piutang_pasien_asuransi", mapPiutang);
+                                hsCriteria.put("piutang_pasien_asuransi", listOfMapPiutang);
 
                                 transId = "09";
                             }
