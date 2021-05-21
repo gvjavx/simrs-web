@@ -6,13 +6,25 @@
 
 <html>
 <head>
+    <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/addrawatpasien.css"/>">
+
     <script type="text/javascript">
-        function callSearch2() {
-            //$('#waiting_dialog').dialog('close');
-            $('#view_dialog_menu').dialog('close');
-            $('#info_dialog').dialog('close');
-            window.location.reload(true);
-        };
+
+        $(document).ready(function () {
+            window.close = function () {
+                //$('#waiting_dialog').dialog('close');
+                $('#view_dialog_menu').dialog('close');
+                $('#info_dialog').dialog('close');
+
+                window.location.href = "<s:url action='search_tipeJurnal.action'/>";
+                window.location.reload(true);
+            };
+
+            var checkOperasional = '<s:property value="tipeJurnal.isOperasional"/>'
+            if (checkOperasional == 'Y') {
+                $('#is_operasional').prop('checked', true);
+            }
+        });
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var nameTipeJurnal = document.getElementById("tipeJurnalNameAdd").value;
@@ -98,6 +110,17 @@
                             </table>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Operasional :</small></label>
+                        </td>
+                        <td class="form-check">
+                            <input type="checkbox"
+                                   id="is_operasional" value="Y"
+                                   name="tipeJurnal.isOperasional">
+                            <label for="is_operasional"></label>
+                        </td>
+                    </tr>
                 </table>
                 <br>
                 <br>
@@ -132,8 +155,7 @@
                                height="200" width="400" autoOpen="false" title="Infomation Dialog"
                                buttons="{
                                                               'OK':function() {
-                                                                      callSearch2();
-                                                                      link();
+                                                                       close();
                                                                    }
                                                             }"
                     >

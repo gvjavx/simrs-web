@@ -6,10 +6,22 @@
 
 <html>
 <head>
+    <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/addrawatpasien.css"/>">
     <script type="text/javascript">
         function cancelBtn() {
             $('#view_dialog_menu').dialog('close');
         };
+    </script>
+
+    <script>
+        $(document).ready(function () {
+                var checkOperasional = '<s:property value="tipeJurnal.isOperasional"/>'
+            console.log(checkOperasional);
+                if (checkOperasional == 'Y') {
+                    $('#is_operasional').prop('checked', true);
+
+                }
+            })
     </script>
 
 </head>
@@ -50,6 +62,17 @@
                             <table>
                                 <s:textfield id="tipeJurnalNameView" name="tipeJurnal.tipeJurnalName" readonly="true" required="true" disabled="false" cssClass="form-control"/>
                             </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Operasional :</small></label>
+                        </td>
+                        <td class="form-check">
+                            <input type="checkbox"
+                                   id="is_operasional" value="Y" disabled="true"
+                                   name="tipeJurnal.isOperasional">
+                            <label for="is_operasional"></label>
                         </td>
                     </tr>
                 </table>

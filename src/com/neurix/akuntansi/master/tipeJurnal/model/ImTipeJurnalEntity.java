@@ -17,11 +17,20 @@ public class ImTipeJurnalEntity implements Serializable {
 
     private String flag;
     private String action;
+    private String isOperasional;
+
     private Timestamp createdDate;
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
 
+    public String getIsOperasional() {
+        return isOperasional;
+    }
+
+    public void setIsOperasional(String isOperasional) {
+        this.isOperasional = isOperasional;
+    }
 
     public String getTipeJurnalId() {
         return tipeJurnalId;

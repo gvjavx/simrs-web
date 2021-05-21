@@ -6,13 +6,32 @@
 
 <html>
 <head>
+    <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/addrawatpasien.css"/>">
+    <script>
+        $(document).ready(function () {
+            var checkOperasional = '<s:property value="tipeJurnal.isOperasional"/>'
+            if (checkOperasional == 'Y') {
+                $('#is_operasional').prop('checked', true);
+            }
+
+
+            window.close = function () {
+                //$('#waiting_dialog').dialog('close');
+                $('#view_dialog_menu').dialog('close');
+                $('#info_dialog').dialog('close');
+                window.location.href = "<s:url action='search_tipeJurnal.action'/>";
+            };
+        })
+    </script>
     <script type="text/javascript">
 
-        function callSearch() {
+        function callSearch2() {
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
-            window.location.reload(true);
+            document.tipeJurnalForm.action = "search_tipeJurnal.action";
+            document.tipeJurnalForm.submit();
+
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
@@ -101,6 +120,17 @@
                             </table>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Operasional :</small></label>
+                        </td>
+                        <td class="form-check">
+                            <input type="checkbox"
+                                   id="is_operasional" value="Y"
+                                   name="tipeJurnal.isOperasional">
+                            <label for="is_operasional"></label>
+                        </td>
+                    </tr>
                 </table>
                 <br>
                 <br>
@@ -140,8 +170,7 @@
                                                    height="200" width="400" autoOpen="false" title="Infomation Dialog"
                                                    buttons="{
                                                               'OK':function() {
-                                                                    //$(this).dialog('close');
-                                                                      callSearch();
+                                                              callSearch2();
                                                                    }
                                                             }"
                                         >
