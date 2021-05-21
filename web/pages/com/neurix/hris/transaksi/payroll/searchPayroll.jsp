@@ -432,7 +432,7 @@
                                                                 </s:if>
                                                             </display:column>
                                                             <display:column media="html" title="Rekap Payroll">
-                                                                <s:if test="#attr.row.flagSlip">
+                                                                <%--<s:if test="#attr.row.flagSlip">--%>
                                                                     <s:if test='#attr.row.tipePayroll == "PY"'>
                                                                         <a href="javascript:;"
                                                                            draftId="<s:property value="%{#attr.row.payrollHeaderId}"/>"
@@ -445,7 +445,7 @@
                                                                             <img border="0" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" name="icon_slip">
                                                                         </a>
                                                                     </s:if>
-                                                                </s:if>
+                                                                <%--</s:if>--%>
                                                             </display:column>
                                                             <%--<display:column property="payrollHeaderId" title="Id"  />--%>
                                                             <display:column property="branchName" title="Unit"  />

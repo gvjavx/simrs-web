@@ -1738,6 +1738,9 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             itemPegawaiPayroll.setBiayaJabatanNilai(paramBiayaJabatan);
             itemPegawaiPayroll.setPersenBiayaJabatan(persenBiayaJabatan);
 
+            //set recalculate dasar perhitungan bpjs
+            itemPegawaiPayroll.recalculateDasarBpjs();
+
             //set calculate based on multifikator
             itemPegawaiPayroll.calculateBasedMultifikator();
 
