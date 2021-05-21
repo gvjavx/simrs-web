@@ -819,6 +819,8 @@ public class VerifikatorAction extends BaseTransactionAction {
         } else {
 
             Map hsCriteria = new HashMap();
+            hsCriteria.put("user_id", CommonUtil.userIdLogin());
+            hsCriteria.put("user_who", CommonUtil.userLogin());
 
             // MENDAPATKAN TINDAKAN TRANSITORIS
             boolean isTransitoris = false;
@@ -1086,6 +1088,8 @@ public class VerifikatorAction extends BaseTransactionAction {
 
         // INISIALISASI MAP UNTUK CREATE JURNAL;
         Map hsCriteria = new HashMap();
+        hsCriteria.put("user_id", CommonUtil.userIdLogin());
+        hsCriteria.put("user_who", CommonUtil.userLogin());
 
         // MENGAMBIL NILAI TINDAKAN YG TERTRANSITORIS;
         boolean isTransitoris = false;
@@ -2804,6 +2808,9 @@ public class VerifikatorAction extends BaseTransactionAction {
         BigDecimal ppnObat = new BigDecimal(0);
 
         Map hsCriteria = new HashMap();
+        hsCriteria.put("user_id", CommonUtil.userIdLogin());
+        hsCriteria.put("user_who", CommonUtil.userLogin());
+
         List<MappingDetail> listMapUangMuka = new ArrayList<>();
 
         boolean isNoCheckup = noCheckup != null && !"".equalsIgnoreCase(noCheckup);

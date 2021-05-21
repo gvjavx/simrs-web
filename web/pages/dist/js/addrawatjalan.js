@@ -1022,6 +1022,7 @@ function showModal(select) {
             $("#sec-total-harga").show();
             $("#form-nama-racik").hide();
             $("#tipe-trans-resep").val("peritem");
+            $("#informasi-racik").hide();
         if (select == 10){
             $('#title-resep').html("Tambah Resep Racik");
             $("#sec-jumlah-resep").hide();
@@ -1030,6 +1031,7 @@ function showModal(select) {
             $("#sec-total-harga").hide();
             $("#form-nama-racik").show();
             $("#tipe-trans-resep").val("racik");
+            $("#informasi-racik").show();
         }
 
         $('#resep_jenis_obat').val('').trigger('change');
@@ -2763,8 +2765,17 @@ function addObatToList() {
                 var totalHarga = parseInt(qty) * parseInt(harga);
                 $('#resep_apotek').attr('disabled', true);
                 $('#desti_apotek').html(namaPelayanan);
+
+                var namaObat = "";
+                if (tipeTrans == "racik"){
+                    namaObat = namaCicik + nama + kronis;
+                } else {
+                    namaObat = namaCicik + nama + cicik + kronis;
+                }
+
                 var row = '<tr id=' + id + '>' +
-                    '<td>' + namaCicik + nama + cicik + kronis +
+                    //'<td>' + namaCicik + nama + cicik + kronis +
+                    '<td>' + namaObat +
                     '<input type="hidden" value="' + id + '" id="id_obat_' + count + '">' +
                     '<input type="hidden" value="' + qty + '" id="qty_' + count + '">' +
                     '<input type="hidden" value="' + jenisSatuan + '" id="jenis_satuan_' + count + '">' +

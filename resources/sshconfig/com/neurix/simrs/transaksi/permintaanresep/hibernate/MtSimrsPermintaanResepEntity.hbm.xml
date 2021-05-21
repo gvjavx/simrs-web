@@ -83,5 +83,21 @@
         <property name="idTransaksiOnline">
             <column name="id_transaksi_online" sql-type="varchar" />
         </property>
+
+        <property name="namaRacik">
+            <column name="nama_racik" sql-type="varchar" />
+        </property>
+
+        <property name="signaRacik">
+            <column name="signa_racik" sql-type="varchar" />
+        </property>
+
+        <property name="kemasanRacik">
+            <column name="kemasan_racik" sql-type="varchar" />
+        </property>
+
+        <property name="qtyKemasanRacik">
+            <column name="qty_kemasan_racik" sql-type="int" />
+        </property>
     </class>
 </hibernate-mapping>
