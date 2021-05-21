@@ -652,7 +652,7 @@
                             <div class="form-group">
                                 <label style="margin-top: 7px">Pendidikan</label>
                                 <s:select id="add_pendidikan"
-                                          list="#{'SD/Sederajat':'SD/Sederajat','SMP/Sederajat':'SMP/Sederajat','SMA/Sederajat':'SMA/Sederajat','S1':'S1','S2':'S3','S3':'S3'}"
+                                          list="#{'Belum Sekolah':'Belum Sekolah','SD/Sederajat':'SD/Sederajat','SMP/Sederajat':'SMP/Sederajat','SMA/Sederajat':'SMA/Sederajat','S1':'S1','S2':'S2','S3':'S3'}"
                                           onchange="$(this).css('border','')"
                                           headerKey="" headerValue="[Select One]"
                                           cssClass="form-control"/>
@@ -665,7 +665,7 @@
                             <div class="form-group">
                                 <label style="margin-top: 7px">Status Perkawinan</label>
                                 <s:select id="add_status_perkawinan"
-                                          list="#{'Kawin':'Kawin','Belum Kawin':'Belum Kawin'}"
+                                          list="#{'Kawin':'Kawin','Belum Kawin':'Belum Kawin','Duda':'Duda','Janda':'Janda'}"
                                           onchange="$(this).css('border','')"
                                           headerKey="" headerValue="[Select One]"
                                           cssClass="form-control"/>

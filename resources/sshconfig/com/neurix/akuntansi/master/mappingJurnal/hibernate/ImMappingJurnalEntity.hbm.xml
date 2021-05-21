@@ -11,7 +11,7 @@
         </id>
 
         <property name="tipeJurnalId">
-            <column name="tipe_jurnal_id" sql-type="varchar" length="10" not-null="true" />
+            <column name="tipe_jurnal_id" sql-type="varchar" length="10" not-null="false" />
         </property>
         <property name="kodeRekening">
             <column name="kode_rekening" sql-type="varchar" length="20" not-null="true" />

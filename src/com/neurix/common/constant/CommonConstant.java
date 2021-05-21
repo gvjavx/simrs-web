@@ -177,7 +177,8 @@ public class CommonConstant {
     public final static String KELOMPOK_ID_PEJABAT_MADYA = CommonUtil.getPropertyParams("kelompok.id.pejabat.madya");
     public final static String KELOMPOK_ID_PEJABAT_UTAMA = CommonUtil.getPropertyParams("kelompok.id.pejabat.utama");
     public final static String KELOMPOK_ID_STAFF = CommonUtil.getPropertyParams("kelompok.id.staff");
-    public final static String BAGIAN_ID_BOD_BOC =CommonUtil.getPropertyParams("bagian.bod.boc");
+    public final static String BAGIAN_ID_BOD =CommonUtil.getPropertyParams("bagian.bod");
+    public final static String BAGIAN_ID_BOC =CommonUtil.getPropertyParams("bagian.boc");
     public final static String KELOMPOK_ID_BOD =CommonUtil.getPropertyParams("kelompok.id.bod");
     public final static String KELOMPOK_ID_BOC =CommonUtil.getPropertyParams("kelompok.id.boc");
     public final static String ROLE_ID_KARYAWAN = CommonUtil.getPropertyParams("role.id.karyawan");
@@ -217,6 +218,7 @@ public class CommonConstant {
 
     //TELEMEDICINE
     public static final int ADD_JAM_BAYAR = 30; //MENIT
+    public static final String URL_RECORDING = CommonUtil.getPropertyParams("recording.handler.baseurl");
 
     public final static String posisiKabidKeuanganKp = CommonUtil.getPropertyParams("posisi.kabid.keuangan.kp");
     public final static String posisiKasubbidKeuanganKp = CommonUtil.getPropertyParams("posisi.kasubbid.keuangan.kp");
@@ -370,10 +372,10 @@ public class CommonConstant {
     public final static String MAPPING_CUTI_KAS = CommonUtil.getPropertyParams("mapping.cuti.kas");
     public final static String MAPPING_CUTI_PPH = CommonUtil.getPropertyParams("mapping.cuti.pph");
 
-    public final static String TIPE_PEGAWAI_BOC = "TP04";
+    public final static String TIPE_PEGAWAI_BOC = "TP01";
     public final static String TIPE_PEGAWAI_BOD = "TP02";
-    public final static String TIPE_PEGAWAI_TETAP = "TP01";
-    public final static String TIPE_PEGAWAI_TIDAK_TETAP = "TP03";
+    public final static String TIPE_PEGAWAI_TETAP = "TP03";
+    public final static String TIPE_PEGAWAI_TIDAK_TETAP = "TP04";
 
     public final static String TIPE_DPLK = "DP01";
     public final static String TIPE_DAPENBUN = "DP02";
@@ -415,6 +417,11 @@ public class CommonConstant {
     //PATH NEW RM LAMA
     public final static String URL_RM_LAMA = CommonUtil.getPropertyParams("path.rm.lama");
 
+    public final static String CODE_VA_BSI = CommonUtil.getPropertyParams("code.va.bsi");
+    public final static String DESC_VA_TELE = CommonUtil.getPropertyParams("desc.va.telemedic");
+    public final static String CODE_INVOICE_VA_TELE = CommonUtil.getPropertyParams("code.invoice.telemedic");
+    public final static String JENIS_PEMBAYARAN_TRANSFER_TUNAI = CommonUtil.getPropertyParams("jenis.pembayaran.tt");
+    public final static String JENIS_PEMBAYARAN_VA = CommonUtil.getPropertyParams("jenis.pembayaran.va");
 
 
 }

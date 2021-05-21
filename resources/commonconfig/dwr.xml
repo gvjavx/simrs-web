@@ -1020,6 +1020,8 @@
         <convert converter="bean" match="com.neurix.simrs.transaksi.makananpendamping.model.ItSimrsDetailPendampingMakananEntity"/>
         <convert converter="bean" match="com.neurix.simrs.transaksi.periksalab.model.ItSimrsUploadHasilPemeriksaanEntity"/>
         <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.UploadPendukungPemeriksaan"/>
+        <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity"/>
+        <convert converter="bean" match="com.neurix.simrs.transaksi.asesmenicu.model.KeseimbanganIcu"/>
 
     </allow>
 </dwr>

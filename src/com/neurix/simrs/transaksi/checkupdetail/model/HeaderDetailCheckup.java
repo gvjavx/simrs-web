@@ -165,6 +165,42 @@ public class HeaderDetailCheckup extends BaseModel{
     private String pemeriksaanTerakhir;
     private String dibayarPasien;
     private String formatTglMasuk;
+    private String isTindakan;
+    private String indikasi;
+    private String triase;
+    private String catatanKlinis;
+
+    public String getCatatanKlinis() {
+        return catatanKlinis;
+    }
+
+    public void setCatatanKlinis(String catatanKlinis) {
+        this.catatanKlinis = catatanKlinis;
+    }
+
+    public String getTriase() {
+        return triase;
+    }
+
+    public void setTriase(String triase) {
+        this.triase = triase;
+    }
+
+    public String getIndikasi() {
+        return indikasi;
+    }
+
+    public void setIndikasi(String indikasi) {
+        this.indikasi = indikasi;
+    }
+
+    public String getIsTindakan() {
+        return isTindakan;
+    }
+
+    public void setIsTindakan(String isTindakan) {
+        this.isTindakan = isTindakan;
+    }
 
     public String getFormatTglMasuk() {
         return formatTglMasuk;

@@ -5,7 +5,9 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.asesmenicu.bo.AsesmenIcuBo;
+import com.neurix.simrs.transaksi.asesmenicu.bo.KeseimbanganIcuBo;
 import com.neurix.simrs.transaksi.asesmenicu.model.AsesmenIcu;
+import com.neurix.simrs.transaksi.asesmenicu.model.KeseimbanganIcu;
 import com.neurix.simrs.transaksi.rekammedik.bo.RekamMedikBo;
 import com.neurix.simrs.transaksi.rekammedik.model.StatusPengisianRekamMedis;
 import org.apache.log4j.Logger;
@@ -172,7 +174,7 @@ public class AsesmenIcuAction {
                 asesmenIcu.setKeterangan(keterangan);
                 asesmenIcu.setLastUpdate(time);
                 asesmenIcu.setLastUpdateWho(userLogin);
-                if(date != null && !"".equalsIgnoreCase(date)){
+                if(date != null && !"".equalsIgnoreCase(date) && !"undefined".equalsIgnoreCase(date)){
                     asesmenIcu.setCreatedDate(Timestamp.valueOf(date));
                 }
                 response = asesmenIcuBo.saveDelete(asesmenIcu);
@@ -201,6 +203,102 @@ public class AsesmenIcuAction {
         }
         return response;
     }
+
+    public CrudResponse saveKeseimbangan(String data, String dataPasien){
+        CrudResponse response = new CrudResponse();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KeseimbanganIcuBo keseimbanganIcuBo = (KeseimbanganIcuBo) ctx.getBean("keseimbanganIcuBoProxy");
+        try {
+            JSONArray json = new JSONArray(data);
+            List<KeseimbanganIcu> icuList = new ArrayList<>();
+
+            for (int i = 0; i < json.length(); i++) {
+                JSONObject obj = json.getJSONObject(i);
+                KeseimbanganIcu asesmenIcu = new KeseimbanganIcu();
+                asesmenIcu.setWaktu(obj.getString("waktu"));
+                asesmenIcu.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                asesmenIcu.setJenis(obj.getString("jenis"));
+                asesmenIcu.setKeterangan(obj.getString("keterangan"));
+                asesmenIcu.setNilai(obj.getString("nilai"));
+                asesmenIcu.setAction("C");
+                asesmenIcu.setFlag("Y");
+                asesmenIcu.setCreatedWho(userLogin);
+                asesmenIcu.setCreatedDate(time);
+                asesmenIcu.setLastUpdateWho(userLogin);
+                asesmenIcu.setLastUpdate(time);
+                icuList.add(asesmenIcu);
+            }
+            try {
+                keseimbanganIcuBo.saveAdd(icuList);
+                response.setStatus("success");
+                if("success".equalsIgnoreCase(response.getStatus())){
+                    RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
+                    JSONObject object = new JSONObject(dataPasien);
+                    if(object != null){
+                        StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
+                        status.setNoCheckup(object.getString("no_checkup"));
+                        status.setIdDetailCheckup(object.getString("id_detail_checkup"));
+                        status.setIdPasien(object.getString("id_pasien"));
+                        status.setIdRekamMedisPasien(object.getString("id_rm"));
+                        status.setIsPengisian("Y");
+                        status.setAction("C");
+                        status.setFlag("Y");
+                        status.setCreatedWho(userLogin);
+                        status.setCreatedDate(time);
+                        status.setLastUpdateWho(userLogin);
+                        status.setLastUpdate(time);
+                        response = rekamMedikBo.saveAdd(status);
+                    }
+                }
+            } catch (GeneralBOException e) {
+                response.setStatus("Error");
+                response.setMsg("Found Error " + e.getMessage());
+                return response;
+            }
+        }catch (Exception e){
+            response.setStatus("error");
+            response.setMsg("Found Error when JSON parse, "+e.getMessage());
+        }
+        return response;
+    }
+
+    public List<KeseimbanganIcu> getListDetailKeseimbangan(String idDetailCheckup) {
+        List<KeseimbanganIcu> list = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KeseimbanganIcuBo keseimbanganIcuBo = (KeseimbanganIcuBo) ctx.getBean("keseimbanganIcuBoProxy");
+        if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
+            try {
+                KeseimbanganIcu asesmenIcu = new KeseimbanganIcu();
+                asesmenIcu.setIdDetailCheckup(idDetailCheckup);
+                list = keseimbanganIcuBo.getByCriteria(asesmenIcu);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return list;
+    }
+
+    public CrudResponse saveDeleteKeseimbangan(String id) {
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KeseimbanganIcuBo keseimbanganIcuBo = (KeseimbanganIcuBo) ctx.getBean("keseimbanganIcuBoProxy");
+        if (id != null && !"".equalsIgnoreCase(id)) {
+            try {
+                KeseimbanganIcu asesmenIcu = new KeseimbanganIcu();
+                asesmenIcu.setIdKeseimbanganIcu(id);
+                keseimbanganIcuBo.saveDelete(asesmenIcu);
+                response.setStatus("success");
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+                response.setStatus("error");
+                response.setMsg("Error, "+e.getMessage());
+            }
+        }
+        return response;
+    }
+
     public static Logger getLogger() {
         return logger;
     }

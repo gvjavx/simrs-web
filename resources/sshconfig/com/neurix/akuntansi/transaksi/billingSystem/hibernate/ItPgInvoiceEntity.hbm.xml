@@ -65,6 +65,9 @@
             <basic name="description">
                 <column name="description"/>
             </basic>
+            <basic name="codeInvoice">
+                <column name="code_invoice"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

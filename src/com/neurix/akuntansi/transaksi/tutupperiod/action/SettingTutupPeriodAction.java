@@ -70,7 +70,12 @@ public class SettingTutupPeriodAction extends BaseTransactionAction {
             JSONObject obj = json.getJSONObject(i);
             batasTutupPeriodEntity = new ItSimrsBatasTutupPeriodEntity();
             batasTutupPeriodEntity.setTahun(obj.getString("tahun"));
-            batasTutupPeriodEntity.setBulan(String.valueOf(obj.getInt("bulan")));
+
+            if(obj.getInt("bulan")<10){
+                batasTutupPeriodEntity.setBulan("0" + String.valueOf(obj.getInt("bulan")));
+            }else {
+                batasTutupPeriodEntity.setBulan(String.valueOf(obj.getInt("bulan")));
+            }
             batasTutupPeriodEntity.setUnit(obj.getString("unit"));
             if (!"".equalsIgnoreCase(obj.getString("tgl"))){
                 Date tgl = Date.valueOf(obj.getString("tgl"));

@@ -112,7 +112,6 @@ function dataResikoJatuh(jenis){
 }
 
 function setResikoJatuh(id, tahun) {
-    console.log(tahun);
     var jenis  = "";
     var resikoJatuh = "";
 

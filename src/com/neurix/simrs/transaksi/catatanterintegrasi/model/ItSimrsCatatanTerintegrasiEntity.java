@@ -31,6 +31,132 @@ public class ItSimrsCatatanTerintegrasiEntity implements Serializable {
     private String namaPetugas;
     private String sipDokter;
     private String sipPetugas;
+    private String kesadaran;
+    private String spo2;
+    private String o2;
+    private String ews;
+    private String kesimpulan;
+    private String monitoring;
+    private String dataEws;
+    private String namaPemberi;
+    private String sipPemberi;
+    private String ttdPemberi;
+    private String namaPenerima;
+    private String sipPenerima;
+    private String ttdPenerima;
+    private String tipe;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
+
+    public String getNamaPemberi() {
+        return namaPemberi;
+    }
+
+    public void setNamaPemberi(String namaPemberi) {
+        this.namaPemberi = namaPemberi;
+    }
+
+    public String getSipPemberi() {
+        return sipPemberi;
+    }
+
+    public void setSipPemberi(String sipPemberi) {
+        this.sipPemberi = sipPemberi;
+    }
+
+    public String getTtdPemberi() {
+        return ttdPemberi;
+    }
+
+    public void setTtdPemberi(String ttdPemberi) {
+        this.ttdPemberi = ttdPemberi;
+    }
+
+    public String getNamaPenerima() {
+        return namaPenerima;
+    }
+
+    public void setNamaPenerima(String namaPenerima) {
+        this.namaPenerima = namaPenerima;
+    }
+
+    public String getSipPenerima() {
+        return sipPenerima;
+    }
+
+    public void setSipPenerima(String sipPenerima) {
+        this.sipPenerima = sipPenerima;
+    }
+
+    public String getTtdPenerima() {
+        return ttdPenerima;
+    }
+
+    public void setTtdPenerima(String ttdPenerima) {
+        this.ttdPenerima = ttdPenerima;
+    }
+
+    public String getDataEws() {
+        return dataEws;
+    }
+
+    public void setDataEws(String dataEws) {
+        this.dataEws = dataEws;
+    }
+
+    public String getKesimpulan() {
+        return kesimpulan;
+    }
+
+    public void setKesimpulan(String kesimpulan) {
+        this.kesimpulan = kesimpulan;
+    }
+
+    public String getMonitoring() {
+        return monitoring;
+    }
+
+    public void setMonitoring(String monitoring) {
+        this.monitoring = monitoring;
+    }
+
+    public String getKesadaran() {
+        return kesadaran;
+    }
+
+    public void setKesadaran(String kesadaran) {
+        this.kesadaran = kesadaran;
+    }
+
+    public String getSpo2() {
+        return spo2;
+    }
+
+    public void setSpo2(String spo2) {
+        this.spo2 = spo2;
+    }
+
+    public String getO2() {
+        return o2;
+    }
+
+    public void setO2(String o2) {
+        this.o2 = o2;
+    }
+
+    public String getEws() {
+        return ews;
+    }
+
+    public void setEws(String ews) {
+        this.ews = ews;
+    }
 
     public String getNadi() {
         return nadi;

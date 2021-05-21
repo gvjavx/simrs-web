@@ -1817,3 +1817,31 @@ ADD COLUMN parent_id VARCHAR(30);
      ALTER COLUMN rekening_id DROP NOT NULL;
 
 --
+
+--2021-05-08
+
+    ALTER TABLE it_simrs_pembayaran_online
+    ADD COLUMN tipe_pembayaran VARCHAR(100);
+
+--
+
+--2021-05-09
+    ALTER TABLE im_simrs_rekening_telemedic
+    ADD init_va_name VARCHAR(100);
+
+    UPDATE im_simrs_rekening_telemedic a SET init_va_name = 'BSI'
+    WHERE id_rekening = 'RKN00013';
+
+    UPDATE im_akun_trans
+    SET is_otomatis = 'Y' WHERE trans_id = '04';
+--
+
+-- 2021-05-21
+
+    ALTER TABLE mt_simrs_permintaan_resep
+    ADD COLUMN nama_racik TEXT,
+    ADD COLUMN signa_racik TEXT,
+    ADD COLUMN kemasan_racik VARCHAR(100),
+    ADD COLUMN qty_kemasan_racik integer;
+
+--

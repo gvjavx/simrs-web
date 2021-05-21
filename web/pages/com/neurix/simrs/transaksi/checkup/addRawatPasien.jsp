@@ -1064,7 +1064,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group">
-                                                <label class="col-md-4" style="margin-top: 7px">No Telp.</label>
+                                                <label class="col-md-4" style="margin-top: 7px">No HP</label>
                                                 <div class="col-md-8">
                                                     <div class="input-group" style="margin-top: 7px">
                                                         <div class="input-group-addon">
@@ -1347,10 +1347,8 @@
                                                         <input readonly class="form-control" id="nama_dokter"
                                                                style="cursor: pointer"
                                                                placeholder="*klik untuk jadwal dokter">
-                                                        <div class="input-group-btn">
-                                                            <a class="btn btn-success">
-                                                                <span id="btn-dokter"><i
-                                                                        class="fa fa-search"></i> Dokter</span></a>
+                                                        <div class="input-group-btn" id="btn-dokter">
+                                                            <a class="btn btn-success"><i class="fa fa-search"></i> Dokter</a>
                                                         </div>
                                                     </div>
                                                     <s:hidden name="headerCheckup.idDokter" id="dokter"></s:hidden>
@@ -2658,7 +2656,6 @@
                 $('#btn-cek').html('<i class="fa fa-search"></i> Check');
             }
         });
-
     }
 
     function listDokter(idPelayanan) {
@@ -2711,7 +2708,7 @@
                         if("umum" == jenisPasien){
                             $('#form-nominal_uang_muka').show();
                             $('#pembayaran').val('tunai');
-                            $('#form_eksekutif').show();
+                            $('#form_eksekutif').hide();
                         }else{
                             $('#form-nominal_uang_muka').hide();
                             $('#pembayaran').val('');
@@ -3144,11 +3141,19 @@
                     if (data.length != 0) {
                         $.each(data, function (i, item) {
                             var labelItem = "";
+                            var dddesa = "";
+                            var tglLahir = "";
+                            if(item.desa != null){
+                                dddesa = '-'+item.desa;
+                            }
+                            if(item.tanggalLahir != null){
+                                tglLahir = '-'+converterDate(item.tanggalLahir);
+                            }
 
                             if (item.noBpjs != '' && item.noBpjs != null) {
-                                labelItem = item.idPasien + "-" + item.noBpjs + "-" + item.nama;
+                                labelItem = item.idPasien + "-" + item.noBpjs + "-" + item.nama+dddesa+tglLahir;
                             } else {
-                                labelItem = item.noBpjs + "-" + item.nama;
+                                labelItem = item.noBpjs + "-" + item.nama+dddesa+tglLahir;
                             }
                             mapped[labelItem] = {
                                 id: item.noBpjs,
@@ -3282,14 +3287,18 @@
                         $.each(data, function (i, item) {
                             var labelItem = "";
                             var dddesa = "";
+                            var tglLahir = "";
                             if(item.desa != null){
                                 dddesa = '-'+item.desa;
                             }
+                            if(item.tanggalLahir != null){
+                                tglLahir = '-'+converterDate(item.tanggalLahir);
+                            }
 
                             if (item.noBpjs != '' && item.noBpjs != null) {
-                                labelItem = item.idPasien + "-" + item.noBpjs + "-" + item.nama + dddesa;
+                                labelItem = item.idPasien + "-" + item.noBpjs + "-" + item.nama + dddesa+tglLahir;
                             } else {
-                                labelItem = item.idPasien + "-" + item.nama + dddesa;
+                                labelItem = item.idPasien + "-" + item.nama + dddesa+tglLahir;
                             }
                             mapped[labelItem] = {
                                 id: item.idPasien,
@@ -3450,7 +3459,7 @@
             $('#form-no-bpjs').hide();
             $('#form-rujukan').hide();
             $('#poli').attr('disabled', false);
-            $('#form_eksekutif').show();
+            $('#form_eksekutif').hide();
             $('#pembayaran').val('tunai');
             $('#form_diagnosa_bpjs').hide();
             $('#diagnosa_awal, #diagnosa_ket').val(null);
@@ -3774,7 +3783,16 @@
                         $('#jalan').val(response.jalan);
                         $('#suku').val(response.suku).trigger('change');
                         $('#img_ktp').val(response.imgKtp);
-                        $('#img-upload').attr('src', response.urlKtp);
+                        if(response.urlKtp != null && response.urlKtp != ''){
+                            var cek = cekImages(response.urlKtp);
+                            if(cek){
+                                $('#img-upload').attr('src', response.urlKtp);
+                            }else{
+                                $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                            }
+                        }else{
+                            $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                        }
                         $('#provinsi').val(response.provinsi);
                         $('#kabupaten').val(response.kota);
                         $('#kecamatan').val(response.kecamatan);
@@ -3793,8 +3811,8 @@
                     } else {
                         $('#save_add').show();
                         $('#load_add').hide();
-                        $('#warning_add').show();
-                        $('#msg_add').text(response.msg).fadeOut(5000);
+                        $('#warning_add').show().fadeOut(5000);
+                        $('#msg_add').text(response.msg);
                     }
                 }
             });

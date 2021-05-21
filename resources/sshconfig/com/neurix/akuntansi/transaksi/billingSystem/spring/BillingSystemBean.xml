@@ -35,6 +35,8 @@
           p:jurnalDetailDao-ref="jurnalDetailDao"
           p:logTrxDao-ref="logTrxDao"
           p:paymentGatewayInvoiceDao-ref="paymentGatewayInvoiceDao"
+          p:verifikatorPembayaranDao-ref="verifikatorPembayaranDao"
+          p:telemedicDao-ref="telemedicDao"
     />
 
     <bean id="billingSystemBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -59,8 +61,9 @@
                 <prop key="updateSaldoAkhirBulanBerjalan">PROPAGATION_REQUIRED</prop>
                 <!--<prop key="generateAndSaveCurrentSaldoPersediaanToNextMonth">readOnly</prop>-->
                 <prop key="prepareCreateJurnal">readOnly</prop>
-                <prop key="createInvoiceNumber">PROPAGATION_REQUIRED</prop>
+                <!--<prop key="createInvoiceNumber">PROPAGATION_REQUIRED</prop>-->
                 <prop key="settlementPGInvoice">PROPAGATION_REQUIRED</prop>
+                <prop key="cobaVa">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>
@@ -70,6 +73,5 @@
 
     <bean id="logTrxDao" class="com.neurix.akuntansi.transaksi.billingSystem.dao.LogTrxDao"
           p:sessionFactory-ref="sessionFactory" />
-
 
 </beans>

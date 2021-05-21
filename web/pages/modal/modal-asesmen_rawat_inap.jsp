@@ -45,10 +45,14 @@
                                     class="fa fa-plus"></i> Psiko Sosial</a></li>
                             <li><a onclick="showModalAsesmenRawatInap('skrining_nutrisi')" style="cursor: pointer"><i
                                     class="fa fa-plus"></i> Skrining Nutrisi</a></li>
+                            <li><a onclick="showModalAsesmenRawatInap('skrining_farmasi')" style="cursor: pointer"><i
+                                    class="fa fa-plus"></i> Skrining Farmasi</a></li>
                             <li><a onclick="showModalAsesmenRawatInap('neurologi')" style="cursor: pointer"><i
                                     class="fa fa-plus"></i> Neurologi</a></li>
                             <li><a onclick="showModalAsesmenRawatInap('genitourinaria')" style="cursor: pointer"><i
                                     class="fa fa-plus"></i> Genitourinaria</a></li>
+                            <li><a onclick="showModalAsesmenRawatInap('diagnosa_keperawatan')" style="cursor: pointer"><i
+                                    class="fa fa-plus"></i> Diagnosa Keperawatan</a></li>
                         </ul>
                     </div>
                 </div>
@@ -136,6 +140,15 @@
                                 <img id="delete_skrining_nutrisi" class="hvr-grow btn-hide" onclick="conRI('skrining_nutrisi', 'asesmen_keperawatan_ri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
+                        <tr id="row_ina_skrining_farmasi">
+                            <td>Skrining Farmasi</td>
+                            <td width="20%" align="center">
+                                <img id="btn_ina_skrining_farmasi" class="hvr-grow"
+                                     onclick="detailAsesmenRawatInap('skrining_farmasi')"
+                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_skrining_farmasi" class="hvr-grow btn-hide" onclick="conRI('skrining_farmasi', 'asesmen_keperawatan_ri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                            </td>
+                        </tr>
                         <tr id="row_ina_neurologi">
                             <td>Neurologi</td>
                             <td width="20%" align="center">
@@ -152,6 +165,15 @@
                                      onclick="detailAsesmenRawatInap('genitourinaria')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                                 <img id="delete_genitourinaria" class="hvr-grow btn-hide" onclick="conRI('genitourinaria', 'asesmen_keperawatan_ri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                            </td>
+                        </tr>
+                        <tr id="row_ina_diagnosa_keperawatan">
+                            <td>Diagnosa Keperawatan</td>
+                            <td width="20%" align="center">
+                                <img id="btn_ina_diagnosa_keperawatan" class="hvr-grow"
+                                     onclick="detailAsesmenRawatInap('diagnosa_keperawatan')"
+                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_diagnosa_keperawatan" class="hvr-grow btn-hide" onclick="conRI('diagnosa_keperawatan', 'asesmen_keperawatan_ri')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -1120,29 +1142,31 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Lokasi</label>
-                            <div class="col-md-7">
-                                <input class="form-control" style="margin-top: 7px;" id="y_lokasi">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3">Jenis</label>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Akut" id="ny21" name="ny2" /><label for="ny21">Akut</label>
+                        <div id="apakah_nyeri" style="display: none">
+                            <div class="form-group">
+                                <label class="col-md-3" style="margin-top: 7px">Lokasi</label>
+                                <div class="col-md-7">
+                                    <input class="form-control" style="margin-top: 7px;" id="y_lokasi">
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="custom02">
-                                    <input type="radio" value="Kronis" id="ny22" name="ny2" /><label for="ny22">Kronis</label>
+                            <div class="form-group">
+                                <label class="col-md-3">Jenis</label>
+                                <div class="col-md-2">
+                                    <div class="custom02">
+                                        <input type="radio" value="Akut" id="ny21" name="ny2" /><label for="ny21">Akut</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="custom02">
+                                        <input type="radio" value="Kronis" id="ny22" name="ny2" /><label for="ny22">Kronis</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3">Intensitas</label>
-                            <div class="col-md-7">
-                                <input class="form-control" id="ny3">
+                            <div class="form-group">
+                                <label class="col-md-3">Intensitas</label>
+                                <div class="col-md-7">
+                                    <input class="form-control" id="ny3">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1150,74 +1174,7 @@
                     <input id="temp_jenis" type="hidden">
                     <canvas id="choice_emoji" style="display: none"></canvas>
                     <hr class="garis">
-                    <div id="set_nyeri"></div>
-                    <%--<input id="temp_scala" type="hidden">--%>
-                    <%--<canvas id="choice_emoji" style="display: none"></canvas>--%>
-                    <%--<hr class="garis">--%>
-                    <%--<div class="row" style="margin-top: 10px">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<div class="col-md-2">--%>
-                                <%--<img src="<%= request.getContextPath() %>/pages/images/scala-0.png" class="nyeri"--%>
-                                     <%--style="width: 100%; cursor: no-drop;" id="0">--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: 10px">0</p>--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: -10px">Tidak Nyeri</p>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-2">--%>
-                                <%--<img src="<%= request.getContextPath() %>/pages/images/scala-2.png" class="nyeri"--%>
-                                     <%--style="width: 100%; cursor: no-drop" id="2" >--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: 10px">2</p>--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: -10px">Sedikit Nyeri</p>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-2">--%>
-                                <%--<img src="<%= request.getContextPath() %>/pages/images/scala-4.png" class="nyeri"--%>
-                                     <%--style="width: 100%; cursor: no-drop" id="4" >--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: 10px">4</p>--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: -10px">Sedikit Lebih Nyeri</p>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-2">--%>
-                                <%--<img src="<%= request.getContextPath() %>/pages/images/scala-6.png" class="nyeri"--%>
-                                     <%--style="width: 100%; cursor: no-drop" id="6" >--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: 10px">6</p>--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: -10px">Lebih Nyeri</p>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-2">--%>
-                                <%--<img src="<%= request.getContextPath() %>/pages/images/scala-8.png" class="nyeri"--%>
-                                     <%--style="width: 100%; cursor: no-drop" id="8" >--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: 10px">8</p>--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: -10px">Sangat Nyeri</p>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-2">--%>
-                                <%--<img src="<%= request.getContextPath() %>/pages/images/scala-10.png" class="nyeri"--%>
-                                     <%--style="width: 100%; cursor: no-drop" id="10" >--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: 10px">10</p>--%>
-                                <%--<p class="text-center" style="font-size: 12px; margin-top: -10px">Nyeri Sangat Hebat</p>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<hr class="garis">--%>
-                    <%--<div class="row">--%>
-                        <%--<div class="col-md-12">--%>
-                            <%--<img src="<%= request.getContextPath() %>/pages/images/scala-nyeri-number.jpg" style="width: 100%;">--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<hr class="garis">--%>
-                    <%--<div class="row">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<div class="col-md-12">--%>
-                                <%--<label>Nomeric Rating Scale</label>--%>
-                                <%--<img src="<%= request.getContextPath() %>/pages/images/rating-scale.png" style="width: 100%">--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<hr class="garis">--%>
-                    <%--<div class="row">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<div class="col-md-12">--%>
-                                <%--<label>Wong Baker Paint Scale</label>--%>
-                                <%--<img src="<%= request.getContextPath() %>/pages/images/paint-scale.png" style="width: 100%">--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
+                    <div id="set_nyeri" style="display: none"></div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -1711,6 +1668,87 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-ina-skrining_farmasi">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Skrining Farmasi</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_ina_skrining_farmasi">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_ina_skrining_farmasi"></p>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="farmasi" id="farmasi1" value="Pasien Baru">
+                                <label for="farmasi1"></label> Pasien Baru
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="farmasi" id="farmasi2" value="Pasien dalam perawatan intensif">
+                                <label for="farmasi2"></label> Pasien dalam perawatan intensif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="farmasi" id="farmasi3" value="Pasien yang menerima lebih dari 5 macam obat">
+                                <label for="farmasi3"></label> Pasien yang menerima lebih dari 5 macam obat
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="farmasi" id="farmasi4" value="Pasien yang mangalami penuruan fungsi organ">
+                                <label for="farmasi4"></label> Pasien yang mangalami penuruan fungsi organ
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="farmasi" id="farmasi5" value="Pasien hasil pmeriksaan laborat mencapai nilai kritis">
+                                <label for="farmasi5"></label> Pasien hasil pmeriksaan laborat mencapai nilai kritis
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="farmasi" id="farmasi6" value="Pasien yang mendapat obat indeks terapi sempit">
+                                <label for="farmasi6"></label> Pasien yang mendapat obat indeks terapi sempit
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_ina_skrining_farmasi" class="btn btn-success pull-right"
+                        onclick="saveAsesmenRawatInap('skrining_farmasi','asesmen_keperawatan_ri')"><i class="fa fa-check"></i>
+                    Save
+                </button>
+                <button id="load_ina_skrining_farmasi" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-ina-neurologi">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -1929,6 +1967,324 @@
                             <textarea class="form-control" id="catatan_gen"></textarea>
                         </div>
                     </div>
+                    </div>
+                </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_ina_genitourinaria" class="btn btn-success pull-right"
+                        onclick="saveAsesmenRawatInap('genitourinaria','asesmen_keperawatan_ri')"><i class="fa fa-check"></i>
+                    Save
+                </button>
+                <button id="load_ina_genitourinaria" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal-ina-diagnosa_keperawatan">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Diagnosa Keperawatan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_ina_diagnosa_keperawatan">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_ina_diagnosa_keperawatan"></p>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk1"
+                                       value="Bersihan jalan nafas tidak efektif">
+                                <label for="dk1"></label> Bersihan jalan nafas tidak efektif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk2"
+                                       value="Cemas">
+                                <label for="dk2"></label> Cemas
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk3"
+                                       value="Defisit valume cairan">
+                                <label for="dk3"></label> Defisit valume cairan
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk4"
+                                       value="Diare">
+                                <label for="dk4"></label> Diare
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk5"
+                                       value="Defisit perawatan diri">
+                                <label for="dk5"></label> Defisit perawatan diri
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk6"
+                                       value="Gangguan pertukaran gas">
+                                <label for="dk6"></label> Gangguan pertukaran gas
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk7"
+                                       value="Gangguan citra diri">
+                                <label for="dk7"></label> Gangguan citra diri
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk8"
+                                       value="Gangguan keseimbangan cairan dan elektrolit">
+                                <label for="dk8"></label> Gangguan keseimbangan cairan dan elektrolit
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk9"
+                                       value="Gangguan pola tidur">
+                                <label for="dk9"></label> Gangguan pola tidur
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk10"
+                                       value="Hipetermi">
+                                <label for="dk10"></label> Hipetermi
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk11"
+                                       value="Hipotermi">
+                                <label for="dk11"></label> Hipotermi
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk12"
+                                       value="Hambatan mobilitas fisik">
+                                <label for="dk12"></label> Hambatan mobilitas fisik
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk13"
+                                       value="Hambatan komunikasi verbal">
+                                <label for="dk13"></label> Hambatan komunikasi verbal
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk14"
+                                       value="Inkontinesia urine">
+                                <label for="dk14"></label> Inkontinesia urine
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk15"
+                                       value="Intoleransi integritas kulit">
+                                <label for="dk15"></label> Intoleransi integritas kulit
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk16"
+                                       value="Kelebihan volume cairan">
+                                <label for="dk16"></label> Kelebihan volume cairan
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk17"
+                                       value="Kerusakan mobilitas fisik">
+                                <label for="dk17"></label> Kerusakan mobilitas fisik
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk18"
+                                       value="Ketidak seimbangan nutrisi kurang dari kebutuhan tubuh">
+                                <label for="dk18"></label> Ketidak seimbangan nutrisi kurang dari kebutuhan tubuh
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk19"
+                                       value="Ketidak seimbangan nutrisi lebih dari kebutuhan tubuh">
+                                <label for="dk19"></label> Ketidak seimbangan nutrisi lebih dari kebutuhan tubuh
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk20"
+                                       value="Kurang Pengetahuan">
+                                <label for="dk20"></label> Kurang Pengetahuan
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk21"
+                                       value="Konstipasi">
+                                <label for="dk21"></label> Konstipasi
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk22"
+                                       value="Nyeri">
+                                <label for="dk22"></label> Nyeri
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk23"
+                                       value="Perfusi jaringan tidak efektif">
+                                <label for="dk23"></label> Perfusi jaringan tidak efektif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk24"
+                                       value="Peningkatan curah jantung">
+                                <label for="dk24"></label> Peningkatan curah jantung
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk25"
+                                       value="Penurunan curah jantung">
+                                <label for="dk25"></label> Penurunan curah jantung
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk26"
+                                       value="Pola nafas tidak efektif">
+                                <label for="dk26"></label> Pola nafas tidak efektif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk27"
+                                       value="Perfusi jaringan tidak efektif">
+                                <label for="dk27"></label> Perfusi jaringan tidak efektif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk28"
+                                       value="Resiko jatuh/cidera">
+                                <label for="dk28"></label> Resiko jatuh/cidera
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk29"
+                                       value="Resiko infeksi">
+                                <label for="dk29"></label> Resiko infeksi
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="diagnosa_keperawatan" id="dk30"
+                                       value="Resiko cidera">
+                                <label for="dk30"></label> Resiko cidera
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Jam Selesai Asesmen</label>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input class="form-control jam" id="jam_ngisi">
+                            </div>
+                        </div>
+                    </div>
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">
@@ -1961,11 +2317,11 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_ina_genitourinaria" class="btn btn-success pull-right"
-                        onclick="saveAsesmenRawatInap('genitourinaria','asesmen_keperawatan_ri')"><i class="fa fa-check"></i>
+                <button id="save_ina_diagnosa_keperawatan" class="btn btn-success pull-right"
+                        onclick="saveAsesmenRawatInap('diagnosa_keperawatan','asesmen_keperawatan_ri')"><i class="fa fa-check"></i>
                     Save
                 </button>
-                <button id="load_ina_genitourinaria" style="display: none; cursor: no-drop" type="button"
+                <button id="load_ina_diagnosa_keperawatan" style="display: none; cursor: no-drop" type="button"
                         class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>

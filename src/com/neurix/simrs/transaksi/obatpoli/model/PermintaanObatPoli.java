@@ -66,6 +66,15 @@ public class PermintaanObatPoli{
     private String jumlahObat;
     private String jenisObat;
     private String stJumlahRequest;
+    private String tipeApprove;
+
+    public String getTipeApprove() {
+        return tipeApprove;
+    }
+
+    public void setTipeApprove(String tipeApprove) {
+        this.tipeApprove = tipeApprove;
+    }
 
     public String getStJumlahRequest() {
         return stJumlahRequest;

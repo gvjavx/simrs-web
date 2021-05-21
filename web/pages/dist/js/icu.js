@@ -20,6 +20,13 @@ function showModalICU(jenis, idRM, isSetIdRM) {
         selectOptionTM('icu', jenis);
         $('#form-'+jenis).hide();
     }
+    if("asuhan_keperawatan_icu" == jenis){
+        $('#dia, #temp_subjektif, #rec').html('');
+        $('#tin, #askep_subjek').val('').trigger('change');
+        $('#diagnosa_askep_icu').val('');
+        removePaint('asuhan_perawat')
+        removePaint('asuhan_dpjp')
+    }
     $('#modal-icu-' + jenis).modal({show: true, backdrop: 'static'});
     setDataPasien();
 }
@@ -181,6 +188,8 @@ function saveICU(jenis, ket) {
         var jatuh4 = $('[name=radio_aud_jatuh4]:checked').val();
         var jatuh5 = $('[name=radio_aud_jatuh5]:checked').val();
         var jatuh6 = $('[name=radio_aud_jatuh6]:checked').val();
+        var tgl = $('#tgl_'+jenis).val();
+        var jam = $('#jam_'+jenis).val();
 
         if (jatuh1 && jatuh2 && jatuh3 && jatuh4 && jatuh5 != undefined) {
 
@@ -198,6 +207,12 @@ function saveICU(jenis, ket) {
             var skor5 = jatuh5.split("|")[1];
             var skor6 = jatuh6.split("|")[1];
 
+            data.push({
+                'parameter': 'Tanggal Jam',
+                'jawaban': tgl+' '+jam,
+                'keterangan': jenis,
+                'id_detail_checkup': idDetailCheckup
+            });
             data.push({
                 'parameter': 'Riwayat Jatuh',
                 'jawaban': isi1,
@@ -240,12 +255,36 @@ function saveICU(jenis, ket) {
                 'skor': skor6,
                 'id_detail_checkup': idDetailCheckup
             });
+            var totalSkor = parseInt(skor1) + parseInt(skor2) + parseInt(skor3) + parseInt(skor4) + parseInt(skor5) + parseInt(skor6);
+            var jwb = "";
+            if (totalSkor >= 0 && totalSkor <= 24) {
+                jwb = "Rendah";
+            } else if (totalSkor >= 25 && totalSkor <= 44) {
+                jwb = "Sedang";
+            } else if (totalSkor >= 45) {
+                jwb = "Tinggi";
+            }
+            data.push({
+                'parameter': 'Total',
+                'jawaban': ''+totalSkor,
+                'keterangan': jenis,
+                'tipe': 'total',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Resiko Jatuh',
+                'jawaban': jwb,
+                'keterangan': jenis,
+                'tipe': 'kesimpulan',
+                'id_detail_checkup': idDetailCheckup
+            });
             cek = true;
         }
     }
 
     if ("decobitus" == jenis) {
-
+        var tgl = $('#tgl_'+jenis).val();
+        var jam = $('#jam_'+jenis).val();
         var va = $('[name=db]');
         var va1 = "";
         $.each(va, function (i, item) {
@@ -259,7 +298,12 @@ function saveICU(jenis, ket) {
         });
 
         if (va1 != '') {
-
+            data.push({
+                'parameter': 'Tanggal Jam',
+                'jawaban': tgl+' '+jam,
+                'keterangan': jenis,
+                'id_detail_checkup': idDetailCheckup
+            });
             data.push({
                 'parameter': 'Derajat Decubitus',
                 'jawaban': va1,
@@ -272,7 +316,8 @@ function saveICU(jenis, ket) {
     }
 
     if ("nyeri" == jenis) {
-
+        var tgl = $('#tgl_'+jenis).val();
+        var jam = $('#jam_'+jenis).val();
         var nyeri = $('[name=radio_aud_nyeri]:checked').val();
         var skala = $('[name=radio_aud_skala]:checked').val();
         var lokasi = $('#yer_lokasi').val();
@@ -280,90 +325,109 @@ function saveICU(jenis, ket) {
         var canvasArea = document.getElementById('choice_emoji');
         var cvs = isCanvasBlank(canvasArea);
 
-        if (nyeri && skala != undefined && lokasi && skal != '') {
-
-            data.push({
-                'parameter': 'Apakah terdapat keluhan nyeri',
-                'jawaban': nyeri,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Lokasi',
-                'jawaban': lokasi,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Jenis',
-                'jawaban': skala,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Skala',
-                'jawaban': skal,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            if (!cvs) {
-                var canv = canvasArea.toDataURL("image/png"),
-                    canv = canv.replace(/^data:image\/(png|jpg);base64,/, "");
+        if (nyeri != '') {
+            var cecek = false;
+            if("Ya" == nyeri){
+                if(skala != undefined && lokasi && skal ){
+                    cecek = true;
+                }
+            }else{
+                cecek = true;
+            }
+            if(cecek){
                 data.push({
-                    'parameter': 'Scala Paint Nyeri',
-                    'jawaban': canv,
+                    'parameter': 'Tanggal Jam',
+                    'jawaban': tgl+' '+jam,
                     'keterangan': jenis,
-                    'jenis': ket,
-                    'tipe': 'gambar',
                     'id_detail_checkup': idDetailCheckup
                 });
+                data.push({
+                    'parameter': 'Apakah terdapat keluhan nyeri',
+                    'jawaban': nyeri,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Lokasi',
+                    'jawaban': lokasi != '' ? lokasi : '-',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Jenis',
+                    'jawaban': skala != undefined ? skala : '-',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Skala',
+                    'jawaban': skal != '' ? skal : '-',
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                if (!cvs) {
+                    var canv = canvasArea.toDataURL("image/png"),
+                        canv = canv.replace(/^data:image\/(png|jpg);base64,/, "");
+                    data.push({
+                        'parameter': 'Scala Paint Nyeri',
+                        'jawaban': canv,
+                        'keterangan': jenis,
+                        'jenis': ket,
+                        'tipe': 'gambar',
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                }
+                cek = true;
             }
-            cek = true;
         }
     }
 
     if ("gcs" == jenis) {
+        var tgl = $('#tgl_'+jenis).val();
+        var jam = $('#jam_'+jenis).val();
 
-        var gcs1 = $('#gc1').val();
-        var gcs2 = $('#gc2').val();
-        var gcs3 = $('#gc3').val();
+        var va2 = $('#res2').val();
+        var va3 = $('#res3').val();
+        var va4 = $('#res4').val();
+        var va5 = $('#res5').val();
+        var va6 = $('#res6').val();
+        var va7 = $('#res7').val();
+        var va8 = $('#res8').val();
+        var va9 = $('#res9').val();
+        var va10 = $('#res10').val();
+        var va11 = $('#res11').val();
+        var va12 = $('#res12').val();
 
-        if (gcs1 && gcs2 && gcs3 != '') {
-
-            var isi1 = gcs1.split("|")[0];
-            var isi2 = gcs2.split("|")[0];
-            var isi3 = gcs3.split("|")[0];
-
-            var skor1 = gcs1.split("|")[1];
-            var skor2 = gcs2.split("|")[1];
-            var skor3 = gcs3.split("|")[1];
-
+        if (va2 && va3 != '') {
             data.push({
-                'parameter': 'E = Eye (membuka mata)',
-                'jawaban': isi1,
+                'parameter': 'Tanggal Jam',
+                'jawaban': tgl+' '+jam,
                 'keterangan': jenis,
-                'jenis': ket,
-                'skor': skor1,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'V = Verbal (komunikasi)',
-                'jawaban': isi2,
+                'parameter': 'GCS',
+                'jawaban': 'E : '+va2 + ', V : ' + va3 + ', M : ' + va4,
                 'keterangan': jenis,
                 'jenis': ket,
-                'skor': skor2,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'M = Motorik (gerakan ekstimitas atas)',
-                'jawaban': isi3,
+                'parameter': 'Diameter Pupil',
+                'jawaban': 'KA : '+va5 + ', KI : ' + va6,
                 'keterangan': jenis,
                 'jenis': ket,
-                'skor': skor3,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Reflek Cahaya',
+                'jawaban': 'KA : '+va7 + ', KI : ' + va8+', TKA : '+va9 + ', TKA : ' + va10+', KKA : '+va11 + ', KKI : ' + va12,
+                'keterangan': jenis,
+                'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -376,13 +440,10 @@ function saveICU(jenis, ket) {
         var kriteria2 = $('[name=kriteria2]');
         var parameter = $('[name=parameter]');
         var dpjp = document.getElementById("ttd_dpjp");
-        var pasien = document.getElementById("ttd_pasien");
 
         var cekTtd1 = isCanvasBlank(dpjp);
-        var cekTtd2 = isCanvasBlank(pasien);
         var nama1 = $('#nama_terang_dokter').val();
         var sip1 = $('#sip_dokter').val();
-        var nama2 = $('#nama_terang_pasien').val();
 
         $.each(parameter, function (i, item) {
 
@@ -415,12 +476,10 @@ function saveICU(jenis, ket) {
             }
         });
 
-        if (data.length > 0 && !cekTtd1 && !cekTtd2 && nama1 && nama2 && sip1 != '') {
+        if (data.length > 0 && !cekTtd1 && nama1 && sip1 != '') {
 
             var canv1 = dpjp.toDataURL("image/png"),
                 canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
-            var canv2 = pasien.toDataURL("image/png"),
-                canv2 = canv2.replace(/^data:image\/(png|jpg);base64,/, "");
 
             data.push({
                 'parameter': 'TTD DPJP',
@@ -430,15 +489,6 @@ function saveICU(jenis, ket) {
                 'tipe': 'ttd',
                 'nama_terang': nama1,
                 'sip': sip1,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'TTD Pasien/Keluarga',
-                'jawaban': canv2,
-                'keterangan': jenis,
-                'jenis': ket,
-                'tipe': 'ttd',
-                'nama_terang': nama2,
                 'id_detail_checkup': idDetailCheckup
             });
 
@@ -1179,6 +1229,7 @@ function saveICU(jenis, ket) {
         var sip3 = $('#sip_ttd3').val();
         var nama4 = $('#nama_terang_ttd4').val();
         var nama5 = $('#nama_terang_ttd5').val();
+        var sip5 = $('#sip_ttd5').val();
 
         var cekTtd1 = isCanvasBlank(ttd1);
         var cekTtd2 = isCanvasBlank(ttd2);
@@ -1366,7 +1417,7 @@ function saveICU(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Saksi I',
+                'parameter': 'Saksi Keluarga',
                 'jawaban': canv4,
                 'keterangan': jenis,
                 'jenis': persetujuan,
@@ -1375,7 +1426,7 @@ function saveICU(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Saksi II',
+                'parameter': 'Perawat Pendamping',
                 'jawaban': canv5,
                 'keterangan': jenis,
                 'jenis': persetujuan,
@@ -1403,6 +1454,8 @@ function saveICU(jenis, ket) {
                         $('#warning_icu_' + ket).show().fadeOut(5000);
                         $('#msg_icu_' + ket).text("Berhasil menambahkan data ICU...");
                         $('#modal-icu-' + jenis).scrollTop(0);
+                        delRowICU(jenis);
+                        detailICU(jenis);
                     } else {
                         $('#save_icu_' + jenis).show();
                         $('#load_icu_' + jenis).hide();
@@ -1445,7 +1498,7 @@ function detailICU(jenis) {
                             jwb = item.jawaban;
                         }
 
-                        if ("Alat" == item.parameter) {
+                        if ("Alat" == item.parameter || "Derajat Decubitus" == item.parameter) {
                             var val = jwb.split("|");
                             var li = "";
                             $.each(val, function (i, item) {
@@ -1523,14 +1576,6 @@ function detailICU(jenis) {
                                     '<td colspan="2">' + jwb + del + '</td>' +
                                     '</tr>';
                             }
-                        } else if (item.score != null) {
-                            body += '<tr>' +
-                                '<td>' + item.parameter + '</td>' +
-                                '<td>' + item.jawaban + '</td>' +
-                                '<td width="10%" align="center">' + item.score + '</td>' +
-                                '</tr>';
-                            totalSkor = parseInt(totalSkor) + parseInt(item.score);
-                            cekSkor = true;
                         } else if ("gambar" == item.tipe) {
                             body += '<tr>' +
                                 '<td width="40%">' + item.parameter + '</td>' +
@@ -1546,7 +1591,28 @@ function detailICU(jenis) {
                                         '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
                                         '</td>' +
                                         '</tr>';
+                                }else{
+                                    body += '<tr>' +
+                                        '<td width="60%">' + item.parameter + '</td>' +
+                                        '<td align="center">' + cekIconsIsNotNull(item.jawaban) + '</td>' +
+                                        '</tr>';
                                 }
+                            } else if("resiko_jatuh" == jenis){
+                                if(item.tipe == "total"){
+                                    body += '<tr style="font-weight: bold"><td colspan="2">'+item.parameter+'</td><td align="center">' + item.jawaban + '</td></tr>';
+                                }else if(item.tipe == "kesimpulan"){
+                                    body += '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">'+item.parameter+'</td><td align="center">' + item.jawaban + '</td></tr>';
+                                }else if(item.parameter == "Tanggal Jam"){
+                                    body += '<tr style="font-weight: bold"><td>'+item.parameter+'</td><td colspan="2">' + item.jawaban + '</td></tr>' +
+                                            '<tr style="font-weight: bold"><td>Parameter</td><td>Jawaban</td><td align="center">Skor</td></tr>';
+                                }else{
+                                    body += '<tr>' +
+                                        '<td>' + item.parameter + '</td>' +
+                                        '<td>' + item.jawaban + '</td>' +
+                                        '<td width="10%" align="center">' + item.score + '</td>' +
+                                        '</tr>';
+                                }
+
                             } else {
                                 if ("ttd" == item.tipe) {
                                     forTTD += '<tr>' +
@@ -1574,29 +1640,9 @@ function detailICU(jenis) {
                         '</tr>';
                 }
 
-                if (cekSkor) {
-                    first = '<tr style="font-weight: bold"><td>Parameter</td><td>Jawaban</td><td align="center">Skor</td></tr>';
-                    last = '<tr style="font-weight: bold"><td colspan="2">Total</td><td align="center">' + totalSkor + '</td></tr>'
-
-                    if ("resiko_jatuh" == jenis) {
-                        var jwb = "";
-                        if (totalSkor >= 0 && totalSkor <= 24) {
-                            jwb = "Rendah";
-                        } else if (totalSkor >= 25 && totalSkor <= 44) {
-                            jwb = "Sedang";
-                        } else if (totalSkor >= 45) {
-                            jwb = "Tinggi";
-                        }
-
-                        if (isKesimpulan) {
-                            kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Resiko Jatuh</td><td align="center">' + jwb + '</td></tr>';
-                        }
-                    }
-                }
-
                 var table = '<table style="font-size: 12px" class="table table-bordered">' +
                     '<thead>' + head + '</thead>' +
-                    '<tbody>' + first + body + last + kesimpulan + forTTD + '</tbody>' +
+                    '<tbody>' + body + forTTD + '</tbody>' +
                     '</table>';
 
                 var newRow = $('<tr id="del_icu_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
@@ -1611,7 +1657,12 @@ function detailICU(jenis) {
 
 function delRowICU(id) {
     $('#del_icu_' + id).remove();
-    var url = contextPath + '/pages/images/icons8-plus-25.png';
+    var url = "";
+    if(id == "resiko_jatuh" || id == "decobitus" || id == "nyeri" || "alat_infasive" == id || "gcs" == id){
+        url = contextPath + '/pages/images/icons8-add-list-25.png';
+    }else{
+        url = contextPath + '/pages/images/icons8-plus-25.png';
+    }
     $('#btn_icu_' + id).attr('src', url);
     $('#btn_icu_' + id).attr('onclick', 'detailICU(\'' + id + '\')');
 }
@@ -1852,17 +1903,6 @@ function saveRespirasi(jenis, ket) {
         'id_rm': tempidRm
     }
     var va1 = $('#res1').val();
-    var va2 = $('#res2').val();
-    var va3 = $('#res3').val();
-    var va4 = $('#res4').val();
-    var va5 = $('#res5').val();
-    var va6 = $('#res6').val();
-    var va7 = $('#res7').val();
-    var va8 = $('#res8').val();
-    var va9 = $('#res9').val();
-    var va10 = $('#res10').val();
-    var va11 = $('#res11').val();
-    var va12 = $('#res12').val();
     var va13 = $('#res13').val();
     var va14 = $('#res14').val();
     var va014 = $('#res014').val();
@@ -1883,15 +1923,10 @@ function saveRespirasi(jenis, ket) {
 
     var data = "";
 
-    if (va1 != '') {
+    if (va13 != '') {
         data = {
             'id_detail_checkup': idDetailCheckup,
             'waktu': va1,
-            'gcs': va2 + '|' + va3 + '|' + va4,
-            'diameter_pupil': va5 + '|' + va6,
-            'reflek_cahaya': va7 + '|' + va8,
-            'tk': va9 + '|' + va10,
-            'kk': va11 + '|' + va12,
             'o2': va13,
             'tipe_ventilasi': va14,
             'peep': va15,
@@ -1965,25 +2000,8 @@ function listRespirasi(jenis) {
                         }
                     }
 
-                    var gcs = item.gcs.split("|");
-                    var dp = item.diameterPupil.split("|");
-                    var rc = item.reflekCahaya.split("|");
-                    var tk = item.tk.split("|");
-                    var kk = item.kk.split("|");
-
                     body += '<tr>' +
                         '<td>' + tempTgl + '<span class="pull-right">' + cekItemIsNull(item.waktu) + '</span>' + '</td>' +
-                        '<td>' + gcs[0] + '</td>' +
-                        '<td>' + gcs[1] + '</td>' +
-                        '<td>' + gcs[2] + '</td>' +
-                        '<td>' + dp[0] + '</td>' +
-                        '<td>' + dp[1] + '</td>' +
-                        '<td>' + rc[0] + '</td>' +
-                        '<td>' + rc[1] + '</td>' +
-                        '<td>' + tk[0] + '</td>' +
-                        '<td>' + tk[1] + '</td>' +
-                        '<td>' + kk[0] + '</td>' +
-                        '<td>' + kk[1] + '</td>' +
                         '<td>' + cekItemIsNull(item.o2) + '</td>' +
                         '<td>' + cekItemIsNull(item.peep) + '</td>' +
                         '<td>' + cekItemIsNull(item.frekwensi) + '</td>' +
@@ -2010,10 +2028,6 @@ function listRespirasi(jenis) {
             if (cekData) {
                 head = '<tr>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">Tanggal Jam</td>\n' +
-                    '<td colspan="3" style="vertical-align: middle" align="center">GCS</td>\n' +
-                    '<td colspan="2" style="vertical-align: middle" align="center">DP</td>\n' +
-                    '<td colspan="2" style="vertical-align: middle" align="center">RC</td>\n' +
-                    '<td colspan="4" style="vertical-align: middle" align="center">EXTR</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">O2</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">PE</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">FR</td>\n' +
@@ -2026,29 +2040,32 @@ function listRespirasi(jenis) {
                     '<td rowspan="2" style="vertical-align: middle" align="center">FL</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">FI</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">UE</td>\n' +
-                    '<td rowspan="2" style="vertical-align: middle" align="center">DE</td>\n' +
+                    '<td rowspan="2" style="vertical-align: middle" align="center">KE</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">SP</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">SE</td>\n' +
                     '<td rowspan="2" style="vertical-align: middle" align="center">Action</td>\n' +
-                    '                        </tr>\n' +
-                    '                        <tr>\n' +
-                    '<td align="center">E</td>\n' +
-                    '<td align="center">V</td>\n' +
-                    '<td align="center">M</td>\n' +
-                    '<td align="center">R</td>\n' +
-                    '<td align="center">L</td>\n' +
-                    '<td align="center">R</td>\n' +
-                    '<td align="center">L</td>\n' +
-                    '<td align="center">TR</td>\n' +
-                    '<td align="center">TL</td>\n' +
-                    '<td align="center">KR</td>\n' +
-                    '<td align="center">KL</td>\n' +
-                    '                        </tr>';
+                    '                        </tr>\n';
             }
-            var table = '<table style="font-size: 10px" class="table table-bordered">' +
+            var table = '<table style="font-size: 12px" class="table table-bordered">' +
                 '<thead>' + head + '</thead>' +
                 '<tbody>' + body + '</tbody>' +
-                '</table>';
+                '</table>' +
+                '<div class="row" style="font-size: 12px">\n' +
+                '<label class="col-md-3"> PE = Peep</label>\n' +
+                '<label class="col-md-3"> FR = Frekwensi/ Frekwensi Total</label>\n' +
+                '<label class="col-md-3"> TV = TV (1) TV (E)</label>\n' +
+                '<label class="col-md-3"> MV = MV (1) MV (E)</label>\n' +
+                '<label class="col-md-3"> PS = P-Support</label>\n' +
+                '<label class="col-md-3"> PI = P-Inspirasi/P-Control</label>\n' +
+                '<label class="col-md-3"> TR = Triger</label>\n' +
+                '<label class="col-md-3"> IN = Inspirasi Time</label>\n' +
+                '<label class="col-md-3"> FL = Flow</label>\n' +
+                '<label class="col-md-3"> FI = FIO 2/Konsentrasi O2</label>\n' +
+                '<label class="col-md-3"> UE = Ukuran ETT</label>\n' +
+                '<label class="col-md-3"> KE = Kedalaman ETT</label>\n' +
+                '<label class="col-md-3"> SP = SPO2</label>\n' +
+                '<label class="col-md-3"> SE = Secret/ Sputum</label>\n' +
+                '</div>';
 
             var newRow = $('<tr id="del_icu_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
             newRow.insertAfter($('table').find('#row_icu_' + jenis));
@@ -2202,101 +2219,101 @@ function setInputan(jenis) {
 
 
     } else {
-        dwr.engine.setAsync(false);
-        IcuAction.getListHead(idDetailCheckup, "parenteral", null, function (res) {
-            if (res.length > 0) {
-                var temp = "";
-                $('#form-parenteral').hide();
-                $('#is_new_parenteral').val(false);
-                $.each(res, function (i, item) {
-                    temp += '<div class="row jarak">\n' +
-                        '<label class="col-md-3">'+item.jenis+'</label>\n' +
-                        '<div class="col-md-5">\n' +
-                        '    <input type="hidden" class="id_header_parenteral" value="'+item.idHeaderIcu+'" readonly>' +
-                        '    <input class="form-control nilai_parenteral" placeholder="Nilai" type="number">\n' +
-                        '</div>\n' +
-                        '</div>';
-                });
-                $('#h_parenteral').html(temp);
-            }else{
-                $('#is_new_parenteral').val(true);
-                $('#form-parenteral').show();
-            }
-        });
-        dwr.engine.setAsync(false);
-        IcuAction.getListDetail(idDetailCheckup, "obat", function (res) {
-            if (res.length > 0) {
-                var temp = "";
-                $('#is_new_obat').val(false);
-                $('#form-obat').hide();
-                $.each(res, function (i, item) {
-                    if(item.nilai == null || item.nilai == '' || item.nilai == '#'){
-                        temp += '<div class="row jarak">\n' +
-                            '<label class="col-md-3">'+item.jenis+'</label>\n' +
-                            '<div class="col-md-3">' +
-                            '<div class="input-group">\n' +
-                            '<div class="input-group-addon">\n' +
-                            '<i class="fa fa-clock-o"></i>\n' +
-                            '</div>\n' +
-                            '<input type="hidden" class="id_detail_obat" value="'+item.idDetailIcu+'">' +
-                            '<input class="form-control" value="'+item.waktu+'" readonly>\n' +
-                            '</div>'+
-                            '</div>'+
-                            '<div class="col-md-3">\n' +
-                            '    <input type="hidden" class="id_header_obat" value="'+item.idHeaderIcu+'">' +
-                            '    <input class="form-control nilai_obat" placeholder="Nilai" type="number">\n' +
-                            '</div>\n' +
-                            '</div>';
-                    }
-                });
-                $('#h_obat').html(temp);
-            }else{
-                $('#is_new_obat').val(true);
-                $('#form-obat').show();
-            }
-        });
-        dwr.engine.setAsync(false);
-        IcuAction.getListHead(idDetailCheckup, "enteral", null, function (res) {
-            if (res.length > 0) {
-                var temp = "";
-                $('#is_new_enteral').val(false);
-                $('#form-enteral').hide();
-                $.each(res, function (i, item) {
-                    temp += '<div class="row jarak">\n' +
-                        '<label class="col-md-3">'+item.jenis+'</label>\n' +
-                        '<div class="col-md-5">\n' +
-                        '    <input type="hidden" class="id_header_enteral" value="'+item.idHeaderIcu+'" readonly>' +
-                        '    <input class="form-control nilai_enteral" placeholder="Nilai" type="number">\n' +
-                        '</div>\n' +
-                        '</div>';
-                });
-                $('#h_enteral').html(temp);
-            }else{
-                $('#is_new_enteral').val(true);
-                $('#form-enteral').show();
-            }
-        });
-        dwr.engine.setAsync(false);
-        IcuAction.getListHead(idDetailCheckup, "output", null, function (res) {
-            if (res.length > 0) {
-                var temp = "";
-                $('#is_new_output').val(false);
-                $('#form-output').hide();
-                $.each(res, function (i, item) {
-                    temp += '<div class="row jarak">\n' +
-                        '<label class="col-md-3">'+item.jenis+'</label>\n' +
-                        '<div class="col-md-5">\n' +
-                        '    <input type="hidden" class="id_header_output" value="'+item.idHeaderIcu+'" readonly>' +
-                        '    <input class="form-control nilai_output" placeholder="Nilai" type="number">\n' +
-                        '</div>\n' +
-                        '</div>';
-                });
-                $('#h_output').html(temp);
-            }else{
-                $('#is_new_output').val(true);
-                $('#form-output').show();
-            }
-        });
+        // dwr.engine.setAsync(false);
+        // IcuAction.getListHead(idDetailCheckup, "parenteral", null, function (res) {
+        //     if (res.length > 0) {
+        //         var temp = "";
+        //         $('#form-parenteral').hide();
+        //         $('#is_new_parenteral').val(false);
+        //         $.each(res, function (i, item) {
+        //             temp += '<div class="row jarak">\n' +
+        //                 '<label class="col-md-3">'+item.jenis+'</label>\n' +
+        //                 '<div class="col-md-5">\n' +
+        //                 '    <input type="hidden" class="id_header_parenteral" value="'+item.idHeaderIcu+'" readonly>' +
+        //                 '    <input class="form-control nilai_parenteral" placeholder="Nilai" type="number">\n' +
+        //                 '</div>\n' +
+        //                 '</div>';
+        //         });
+        //         $('#h_parenteral').html(temp);
+        //     }else{
+        //         $('#is_new_parenteral').val(true);
+        //         $('#form-parenteral').show();
+        //     }
+        // });
+        // dwr.engine.setAsync(false);
+        // IcuAction.getListDetail(idDetailCheckup, "obat", function (res) {
+        //     if (res.length > 0) {
+        //         var temp = "";
+        //         $('#is_new_obat').val(false);
+        //         $('#form-obat').hide();
+        //         $.each(res, function (i, item) {
+        //             if(item.nilai == null || item.nilai == '' || item.nilai == '#'){
+        //                 temp += '<div class="row jarak">\n' +
+        //                     '<label class="col-md-3">'+item.jenis+'</label>\n' +
+        //                     '<div class="col-md-3">' +
+        //                     '<div class="input-group">\n' +
+        //                     '<div class="input-group-addon">\n' +
+        //                     '<i class="fa fa-clock-o"></i>\n' +
+        //                     '</div>\n' +
+        //                     '<input type="hidden" class="id_detail_obat" value="'+item.idDetailIcu+'">' +
+        //                     '<input class="form-control" value="'+item.waktu+'" readonly>\n' +
+        //                     '</div>'+
+        //                     '</div>'+
+        //                     '<div class="col-md-3">\n' +
+        //                     '    <input type="hidden" class="id_header_obat" value="'+item.idHeaderIcu+'">' +
+        //                     '    <input class="form-control nilai_obat" placeholder="Nilai" type="number">\n' +
+        //                     '</div>\n' +
+        //                     '</div>';
+        //             }
+        //         });
+        //         $('#h_obat').html(temp);
+        //     }else{
+        //         $('#is_new_obat').val(true);
+        //         $('#form-obat').show();
+        //     }
+        // });
+        // dwr.engine.setAsync(false);
+        // IcuAction.getListHead(idDetailCheckup, "enteral", null, function (res) {
+        //     if (res.length > 0) {
+        //         var temp = "";
+        //         $('#is_new_enteral').val(false);
+        //         $('#form-enteral').hide();
+        //         $.each(res, function (i, item) {
+        //             temp += '<div class="row jarak">\n' +
+        //                 '<label class="col-md-3">'+item.jenis+'</label>\n' +
+        //                 '<div class="col-md-5">\n' +
+        //                 '    <input type="hidden" class="id_header_enteral" value="'+item.idHeaderIcu+'" readonly>' +
+        //                 '    <input class="form-control nilai_enteral" placeholder="Nilai" type="number">\n' +
+        //                 '</div>\n' +
+        //                 '</div>';
+        //         });
+        //         $('#h_enteral').html(temp);
+        //     }else{
+        //         $('#is_new_enteral').val(true);
+        //         $('#form-enteral').show();
+        //     }
+        // });
+        // dwr.engine.setAsync(false);
+        // IcuAction.getListHead(idDetailCheckup, "output", null, function (res) {
+        //     if (res.length > 0) {
+        //         var temp = "";
+        //         $('#is_new_output').val(false);
+        //         $('#form-output').hide();
+        //         $.each(res, function (i, item) {
+        //             temp += '<div class="row jarak">\n' +
+        //                 '<label class="col-md-3">'+item.jenis+'</label>\n' +
+        //                 '<div class="col-md-5">\n' +
+        //                 '    <input type="hidden" class="id_header_output" value="'+item.idHeaderIcu+'" readonly>' +
+        //                 '    <input class="form-control nilai_output" placeholder="Nilai" type="number">\n' +
+        //                 '</div>\n' +
+        //                 '</div>';
+        //         });
+        //         $('#h_output').html(temp);
+        //     }else{
+        //         $('#is_new_output').val(true);
+        //         $('#form-output').show();
+        //     }
+        // });
     }
 
     var sel = $('.select2').length;
@@ -2444,21 +2461,14 @@ function delInputan(id) {
 }
 
 function saveInputan(jenis, ket) {
-    var dataPasien = "";
-    dataPasien = {
+    var dataPasien = {
         'no_checkup': noCheckup,
         'id_detail_checkup': idDetailCheckup,
         'id_pasien': idPasien,
         'id_rm': tempidRm
     }
 
-    var isNew1 = $('#is_new_parenteral').val();
-    var isNew2 = $('#is_new_obat').val();
-    var isNew3 = $('#is_new_enteral').val();
-    var isNew4 = $('#is_new_output').val();
-
     var data = [];
-    var waktu = $('#waktu_' + jenis).val();
     var waktu = $('#waktu_keseimbangan_icu').val();
     var p1 = $('.jenis_loading');
     var p11 = $('.nilai_loading');
@@ -2467,248 +2477,99 @@ function saveInputan(jenis, ket) {
     var p3 = $('.jenis_cairan');
     var p33 = $('.nilai_cairan');
 
-    if(isNew1 == "false"){
-        var idHeader = $('.id_header_parenteral');
-        var nilai = $('.nilai_parenteral');
-        $.each(idHeader, function (i, item) {
-            if(item.value != '' && nilai[i].value != ''){
-                data.push({
-                    'id_detail_checkup': idDetailCheckup,
-                    'waktu': waktu,
-                    'id_header_icu': item.value,
-                    'nilai': nilai[i].value,
-                    'kategori': 'parenteral',
-                    'is_new': isNew1
-                })
-            }
-        });
-    }else{
-        $.each(p1, function (i, item) {
-            console.log(p11);
-            if (item.value != '' && p11[i].value != '') {
-                data.push({
-                    'id_detail_checkup': idDetailCheckup,
-                    'waktu': waktu,
-                    'jenis': item.value,
-                    'nilai': p11[i].value,
-                    'kategori': 'parenteral',
-                    'is_new': isNew1
-                })
-            }
-        });
-
-        $.each(p2, function (i, item) {
-            if (item.value != '' && p22[i].value != '') {
-                data.push({
-                    'id_detail_checkup': idDetailCheckup,
-                    'waktu': waktu,
-                    'jenis': item.value,
-                    'nilai': p22[i].value,
-                    'kategori': 'parenteral',
-                    'is_new': isNew1
-                })
-            }
-        });
-
-        $.each(p3, function (i, item) {
-            if (item.value != '' && p33[i].value != '') {
-                data.push({
-                    'id_detail_checkup': idDetailCheckup,
-                    'waktu': waktu,
-                    'jenis': item.value,
-                    'nilai': p33[i].value,
-                    'kategori': 'parenteral',
-                    'is_new': isNew1
-                })
-            }
-        });
-    }
+    $.each(p1, function (i, item) {
+        if (item.value != '' && p11[i].value != '') {
+            data.push({
+                'id_detail_checkup': idDetailCheckup,
+                'waktu': waktu,
+                'jenis': item.value,
+                'nilai': p11[i].value,
+                'keterangan': 'parenteral'
+            })
+        }
+    });
+    $.each(p2, function (i, item) {
+        if (item.value != '' && p22[i].value != '') {
+            data.push({
+                'id_detail_checkup': idDetailCheckup,
+                'waktu': waktu,
+                'jenis': item.value,
+                'nilai': p22[i].value,
+                'keterangan': 'parenteral'
+            })
+        }
+    });
+    $.each(p3, function (i, item) {
+        if (item.value != '' && p33[i].value != '') {
+            data.push({
+                'id_detail_checkup': idDetailCheckup,
+                'waktu': waktu,
+                'jenis': item.value,
+                'nilai': p33[i].value,
+                'keterangan': 'parenteral'
+            })
+        }
+    });
 
     var o1 = $('.jenis_injeksi');
-    var o11 = $('.kali_injeksi');
-    var o111 = $('.nilai_injeksi');
+    var o11 = $('.nilai_injeksi');
     var o2 = $('.jenis_oral');
-    var o22 = $('.kali_oral');
-    var o222 = $('.nilai_oral');
+    var o22 = $('.nilai_oral');
     var o3 = $('.jenis_lainnya');
-    var o33 = $('.kali_lainnya');
-    var o333 = $('.nilai_lainnya');
+    var o33 = $('.nilai_lainnya');
 
-    if(isNew2 == "false"){
-        var idHeader = $('.id_header_obat');
-        var idDetail = $('.id_detail_obat');
-        var nilai = $('.nilai_obat');
-        $.each(idHeader, function (i, item) {
-            if(item.value != '' && idDetail[i].value != '' && nilai[i].value != ''){
-                data.push({
-                    'id_detail_checkup': idDetailCheckup,
-                    'waktu': waktu,
-                    'id_header_icu': item.value,
-                    'id_detail_icu': idDetail[i].value,
-                    'nilai': nilai[i].value,
-                    'kategori': 'obat',
-                    'is_new': isNew2
-                });
-            }
-        });
-    }else{
-        $.each(o1, function (i, item) {
-            if (item.value != '' && o11[i].value != '' && o111[i].value != '') {
-                var kali = o11[i].value.split('x');
-                var atas = "";
-                var bawah = "";
-                if (kali[0] != null && kali[0] != '') {
-                    atas = kali[0];
-                    var time = new Date;
-                    var curentTime = time.getHours();
-                    var sisaJam = 24 - curentTime;
-                    var perHari = sisaJam / parseInt(atas);
-                    var perMenit = perHari * 60;
-                    for (var j = 0; j < atas; j++) {
-                        if (j == 0) {
-                            data.push({
-                                'id_detail_checkup': idDetailCheckup,
-                                'waktu': waktu,
-                                'jenis': item.value + ' ' + o11[i].value,
-                                'nilai': o111[0].value,
-                                'kategori': 'obat',
-                                'is_new': isNew2
-                            });
-                        } else {
-                            time.setMinutes(perMenit);
-                            var nextTime = converterTime(time);
-                            data.push({
-                                'id_detail_checkup': idDetailCheckup,
-                                'waktu': nextTime,
-                                'jenis': item.value + ' ' + o11[i].value,
-                                'nilai': '',
-                                'kategori': 'obat',
-                                'is_new': isNew2
-                            });
-                        }
-                    }
-                }
-                if (kali[1] != null && kali[1] != '') {
-                    bawah = kali[1];
-                }
-            }
-        });
-
-        $.each(o2, function (i, item) {
-            if (item.value != '' && o22[i].value != '' && o222[i].value != '') {
-                var kali = o22[i].value.split('x');
-                var atas = "";
-                var bawah = "";
-                if (kali[0] != null && kali[0] != '') {
-                    atas = kali[0];
-                    var time = new Date;
-                    var curentTime = time.getHours();
-                    var sisaJam = 24 - curentTime;
-                    var perHari = sisaJam / parseInt(atas);
-                    var perMenit = perHari * 60;
-                    for (var j = 0; j < atas; j++) {
-                        if (j == 0) {
-                            data.push({
-                                'id_detail_checkup': idDetailCheckup,
-                                'waktu': waktu,
-                                'jenis': item.value + ' ' + o22[i].value,
-                                'nilai': o222[0].value,
-                                'kategori': 'obat',
-                                'is_new': isNew2
-                            });
-                        } else {
-                            time.setMinutes(perMenit);
-                            var nextTime = converterTime(time);
-                            data.push({
-                                'id_detail_checkup': idDetailCheckup,
-                                'waktu': nextTime,
-                                'jenis': item.value + ' ' + o22[i].value,
-                                'nilai': '',
-                                'kategori': 'obat',
-                                'is_new': isNew2
-                            });
-                        }
-                    }
-                }
-            }
-        });
-        $.each(o3, function (i, item) {
-            if (item.value != '' && o33[i].value != '' && o333[i].value != '') {
-                var kali = o33[i].value.split('x');
-                var atas = "";
-                var bawah = "";
-                if (kali[0] != null && kali[0] != '') {
-                    atas = kali[0];
-                    var time = new Date;
-                    var curentTime = time.getHours();
-                    var sisaJam = 24 - curentTime;
-                    var perHari = sisaJam / parseInt(atas);
-                    var perMenit = perHari * 60;
-                    for (var j = 0; j < atas; j++) {
-                        if (j == 0) {
-                            data.push({
-                                'id_detail_checkup': idDetailCheckup,
-                                'waktu': waktu,
-                                'jenis': item.value + ' ' + o33[i].value,
-                                'nilai': o333[0].value,
-                                'kategori': 'obat',
-                                'is_new': isNew2
-                            });
-                        } else {
-                            time.setMinutes(perMenit);
-                            var nextTime = converterTime(time);
-                            data.push({
-                                'id_detail_checkup': idDetailCheckup,
-                                'waktu': nextTime,
-                                'jenis': item.value + ' ' + o33[i].value,
-                                'nilai': '',
-                                'kategori': 'obat',
-                                'is_new': isNew2
-                            });
-                        }
-                    }
-                }
-            }
-        });
-    }
+    $.each(o1, function (i, item) {
+        if (item.value != '' && o11[i].value != '') {
+            data.push({
+                'id_detail_checkup': idDetailCheckup,
+                'waktu': waktu,
+                'jenis': item.value,
+                'nilai': o11[i].value,
+                'keterangan': 'obat'
+            })
+        }
+    });
+    $.each(o2, function (i, item) {
+        if (item.value != '' && o22[i].value != '') {
+            data.push({
+                'id_detail_checkup': idDetailCheckup,
+                'waktu': waktu,
+                'jenis': item.value,
+                'nilai': o22[i].value,
+                'keterangan': 'obat'
+            })
+        }
+    });
+    $.each(o3, function (i, item) {
+        if (item.value != '' && o33[i].value != '') {
+            data.push({
+                'id_detail_checkup': idDetailCheckup,
+                'waktu': waktu,
+                'jenis': item.value,
+                'nilai': o33[i].value,
+                'keterangan': 'obat'
+            })
+        }
+    });
 
     var ngt = $('#ngt').val();
     var minum = $('#minum').val();
 
-    if(isNew3 == "false"){
-        var idHeader = $('.id_header_enteral');
-        var nilai = $('.nilai_enteral');
-        $.each(idHeader, function (i, item) {
-            if(item.value != '' && nilai[i].value != ''){
-                data.push({
-                    'id_detail_checkup': idDetailCheckup,
-                    'waktu': waktu,
-                    'id_header_icu': item.value,
-                    'nilai': nilai[i].value,
-                    'kategori': 'enteral',
-                    'is_new': isNew3
-                });
-            }
+    if (ngt != '' || minum != '') {
+        data.push({
+            'id_detail_checkup': idDetailCheckup,
+            'waktu': waktu,
+            'jenis': 'NGT/Oral',
+            'nilai': ngt,
+            'keterangan': 'enteral'
         });
-    }else{
-        if (ngt && minum != '') {
-            data.push({
-                'id_detail_checkup': idDetailCheckup,
-                'waktu': waktu,
-                'jenis': 'NGT/Oral',
-                'nilai': ngt,
-                'kategori': 'enteral',
-                'is_new': isNew3
-            });
-            data.push({
-                'id_detail_checkup': idDetailCheckup,
-                'waktu': waktu,
-                'jenis': 'Minum',
-                'nilai': minum,
-                'kategori': 'enteral',
-                'is_new': isNew3
-            });
-        }
+        data.push({
+            'id_detail_checkup': idDetailCheckup,
+            'waktu': waktu,
+            'jenis': 'Minum',
+            'nilai': minum,
+            'keterangan': 'enteral'
+        });
     }
 
     var drain1 = $('#drain1').val();
@@ -2719,96 +2580,65 @@ function saveInputan(jenis, ket) {
     var iwl = $('#iwl').val();
     var stoma = $('#stoma').val();
 
-    if(isNew4 == "false"){
-        var idHeader = $('.id_header_output');
-        var nilai = $('.nilai_output');
-        $.each(idHeader, function (i, item) {
-            if(item.value != '' && nilai[i].value != ''){
-                data.push({
-                    'id_detail_checkup': idDetailCheckup,
-                    'waktu': waktu,
-                    'id_header_icu': item.value,
-                    'nilai': nilai[i].value,
-                    'kategori': 'output',
-                    'is_new': isNew4
-                });
-            }
+    if (drain1 && drain2 && urin && muntah && bab && iwl && stoma != '') {
+        data.push({
+            'id_detail_checkup': idDetailCheckup,
+            'waktu': waktu,
+            'jenis': 'Drain 1',
+            'nilai': drain1,
+            'keterangan': 'output'
         });
-    }else{
-        if (drain1 && drain2 && urin && muntah && bab && iwl && stoma != '') {
-            data.push({
-                'id_detail_checkup': idDetailCheckup,
-                'waktu': waktu,
-                'jenis': 'Drain 1',
-                'nilai': drain1,
-                'kategori': 'output',
-                'is_new': isNew4
-            });
-            data.push({
-                'id_detail_checkup': idDetailCheckup,
-                'waktu': waktu,
-                'jenis': 'Drain 2',
-                'nilai': drain2,
-                'kategori': 'output',
-                'is_new': isNew4
-            });
-            data.push({
-                'id_detail_checkup': idDetailCheckup,
-                'waktu': waktu,
-                'jenis': 'Urin',
-                'nilai': urin,
-                'kategori': 'output',
-                'is_new': isNew4
-            });
-            data.push({
-                'id_detail_checkup': idDetailCheckup,
-                'waktu': waktu,
-                'jenis': 'Muntah',
-                'nilai': muntah,
-                'kategori': 'output',
-                'is_new': isNew4
-            });
-            data.push({
-                'id_detail_checkup': idDetailCheckup,
-                'waktu': waktu,
-                'jenis': 'BAB',
-                'nilai': bab,
-                'kategori': 'output',
-                'is_new': isNew4
-            });
-            data.push({
-                'id_detail_checkup': idDetailCheckup,
-                'waktu': waktu,
-                'jenis': 'IWL',
-                'nilai': iwl,
-                'kategori': 'output',
-                'is_new': isNew4
-            });
-            data.push({
-                'id_detail_checkup': idDetailCheckup,
-                'waktu': waktu,
-                'jenis': 'Stoma',
-                'nilai': stoma,
-                'kategori': 'output',
-                'is_new': isNew4
-            });
-        }
+        data.push({
+            'id_detail_checkup': idDetailCheckup,
+            'waktu': waktu,
+            'jenis': 'Drain 2',
+            'nilai': drain2,
+            'keterangan': 'output'
+        });
+        data.push({
+            'id_detail_checkup': idDetailCheckup,
+            'waktu': waktu,
+            'jenis': 'Urin',
+            'nilai': urin,
+            'keterangan': 'output'
+        });
+        data.push({
+            'id_detail_checkup': idDetailCheckup,
+            'waktu': waktu,
+            'jenis': 'Muntah',
+            'nilai': muntah,
+            'keterangan': 'output'
+        });
+        data.push({
+            'id_detail_checkup': idDetailCheckup,
+            'waktu': waktu,
+            'jenis': 'BAB',
+            'nilai': bab,
+            'keterangan': 'output'
+        });
+        data.push({
+            'id_detail_checkup': idDetailCheckup,
+            'waktu': waktu,
+            'jenis': 'IWL',
+            'nilai': iwl,
+            'keterangan': 'output'
+        });
+        data.push({
+            'id_detail_checkup': idDetailCheckup,
+            'waktu': waktu,
+            'jenis': 'Stoma',
+            'nilai': stoma,
+            'keterangan': 'output'
+        });
     }
 
-    console.log(isNew1);
-    console.log(isNew2);
-    console.log(isNew3);
-    console.log(isNew4);
-
-    if (waktu != '') {
+    if (waktu != '' && data.length > 0) {
         var result = JSON.stringify(data);
         var pasienData = JSON.stringify(dataPasien);
-
         $('#save_icu_' + jenis).hide();
         $('#load_icu_' + jenis).show();
         dwr.engine.setAsync(true);
-
-        IcuAction.save(result, pasienData, {
+        AsesmenIcuAction.saveKeseimbangan(result, pasienData, {
             callback: function (res) {
                 if (res.status == "success") {
                     $('#save_icu_' + jenis).show();
@@ -2817,6 +2647,8 @@ function saveInputan(jenis, ket) {
                     $('#warning_icu_' + ket).show().fadeOut(5000);
                     $('#msg_icu_' + ket).text("Berhasil menambahkan data ICU...");
                     $('#modal-icu-' + jenis).scrollTop(0);
+                    delRowICU(jenis);
+                    listInputan(jenis);
                 } else {
                     $('#save_icu_' + jenis).show();
                     $('#load_icu_' + jenis).hide();
@@ -2834,361 +2666,303 @@ function saveInputan(jenis, ket) {
 }
 
 function listInputan(jenis) {
-    var body1 = "";
-    var body2 = "";
-    var body3 = "";
-    var body4 = "";
-    var rbody1 = "";
-    var rbody2 = "";
-    var rbody3 = "";
-    var rbody4 = "";
-    var thead1 = "<td width='12%'>Tanggal Jam</td>";
-    var thead2 = "<td width='12%'>Tanggal Jam</td>";
-    var thead3 = "<td width='12%'>Tanggal Jam</td>";
-    var thead4 = "<td width='12%'>Tanggal Jam</td>";
-    var head1 = "";
-    var head2 = "";
-    var head3 = "";
-    var head4 = "";
-    var body = "";
-    var head = "";
     var parenteral = [];
     var obat = [];
     var enteral = [];
     var output = [];
-    var hparenteral = [];
-    var hobat = [];
-    var henteral = [];
-    var houtput = [];
-    var temp1 = "";
-    var temp2 = "";
-    var temp3 = "";
-    var temp4 = "";
-    dwr.engine.setAsync(false);
-    IcuAction.getListDetail(idDetailCheckup, null, function (res) {
+    var head = "";
+    var body = "";
+    var table1 = "";
+    var table2 = "";
+    var table3 = "";
+    var table4 = "";
+    var table5 = "";
+
+    AsesmenIcuAction.getListDetailKeseimbangan(idDetailCheckup, function (res) {
         if (res.length > 0) {
             $.each(res, function (i, item) {
-                if (item.kategori == "parenteral") {
+                if (item.keterangan == "parenteral") {
                     parenteral.push({
+                        'id': item.idKeseimbanganIcu,
                         'jam': item.waktu,
                         'tanggal': converterDate(item.createdDate),
-                        'nilai': item.nilai,
-                        'id_detail_icu': item.idDetailIcu,
-                        'id_header_icu': item.idHeaderIcu
+                        'jenis': item.jenis,
+                        'nilai': item.nilai
                     });
                 }
-                if (item.kategori == "obat") {
+                if (item.keterangan == "obat") {
                     obat.push({
+                        'id': item.idKeseimbanganIcu,
                         'jam': item.waktu,
                         'tanggal': converterDate(item.createdDate),
-                        'nilai': item.nilai,
-                        'id_detail_icu': item.idDetailIcu,
-                        'id_header_icu': item.idHeaderIcu
+                        'jenis': item.jenis,
+                        'nilai': item.nilai
                     });
                 }
-                if (item.kategori == "enteral") {
+                if (item.keterangan == "enteral") {
                     enteral.push({
+                        'id': item.idKeseimbanganIcu,
                         'jam': item.waktu,
                         'tanggal': converterDate(item.createdDate),
-                        'nilai': item.nilai,
-                        'id_detail_icu': item.idDetailIcu,
-                        'id_header_icu': item.idHeaderIcu
+                        'jenis': item.jenis,
+                        'nilai': item.nilai
                     });
                 }
-                if (item.kategori == "output") {
+                if (item.keterangan == "output") {
                     output.push({
+                        'id': item.idKeseimbanganIcu,
                         'jam': item.waktu,
                         'tanggal': converterDate(item.createdDate),
-                        'nilai': item.nilai,
-                        'id_detail_icu': item.idDetailIcu,
-                        'id_header_icu': item.idHeaderIcu
+                        'jenis': item.jenis,
+                        'nilai': item.nilai
                     });
                 }
             });
+
+            var total123 = 0;
+            var total4 = 0;
+
+            if(parenteral.length > 0){
+                var bod = "";
+                var jumlah = 0;
+                $.each(parenteral, function (ix, itemx) {
+                    var tanggal = itemx.tanggal;
+                    var tempTgl = "";
+                    if (ix == 0) {
+                        tempTgl = tanggal;
+                    } else {
+                        var tgl = parenteral[ix - 1]["tanggal"];
+                        var tglB = tgl;
+                        if (tanggal == tglB) {
+                            tempTgl = "";
+                        } else {
+                            tempTgl = tanggal;
+                        }
+                    }
+                    bod += '<tr>'+
+                        '<td><div class="row">' +
+                        '<div class="col-md-6">' +tempTgl+
+                        '</div>' +
+                        '<div class="col-md-4">' + itemx.jam +
+                        '</div>' +
+                        '</div></td>'+
+                        '<td>'+itemx.jenis+'</td>'+
+                        '<td>'+itemx.nilai+'</td>'+
+                        '<td align="center"><i id="delete_' + itemx.id + '" onclick="conICU(\''+jenis+'\', \'asesmen_icu\', \''+itemx.id+'\')" class="fa fa-trash hvr-grow" style="color: red"></i></td>'+
+                        '</tr>';
+                    jumlah = jumlah + parseInt(itemx.nilai);
+                });
+                if(parseInt(jumlah) > 0){
+                    total123 = total123 + parseInt(jumlah);
+                    bod += '<tr bgcolor="#ffebcd">'+
+                        '<td colspan="2">Total Parenteral</td>'+
+                        '<td colspan="2">'+jumlah+'</td>'+
+                        '</tr>';
+                }
+                table1 = '<div style="margin-bottom: -20px; font-size: 14px"><b>I. Parenteral</b></div>' +
+                    '<table style="font-size: 12px" class="table table-bordered">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<td width="20%">Waktu</td>' +
+                    '<td>Jenis Parenteral</td>' +
+                    '<td width="20%">Nilai</td>' +
+                    '<td width="10%" align="center">Action</td>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>' + bod + '</tbody>' +
+                    '</table>';
+            }
+
+            if(obat.length > 0){
+                var bod = "";
+                var jumlah = 0;
+                $.each(obat, function (ix, itemx) {
+                    var tanggal = itemx.tanggal;
+                    var tempTgl = "";
+                    if (ix == 0) {
+                        tempTgl = tanggal;
+                    } else {
+                        var tgl = obat[ix - 1]["tanggal"];
+                        var tglB = tgl;
+                        if (tanggal == tglB) {
+                            tempTgl = "";
+                        } else {
+                            tempTgl = tanggal;
+                        }
+                    }
+                    bod += '<tr>'+
+                        '<td><div class="row">' +
+                        '<div class="col-md-6">' +tempTgl+
+                        '</div>' +
+                        '<div class="col-md-4">' + itemx.jam +
+                        '</div>' +
+                        '</div></td>'+
+                        '<td>'+itemx.jenis+'</td>'+
+                        '<td>'+itemx.nilai+'</td>'+
+                        '<td align="center"><i id="delete_' + itemx.id + '" onclick="conICU(\''+jenis+'\', \'asesmen_icu\', \''+itemx.id+'\')" class="fa fa-trash hvr-grow" style="color: red"></i></td>'+
+                        '</tr>';
+                    jumlah = jumlah + parseInt(itemx.nilai);
+                });
+                if(parseInt(jumlah) > 0){
+                    total123 = total123 + parseInt(jumlah);
+                    bod += '<tr bgcolor="#ffebcd">'+
+                        '<td colspan="2">Total Obat-Obatan</td>'+
+                        '<td colspan="2">'+jumlah+'</td>'+
+                        '</tr>';
+                }
+                table2 = '<div style="font-size: 14px"><b>II. Obat-Obatan</b></div>' +
+                    '<table style="font-size: 12px" class="table table-bordered">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<td width="20%">Waktu</td>' +
+                    '<td>Jenis Obat</td>' +
+                    '<td width="20%">Nilai</td>' +
+                    '<td width="10%" align="center">Action</td>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>' + bod + '</tbody>' +
+                    '</table>';
+            }
+
+            if(enteral.length > 0){
+                var bod = "";
+                var jumlah = 0;
+                $.each(enteral, function (ix, itemx) {
+                    var tanggal = itemx.tanggal;
+                    var tempTgl = "";
+                    if (ix == 0) {
+                        tempTgl = tanggal;
+                    } else {
+                        var tgl = enteral[ix - 1]["tanggal"];
+                        var tglB = tgl;
+                        if (tanggal == tglB) {
+                            tempTgl = "";
+                        } else {
+                            tempTgl = tanggal;
+                        }
+                    }
+                    bod += '<tr>'+
+                        '<td><div class="row">' +
+                        '<div class="col-md-6">' +tempTgl+
+                        '</div>' +
+                        '<div class="col-md-4">' + itemx.jam +
+                        '</div>' +
+                        '</div></td>'+
+                        '<td>'+itemx.jenis+'</td>'+
+                        '<td>'+itemx.nilai+'</td>'+
+                        '<td align="center"><i id="delete_' + itemx.id + '" onclick="conICU(\''+jenis+'\', \'asesmen_icu\', \''+itemx.id+'\')" class="fa fa-trash hvr-grow" style="color: red"></i></td>'+
+                        '</tr>';
+                    jumlah = jumlah + parseInt(itemx.nilai);
+                });
+                if(parseInt(jumlah) > 0){
+                    total123 = total123 + parseInt(jumlah);
+                    bod += '<tr bgcolor="#ffebcd">'+
+                        '<td colspan="2">Total Enteral</td>'+
+                        '<td colspan="2">'+jumlah+'</td>'+
+                        '</tr>';
+                }
+                table3 = '<div style="font-size: 14px"><b>III. Enteral</b></div>' +
+                    '<table style="font-size: 12px" class="table table-bordered">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<td width="20%">Waktu</td>' +
+                    '<td>Jenis Enteral</td>' +
+                    '<td width="20%">Nilai</td>' +
+                    '<td width="10%" align="center">Action</td>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>' + bod + '</tbody>' +
+                    '</table>';
+            }
+
+            if(output.length > 0){
+                var bod = "";
+                var jumlah = 0;
+                $.each(output, function (ix, itemx) {
+                    var tanggal = itemx.tanggal;
+                    var tempTgl = "";
+                    if (ix == 0) {
+                        tempTgl = tanggal;
+                    } else {
+                        var tgl = output[ix - 1]["tanggal"];
+                        var tglB = tgl;
+                        if (tanggal == tglB) {
+                            tempTgl = "";
+                        } else {
+                            tempTgl = tanggal;
+                        }
+                    }
+                    bod += '<tr>'+
+                        '<td><div class="row">' +
+                        '<div class="col-md-6">' +tempTgl+
+                        '</div>' +
+                        '<div class="col-md-4">' + itemx.jam +
+                        '</div>' +
+                        '</div></td>'+
+                        '<td>'+itemx.jenis+'</td>'+
+                        '<td>'+itemx.nilai+'</td>'+
+                        '<td align="center"><i id="delete_' + itemx.id + '" onclick="conICU(\''+jenis+'\', \'asesmen_icu\', \''+itemx.id+'\')" class="fa fa-trash hvr-grow" style="color: red"></i></td>'+
+                        '</tr>';
+                    jumlah = jumlah + parseInt(itemx.nilai);
+                });
+                if(parseInt(jumlah) > 0){
+                    total4 = total4 + parseInt(jumlah);
+                    bod += '<tr bgcolor="#ffebcd">'+
+                        '<td colspan="2">Total Output</td>'+
+                        '<td colspan="2">'+jumlah+'</td>'+
+                        '</tr>';
+                }
+                table4 = '<div style="font-size: 14px"><b>IV. Output</b></div>' +
+                    '<table style="font-size: 12px" class="table table-bordered">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<td width="20%">Waktu</td>' +
+                    '<td>Jenis Output</td>' +
+                    '<td width="20%">Nilai</td>' +
+                    '<td width="10%" align="center">Action</td>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>' + bod + '</tbody>' +
+                    '</table>';
+            }
+
+            var kes = "";
+            if(total123 == total4){
+                kes = '<span class="span-success">Seimbang</span>';
+            }else{
+                kes = '<span class="span-danger">Tidak Seimbang</span>';
+            }
+            table5 = '<div style="font-size: 14px"><b>Kesimpulan</b></div>' +
+                '<table style="font-size: 12px" class="table table-bordered">' +
+                '<thead>' +
+                '<tr>' +
+                '<td width="40%">Total Parenteral+Obat-Obatan+Enteral</td>' +
+                '<td width="40%">Total Output</td>' +
+                '<td align="center">Kesimpulan</td>' +
+                '</tr>' +
+                '</thead>' +
+                '<tbody><tr bgcolor="#ffebcd" style="font-weight: bold">' +
+                '<td>'+total123+'</td>' +
+                '<td>'+total4+'</td>' +
+                '<td align="center">'+kes+'</td>' +
+                '</tr></tbody>' +
+                '</table>';
+
+            body = table1 + table2 + table3 + table4 + table5;
+        }else{
+            body = '<tr><td>Belum ada data</td></tr>';
         }
+
+        var table = '<table style="font-size: 12px" class="table table-bordered">' +
+            '<tbody>' + body + '</tbody>' +
+            '</table>';
+
+        var newRow = $('<tr id="del_icu_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+        newRow.insertAfter($('table').find('#row_icu_' + jenis));
+        var url = contextPath + '/pages/images/minus-allnew.png';
+        $('#btn_icu_' + jenis).attr('src', url);
+        $('#btn_icu_' + jenis).attr('onclick', 'delRowICCU(\'' + jenis + '\')');
     });
-    if (parenteral.length > 0) {
-        dwr.engine.setAsync(false);
-        IcuAction.getListHead(idDetailCheckup, "parenteral", null, function (res) {
-            if (res.length > 0) {
-                $.each(res, function (i, item) {
-                    thead1 += '<td>' + item.jenis + '</td>';
-                });
-            }
-        });
-        var pBody = "";
-        var tempJam = "";
-        head1 = '<tr style="font-weight: bold"><td>Parenteral</td></tr><tr>' + thead1 + '<td width="5%" align="center">Action</td></tr>';
-        $.each(parenteral, function (i, item) {
-            var tanggal = item.tanggal;
-            var tempTgl = "";
-            if (i == 0) {
-                tempTgl = tanggal;
-            } else {
-                var tgl = parenteral[i - 1]["tanggal"];
-                var tglB = tgl;
-                if (tanggal == tglB) {
-                    tempTgl = "";
-                } else {
-                    tempTgl = tanggal;
-                }
-            }
-
-            var tempTr = "";
-            var jam = "";
-            var btn = "";
-            if (tempJam == "") {
-                tempJam = item.jam;
-                jam = '<td>' + tempTgl + '<span class="pull-right">' + item.jam + '</span></td>';
-            } else {
-                if (tempJam != item.jam) {
-                    tempJam = item.jam;
-                    tempTr = "|";
-                    jam = '<td>' + tempTgl + '<span class="pull-right">' + item.jam + '</span></td>';
-                    btn = '<td align="center"><i onclick="conICU(\''+jenis +'\',\'asesmen_icu\', \''+item.id_detail_icu +'\')" style="color: red" class="fa fa-trash hvr-grow"></i></td>';
-                }
-            }
-            if (pBody == "") {
-                pBody = jam + '<td>' + '<span style="background-color: #449d44; padding: 3px; color: white; border: solid 1px black">'+item.nilai.split("#")[0]+'</span>'+'<span style="background-color: #286090; padding: 3px; color: white; border: solid 1px black; margin-left: 1px">'+item.nilai.split("#")[1]+'</span>' + '</td>';
-            } else {
-                pBody = pBody + btn + tempTr + jam + '<td>' + '<span style="background-color: #449d44; padding: 3px; color: white; border: solid 1px black">'+item.nilai.split("#")[0]+'</span>'+'<span style="background-color: #286090; padding: 3px; color: white; border: solid 1px black; margin-left: 1px">'+item.nilai.split("#")[1]+'</span>' + '</td>';
-            }
-
-            if (i == parenteral.length - 1) {
-                pBody = pBody + '<td align="center"><i onclick="conICU(\''+jenis +'\',\'asesmen_icu\', \''+item.id_detail_icu +'\')" style="color: red" class="fa fa-trash hvr-grow"></i></td>';
-            }
-        });
-        if (pBody != '') {
-            var tr = pBody.split("|");
-            $.each(tr, function (ix, itemx) {
-                body1 += '<tr>' + itemx + '</tr>';
-            });
-        }
-        rbody1 = head1 + body1;
-    }
-
-    if (obat.length > 0) {
-        dwr.engine.setAsync(false);
-        IcuAction.getListHead(idDetailCheckup, "obat", null, function (res) {
-            if (res.length > 0) {
-                $.each(res, function (i, item) {
-                    thead2 += '<td>' + item.jenis + '</td>';
-                });
-            }
-        });
-        var pBody = "";
-        var tempJam = "";
-        head2 = '<tr style="font-weight: bold"><td>Obat-obatan</td></tr><tr>' + thead2 + '</tr>';
-        $.each(obat, function (i, item) {
-            var tanggal = item.tanggal;
-            var tempTgl = "";
-            if (i == 0) {
-                tempTgl = tanggal;
-            } else {
-                var tgl = obat[i - 1]["tanggal"];
-                var tglB = tgl;
-                if (tanggal == tglB) {
-                    tempTgl = "";
-                } else {
-                    tempTgl = tanggal;
-                }
-            }
-            var tempTr = "";
-            var jam = "";
-            var btn = "";
-            if (tempJam == "") {
-                tempJam = item.jam;
-                jam = '<td>' + tempTgl + '<span class="pull-right">' + item.jam + '</span></td>';
-            } else {
-                if (tempJam != item.jam) {
-                    tempJam = item.jam;
-                    tempTr = "|";
-                    jam = '<td>' + tempTgl + '<span class="pull-right">' + item.jam + '</span></td>';
-                    btn = '<td align="center"><i onclick="conICU(\''+jenis +'\',\'asesmen_icu\', \''+item.id_detail_icu +'\')" style="color: red" class="fa fa-trash hvr-grow"></i></td>';
-                }
-            }
-
-            var isi = '<i onclick="showEditObat(\''+item.id_header_icu+'\',\''+item.id_detail_icu+'\')" style="color: #286090; font-size: 20px" class="fa fa-edit hvr-grow"></i>';
-            if(item.nilai != '' && item.nilai != null && item.nilai != '#'){
-                var isi = '<span style="background-color: #449d44; padding: 3px; color: white; border: solid 1px black">'+item.nilai.split("#")[0]+'</span>'+'<span style="background-color: #286090; padding: 3px; color: white; border: solid 1px black; margin-left: 1px">'+item.nilai.split("#")[1]+'</span>';
-            }
-            if (pBody == "") {
-                pBody = jam + '<td>' + isi + '</td>';
-            } else {
-                pBody = pBody + tempTr + jam + '<td>' + isi + '</td>';
-            }
-        });
-        if (pBody != '') {
-            var tr = pBody.split("|");
-            $.each(tr, function (ix, itemx) {
-                body2 += '<tr>' + itemx + '</tr>';
-            });
-        }
-        rbody2 = head2 + body2;
-    }
-
-    if (enteral.length > 0) {
-        dwr.engine.setAsync(false);
-        IcuAction.getListHead(idDetailCheckup, "enteral", null, function (res) {
-            if (res.length > 0) {
-                $.each(res, function (i, item) {
-                    thead3 += '<td>' + item.jenis + '</td>';
-                });
-            }
-        });
-        var pBody = "";
-        var tempJam = "";
-        head3 = '<tr style="font-weight: bold"><td>Enteral</td></tr><tr>' + thead3 + '<td width="5%" align="center">Action</td></tr>';
-        $.each(enteral, function (i, item) {
-            var tanggal = item.tanggal;
-            var tempTgl = "";
-            if (i == 0) {
-                tempTgl = tanggal;
-            } else {
-                var tgl = enteral[i - 1]["tanggal"];
-                var tglB = tgl;
-                if (tanggal == tglB) {
-                    tempTgl = "";
-                } else {
-                    tempTgl = tanggal;
-                }
-            }
-            var tempTr = "";
-            var jam = "";
-            var btn = "";
-            if (tempJam == "") {
-                tempJam = item.jam;
-                jam = '<td>' + tempTgl + '<span class="pull-right">' + item.jam + '</span></td>';
-            } else {
-                if (tempJam != item.jam) {
-                    tempJam = item.jam;
-                    tempTr = "|";
-                    jam = '<td>' + tempTgl + '<span class="pull-right">' + item.jam + '</span></td>';
-                    btn = '<td align="center"><i onclick="conICU(\''+jenis +'\',\'asesmen_icu\', \''+item.id_detail_icu +'\')" style="color: red" class="fa fa-trash hvr-grow"></i></td>';
-                }
-            }
-            if (pBody == "") {
-                pBody = jam + '<td>' + '<span style="background-color: #449d44; padding: 3px; color: white; border: solid 1px black">'+item.nilai.split("#")[0]+'</span>'+'<span style="background-color: #286090; padding: 3px; color: white; border: solid 1px black; margin-left: 1px">'+item.nilai.split("#")[1]+'</span>' + '</td>';
-            } else {
-                pBody = pBody + btn + tempTr + jam + '<td>' + '<span style="background-color: #449d44; padding: 3px; color: white; border: solid 1px black">'+item.nilai.split("#")[0]+'</span>'+'<span style="background-color: #286090; padding: 3px; color: white; border: solid 1px black; margin-left: 1px">'+item.nilai.split("#")[1]+'</span>' + '</td>';
-            }
-
-            if (i == enteral.length - 1) {
-                pBody = pBody + '<td align="center"><i onclick="conICU(\''+jenis +'\',\'asesmen_icu\', \''+item.id_detail_icu +'\')" style="color: red" class="fa fa-trash hvr-grow"></i></td>';
-            }
-        });
-        if (pBody != '') {
-            var tr = pBody.split("|");
-            $.each(tr, function (ix, itemx) {
-                body3 += '<tr>' + itemx + '</tr>';
-            });
-        }
-        rbody3 = head3 + body3;
-    }
-
-    if (output.length > 0) {
-        dwr.engine.setAsync(false);
-        IcuAction.getListHead(idDetailCheckup, "output", null, function (res) {
-            if (res.length > 0) {
-                $.each(res, function (i, item) {
-                    thead4 += '<td>' + item.jenis + '</td>';
-                });
-            }
-        });
-        var pBody = "";
-        var tempJam = "";
-        head4 = '<tr style="font-weight: bold"><td>Output</td></tr><tr>' + thead4 + '<td width="5%" align="center">Action</td></tr>';
-        $.each(output, function (i, item) {
-            var tanggal = item.tanggal;
-            var tempTgl = "";
-            if (i == 0) {
-                tempTgl = tanggal;
-            } else {
-                var tgl = output[i - 1]["tanggal"];
-                var tglB = tgl;
-                if (tanggal == tglB) {
-                    tempTgl = "";
-                } else {
-                    tempTgl = tanggal;
-                }
-            }
-            var tempTr = "";
-            var jam = "";
-            var btn = "";
-            if (tempJam == "") {
-                tempJam = item.jam;
-                jam = '<td>' + tempTgl + '<span class="pull-right">' + item.jam + '</span></td>';
-            } else {
-                if (tempJam != item.jam) {
-                    tempJam = item.jam;
-                    tempTr = "|";
-                    jam = '<td>' + tempTgl + '<span class="pull-right">' + item.jam + '</span></td>';
-                    btn = '<td align="center"><i onclick="conICU(\''+jenis +'\',\'asesmen_icu\', \''+item.id_detail_icu +'\')" style="color: red" class="fa fa-trash hvr-grow"></i></td>';
-                }
-            }
-            if (pBody == "") {
-                pBody = jam + '<td>' + '<span style="background-color: #449d44; padding: 3px; color: white; border: solid 1px black">'+item.nilai.split("#")[0]+'</span>'+'<span style="background-color: #286090; padding: 3px; color: white; border: solid 1px black; margin-left: 1px">'+item.nilai.split("#")[1]+'</span>' + '</td>';
-            } else {
-                pBody = pBody + btn + tempTr + jam + '<td>' + '<span style="background-color: #449d44; padding: 3px; color: white; border: solid 1px black">'+item.nilai.split("#")[0]+'</span>'+'<span style="background-color: #286090; padding: 3px; color: white; border: solid 1px black; margin-left: 1px">'+item.nilai.split("#")[1]+'</span>' + '</td>';
-            }
-
-            if (i == output.length - 1) {
-                pBody = pBody + '<td align="center"><i onclick="conICU(\''+jenis +'\',\'asesmen_icu\', \''+item.id_detail_icu +'\')" style="color: red" class="fa fa-trash hvr-grow"></i></td>';
-            }
-        });
-        if (pBody != '') {
-            var tr = pBody.split("|");
-            $.each(tr, function (ix, itemx) {
-                body4 += '<tr>' + itemx + '</tr>';
-            });
-        }
-        rbody4 = head4 + body4;
-    }
-
-    if (parenteral.length > 0 || obat.length > 0 || enteral.length > 0 || output.length > 0) {
-        var table1 = "";
-        var table2 = "";
-        var table3 = "";
-        var table4 = "";
-        if (parenteral.length > 0) {
-            table1 = '<table style="font-size: 12px" class="table table-bordered">' +
-                '<thead><tr>' + head + '</tr></thead>' +
-                '<tbody>' + rbody1 + '</tbody>' +
-                '</table>';
-        }
-        if (obat.length > 0) {
-            table2 = '<table style="font-size: 12px" class="table table-bordered">' +
-                '<thead><tr>' + head + '</tr></thead>' +
-                '<tbody>' + rbody2 + '</tbody>' +
-                '</table>';
-        }
-        if (enteral.length > 0) {
-            table3 = '<table style="font-size: 12px" class="table table-bordered">' +
-                '<thead><tr>' + head + '</tr></thead>' +
-                '<tbody>' + rbody3 + '</tbody>' +
-                '</table>';
-        }
-        if (output.length > 0) {
-            table4 = '<table style="font-size: 12px" class="table table-bordered">' +
-                '<thead><tr>' + head + '</tr></thead>' +
-                '<tbody>' + rbody4 + '</tbody>' +
-                '</table>';
-        }
-        body = table1 + table2 + table3 + table4;
-    } else {
-        body = '<tr><td>Data belum ada</td></tr>';
-    }
-
-    var table = '<table style="font-size: 12px" class="table table-bordered">' +
-        '<thead><tr>' + head + '</tr></thead>' +
-        '<tbody>' + body + '</tbody>' +
-        '</table>';
-
-    var newRow = $('<tr id="del_icu_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
-    newRow.insertAfter($('table').find('#row_icu_' + jenis));
-    var url = contextPath + '/pages/images/minus-allnew.png';
-    $('#btn_icu_' + jenis).attr('src', url);
-    $('#btn_icu_' + jenis).attr('onclick', 'delRowICCU(\'' + jenis + '\')');
 }
 
 function searcHead(kategori) {
@@ -3339,8 +3113,7 @@ function listCatatanTerintegrasiICU(jenis) {
 function saveAsuhanKeperawatanICU(jenis, ket) {
 
     var data = [];
-    var dataPasien = "";
-    dataPasien = {
+    var dataPasien = {
         'no_checkup': noCheckup,
         'id_detail_checkup': idDetailCheckup,
         'id_pasien': idPasien,
@@ -3351,6 +3124,7 @@ function saveAsuhanKeperawatanICU(jenis, ket) {
     var inter = $('[name=inter]');
     var imple = $('#tin').val();
     var param = $('[name=params]');
+    var dataSub = $('#data_sub').val();
 
     var tgl = $('.tgl').val();
     var jam = $('.jam').val();
@@ -3381,6 +3155,7 @@ function saveAsuhanKeperawatanICU(jenis, ket) {
     });
 
     var subjektif = "";
+    var datSubjek = "";
 
     $.each(param, function (i, item) {
 
@@ -3409,11 +3184,15 @@ function saveAsuhanKeperawatanICU(jenis, ket) {
         });
 
         if (val != '') {
-            sbj = item.value + ' : ' + val;
+            var label = "";
+            if(i == 0){
+                label = "Data Obyektif|";
+            }
+            sbj = label+item.value + ' : ' + val;
             if (subjektif != '') {
                 subjektif = subjektif + '|' + sbj;
             } else {
-                if (diagnosis != '') {
+                if (tempDiag != '') {
                     subjektif = '|' + sbj;
                 } else {
                     subjektif = sbj;
@@ -3421,6 +3200,10 @@ function saveAsuhanKeperawatanICU(jenis, ket) {
             }
         }
     });
+
+    if(dataSub != ''){
+        datSubjek = "|Data Subyektif|"+dataSub;
+    }
 
     $.each(inter, function (i, item) {
         var val = "";
@@ -3468,7 +3251,7 @@ function saveAsuhanKeperawatanICU(jenis, ket) {
         data = {
             'id_detail_checkup': idDetailCheckup,
             'waktu': tgl + ' ' + jam,
-            'diagnosa': tempDiag + subjektif,
+            'diagnosa': tempDiag + subjektif + datSubjek,
             'hasil': '',
             'intervensi': tempInter,
             'implementasi': tempImple,
@@ -3535,7 +3318,11 @@ function listAsuhanKeperawatanICU(jenis) {
                 if (item.diagnosa != null) {
                     var v = item.diagnosa.split("|");
                     $.each(v, function (i, item) {
-                        diagnosa += '<li>' + item + '</li>';
+                        if(item == "Data Obyektif" || item == "Data Subyektif"){
+                            diagnosa += '<li style="list-style-type: none; margin-top: 20px"><b>' + item + '</b></li>';
+                        }else{
+                            diagnosa += '<li>' + item + '</li>';
+                        }
                     });
                 }
 
@@ -3553,6 +3340,25 @@ function listAsuhanKeperawatanICU(jenis) {
                     });
                 }
 
+                if (item.ttdPerawat != null) {
+                    implementasi += '<li style="list-style-type: none; margin-top: 20px">' +
+                        '<div class="row">' +
+                        '<div class="col-md-6">' +
+                        '<div><b>TTD Perawat</b></div>' +
+                        '<img style="width: 70px; height: 50px" src="' + item.ttdPerawat + '">' +
+                        '<p style="margin-top: -3px">' + cekItemIsNull(item.namaTerang) + '</p>' +
+                        '<p style="margin-top: -7px">' + cekItemIsNull(item.sip) + '</p>' +
+                        '</div>' +
+                        '<div class="col-md-6">' +
+                        '<div><b>TTD Dokter</b></div>' +
+                        '<img style="width: 70px; height: 50px" src="' + item.ttdDokter + '">' +
+                        '<p style="margin-top: -3px">' + cekItemIsNull(item.namaDokter) + '</p>' +
+                        '<p style="margin-top: -7px">' + cekItemIsNull(item.sip) + '</p>' +
+                        '</div>' +
+                        '</div>'+
+                        '</li>';
+                }
+
                 if (diagnosa != '') {
                     ul1 = '<ul style="margin-left: 12px">' + diagnosa + '</ul>'
                 }
@@ -3568,6 +3374,7 @@ function listAsuhanKeperawatanICU(jenis) {
                     '<td>' + ul1 + '</td>' +
                     '<td>' + ul2 + '</td>' +
                     '<td>' + ul3 + '</td>' +
+                    '<td align="center">' + '<i id="delete_'+item.idRencanaAsuhanKeperawatan+'" onclick="conRA(\''+jenis+'\', \'\', \''+item.idRencanaAsuhanKeperawatan+'\')" class="fa fa-trash hvr-grow" style="color: red"></i>' + '</td>' +
                     '</tr>';
                 cekData = true;
             });
@@ -3578,9 +3385,10 @@ function listAsuhanKeperawatanICU(jenis) {
         if (cekData) {
             head = '<tr>\n' +
                 '<td width="10%" style="vertical-align: middle" align="center">Tanggal Jam</td>\n' +
-                '<td width="20%" style="vertical-align: middle" align="center">Diagnosa Keperawatan</td>\n' +
+                '<td width="20%" style="vertical-align: middle" align="center">Diagnosis</td>\n' +
                 '<td width="20%" style="vertical-align: middle" align="center">Planning/ Rencana Tindakan</td>\n' +
                 '<td width="20%" style="vertical-align: middle" align="center">Tindakan</td>\n' +
+                '<td width="5%" style="vertical-align: middle" align="center">Action</td>\n' +
                 '</tr>';
         }
 
@@ -3756,10 +3564,46 @@ function tindakanICU(jenis) {
 function conICU(jenis, ket, idAsesmen, tipe, date) {
     $('#tanya').text("Yakin mengahapus data ini ?");
     $('#modal-confirm-rm').modal({show: true, backdrop: 'static'});
-    if (idAsesmen != undefined && idAsesmen != '') {
-        $('#save_con_rm').attr('onclick', 'delICUS(\'' + jenis + '\', \'' + ket + '\', \'' + idAsesmen + '\', \'' + tipe + '\')');
-    } else {
-        $('#save_con_rm').attr('onclick', 'delICU(\'' + jenis + '\', \'' + ket + '\', \''+date+'\')');
+    if(jenis == "keseimbangan_icu"){
+        $('#save_con_rm').attr('onclick', 'delKes(\'' + jenis + '\', \'' + ket + '\', \'' + idAsesmen + '\')');
+    }else{
+        if (idAsesmen != undefined && idAsesmen != '') {
+            $('#save_con_rm').attr('onclick', 'delICUS(\'' + jenis + '\', \'' + ket + '\', \'' + idAsesmen + '\', \'' + tipe + '\')');
+        } else {
+            $('#save_con_rm').attr('onclick', 'delICU(\'' + jenis + '\', \'' + ket + '\', \''+date+'\')');
+        }
+    }
+}
+
+function delKes(jenis, ket, idAsesmen) {
+    $('#modal-confirm-rm').modal('hide');
+    if(!cekSession()){
+        var dataPasien = {
+            'no_checkup': noCheckup,
+            'id_detail_checkup': idDetailCheckup,
+            'id_pasien': idPasien,
+            'id_rm': tempidRm
+        }
+        var result = JSON.stringify(dataPasien);
+        startIconSpin('delete_' + idAsesmen);
+        dwr.engine.setAsync(true);
+        AsesmenIcuAction.saveDeleteKeseimbangan(idAsesmen, {
+            callback: function (res) {
+                if (res.status == "success") {
+                    stopIconSpin('delete_' + idAsesmen);
+                    $('#modal-icu-' + ket).scrollTop(0);
+                    $('#warning_icu_' + ket).show().fadeOut(5000);
+                    $('#msg_icu_' + ket).text("Berhasil menghapus data...");
+                } else {
+                    stopIconSpin('delete_' + idAsesmen);
+                    $('#modal-icu-' + ket).scrollTop(0);
+                    $('#warn_' + ket).show().fadeOut(5000);
+                    $('#msg_' + ket).text(res.msg);
+                }
+                delRowICU(jenis);
+                listInputan(jenis);
+            }
+        });
     }
 }
 
@@ -3897,14 +3741,14 @@ function setCustomeJenis(idSet, jenis) {
         }
 
         set = '<div class="row jarak" id="' + id + '">\n' +
-            '<div class="col-md-offset-3 col-md-4">\n' +
+            '<div class="col-md-offset-3 col-md-5">\n' +
             '    <input class="form-control ' + pc1 + '" placeholder="Jenis ' + jenis + '">\n' +
             '</div>\n' +
-            '<div class="col-md-2">\n' +
-            '    <input class="form-control ' + pc2 + '" data-inputmask="\'mask\': [\'9x9\']"\n' +
-            '           data-mask="">\n' +
-            '</div>\n' +
-            '<div class="col-md-2">\n' +
+            // '<div class="col-md-2">\n' +
+            // '    <input class="form-control ' + pc2 + '" data-inputmask="\'mask\': [\'9x9\']"\n' +
+            // '           data-mask="">\n' +
+            // '</div>\n' +
+            '<div class="col-md-3">\n' +
             '    <input class="form-control ' + pc3 + '" type="number" placeholder="Nilai">\n' +
             '</div>\n' +
             '<div class="col-md-1">\n' +

@@ -28,6 +28,7 @@
                                 <img id="btn_ina_early_warning_score" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('early_warning_score')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_early_warning_score" class="hvr-grow btn-hide" onclick="conRI('early_warning_score', 'early_warning')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -237,6 +238,7 @@
                                 <canvas class="paint-canvas-ttd" id="ews12" width="220"
                                         onmouseover="paintTtd('ews12')"></canvas>
                                 <input class="form-control nama_petugas" id="nama_terang_ews12" placeholder="Nama Terang">
+                                <input class="form-control nip_petugas" id="sip_terang_ews12" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="clearConvas('ews12')"><i
                                         class="fa fa-trash"></i> Clear

@@ -74,10 +74,18 @@
             <basic name="shiftId">
                 <column name="shift_id"/>
             </basic>
+            <basic name="tipeRekening">
+                <column name="tipe_rekening"/>
+            </basic>
+            <basic name="clientId">
+                <column name="client_id"/>
+            </basic>
             <basic name="noJurnal">
                 <column name="no_jurnal"/>
             </basic>
-
+            <basic name="tipePembayaran">
+                <column name="tipe_pembayaran"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

@@ -26,8 +26,8 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a onclick="addAsesmenUgd('keluhan_utama')" style="cursor: pointer" ><i class="fa fa-plus"></i> Keluhan Utama</a></li>
-                            <li><a onclick="addAsesmenUgd('pre_hospital')" style="cursor: pointer"><i class="fa fa-plus"></i> Data Pre Hospital</a></li>
+                            <li><a onclick="addAsesmenUgd('keluhan_utama')" style="cursor: pointer" ><i class="fa fa-plus"></i> Triase</a></li>
+                            <li><a onclick="addAsesmenUgd('pre_hospital')" style="cursor: pointer"><i class="fa fa-plus"></i> Data Pre Hospital & Data Primary Survei</a></li>
                             <li><a onclick="addAsesmenUgd('keperawatan')" style="cursor: pointer"><i class="fa fa-plus"></i> Keperawatan</a></li>
                             <li><a onclick="addAsesmenUgd('nyeri_anak')" style="cursor: pointer"><i class="fa fa-plus"></i> Asesmen Nyeri</a></li>
                             <li><a onclick="addAsesmenUgd('nutrisional_anak')" style="cursor: pointer"><i class="fa fa-plus"></i> Skrining Risiko Nutrisional</a></li>
@@ -47,14 +47,14 @@
                     <table class="table" id="tabel_aud">
                         <tbody>
                         <tr id="row_aud_keluhan_utama">
-                            <td>Keluhan Utama</td>
+                            <td>Triase</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_keluhan_utama" class="hvr-grow" onclick="detailAud('keluhan_utama')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                                 <img id="delete_keluhan_utama" class="hvr-grow btn-hide" onclick="conUGD('keluhan_utama', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_pre_hospital">
-                            <td>Data Pre Hospipal</td>
+                            <td>Data Pre Hospital & Data Primary Survei</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_pre_hospital" class="hvr-grow" onclick="detailAud('pre_hospital')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                                 <img id="delete_pre_hospital" class="hvr-grow btn-hide" onclick="conUGD('pre_hospital', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
@@ -160,7 +160,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Keluhan Utama
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Triase
                 </h4>
             </div>
             <div class="modal-body">
@@ -177,15 +177,15 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="custom02" style="margin-left: -20px">
-                                    <input onclick="setDataTriase(this.value)" type="radio" value="Merah" id="triase1" name="radio_triase" /><label for="triase1" >Merah</label>
+                                    <input onclick="setDataTriase(this.value)" type="radio" value="Merah|#d73925" id="triase1" name="radio_triase" /><label for="triase1" >Merah</label>
                                 </div>
                             </div>
                             <div class="col-md-1">
-                                <i class="fa fa-square fa-2x" style="color: #e08e0b"></i>
+                                <i class="fa fa-square fa-2x" style="color: yellow"></i>
                             </div>
                             <div class="col-md-2">
                                 <div class="custom02" style="margin-left: -20px">
-                                    <input onclick="setDataTriase(this.value)" type="radio" value="Kuning" id="triase2" name="radio_triase" /><label for="triase2">Kuning</label>
+                                    <input onclick="setDataTriase(this.value)" type="radio" value="Kuning|yellow" id="triase2" name="radio_triase" /><label for="triase2">Kuning</label>
                                 </div>
                             </div>
                         </div>
@@ -197,7 +197,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="custom02" style="margin-left: -20px">
-                                    <input onclick="setDataTriase(this.value)" type="radio" value="Hijau" id="triase3" name="radio_triase" /><label for="triase3">Hijau</label>
+                                    <input onclick="setDataTriase(this.value)" type="radio" value="Hijau|#008d4c" id="triase3" name="radio_triase" /><label for="triase3">Hijau</label>
                                 </div>
                             </div>
                             <div class="col-md-1">
@@ -205,7 +205,7 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="custom02" style="margin-left: -20px">
-                                    <input onclick="setDataTriase(this.value)" type="radio" value="Hitam" id="triase4" name="radio_triase" /><label for="triase4">Hitam</label>
+                                    <input onclick="setDataTriase(this.value)" type="radio" value="Hitam|#2b2b2b" id="triase4" name="radio_triase" /><label for="triase4">Hitam</label>
                                 </div>
                             </div>
                         </div>
@@ -231,7 +231,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Data Pre Hospital
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Data Pre Hospital & Data Primary Survei
                 </h4>
             </div>
             <div class="modal-body">
@@ -289,7 +289,7 @@
                             <div class="col-md-3">
                                 <label>Tekanan Darah</label>
                                 <div class="input-group">
-                                    <input class="form-control tensi-pasien" id="pre_tkn" data-inputmask="'mask': ['999/999']" data-mask="">
+                                    <input class="form-control" id="pre_tkn" data-inputmask="'mask': ['999/999']" data-mask="">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         mmHg
                                     </div>
@@ -298,7 +298,7 @@
                             <div class="col-md-3">
                                 <label>Nadi</label>
                                 <div class="input-group">
-                                    <input class="form-control nadi-pasien" id="pre_nadi" type="number">
+                                    <input class="form-control" id="pre_nadi" type="number">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         x/menit
                                     </div>
@@ -307,7 +307,7 @@
                             <div class="col-md-3">
                                 <label>RR</label>
                                 <div class="input-group">
-                                    <input class="form-control rr-pasien" id="pre_rr" type="number">
+                                    <input class="form-control" id="pre_rr" type="number">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         x/menit
                                     </div>
@@ -316,7 +316,7 @@
                             <div class="col-md-3">
                                 <label>Suhu</label>
                                 <div class="input-group">
-                                    <input class="form-control suhu-pasien" id="pre_suhu" type="number">
+                                    <input class="form-control" id="pre_suhu" type="number">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         &#8451
                                     </div>
@@ -1277,10 +1277,10 @@
                         <hr class="garis">
                         <div class="row">
                             <div class="form-group">
-                                <label class="col-md-3">Respon</label>
+                                <label class="col-md-3">Respon Terhadap Pembedahan/Sedasi/Anastesi</label>
                                 <div class="col-md-9">
                                     <div class="custom02">
-                                        <input type="radio" value="< 24 jam|3" id="rja51" name="rja5" /><label for="rja51">< 24 jam</label>
+                                        <input type="radio" value="dalam 24 jam|3" id="rja51" name="rja5" /><label for="rja51">dalam 24 jam</label>
                                     </div>
                                 </div>
                             </div>
@@ -1289,7 +1289,7 @@
                             <div class="form-group">
                                 <div class="col-md-offset-3 col-md-9">
                                     <div class="custom02">
-                                        <input type="radio" value="< 48 jam|2" id="rja52" name="rja5" /><label for="rja52">< 48 jam</label>
+                                        <input type="radio" value="dalam 48 jam|2" id="rja52" name="rja5" /><label for="rja52">dalam 48 jam</label>
                                     </div>
                                 </div>
                             </div>
@@ -1298,7 +1298,7 @@
                             <div class="form-group">
                                 <div class="col-md-offset-3 col-md-9">
                                     <div class="custom02">
-                                        <input type="radio" value="> 48 jam|1" id="rja53" name="rja5" /><label for="rja53">> 48 jam</label>
+                                        <input type="radio" value="lebih dari 48 jam atau tidak menjalani pemebedahan/sedasa/anastesi|1" id="rja53" name="rja5" /><label for="rja53">lebih dari 48 jam atau tidak menjalani pemebedahan/sedasa/anastesi</label>
                                     </div>
                                 </div>
                             </div>
@@ -1353,7 +1353,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Status Funsional
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Status Fungsional
                 </h4>
             </div>
             <div class="modal-body">
@@ -1523,7 +1523,7 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Bicara</label>
+                            <label class="col-md-4" style="margin-top: 7px">Bicara</label>
                             <div class="col-md-2">
                                 <div class="custom02" style="margin-top: 7px">
                                     <input onclick="showKetUgd(this.value, 'kebutuhan1')" type="radio" value="Normal" id="aud_kebutuhan11" name="radio_aud_kebutuhan1" /><label for="aud_kebutuhan11">Normal</label>
@@ -1535,14 +1535,14 @@
                             </div>
                         </div>
                         <div class="form-group" style="display: none" id="ugd-kebutuhan1">
-                            <div class="col-md-offset-3 col-md-5">
+                            <div class="col-md-offset-4 col-md-8">
                                 <input class="form-control" id="aud_ket_kebutuhan1">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Perlu Penerjemah</label>
+                            <label class="col-md-4" style="margin-top: 7px">Perlu Penerjemah</label>
                             <div class="col-md-2">
                                 <div class="custom02" style="margin-top: 7px">
                                     <input onclick="showKetUgd(this.value, 'kebutuhan2')" type="radio" value="Tidak" id="aud_kebutuhan21" name="radio_aud_kebutuhan2" /><label for="aud_kebutuhan21">Tidak</label>
@@ -1554,14 +1554,14 @@
                             </div>
                         </div>
                         <div class="form-group" style="display: none" id="ugd-kebutuhan2">
-                            <div class="col-md-offset-3 col-md-5">
+                            <div class="col-md-offset-4 col-md-8">
                                 <input class="form-control" id="aud_ket_kebutuhan2">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Hambatan belajar</label>
+                            <label class="col-md-4" style="margin-top: 7px">Hambatan Belajar</label>
                             <div class="col-md-2">
                                 <div class="custom02" style="margin-top: 7px">
                                     <input onclick="showKetUgd(this.value, 'kebutuhan3')" type="radio" value="Tidak" id="aud_kebutuhan31" name="radio_aud_kebutuhan3" /><label for="aud_kebutuhan31">Tidak</label>
@@ -1574,46 +1574,46 @@
                             </div>
                         </div>
                         <div id="ugd-kebutuhan3" style="display: none">
-                        <div class="form-group" style="font-size: 12px">
-                            <div class="col-md-offset-3 col-md-2">
+                        <div class="form-group">
+                            <div class="col-md-3">
                                 <div class="custom02" style="margin-top: 7px">
                                     <input onclick="showKetUgd2(this.value, 'kebutuhan3')" type="radio" value="pendengaran" id="ket_kebutuhan31" name="radio_ket_kebutuhan3" /><label for="ket_kebutuhan31">pendengaran</label>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="custom02" style="margin-top: 7px">
                                     <input onclick="showKetUgd2(this.value, 'kebutuhan3')" type="radio" value="penglihatan" id="ket_kebutuhan32" name="radio_ket_kebutuhan3" /><label for="ket_kebutuhan32">penglihatan</label></div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="custom02" style="margin-top: 7px">
                                     <input onclick="showKetUgd2(this.value, 'kebutuhan3')" type="radio" value="kognitif" id="ket_kebutuhan33" name="radio_ket_kebutuhan3" /><label for="ket_kebutuhan33">kognitif</label></div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="custom02" style="margin-top: 7px">
                                     <input onclick="showKetUgd2(this.value, 'kebutuhan3')" type="radio" value="fisik" id="ket_kebutuhan34" name="radio_ket_kebutuhan3" /><label for="ket_kebutuhan34">fisik</label></div>
                             </div>
                         </div>
-                        <div class="form-group" style="font-size: 12px">
-                            <div class="col-md-offset-3 col-md-2">
+                        <div class="form-group">
+                            <div class="col-md-3">
                                 <div class="custom02" style="margin-top: 7px">
                                     <input onclick="showKetUgd2(this.value, 'kebutuhan3')" type="radio" value="budaya" id="ket_kebutuhan35" name="radio_ket_kebutuhan3" /><label for="ket_kebutuhan35">budaya</label>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="custom02" style="margin-top: 7px">
                                     <input onclick="showKetUgd2(this.value, 'kebutuhan3')" type="radio" value="agama" id="ket_kebutuhan36" name="radio_ket_kebutuhan3" /><label for="ket_kebutuhan36">agama</label></div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="custom02" style="margin-top: 7px">
                                     <input onclick="showKetUgd2(this.value, 'kebutuhan3')" type="radio" value="emosi" id="ket_kebutuhan37" name="radio_ket_kebutuhan3" /><label for="ket_kebutuhan37">emosi</label></div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="custom02" style="margin-top: 7px">
                                     <input onclick="showKetUgd2(this.value, 'kebutuhan3')" type="radio" value="bahasa" id="ket_kebutuhan38" name="radio_ket_kebutuhan3" /><label for="ket_kebutuhan38">bahasa</label></div>
                             </div>
                         </div>
-                        <div class="form-group" style="font-size: 12px">
-                            <div class="col-md-offset-3 col-md-8">
+                        <div class="form-group">
+                            <div class="col-md-12">
                                 <div class="custom02" style="margin-top: 7px">
                                     <input onclick="showKetUgd2(this.value, 'kebutuhan3')" type="radio" value="lainnya" id="ket_kebutuhan39" name="radio_ket_kebutuhan3" /><label for="ket_kebutuhan39">lainnya</label>
                                 </div>
@@ -1630,41 +1630,55 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Kebutuhan Pembelajaran</label>
-                            <div class="col-md-2" style="font-size: 12px">
-                                <div class="custom02" style="margin-top: 7px">
-                                    <input onclick="showKetUgd(this.value, 'kebutuhan4')" type="radio" value="proses penyakit" id="aud_kebutuhan41" name="radio_aud_kebutuhan4" /><label for="aud_kebutuhan41">proses penyakit</label>
+                            <label class="col-md-4" style="margin-top: 7px">Kebutuhan Pembelajaran</label>
+                            <div class="col-md-4" style="font-size: 12px">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input class="kp" type="checkbox" name="kp" id="kp1" value="Proses penyakit">
+                                    <label for="kp1"></label> Proses penyakit
                                 </div>
                             </div>
-                            <div class="col-md-2" style="font-size: 12px">
-                                <div class="custom02" style="margin-top: 7px">
-                                    <input onclick="showKetUgd(this.value, 'kebutuhan4')" type="radio" value="manajemen nyeri" id="aud_kebutuhan42" name="radio_aud_kebutuhan4" /><label for="aud_kebutuhan42">manejemen nyeri</label></div>
-                            </div>
-                            <div class="col-md-2" style="font-size: 12px">
-                                <div class="custom02" style="margin-top: 7px">
-                                    <input onclick="showKetUgd(this.value, 'kebutuhan4')" type="radio" value="terapi/obat" id="aud_kebutuhan43" name="radio_aud_kebutuhan4" /><label for="aud_kebutuhan43">terapi/obat</label></div>
-                            </div>
-                            <div class="col-md-2" style="font-size: 12px">
-                                <div class="custom02" style="margin-top: 7px">
-                                    <input onclick="showKetUgd(this.value, 'kebutuhan4')" type="radio" value="diet/nutrisi" id="aud_kebutuhan44" name="radio_aud_kebutuhan4" /><label for="aud_kebutuhan44">diet/nutrisi</label></div>
+                            <div class="col-md-4" >
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input class="kp" type="checkbox" name="kp" id="kp2" value="Manajemen nyeri">
+                                    <label for="kp2"></label> Manajemen nyeri
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <div class="col-md-offset-3 col-md-2" style="font-size: 12px">
-                                <div class="custom02" style="margin-top: 7px">
-                                    <input onclick="showKetUgd(this.value, 'kebutuhan4')" type="radio" value="rehabilitas" id="aud_kebutuhan45" name="radio_aud_kebutuhan4" /><label for="aud_kebutuhan45">rehabilitas</label>
+                            <div class="col-md-offset-4 col-md-4" >
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input class="kp" type="checkbox" name="kp" id="kp3" value="Terapi/obat">
+                                    <label for="kp3"></label> Terapi/obat
                                 </div>
                             </div>
-                            <div class="col-md-5" style="font-size: 12px">
-                                <div class="custom02" style="margin-top: 7px">
-                                    <input onclick="showKetUgd(this.value, 'kebutuhan4')" type="radio" value="lainnya" id="aud_kebutuhan46" name="radio_aud_kebutuhan4" /><label for="aud_kebutuhan46">lainnya</label></div>
+                            <div class="col-md-4" >
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input class="kp" type="checkbox" name="kp" id="kp4" value="Diet/nutrisi">
+                                    <label for="kp4"></label> Diet/nutrisi
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-4" >
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input class="kp" type="checkbox" name="kp" id="kp5" value="Rehabilitas">
+                                    <label for="kp5"></label> Rehabilitas
+                                </div>
+                            </div>
+                            <div class="col-md-4" >
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input class="kp" type="checkbox" name="kp" id="kp6" value="lainnya" onclick="cekBox(this.id, 'ugd-kebutuhan4')">
+                                    <label for="kp6"></label> Lainnya
+                                </div>
                             </div>
                         </div>
                         <div class="form-group" style="display: none" id="ugd-kebutuhan4">
-                            <div class="col-md-offset-3 col-md-5">
-                                <input class="form-control" id="aud_ket_kebutuhan47">
+                            <div class="col-md-offset-4 col-md-5">
+                                <input class="form-control" id="aud_ket_kebutuhan47" oninput="$('#kp6').val(this.value)">
                             </div>
                         </div>
                     </div>
@@ -1961,7 +1975,7 @@
                         <div class="form-group">
                             <label class="col-md-4">Autoanamnesis</label>
                             <div class="col-md-8">
-                                <input class="form-control" id="an1">
+                                <textarea class="form-control " id="an1" rows="3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -1976,13 +1990,10 @@
                                     <option value="Anak">Anak</option>
                                     <option value="Lainnya">Lainnya</option>
                                 </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak" style="display: none" id="ugd-2-ket_an2">
-                        <div class="form-group">
-                            <div class="col-md-offset-4 col-md-8">
-                                <input class="form-control" id="ket_an2" placeholder="Keterangan">
+                                <div id="ugd-2-ket_an2" style="display: none">
+                                    <input class="form-control" id="ket_an2" placeholder="Keterangan" style="margin-top: 7px;">
+                                </div>
+                                <textarea class="form-control" id="ket_allow" style="margin-top: 7px" rows="3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -2008,7 +2019,7 @@
                         <div class="col-md-6">
                             <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
                                 <div class="col-md-1">
-                                    <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker-op  color-picker pull-left">
+                                    <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker-op  color-picker pull-left" value="#ff0000">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -2260,6 +2271,11 @@
                             </div>
                         </div>
                     </div>
+                    <hr>
+                    <div class="alert alert-info alert-dismissible">
+                        <p id="msg_ews">Early Warning System (EWS) Anak-Anak</p>
+                    </div>
+                    <input id="tipe_ews" value="anak_anak" type="hidden">
                     <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-3" ><b>O</b>bjective</label>
@@ -2276,8 +2292,11 @@
                     <div class="row jarak">
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-4">
-                                <span>Nadi </span> <small>(x/menit)</small>
-                                <input class="form-control nadi-pasien" id="cppt5_nadi" type="number">
+                                <span>Apakah Merintih?</span>
+                                <select class="form-control" id="merintih" onchange="setRR(this.value, 'cppt5_rr')">
+                                    <option value="Tidak">Tidak</option>
+                                    <option value="Ya">Ya</option>
+                                </select>
                             </div>
                             <div class="col-md-4">
                                 <span>RR </span> <small>(x/menit)</small>
@@ -2287,11 +2306,136 @@
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <div class="col-md-offset-3 col-md-8">
-                                <textarea class="form-control" id="ket_cppt5"></textarea>
+                            <div class="col-md-offset-3 col-md-4">
+                                <span>Nadi </span> <small>(x/menit)</small>
+                                <input class="form-control nadi-pasien" id="cppt5_nadi" type="number">
+                            </div>
+                            <div class="col-md-4">
+                                <span>SpO2 </span> <small>(x/menit)</small>
+                                <input class="form-control" id="spo2" type="number">
                             </div>
                         </div>
                     </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-4">
+                                <span>Alat Bantu O2</span>
+                                <select class="form-control" id="o2" onchange="setHideShow(this.value, 'form_al')">
+                                    <option value="Tidak">Tidak</option>
+                                    <option value="Ya">Ya</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4" style="display: none" id="form_al">
+                                <span>Keterangan Alat Bantu</span>
+                                <input class="form-control" id="ket_o2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-8">
+                                <textarea class="form-control" id="ket_cppt5" placeholder="Keterangan Objective"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-md-4">Perilaku</label>
+                                    <div class="col-md-8">
+                                        <div class="custom02">
+                                            <input type="radio" value="Bermain|0" id="ews31" name="ews3" /><label for="ews31">Bermain</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-offset-4 col-md-8">
+                                        <div class="custom02">
+                                            <input type="radio" value="Tidur|1" id="ews32" name="ews3" /><label for="ews32">Tidur</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-offset-4 col-md-8">
+                                        <div class="custom02">
+                                            <input type="radio" value="Iritabel|2" id="ews33" name="ews3" /><label for="ews33">Iritabel</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-offset-4 col-md-8">
+                                        <div class="custom02">
+                                            <input type="radio" value="Letargi|3" id="ews34" name="ews3" /><label for="ews34">Letargi</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-md-4">Kardiovaskuler</label>
+                                    <div class="col-md-8">
+                                        <div class="custom02">
+                                            <input type="radio" value="Merah Jambu|0" id="ews41" name="ews4" /><label for="ews41">Merah Jambu</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-offset-4 col-md-8">
+                                        <div class="custom02">
+                                            <input type="radio" value="Pucat|1" id="ews42" name="ews4" /><label for="ews42">Pucat</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-offset-4 col-md-8">
+                                        <div class="custom02">
+                                            <input type="radio" value="Abu Abu, CRT 4|2" id="ews43" name="ews4" /><label for="ews43">Abu Abu, CRT 4</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-offset-4 col-md-8">
+                                        <div class="custom02">
+                                            <input type="radio" value="Abu Abu, CRT >= 5|3" id="ews44" name="ews4" /><label for="ews44">Abu Abu, CRT >= 5</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-6">Nebulisasi 15 mt / muntah persisten</label>
+                            <div class="col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" value="Tidak|0" id="ews61" name="ews6" /><label for="ews61">Tidak</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" value="Ya|2" id="ews62" name="ews6" /><label for="ews62">Ya</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
                     <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-3" ><b>A</b>ssesment</label>
@@ -2454,10 +2598,25 @@
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
+                            <label class="col-md-3">Jenis Kasus</label>
+                            <div class="col-md-9">
+                                <select class="form-control select2" id="kasus" style="width: 100%">
+                                    <option value="">-</option>
+                                    <option value="BEDAH">BEDAH</option>
+                                    <option value="NON BEDAH">NON BEDAH</option>
+                                    <option value="KEBIDANAN">KEBIDANAN</option>
+                                    <option value="PSIKIANTRIK">PSIKIANTRIK</option>
+                                    <option value="ANAK">ANAK</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
                             <label class="col-md-3">Instruksi Tindak Lanjut</label>
                             <div class="col-md-9">
                                 <select class="form-control select2" id="ki9" style="width: 100%" onchange="showKetIntruksi(this.value)">
-                                    <option value="">[Select One]</option>
+                                    <option value="">-</option>
                                     <option value="Rawat Inap">Rawat Inap</option>
                                     <option value="Rawat Intensif">Rawat Intensif</option>
                                     <option value="Rawat Isolasi">Rawat Isolasi</option>
@@ -2481,13 +2640,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row jarak" style="display: none" id="int-ket2">
-                        <div class="form-group">
-                            <div class="col-md-offset-3 col-md-9">
-                                <input class="form-control" id="ket_ki92" placeholder="Keterangan">
-                            </div>
-                        </div>
-                    </div>
+                    <%--<div class="row jarak" style="display: none" id="int-ket2">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<div class="col-md-offset-3 col-md-9">--%>
+                                <%--<input class="form-control" id="ket_ki92" placeholder="Keterangan">--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <div class="row jarak" style="display: none" id="int-ket3">
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-4">

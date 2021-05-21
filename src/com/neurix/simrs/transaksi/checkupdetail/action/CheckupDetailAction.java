@@ -60,6 +60,8 @@ import com.neurix.simrs.transaksi.asesmenoperasi.model.AsesmenOperasi;
 import com.neurix.simrs.transaksi.asesmenrawatinap.bo.AsesmenRawatInapBo;
 import com.neurix.simrs.transaksi.asesmenrawatinap.model.AsesmenRawatInap;
 import com.neurix.simrs.transaksi.asesmenrawatinap.model.PersetujuanTindakanMedis;
+import com.neurix.simrs.transaksi.asesmenrawatjalan.bo.KeperawatanRawatJalanBo;
+import com.neurix.simrs.transaksi.asesmenrawatjalan.model.KeperawatanRawatJalan;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
@@ -98,6 +100,8 @@ import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.rekammedik.bo.RekamMedikBo;
 import com.neurix.simrs.transaksi.rekammedik.model.StatusPengisianRekamMedis;
+import com.neurix.simrs.transaksi.ringkasanpasien.bo.RingkasanPasienBo;
+import com.neurix.simrs.transaksi.ringkasanpasien.model.RingkasanPasien;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsTindakanTransitorisEntity;
@@ -110,6 +114,7 @@ import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+import io.agora.recording.common.Common;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -543,7 +548,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
 
             try {
-                checkupDetailBoProxy.saveEdit(detailCheckup);
+                checkupDetailBoProxy.updateStatusPeriksa(detailCheckup);
             } catch (GeneralBOException e) {
                 logger.error("[CheckupDetailAction.add] Error when update checkup detail");
                 throw new GeneralBOException("Error when update checkup detail," + e.getMessage());
@@ -616,6 +621,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             detailCheckup.setTipePelayanan(checkup.getTipePelayanan());
             detailCheckup.setIsEksekutif(checkup.getIsEksekutif());
             detailCheckup.setIsVaksin(checkup.getIsVaksin());
+            detailCheckup.setCatatanKlinis(checkup.getCatatanKlinis());
 
             if ("rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
                 RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
@@ -800,10 +806,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         try {
             listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getSearchRawatJalan(headerDetailCheckup);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[CheckupDetailAction.save] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
-            return ERROR;
+            logger.error("[CheckupDetailAction.save] Error when searching pasien by criteria," + "Found problem when searching data by criteria, please inform to your admin.", e);
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -1095,6 +1098,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 String eksekutif = null;
                 String vaksin = null;
                 String isMeninggal = "";
+                String indikasi = null;
 
                 if (object.has("rs_rujukan")) {
                     rsRujukan = object.getString("rs_rujukan");
@@ -1144,6 +1148,9 @@ public class CheckupDetailAction extends BaseMasterAction {
                 if (object.has("is_meninggal")) {
                     isMeninggal = object.getString("is_meninggal");
                 }
+                if (object.has("indikasi")) {
+                    indikasi = object.getString("indikasi");
+                }
 
                 if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(tindakLanjut)) {
                     HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
@@ -1161,6 +1168,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                     }
                     headerDetailCheckup.setRsRujukan(rsRujukan);
                     headerDetailCheckup.setIsMeninggal(isMeninggal);
+                    headerDetailCheckup.setIndikasi(indikasi);
 
                     saveApproveAllTindakanRawatJalan(idDetailCheckup, jenisPasien);
 
@@ -1611,6 +1619,9 @@ public class CheckupDetailAction extends BaseMasterAction {
         BigDecimal ppnObat = new BigDecimal(0);
 
         Map hsCriteria = new HashMap();
+        hsCriteria.put("user_id", CommonUtil.userIdLogin());
+        hsCriteria.put("user_who", CommonUtil.userLogin());
+
         List<MappingDetail> listMapUangMuka = new ArrayList<>();
 
         boolean isNoCheckup = noCheckup != null && !"".equalsIgnoreCase(noCheckup);
@@ -3983,7 +3994,6 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
 
         if (checkup != null) {
-
             reportParams.put("idDokter", permintaanResep.getIdDokter());
             reportParams.put("dokter", permintaanResep.getNamaDokter());
             reportParams.put("ttdDokter", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + permintaanResep.getTtdDokter());
@@ -3997,13 +4007,17 @@ public class CheckupDetailAction extends BaseMasterAction {
             reportParams.put("logo", logo);
             reportParams.put("nik", checkup.getNoKtp());
             reportParams.put("nama", checkup.getNama());
-            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
-            reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+            if(checkup.getTglLahir() != null){
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+                reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+            }
+
             if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
                 jk = "Laki-Laki";
             } else {
                 jk = "Perempuan";
             }
+
             reportParams.put("jenisKelamin", jk);
             reportParams.put("jenisPasien", checkup.getStatusPeriksaName());
             reportParams.put("poli", checkup.getNamaPelayanan());
@@ -4016,7 +4030,6 @@ public class CheckupDetailAction extends BaseMasterAction {
                 preDownload();
             } catch (SQLException e) {
                 logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
                 return "search";
             }
         }
@@ -4910,6 +4923,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         long millis = System.currentTimeMillis();
         java.util.Date date = new java.util.Date(millis);
         String tglToday = new SimpleDateFormat("dd-MM-yyyy").format(date);
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
 
         try {
             branches = branchBoProxy.getBranchById(branch, "Y");
@@ -4931,7 +4945,6 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         if (idPatien != null && !"".equalsIgnoreCase(idPatien)) {
             try {
-                ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
                 PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
                 List<Pasien> pasienList = new ArrayList<>();
 
@@ -4987,6 +5000,8 @@ public class CheckupDetailAction extends BaseMasterAction {
             reportParams.put("noBpjs", checkup.getNoBpjs());
             reportParams.put("auto", "Autoanamnesis : " + checkup.getAutoanamnesis());
             reportParams.put("hetero", "Heteroanamnesis : " + checkup.getHeteroanamnesis());
+            reportParams.put("catatanKlinis", checkup.getCatatanKlinis());
+            reportParams.put("pemeriksaanFisik", "Tensi :"+checkup.getTensi()+" mmHg, Suhu : "+checkup.getSuhu()+" ˚C, RR : "+checkup.getPernafasan()+" x/menit, Nadi : "+checkup.getNadi()+" x/menit");
             if (checkup.getTglLahir() != null) {
                 String tahun = calculateAge(checkup.getTglLahir(), false);
                 String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
@@ -5061,7 +5076,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 reportParams.put("penunjang", penunjang);
                 reportParams.put("diagnosaPrimer", diagnosaPrimer);
                 reportParams.put("diagnosaSekunder", diagnosaSekunder);
-                reportParams.put("diagnosa", diagnosaSekunder);
+                reportParams.put("diagnosa", diagnosaPrimer);
                 reportParams.put("terapi", terapi);
                 reportParams.put("tindakan", tindakanIcd9);
                 reportParams.put("lab", lab);
@@ -5070,7 +5085,39 @@ public class CheckupDetailAction extends BaseMasterAction {
                 DokterTeam dokterTeam = teamDokterBoProxy.getNamaDokter(checkup.getIdDetailCheckup(), false);
                 reportParams.put("dokter", dokterTeam.getNamaDokter());
                 reportParams.put("sip", dokterTeam.getSip());
-                reportParams.put("diagnosaMasuk", diagnosaSekunder);
+                reportParams.put("diagnosaMasuk", diagnosaPrimer);
+                reportParams.put("indikasi", checkup.getIndikasi());
+
+                if("SP15".equalsIgnoreCase(tipe)){
+                    KeperawatanRawatJalanBo keperawatanRawatJalanBo = (KeperawatanRawatJalanBo) ctx.getBean("keperawatanRawatJalanBoProxy");
+                    KeperawatanRawatJalan keperawatanRawatJalan = new KeperawatanRawatJalan();
+                    keperawatanRawatJalan.setIdDetailCheckup(checkup.getIdDetailCheckup());
+                    keperawatanRawatJalan.setJenis("resume_medis");
+                    HeaderCheckup headerCheckup = keperawatanRawatJalanBo.getDataResumeMedis(keperawatanRawatJalan);
+                    if(headerCheckup != null){
+                        reportParams.put("ttdPasien", headerCheckup.getTtdPasien());
+                        reportParams.put("ttdDokter", headerCheckup.getTtdDokter());
+                        reportParams.put("penunjangLab", headerCheckup.getPenunjangLab());
+                        reportParams.put("penunjangRadiologi", headerCheckup.getPenunjangRadiologi());
+                    }
+                }
+
+                if("SP16".equalsIgnoreCase(tipe)){
+                    RingkasanPasienBo ringkasanPasienBo = (RingkasanPasienBo) ctx.getBean("ringkasanPasienBoProxy");
+                    HeaderCheckup headerCheckup = ringkasanPasienBo.getResumeMedis(checkup.getIdDetailCheckup());
+                    if(headerCheckup != null){
+                        reportParams.put("ttdPasien", headerCheckup.getTtdPasien());
+                        reportParams.put("ttdDokter", headerCheckup.getTtdDokter());
+                        reportParams.put("penunjangLab", headerCheckup.getPenunjangLab());
+                        reportParams.put("penunjangRadiologi", headerCheckup.getPenunjangRadiologi());
+                        reportParams.put("kondisiPulang", headerCheckup.getKondisiPulang());
+                        reportParams.put("keadaanPulang", headerCheckup.getKeadaanPulang());
+                        reportParams.put("penyakit", headerCheckup.getPenyakitDahulu());
+                        reportParams.put("tglKeluar", headerCheckup.getStTglKeluar());
+                        reportParams.put("terapiPulang", headerCheckup.getTerapi());
+                        reportParams.put("tindakLanjut", headerCheckup.getTindakLanjut());
+                    }
+                }
             }
         }
 
@@ -5123,7 +5170,6 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
 
         if ("INA".equalsIgnoreCase(tipe) || "RB".equalsIgnoreCase(tipe) || "ICU".equalsIgnoreCase(tipe) || "OK".equalsIgnoreCase(tipe)) {
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             AsesmenRawatInapBo asesmenRawatInapBo = (AsesmenRawatInapBo) ctx.getBean("asesmenRawatInapBoProxy");
             AsesmenOperasiBo asesmenOperasiBo = (AsesmenOperasiBo) ctx.getBean("asesmenOperasiBoProxy");
             AsesmenIcuBo asesmenIcuBo = (AsesmenIcuBo) ctx.getBean("asesmenIcuBoProxy");
@@ -5200,7 +5246,6 @@ public class CheckupDetailAction extends BaseMasterAction {
         if (checkup.getIdDetailCheckup() != null || pasien.getIdPasien() != null) {
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
             String user = CommonUtil.userLogin();
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
 
             if (idRm != null && !"".equalsIgnoreCase(idRm) && !"undefined".equalsIgnoreCase(idRm)) {
@@ -6036,6 +6081,51 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
         }
         logger.info("[CheckupDetailAction.getListUploadPendukungPemeriksaan] end process >>>");
+        return response;
+    }
+
+    public CrudResponse sendToTppti(String id, String lanjut, String indikasi, String selesai) {
+        logger.info("[CheckupDetailAction.sendToTppti] start process >>>");
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        if (id != null && !"".equalsIgnoreCase(id)) {
+            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+            detailCheckup.setIdDetailCheckup(id);
+            detailCheckup.setTindakLanjut(lanjut);
+            detailCheckup.setIndikasi(indikasi);
+            detailCheckup.setKeteranganSelesai(selesai);
+            detailCheckup.setLastUpdateWho(userLogin);
+            detailCheckup.setLastUpdate(updateTime);
+            try {
+                checkupDetailBo.sendToTppti(detailCheckup);
+                response.setStatus("success");
+                response.setMsg("OK");
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                response.setStatus("error");
+                response.setMsg("[CheckupDetailAction.sendToTppti] ERROR, " + e.getMessage());
+            }
+        }
+        logger.info("[CheckupDetailAction.sendToTppti] end process >>>");
+        return response;
+    }
+
+    public ItSimrsHeaderDetailCheckupEntity getDetailCheckup(String id) {
+        logger.info("[CheckupDetailAction.getDetailCheckup] start process >>>");
+        ItSimrsHeaderDetailCheckupEntity response = new ItSimrsHeaderDetailCheckupEntity();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        if (id != null && !"".equalsIgnoreCase(id)) {
+            try {
+                response = checkupDetailBo.getEntityById(id);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+        }
+        logger.info("[CheckupDetailAction.getDetailCheckup] end process >>>");
         return response;
     }
 

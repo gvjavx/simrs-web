@@ -241,7 +241,8 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                 "nama,\n" +
                 "no_rm_lama,\n" +
                 "desa_id,\n" +
-                "no_bpjs\n" +
+                "no_bpjs,\n" +
+                "tgl_lahir\n" +
                 "FROM im_simrs_pasien\n" +
                 "WHERE id_pasien ILIKE '%"+key+"%'\n" +
                 "OR nama ILIKE '%"+key+"%'\n" +
@@ -261,6 +262,7 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                 if(obj[3] != null){
                     pasien.setDesa(desaName(obj[3].toString()));
                 }
+                pasien.setTanggalLahir(obj[5] != null ? (Date)obj[5] : null);
                 listOfResult.add(pasien);
             }
         }

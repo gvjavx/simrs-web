@@ -59,9 +59,20 @@ function saveRingkasanPasien(jenis, ket) {
         var pe23 = $('#rps23').val();
         var spo1 = $('#spo1').val();
         var spo2 = $('#spo2').val();
+        var hasilRadiologi = $('#hasil_radiologi').val();
+
+        var ttd1 = document.getElementById('gen2');
+        var ttd2 = document.getElementById('gen3');
+        var nama1 = $('#nama_terang_gen2').val();
+        var nama2 = $('#nama_terang_gen3').val();
+        var sip2 = $('#sip_gen3').val();
+
+        var cek1 = isCanvasBlank(ttd1);
+        var cek2 = isCanvasBlank(ttd2);
 
         if (pe1 && pe2 && pe3 && pe4 && pe5 && pe6 && pe7 && pe8 && pe9 && pe10 &&
-            pe11 && pe12 && pe13 && pe14 && pe15 && pe16 && pe17 && pe18 && pe19 && pe20 && pe23 != '' && pe21 != undefined) {
+            pe11 && pe12 && pe13 && pe14 && pe15 && pe16 && pe17 && pe18 && pe19 &&
+            pe20 && pe23 != '' && pe21 != undefined && nama1 && nama2 && sip2 != '' && !cek1 && !cek2) {
 
             data.push({
                 'parameter': 'Tanggal Masuk',
@@ -75,6 +86,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe2,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'tgl_keluar',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -89,6 +101,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe4,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'riwayat_penyakit',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -140,10 +153,19 @@ function saveRingkasanPasien(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Pemeriksaan Penunjang/Diagnotik Terpeing',
+                'parameter': 'Pemeriksaan Lab',
                 'jawaban': pe10,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'pemeriksaan_lab',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Pemeriksaan Radiologi',
+                'jawaban': hasilRadiologi,
+                'keterangan': jenis,
+                'jenis': 'ringkasan_pulang',
+                'tipe': 'pemeriksaan_radiologi',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -192,6 +214,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe16 + ' C',
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'suhu',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -199,6 +222,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe17 + ' x/mnt',
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'nadi',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -206,6 +230,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe18 + ' x/mnt',
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'rr',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -213,6 +238,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': replaceUnderLine(pe19) + ' mmHg',
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'tensi',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -220,6 +246,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe20,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'gcs',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -227,6 +254,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': spo2,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'spo2',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -234,6 +262,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe21,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'keadaan_pulang',
                 'id_detail_checkup': idDetailCheckup
             });
             if(pe22 != undefined){
@@ -250,6 +279,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe23,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'instruksi_lanjut',
                 'id_detail_checkup': idDetailCheckup
             });
 
@@ -276,6 +306,29 @@ function saveRingkasanPasien(jenis, ket) {
                     'id_detail_checkup': idDetailCheckup
                 });
             }
+
+            var cvs1 = convertToDataURL(ttd1);
+            var cvs2 = convertToDataURL(ttd2);
+
+            data.push({
+                'parameter': 'TTD Keluarga',
+                'jawaban': cvs1,
+                'keterangan': jenis,
+                'jenis': ket,
+                'nama_terang': nama1,
+                'tipe': 'ttd',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'TTD DPJP',
+                'jawaban': cvs2,
+                'keterangan': jenis,
+                'jenis': ket,
+                'nama_terang': nama2,
+                'sip': sip2,
+                'tipe': 'ttd',
+                'id_detail_checkup': idDetailCheckup
+            });
             cek = true;
         }
     }
@@ -654,26 +707,27 @@ function saveRingkasanPasien(jenis, ket) {
 
         var hslAlergi = "";
 
-        if (alergi != '' && ketAlergi != '') {
-            hslAlergi = alergi + ', ' + ketAlergi;
-        } else {
-            if (alergi != '') {
-                hslAlergi = alergi;
+        if(check6 == "Ya"){
+            if (alergi != '' && ketAlergi != '') {
+                hslAlergi = alergi + ', ' + ketAlergi;
+            } else {
+                if (alergi != '') {
+                    hslAlergi = alergi;
+                }
             }
         }
 
         var ttd1 = document.getElementById("et4");
         var ttd2 = document.getElementById("et5");
 
-        var nama1 = $('#nama_petugas').val();
-        var sip1 = $('#nip_petugas').val();
+        var nama1 = $('#nama_keluarga').val();
         var nama2 = $('#nama_dokter').val();
         var sip2 = $('#sip_dokter').val();
 
         var cek1 = isCanvasBlank(ttd1);
         var cek2 = isCanvasBlank(ttd2);
 
-        if(check1 && check2 && check3 && check4 && check5 && check6 != undefined && nama1 && sip1 && nama2 && sip2 != '' && !cek1 && !cek2){
+        if(check1 && check2 && check3 && check4 && check5 && check6 != undefined && nama1 && nama2 && sip2 != '' && !cek1 && !cek2){
             var va1 = check1;
             var va2 = check2;
             var va3 = check3;
@@ -746,17 +800,16 @@ function saveRingkasanPasien(jenis, ket) {
             var cvs1 = convertToDataURL(ttd1);
             var cvs2 = convertToDataURL(ttd2);
             data.push({
-                'parameter': 'TTD Petugas',
+                'parameter': 'TTD Pasien',
                 'jawaban': cvs1,
                 'keterangan': jenis,
                 'jenis': 'admisi',
                 'nama_terang': nama1,
-                'sip':sip1,
                 'tipe': 'ttd',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'TTD Dokter',
+                'parameter': 'TTD Petugas',
                 'jawaban': cvs2,
                 'keterangan': jenis,
                 'jenis': 'admisi',
@@ -864,6 +917,14 @@ function detailRingkasanPasien(jenis) {
                                         '<td colspan="2">' + table + '</td>' +
                                         '</tr>';
                                 }
+                            }else if(item.tipe == 'ttd'){
+                                body += '<tr>' +
+                                    '<td>' + item.parameter + '</td>' +
+                                    '<td>' + '<img src="' + item.jawaban + '" style="height: 100px">' +
+                                    '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                    '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                    '</td>' +
+                                    '</tr>';
                             } else {
                                 body += '<tr>' +
                                     '<td>' + item.parameter + '</td>' +

@@ -57,7 +57,9 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
                     asesmenRawatInap.setIdDetailCheckup(entity.getIdDetailCheckup());
                     asesmenRawatInap.setParameter(entity.getParameter());
                     if ("ttd".equalsIgnoreCase(entity.getTipe())) {
-                        asesmenRawatInap.setJawaban(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getJawaban());
+                        if(entity.getJawaban() != null && !"".equalsIgnoreCase(entity.getJawaban())){
+                            asesmenRawatInap.setJawaban(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getJawaban());
+                        }
                     } else if ("gambar".equalsIgnoreCase(entity.getTipe())) {
                         asesmenRawatInap.setJawaban(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_IMG_RM + entity.getJawaban());
                     } else {
@@ -218,7 +220,13 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
         if (bean.getIdAsesmenKeperawatanRawatInap() != null) {
             ItSimrsAsesmenRawatInapEntity asesmenRawatInapEntity = asesmenRawatInapDao.getById("idAsesmenKeperawatanRawatInap", bean.getIdAsesmenKeperawatanRawatInap());
             if (asesmenRawatInapEntity != null) {
-                asesmenRawatInapEntity.setJawaban(asesmenRawatInapEntity.getJawaban() + "|" + bean.getJawaban());
+                if(bean.getNamaTerang() != null){
+                    asesmenRawatInapEntity.setJawaban(bean.getJawaban());
+                    asesmenRawatInapEntity.setNamaTerang(bean.getNamaTerang());
+                    asesmenRawatInapEntity.setSip(bean.getSip());
+                }else{
+                    asesmenRawatInapEntity.setJawaban(asesmenRawatInapEntity.getJawaban() + "|" + bean.getJawaban());
+                }
                 asesmenRawatInapEntity.setAction("U");
                 asesmenRawatInapEntity.setLastUpdate(bean.getLastUpdate());
                 asesmenRawatInapEntity.setLastUpdateWho(bean.getLastUpdateWho());

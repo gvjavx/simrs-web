@@ -39,12 +39,6 @@ public class RespirasiAction {
             respirasi.setIdDetailCheckup(idDetailCheckup);
             respirasi.setKeterangan(obj.getString("keterangan"));
             respirasi.setWaktu(waktu);
-
-            respirasi.setGcs(obj.getString("gcs"));
-            respirasi.setDiameterPupil(obj.getString("diameter_pupil"));
-            respirasi.setReflekCahaya(obj.getString("reflek_cahaya"));
-            respirasi.setTk(obj.getString("tk"));
-            respirasi.setKk(obj.getString("kk"));
             respirasi.setO2(obj.getString("o2"));
             respirasi.setTipeVentilasi(obj.getString("tipe_ventilasi"));
             respirasi.setPeep(obj.getString("peep"));

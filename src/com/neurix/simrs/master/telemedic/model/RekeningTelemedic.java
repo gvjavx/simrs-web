@@ -24,6 +24,43 @@ public class RekeningTelemedic {
     private String stCreatedDate;
     private String stLastUpdate;
 
+    private String tipeRekening;
+    private String keterangan;
+    private String clientId;
+    private String initVaName;
+
+    public String getInitVaName() {
+        return initVaName;
+    }
+
+    public void setInitVaName(String initVaName) {
+        this.initVaName = initVaName;
+    }
+
+    public String getTipeRekening() {
+        return tipeRekening;
+    }
+
+    public void setTipeRekening(String tipeRekening) {
+        this.tipeRekening = tipeRekening;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
     public String getStCreatedDate() {
         return stCreatedDate;
     }

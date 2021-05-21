@@ -2,9 +2,8 @@ package com.neurix.simrs.master.pasien.model;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
-
-import java.util.Date;
 
 
 /**

@@ -78,4 +78,6 @@ public interface PermintaanVendorBo {
     public List<PabrikObat> getListPabrikObatByIdObatForPo(String idObat, String tipePencarian);
 
     public Obat cekNoProduksi(String noProduksi) throws GeneralBOException;
+
+    public void saveUploadDocPoAfterApprove(List<ItSimrsDocPoEntity> listImg, BatchPermintaanObat batchData) throws GeneralBOException;
 }

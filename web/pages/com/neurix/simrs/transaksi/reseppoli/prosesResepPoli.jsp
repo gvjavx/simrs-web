@@ -253,23 +253,25 @@
                                     <s:hidden id="id_resep" name="permintaanResep.idPermintaanResep"></s:hidden>
                                     <s:hidden id="jenis_pasien" name="permintaanResep.idJenisPeriksa"></s:hidden>
                                     <tr>
-                                        <td width="45%"><b>No RM</b></td>
+                                        <td><b>No RM</b></td>
                                         <td>
                                             <table>
                                                 <s:label name="permintaanResep.idPasien"></s:label></table>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="45%"><b>No Resep</b></td>
+                                        <td width="40%"><b>No Resep</b></td>
                                         <td>
                                             <table>
-                                                <s:label name="permintaanResep.idPermintaanResep"></s:label></table>
+                                                <s:label name="permintaanResep.idPermintaanResep"></s:label>
+                                                <s:hidden name="permintaanResep.flagRacik" id="flag-racik"/>
+                                            </table>
                                         </td>
                                     </tr>
 
                                     <s:if test='permintaanResep.flagEresep != "Y"'>
                                         <tr>
-                                            <td width="45%"><b>No Checkup</b></td>
+                                            <td><b>No Checkup</b></td>
                                             <td>
                                                 <table>
                                                     <s:label name="permintaanResep.noCheckup"></s:label></table>
@@ -328,7 +330,7 @@
                                 <table class="table table-striped">
                                     <s:if test='permintaanResep.flagEresep != "Y"'>
                                         <tr>
-                                            <td><b>Poli</b></td>
+                                            <td><b>Pelayanan</b></td>
                                             <td>
                                                 <table>
                                                     <s:label name="permintaanResep.namaPelayanan"></s:label></table>
@@ -336,7 +338,7 @@
                                         </tr>
                                     </s:if>
                                     <tr>
-                                        <td><b>Alamat</b></td>
+                                        <td width="40%"><b>Alamat</b></td>
                                         <td>
                                             <table><s:label name="permintaanResep.alamat"></s:label></table>
                                         </td>
@@ -382,6 +384,9 @@
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border" id="top_top">
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Obat Resep</h3>
+                        <s:if test='permintaanResep.flagRacik == "Y"'>
+                            <span style="padding: 5px; border-radius: 3px; background-color: lightgrey">Racik</span>
+                        </s:if>
                     </div>
                     <div class="box-body">
                         <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_list_obat">
@@ -391,78 +396,146 @@
                         <table class="table table-bordered table-striped" id="tabel_list_obat" style="font-size: 14px">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Nama Obat</td>
-                                <td align="center">Qty Request</td>
-                                <td align="center">Qty Approve</td>
-                                <td align="center">Satuan (Rp.)</td>
-                                <td align="center">Total (Rp.)</td>
-                                <td width="21%" align="center">Scan ID Obat</td>
-                                <td>Keterangan</td>
+                                <s:if test='permintaanResep.flagRacik == "Y"'>
+                                    <td>Nama Obat</td>
+                                    <td>Dosis</td>
+                                    <td width="21%" align="center">Scan ID Obat</td>
+                                    <td align="center">Qty Approve</td>
+                                    <td align="center">Satuan (Rp.)</td>
+                                    <td align="center">Total (Rp.)</td>
+                                </s:if>
+                                <s:else>
+                                    <td>Nama Obat</td>
+                                    <td align="center">Qty Request</td>
+                                    <td align="center">Qty Approve</td>
+                                    <td align="center">Satuan (Rp.)</td>
+                                    <td align="center">Total (Rp.)</td>
+                                    <td width="21%" align="center">Scan ID Obat</td>
+                                    <td>Keterangan / Signa</td>
+                                </s:else>
                             </tr>
                             </thead>
                             <tbody>
                             <s:iterator value="#session.listOfResultResep" var="row" status="count">
                                 <tr>
-                                    <td>
-                                        <s:property value="namaObat"/>
-                                        <script>
-                                            var nama = '<s:property value="namaRacik"/>';
-                                            var hariKronis = '<s:property value="HariKronis"/>';
-                                            var racik = '<span style="border-radius: 5px; padding:4px; background-color: black; color: white; font-size: 10px">\n' + nama +'</span>';
-                                            var kronis = '<span style="border-radius: 5px; padding:4px; background-color: #fbec88; color: black; font-size: 10px">\n' + 'kronis' +'</span>';
-                                            if(nama != '' && nama != null){
-                                                document.write(racik);
-                                            }else{
-                                                if(hariKronis != '' && hariKronis != null){
-                                                    document.write(kronis);
+                                    <s:if test='permintaanResep.flagRacik == "Y"'>
+                                        <td>
+                                            <s:property value="namaObat"/>
+                                            <script>
+                                                var nama = '<s:property value="namaRacik"/>';
+                                                var hariKronis = '<s:property value="HariKronis"/>';
+                                                var racik = '<span style="border-radius: 5px; padding:4px; background-color: black; color: white; font-size: 10px">\n' + nama +'</span>';
+                                                var kronis = '<span style="border-radius: 5px; padding:4px; background-color: #fbec88; color: black; font-size: 10px">\n' + 'kronis' +'</span>';
+                                                if(nama != '' && nama != null){
+                                                    document.write(racik);
+                                                }else{
+                                                    if(hariKronis != '' && hariKronis != null){
+                                                        document.write(kronis);
+                                                    }
                                                 }
-                                            }
-                                        </script>
-                                        <input type="hidden" value="<s:property value="idObat"/>" id='id_obat_<s:property value="%{#count.index}"/>'>
-                                        <input type="hidden" value="<s:property value="idRacik"/>" id='id_racik_<s:property value="%{#count.index}"/>'>
-                                    </td>
-                                    <td align="center"><s:property value="qty"/> <s:property value="jenisSatuan"/></td>
-                                    <td align="center"><span id='qtyAppove<s:property value="idObat"/>'><s:property value="qtyApprove"/> <s:property value="jenisSatuan"/></span></td>
-                                    <td align="right"><script>var val = <s:property value="harga"/>;
-                                    if (val != null && val != '') {
-                                        document.write(formatRupiah(val))
-                                    }</script></td>
-                                    <td align="right">
-                                        <script>
-                                            var val = <s:property value="totalHarga"/>;
-                                            if (val != null && val != '') {
-                                                document.write(formatRupiah(val))
-                                            }
-                                        </script>
-                                        <input type="hidden" value="<s:property value="totalHarga"/>" id='tot_resep_<s:property value="%{#count.index}"/>'>
-                                    </td>
-                                    <td>
-                                        <div class="input-group">
-                                            <s:if test='#row.flagVerifikasi == "Y"'>
-                                                <input type="text" id='input<s:property value="idObat"/>' value="<s:property value="idObat"/>" disabled class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')">
-                                                <div class="input-group-addon">
-                                                    <img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">
-                                                </div>
-                                            </s:if>
-                                            <s:else>
-                                                <input type="text" id='input<s:property value="idObat"/>' class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')">
-                                                <div class="input-group-addon">
-                                                    <span id='status<s:property value="idObat"/>'></span>
-                                                </div>
-                                            </s:else>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <script>
-                                            var ket = '<s:property value="keterangan"/>';
-                                            var idObat = '<s:property value="idObat"/>';
-                                            var idRacik = '<s:property value="idRacik"/>';
-                                            if(ket != '' && ket != null){
-                                                document.write('<textarea class="form-control" id=\'ket_<s:property value="%{#count.index}"/>\'>'+ket+'</textarea>');
-                                            }
-                                        </script>
-                                    </td>
+                                            </script>
+                                            <input type="hidden" value="<s:property value="idObat"/>" id='id_obat_<s:property value="%{#count.index}"/>'>
+                                            <input type="hidden" value="<s:property value="idRacik"/>" id='id_racik_<s:property value="%{#count.index}"/>'>
+                                        </td>
+                                        <td>
+                                            <s:property value="keterangan"/>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <s:if test='#row.flagVerifikasi == "Y"'>
+                                                    <input type="text" id='input<s:property value="idObat"/>' value="<s:property value="idObat"/>" disabled class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')">
+                                                    <div class="input-group-addon">
+                                                        <img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">
+                                                    </div>
+                                                </s:if>
+                                                <s:else>
+                                                    <input type="text" id='input<s:property value="idObat"/>' class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')">
+                                                    <div class="input-group-addon">
+                                                        <span id='status<s:property value="idObat"/>'></span>
+                                                    </div>
+                                                </s:else>
+                                            </div>
+                                        </td>
+                                        <%--<td align="center"><s:property value="qty"/> <s:property value="jenisSatuan"/></td>--%>
+                                        <td align="center"><span id='qtyAppove<s:property value="idObat"/>'><s:property value="qtyApprove"/> <s:property value="jenisSatuan"/></span></td>
+                                        <td align="right"><script>var val = <s:property value="harga"/>;
+                                        if (val != null && val != '') {
+                                            document.write(formatRupiah(val))
+                                        }</script></td>
+                                        <td align="right">
+                                            <script>
+                                                var val = <s:property value="totalHarga"/>;
+                                                if (val != null && val != '') {
+                                                    document.write(formatRupiah(val))
+                                                }
+                                            </script>
+                                            <input type="hidden" value="<s:property value="totalHarga"/>" id='tot_resep_<s:property value="%{#count.index}"/>'>
+                                        </td>
+                                    </s:if>
+                                    <s:else>
+                                        <td>
+                                            <s:property value="namaObat"/>
+                                            <script>
+                                                var nama = '<s:property value="namaRacik"/>';
+                                                var hariKronis = '<s:property value="HariKronis"/>';
+                                                var racik = '<span style="border-radius: 5px; padding:4px; background-color: black; color: white; font-size: 10px">\n' + nama +'</span>';
+                                                var kronis = '<span style="border-radius: 5px; padding:4px; background-color: #fbec88; color: black; font-size: 10px">\n' + 'kronis' +'</span>';
+                                                if(nama != '' && nama != null){
+                                                    document.write(racik);
+                                                }else{
+                                                    if(hariKronis != '' && hariKronis != null){
+                                                        document.write(kronis);
+                                                    }
+                                                }
+                                            </script>
+                                            <input type="hidden" value="<s:property value="idObat"/>" id='id_obat_<s:property value="%{#count.index}"/>'>
+                                            <input type="hidden" value="<s:property value="idRacik"/>" id='id_racik_<s:property value="%{#count.index}"/>'>
+                                        </td>
+                                        <td align="center"><s:property value="qty"/> <s:property value="jenisSatuan"/></td>
+                                        <td align="center"><span id='qtyAppove<s:property value="idObat"/>'><s:property value="qtyApprove"/> <s:property value="jenisSatuan"/></span></td>
+                                        <td align="right"><script>var val = <s:property value="harga"/>;
+                                        if (val != null && val != '') {
+                                            document.write(formatRupiah(val))
+                                        }</script></td>
+                                        <td align="right">
+                                            <script>
+                                                var val = <s:property value="totalHarga"/>;
+                                                if (val != null && val != '') {
+                                                    document.write(formatRupiah(val))
+                                                }
+                                            </script>
+                                            <input type="hidden" value="<s:property value="totalHarga"/>" id='tot_resep_<s:property value="%{#count.index}"/>'>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <s:if test='#row.flagVerifikasi == "Y"'>
+                                                    <input type="text" id='input<s:property value="idObat"/>' value="<s:property value="idObat"/>" disabled class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')">
+                                                    <div class="input-group-addon">
+                                                        <img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">
+                                                    </div>
+                                                </s:if>
+                                                <s:else>
+                                                    <input type="text" id='input<s:property value="idObat"/>' class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')">
+                                                    <div class="input-group-addon">
+                                                        <span id='status<s:property value="idObat"/>'></span>
+                                                    </div>
+                                                </s:else>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <script>
+                                                var ket = '<s:property value="keterangan"/>';
+                                                var idObat = '<s:property value="idObat"/>';
+                                                var idRacik = '<s:property value="idRacik"/>';
+                                                if(ket != '' && ket != null){
+                                                    document.write('<textarea class="form-control" id=\'ket_<s:property value="%{#count.index}"/>\'>'+ket+'</textarea>');
+                                                }
+                                            </script>
+                                        </td>
+                                    </s:else>
                                 </tr>
+
+
                             </s:iterator>
                             </tbody>
                         </table>
@@ -1055,6 +1128,8 @@
         var qtyBox = 0;
         var qtyLembar = 0;
         var qtyBiji = 0;
+        var flagRacik = $("#flag-racik").val();
+        alert(flagRacik);
 
         $.each(data, function (i, item) {
             var expired = data[i]["Expired Date"];
@@ -1092,7 +1167,7 @@
         var stringData = JSON.stringify(result);
 
         if (qtyApp > 0) {
-            if (parseInt(qtyApp) <= parseInt(stok) && parseInt(qtyApp) <= parseInt(qtyReq)) {
+            if (parseInt(qtyApp) <= parseInt(stok) && parseInt(qtyApp) <= parseInt(qtyReq) || flagRacik == "Y") {
                 $('#modal-confirm-dialog').modal('show');
                 $('#save_con').attr('onclick','saveApprove(\'' + idObat + '\',\'' + idTransaksi + '\',\'' + stringData + '\',\'' + qtyApp + '\',\''+jenisSatuan+'\')');
             } else {

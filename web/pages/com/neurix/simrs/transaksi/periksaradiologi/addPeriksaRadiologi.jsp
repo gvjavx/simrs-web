@@ -87,7 +87,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="45%"><b>No Checkup</b></td>
+                                        <td width="40%"><b>No Checkup</b></td>
                                         <td>
                                             <s:hidden id="id_periksa_lab" name="periksaLab.idPeriksaLab"></s:hidden>
                                             <s:hidden id="no_checkup" name="periksaLab.noCheckup"></s:hidden>
@@ -143,6 +143,16 @@
                                             </table>
                                         </td>
                                     </tr>
+                                    <s:if test='periksaLab.isCito == "Y"'>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <table>
+                                                    <span class="span-warning">CITO</span>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -152,7 +162,7 @@
                                 </script>
                                 <table class="table table-striped">
                                     <tr>
-                                        <td width="35%"><b>Pelayanan</b></td>
+                                        <td width="40%"><b>Pelayanan</b></td>
                                         <td>
                                             <table><s:label name="periksaLab.namaPelayanan"></s:label></table>
                                         </td>
@@ -199,6 +209,12 @@
                                         <td><b>Diagnosa</b></td>
                                         <td>
                                             <table><s:label name="periksaLab.diagnosa"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Catatan Klinis</b></td>
+                                        <td>
+                                            <table><s:label name="periksaLab.catatanKlinis"></s:label></table>
                                         </td>
                                     </tr>
                                 </table>

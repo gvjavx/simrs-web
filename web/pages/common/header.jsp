@@ -181,6 +181,7 @@ apply the skin class to the body tag so the changes take effect.
         });
 
         $('#myTable').css('width', '100%');
+        $('#myTable-2').css('width', '100%');
         $('#sortTable').css('width', '100%');
 
         $("#tanggal_lahir").datepicker({

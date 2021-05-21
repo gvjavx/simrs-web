@@ -58,5 +58,17 @@
             <column name="branch_id" sql-type="varchar" length="5" not-null="false" />
         </property>
 
+        <property name="tipeRekening">
+            <column name="tipe_rekening" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
+        <property name="clientId">
+            <column name="client_id" sql-type="varchar" length="20" not-null="false" />
+        </property>
+
+        <property name="keterangan">
+            <column name="keterangan" sql-type="text" not-null="false" />
+        </property>
+
     </class>
 </hibernate-mapping>

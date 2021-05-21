@@ -123,6 +123,9 @@
         <property name="kunjunganPoli">
             <column name="kunjungan_poli" />
         </property>
+        <property name="catatanKlinis">
+            <column name="catatan_klinis" />
+        </property>
 
     </class>
 </hibernate-mapping>

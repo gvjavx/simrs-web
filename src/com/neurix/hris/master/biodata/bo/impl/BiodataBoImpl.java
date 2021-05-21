@@ -2862,7 +2862,7 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setFotoUpload(personalEntity.getFotoUpload());
                     returnBiodata.setStatusCaption(personalEntity.getStatusCaption());
                     returnBiodata.setKeterangan(personalEntity.getKeterangan());
-                    if ("N".equalsIgnoreCase(personalEntity.getFlagDokterKso()) && CommonConstant.PEGAWAI_TETAP.equalsIgnoreCase(personalEntity.getTipePegawai())) {
+                    if ("N".equalsIgnoreCase(personalEntity.getFlagDokterKso()) && CommonConstant.TIPE_PEGAWAI_TETAP.equalsIgnoreCase(personalEntity.getTipePegawai())) {
                         returnBiodata.setStMasaKerjaGol(personalEntity.getStMasaKerjaGol());
                         returnBiodata.setMasaKerjaGolongan(Integer.parseInt(personalEntity.getStMasaKerjaGol()));
                     }
@@ -4023,7 +4023,7 @@ public class BiodataBoImpl implements BiodataBo {
                             throw new GeneralBOException("Found problem when get Golongan PKWT by ID, please info to your admin..." + e.getMessage());
                         }
                         biodata.setGolonganName(golonganPkwtEntity.getGolonganPkwtName());
-                    } else if (CommonConstant.PEGAWAI_TETAP.equalsIgnoreCase(imBiodata.getTipePegawai())) {
+                    } else if (CommonConstant.TIPE_PEGAWAI_TETAP.equalsIgnoreCase(imBiodata.getTipePegawai())) {
                         biodata.setGolonganName(imBiodata.getImGolonganEntity().getGolonganName());
                     }
                     biodata.setGolongan(imBiodata.getGolongan());
@@ -4290,7 +4290,7 @@ public class BiodataBoImpl implements BiodataBo {
             }
             if (bean.getGolonganId() != null) {
                 if (!bean.getGolonganId().equalsIgnoreCase("")) {
-                    if (bean.getTipePegawaiId().equalsIgnoreCase(CommonConstant.PEGAWAI_TETAP)) {
+                    if (bean.getTipePegawaiId().equalsIgnoreCase(CommonConstant.TIPE_PEGAWAI_TETAP)) {
                         try {
                             golonganName = historyJabatanPegawaiDao.getGolonganById(bean.getGolonganId());
                         } catch (HibernateException e) {
@@ -4546,7 +4546,7 @@ public class BiodataBoImpl implements BiodataBo {
                     }
                     if (bean.getGolonganId() != null) {
                         if (!bean.getGolonganId().equalsIgnoreCase("")) {
-                            if (bean.getTipePegawaiId().equalsIgnoreCase(CommonConstant.PEGAWAI_TETAP)) {
+                            if (bean.getTipePegawaiId().equalsIgnoreCase(CommonConstant.TIPE_PEGAWAI_TETAP)) {
                                 golonganName = historyJabatanPegawaiDao.getGolonganById(bean.getGolonganId());
                             }
                             if (bean.getTipePegawaiId().equalsIgnoreCase(CommonConstant.PEGAWAI_PKWT)) {
@@ -6248,7 +6248,7 @@ public class BiodataBoImpl implements BiodataBo {
             if (tipePegawai == null) {
                 status = "false";
             } else {
-                if (CommonConstant.PEGAWAI_TETAP.equalsIgnoreCase(imBiodataEntity.getTipePegawai())) {
+                if (CommonConstant.TIPE_PEGAWAI_TETAP.equalsIgnoreCase(imBiodataEntity.getTipePegawai())) {
                     if (tipePegawai.equalsIgnoreCase(imBiodataEntity.getTipePegawai())) {
                         status = "true";
                     } else {

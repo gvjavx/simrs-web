@@ -20,6 +20,33 @@ public class ImSimrsRekeningTelemedicEntity {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+    private String tipeRekening;
+    private String clientId;
+    private String keterangan;
+
+    public String getTipeRekening() {
+        return tipeRekening;
+    }
+
+    public void setTipeRekening(String tipeRekening) {
+        this.tipeRekening = tipeRekening;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
 
     public String getIdRekening() {
         return idRekening;

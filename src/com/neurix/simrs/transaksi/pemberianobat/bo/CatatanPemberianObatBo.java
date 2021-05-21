@@ -10,4 +10,5 @@ public interface CatatanPemberianObatBo {
     public List<CatatanPemberianObat> getByCriteria(CatatanPemberianObat bean) throws GeneralBOException;
     public CrudResponse saveAdd(CatatanPemberianObat bean) throws GeneralBOException;
     public CrudResponse saveDelete(CatatanPemberianObat bean) throws GeneralBOException;
+    public void saveUpdate(CatatanPemberianObat bean) throws GeneralBOException;
 }

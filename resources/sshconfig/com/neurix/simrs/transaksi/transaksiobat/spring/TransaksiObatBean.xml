@@ -33,6 +33,8 @@
           p:transaksiStokDao-ref="transaksiStokDao"
           p:batasTutupPeriodDao-ref="batasTutupPeriodDao"
           p:riwayatTindakanDao-ref="riwayatTindakanDao"
+          p:catatanPemberianObatDao-ref="catatanPemberianObatDao"
+          p:headerObatDao-ref="headerObatDao"
     />
 
     <bean id="transaksiObatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
