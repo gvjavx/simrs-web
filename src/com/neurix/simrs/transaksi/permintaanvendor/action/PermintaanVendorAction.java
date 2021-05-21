@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.permintaanvendor.action;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.billingSystem.model.MappingDetail;
 import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.authorization.company.bo.AreaBo;
 import com.neurix.authorization.company.bo.BranchBo;
@@ -63,6 +64,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Toshiba on 27/12/2019.
@@ -789,12 +791,12 @@ public class PermintaanVendorAction extends BaseMasterAction {
             }
         }
 
-        permintaanVendor.setNoFaktur(noFaktur);
-        permintaanVendor.setTanggalFaktur(Date.valueOf(tglFaktur));
+        permintaanVendor.setNoFaktur(noFaktur != null && !"".equalsIgnoreCase(noFaktur) ? noFaktur : null);
+        permintaanVendor.setTanggalFaktur(tglFaktur != null && !"".equalsIgnoreCase(tglFaktur) ? Date.valueOf(tglFaktur) : null);
         permintaanVendor.setTglInvoice( "".equalsIgnoreCase(tglInvoice) ? null : Date.valueOf(tglInvoice));
         permintaanVendor.setTglDo( "".equalsIgnoreCase(tglDo) ? null : Date.valueOf(tglDo));
-        permintaanVendor.setNoInvoice(noInvoice);
-        permintaanVendor.setNoDo(noDo);
+        permintaanVendor.setNoInvoice(noInvoice != null && !"".equalsIgnoreCase(noInvoice) ? noInvoice : null);
+        permintaanVendor.setNoDo(noDo != null && !"".equalsIgnoreCase(noDo) ? noDo : null);
         permintaanVendor.setIdPelayanan(pelayananId);
 
         List<PermintaanVendor> permintaanVendorList = new ArrayList<>();
@@ -829,7 +831,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 addActionError(" Error when save data approve PO" + e.getMessage());
             }
 
-            List<Map> listMapPersediaan = new ArrayList<>();
+            List<MappingDetail> listMapPersediaan = new ArrayList<>();
             BigDecimal hutangUsaha = new BigDecimal(0);
             BigDecimal ppn = new BigDecimal(0);
             if (transaksiObatDetails.size() > 0) {
@@ -873,9 +875,9 @@ public class PermintaanVendorAction extends BaseMasterAction {
                         ppn = ppn.add(hargaPpn);
                     }
 
-                    Map mapHutangUsaha = new HashMap();
-                    mapHutangUsaha.put("kd_barang", trans.getIdBarang());
-                    mapHutangUsaha.put("nilai", hargaTotal.subtract(hargaPpn));
+                    MappingDetail mapHutangUsaha = new MappingDetail();
+                    mapHutangUsaha.setKodeBarang(trans.getIdBarang());
+                    mapHutangUsaha.setNilai(hargaTotal.subtract(hargaPpn));
                     listMapPersediaan.add(mapHutangUsaha);
                 }
             }
@@ -903,32 +905,41 @@ public class PermintaanVendorAction extends BaseMasterAction {
                     }
                 }
 
-                Map mapBiaya = new HashMap();
-                mapBiaya.put("divisi_id", divisiId);
-                mapBiaya.put("nilai", hutangUsaha);
+                List<MappingDetail> listMapBiaya = new ArrayList<>();
+
+                MappingDetail mapBiaya = new MappingDetail();
+                mapBiaya.setMasterId(divisiId);
+                mapBiaya.setNilai(hutangUsaha);
+                listMapBiaya.add(mapBiaya);
 
                 jurnalMap.put("divisi_id", divisiId);
                 jurnalMap.put("persediaan_gudang", listMapPersediaan);
-                jurnalMap.put("biaya_persediaan_obat", mapBiaya);
+                jurnalMap.put("biaya_persediaan_obat", listMapBiaya);
 
                 catatan = "Pengganti Barang No. Transaksi "+idPermintaanVendor+". Retur Vendor ke Gudang dari Vendor " + requestVendor.getIdVendor() + " - " + namaVendor;
                 transId = "36";
             } else {
 
-                Map mapPajakObat = new HashMap();
-                mapPajakObat.put("bukti", noFaktur);
-                mapPajakObat.put("nilai", ppn);
-                mapPajakObat.put("master_id", requestVendor.getIdVendor());
+                List<MappingDetail> listMapPajakObat = new ArrayList<>();
 
-                Map mapHutangVendor = new HashMap();
-                mapHutangVendor.put("bukti", noDo);
-                mapHutangVendor.put("nilai", hutangUsaha);
-                mapHutangVendor.put("master_id", requestVendor.getIdVendor());
-                mapHutangVendor.put("divisi_id", divisiId);
+                MappingDetail mapPajakObat = new MappingDetail();
+                mapPajakObat.setBukti(noFaktur);
+                mapPajakObat.setNilai(ppn);
+                mapPajakObat.setMasterId(requestVendor.getIdVendor());
+                listMapPajakObat.add(mapPajakObat);
+
+                List<MappingDetail> listMapHutangVendor = new ArrayList<>();
+
+                MappingDetail mapHutangVendor = new MappingDetail();
+                mapHutangVendor.setBukti(noDo);
+                mapHutangVendor.setNilai(hutangUsaha);
+                mapHutangVendor.setMasterId(requestVendor.getIdVendor());
+                mapHutangVendor.setDivisiId(divisiId);
+                listMapHutangVendor.add(mapHutangVendor);
 
                 jurnalMap.put("persediaan_gudang", listMapPersediaan);
-                jurnalMap.put("hutang_farmasi_vendor", mapHutangVendor);
-                jurnalMap.put("ppn_masukan", mapPajakObat);
+                jurnalMap.put("hutang_farmasi_vendor", listMapHutangVendor);
+                jurnalMap.put("ppn_masukan", listMapPajakObat);
 
                 catatan = "Penerimaan Barang Gudang dari Vendor " + requestVendor.getIdVendor() + " - " + namaVendor;
                 transId = "27";
@@ -949,6 +960,173 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         logger.info("[PermintaanVendorAction.saveApproveBatch] START >>>>>>>");
         return checkObatResponse;
+    }
+
+    public CrudResponse saveDocPo(String idPermintaanVendor, String noBatch, String listImg, String objData) throws JSONException, IOException{
+        logger.info("[PermintaanVendorAction.saveDocPo] Start >>>");
+
+        String userLogin    = CommonUtil.userLogin();
+        Timestamp time      = CommonUtil.getCurrentDateTimes();
+
+        CrudResponse response = new CrudResponse();
+
+        List<ItSimrsDocPoEntity> docPoEntities = new ArrayList<>();
+
+        if (idPermintaanVendor == null || "".equalsIgnoreCase(idPermintaanVendor)){
+            response.hasError("Tidak Ditemukan No. Permintaan");
+            return response;
+        }
+
+        if (noBatch == null || "".equalsIgnoreCase(noBatch)){
+            response.hasError("Tidak Ditemukan No. Batch");
+            return response;
+        }
+
+        if (listImg == null || "".equalsIgnoreCase(listImg)){
+            response.hasError("Tidak Ditemukan list Document Dikirim");
+            return response;
+        }
+
+        if (objData == null || "".equalsIgnoreCase(objData)){
+            response.hasError("Tidak Ditemukan data No. Document");
+            return response;
+        }
+
+        // passing data uploaded document to list document entity
+        JSONArray json = new JSONArray(listImg);
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            ItSimrsDocPoEntity docPoEntity = new ItSimrsDocPoEntity();
+            if (!"".equalsIgnoreCase(obj.get("jenisnomor").toString())) {
+                docPoEntity.setJenisNomor(obj.get("jenisnomor") == null ? "" : obj.get("jenisnomor").toString());
+            }
+            if (!"".equalsIgnoreCase(obj.get("iditem").toString())) {
+                docPoEntity.setIdItem(obj.get("iditem") == null ? null : obj.get("iditem").toString());
+            }
+            // upload img
+            if (!"".equalsIgnoreCase(obj.get("img").toString())) {
+
+                BASE64Decoder decoder = new BASE64Decoder();
+                byte[] decodedBytes = decoder.decodeBuffer(obj.getString("img"));
+                logger.info("Decoded upload data : " + decodedBytes.length);
+                String fileName = i + docPoEntity.getIdItem() + "-" + dateFormater("MM") + dateFormater("yy") + ".jpg";
+                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_PO + fileName;
+                logger.info("File save path : " + uploadFile);
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                if (image == null) {
+                    logger.error("Buffered Image is null");
+                } else {
+                    response = CommonUtil.compressImage(image, "png", uploadFile);
+                    if ("success".equalsIgnoreCase(response.getStatus())) {
+                        docPoEntity.setUrlImg(fileName);
+                    } else {
+                        response.hasError("Kompress IMG Error, " + response.getMsg());
+                    }
+                }
+            }
+
+            docPoEntity.setTipe("IMG");
+            docPoEntity.setIdPermintaanObatVendor(idPermintaanVendor);
+            docPoEntity.setNoBatch(Integer.valueOf(noBatch));
+            docPoEntity.setFlag("Y");
+            docPoEntity.setAction("C");
+            docPoEntity.setCreatedDate(time);
+            docPoEntity.setCreatedWho(userLogin);
+            docPoEntity.setLastUpdate(time);
+            docPoEntity.setLastUpdateWho(userLogin);
+            docPoEntities.add(docPoEntity);
+        }
+        // END
+
+        // set json object to object BatchPermintaanObat
+        BatchPermintaanObat batchPermintaanObat = new BatchPermintaanObat();
+        JSONObject obj = new JSONObject(objData);
+
+        batchPermintaanObat.setNoFaktur(obj.getString("no_faktur"));
+        batchPermintaanObat.setNoInvoice(obj.getString("no_invoice"));
+        batchPermintaanObat.setNoDo(obj.getString("no_do"));
+        batchPermintaanObat.setTanggalFaktur(obj.getString("tgl_faktur") == null ? null : CommonUtil.convertStringToDate2(obj.getString("tgl_faktur")));
+        batchPermintaanObat.setTglInvoice(obj.getString("tgl_invoice") == null ? null : CommonUtil.convertStringToDate2(obj.getString("tgl_invoice")));
+        batchPermintaanObat.setTglDo(obj.getString("tgl_do") == null ? null : CommonUtil.convertStringToDate2(obj.getString("tgl_do")));
+        batchPermintaanObat.setIdPermintaan(idPermintaanVendor);
+        batchPermintaanObat.setStNoBatch(noBatch);
+        batchPermintaanObat.setLastUpdate(time);
+        batchPermintaanObat.setLastUpdateWho(userLogin);
+        // END
+
+        // check jika list dokumen tidak ada nomor dokumen
+        response = checkDocumentNumb(docPoEntities, batchPermintaanObat);
+        if ("error".equalsIgnoreCase(response.getStatus())){
+            return response;
+        }
+        // END
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+
+        try {
+            permintaanVendorBo.saveUploadDocPoAfterApprove(docPoEntities, batchPermintaanObat);
+            response.hasSuccess("Berhasil Menyimpan");
+        } catch (GeneralBOException e) {
+            logger.error("[PermintaanVendorAction.saveApproveBatch] ERROR error when save DOC PO. ", e);
+            response.hasError("[PermintaanVendorAction.saveApproveBatch] ERROR error when save DOC PO. " + e.getMessage());
+            return response;
+        }
+
+        logger.info("[PermintaanVendorAction.saveDocPo] END <<<");
+        return response;
+    }
+
+    private CrudResponse checkDocumentNumb(List<ItSimrsDocPoEntity> docPoEntities, BatchPermintaanObat batchObat){
+        logger.info("[PermintaanVendorAction.checkDocumentNumb] Start >>>");
+        CrudResponse response = new CrudResponse();
+
+        if (batchObat.getNoFaktur() == null
+                || "".equalsIgnoreCase(batchObat.getNoFaktur())
+                || batchObat.getTanggalFaktur() == null )
+        {
+            List<ItSimrsDocPoEntity> filterdList = docPoEntities.stream().filter(
+                    p->p.getJenisNomor().equalsIgnoreCase("faktur")
+            ).collect(Collectors.toList());
+
+            if (filterdList.size() > 0){
+                response.hasError("Tidak ditemukan no. faktur pada list faktur yang dikirim");
+                return response;
+            }
+        }
+
+        if (batchObat.getNoInvoice() == null
+                || "".equalsIgnoreCase(batchObat.getNoInvoice())
+                || batchObat.getTglInvoice() == null)
+        {
+            List<ItSimrsDocPoEntity> filterdList = docPoEntities.stream().filter(
+                    p->p.getJenisNomor().equalsIgnoreCase("invoice")
+            ).collect(Collectors.toList());
+
+            if (filterdList.size() > 0){
+                response.hasError("Tidak ditemukan no. invoice pada list invoice yang dikirim");
+                return response;
+            }
+        }
+
+        if (batchObat.getNoDo() == null
+                || "".equalsIgnoreCase(batchObat.getNoDo())
+                || batchObat.getTglDo() == null)
+        {
+            List<ItSimrsDocPoEntity> filterdList = docPoEntities.stream().filter(
+                    p->p.getJenisNomor().equalsIgnoreCase("do")
+            ).collect(Collectors.toList());
+
+            if (filterdList.size() > 0){
+                response.hasError("Tidak ditemukan no. invoice pada list invoice yang dikirim");
+                return response;
+            }
+        }
+
+        response.setStatus("success");
+        logger.info("[PermintaanVendorAction.checkDocumentNumb] End <<<");
+        return response;
     }
 
     public List<TransaksiObatDetail> searchNewListObat(String idApproval) {

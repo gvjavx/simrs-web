@@ -432,7 +432,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             Map hsCriteria = new HashMap();
             hsCriteria.put("id_seq_obat", obat.getIdSeqObat());
             hsCriteria.put("flag", "Y");
-
             try {
                 obatEntities = obatDao.getByCriteria(hsCriteria);
             } catch (HibernateException e) {
@@ -444,7 +443,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                 return obatEntities.get(0);
             }
         }
-
         logger.info("[TransaksiObatBoImpl.getLastEntityObatById] END <<<<<<<<<<");
         return null;
     }
@@ -1059,7 +1057,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         newObatEntity.setExpiredDate(bean.getExpDate());
         newObatEntity.setLembarPerBox(lembarPerBoxBatch);
         newObatEntity.setBijiPerLembar(bijiPerLembarBatch);
-        newObatEntity.setMinStok(obatEntity.getMinStok());
+        newObatEntity.setMinStok(obatEntity != null ? obatEntity.getMinStok() : null);
         newObatEntity.setHargaTerakhir(hargaBijianPadaBatch);
         newObatEntity.setMerk(pabrikObat.getNama());
 
@@ -1961,6 +1959,8 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                 throw new GeneralBOException("[PermintaanVendorBoImpl.getListBatchObatByIdApproval] ERROR." + e.getMessage());
             }
 
+
+
             if (allowApprove) {
                 permintaanObat.setIsApprove("Y");
             } else {
@@ -2539,6 +2539,57 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
         logger.info("[PermintaanVendorBoImpl.getListPabrikObatByIdObatForPo] End <<<");
         return pabrikObatList;
+    }
+
+    @Override
+    public void saveUploadDocPoAfterApprove(List<ItSimrsDocPoEntity> listImg, BatchPermintaanObat batchData) throws GeneralBOException {
+        logger.info("[PermintaanVendorBoImpl.saveUploadDocPoAfterApprove] Start >>>");
+
+        if (listImg.size() > 0){
+            for (ItSimrsDocPoEntity docPoEntity : listImg){
+                docPoEntity.setId(getNextIdDocPo());
+
+                try {
+                    docPoDao.addAndSave(docPoEntity);
+                } catch (HibernateException e){
+                    logger.error("Found error when save doc po " , e);
+                }
+            }
+        }
+
+        String idPermintaan     = batchData.getIdPermintaan();
+        String stNoBatch        = batchData.getStNoBatch();
+
+        List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = new ArrayList<>();
+
+        try {
+            batchEntities = transaksiObatDetailBatchDao.getListBatchEntityByNoPoAndBatch(idPermintaan, stNoBatch);
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorBoImpl.saveUploadDocPoAfterApprove] ERROR when get data. " + e.getMessage());
+            throw new GeneralBOException("[PermintaanVendorBoImpl.saveUploadDocPoAfterApprove] ERROR when get data. " + e.getMessage());
+        }
+
+        if (batchEntities.size() > 0){
+            for (MtSimrsTransaksiObatDetailBatchEntity batchEntity : batchEntities){
+
+                batchEntity.setNoFaktur(batchData.getNoFaktur());
+                batchEntity.setNoInvoice(batchData.getNoInvoice());
+                batchEntity.setNoDo(batchData.getNoDo());
+                batchEntity.setTanggalFaktur(batchData.getTanggalFaktur());
+                batchEntity.setTglInvoice(batchData.getTglInvoice());
+                batchEntity.setTglDo(batchData.getTglDo());
+                batchEntity.setLastUpdate(batchData.getLastUpdate());
+                batchEntity.setLastUpdateWho(batchData.getLastUpdateWho());
+
+                try {
+                    transaksiObatDetailBatchDao.updateAndSave(batchEntity);
+                } catch (HibernateException e){
+                    logger.error("[PermintaanVendorBoImpl.saveUploadDocPoAfterApprove] ERROR when get data. " + e.getMessage());
+                    throw new GeneralBOException("[PermintaanVendorBoImpl.saveUploadDocPoAfterApprove] ERROR when get data. " + e.getMessage());
+                }
+            }
+        }
+        logger.info("[PermintaanVendorBoImpl.saveUploadDocPoAfterApprove] End <<<");
     }
 
     @Override

@@ -33,7 +33,6 @@ public class ImTransEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
-
     private Set<ImMappingJurnalEntity> imMappingJurnal;
 
     public Set<ImMappingJurnalEntity> getImMappingJurnal() {

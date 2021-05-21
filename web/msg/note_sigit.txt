@@ -1785,3 +1785,53 @@ ADD COLUMN parent_id VARCHAR(30);
     ADD COLUMN jenis VARCHAR(100);
 
 --
+
+-- 2021-05-05
+    ALTER TABLE it_simrs_pembayaran_online
+    ADD COLUMN no_jurnal VARCHAR(100);
+--
+
+-- 2021-05-06
+
+    ALTER TABLE it_akun_jurnal
+    ADD COLUMN registered_user_id VARCHAR(100);
+
+    ALTER TABLE it_akun_jurnal
+    ADD COLUMN metode_bayar VARCHAR(20);
+
+    ALTER TABLE im_akun_mapping_jurnal
+    ALTER COLUMN parameter_coa TYPE VARCHAR(100);
+    UPDATE im_akun_mapping_jurnal a SET parameter_coa = a.keterangan;
+
+    ALTER TABLE im_akun_trans
+    ADD COLUMN is_otomatis VARCHAR(1);
+
+    UPDATE im_akun_mapping_jurnal SET
+    flag = 'N' WHERE mapping_jurnal_id = 'NPJ0000077';
+
+--
+
+--2021-05-07
+
+     ALTER TABLE it_akun_jurnal_detail
+     ALTER COLUMN rekening_id DROP NOT NULL;
+
+--
+
+--2021-05-08
+
+    ALTER TABLE it_simrs_pembayaran_online
+    ADD COLUMN tipe_pembayaran VARCHAR(100);
+
+--
+
+--2021-05-09
+    ALTER TABLE im_simrs_rekening_telemedic
+    ADD init_va_name VARCHAR(100);
+
+    UPDATE im_simrs_rekening_telemedic a SET init_va_name = 'BSI'
+    WHERE id_rekening = 'RKN00013';
+
+    UPDATE im_akun_trans
+    SET is_otomatis = 'Y' WHERE trans_id = '04';
+--
