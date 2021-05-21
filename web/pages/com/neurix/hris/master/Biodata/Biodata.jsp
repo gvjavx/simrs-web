@@ -476,18 +476,26 @@
                                                     </td>
                                                 </tr>
                                             </s:if>
-                                            <s:if test="isEdit()">
+                                            <%--<s:if test="isEdit()">--%>
+                                            <s:else>
                                                 <tr>
                                                     <td>
                                                         <label><small>Jumlah Anak :</small></label>
                                                     </td>
                                                     <td>
-                                                        <table>
-                                                            <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" disabled="false" cssClass="form-control"/>
-                                                        </table>
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="false" disabled="false" cssClass="form-control"/>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <input type="checkbox" id="manualPtkp" class="checkZakat" onchange="cekManualPtkp()" />
+                                                                <s:hidden id="flagManualPtkp" name="biodata.flagManualPtkp" />
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                 </tr>
-                                            </s:if>
+                                            </s:else>
+                                            <%--</s:if>--%>
                                             <tr>
                                                 <td>
                                                     <label><small>Tempat Lahir <span style="color:red;">*</span> :</small></label>
@@ -3716,6 +3724,14 @@
 //        } else {
 //            document.getElementById("plt").checked = false;
 //        }
+
+        var flagManualPtkp = document.getElementById("flagManualPtkp").value;
+        if (flagManualPtkp == "Y") {
+            document.getElementById("manualPtkp").checked = true;
+        } else {
+            document.getElementById("manualPtkp").checked = false;
+        }
+
         var flagFingerMobile = document.getElementById("flagFingerMobile").value;
         if (flagFingerMobile == "Y") {
             document.getElementById("fingerMobile").checked = true;
@@ -6292,6 +6308,15 @@
     //        }
     //    }
 
+    window.cekManualPtkp = function () {
+        if (document.getElementById("manualPtkp").checked == true) {
+            $("#flagManualPtkp").val("Y");
+            $("#jumlahAnak").prop("disabled",false);
+        } else {
+            $("#flagManualPtkp").val("N");
+            $("#jumlahAnak").prop("disabled",true);
+        }
+    }
 
     window.cekAktif = function () {
         if ($('#aktif').is(":checked")) {

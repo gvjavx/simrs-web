@@ -182,6 +182,15 @@ public class Biodata extends BaseModel {
     private String role;
     //RAKA-end
 
+    private String flagManualPtkp;
+
+    public String getFlagManualPtkp() {
+        return flagManualPtkp;
+    }
+
+    public void setFlagManualPtkp(String flagManualPtkp) {
+        this.flagManualPtkp = flagManualPtkp;
+    }
 
     public String getCreateUser() {
         return createUser;
