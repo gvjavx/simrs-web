@@ -184,7 +184,7 @@
                                             </center>
                                         </sj:dialog>
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true" resizable="false" cssStyle="text-align:left;"
-                                                   height="450" width="600" autoOpen="false" title="Add Kode Rekening"
+                                                   height="400" width="600" autoOpen="false" title="Add Kode Rekening"
                                         >
                                             <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
@@ -244,8 +244,9 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Tipe Rekening :</label>
                         <div class="col-sm-6">
-                            <s:select list="#{'00':'Jurnal', '01' : 'Neraca'}" id="tipeRekeningIdDelete" disabled="true"
-                                      headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                            <s:action id="initComboTipeRekening" namespace="/tipeRekening" name="initComboTipeRekening_tipeRekening"/>
+                            <s:select list="#initComboTipeRekening.listOfComboTipeRekening" id="tipeRekeningIdDelete" name="kodeRekening.tipeCoa"
+                                      disabled="true" listKey="tipeRekeningId" listValue="tipeRekeningName"  headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 7px"/>
                         </div>
                     </div>
                 </s:form>
@@ -290,24 +291,8 @@
                         <label class="control-label col-sm-4" >Tipe Rekening :</label>
                         <div class="col-sm-6">
                             <s:action id="initComboTipeRekening" namespace="/tipeRekening" name="initComboTipeRekening_tipeRekening"/>
-                            <s:select list="#initComboTipeRekening.listOfComboTipeRekening" id="tipeRekeningIdEdit" name="kodeRekening.tipeRekeningId"
+                            <s:select list="#initComboTipeRekening.listOfComboTipeRekening" id="tipeRekeningIdEdit" name="kodeRekening.tipeCoa"
                                       listKey="tipeRekeningId" listValue="tipeRekeningName"  headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 7px"/>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Master Id :</label>
-                        <div class="col-sm-6">
-                            <s:select list="#{'Y':'Active', 'N':'NonActive'}" id="flag-master-edit" name="users.flagMaster"
-                                      headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Divisi Id :</label>
-                        <div class="col-sm-6">
-                            <s:select list="#{'Y':'Active', 'N':'NonActive'}" id="flag-divisi-edit" name="users.flagDivisi"
-                                      headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                         </div>
                     </div>
 
@@ -323,7 +308,9 @@
 
 <script>
 
+
     $(document).ready(function () {
+
         //btn Save
         $('#btnEdit').click(function(){
             var id                  = $('#rekeningIdEdit').val();
@@ -332,14 +319,16 @@
             var result              = '';
             var flagMaster          = $("#flag-master-edit").val();
             var flagDivisi          = $("#flag-divisi-edit").val();
-            var tipeRekening        = $("#tipeRekeningIdEdit").val();
+            var tipeCoa        = $("#tipeRekeningIdEdit").val();
 
             if(id != ''&&kodeRekeningName != ''&&kodeRekening != ''){
                 if (confirm('Are you sure you want to save this Record?')) {
-                    KodeRekeningAction.saveEdit(id, kodeRekeningName, kodeRekening,"edit", tipeRekening, flagMaster, flagDivisi, function(result) {
+                    KodeRekeningAction.saveEdit(id, kodeRekeningName, kodeRekening,"edit", tipeCoa, flagMaster, flagDivisi, function(result) {
                         if (result==""){
                             alert('Record has been saved successfully.');
-                            location.reload();
+                            $('.tree').html('');
+                            f1();
+                            $('#modal-edit').modal("hide");
                         } else{
                             alert(result);
                         }
@@ -388,12 +377,17 @@
 
         $('.tree').on('click', '.item-edit', function(){
             var id = $(this).attr('data');
+            // var option = "<option value=''>[Select One]</option>";
             KodeRekeningAction.initKodeRekeningSearch(id,"","",function(listdata) {
                 $.each(listdata, function(i,item){
                     $('#rekeningIdEdit').val(item.rekeningId);
                     $('#kodeRekeningNameEdit').val(item.namaKodeRekening);
                     $('#kodeRekeningEdit').val(item.kodeRekening);
-                    $('#tipeRekeningIdEdit').val(item.tipeRekeningId);
+
+                    /*option = "<option value='" + item.tipeRekeningId + "'>" + item.tipeCoa + "</option>";
+                    $('#tipeRekeningIdEdit').html(option);*/
+
+                    $('#tipeRekeningIdEdit').val(item.tipeRekeningId );
                     $('#flag-master-edit').val(item.flagMaster);
                     $('#flag-divisi-edit').val(item.flagDivisi);
                 });
@@ -408,12 +402,18 @@
                     $('#rekeningIdDelete').val(item.rekeningId);
                     $('#kodeRekeningNameDelete').val(item.namaKodeRekening);
                     $('#kodeRekeningDelete').val(item.kodeRekening);
-                    $('#tipeRekeningIdDelete').val(item.tipeRekeningId);
+                    $('#tipeRekeningIdDelete').val(item.tipeCoa);
                 });
             });
             $('#modal-delete').modal('show');
         });
     });
+
+
+    function searchBack(){
+        document.kodeRekeningForm.action = "search_kodeRekening.action";
+        document.kodeRekeningForm.submit();
+    }
 
     function searchFunc(){
         $('.tree').find('tbody').remove();
@@ -423,24 +423,27 @@
             expanderExpandedClass: 'glyphicon glyphicon-minus',
             expanderCollapsedClass: 'glyphicon glyphicon-plus'
         });
+
+
     }
 
     function f1() {
+        $('#waiting_dialog').dialog('open');
         var rekeningId = document.getElementById("rekeningId").value;
         var namaRekening = document.getElementById("kodeRekeningName").value;
         var kodeRekening = document.getElementById("kodeRekening").value;
         var tmp_table = "";
         var data = [];
         var data2 = [];
-        dwr.engine.setAsync(false);
-        KodeRekeningAction.initKodeRekeningSearch(rekeningId, namaRekening, kodeRekening, function(listdata){
+        dwr.engine.setAsync(true);
+        KodeRekeningAction.initKodeRekeningSearch(rekeningId, namaRekening, kodeRekening, {callback: function(listdata){
             data = listdata;
             data2 = new Array();
             data2_hasil = new Array();
             data2Tmp= new Array();
             $.each(data, function(i,item){
                 data2.push({_id : item.rekeningId, level : item.level,  nama : item.namaKodeRekening, parent : item.parentId, coa : item.kodeRekening,
-                    tipeRekening : item.tipeRekeningId, status : item.flag,tipeRekeningName: item.tipeRekeningName});
+                    tipeRekening : item.tipeRekeningId, status : item.flag,tipeCoa: item.tipeCoa});
             });
             function hierarhySort(hashArr, key, result) {
                 if (hashArr[key] == undefined){
@@ -462,22 +465,23 @@
                     hashArr[data2[i].parent] = [];
                 }
                 hashArr[data2[i].parent].push(data2[i]);
+                tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
+                    "<th style='text-align: center; background-color:  #30d196'>COA ( Chart of Account )</th>"+
+                    "<th style='text-align: center; background-color:  #30d196''>Nama Kode Rekening</th>"+
+                    "<th style='text-align: center; background-color:  #30d196''>Tipe Rekening </th>"+
+                    "<th style='text-align: center; background-color:  #30d196''>Level</th>"+
+                    "<th style='text-align: center; background-color:  #30d196'>Edit</th>"+
+                    "<th style='text-align: center; background-color:  #30d196'>Delete</th>"+
+                    "</tr></thead>";
             }
-            tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
-                "<th style='text-align: center; background-color:  #30d196'>COA ( Chart of Account )</th>"+
-                "<th style='text-align: center; background-color:  #30d196''>Nama Kode Rekening</th>"+
-                "<th style='text-align: center; background-color:  #30d196''>Level</th>"+
-                // "<th style='text-align: center; background-color:  #30d196''>Tipe Rekening </th>"+
-                "<th style='text-align: center; background-color:  #30d196'>Edit</th>"+
-                "<th style='text-align: center; background-color:  #30d196'>Delete</th>"+
-                "</tr></thead>";
             for(i = 0 ; i < data2.length ; i++){
+                console.log(data2[i]);
                 if(data2[i].parent == "-"){
                     tmp_table += '<tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
                         '<td >' + data2[i].coa + '</td>' +
                         '<td >' + data2[i].nama + '</td>' +
+                        '<td align="center" class="ceknull">' + data2[i].tipeCoa + '</td>' +
                         '<td align="center" class="ceknull">' + data2[i].level+ '</td>' +
-                        // '<td align="center" class="ceknull">' + data2[i].tipeRekeningName + '</td>' +
                         '<td align="center">' +
                         "<a href='javascript:;' class ='item-edit' data ='"+data2[i]._id+"' >" +
                         "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>"+
@@ -494,8 +498,8 @@
                         + '<td style="border: 2px solid black;">' +
                         '<td >' + data2[i].coa + '</td>' +
                         '<td >' + data2[i].nama + '</td>' +
+                        '<td align="center" class="ceknull">' + data2[i].tipeCoa + '</td>' +
                         '<td align="center" class="ceknull">' + data2[i].level + '</td>' +
-                        // '<td align="center" class="ceknull">' + data2[i].tipeRekeningName + '</td>' +
                         '<td align="center">' +
                         "<a href='javascript:;' class ='item-edit' data ='"+data2[i]._id+"' >" +
                         "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>"+
@@ -511,7 +515,8 @@
             }
             $('.tree').append(tmp_table);
             $(".tree .ceknull:contains('null')").html("-");
-        });
+            $('#waiting_dialog').dialog('close');
+            }});
     }
     function cekAvailableCoaEdit(nilai){
         var coa = nilai.value;

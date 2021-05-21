@@ -22,6 +22,8 @@ public class ImKodeRekeningEntity implements Serializable {
 
     private String flag;
     private String action;
+
+    private String tipeCoa;
     private Timestamp createdDate;
     private Timestamp lastUpdate;
     private String createdWho;
@@ -36,14 +38,6 @@ public class ImKodeRekeningEntity implements Serializable {
 
     public void setTipeBudgeting(String tipeBudgeting) {
         this.tipeBudgeting = tipeBudgeting;
-    }
-
-    public Long getLevel() {
-        return level;
-    }
-
-    public void setLevel(Long level) {
-        this.level = level;
     }
 
     public String getRekeningId() {
@@ -132,6 +126,22 @@ public class ImKodeRekeningEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public Long getLevel() {
+        return level;
+    }
+
+    public void setLevel(Long level) {
+        this.level = level;
+    }
+
+    public String getTipeCoa() {
+        return tipeCoa;
+    }
+
+    public void setTipeCoa(String tipeCoa) {
+        this.tipeCoa = tipeCoa;
     }
 
     public String getFlagMaster() {

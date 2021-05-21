@@ -32,8 +32,16 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
     private TipeRekeningDao tipeRekeningDao;
     private BranchDao branchDao;
 
-    public BranchDao getBranchDao() {
-        return branchDao;
+    public static void setLogger(Logger logger) {
+        KodeRekeningBoImpl.logger = logger;
+    }
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public void setKodeRekeningDao(KodeRekeningDao kodeRekeningDao) {
+        this.kodeRekeningDao = kodeRekeningDao;
     }
 
     public void setBranchDao(BranchDao branchDao) {
@@ -57,7 +65,7 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
     public void saveEdit(KodeRekening bean) throws GeneralBOException {
         logger.info("[KodeRekeningBoImpl.saveEdit] start process >>>");
         if (bean!=null) {
-            ImKodeRekeningEntity kodeRekeningEntity= null;
+            ImKodeRekeningEntity kodeRekeningEntity;
             try {
                 // Get data from database by ID
                 kodeRekeningEntity = kodeRekeningDao.getById("rekeningId", bean.getRekeningId());
@@ -68,13 +76,16 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
 
             if (kodeRekeningEntity != null) {
                 if (("Y").equalsIgnoreCase(bean.getFlag())){
-                 kodeRekeningEntity.setTipeRekeningId(bean.getTipeRekeningId());
+//                 kodeRekeningEntity.setTipeRekeningId(bean.getTipeRekeningId());
                  kodeRekeningEntity.setKodeRekening(bean.getKodeRekening());
                  kodeRekeningEntity.setNamaKodeRekening(bean.getNamaKodeRekening());
+                    kodeRekeningEntity.setTipeCoa(bean.getTipeCoa()); //efek rombak perlu cek
+
+                    /*kodeRekeningEntity.setTipeRekeningId(bean.getTipeRekeningId());
                  kodeRekeningEntity.setTipeRekeningId(bean.getTipeRekeningId());
                  kodeRekeningEntity.setFlagDivisi(bean.getFlagDivisi());
                  kodeRekeningEntity.setFlagMaster(bean.getFlagMaster());
-                 kodeRekeningEntity.setTipeBudgeting(bean.getTipeBudgeting());
+                    kodeRekeningEntity.setTipeBudgeting(bean.getTipeBudgeting());*/
 
                     String[] coa = bean.getKodeRekening().split("\\.");
                     if (coa.length==1){
@@ -89,9 +100,11 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
                             }
                         }
                         List<ImKodeRekeningEntity> kodeRekeningEntityList = kodeRekeningDao.getIdByCoa(coaParent);
+                        if(kodeRekeningEntityList.size() > 0) {
                         for (ImKodeRekeningEntity kodeRekeningEntity1 : kodeRekeningEntityList){
                             kodeRekeningEntity.setParentId(kodeRekeningEntity1.getRekeningId());
                         }
+                    }
                     }
                     kodeRekeningEntity.setLevel((long) coa.length);
                 }else{
@@ -154,8 +167,8 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
             if (searchBean.getKodeRekening() != null && !"".equalsIgnoreCase(searchBean.getKodeRekening())) {
                 hsCriteria.put("kode_rekening", searchBean.getKodeRekening());
             }
-            if (searchBean.getTipeRekeningId() != null && !"".equalsIgnoreCase(searchBean.getTipeRekeningId())) {
-                hsCriteria.put("tipe_rekening_id", searchBean.getTipeRekeningId());
+            if (searchBean.getTipeCoa() != null && !"".equalsIgnoreCase(searchBean.getTipeCoa())) {
+                hsCriteria.put("tipe_coa", searchBean.getTipeCoa());
             }
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBean.getFlag())) {
@@ -185,13 +198,18 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
                     returnKodeRekening.setKodeRekening(kodeRekeningEntity.getKodeRekening());
                     returnKodeRekening.setNamaKodeRekening(kodeRekeningEntity.getNamaKodeRekening());
                     returnKodeRekening.setParentId(kodeRekeningEntity.getParentId());
-                    returnKodeRekening.setTipeRekeningId(kodeRekeningEntity.getTipeRekeningId());
+//                    returnKodeRekening.setTipeRekeningId(kodeRekeningEntity.getTipeRekeningId());
                     returnKodeRekening.setLevel(kodeRekeningEntity.getLevel());
-                    returnKodeRekening.setTipeRekeningId(kodeRekeningEntity.getTipeRekeningId());
-                    returnKodeRekening.setFlagMaster(kodeRekeningEntity.getFlagMaster());
-                    returnKodeRekening.setFlagDivisi(kodeRekeningEntity.getFlagDivisi());
+                    String tipeCoa = kodeRekeningEntity.getTipeCoa() != null ? kodeRekeningEntity.getTipeCoa() : "";
 
-                    if (kodeRekeningEntity.getTipeRekeningId()!=null){
+                    ImTipeRekeningEntity imTipeRekeningEntity  = tipeRekeningDao.getById("tipeRekeningId",tipeCoa);
+                    returnKodeRekening.setTipeCoa(imTipeRekeningEntity == null ? "" : imTipeRekeningEntity.getTipeRekeningName());
+                    returnKodeRekening.setTipeRekeningId(imTipeRekeningEntity == null ? "" : imTipeRekeningEntity.getTipeRekeningId());
+                    /*returnKodeRekening.setTipeRekeningId(kodeRekeningEntity.getTipeRekeningId());
+                    returnKodeRekening.setFlagMaster(kodeRekeningEntity.getFlagMaster());
+                    returnKodeRekening.setFlagDivisi(kodeRekeningEntity.getFlagDivisi());*/ //efek rombak perlu cek
+
+                    /*if (kodeRekeningEntity.getTipeRekeningId()!=null){
                         ImTipeRekeningEntity tipeRekeningEntity;
                         try {
                             tipeRekeningEntity = tipeRekeningDao.getById("tipeRekeningId",kodeRekeningEntity.getTipeRekeningId());
@@ -200,15 +218,15 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
                             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
                         }
                         if (tipeRekeningEntity!=null){
-                            returnKodeRekening.setTipeRekeningName(tipeRekeningEntity.getTipeRekeningName());
+                            returnKodeRekening.setTipeRekeningName(tipeRekeningEntity.getTipeRekeningName()); //efek rombak perlu cek
                         }
-                    }
+                    }*/
                     returnKodeRekening.setCreatedWho(kodeRekeningEntity.getCreatedWho());
                     returnKodeRekening.setCreatedDate(kodeRekeningEntity.getCreatedDate());
                     returnKodeRekening.setLastUpdate(kodeRekeningEntity.getLastUpdate());
                     returnKodeRekening.setAction(kodeRekeningEntity.getAction());
                     returnKodeRekening.setFlag(kodeRekeningEntity.getFlag());
-                    returnKodeRekening.setTipeBudgeting(kodeRekeningEntity.getTipeBudgeting());
+//                    returnKodeRekening.setTipeBudgeting(kodeRekeningEntity.getTipeBudgeting()); //efek rombak perlu cek
                     listOfResult.add(returnKodeRekening);
                 }
             }
@@ -236,7 +254,7 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
             imKodeRekeningEntity.setRekeningId(kodeRekeningId);
             imKodeRekeningEntity.setKodeRekening(bean.getKodeRekening());
             imKodeRekeningEntity.setNamaKodeRekening(bean.getNamaKodeRekening());
-            imKodeRekeningEntity.setTipeRekeningId(bean.getTipeRekeningId());
+            imKodeRekeningEntity.setTipeCoa(bean.getTipeCoa()); //efek rombak perlu cek
 
             String[] coa = bean.getKodeRekening().split("\\.");
             if (coa.length==1){
@@ -262,7 +280,7 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
             imKodeRekeningEntity.setLastUpdateWho(bean.getLastUpdateWho());
             imKodeRekeningEntity.setCreatedDate(bean.getCreatedDate());
             imKodeRekeningEntity.setLastUpdate(bean.getLastUpdate());
-            imKodeRekeningEntity.setTipeBudgeting(bean.getTipeBudgeting());
+//            imKodeRekeningEntity.setTipeBudgeting(bean.getTipeBudgeting()); ////efek rombak perlu cek
 
             try {
                 // insert into database
@@ -300,15 +318,17 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
                 returnKodeRekening.setKodeRekening(kodeRekeningEntity.getKodeRekening());
                 returnKodeRekening.setNamaKodeRekening(kodeRekeningEntity.getNamaKodeRekening());
                 returnKodeRekening.setParentId(kodeRekeningEntity.getParentId());
-                returnKodeRekening.setTipeRekeningId(kodeRekeningEntity.getTipeRekeningId());
+//                returnKodeRekening.setTipeRekeningId(kodeRekeningEntity.getTipeRekeningId());
 
                 returnKodeRekening.setCreatedWho(kodeRekeningEntity.getCreatedWho());
                 returnKodeRekening.setCreatedDate(kodeRekeningEntity.getCreatedDate());
                 returnKodeRekening.setLastUpdate(kodeRekeningEntity.getLastUpdate());
                 returnKodeRekening.setAction(kodeRekeningEntity.getAction());
                 returnKodeRekening.setFlag(kodeRekeningEntity.getFlag());
+                returnKodeRekening.setTipeCoa(kodeRekeningEntity.getTipeCoa() == null ? "" : kodeRekeningEntity.getTipeCoa());
+                /*returnKodeRekening.setTipeRekeningId(kodeRekeningEntity.getTipeRekeningId());
                 returnKodeRekening.setFlagDivisi(kodeRekeningEntity.getFlagDivisi());
-                returnKodeRekening.setFlagMaster(kodeRekeningEntity.getFlagMaster());
+                returnKodeRekening.setFlagMaster(kodeRekeningEntity.getFlagMaster());*/ //efek rombak perlu cek
                 listOfResult.add(returnKodeRekening);
             }
         }
@@ -340,7 +360,8 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
                 returnKodeRekening.setKodeRekening(kodeRekeningEntity.getKodeRekening());
                 returnKodeRekening.setNamaKodeRekening(kodeRekeningEntity.getNamaKodeRekening());
                 returnKodeRekening.setParentId(kodeRekeningEntity.getParentId());
-                returnKodeRekening.setTipeRekeningId(kodeRekeningEntity.getTipeRekeningId());
+//                returnKodeRekening.setTipeRekeningId(kodeRekeningEntity.getTipeRekeningId()); ////efek rombak perlu cek
+                returnKodeRekening.setTipeCoa(kodeRekeningEntity.getTipeCoa()); //efek rombak perlu cek
                 returnKodeRekening.setLevel(kodeRekeningEntity.getLevel());
 
                 returnKodeRekening.setCreatedWho(kodeRekeningEntity.getCreatedWho());
@@ -358,7 +379,17 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
 
     @Override
     public ImKodeRekeningEntity getKodeRekeningById(String id) throws GeneralBOException {
-        return kodeRekeningDao.getById("rekeningId", id);
+        ImKodeRekeningEntity imKodeRekeningEntity;
+        logger.info("[KodeRekeningBoImpl.getKodeRekeningById] start process >>>");
+        try {
+            imKodeRekeningEntity = kodeRekeningDao.getById("rekeningId", id);
+        }
+        catch (Exception e){
+            logger.error("[KodeRekeningBoImpl.getKodeRekeningById] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by Id, please info to your admin..." + e.getMessage());
+        }
+        logger.info("[KodeRekeningBoImpl.getKodeRekeningById] end process <<<");
+        return imKodeRekeningEntity;
     }
 
     @Override
@@ -378,12 +409,32 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
 
     @Override
     public List<ImKodeRekeningEntity> getListKodeRekeningByLevel(String coa, Long level) throws GeneralBOException {
-        return kodeRekeningDao.getKodeRekeningListByLevel(coa, level);
+        List<ImKodeRekeningEntity> imKodeRekeningEntityList;
+        logger.info("[KodeRekeningBoImpl.getListKodeRekeningByLevel] start process >>>");
+        try {
+            imKodeRekeningEntityList = kodeRekeningDao.getKodeRekeningListByLevel(coa, level);
+        }
+        catch (Exception e){
+            logger.error("[KodeRekeningBoImpl.getListKodeRekeningByLevel] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by Id, please info to your admin..." + e.getMessage());
+        }
+        logger.info("[KodeRekeningBoImpl.getListKodeRekeningByLevel] end process <<<");
+        return imKodeRekeningEntityList;
     }
 
     @Override
     public List<ImKodeRekeningEntity> getListKodeRekeningByLevelAndTipeBudgeting(String coa, Long level, String tipeBudgeting) throws GeneralBOException {
-        return kodeRekeningDao.getKodeRekeningListByLevelAndTipeBudgeting(coa, level, tipeBudgeting);
+        List<ImKodeRekeningEntity> imKodeRekeningEntityList;
+        logger.info("[KodeRekeningBoImpl.getKodeRekeningListByLevelAndTipeBudgeting] start process >>>");
+        try {
+            imKodeRekeningEntityList = kodeRekeningDao.getKodeRekeningListByLevelAndTipeBudgeting(coa, level, tipeBudgeting);
+        }
+        catch (Exception e){
+            logger.error("[KodeRekeningBoImpl.getKodeRekeningListByLevelAndTipeBudgeting] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by Id, please info to your admin..." + e.getMessage());
+        }
+        logger.info("[KodeRekeningBoImpl.getKodeRekeningListByLevelAndTipeBudgeting] end process <<<");
+        return imKodeRekeningEntityList;
     }
 
     @Override
@@ -398,7 +449,32 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
 
     @Override
     public String getRekeningIdByKodeRekening ( String kodeRekening ){
-        return kodeRekeningDao.getRekeningIdByCoa(kodeRekening);
+        String rekeningId;
+        logger.info("[KodeRekeningBoImpl.getRekeningIdByKodeRekening] start process >>>");
+        try {
+            rekeningId = kodeRekeningDao.getRekeningIdByCoa(kodeRekening);
+        }
+        catch (Exception e){
+            logger.error("[KodeRekeningBoImpl.getRekeningIdByKodeRekening] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by koderekening , please info to your admin..." + e.getMessage());
+        }
+        logger.info("[KodeRekeningBoImpl.getRekeningIdByKodeRekening] end process <<<");
+        return rekeningId;
+    }
+
+    @Override
+    public List<String> getParentByTipeCoa(String tipeCoa) throws GeneralBOException {
+        List<String> parentList;
+        logger.info("[KodeRekeningBoImpl.getRekeningIdByKodeRekening] start process >>>");
+        try {
+            parentList = kodeRekeningDao.getParentByCoa(tipeCoa);
+        }
+        catch (Exception e){
+            logger.error("[KodeRekeningBoImpl.getRekeningIdByKodeRekening] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by koderekening , please info to your admin..." + e.getMessage());
+        }
+        logger.info("[KodeRekeningBoImpl.getRekeningIdByKodeRekening] end process <<<");
+        return parentList;
     }
 
     @Override
@@ -406,7 +482,7 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
         logger.info("[KodeRekeningBoImpl.getKodeRekeningLawanByTransId] start process >>>");
 
         // Mapping with collection and put
-        List<KodeRekening> listOfResult = new ArrayList();
+        List<KodeRekening> listOfResult;
         try {
             listOfResult = kodeRekeningDao.getKodeRekeningLawanByTransId(transId,posisiLawan);
         } catch (HibernateException e) {
@@ -421,9 +497,17 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
 
     @Override
     public List<String> getListRekeningIdsByTipeBudgeting(String tipeBudgeting) throws GeneralBOException {
+        List<String> rekeningId;
         logger.info("[KodeRekeningBoImpl.getListKodeRekeningIdsByTipeBudgeting] start process >>>");
+        try {
+            rekeningId = kodeRekeningDao.getListRekeningIdsByTipeBudgeting(tipeBudgeting);
+        }
+        catch (Exception e){
+            logger.error("[KodeRekeningBoImpl.getListKodeRekeningIdsByTipeBudgeting] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by tipeBudgeting, please info to your admin..." + e.getMessage());
+        }
         logger.info("[KodeRekeningBoImpl.getListKodeRekeningIdsByTipeBudgeting] end process <<<");
-        return kodeRekeningDao.getListRekeningIdsByTipeBudgeting(tipeBudgeting);
+        return rekeningId;
     }
 
     @Override
@@ -431,7 +515,7 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
         logger.info("[KodeRekeningBoImpl.getKodeRekeningLawanByTransIdRk] start process >>>");
 
         // Mapping with collection and put
-        List<KodeRekening> listOfResult = new ArrayList();
+        List<KodeRekening> listOfResult;
         List<KodeRekening> listOfResultFinal = new ArrayList();
         try {
             listOfResult = kodeRekeningDao.getKodeRekeningLawanByTransId(transId,posisiLawan);
@@ -444,32 +528,17 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
         imBranchesPK.setId(branchId);
         ImBranches branches = branchDao.getById("primaryKey",imBranchesPK);
 
+        if (branches != null) {
         for(KodeRekening kodeRekening : listOfResult){
             if (branches.getCoaRk().equalsIgnoreCase(kodeRekening.getKodeRekening())){
                 listOfResultFinal.add(kodeRekening);
                 break;
             }
         }
-
+        }
         logger.info("[KodeRekeningBoImpl.getKodeRekeningLawanByTransIdRk] end process <<<");
 
         return listOfResultFinal;
-    }
-
-    public static Logger getLogger() {
-        return logger;
-    }
-
-    public static void setLogger(Logger logger) {
-        KodeRekeningBoImpl.logger = logger;
-    }
-
-    public KodeRekeningDao getKodeRekeningDao() {
-        return kodeRekeningDao;
-    }
-
-    public void setKodeRekeningDao(KodeRekeningDao kodeRekeningDao) {
-        this.kodeRekeningDao = kodeRekeningDao;
     }
 
 

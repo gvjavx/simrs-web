@@ -53,6 +53,9 @@
         <property name="tipeBudgeting">
             <column name="tipe_budgeting" sql-type="varchar"/>
         </property>
+        <property name="tipeCoa">
+            <column name="tipe_coa" sql-type="varchar"/>
+        </property>
 
     </class>
 </hibernate-mapping>
