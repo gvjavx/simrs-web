@@ -20,6 +20,7 @@
                         <p id="msg_catatan_integrasi"></p>
                     </div>
                     <button class="btn btn-success btn-hide" onclick="showModalAsesmenRawatInap('catatan_integrasi_pasien_ina')"><i class="fa fa-plus"></i> Catatan Integrasi Pasien</button>
+                    <button class="btn btn-success btn-hide" onclick="showModalAsesmenRawatInap('ttd_hand_over')"><i class="fa fa-plus"></i> Hand Over</button>
                 </div>
                 <div class="box-body">
                     <table class="table" id="tabel_hd_monitoring_hd">
@@ -246,6 +247,156 @@
                     Save
                 </button>
                 <button id="load_ttd_dpjp" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-ina-ttd_hand_over">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Hand Over
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_ina_ttd_hand_over">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_ina_ttd_hand_over"></p>
+                </div>
+                <div class="modal-body">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-3" style="margin-top: 7px">Tanggal</label>
+                                <div class="col-md-4">
+                                    <div class="input-group" style="margin-top: 7px">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input class="form-control tgl" id="tgl_ttd_hand_over">
+                                    </div>
+                                </div>
+                                <label class="col-md-1" style="margin-top: 7px">Jam</label>
+                                <div class="col-md-3">
+                                    <div class="input-group" style="margin-top: 7px">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
+                                        <input class="form-control jam" id="jam_ttd_hand_over">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group" style="display: none">
+                            <div class="col-md-1">
+                                <input type="color" style="margin-left: -6px; margin-top: -8px"
+                                       class="js-color-picker  color-picker pull-left">
+                            </div>
+                            <div class="col-md-9">
+                                <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72"
+                                       value="1">
+                            </div>
+                            <div class="col-md-2">
+                                <div style="margin-top: -8px;" class="js-range-value">1 px</div>
+                            </div>
+                        </div>
+                        <div class="row text-center">
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <label>TTD Pemberi</label>
+                                    <canvas class="paint-canvas-ttd del-canvas" id="ttd_hand_over_pemberi" width="250"
+                                            onmouseover="paintTtd('ttd_hand_over_pemberi')"></canvas>
+                                    <input class="form-control nama_petugas" id="nama_hand_over_pemberi" placeholder="Nama Terang">
+                                    <input style="margin-top: 3px" class="form-control nip_petugas" id="sip_hand_over_pemberi" placeholder="SIP">
+                                    <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                            onclick="removePaint('ttd_hand_over_pemberi')"><i
+                                            class="fa fa-trash"></i> Clear
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>TTD Penerima</label>
+                                    <canvas class="paint-canvas-ttd del-canvas" id="ttd_hand_over_penerima" width="250"
+                                            onmouseover="paintTtd('ttd_hand_over_penerima')"></canvas>
+                                    <input class="form-control" id="nama_ttd_hand_over_penerima" placeholder="Nama Terang">
+                                    <input style="margin-top: 3px" class="form-control " id="sip_ttd_hand_over_penerima" placeholder="SIP">
+                                    <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                            onclick="removePaint('ttd_hand_over_penerima')"><i
+                                            class="fa fa-trash"></i> Clear
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_ttd_hand_over" class="btn btn-success pull-right" onclick="saveHandOver('ttd_hand_over','catatan_terintegrasi_ina', 'ina')"><i class="fa fa-check"></i>
+                    Save
+                </button>
+                <button id="load_ttd_hand_over" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-ina-ttd_penerima">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> TTD Penerima
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_ina_ttd_penerima">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_ina_ttd_penerima"></p>
+                </div>
+                <div class="modal-body">
+                    <div class="box-body">
+                        <div class="form-group" style="display: none">
+                            <div class="col-md-1">
+                                <input type="color" style="margin-left: -6px; margin-top: -8px"
+                                       class="js-color-picker  color-picker pull-left">
+                            </div>
+                            <div class="col-md-9">
+                                <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72"
+                                       value="1">
+                            </div>
+                            <div class="col-md-2">
+                                <div style="margin-top: -8px;" class="js-range-value">1 px</div>
+                            </div>
+                        </div>
+                        <div class="row text-center">
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-8">
+                                    <label>TTD Penerima</label>
+                                    <canvas class="paint-canvas-ttd del-canvas" id="ttd_penerima" width="300" onmouseover="paintTtd('ttd_penerima')"></canvas>
+                                    <input class="form-control nama_petugas" id="nama_ttd_penerima" placeholder="Nama Terang">
+                                    <input style="margin-top: 3px" class="form-control nip_petugas" id="sip_ttd_penerima" placeholder="SIP">
+                                    <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="removePaint('ttd_penerima')"><i class="fa fa-trash"></i> Clear</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                <button id="save_ttd_penerima" class="btn btn-success pull-right"><i class="fa fa-check"></i>Save</button>
+                <button id="load_ttd_penerima" style="display: none; cursor: no-drop" type="button"
                         class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>

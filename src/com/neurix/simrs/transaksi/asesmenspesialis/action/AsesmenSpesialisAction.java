@@ -125,7 +125,7 @@ public class AsesmenSpesialisAction {
                 response.setMsg("Found Error " + e.getMessage());
                 return response;
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             response.setStatus("error");
             response.setMsg("Error Parse JSON, " + e.getMessage());
         }
