@@ -205,6 +205,14 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Permintaan Obat Gudang</h3>
                     </div>
                     <div class="box-body">
+
+                        <div class="alert alert-info" role="alert"> <i class="fa fa-exclamation-circle"></i>
+                            anda dapat  <span style="font-weight: bold"> menverifikasi satu persatu kemudian konfirmasi</span>
+                            (<img src="<s:url value="/pages/images/icons8-create-25.png"/>">)
+                            atau <span style="font-weight: bold">langsung konfirmasi</span>
+                            (<img src="<s:url value="/pages/images/icons8-test-passed-23.png"/>">)
+                        </div>
+
                         <table id="myTable" class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
@@ -232,6 +240,11 @@
                                     </s:else></td>
                                     <td align="center">
                                         <s:if test='#row.approvalFlag == "Y" && #row.diterimaFlag == null'>
+                                            <img onclick="confirmApprove('<s:property value="idApprovalObat"/>',
+                                                    '<s:property value="idPermintaanObatPoli"/>',
+                                                    '<s:property value="stCreatedDate"/>',
+                                                    '<s:property value="tujuanPelayanan"/>')"
+                                                 class="hvr-grow" src="<s:url value="/pages/images/icons8-test-passed-23.png"/>" style="cursor: pointer;">
                                             <img onclick="confirm('<s:property value="idApprovalObat"/>',
                                                     '<s:property value="idPermintaanObatPoli"/>',
                                                     '<s:property value="stCreatedDate"/>',
@@ -501,6 +514,8 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_request_detail"></p>
                 </div>
+                <div class="alert alert-info" role="alert"> <i class="fa fa-exclamation-circle"></i> Konfirmasi Per ID Barang.
+                </div>
                 <div class="row">
                     <div class="form-group">
                         <label class="col-md-2" style="margin-top: 10px">ID Permintaan</label>
@@ -533,7 +548,7 @@
                         <td >Jenis Satuan</td>
 
                         </thead>
-                        <tbody id="body_request_detail">
+                        <tbody id="body_request_detail" style="font-size: 13px;">
                         </tbody>
                     </table>
                     <p id="loading_data" style="color: #00a65a; display: none"><img
@@ -549,6 +564,74 @@
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
                         id="load_req_detail"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-request-detail-approve">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span
+                        id="judul_req_approve"></span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_request_detail_approve">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_request_detail_approve"></p>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-2" style="margin-top: 10px">ID Permintaan</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" readonly="true" id="req_id_permintaan_approve"
+                                   style="margin-top: 7px">
+                        </div>
+                        <div class="col-md-6"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2" style="margin-top: 10px">Tanggal Request</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" readonly="true" id="req_tanggal_approve"
+                                   style="margin-top: 7px">
+                        </div>
+                    </div>
+                    <input type="hidden" id="req_id_approve_approve">
+                </div>
+                <div class="box-header with-border"></div>
+                <div class="box-header with-border"><i class="fa fa-file-o"></i> Detail Request Obat
+                </div>
+                <div class="box">
+                    <table class="table table-striped table-bordered" id="tabel_request_detail_approve">
+                        <thead>
+                        <td>ID Barang</td>
+                        <td>Nama Obat</td>
+                        <td align="center">Expired Date</td>
+                        <td align="center">Qty Approve</td>
+                        <td >Jenis Satuan</td>
+                        </thead>
+                        <tbody id="body_request_detail_approve" style="font-size: 13px;">
+                        </tbody>
+                    </table>
+                    <p id="loading_data_approve" style="color: #00a65a; display: none"><img
+                            src="<s:url value="/pages/images/spinner.gif"/>" style="height: 40px; width: 40px;"> Sedang
+                        mengambil data...</p>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_req_detail_approve" onclick="saveConfirmAllDiterima()"><i
+                        class="fa fa-check"></i> Konfirmasi
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
+                        id="load_req_detail_approve"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -1032,7 +1115,7 @@
     function confirm(idApp, idPermin, tanggal, tujuan) {
         $('#save_req_detail').show();
         $('#load_req_detail').hide();
-        $('#judul_req').html('Konfirmasi Request Diterima');
+        $('#judul_req').html('Verifikasi Dan Konfirmasi Request Diterima');
         $('#req_id_permintaan').val(idPermin);
         $('#req_tanggal').val(tanggal);
         $('#req_id_approve').val(idApp);
@@ -1073,6 +1156,42 @@
         $('#body_request_detail').html(table);
     }
 
+    function confirmApprove(idApp, idPermin, tanggal, tujuan) {
+        $('#save_req_detail_approve').show();
+        $('#load_req_detail_approve').hide();
+        $('#judul_req_approve').html('Konfirmasi Semua Request Diterima');
+        $('#req_id_permintaan_approve').val(idPermin);
+        $('#req_tanggal_approve').val(tanggal);
+        $('#req_id_approve_approve').val(idApp);
+        $('#modal-request-detail-approve').modal({show:true, backdrop:'static'});
+        var table = "";
+        PermintaanObatPoliAction.listDetailObatRequest(idPermin, {
+            callback: function (response) {
+                if (response.length > 0) {
+                    $.each(response, function (i, item) {
+                        var expired = $.datepicker.formatDate('dd-mm-yy', new Date(item.expiredDate));
+
+                        var idBar = item.idBarang;
+                        var str = idBar.substring(8, 15);
+                        var idBarang = idBar.replace(str, '*******');
+
+                        table += "<tr>" +
+                            "<td>" + idBarang +
+                            '<input type="hidden" id=id_barang' + i + ' value=' + item.idBarang + '>'+
+                            '<input type="hidden" id=id_obat' + i + ' value=' + item.idObat + '>'+
+                            '<input type="hidden" id=id_transaksi' + i + ' value=' + item.idTransaksiObatDetail + '>' + "</td>" +
+                            "<td>" + item.namaObat + "</td>" +
+                            "<td align='center'>" + expired + "</td>" +
+                            "<td align='center'>" + item.qtyApprove + "</td>" +
+                            "<td>" + item.jenisSatuan + "</td>" +
+                            "</tr>";
+                    });
+                }
+            }
+        });
+        $('#body_request_detail_approve').html(table);
+    }
+
     function saveConfirmDiterima() {
         var data = $('#tabel_request_detail').tableToJSON();
         var idApp = $('#req_id_approve').val();
@@ -1108,6 +1227,63 @@
         }
     }
 
+    function saveConfirmAllDiterima() {
+        var data = $('#tabel_request_detail_approve').tableToJSON();
+        var idApp = $('#req_id_approve_approve').val();
+        var idPermin = $('#req_id_permintaan_approve').val();
+        var result = [];
+        var cek = false;
+
+        $.each(data, function (i, item) {
+            var idBarang = $('#id_barang'+i).val();
+            var idObat = $('#id_obat'+i).val();
+            var idTransaksi = $('#id_transaksi'+i).val();
+            var jenisSatuan = data[i]["Jenis Satuan"];
+            var qtyApp = data[i]["Qty Approve"];
+            //var scanId = $('#cek_id_barang'+i).val();
+            result.push({'ID Barang':idBarang, 'ID Obat':idObat, 'ID Transkasi':idTransaksi, 'Jenis Satuan':jenisSatuan, 'Qty Approve':qtyApp});
+        });
+
+        var stringData = JSON.stringify(result);
+        if(cek){
+            $('#warning_request_detail').show().fadeOut(5000);
+            $('#msg_request_detail').text("Silahkan lakukan konfirmasi untuk masing masing id barang..!");
+        }else{
+            if (stringData != '[]') {
+                $('#save_con').attr('onclick','saveApproveAllDiterima(\''+idApp+'\',\''+idPermin+'\',\''+stringData+'\')');
+                $('#modal-confirm-dialog').modal('show');
+            } else {
+                $('#warning_request_detail').show().fadeOut(5000);
+                $('#msg_request_detail').text("Silahkan cek kembali data inputan berikut..!");
+            }
+        }
+    }
+
+    function saveApproveAllDiterima(idApp, idPermin, stringData){
+
+        $('#modal-confirm-dialog').modal('hide');
+        $('#save_req_detail_approve').hide();
+        $('#load_req_detail_approve').show();
+
+        dwr.engine.setAsync(true);
+        ObatPoliAction.saveKonfirmasiDiterima(idApp, idPermin, stringData, "all", {
+            callback: function (response) {
+                if (response["status"] == "success") {
+                    $('#modal-request-detail-approve').modal('hide');
+                    $('#info_dialog').dialog('open');
+                    $('#save_req_detail_approve').show();
+                    $('#load_req_detail_approve').hide();
+                    $('body').scrollTop(0);
+                } else {
+                    $('#save_req_detail_approve').show();
+                    $('#load_req_detail_approve').hide();
+                    $('#warning_request_detail_approve').show().fadeOut(5000);
+                    $('#msg_request_detail_approve').text(response["message"]);
+                }
+            }
+        });
+    }
+
     function saveApproveDiterima(idApp, idPermin, stringData){
 
         $('#modal-confirm-dialog').modal('hide');
@@ -1115,7 +1291,7 @@
         $('#load_req_detail').show();
 
         dwr.engine.setAsync(true);
-        ObatPoliAction.saveKonfirmasiDiterima(idApp, idPermin, stringData, {
+        ObatPoliAction.saveKonfirmasiDiterima(idApp, idPermin, stringData, "peritem", {
             callback: function (response) {
                 if (response["status"] == "success") {
                     $('#modal-request-detail').modal('hide');

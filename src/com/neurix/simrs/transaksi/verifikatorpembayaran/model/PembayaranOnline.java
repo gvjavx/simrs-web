@@ -45,6 +45,24 @@ public class PembayaranOnline {
     private Timestamp tanggalUpload;
     private String tipeRekening;
     private String clientId;
+    private String noJurnal;
+    private String tipePembayaran;
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
+
+    public String getTipePembayaran() {
+        return tipePembayaran;
+    }
+
+    public void setTipePembayaran(String tipePembayaran) {
+        this.tipePembayaran = tipePembayaran;
+    }
 
     public String getTipeRekening() {
         return tipeRekening;

@@ -5,6 +5,7 @@ import com.neurix.hris.master.shift.model.Shift;
 import com.neurix.simrs.master.telemedic.model.RekeningTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
+import com.neurix.simrs.transaksi.verifikatorpembayaran.model.PembayaranOnline;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -361,6 +362,21 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
                     telemedic.setStatus(entity.getStatus());
                     telemedic.setFlagBayarKonsultasi(entity.getFlagBayarKonsultasi());
                     telemedic.setFlagBayarResep(entity.getFlagBayarResep());
+
+
+                    PembayaranOnline pembayaranKonsul = getListPembayaranOnlineById(telemedic.getId(), "konsultasi");
+                    if (pembayaranKonsul != null){
+                        if (pembayaranKonsul.getNoJurnal() != null){
+                            telemedic.setFlagBayarKonsultasi("Y");
+                        }
+                    }
+                    if ("Y".equalsIgnoreCase(telemedic.getFlagResep())){
+                        PembayaranOnline pembayaranResep = getListPembayaranOnlineById(telemedic.getId(), "resep");
+                        if (pembayaranResep != null && pembayaranResep.getNoJurnal() != null){
+                            telemedic.setFlagBayarResep("Y");
+                        }
+                    }
+
                     telemedic.setCreatedDate(entity.getCreatedDate());
                     telemedic.setCreatedWho(entity.getCreatedWho());
                     telemedic.setLastUpdateWho(entity.getLastUpdateWho());
@@ -392,6 +408,24 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
             }
         }
         return antrianTelemedicList;
+    }
+
+    private PembayaranOnline getListPembayaranOnlineById(String idTrans, String keterangan){
+
+        String SQL = "SELECT no_jurnal, tipe_pembayaran, id FROM it_simrs_pembayaran_online WHERE id_antrian_telemedic = '"+idTrans+"' \n" +
+                "AND keterangan = '"+keterangan+"' \n" +
+                "AND tipe_pembayaran = 'virtual_account'";
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+        if (list.size() > 0){
+            Object[] obj = list.get(0);
+            PembayaranOnline pembayaranOnline = new PembayaranOnline();
+            pembayaranOnline.setNoJurnal(stringNulEscape(obj[0]));
+            pembayaranOnline.setTipePembayaran(stringNulEscape(obj[1]));
+            pembayaranOnline.setId(obj[2].toString());
+            return pembayaranOnline;
+        }
+
+        return null;
     }
 
     public List<Shift> getJadwalShiftKasirTelemedicineByDate(String branchId, String stDate, String shiftId){

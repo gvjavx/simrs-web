@@ -740,6 +740,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
     public CrudResponse saveUangMuka(String id, String idPasien, String biaya, String jumlahDibayar, String metodeBayar, String kodeBank, String noRekening) {
         CrudResponse response = new CrudResponse();
 
+        kodeBank = "tunai".equalsIgnoreCase(metodeBayar) ? CommonConstant.KAS_TUNAI : kodeBank;
+
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
         KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
@@ -793,6 +795,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         hsCriteria.put("uang_muka", listMapUangMuka);
         hsCriteria.put("kas", listMapKas);
+        hsCriteria.put("user_id", CommonUtil.userIdLogin());
+        hsCriteria.put("user_who", CommonUtil.userLogin());
 
         try {
 
@@ -1253,7 +1257,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     String noNota = "";
                     String withObat = obj.getString("with_obat");
                     String metodeBayar = obj.getString("metode_bayar");
-                    String kodeBank = obj.getString("kode_bank");
+                    String kodeBank =  "tunai".equalsIgnoreCase(metodeBayar) ? CommonConstant.KAS_TUNAI : obj.getString("kode_bank");
                     String type = obj.getString("type");
                     String jenis = obj.getString("jenis");
                     String noRekening = obj.getString("no_rekening");
@@ -1708,6 +1712,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                     // kas
                     mapJurnal.put("kas", listMapKas);
+                    mapJurnal.put("user_id", CommonUtil.userIdLogin());
+                    mapJurnal.put("user_who", CommonUtil.userLogin());
 
                     if (!"".equalsIgnoreCase(transId)) {
                         try {
