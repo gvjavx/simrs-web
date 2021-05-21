@@ -108,15 +108,16 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                 transaksiObatDetail.setIdRacik(obatDetailEntity.getIdRacik());
                 transaksiObatDetail.setNamaRacik(obatDetailEntity.getNamaRacik());
                 transaksiObatDetail.setHariKronis(obatDetailEntity.getHariKronis());
+                transaksiObatDetail.setKeterangan(obatDetailEntity.getKeterangan());
 
-                if("Y".equalsIgnoreCase(obatDetailEntity.getFlagRacik())){
-                    if(!obatDetailEntity.getIdRacik().equalsIgnoreCase(idRacik)){
-                        idRacik = obatDetailEntity.getIdRacik();
-                        transaksiObatDetail.setKeterangan(obatDetailEntity.getKeterangan());
-                    }
-                }else{
-                    transaksiObatDetail.setKeterangan(obatDetailEntity.getKeterangan());
-                }
+//                if("Y".equalsIgnoreCase(obatDetailEntity.getFlagRacik())){
+//                    if(!obatDetailEntity.getIdRacik().equalsIgnoreCase(idRacik)){
+//                        idRacik = obatDetailEntity.getIdRacik();
+//                        transaksiObatDetail.setKeterangan(obatDetailEntity.getKeterangan());
+//                    }
+//                }else{
+//                    transaksiObatDetail.setKeterangan(obatDetailEntity.getKeterangan());
+//                }
 
                 ImSimrsObatEntity obatEntity = getObatById(obatDetailEntity.getIdObat());
                 if (obatEntity != null) {

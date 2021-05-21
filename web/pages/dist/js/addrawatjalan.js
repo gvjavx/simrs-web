@@ -2789,7 +2789,7 @@ function addObatToList() {
                 } else {
                     row += '<td>' +
                         '<div id="body_ket_'+ count +'">' +
-                        '<textarea id="keterangan_detail_racik_'+ count +'" rows="3" class="form-control">asdads</textarea> '+
+                        '<textarea id="keterangan_detail_racik_'+ count +'" rows="3" class="form-control"></textarea> '+
                         '</div>' +
                         '</td>';
                 }
