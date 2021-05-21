@@ -169,9 +169,17 @@
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Pemeriksaan Penunjang/Diagnotik Terpeing</label>
+                            <label class="col-md-3" style="margin-top: 7px">Pemeriksaan Lab</label>
                             <div class="col-md-8">
-                                <textarea style="margin-top: 7px" class="form-control penunjang-medis" rows="3" id="rps10"></textarea>
+                                <textarea style="margin-top: 7px" class="form-control" rows="3" id="rps10"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Pemeriksaan Radiologi</label>
+                            <div class="col-md-8">
+                                <textarea style="margin-top: 7px" class="form-control" rows="3" id="hasil_radiologi"></textarea>
                             </div>
                         </div>
                     </div>

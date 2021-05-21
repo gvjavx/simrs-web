@@ -2686,6 +2686,9 @@ ADD COLUMN tipe VARCHAR(100);
 3. Perbaikan Rencana Asuah Keperawatan Di ICU
 4. Perbaikan Signature Bisa melalui device tablet
 5. Perbaikan Keseimbangan pada Asesmen ICU
+6. Penambahan Notif Lab dan Radiologi di halaman periksa Rawat Jalan, Rawat Igd, dan Rawat Inap
+7. Penambahan Label CITO pada pemeriksaan Lab dan Radiologi
+8. Perbaikan Resume Medis Rawat Jalan dan IGD
 
 
 

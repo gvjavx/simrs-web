@@ -131,7 +131,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="45%"><b>No Checkup</b></td>
+                                        <td width="40%"><b>No Checkup</b></td>
                                         <td>
                                             <s:hidden id="id_periksa_lab" name="periksaLab.idPeriksaLab"></s:hidden>
                                             <s:hidden id="no_checkup" name="periksaLab.noCheckup"></s:hidden>
@@ -206,7 +206,7 @@
                                 </script>
                                 <table class="table table-striped">
                                     <tr>
-                                        <td><b>Pelayanan</b></td>
+                                        <td width="40%"><b>Pelayanan</b></td>
                                         <td>
                                             <table><s:label name="periksaLab.namaPelayanan"></s:label></table>
                                         </td>
@@ -242,7 +242,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="40%"><b>Dokter Pengirim</b></td>
+                                        <td><b>Dokter Pengirim</b></td>
                                         <td>
                                             <table>
                                                 <s:label name="periksaLab.namaDokterPengirim"></s:label>

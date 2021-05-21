@@ -293,7 +293,7 @@ function selectKeterangan(idKtg) {
             $('#form-pindah_poli').show();
             $('#form-catatan').show();
             if (jenisPasien == 'umum') {
-                $('#form_eksekutif').show();
+                $('#form_eksekutif').hide();
             } else {
                 $('#form_eksekutif').hide();
             }
@@ -1353,17 +1353,10 @@ function listTindakan() {
 }
 
 function saveDiagnosa(id) {
-
     var idDiag = $('#nosa_id_diagnosa').val();
     var ketDiagnosa = $('#nosa_ket_diagnosa').val();
     var jenisPasien = $('#jenis_pasien').val();
-    var panjang = $('#tabel_diagnosa').tableToJSON();
-    var jenisDiagnosa = "";
-    if (id != '') {
-        jenisDiagnosa = $('#val_jenis_diagnosa').val();
-    } else {
-        jenisDiagnosa = panjang.length + 1;
-    }
+    var jenisDiagnosa = $('#nosa_jenis_diagnosa').val();
 
     if (idDetailCheckup != '' && idDiag != '' && jenisDiagnosa != '' && ketDiagnosa != '') {
         if (!cekSession()) {
@@ -1413,7 +1406,7 @@ function saveDiagnosa(id) {
         $('#warning_diagnosa').show().fadeOut(5000);
         $('#msg_diagnosa').text('Silahkan cek kembali data inputan...!');
         if (idDiag == '') {
-            $('#war_diagnosa').show();
+            $('#war_diagnosa_bpjs').show();
         }
         if (jenisDiagnosa == '') {
             $('#war_jenis_diagnosa').show();
@@ -1449,7 +1442,8 @@ function listDiagnosa() {
                     ket = item.keteranganDiagnosa;
                 }
                 if (item.jenisDiagnosa != null) {
-                    jen = "Diagnosa Ke " + item.jenisDiagnosa;
+                    jen = item.jenisDiagnosa.replace("_"," ");
+                    jen = convertSentenceCaseUp(jen);
                 }
                 table += '<tr '+blink+'>' +
                     "<td>" + dateFormat + "</td>" +
@@ -2232,7 +2226,7 @@ function editDiagnosa(id, idDiagnosa, jenis, ket) {
     $('#load_diagnosa, #warning_diagnosa, #war_diagnosa, #war_jenis_diagnosa').hide();
     $('#nosa_id_diagnosa').val(idDiagnosa);
     $('#nosa_ket_diagnosa').val(ket);
-    $('#val_jenis_diagnosa').val(jenis);
+    $('#nosa_jenis_diagnosa').val(jenis).trigger('change');
     $('#save_diagnosa').attr('onclick', 'saveDiagnosa(\'' + id + '\')').show();
     $('#modal-diagnosa').modal({show: true, backdrop: 'static'});
 }
@@ -3903,6 +3897,8 @@ function savePemeriksaanPasien() {
         vaksin = "Y";
     }
 
+    var keteranganRW = $('#keterangan_rw').val();
+
     if (tindakLanjut != '') {
 
         if (jenisPeriksaPasien == 'asuransi' && isLaka == 'Y') {
@@ -3925,7 +3921,8 @@ function savePemeriksaanPasien() {
                     'tindak_lanjut': tindakLanjut,
                     'keterangan': 'Rawat Inap, ' + ketRawatInap,
                     'catatan': catatan,
-                    'jenis_pasien': jenisPeriksaPasien
+                    'jenis_pasien': jenisPeriksaPasien,
+                    'indikasi': keteranganRW
                 }
                 cek = true;
             }
@@ -4067,7 +4064,8 @@ function savePemeriksaanPasien() {
                 'keterangan': ktr,
                 'catatan': catatan,
                 'jenis_pasien': jenisPeriksaPasien,
-                'is_meninggal': meninggal
+                'is_meninggal': meninggal,
+                'indikasi': keteranganRW
             }
             cek = true;
         }
@@ -4142,10 +4140,84 @@ function cekDataAsuransi() {
 }
 
 function printPernyataan(kode, idRm, flag, namaRm) {
-    $('#tanya').text("Apakah anda yakin print ?");
-    $('#print_form').text(namaRm);
-    $('#save_con_rm').attr('onclick', 'printPernyataanRM(\'' + kode + '\', \'' + idRm + '\')');
-    $('#modal-confirm-rm').modal('show');
+    if("SP15" == kode){
+        $('#modal-input_resume').modal({show: true, backdrop: 'static'});
+        $('#save_resume').attr('onclick', 'saveResume(\'' + kode + '\', \'' + idRm + '\')');
+    }else{
+        $('#tanya').text("Apakah anda yakin print ?");
+        $('#print_form').text(namaRm);
+        $('#save_con_rm').attr('onclick', 'printPernyataanRM(\'' + kode + '\', \'' + idRm + '\')');
+        $('#modal-confirm-rm').modal('show');
+    }
+}
+
+function saveResume(kode, idRm){
+    var data = [];
+    var p1 = $('#p1').val();
+    var p2 = $('#p2').val();
+    var ttd1 = document.getElementById('ttd_keluarga');
+    var ttd2 = document.getElementById('ttd_penjaga');
+
+    var cek1 = isCanvasBlank(ttd1);
+    var cek2 = isCanvasBlank(ttd2);
+
+    if(p1 && p2 != '' && !cek1 && !cek2){
+        var can1 = convertToDataURLAtas(ttd1);
+        var can2 = convertToDataURLAtas(ttd2);
+        data.push({
+            'parameter': 'penunjang_lab',
+            'jawaban': p1,
+            'keterangan': 'resume_medis',
+            'jenis': 'resume_medis',
+            'id_detail_checkup': idDetailCheckup
+        });
+        data.push({
+            'parameter': 'penunjang_radiologi',
+            'jawaban': p2,
+            'keterangan': 'resume_medis',
+            'jenis': 'resume_medis',
+            'id_detail_checkup': idDetailCheckup
+        });
+        data.push({
+            'parameter': 'pasien',
+            'jawaban': can1,
+            'keterangan': 'resume_medis',
+            'jenis': 'resume_medis',
+            'tipe': 'ttd',
+            'id_detail_checkup': idDetailCheckup
+        });
+        data.push({
+            'parameter': 'dokter',
+            'jawaban': can2,
+            'keterangan': 'resume_medis',
+            'jenis': 'resume_medis',
+            'tipe': 'ttd',
+            'id_detail_checkup': idDetailCheckup
+        });
+        var result = JSON.stringify(data);
+        $('#save_resume').hide();
+        $('#load_resume').show();
+        dwr.engine.setAsync(true);
+        KeperawatanRawatJalanAction.saveTtdResumenMeis(result, {
+            callback: function (res) {
+                if (res.status == "success") {
+                    $('#modal-input_resume').modal('hide');
+                    $('#save_resume').show();
+                    $('#load_resume').hide();
+                    printPernyataanRM(kode, idRm);
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(14);
+                } else {
+                    $('#save_resume').show();
+                    $('#load_resume').hide();
+                }
+            }
+        });
+    }else{
+        $('#modal-input_resume').scrollTop(0);
+        $('#warning_input_resume').show().fadeOut(5000);
+        $('#msg_input_resume').text("Silahkan cek kembali inputan dan TTD berikut...!");
+    }
 }
 
 function printPernyataanRM(kode, idRM) {

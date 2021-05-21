@@ -4101,6 +4101,7 @@ function savePemeriksaanPasien() {
     var cek = false;
     var cekTindakan = $('#tabel_tindakan').tableToJSON();
     var idKeterangan = $('#ket_selesai').val();
+    var keteranganRW = $('#keterangan_rw').val();
 
     if (cekTindakan.length > 0) {
         if (tindakLanjut != '') {
@@ -4116,7 +4117,8 @@ function savePemeriksaanPasien() {
                         'catatan': catatan,
                         'id_ruangan': idRuangan,
                         'jenis_pasien': jenisPeriksaPasien,
-                        'id_ruangan_lama': idRuanganLama
+                        'id_ruangan_lama': idRuanganLama,
+                        'indikasi': keteranganRW
                     }
                     cek = true;
                 }
@@ -4234,7 +4236,8 @@ function savePemeriksaanPasien() {
                     'is_stay': stay,
                     'jenis_pasien': jenisPeriksaPasien,
                     'id_ruangan_lama': idRuanganLama,
-                    'is_meninggal': meninggal
+                    'is_meninggal': meninggal,
+                    'indikasi': keteranganRW
                 }
                 cek = true;
             }

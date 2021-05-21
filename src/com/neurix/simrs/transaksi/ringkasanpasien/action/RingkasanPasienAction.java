@@ -182,7 +182,7 @@ public class RingkasanPasienAction {
                             status.setLastUpdate(time);
                             response = rekamMedikBo.saveEdit(status);
                         }
-                    }catch (JSONException e){
+                    }catch (Exception e){
                         response.setStatus("error");
                         response.setMsg(e.getMessage());
                     }

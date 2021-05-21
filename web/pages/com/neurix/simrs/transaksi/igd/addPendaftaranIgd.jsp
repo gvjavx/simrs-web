@@ -1056,7 +1056,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group">
-                                                <label class="col-md-4" style="margin-top: 7px">No Telp.</label>
+                                                <label class="col-md-4" style="margin-top: 7px">No HP.</label>
                                                 <div class="col-md-8">
                                                     <div class="input-group" style="margin-top: 7px">
                                                         <div class="input-group-addon">

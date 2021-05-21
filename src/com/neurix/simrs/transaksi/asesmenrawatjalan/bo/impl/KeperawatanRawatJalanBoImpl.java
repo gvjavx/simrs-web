@@ -7,6 +7,7 @@ import com.neurix.simrs.transaksi.asesmenrawatjalan.bo.KeperawatanRawatJalanBo;
 import com.neurix.simrs.transaksi.asesmenrawatjalan.dao.KeperawatanRawatJalanDao;
 import com.neurix.simrs.transaksi.asesmenrawatjalan.model.ItSimrsAsesmenKeperawatanRawatJalanEntity;
 import com.neurix.simrs.transaksi.asesmenrawatjalan.model.KeperawatanRawatJalan;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -88,10 +89,7 @@ public class KeperawatanRawatJalanBoImpl implements KeperawatanRawatJalanBo {
             kp.setIdDetailCheckup(keperawatanRawatJalan.getIdDetailCheckup());
             kp.setKeterangan(keperawatanRawatJalan.getKeterangan());
             List<KeperawatanRawatJalan> keperawatanRawatJalanList = getByCriteria(kp);
-            if (keperawatanRawatJalanList.size() > 0) {
-                response.setStatus("error");
-                response.setMsg("Found Error, Data yang anda masukan sudah ada...!");
-            } else {
+            if ("resume_medis".equalsIgnoreCase(kp.getJenis())) {
                 for (KeperawatanRawatJalan bean : list) {
                     ItSimrsAsesmenKeperawatanRawatJalanEntity keperawatanRawatJalanEntity = new ItSimrsAsesmenKeperawatanRawatJalanEntity();
                     keperawatanRawatJalanEntity.setIdKeperawatanRawatJalan("KRJ" + keperawatanRawatJalanDao.getNextSeq());
@@ -119,6 +117,41 @@ public class KeperawatanRawatJalanBoImpl implements KeperawatanRawatJalanBo {
                         response.setStatus("error");
                         response.setMsg("Found Error " + e.getMessage());
                         logger.error(e.getMessage());
+                    }
+                }
+            } else {
+                if (keperawatanRawatJalanList.size() > 0) {
+                    response.setStatus("error");
+                    response.setMsg("Found Error, Data yang anda masukan sudah ada...!");
+                } else {
+                    for (KeperawatanRawatJalan bean : list) {
+                        ItSimrsAsesmenKeperawatanRawatJalanEntity keperawatanRawatJalanEntity = new ItSimrsAsesmenKeperawatanRawatJalanEntity();
+                        keperawatanRawatJalanEntity.setIdKeperawatanRawatJalan("KRJ" + keperawatanRawatJalanDao.getNextSeq());
+                        keperawatanRawatJalanEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                        keperawatanRawatJalanEntity.setParameter(bean.getParameter());
+                        keperawatanRawatJalanEntity.setJawaban(bean.getJawaban());
+                        keperawatanRawatJalanEntity.setKeterangan(bean.getKeterangan());
+                        keperawatanRawatJalanEntity.setJenis(bean.getJenis());
+                        keperawatanRawatJalanEntity.setScore(bean.getScore());
+                        keperawatanRawatJalanEntity.setAction(bean.getAction());
+                        keperawatanRawatJalanEntity.setFlag(bean.getFlag());
+                        keperawatanRawatJalanEntity.setCreatedDate(bean.getCreatedDate());
+                        keperawatanRawatJalanEntity.setCreatedWho(bean.getCreatedWho());
+                        keperawatanRawatJalanEntity.setLastUpdate(bean.getLastUpdate());
+                        keperawatanRawatJalanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                        keperawatanRawatJalanEntity.setTipe(bean.getTipe());
+                        keperawatanRawatJalanEntity.setNamaTerang(bean.getNamaTerang());
+                        keperawatanRawatJalanEntity.setSip(bean.getSip());
+
+                        try {
+                            keperawatanRawatJalanDao.addAndSave(keperawatanRawatJalanEntity);
+                            response.setStatus("success");
+                            response.setMsg("Berhasil");
+                        } catch (HibernateException e) {
+                            response.setStatus("error");
+                            response.setMsg("Found Error " + e.getMessage());
+                            logger.error(e.getMessage());
+                        }
                     }
                 }
             }
@@ -154,11 +187,53 @@ public class KeperawatanRawatJalanBoImpl implements KeperawatanRawatJalanBo {
                     response.setMsg(e.getMessage());
                 }
             }
-        }else{
+        } else {
             response.setStatus("error");
             response.setMsg("Data tidak ditemukan...!");
         }
         return response;
+    }
+
+    @Override
+    public HeaderCheckup getDataResumeMedis(KeperawatanRawatJalan bean) throws GeneralBOException {
+        HeaderCheckup checkup = new HeaderCheckup();
+        if (bean != null) {
+            Map hsCriteria = new HashMap();
+            if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
+                hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+            }
+            if (bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())) {
+                hsCriteria.put("keterangan", bean.getKeterangan());
+            }
+            if (bean.getJenis() != null && !"".equalsIgnoreCase(bean.getJenis())) {
+                hsCriteria.put("jenis", bean.getJenis());
+            }
+            List<ItSimrsAsesmenKeperawatanRawatJalanEntity> entityList = new ArrayList<>();
+            try {
+                entityList = keperawatanRawatJalanDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e) {
+                logger.error(e.getMessage());
+            }
+            if (entityList.size() > 0) {
+                for (ItSimrsAsesmenKeperawatanRawatJalanEntity entity : entityList) {
+                    if (entity.getParameter() != null) {
+                        if ("penunjang_lab".equalsIgnoreCase(entity.getParameter())) {
+                            checkup.setPenunjangLab(entity.getJawaban());
+                        }
+                        if ("penunjang_radiologi".equalsIgnoreCase(entity.getParameter())) {
+                            checkup.setPenunjangRadiologi(entity.getJawaban());
+                        }
+                        if ("pasien".equalsIgnoreCase(entity.getParameter())) {
+                            checkup.setTtdPasien(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getJawaban());
+                        }
+                        if ("dokter".equalsIgnoreCase(entity.getParameter())) {
+                            checkup.setTtdDokter(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getJawaban());
+                        }
+                    }
+                }
+            }
+        }
+        return checkup;
     }
 
     public static Logger getLogger() {

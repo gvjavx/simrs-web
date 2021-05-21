@@ -257,7 +257,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="45%"><b>No Checkup</b></td>
+                                        <td><b>No Checkup</b></td>
                                         <td>
                                             <table>
                                                 <s:label name="rawatInap.noCheckup"></s:label></table>
@@ -306,10 +306,25 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>No Telp. Penanggung Jawab</b></td>
+                                        <td><b>No HP. Penanggung Jawab</b></td>
                                         <td>
                                             <table>
-                                                <s:label name="rawatInap.noTelp"></s:label>
+                                                <script>
+                                                    var noHp = '<s:property value="rawatInap.noTelp"/>';
+                                                    var temp = "";
+                                                    if(noHp != '' && noHp.length > 0){
+                                                        for (var i = 0; i < noHp.length; i++) {
+                                                            if(i == 3){
+                                                                temp = temp+noHp[i]+'-';
+                                                            }else if(i == 7){
+                                                                temp = temp+noHp[i]+'-';
+                                                            }else{
+                                                                temp = temp+noHp[i];
+                                                            }
+                                                        }
+                                                    }
+                                                    document.write(temp);
+                                                </script>
                                             </table>
                                         </td>
                                     </tr>
@@ -329,7 +344,7 @@
                                 </script>
                                 <table class="table table-striped">
                                     <tr>
-                                        <td width="40%"><b>Jenis Pasien</b></td>
+                                        <td width="45%"><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
                                                 <script>

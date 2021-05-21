@@ -205,7 +205,7 @@ function saveAsesmenUgd(jenis, keterangan) {
                 });
                 data.push({
                     'parameter': 'Suhu',
-                    'jawaban': suhu + ' C',
+                    'jawaban': suhu + ' ˚C',
                     'keterangan': jenis,
                     'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
@@ -412,7 +412,7 @@ function saveAsesmenUgd(jenis, keterangan) {
                 });
                 data.push({
                     'parameter': 'Suhu',
-                    'jawaban': suhu + ' C',
+                    'jawaban': suhu + ' ˚C',
                     'keterangan': jenis,
                     'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
@@ -1638,7 +1638,7 @@ function saveAsesmenUgd(jenis, keterangan) {
                 });
                 data.push({
                     'parameter': 'Vital Sign',
-                    'jawaban': 'Tensi '+va3+' mmHg, Nadi '+va4+' x/menit, Suhu '+va5+' C, RR '+va6+' x/menit',
+                    'jawaban': 'Tensi '+va3+' mmHg, Nadi '+va4+' x/menit, Suhu '+va5+' ˚C, RR '+va6+' x/menit',
                     'keterangan': jenis,
                     'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
