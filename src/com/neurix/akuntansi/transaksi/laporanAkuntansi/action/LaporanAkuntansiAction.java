@@ -1106,15 +1106,15 @@ public class LaporanAkuntansiAction extends BaseMasterAction {
             unit = "'" + data.getUnit() + "'";
         }
 
-        result = "print_report_mutasi_jurnal";
-        titleReport = "MUTASI " + tipeJurnal.getTipeJurnalName().toUpperCase();
-        /*if (("M").equalsIgnoreCase(data.getTipeLaporan())) {
+//        result = "print_report_mutasi_jurnal";
+//        titleReport = "MUTASI " + tipeJurnal.getTipeJurnalName().toUpperCase();
+        if (("M").equalsIgnoreCase(data.getTipeLaporan())) {
             result = "print_report_mutasi_jurnal";
             titleReport = "MUTASI " + tipeJurnal.getTipeJurnalName().toUpperCase();
         } else if (("da").equalsIgnoreCase(data.getTipeLaporan())) {
             titleReport = "MUTASI DETAIL ACTIVITY " + tipeJurnal.getTipeJurnalName().toUpperCase();
             result = "print_report_mutasi_jurnal_activity";
-        }*/
+        }
 
         reportParams.put("reportTitle", titleReport);
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT + branch.getLogoName());
