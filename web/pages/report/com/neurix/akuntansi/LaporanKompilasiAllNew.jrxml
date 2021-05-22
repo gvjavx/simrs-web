@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IkhtisarPendapatan" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="814" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" isFloatColumnFooter="true" uuid="1ad74e3d-21c5-43ac-b65a-1f771461ad66">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.1435888100000224"/>
-	<property name="ireport.x" value="837"/>
-	<property name="ireport.y" value="144"/>
+	<property name="ireport.zoom" value="1.1000000000000112"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -34,18 +34,34 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="level1" class="java.lang.String"/>
-	<field name="level2" class="java.lang.String"/>
-	<field name="curSaldoUnit1" class="java.math.BigDecimal"/>
-	<field name="curSaldoUnit2" class="java.math.BigDecimal"/>
-	<field name="curSaldoUnit3" class="java.math.BigDecimal"/>
-	<field name="curSaldoUnit4" class="java.math.BigDecimal"/>
-	<field name="curSaldoUnitAll" class="java.math.BigDecimal"/>
-	<field name="kodeRekeningAlias" class="java.lang.String"/>
-	<field name="namaKodeRekeningAlias" class="java.lang.String"/>
-	<field name="curSaldoUnit5" class="java.math.BigDecimal"/>
-	<field name="curSaldoUnit6" class="java.math.BigDecimal"/>
-	<field name="curSaldoUnit7" class="java.math.BigDecimal"/>
+	<field name="namarekening" class="java.lang.String"/>
+	<field name="koderekening" class="java.lang.String"/>
+	<field name="konsolid" class="java.lang.String"/>
+	<field name="operator" class="java.lang.String"/>
+	<field name="saldounit1" class="java.math.BigDecimal"/>
+	<field name="lastsaldounit1" class="java.math.BigDecimal"/>
+	<field name="cursaldounit1" class="java.math.BigDecimal"/>
+	<field name="saldounit2" class="java.math.BigDecimal"/>
+	<field name="lastsaldounit2" class="java.math.BigDecimal"/>
+	<field name="cursaldounit2" class="java.math.BigDecimal"/>
+	<field name="saldounit3" class="java.math.BigDecimal"/>
+	<field name="lastsaldounit3" class="java.math.BigDecimal"/>
+	<field name="cursaldounit3" class="java.math.BigDecimal"/>
+	<field name="saldounit4" class="java.math.BigDecimal"/>
+	<field name="lastsaldounit4" class="java.math.BigDecimal"/>
+	<field name="cursaldounit4" class="java.math.BigDecimal"/>
+	<field name="saldounit5" class="java.math.BigDecimal"/>
+	<field name="lastsaldounit5" class="java.math.BigDecimal"/>
+	<field name="cursaldounit5" class="java.math.BigDecimal"/>
+	<field name="saldounit6" class="java.math.BigDecimal"/>
+	<field name="lastsaldounit6" class="java.math.BigDecimal"/>
+	<field name="cursaldounit6" class="java.math.BigDecimal"/>
+	<field name="saldounit7" class="java.math.BigDecimal"/>
+	<field name="lastsaldounit7" class="java.math.BigDecimal"/>
+	<field name="cursaldounit7" class="java.math.BigDecimal"/>
+	<field name="saldounitall" class="java.math.BigDecimal"/>
+	<field name="lastsaldounitall" class="java.math.BigDecimal"/>
+	<field name="cursaldounitall" class="java.math.BigDecimal"/>
 	<variable name="SUM_level_2_unit_1" class="java.math.BigDecimal" resetType="Group" resetGroup="level2" calculation="Sum">
 		<variableExpression><![CDATA[$F{curSaldoUnit1}]]></variableExpression>
 	</variable>

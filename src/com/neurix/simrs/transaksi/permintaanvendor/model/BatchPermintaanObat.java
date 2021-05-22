@@ -20,12 +20,48 @@ public class BatchPermintaanObat {
     private String urlDoc;
     private String noFaktur;
     private Date tanggalFaktur;
+    private Date tglInvoice;
+    private Date tglDo;
     private String noInvoice;
     private String noDo;
     private String stTanggakFaktur;
     private String jenis;
     private String stTglInvoice;
     private String stTglDo;
+    private String idPermintaan;
+    private String stNoBatch;
+
+    public Date getTglInvoice() {
+        return tglInvoice;
+    }
+
+    public void setTglInvoice(Date tglInvoice) {
+        this.tglInvoice = tglInvoice;
+    }
+
+    public Date getTglDo() {
+        return tglDo;
+    }
+
+    public void setTglDo(Date tglDo) {
+        this.tglDo = tglDo;
+    }
+
+    public String getStNoBatch() {
+        return stNoBatch;
+    }
+
+    public void setStNoBatch(String stNoBatch) {
+        this.stNoBatch = stNoBatch;
+    }
+
+    public String getIdPermintaan() {
+        return idPermintaan;
+    }
+
+    public void setIdPermintaan(String idPermintaan) {
+        this.idPermintaan = idPermintaan;
+    }
 
     public String getStTglInvoice() {
         return stTglInvoice;

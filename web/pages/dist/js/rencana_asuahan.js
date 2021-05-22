@@ -16,6 +16,7 @@ function saveRA(jenis, ket, tipe) {
     var tgl = $('.tgl').val();
     var jam = $('.jam').val();
     var namaTerang = $('#nama_terang_perawat').val();
+    var sip = $('#nip_perawat').val();
 
     var tempDiag = "";
     var tempHasil = "";
@@ -145,7 +146,8 @@ function saveRA(jenis, ket, tipe) {
             'evaluasi': tempEva,
             'keterangan': jenis,
             'nama_terang': namaTerang,
-            'ttd_perawat': ttd
+            'ttd_perawat': ttd,
+            'sip': sip
         }
 
         if(!cekSession()){
@@ -209,7 +211,11 @@ function detailRA(jenis, ket, tipe) {
                     if (item.diagnosa != null) {
                         var v = item.diagnosa.split("|");
                         $.each(v, function (i, item) {
-                            diagnosa += '<li>' + item + '</li>';
+                            if(item == "Data Obyektif" || item == "Data Subyektif"){
+                                diagnosa += '<li style="list-style-type: none; margin-top: 20px"><b>' + item + '</b></li>';
+                            }else{
+                                diagnosa += '<li>' + item + '</li>';
+                            }
                         });
                     }
 
@@ -237,12 +243,23 @@ function detailRA(jenis, ket, tipe) {
                     if (item.evaluasi != null) {
                         var v = item.evaluasi.split("|");
                         $.each(v, function (i, item) {
-                            evaluasi += '<li>' + item + '</li>';
+                            if(item == "Subyektif"){
+                                evaluasi += '<li style="list-style-type: none;"><b>' + item + '</b></li>';
+                            }else if(item == "Obyektif"){
+                                evaluasi += '<li style="list-style-type: none; margin-top: 20px"><b>' + item + '</b></li>';
+                            }else{
+                                evaluasi += '<li>' + item + '</li>';
+                            }
                         });
                     }
 
                     if (item.ttdPerawat != null) {
-                        evaluasi += '<li style="list-style-type: none; margin-top: 10px">' + '<label>Perawat</label><img style="width: 50px; height: 20px" src="' + item.ttdPerawat + '">' + '</li>';
+                        evaluasi += '<li style="list-style-type: none; margin-top: 20px">' +
+                            '<label><b>TTD Perawat</b></label>' +
+                            '<img style="width: 70px; height: 50px" src="' + item.ttdPerawat + '">' +
+                            '<p style="margin-top: -3px">' + cekItemIsNull(item.namaTerang) + '</p>' +
+                            '<p style="margin-top: -7px">' + cekItemIsNull(item.sip) + '</p></td>' +
+                            '</li>';
                     }
 
                     var idAsuhan = item.idRencanaAsuhanKeperawatan;
@@ -283,8 +300,8 @@ function detailRA(jenis, ket, tipe) {
             if (cekData) {
                 head = '<tr style="font-weight: bold">' +
                     '<td width="13%">Tanggal Jam</td>' +
-                    '<td>Diagnosa Keperawatan</td>' +
-                    '<td>Hasil Luaran Keperawatan</td>' +
+                    '<td>Diagnosis</td>' +
+                    '<td>Tujuan dan Kriteria Hasil</td>' +
                     '<td>Planning/ Rencana Tindakan</td>' +
                     '<td>Implementasi</td>' +
                     '<td>Evaluasi</td>' +
@@ -331,17 +348,9 @@ function conRA(jenis, ket, tipe, id){
 function delRA(jenis, ket, tipe, id) {
     $('#modal-confirm-rm').modal('hide');
     if(!cekSession()){
-        var dataPasien = {
-            'no_checkup': noCheckup,
-            'id_detail_checkup': idDetailCheckup,
-            'id_pasien': idPasien,
-            'id_rm': tempidRm
-        };
-
-        var result = JSON.stringify(dataPasien);
         startIconSpin('delete_'+id);
         dwr.engine.setAsync(true);
-        RencanaAsuhanKeperawatanAction.saveDelete(id, result, {
+        RencanaAsuhanKeperawatanAction.saveDelete(id, {
             callback: function (res) {
                 if (res.status == "success") {
                     stopIconSpin('delete_'+id);

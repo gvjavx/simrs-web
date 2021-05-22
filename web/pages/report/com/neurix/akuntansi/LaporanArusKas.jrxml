@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IkhtisarPendapatan" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" isFloatColumnFooter="true" uuid="1ad74e3d-21c5-43ac-b65a-1f771461ad66">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LaporanArusKas" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" isFloatColumnFooter="true" uuid="1ad74e3d-21c5-43ac-b65a-1f771461ad66">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.331000000000002"/>
+	<property name="ireport.zoom" value="1.6105100000000057"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -23,21 +23,77 @@
 	<parameter name="urlLogo" class="java.lang.String"/>
 	<parameter name="areaId" class="java.lang.String"/>
 	<parameter name="parameter2" class="java.lang.String"/>
+	<parameter name="periodeLalu" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[]]>
+		<![CDATA[select koderekening.nama_kode_rekening grup, result.*
+from (select case
+               when lalu.grup is null then sekarang.grup
+               else lalu.grup
+                 end as kode_grup,
+             case
+               when lalu.kode_rekening is null then sekarang.nomor_rekening
+               else lalu.kode_rekening
+                 end as kodeRekening,
+             case
+               when lalu.nama_kode_rekening is null then sekarang.nama_kode_rekening
+               else lalu.nama_kode_rekening
+                 end as namaRekening,
+             coalesce(lalu.penerimaan, 0) - coalesce(lalu.pengeluaran, 0) as lastSaldo,
+             coalesce(sekarang.penerimaan, 0)                as penerimaan,
+             coalesce(sekarang.pengeluaran, 0)               as pengeluaran,
+             coalesce(lalu.penerimaan,0 ) - coalesce(lalu.pengeluaran, 0) +
+             coalesce(sekarang.penerimaan, 0) - coalesce(sekarang.pengeluaran, 0) as saldoSekarang
+      from (
+           select substr(saldoDetail.kode_rekening, 1, 9)    grup,
+                  saldoDetail.kode_rekening,
+                  rekening.nama_kode_rekening,
+                  sum(coalesce(saldoDetail.jumlah_debit, 0))  penerimaan,
+                  sum(coalesce(saldoDetail.jumlah_kredit, 0)) pengeluaran
+           from it_akun_saldo_akhir_detail saldoDetail
+                  join it_akun_saldo_akhir saldo on saldo.saldo_akhir_id = saldoDetail.saldo_akhir_id
+                                                  and saldo.flag = 'Y'  and saldo.periode  = $P{periodeLalu}
+ and saldo.branch_id = $P{branchId}
+                  join (select kodering.kode_rekening, kodering.nama_kode_rekening
+                        from im_akun_report_detail reportSetting
+                               join im_akun_kode_rekening kodering on kodering.rekening_id = reportSetting.rekening_id
+                        where reportSetting.report_id = $P{reportId}
+                          and reportSetting.flag = 'Y') rekening
+                    on rekening.kode_rekening = saldoDetail.kode_rekening
+           group by saldoDetail.kode_rekening, rekening.nama_kode_rekening
+           ) lalu full
+             outer join (
+                        select substr(jurnalDetail.nomor_rekening, 1, 9)    grup,
+                                jurnalDetail.nomor_rekening,
+                                rekening.nama_kode_rekening,
+                                sum(coalesce(jurnalDetail.jumlah_debit, 0))  penerimaan,
+                                sum(coalesce(jurnalDetail.jumlah_kredit, 0)) pengeluaran
+                         from it_akun_jurnal_detail jurnalDetail
+                                join it_akun_jurnal jurnal on jurnal.no_jurnal = jurnalDetail.no_jurnal
+                                                                and registered_flag = 'Y'
+                                                                and to_char(jurnal.registered_date, 'MM-yyyy') = $P{periode} and jurnal.branch_id = $P{branchId}
+          join (select kodering.kode_rekening, kodering.nama_kode_rekening
+          from im_akun_report_detail reportSetting
+          join im_akun_kode_rekening kodering
+          on kodering.rekening_id = reportSetting.rekening_id
+          where reportSetting.report_id = $P{reportId}
+          and reportSetting.flag = 'Y') rekening
+          on rekening.kode_rekening = jurnalDetail.nomor_rekening
+          group by jurnalDetail.nomor_rekening, rekening.nama_kode_rekening) sekarang
+               on lalu.kode_rekening = sekarang.nomor_rekening) result
+       join im_akun_kode_rekening koderekening on result.kode_grup = koderekening.kode_rekening]]>
 	</queryString>
-	<field name="kodeRekening" class="java.lang.String"/>
 	<field name="grup" class="java.lang.String"/>
-	<field name="periode" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="namaRekening" class="java.lang.String"/>
+	<field name="kode_grup" class="java.lang.String"/>
+	<field name="koderekening" class="java.lang.String"/>
+	<field name="namarekening" class="java.lang.String"/>
+	<field name="lastsaldo" class="java.math.BigDecimal"/>
 	<field name="penerimaan" class="java.math.BigDecimal"/>
 	<field name="pengeluaran" class="java.math.BigDecimal"/>
-	<field name="lastSaldo" class="java.math.BigDecimal"/>
-	<field name="saldoSekarang" class="java.math.BigDecimal"/>
+	<field name="saldosekarang" class="java.math.BigDecimal"/>
 	<variable name="SUM_saldo_lalu" class="java.math.BigDecimal" resetType="Group" resetGroup="reks" calculation="Sum">
-		<variableExpression><![CDATA[$F{lastSaldo}]]></variableExpression>
+		<variableExpression><![CDATA[$F{lastsaldo}]]></variableExpression>
 	</variable>
 	<variable name="SUM_penerimaan" class="java.math.BigDecimal" resetType="Group" resetGroup="reks" calculation="Sum">
 		<variableExpression><![CDATA[$F{penerimaan}]]></variableExpression>
@@ -46,10 +102,10 @@
 		<variableExpression><![CDATA[$F{pengeluaran}]]></variableExpression>
 	</variable>
 	<variable name="SUM_saldo_sekarang" class="java.math.BigDecimal" resetType="Group" resetGroup="reks" calculation="Sum">
-		<variableExpression><![CDATA[$F{saldoSekarang}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldosekarang}]]></variableExpression>
 	</variable>
 	<variable name="DISPLAY_saldo_lalu" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{lastSaldo}.abs()]]></variableExpression>
+		<variableExpression><![CDATA[$F{lastsaldo}.abs()]]></variableExpression>
 	</variable>
 	<variable name="DISPLAY_penerimaan" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{penerimaan}.abs()]]></variableExpression>
@@ -58,7 +114,7 @@
 		<variableExpression><![CDATA[$F{pengeluaran}.abs()]]></variableExpression>
 	</variable>
 	<variable name="DISPLAY_saldo_sekarang" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{saldoSekarang}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldosekarang}]]></variableExpression>
 	</variable>
 	<variable name="DISPLAY_SUM_saldo_lalu" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$V{SUM_saldo_lalu}.abs()]]></variableExpression>
@@ -73,7 +129,7 @@
 		<variableExpression><![CDATA[$V{SUM_saldo_sekarang}]]></variableExpression>
 	</variable>
 	<variable name="SUM_saldo_lalu_grup" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
-		<variableExpression><![CDATA[$F{lastSaldo}]]></variableExpression>
+		<variableExpression><![CDATA[$F{lastsaldo}]]></variableExpression>
 	</variable>
 	<variable name="SUM_penerimaan_grup" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
 		<variableExpression><![CDATA[$F{penerimaan}]]></variableExpression>
@@ -82,7 +138,7 @@
 		<variableExpression><![CDATA[$F{pengeluaran}]]></variableExpression>
 	</variable>
 	<variable name="SUM_saldo_sekarang_grup" class="java.math.BigDecimal" resetType="Group" resetGroup="rekening" calculation="Sum">
-		<variableExpression><![CDATA[$F{saldoSekarang}]]></variableExpression>
+		<variableExpression><![CDATA[$F{saldosekarang}]]></variableExpression>
 	</variable>
 	<group name="reks">
 		<groupExpression><![CDATA[]]></groupExpression>
@@ -143,7 +199,7 @@
 					<textFieldExpression><![CDATA[$V{DISPLAY_SUM_pengeluaran}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-21" x="467" y="3" width="97" height="18" uuid="651cecb5-471b-47e3-ad4d-321d4f878285"/>
+					<reportElement key="textField-21" x="467" y="3" width="87" height="18" uuid="651cecb5-471b-47e3-ad4d-321d4f878285"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -169,7 +225,7 @@
 					<textFieldExpression><![CDATA[$V{DISPLAY_SUM_penerimaan}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-24" x="202" y="3" width="102" height="18" uuid="03ea2a44-0fc2-49ab-949d-68e46644612f"/>
+					<reportElement key="textField-24" x="202" y="3" width="89" height="18" uuid="03ea2a44-0fc2-49ab-949d-68e46644612f"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -179,7 +235,25 @@
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{DISPLAY_SUM_saldo_lalu}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{DISPLAY_SUM_saldo_lalu}.abs()]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="291" y="3" width="13" height="18" uuid="2619e568-a700-4470-90bd-b196a7298e8c"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{DISPLAY_SUM_saldo_lalu}.compareTo( new BigDecimal(0) ) == 0 ?
+' ' :
+$V{DISPLAY_SUM_saldo_lalu}.compareTo( new BigDecimal(0) ) < 0 ? 'K' : 'D']]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="554" y="3" width="13" height="18" uuid="31fe2759-e53b-447a-8361-9e2d1d72ec4f"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{DISPLAY_SUM_saldo_sekarang}.compareTo( new BigDecimal(0) ) == 0 ?
+' ' :
+$V{DISPLAY_SUM_saldo_sekarang}.compareTo( new BigDecimal(0) ) < 0 ? 'K' : 'D']]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -232,7 +306,7 @@
 					<textFieldExpression><![CDATA[$V{SUM_pengeluaran_grup}.abs()]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-22" x="202" y="1" width="102" height="14" uuid="215fc24a-c689-4ef2-b5b0-e2669280ad43"/>
+					<reportElement key="textField-22" x="202" y="1" width="89" height="14" uuid="215fc24a-c689-4ef2-b5b0-e2669280ad43"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -245,7 +319,7 @@
 					<textFieldExpression><![CDATA[$V{SUM_saldo_lalu_grup}.abs()]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-18" x="467" y="1" width="99" height="14" uuid="43b08e7f-03ab-4b52-8678-6b8b147f4345"/>
+					<reportElement key="textField-18" x="467" y="1" width="87" height="14" uuid="43b08e7f-03ab-4b52-8678-6b8b147f4345"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -269,6 +343,24 @@
 						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{SUM_penerimaan_grup}.abs()]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="291" y="1" width="13" height="14" uuid="a1764a33-ca09-4b39-89a9-d3bca241d3ea"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SUM_saldo_lalu_grup}.compareTo( new BigDecimal(0) ) == 0 ?
+' ' :
+$V{SUM_saldo_lalu_grup}.compareTo( new BigDecimal(0) ) < 0 ? 'K' : 'D']]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="554" y="1" width="13" height="14" uuid="f0f5b7e5-f0f9-4b80-9725-81bd6383edfd"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SUM_saldo_sekarang_grup}.compareTo( new BigDecimal(0) ) == 0 ?
+' ' :
+$V{SUM_saldo_sekarang_grup}.compareTo( new BigDecimal(0) ) < 0 ? 'K' : 'D']]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -429,7 +521,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Periode Hari : "+ $P{periodeTitle}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Periode : "+ $P{periodeTitle}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
@@ -500,7 +592,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Pengeluaran]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-28" mode="Transparent" x="202" y="2" width="102" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="d5539f9b-dbb0-4c76-9379-0c038fbed249"/>
+				<reportElement key="staticText-28" mode="Transparent" x="202" y="2" width="89" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="d5539f9b-dbb0-4c76-9379-0c038fbed249"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -553,7 +645,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{kodeRekening}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{koderekening}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField" mode="Transparent" x="68" y="1" width="133" height="15" uuid="79fd5edc-7d17-4151-b4ed-103ab95422eb"/>
@@ -566,7 +658,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{namaRekening}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{namarekening}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-16" x="385" y="1" width="82" height="14" uuid="4bedb26c-495e-44ab-8c56-f96318f343f7"/>
@@ -582,7 +674,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$V{DISPLAY_pengeluaran}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-18" x="467" y="0" width="99" height="16" uuid="3f136fc4-38a2-4184-95e8-ddc326e7322d"/>
+				<reportElement key="textField-18" x="467" y="0" width="87" height="16" uuid="3f136fc4-38a2-4184-95e8-ddc326e7322d"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -592,10 +684,10 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{DISPLAY_saldo_sekarang}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{DISPLAY_saldo_sekarang}.abs()]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="202" y="0" width="102" height="15" uuid="97192834-2968-458a-b27d-145e8d54a26a"/>
+				<reportElement key="textField-22" x="202" y="0" width="89" height="15" uuid="97192834-2968-458a-b27d-145e8d54a26a"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -605,7 +697,16 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{DISPLAY_saldo_lalu}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{DISPLAY_saldo_lalu}.abs()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="554" y="0" width="13" height="16" uuid="0e5da0bb-1fc8-4281-969f-f2a6be4d8acc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{DISPLAY_saldo_sekarang}.compareTo( new BigDecimal(0) ) == 0 ?
+' ' :
+$V{DISPLAY_saldo_sekarang}.compareTo( new BigDecimal(0) ) < 0 ? 'K' : 'D']]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

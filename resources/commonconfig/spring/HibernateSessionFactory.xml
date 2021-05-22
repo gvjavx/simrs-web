@@ -623,6 +623,7 @@
                 <value>sshconfig/com/neurix/hris/transaksi/logcron/hibernate/ItLogCronEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/checkupdetail/hibernate/ItSimrsUploadPendukungPemeriksaanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/hargaobat/hibernate/MtSimrsHargaObatPerKonsumenEntity.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/asesmenicu/hibernate/ItSimrsKeseimbanganIcuEntity.hbm.xml</value>
             </list>
 
         </property>

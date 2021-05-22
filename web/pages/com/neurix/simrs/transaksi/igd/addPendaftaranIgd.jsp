@@ -2633,8 +2633,8 @@
                     title = "Info!";
                     warnClass = "alert-success";
                     msg = "No BPJS berhasil diverifikasi dengan status AKTIF!";
-                    $('#no_rujukan').val(response.noKunjungan).trigger('input');
-                    cekNoRujukan();
+                    //$('#no_rujukan').val(response.noKunjungan).trigger('input');
+                    //cekNoRujukan();
                 } else if (response.keteranganStatusPeserta == "TIDAK AKTIF") {
                     val = "tidak aktif";
                     icon = "fa-warning";

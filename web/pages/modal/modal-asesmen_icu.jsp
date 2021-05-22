@@ -35,16 +35,6 @@
                             <li><a onclick="showModalICU('hemodinamika_icu')" style="cursor: pointer"><i class="fa fa-plus"></i> Hemodinamika</a></li>
                             <li><a onclick="showModalICU('respirasi_icu')" style="cursor: pointer"><i class="fa fa-plus"></i> Respirator Mode</a></li>
                             <li><a onclick="showModalICU('keseimbangan_icu')" style="cursor: pointer"><i class="fa fa-plus"></i> Keseimbangan</a></li>
-                            <%--<li><a onclick="showModalICU('injeksi_icu')" style="cursor: pointer"><i--%>
-                                    <%--class="fa fa-plus"></i> Ijeksi</a></li>--%>
-                            <%--<li><a onclick="showModalICU('oral_icu')" style="cursor: pointer"><i--%>
-                                    <%--class="fa fa-plus"></i> Oral</a></li>--%>
-                            <%--<li><a onclick="showModalICU('lain_icu')" style="cursor: pointer"><i--%>
-                                    <%--class="fa fa-plus"></i> Lain-Lain</a></li>--%>
-                            <%--<li><a onclick="showModalICU('intakea_icu')" style="cursor: pointer"><i--%>
-                                    <%--class="fa fa-plus"></i> Intakea</a></li>--%>
-                            <%--<li><a onclick="showModalICU('output_icu')" style="cursor: pointer"><i--%>
-                                    <%--class="fa fa-plus"></i> Output</a></li>--%>
                             <li><a onclick="showModalICU('asuhan_keperawatan_icu')" style="cursor: pointer"><i class="fa fa-plus"></i> Rencana Asuhan Keperawatan</a></li>
                         </ul>
                     </div>
@@ -112,36 +102,6 @@
                                 <img id="btn_icu_keseimbangan_icu" class="hvr-grow" onclick="listInputan('keseimbangan_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
-                        <%--<tr id="row_icu_injeksi_icu">--%>
-                            <%--<td>Injeksi ICU</td>--%>
-                            <%--<td width="20%" align="center">--%>
-                                <%--<img id="btn_icu_injeksi_icu" class="hvr-grow" onclick="listInputan('injeksi_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">--%>
-                            <%--</td>--%>
-                        <%--</tr>--%>
-                        <%--<tr id="row_icu_oral_icu">--%>
-                            <%--<td>Oral</td>--%>
-                            <%--<td width="20%" align="center">--%>
-                                <%--<img id="btn_icu_oral_icu" class="hvr-grow" onclick="listInputan('oral_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">--%>
-                            <%--</td>--%>
-                        <%--</tr>--%>
-                        <%--<tr id="row_icu_lain_icu">--%>
-                            <%--<td>Lain-Lain</td>--%>
-                            <%--<td width="20%" align="center">--%>
-                                <%--<img id="btn_icu_lain_icu" class="hvr-grow" onclick="listInputan('lain_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">--%>
-                            <%--</td>--%>
-                        <%--</tr>--%>
-                        <%--<tr id="row_icu_intakea_icu">--%>
-                            <%--<td>Intakea ICU</td>--%>
-                            <%--<td width="20%" align="center">--%>
-                                <%--<img id="btn_icu_intakea_icu" class="hvr-grow" onclick="listInputan('intakea_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">--%>
-                            <%--</td>--%>
-                        <%--</tr>--%>
-                        <%--<tr id="row_icu_output_icu">--%>
-                            <%--<td>Output ICU</td>--%>
-                            <%--<td width="20%" align="center">--%>
-                                <%--<img id="btn_icu_output_icu" class="hvr-grow" onclick="listInputan('output_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">--%>
-                            <%--</td>--%>
-                        <%--</tr>--%>
                         <tr id="row_icu_asuhan_keperawatan_icu">
                             <td>Rencana Asuhan Keperawatan</td>
                             <td width="20%" align="center">
@@ -1493,14 +1453,10 @@
                     <div id="form-obat">
                         <div class="row">
                             <label class="col-md-3">Injeksi</label>
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <input class="form-control jenis_injeksi" placeholder="Jenis Injeksi">
                             </div>
-                            <div class="col-md-2">
-                                <input class="form-control kali_injeksi" data-inputmask="'mask': ['9x9']"
-                                       data-mask="">
-                            </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <input class="form-control nilai_injeksi" type="number" placeholder="Nilai">
                             </div>
                             <div class="col-md-1">
@@ -1510,14 +1466,14 @@
                         <div id="set_injeksi"></div>
                         <div class="row jarak">
                             <label class="col-md-3">Oral</label>
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <input class="form-control jenis_oral" placeholder="Jenis Oral">
                             </div>
-                            <div class="col-md-2">
-                                <input class="form-control kali_oral" data-inputmask="'mask': ['9x9']"
-                                       data-mask="">
-                            </div>
-                            <div class="col-md-2">
+                            <%--<div class="col-md-2">--%>
+                                <%--<input class="form-control kali_oral" data-inputmask="'mask': ['9x9']"--%>
+                                       <%--data-mask="">--%>
+                            <%--</div>--%>
+                            <div class="col-md-3">
                                 <input class="form-control nilai_oral" type="number" placeholder="Nilai">
                             </div>
                             <div class="col-md-1">
@@ -1527,14 +1483,14 @@
                         <div id="set_oral"></div>
                         <div class="row jarak">
                             <label class="col-md-3">Lainnya</label>
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <input class="form-control jenis_lainnya" placeholder="Jenis Lainnya">
                             </div>
-                            <div class="col-md-2">
-                                <input class="form-control kali_lainnya" data-inputmask="'mask': ['9x9']"
-                                       data-mask="">
-                            </div>
-                            <div class="col-md-2">
+                            <%--<div class="col-md-5">--%>
+                                <%--<input class="form-control kali_lainnya" data-inputmask="'mask': ['9x9']"--%>
+                                       <%--data-mask="">--%>
+                            <%--</div>--%>
+                            <div class="col-md-3">
                                 <input class="form-control nilai_lainnya" type="number" placeholder="Nilai">
                             </div>
                             <div class="col-md-1">
@@ -1608,12 +1564,6 @@
                         </div>
                     </div>
                     <div id="h_output"></div>
-                    <%--<div id="select_isi"></div>--%>
-                    <%--<div id="resus"></div>--%>
-                    <%--<div id="darah"></div>--%>
-                    <%--<div id="infus"></div>--%>
-                    <%--<div id="inpt_keseimbangan_icu"></div>--%>
-                    <%--<input type="hidden" id="is_new">--%>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -1628,333 +1578,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-icu-injeksi_icu">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a; color: white">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Tambah Data Injeksi
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="box-body">
-                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_icu_injeksi_icu">
-                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
-                        <p id="msg_icu_injeksi_icu"></p>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Waktu</label>
-                            <div class="col-md-9">
-                                <select class="form-control select2 waktu" id="waktu_injeksi_icu" style="width: 100%">
-                                    <option value="">[Select One]</option>
-                                    <option value="07:00">07:00</option>
-                                    <option value="08:00">08:00</option>
-                                    <option value="09:00">09:00</option>
-                                    <option value="10:00">10:00</option>
-                                    <option value="11:00">11:00</option>
-                                    <option value="12:00">12:00</option>
-                                    <option value="13:00">13:00</option>
-                                    <option value="14:00">14:00</option>
-                                    <option value="15:00">15:00</option>
-                                    <option value="16:00">16:00</option>
-                                    <option value="17:00">17:00</option>
-                                    <option value="18:00">18:00</option>
-                                    <option value="19:00">19:00</option>
-                                    <option value="20:00">20:00</option>
-                                    <option value="21:00">21:00</option>
-                                    <option value="22:00">22:00</option>
-                                    <option value="23:00">23:00</option>
-                                    <option value="24:00">24:00</option>
-                                    <option value="01:00">01:00</option>
-                                    <option value="02:00">02:00</option>
-                                    <option value="03:00">03:00</option>
-                                    <option value="04:00">04:00</option>
-                                    <option value="05:00">05:00</option>
-                                    <option value="06:00">06:00</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="injeksi_icu"></div>
-                    <div id="inpt_injeksi_icu"></div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                <button id="save_icu_injeksi_icu" class="btn btn-success pull-right" onclick="saveInputan('injeksi_icu', 'asesmen_icu')"><i class="fa fa-check"></i> Save
-                </button>
-                <button id="load_icu_injeksi_icu" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal-icu-oral_icu">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a; color: white">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Tambah Data Oral
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="box-body">
-                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_icu_oral_icu">
-                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
-                        <p id="msg_icu_oral_icu"></p>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Waktu</label>
-                            <div class="col-md-9">
-                                <select class="form-control select2" id="waktu_oral_icu" style="width: 100%">
-                                    <option value="">[Select One]</option>
-                                    <option value="07:00">07:00</option>
-                                    <option value="08:00">08:00</option>
-                                    <option value="09:00">09:00</option>
-                                    <option value="10:00">10:00</option>
-                                    <option value="11:00">11:00</option>
-                                    <option value="12:00">12:00</option>
-                                    <option value="13:00">13:00</option>
-                                    <option value="14:00">14:00</option>
-                                    <option value="15:00">15:00</option>
-                                    <option value="16:00">16:00</option>
-                                    <option value="17:00">17:00</option>
-                                    <option value="18:00">18:00</option>
-                                    <option value="19:00">19:00</option>
-                                    <option value="20:00">20:00</option>
-                                    <option value="21:00">21:00</option>
-                                    <option value="22:00">22:00</option>
-                                    <option value="23:00">23:00</option>
-                                    <option value="24:00">24:00</option>
-                                    <option value="01:00">01:00</option>
-                                    <option value="02:00">02:00</option>
-                                    <option value="03:00">03:00</option>
-                                    <option value="04:00">04:00</option>
-                                    <option value="05:00">05:00</option>
-                                    <option value="06:00">06:00</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="oral_icu"></div>
-                    <div id="inpt_oral_icu"></div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                <button id="save_icu_oral_icu" class="btn btn-success pull-right" onclick="saveInputan('oral_icu', 'asesmen_icu')"><i class="fa fa-check"></i> Save
-                </button>
-                <button id="load_icu_oral_icu" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal-icu-lain_icu">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a; color: white">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Tambah Data Lain-Lain
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="box-body">
-                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_icu_lain_icu">
-                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
-                        <p id="msg_icu_lain_icu"></p>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Waktu</label>
-                            <div class="col-md-9">
-                                <select class="form-control select2" id="waktu_lain_icu" style="width: 100%">
-                                    <option value="">[Select One]</option>
-                                    <option value="07:00">07:00</option>
-                                    <option value="08:00">08:00</option>
-                                    <option value="09:00">09:00</option>
-                                    <option value="10:00">10:00</option>
-                                    <option value="11:00">11:00</option>
-                                    <option value="12:00">12:00</option>
-                                    <option value="13:00">13:00</option>
-                                    <option value="14:00">14:00</option>
-                                    <option value="15:00">15:00</option>
-                                    <option value="16:00">16:00</option>
-                                    <option value="17:00">17:00</option>
-                                    <option value="18:00">18:00</option>
-                                    <option value="19:00">19:00</option>
-                                    <option value="20:00">20:00</option>
-                                    <option value="21:00">21:00</option>
-                                    <option value="22:00">22:00</option>
-                                    <option value="23:00">23:00</option>
-                                    <option value="24:00">24:00</option>
-                                    <option value="01:00">01:00</option>
-                                    <option value="02:00">02:00</option>
-                                    <option value="03:00">03:00</option>
-                                    <option value="04:00">04:00</option>
-                                    <option value="05:00">05:00</option>
-                                    <option value="06:00">06:00</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="lain_icu"></div>
-                    <div id="inpt_lain_icu"></div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                <button id="save_icu_lain_icu" class="btn btn-success pull-right" onclick="saveInputan('lain_icu', 'asesmen_icu')"><i class="fa fa-check"></i> Save
-                </button>
-                <button id="load_icu_lain_icu" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal-icu-intakea_icu">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a; color: white">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Tambah Data Intakea
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="box-body">
-                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_icu_intakea_icu">
-                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
-                        <p id="msg_icu_intakea_icu"></p>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Waktu</label>
-                            <div class="col-md-9">
-                                <select class="form-control select2" id="waktu_intakea_icu" style="width: 100%">
-                                    <option value="">[Select One]</option>
-                                    <option value="07:00">07:00</option>
-                                    <option value="08:00">08:00</option>
-                                    <option value="09:00">09:00</option>
-                                    <option value="10:00">10:00</option>
-                                    <option value="11:00">11:00</option>
-                                    <option value="12:00">12:00</option>
-                                    <option value="13:00">13:00</option>
-                                    <option value="14:00">14:00</option>
-                                    <option value="15:00">15:00</option>
-                                    <option value="16:00">16:00</option>
-                                    <option value="17:00">17:00</option>
-                                    <option value="18:00">18:00</option>
-                                    <option value="19:00">19:00</option>
-                                    <option value="20:00">20:00</option>
-                                    <option value="21:00">21:00</option>
-                                    <option value="22:00">22:00</option>
-                                    <option value="23:00">23:00</option>
-                                    <option value="24:00">24:00</option>
-                                    <option value="01:00">01:00</option>
-                                    <option value="02:00">02:00</option>
-                                    <option value="03:00">03:00</option>
-                                    <option value="04:00">04:00</option>
-                                    <option value="05:00">05:00</option>
-                                    <option value="06:00">06:00</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="intakea_icu"></div>
-                    <div id="inpt_intakea_icu"></div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                <button id="save_icu_intakea_icu" class="btn btn-success pull-right" onclick="saveInputan('intakea_icu', 'asesmen_icu')"><i class="fa fa-check"></i> Save
-                </button>
-                <button id="load_icu_intakea_icu" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal-icu-output_icu">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a; color: white">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Tambah Data Output
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="box-body">
-                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_icu_output_icu">
-                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
-                        <p id="msg_icu_output_icu"></p>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Waktu</label>
-                            <div class="col-md-9">
-                                <select class="form-control select2" id="waktu_output_icu" style="width: 100%">
-                                    <option value="">[Select One]</option>
-                                    <option value="07:00">07:00</option>
-                                    <option value="08:00">08:00</option>
-                                    <option value="09:00">09:00</option>
-                                    <option value="10:00">10:00</option>
-                                    <option value="11:00">11:00</option>
-                                    <option value="12:00">12:00</option>
-                                    <option value="13:00">13:00</option>
-                                    <option value="14:00">14:00</option>
-                                    <option value="15:00">15:00</option>
-                                    <option value="16:00">16:00</option>
-                                    <option value="17:00">17:00</option>
-                                    <option value="18:00">18:00</option>
-                                    <option value="19:00">19:00</option>
-                                    <option value="20:00">20:00</option>
-                                    <option value="21:00">21:00</option>
-                                    <option value="22:00">22:00</option>
-                                    <option value="23:00">23:00</option>
-                                    <option value="24:00">24:00</option>
-                                    <option value="01:00">01:00</option>
-                                    <option value="02:00">02:00</option>
-                                    <option value="03:00">03:00</option>
-                                    <option value="04:00">04:00</option>
-                                    <option value="05:00">05:00</option>
-                                    <option value="06:00">06:00</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="output_icu"></div>
-                    <div id="inpt_output_icu"></div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                <button id="save_icu_output_icu" class="btn btn-success pull-right" onclick="saveInputan('output_icu', 'asesmen_icu')"><i class="fa fa-check"></i> Save
-                </button>
-                <button id="load_icu_output_icu" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="modal fade" id="modal-icu-asuhan_keperawatan_icu">
-    <div class="modal-dialog" style="width: 80%">
+    <div class="modal-dialog modal-xtra">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -2004,15 +1629,13 @@
                         <thead>
                         <tr style="font-weight: bold">
                             <td width="20%">Diagnosis</td>
-                            <td width="20%">Rencana</td>
+                            <td width="20%">Planning/ Rencana Tindakan</td>
                             <td width="20%">Tindakan</td>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td>
-                                <div id="dia"></div>
-                            </td>
+                            <td><div id="dia"></div></td>
                             <td><div id="rec"></div></td>
                             <td><select id="tin" class="form-control select2" multiple style="width: 100%"></select></td>
                         </tr>
@@ -2021,8 +1644,17 @@
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">
+                            <div class="col-md-12">
+                                <label>Data Subjectif <small style="color: red">(*optional)</small></label>
+                                <textarea class="form-control" rows="3" id="data_sub"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="form-group">
                             <div class="col-md-4">
-                                <label>Data Subjektif</label>
+                                <label>Data Objektif <small style="color: red">(*silahkan pilih sesuai keinginan)</small></label>
                                 <select class="form-control select2" id="askep_subjek" onchange="setSubjektif(this.value)" style="width: 100%"> </select>
                             </div>
                         </div>
