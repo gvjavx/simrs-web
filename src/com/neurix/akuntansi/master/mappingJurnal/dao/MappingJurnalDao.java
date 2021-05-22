@@ -80,7 +80,7 @@ public class MappingJurnalDao extends GenericDao<ImMappingJurnalEntity, String> 
         }*/
             resultQuery =  sqlQuery.list();
             for (Object[] row : resultQuery) {
-                if(row.length == 18) {
+                if(row.length == 19) {
                     ImMappingJurnalEntity imMappingJurnalEntity = new ImMappingJurnalEntity();
                     imMappingJurnalEntity.setMappingJurnalId(row[0] == null ? "" : row[0].toString());
                     imMappingJurnalEntity.setTipeJurnalId(row[1] == null ? "" : row[1].toString());
@@ -101,6 +101,7 @@ public class MappingJurnalDao extends GenericDao<ImMappingJurnalEntity, String> 
                     imMappingJurnalEntity.setKirimList(row[15] == null ? "" : row[15].toString());
                     imMappingJurnalEntity.setDivisiId(row[16] == null ? "" : row[16].toString());
                     imMappingJurnalEntity.setEditBiaya(row[17] == null ? "" : row[17].toString());
+                    imMappingJurnalEntity.setParameterCoa(row[18] == null ? "" : row[18].toString());
                     results.add(imMappingJurnalEntity);
                 }
             }

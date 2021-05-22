@@ -60,12 +60,10 @@
                         <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Mapping Jurnal</h3>
                     </div>
                     <div class="box-body">
-                        <table width="100%" align="center" class="col-md-12">
+                        <table width="100%" align="center" >
                             <tr>
-                                <td align="center" width="100%">
-                                    <s:form id="mappingJurnalForm" method="post" theme="simple"
-                                            namespace="/mappingJurnal" action="search_mappingJurnal.action"
-                                            cssClass="form-horizontal">
+                                <td align="center">
+                                    <s:form id="mappingJurnalForm" method="post" theme="simple" namespace="/mappingJurnal" action="search_mappingJurnal.action" cssClass="form-horizontal">
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -74,15 +72,16 @@
                                             </tr>
                                         </table>
 
-                                        <table >
+                                        <table width="500px">
                                             <tr>
                                                 <td>
                                                     <label class="control-label">
                                                         <small>Tipe Jurnal :</small>
                                                     </label>
                                                 </td>
-                                                <td>
-                                                    <table><small>
+                                                <td >
+                                                    <table width="300px">
+                                                        <small>
                                                         <s:action id="initComboTipeJurnal" namespace="/tipeJurnal"
                                                                   name="initComboTipeJurnal_tipeJurnal"/>
                                                         <s:select list="#initComboTipeJurnal.listOfComboTipeJurnal"
@@ -100,7 +99,8 @@
                                                     </label>
                                                 </td>
                                                 <td>
-                                                    <table><small>
+                                                    <table>
+                                                        <small>
                                                         <s:action id="comboTrans" namespace="/trans"
                                                                   name="initComboTrans_trans"/>
                                                         <s:select list="#comboTrans.listOfComboTrans" id="transId"
@@ -118,7 +118,8 @@
                                                     </label>
                                                 </td>
                                                 <td>
-                                                    <table><small>
+                                                    <table>
+                                                        <small>
                                                         <s:select list="#{'N':'Non-Active'}" id="flag"
                                                                   name="mappingJurnal.flag"
                                                                   headerKey="Y" headerValue="Active"
@@ -134,7 +135,8 @@
                                                     </label>
                                                 </td>
                                                 <td>
-                                                    <table><small>
+                                                    <table>
+                                                        <small>
                                                         <s:action id="koderek" namespace="/kodeRekening"
                                                                   name="initComboKodeRekeningAll_kodeRekening"/>
                                                         <s:select cssStyle="margin-top: 7px; width: 100%" list="#koderek.listOfComboKodeRekening"
@@ -151,7 +153,8 @@
                                                     </label>
                                                 </td>
                                                 <td>
-                                                    <table><small>
+                                                    <table>
+                                                        <small>
                                                         <s:select list="#{'D':'Debit','K':'Kredit'}"
                                                                   name="mappingJurnal.posisi"
                                                                   headerKey="" headerValue="[Select one]"
