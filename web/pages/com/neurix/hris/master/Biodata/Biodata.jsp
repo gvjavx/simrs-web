@@ -470,9 +470,15 @@
                                                         <label><small>Jumlah Anak :</small></label>
                                                     </td>
                                                     <td>
-                                                        <table>
-                                                            <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" disabled="false" cssClass="form-control"/>
-                                                        </table>
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" disabled="false" cssClass="form-control"/>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <input type="checkbox" id="manualPtkp" class="checkZakat" disabled onchange="cekManualPtkp()" />
+                                                                <s:hidden id="flagManualPtkp" name="biodata.flagManualPtkp" />
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             </s:if>
@@ -488,8 +494,17 @@
                                                                 <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="false" disabled="false" cssClass="form-control"/>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <input type="checkbox" id="manualPtkp" class="checkZakat" onchange="cekManualPtkp()" />
-                                                                <s:hidden id="flagManualPtkp" name="biodata.flagManualPtkp" />
+                                                                <table>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="checkbox" id="manualPtkp" class="checkZakat" onchange="cekManualPtkp()" />
+                                                                            <s:hidden id="flagManualPtkp" name="biodata.flagManualPtkp" />
+                                                                        </td>
+                                                                        <td>
+                                                                            <small>(set manual)</small>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -3728,8 +3743,11 @@
         var flagManualPtkp = document.getElementById("flagManualPtkp").value;
         if (flagManualPtkp == "Y") {
             document.getElementById("manualPtkp").checked = true;
+            $("#jumlahAnak").prop("disabled",false);
         } else {
             document.getElementById("manualPtkp").checked = false;
+            $("#jumlahAnak").prop("disabled",true);
+
         }
 
         var flagFingerMobile = document.getElementById("flagFingerMobile").value;

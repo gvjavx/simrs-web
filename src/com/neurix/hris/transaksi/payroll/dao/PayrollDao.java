@@ -8586,8 +8586,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "           from it_hris_absensi_pegawai ap\n" +
                 "           left join it_hris_payroll pay on pay.nip = ap.nip\n" +
                 "           where ap.tanggal between pay.tanggal_awal_lembur and pay.tanggal_akhir_lembur\n" +
-                "           and pay.bulan = '04'\n" +
-                "           and pay.tahun = '2021'\n" +
+                "           and pay.bulan = '"+ bulan +"'\n" +
+                "           and pay.tahun = '"+ tahun +"'\n" +
                 "           group by ap.nip\n" +
                 "        ) absen on absen.nip = py.nip \n" +
                 "where head.bulan = '"+ bulan +"'\n" +

@@ -190,8 +190,8 @@ public class PayrollTempDao extends GenericDao<ItHrisPayrollTempEntity, String> 
                 "       py.position_name\n" +
                 "\n" +
                 "from it_hris_payroll_header head\n" +
-                "       left join it_hris_payroll py on py.payroll_header_id = head.payroll_header_id\n" +
-                "       left join it_hris_payroll_pph pph on pph.payroll_id = py.payroll_id\n" +
+                "       left join it_hris_payroll_temp py on py.payroll_header_id = head.payroll_header_id\n" +
+                "       left join it_hris_payroll_pph_temp pph on pph.payroll_id = py.payroll_id\n" +
                 "       left join im_hris_department dept on dept.department_id = py.department_id\n" +
                 "       left join im_hris_position_bagian bag on bag.bagian_id = py.sub_divisi\n" +
                 "       left join\n" +
@@ -200,17 +200,16 @@ public class PayrollTempDao extends GenericDao<ItHrisPayrollTempEntity, String> 
                 "             sum(realisasi_jam_lembur) as jam_lembur,\n" +
                 "             sum(jam_lembur) as fak_lembur\n" +
                 "           from it_hris_absensi_pegawai ap\n" +
-                "           left join it_hris_payroll pay on pay.nip = ap.nip\n" +
+                "           left join it_hris_payroll_temp pay on pay.nip = ap.nip\n" +
                 "           where ap.tanggal between pay.tanggal_awal_lembur and pay.tanggal_akhir_lembur\n" +
-                "           and pay.bulan = '04'\n" +
-                "           and pay.tahun = '2021'\n" +
+                "           and pay.bulan = '"+ bulan +"'\n" +
+                "           and pay.tahun = '"+ tahun +"'\n" +
                 "           group by ap.nip\n" +
                 "        ) absen on absen.nip = py.nip \n" +
                 "where head.bulan = '"+ bulan +"'\n" +
                 "    and head.tahun = '"+ tahun +"'\n" +
                 "    and head.branch_id = '"+ unit +"'\n" +
                 "    and head.tipe_payroll = 'PY'\n" +
-                "    and head.approval_aks_flag = 'Y'\n" +
                 "    and head.flag = 'Y'\n" +
                 "    order by\n" +
                 "    (  case\n" +

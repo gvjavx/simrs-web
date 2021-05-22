@@ -1001,6 +1001,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                         hsCriteria4.put("flag", "Y");
                         List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                         List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
+                        Double peralihan = 0d;
                         if (biodataEntity.getTipePegawai().equalsIgnoreCase(CommonConstant.TIPE_PEGAWAI_TETAP)) {
                             try {
                                 payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodataEntity.getGolongan(), tahunGaji);
@@ -1010,7 +1011,8 @@ public class AbsensiBoImpl implements AbsensiBo {
                             }
                             for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
                                 gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
-                                sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
+//                                sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
+                                peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(), bean.getTanggal()).doubleValue();
                             }
                         } else if (biodataEntity.getTipePegawai().equalsIgnoreCase(CommonConstant.PEGAWAI_PKWT)) {
                             try {
@@ -1065,8 +1067,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                                 j = j + 1;
                             } while (lamaLembur > 0);
                         }
-                        Double peralihan = 0d;
-                        peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(), bean.getTanggal()).doubleValue();
+
 //                        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 //                        String strDate = dateFormat.format(bean.getTanggal());
 //                        String[] a = strDate.split("-");
