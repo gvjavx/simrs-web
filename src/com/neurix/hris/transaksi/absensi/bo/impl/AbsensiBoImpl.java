@@ -1012,7 +1012,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                             for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
                                 gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
 //                                sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
-                                peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(), bean.getTanggal()).doubleValue();
+                                peralihan = getPeralihanGapok(absensiPegawaiEntity.getNip(), bean.getTanggal()).doubleValue();
                             }
                         } else if (biodataEntity.getTipePegawai().equalsIgnoreCase(CommonConstant.PEGAWAI_PKWT)) {
                             try {

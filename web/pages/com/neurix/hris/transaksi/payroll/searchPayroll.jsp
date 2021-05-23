@@ -1120,7 +1120,7 @@
             var tipePayroll = $(this).attr('draftTipe');
 
             if (confirm('Apakah Anda ingin mencetak detail rekap payroll?')) {
-                window.location.href = 'payrollRekapReportExcel_payroll?branchId='+branchId+'&tahun='+tahun+'&bulan='+bulan;
+                window.location.href = 'payrollRekapReportExcel_payroll?branchId='+branchId+'&tahun='+tahun+'&bulan='+bulan+'&idPayrollHeader='+idPayrollHeader;
             }
         });
 

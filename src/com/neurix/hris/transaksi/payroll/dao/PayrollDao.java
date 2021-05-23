@@ -8699,6 +8699,29 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
         }
         return listOfResult;
     }
+
+    public String statApprovPayroll(String idPayroalHeader){
+        String statPayroll = "";
+        List<Object[]> results = new ArrayList<Object[]>();
+        final String query = "select\n" +
+                "\tapproval_sdm_flag,\n" +
+                "\tapproval_aks_flag\n" +
+                "from it_hris_payroll_header\n" +
+                "where payroll_header_id = '"+ idPayroalHeader +"'\n";
+        results = this.sessionFactory.getCurrentSession().createSQLQuery(query).list();
+
+        if(results != null){
+            if("Y".equalsIgnoreCase(results.get(0)[1].toString())){
+                statPayroll = "approveAKS";
+            }else if("Y".equalsIgnoreCase(results.get(0)[0].toString())){
+                statPayroll = "approveSDM";
+            }else{
+                statPayroll = "inProcess";
+            }
+        }
+        return statPayroll;
+    }
+
     //RAKA-end
 //
 //    public List<ItPayrollEntity> searchReportTarikanPendapatanPPH(final String tahun, final String unit) {

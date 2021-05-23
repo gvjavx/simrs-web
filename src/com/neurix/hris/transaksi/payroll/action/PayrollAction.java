@@ -12346,6 +12346,7 @@ public class PayrollAction extends BaseTransactionAction {
         final String tahun = this.getTahun();
         final String bulan = this.getBulan();
         final String unit = this.getBranchId();
+        final String idHeader = this.getIdPayrollHeader();
         String titleReport = "";
         String filename = "";
         final ApplicationContext ctx = (ApplicationContext)ContextLoader.getCurrentWebApplicationContext();
@@ -12360,7 +12361,7 @@ public class PayrollAction extends BaseTransactionAction {
 
         titleReport = "Rekap Payroll " + branch.getBranchName() + periode;
         filename = "Rekap Payroll " + branch.getBranchName() + periode;
-        listData = payrollBo.searchReportPayroll(bulan, tahun, unit);
+        listData = payrollBo.searchReportPayroll(bulan, tahun, unit, idHeader);
 
         listOfColumn.add("nip");
         listOfColumn.add("nama pegawai");
@@ -12554,7 +12555,7 @@ public class PayrollAction extends BaseTransactionAction {
             // tunjalih
             cellDetail = new CellDetail();
             cellDetail.setCellID(16);
-            cellDetail.setValueCell(data.getTjAlihGapok().doubleValue());
+            cellDetail.setValueCell(data.getTunjAlihTot().doubleValue());
             cellDetail.setAlignmentCell(3);
             listOfCell.add(cellDetail);
 

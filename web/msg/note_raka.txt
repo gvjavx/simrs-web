@@ -1,3 +1,19 @@
+------ 2021-05-22 ===> pelengkapan payroll
+-- untuk pengajuan payroll
+    alter table it_hris_payroll_temp
+    add column flag_koreksi varchar(5),
+    add column note_koreksi varchar(500);
+
+-- update skala pensiun
+    update im_hris_payroll_skala_gaji_pensiun
+    set flag = 'N'
+    where skala_gaji_pensiun_id
+        in ('SGP00163','SGP00164','SGP00165','SGP00166',
+            'SGP00167','SGP00168','SGP00169','SGP00170',
+            'SGP00171','SGP00172','SGP00173','SGP00174',
+            'SGP00175','SGP00176','SGP00177','SGP00178',
+            'SGP00179');
+
 ------ 2021-05-15 ===> keperluan MBT
 -- penambahan status mutasi
     insert into im_hris_status_mutasi(
