@@ -8711,9 +8711,11 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
         results = this.sessionFactory.getCurrentSession().createSQLQuery(query).list();
 
         if(results != null){
-            if("Y".equalsIgnoreCase(results.get(0)[1].toString())){
+            String aks = results.get(0)[1]!=null ? results.get(0)[1].toString() : "N";
+            String sdm = results.get(0)[0]!=null ? results.get(0)[0].toString() : "N";
+            if("Y".equalsIgnoreCase(aks)){
                 statPayroll = "approveAKS";
-            }else if("Y".equalsIgnoreCase(results.get(0)[0].toString())){
+            }else if("Y".equalsIgnoreCase(sdm)){
                 statPayroll = "approveSDM";
             }else{
                 statPayroll = "inProcess";

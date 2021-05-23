@@ -27700,9 +27700,14 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
 
+        List<ImBiodataEntity> listBiodata = new ArrayList<>();
         ImBiodataEntity biodata = new ImBiodataEntity();
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("nip", nip);
+        hsCriteria.put("flag", "Y");
         try{
-            biodata = biodataDao.getById("nip", nip);
+            listBiodata = biodataDao.getByCriteria(hsCriteria);
+            biodata = listBiodata.get(0);
         }catch(HibernateException e){
             logger.error("[PayrollBoImpl.getBiayaLembur] Error, " + e.getMessage());
             throw new GeneralBOException("Problem when retrieving Biopdata, " + e.getMessage());
