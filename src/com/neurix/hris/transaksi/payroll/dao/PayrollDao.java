@@ -414,7 +414,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "             left join im_hris_payroll_skala_gaji_pensiun skala_gaji_pensiun\n" +
                 "               on skala_gaji_pensiun.tipe_dapen_id = pegawai.dana_pensiun and\n" +
                 "                  skala_gaji_pensiun.golongan_id = pegawai.golongan_id and\n" +
-                "                  skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol\n" +
+                "                  skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol and\n" +
+                "                  skala_gaji_pensiun.flag = 'Y'\n" +
                 "             left join im_hris_payroll_skala_gaji_dplk_pegawai skala_gaji_dplk_pegawai\n" +
                 "               on skala_gaji_dplk_pegawai.golongan_id = pegawai.golongan_id\n" +
                 "             left join im_hris_payroll_bpjs param_bpjs on param_bpjs.branch_id = :branchId and param_bpjs.flag = 'Y'\n" +
@@ -767,7 +768,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "             left join im_hris_payroll_skala_gaji_pensiun skala_gaji_pensiun\n" +
                 "               on skala_gaji_pensiun.tipe_dapen_id = pegawai.dana_pensiun and\n" +
                 "                  skala_gaji_pensiun.golongan_id = pegawai.golongan_id and\n" +
-                "                  skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol\n" +
+                "                  skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol and\n" +
+                "                  skala_gaji_pensiun.flag = 'Y'\n" +
                 "             left join im_hris_payroll_skala_gaji_dplk_pegawai skala_gaji_dplk_pegawai\n" +
                 "               on skala_gaji_dplk_pegawai.golongan_id = pegawai.golongan_id\n" +
                 "             left join im_hris_payroll_bpjs param_bpjs on param_bpjs.branch_id = '01' and param_bpjs.flag = 'Y'\n" +
@@ -2436,7 +2438,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                   left join im_hris_payroll_skala_gaji_pensiun skala_gaji_pensiun\n" +
                 "                     on skala_gaji_pensiun.tipe_dapen_id = pegawai.dana_pensiun and\n" +
                 "                        skala_gaji_pensiun.golongan_id = pegawai.golongan_id and\n" +
-                "                        skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol\n" +
+                "                        skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol and\n" +
+                "                        skala_gaji_pensiun.flag = 'Y'\n" +
                 "                   left join im_hris_payroll_skala_gaji_dplk_pegawai skala_gaji_dplk_pegawai\n" +
                 "                     on skala_gaji_dplk_pegawai.golongan_id = pegawai.golongan_id\n" +
                 "                   left join it_hris_payroll transaksi_payroll\n" +
@@ -2858,7 +2861,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                   left join im_hris_payroll_skala_gaji_pensiun skala_gaji_pensiun\n" +
                 "                     on skala_gaji_pensiun.tipe_dapen_id = pegawai.dana_pensiun and\n" +
                 "                        skala_gaji_pensiun.golongan_id = pegawai.golongan_id and\n" +
-                "                        skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol\n" +
+                "                        skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol and\n" +
+                "                        skala_gaji_pensiun.flag = 'Y'\n" +
                 "                   left join im_hris_payroll_skala_gaji_dplk_pegawai skala_gaji_dplk_pegawai\n" +
                 "                     on skala_gaji_dplk_pegawai.golongan_id = pegawai.golongan_id\n" +
                 "                   left join it_hris_payroll transaksi_payroll\n" +
