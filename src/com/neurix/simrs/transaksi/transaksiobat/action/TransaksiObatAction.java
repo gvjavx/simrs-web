@@ -1073,9 +1073,12 @@ public class TransaksiObatAction extends BaseMasterAction {
                 }
 
                 try {
-                    // create jurnal Pengeluaran Obat Apotik
-                    JurnalResponse jurnalResponse = createJurnalPengeluaranObatApotik(idApproval);
+                     //create jurnal Pengeluaran Obat Apotik
+                    //JurnalResponse jurnalResponse = createJurnalPengeluaranObatApotik(idApproval);
+                    JurnalResponse jurnalResponse = new JurnalResponse();
+                    jurnalResponse.setStatus("success");
                     if ("error".equalsIgnoreCase(jurnalResponse.getStatus())) {
+                        response.setMessage(jurnalResponse.getMsg());
                         return response;
                     } else {
                         obatDetail.setNoJurnal(jurnalResponse.getNoJurnal());

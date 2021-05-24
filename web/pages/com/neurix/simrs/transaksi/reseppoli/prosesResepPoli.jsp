@@ -1298,7 +1298,7 @@
                     $('#info_dialog').dialog('close');
                     $('#waiting_dialog').dialog('close');
                     $('#error_dialog').dialog('open');
-                    $('#errorMessage').text(response.message);
+                    $('#errorMessage').text(response.msg);
                 }
             }
         });

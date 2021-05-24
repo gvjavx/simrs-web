@@ -1452,22 +1452,27 @@ public class PeriksaLabAction extends BaseTransactionAction {
         PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        List<Asesmen> asesmenList = new ArrayList<>();
         if (data != null && !"".equalsIgnoreCase(data)) {
             try {
-                JSONObject object = new JSONObject(data);
-                if(object != null){
-                    Asesmen asesmen = new Asesmen();
-                    asesmen.setIdDetailCheckup(object.getString("id_detail_checkup"));
-                    asesmen.setParameter(object.getString("parameter"));
-                    asesmen.setJawaban(object.getString("jawaban"));
-                    asesmen.setKeterangan(object.getString("keterangan"));
-                    asesmen.setFlag("C");
-                    asesmen.setAction("C");
-                    asesmen.setCreatedDate(updateTime);
-                    asesmen.setCreatedWho(userLogin);
-                    asesmen.setLastUpdate(updateTime);
-                    asesmen.setLastUpdateWho(userLogin);
-                    periksaLabBo.saveAsesmen(asesmen);
+                JSONArray json = new JSONArray(data);
+                if(json != null){
+                    for (int i=0; i<json.length(); i++){
+                        JSONObject object = json.getJSONObject(i);
+                        Asesmen asesmen = new Asesmen();
+                        asesmen.setIdDetailCheckup(object.getString("id_detail_checkup"));
+                        asesmen.setParameter(object.getString("parameter"));
+                        asesmen.setJawaban(object.getString("jawaban"));
+                        asesmen.setKeterangan(object.getString("keterangan"));
+                        asesmen.setFlag("Y");
+                        asesmen.setAction("C");
+                        asesmen.setCreatedDate(updateTime);
+                        asesmen.setCreatedWho(userLogin);
+                        asesmen.setLastUpdate(updateTime);
+                        asesmen.setLastUpdateWho(userLogin);
+                        asesmenList.add(asesmen);
+                    }
+                    periksaLabBo.saveAsesmen(asesmenList);
                     response.setStatus("success");
                 }else{
                     response.setStatus("error");
