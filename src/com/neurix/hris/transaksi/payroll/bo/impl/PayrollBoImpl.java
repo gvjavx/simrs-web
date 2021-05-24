@@ -1062,6 +1062,10 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         pegawaiPayroll.setTotalIuranBpjsTkKary(pegawaiPayroll.getTotalIuranBpjsTkKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalIuranBpjsTkKaryNilai(),"###,###") : "");
         pegawaiPayroll.setTotalIuranBpjsTkPers(pegawaiPayroll.getTotalIuranBpjsTkPersNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalIuranBpjsTkPersNilai(),"###,###") : "");
 
+        pegawaiPayroll.setFlagKoreksi(itHrisPayrollTempEntity.getFlagKoreksi());
+        pegawaiPayroll.setNoteKoreksi(itHrisPayrollTempEntity.getNoteKoreksi());
+
+
         Set<ItHrisPayrollPphTempEntity> itHrisPayrollPphTempEntitySet = itHrisPayrollTempEntity.getItHrisPayrollPphTemp();
 
         if (!itHrisPayrollPphTempEntitySet.isEmpty()) {

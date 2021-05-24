@@ -600,6 +600,20 @@
                             <%--</div>--%>
 
                         </div>
+                        <%--<div class="col-sm-4">--%>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="control-label col-sm-5" >Koreksi :</label>--%>
+                                <%--<div class="col-sm-6">--%>
+                                    <%--<input style="text-align: right" readonly type="text" class="form-control nip" id="flagKoreksi" name="flagKoreksi">--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="control-label col-sm-5" >Catatan :</label>--%>
+                                <%--<div class="col-sm-6">--%>
+                                    <%--<textarea rows="6" style="text-align: right" readonly type="text" class="form-control nip" id="noteKoreksi" name="noteKoreksi"></textarea>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                     </div>
                     <div class="row" id="totalAMod">
                         <div class="col-sm-4" id="komponenA">
@@ -1158,6 +1172,9 @@
             $('#pphSeharusnya').val(itemData.pphSeharusnya);
             $('#selisihPph').val(itemData.selisihPph);
 
+            //koreksi dari aks
+            // $('#noteKoreksi').val(itemData.noteKoreksi);
+            // $('#flagKoreksi').val(itemData.flagKoreksi);
         });
 
         $('#modal-edit').find('.modal-title').text('Detail Payroll');
