@@ -534,11 +534,11 @@
                                         </td>
                                     </s:else>
                                 </tr>
-
-
                             </s:iterator>
                             </tbody>
                         </table>
+                        <%--<textarea rows="3" id="signa-racik" class="form-control">--%>
+                        <%--</textarea>--%>
                     </div>
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
@@ -1129,7 +1129,7 @@
         var qtyLembar = 0;
         var qtyBiji = 0;
         var flagRacik = $("#flag-racik").val();
-        alert(flagRacik);
+        //alert(flagRacik);
 
         $.each(data, function (i, item) {
             var expired = data[i]["Expired Date"];
