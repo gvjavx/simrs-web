@@ -740,6 +740,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
     public CrudResponse saveUangMuka(String id, String idPasien, String biaya, String jumlahDibayar, String metodeBayar, String kodeBank, String noRekening) {
         CrudResponse response = new CrudResponse();
 
+        kodeBank = "tunai".equalsIgnoreCase(metodeBayar) ? CommonConstant.KAS_TUNAI : kodeBank;
+
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
         KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
@@ -793,6 +795,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         hsCriteria.put("uang_muka", listMapUangMuka);
         hsCriteria.put("kas", listMapKas);
+        hsCriteria.put("user_id", CommonUtil.userIdLogin());
+        hsCriteria.put("user_who", CommonUtil.userLogin());
 
         try {
 

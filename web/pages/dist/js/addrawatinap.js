@@ -4618,15 +4618,25 @@ function setDiskonHarga(id) {
                 if (jenisPeriksaPasien == "bpjs") {
                     tarif = res.tarifBpjs;
                 } else if (jenisPeriksaPasien == "bpjs_rekanan" || jenisPeriksaPasien == "rekanan"){
-                    TindakanRawatAction.getTarifDetailRekanaOps(idDetailCheckup, id, function (res2) {
-                        if (jenisPeriksaPasien == "bpjs_rekanan"){
-                            disk = res2.diskonBpjs;
-                            tarif = res2.tarifBpjs;
-                        }
 
-                        if (jenisPeriksaPasien == "rekanan"){
-                            disk = res2.diskonNonBpjs;
-                            tarif = res2.tarif;
+                    if (jenisPeriksaPasien == "rekanan"){
+                        tarif = res.tarif;
+                    } else {
+                        tarif = res.tarifBpjs;
+                    }
+
+                    TindakanRawatAction.getTarifDetailRekanaOps(idDetailCheckup, id, function (res2) {
+
+                        if (res2 != null){
+                            if (jenisPeriksaPasien == "bpjs_rekanan"){
+                                disk = res2.diskonBpjs;
+                                tarif = res2.tarifBpjs;
+                            }
+
+                            if (jenisPeriksaPasien == "rekanan"){
+                                disk = res2.diskonNonBpjs;
+                                tarif = res2.tarif;
+                            }
                         }
                     });
 
