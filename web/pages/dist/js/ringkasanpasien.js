@@ -303,6 +303,7 @@ function saveRingkasanPasien(jenis, ket) {
                     'jawaban': terapi,
                     'keterangan': jenis,
                     'jenis': 'ringkasan_pulang',
+                    'tipe': 'terapi_pulang',
                     'id_detail_checkup': idDetailCheckup
                 });
             }

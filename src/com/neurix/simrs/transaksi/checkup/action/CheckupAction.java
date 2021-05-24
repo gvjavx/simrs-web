@@ -2024,9 +2024,10 @@ public class CheckupAction extends BaseMasterAction {
 
         try {
             response = bpjsBo.caraRujukanBerdasarNomorkartuBpjs(noBpjs, jenisCari, unitId);
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             logger.error("[CheckupAction.checkStatusBpjs] ERROR " + e.getMessage());
-            addActionError("[CheckupAction.checkStatusBpjs] ERROR " + e.getMessage());
+            response.setStatus("error");
+            response.setMessage(e.getMessage());
         }
 
         logger.info("[CheckupAction.checkStatusBpjs] END process <<<");

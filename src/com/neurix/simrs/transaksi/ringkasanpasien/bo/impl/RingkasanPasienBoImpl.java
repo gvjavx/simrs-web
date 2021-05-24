@@ -223,7 +223,7 @@ public class RingkasanPasienBoImpl implements RingkasanPasienBo {
                             checkup.setTtdDokter(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getJawaban());
                         }
 
-                        if("Terapi Pulang".equalsIgnoreCase(entity.getParameter())){
+                        if("terapi_pulang".equalsIgnoreCase(entity.getTipe())){
                             if(entity.getJawaban() != null){
                                 String[] row = entity.getJawaban().split("=");
                                 if (row.length > 0){

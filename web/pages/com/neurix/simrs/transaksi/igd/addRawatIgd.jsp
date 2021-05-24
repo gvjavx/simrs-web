@@ -1305,7 +1305,7 @@
                     </div>
                     <div class="form-group" id="form-list" style="display: none">
                         <label class="col-md-12">
-                            <table id="table_list_tindakan" class="table table-bordered table-hover" style="font-size: 12px; margin-top: 20px">
+                            <table id="table_list_tindakan" class="table table-bordered table-hover" style="font-size: 12px; margin-top: 20px; width: 100%">
                                 <thead>
                                 <tr>
                                     <td>Dokter</td>

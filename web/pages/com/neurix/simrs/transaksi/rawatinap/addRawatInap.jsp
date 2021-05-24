@@ -858,33 +858,19 @@
                                                     onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this.value)">
                                                 <option value="">-</option>
                                                 <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
-                                                    <s:if test='rawatInap.idJenisPeriksa == "umum" || rawatInap.idJenisPeriksa == "rekanan"'>
-                                                        <option value="selesai">Selesai</option>
-                                                        <option value="rawat_intensif">Rawat Intensif</option>
-                                                        <option value="rawat_isolasi">Rawat Isolasi</option>
-                                                        <option value="kamar_operasi">Kamar Operasi</option>
-                                                        <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
-                                                            <option value="ruang_bersalin">Ruang Bersalin</option>
-                                                        </s:if>
-                                                        <option value="rujuk_rs_lain">Dirujuk</option>
-                                                        <option value="kontrol_ulang">Kontrol Ulang</option>
+                                                    <option value="selesai">Selesai</option>
+                                                    <option value="rawat_intensif">Rawat Intensif</option>
+                                                    <option value="rawat_isolasi">Rawat Isolasi</option>
+                                                    <option value="kamar_operasi">Kamar Operasi</option>
+                                                    <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
+                                                        <option value="ruang_bersalin">Ruang Bersalin</option>
                                                     </s:if>
-                                                    <s:elseif test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "asuransi"'>
-                                                        <option value="selesai">Selesai</option>
-                                                        <option value="rawat_intensif">Rawat Intensif</option>
-                                                        <option value="rawat_isolasi">Rawat Isolasi</option>
-                                                        <option value="kamar_operasi">Kamar Operasi</option>
-                                                        <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
-                                                            <option value="ruang_bersalin">Ruang Bersalin</option>
-                                                        </s:if>
-                                                        <option value="rujuk_rs_lain">Dirujuk</option>
-                                                        <option value="kontrol_ulang">Kontrol Ulang</option>
+                                                    <option value="hemodialisa">Hemodialisa</option>
+                                                    <option value="rujuk_rs_lain">Dirujuk</option>
+                                                    <option value="kontrol_ulang">Kontrol Ulang</option>
+                                                    <s:if test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "asuransi"'>
                                                         <option value="lanjut_biaya">Lanjut Biaya</option>
-                                                    </s:elseif>
-                                                    <s:else>
-                                                        <option value="selesai">Selesai</option>
-                                                        <option value="kontrol_ulang">Kontrol Ulang</option>
-                                                    </s:else>
+                                                    </s:if>
                                                 </s:if>
                                                 <s:elseif test='rawatInap.kategoriRuangan == "rawat_intensif"'>
                                                     <s:if test='rawatInap.isStay == "Y"'>
@@ -958,6 +944,14 @@
                                                     <option value="rawat_intensif">Rawat Intensif</option>
                                                     <option value="rawat_isolasi">Rawat Isolasi</option>
                                                     <option value="kamar_operasi">Kamar Operasi</option>
+                                                </s:elseif>
+                                                <s:elseif test='rawatInap.kategoriRuangan == "hemodialisa"'>
+                                                    <s:if test='rawatInap.isStay == "Y"'>
+                                                        <option value="kembali_ke_inap">Kembali Ke Inap</option>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <option value="rawat_inap">Rawat Inap</option>
+                                                    </s:else>
                                                 </s:elseif>
                                             </select>
                                         </div>
@@ -1193,6 +1187,13 @@
                                                         class="fa fa-arrow-left hvr-icon"></i> Back
                                             </a>
                                         </s:elseif>
+                                        <s:elseif test='rawatInap.kategoriRuangan == "hemodialisa"'>
+                                            <a href="initForm_hemodialisa.action" class="btn btn-warning hvr-icon-wobble-horizontal"
+                                               style="margin-top: 15px;">
+                                                <i
+                                                        class="fa fa-arrow-left hvr-icon"></i> Back
+                                            </a>
+                                        </s:elseif>
                                         <button class="btn btn-success hvr-icon-pulse-grow" onclick="confirmPemeriksaanPasien()"
                                                 style="margin-top: 15px;" id="save_ket"><i
                                                 class="fa fa-check hvr-icon"></i> Selesai
@@ -1394,7 +1395,7 @@
                     </div>
                     <div class="form-group" id="form-list" style="display: none">
                         <label class="col-md-12">
-                            <table id="table_list_tindakan" class="table table-bordered table-hover" style="font-size: 12px; margin-top: 20px">
+                            <table id="table_list_tindakan" class="table table-bordered table-hover" style="font-size: 12px; margin-top: 20px; width: 100%">
                                 <thead>
                                 <tr>
                                     <td>Dokter</td>
@@ -4703,6 +4704,13 @@
             $('#rr').addClass('active');
             urlPage = 'recoveryroom';
             $('#pel_ri_active, #rr').addClass('active');
+            $('#pel_ri_open').addClass('menu-open');
+        }
+        if(kategoriRuangan == 'hemodialisa'){
+            $('#title-pages').text("Hemodialisa");
+            $('#hemodialisa').addClass('active');
+            urlPage = 'hemodialisa';
+            $('#pel_ri_active, #hemodialisa').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
         }
 

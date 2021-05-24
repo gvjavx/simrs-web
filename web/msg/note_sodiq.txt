@@ -2689,8 +2689,8 @@ ADD COLUMN tipe VARCHAR(100);
 6. Penambahan Notif Lab dan Radiologi di halaman periksa Rawat Jalan, Rawat Igd, dan Rawat Inap
 7. Penambahan Label CITO pada pemeriksaan Lab dan Radiologi
 8. Perbaikan Resume Medis Rawat Jalan dan IGD
-
-
+9. Perbaikan Resume Medis Rawat Inap
+10. Penambahan Pindah Ke Hemodialisa Di Rawat Inap
 
 /=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
 ---------------------------------B E L U M - D I P R O D -------------------------------------------------------
@@ -2743,6 +2743,28 @@ ADD COLUMN is_cito VARCHAR(1);
 
 ALTER TABLE it_simrs_header_pemeriksaan
 ADD COLUMN is_read_hasil VARCHAR(1);
+
+--FUNCTION
+INSERT INTO im_functions VALUES
+(6928, 'Hemodialisa', '/hemodialisa/initForm_hemodialisa.action', 2600, 2, now(), 'admin', now(), 'admin', 'Y','C', 6928),
+(6929, 'init', '/hemodialisa/initForm_hemodialisa.action', 6928, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6930, 'search', '/hemodialisa/searchHemodialisa_hemodialisa.action', 6928, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6931, 'add', '/hemodialisa/add_hemodialisa.action', 6928, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6928, 32, 'Y', now(), now(), 'admin', 'admin'),
+(6929, 32, 'Y', now(), now(), 'admin', 'admin'),
+(6930, 32, 'Y', now(), now(), 'admin', 'admin'),
+(6931, 32, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE im_simrs_lab
+ADD COLUMN is_asesmen VARCHAR(1);
+
+UPDATE im_simrs_lab
+SET is_asesmen = 'Y'
+WHERE id_lab IN ('LAB00000012','LAB00000010');
+
+
 
 
 

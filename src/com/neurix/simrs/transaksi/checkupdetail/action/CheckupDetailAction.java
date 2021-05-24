@@ -5064,6 +5064,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             if ("SP15".equalsIgnoreCase(tipe) || "SP16".equalsIgnoreCase(tipe) || "SP17".equalsIgnoreCase(tipe) || "SP19".equalsIgnoreCase(tipe)) {
                 String penunjang = checkupBoProxy.getPenunjangMedis(checkup.getIdDetailCheckup(), null);
                 String terapi = checkupBoProxy.getResepPasien(checkup.getIdDetailCheckup());
+                String diagnosaMasuk = checkupBoProxy.getDiagnosaMasuk(checkup.getIdDetailCheckup());
                 String diagnosaPrimer = checkupBoProxy.getDiagnosaPrimer(checkup.getIdDetailCheckup());
                 String diagnosaSekunder = checkupBoProxy.getDiagnosaSekunder(checkup.getIdDetailCheckup());
                 String tindakanIcd9 = checkupBoProxy.getTindakanRawatICD9(checkup.getIdDetailCheckup());
@@ -5081,7 +5082,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 DokterTeam dokterTeam = teamDokterBoProxy.getNamaDokter(checkup.getIdDetailCheckup(), false);
                 reportParams.put("dokter", dokterTeam.getNamaDokter());
                 reportParams.put("sip", dokterTeam.getSip());
-                reportParams.put("diagnosaMasuk", diagnosaPrimer);
+                reportParams.put("diagnosaMasuk", diagnosaMasuk);
                 reportParams.put("indikasi", checkup.getIndikasi());
 
                 if("SP15".equalsIgnoreCase(tipe)){

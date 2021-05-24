@@ -360,6 +360,27 @@ function selectKeterangan(idKtg) {
             $('#form_order_pemeriksaan').hide();
             $('#body_order_pemeriksaan').html('');
 
+        }else if (idKtg == "hemodialisa") {
+            getKamar(null, 'hemodialisa');
+            $('#label_kamar').text('Hemodialisa');
+            $('#form-catatan').show();
+            $('#form-kamar').show();
+            if (kategoriRuangan == 'rawat_inap') {
+                $('#form-stay').show();
+            }
+
+            $('#form-selesai').hide();
+            $('#form-ket-rawat_inap').hide();
+            $('#form-rs-rujukan').hide();
+            $('#form-tgl-kontrol').hide();
+            $('#form-pemeriksaan').hide();
+            $('#form-kelas_kamar').hide();
+            $('#form-asesmen').show();
+            $('#title_asesmen').html(keteranganPindah);
+            $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ri\',\'asesmen_pindah\')');
+            $('#form_order_pemeriksaan').hide();
+            $('#body_order_pemeriksaan').html('');
+
         } else if (idKtg == "rr") {
             getKamar(null, 'rr');
             $('#label_kamar').text('Ruangan');
@@ -1608,146 +1629,148 @@ function saveLab(id) {
     var idParameter = $('.id_parameter_pemeriksaan');
     var jenisPemeriksaan = $('#select-jenis-pemeriksaan').val();
 
-    if(table > 0){
-        var saveCek = false;
-        var waktu = "";
-        if (cekPending) {
-            if (tglPending && jamPending != '') {
+    if(!cekSession()){
+        if(table > 0){
+            var saveCek = false;
+            var waktu = "";
+            if (cekPending) {
+                if (tglPending && jamPending != '') {
+                    saveCek = true;
+                    waktu = tglPending.split("-").reverse().join("-") + " " + jamPending + ":00";
+                }
+            } else {
                 saveCek = true;
-                waktu = tglPending.split("-").reverse().join("-") + " " + jamPending + ":00";
             }
-        } else {
-            saveCek = true;
-        }
-        if(saveCek){
-
-            if(id != ''){
-                ttd = false;
-            }
-
-            if(!ttd){
-                var pemeriksan = [];
-                $.each(namaPemeriksaan, function (i, item) {
-                    if(item.value){
-                        var tempItem = [];
-                        if("N" == isLuar){
-                            var tmep = parameterPemeriksaan[i].value;
-                            var imep = idParameter[i].value;
-                            if(tmep != '' && imep != ''){
-                                var pp = tmep.split("#");
-                                var mp = imep.split("#");
-                                $.each(pp, function (i, item) {
-                                    tempItem.push({
-                                        'id_parameter': mp[i],
-                                        'nama_parameter': item
-                                    })
-                                });
-                            }
-                        }else{
-                            var tmep = parameterPemeriksaan[i].value;
-                            if(tmep != ''){
-                                var pp = tmep.split("#");
-                                $.each(pp, function (i, item) {
-                                    tempItem.push({
-                                        'id_parameter': "",
-                                        'nama_parameter': item
-                                    })
-                                });
-                            }
-                        }
-
-                        pemeriksan.push({
-                            'id_pemeriksaan': idPemeriksaan[i].value,
-                            'nama_pemeriksaan': item.value,
-                            'list_parameter': JSON.stringify(tempItem)
-                        });
-                    }
-                });
+            if(saveCek){
 
                 if(id != ''){
-                    var data = {
-                        'id_header_pemeriksaan': id,
-                        'list_pemeriksaan': JSON.stringify(pemeriksan),
-                        'is_luar': isLuar,
-                        'id_kategori_lab': idKategori,
-                        'jenis_pemeriksaan': jenisPemeriksaan,
-                        'tarif_lab_luar': tarifLabLuar,
-                        'is_cito': isCito
-                    }
-                    var result = JSON.stringify(data);
-                    $('#save_lab').hide();
-                    $('#load_lab').show();
-                    dwr.engine.setAsync(true);
-                    PeriksaLabAction.editOrderLab(result, {
-                        callback: function (response) {
-                            if (response.status == "success") {
-                                dwr.engine.setAsync(false);
-                                listLab();
-                                $('#modal-lab').modal('hide');
-                                $('#info_dialog').dialog('open');
-                                $('#close_pos').val(4);
-                            } else {
-                                $('#warning_lab').show().fadeOut(5000);
-                                $('#msg_lab').text(response.msg);
-                                $('#modal-lab').scrollTop(0);
+                    ttd = false;
+                }
+
+                if(!ttd){
+                    var pemeriksan = [];
+                    $.each(namaPemeriksaan, function (i, item) {
+                        if(item.value){
+                            var tempItem = [];
+                            if("N" == isLuar){
+                                var tmep = parameterPemeriksaan[i].value;
+                                var imep = idParameter[i].value;
+                                if(tmep != '' && imep != ''){
+                                    var pp = tmep.split("#");
+                                    var mp = imep.split("#");
+                                    $.each(pp, function (i, item) {
+                                        tempItem.push({
+                                            'id_parameter': mp[i],
+                                            'nama_parameter': item
+                                        })
+                                    });
+                                }
+                            }else{
+                                var tmep = parameterPemeriksaan[i].value;
+                                if(tmep != ''){
+                                    var pp = tmep.split("#");
+                                    $.each(pp, function (i, item) {
+                                        tempItem.push({
+                                            'id_parameter': "",
+                                            'nama_parameter': item
+                                        })
+                                    });
+                                }
                             }
+
+                            pemeriksan.push({
+                                'id_pemeriksaan': idPemeriksaan[i].value,
+                                'nama_pemeriksaan': item.value,
+                                'list_parameter': JSON.stringify(tempItem)
+                            });
                         }
                     });
+
+                    if(id != ''){
+                        var data = {
+                            'id_header_pemeriksaan': id,
+                            'list_pemeriksaan': JSON.stringify(pemeriksan),
+                            'is_luar': isLuar,
+                            'id_kategori_lab': idKategori,
+                            'jenis_pemeriksaan': jenisPemeriksaan,
+                            'tarif_lab_luar': tarifLabLuar,
+                            'is_cito': isCito
+                        }
+                        var result = JSON.stringify(data);
+                        $('#save_lab').hide();
+                        $('#load_lab').show();
+                        dwr.engine.setAsync(true);
+                        PeriksaLabAction.editOrderLab(result, {
+                            callback: function (response) {
+                                if (response.status == "success") {
+                                    dwr.engine.setAsync(false);
+                                    listLab();
+                                    $('#modal-lab').modal('hide');
+                                    $('#info_dialog').dialog('open');
+                                    $('#close_pos').val(4);
+                                } else {
+                                    $('#warning_lab').show().fadeOut(5000);
+                                    $('#msg_lab').text(response.msg);
+                                    $('#modal-lab').scrollTop(0);
+                                }
+                            }
+                        });
+                    }else{
+                        var data = {
+                            'id_detail_checkup': idDetailCheckup,
+                            'list_pemeriksaan': JSON.stringify(pemeriksan),
+                            'is_luar': isLuar,
+                            'id_dokter_pengirim': idDokter,
+                            'nama_dokter_pengirim':namaDokter,
+                            'id_kategori_lab': idKategori,
+                            'waktu_pending': waktu,
+                            'ttd_pengirim': ttdPengirim,
+                            'jenis_pemeriksaan': jenisPemeriksaan,
+                            'tarif_lab_luar': tarifLabLuar,
+                            'is_cito': isCito
+                        }
+                        var result = JSON.stringify(data);
+                        $('#save_lab').hide();
+                        $('#load_lab').show();
+                        dwr.engine.setAsync(true);
+                        PeriksaLabAction.saveOrderLab(result, {
+                            callback: function (response) {
+                                if (response.status == "success") {
+                                    dwr.engine.setAsync(false);
+                                    listLab();
+                                    $('#modal-lab').modal('hide');
+                                    $('#info_dialog').dialog('open');
+                                    $('#close_pos').val(4);
+                                    $('#save_lab').show();
+                                    $('#load_lab').hide();
+                                } else {
+                                    $('#warning_lab').show().fadeOut(5000);
+                                    $('#msg_lab').text(response.msg);
+                                    $('#modal-lab').scrollTop(0);
+                                    $('#save_lab').show();
+                                    $('#load_lab').hide();
+                                }
+                            }
+                        });
+                    }
                 }else{
-                    var data = {
-                        'id_detail_checkup': idDetailCheckup,
-                        'list_pemeriksaan': JSON.stringify(pemeriksan),
-                        'is_luar': isLuar,
-                        'id_dokter_pengirim': idDokter,
-                        'nama_dokter_pengirim':namaDokter,
-                        'id_kategori_lab': idKategori,
-                        'waktu_pending': waktu,
-                        'ttd_pengirim': ttdPengirim,
-                        'jenis_pemeriksaan': jenisPemeriksaan,
-                        'tarif_lab_luar': tarifLabLuar,
-                        'is_cito': isCito
-                    }
-                    var result = JSON.stringify(data);
-                    $('#save_lab').hide();
-                    $('#load_lab').show();
-                    dwr.engine.setAsync(true);
-                    PeriksaLabAction.saveOrderLab(result, {
-                        callback: function (response) {
-                            if (response.status == "success") {
-                                dwr.engine.setAsync(false);
-                                listLab();
-                                $('#modal-lab').modal('hide');
-                                $('#info_dialog').dialog('open');
-                                $('#close_pos').val(4);
-                                $('#save_lab').show();
-                                $('#load_lab').hide();
-                            } else {
-                                $('#warning_lab').show().fadeOut(5000);
-                                $('#msg_lab').text(response.msg);
-                                $('#modal-lab').scrollTop(0);
-                                $('#save_lab').show();
-                                $('#load_lab').hide();
-                            }
-                        }
-                    });
+                    $('#warning_lab').show().fadeOut(5000);
+                    $('#msg_lab').text("Silhakan cek tanda tangan dokter pengirim...!");
+                    $('#modal-lab').scrollTop(0);
                 }
             }else{
                 $('#warning_lab').show().fadeOut(5000);
-                $('#msg_lab').text("Silhakan cek tanda tangan dokter pengirim...!");
+                $('#msg_lab').text("Silhakan cek kembali tanggal dan jam inputan...!");
                 $('#modal-lab').scrollTop(0);
+                if (tglPending == '' || jamPending == '') {
+                    $('#war_pending').show();
+                }
             }
         }else{
             $('#warning_lab').show().fadeOut(5000);
-            $('#msg_lab').text("Silhakan cek kembali tanggal dan jam inputan...!");
+            $('#msg_lab').text("Silhakan cek kembali inputan berikut...!");
             $('#modal-lab').scrollTop(0);
-            if (tglPending == '' || jamPending == '') {
-                $('#war_pending').show();
-            }
         }
-    }else{
-        $('#warning_lab').show().fadeOut(5000);
-        $('#msg_lab').text("Silhakan cek kembali inputan berikut...!");
-        $('#modal-lab').scrollTop(0);
     }
 }
 
@@ -4050,8 +4073,8 @@ function confirmPemeriksaanPasien() {
                 cek = true;
             }
         }
-        if (tindakLanjut == "rawat_intensif" || tindakLanjut == "rawat_isolasi" ||
-            tindakLanjut == "kamar_operasi" || tindakLanjut == "ruang_bersalin" || tindakLanjut == "rr") {
+        if (tindakLanjut == "rawat_intensif" || tindakLanjut == "rawat_isolasi" || tindakLanjut == "rr" ||
+            tindakLanjut == "kamar_operasi" || tindakLanjut == "ruang_bersalin" || tindakLanjut == "hemodialisa") {
             if (idRuangan != '') {
                 cek = true;
             }
@@ -4203,6 +4226,7 @@ function savePemeriksaanPasien() {
                     }
                 }
             } else {
+                console.log('tesss');
                 var stay = "N";
                 if (kategoriRuangan == 'rawat_inap') {
                     if (isStay) {

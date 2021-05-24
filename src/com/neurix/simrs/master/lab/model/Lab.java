@@ -27,6 +27,15 @@ public class Lab extends BaseModel {
     private String stTarif;
     private String branchId;
     private String kategori;
+    private String isAsesmen;
+
+    public String getIsAsesmen() {
+        return isAsesmen;
+    }
+
+    public void setIsAsesmen(String isAsesmen) {
+        this.isAsesmen = isAsesmen;
+    }
 
     public String getKategori() {
         return kategori;

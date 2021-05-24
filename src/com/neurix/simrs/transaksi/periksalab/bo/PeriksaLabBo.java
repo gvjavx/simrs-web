@@ -4,6 +4,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.labdetail.model.LabDetail;
 import com.neurix.simrs.transaksi.CrudResponse;
+import com.neurix.simrs.transaksi.checkup.model.Asesmen;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.periksalab.model.*;
 
@@ -40,4 +41,6 @@ public interface PeriksaLabBo {
     public ItSimrsHeaderPemeriksaanEntity getEntityHeaderpemeriksaan(String id) throws GeneralBOException;
     public List<UploadHasilPemeriksaan> hasilUploadPemeriksaan(String id) throws GeneralBOException;
     public List<PeriksaLab> pushListHasil(String id, String branchId) throws GeneralBOException;
+    public void saveAsesmen(List<Asesmen> bean) throws GeneralBOException;
+    public List<Asesmen> getByCriteriaAsesmen(Asesmen bean) throws GeneralBOException;
 }
