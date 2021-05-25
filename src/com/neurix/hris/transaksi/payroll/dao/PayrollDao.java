@@ -2285,7 +2285,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                     else tunj_struktural.tunj_jabatan end                                    as tunj_jabatan,\n" +
                 "                   case\n" +
                 "                     when tunj_struktural.tunj_struktural is null then 0\n" +
-                "                     else (tunj_struktural.tunj_struktural * jenis_pegawai.persen_gaji)/100 end        as tunj_struktural,\n" +
+                "                     else tunj_struktural.tunj_struktural end        as tunj_struktural,\n" +
                 "                   case\n" +
                 "                     when tunj_strategis.nilai is null then 0\n" +
                 "                     else tunj_strategis.nilai end                                            as tunj_fungsional,\n" +
@@ -2704,7 +2704,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                     else tunj_struktural.tunj_jabatan end                                    as tunj_jabatan,\n" +
                 "                   case\n" +
                 "                     when tunj_struktural.tunj_struktural is null then 0\n" +
-                "                     else (tunj_struktural.tunj_struktural * jenis_pegawai.persen_gaji) / 100 end      as tunj_struktural,\n" +
+                "                     else tunj_struktural.tunj_struktural end      as tunj_struktural,\n" +
                 "                   case\n" +
                 "                     when tunj_strategis.nilai is null then 0\n" +
                 "                     else tunj_strategis.nilai end                                            as tunj_fungsional,\n" +
