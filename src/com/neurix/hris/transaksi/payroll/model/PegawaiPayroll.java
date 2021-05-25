@@ -409,6 +409,10 @@ public class PegawaiPayroll extends BasePayroll {
                 setGajiPokokNilai(gapok);
                 setGajiPokok(CommonUtil.numbericFormat(gapok,"###,###"));
 
+                setTunjJabatan(CommonUtil.numbericFormat(tunjJabatanNilai,"###,###"));
+                setTunjStruktural(CommonUtil.numbericFormat(tunjStrukturalNilai,"###,###"));
+
+
             } else { // untuk pendapatan tidak rutin (THR/Insentif/Jasop/Cuti Panjang/ Cuti Tahunan)
 
                 tunjRumahNilai = (multifikatorNilai.multiply(tunjRumahNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
@@ -429,6 +433,8 @@ public class PegawaiPayroll extends BasePayroll {
                 setGajiPokokNilai(gapok);
                 setGajiPokok(CommonUtil.numbericFormat(gapok,"###,###"));
 
+                setTunjJabatan(CommonUtil.numbericFormat(tunjJabatanNilai,"###,###"));
+                setTunjStruktural(CommonUtil.numbericFormat(tunjStrukturalNilai,"###,###"));
             }
 
         }
@@ -1572,18 +1578,21 @@ public class PegawaiPayroll extends BasePayroll {
                 BigDecimal gajiPokok = getGajiPokokNilai();
                 gajiPokok = gajiPokok.multiply(persentase).divide(seratusPersen);
                 setGajiPokokNilai(gajiPokok);
+                setGajiPokok(CommonUtil.numbericFormat(gajiPokok,"###,###"));
 
             } else if ("tunjangan_jabatan".equalsIgnoreCase(mappingPersenGaji.getJenisGaji())) {
 
                 BigDecimal tunjanganJabatan = getTunjJabatanNilai();
                 tunjanganJabatan = tunjanganJabatan.multiply(persentase).divide(seratusPersen);
                 setTunjJabatanNilai(tunjanganJabatan);
+                setTunjJabatan(CommonUtil.numbericFormat(tunjanganJabatan,"###,###"));
 
             } else if ("tunjangan_jabatan_struktural".equalsIgnoreCase(mappingPersenGaji.getJenisGaji())) {
 
                 BigDecimal tunjanganStruktural = getTunjStrukturalNilai();
                 tunjanganStruktural = tunjanganStruktural.multiply(persentase).divide(seratusPersen);
                 setTunjStrukturalNilai(tunjanganStruktural);
+                setTunjStruktural(CommonUtil.numbericFormat(tunjanganStruktural,"###,###"));
 
             }
 
