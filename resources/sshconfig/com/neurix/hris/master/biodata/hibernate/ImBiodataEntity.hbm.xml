@@ -306,6 +306,7 @@
                      insert="false" update="false" fetch="select" cascade="all">
             <column name="golongan_id"/>
         </many-to-one>
+
         <many-to-one name="imDanaPensiunEntity" class="com.neurix.hris.master.payrollDanaPensiun.model.ImPayrollDanaPensiunEntity"
                      insert="false" update="false" fetch="select" cascade="all">
             <column name="dana_pensiun"/>
