@@ -3875,7 +3875,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         return noJurnal;
     }
 
-    public CrudResponse addObatNormalToList(String stObat) throws JSONException{
+    public CrudResponse addObatNormalToList(String stObat, String stSignaObat) throws JSONException{
         logger.info("[TransaksiObatAction.addObatToList] Start >>>");
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -3889,11 +3889,30 @@ public class TransaksiObatAction extends BaseMasterAction {
             return response;
         }
 
+        if (stSignaObat != null && !"".equalsIgnoreCase(stSignaObat)){
+            JSONArray arraySigna = new JSONArray(stSignaObat);
+            for (int i = 0; i < arraySigna.length() ; i++){
+                JSONObject objSigna     = arraySigna.getJSONObject(i);
+                String idObatSigna      = objSigna.getString("idobat");
+                String signadarilist    = objSigna.getString("signa");
+
+                List<TransaksiObatDetail> filteredObat = listObat.stream().filter(
+                        p->p.getIdObat().equalsIgnoreCase(idObatSigna)
+                ).collect(Collectors.toList());
+
+                listObat.remove(filteredObat.get(0));
+                TransaksiObatDetail newObatSigna = filteredObat.get(0);
+                newObatSigna.setKeterangan(signadarilist);
+                listObat.add(newObatSigna);
+            }
+        }
+
         JSONObject obj = new JSONObject(stObat);
         String idObat   = obj.getString("idobat");
         String namaObat = obj.getString("namaobat");
         String qty      = obj.getString("qty");
-        String signa    = obj.getString("signa");
+        String harga    = obj.getString("harga");
+        //String signa    = obj.getString("signa");
 
         List<TransaksiObatDetail> filteredByIdObat = listObat.stream().filter(
                 p->p.getIdObat().equalsIgnoreCase(idObat)
@@ -3905,15 +3924,15 @@ public class TransaksiObatAction extends BaseMasterAction {
             listObat.remove(obatDetail);
 
             obatDetail.setQty(obatDetail.getQty().add(new BigInteger(qty)));
-            obatDetail.setKeterangan(signa);
-
             listObat.add(obatDetail);
         } else {
             TransaksiObatDetail obatDetail = new TransaksiObatDetail();
             obatDetail.setIdObat(idObat);
             obatDetail.setNamaObat(namaObat);
             obatDetail.setQty(new BigInteger(qty));
-            obatDetail.setKeterangan(signa);
+            obatDetail.setHarga(new BigInteger(harga));
+            listObat.add(obatDetail);
+            //obatDetail.setKeterangan(signa);
         }
 
         session.removeAttribute("listOfObat");
@@ -3941,8 +3960,8 @@ public class TransaksiObatAction extends BaseMasterAction {
         JSONObject obj = new JSONObject(stObatRacik);
         String idObat       = obj.getString("idobat");
         String namaObat     = obj.getString("namaobat");
-        String qty          = obj.getString("qty");
-        String dosis        = obj.getString("dosis");
+        //String qty          = obj.getString("qty");
+        //String dosis        = obj.getString("dosis");
         String namaRacik    = obj.getString("namaracik");
 
         List<TransaksiObatDetail> filteredByIdObat = listObat == null ? new ArrayList<>() :
@@ -3951,19 +3970,14 @@ public class TransaksiObatAction extends BaseMasterAction {
                         p.getNamaRacik().equalsIgnoreCase(namaRacik)
         ).collect(Collectors.toList());
 
-        if (filteredByIdObat.size() > 0){
-            TransaksiObatDetail obatDetail = filteredByIdObat.get(0);
-            listObat.remove(obatDetail);
-            obatDetail.setQty(obatDetail.getQty().add(new BigInteger(qty)));
-            obatDetail.setKeterangan(dosis);
-            listObat.add(obatDetail);
-        } else {
+        if (filteredByIdObat.size() == 0){
             TransaksiObatDetail obatDetail = new TransaksiObatDetail();
             obatDetail.setIdObat(idObat);
             obatDetail.setNamaObat(namaObat);
-            obatDetail.setQty(new BigInteger(qty));
-            obatDetail.setKeterangan(dosis);
+            //obatDetail.setQty(new BigInteger(qty));
+            //obatDetail.setKeterangan(dosis);
             obatDetail.setNamaRacik(namaRacik);
+            listObat.add(obatDetail);
         }
 
         List<ObatRacik> filteredNamaRacik = listNamaRacik == null ? new ArrayList<>() :
@@ -4134,6 +4148,21 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         logger.info("[TransaksiObatAction.getListNamaRacik] End <<<");
         return listOfObat;
+    }
+
+    public CrudResponse deleteAllSessionOrderObat(){
+        logger.info("[TransaksiObatAction.deleteAllSessionOrderObat] Start >>>");
+
+        CrudResponse response = new CrudResponse();
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfNamaRacik");
+        session.removeAttribute("listOfDetailRacik");
+        session.removeAttribute("listOfObat");
+
+        logger.info("[TransaksiObatAction.deleteAllSessionOrderObat] End <<<");
+        response.hasSuccess("Berhasil");
+        return response;
     }
 
 }

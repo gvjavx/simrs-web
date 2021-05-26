@@ -1993,19 +1993,19 @@
                     <p id="msg_resep"></p>
                 </div>
                 <input type="hidden" id="tipe-trans-resep"/>
-                <%--<div class="row">--%>
-                    <%--<label class="col-md-3" style="margin-top: 7px">Obat Racik ?</label>--%>
-                    <%--<div class="col-md-9">--%>
-                        <%--<div class="form-check" style="margin-top: 7px;">--%>
-                            <%--<input type="checkbox" name="cek_racik" id="racik_racik" value="Y" onclick="var warn = $('#war_rep_racik').is(':visible'); if (warn){$('#cor_rep_racik').show().fadeOut(3000);$('#war_rep_racik').hide()}; cekRacik(this.id)">--%>
-                            <%--<label for="racik_racik"></label> Ya--%>
-                        <%--</div>--%>
-                        <%--<span style="color: red; margin-top: 12px; display: none;"--%>
-                              <%--id="war_rep_racik"><i class="fa fa-times"></i> required</span>--%>
-                        <%--<span style="color: green; margin-top: 12px; display: none;"--%>
-                              <%--id="cor_rep_racik"><i class="fa fa-check"></i> correct</span>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
+                <div class="row">
+                    <label class="col-md-3" style="margin-top: 7px">Obat Racik ?</label>
+                    <div class="col-md-9">
+                        <div class="form-check" style="margin-top: 7px;">
+                            <input type="checkbox" name="cek_racik" id="racik_racik" value="Y" onclick="var warn = $('#war_rep_racik').is(':visible'); if (warn){$('#cor_rep_racik').show().fadeOut(3000);$('#war_rep_racik').hide()}; cekRacik(this.id)">
+                            <label for="racik_racik"></label> Ya
+                        </div>
+                        <span style="color: red; margin-top: 12px; display: none;"
+                              id="war_rep_racik"><i class="fa fa-times"></i> required</span>
+                        <span style="color: green; margin-top: 12px; display: none;"
+                              id="cor_rep_racik"><i class="fa fa-check"></i> correct</span>
+                    </div>
+                </div>
                 <div class="row">
                     <label class="col-md-3" style="margin-top: 7px">Apotek</label>
                     <div class="col-md-9">
@@ -2206,17 +2206,19 @@
                         </tbody>
                     </table>
 
-                    <table class="table table-striped table-bordered" id="tabel_rese_detail_racik" style="font-size: 13px;">
-                        <thead>
-                        <td>Nama Obat</td>
-                        <td width="50%">Dosis</td>
-                        <td align="center" width="5%">Action</td>
-                        </thead>
-                        <tbody id="body_detail_racik">
-                        </tbody>
-                    </table>
-
                     <div id="informasi-racik">
+
+                        <label id="label-racik">Nama Racik</label>
+                        <table class="table table-striped table-bordered" id="tabel_rese_detail_racik" style="font-size: 13px;">
+                            <thead>
+                            <td>Nama Obat</td>
+                            <td width="50%">Dosis</td>
+                            <td align="center" width="5%">Action</td>
+                            </thead>
+                            <tbody id="body_detail_racik">
+                            </tbody>
+                        </table>
+
                         <div class="row">
                             <div class="col-md-3">
                                 Signa

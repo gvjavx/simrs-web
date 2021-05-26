@@ -1023,7 +1023,7 @@ function showModal(select) {
             $("#sec-total-harga").show();
             $("#form-nama-racik").hide();
             $("#tipe-trans-resep").val("peritem");
-            $("#informasi-racik").hide();
+            //$("#informasi-racik").hide();
         if (select == 10){
             $('#title-resep').html("Tambah Resep Racik");
             $("#sec-jumlah-resep").hide();
@@ -4504,9 +4504,11 @@ function setDiskonHarga(id) {
 function cekRacik(id) {
     if ($('#' + id).is(':checked')) {
         $('#form-nama-racik').show();
+        $('#sec-jumlah-resep').hide();
     } else {
         $('#form-nama-racik').hide();
         $('#nama_racik').val('');
+        $('#sec-jumlah-resep').show();
     }
 }
 
@@ -5820,4 +5822,62 @@ function updateRead(id){
             $('#'+id).removeAttr('class');
         }, 5000);
     });
+}
+
+function saveObatRacikToSession(){
+
+    var obat = null;
+    var flagSerupa = $("#flag-obat-serupa").val();
+    if (flagSerupa == "Y") {
+        obat = $("#resep_nama_obat_serupa").val();
+    } else {
+        obat = $('#resep_nama_obat').val();
+    }
+    var idObat = "";
+    if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
+        idObat = obat.split('|')[0];
+    }
+
+    var namaObat = "";
+    if (obat.split('|')[1] != 'null' && obat.split('|')[1] != '') {
+        namaObat = obat.split('|')[1];
+    }
+
+    var namaRacik   = $('#nama_racik').val();
+    var data        = $('#tabel_rese_detail_racik').tableToJSON();
+
+    var stListSigna = "";
+    if (data.length > 0){
+        var arrSigna = [];
+        for (var i=0 ; i < data.length ; i++){
+            var idObatSigna = $("#id-obat-"+i).val();
+            var signaList   = $("#signa-"+i).val();
+            arrSigna.push({"idobat":idObatSigna, "signa":signaList});
+        }
+        stListSigna = JSON.stringify(arrSigna);
+    }
+
+    var dataObat    = {"idobat":idObat, "namaobat":namaObat, "qty":qty, "harga":harga};
+    var stDataObat  = JSON.stringify(data);
+    TransaksiObatAction.addObatNormalToList(stDataObat, stListSigna, function (res) {
+
+        if (res.status == "error"){
+            alert(res.msg);
+        } else {
+
+            TransaksiObatAction.getListObatResep(function(list){
+                var str = '';
+                $.each(list, function(i, item){
+                   str += '<tr>' +
+                       '<td>'+item.namaObat+'</td>' +
+                       '<td>'+item.qty+'</td>' +
+                       '<td><textarea id="signa-'+i+'" cols="4" rows="3" class="form-control"></textarea></td>' +
+                       '<td>'+item.namaObat+'</td>' +
+                       '</tr>';
+                });
+            });
+        }
+
+    });
+
 }
