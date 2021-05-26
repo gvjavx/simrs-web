@@ -2177,7 +2177,9 @@
                 <hr/>
                 <div class="row" style="margin-top: -10px" id="btn-add-resep">
                     <div class="col-md-12">
-                        <button class="btn btn-success" onclick="addObatToList()"><i class="fa fa-plus"></i> Tambah
+                        <button class="btn btn-success" onclick="addObatToList()" id="btn-save-resep-normal"><i class="fa fa-plus"></i> Tambah
+                        </button>
+                        <button class="btn btn-success" onclick="saveObatRacikToSession()" id="btn-save-resep-racik"><i class="fa fa-plus"></i> Tambah Racik
                         </button>
                         <button class="btn btn-danger" onclick="resetAll()"><i
                                 class="fa fa-refresh"></i> Reset
@@ -2208,47 +2210,47 @@
 
                     <div id="informasi-racik">
 
-                        <label id="label-racik">Nama Racik</label>
-                        <table class="table table-striped table-bordered" id="tabel_rese_detail_racik" style="font-size: 13px;">
-                            <thead>
-                            <td>Nama Obat</td>
-                            <td width="50%">Dosis</td>
-                            <td align="center" width="5%">Action</td>
-                            </thead>
-                            <tbody id="body_detail_racik">
-                            </tbody>
-                        </table>
+                        <%--<label id="label-racik">Nama Racik</label>--%>
+                        <%--<table class="table table-striped table-bordered" id="tabel_rese_detail_racik" style="font-size: 13px;">--%>
+                            <%--<thead>--%>
+                            <%--<td>Nama Obat</td>--%>
+                            <%--<td width="50%">Dosis</td>--%>
+                            <%--<td align="center" width="5%">Action</td>--%>
+                            <%--</thead>--%>
+                            <%--<tbody id="body_detail_racik">--%>
+                            <%--</tbody>--%>
+                        <%--</table>--%>
 
-                        <div class="row">
-                            <div class="col-md-3">
-                                Signa
-                            </div>
-                            <div class="col-md-5">
-                                <%--<button class="btn btn-sm btn-warning" onclick="showModalKeterangan('0')">Tambah</button>--%>
-                                <%--<button class="btn btn-sm btn-danger" onclick="hapusKeterangan('0')">Hapus</button>--%>
-                                <textarea cols="100%" rows="3" class="form-control" id="signa-racik">
-                            </textarea>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                                Qty Kemasan
-                            </div>
-                            <div class="col-md-3">
-                                    <input type="number" class="form-control" id="qty-kemasan-racik"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                                Kemasan
-                            </div>
-                            <div class="col-md-3">
-                                <select class="form-control" id="kemasan-racik">
-                                    <option value="Capsule"> Capsule </option>
-                                    <option value="Puser"> Puyer </option>
-                                </select>
-                            </div>
-                        </div>
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-3">--%>
+                                <%--Signa--%>
+                            <%--</div>--%>
+                            <%--<div class="col-md-5">--%>
+                                <%--&lt;%&ndash;<button class="btn btn-sm btn-warning" onclick="showModalKeterangan('0')">Tambah</button>&ndash;%&gt;--%>
+                                <%--&lt;%&ndash;<button class="btn btn-sm btn-danger" onclick="hapusKeterangan('0')">Hapus</button>&ndash;%&gt;--%>
+                                <%--<textarea cols="100%" rows="3" class="form-control" id="signa-racik">--%>
+                            <%--</textarea>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-3">--%>
+                                <%--Qty Kemasan--%>
+                            <%--</div>--%>
+                            <%--<div class="col-md-3">--%>
+                                    <%--<input type="number" class="form-control" id="qty-kemasan-racik"/>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-3">--%>
+                                <%--Kemasan--%>
+                            <%--</div>--%>
+                            <%--<div class="col-md-3">--%>
+                                <%--<select class="form-control" id="kemasan-racik">--%>
+                                    <%--<option value="Capsule"> Capsule </option>--%>
+                                    <%--<option value="Puser"> Puyer </option>--%>
+                                <%--</select>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                     </div>
                     <br>
                 </div>
