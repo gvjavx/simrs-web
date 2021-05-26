@@ -1525,6 +1525,21 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-9">
+                            <div class="form-check jarak">
+                                <input type="checkbox" id="is_cito" value="yes">
+                                <label for="is_cito"></label>
+                                Centang Jika Pemeriksaan Darurat (CITO)
+                                <i class="fa fa-question-circle box-rm" style="font-size: 18px">
+                                    <span class="box-rmtext" style="font-size: 12px; font-family: Calibri">
+                                        Centang untuk menandai pemeriksaan dengan CITO
+                                    </span></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row" style="display: none" id="form_tarif_lab_luar">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Tarif Lab Luar</label>
