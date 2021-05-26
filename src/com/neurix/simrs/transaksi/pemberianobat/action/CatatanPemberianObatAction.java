@@ -131,7 +131,7 @@ public class CatatanPemberianObatAction {
         return response;
     }
 
-    public List<CatatanPemberianObat> getListCatatanPemberianObat(String idDetailCheckup) {
+    public List<CatatanPemberianObat> getListCatatanPemberianObat(String idDetailCheckup, String jenis) {
         List<CatatanPemberianObat> list = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CatatanPemberianObatBo catatanPemberianObatBo = (CatatanPemberianObatBo) ctx.getBean("catatanPemberianObatBoProxy");
@@ -139,6 +139,9 @@ public class CatatanPemberianObatAction {
             try {
                 CatatanPemberianObat catatan = new CatatanPemberianObat();
                 catatan.setIdDetailCheckup(idDetailCheckup);
+                if(!"".equalsIgnoreCase(jenis)){
+                    catatan.setJenis(jenis);
+                }
                 list = catatanPemberianObatBo.getByCriteria(catatan);
             } catch (GeneralBOException e) {
                 logger.error("Found Error" + e.getMessage());
@@ -176,7 +179,12 @@ public class CatatanPemberianObatAction {
                 catatan.setWaktu(obj.getString("waktu"));
                 catatan.setNamaTerangDokter(obj.getString("nama1"));
                 catatan.setNamaTerangPerawat(obj.getString("nama2"));
-                catatan.setSipDokter(obj.getString("sip"));
+                if(obj.has("sip1")){
+                    catatan.setSipDokter(obj.getString("sip1"));
+                }
+                if(obj.has("sip2")){
+                    catatan.setSipPerawat(obj.getString("sip2"));
+                }
                 catatan.setKeterangan(obj.getString("keterangan"));
                 if(obj.has("ttd_keluarga") || obj.has("ttd_perawat")){
                     if(!"".equalsIgnoreCase(obj.getString("ttd_keluarga")) || !"".equalsIgnoreCase(obj.getString("ttd_perawat"))){

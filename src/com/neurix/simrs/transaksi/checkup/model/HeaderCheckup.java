@@ -221,6 +221,15 @@ public class HeaderCheckup {
     private String keadaanPulang;
     private String stTglKeluar;
     private String tindakLanjut;
+    private String prognosis;
+
+    public String getPrognosis() {
+        return prognosis;
+    }
+
+    public void setPrognosis(String prognosis) {
+        this.prognosis = prognosis;
+    }
 
     public String getTindakLanjut() {
         return tindakLanjut;

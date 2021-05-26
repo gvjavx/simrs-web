@@ -5117,6 +5117,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         reportParams.put("tglKeluar", headerCheckup.getStTglKeluar());
                         reportParams.put("terapiPulang", headerCheckup.getTerapi());
                         reportParams.put("tindakLanjut", headerCheckup.getTindakLanjut());
+                        reportParams.put("prognosis", headerCheckup.getPrognosis());
                     }
                 }
             }

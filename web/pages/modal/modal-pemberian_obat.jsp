@@ -280,14 +280,21 @@
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" id="tipe_cpo">
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
-                                <label style="margin-left: 8px">TTD Keluarga</label>
+                                <label style="margin-left: 8px"><span id="title_ttd"></span></label>
                                 <canvas class="paint-canvas-ttd" id="cpo9" width="220"
                                         onmouseover="paintTtd('cpo9')"></canvas>
-                                <input class="form-control" id="nama_terang_cpo9" placeholder="Nama Terang">
+                                <div id="form_apoteker" style="display: none">
+                                    <input class="form-control" id="nama_terang_apoteker" placeholder="Nama Terang">
+                                    <input class="form-control" id="sip_apoteker" placeholder="SIP">
+                                </div>
+                                <div id="form_perawat" style="display: none">
+                                    <input class="form-control" id="nama_terang_cpo9" placeholder="Nama Terang">
+                                </div>
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('cpo9')"><i
                                         class="fa fa-trash"></i> Clear

@@ -786,31 +786,22 @@ public class TransaksiObatAction extends BaseMasterAction {
 
 
     public String searchResepPasien() {
-
-        logger.info("[CheckupAction.search] start process >>>");
-
+        logger.info("[TransaksiObatAction.searchResepPasien] start process >>>");
         PermintaanResep permintaanResep = getPermintaanResep();
         List<PermintaanResep> listResep = new ArrayList();
         permintaanResep.setBranchId(CommonUtil.userBranchLogin());
         permintaanResep.setTujuanPelayanan(CommonUtil.userPelayananIdLogin());
 
         try {
-
             listResep = transaksiObatBoProxy.getListResepPasien(permintaanResep);
-
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[CheckupAction.save] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
-            return ERROR;
+            logger.error("[TransaksiObatAction.searchResepPasien] Error when searching pasien by criteria," + "Found problem when searching data by criteria, please inform to your admin.", e);
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
-
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listResep);
-
-        logger.info("[CheckupAction.search] end process <<<");
+        logger.info("[TransaksiObatAction.searchResepPasien] end process <<<");
         return "search";
 
     }
