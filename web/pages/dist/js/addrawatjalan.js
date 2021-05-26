@@ -3054,7 +3054,8 @@ function saveResepObat() {
                 var waktu = $('#temp_waktu_'+i).val();
 
                 if (tipeTrans != "racik"){
-                    var ketDetail = $('#keterangan_detail_' + i).val();
+                    //var ketDetail = $('#keterangan_detail_' + i).val();
+                    var ketDetail = $('#signa-normal-' + i).val();
                     var keterangan = $('#keterangan_' + i).val();
 
                     dataObat.push({
@@ -3088,6 +3089,30 @@ function saveResepObat() {
                 }
 
             });
+
+            var listDetailRacik = [];
+            $.each(arrListDetailRacik, function(i,item){
+                var detail = {
+                    "idobat":item.idobat,
+                    "namaobat":item.namaobat,
+                    "dosis":$("#dosis-"+item.idracik+"-"+item.idobat).val(),
+                    "idracik":item.idracik,
+                    "racik":item.racik
+                }
+                listDetailRacik.push(detail);
+            });
+
+            var listNamaRacik = [];
+            $.each(arrListNamaRacik, function(i,item){
+                var racikname = {
+                    "idracik":item.idracik,
+                    "racik":item.namaracik,
+                    "qty":$("#qty-racik-"+item.idracik).val(),
+                    "signa":$("#signa-racik-"+item.idracik).val(),
+                    "kemasan":$("#kemasan-racik-"+item.idracik).val()
+                }
+                listNamaRacik.push(racikname);
+            });
             var stringDataObat = JSON.stringify(dataObat);
             var dataObj = {
                 'id_detail_checkup': idDetailCheckup,
@@ -3096,12 +3121,14 @@ function saveResepObat() {
                 'id_pasien': idPasien,
                 'id_apotek': idPelayanan,
                 'ttd': dataURL,
-                'data_obat': stringDataObat
-
+                'data_obat': stringDataObat,
+                'arr_nama_racik':listNamaRacik.length > 0 ? listNamaRacik : "",
+                'arr_detail_racik':listDetailRacik.length > 0 ? listDetailRacik : ""
             }
             var stringObj = JSON.stringify(dataObj);
             $('#save_resep_head').hide();
             $('#load_resep_head').show();
+            console.log(dataObj);
             dwr.engine.setAsync(true);
             PermintaanResepAction.saveResepPasien(stringObj, {
                 callback: function (response) {
