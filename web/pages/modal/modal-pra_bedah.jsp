@@ -87,7 +87,7 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-12">
-                                <span>1. Keluahan</span>
+                                <span>1. Keluhan</span>
                                 <textarea rows="3" class="form-control" id="pra1"></textarea>
                             </div>
                         </div>
