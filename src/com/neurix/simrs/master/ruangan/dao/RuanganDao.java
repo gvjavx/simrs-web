@@ -86,6 +86,8 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
         String idRuang = "%";
         String idkelas = "%";
         String namaRuang = "%";
+        String jenisJoin = "LEFT JOIN";
+        String namaPasien = "";
 
         List<Ruangan> ruanganList = new ArrayList<>();
 
@@ -100,6 +102,10 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
 
             if (bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdKelasRuangan())) {
                 idkelas = bean.getIdKelasRuangan();
+            }
+            if(bean.getNamaPasien() != null && !"".equalsIgnoreCase(bean.getNamaPasien())){
+                namaPasien = "AND c.nama ILIKE '%"+bean.getNamaPasien()+"%'\n";
+                jenisJoin = "INNER JOIN";
             }
 
             String SQL = "SELECT \n" +
@@ -118,19 +124,24 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     "FROM im_simrs_kelas_ruangan a\n" +
                     "INNER JOIN mt_simrs_ruangan b ON a.id_kelas_ruangan = b.id_kelas_ruangan\n" +
                     "INNER JOIN mt_simrs_ruangan_tempat_tidur tt ON b.id_ruangan = tt.id_ruangan\n" +
-                    "LEFT JOIN (\n" +
-                    "SELECT a.id_detail_checkup, a.id_ruangan, a.tgl_masuk, c.cover_biaya, c.id_jenis_periksa_pasien, b.nama, b.id_pasien\n" +
-                    "FROM it_simrs_rawat_inap a\n" +
-                    "INNER JOIN it_simrs_header_checkup b\n" +
-                    "ON a.no_checkup = b.no_checkup\n" +
-                    "INNER JOIN it_simrs_header_detail_checkup c \n" +
-                    "ON a.id_detail_checkup = c.id_detail_checkup\n" +
-                    "AND a.status = '1' \n" +
-                    "WHERE a.flag = 'Y' \n" +
-                    "AND b.branch_id LIKE :branchId) c ON tt.id_tempat_tidur = c.id_ruangan\n" +
-                    "WHERE a.id_kelas_ruangan LIKE :idKelas \n" +
-                    "AND b.id_ruangan LIKE :idRuang \n" +
-                    "AND b.nama_ruangan LIKE :namaRuang \n" +
+                    jenisJoin + "(\n" +
+                    "\tSELECT \n" +
+                    "\ta.id_detail_checkup, \n" +
+                    "\ta.id_ruangan, \n" +
+                    "\ta.tgl_masuk, \n" +
+                    "\tc.cover_biaya, \n" +
+                    "\tc.id_jenis_periksa_pasien, \n" +
+                    "\tb.nama, \n" +
+                    "\tb.id_pasien\n" +
+                    "\tFROM it_simrs_rawat_inap a\n" +
+                    "\tINNER JOIN it_simrs_header_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "\tINNER JOIN it_simrs_header_detail_checkup c ON a.id_detail_checkup = c.id_detail_checkup\n" +
+                    "\tAND a.status = '1' \n" +
+                    "\tWHERE a.flag = 'Y' \n" +
+                    "\tAND b.branch_id LIKE :branchId) c ON tt.id_tempat_tidur = c.id_ruangan\n" +
+                    "WHERE a.id_kelas_ruangan LIKE :idKelas\n" +
+                    "AND b.id_ruangan LIKE :idRuang\n" +
+                    "AND b.nama_ruangan LIKE :namaRuang\n" + namaPasien +
                     "ORDER BY a.id_kelas_ruangan ASC";
 
             List<Object[]> results = new ArrayList<>();
