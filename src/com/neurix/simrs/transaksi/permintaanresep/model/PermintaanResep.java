@@ -70,6 +70,24 @@ public class PermintaanResep{
     private String flagEresep;
     private String flagDelayAsuransi;
     private String flagRacik;
+    private String umur;
+    private String kategoriPelayanan;
+
+    public String getKategoriPelayanan() {
+        return kategoriPelayanan;
+    }
+
+    public void setKategoriPelayanan(String kategoriPelayanan) {
+        this.kategoriPelayanan = kategoriPelayanan;
+    }
+
+    public String getUmur() {
+        return umur;
+    }
+
+    public void setUmur(String umur) {
+        this.umur = umur;
+    }
 
     public String getFlagRacik() {
         return flagRacik;

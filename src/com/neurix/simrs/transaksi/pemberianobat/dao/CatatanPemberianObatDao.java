@@ -37,12 +37,15 @@ public class CatatanPemberianObatDao extends GenericDao<ItSimrsCatatanPemberianO
             if (mapCriteria.get("waktu")!=null) {
                 criteria.add(Restrictions.eq("waktu", (String) mapCriteria.get("waktu")));
             }
+            if (mapCriteria.get("jenis")!=null) {
+                criteria.add(Restrictions.eq("jenis", (String) mapCriteria.get("jenis")));
+            }
         }
 
         criteria.add(Restrictions.eq("flag", "Y"));
         criteria.addOrder(Order.asc("createdDate"));
         criteria.addOrder(Order.asc("waktu"));
-
+        criteria.addOrder(Order.asc("jenis"));
         List<ItSimrsCatatanPemberianObatEntity> results = criteria.list();
         return results;
     }

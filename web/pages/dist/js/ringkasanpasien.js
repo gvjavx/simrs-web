@@ -60,6 +60,8 @@ function saveRingkasanPasien(jenis, ket) {
         var spo1 = $('#spo1').val();
         var spo2 = $('#spo2').val();
         var hasilRadiologi = $('#hasil_radiologi').val();
+        var pro = $('#prognosis').val();
+        var catatan = $('#catatan_khusus').val();
 
         var ttd1 = document.getElementById('gen2');
         var ttd2 = document.getElementById('gen3');
@@ -275,13 +277,51 @@ function saveRingkasanPasien(jenis, ket) {
                 });
             }
             data.push({
+                'parameter': 'Prognosis',
+                'jawaban': pro,
+                'keterangan': jenis,
+                'jenis': 'ringkasan_pulang',
+                'tipe': 'prognosis',
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            var kontrol = "";
+            var tglKontorl = $('.tanggal_kontrol');
+            var poliKontorl = $('.poli_kontrol');
+            var dokterKontorl = $('.dokter_kontrol');
+            $.each(tglKontorl, function (i, item) {
+                if(item.value != '' && poliKontorl[i].value != '' && dokterKontorl[i].value != ''){
+                    if(kontrol != ''){
+                        kontrol = kontrol+'|'+'Tanggal '+item.value+', Poli '+poliKontorl[i].value+', Dokter '+dokterKontorl[i].value;
+                    }else{
+                        kontrol = 'Tanggal '+item.value+', Poli '+poliKontorl[i].value+', Dokter '+dokterKontorl[i].value;
+                    }
+                }
+            });
+
+            var kon = "";
+            if("Kontrol Ulang" == pe23){
+                kon = '|'+kontrol;
+            }
+
+            data.push({
                 'parameter': 'Instruksi tindak lanjut',
-                'jawaban': pe23,
+                'jawaban': pe23+kon,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
                 'tipe': 'instruksi_lanjut',
                 'id_detail_checkup': idDetailCheckup
             });
+            if(catatan != ''){
+                data.push({
+                    'parameter': 'Catatan Khusus',
+                    'jawaban': catatan,
+                    'keterangan': jenis,
+                    'jenis': 'ringkasan_pulang',
+                    'tipe': 'catatan_khusus',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
 
             var obatTerapi = $('.obat-terapi');
             var jmlTerapi = $('.jml-terapi');
@@ -1258,5 +1298,40 @@ function setSideValue(id, value) {
         $('#' + id).val('');
     } else {
         $('#' + id).val(value);
+    }
+}
+
+function setKontrol(tipe, id) {
+    if(tipe == 'dell'){
+        $('#'+id).remove();
+    }else if(tipe == 'add'){
+        var jumlah = $('#tanggal_kontrol').length;
+        var idRow = 'wor_'+jumlah;
+        var html = '<div class="row" style="margin-top: 7px" id="'+idRow+'">\n' +
+            '<div class="form-group">\n' +
+            '    <div class="col-md-3">\n' +
+            '        <input style="cursor: pointer" class="form-control tgl tanggal_kontrol" placeholder="Tanggal" readonly>\n' +
+            '    </div>\n' +
+            '    <div class="col-md-4">\n' +
+            '        <input class="form-control poli_kontrol" placeholder="Poli">\n' +
+            '    </div>\n' +
+            '    <div class="col-md-4">\n' +
+            '        <input class="form-control dokter_kontrol" placeholder="Dokter">\n' +
+            '    </div>\n' +
+            '    <div class="col-md-1">\n' +
+            '        <button onclick="setKontrol(\'dell\', \''+idRow+'\')" class="btn btn-danger" style="margin-left: -20px; margin-top: 0px"><i class="fa fa-trash"></i></button>\n' +
+            '    </div>\n' +
+            '</div>\n' +
+            '</div>';
+        $('#set_kontrol').append(html);
+        $('.tgl').datepicker({
+            dateFormat: 'dd-mm-yy'
+        });
+    }else{
+        if(id == "Kontrol Ulang"){
+            $('#form_kontrol_ringkasan').show();
+        }else{
+            $('#form_kontrol_ringkasan').hide();
+        }
     }
 }

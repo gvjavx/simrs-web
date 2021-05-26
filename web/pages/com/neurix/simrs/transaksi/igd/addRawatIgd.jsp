@@ -2869,6 +2869,7 @@
     var flagVaksin = $('#h_flag_vaksin').val();
     var tanggalMasuk = new Date();
     var idRawatInap = "";
+    var jenisCPO = "perawat";
 
     $(document).ready(function () {
         $('#igd').addClass('active');

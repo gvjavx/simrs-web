@@ -67,6 +67,9 @@ public class RekonsiliasiObatBoImpl implements RekonsiliasiObatBo {
                     rekonsiliasiObat.setCreatedWho(entity.getCreatedWho());
                     rekonsiliasiObat.setLastUpdate(entity.getLastUpdate());
                     rekonsiliasiObat.setLastUpdateWho(entity.getLastUpdateWho());
+                    rekonsiliasiObat.setKeluarga(entity.getKeluarga());
+                    rekonsiliasiObat.setApoteker(entity.getApoteker());
+                    rekonsiliasiObat.setSip(entity.getSip());
                     list.add(rekonsiliasiObat);
                 }
             }
@@ -100,6 +103,9 @@ public class RekonsiliasiObatBoImpl implements RekonsiliasiObatBo {
             rekonsiliasiObatEntity.setCreatedWho(bean.getCreatedWho());
             rekonsiliasiObatEntity.setLastUpdate(bean.getLastUpdate());
             rekonsiliasiObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            rekonsiliasiObatEntity.setKeluarga(bean.getKeluarga());
+            rekonsiliasiObatEntity.setApoteker(bean.getApoteker());
+            rekonsiliasiObatEntity.setSip(bean.getSip());
 
             try {
                 rekonsiliasiObatDao.addAndSave(rekonsiliasiObatEntity);

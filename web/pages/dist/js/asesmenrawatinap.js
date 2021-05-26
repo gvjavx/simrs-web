@@ -1472,9 +1472,9 @@ function saveAsesmenRawatInap(jenis, ket) {
         var ttd1 = document.getElementById("ttd_dpjp");
         var ttd2 = document.getElementById("ttd1_keluarga");
         var ttd3 = document.getElementById("ttd_perawat");
-        var ttdCek1 = isBlank(ttd1);
-        var ttdCek2 = isBlank(ttd2);
-        var ttdCek3 = isBlank(ttd3);
+        var ttdCek1 = isCanvasBlank(ttd1);
+        var ttdCek2 = isCanvasBlank(ttd2);
+        var ttdCek3 = isCanvasBlank(ttd3);
 
         var nama1 = $('#nama_dpjp').val();
         var sip1 = $('#sip_dpjp').val();
@@ -1582,7 +1582,7 @@ function saveAsesmenRawatInap(jenis, ket) {
         var va8 = $('#ews10').val();
         var va9 = $('#ews11').val();
         var ttd = document.getElementById("ews12");
-        var ttdCek = isBlank(ttd);
+        var ttdCek = isCanvasBlank(ttd);
         var namaTerang = $('#nama_terang_ews12').val();
         var sip = $('#sip_terang_ews12').val();
 
@@ -1714,7 +1714,7 @@ function saveAsesmenRawatInap(jenis, ket) {
         var va5 = $('#pp5').val();
         var va6 = $('#pp6').val();
         var ttd = document.getElementById("pp7");
-        var ttdCek = isBlank(ttd);
+        var ttdCek = isCanvasBlank(ttd);
 
         if (va1 && va2 && va3 && va4 && va5 && va6 != '' && !ttdCek) {
 
@@ -3920,8 +3920,8 @@ function saveCatatanTerintegrasi(jenis, ket) {
         var va5 = $('#cp5').val();
         var v6 = document.getElementById("cp6");
         var v7 = document.getElementById("cp7");
-        var va6 = isBlank(v6);
-        var va7 = isBlank(v7);
+        var va6 = isCanvasBlank(v6);
+        var va7 = isCanvasBlank(v7);
 
         if (va1 && va2 && va3 && va5 != '' && !va6 && !va7) {
 
@@ -4013,8 +4013,8 @@ function saveCatatanPemberianObat(jenis, ket) {
         var va8 = $('#cpo8').val();
         var v9 = document.getElementById("cpo9");
         var v10 = document.getElementById("cpo10");
-        var va9 = isBlank(v9);
-        var va10 = isBlank(v10);
+        var va9 = isCanvasBlank(v9);
+        var va10 = isCanvasBlank(v10);
         var nama1 = $('#nama_terang_cpo9').val();
         var nama2 = $('#nama_terang_cpo10').val();
         var sip1 = $('#sip_cpo9').val();
@@ -4082,9 +4082,13 @@ function saveCatatanPemberianObat(jenis, ket) {
 }
 
 function listCatatanPemberianObat() {
+    var jeniscpo = "";
+    if(jenisCPO != undefined){
+        jeniscpo = jenisCPO;
+    }
     if(!cekSession()){
         var table = "";
-        CatatanPemberianObatAction.getListCatatanPemberianObat(idDetailCheckup, function (res) {
+        CatatanPemberianObatAction.getListCatatanPemberianObat(idDetailCheckup, jeniscpo, function (res) {
             if (res.length > 0) {
                 var wawak = "";
                 $.each(res, function (i, item) {
@@ -4093,15 +4097,29 @@ function listCatatanPemberianObat() {
                     if(wawak != item.waktu){
                         wawak = item.waktu;
                         action = '<i onclick="actionCPO(\''+item.idCatatanPemberianObat+'\', \''+item.waktu+'\')" class="fa fa-edit" style="font-size: 20px; cursor: pointer"></i>';
-                        if(item.ttdApoteker != null && item.ttdDokter){
-                            ttd = '<span>Keluarga</span><br>'+
-                                '<img style="width: 70%; height: 50px" src="' + item.ttdDokter + '">' +
-                                '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerangDokter)+'</p>' +
-                                '<p>-----------------------------------------</p>'+
-                                '<span>Perawat</span><br>'+
-                                '<img style="width: 70%; height: 50px" src="' + item.ttdApoteker + '">' +
-                                '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerangPerawat)+'</p>' +
-                                '<p style="margin-top: -9px;">'+cekItemIsNull(item.sipDokter)+'</p>';
+                        if("perawat" == item.jenis){
+                            if(item.ttdApoteker != null && item.ttdDokter){
+                                ttd = '<span>Keluarga</span><br>'+
+                                    '<img style="width: 70%; height: 50px" src="' + item.ttdDokter + '">' +
+                                    '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerangDokter)+'</p>' +
+                                    '<p>-----------------------------------------</p>'+
+                                    '<span>Perawat</span><br>'+
+                                    '<img style="width: 70%; height: 50px" src="' + item.ttdApoteker + '">' +
+                                    '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerangPerawat)+'</p>' +
+                                    '<p style="margin-top: -9px;">'+cekItemIsNull(item.sipPerawat)+'</p>';
+                            }
+                        }else{
+                            if(item.ttdApoteker != null && item.ttdDokter){
+                                ttd = '<span>Apoteker</span><br>'+
+                                    '<img style="width: 70%; height: 50px" src="' + item.ttdDokter + '">' +
+                                    '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerangDokter)+'</p>' +
+                                    '<p style="margin-top: -3px">'+cekItemIsNull(item.sipDokter)+'</p>' +
+                                    '<p>-----------------------------------------</p>'+
+                                    '<span>Perawat</span><br>'+
+                                    '<img style="width: 70%; height: 50px" src="' + item.ttdApoteker + '">' +
+                                    '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerangPerawat)+'</p>' +
+                                    '<p style="margin-top: -9px;">'+cekItemIsNull(item.sipPerawat)+'</p>';
+                            }
                         }
                     }
 
@@ -4133,6 +4151,16 @@ function listCatatanPemberianObat() {
 
 function actionCPO(id, waktu){
     $('#jam').val(waktu);
+    $('#tipe_cpo').val(jenisCPO);
+    if(jenisCPO == "apoteker"){
+        $('#form_apoteker').show();
+        $('#form_perawat').hide();
+        $('#title_ttd').text("TTD Apoteker");
+    }else{
+        $('#form_apoteker').hide();
+        $('#form_perawat').show();
+        $('#title_ttd').text("TTD Keluarga");
+    }
     $('#modal-ina-action_pemberian_obat').modal({show:true, backdrop:'static'});
     $('#save_ina_action_pemberian_obat').attr('onclick', 'saveCOP(\''+id+'\')');
 }
@@ -4144,9 +4172,12 @@ function saveCOP(id){
     var nama1 = $('#nama_terang_cpo9').val();
     var nama2 = $('#nama_terang_cpo10').val();
     var sip2 = $('#nip_cpo10').val();
-    var cek1 = isBlank(ttdPasien);
-    var cek2 = isBlank(ttdPerawat);
+    var cek1 = isCanvasBlank(ttdPasien);
+    var cek2 = isCanvasBlank(ttdPerawat);
     var waktu = $('#jam').val();
+
+    var apoteker = $('#nama_terang_apoteker').val();
+    var sipApoteker = $('#sip_apoteker').val();
 
     var temp = "";
     $.each(centeng, function (i, item) {
@@ -4164,18 +4195,24 @@ function saveCOP(id){
     var ttd2 = ttdPerawat.toDataURL("image/png"),
         ttd2 = ttd2.replace(/^data:image\/(png|jpg);base64,/, "");
 
+    var namanama = nama1;
+    var jenCPO = $('#tipe_cpo').val();
+    if("apoteker" == jenCPO){
+        namanama = apoteker;
+    }
     var data = {
         'id': id,
         'ttd_keluarga': ttd1,
         'ttd_perawat': ttd2,
         'nama1': nama1,
         'nama2': nama2,
-        'sip': sip2,
+        'sip1': sipApoteker,
+        'sip2': sip2,
         'keterangan': temp,
         'waktu': waktu
     }
 
-    if(id != '' && !cek1 && !cek2 && nama1 && nama2 && sip2 && waktu && temp != ''){
+    if(id != '' && !cek1 && !cek2 && namanama && nama2 && sip2 && waktu && temp != ''){
         $('#save_ina_action_pemberian_obat').hide();
         $('#load_ina_action_pemberian_obat').show();
         var result = JSON.stringify(data);
@@ -4489,8 +4526,12 @@ function saveRekonsiliasiObat(jenis, ket) {
     var va7 = $('[name=reo7]:checked').val();
     var v9 = document.getElementById("reo_ttd1");
     var v10 = document.getElementById("reo_ttd2");
-    var va9 = isBlank(v9);
-    var va10 = isBlank(v10);
+    var va9 = isCanvasBlank(v9);
+    var va10 = isCanvasBlank(v10);
+
+    var keluarga = $('#keluarga').val();
+    var apoteker = $('#apoteker').val();
+    var sip = $('#sip_apoteker').val();
 
     if (va1 && va2 && va3 && va4 && va5 && va6 != '' && va7 != undefined && !va9 && !va10) {
 
@@ -4509,7 +4550,10 @@ function saveRekonsiliasiObat(jenis, ket) {
             'indikasi': va6,
             'diteruskan': va7,
             'ttd_pasien': ttd1,
-            'ttd_apoteker': ttd2
+            'ttd_apoteker': ttd2,
+            'keluarga': keluarga,
+            'apoteker': apoteker,
+            'sip': sip
         }
 
         if(!cekSession()){
@@ -4564,7 +4608,7 @@ function listRekonsiliasiObat() {
                     }
 
                     table += '<tr>' +
-                        '<td>' + formaterDate(item.tanggal) + '</td>' +
+                        '<td>' + converterDate(item.tanggal) + '</td>' +
                         '<td>' + cekNull(item.ruangan) + '</td>' +
                         '<td>' + cekNull(item.namaObat) + '</td>' +
                         '<td>' + cekNull(item.dosis) + '</td>' +
@@ -4572,8 +4616,15 @@ function listRekonsiliasiObat() {
                         '<td>' + cekNull(item.indikasi) + '</td>' +
                         '<td align="center">' + ya + '</td>' +
                         '<td align="center">' + tidak + '</td>' +
-                        '<td align="center">' + '<img style="width: 30px; height: 20px" src="' + item.ttdPasien + '">' + '</td>' +
-                        '<td align="center">' + '<img style="width: 30px; height: 20px" src="' + item.ttdApoteker + '">' + '</td>' +
+                        '<td align="center">' +
+                        '<img style="width: 70px; height: 50px" src="' + item.ttdPasien + '">' +
+                        '<p>'+item.keluarga+'</p>'+
+                        '</td>' +
+                        '<td align="center">' +
+                        '<img style="width: 70px; height: 50px" src="' + item.ttdApoteker + '">' +
+                        '<p>'+item.apoteker+'</p>'+
+                        '<p>'+item.sip+'</p>'+
+                        '</td>' +
                         '</tr>';
                 });
                 $('#body_rekonsiliasi').html(table);
@@ -4992,8 +5043,8 @@ function radioEdukasiPasien(jenis) {
         edukasi.push({'edukasi': ''});
     }
     if ("ept_dokter_igd" == jenis) {
-        edukasi.push({'edukasi': 'Diagnosa Masuk'});
-        edukasi.push({'edukasi': 'Rencana Pelayanan Dan Tindakan'});
+        edukasi.push({'edukasi': 'plc|Diagnosa Masuk'});
+        edukasi.push({'edukasi': 'plc|Rencana Pelayanan Dan Tindakan'});
         edukasi.push({'edukasi': 'plc|DPJP yang merawat Dr.'});
         edukasi.push({'edukasi': ''});
         edukasi.push({'edukasi': ''});
@@ -6064,7 +6115,7 @@ function saveImpl(jenis, ket) {
     var va2 = $('#impl2').val();
     var va3 = $('#impl3').val();
     var v4 = document.getElementById("impl4");
-    var va4 = isBlank(v4);
+    var va4 = isCanvasBlank(v4);
     var nama = $('#nama_terang').val();
     var sip = $('#sip').val();
 

@@ -30,6 +30,33 @@ public class RekonsiliasiObat extends BaseModel {
     private String ttdPasien;
     private String ttdApoteker;
     private String ruangan;
+    private String keluarga;
+    private String apoteker;
+    private String sip;
+
+    public String getKeluarga() {
+        return keluarga;
+    }
+
+    public void setKeluarga(String keluarga) {
+        this.keluarga = keluarga;
+    }
+
+    public String getApoteker() {
+        return apoteker;
+    }
+
+    public void setApoteker(String apoteker) {
+        this.apoteker = apoteker;
+    }
+
+    public String getSip() {
+        return sip;
+    }
+
+    public void setSip(String sip) {
+        this.sip = sip;
+    }
 
     public String getTtdPasien() {
         return ttdPasien;

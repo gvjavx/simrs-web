@@ -32,6 +32,9 @@ public class CatatanPemberianObatBoImpl implements CatatanPemberianObatBo {
             if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
+            if(bean.getJenis() != null && !"".equalsIgnoreCase(bean.getJenis())){
+                hsCriteria.put("jenis", bean.getJenis());
+            }
 
             List<ItSimrsCatatanPemberianObatEntity> entityList = new ArrayList<>();
             try {
@@ -68,6 +71,7 @@ public class CatatanPemberianObatBoImpl implements CatatanPemberianObatBo {
                     catatan.setNamaTerangDokter(entity.getNamaTerangDokter());
                     catatan.setNamaTerangPerawat(entity.getNamaTerangPerawat());
                     catatan.setSipDokter(entity.getSipDokter());
+                    catatan.setJenis(entity.getJenis());
                     list.add(catatan);
                 }
             }
@@ -103,6 +107,7 @@ public class CatatanPemberianObatBoImpl implements CatatanPemberianObatBo {
             catatanPemberianObatEntity.setNamaTerangDokter(bean.getNamaTerangDokter());
             catatanPemberianObatEntity.setNamaTerangPerawat(bean.getNamaTerangPerawat());
             catatanPemberianObatEntity.setSipDokter(bean.getSipDokter());
+            catatanPemberianObatEntity.setJenis(bean.getJenis());
 
             try {
                 catatanPemberianObatDao.addAndSave(catatanPemberianObatEntity);
@@ -162,6 +167,7 @@ public class CatatanPemberianObatBoImpl implements CatatanPemberianObatBo {
             hs.put("waktu", catatanPemberianObatEntity.getWaktu());
             hs.put("created_date", catatanPemberianObatEntity.getCreatedDate());
             hs.put("id_detail_checkup", catatanPemberianObatEntity.getIdDetailCheckup());
+            hs.put("jenis", catatanPemberianObatEntity.getJenis());
 
             List<ItSimrsCatatanPemberianObatEntity> pemberianObatEntities = catatanPemberianObatDao.getByCriteria(hs);
             for (ItSimrsCatatanPemberianObatEntity pemberianObatEntities1: pemberianObatEntities){
@@ -172,6 +178,7 @@ public class CatatanPemberianObatBoImpl implements CatatanPemberianObatBo {
                 pemberianObatEntities1.setNamaTerangDokter(bean.getNamaTerangDokter());
                 pemberianObatEntities1.setNamaTerangPerawat(bean.getNamaTerangPerawat());
                 pemberianObatEntities1.setSipDokter(bean.getSipDokter());
+                pemberianObatEntities1.setSipPerawat(bean.getSipPerawat());
                 pemberianObatEntities1.setAction("U");
                 pemberianObatEntities1.setLastUpdate(bean.getLastUpdate());
                 pemberianObatEntities1.setLastUpdateWho(bean.getLastUpdateWho());
