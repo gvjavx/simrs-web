@@ -94,7 +94,7 @@ public class CommonConstant {
     public final static String URL_IMAGE_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/logo-nmu.png";
     public final static String URL_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/";
     public final static String IMAGE_LOGO_KP = "KP.png";
-    public final static String RESOURCE_DOCUMENT_PAYROLL = CommonUtil.getPropertyParams("upload.folder2")+CommonConstant.RESOURCE_PATH_PAYROLL;
+    public final static String RESOURCE_DOCUMENT_PAYROLL = CommonUtil.getPropertyParams("upload.folder")+CommonConstant.RESOURCE_PATH_PAYROLL;
 
     public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayroll3.jrxml";
     public final static String REPORT_PAYROLL_THR = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollThrBranch3.jrxml";
