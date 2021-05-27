@@ -868,7 +868,7 @@
                         alert('Payroll Berhasil Tidak Di Approve');
                         $('#modal-approve-keu').modal('hide');
                         showDialogPy("success");
-                        $('#myForm')[0].reset();
+                        // $('#myForm')[0].reset();
                         window.location.href="<s:url action='initForm_payroll.action'/>";
                     } else {
                         showDialogPy("error");
