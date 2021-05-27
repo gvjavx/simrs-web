@@ -3102,6 +3102,11 @@ function saveResepObat() {
                 listDetailRacik.push(detail);
             });
 
+            var stListDetailRacik = "";
+            if (listDetailRacik.length > 0){
+                stListDetailRacik = JSON.stringify(listDetailRacik);
+            }
+
             var listNamaRacik = [];
             $.each(arrListNamaRacik, function(i,item){
                 var racikname = {
@@ -3113,6 +3118,12 @@ function saveResepObat() {
                 }
                 listNamaRacik.push(racikname);
             });
+
+            var stListNamaRacik = "";
+            if (listNamaRacik.length > 0){
+                stListNamaRacik = JSON.stringify(listNamaRacik);
+            }
+
             var stringDataObat = JSON.stringify(dataObat);
             var dataObj = {
                 'id_detail_checkup': idDetailCheckup,
@@ -3122,8 +3133,8 @@ function saveResepObat() {
                 'id_apotek': idPelayanan,
                 'ttd': dataURL,
                 'data_obat': stringDataObat,
-                'arr_nama_racik':listNamaRacik.length > 0 ? listNamaRacik : "",
-                'arr_detail_racik':listDetailRacik.length > 0 ? listDetailRacik : ""
+                'arr_nama_racik': stListNamaRacik,
+                'arr_detail_racik': stListDetailRacik
             }
             var stringObj = JSON.stringify(dataObj);
             $('#save_resep_head').hide();

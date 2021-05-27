@@ -427,6 +427,41 @@ public class TransaksiObatAction extends BaseMasterAction {
             }
         }
 
+        List<TransaksiObatDetail> obatDetailsRacik = obatDetailList.stream().filter(
+                p->p.getIdRacik() != null && !"".equalsIgnoreCase(p.getIdRacik())
+        ).collect(Collectors.toList());
+
+        obatDetailList = obatDetailList.stream().filter(
+                p->p.getIdRacik() == null || "".equalsIgnoreCase(p.getIdRacik())
+        ).collect(Collectors.toList());
+
+        List<ObatRacik> listNamaRacik = new ArrayList<>();
+        if (obatDetailsRacik.size() > 0){
+            for (TransaksiObatDetail obatDetail : obatDetailsRacik){
+
+                if (listNamaRacik.size() == 0){
+                    List<ObatRacik> listRacik = transaksiObatBoProxy.getListNamaRacik(obatDetail.getIdRacik());
+                    if (listRacik.size() > 0){
+                        listNamaRacik.add(listRacik.get(0));
+                    }
+                } else {
+
+                    List<ObatRacik> filteredObatRacik = listNamaRacik.stream().filter(
+                            p->p.getId().equalsIgnoreCase(obatDetail.getIdRacik())
+                    ).collect(Collectors.toList());
+
+                    if (filteredObatRacik.size() > 0){
+                        continue;
+                    } else {
+                        List<ObatRacik> listRacik = transaksiObatBoProxy.getListNamaRacik(obatDetail.getIdRacik());
+                        if (listRacik.size() > 0){
+                            listNamaRacik.add(listRacik.get(0));
+                        }
+                    }
+                }
+            }
+        }
+
         BigInteger hitungTotalResep = hitungTotalBayar(obatDetailList);
         setTransaksiObatDetail(transaksiObatDetail);
         BigInteger jml = hitungTotalResep;
@@ -460,6 +495,8 @@ public class TransaksiObatAction extends BaseMasterAction {
         setTransaksiObatDetail(transaksiObatDetail);
         session.removeAttribute("listOfResultResep");
         session.setAttribute("listOfResultResep", obatDetailList);
+        session.setAttribute("listOfResultNamaRacik", listNamaRacik);
+        session.setAttribute("listOfResultDetailRacik", obatDetailsRacik);
         logger.info("[TransaksiObatAction.searchResep] END <<<<<<<");
         return "init_bayar";
 

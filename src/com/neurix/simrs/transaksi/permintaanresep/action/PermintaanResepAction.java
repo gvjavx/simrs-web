@@ -117,7 +117,7 @@ public class PermintaanResepAction extends BaseMasterAction{
                         if (!"".equalsIgnoreCase(obj.getString("arr_nama_racik"))){
                             JSONArray arrNamaRacik = new JSONArray(obj.getString("arr_nama_racik"));
                             for (int i=0; i < arrNamaRacik.length(); i++){
-                                JSONObject objNamaRacik = new JSONObject(i);
+                                JSONObject objNamaRacik = arrNamaRacik.getJSONObject(i);
                                 ObatRacik obatRacik = new ObatRacik();
                                 obatRacik.setId(objNamaRacik.getString("idracik"));
                                 obatRacik.setNama(objNamaRacik.getString("racik"));
@@ -133,10 +133,11 @@ public class PermintaanResepAction extends BaseMasterAction{
                         if (!"".equalsIgnoreCase(obj.getString("arr_detail_racik"))){
                             JSONArray arrNamaRacik = new JSONArray(obj.getString("arr_detail_racik"));
                             for (int i=0; i < arrNamaRacik.length(); i++){
-                                JSONObject objNamaRacik = new JSONObject(i);
+                                JSONObject objNamaRacik = arrNamaRacik.getJSONObject(i);
                                 TransaksiObatDetail obatRacik = new TransaksiObatDetail();
                                 obatRacik.setIdObat(objNamaRacik.getString("idobat"));
                                 obatRacik.setNamaObat(objNamaRacik.getString("namaobat"));
+                                obatRacik.setKeterangan(objNamaRacik.getString("dosis"));
                                 obatRacik.setQty(new BigInteger(String.valueOf(0)));
                                 obatRacik.setIdRacik(objNamaRacik.getString("idracik"));
                                 listDetailObatRacik.add(obatRacik);
