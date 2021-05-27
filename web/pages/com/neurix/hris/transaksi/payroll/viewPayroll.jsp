@@ -15,6 +15,7 @@
     <%--<script type='text/javascript' src='<s:url value="/dwr/interface/MedicalRecordAction.js"/>'></script>--%>
 
     <style>
+        .checkBox {width: 20px; height: 20px;}
         .checkApprove {width: 20px; height: 20px;}
         .pagebanner{
             background-color: #ededed;
@@ -621,6 +622,21 @@
                             <%--</div>--%>
 
                         </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Koreksi :</label>
+                                <div class="col-sm-6">
+                                    <input type="checkbox" id="cekFlagKoreksi" class="checkBox" onchange="needKoreksi()" />
+                                    <input style="display: none" type="text" class="form-control nip" id="flagKoreksi" name="flagKoreksi">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Catatan Koreksi :</label>
+                                <div class="col-sm-6">
+                                    <textarea rows="6" type="text" class="form-control nip" id="noteKoreksi" name="noteKoreksi"></textarea>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="row" id="totalAMod">
                         <div class="col-sm-4" id="komponenA">
@@ -960,6 +976,7 @@
 
             </div>
             <div class="modal-footer">
+                <a id="btnSave" type="btn btn-success" class="btn btn-default btn-success"><i class="fa fa-save"></i> Save</a>
                 <a type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Close</a>
             </div>
         </div>
@@ -1005,7 +1022,7 @@
             </div>
             <div class="modal-footer">
                 <%--<a type="button" class="btn btn-success" id="btnRefreshLembur" >Refresh</a>--%>
-                <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
+                    <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
             </div>
         </div>
     </div>
@@ -3058,6 +3075,35 @@
 
 <script>
 
+    $('#btnSave').click(function() {
+        var payrollId = document.getElementById("payrollPegawaiId").value;
+        var nip = document.getElementById("nip").value;
+        var bulan = document.getElementById("bulan").value;
+        var tahun = document.getElementById("tahun").value;
+
+        //komponen rincian potongan
+        var flagKoreksi = document.getElementById("flagKoreksi").value;
+        var noteKoreksi = document.getElementById("noteKoreksi").value;
+
+        console.log(flagKoreksi);
+        if (confirm('Apakah Anda ingin menyimpan koreksi ?')) {
+
+            PayrollAction.saveKoreksiAks(payrollId, nip, bulan, flagKoreksi, noteKoreksi, function(result) {
+
+                if (result) {
+                    alert('Catatan Koreksi telah tersimpan.');
+                    $('#modal-edit').modal('hide');
+                    $('#formEdit')[0].reset();
+                } else {
+                    alert('Error saat penyimpanan data, tolong di cek kembali atau hubungin admin.');
+                }
+
+            });
+
+        }
+
+    });
+
     //updated by ferdi, 01-12-2020, to view saved item payroll each nip
     $('.tablePayroll').on('click', '.item-view', function(){
 
@@ -3170,6 +3216,19 @@
             $('#pph11Bulan').val(itemData.totalPphUntilNov);
             $('#pphSeharusnya').val(itemData.pphSeharusnya);
             $('#selisihPph').val(itemData.selisihPph);
+
+            //koreksi dari aks
+            console.log("ready : " + itemData.flagKoreksi);
+            if (itemData.flagKoreksi == "Y") {
+                document.getElementById("cekFlagKoreksi").checked = true;
+                $("#noteKoreksi").prop("disabled",false);
+
+                $('#noteKoreksi').val(itemData.noteKoreksi);
+                $('#flagKoreksi').val(itemData.flagKoreksi);
+            } else {
+                document.getElementById("cekFlagKoreksi").checked = false;
+                $("#noteKoreksi").prop("disabled",true);
+            }
 
         });
 
@@ -3299,6 +3358,16 @@
             window.location.href = 'printReportPensiun_payroll?id='+payrollId;
         }
     });
+
+    window.needKoreksi = function () {
+        if (document.getElementById("cekFlagKoreksi").checked == true) {
+            $("#flagKoreksi").val("Y");
+            $("#noteKoreksi").prop("disabled",false);
+        } else {
+            $("#flagKoreksi").val("N");
+            $("#noteKoreksi").prop("disabled",true);
+        }
+    }
 
 
     // $('.detailTunjlain').on('click', function(){

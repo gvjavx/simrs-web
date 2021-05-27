@@ -346,25 +346,52 @@
                                                         <display:table name="listDataPayroll" class="tablePayroll table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_edit_payroll.action" export="true" id="row" pagesize="1000" style="font-size:9">
 
-                                                            <display:column media="html" title="Edit">
-                                                                <a href="javascript:;"
-                                                                   data="<s:property value="%{#attr.row.payrollId}"/>" class="item-edit">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
-                                                                </a>
-                                                            </display:column>
+                                                            <s:if test='%{#attr.row.flagKoreksi == "Y" }'>
 
-                                                            <display:column property="nip" sortable="true" title="NIP"  />
-                                                            <display:column property="namaPegawai" sortable="true" title="Nama" />
-                                                            <display:column property="divisiName" sortable="true" title="Bidang" />
-                                                            <display:column property="posisiName" sortable="true" title="Jabatan" />
-                                                            <display:column style="text-align:right;" property="componentA" sortable="true" title="Gaji" />
-                                                            <display:column style="text-align:right;" property="componentB" sortable="true" title="Tot.Tunj." />
-                                                            <display:column style="text-align:right;" property="componentC" sortable="true" title="Tot.Pot.Tnp.PPh" />
-                                                            <display:column style="text-align:right;" property="tunjanganPph" sortable="true" title="PPh" />
-                                                            <display:column style="text-align:right;" property="gajiBersih" sortable="true" title="Gaji.Bersih" />
-                                                            <display:column style="text-align:center;" property="multifikator" sortable="true" title="Prop.Gaji" />
-                                                            <display:column style="color: #00cc00;" property="stTanggalPraPensiun" sortable="true" title="PMP" />
-                                                            <display:column style="color: red;" property="stTanggalPensiun" sortable="true" title="Pensiun" />
+                                                                <display:column class="bg-danger" media="html" title="Edit">
+                                                                    <a href="javascript:;"
+                                                                       data="<s:property value="%{#attr.row.payrollId}"/>" class="item-edit">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
+                                                                    </a>
+                                                                </display:column>
+
+                                                                <display:column class="bg-danger" property="nip" sortable="true" title="NIP"  />
+                                                                <display:column class="bg-danger" property="namaPegawai" sortable="true" title="Nama" />
+                                                                <display:column class="bg-danger" property="divisiName" sortable="true" title="Bidang" />
+                                                                <display:column class="bg-danger" property="posisiName" sortable="true" title="Jabatan" />
+                                                                <display:column class="bg-danger" style="text-align:right;" property="componentA" sortable="true" title="Gaji" />
+                                                                <display:column class="bg-danger" style="text-align:right;" property="componentB" sortable="true" title="Tot.Tunj." />
+                                                                <display:column class="bg-danger" style="text-align:right;" property="componentC" sortable="true" title="Tot.Pot.Tnp.PPh" />
+                                                                <display:column class="bg-danger" style="text-align:right;" property="tunjanganPph" sortable="true" title="PPh" />
+                                                                <display:column class="bg-danger" style="text-align:right;" property="gajiBersih" sortable="true" title="Gaji.Bersih" />
+                                                                <display:column class="bg-danger" style="text-align:center;" property="multifikator" sortable="true" title="Prop.Gaji" />
+                                                                <display:column class="bg-danger" style="color: #00cc00;" property="stTanggalPraPensiun" sortable="true" title="PMP" />
+                                                                <display:column class="bg-danger" style="color: red;" property="stTanggalPensiun" sortable="true" title="Pensiun" />
+
+                                                            </s:if>
+                                                            <s:else>
+
+                                                                <display:column media="html" title="Edit">
+                                                                    <a href="javascript:;"
+                                                                       data="<s:property value="%{#attr.row.payrollId}"/>" class="item-edit">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
+                                                                    </a>
+                                                                </display:column>
+
+                                                                <display:column property="nip" sortable="true" title="NIP"  />
+                                                                <display:column property="namaPegawai" sortable="true" title="Nama" />
+                                                                <display:column property="divisiName" sortable="true" title="Bidang" />
+                                                                <display:column property="posisiName" sortable="true" title="Jabatan" />
+                                                                <display:column style="text-align:right;" property="componentA" sortable="true" title="Gaji" />
+                                                                <display:column style="text-align:right;" property="componentB" sortable="true" title="Tot.Tunj." />
+                                                                <display:column style="text-align:right;" property="componentC" sortable="true" title="Tot.Pot.Tnp.PPh" />
+                                                                <display:column style="text-align:right;" property="tunjanganPph" sortable="true" title="PPh" />
+                                                                <display:column style="text-align:right;" property="gajiBersih" sortable="true" title="Gaji.Bersih" />
+                                                                <display:column style="text-align:center;" property="multifikator" sortable="true" title="Prop.Gaji" />
+                                                                <display:column style="color: #00cc00;" property="stTanggalPraPensiun" sortable="true" title="PMP" />
+                                                                <display:column style="color: red;" property="stTanggalPensiun" sortable="true" title="Pensiun" />
+
+                                                            </s:else>
 
                                                             <display:setProperty name="paging.banner.item_name">PayrollDetail</display:setProperty>
                                                             <display:setProperty name="paging.banner.items_name">PayrollDetail</display:setProperty>
@@ -600,20 +627,21 @@
                             <%--</div>--%>
 
                         </div>
-                        <%--<div class="col-sm-4">--%>
+                        <div class="col-sm-4">
                             <%--<div class="form-group">--%>
                                 <%--<label class="control-label col-sm-5" >Koreksi :</label>--%>
                                 <%--<div class="col-sm-6">--%>
-                                    <%--<input style="text-align: right" readonly type="text" class="form-control nip" id="flagKoreksi" name="flagKoreksi">--%>
+                                    <%--<input style="display: none" readonly type="text" class="form-control nip" id="flagKoreksi" name="flagKoreksi">--%>
                                 <%--</div>--%>
                             <%--</div>--%>
-                            <%--<div class="form-group">--%>
-                                <%--<label class="control-label col-sm-5" >Catatan :</label>--%>
-                                <%--<div class="col-sm-6">--%>
-                                    <%--<textarea rows="6" style="text-align: right" readonly type="text" class="form-control nip" id="noteKoreksi" name="noteKoreksi"></textarea>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Catatan Koreksi :</label>
+                                <div class="col-sm-6">
+                                    <input style="display: none" readonly type="text" class="form-control nip" id="flagKoreksi" name="flagKoreksi">
+                                    <textarea rows="6" readonly type="text" class="form-control nip" id="noteKoreksi" name="noteKoreksi"></textarea>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="row" id="totalAMod">
                         <div class="col-sm-4" id="komponenA">
@@ -1173,8 +1201,8 @@
             $('#selisihPph').val(itemData.selisihPph);
 
             //koreksi dari aks
-            // $('#noteKoreksi').val(itemData.noteKoreksi);
-            // $('#flagKoreksi').val(itemData.flagKoreksi);
+            $('#noteKoreksi').val(itemData.noteKoreksi);
+            $('#flagKoreksi').val(itemData.flagKoreksi);
         });
 
         $('#modal-edit').find('.modal-title').text('Detail Payroll');

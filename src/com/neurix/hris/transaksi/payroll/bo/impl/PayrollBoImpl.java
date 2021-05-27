@@ -455,6 +455,9 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         itHrisPayrollTempEntity.setFlag("Y");
         itHrisPayrollTempEntity.setAction(action);
 
+        itHrisPayrollTempEntity.setFlagKoreksi(pegawaiPayroll.getFlagKoreksi());
+        itHrisPayrollTempEntity.setNoteKoreksi(pegawaiPayroll.getNoteKoreksi());
+
         if ("C".equalsIgnoreCase(action)) {
 
             itHrisPayrollTempEntity.setCreatedWho(createdWho);
