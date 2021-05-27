@@ -622,7 +622,7 @@
                             <%--</div>--%>
 
                         </div>
-                        <div class="col-sm-4">
+                        <div id="koreksiAks" class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label col-sm-5" >Koreksi :</label>
                                 <div class="col-sm-6">
@@ -3218,16 +3218,19 @@
             $('#selisihPph').val(itemData.selisihPph);
 
             //koreksi dari aks
-            console.log("ready : " + itemData.flagKoreksi);
-            if (itemData.flagKoreksi == "Y") {
-                document.getElementById("cekFlagKoreksi").checked = true;
-                $("#noteKoreksi").prop("disabled",false);
-
-                $('#noteKoreksi').val(itemData.noteKoreksi);
-                $('#flagKoreksi').val(itemData.flagKoreksi);
+            if (itemData.flagPrint == "Y"){
+                $('#koreksiAks').hide();
             } else {
-                document.getElementById("cekFlagKoreksi").checked = false;
-                $("#noteKoreksi").prop("disabled",true);
+                if (itemData.flagKoreksi == "Y") {
+                    document.getElementById("cekFlagKoreksi").checked = true;
+                    $("#noteKoreksi").prop("disabled",false);
+
+                    $('#noteKoreksi').val(itemData.noteKoreksi);
+                    $('#flagKoreksi').val(itemData.flagKoreksi);
+                } else {
+                    document.getElementById("cekFlagKoreksi").checked = false;
+                    $("#noteKoreksi").prop("disabled",true);
+                }
             }
 
         });
