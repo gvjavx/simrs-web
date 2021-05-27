@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printResumeRawatJalan" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.4641000000000048"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="336"/>
+	<property name="ireport.y" value="538"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -291,10 +291,10 @@ WHERE id_detail_checkup = $P{reportParams.idDetailCheckup}]]>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Anamnesa]]></text>
+				<text><![CDATA[Anamnesis]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="185" width="104" height="15" uuid="4a57de25-3093-4800-b26c-9ce004de0e10"/>
+				<reportElement x="0" y="204" width="104" height="15" uuid="4a57de25-3093-4800-b26c-9ce004de0e10"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -317,28 +317,28 @@ WHERE id_detail_checkup = $P{reportParams.idDetailCheckup}]]>
 				<textFieldExpression><![CDATA[$P{reportParams.hetero} == null ? "" : $P{reportParams.hetero}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="104" y="136" width="5" height="15" uuid="06a91c4f-6ec4-4c8b-b119-adccefb2acd2"/>
+				<reportElement x="103" y="136" width="6" height="15" uuid="06a91c4f-6ec4-4c8b-b119-adccefb2acd2"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="104" y="151" width="5" height="15" uuid="ca8ed574-c9fa-4436-a8a9-b860eff15802"/>
+				<reportElement x="103" y="151" width="6" height="15" uuid="ca8ed574-c9fa-4436-a8a9-b860eff15802"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="104" y="185" width="5" height="15" uuid="d978f097-9640-40df-b249-7713653c360b"/>
+				<reportElement x="104" y="204" width="5" height="15" uuid="d978f097-9640-40df-b249-7713653c360b"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="109" y="185" width="272" height="15" isPrintWhenDetailOverflows="true" uuid="aea0ea87-95d1-4c2b-95c6-3ee46f9f33e1"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="109" y="204" width="272" height="15" isPrintWhenDetailOverflows="true" uuid="aea0ea87-95d1-4c2b-95c6-3ee46f9f33e1"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle" markup="html">
 					<font size="8"/>
@@ -440,21 +440,21 @@ WHERE id_detail_checkup = $P{reportParams.idDetailCheckup}]]>
 				</jr:Code128>
 			</componentElement>
 			<staticText>
-				<reportElement x="0" y="200" width="104" height="15" uuid="59765501-f057-4474-a27a-54fd8ecc743c"/>
+				<reportElement x="0" y="219" width="104" height="15" uuid="59765501-f057-4474-a27a-54fd8ecc743c"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Pemeriksaan Radiologi]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="104" y="200" width="5" height="15" uuid="3438c129-b885-47f5-adc2-ff8786d53e1b"/>
+				<reportElement x="104" y="219" width="5" height="15" uuid="3438c129-b885-47f5-adc2-ff8786d53e1b"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="109" y="200" width="272" height="15" isPrintWhenDetailOverflows="true" uuid="7e13d956-ea47-4014-97c7-18404c3a6b66"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="109" y="219" width="272" height="15" isPrintWhenDetailOverflows="true" uuid="7e13d956-ea47-4014-97c7-18404c3a6b66"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle" markup="html">
 					<font size="8"/>
@@ -462,21 +462,21 @@ WHERE id_detail_checkup = $P{reportParams.idDetailCheckup}]]>
 				<textFieldExpression><![CDATA[$P{penunjangRadiologi} == null ? "" : $P{penunjangRadiologi}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="104" y="215" width="5" height="15" uuid="ba168190-e721-443b-a019-cc5ed6553c34"/>
+				<reportElement x="103" y="166" width="6" height="15" uuid="ba168190-e721-443b-a019-cc5ed6553c34"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="215" width="104" height="15" uuid="6e2a6491-c869-4191-9264-d3cf84467c68"/>
+				<reportElement x="0" y="166" width="104" height="15" uuid="6e2a6491-c869-4191-9264-d3cf84467c68"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Pemeriksaan Fisik]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="109" y="215" width="272" height="15" isPrintWhenDetailOverflows="true" uuid="7631cbd6-28f1-4eba-9e80-04871722ac46"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="109" y="166" width="272" height="15" isPrintWhenDetailOverflows="true" uuid="7631cbd6-28f1-4eba-9e80-04871722ac46"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle" markup="html">
 					<font size="8"/>
@@ -484,21 +484,21 @@ WHERE id_detail_checkup = $P{reportParams.idDetailCheckup}]]>
 				<textFieldExpression><![CDATA[$P{pemeriksaanFisik} == null ? "" : $P{pemeriksaanFisik}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="166" width="104" height="15" uuid="cb391664-6ec3-4ca8-8b6e-bfd8518cff45"/>
+				<reportElement x="0" y="181" width="104" height="15" uuid="cb391664-6ec3-4ca8-8b6e-bfd8518cff45"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Catatan Klinis]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="104" y="166" width="5" height="15" uuid="a2ebae68-3651-48bb-905c-73e1ed81c22d"/>
+				<reportElement x="103" y="181" width="6" height="15" uuid="a2ebae68-3651-48bb-905c-73e1ed81c22d"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="109" y="166" width="272" height="15" isPrintWhenDetailOverflows="true" uuid="beffd155-1e9e-497f-9376-bcacfda815b0"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="109" y="181" width="272" height="15" isPrintWhenDetailOverflows="true" uuid="beffd155-1e9e-497f-9376-bcacfda815b0"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle" markup="html">
 					<font size="8"/>

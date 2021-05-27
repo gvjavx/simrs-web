@@ -701,7 +701,9 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
                                             }
 
-                                            listOfJurnalDetail.add(itemJurnalDetailEntity);
+                                            if (nilai.compareTo(new BigDecimal(0)) == 1){
+                                                listOfJurnalDetail.add(itemJurnalDetailEntity);
+                                            }
                                         }
 
                                     } else { //jika tidak otomatis (dari form keuangan JKM/JKK/JKR), untuk coa di get dari form UI

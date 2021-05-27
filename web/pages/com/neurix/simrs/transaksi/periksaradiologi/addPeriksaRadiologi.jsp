@@ -31,6 +31,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/historypenunjang.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -91,8 +92,7 @@
                                         <td>
                                             <s:hidden id="id_periksa_lab" name="periksaLab.idPeriksaLab"></s:hidden>
                                             <s:hidden id="no_checkup" name="periksaLab.noCheckup"></s:hidden>
-                                            <s:hidden id="no_detail_checkup"
-                                                      name="periksaLab.idDetailCheckup"></s:hidden>
+                                            <s:hidden id="no_detail_checkup" name="periksaLab.idDetailCheckup"></s:hidden>
                                             <s:hidden id="id_palayanan" name="periksaLab.idPelayanan"></s:hidden>
                                             <table><s:label name="periksaLab.noCheckup"></s:label></table>
                                         </td>
@@ -269,13 +269,23 @@
                                         </label>
                                     </div>
                                 </sj:dialog>
-
                             </div>
                         </div>
                     </div>
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-12">
+                                <div id="asesmen_radiolgi" class="btn-group dropdown" style="margin-bottom: -20px; display: none">
+                                    <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen
+                                    </button>
+                                    <button onclick="getListRekamMedis()" type="button" class="btn btn-primary dropdown-toggle"
+                                            data-toggle="dropdown" style="height: 34px">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu" id="asesmen_rj">
+                                    </ul>
+                                </div>
                                 <button id="btn-add-parameter" class="btn btn-success"
                                         style="margin-bottom: -20px; display: none" onclick="showModal(1)"><i
                                         class="fa fa-plus"></i>
@@ -343,73 +353,11 @@
                                         </div>
                                     </div>
                                     <div id="set_luar">
-
                                     </div>
-                                    <%--<div class="row top_jarak">--%>
-                                        <%--&lt;%&ndash;<div class="col-md-3">&ndash;%&gt;--%>
-                                            <%--&lt;%&ndash;<a class="btn btn-success" onclick="viewUpload('hasil_luar')"><i&ndash;%&gt;--%>
-                                                    <%--&lt;%&ndash;class="fa fa-image"></i> View Upload</a>&ndash;%&gt;--%>
-                                        <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-                                        <%--<div class="col-md-7">--%>
-                                            <%--<div class="input-group">--%>
-                                                <%--<div class="input-group-addon">--%>
-                                                    <%--Rp.--%>
-                                                <%--</div>--%>
-                                                <%--<input oninput="convertRpAtas(this.id, this.value, 'h_total_tarif')"--%>
-                                                       <%--id="total_tarif" class="form-control" placeholder="Total Tarif">--%>
-                                                <%--<input type="hidden" id="h_total_tarif">--%>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <%--<div class="box-header with-border"></div>--%>
-                    <%--<div class="box-header with-border">--%>
-                    <%--<div class="row">--%>
-                    <%--<div class="col-md-6" id="form_hasil_lab_title">--%>
-                    <%--<h3 class="box-title"><i class="fa fa-upload"></i> Upload Hasil Radiologi <small>(Optional)</small></h3>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="box-body">--%>
-
-                    <%--</div>--%>
-                    <%--<hr class="garis">--%>
-                    <%--<div class="box-body">--%>
-                    <%--<div class="row">--%>
-                    <%--<div class="form-group">--%>
-                    <%--<div class="col-md-offset-4 col-md-4 text-center">--%>
-                    <%--<span>TTD Petugas</span>--%>
-                    <%--<button class="btn btn-danger" onclick="removePaint('ttd_petugas')">--%>
-                    <%--<i class="fa fa-trash"></i>--%>
-                    <%--</button>--%>
-                    <%--</div>--%>
-                    <%--<div class="col-md-3">--%>
-                    <%--<span>TTD Validator</span>--%>
-                    <%--<button class="btn btn-danger" onclick="removePaint('ttd_dokter')">--%>
-                    <%--<i class="fa fa-trash"></i>--%>
-                    <%--</button>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="row">--%>
-                    <%--<div class="form-group">--%>
-                    <%--<div class="col-md-offset-4 col-md-3">--%>
-                    <%--<canvas class="paint-canvas-ttd" id="ttd_petugas" width="260"--%>
-                    <%--onmouseover="paintTtd('ttd_petugas')" style="margin-left: -8px"></canvas>--%>
-                    <%--<input class="form-control" placeholder="Nama Petugas" id="nama_petugas">--%>
-                    <%--<input class="form-control" placeholder="NIP/SIP" style="margin-top: 5px" id="nip_petugas">--%>
-                    <%--</div>--%>
-                    <%--<div class="col-md-3">--%>
-                    <%--<canvas class="paint-canvas-ttd" id="ttd_dokter" width="260"--%>
-                    <%--onmouseover="paintTtd('ttd_dokter')" style="margin-left: -8px"></canvas>--%>
-                    <%--<input class="form-control" placeholder="Nama Validator" id="nama_validator">--%>
-                    <%--<input class="form-control" placeholder="NIP/SIP" style="margin-top: 5px" id="nip_validator">--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
                     <hr class="garis">
                     <div class="row" style="display: none">
                         <div class="col-md-12">
@@ -594,65 +542,6 @@
     </div>
 </div>
 
-<%--<div class="modal fade" id="modal-ttd">--%>
-    <%--<div class="modal-dialog modal-md">--%>
-        <%--<div class="modal-content">--%>
-            <%--<div class="modal-header" style="background-color: #00a65a; color: white">--%>
-                <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
-                    <%--<span aria-hidden="true">&times;</span></button>--%>
-                <%--<h4 class="modal-title"><i class="fa fa-pencil"></i> <span id="title_modal"></span>--%>
-                <%--</h4>--%>
-            <%--</div>--%>
-            <%--<div class="modal-body">--%>
-                <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_ttd">--%>
-                    <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
-                    <%--<p id="msg_ttd"></p>--%>
-                <%--</div>--%>
-                <%--<div class="row" style="display: none">--%>
-                    <%--<div class="col-md-12">--%>
-                        <%--<div class="col-md-7">--%>
-                            <%--<div class="form-group" style="padding-top: 10px; padding-bottom: 10px">--%>
-                                <%--<div class="col-md-1">--%>
-                                    <%--<input type="color" style="margin-left: -6px; margin-top: -8px"--%>
-                                           <%--class="js-color-picker  color-picker pull-left">--%>
-                                <%--</div>--%>
-                                <%--<div class="col-md-9">--%>
-                                    <%--<input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72"--%>
-                                           <%--value="1">--%>
-                                <%--</div>--%>
-                                <%--<div class="col-md-2">--%>
-                                    <%--<div style="margin-top: -8px;" class="js-range-value">1 px</div>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-                <%--<div class="row" style="margin-top: 10px">--%>
-                    <%--<div class="col-md-offset-2 col-md-8 text-center">--%>
-                        <%--<canvas style="margin-left: -7px; cursor: pointer" class="ttd-paint-canvas" id="ttd_dokter"--%>
-                                <%--width="380" height="300"--%>
-                                <%--onmouseover="paintTtd(this.id)"></canvas>--%>
-                        <%--<input oninput="$(this).css('border', '')" class="form-control" id="nama_dokter" placeholder="Nama Terang">--%>
-                        <%--<input oninput="$(this).css('border', '')" class="form-control" id="sip_dokter" style="margin-top: 5px" placeholder="SIP/NIP">--%>
-                        <%--<button style="margin-top: 5px" type="button" class="btn btn-danger"--%>
-                                <%--onclick="removePaint('ttd_dokter')"><i class="fa fa-trash"></i> Clear--%>
-                        <%--</button>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-            <%--<div class="modal-footer" style="background-color: #cacaca">--%>
-                <%--<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close--%>
-                <%--</button>--%>
-                <%--<button class="btn btn-success pull-right" id="save_ttd"><i class="fa fa-check"></i> Save--%>
-                <%--</button>--%>
-                <%--<button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_ttd">--%>
-                    <%--<i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...--%>
-                <%--</button>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-    <%--</div>--%>
-<%--</div>--%>
-
 <div class="modal fade" id="modal-history">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -793,6 +682,8 @@
         </div>
     </div>
 </div>
+
+<div id="modal-temp"></div>
 
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
@@ -1043,6 +934,8 @@
         PeriksaLabAction.listParameterPemeriksaan(idHeaderPemeriksaan, function (response) {
             if (response.length > 0) {
                 var table = "";
+                var asesmen = "N";
+
                 $.each(response, function (i, item) {
                     var nomor = i + 1;
                     var margin = "";
@@ -1121,11 +1014,20 @@
                         '    </div>\n' +
                         '</div>\n' +
                         '</div>';
+
+                    if("Y" == item.isAsesmen){
+                        asesmen = "Y";
+                    }
                 });
                 $('#body_parameter').html(table);
                 $('.editors').each(function () {
                     CKEDITOR.replace($(this).attr('id'));
                 });
+                if("Y" == asesmen){
+                    $('#asesmen_radiolgi').show();
+                }else{
+                    $('#asesmen_radiolgi').hide();
+                }
             }
         });
     }
@@ -1336,12 +1238,6 @@
         });
     }
 
-    // function savePemeriksaan(id, text, namaPeriksa) {
-    //     $('#title_modal').text(namaPeriksa);
-    //     $('#modal-ttd').modal({show: true, backdrop: 'static'});
-    //     $('#save_ttd').attr('onclick', 'saveHasil(\'' + id + '\', \'' + text + '\', \'' + namaPeriksa + '\')');
-    // }
-
     function savePemeriksaan(id, text, namaPeriksa) {
         var hasil = CKEDITOR.instances[text].getData();
         var data = {
@@ -1367,23 +1263,6 @@
                 }
             }
         });
-
-        // if(nama && sip != ''){
-        //     if(!cekDokter){
-        //     }else{
-        //         $('#warning_ttd').show().fadeOut(5000);
-        //         $('#msg_ttd').text("Silahkan melakukan TTD...!");
-        //     }
-        // }else{
-        //     if(nama == ''){
-        //         $('#nama_dokter').css('border', 'solid 1px red');
-        //     }
-        //     if(sip == ''){
-        //         $('#sip_dokter').css('border', 'solid 1px red');
-        //     }
-        //     $('#warning_ttd').show().fadeOut(5000);
-        //     $('#msg_ttd').text("Cek kembali inputan anda...!");
-        // }
     }
 
     function changeHasil(id, text, namaPeriksa){
@@ -1605,6 +1484,82 @@
             }
         });
     }
+
+    function loadModalRM(jenis, method, parameter, idRM, flag, flagHide, flagCheck) {
+        var context = contextPathHeader + '/pages/modal/modal-default.jsp';
+        if (jenis != "") {
+            context = contextPathHeader + '/pages/modal/modal-'+jenis+'.jsp';
+        }
+        $('#modal-temp').load(context, function (res, status, xhr) {
+            if(status == "success"){
+                var func = new Function(method+'(\''+parameter+'\', \''+idRM+'\', \''+flag+'\', \''+flagHide+'\', \''+flagCheck+'\')');
+                func();
+            }
+        });
+    }
+
+    function getListRekamMedis() {
+        var li = "";
+        var jenisRm = "";
+        CheckupAction.getListRekammedisPasien("radiologi", jenisRm, idDetailCheckup, function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    var cek = "";
+                    var tgl = "";
+                    var icons = '<i class="fa fa-file-o"></i>';
+                    var icons2 = '<i class="fa fa-print"></i>';
+                    var tol = "";
+                    var tolText = "";
+                    var labelTerisi = "";
+                    var constan = 0;
+                    var terIsi = 0;
+                    var labelPrint = "";
+                    var terIsiPrint = "";
+                    var enter = '';
+
+                    if (item.jumlahKategori != null) {
+                        constan = item.jumlahKategori;
+                    }
+                    if (item.terisi != null && item.terisi != '') {
+                        terIsi = item.terisi;
+                        terIsiPrint = item.terisi;
+                    }
+
+                    if (constan == terIsi || parseInt(terIsi) > parseInt(constan)) {
+                        var conver = "";
+                        if (item.createdDate != null) {
+                            conver = converterDate(new Date(item.createdDate));
+                            tgl = '<label class="label label-success">' + conver + '</label>';
+                            tol = 'class="box-rm"';
+                            tolText = '<span class="box-rmtext">Tanggal mengisi ' + conver + '</span>';
+                        }
+                        icons = '<i class="fa fa-check" style="color: #449d44"></i>';
+                        icons2 = '<i class="fa fa-check" style="color: #449d44"></i>';
+                        enter = '<br>';
+                    }
+
+                    labelTerisi = '<span style="color: #367fa9; font-weight: bold">' + terIsi + '/' + constan + '</span>';
+                    labelPrint = '<span style="color: #367fa9; font-weight: bold">' + terIsiPrint + '</span>';
+
+                    if (item.jenis == 'ringkasan_rj') {
+                        li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-television"></i>' + item.namaRm + '</a></li>'
+                    } else {
+                        if (item.function == 'addMonitoringFisioterapi') {
+                            li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-television"></i>' + item.namaRm + '</a></li>'
+                        } else {
+                            if (item.keterangan == 'form') {
+                                li += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \'' + item.function + '\', \'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>' + enter;
+                            } else if (item.keterangan == "surat") {
+                                li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>' + enter;
+                            }
+                        }
+                    }
+                });
+                $('#asesmen_rj').html(li);
+            }
+        });
+    }
+
 
 </script>
 

@@ -44,6 +44,9 @@ public class RekonsiliasiObatAction {
             rekonsiliasiObat.setAturanPakai(obj.getString("aturan_pakai"));
             rekonsiliasiObat.setIndikasi(obj.getString("indikasi"));
             rekonsiliasiObat.setDiteruskan(obj.getString("diteruskan"));
+            rekonsiliasiObat.setKeluarga(obj.getString("keluarga"));
+            rekonsiliasiObat.setApoteker(obj.getString("apoteker"));
+            rekonsiliasiObat.setSip(obj.getString("sip"));
 
             if(obj.has("ttd_pasien") || obj.has("ttd_apoteker")){
                 if(!"".equalsIgnoreCase(obj.getString("ttd_pasien")) || !"".equalsIgnoreCase(obj.getString("ttd_apoteker"))){

@@ -1,8 +1,13 @@
 package com.neurix.simrs.transaksi.permintaanresep.model;
 
+import com.neurix.simrs.transaksi.obatracik.model.ObatRacik;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+
 import java.io.Serializable;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Toshiba on 11/12/2019.
@@ -70,6 +75,43 @@ public class PermintaanResep{
     private String flagEresep;
     private String flagDelayAsuransi;
     private String flagRacik;
+    private String umur;
+    private String kategoriPelayanan;
+
+    private List<ObatRacik> listNamaObatRacik = new ArrayList<>();
+    private List<TransaksiObatDetail> listDetailObatRacik = new ArrayList<>();
+
+    public List<ObatRacik> getListNamaObatRacik() {
+        return listNamaObatRacik;
+    }
+
+    public void setListNamaObatRacik(List<ObatRacik> listNamaObatRacik) {
+        this.listNamaObatRacik = listNamaObatRacik;
+    }
+
+    public List<TransaksiObatDetail> getListDetailObatRacik() {
+        return listDetailObatRacik;
+    }
+
+    public void setListDetailObatRacik(List<TransaksiObatDetail> listDetailObatRacik) {
+        this.listDetailObatRacik = listDetailObatRacik;
+    }
+
+    public String getKategoriPelayanan() {
+        return kategoriPelayanan;
+    }
+
+    public void setKategoriPelayanan(String kategoriPelayanan) {
+        this.kategoriPelayanan = kategoriPelayanan;
+    }
+
+    public String getUmur() {
+        return umur;
+    }
+
+    public void setUmur(String umur) {
+        this.umur = umur;
+    }
 
     public String getFlagRacik() {
         return flagRacik;

@@ -214,7 +214,35 @@ public class RingkasanPasienBoImpl implements RingkasanPasienBo {
                             checkup.setKeadaanPulang(entity.getJawaban());
                         }
                         if("instruksi_lanjut".equalsIgnoreCase(entity.getTipe())){
-                            checkup.setTindakLanjut(entity.getJawaban());
+                            if(!"".equalsIgnoreCase(entity.getJawaban())){
+                                String[] tindak = entity.getJawaban().split("\\|");
+                                String tindakLanjut = "";
+                                int i = 0;
+                                if(tindak.length > 0){
+                                    for (String lanjut: tindak){
+                                        if("Kontrol Ulang".equalsIgnoreCase(lanjut)){
+                                            if(i == 0){
+                                                tindakLanjut = lanjut;
+                                            }else{
+                                                tindakLanjut = tindakLanjut + i +"."+lanjut;
+                                            }
+                                        }
+                                        i++;
+                                    }
+                                    if(i > 0){
+                                        int no = i+1;
+                                        tindakLanjut = tindakLanjut + no+". Bila ada keluhan sebelum kontrol. pasien dapat berobat ke fasilitas kesehatan tingkat I terdekat. Kontrol membawa : FC kartu BPJS/Asuransi, FC KTP/KK, Resume Medis/Surat Kontrol";
+                                        if("catatan_khusus".equalsIgnoreCase(entity.getTipe())){
+                                            no = no+1;
+                                            tindakLanjut = tindakLanjut+ no+"."+entity.getJawaban();
+                                        }
+                                    }
+                                }
+                                checkup.setTindakLanjut(tindakLanjut);
+                            }
+                        }
+                        if("prognosis".equalsIgnoreCase(entity.getTipe())){
+                            checkup.setPrognosis(entity.getJawaban());
                         }
                         if("TTD Keluarga".equalsIgnoreCase(entity.getParameter())){
                             checkup.setTtdPasien(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getJawaban());
@@ -223,13 +251,13 @@ public class RingkasanPasienBoImpl implements RingkasanPasienBo {
                             checkup.setTtdDokter(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getJawaban());
                         }
 
-                        if("Terapi Pulang".equalsIgnoreCase(entity.getParameter())){
+                        if("terapi_pulang".equalsIgnoreCase(entity.getTipe())){
                             if(entity.getJawaban() != null){
-                                String[] row = entity.getJawaban().split("=");
+                                String[] row = entity.getJawaban().split("\\=");
                                 if (row.length > 0){
                                     String tempA = "";
                                     for (String a: row){
-                                        String[] column = a.split("|");
+                                        String[] column = a.split("\\|");
                                         String tempB = "";
                                         for (String b: column){
                                             if("".equalsIgnoreCase(tempB)){

@@ -159,18 +159,14 @@
                             <s:form id="monitorruanganForm" method="post" namespace="/monitorruangan"
                                     action="search_monitorruangan.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
+                                    <label class="control-label col-sm-4">Nama Pasien</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield cssClass="form-control" name="ruangan.namaPasien"></s:textfield>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-sm-4">Kelas Ruangan</label>
                                     <div class="col-sm-4">
-                                        <%--<s:action id="initComboKelas" namespace="/checkupdetail"--%>
-                                                  <%--name="getListComboKelasRuangan_checkupdetail"/>--%>
-                                        <%--<s:select cssStyle="margin-top: 7px"--%>
-                                                  <%--onchange="$(this).css('border',''); listSelectRuangan(this.value)"--%>
-                                                  <%--list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"--%>
-                                                  <%--name="ruangan.idKelasRuangan"--%>
-                                                  <%--listKey="idKelasRuangan"--%>
-                                                  <%--listValue="namaKelasRuangan"--%>
-                                                  <%--headerKey="" headerValue="[Select one]"--%>
-                                                  <%--cssClass="form-control select2"/>--%>
                                             <select id="kelas_kamar" style="margin-top: 7px" class="form-control select2"
                                                     name="ruangan.idKelasRuangan" onchange="listSelectRuangan(this.value)">
                                                 <option value=''> - </option>

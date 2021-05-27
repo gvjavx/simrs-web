@@ -101,6 +101,7 @@ public interface CheckupBo {
     public String getTindakanRawat(String idDetailCheckup) throws GeneralBOException;
     public String getTindakanRawatICD9(String idDetailCheckup) throws GeneralBOException;
     public String getDiagnosaPrimer(String idDetailCheckup) throws GeneralBOException;
+    public String getDiagnosaMasuk(String idDetailCheckup) throws GeneralBOException;
     public String getDiagnosaSekunder(String idDetailCheckup) throws GeneralBOException;
     public String getPenunjangMedis(String idDetailCheckup, String tipe) throws GeneralBOException;
     public String getResepPasien(String idDetailCheckup) throws GeneralBOException;

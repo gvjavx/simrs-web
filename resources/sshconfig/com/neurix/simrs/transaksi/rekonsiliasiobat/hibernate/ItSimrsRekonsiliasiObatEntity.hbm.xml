@@ -80,5 +80,14 @@
         <property name="ruangan">
             <column name="ruangan" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="keluarga">
+            <column name="keluarga"/>
+        </property>
+        <property name="apoteker">
+            <column name="apoteker"/>
+        </property>
+        <property name="sip">
+            <column name="sip"/>
+        </property>
     </class>
 </hibernate-mapping>

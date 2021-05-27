@@ -1255,6 +1255,27 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return response;
     }
 
+    public String getDiagnosaMasuk(String idDetailCheckup){
+        String response = "";
+        String SQL = "SELECT\n" +
+                "id_diagnosa,\n" +
+                "keterangan_diagnosa \n" +
+                "FROM it_simrs_diagnosa_rawat\n" +
+                "WHERE id_detail_checkup = :id ORDER BY created_date ASC LIMIT 1\n";
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idDetailCheckup)
+                .list();
+        if (result.size() > 0){
+            for (Object[] obj: result){
+                if(obj[1] != null){
+                    response = obj[0].toString()+"-"+obj[1].toString();
+                }
+            }
+        }
+        return response;
+    }
+
     public String getDiagnosaSekunder(String idDetailCheckup){
         String response = "";
         String res = "";

@@ -23,6 +23,7 @@
           p:periksaRadiologiDao-ref="periksaRadiologiDao"
           p:uploadHasilPeriksaDao-ref="uploadHasilPeriksaDao"
           p:headerPemeriksaanDao-ref="headerPemeriksaanDao"
+          p:asesmenDao-ref="asesmenDao"
     />
 
     <bean id="periksaLabBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

@@ -4,6 +4,9 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.pasien.dao.PasienDao;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.transaksi.CrudResponse;
+import com.neurix.simrs.transaksi.obatracik.dao.ObatRacikDao;
+import com.neurix.simrs.transaksi.obatracik.model.ItSimrsObatRacikEntity;
+import com.neurix.simrs.transaksi.obatracik.model.ObatRacik;
 import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
 import com.neurix.simrs.transaksi.permintaanresep.dao.PermintaanResepDao;
 import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
@@ -23,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by Toshiba on 11/12/2019.
@@ -34,6 +38,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
     private PasienDao pasienDao;
     private TransaksiObatDetailDao transaksiObatDetailDao;
     private TransKeteranganObatDao transKeteranganObatDao;
+    private ObatRacikDao obatRacikDao;
 
     @Override
     public List<PermintaanResep> getByCriteria(PermintaanResep bean) throws GeneralBOException {
@@ -227,6 +232,32 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
             return response;
         }
 
+        if (bean.getListNamaObatRacik().size() > 0){
+
+            for (ObatRacik obatRacik : bean.getListNamaObatRacik()){
+                ItSimrsObatRacikEntity obatRacikEntity = new ItSimrsObatRacikEntity();
+                obatRacikEntity.setId(getNextObatRacikId());
+                obatRacikEntity.setNama(obatRacik.getNama());
+                obatRacikEntity.setSigna(obatRacik.getSigna());
+                obatRacikEntity.setQty(obatRacik.getQty());
+                obatRacikEntity.setKemasan(obatRacik.getKemasan());
+                obatRacikEntity.setFlag("Y");
+                obatRacikEntity.setAction("C");
+                obatRacikEntity.setCreatedDate(bean.getCreatedDate());
+                obatRacikEntity.setLastUpdate(bean.getCreatedDate());
+                obatRacikEntity.setCreatedWho(bean.getCreatedWho());
+                obatRacikEntity.setLastUpdateWho(bean.getCreatedWho());
+
+                try {
+                    obatRacikDao.addAndSave(obatRacikEntity);
+                } catch (HibernateException e){
+                    logger.error("[PermintaanResepBoImpl.saveAdd]  ERROR. ", e);
+                    response.hasError("[PermintaanResepBoImpl.saveAdd]  ERROR. "+e.getMessage());
+                    return response;
+                }
+            }
+        }
+
         if (detailList.size() > 0) {
             for (TransaksiObatDetail detailObat : detailList) {
                 TransaksiObatDetail detail = new TransaksiObatDetail();
@@ -267,6 +298,78 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
                     }
                 }
                 saveObatResep(detail);
+            }
+        }
+
+        if (bean.getListNamaObatRacik().size() > 0){
+
+            for (ObatRacik obatRacik : bean.getListNamaObatRacik()){
+                ItSimrsObatRacikEntity obatRacikEntity = new ItSimrsObatRacikEntity();
+                obatRacikEntity.setId(getNextObatRacikId());
+                obatRacikEntity.setNama(obatRacik.getNama());
+                obatRacikEntity.setSigna(obatRacik.getSigna());
+                obatRacikEntity.setQty(obatRacik.getQty());
+                obatRacikEntity.setKemasan(obatRacik.getKemasan());
+                obatRacikEntity.setFlag("Y");
+                obatRacikEntity.setAction("C");
+                obatRacikEntity.setCreatedDate(bean.getCreatedDate());
+                obatRacikEntity.setLastUpdate(bean.getCreatedDate());
+                obatRacikEntity.setCreatedWho(bean.getCreatedWho());
+                obatRacikEntity.setLastUpdateWho(bean.getCreatedWho());
+
+                try {
+                    obatRacikDao.addAndSave(obatRacikEntity);
+                } catch (HibernateException e){
+                    logger.error("[PermintaanResepBoImpl.saveAdd]  ERROR. ", e);
+                    response.hasError("[PermintaanResepBoImpl.saveAdd]  ERROR. "+e.getMessage());
+                    return response;
+                }
+
+                List<TransaksiObatDetail> filterTransaksiObatDetail = bean.getListDetailObatRacik().stream().filter(
+                        p->p.getIdRacik().equalsIgnoreCase(obatRacik.getId())
+                ).collect(Collectors.toList());
+
+                if (filterTransaksiObatDetail.size() > 0){
+                    for (TransaksiObatDetail detailObat : filterTransaksiObatDetail) {
+                        TransaksiObatDetail detail = new TransaksiObatDetail();
+                        detail.setIdApprovalObat(approvalEntity.getIdApprovalObat());
+                        detail.setIdObat(detailObat.getIdObat());
+                        detail.setQty(detailObat.getQty());
+                        detail.setJenisResep(detailObat.getJenisResep());
+                        detail.setQtyApprove(detailObat.getQty());
+                        detail.setJenisSatuan("biji");
+                        detail.setKeterangan(detailObat.getKeterangan());
+                        detail.setCreatedDate(bean.getCreatedDate());
+                        detail.setCreatedWho(bean.getCreatedWho());
+                        detail.setLastUpdate(bean.getCreatedDate());
+                        detail.setLastUpdateWho(bean.getCreatedWho());
+                        detail.setFlagRacik("Y");
+                        detail.setNamaRacik(detailObat.getNamaRacik());
+                        detail.setIdRacik(obatRacikEntity.getId());
+
+                        if (detailObat.getHariKronis() != null && !"".equalsIgnoreCase(detailObat.getHariKronis().toString())){
+                            detail.setHariKronis(detailObat.getHariKronis());
+                        }
+
+                        if(detailObat.getKeteranganResepEntityList().size() > 0){
+                            for (ItSimrsKeteranganResepEntity keteranganResepEntity: detailObat.getKeteranganResepEntityList()){
+                                keteranganResepEntity.setId(transKeteranganObatDao.getNextSeq());
+                                keteranganResepEntity.setIdObat(detailObat.getIdObat());
+                                keteranganResepEntity.setIdPermintaanResep(permintaanEntity.getIdPermintaanResep());
+                                try{
+                                    transKeteranganObatDao.addAndSave(keteranganResepEntity);
+                                }catch (HibernateException e){
+                                    logger.error(e.getMessage());
+                                    response.setStatus("error");
+                                    response.setMsg("Error insert keterangan resep, "+e.getMessage());
+                                    return response;
+                                }
+                            }
+                        }
+                        saveObatResep(detail);
+                    }
+
+                }
             }
         }
         logger.info("[PermintaanResepBoImpl.saveAdd] END <<<<<<<");
@@ -362,6 +465,17 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         return id;
     }
 
+    private String getNextObatRacikId() throws GeneralBOException {
+        String id = "";
+        try {
+            id = obatRacikDao.getNextSeq();
+        } catch (HibernateException e) {
+            logger.error("[PermintaanResepBoImpl.getNextObatRacikId] ERROR when get next id transaksi obat detail. ", e);
+            throw new GeneralBOException("[PermintaanResepBoImpl.getNextObatRacikId] ERROR when get next id transaksi obat detail. ", e);
+        }
+        return id;
+    }
+
     public void setPermintaanResepDao(PermintaanResepDao permintaanResepDao) {
         this.permintaanResepDao = permintaanResepDao;
     }
@@ -380,5 +494,9 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
 
     public void setTransKeteranganObatDao(TransKeteranganObatDao transKeteranganObatDao) {
         this.transKeteranganObatDao = transKeteranganObatDao;
+    }
+
+    public void setObatRacikDao(ObatRacikDao obatRacikDao) {
+        this.obatRacikDao = obatRacikDao;
     }
 }

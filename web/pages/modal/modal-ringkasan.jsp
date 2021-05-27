@@ -339,9 +339,48 @@
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Instruksi tindak lanjut</label>
+                            <label class="col-md-3" style="margin-top: 7px">Prognosis</label>
                             <div class="col-md-8">
-                                <textarea style="margin-top: 7px" class="form-control" rows="3" id="rps23"></textarea>
+                                <textarea style="margin-top: 7px" class="form-control" rows="3" id="prognosis"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Instruksi tindak lanjut</label>
+                            <div class="col-md-7">
+                                <select class="form-control" id="rps23" style="margin-top: 7px" onchange="setKontrol('show', this.value)">
+                                    <option value="">-</option>
+                                    <option value="Kembali ke FKTP">Kembali ke FKTP</option>
+                                    <option value="Kontrol Ulang">Kontrol Ulang</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: none" id="form_kontrol_ringkasan">
+                        <div class="row" style="margin-top: 7px">
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <input style="cursor: pointer" class="form-control ptr-tgl tanggal_kontrol" id="tgl1" placeholder="Tanggal" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <input class="form-control poli_kontrol" id="poli1" placeholder="Poli">
+                                </div>
+                                <div class="col-md-4">
+                                    <input class="form-control dokter_kontrol" id="dokter1" placeholder="Dokter">
+                                </div>
+                                <div class="col-md-1">
+                                    <button onclick="setKontrol('add')" class="btn btn-success" style="margin-left: -20px; margin-top: 0px"><i class="fa fa-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="set_kontrol"></div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Catatan Khusus</label>
+                            <div class="col-md-8">
+                                <textarea style="margin-top: 7px" class="form-control" rows="3" id="catatan_khusus"></textarea>
                             </div>
                         </div>
                     </div>
