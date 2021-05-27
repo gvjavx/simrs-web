@@ -99,5 +99,17 @@
         <property name="qtyKemasanRacik">
             <column name="qty_kemasan_racik" sql-type="int" />
         </property>
+
+        <property name="kajianAdministrasi">
+            <column name="kajian_administrasi" sql-type="varchar" />
+        </property>
+
+        <property name="kajianFermasetis">
+            <column name="kajian_fermasetis" sql-type="varchar" />
+        </property>
+
+        <property name="kajianKritis">
+            <column name="kajian_kritis" sql-type="varchar" />
+        </property>
     </class>
 </hibernate-mapping>

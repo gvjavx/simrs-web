@@ -23,6 +23,7 @@ import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
 import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsObatPoliEntity;
 import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsPermintaanObatPoliEntity;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
+import com.neurix.simrs.transaksi.obatracik.model.ObatRacik;
 import com.neurix.simrs.transaksi.pemberianobat.dao.CatatanPemberianObatDao;
 import com.neurix.simrs.transaksi.pemberianobat.model.ItSimrsCatatanPemberianObatEntity;
 import com.neurix.simrs.transaksi.permintaanresep.dao.PermintaanResepDao;
@@ -2788,6 +2789,23 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
         logger.info("[TransaksiObatBoImpl.getFlagIsRacikInTransaksiObatDetail] End <<<");
         return flag;
+    }
+
+    @Override
+    public List<ObatRacik> getListNamaRacik(String idRacik) throws GeneralBOException {
+        logger.info("[TransaksiObatBoImpl.getListNamaRacik] Start >>>");
+
+        List<ObatRacik> obatRacikList = new ArrayList<>();
+
+        try {
+            obatRacikList = transaksiObatDetailDao.getListObatRacik(idRacik);
+        } catch (HibernateException e){
+            logger.error("[TransaksiObatBoImpl.getListNamaRacik] ERROR.", e);
+            throw new GeneralBOException("[TransaksiObatBoImpl.getListNamaRacik] ERROR." + e.getMessage());
+        }
+
+        logger.info("[TransaksiObatBoImpl.getListNamaRacik] End <<<");
+        return obatRacikList;
     }
 
     private void saveTransaksiStokObatMasukKarnaReture(TransaksiObatDetail bean){

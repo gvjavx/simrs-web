@@ -1023,7 +1023,7 @@ function showModal(select) {
             $("#sec-total-harga").show();
             $("#form-nama-racik").hide();
             $("#tipe-trans-resep").val("peritem");
-            $("#informasi-racik").hide();
+            $("#btn-save-resep-racik").hide();
         if (select == 10){
             $('#title-resep').html("Tambah Resep Racik");
             $("#sec-jumlah-resep").hide();
@@ -1032,7 +1032,6 @@ function showModal(select) {
             $("#sec-total-harga").hide();
             $("#form-nama-racik").show();
             $("#tipe-trans-resep").val("racik");
-            $("#informasi-racik").show();
         }
 
         $('#resep_jenis_obat').val('').trigger('change');
@@ -2809,9 +2808,9 @@ function addObatToList() {
                 if (tipeTrans != "racik"){
                     row += '<td align="center">' + qty + ' ' + jenisSatuan + '</td>'+
                         '<td>' + ulWak+ '<br>'+
-                        '<div id="body_ket_'+ count +'"></div><br>' +
-                        '<button class="btn btn-sm btn-warning" onclick="showModalKeterangan(\''+count+'\')">Tambah</button>' +
-                        '<button class="btn btn-sm btn-danger" onclick="hapusKeterangan(\''+count+'\')">Hapus</button>' +
+                        '<div id="body_ket_'+ count +'"><textarea class="form-control" rows="2" cols="4" id="signa-normal-'+count+'"></textarea></div><br>' +
+                        // '<button class="btn btn-sm btn-warning" onclick="showModalKeterangan(\''+count+'\')">Tambah</button>' +
+                        // '<button class="btn btn-sm btn-danger" onclick="hapusKeterangan(\''+count+'\')">Hapus</button>' +
                         '</td>' +
                         '<td align="right">' + formatRupiah(totalHarga) + '</td>';
                 } else {
@@ -3055,7 +3054,8 @@ function saveResepObat() {
                 var waktu = $('#temp_waktu_'+i).val();
 
                 if (tipeTrans != "racik"){
-                    var ketDetail = $('#keterangan_detail_' + i).val();
+                    //var ketDetail = $('#keterangan_detail_' + i).val();
+                    var ketDetail = $('#signa-normal-' + i).val();
                     var keterangan = $('#keterangan_' + i).val();
 
                     dataObat.push({
@@ -3089,6 +3089,41 @@ function saveResepObat() {
                 }
 
             });
+
+            var listDetailRacik = [];
+            $.each(arrListDetailRacik, function(i,item){
+                var detail = {
+                    "idobat":item.idobat,
+                    "namaobat":item.namaobat,
+                    "dosis":$("#dosis-"+item.idracik+"-"+item.idobat).val(),
+                    "idracik":item.idracik,
+                    "racik":item.racik
+                }
+                listDetailRacik.push(detail);
+            });
+
+            var stListDetailRacik = "";
+            if (listDetailRacik.length > 0){
+                stListDetailRacik = JSON.stringify(listDetailRacik);
+            }
+
+            var listNamaRacik = [];
+            $.each(arrListNamaRacik, function(i,item){
+                var racikname = {
+                    "idracik":item.idracik,
+                    "racik":item.namaracik,
+                    "qty":$("#qty-racik-"+item.idracik).val(),
+                    "signa":$("#signa-racik-"+item.idracik).val(),
+                    "kemasan":$("#kemasan-racik-"+item.idracik).val()
+                }
+                listNamaRacik.push(racikname);
+            });
+
+            var stListNamaRacik = "";
+            if (listNamaRacik.length > 0){
+                stListNamaRacik = JSON.stringify(listNamaRacik);
+            }
+
             var stringDataObat = JSON.stringify(dataObat);
             var dataObj = {
                 'id_detail_checkup': idDetailCheckup,
@@ -3097,12 +3132,14 @@ function saveResepObat() {
                 'id_pasien': idPasien,
                 'id_apotek': idPelayanan,
                 'ttd': dataURL,
-                'data_obat': stringDataObat
-
+                'data_obat': stringDataObat,
+                'arr_nama_racik': stListNamaRacik,
+                'arr_detail_racik': stListDetailRacik
             }
             var stringObj = JSON.stringify(dataObj);
             $('#save_resep_head').hide();
             $('#load_resep_head').show();
+            console.log(dataObj);
             dwr.engine.setAsync(true);
             PermintaanResepAction.saveResepPasien(stringObj, {
                 callback: function (response) {
@@ -3451,6 +3488,9 @@ function resetAll() {
     $('#set_formula').text('');
     $('#set_teral').text('');
     $('#set_noretal').text('');
+    arrListNamaRacik = [];
+    arrListDetailRacik = [];
+    $("#informasi-racik").html("");
 
     resetComboObat();
 }
@@ -4504,9 +4544,15 @@ function setDiskonHarga(id) {
 function cekRacik(id) {
     if ($('#' + id).is(':checked')) {
         $('#form-nama-racik').show();
+        $('#sec-jumlah-resep').hide();
+        $('#btn-save-resep-normal').hide();
+        $('#btn-save-resep-racik').show();
     } else {
         $('#form-nama-racik').hide();
         $('#nama_racik').val('');
+        $('#sec-jumlah-resep').show();
+        $('#btn-save-resep-normal').show();
+        $('#btn-save-resep-racik').hide();
     }
 }
 
@@ -5820,4 +5866,126 @@ function updateRead(id){
             $('#'+id).removeAttr('class');
         }, 5000);
     });
+}
+
+var arrListNamaRacik = [];
+var arrListDetailRacik = [];
+function saveObatRacikToSession(){
+
+    var obat = null;
+    var flagSerupa = $("#flag-obat-serupa").val();
+    if (flagSerupa == "Y") {
+        obat = $("#resep_nama_obat_serupa").val();
+    } else {
+        obat = $('#resep_nama_obat').val();
+    }
+
+    //alert(obat);
+    var idObat = "";
+    if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
+        idObat = obat.split('|')[0];
+    }
+
+    var namaObat = "";
+    if (obat.split('|')[1] != 'null' && obat.split('|')[1] != '') {
+        namaObat = obat.split('|')[1];
+    }
+
+    var namaRacik   = $('#nama_racik').val();
+    var namaRacik2  = $('#nama_racik').val();
+    var idnamaracik = namaRacik2.replace(' ', '-');
+
+    var stListSigna = "";
+    var found = false;
+    if (arrListNamaRacik.length > 0){
+        $.each(arrListNamaRacik, function(i, item){
+            if (item.idracik == idnamaracik){
+                found = true;
+            }
+        });
+
+        if (!found){
+            arrListNamaRacik.push({"idracik": idnamaracik,"namaracik":namaRacik});
+            arrListDetailRacik.push({ "idobat":idObat, "namaobat":namaObat, "racik":namaRacik, "idracik":idnamaracik});
+        } else {
+            var founDetail = false
+            $.each(arrListDetailRacik, function(i,item){
+                if (item.idobat == idObat && item.idracik == idnamaracik){
+                    founDetail = true;
+                }
+            });
+            if (!founDetail){
+                var detail = "<tr>" +
+                    "<td>"+namaObat+"<input type='hidden' id='id-"+namaRacik+"-"+idObat+"' value='"+idObat+"'/><input type='hidden' id='nama-"+namaRacik+"-"+idObat+"' value='"+namaObat+"'></td>" +
+                    "<td width='50%'><textarea id='dosis-"+namaRacik+"-"+idObat+"' class='form-control' cols='4' rows='1'></textarea></td>" +
+                    "<td width='10%' align='center'>"+
+                    '<img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
+                    "</td>" +
+                    "</tr>";
+
+                $("#body-detail-racik-obat-"+idnamaracik).append(detail);
+                arrListDetailRacik.push({ "idobat":idObat, "namaobat":namaObat, "racik":namaRacik, "idracik":idnamaracik});
+            };
+        }
+    } else {
+        arrListNamaRacik.push({"idracik": idnamaracik,"namaracik":namaRacik});
+        arrListDetailRacik.push({ "idobat":idObat, "namaobat":namaObat, "racik":namaRacik, "idracik":idnamaracik});
+    }
+
+    if (!found){
+        var label = "<div class='box-header with-border'><i class='fa fa-file-o'></i> Obat Racik : </div>";
+        var table = "<table style='font-size: 13px' class='table table-bordered table-striped' width='100%' id='tabel-racik-"+idnamaracik+"'>" +
+            "<thead style='font-weight:bold;'>" +
+            "<td>Nama Racik</td>" +
+            "<td>Signa</td>" +
+            "<td>qty</td>" +
+            "<td>Kemasan</td>" +
+            "<td>Action</td>" +
+            "</thead>" +
+            "<tbody id='body-tabel-racik-"+idnamaracik+"'>"+
+            "<tr>" +
+            "<td><span style='font-weight:bold;'>"+namaRacik+"</span></td>" +
+            "<td width='35%'><textarea class='form-control' cols='4' rows='3' id='signa-racik-"+idnamaracik+"'></textarea></td>" +
+            "<td width='15%'><input type='number' class='form-control' id='qty-racik-"+idnamaracik+"'/></td>" +
+            "<td><select class='form-control' id='kemasan-racik-"+idnamaracik+"'>"+
+            "<option value='Capsule'>Capsule</option>"+
+            "<option value='Puyer'>Puyer</option>"+
+            "</select>"+
+            "</td>" +
+            "<td width='10%' align='center'>"+
+            '<img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
+            "</td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td id='body-detail-racik-"+idnamaracik+"' colspan='5'>" +
+            "</td>" +
+            "</tr>" +
+            "</tbody>"+
+            "</table>";
+
+        $("#informasi-racik").append(label+table);
+
+        var detail = "<table style='font-size:13px;' id='detail-racik-"+idnamaracik+"' class='table table-bordered table-striped'>"+
+                "<thead>" +
+                "<td>Nama Obat</td>" +
+                "<td>Dosis</td>" +
+                "<td>Action</td>" +
+                "</thead>" +
+                "<tbody id='body-detail-racik-obat-"+idnamaracik+"'>"+
+                "<tr>" +
+                "<td>"+namaObat+"<input type='hidden' id='id-"+idnamaracik+"-"+idObat+"' value='"+idObat+"'/><input type='hidden' id='nama-"+idnamaracik+"-"+idObat+"' value='"+namaObat+"'/></td>" +
+                "<td width='50%'><textarea id='dosis-"+idnamaracik+"-"+idObat+"' class='form-control' cols='4' rows='1'></textarea></td>" +
+                "<td width='10%' align='center'>"+
+                '<img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
+                '</tr>'+
+                "</td>" +
+                "</tr>" +
+                "</tbody>"+
+                "</table>";
+
+        $("#body-detail-racik-"+idnamaracik).append(detail);
+    };
+
+    console.log(arrListNamaRacik);
+    console.log(arrListDetailRacik);
 }

@@ -1845,3 +1845,32 @@ ADD COLUMN parent_id VARCHAR(30);
     ADD COLUMN qty_kemasan_racik integer;
 
 --
+
+-- 2021-05-25
+
+
+    CREATE TABLE it_simrs_obat_racik(
+        id VARCHAR(100) NOT NULL PRIMARY KEY,
+        nama TEXT,
+        signa TEXT,
+        qty INTEGER,
+        kemasan VARCHAR,
+        flag VARCHAR(1),
+        action VARCHAR(1),
+        created_date TIMESTAMP WITHOUT TIME ZONE,
+        created_who VARCHAR(100),
+        last_update TIMESTAMP WITHOUT TIME ZONE,
+        last_update_who VARCHAR(100)
+    );
+
+    CREATE SEQUENCE seq_obat_racik;
+--
+
+-- 2021-05-27
+
+    ALTER TABLE mt_simrs_permintaan_resep
+    ADD COLUMN kajian_administrasi VARCHAR(1),
+    ADD COLUMN kajian_fermasetis VARCHAR(1),
+    ADD COLUMN kajian_kritis VARCHAR(1);
+
+--
