@@ -243,7 +243,7 @@ function saveDataOperasi(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Persiapan Prosuk Darah',
+                'parameter': 'Persiapan Produk Darah',
                 'jawaban1': cekList013,
                 'jawaban2': "N",
                 'keterangan': jenis,
@@ -638,7 +638,7 @@ function saveDataOperasi(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Skala Malampahty',
+                'parameter': 'Skala Malapaty',
                 'jawaban1': pf16,
                 'keterangan': jenis,
                 'jenis': 'pra_anestesi',
