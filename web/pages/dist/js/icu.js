@@ -2580,7 +2580,7 @@ function saveInputan(jenis, ket) {
     var iwl = $('#iwl').val();
     var stoma = $('#stoma').val();
 
-    if (drain1 && drain2 && urin && muntah && bab && iwl && stoma != '') {
+    if (drain1 || drain2 || urin || muntah || bab && iwl || stoma != '') {
         data.push({
             'id_detail_checkup': idDetailCheckup,
             'waktu': waktu,
@@ -2927,11 +2927,16 @@ function listInputan(jenis) {
             }
 
             var kes = "";
-            if(total123 == total4){
+            if(total123 > total4){
+                kes = '<span class="span-success">Positif</span>';
+            }else if(total123 < total4){
+                kes = '<span class="span-success">Negatif</span>';
+            }else if(total123 == total4){
                 kes = '<span class="span-success">Seimbang</span>';
             }else{
                 kes = '<span class="span-danger">Tidak Seimbang</span>';
             }
+
             table5 = '<div style="font-size: 14px"><b>Kesimpulan</b></div>' +
                 '<table style="font-size: 12px" class="table table-bordered">' +
                 '<thead>' +

@@ -2633,7 +2633,7 @@ function saveDataOperasi(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': '1. Keluahan',
+                'parameter': '1. Keluhan',
                 'jawaban1': pa1,
                 'keterangan': jenis,
                 'jenis': ket,

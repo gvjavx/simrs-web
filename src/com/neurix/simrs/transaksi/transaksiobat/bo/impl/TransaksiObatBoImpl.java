@@ -1419,8 +1419,31 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                                     catatanPemberianObatEntity.setCreatedWho(bean.getLastUpdateWho());
                                     catatanPemberianObatEntity.setLastUpdate(bean.getLastUpdate());
                                     catatanPemberianObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                                    catatanPemberianObatEntity.setJenis("perawat");
                                     try {
                                         catatanPemberianObatDao.addAndSave(catatanPemberianObatEntity);
+                                    }catch (HibernateException e){
+                                        logger.error(e.getMessage());
+                                    }
+                                }
+
+                                ItSimrsCatatanPemberianObatEntity simrsCatatanPemberianObatEntity = new ItSimrsCatatanPemberianObatEntity();
+                                simrsCatatanPemberianObatEntity.setIdCatatanPemberianObat("CPO"+catatanPemberianObatDao.getNextSeq());
+                                simrsCatatanPemberianObatEntity.setIdDetailCheckup(resepEntity.getIdDetailCheckup());
+                                simrsCatatanPemberianObatEntity.setWaktu(waktu);
+                                if(obatEntity != null){
+                                    simrsCatatanPemberianObatEntity.setNamaObat(obatEntity.getNamaObat());
+                                    simrsCatatanPemberianObatEntity.setAturanPakai(obatDetailEntity.getKeterangan());
+                                    simrsCatatanPemberianObatEntity.setStatus(bean.getStatus());
+                                    simrsCatatanPemberianObatEntity.setAction("C");
+                                    simrsCatatanPemberianObatEntity.setFlag("Y");
+                                    simrsCatatanPemberianObatEntity.setCreatedDate(bean.getLastUpdate());
+                                    simrsCatatanPemberianObatEntity.setCreatedWho(bean.getLastUpdateWho());
+                                    simrsCatatanPemberianObatEntity.setLastUpdate(bean.getLastUpdate());
+                                    simrsCatatanPemberianObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                                    simrsCatatanPemberianObatEntity.setJenis("apoteker");
+                                    try {
+                                        catatanPemberianObatDao.addAndSave(simrsCatatanPemberianObatEntity);
                                     }catch (HibernateException e){
                                         logger.error(e.getMessage());
                                     }

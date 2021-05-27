@@ -126,11 +126,10 @@
                         </td>
                         <td>
                             <table>
-                                <s:select list="#{'rawat_inap':'rawat inap','rawat_intensif':'rawat intensif',
-                                'kamar_operasi':'kamar operasi','rawat_isolasi':'rawat isolasi','ruang_bersalin':'ruang bersalin','rr':'ruang recovery'
-                                }"
-                                          id="kategoriAdd" name="kelasRuangan.kategori"
-                                          headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 5px"
+                                <s:select list="#{'rawat_inap':'Rawat Inap','rawat_intensif':'Rawat Intensif',
+                                'kamar_operasi':'Kamar Operasi','rawat_isolasi':'Rawat Isolasi','ruang_bersalin':'Ruang Bersalin',
+                                'rr':'ruang recovery','hemodialisa':'Hemodialisa'}" id="kategoriAdd" name="kelasRuangan.kategori" headerKey=""
+                                headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 5px"
                                 />
                             </table>
                         </td>

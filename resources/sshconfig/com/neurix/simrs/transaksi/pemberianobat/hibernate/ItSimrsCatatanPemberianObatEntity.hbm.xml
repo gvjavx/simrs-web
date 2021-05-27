@@ -71,6 +71,11 @@
         <property name="sipDokter">
             <column name="sip_dokter" />
         </property>
-
+        <property name="jenis">
+            <column name="jenis" />
+        </property>
+        <property name="sipPerawat">
+            <column name="sip_perawat" />
+        </property>
     </class>
 </hibernate-mapping>

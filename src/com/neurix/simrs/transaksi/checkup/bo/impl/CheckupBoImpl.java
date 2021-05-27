@@ -2830,6 +2830,11 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     }
 
     @Override
+    public String getDiagnosaMasuk(String idDetailCheckup) throws GeneralBOException {
+        return headerCheckupDao.getDiagnosaMasuk(idDetailCheckup);
+    }
+
+    @Override
     public String getDiagnosaSekunder(String idDetailCheckup) throws GeneralBOException {
         return headerCheckupDao.getDiagnosaSekunder(idDetailCheckup);
     }

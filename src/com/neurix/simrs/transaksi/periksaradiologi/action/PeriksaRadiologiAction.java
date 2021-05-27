@@ -222,6 +222,8 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 String suhu = "";
                 String tensi = "";
                 String rr = "";
+                String klinis= "";
+
                 if(checkup.getHeteroanamnesis() != null && !"".equalsIgnoreCase(checkup.getHeteroanamnesis())){
                     hetero = "Heteroanamnesis: "+checkup.getHeteroanamnesis();
                 }
@@ -240,7 +242,11 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 if(checkup.getPernafasan() != null && !"".equalsIgnoreCase(checkup.getPernafasan())){
                     rr = ", RR: "+checkup.getPernafasan();
                 }
-                periksaLab.setCatatanKlinis(hetero+auto+nadi+suhu+tensi+rr);
+                if(checkup.getCatatanKlinis() != null && !"".equalsIgnoreCase(checkup.getCatatanKlinis())){
+                    klinis = ", Catatan Klinis: "+checkup.getCatatanKlinis();
+                }
+
+                periksaLab.setCatatanKlinis(hetero+auto+nadi+suhu+tensi+rr+klinis);
                 setPeriksaLab(periksaLab);
 
                 PeriksaLab periksa = new PeriksaLab();

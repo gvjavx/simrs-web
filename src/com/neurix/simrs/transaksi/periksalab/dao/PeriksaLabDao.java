@@ -576,6 +576,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     lab.setHasil(obj[11] == null ? null : (String) obj[11]);
                     lab.setKeteranganHasil(obj[12] == null ? null : (String) obj[12]);
                     lab.setIsCatatan(cekDefultCatatan(obj[0].toString()));
+                    lab.setIsAsesmen(cekDefultAsesmen(obj[0].toString()));
                     labList.add(lab);
                 }
             }
@@ -590,6 +591,33 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     "a.id_header_pemeriksaan,\n" +
                     "b.id_pemeriksaan,\n" +
                     "c.is_catatan\n" +
+                    "FROM it_simrs_header_pemeriksaan a\n" +
+                    "INNER JOIN it_simrs_periksa_lab b ON a.id_header_pemeriksaan = b.id_header_pemeriksaan\n" +
+                    "INNER JOIN im_simrs_lab c ON b.id_pemeriksaan = c.id_lab\n" +
+                    "WHERE a.id_header_pemeriksaan = :id";
+            List<Objects[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", id)
+                    .list();
+            if(result.size() > 0){
+                for (Object[] obj: result){
+                    if(obj[2] != null){
+                        if("Y".equalsIgnoreCase(obj[2].toString())){
+                            res = "Y";
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    private String cekDefultAsesmen(String id){
+        String res = "N";
+        if(id != null && !"".equalsIgnoreCase(id)){
+            String SQL = "SELECT \n" +
+                    "a.id_header_pemeriksaan,\n" +
+                    "b.id_pemeriksaan,\n" +
+                    "c.is_asesmen\n" +
                     "FROM it_simrs_header_pemeriksaan a\n" +
                     "INNER JOIN it_simrs_periksa_lab b ON a.id_header_pemeriksaan = b.id_header_pemeriksaan\n" +
                     "INNER JOIN im_simrs_lab c ON b.id_pemeriksaan = c.id_lab\n" +

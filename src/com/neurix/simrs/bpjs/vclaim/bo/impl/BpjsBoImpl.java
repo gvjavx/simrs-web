@@ -1948,6 +1948,7 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
                     }
                 } catch (IOException | JSONException |GeneralSecurityException e) {
                     e.printStackTrace();
+                    throw new GeneralBOException("Cons ID dan Secret Key Tidak ada...!");
                 }
             }
         }

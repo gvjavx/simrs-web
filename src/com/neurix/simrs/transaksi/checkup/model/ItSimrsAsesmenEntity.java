@@ -1,12 +1,8 @@
 package com.neurix.simrs.transaksi.checkup.model;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.sql.Timestamp;
 
-/**
- * Created by Toshiba on 23/12/2019.
- */
 public class ItSimrsAsesmenEntity implements Serializable {
 
     private String idAsesmen;
