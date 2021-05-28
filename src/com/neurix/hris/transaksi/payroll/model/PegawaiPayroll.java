@@ -302,13 +302,12 @@ public class PegawaiPayroll extends BasePayroll {
         BigDecimal perhitunganDasarBpjsKs;
         BigDecimal perhitunganDasarBpjsTk;
 
-        if(dasarBpjsNilai != null){
-            perhitunganDasarBpjsKs = dasarBpjsNilai;
-            perhitunganDasarBpjsTk = dasarBpjsNilai;
-        }else {
-            perhitunganDasarBpjsKs = getGajiPokokNilai().add(santunanKhususNilai).add(tunjPeralihanGapokNilai).add(tunjPeralihanSankhusNilai);
-            perhitunganDasarBpjsTk = getGajiPokokNilai().add(santunanKhususNilai).add(tunjPeralihanGapokNilai).add(tunjPeralihanSankhusNilai);
+        if(dasarBpjsNilai == null){
+            dasarBpjsNilai = getGajiPokokNilai().add(santunanKhususNilai).add(tunjPeralihanGapokNilai).add(tunjPeralihanSankhusNilai);
         }
+
+        perhitunganDasarBpjsKs = dasarBpjsNilai;
+        perhitunganDasarBpjsTk = dasarBpjsNilai;
 
         if (perhitunganDasarBpjsKs.compareTo(minBpjsKsNilai) < 0) { // perhitunganDasarBpjsKs < min bpjs ks maka dasar perhitungan bpjs ks = min bpjs ks
 

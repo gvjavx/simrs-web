@@ -1047,7 +1047,7 @@ public class PayrollAction extends BaseTransactionAction {
                 itemEditDataPayroll.setPotonganLainNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(potonganLain))));
 
                 itemEditDataPayroll.setDasarBpjs(dasarBpjs);
-                itemEditDataPayroll.setDasarBpjsNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(dasarBpjs))));
+                itemEditDataPayroll.setDasarBpjsNilai((dasarBpjs != null && !"".equalsIgnoreCase(dasarBpjs)) ? BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(dasarBpjs))) : BigDecimal.ZERO);
 
                 if (CommonConstant.BULAN_12.equalsIgnoreCase(bulan)) {
                     PayrollPph itemEditPayrollPph = itemEditDataPayroll.getPayrollPph();

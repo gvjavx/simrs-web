@@ -1009,6 +1009,10 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         pegawaiPayroll.setMultifikatorNilai(itHrisPayrollTempEntity.getMultifikator());
         pegawaiPayroll.setMultifikator(pegawaiPayroll.getMultifikatorNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getMultifikatorNilai(),"###,###") : "");
 
+        //RAKA-28MEI2021==> dasarBpjs
+        pegawaiPayroll.setDasarBpjsNilai(itHrisPayrollTempEntity.getDasarBpjs());
+        pegawaiPayroll.setDasarBpjs(pegawaiPayroll.getDasarBpjsNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getDasarBpjsNilai(), "###,###") : "");
+
         pegawaiPayroll.setDasarPerhitunganBpjsKsNilai(itHrisPayrollTempEntity.getDasarBpjsKs());
         pegawaiPayroll.setDasarPerhitunganBpjsTkNilai(itHrisPayrollTempEntity.getDasarBpjsTk());
 
