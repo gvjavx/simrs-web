@@ -1887,20 +1887,16 @@ public class CheckupAction extends BaseMasterAction {
         return "success";
     }
 
-    public List<ItSImrsCheckupAlergiEntity> getListAlergi(String noCheckup) {
+    public List<ItSImrsCheckupAlergiEntity> getListAlergi(String idPasien) {
         logger.info("[CheckupAction.getListAlergi] start process >>>");
-
         List<ItSImrsCheckupAlergiEntity> listAlergi = new ArrayList<>();
-
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
-
         try {
-            listAlergi = checkupBo.getListAlergi(noCheckup);
+            listAlergi = checkupBo.getListAlergi(idPasien);
         } catch (GeneralBOException e) {
             logger.error("[CheckupAction.getListAlergi] ERROR " + e.getMessage());
         }
-
         logger.info("[CheckupAction.getListAlergi] end process <<<");
         return listAlergi;
     }

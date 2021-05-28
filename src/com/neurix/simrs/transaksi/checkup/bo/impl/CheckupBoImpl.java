@@ -1667,15 +1667,12 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     }
 
     @Override
-    public List<ItSImrsCheckupAlergiEntity> getListAlergi(String noCheckup) throws GeneralBOException {
+    public List<ItSImrsCheckupAlergiEntity> getListAlergi(String idPasien) throws GeneralBOException {
         logger.info("[CheckupBoImpl.getListAlergi] Start >>>>>>>>");
-
         Map hsCriteria = new HashMap();
-        hsCriteria.put("no_checkup", noCheckup);
-
+        hsCriteria.put("id_pasien", idPasien);
         List<ItSImrsCheckupAlergiEntity> alergiEntities = null;
-
-        if (noCheckup != null && !"".equalsIgnoreCase(noCheckup)) {
+        if (idPasien != null && !"".equalsIgnoreCase(idPasien)) {
             try {
                 alergiEntities = checkupAlergiDao.getByCriteria(hsCriteria);
             } catch (HibernateException e) {
