@@ -3198,13 +3198,15 @@ function hapusKeterangan(count){
 
 function delRowObat(id, harga) {
     $('#' + id).remove();
-    var total = $('#total_harga_obat').val();
-    var tot = 0;
-    if (total != "") {
-        tot = total.replace(/[.]/g, '');
+    if(harga != '' && harga != null && harga != undefined){
+        var total = $('#total_harga_obat').val();
+        var tot = 0;
+        if (total != "") {
+            tot = total.replace(/[.]/g, '');
+        }
+        var jumlah = parseInt(tot) - parseInt(harga);
+        $('#total_harga_obat').val(formatRupiah(jumlah));
     }
-    var jumlah = parseInt(tot) - parseInt(harga);
-    $('#total_harga_obat').val(formatRupiah(jumlah));
 }
 
 function saveResepObatTtd() {
@@ -6009,8 +6011,8 @@ function saveObatRacikToSession(){
     }
 
     if (!found){
-        var label = "<div class='box-header with-border'><i class='fa fa-file-o'></i> Obat Racik : </div>";
-        var table = "<table style='font-size: 13px' class='table table-bordered table-striped' width='100%' id='tabel-racik-"+idnamaracik+"'>" +
+        var table = "<div id='tabel-del-"+idnamaracik+"'><div class='box-header with-border'><i class='fa fa-file-o'></i> Obat Racik : </div>" +
+            "<table style='font-size: 13px' class='table table-bordered table-striped' width='100%' id='tabel-racik-"+idnamaracik+"'>" +
             "<thead style='font-weight:bold;'>" +
             "<td>Nama Racik</td>" +
             "<td>Signa</td>" +
@@ -6029,7 +6031,7 @@ function saveObatRacikToSession(){
             "</select>"+
             "</td>" +
             "<td width='10%' align='center'>"+
-            '<img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
+            '<img onclick="delRowObat(\'tabel-del-'+idnamaracik+'\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
             "</td>" +
             "</tr>" +
             "<tr>" +
@@ -6037,11 +6039,12 @@ function saveObatRacikToSession(){
             "</td>" +
             "</tr>" +
             "</tbody>"+
-            "</table>";
+            "</table>" +
+            "</div>";
 
-        $("#informasi-racik").append(label+table);
+        $("#informasi-racik").append(table);
 
-        var detail = "<table style='font-size:13px;' id='detail-racik-"+idnamaracik+"' class='table table-bordered table-striped'>"+
+        var detail = "<div id='detail-racik-"+idnamaracik+"-"+idObat+"'><table style='font-size:13px;' id='detail-racik-"+idnamaracik+"' class='table table-bordered table-striped'>"+
             "<thead>" +
             "<td>Nama Obat</td>" +
             "<td>Dosis</td>" +
@@ -6052,12 +6055,12 @@ function saveObatRacikToSession(){
             "<td>"+namaObat+"<input type='hidden' id='id-"+idnamaracik+"-"+idObat+"' value='"+idObat+"'/><input type='hidden' id='nama-"+idnamaracik+"-"+idObat+"' value='"+namaObat+"'/></td>" +
             "<td width='50%'><textarea id='dosis-"+idnamaracik+"-"+idObat+"' class='form-control dosis-racik' cols='4' rows='1'></textarea></td>" +
             "<td width='10%' align='center'>"+
-            '<img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
+            '<img onclick="delRowObat(\'detail-racik-'+idnamaracik+'-'+idObat+'\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
             '</tr>'+
             "</td>" +
             "</tr>" +
             "</tbody>"+
-            "</table>";
+            "</table></div>";
 
         $("#body-detail-racik-"+idnamaracik).append(detail);
     };
