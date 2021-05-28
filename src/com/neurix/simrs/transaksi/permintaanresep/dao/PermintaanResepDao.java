@@ -154,4 +154,85 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
         }
         return rawatList;
     }
+
+    public List<PermintaanResep> listResepPasienTerakhir(String idPasien, String idPelayanan){
+
+        String SQL = "SELECT \n" +
+                "pr.id_permintaan_resep,\n" +
+                "pr.id_approval_obat,\n" +
+                "pr.id_pasien,\n" +
+                "pr.id_detail_checkup,\n" +
+                "pr.tgl_antrian\n" +
+                "FROM mt_simrs_permintaan_resep pr\n" +
+                "INNER JOIN (\n" +
+                "\tSELECT id_detail_checkup, status_periksa FROM it_simrs_header_detail_checkup \n" +
+                "\tWHERE id_pelayanan = '"+idPelayanan+"'\n" +
+                "\tAND status_periksa = '3'\n" +
+                "\tORDER BY last_update DESC \n" +
+                ") dc ON dc.id_detail_checkup = pr.id_detail_checkup\n" +
+                "WHERE pr.id_pasien = '"+idPasien+"'\n" +
+                "AND pr.status = '3'\n" +
+                "ORDER BY tgl_antrian DESC LIMIT 1";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+        List<PermintaanResep> obatDetailList = new ArrayList<>();
+        if (list.size() > 0){
+            for (Object[] obj : list){
+                PermintaanResep obatDetail = new PermintaanResep();
+                obatDetail.setIdPermintaanResep(obj[0].toString());
+                obatDetail.setIdApprovalObat(obj[1].toString());
+                obatDetail.setIdPasien(obj[2].toString());
+                obatDetail.setIdDetailCheckup(obj[3].toString());
+                obatDetail.setTglAntrian((Timestamp) obj[4]);
+                obatDetail.setStTglAntrian(obatDetail.getTglAntrian().toString());
+                obatDetailList.add(obatDetail);
+            }
+        }
+        return obatDetailList;
+    }
+
+    public List<TransaksiObatDetail> listIsiResep(String idApproval){
+
+        String SQL = "SELECT \n" +
+                "ob.nama_obat,\n" +
+                "tr.keterangan,\n" +
+                "trb.qty_approve,\n" +
+                "orac.id as id_racik,\n" +
+                "orac.nama as nama_racik,\n" +
+                "orac.qty,\n" +
+                "orac.kemasan,\n" +
+                "orac.signa\n" +
+                "ob.id_obat\n" +
+                "FROM mt_simrs_transaksi_obat_detail tr\n" +
+                "INNER JOIN (\n" +
+                "\tSELECT id_transaksi_obat_detail, SUM (qty_approve) as qty_approve\n" +
+                "\tFROM\n" +
+                "\tmt_simrs_transaksi_obat_detail_batch \n" +
+                "\tGROUP BY id_transaksi_obat_detail\n" +
+                ") trb ON trb.id_transaksi_obat_detail = tr.id_transaksi_obat_detail\n" +
+                "INNER JOIN im_simrs_header_obat ob ON ob.id_obat = tr.id_obat\n" +
+                "LEFT JOIN it_simrs_obat_racik orac ON orac.id = tr.id_racik\n" +
+                "WHERE tr.id_approval_obat = '"+idApproval+"' \n" +
+                "ORDER BY tr.id_transaksi_obat_detail\n";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+        List<TransaksiObatDetail> obatDetails = new ArrayList<>();
+        if (list.size() > 0){
+            for (Object[] obj : list){
+                TransaksiObatDetail obatDetail = new TransaksiObatDetail();
+                obatDetail.setNamaObat(obj[0].toString());
+                obatDetail.setKeterangan(obj[1] == null ? "" : obj[1].toString());
+                obatDetail.setQtyApprove(obj[2] == null ? null : new BigInteger(obj[2].toString()));
+                obatDetail.setIdRacik(obj[3] == null ? null : obj[3].toString());
+                obatDetail.setNamaRacik(obj[4] == null ? "" : obj[4].toString());
+                obatDetail.setQtyRacik(obj[5] == null ? null : new Integer(obj[5].toString()));
+                obatDetail.setKemasan(obj[6] == null ? "" : obj[6].toString());
+                obatDetail.setSignaRacik(obj[7] == null ? "" : obj[7].toString());
+                obatDetail.setIdObat(obj[8] == null ? "" : obj[8].toString());
+                obatDetails.add(obatDetail);
+            }
+        }
+
+        return obatDetails;
+    }
 }
