@@ -1103,6 +1103,47 @@ public class TransaksiObatAction extends BaseMasterAction {
                 }
 
                 try {
+                    if(object.getString("waktu") != null && !"".equalsIgnoreCase(object.getString("waktu"))){
+                        JSONArray json = new JSONArray(object.getString("waktu"));
+                        List<TransaksiObatDetail> entityArrayList = new ArrayList<>();
+                        for (int i = 0; i < json.length(); i++) {
+                            JSONObject obj = json.getJSONObject(i);
+                            TransaksiObatDetail detail = new TransaksiObatDetail();
+                            detail.setFrekuensi(obj.getString("waktu"));
+                            detail.setNamaObat(obj.getString("nama_obat"));
+                            detail.setKeterangan(obj.getString("keterangan"));
+                            entityArrayList.add(detail);
+                        }
+                        if(entityArrayList.size() > 0){
+                            obatDetail.setWaktuObat(entityArrayList);
+                        }
+                    }
+                }catch (Exception e){
+                    response.setStatus(ERROR);
+                    response.setMessage("Terjadi kesalah saat parse JSON object, "+e.getMessage());
+                    return response;
+                }
+
+                try {
+                    if(object.getString("kajian") != null && !"".equalsIgnoreCase(object.getString("kajian"))){
+                        JSONObject jsonObject = new JSONObject(object.getString("kajian"));
+                        if(jsonObject.has("admin")){
+                            obatDetail.setkAdmin(jsonObject.getString("admin"));
+                        }
+                        if(jsonObject.has("farma")){
+                            obatDetail.setkFarma(jsonObject.getString("farma"));
+                        }
+                        if(jsonObject.has("kritis")){
+                            obatDetail.setkKritis(jsonObject.getString("kritis"));
+                        }
+                    }
+                }catch (Exception e){
+                    response.setStatus(ERROR);
+                    response.setMessage("Terjadi kesalah saat parse JSON object, "+e.getMessage());
+                    return response;
+                }
+
+                try {
                      //create jurnal Pengeluaran Obat Apotik
                     //JurnalResponse jurnalResponse = createJurnalPengeluaranObatApotik(idApproval);
                     JurnalResponse jurnalResponse = new JurnalResponse();

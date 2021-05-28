@@ -109,6 +109,42 @@ public class TransaksiObatDetail extends BaseModel {
     private String nomorProduksi;
     private String flagBpjs;
     private String frekuensi;
+    private List<TransaksiObatDetail> waktuObat = new ArrayList<>();
+    private String kAdmin;
+    private String kFarma;
+    private String kKritis;
+
+    public String getkAdmin() {
+        return kAdmin;
+    }
+
+    public void setkAdmin(String kAdmin) {
+        this.kAdmin = kAdmin;
+    }
+
+    public String getkFarma() {
+        return kFarma;
+    }
+
+    public void setkFarma(String kFarma) {
+        this.kFarma = kFarma;
+    }
+
+    public String getkKritis() {
+        return kKritis;
+    }
+
+    public void setkKritis(String kKritis) {
+        this.kKritis = kKritis;
+    }
+
+    public List<TransaksiObatDetail> getWaktuObat() {
+        return waktuObat;
+    }
+
+    public void setWaktuObat(List<TransaksiObatDetail> waktuObat) {
+        this.waktuObat = waktuObat;
+    }
 
     public String getFrekuensi() {
         return frekuensi;

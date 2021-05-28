@@ -877,25 +877,9 @@
                         <h3 class="box-title"><i class="fa fa-medkit"></i> Order Resep Obat</h3>
                     </div>
                     <div class="box-body">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-success btn-outline dropdown-toggle" data-toggle="dropdown" style="margin-bottom: 10px; width: 150px"><i class="fa fa-plus"></i> Tambah Resep</button>
-                            <%--<button type="button" class="btn btn-success dropdown-toggle"--%>
-                                    <%--data-toggle="dropdown" style="height: 34px">--%>
-                                <%--<span class="caret"></span>--%>
-                                <%--<span class="sr-only">Toggle Dropdown</span>--%>
-                            <%--</button>--%>
-                            <ul class="dropdown-menu" role="menu">
-                                <li onclick="showModal(7)">
-                                    <a href="#"><i class="fa fa-tag"></i> Resep</a>
-                                </li>
-                                <li onclick="showModal(10)">
-                                    <a href="#"><i class="fa fa-tag"></i> Resep Racik</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <%--<button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"--%>
-                                <%--onclick="showModal(7)"><i class="fa fa-plus"></i> Tambah Resep--%>
-                        <%--</button>--%>
+                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
+                                onclick="showModal(7)"><i class="fa fa-plus"></i> Tambah Resep
+                        </button>
                         <button class="btn btn-primary" style="margin-bottom: 10px;"
                                 onclick="refreshTable('resep_ref', 'resep')"><i class="fa fa-refresh" id="resep_ref"></i> Refresh
                         </button>
@@ -2000,7 +1984,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="title-resep"></span></h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tambah Resep Pasien</h4>
             </div>
             <div class="modal-body" id="temp_resep-head">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_resep_head">
@@ -2042,9 +2026,6 @@
                 <div class="row" id="form-nama-racik" style="display: none">
                     <label class="col-md-3" style="margin-top: 7px;">Nama Racik</label>
                     <div class="col-md-9">
-                        <%--<input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"--%>
-                               <%--class="form-control" type="text"--%>
-                               <%--id="nama_racik">--%>
                         <div class="input-group" style="margin-top: 7px;">
                             <input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"
                             class="form-control" type="text"
@@ -2222,55 +2203,10 @@
                         <tbody id="body_detail">
                         </tbody>
                     </table>
-
                     <div id="informasi-racik">
-
-                        <%--<label id="label-racik">Nama Racik</label>--%>
-                        <%--<table class="table table-striped table-bordered" id="tabel_rese_detail_racik" style="font-size: 13px;">--%>
-                            <%--<thead>--%>
-                            <%--<td>Nama Obat</td>--%>
-                            <%--<td width="50%">Dosis</td>--%>
-                            <%--<td align="center" width="5%">Action</td>--%>
-                            <%--</thead>--%>
-                            <%--<tbody id="body_detail_racik">--%>
-                            <%--</tbody>--%>
-                        <%--</table>--%>
-
-                        <%--<div class="row">--%>
-                            <%--<div class="col-md-3">--%>
-                                <%--Signa--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-5">--%>
-                                <%--&lt;%&ndash;<button class="btn btn-sm btn-warning" onclick="showModalKeterangan('0')">Tambah</button>&ndash;%&gt;--%>
-                                <%--&lt;%&ndash;<button class="btn btn-sm btn-danger" onclick="hapusKeterangan('0')">Hapus</button>&ndash;%&gt;--%>
-                                <%--<textarea cols="100%" rows="3" class="form-control" id="signa-racik">--%>
-                            <%--</textarea>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                        <%--<div class="row">--%>
-                            <%--<div class="col-md-3">--%>
-                                <%--Qty Kemasan--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-3">--%>
-                                    <%--<input type="number" class="form-control" id="qty-kemasan-racik"/>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                        <%--<div class="row">--%>
-                            <%--<div class="col-md-3">--%>
-                                <%--Kemasan--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-3">--%>
-                                <%--<select class="form-control" id="kemasan-racik">--%>
-                                    <%--<option value="Capsule"> Capsule </option>--%>
-                                    <%--<option value="Puser"> Puyer </option>--%>
-                                <%--</select>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
                     </div>
                     <br>
                 </div>
-                <%--<div class="box-header with-border">--%>
-                <%--</div>--%>
                 <div class="row" style="margin-top: 10px">
                     <div class="form-group">
                         <div class="col-md-6">
@@ -3245,6 +3181,7 @@
         }
 
         setKeteranganPeriksa('keterangan');
+        setTindakLanjut();
 
         $('.carousel').carousel({
             interval: false,

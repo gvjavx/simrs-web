@@ -3549,7 +3549,7 @@ function saveMonAnestesi(jenis, ket) {
     var cek = false;
 
     if ("mon_intra_anestesi" == jenis) {
-        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 != '') {
+        if (va1 && va2 && va3 && va4 != '') {
             cek = true;
         }
     }
@@ -3569,9 +3569,9 @@ function saveMonAnestesi(jenis, ket) {
             'nadi': va2,
             'sistole': va3,
             'diastole': va4,
-            'o2': va5,
-            'n2o': va6,
-            'inhalasi': va7,
+            'o2': va5 != '' ? va5 : "",
+            'n2o': va6 != '' ? va6 : "",
+            'inhalasi': va7 != '' ? va7 : "",
             'keterangan': jenis,
             'jenis': ket
         };
