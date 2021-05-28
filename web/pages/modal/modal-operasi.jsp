@@ -323,7 +323,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Persiapan Prosuk Darah</td>
+                            <td>Persiapan Produk Darah</td>
                             <td>
                                 <div class="form-check" style="margin-top: 7px;">
                                     <input type="checkbox" name="cek_list13" id="cek_list131" value="Ya">
@@ -576,20 +576,10 @@
                            <div class="form-group">
                                <label class="col-md-4" style="margin-top: 7px">Skala Nyeri</label>
                                <div class="col-md-4">
-                                   <div class="input-group" style="margin-top: 7px">
-                                       <input oninput="setSideValue('cek_list242', this.value)" class="form-control" type="number" id="cek_list241">
-                                       <div class="input-group-addon">
-                                           x/menit
-                                       </div>
-                                   </div>
+                                   <input oninput="setSideValue('cek_list242', this.value)" class="form-control" type="number" id="cek_list241">
                                </div>
                                <div class="col-md-4">
-                                   <div class="input-group" style="margin-top: 7px">
-                                       <input class="form-control" type="number" id="cek_list242">
-                                       <div class="input-group-addon">
-                                           x/menit
-                                       </div>
-                                   </div>
+                                   <input class="form-control" type="number" id="cek_list242">
                                </div>
                            </div>
                        </div>
@@ -1207,7 +1197,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Skala Malampahty</label>
+                            <label class="col-md-4" style="margin-top: 7px">Skala Malapaty</label>
                             <div class="col-md-6">
                                 <%--<input class="form-control" id="cek_pf166" style="margin-top: 7px">--%>
                                 <select class="form-control" id="cek_pf166" style="margin-top: 7px">

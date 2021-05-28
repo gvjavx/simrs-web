@@ -1338,7 +1338,6 @@ public class CheckupAction extends BaseMasterAction {
             lisJenisPeriksa = jenisPriksaPasienBo.getListAllJenisPeriksa(jenisPriksaPasien);
         } catch (HibernateException e) {
             logger.error("[CheckupAction.getComboJenisPeriksaPasienNotBpjs] Error when get data for combo listOfJenisPriksaPasien", e);
-            addActionError(" Error when get data for combo listOfJenisPriksaPasien" + e.getMessage());
         }
 
         return lisJenisPeriksa;
@@ -1354,14 +1353,12 @@ public class CheckupAction extends BaseMasterAction {
             lisJenisPeriksa = jenisPriksaPasienBo.getListJenisPeriksaByIdDetailCheckup(jenis, idDetail);
         } catch (HibernateException e) {
             logger.error("[CheckupAction.getComboJenisPeriksaPasienNotBpjs] Error when get data for combo listOfJenisPriksaPasien", e);
-            addActionError(" Error when get data for combo listOfJenisPriksaPasien" + e.getMessage());
         }
 
         return lisJenisPeriksa;
     }
 
     public String getComboPelayanan() {
-
         List<Pelayanan> pelayananList = new ArrayList<>();
         Pelayanan pelayanan = new Pelayanan();
         pelayanan.setTipePelayanan("rawat_jalan");
@@ -1371,11 +1368,34 @@ public class CheckupAction extends BaseMasterAction {
             pelayananList = pelayananBoProxy.getByCriteria(pelayanan);
         } catch (HibernateException e) {
             logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
-            addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
         }
 
         listOfPelayanan.addAll(pelayananList);
         return "init_add";
+    }
+
+    public List<DokterTeam> getComboDokterPelayanan(String idPelayanan) {
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TeamDokterBo teamDokterBo = (TeamDokterBo) ctx.getBean("teamDokterBoProxy");
+        List<DokterTeam> dokterTeamList = new ArrayList<>();
+        try {
+            dokterTeamList = teamDokterBo.getListDokterToday(idPelayanan);
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+        }
+        return dokterTeamList;
+    }
+
+    public List<DokterTeam> getComboNamaDokterPelayanan(String nama) {
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TeamDokterBo teamDokterBo = (TeamDokterBo) ctx.getBean("teamDokterBoProxy");
+        List<DokterTeam> dokterTeamList = new ArrayList<>();
+        try {
+            dokterTeamList = teamDokterBo.getTtdNamaDokter(CommonUtil.userBranchLogin(), nama);
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+        }
+        return dokterTeamList;
     }
 
     public List<Pelayanan> getComboPelayananCtx() {
