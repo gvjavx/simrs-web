@@ -367,6 +367,24 @@ public class PermintaanResepAction extends BaseMasterAction{
         return permintaanResepList;
     }
 
+    public List<PermintaanResep> getListResepTerakhir(String idPasien, String idPelayanan){
+        logger.info("[PermintaanResepAction.getListResepTerakhir] start process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
+
+        List<PermintaanResep> permintaanResepList = new ArrayList<>();
+        try {
+            permintaanResepList = permintaanResepBo.getListResepTerakhirByIdPelayanan(idPasien, idPelayanan);
+        } catch (GeneralBOException e){
+            logger.error("[PermintaanResepAction.getListResepTerakhir] Error.", e);
+
+        }
+
+        logger.info("[PermintaanResepAction.getListResepTerakhir] END process >>>");
+        return permintaanResepList;
+    }
+
     @Override
     public String add() {
         return null;

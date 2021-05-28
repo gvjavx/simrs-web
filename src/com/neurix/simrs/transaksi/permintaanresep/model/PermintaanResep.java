@@ -77,9 +77,27 @@ public class PermintaanResep{
     private String flagRacik;
     private String umur;
     private String kategoriPelayanan;
+    private String stTglAntrian;
 
+    private List<TransaksiObatDetail> listDetailObatNonRacikk;
     private List<ObatRacik> listNamaObatRacik = new ArrayList<>();
     private List<TransaksiObatDetail> listDetailObatRacik = new ArrayList<>();
+
+    public List<TransaksiObatDetail> getListDetailObatNonRacikk() {
+        return listDetailObatNonRacikk;
+    }
+
+    public void setListDetailObatNonRacikk(List<TransaksiObatDetail> listDetailObatNonRacikk) {
+        this.listDetailObatNonRacikk = listDetailObatNonRacikk;
+    }
+
+    public String getStTglAntrian() {
+        return stTglAntrian;
+    }
+
+    public void setStTglAntrian(String stTglAntrian) {
+        this.stTglAntrian = stTglAntrian;
+    }
 
     public List<ObatRacik> getListNamaObatRacik() {
         return listNamaObatRacik;

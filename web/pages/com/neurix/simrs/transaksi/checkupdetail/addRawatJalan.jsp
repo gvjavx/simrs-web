@@ -880,6 +880,8 @@
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                 onclick="showModal(7)"><i class="fa fa-plus"></i> Tambah Resep
                         </button>
+                        <button class="btn btn-success btn-outline" onclick="showModal(11)" style="margin-bottom: 10px; width: 150px"><i class="fa fa-mail-reply"></i> Copy Resep</button>
+
                         <button class="btn btn-primary" style="margin-bottom: 10px;"
                                 onclick="refreshTable('resep_ref', 'resep')"><i class="fa fa-refresh" id="resep_ref"></i> Refresh
                         </button>
@@ -1647,21 +1649,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group">
-                        <div class="col-md-offset-3 col-md-9">
-                            <div class="form-check jarak">
-                                <input type="checkbox" id="is_cito" value="yes">
-                                <label for="is_cito"></label>
-                                Centang Jika Pemeriksaan Darurat (CITO)
-                                <i class="fa fa-question-circle box-rm" style="font-size: 18px">
-                                    <span class="box-rmtext" style="font-size: 12px; font-family: Calibri">
-                                        Centang untuk menandai pemeriksaan dengan CITO
-                                    </span></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="row" style="display: none" id="form_tarif_lab_luar">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Tarif Lab Luar</label>
@@ -1984,7 +1971,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tambah Resep Pasien</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="title-resep"></span></h4>
             </div>
             <div class="modal-body" id="temp_resep-head">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_resep_head">
@@ -2026,6 +2013,9 @@
                 <div class="row" id="form-nama-racik" style="display: none">
                     <label class="col-md-3" style="margin-top: 7px;">Nama Racik</label>
                     <div class="col-md-9">
+                        <%--<input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"--%>
+                               <%--class="form-control" type="text"--%>
+                               <%--id="nama_racik">--%>
                         <div class="input-group" style="margin-top: 7px;">
                             <input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"
                             class="form-control" type="text"
@@ -2203,10 +2193,55 @@
                         <tbody id="body_detail">
                         </tbody>
                     </table>
+
                     <div id="informasi-racik">
+
+                        <%--<label id="label-racik">Nama Racik</label>--%>
+                        <%--<table class="table table-striped table-bordered" id="tabel_rese_detail_racik" style="font-size: 13px;">--%>
+                            <%--<thead>--%>
+                            <%--<td>Nama Obat</td>--%>
+                            <%--<td width="50%">Dosis</td>--%>
+                            <%--<td align="center" width="5%">Action</td>--%>
+                            <%--</thead>--%>
+                            <%--<tbody id="body_detail_racik">--%>
+                            <%--</tbody>--%>
+                        <%--</table>--%>
+
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-3">--%>
+                                <%--Signa--%>
+                            <%--</div>--%>
+                            <%--<div class="col-md-5">--%>
+                                <%--&lt;%&ndash;<button class="btn btn-sm btn-warning" onclick="showModalKeterangan('0')">Tambah</button>&ndash;%&gt;--%>
+                                <%--&lt;%&ndash;<button class="btn btn-sm btn-danger" onclick="hapusKeterangan('0')">Hapus</button>&ndash;%&gt;--%>
+                                <%--<textarea cols="100%" rows="3" class="form-control" id="signa-racik">--%>
+                            <%--</textarea>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-3">--%>
+                                <%--Qty Kemasan--%>
+                            <%--</div>--%>
+                            <%--<div class="col-md-3">--%>
+                                    <%--<input type="number" class="form-control" id="qty-kemasan-racik"/>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-3">--%>
+                                <%--Kemasan--%>
+                            <%--</div>--%>
+                            <%--<div class="col-md-3">--%>
+                                <%--<select class="form-control" id="kemasan-racik">--%>
+                                    <%--<option value="Capsule"> Capsule </option>--%>
+                                    <%--<option value="Puser"> Puyer </option>--%>
+                                <%--</select>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                     </div>
                     <br>
                 </div>
+                <%--<div class="box-header with-border">--%>
+                <%--</div>--%>
                 <div class="row" style="margin-top: 10px">
                     <div class="form-group">
                         <div class="col-md-6">
@@ -2252,6 +2287,45 @@
                         id="load_resep_head"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-resep-history">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Copy Resep</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="box-header with-border"><i class="fa fa-file-o"></i> Riwayat Resep </div>
+                <table class="table table-striped table-bordered" style="font-size: 13px;">
+                    <thead>
+                    <td>No. Resep</td>
+                    <td>Tgl. Resep</td>
+                    <td>No. Rawat</td>
+                    <td>No. RM</td>
+                    <td align="center" width="5%">Action</td>
+                    </thead>
+                    <tbody id="body-riwayat-resep">
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <%--<button type="button" class="btn btn-success" id="save_resep_head" onclick="saveResepObatTtd()"><i--%>
+                        <%--class="fa fa-check"></i> Copy Resep--%>
+                <%--</button>--%>
+                <%--<button style="display: none; cursor: no-drop" type="button" class="btn btn-success"--%>
+                        <%--id="load_resep_head"><i--%>
+                        <%--class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...--%>
+                <%--</button>--%>
             </div>
         </div>
     </div>
@@ -3025,7 +3099,6 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenUgdAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/MppAction.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenIcuAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/fisioterapi.js"/>'></script>
@@ -3044,7 +3117,6 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenUgd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/mpp.js"/>'></script>
-<script type='text/javascript' src='<s:url value="/pages/dist/js/icu.js"/>'></script>
 
 <script type='text/javascript'>
 

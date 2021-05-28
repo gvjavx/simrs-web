@@ -7,6 +7,7 @@ import com.neurix.simrs.transaksi.transketeranganobat.model.ItSimrsKeteranganRes
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -144,6 +145,60 @@ public class TransaksiObatDetail extends BaseModel {
 
     public void setWaktuObat(List<TransaksiObatDetail> waktuObat) {
         this.waktuObat = waktuObat;
+    }
+    private Timestamp tglAntrian;
+    private String stTglAntrian;
+    private Integer qtyRacik;
+    private String stQtyRacik;
+    private String kemasan;
+    private String signaRacik;
+
+    public String getKemasan() {
+        return kemasan;
+    }
+
+    public void setKemasan(String kemasan) {
+        this.kemasan = kemasan;
+    }
+
+    public String getSignaRacik() {
+        return signaRacik;
+    }
+
+    public void setSignaRacik(String signaRacik) {
+        this.signaRacik = signaRacik;
+    }
+
+    public Integer getQtyRacik() {
+        return qtyRacik;
+    }
+
+    public void setQtyRacik(Integer qtyRacik) {
+        this.qtyRacik = qtyRacik;
+    }
+
+    public String getStQtyRacik() {
+        return stQtyRacik;
+    }
+
+    public void setStQtyRacik(String stQtyRacik) {
+        this.stQtyRacik = stQtyRacik;
+    }
+
+    public Timestamp getTglAntrian() {
+        return tglAntrian;
+    }
+
+    public void setTglAntrian(Timestamp tglAntrian) {
+        this.tglAntrian = tglAntrian;
+    }
+
+    public String getStTglAntrian() {
+        return stTglAntrian;
+    }
+
+    public void setStTglAntrian(String stTglAntrian) {
+        this.stTglAntrian = stTglAntrian;
     }
 
     public String getFrekuensi() {
