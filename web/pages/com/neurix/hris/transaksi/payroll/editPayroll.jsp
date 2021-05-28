@@ -851,6 +851,14 @@
                                     </div>
                                 </div>
                             </s:if>
+                            <br>
+                            <br>
+                            <div class="form-group">
+                                <label class="control-label col-sm-5" >Dasar BPJS : </label>
+                                <div class="col-sm-6">
+                                    <input style="text-align: right"  type="text" class="form-control nip" id="dasarBpjs" name="dasarBpjs">
+                                </div>
+                            </div>
                         </div>
                         <div class="col-sm-4">
                             <div align="center">
@@ -981,7 +989,7 @@
 
             </div>
             <div class="modal-footer">
-                <a id="btnSave" type="btn btn-success" class="btn btn-default btn-success"><i class="fa fa-save"></i> Save</a>
+                <a id="btnSave" type="btn btn-success" class="btn btn-default btn-success"><i class="fa fa-save"></i> Save & Reload</a>
                 <a type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Close</a>
             </div>
         </div>

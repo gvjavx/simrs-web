@@ -145,6 +145,10 @@ public class PegawaiPayroll extends BasePayroll {
 
 
     //iuran bpjs
+    //RAKA-28MEI2021==>dasar BPJS untuk custom
+    private String dasarBpjs;
+    private BigDecimal dasarBpjsNilai;
+
     private String totalIuranBpjsTkKary;
     private BigDecimal totalIuranBpjsTkKaryNilai;
     private String iuranBpjsTkKary;
@@ -295,7 +299,17 @@ public class PegawaiPayroll extends BasePayroll {
     @Override
     public void recalculateDasarBpjs() {
 
-        BigDecimal perhitunganDasarBpjsKs = getGajiPokokNilai().add(santunanKhususNilai).add(tunjPeralihanGapokNilai).add(tunjPeralihanSankhusNilai);
+        BigDecimal perhitunganDasarBpjsKs;
+        BigDecimal perhitunganDasarBpjsTk;
+
+        if(dasarBpjsNilai != null){
+            perhitunganDasarBpjsKs = dasarBpjsNilai;
+            perhitunganDasarBpjsTk = dasarBpjsNilai;
+        }else {
+            perhitunganDasarBpjsKs = getGajiPokokNilai().add(santunanKhususNilai).add(tunjPeralihanGapokNilai).add(tunjPeralihanSankhusNilai);
+            perhitunganDasarBpjsTk = getGajiPokokNilai().add(santunanKhususNilai).add(tunjPeralihanGapokNilai).add(tunjPeralihanSankhusNilai);
+        }
+
         if (perhitunganDasarBpjsKs.compareTo(minBpjsKsNilai) < 0) { // perhitunganDasarBpjsKs < min bpjs ks maka dasar perhitungan bpjs ks = min bpjs ks
 
             dasarPerhitunganBpjsKsNilai = minBpjsKsNilai;
@@ -312,7 +326,6 @@ public class PegawaiPayroll extends BasePayroll {
 
         setDasarPerhitunganBpjsKs(CommonUtil.numbericFormat(getDasarPerhitunganBpjsKsNilai(),"###,###"));
 
-        BigDecimal perhitunganDasarBpjsTk = getGajiPokokNilai().add(santunanKhususNilai).add(tunjPeralihanGapokNilai).add(tunjPeralihanSankhusNilai);
         if (perhitunganDasarBpjsTk.compareTo(minBpjsTkNilai) < 0) { // perhitunganDasarBpjsTk < min bpjs tk maka dasar perhitungan bpjs tk = min bpjs tk
 
             dasarPerhitunganBpjsTkNilai = minBpjsTkNilai;
@@ -2369,6 +2382,22 @@ public class PegawaiPayroll extends BasePayroll {
 
     public void setPersenDapenKaryNilai(BigDecimal persenDapenKaryNilai) {
         this.persenDapenKaryNilai = persenDapenKaryNilai;
+    }
+
+    public String getDasarBpjs() {
+        return dasarBpjs;
+    }
+
+    public void setDasarBpjs(String dasarBpjs) {
+        this.dasarBpjs = dasarBpjs;
+    }
+
+    public BigDecimal getDasarBpjsNilai() {
+        return dasarBpjsNilai;
+    }
+
+    public void setDasarBpjsNilai(BigDecimal dasarBpjsNilai) {
+        this.dasarBpjsNilai = dasarBpjsNilai;
     }
 
     public String getIuranBpjsTkKary() {

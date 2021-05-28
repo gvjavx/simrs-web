@@ -997,7 +997,7 @@ public class PayrollAction extends BaseTransactionAction {
     public String saveEditData(String payrollId, String nip, String bulan,  //data pegawai
                              String kopkar, String iuranSp, String iuranPiikb, String bankBri, String bankMandiri, // Komponen rincian C
                              String infaq, String perkesDanObat, String listrik, String iuranProfesi, String potonganLain, // Komponen rincian C
-                             String selisihPph21){
+                             String selisihPph21, String dasarBpjs){
 
         logger.info("[PayrollAction.saveEditData] start process >>>");
 
@@ -1045,6 +1045,9 @@ public class PayrollAction extends BaseTransactionAction {
 
                 itemEditDataPayroll.setPotonganLain(potonganLain);
                 itemEditDataPayroll.setPotonganLainNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(potonganLain))));
+
+                itemEditDataPayroll.setDasarBpjs(dasarBpjs);
+                itemEditDataPayroll.setDasarBpjsNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(dasarBpjs))));
 
                 if (CommonConstant.BULAN_12.equalsIgnoreCase(bulan)) {
                     PayrollPph itemEditPayrollPph = itemEditDataPayroll.getPayrollPph();
