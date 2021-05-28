@@ -880,6 +880,8 @@
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                 onclick="showModal(7)"><i class="fa fa-plus"></i> Tambah Resep
                         </button>
+                        <button class="btn btn-success btn-outline" onclick="showModal(11)" style="margin-bottom: 10px; width: 150px"><i class="fa fa-mail-reply"></i> Copy Resep</button>
+
                         <button class="btn btn-primary" style="margin-bottom: 10px;"
                                 onclick="refreshTable('resep_ref', 'resep')"><i class="fa fa-refresh" id="resep_ref"></i> Refresh
                         </button>
@@ -2285,6 +2287,45 @@
                         id="load_resep_head"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-resep-history">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Copy Resep</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="box-header with-border"><i class="fa fa-file-o"></i> Riwayat Resep </div>
+                <table class="table table-striped table-bordered" style="font-size: 13px;">
+                    <thead>
+                    <td>No. Resep</td>
+                    <td>Tgl. Resep</td>
+                    <td>No. Rawat</td>
+                    <td>No. RM</td>
+                    <td align="center" width="5%">Action</td>
+                    </thead>
+                    <tbody id="body-riwayat-resep">
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <%--<button type="button" class="btn btn-success" id="save_resep_head" onclick="saveResepObatTtd()"><i--%>
+                        <%--class="fa fa-check"></i> Copy Resep--%>
+                <%--</button>--%>
+                <%--<button style="display: none; cursor: no-drop" type="button" class="btn btn-success"--%>
+                        <%--id="load_resep_head"><i--%>
+                        <%--class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...--%>
+                <%--</button>--%>
             </div>
         </div>
     </div>

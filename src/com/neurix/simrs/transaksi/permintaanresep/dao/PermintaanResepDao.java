@@ -201,7 +201,7 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
                 "orac.nama as nama_racik,\n" +
                 "orac.qty,\n" +
                 "orac.kemasan,\n" +
-                "orac.signa\n" +
+                "orac.signa,\n" +
                 "ob.id_obat\n" +
                 "FROM mt_simrs_transaksi_obat_detail tr\n" +
                 "INNER JOIN (\n" +
