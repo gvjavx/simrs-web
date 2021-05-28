@@ -636,6 +636,10 @@
                                     <textarea rows="6" type="text" class="form-control nip" id="noteKoreksi" name="noteKoreksi"></textarea>
                                 </div>
                             </div>
+                            <br>
+                            <div class="col-sm-offset-5 col-sm-6" style="text-align: center">
+                                <a id="btnSaveKoreksi" type="btn btn-success" class="btn btn-default btn-success"><i class="fa fa-save"></i> Save</a>
+                            </div>
                         </div>
                     </div>
                     <div class="row" id="totalAMod">
@@ -976,7 +980,6 @@
 
             </div>
             <div class="modal-footer">
-                <a id="btnSave" type="btn btn-success" class="btn btn-default btn-success"><i class="fa fa-save"></i> Save</a>
                 <a type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Close</a>
             </div>
         </div>
@@ -3075,7 +3078,7 @@
 
 <script>
 
-    $('#btnSave').click(function() {
+    $('#btnSaveKoreksi').click(function() {
         var payrollId = document.getElementById("payrollPegawaiId").value;
         var nip = document.getElementById("nip").value;
         var bulan = document.getElementById("bulan").value;
@@ -3224,12 +3227,14 @@
                 if (itemData.flagKoreksi == "Y") {
                     document.getElementById("cekFlagKoreksi").checked = true;
                     $("#noteKoreksi").prop("disabled",false);
+                    $("#btnSaveKoreksi").show();
 
                     $('#noteKoreksi').val(itemData.noteKoreksi);
                     $('#flagKoreksi').val(itemData.flagKoreksi);
                 } else {
                     document.getElementById("cekFlagKoreksi").checked = false;
                     $("#noteKoreksi").prop("disabled",true);
+                    $("#btnSaveKoreksi").hide();
                 }
             }
 
@@ -3366,9 +3371,12 @@
         if (document.getElementById("cekFlagKoreksi").checked == true) {
             $("#flagKoreksi").val("Y");
             $("#noteKoreksi").prop("disabled",false);
+            $("#btnSaveKoreksi").show();
         } else {
             $("#flagKoreksi").val("N");
             $("#noteKoreksi").prop("disabled",true);
+            $("#btnSaveKoreksi").hide();
+
         }
     }
 
