@@ -19,12 +19,18 @@ import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.mappingpersengaji.dao.MappingPersenGajiDao;
 import com.neurix.hris.master.mappingpersengaji.model.ImHrisMappingPersenGaji;
 import com.neurix.hris.master.mappingpersengaji.model.MappingPersenGaji;
+import com.neurix.hris.master.payrollSkalaGaji.dao.PayrollSkalaGajiDao;
+import com.neurix.hris.master.payrollSkalaGaji.model.ImPayrollSkalaGajiEntity;
+import com.neurix.hris.master.payrollSkalaGajiPkwt.dao.PayrollSkalaGajiPkwtDao;
+import com.neurix.hris.master.payrollSkalaGajiPkwt.model.ImPayrollSkalaGajiPkwtEntity;
 import com.neurix.hris.transaksi.absensi.dao.AbsensiPegawaiDao;
 import com.neurix.hris.transaksi.absensi.model.AbsensiPegawai;
 import com.neurix.hris.transaksi.absensi.model.AbsensiPegawaiEntity;
 import com.neurix.hris.transaksi.payroll.bo.PayrollBo;
 import com.neurix.hris.transaksi.payroll.dao.*;
 import com.neurix.hris.transaksi.payroll.model.*;
+import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
+import io.agora.recording.common.Common;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -52,8 +58,22 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
     private BranchDao branchDao;
     private CompanyDao companyDao;
     private AbsensiPegawaiDao absensiPegawaiDao;
+    private PersonilPositionDao personilPositionDao;
+    private PayrollSkalaGajiDao payrollSkalaGajiDao;
+    private PayrollSkalaGajiPkwtDao payrollSkalaGajiPkwtDao;
 
-//    private MappingJurnalDao mappingJurnalDao;
+    public void setPersonilPositionDao(PersonilPositionDao personilPositionDao) {
+        this.personilPositionDao = personilPositionDao;
+    }
+
+    public void setPayrollSkalaGajiDao(PayrollSkalaGajiDao payrollSkalaGajiDao) {
+        this.payrollSkalaGajiDao = payrollSkalaGajiDao;
+    }
+
+    public void setPayrollSkalaGajiPkwtDao(PayrollSkalaGajiPkwtDao payrollSkalaGajiPkwtDao) {
+        this.payrollSkalaGajiPkwtDao = payrollSkalaGajiPkwtDao;
+    }
+    //    private MappingJurnalDao mappingJurnalDao;
 
     private BiodataDao biodataDao;
 
@@ -434,6 +454,9 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 
         itHrisPayrollTempEntity.setFlag("Y");
         itHrisPayrollTempEntity.setAction(action);
+
+        itHrisPayrollTempEntity.setFlagKoreksi(pegawaiPayroll.getFlagKoreksi());
+        itHrisPayrollTempEntity.setNoteKoreksi(pegawaiPayroll.getNoteKoreksi());
 
         if ("C".equalsIgnoreCase(action)) {
 
@@ -1042,6 +1065,10 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         pegawaiPayroll.setTotalIuranBpjsTkKary(pegawaiPayroll.getTotalIuranBpjsTkKaryNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalIuranBpjsTkKaryNilai(),"###,###") : "");
         pegawaiPayroll.setTotalIuranBpjsTkPers(pegawaiPayroll.getTotalIuranBpjsTkPersNilai() != null ? CommonUtil.numbericFormat(pegawaiPayroll.getTotalIuranBpjsTkPersNilai(),"###,###") : "");
 
+        pegawaiPayroll.setFlagKoreksi(itHrisPayrollTempEntity.getFlagKoreksi());
+        pegawaiPayroll.setNoteKoreksi(itHrisPayrollTempEntity.getNoteKoreksi());
+
+
         Set<ItHrisPayrollPphTempEntity> itHrisPayrollPphTempEntitySet = itHrisPayrollTempEntity.getItHrisPayrollPphTemp();
 
         if (!itHrisPayrollPphTempEntitySet.isEmpty()) {
@@ -1615,7 +1642,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 
         logger.info("[PayrollBoImpl.refreshInitialPegawaiPayrollTemp] start process >>>");
 
-        if ("plt".equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = plt
+        if (CommonConstant.JP_PLT.equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = plt
 
             List<MappingPersenGaji> filterdMappingPersenGaji = listOfMappingPersenGaji.stream().filter(
                     p -> p.getNamaMappingPersenGaji().equalsIgnoreCase("plt")
@@ -1624,7 +1651,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             //mapping ke model mapping persen gaji
             itemPegawaiPayroll.setListOfMappingPersenGaji(filterdMappingPersenGaji);
 
-        } else if ("pjs".equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = pjs
+        } else if (CommonConstant.JP_PJS.equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = pjs
 
             List<MappingPersenGaji> filterdMappingPersenGaji = listOfMappingPersenGaji.stream().filter(
                     p -> p.getNamaMappingPersenGaji().equalsIgnoreCase("pjs")
@@ -1633,7 +1660,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             //mapping ke model mapping persen gaji
             itemPegawaiPayroll.setListOfMappingPersenGaji(filterdMappingPersenGaji);
 
-        } else if ("percobaan".equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = percobaan
+        } else if (CommonConstant.JP_PERCOBAAN.equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = percobaan
 
             List<MappingPersenGaji> filterdMappingPersenGaji = listOfMappingPersenGaji.stream().filter(
                     p -> p.getNamaMappingPersenGaji().equalsIgnoreCase("percobaan")
@@ -1704,7 +1731,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 
         for (PegawaiPayroll itemPegawaiPayroll : listOfInitialPayroll) {
 
-            if ("plt".equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = plt
+            if (CommonConstant.JP_PLT.equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = plt
 
                 List<MappingPersenGaji> filterdMappingPersenGaji = listOfMappingPersenGaji.stream().filter(
                         p -> p.getNamaMappingPersenGaji().equalsIgnoreCase("plt")
@@ -1713,7 +1740,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
                 //mapping ke model mapping persen gaji
                 itemPegawaiPayroll.setListOfMappingPersenGaji(filterdMappingPersenGaji);
 
-            } else if ("pjs".equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = pjs
+            } else if (CommonConstant.JP_PJS.equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = pjs
 
                 List<MappingPersenGaji> filterdMappingPersenGaji = listOfMappingPersenGaji.stream().filter(
                         p -> p.getNamaMappingPersenGaji().equalsIgnoreCase("pjs")
@@ -1722,7 +1749,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
                 //mapping ke model mapping persen gaji
                 itemPegawaiPayroll.setListOfMappingPersenGaji(filterdMappingPersenGaji);
 
-            } else if ("percobaan".equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = percobaan
+            } else if (CommonConstant.JP_PERCOBAAN.equalsIgnoreCase(itemPegawaiPayroll.getJenisPegawai())) { //jika jenis pegawai = percobaan
 
                 List<MappingPersenGaji> filterdMappingPersenGaji = listOfMappingPersenGaji.stream().filter(
                         p -> p.getNamaMappingPersenGaji().equalsIgnoreCase("percobaan")
@@ -1736,6 +1763,9 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             //set biaya jabatan dan persen biaya jabatan
             itemPegawaiPayroll.setBiayaJabatanNilai(paramBiayaJabatan);
             itemPegawaiPayroll.setPersenBiayaJabatan(persenBiayaJabatan);
+
+            //set recalculate dasar perhitungan bpjs
+            itemPegawaiPayroll.recalculateDasarBpjs();
 
             //set calculate based on multifikator
             itemPegawaiPayroll.calculateBasedMultifikator();
@@ -27622,15 +27652,117 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
     //RAKA-end
 
     @Override
-    public List<ReportPayroll> searchReportPayroll (String bulan, String tahun, String unit) throws GeneralBOException {
+    public List<ReportPayroll> searchReportPayroll (String bulan, String tahun, String unit, String idHeader) throws GeneralBOException {
+        List<ReportPayroll> listOfReport = new ArrayList<>();
         List<ReportPayroll> listOfResult = new ArrayList<>();
         try{
-            listOfResult = payrollDao.reportRekapPayroll(bulan, tahun, unit);
+            String statApprove = payrollDao.statApprovPayroll(idHeader);
+            if("approveAKS".equalsIgnoreCase(statApprove)) {
+                listOfResult = payrollDao.reportRekapPayroll(bulan, tahun, unit);
+            } else {
+                listOfResult = payrollTempDao.reportRekapPayroll(bulan, tahun, unit);
+            }
         }catch (HibernateException e){
             logger.error("[PayrollBoImpl.searchPayroll] Error, " + e);
             throw new GeneralBOException(e);
         }
-        return listOfResult;
+        for(ReportPayroll report : listOfResult){
+            BigDecimal byLembur = new BigDecimal(0.0);
+            byLembur = getBiayaLembur(report.getNip(),tahun);
+
+            report.setByLembur(byLembur);
+            listOfReport.add(report);
+        }
+
+        return listOfReport;
+    }
+
+    private BigDecimal getBiayaLembur(String nip, String tahun){
+        BigDecimal byLembur = new BigDecimal(0);
+
+        String personPosition = "";
+        try {
+            personPosition = personilPositionDao.getJenisPegawaiByNip(nip);
+            if(CommonConstant.JP_NORMAL.equalsIgnoreCase(personPosition)){
+                personPosition = "NORMAL";
+            } else if(CommonConstant.JP_PJS.equalsIgnoreCase(personPosition)){
+                personPosition = "PJS";
+            } else if(CommonConstant.JP_PLT.equalsIgnoreCase(personPosition)){
+                personPosition = "PLT";
+            } else {
+                personPosition = "PERCOBAAN";
+            }
+        } catch (HibernateException e) {
+            logger.error("[AbsensiBoImpl.cronInquiry] Error " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        List<ImHrisMappingPersenGaji> mappingGaji; new ArrayList<>();
+        BigDecimal prosentase = new BigDecimal(0);
+        try {
+            mappingGaji = mappingPersenGajiDao.getDataMapping(personPosition, "tunjangan_jabatan"); //Pokonya selain gaji pokok
+            prosentase = BigDecimal.valueOf(mappingGaji.get(0).getPresentase() / 100);
+        } catch (HibernateException e) {
+            logger.error("[PayrollBoImpl.getBiayaLembur] Error " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        List<ImBiodataEntity> listBiodata = new ArrayList<>();
+        ImBiodataEntity biodata = new ImBiodataEntity();
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("nip", nip);
+        hsCriteria.put("flag", "Y");
+        try{
+            listBiodata = biodataDao.getByCriteria(hsCriteria);
+            biodata = listBiodata.get(0);
+        }catch(HibernateException e){
+            logger.error("[PayrollBoImpl.getBiayaLembur] Error, " + e.getMessage());
+            throw new GeneralBOException("Problem when retrieving Biopdata, " + e.getMessage());
+        }
+
+        List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
+        List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
+        BigDecimal gapok = new BigDecimal(0.0);
+        BigDecimal alihGapok = new BigDecimal(0);
+        BigDecimal sankhus = new BigDecimal(0.0);
+        if (CommonConstant.TIPE_PEGAWAI_TETAP.equalsIgnoreCase(biodata.getTipePegawai())) {
+            try{
+                payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(), tahun);
+            }catch (HibernateException e){
+                logger.error("[AbsensiBoImpl.getDetailLembur] Error, " + e.getMessage());
+                throw new GeneralBOException("Problem when retrieving Skala Gaji, " + e.getMessage());
+            }
+            for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
+                gapok = BigDecimal.valueOf(imPayrollSkalaGajiEntity.getNilai().doubleValue());
+//                sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
+            }
+
+            List<ItHrisPayrollEntity> itPayrollEntityList = new ArrayList<>();
+            try{
+                itPayrollEntityList = payrollDao.getTunjanganPeralihanForAbsensi(nip, tahun);
+            }catch (HibernateException e){
+                logger.error("[PayrollBoImpl.getBiayaLembur] Error, " + e.getMessage());
+                throw new GeneralBOException("Problem when retrieving Tunjangan Peralihan For Absensi, " + e.getMessage());
+            }
+            for (ItHrisPayrollEntity itPayrollEntity : itPayrollEntityList) {
+                alihGapok = alihGapok.add(itPayrollEntity.getPeralihanGapok());
+                break;
+            }
+        } else if (CommonConstant.PEGAWAI_PKWT.equalsIgnoreCase(biodata.getTipePegawai())) {
+            try{
+                payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodata.getGolongan(), tahun);
+            }catch (HibernateException e){
+                logger.error("[AbsensiBoImpl.getDetailLembur] Error, " + e.getMessage());
+                throw new GeneralBOException("Problem when retrieving Skala Gaji PKWT, " + e.getMessage());
+            }
+            for (ImPayrollSkalaGajiPkwtEntity skalaGajiLoop : payrollSkalaGajiPkwtEntityList) {
+                gapok = BigDecimal.valueOf(skalaGajiLoop.getGajiPokok().doubleValue());
+                sankhus = BigDecimal.valueOf(skalaGajiLoop.getSantunanKhusus().doubleValue());
+            }
+        }
+
+        byLembur = (gapok.add(alihGapok).add(sankhus)).multiply(prosentase);
+        return byLembur;
     }
 
     @Override

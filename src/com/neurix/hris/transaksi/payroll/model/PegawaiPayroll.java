@@ -272,6 +272,26 @@ public class PegawaiPayroll extends BasePayroll {
     private String flagEdit;
     private String flagPrint;
 
+    //RAKA-23MEI2021==>untuk koreksi aks
+    private String flagKoreksi;
+    private String noteKoreksi;
+
+    public String getFlagKoreksi() {
+        return flagKoreksi;
+    }
+
+    public void setFlagKoreksi(String flagKoreksi) {
+        this.flagKoreksi = flagKoreksi;
+    }
+
+    public String getNoteKoreksi() {
+        return noteKoreksi;
+    }
+
+    public void setNoteKoreksi(String noteKoreksi) {
+        this.noteKoreksi = noteKoreksi;
+    }
+
     @Override
     public void recalculateDasarBpjs() {
 
@@ -321,13 +341,21 @@ public class PegawaiPayroll extends BasePayroll {
         }
 
         if (getNoBpjsTk()!=null && !"".equalsIgnoreCase(getNoBpjsTk())) {
-
-            iuranBpjsTkKaryNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkIuranKaryNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+            //RAKA-20MEI2021 ===> hanya JPK yg kena min/max
+            iuranBpjsTkKaryNilai = (perhitunganDasarBpjsTk.multiply(persenBpjsTkIuranKaryNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
             jpkBpjsTkKaryNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJpkKaryNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
-            jkkBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJkkPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
-            jhtBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJhtPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
-            jkmBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJkmPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+            jkkBpjsTkPershNilai = (perhitunganDasarBpjsTk.multiply(persenBpjsTkJkkPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+            jhtBpjsTkPershNilai = (perhitunganDasarBpjsTk.multiply(persenBpjsTkJhtPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+            jkmBpjsTkPershNilai = (perhitunganDasarBpjsTk.multiply(persenBpjsTkJkmPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
             jpkBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJpkPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+            //RAKA-end
+
+//            iuranBpjsTkKaryNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkIuranKaryNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+//            jpkBpjsTkKaryNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJpkKaryNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+//            jkkBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJkkPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+//            jhtBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJhtPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+//            jkmBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJkmPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+//            jpkBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJpkPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
 
         } else {
 
@@ -381,6 +409,10 @@ public class PegawaiPayroll extends BasePayroll {
                 setGajiPokokNilai(gapok);
                 setGajiPokok(CommonUtil.numbericFormat(gapok,"###,###"));
 
+                setTunjJabatan(CommonUtil.numbericFormat(tunjJabatanNilai,"###,###"));
+                setTunjStruktural(CommonUtil.numbericFormat(tunjStrukturalNilai,"###,###"));
+
+
             } else { // untuk pendapatan tidak rutin (THR/Insentif/Jasop/Cuti Panjang/ Cuti Tahunan)
 
                 tunjRumahNilai = (multifikatorNilai.multiply(tunjRumahNilai)).setScale(0, BigDecimal.ROUND_HALF_UP);;
@@ -401,6 +433,8 @@ public class PegawaiPayroll extends BasePayroll {
                 setGajiPokokNilai(gapok);
                 setGajiPokok(CommonUtil.numbericFormat(gapok,"###,###"));
 
+                setTunjJabatan(CommonUtil.numbericFormat(tunjJabatanNilai,"###,###"));
+                setTunjStruktural(CommonUtil.numbericFormat(tunjStrukturalNilai,"###,###"));
             }
 
         }
@@ -1544,18 +1578,21 @@ public class PegawaiPayroll extends BasePayroll {
                 BigDecimal gajiPokok = getGajiPokokNilai();
                 gajiPokok = gajiPokok.multiply(persentase).divide(seratusPersen);
                 setGajiPokokNilai(gajiPokok);
+                setGajiPokok(CommonUtil.numbericFormat(gajiPokok,"###,###"));
 
             } else if ("tunjangan_jabatan".equalsIgnoreCase(mappingPersenGaji.getJenisGaji())) {
 
                 BigDecimal tunjanganJabatan = getTunjJabatanNilai();
                 tunjanganJabatan = tunjanganJabatan.multiply(persentase).divide(seratusPersen);
                 setTunjJabatanNilai(tunjanganJabatan);
+                setTunjJabatan(CommonUtil.numbericFormat(tunjanganJabatan,"###,###"));
 
             } else if ("tunjangan_jabatan_struktural".equalsIgnoreCase(mappingPersenGaji.getJenisGaji())) {
 
                 BigDecimal tunjanganStruktural = getTunjStrukturalNilai();
                 tunjanganStruktural = tunjanganStruktural.multiply(persentase).divide(seratusPersen);
                 setTunjStrukturalNilai(tunjanganStruktural);
+                setTunjStruktural(CommonUtil.numbericFormat(tunjanganStruktural,"###,###"));
 
             }
 

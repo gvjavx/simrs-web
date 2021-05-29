@@ -291,7 +291,7 @@ public class AsesmenOperasiAction {
                 operasi.setKeterangan(keterangan);
                 operasi.setLastUpdate(time);
                 operasi.setLastUpdateWho(userLogin);
-                if(date != null && !"".equalsIgnoreCase(date)){
+                if(date != null && !"".equalsIgnoreCase(date) && !"undefined".equalsIgnoreCase(date)){
                     operasi.setCreatedDate(Timestamp.valueOf(date));
                 }
                 response = asesmenOperasiBo.saveDelete(operasi);

@@ -110,6 +110,7 @@ import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+import io.agora.recording.common.Common;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -1608,6 +1609,9 @@ public class CheckupDetailAction extends BaseMasterAction {
         BigDecimal ppnObat = new BigDecimal(0);
 
         Map hsCriteria = new HashMap();
+        hsCriteria.put("user_id", CommonUtil.userIdLogin());
+        hsCriteria.put("user_who", CommonUtil.userLogin());
+
         List<MappingDetail> listMapUangMuka = new ArrayList<>();
 
         boolean isNoCheckup = noCheckup != null && !"".equalsIgnoreCase(noCheckup);

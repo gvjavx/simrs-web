@@ -638,17 +638,6 @@
                                         <div id="bar_bmi"></div>
                                     </div>
                                 </div>
-                                <%--<small>--%>
-                                <%--<ul style="list-style-type: none;">--%>
-                                <%--<li style="float: left"><i class="fa fa-square" style="color: #5bc0de"></i> Kurus berat--%>
-                                <%--</li>--%>
-                                <%--<li style="float: left; padding-left: 10px"><i class="fa fa-square" style="color: #337ab7"></i> Kurus ringan--%>
-                                <%--</li>--%>
-                                <%--<li style="float: left; padding-left: 10px"><i class="fa fa-square" style="color: #5cb85c"></i> Normal </li>--%>
-                                <%--<li style="float: left; padding-left: 10px"><i class="fa fa-square" style="color: #f0ad4e"></i> Gemuk ringan  </li>--%>
-                                <%--<li style="float: left; padding-left: 10px"><i class="fa fa-square" style="color: #d9534f"></i> Gemuk berat    </li>--%>
-                                <%--</ul>--%>
-                                <%--</small>--%>
                                 <small>
                                     <ul style="list-style-type: none;">
                                         <li style="float: left; padding-left: 10px"><i class="fa fa-square" style="color: #337ab7"></i> Berat badan kurang
@@ -733,8 +722,8 @@
                         <table class="table table-bordered table-striped" id="tabel_diagnosa">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Tanggal</td>
-                                <td>ID Diagnosa</td>
+                                <td width="14%">Waktu</td>
+                                <td>Kode ICD10</td>
                                 <td>Keterangan</td>
                                 <td>Jenis Diagnosa</td>
                                 <td align="center">Action</td>
@@ -793,55 +782,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <%--<div id="status_asuransi" style="display: none">--%>
-                        <%--<div class="box-header with-border">--%>
-                        <%--</div>--%>
-                        <%--<div class="box-header with-border">--%>
-                            <%--<h3 class="box-title"><i class="fa fa-line-chart"></i> Status Biaya Tindakan</h3>--%>
-                        <%--</div>--%>
-                        <%--<div class="box-body">--%>
-                            <%--<div class="row">--%>
-                                <%--<div class="col-md-offset-2 col-md-8">--%>
-                                    <%--<h5>--%>
-                                        <%--Cover Biaya Asuransi--%>
-                                        <%--<small class="pull-right" style="margin-top: 7px">Rp. <span id="b_asuransi"></span>--%>
-                                        <%--</small>--%>
-                                    <%--</h5>--%>
-                                    <%--<div class="progress">--%>
-                                        <%--<div id="sts_cover_biaya_asuransi">--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--<h5>--%>
-                                        <%--Total Biaya Tindakan--%>
-                                        <%--<small class="pull-right" style="margin-top: 7px">Rp. <span--%>
-                                                <%--id="b_tindakan_asuransi"></span></small>--%>
-                                    <%--</h5>--%>
-                                    <%--<div class="progress">--%>
-                                        <%--<div id="sts_biaya_tindakan_asuransi">--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--<ul style="list-style-type: none">--%>
-                                        <%--<li><i class="fa fa-square" style="color: #337ab7"></i> Total biaya cover Asuransi--%>
-                                        <%--</li>--%>
-                                        <%--<li><i class="fa fa-square" style="color: #5cb85c"></i> Total biaya tindakan <--%>
-                                            <%--50% dari cover biaya Asuransi--%>
-                                        <%--</li>--%>
-                                        <%--<li><i class="fa fa-square" style="color: #f0ad4e"></i> Total biaya tindakan >--%>
-                                            <%--50% dan < 70% dari cover biaya Asuransi--%>
-                                        <%--</li>--%>
-                                        <%--<li><i class="fa fa-square" style="color: #d9534f"></i> Total biaya tindakan >--%>
-                                            <%--70% dari cover biaya Asuransi--%>
-                                        <%--</li>--%>
-                                    <%--</ul>--%>
-                                <%--</div>--%>
-                                <%--<div class="col-md-2">--%>
-
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-
                     <div class="box-header with-border" id="pos_icd9">
                     </div>
                     <div class="box-header with-border">
@@ -854,9 +794,9 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Tanggal</td>
-                                <td>ID ICD9</td>
-                                <td>Nama ICD9</td>
+                                <td width="14%">Waktu</td>
+                                <td>Kode ICD9</td>
+                                <td>Keterangan</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -880,10 +820,9 @@
                             <table class="table table-bordered table-striped" id="tabel_tindakan">
                                 <thead>
                                 <tr bgcolor="#90ee90">
-                                    <td>Tanggal</td>
+                                    <td width="14%">Waktu</td>
                                     <td>Tindakan</td>
                                     <td>Dokter</td>
-                                        <%--<td>Perawat</td>--%>
                                     <td align="center">Tarif (Rp.)</td>
                                     <td align="center">Qty</td>
                                     <td align="center">Total (Rp.)</td>
@@ -898,7 +837,7 @@
                             <table class="table table-bordered table-striped">
                                 <thead>
                                 <tr bgcolor="#90ee90">
-                                    <td>Tanggal</td>
+                                    <td width="14%">Waktu</td>
                                     <td>Tindakan</td>
                                     <td align="center" width="10%">Action</td>
                                 </tr>
@@ -937,36 +876,6 @@
                             </tbody>
                         </table>
                     </div>
-
-                    <%--<div class="box-header with-border" id="pos_diet">--%>
-                    <%--</div>--%>
-                    <%--<div class="box-header with-border">--%>
-                        <%--<h3 class="box-title"><i class="fa fa-stethoscope"></i> Order Gizi</h3>--%>
-                    <%--</div>--%>
-                    <%--<div class="box-body">--%>
-                        <%--<button class="btn btn-success btn-outline hvr-icon-spin" style="margin-bottom: 10px; width: 150px"--%>
-                                <%--onclick="showModal(5)"><i class="fa fa-plus hvr-icon"></i> Order Gizi--%>
-                        <%--</button>--%>
-                        <%--<button class="btn btn-primary" style="margin-bottom: 10px;"--%>
-                                <%--onclick="refreshTable('gizi_ref', 'gizi')"><i class="fa fa-refresh" id="gizi_ref"></i> Refresh--%>
-                        <%--</button>--%>
-                        <%--<table class="table table-bordered table-striped">--%>
-                            <%--<thead>--%>
-                            <%--<tr bgcolor="#90ee90" style="height: 20px">--%>
-                                <%--<td >Tanggal</td>--%>
-                                <%--<td >Jenis Diet</td>--%>
-                                <%--<td >Bentuk Diet</td>--%>
-                                <%--<td >Keterangan</td>--%>
-                                <%--<td align="center">Status</td>--%>
-                                <%--<td align="center"width="18%">Action</td>--%>
-                            <%--</tr>--%>
-                            <%--</thead>--%>
-                            <%--<tbody id="body_diet">--%>
-
-                            <%--</tbody>--%>
-                        <%--</table>--%>
-                    <%--</div>--%>
-
                     <div class="box-header with-border" id="pos_rssep">
                     </div>
                     <div class="box-header with-border">
@@ -982,7 +891,7 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Tanggal</td>
+                                <td width="14%">Waktu</td>
                                 <td>ID Resep</td>
                                 <td>Status</td>
                                 <td align="center">Action</td>
@@ -995,29 +904,6 @@
                     </div>
                     <div class="box-header with-border">
                     </div>
-                    <%--<div class="box-header with-border">--%>
-                        <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_all">--%>
-                            <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
-                            <%--<p id="msg_all_war"></p>--%>
-                        <%--</div>--%>
-                        <%--<div class="alert alert-success alert-dismissible" style="display: none" id="success_all">--%>
-                            <%--<h4><i class="icon fa fa-info"></i> Info!</h4>--%>
-                            <%--<p id="msg_all_suc"></p>--%>
-                        <%--</div>--%>
-                        <%--<div class="row">--%>
-                            <%--<div class="col-md-12">--%>
-                                <%--<div class="form-group">--%>
-                                    <%--<div class="col-md-offset-4 col-md-4 text-center">--%>
-                                        <%--<a class="btn btn-success" id="save_all" onclick="confirmSaveAllTindakan()"><i class="fa fa-check"></i> Save All Tindakan</a>--%>
-                                        <%--<button style="display: none; cursor: no-drop;" type="button"--%>
-                                                <%--class="btn btn-success" id="load_all"><i class="fa fa-spinner fa-spin"></i>--%>
-                                            <%--Sedang Menyimpan...--%>
-                                        <%--</button>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-navicon"></i> Keterangan (Jika sudah pulang / selesai pemeriksaan)</h3>
                     </div>
@@ -1348,7 +1234,11 @@
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_tindakan">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                   <p id="msg_tindakan"></p>
+                    <p id="msg_tindakan"></p>
+                </div>
+                <div class="alert alert-info alert-dismissible" style="display: none" id="warning_konsul">
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
+                    <p id="msg_konsul"></p>
                 </div>
                 <div class="row">
                     <div class="form-group">
@@ -1382,6 +1272,7 @@
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_kategori"><i class="fa fa-check"></i> correct</p>
                         </div>
+
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>
@@ -1389,7 +1280,7 @@
                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                     id="tin_id_tindakan"
                                     onchange="var warn =$('#war_tindakan').is(':visible'); if (warn){$('#cor_tindakan').show().fadeOut(3000);$('#war_tindakan').hide()}; setDiskonHarga(this.value)">
-                                <option value=''>[Select One]</option>
+                                <option value=''> - </option>
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -1400,15 +1291,21 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Diskon</label>
+                        <label class="col-md-3" style="margin-top: 7px">Diskon (%)</label>
                         <div class="col-md-7">
                             <input style="margin-top: 7px" class="form-control" readonly id="h_diskon">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Harga</label>
-                        <div class="col-md-7">
+                        <label class="col-md-3" style="margin-top: 7px">Harga (Rp.)</label>
+                        <div class="col-md-3">
                             <input style="margin-top: 7px" class="form-control" readonly id="h_harga">
+                        </div>
+                        <div class="col-md-1">
+                            <i class="fa fa-arrow-right" style="margin-top: 15px"></i>
+                        </div>
+                        <div class="col-md-3">
+                            <input style="margin-top: 7px" class="form-control" readonly id="h_harga_after">
                         </div>
                     </div>
                     <div class="form-group">
@@ -1426,6 +1323,31 @@
                             <input type="number" min="1" class="form-control" style="margin-top: 7px" id="tin_qty_elektif"
                                    oninput="$(this).css('border','')" onchange="$(this).css('border','')">
                         </div>
+                    </div>
+                    <div class="form-group" id="form-btn-add" style="display: none">
+                        <div class="col-md-offset-3 col-md-9">
+                            <button onclick="addToListTindakan()" class="btn btn-success"><i class="fa fa-plus"></i> Tambah</button>
+                            <button onclick="resetListTindakan()" class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>
+                        </div>
+                    </div>
+                    <div class="form-group" id="form-list" style="display: none">
+                        <label class="col-md-12">
+                            <table id="table_list_tindakan" class="table table-bordered table-hover" style="font-size: 12px; margin-top: 20px">
+                                <thead>
+                                <tr>
+                                    <td>Dokter</td>
+                                    <td>Tindakan</td>
+                                    <td align="center">Qty</td>
+                                    <td align="right">Tarif (Rp.)</td>
+                                    <td align="right">Total (Rp.)</td>
+                                    <td align="center">Action</td>
+                                </tr>
+                                </thead>
+                                <tbody id="body_temp_tindakan">
+
+                                </tbody>
+                            </table>
+                        </label>
                     </div>
                 </div>
             </div>

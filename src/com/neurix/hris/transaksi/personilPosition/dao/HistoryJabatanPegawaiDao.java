@@ -260,7 +260,11 @@ public class HistoryJabatanPegawaiDao extends GenericDao<ImtHrisHistoryJabatanPe
             String queryPkwt = "select golongan_pkwt_name from im_hris_golongan_pkwt where golongan_pkwt_id ='"+golonganId+"'";
             Object resultsPkwt = this.sessionFactory.getCurrentSession()
                     .createSQLQuery(queryPkwt).uniqueResult();
-            Result = resultsPkwt.toString();
+            if(resultsPkwt == null){
+                Result = golonganId;
+            } else {
+                Result = resultsPkwt.toString();
+            }
         }else {
             Result = results.toString();
         }

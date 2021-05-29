@@ -266,9 +266,9 @@
                         <thead>
                         <td align="center">No Batch</td>
                         <td>Last Update</td>
-                        <td align="center">Action</td>
+                        <td align="center" width="100px">Action</td>
                         </thead>
-                        <tbody id="body_bat">
+                        <tbody id="body_bat" style="font-size: 13px;vertical-align: middle">
                         </tbody>
                     </table>
                 </div>
@@ -344,7 +344,7 @@
                         <td align="center">Jenis Satuan</td>
                         <td align="center">Action</td>
                         </thead>
-                        <tbody id="body_detail">
+                        <tbody id="body_detail" style="font-size: 13px">
                         </tbody>
                     </table>
                     <p id="loading_detail" style="color: #00a65a; display: none"><img src="<s:url value="/pages/images/spinner.gif"/>" style="height: 40px; width: 40px;"> Sedang mengambil data...</p>
@@ -430,6 +430,183 @@
 </div>
 
 
+<div class="modal fade" id="modal-upload">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Upload Document Batch <span id="mod_batch"></span>
+                </h4>
+                <input type="hidden" id="no_po"/>
+            </div>
+            <div class="modal-body" id="back_top">
+                <div class="alert alert-danger alert-dismissible" style="display: none;" id="warning_app">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_app"></p>
+                </div>
+                <%--<div class="box-header with-border"></div>--%>
+                <div class="box-body">
+                    <hr>
+                    <span style="font-weight: bold">Faktur Pajak</span>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table">
+                                <tr>
+                                    <td width="40%" style="font-size: 13px">Nomor</td>
+                                    <td><input type="text" class="form-control" id="app_no_faktur"
+                                               onchange="checkAvail(this.value, 'faktur')"/></td>
+                                    <input type="hidden" id="avail-no-faktur" value=""/>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 13px">Tanggal</td>
+                                    <td>
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                            <input readonly placeholder="yyyy-mm-dd *klik untuk tgl"
+                                                   style="cursor: pointer" class="form-control datepicker"
+                                                   id="app_tgl_faktur"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td style="font-size: 13px">
+                                        <div class="alert alert-danger" id="alert-faktur" style="display: none">No
+                                            Faktur Telah Dipakai
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div>Upload Document</div>
+                                <div class="input-group">
+                                    <input type="file" class="form-control" name="uploadFaktur" id="upload-faktur-0"
+                                           onchange="uploadDoc('faktur', '0')"/>
+                                    <div class="input-group-btn">
+                                        <a class="btn btn-warning" style="padding: 9px" onclick="addUpload('faktur')"><i
+                                                class="fa fa-plus"></i></a>
+                                    </div>
+                                </div>
+                                <canvas id="canvas-faktur-0" class="faktur" style="display: none"></canvas>
+                                <div id="set_faktur"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <span style="font-weight: bold">Invoice</span>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table">
+                                <tr>
+                                    <td width="40%" style="font-size: 13px">Nomor</td>
+                                    <td><input type="text" class="form-control" id="app_no_invoice"
+                                               onchange="checkAvail(this.value, 'invoice')"/></td>
+                                    <input type="hidden" id="avail-no-invoice" value=""/>
+                                </tr>
+                                <tr>
+                                    <td width="40%" style="font-size: 13px">Tanggal</td>
+                                    <td>
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                            <input readonly placeholder="yyyy-mm-dd *klik untuk tgl"
+                                                   style="cursor: pointer" class="form-control datepicker"
+                                                   id="tgl-invoice"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td style="font-size: 13px">
+                                        <div class="alert alert-danger" id="alert-invoice" style="display: none">No
+                                            Invoice Telah Dipakai
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <div>Upload Document</div>
+                            <div class="input-group">
+                                <input type="file" class="form-control" name="uploadInvoice" id="upload-invoice-0"
+                                       onchange="uploadDoc('invoice', '0')"/>
+                                <div class="input-group-btn">
+                                    <a class="btn btn-warning" style="padding: 9px" onclick="addUpload('invoice')"><i
+                                            class="fa fa-plus"></i></a>
+                                </div>
+                            </div>
+                            <canvas id="canvas-invoice-0" class="invoice" style="display: none"></canvas>
+                            <div id="set_invoice"></div>
+                        </div>
+                    </div>
+                    <hr>
+                    <span style="font-weight: bold">Delivery Order</span>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table">
+                                <tr>
+                                    <td width="40%" style="font-size: 13px">Nomor</td>
+                                    <td><input type="text" class="form-control" id="app_no_do"
+                                               onchange="checkAvail(this.value, 'do')"/></td>
+                                    <input type="hidden" id="avail-no-do" value=""/>
+                                </tr>
+                                <tr>
+                                    <td width="40%" style="font-size: 13px">Tanggal</td>
+                                    <td>
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                            <input readonly placeholder="yyyy-mm-dd *klik untuk tgl"
+                                                   style="cursor: pointer" class="form-control datepicker" id="tgl-do"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td style="font-size: 13px">
+                                        <div class="alert alert-danger" id="alert-do" style="display: none">No DO Telah
+                                            Dipakai
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <div>Upload Document</div>
+                            <div class="input-group">
+                                <input type="file" class="form-control" name="uploadDo" id="upload-do-0"
+                                       onchange="uploadDoc('do', '0')"/>
+                                <div class="input-group-btn">
+                                    <a class="btn btn-warning" style="padding: 9px" onclick="addUpload('do')"><i
+                                            class="fa fa-plus"></i></a>
+                                </div>
+                            </div>
+                            <canvas id="canvas-do-0" class="do" style="display: none"></canvas>
+                            <div id="set_do"></div>
+                        </div>
+                    </div>
+                    <div class="alert alert-danger" id="alert-panel" style="display: none;"></div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_approve" onclick="saveUploadDoc()"><i
+                        class="fa fa-check"></i> Upload
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_approve">
+                    <i
+                            class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
@@ -442,20 +619,213 @@
             if(response.length > 0){
                 $.each(response, function (i, item) {
                     var tgl = $.datepicker.formatDate('dd-mm-yy', new Date(item.tanggalFaktur));
-                    table += '<tr>' +
-                        '<td align="center">'+item.noBatch+'</td>' +
-                        '<td>'+item.stLastUpdateWho+'</td>' +
-                        '<td align="center">' +
+                    table += '<tr style="vertical-align: middle">' +
+                        '<td align="center" width="100px" style="vertical-align: middle">'+item.noBatch+'</td>' +
+                        '<td  style="vertical-align: middle">'+item.stLastUpdateWho+'</td>' +
+                        '<td align="center" width="120px">' +
+                        '<div style="float:left;margin-right:10px">' +
+                        '<img style="cursor: pointer" onclick="showUploadDoc(\''+idPermintaan+'\',\''+item.noBatch+'\')" src="<s:url value="/pages/images/icons8-pictures-folder-25.png"/>">'+
+                        '<div style="font-size: 10px;">upload</div>' +
+                        '</div>' +
+                        '<div style="float:left;margin-right:10px">' +
                         '<img style="cursor: pointer" onclick="showDetailListObat(\''+idPermintaan+'\',\''+item.noBatch+'\',\''+item.noFaktur+'\',\''+tgl+'\',\''+item.noInvoice+'\',\''+item.noDo+'\',\''+item.urlDoc+'\')" src="<s:url value="/pages/images/icons8-search-25.png"/>">'+
+                        '<div style="font-size: 10px;">detail</div>' +
+                        '</div>' +
+                        '<div style="float:left">' +
                         '<a target="_blank" href="printPermintaanPO_permintaanpo?id='+idPermintaan+'&noBatch='+item.noBatch+'">' +
                         '<img src="<s:url value="/pages/images/icons8-print-25.png"/>">'+
                         '</a>'+
+                        '<div style="font-size: 10px;">print</div>' +
+                        '</div>' +
                         '</td>' +
                         '</tr>';
                 });
                 $('#body_bat').html(table);
             }
         })
+    }
+
+    function showUploadDoc(idPermintaan, noBatch){
+
+        $("#avail-no-faktur").val("");
+        $("#avail-no-invoice").val("");
+        $("#avail-no-do").val("");
+
+        $("#app_no_faktur").val("");
+        $("#app_tgl_faktur").val("");
+        $("#app_no_invoice").val("");
+        $("#app_no_do").val("");
+        $("#tgl-invoice").val("");
+        $("#tgl-do").val("");
+
+        $("#set_faktur").html("");
+        $("#set_invoice").html("");
+        $("#set_do").html("");
+
+        $("#upload-faktur-0").val("");
+        $("#upload-invoice-0").val("");
+        $("#upload-do-0").val("");
+
+        $("#modal-upload").modal('show');
+
+        $("#no_po").val(idPermintaan);
+        $("#mod_batch").text(noBatch);
+    }
+
+    function addUpload(tipe) {
+        var cekTipe = $('.' + tipe).length;
+        var remove = 'remove_' + tipe + cekTipe;
+        var set = '<div id="' + remove + '">' +
+            '<div class="input-group" style="margin-top: 7px">\n' +
+            '<input type="file" class="form-control" id="upload-' + tipe + '-' + cekTipe + '" onchange="uploadDoc(\'' + tipe + '\', \'' + cekTipe + '\')"/>\n' +
+            '<div class="input-group-btn">\n' +
+            '    <a class="btn btn-danger" style="padding: 9px" onclick="delUpload(\'' + remove + '\')"><i class="fa fa-trash"></i></a>\n' +
+            '</div>\n' +
+            '</div>' +
+            '<canvas id="canvas-' + tipe + '-' + cekTipe + '" class="' + tipe + '" style="display: none"></canvas>' +
+            '</div>';
+        $('#set_' + tipe).append(set);
+    }
+
+    function delUpload(id) {
+        $('#' + id).remove();
+
+    }
+
+    function checkAvail(idItem, jenis) {
+        var batch = $("#mod_batch").text();
+        var idTransakasi = $("#no_po").val();
+
+        PermintaanVendorAction.getListBatchByJenisItem(idItem, jenis, idTransakasi, batch, function (res) {
+            if (res != null && res.length > 0) {
+                $.each(res, function (i, item) {
+
+                    if (jenis == "faktur") {
+                        $("#avail-no-faktur").val(item.noFaktur);
+                        $("#alert-faktur").show();
+                    } else {
+                        $("#avail-no-faktur").val("");
+                        $("#alert-faktur").hide();
+                    }
+                    if (jenis == "invoice") {
+                        $("#avail-no-invoice").val(item.noInvoice);
+                        $("#alert-invoice").show();
+                    } else {
+                        $("#avail-no-invoice").val("");
+                        $("#alert-invoice").hide();
+                    }
+                    if (jenis == "do") {
+                        $("#avail-no-do").val(item.noDo);
+                        $("#alert-do").show();
+                    } else {
+                        $("#avail-no-do").val("");
+                        $("#alert-do").hide();
+                    }
+                });
+            } else {
+                if (jenis == "faktur") {
+                    $("#avail-no-faktur").val("");
+                    $("#alert-faktur").hide();
+                }
+                if (jenis == "invoice") {
+                    $("#avail-no-invoice").val("");
+                    $("#alert-invoice").hide();
+                }
+                if (jenis == "do") {
+                    $("#avail-no-do").val("");
+                    $("#alert-do").hide();
+                }
+            }
+        });
+    }
+
+    function saveUploadDoc() {
+        var idPermintaan    = $("#no_po").val();
+        var noBatch         = $("#mod_batch").text();
+
+        var availFaktur = $("#avail-no-faktur").val();
+        var availInvoice = $("#avail-no-invoice").val();
+        var availDo = $("#avail-no-do").val();
+
+        if (availDo != "" || availFaktur != "" || availInvoice != "") {
+            $("#alert-panel").show().fadeOut(5000);
+            $("#alert-panel").html("Nomor Telah Ada.");
+            return false;
+        }
+
+        var noFaktur    = $('#app_no_faktur').val();
+        var noInvoice   = $('#app_no_invoice').val();
+        var noDo        = $('#app_no_do').val();
+
+        var tgl         = $('#app_tgl_faktur').val();
+        var tglInvoice  = $('#tgl-invoice').val();
+        var tglDo       = $('#tgl-do').val();
+        var listOfimg   = [];
+
+        var data = {
+            'no_faktur': noFaktur,
+            'no_invoice': noInvoice,
+            'no_do': noDo,
+            'tgl_faktur': tgl,
+            'tgl_invoice': tglInvoice,
+            'tgl_do': tglDo
+        };
+
+        var cekFaktur = $('.faktur');
+        var cekInvoice = $('.invoice');
+        var cekDo = $('.do');
+
+        if (cekFaktur.length > 0) {
+            $.each(cekFaktur, function (i, item) {
+                if (!cekFile('upload-faktur-' + i)) {
+                    var canvas = document.getElementById('canvas-faktur-' + i);
+                    listOfimg.push({
+                        "jenisnomor": "faktur",
+                        "batch": noBatch,
+                        "iditem": noFaktur,
+                        "img": convertToDataURLAtas(canvas)
+                    });
+                }
+            });
+        };
+
+        if (cekInvoice.length > 0) {
+            $.each(cekInvoice, function (i, item) {
+                if (!cekFile('upload-invoice-' + i)) {
+                    var canvas = document.getElementById('canvas-invoice-' + i);
+                    listOfimg.push({
+                        "jenisnomor": "invoice",
+                        "batch": noBatch,
+                        "iditem": noInvoice,
+                        "img": convertToDataURLAtas(canvas)
+                    });
+                }
+            });
+        };
+
+        if (cekDo.length > 0) {
+            $.each(cekDo, function (i, item) {
+                if (!cekFile('upload-do-' + i)) {
+                    var canvas = document.getElementById('canvas-do-' + i);
+                    listOfimg.push({
+                        "jenisnomor": "do",
+                        "batch": noBatch,
+                        "iditem": noDo,
+                        "img": convertToDataURLAtas(canvas)
+                    });
+                }
+            });
+        };
+
+        var listimg = JSON.stringify(listOfimg);
+        var stData  = JSON.stringify(data);
+
+        PermintaanVendorAction.saveDocPo(idPermintaan, noBatch, listimg, stData, function (res) {
+            alert(res.msg);
+            if (res.status == "success"){
+                $("#modal-upload").modal('hide');
+            }
+        });
     }
 
     function showDetailListObat(idpermintaanPo, noBatch, noFaktur, tglFaktur, noInvoice, noDo, img){
@@ -620,6 +990,26 @@
         });
     }
 
+    function uploadDoc(tipe, ind) {
+        var canvas = document.getElementById("canvas-" + tipe + "-" + ind);
+        var ctx = canvas.getContext('2d');
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            var img = new Image();
+            img.onload = function () {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0);
+            }
+            img.src = event.target.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    function cekFile(id) {
+        return $('#' + id).get(0).files.length === 0;
+    }
 
 </script>
 

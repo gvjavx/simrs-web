@@ -231,6 +231,33 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
     }
 
 
+    public List<MtSimrsTransaksiObatDetailBatchEntity> getListBatchEntityByNoPoAndBatch(String idPermintaan, String stNoBatch){
+
+        String SQL = "SELECT \n" +
+                "odb.id as id_batch\n" +
+                "FROM mt_simrs_transaksi_obat_detail_batch odb\n" +
+                "INNER JOIN mt_simrs_transaksi_obat_detail od ON od.id_transaksi_obat_detail = odb.id_transaksi_obat_detail\n" +
+                "INNER JOIN mt_simrs_permintaan_obat_vendor ov ON ov.id_approval_obat = od.id_approval_obat\n" +
+                "WHERE ov.id_permintaan_obat_vendor = '"+idPermintaan+"'\n" +
+                "AND odb.no_batch = "+Integer.valueOf(stNoBatch)+"\n" +
+                "AND odb.approve_flag = 'Y'";
+
+        List<Object> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<MtSimrsTransaksiObatDetailBatchEntity> detailBatchEntities = new ArrayList<>();
+        if (list.size() > 0 ){
+            for (Object obj : list){
+                MtSimrsTransaksiObatDetailBatchEntity obatDetailBatchEntity = getById("id", obj.toString());
+                if (obatDetailBatchEntity != null){
+                    detailBatchEntities.add(obatDetailBatchEntity);
+                }
+            }
+        }
+
+        return detailBatchEntities;
+    }
+
+
     public String getNextId(){
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_transaksi_obat_batch')");
         Iterator<BigInteger> iter=query.list().iterator();

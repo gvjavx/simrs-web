@@ -24,110 +24,74 @@
 	<parameter name="areaId" class="java.lang.String"/>
 	<parameter name="parameter2" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT
-  sekarang.*,
-  sekarang.saldosekarang + sekarang.lastsaldo as saldo
-from
-  (
-    select
-      a.nomor_master as nomor_master,
-      a.grup as grup,
-      $P{periode} as periode,
-      a.nama as nama,
-      (
-        CASE WHEN length(a.nomor_master) = 6 THEN (
-          CASE WHEN c.jumlah_debit IS NULL
-          OR c.jumlah_kredit IS NULL THEN 0 ELSE (c.jumlah_debit - c.jumlah_kredit) END
-        ) ELSE NULL END
-      ) as saldosekarang,
-      (
-        CASE WHEN length(a.nomor_master) = 6 THEN (
-          CASE WHEN d.jumlah_debit IS NULL
-          OR d.jumlah_kredit IS NULL THEN 0 ELSE (d.jumlah_debit - d.jumlah_kredit) END
-        ) ELSE NULL END
-      ) as lastSaldo
-    FROM
-      (
-        SELECT
-          x.*,
-          y.nama as grup
-        FROM
-          (
-            select
-              nomor_master as nomor_master,
-              nama,
-              left(nomor_master, 2) as grup_id
-            from
-              im_akun_master
-            where
-              flag = 'Y'
-            order by
-              nomor_master
-          ) x
-          LEFT JOIN im_akun_master y ON x.grup_id = y.nomor_master
-      ) a
-      left outer JOIN (
-        select
-          y.master_id as master_id,
-          sum(y.jumlah_debit * x.kurs) as jumlah_debit,
-          sum(y.jumlah_kredit * x.kurs) as jumlah_kredit
-        from
-          it_akun_jurnal x
-          inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
-        where
-          to_char(x.tanggal_jurnal, 'MM-yyyy') = $P{periode}
-          and x.registered_flag = 'Y'
-          and x.branch_id IN ($P!{branchId})
-          AND y.rekening_id IN (
-            SELECT
-              rekening_id
-            FROM
-              im_akun_report_detail
-            WHERE
-              report_id = $P{reportId}
-              AND flag = 'Y'
-          )
-        group by
-          y.master_id
-      ) c ON c.master_id = a.nomor_master
-      left outer JOIN (
-        select
-          x.master_id as master_id,
-          sum(x.jumlah_debit) as jumlah_debit,
-          sum(x.jumlah_kredit) as jumlah_kredit
-        from
-          it_akun_saldo_akhir_detail x
-        where
-          to_date(x.periode, 'MM-yyyy') = to_date($P{periode}, 'MM-yyyy') - Interval '1 month'
-          and x.branch_id IN ($P!{branchId})
-          AND x.rekening_id IN (
-            SELECT
-              rekening_id
-            FROM
-              im_akun_report_detail
-            WHERE
-              report_id = $P{reportId}
-              AND flag = 'Y'
-          )
-        group by
-          x.master_id
-      ) d ON d.master_id = a.nomor_master
-  ) sekarang
-WHERE
-  sekarang.saldosekarang + sekarang.lastsaldo <> 0
-ORDER BY
-  nomor_master]]>
+		<![CDATA[SELECT sekarang.*, sekarang.saldosekarang + sekarang.lastsaldo as saldo
+from (select master.nomor_master as nomor_master, master.grup as grup, $P{periode} as periode, master.nama as nama, (
+    CASE
+    WHEN length(master.nomor_master) = 6 THEN (
+    CASE
+    WHEN jurnal.jumlah_debit IS NULL
+    OR jurnal.jumlah_kredit IS NULL THEN 0
+    ELSE (jurnal.jumlah_debit - jurnal.jumlah_kredit) END
+    )
+    ELSE NULL END
+    )                       as saldosekarang, (
+    CASE
+    WHEN length(master.nomor_master) = 6 THEN (
+    CASE
+    WHEN saldoAkhir.jumlah_debit IS NULL
+    OR saldoAkhir.jumlah_kredit IS NULL THEN 0
+    ELSE (saldoAkhir.jumlah_debit - saldoAkhir.jumlah_kredit) END
+    )
+    ELSE NULL END
+    )          as lastSaldo
+    FROM (
+    SELECT master2.*, akunMaster.nama as grup
+    FROM ( select nomor_master as nomor_master, nama, left(nomor_master, 2) as grup_id
+    from im_akun_master
+    where flag = 'Y'
+    order by nomor_master) master2
+    LEFT JOIN im_akun_master akunMaster ON master2.grup_id = akunMaster.nomor_master
+    ) master
+    left outer JOIN (
+
+    select jurnalDetail.master_id                   as master_id,
+    sum(jurnalDetail.jumlah_debit * itAkunJurnal.kurs)  as jumlah_debit,
+    sum(jurnalDetail.jumlah_kredit * itAkunJurnal.kurs) as jumlah_kredit
+    from it_akun_jurnal itAkunJurnal
+    inner join it_akun_jurnal_detail jurnalDetail on itAkunJurnal.no_jurnal = jurnalDetail.no_jurnal
+    join im_akun_kode_rekening kodering on kodering.kode_rekening = jurnalDetail.nomor_rekening
+    where to_char(itAkunJurnal.tanggal_jurnal, 'MM-yyyy') = $P{periode}
+    and itAkunJurnal.registered_flag = 'Y'
+    and itAkunJurnal.branch_id IN ($P!{branchId})
+    AND kodering.rekening_id IN
+    (SELECT rekening_id FROM im_akun_report_detail WHERE report_id = $P{reportId}
+    AND flag = 'Y')
+    group by jurnalDetail.master_id
+
+    ) jurnal ON jurnal.master_id = master.nomor_master
+    left outer JOIN (select x.master_id          as master_id,
+    sum(x.jumlah_debit)  as jumlah_debit,
+    sum(x.jumlah_kredit) as jumlah_kredit
+    from it_akun_saldo_akhir_detail x
+    join im_akun_kode_rekening kodering on x.kode_rekening = kodering.kode_rekening
+    where to_date(x.periode, 'MM-yyyy') = to_date($P{periode}, 'MM-yyyy') - Interval '1 month'
+    and x.branch_id IN ($P!{branchId})
+    AND kodering.rekening_id IN
+    ( SELECT rekening_id FROM im_akun_report_detail WHERE report_id = $P{reportId}
+    AND flag = 'Y' )
+    group by x.master_id ) saldoAkhir ON saldoAkhir.master_id = master.nomor_master) sekarang
+WHERE sekarang.saldosekarang + sekarang.lastsaldo <> 0
+ORDER BY nomor_master]]>
 	</queryString>
 	<field name="nomor_master" class="java.lang.String">
 		<fieldDescription><![CDATA[Unique Nomor Master]]></fieldDescription>
 	</field>
 	<field name="grup" class="java.lang.String"/>
 	<field name="periode" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[
+]]></fieldDescription>
 	</field>
-	<field name="nama" class="java.lang.String">
-		<fieldDescription><![CDATA[Nama Master]]></fieldDescription>
-	</field>
+	<field name="nama" class="java.lang.String"/>
 	<field name="saldosekarang" class="java.math.BigDecimal"/>
 	<field name="lastsaldo" class="java.math.BigDecimal"/>
 	<field name="saldo" class="java.math.BigDecimal"/>
