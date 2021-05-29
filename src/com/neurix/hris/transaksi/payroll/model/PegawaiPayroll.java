@@ -387,6 +387,8 @@ public class PegawaiPayroll extends BasePayroll {
         setJhtBpjsTkPersh(CommonUtil.numbericFormat(getJhtBpjsTkPershNilai(),"###,###"));
         setJkmBpjsTkPersh(CommonUtil.numbericFormat(getJkmBpjsTkPershNilai(),"###,###"));
         setJpkBpjsTkPersh(CommonUtil.numbericFormat(getJpkBpjsTkPershNilai(),"###,###"));
+
+        setDasarBpjs(CommonUtil.numbericFormat(getDasarBpjsNilai(),"###,###"));
     }
 
     @Override

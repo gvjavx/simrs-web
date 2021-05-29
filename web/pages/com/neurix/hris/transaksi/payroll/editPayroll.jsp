@@ -1071,6 +1071,8 @@
         var iuranProfesi = document.getElementById("iuranProfesi").value;
         var potonganLain = document.getElementById("potonganLain").value;
 
+        var dasarBpjs = document.getElementById("dasarBpjs").value;
+
         var selisihPph21 = "0";
 
         if (bulan=="12"){
@@ -1079,7 +1081,7 @@
 
         if (confirm('Apakah Anda ingin merubah Data?')) {
 
-            PayrollAction.saveEditData(payrollId, nip, bulan, kopkar, iuranSp, iuranPiikb,bankBri, bankMandiri, infaq, perkesDanObat,listrik, iuranProfesi, potonganLain,selisihPph21, function(result) {
+            PayrollAction.saveEditData(payrollId, nip, bulan, kopkar, iuranSp, iuranPiikb,bankBri, bankMandiri, infaq, perkesDanObat,listrik, iuranProfesi, potonganLain,selisihPph21, dasarBpjs, function(result) {
 
                 if (result) {
                     alert('Data Berhasil Dirubah.');
@@ -1210,7 +1212,10 @@
 
             //koreksi dari aks
             $('#noteKoreksi').val(itemData.noteKoreksi);
-            $('#flagKoreksi').val(itemData.flagKoreksi);
+            // $('#flagKoreksi').val(itemData.flagKoreksi);
+
+            //dasar BPJS
+            $('#dasarBpjs').val(itemData.dasarBpjs);
         });
 
         $('#modal-edit').find('.modal-title').text('Detail Payroll');
