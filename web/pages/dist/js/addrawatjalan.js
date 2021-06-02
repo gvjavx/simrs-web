@@ -229,10 +229,8 @@ function saveAlergi(id) {
 }
 
 function listAlergi() {
-
     var table = "";
-    var noCheckup = $("#no_checkup").val();
-    CheckupAction.getListAlergi(noCheckup, function (response) {
+    CheckupAction.getListAlergi(idPasien, function (response) {
         if (response.length > 0) {
             $.each(response, function (i, item) {
                 table += "<tr>" +
@@ -241,8 +239,10 @@ function listAlergi() {
                     "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editAlergi(\'' + item.idAlergi + '\',\'' + item.alergi + '\', \'' + item.jenis + '\')" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer;">' + "</td>" +
                     "</tr>";
             });
+            $('#body_alergi').html(table);
+        }else{
+            $('#body_alergi').html('');
         }
-        $('#body_alergi').html(table);
     });
 }
 
