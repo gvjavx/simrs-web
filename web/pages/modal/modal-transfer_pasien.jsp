@@ -439,8 +439,8 @@
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-3">
                                 <div class="form-check" style="margin-top: -10px">
-                                    <input type="checkbox" name="ck7" id="ck74" value="Cetater">
-                                    <label for="ck74"></label> Cetater
+                                    <input type="checkbox" name="ck7" id="ck74" value="Catheter">
+                                    <label for="ck74"></label> Catheter
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -451,8 +451,8 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-check" style="margin-top: -10px">
-                                    <input type="checkbox" name="ck7" id="ck76" value="Ortotrakeal">
-                                    <label for="ck76"></label> Ortotrakeal
+                                    <input type="checkbox" name="ck7" id="ck76" value="Orotracheal">
+                                    <label for="ck76"></label> Orotracheal
                                 </div>
                             </div>
                         </div>

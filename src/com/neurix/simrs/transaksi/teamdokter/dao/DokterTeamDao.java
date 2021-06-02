@@ -193,4 +193,63 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
         }
         return listOfResult;
     }
+
+    public List<DokterTeam> getListDokterToday(String idPelayanan) {
+        List<DokterTeam> res = new ArrayList<>();
+        String id = "%";
+        if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
+            id = "AND a.id_pelayanan = '"+idPelayanan+"'";
+        }
+        if(!"".equalsIgnoreCase(idPelayanan) && idPelayanan != null){
+            String SQL = "SELECT\n" +
+                    "b.id_dokter,\n" +
+                    "c.nama_dokter\n" +
+                    "FROM it_simrs_header_detail_checkup a \n" +
+                    "INNER JOIN it_simrs_dokter_team b ON a.id_detail_checkup = b.id_detail_checkup\n" +
+                    "INNER JOIN im_simrs_dokter c ON b.id_dokter = c.id_dokter\n" +
+                    "WHERE CAST(a.created_date AS DATE) = CURRENT_DATE \n"+id;
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .list();
+            if(result.size() > 0){
+                for (Object[] obj: result){
+                    DokterTeam dokterTeam = new DokterTeam();
+                    dokterTeam.setIdDokter(obj[0] == null ? "" : obj[0].toString());
+                    dokterTeam.setNamaDokter(obj[1] == null ? "" : obj[1].toString());
+                    res.add(dokterTeam);
+                }
+            }
+        }
+        return res;
+    }
+
+    public List<DokterTeam> getTtdNamaDokter(String branchId, String nama) {
+        List<DokterTeam> res = new ArrayList<>();
+        if(!"".equalsIgnoreCase(branchId) && branchId != null){
+            if(nama != null && !"".equalsIgnoreCase(nama)){
+                nama = "%"+nama+"%";
+            }
+            String SQL = "SELECT\n" +
+                    "a.id_dokter,\n" +
+                    "a.nama_dokter\n" +
+                    "FROM im_simrs_dokter a\n" +
+                    "INNER JOIN im_simrs_dokter_pelayanan b ON a.id_dokter = b.id_dokter\n" +
+                    "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                    "WHERE c.branch_id = :branch AND a.nama_dokter ILIKE :nama LIMIT 5";
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("branch", branchId)
+                    .setParameter("nama", nama)
+                    .list();
+            if(result.size() > 0){
+                for (Object[] obj: result){
+                    DokterTeam dokterTeam = new DokterTeam();
+                    dokterTeam.setIdDokter(obj[0] == null ? "" : obj[0].toString());
+                    dokterTeam.setNamaDokter(obj[1] == null ? "" : obj[1].toString());
+                    res.add(dokterTeam);
+                }
+            }
+        }
+        return res;
+    }
 }

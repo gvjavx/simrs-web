@@ -19,4 +19,5 @@ public interface PermintaanResepBo {
     public CrudResponse saveObatResep(TransaksiObatDetail bean) throws GeneralBOException;
     public ImSimrsPermintaanResepEntity getEntityPermintaanResepById(String id) throws GeneralBOException;
     public List<PermintaanResep> getListResepPasien(String noCheckup, String jenis) throws GeneralBOException;
+    public List<PermintaanResep> getListResepTerakhirByIdPelayanan(String idPasien, String idPelayanan) throws GeneralBOException;
 }

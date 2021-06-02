@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.transaksiobat.dao;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.transaksi.obatracik.model.ObatRacik;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
@@ -71,6 +72,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         String branchId             = "%";
         String tipePermintaan       = "001";
         String isOrder              = "";
+        String isRacik              = "";
 
         if (bean.getIdTransaksiObatDetail() != null && !"".equalsIgnoreCase(bean.getIdTransaksiObatDetail())){
             idTransaksi = bean.getIdTransaksiObatDetail();
@@ -1099,5 +1101,25 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return sId;
+    }
+
+    public List<ObatRacik> getListObatRacik(String idRacik){
+        String SQL = "SELECT id, nama, signa, qty, kemasan FROM it_simrs_obat_racik WHERE id = '"+idRacik+"'";
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<ObatRacik> obatRacikList = new ArrayList<>();
+        if (list.size() > 0){
+            for (Object[] obj : list){
+                ObatRacik obatRacik = new ObatRacik();
+                obatRacik.setId(obj[0] == null ? "" : obj[0].toString());
+                obatRacik.setNama(obj[1] == null ? "" : obj[1].toString());
+                obatRacik.setSigna(obj[2] == null ? "" : obj[2].toString());
+                obatRacik.setQty(new Integer(obj[3] == null ? "0" : obj[3].toString()));
+                obatRacik.setKemasan(obj[4] == null ? "" : obj[4].toString());
+                obatRacikList.add(obatRacik);
+            }
+        }
+
+        return obatRacikList;
     }
 }

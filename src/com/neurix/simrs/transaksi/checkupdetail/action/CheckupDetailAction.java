@@ -797,9 +797,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
 
         if (CommonConstant.ROLE_ADMIN_POLI.equalsIgnoreCase(userRoleLogin)) {
-            HeaderDetailCheckup headerDetailCheckup1 = new HeaderDetailCheckup();
-            headerDetailCheckup1.setIdPelayanan(CommonUtil.userPelayananIdLogin());
-            setHeaderDetailCheckup(headerDetailCheckup1);
+            headerDetailCheckup.setIdPelayanan(CommonUtil.userPelayananIdLogin());
             headerDetailCheckup.setTipePelayanan("rawat_jalan");
         }
 
@@ -812,6 +810,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfsearchHeaderDetailCheckup);
+        setHeaderDetailCheckup(headerDetailCheckup);
 
         logger.info("[CheckupDetailAction.search] end process <<<");
         return "search";

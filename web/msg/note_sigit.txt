@@ -1865,3 +1865,12 @@ ADD COLUMN parent_id VARCHAR(30);
 
     CREATE SEQUENCE seq_obat_racik;
 --
+
+-- 2021-05-27
+
+    ALTER TABLE mt_simrs_permintaan_resep
+    ADD COLUMN kajian_administrasi VARCHAR(1),
+    ADD COLUMN kajian_fermasetis VARCHAR(1),
+    ADD COLUMN kajian_kritis VARCHAR(1);
+
+--

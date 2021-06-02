@@ -2784,6 +2784,10 @@ ADD COLUMN jenis VARCHAR(100);
 ALTER TABLE it_simrs_catatan_pemberian_obat
 ADD COLUMN sip_perawat VARCHAR(100);
 
+UPDATE im_simrs_rekam_medis_pelayanan
+SET flag = 'N'
+WHERE id_rekam_medis_pelayanan = 'RMP000000247';
+
 
 
 

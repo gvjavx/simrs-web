@@ -123,7 +123,7 @@ public class LabDao extends GenericDao<ImSimrsLabEntity, String> {
                 "INNER JOIN im_simrs_kategori_lab d ON c.id_kategori_lab = d.id_kategori_lab\n" +
                 "WHERE d.kategori LIKE :idKat OR d.id_kategori_lab = :idKat\n" +
                 "AND a.branch_id LIKE :branch \n" +
-                "GROUP BY b.id_lab, b.nama_lab";
+                "GROUP BY b.id_lab, b.nama_lab ORDER BY b.order_index";
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("idKat", idKat)

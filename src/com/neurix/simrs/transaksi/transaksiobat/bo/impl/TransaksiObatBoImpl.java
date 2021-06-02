@@ -23,6 +23,7 @@ import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
 import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsObatPoliEntity;
 import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsPermintaanObatPoliEntity;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
+import com.neurix.simrs.transaksi.obatracik.model.ObatRacik;
 import com.neurix.simrs.transaksi.pemberianobat.dao.CatatanPemberianObatDao;
 import com.neurix.simrs.transaksi.pemberianobat.model.ItSimrsCatatanPemberianObatEntity;
 import com.neurix.simrs.transaksi.permintaanresep.dao.PermintaanResepDao;
@@ -1269,6 +1270,9 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                 resepEntity.setAction("U");
                 resepEntity.setLastUpdate(bean.getLastUpdate());
                 resepEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                resepEntity.setKajianAdministrasi(bean.getkAdmin());
+                resepEntity.setKajianFermasetis(bean.getkFarma());
+                resepEntity.setKajianKritis(bean.getkKritis());
 
                 try {
                     permintaanResepDao.updateAndSave(resepEntity);
@@ -1400,56 +1404,6 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                             logger.error("[TransaksiObatBoImpl.saveApproveResepPoli] ERROR when update obat detail by criteria. ", e);
                             throw new GeneralBOException("[TransaksiObatBoImpl.saveApproveResepPoli] ERROR when update obat detail by criteria. ", e);
                         }
-
-                        if(obatDetailEntity.getFrekuensi() != null && !"".equalsIgnoreCase(obatDetailEntity.getFrekuensi())){
-                            String[] strings = obatDetailEntity.getFrekuensi().split("#");
-                            for (String waktu: strings){
-                                ItSimrsCatatanPemberianObatEntity catatanPemberianObatEntity = new ItSimrsCatatanPemberianObatEntity();
-                                catatanPemberianObatEntity.setIdCatatanPemberianObat("CPO"+catatanPemberianObatDao.getNextSeq());
-                                catatanPemberianObatEntity.setIdDetailCheckup(resepEntity.getIdDetailCheckup());
-                                catatanPemberianObatEntity.setWaktu(waktu);
-                                ImSimrsHeaderObatEntity obatEntity = headerObatDao.getById("idObat", obatDetailEntity.getIdObat());
-                                if(obatEntity != null){
-                                    catatanPemberianObatEntity.setNamaObat(obatEntity.getNamaObat());
-                                    catatanPemberianObatEntity.setAturanPakai(obatDetailEntity.getKeterangan());
-                                    catatanPemberianObatEntity.setStatus(bean.getStatus());
-                                    catatanPemberianObatEntity.setAction("C");
-                                    catatanPemberianObatEntity.setFlag("Y");
-                                    catatanPemberianObatEntity.setCreatedDate(bean.getLastUpdate());
-                                    catatanPemberianObatEntity.setCreatedWho(bean.getLastUpdateWho());
-                                    catatanPemberianObatEntity.setLastUpdate(bean.getLastUpdate());
-                                    catatanPemberianObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                                    catatanPemberianObatEntity.setJenis("perawat");
-                                    try {
-                                        catatanPemberianObatDao.addAndSave(catatanPemberianObatEntity);
-                                    }catch (HibernateException e){
-                                        logger.error(e.getMessage());
-                                    }
-                                }
-
-                                ItSimrsCatatanPemberianObatEntity simrsCatatanPemberianObatEntity = new ItSimrsCatatanPemberianObatEntity();
-                                simrsCatatanPemberianObatEntity.setIdCatatanPemberianObat("CPO"+catatanPemberianObatDao.getNextSeq());
-                                simrsCatatanPemberianObatEntity.setIdDetailCheckup(resepEntity.getIdDetailCheckup());
-                                simrsCatatanPemberianObatEntity.setWaktu(waktu);
-                                if(obatEntity != null){
-                                    simrsCatatanPemberianObatEntity.setNamaObat(obatEntity.getNamaObat());
-                                    simrsCatatanPemberianObatEntity.setAturanPakai(obatDetailEntity.getKeterangan());
-                                    simrsCatatanPemberianObatEntity.setStatus(bean.getStatus());
-                                    simrsCatatanPemberianObatEntity.setAction("C");
-                                    simrsCatatanPemberianObatEntity.setFlag("Y");
-                                    simrsCatatanPemberianObatEntity.setCreatedDate(bean.getLastUpdate());
-                                    simrsCatatanPemberianObatEntity.setCreatedWho(bean.getLastUpdateWho());
-                                    simrsCatatanPemberianObatEntity.setLastUpdate(bean.getLastUpdate());
-                                    simrsCatatanPemberianObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                                    simrsCatatanPemberianObatEntity.setJenis("apoteker");
-                                    try {
-                                        catatanPemberianObatDao.addAndSave(simrsCatatanPemberianObatEntity);
-                                    }catch (HibernateException e){
-                                        logger.error(e.getMessage());
-                                    }
-                                }
-                            }
-                        }
                     }
 
                     if(bean.getBiayaTambahanList().size() > 0){
@@ -1469,6 +1423,55 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                                 }catch (HibernateException e){
                                     response.setStatus("error");
                                     response.setMessage("[TransaksiObatBoImpl.saveApproveResepPoli], ERROR when update permintaan resep by criteria, "+e.getMessage());
+                                }
+                            }
+                        }
+                    }
+
+                    if(bean.getWaktuObat().size() > 0){
+                        for (TransaksiObatDetail detail: bean.getWaktuObat()){
+                            if(detail.getFrekuensi() != null && !"".equalsIgnoreCase(detail.getFrekuensi())){
+                                String[] strings = detail.getFrekuensi().split("#");
+                                for (String waktu: strings){
+                                    ItSimrsCatatanPemberianObatEntity catatanPemberianObatEntity = new ItSimrsCatatanPemberianObatEntity();
+                                    catatanPemberianObatEntity.setIdCatatanPemberianObat("CPO"+catatanPemberianObatDao.getNextSeq());
+                                    catatanPemberianObatEntity.setIdDetailCheckup(resepEntity.getIdDetailCheckup());
+                                    catatanPemberianObatEntity.setWaktu(waktu);
+                                    catatanPemberianObatEntity.setNamaObat(detail.getNamaObat());
+                                    catatanPemberianObatEntity.setAturanPakai(detail.getKeterangan());
+                                    catatanPemberianObatEntity.setStatus(bean.getStatus());
+                                    catatanPemberianObatEntity.setAction("C");
+                                    catatanPemberianObatEntity.setFlag("Y");
+                                    catatanPemberianObatEntity.setCreatedDate(bean.getLastUpdate());
+                                    catatanPemberianObatEntity.setCreatedWho(bean.getLastUpdateWho());
+                                    catatanPemberianObatEntity.setLastUpdate(bean.getLastUpdate());
+                                    catatanPemberianObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                                    catatanPemberianObatEntity.setJenis("perawat");
+                                    try {
+                                        catatanPemberianObatDao.addAndSave(catatanPemberianObatEntity);
+                                    }catch (HibernateException e){
+                                        logger.error(e.getMessage());
+                                    }
+
+                                    ItSimrsCatatanPemberianObatEntity simrsCatatanPemberianObatEntity = new ItSimrsCatatanPemberianObatEntity();
+                                    simrsCatatanPemberianObatEntity.setIdCatatanPemberianObat("CPO"+catatanPemberianObatDao.getNextSeq());
+                                    simrsCatatanPemberianObatEntity.setIdDetailCheckup(resepEntity.getIdDetailCheckup());
+                                    simrsCatatanPemberianObatEntity.setWaktu(waktu);
+                                    simrsCatatanPemberianObatEntity.setNamaObat(detail.getNamaObat());
+                                    simrsCatatanPemberianObatEntity.setAturanPakai(detail.getKeterangan());
+                                    simrsCatatanPemberianObatEntity.setStatus(bean.getStatus());
+                                    simrsCatatanPemberianObatEntity.setAction("C");
+                                    simrsCatatanPemberianObatEntity.setFlag("Y");
+                                    simrsCatatanPemberianObatEntity.setCreatedDate(bean.getLastUpdate());
+                                    simrsCatatanPemberianObatEntity.setCreatedWho(bean.getLastUpdateWho());
+                                    simrsCatatanPemberianObatEntity.setLastUpdate(bean.getLastUpdate());
+                                    simrsCatatanPemberianObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                                    simrsCatatanPemberianObatEntity.setJenis("apoteker");
+                                    try {
+                                        catatanPemberianObatDao.addAndSave(simrsCatatanPemberianObatEntity);
+                                    }catch (HibernateException e){
+                                        logger.error(e.getMessage());
+                                    }
                                 }
                             }
                         }
@@ -2788,6 +2791,23 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
         logger.info("[TransaksiObatBoImpl.getFlagIsRacikInTransaksiObatDetail] End <<<");
         return flag;
+    }
+
+    @Override
+    public List<ObatRacik> getListNamaRacik(String idRacik) throws GeneralBOException {
+        logger.info("[TransaksiObatBoImpl.getListNamaRacik] Start >>>");
+
+        List<ObatRacik> obatRacikList = new ArrayList<>();
+
+        try {
+            obatRacikList = transaksiObatDetailDao.getListObatRacik(idRacik);
+        } catch (HibernateException e){
+            logger.error("[TransaksiObatBoImpl.getListNamaRacik] ERROR.", e);
+            throw new GeneralBOException("[TransaksiObatBoImpl.getListNamaRacik] ERROR." + e.getMessage());
+        }
+
+        logger.info("[TransaksiObatBoImpl.getListNamaRacik] End <<<");
+        return obatRacikList;
     }
 
     private void saveTransaksiStokObatMasukKarnaReture(TransaksiObatDetail bean){

@@ -1142,11 +1142,10 @@ function saveAsesmenUgd(jenis, keterangan) {
             }
 
             var va2 = $('#ra2').val();
-            var va3 = $('#ra3').val();
             var va4 = $('#ra4').val();
             var va5 = $('#ra5').val();
 
-            if (va1 && va2 && va3 && va4 && va5 != '') {
+            if (va1 && va2 && va4 && va5 != '') {
                 data.push({
                     'parameter': 'Hasil Skrining',
                     'jawaban': va1,
