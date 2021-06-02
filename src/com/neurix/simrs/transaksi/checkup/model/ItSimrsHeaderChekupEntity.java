@@ -54,6 +54,15 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
     private String statusPerkawinan;
     private String kunjunganPoli;
     private String catatanKlinis;
+    private String spo2;
+
+    public String getSpo2() {
+        return spo2;
+    }
+
+    public void setSpo2(String spo2) {
+        this.spo2 = spo2;
+    }
 
     public String getCatatanKlinis() {
         return catatanKlinis;

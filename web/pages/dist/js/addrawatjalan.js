@@ -48,9 +48,9 @@ function cekRekakanops() {
 
 function hitungBmi() {
 
-    var berat = $('#berat').val();
-    var tinggi = $('#tinggi').val();
-    var persen = "";
+    var berat = $('#fisik_berat').val();
+    var tinggi = $('#fisik_tinggi').val();
+    var persen = 0;
     var bmi = "";
     var barClass = "";
     var barLabel = "";
@@ -3526,29 +3526,44 @@ function saveAnamnese() {
     var nadi = $('#fisik_nadi').val();
     var rr = $('#fisik_rr').val();
     var klinis = $('#kinis').val();
-    if (auto && hetero && tensi && suhu && nadi && rr && klinis != '') {
-        if (!cekSession()) {
-            $('#save_fisik').hide();
-            $('#load_fisik').show();
-            CheckupAction.saveAnamnese(auto, hetero, noCheckup, idDetailCheckup, tensi, suhu, nadi, rr, klinis, {
-                callback: function (response) {
-                    if (response.status == "success") {
-                        $('#suc_anamnese').show().fadeOut(5000);
-                        $('#save_fisik').show();
-                        $('#load_fisik').hide();
-                        $('#msg_suc').text("Berhasil menyimpan data pemeriksaan fisik...");
-                    } else {
-                        $('#war_anamnese').show().fadeOut(5000);
-                        $('#save_fisik').show();
-                        $('#load_fisik').hide();
-                        $('#msg_war').text("Terjadi kesalahan saat penyimpanan data...!");
-                    }
-                }
-            });
+    var tinggi = $('#fisik_tinggi').val();
+    var berat = $('#fisik_berat').val();
+    var spo2 = $('#fisik_spo2').val();
+
+    if (!cekSession()) {
+        var data = {
+            'no_checkup': noCheckup,
+            'id_detail_checkup': idDetailCheckup,
+            'auto': auto,
+            'hetero': hetero,
+            'tensi': tensi,
+            'suhu': suhu,
+            'nadi': nadi,
+            'rr': rr,
+            'klinis': klinis,
+            'tinggi': tinggi,
+            'berat': berat,
+            'spo2': spo2
         }
-    } else {
-        $('#war_anamnese').show().fadeOut(5000);
-        $('#msg_war').text("Silahkan cek kembali data inputan anda...!");
+        var result = JSON.stringify(data);
+        $('#save_fisik').hide();
+        $('#load_fisik').show();
+        CheckupAction.saveAnamnese(result, {
+            callback: function (response) {
+                if (response.status == "success") {
+                    $('#suc_anamnese').show().fadeOut(5000);
+                    $('#save_fisik').show();
+                    $('#load_fisik').hide();
+                    $('#msg_suc').text("Berhasil menyimpan data pemeriksaan fisik...");
+                    hitungBmi();
+                } else {
+                    $('#war_anamnese').show().fadeOut(5000);
+                    $('#save_fisik').show();
+                    $('#load_fisik').hide();
+                    $('#msg_war').text("Terjadi kesalahan saat penyimpanan data...!");
+                }
+            }
+        });
     }
 }
 

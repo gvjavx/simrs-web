@@ -2790,6 +2790,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 chekupEntity.setLastUpdate(bean.getLastUpdate());
                 chekupEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 chekupEntity.setCatatanKlinis(bean.getCatatanKlinis());
+                chekupEntity.setTinggi(bean.getTinggi());
+                chekupEntity.setBerat(bean.getBerat());
+                chekupEntity.setSpo2(bean.getSpo2());
                 try {
                     headerCheckupDao.updateAndSave(chekupEntity);
                     response.setMsg("Berhasil");

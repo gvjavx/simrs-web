@@ -939,6 +939,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setSuhu(hdr.getSuhu());
                     checkup.setNadi(hdr.getNadi());
                     checkup.setPernafasan(hdr.getPernafasan());
+                    checkup.setSpo2(hdr.getSpo2());
                     checkup.setIdKelasRuangan(getDataRuangan(checkup.getIdRuangan()).getIdKelasRuangan());
                     checkup.setKategoriRuangan(getDataRuangan(checkup.getIdRuangan()).getKategori());
                 }
@@ -1314,7 +1315,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "nadi,\n" +
                     "rr,\n" +
                     "autoanamnesis, \n" +
-                    "heteroanamnesis\n" +
+                    "heteroanamnesis,\n" +
+                    "spo2\n" +
                     "FROM it_simrs_header_checkup\n" +
                     "WHERE no_checkup LIKE :id";
             List<Object[]> result = new ArrayList<>();
@@ -1330,6 +1332,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 res.setSuhu(obj[4] != null ? obj[4].toString() : "");
                 res.setNadi(obj[5] != null ? obj[5].toString() : "");
                 res.setPernafasan(obj[6] != null ? obj[6].toString() : "");
+                res.setSpo2(obj[9] != null ? obj[9].toString() : "");
                 if(obj[7] != null && obj[8] != null){
                     res.setAnamnese("Autoanamnesis : "+obj[7].toString()+ ". Heteroanamnesis : "+obj[8].toString());
                 }else if(obj[7] != null){

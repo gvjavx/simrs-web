@@ -415,92 +415,165 @@ function saveRJ(jenis, ket) {
 
     if("nyeri" == jenis){
         var va1 = $('[name=radio_nyeri_keluhan]:checked').val();
+
         var va2 = $('#y_lokasi').val();
         var va3 = $('[name=radio_nyeri_jenis]:checked').val();
         var va4 = $('#y_inten').val();
         var jen = $('#temp_jenis').val();
+
         var nyeri = "";
         var tipe = "";
         var namaTerang = $('#nama_terang').val();
         var nip = $('#nip_perawat').val();
+
         var ttd = document.getElementById('ttdPerawat');
         if(jen == "emoji"){
             nyeri = document.getElementById('choice_emoji');
             tipe = "Wong Baker Pain Scale";
-        }else{
-            nyeri = document.getElementById('area_nyeri');
-            tipe = "Nomeric Rating Scale";
         }
-        var cvs1 = isCanvasBlank(nyeri);
+
         var cvs2 = isCanvasBlank(ttd);
 
         if(va1 != undefined){
-
-            var cecek = false;
             if(va1 == "Ya"){
-                if(va2 != undefined && va3 != '' && va4 != ''){
-                    cecek = true;
+                if(jen == "emoji"){
+                    if(!cvs2 && va2 != undefined && va3 != '' && va4 != ''){
+                        data.push({
+                            'parameter': 'Apakah terdapat keluhan nyeri',
+                            'jawaban': va1,
+                            'keterangan': jenis,
+                            'jenis': ket,
+                            'id_detail_checkup': idDetailCheckup
+                        });
+                        data.push({
+                            'parameter': 'Lokasi',
+                            'jawaban': va2 != '' ? va2 : '',
+                            'keterangan': jenis,
+                            'jenis': ket,
+                            'id_detail_checkup': idDetailCheckup
+                        });
+                        data.push({
+                            'parameter': 'Jenis',
+                            'jawaban': va3 != '' ? va3 : '',
+                            'keterangan': jenis,
+                            'jenis': ket,
+                            'id_detail_checkup': idDetailCheckup
+                        });
+                        data.push({
+                            'parameter': 'Intensitas',
+                            'jawaban': va4 != '' ? va4 : '',
+                            'keterangan': jenis,
+                            'jenis': ket,
+                            'id_detail_checkup': idDetailCheckup
+                        });
+
+                        var canv1 = nyeri.toDataURL("image/png"),
+                            canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
+                        data.push({
+                            'parameter': tipe,
+                            'jawaban': canv1,
+                            'keterangan': jenis,
+                            'jenis': ket,
+                            'tipe': 'gambar',
+                            'id_detail_checkup': idDetailCheckup
+                        });
+                        cek = true;
+                    }
+                }else{
+                    if(!cvs2){
+                        var total = 0;
+                        var kesimpulan = "";
+                        var cekVal = true;
+                        var label = $('.label_nyeri');
+
+                        data.push({
+                            'parameter': 'Apakah terdapat keluhan nyeri',
+                            'jawaban': "Ya",
+                            'keterangan': jenis,
+                            'jenis': ket,
+                            'id_detail_checkup': idDetailCheckup
+                        });
+
+                        $.each(label, function (i, item) {
+                            var i = i + 1;
+                            var isi = $('[name=nyeri'+i+']:checked').val();
+                            if(isi == undefined){
+                                cekVal = false;
+                            }
+                            data.push({
+                                'parameter': item.innerHTML,
+                                'jawaban': isi.split("|")[0],
+                                'skor': isi.split("|")[1],
+                                'keterangan': jenis,
+                                'jenis': ket,
+                                'id_detail_checkup': idDetailCheckup
+                            });
+                            total += parseInt(isi.split("|")[1]);
+                        });
+
+                        if(total >= 1 && total <= 3){
+                            kesimpulan = "Nyeri Ringan";
+                        }else if (total >= 4 && total <= 6) {
+                            kesimpulan = "Nyeri Sedang";
+                        }else if (total >= 7 && total <= 10) {
+                            kesimpulan = "Nyeri Berat";
+                        }else if(total == 0){
+                            kesimpulan = "Tidak Nyeri";
+                        }
+
+                        data.push({
+                            'parameter': 'Total Skor Nyeri',
+                            'jawaban': ''+total,
+                            'keterangan': jenis,
+                            'tipe': 'total',
+                            'id_detail_checkup': idDetailCheckup
+                        });
+                        data.push({
+                            'parameter': 'Nyeri',
+                            'jawaban': kesimpulan,
+                            'keterangan': jenis,
+                            'tipe': 'kesimpulan',
+                            'id_detail_checkup': idDetailCheckup
+                        });
+
+                        var canv2 = ttd.toDataURL("image/png"),
+                            canv2 = canv2.replace(/^data:image\/(png|jpg);base64,/, "");
+                        data.push({
+                            'parameter': 'TTD Perawat',
+                            'jawaban': canv2,
+                            'keterangan': jenis,
+                            'jenis': ket,
+                            'tipe': 'ttd',
+                            'nama_terang': namaTerang,
+                            'sip': nip,
+                            'id_detail_checkup': idDetailCheckup
+                        });
+                        cek = cekVal;
+                    }
                 }
             }else{
-                cecek = true;
-            }
-
-            if(cecek){
-                data.push({
-                    'parameter': 'Apakah terdapat keluhan nyeri',
-                    'jawaban': va1,
-                    'keterangan': jenis,
-                    'jenis': ket,
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'Lokasi',
-                    'jawaban': va2 != '' ? va2 : '',
-                    'keterangan': jenis,
-                    'jenis': ket,
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'Jenis',
-                    'jawaban': va3 != '' ? va3 : '',
-                    'keterangan': jenis,
-                    'jenis': ket,
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'Intensitas',
-                    'jawaban': va4 != '' ? va4 : '',
-                    'keterangan': jenis,
-                    'jenis': ket,
-                    'id_detail_checkup': idDetailCheckup
-                });
-
-                if("Ya" == va1){
-                    var canv1 = nyeri.toDataURL("image/png"),
-                        canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
+                if(!cvs2){
                     data.push({
-                        'parameter': tipe,
-                        'jawaban': canv1,
+                        'parameter': 'Apakah terdapat keluhan nyeri',
+                        'jawaban': va1,
                         'keterangan': jenis,
                         'jenis': ket,
-                        'tipe': 'gambar',
                         'id_detail_checkup': idDetailCheckup
                     });
+                    var canv2 = ttd.toDataURL("image/png"),
+                        canv2 = canv2.replace(/^data:image\/(png|jpg);base64,/, "");
+                    data.push({
+                        'parameter': 'TTD Perawat',
+                        'jawaban': canv2,
+                        'keterangan': jenis,
+                        'jenis': ket,
+                        'tipe': 'ttd',
+                        'nama_terang': namaTerang,
+                        'sip': nip,
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                    cek = true;
                 }
-
-                var canv2 = ttd.toDataURL("image/png"),
-                    canv2 = canv2.replace(/^data:image\/(png|jpg);base64,/, "");
-                data.push({
-                    'parameter': 'TTD Perawat',
-                    'jawaban': canv2,
-                    'keterangan': jenis,
-                    'jenis': ket,
-                    'tipe': 'ttd',
-                    'nama_terang': namaTerang,
-                    'sip': nip,
-                    'id_detail_checkup': idDetailCheckup
-                });
-                cek = true;
             }
         }
     }
@@ -551,6 +624,8 @@ function detailRJ(jenis) {
             var last = "";
             var tgl = "";
             var cekData = false;
+            var cekNyeri = false;
+
             KeperawatanRawatJalanAction.getListAsesmenRawat(idDetailCheckup, jenis, function (res) {
                 if (res.length > 0) {
                     $.each(res, function (i, item) {
@@ -593,17 +668,32 @@ function detailRJ(jenis) {
                                 body += '<tr>' +
                                     '<td width="40%">' + item.parameter + '</td>' +
                                     '<td>' + jwb + '</td>' +
-                                    '<td>' + cekItemIsNull(item.score) + '</td>' +
+                                    '<td align="center">' + cekItemIsNull(item.score) + '</td>' +
                                     '</tr>';
                             }
                         }else {
-                            body += '<tr>' +
-                                '<td width="40%">' + item.parameter + '</td>' +
-                                '<td>' + jwb + '</td>' +
-                                '</tr>';
+                            if(item.tipe == "total"){
+                                body += '<tr style="font-weight: bold"><td colspan="2">'+item.parameter+'</td><td align="center">'+item.jawaban+'</td></tr>';
+                            }else if(item.score != null){
+                                body += '<tr>' +
+                                    '<td width="40%">' + item.parameter + '</td>' +
+                                    '<td>' + jwb + '</td>' +
+                                    '<td align="center">' + cekItemIsNull(item.score) + '</td>' +
+                                    '</tr>';
+                            }else if(item.tipe == "kesimpulan"){
+                                body += '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">'+item.parameter+'</td><td align="center">'+item.jawaban+'</td></tr>';
+                            }else{
+                                body += '<tr>' +
+                                    '<td width="40%">' + item.parameter + '</td>' +
+                                    '<td>' + jwb + '</td>' +
+                                    '</tr>';
+                            }
                         }
                         cekData = true;
                         tgl = item.createdDate;
+                        if("Face" == item.parameter){
+                            cekNyeri = true;
+                        }
                     });
                 } else {
                     body = '<tr>' +
@@ -616,7 +706,14 @@ function detailRJ(jenis) {
                         head = '<tr style="font-weight: bold">' +
                             '<td>Parameter</td>' +
                             '<td>Jawaban</td>' +
-                            '<td>Score</td>' +
+                            '<td align="center">Score</td>' +
+                            '</tr>'
+                    }
+                    if(cekNyeri){
+                        head = '<tr style="font-weight: bold">' +
+                            '<td>Parameter</td>' +
+                            '<td>Jawaban</td>' +
+                            '<td align="center">Score</td>' +
                             '</tr>'
                     }
                 }
