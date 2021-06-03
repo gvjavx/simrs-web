@@ -400,6 +400,22 @@ function selectKeterangan(idKtg) {
             $('#form_order_pemeriksaan').hide();
             $('#body_order_pemeriksaan').html('');
 
+        } else if (idKtg == "kembali_ke_inap") {
+            $('#form-selesai').hide();
+            $('#form-catatan').hide();
+            $('#form-ket-rawat_inap').hide();
+            $('#form-rs-rujukan').hide();
+            $('#form-tgl-kontrol').hide();
+            $('#form-pemeriksaan').hide();
+            $('#form-kamar').hide();
+            $('#form-stay').hide();
+            $('#form-kelas_kamar').hide();
+            $('#form-asesmen').show();
+            $('#form_order_pemeriksaan').hide();
+            $('#body_order_pemeriksaan').html('');
+            $('#title_asesmen').html(keteranganPindah);
+            $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ri\',\'asesmen_pindah\')');
+
         } else {
             $('#form-selesai').hide();
             $('#form-catatan').hide();
@@ -4524,7 +4540,7 @@ function refreshTable(id, tipe) {
 }
 
 function startInterval() {
-    setNotif = setInterval(cekDokter, 5000);
+    setNotif = setInterval(cekDokter, 50000);
 }
 
 function stopInterval() {

@@ -3520,33 +3520,92 @@ public class CheckupAction extends BaseMasterAction {
         return checkupList;
     }
 
-    public CrudResponse saveAnamnese(String auto, String hetero, String noCheckup, String idDetailCheckup, String tensi, String suhu, String nadi, String rr, String klinis) {
+    public CrudResponse saveAnamnese(String data) {
         logger.info("[CheckupAction.savePenunjangPasien] start process >>>");
-        CrudResponse response = new CrudResponse();
-        HeaderCheckup headerCheckup = new HeaderCheckup();
-        headerCheckup.setNoCheckup(noCheckup);
-        headerCheckup.setAutoanamnesis(auto);
-        headerCheckup.setHeteroanamnesis(hetero);
-        headerCheckup.setTensi(tensi);
-        headerCheckup.setSuhu(suhu);
-        headerCheckup.setNadi(nadi);
-        headerCheckup.setPernafasan(rr);
-        headerCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-        headerCheckup.setLastUpdateWho(CommonUtil.userLogin());
-        headerCheckup.setCatatanKlinis(klinis);
-
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        CrudResponse response = new CrudResponse();
+
+        String auto = null;
+        String hetero = null;
+        String noCheckup = null;
+        String tensi = null;
+        String suhu = null;
+        String nadi = null;
+        String rr = null;
+        String klinis = null;
+        String berat = null;
+        String tinggi = null;
+        String spo2 = null;
+        String idDetailCheckup = null;
 
         try {
-            response = checkupBo.updateAnamnese(headerCheckup);
-        } catch (GeneralBOException e) {
+            JSONObject object = new JSONObject(data);
+            if(object != null){
+                noCheckup = object.getString("no_checkup");
+                idDetailCheckup = object.getString("id_detail_checkup");
+                if(object.has("auto")){
+                   auto = object.getString("auto");
+                }
+                if(object.has("hetero")){
+                    hetero = object.getString("hetero");
+                }
+                if(object.has("tensi")){
+                    tensi = object.getString("tensi");
+                }
+                if(object.has("suhu")){
+                    suhu = object.getString("suhu");
+                }
+                if(object.has("nadi")){
+                    nadi = object.getString("nadi");
+                }
+                if(object.has("rr")){
+                    rr = object.getString("rr");
+                }
+                if(object.has("klinis")){
+                    klinis = object.getString("klinis");
+                }
+                if(object.has("tinggi")){
+                    tinggi = object.getString("tinggi");
+                }
+                if(object.has("berat")){
+                    berat = object.getString("berat");
+                }
+                if(object.has("spo2")){
+                    spo2 = object.getString("spo2");
+                }
+                HeaderCheckup headerCheckup = new HeaderCheckup();
+                headerCheckup.setNoCheckup(noCheckup);
+                headerCheckup.setAutoanamnesis(auto);
+                headerCheckup.setHeteroanamnesis(hetero);
+                headerCheckup.setTensi(tensi);
+                headerCheckup.setSuhu(suhu);
+                headerCheckup.setNadi(nadi);
+                headerCheckup.setPernafasan(rr);
+                headerCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                headerCheckup.setLastUpdateWho(CommonUtil.userLogin());
+                headerCheckup.setCatatanKlinis(klinis);
+                headerCheckup.setTinggi(tinggi);
+                headerCheckup.setBerat(berat);
+                headerCheckup.setSpo2(spo2);
+
+                try {
+                    response = checkupBo.updateAnamnese(headerCheckup);
+                } catch (GeneralBOException e) {
+                    response.setStatus("error");
+                    response.setMsg("Error when update data " + e.getMessage());
+                }
+
+                if ("success".equalsIgnoreCase(response.getStatus())) {
+                    insertProfilRJ(idDetailCheckup, "Autoanamnesis : " + auto + ", Heteroanamnesis : " + hetero);
+                }
+            }else{
+                response.setStatus("error");
+                response.setMsg("Data not Found");
+            }
+        }catch (Exception e){
             response.setStatus("error");
             response.setMsg("Error when update data " + e.getMessage());
-        }
-
-        if ("success".equalsIgnoreCase(response.getStatus())) {
-            insertProfilRJ(idDetailCheckup, "Autoanamnesis : " + auto + ", Heteroanamnesis : " + hetero);
         }
 
         logger.info("[CheckupAction.savePenunjangPasien] end process <<<");

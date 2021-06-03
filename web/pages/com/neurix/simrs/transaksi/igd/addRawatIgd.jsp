@@ -470,7 +470,7 @@
                         <div class="col-md-6">
                             <div class="box-header with-border" id="pos_rm"></div>
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-stethoscope"></i> Anamnesa & Pemeriksaan Fisik</h3>
+                                <h3 class="box-title"><i class="fa fa-stethoscope"></i> Anamnesis & Pemeriksaan Fisik</h3>
                             </div>
                             <div class="box-body">
                                 <div class="alert alert-danger alert-dismissible" style="display: none" id="war_anamnese">
@@ -507,6 +507,20 @@
                                     <div class="col-md-3">
                                         <span>RR</span> <small>(x/menit)</small>
                                         <s:textfield cssClass="form-control" id="fisik_rr" name="headerDetailCheckup.pernafasan" type="number"></s:textfield>
+                                    </div>
+                                </div>
+                                <div class="row jarak">
+                                    <div class="col-md-3">
+                                        <span>SPO2</span> <small>(%)</small>
+                                        <s:textfield cssClass="form-control" id="fisik_spo2" name="headerDetailCheckup.spo2" type="number"></s:textfield>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span>Tinggi</span> <small>(Cm)</small>
+                                        <s:textfield cssClass="form-control" id="fisik_tinggi" name="headerDetailCheckup.tinggi" type="number"></s:textfield>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span>Berat</span> <small>(Kg)</small>
+                                        <s:textfield cssClass="form-control" id="fisik_berat" name="headerDetailCheckup.berat" type="number"></s:textfield>
                                     </div>
                                 </div>
                                 <div class="row jarak">
@@ -555,67 +569,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="box-header with-border" id="pos_alergi"></div>
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-user"></i> Tinggi & Berat Badan</h3>
-                            </div>
-                            <div class="box-body">
-                                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_penunjang">
-                                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                                    Silahkan cek kembali data inputan!
-                                </div>
-                                <div class="alert alert-success alert-dismissible" style="display: none" id="success_penunjang">
-                                    <h4><i class="icon fa fa-info"></i> Info!</h4>
-                                    Data berhasil disimpan!
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label>Tinggi</label>
-                                            <div class="input-group date">
-                                                <s:textfield id="tinggi" name="headerDetailCheckup.tinggi"
-                                                             cssClass="form-control" type="number"/>
-                                                <div class="input-group-addon">
-                                                    cm
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label>Berat</label>
-                                            <div class="input-group date">
-                                                <s:textfield id="berat" name="headerDetailCheckup.berat"
-                                                             cssClass="form-control" type="number"/>
-                                                <div class="input-group-addon">
-                                                    Kg
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <button style="margin-top: 25px" id="save_penunjang" onclick="savePenunjangPasien()"
-                                                    class="btn btn-success"><i
-                                                    class="fa fa-check"></i>
-                                                Save
-                                            </button>
-                                            <button style="display: none; cursor: no-drop; margin-top: 25px" type="button"
-                                                    class="btn btn-success"
-                                                    id="load_penunjang">
-                                                <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-heartbeat"></i> Hasil BMI (Body Mass Index)</h3>
@@ -641,7 +594,7 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="box-header with-border"></div>
+                            <div class="box-header with-border" id="pos_alergi"></div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Alergi</h3>
                             </div>

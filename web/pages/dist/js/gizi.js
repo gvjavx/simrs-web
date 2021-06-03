@@ -1308,11 +1308,11 @@ function setPengkajianGizi(umur) {
     var res = '<div class="row jarak">\n' +
         '    <div class="col-md-3">\n' +
         '        <span>BB<small><b>(Kg)</b></small></span>\n' +
-        '        <input class="form-control" id="gizi1" type="number">\n' +
+        '        <input class="form-control berat-pasien" id="gizi1" type="number">\n' +
         '    </div>\n' +
         '    <div class="col-md-3">\n' +
         '        <span>TB<small><b>(Cm)</b></small></span>\n' +
-        '        <input class="form-control" id="gizi2" type="number">\n' +
+        '        <input class="form-control tinggi-pasien" id="gizi2" type="number">\n' +
         '    </div>\n' +
         '    <div class="col-md-3">\n' +
         '        <span>LLA<small><b>(Cm)</b></small></span>\n' +
@@ -1351,11 +1351,11 @@ function setPengkajianGizi(umur) {
         res = '<div class="row jarak">\n' +
             '    <div class="col-md-3">\n' +
             '        <span>BB<small><b>(Kg)</b></small></span>\n' +
-            '        <input class="form-control" id="gizi1" type="number">\n' +
+            '        <input class="form-control berat-pasien" id="gizi1" type="number">\n' +
             '    </div>\n' +
             '    <div class="col-md-3">\n' +
             '        <span>TB<small><b>(Cm)</b></small></span>\n' +
-            '        <input class="form-control" id="gizi2" type="number">\n' +
+            '        <input class="form-control tinggi-pasien" id="gizi2" type="number">\n' +
             '    </div>\n' +
             '    <div class="col-md-3">\n' +
             '        <span>BBI<small><b>(Kg)</b></small></span>\n' +
@@ -1386,6 +1386,28 @@ function setPengkajianGizi(umur) {
             '</div>';
     }
     $('#set_pengakajian').html(res);
+    CheckupAction.getDataPemeriksaanFisik(noCheckup, {
+        callback: function (res) {
+            if (res != '') {
+                if (res.berat != '' && res.tinggi != '') {
+                    var tom = (parseInt(tinggi) * 0.01);
+                    var bmi = (parseInt(berat) / (tom * tom)).toFixed(2);
+                    var keterangan = "";
+                    if (parseInt(bmi) < 18.5) {
+                        keterangan = 'Kurang';
+                    } else if (parseInt(bmi) >= 18.5 && parseInt(bmi) <= 22.9) {
+                        keterangan = 'Normal';
+                    } else if (parseInt(bmi) >= 23 && parseInt(bmi) <= 29.9) {
+                        keterangan = 'Lebih';
+                    } else if (parseInt(bmi) > 30) {
+                        keterangan = 'Obesitas';
+                    }
+                    $('[name=gizi9]').filter('[value='+keterangan+']').attr('checked', true);
+                }
+            }
+        }
+    });
+    setDataPasien();
 }
 
 

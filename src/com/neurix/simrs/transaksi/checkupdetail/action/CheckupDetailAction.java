@@ -622,6 +622,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             detailCheckup.setIsEksekutif(checkup.getIsEksekutif());
             detailCheckup.setIsVaksin(checkup.getIsVaksin());
             detailCheckup.setCatatanKlinis(checkup.getCatatanKlinis());
+            detailCheckup.setSpo2(checkup.getSpo2());
 
             if ("rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
                 RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
@@ -5118,6 +5119,20 @@ public class CheckupDetailAction extends BaseMasterAction {
                         reportParams.put("tindakLanjut", headerCheckup.getTindakLanjut());
                         reportParams.put("prognosis", headerCheckup.getPrognosis());
                     }
+                }
+            }
+
+            if("CK04".equalsIgnoreCase(tipe) || "CK01".equalsIgnoreCase(tipe)){
+                KeperawatanRawatJalanBo keperawatanRawatJalanBo = (KeperawatanRawatJalanBo) ctx.getBean("keperawatanRawatJalanBoProxy");
+                KeperawatanRawatJalan keperawatanRawatJalan = new KeperawatanRawatJalan();
+                keperawatanRawatJalan.setIdDetailCheckup(checkup.getIdDetailCheckup());
+                keperawatanRawatJalan.setJenis("general_concent");
+                HeaderCheckup headerCheckup = keperawatanRawatJalanBo.getDataResumeMedis(keperawatanRawatJalan);
+                if(headerCheckup != null){
+                    reportParams.put("namaPasien", headerCheckup.getNama());
+                    reportParams.put("namaPemberi", headerCheckup.getNamaDokter());
+                    reportParams.put("pasien", headerCheckup.getTtdPasien());
+                    reportParams.put("petugas", headerCheckup.getTtdDokter());
                 }
             }
         }

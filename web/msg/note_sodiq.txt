@@ -2765,7 +2765,7 @@ SET is_asesmen = 'Y'
 WHERE id_lab IN ('LAB00000012','LAB00000010');
 
 /=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
----------------------------------B E L U M - D I P R O D -------------------------------------------------------
+---------------------------------SU DAH - D I P R O D -------------------------------------------------------
 ------------------------------------- 26 05 2021 ---------------------------------------------------------------
 /=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
 
@@ -2788,9 +2788,28 @@ UPDATE im_simrs_rekam_medis_pelayanan
 SET flag = 'N'
 WHERE id_rekam_medis_pelayanan = 'RMP000000247';
 
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+---------------------------------B E L U M - D I P R O D -------------------------------------------------------
+------------------------------------- 31 05 2021 ---------------------------------------------------------------
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
 
+INSERT INTO im_simrs_rekam_medis_pasien VALUES
+('RMM00000117','TP 013','Privasi Pasien','form','privasi','privasi','showModalAsesmenRawatInap','Y','C','migrasi',now(),now(),'migrasi','1');
 
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000299','RMM00000117','tppri','2','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000300','RMM00000068','tppri','3','Y','C','migrasi',now(),now(),'migrasi');
 
+ALTER TABLE it_simrs_header_checkup
+ADD COLUMN spo2 VARCHAR (10);
 
+UPDATE im_simrs_rekam_medis_pasien
+SET jumlah_kategori = '1'
+WHERE id_rekam_medis_pasien = 'RMM00000089';
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000301','RMM00000116','pindah_ok','3','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000302','RMM00000044','pindah_ok','4','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000303','RMM00000045','pindah_ok','5','Y','C','migrasi',now(),now(),'migrasi');
 
 

@@ -126,6 +126,8 @@
         <property name="catatanKlinis">
             <column name="catatan_klinis" />
         </property>
-
+        <property name="spo2">
+            <column name="spo2" />
+        </property>
     </class>
 </hibernate-mapping>

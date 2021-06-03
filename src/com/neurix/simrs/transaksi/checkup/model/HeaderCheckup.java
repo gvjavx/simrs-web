@@ -222,6 +222,15 @@ public class HeaderCheckup {
     private String stTglKeluar;
     private String tindakLanjut;
     private String prognosis;
+    private String spo2;
+
+    public String getSpo2() {
+        return spo2;
+    }
+
+    public void setSpo2(String spo2) {
+        this.spo2 = spo2;
+    }
 
     public String getPrognosis() {
         return prognosis;

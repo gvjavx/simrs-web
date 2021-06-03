@@ -73,13 +73,13 @@
                         </div>
                         <label class="col-md-2">BB <small><b>(Kg)</b></small></label>
                         <div class="col-md-3">
-                            <input class="form-control" id="gizi2" type="number">
+                            <input class="form-control berat-pasien" id="gizi2" type="number">
                         </div>
                     </div>
                     <div class="row jarak">
                         <label class="col-md-3">Status Gizi</label>
                         <div class="col-md-4">
-                            <input class="form-control" id="gizi3">
+                            <input class="form-control status_gizi" id="gizi3">
                         </div>
                         <label class="col-md-2">Intakea</label>
                         <div class="col-md-3">

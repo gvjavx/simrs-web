@@ -35,8 +35,7 @@ function saveCPPT(jenis, ket, tipe) {
         'id_rm': tempidRm
     }
 
-    if (va1 && va2 && va3 && va4 && va6 && va7 && va8 &&
-        nP && sP && !va9) {
+    if (va1 && va2 && va3 && va4 && va6 && va7 && va8) {
 
         var tipeEWS = $('#tipe_ews').val();
 
@@ -580,14 +579,21 @@ function detailCPPT(jenis, ket, tipe, gizi) {
                         }
                     }
 
+                    var petugas = '<img style="width: 100%; height: 50px" src="' + item.ttdPetugas + '">' +
+                        '<p style="margin-top: -5px">' + cekNullCppt(item.namaPetugas) + '</p>' +
+                        '<p style="margin-top: -10px">' + cekNullCppt(item.sipPetugas);
+                    if("Dokter" == item.ppa || "Bidan" == item.ppa){
+                        petugas = ''
+                    }
+
                     if("hand_over" == item.tipe){
                         if(item.ttdPenerima != '' && item.ttdPenerima != null){
                             setTtd = '<img style="width: 50%; height: 50px" src="' + item.ttdPenerima + '">';
                         }else{
                             setTtd = '<i onclick="setTtdDpjp(\''+item.idCatatanTerintegrasi+'\', \''+jenis+'\', \''+ket+'\', \''+tipe+'\')" class="fa fa-pencil hvr-grow" style="cursor: pointer; color: #1ab7ea; margin-bottom: 10px"></i>';
                         }
-                        body += '<tr>' +
-                            '<td width="10%">' + converterDateTime(item.waktu) + '</td>' +
+                        body += '<tr bgcolor="#ffe4b5">' +
+                            '<td width="10%">' + converterDateTime(item.waktu) + '<p style="margin-top: 20px">Hand Over</p></td>' +
                             '<td colspan="4" align="center">' +
                             '<img style="width: 50%; height: 50px" src="' + item.ttdPemberi + '">' +
                             '<p style="margin-top: -5px">' + cekNullCppt(item.namaPemberi) + '</p>' +
@@ -599,16 +605,21 @@ function detailCPPT(jenis, ket, tipe, gizi) {
                             '</td>' +
                             '<td align="center">' + tempDel + '</td></tr>';
                     }else{
-                        var object =
-                            '<p>Tensi : ' + item.tensi + ' mmHg</p>' +
-                            '<p>Nadi : ' + item.nadi + ' x/menit</p>'+
-                            '<p>Suhu : ' + item.suhu + ' ˚C</p>' +
-                            '<p>RR : ' + item.rr + ' x/menit' +'</p>'+
-                            '<p>Keterangan : ' + cekNullCppt(item.objective)+'</p>'+
-                            '<p>-----------------------</p>' +
-                            '<p>Total Skor EWS : '+cekNullCppt(item.ews)+'</p>' +
-                            '<p>Kesimpulan : '+cekNullCppt(item.kesimpulan)+'</p>' +
-                            '<p>Monitoring : '+cekNullCppt(item.monitoring)+'</p>';
+                        var object = "";
+                        if("Dokter" == item.ppa || "Bidan" == item.ppa || "Perawat" == item.ppa){
+                            object = '<p>Tensi : ' + item.tensi + ' mmHg</p>' +
+                                '<p>Nadi : ' + item.nadi + ' x/menit</p>'+
+                                '<p>Suhu : ' + item.suhu + ' ˚C</p>' +
+                                '<p>RR : ' + item.rr + ' x/menit' +'</p>'+
+                                '<p>Keterangan : ' + cekNullCppt(item.objective)+'</p>'+
+                                '<p>-----------------------</p>' +
+                                '<p>Total Skor EWS : '+cekNullCppt(item.ews)+'</p>' +
+                                '<p>Kesimpulan : '+cekNullCppt(item.kesimpulan)+'</p>' +
+                                '<p>Monitoring : '+cekNullCppt(item.monitoring)+'</p>';
+                        }else{
+                            object = cekNullCppt(item.objective);
+                        }
+
                         body += '<tr>' +
                             '<td width="10%">' + converterDateTime(item.waktu) + '</td>' +
                             '<td>' + cekNullCppt(item.ppa) + '</td>' +
@@ -617,9 +628,7 @@ function detailCPPT(jenis, ket, tipe, gizi) {
                             '<td>' + cekNullCppt(item.assesment) + '</td>' +
                             '<td>' + cekNullCppt(item.planning) + '</td>' +
                             '<td>' + cekNullCppt(item.intruksi) + '</td>' +
-                            '<td>' + '<img style="width: 100%; height: 50px" src="' + item.ttdPetugas + '">' +
-                            '<p style="margin-top: -5px">' + cekNullCppt(item.namaPetugas) + '</p>' +
-                            '<p style="margin-top: -10px">' + cekNullCppt(item.sipPetugas) + '</p>' +
+                            '<td>' + petugas +'</p>' +
                             '</td>' +
                             '<td>' + setTtd +
                             '<p style="margin-top: -5px">' + cekNullCppt(item.namaDokter) + '</p>' +
@@ -842,7 +851,7 @@ function setHideShow(val, form){
 function setEWS(jenis, umur, id){
     var set = '';
     if("obstetri" == jenis){
-        set = '<div class="alert alert-info alert-dismissible">\n' +
+        set = '<div id="just_objective"><div class="alert alert-info alert-dismissible">\n' +
             '                        <p id="msg_ews">Early Warning System (EWS) Obstetri</p>\n' +
             '</div>\n' +
             '<input id="tipe_ews" value="obstetri" type="hidden">\n' +
@@ -926,17 +935,18 @@ function setEWS(jenis, umur, id){
             '            <input class="form-control" id="ket_o2">\n' +
             '        </div>\n' +
             '    </div>\n' +
-            '</div>\n' +
+            '</div></div>\n' +
             '<div class="row jarak">\n' +
             '    <div class="form-group">\n' +
-            '        <div class="col-md-offset-3 col-md-8">\n' +
+            '        <label class="col-md-3" style="display: none" id="label_objective"><b>O</b>bjective</label>\n' +
+            '        <div class="col-md-offset-3 col-md-8" id="ket_objective">\n' +
             '            <textarea class="form-control" id="ket_cppt5" placeholder="Keterangan Objective"></textarea>\n' +
             '        </div>\n' +
             '    </div>\n' +
             '</div>';
     }else{
         if(parseInt(umur) >= 0 && parseInt(umur) <= 16){
-            set = '<div class="alert alert-info alert-dismissible">\n' +
+            set = '<div id="just_objective"><div class="alert alert-info alert-dismissible">\n' +
                 '    <p id="msg_ews">Early Warning System (EWS) Anak-Anak</p>\n' +
                 '</div>\n' +
                 '<input id="tipe_ews" value="anak_anak" type="hidden">\n' +
@@ -994,16 +1004,17 @@ function setEWS(jenis, umur, id){
                 '            <input class="form-control" id="ket_o2">\n' +
                 '        </div>\n' +
                 '    </div>\n' +
-                '</div>\n' +
+                '</div></div>\n' +
                 '<div class="row jarak">\n' +
                 '    <div class="form-group">\n' +
-                '        <div class="col-md-offset-3 col-md-8">\n' +
+                '        <label class="col-md-3" style="display: none" id="label_objective"><b>O</b>bjective</label>\n' +
+                '        <div class="col-md-offset-3 col-md-8" id="ket_objective">\n' +
                 '            <textarea class="form-control" id="ket_cppt5" placeholder="Keterangan Objective"></textarea>\n' +
                 '        </div>\n' +
                 '    </div>\n' +
                 '</div>\n' +
                 '<hr>\n' +
-                '<div class="row">\n' +
+                '<div id="just_objective_2"><div class="row">\n' +
                 '    <div class="col-md-5">\n' +
                 '        <div class="row">\n' +
                 '            <div class="form-group">\n' +
@@ -1098,9 +1109,10 @@ function setEWS(jenis, umur, id){
                 '                                </div>\n' +
                 '                            </div>\n' +
                 '                        </div>\n' +
-                '                    </div>';
+                '                    </div></div>';
         }else{
-            set = '              <div class="alert alert-info alert-dismissible">\n' +
+            set = '              <div id="just_objective">' +
+                '<div class="alert alert-info alert-dismissible">\n' +
                 '                        <p id="msg_ews">Early Warning System (EWS) Dewasa</p>\n' +
                 '                    </div>\n' +
                 '                    <input id="tipe_ews" value="dewasa" type="hidden">\n' +
@@ -1158,10 +1170,11 @@ function setEWS(jenis, umur, id){
                 '                                <input class="form-control" id="ket_o2">\n' +
                 '                            </div>\n' +
                 '                        </div>\n' +
-                '                    </div>\n' +
+                '                    </div></div>\n' +
                 '                    <div class="row jarak">\n' +
                 '                        <div class="form-group">\n' +
-                '                            <div class="col-md-offset-3 col-md-8">\n' +
+                '        <label class="col-md-3" style="display: none" id="label_objective"><b>O</b>bjective</label>\n' +
+                '        <div class="col-md-offset-3 col-md-8" id="ket_objective">\n' +
                 '                                <textarea class="form-control" id="ket_cppt5" placeholder="Keterangan Objective"></textarea>\n' +
                 '                            </div>\n' +
                 '                        </div>\n' +
@@ -1243,5 +1256,36 @@ function saveHandOver(jenis, ket, tipe) {
         $('#warning_' + tipe + '_' + jenis).show().fadeOut(5000);
         $('#msg_' + tipe + '_' + jenis).text("Silahkan cek kembali data inputan anda...");
         $('#modal-' + tipe + '-' + jenis).scrollTop(0);
+    }
+}
+
+function changePPA(ppa){
+    if("Dokter" == ppa || "Perawat" == ppa || "Bidan" == ppa ){
+        if("Dokter" == ppa || "Bidan" == ppa){
+            $('#form_ttd_petugas').hide();
+            CheckupAction.getDataPemeriksaanFisik(noCheckup, {
+                callback: function (res) {
+                    if (res != '') {
+                        $('.tensi-pasien').val(res.tensi);
+                        $('.suhu-pasien').val(res.suhu);
+                        $('.rr-pasien').val(res.pernafasan);
+                        $('.nadi-pasien').val(res.nadi);
+                    }
+                }
+            });
+        }else{
+            $('#form_ttd_petugas').show();
+            $('.tensi-pasien, .suhu-pasien, .rr-pasien, .nadi-pasien').val('');
+        }
+        $('#just_objective, #just_objective_2').show();
+        $('#label_objective').hide();
+        $('#ket_objective').removeClass("col-md-offset-3 col-md-8");
+        $('#ket_objective').addClass("col-md-offset-3 col-md-8");
+    }else{
+        $('#just_objective, #just_objective_2').hide();
+        $('#form_ttd_petugas, #label_objective').show();
+        $('#ket_objective').removeClass("col-md-offset-3 col-md-8");
+        $('#ket_objective').addClass("col-md-8");
+        $('.tensi-pasien, .suhu-pasien, .rr-pasien, .nadi-pasien').val('');
     }
 }
