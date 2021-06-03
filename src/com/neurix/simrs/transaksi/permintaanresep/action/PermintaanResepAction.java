@@ -124,9 +124,9 @@ public class PermintaanResepAction extends BaseMasterAction{
                                 obatRacik.setSigna(objNamaRacik.getString("signa"));
                                 obatRacik.setQty(new Integer(objNamaRacik.getString("qty")));
                                 obatRacik.setKemasan(objNamaRacik.getString("kemasan"));
+                                obatRacik.setWarna(objNamaRacik.getString("warna"));
                                 listNamaRacik.add(obatRacik);
                             }
-
                         }
 
                         List<TransaksiObatDetail> listDetailObatRacik = new ArrayList<>();
@@ -382,6 +382,23 @@ public class PermintaanResepAction extends BaseMasterAction{
         }
 
         logger.info("[PermintaanResepAction.getListResepTerakhir] END process >>>");
+        return permintaanResepList;
+    }
+
+    public List<PermintaanResep> getListResepTerakhirByIdApproval(String idApproval){
+        logger.info("[PermintaanResepAction.getListResepTerakhirByIdApproval] start process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
+
+        List<PermintaanResep> permintaanResepList = new ArrayList<>();
+        try {
+            permintaanResepList = permintaanResepBo.getListResepTerakhirByIdApproval(idApproval);
+        } catch (GeneralBOException e){
+            logger.error("[PermintaanResepAction.getListResepTerakhirByIdApproval] Error.", e);
+        }
+
+        logger.info("[PermintaanResepAction.getListResepTerakhirByIdApproval] END process >>>");
         return permintaanResepList;
     }
 

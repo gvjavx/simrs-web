@@ -78,6 +78,24 @@ public class PermintaanResep{
     private String umur;
     private String kategoriPelayanan;
     private String stTglAntrian;
+    private String tipePelayanan;
+    private String idObat;
+
+    public String getIdObat() {
+        return idObat;
+    }
+
+    public void setIdObat(String idObat) {
+        this.idObat = idObat;
+    }
+
+    public String getTipePelayanan() {
+        return tipePelayanan;
+    }
+
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
+    }
 
     private List<TransaksiObatDetail> listDetailObatNonRacikk;
     private List<ObatRacik> listNamaObatRacik = new ArrayList<>();

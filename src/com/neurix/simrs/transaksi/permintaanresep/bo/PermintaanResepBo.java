@@ -20,4 +20,6 @@ public interface PermintaanResepBo {
     public ImSimrsPermintaanResepEntity getEntityPermintaanResepById(String id) throws GeneralBOException;
     public List<PermintaanResep> getListResepPasien(String noCheckup, String jenis) throws GeneralBOException;
     public List<PermintaanResep> getListResepTerakhirByIdPelayanan(String idPasien, String idPelayanan) throws GeneralBOException;
+    public List<PermintaanResep> getListResepTerakhirByIdApproval(String idApproval) throws GeneralBOException;
+    public String getTipePelayananOfIdDetailCheckup(String idDetailCheckup) throws GeneralBOException;
 }

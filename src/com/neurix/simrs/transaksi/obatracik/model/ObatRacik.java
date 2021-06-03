@@ -14,6 +14,15 @@ public class ObatRacik {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String warna;
+
+    public String getWarna() {
+        return warna;
+    }
+
+    public void setWarna(String warna) {
+        this.warna = warna;
+    }
 
     public String getId() {
         return id;

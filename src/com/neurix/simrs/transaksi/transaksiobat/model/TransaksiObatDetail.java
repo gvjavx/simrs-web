@@ -114,6 +114,15 @@ public class TransaksiObatDetail extends BaseModel {
     private String kAdmin;
     private String kFarma;
     private String kKritis;
+    private String warna;
+
+    public String getWarna() {
+        return warna;
+    }
+
+    public void setWarna(String warna) {
+        this.warna = warna;
+    }
 
     public String getkAdmin() {
         return kAdmin;

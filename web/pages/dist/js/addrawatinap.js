@@ -5,11 +5,31 @@ function getJenisResep(id) {
     strSelect = "";
     var arBodyJenisResep = [];
     if (jenisPeriksaPasien == "rekanan") {
-        arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS"}, {"nilai": "rekanan", "label": "Rekanan"});
+        if (isBpjsRekanan == "Y") {
+            arBodyJenisResep.push({
+                "nilai": "bpjs",
+                "label": "BPJS"
+            });
+            arBodyJenisResep.push({
+                "nilai": "rekanan",
+                "label": "REKANAN"
+            });
+        } else {
+            arBodyJenisResep.push({
+                "nilai": "rekanan",
+                "label": "REKANAN"
+            });
+        }
     } else if (jenisPeriksaPasien == "asuransi") {
         arBodyJenisResep.push({"nilai": "asuransi", "label": "ASURANSI"}, {"nilai": "umum", "label": "UMUM"});
     } else if (jenisPeriksaPasien == "bpjs") {
         arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS"});
+    } else if (jenisPeriksaPasien == "paket_perusahaan") {
+        arBodyJenisResep.push({"nilai": "paket_perusahaan", "label": "Medical Checkup"});
+    } else if (jenisPeriksaPasien == "paket_individu") {
+        arBodyJenisResep.push({"nilai": "paket_individu", "label": "Promo"});
+    } else if (jenisPeriksaPasien == "umum") {
+        arBodyJenisResep.push({"nilai": "umum", "label": "UMUM"});
     } else if (jenisPeriksaPasien == "bpjs_rekanan") {
         arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS REKANAN"});
     } else  {
@@ -21,6 +41,14 @@ function getJenisResep(id) {
         strSelect += "<option value='" + item.nilai + "'>" + item.label + "</option>";
     });
     $("#"+id).html(strSelect);
+}
+
+function cekRekakanops() {
+    CheckupAction.cekRekananOps(IdAsuransi, function (res) {
+        if (res.isBpjs != null && res.isBpjs != '') {
+            isBpjsRekanan = res.isBpjs;
+        }
+    });
 }
 
 function hitungBmi() {
@@ -73,7 +101,7 @@ function hitungCoverBiaya() {
                     var biayaTindakan = response.tarifTindakan;
 
                     var persen = "";
-                    if (coverBiaya != '' && biayaTindakan) {
+                    if (coverBiaya != '' && biayaTindakan != '') {
                         persen = ((parseInt(biayaTindakan) / parseInt(coverBiaya)) * 100).toFixed(2);
                     } else {
                         persen = 0;
@@ -123,7 +151,7 @@ function hitungStatusBiaya() {
                 $('#kode_cbg').text(response.kodeCbg);
 
                 var persen = "";
-                if (coverBiaya != '' && biayaTindakan) {
+                if (coverBiaya != null && biayaTindakan != null) {
                     persen = ((parseInt(biayaTindakan) / parseInt(coverBiaya)) * 100).toFixed(2);
                 } else {
                     persen = 0;
@@ -144,12 +172,12 @@ function hitungStatusBiaya() {
 
                 var barTindakan = '<div class="progress-bar ' + barClass + '" style="width: ' + persen + '%" role="progressbar" aria-valuenow="' + persen + '" aria-valuemin="0" aria-valuemax="100">' + persen + "%" + '</div>';
 
-                if (coverBiaya != '') {
+                if (coverBiaya != null) {
                     $('#sts_cover_biaya').html(barBpjs);
                     $('#b_bpjs').html(formatRupiah(coverBiaya) + " (100%)");
                 }
 
-                if (biayaTindakan != '') {
+                if (biayaTindakan != null) {
                     $('#sts_biaya_tindakan').html(barTindakan);
                     $('#b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
                 }
@@ -807,10 +835,29 @@ function showModal(select) {
         $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
         $('#load_obat, #warning_obat, #war_ob_jenis_obat, #war_obat, #war_qty_obat').hide();
         $('#modal-obat').modal({show: true, backdrop: 'static'});
-    } else if (select == 7) {
+    } else if (select == 7 || select == 10) {
         resetAll();
-        getJenisResep('select-jenis-resep');
-        getApotekRawatInap;
+        cekRekakanops();
+        //getApotekRawatJalan();
+        if (select == 7)
+            $('#title-resep').html("Tambah Resep Pasien");
+            $("#sec-jumlah-resep").show();
+            $("#tabel_rese_detail_racik").hide();
+            $("#tabel_rese_detail").show();
+            $("#sec-total-harga").show();
+            $("#form-nama-racik").hide();
+            $("#tipe-trans-resep").val("peritem");
+            $("#btn-save-resep-racik").hide();
+        if (select == 10){
+            $('#title-resep').html("Tambah Resep Racik");
+            $("#sec-jumlah-resep").hide();
+            $("#tabel_rese_detail").hide();
+            $("#tabel_rese_detail_racik").show();
+            $("#sec-total-harga").hide();
+            $("#form-nama-racik").show();
+            $("#tipe-trans-resep").val("racik");
+        }
+
         $('#resep_jenis_obat').val('').trigger('change');
         // $('#resep_apotek').val('').trigger('change').attr('disabled', false);
         $('#resep_nama_obat').val('').trigger('change');
@@ -818,18 +865,18 @@ function showModal(select) {
         $('#resep_qty').val('');
         $('#resep_jenis_satuan').val('biji').trigger('change');
         $('#resep_stok_box, #resep_stok_lembar, #resep_stok_biji').val('');
-        $('#body_detail').html('');
+        // $('#body_detail').html('');
         $('#desti_apotek').html('');
         $('#save_resep_head').show();
         $('#load_resep_head').hide();
         $('#desti_apotek').html('');
-        $('#resep_jenis_obat').attr("onchange", "var warn =$('#war_jenis_pasien').is(':visible'); if (warn){$('#cor_jenis_pasien').show().fadeOut(3000);$('#war_jenis_pasien').hide()}; setObatPoli(this.value)");
+        $('#resep_jenis_obat').attr("onchange", "var warn =$('#war_jenis_obat').is(':visible'); if (warn){$('#cor_jenis_obat').show().fadeOut(3000);$('#war_jenis_obat').hide()}; setObatPoli(this.value)");
         $('#resep_apotek').attr("onchange", "var warn =$('#war_rep_apotek').is(':visible'); if (warn){$('#cor_rep_apotek').show().fadeOut(3000);$('#war_rep_apotek').hide()}; setObatPoli()");
-        $('#resep_nama_obat').attr("onchange", "var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}; setStokObatApotek(this,\'\')");
+        $('#resep_nama_obat').attr("onchange", "var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}; setStokObatApotek(this, \'\')");
         $('#resep_nama_obat_serupa').attr("onchange", "var warn =$('#war_rep_obat_serupa').is(':visible'); if (warn){$('#cor_rep_obat_serupa').show().fadeOut(3000);$('#war_rep_obat_serupa').hide()}; setStokObatApotek(this, \'serupa\')");
         $('#body_detail').html('');
         $('#modal-resep-head').modal({show: true, backdrop: 'static'});
-
+        getJenisResep('select-jenis-resep');
         var option = '<option value=""> - </option>';
         dwr.engine.setAsync(true);
         CheckupAction.getListJenisObat(function (res) {
@@ -3317,7 +3364,7 @@ function saveResepObat() {
                 }
                 listDetailRacik.push(detail);
             });
-
+            //console.log(listDetailRacik);
             var stListDetailRacik = "";
             if (listDetailRacik.length > 0){
                 stListDetailRacik = JSON.stringify(listDetailRacik);
@@ -3328,6 +3375,7 @@ function saveResepObat() {
                 var racikname = {
                     "idracik":item.idracik,
                     "racik":item.namaracik,
+                    "warna":item.warna,
                     "qty":$("#qty-racik-"+item.idracik).val(),
                     "signa":$("#signa-racik-"+item.idracik).val(),
                     "kemasan":$("#kemasan-racik-"+item.idracik).val()
@@ -3417,9 +3465,13 @@ function listResepPasien() {
                     "<td>" + dateFormat + "</td>" +
                     "<td>" + idResep + "</td>" +
                     "<td>" + status + "</td>" +
-                    "<td align='center'>" +
-                    // '<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="'+pathImages+'/pages/images/icons8-create-25.png" style="cursor: pointer;">' +
-                    '<img onclick="printResep(\'' + idResep + '\')" class="hvr-grow" src="' + pathImages + '/pages/images/icons8-print-25.png" style="cursor: pointer;">' +
+                    "<td align='center'>";
+                    
+                    if (status.toLowerCase() == "selesai"){
+                        table += '<img border="0" class="hvr-grow" onclick="repeatOrderObat(\'' + item.idApprovalObat + '\')" src="'+pathImages+'/pages/images/icons8-return-25.png" style="cursor: pointer;">';
+                    }
+                    
+                table += '<img onclick="printResep(\'' + idResep + '\')" class="hvr-grow" src="' + pathImages + '/pages/images/icons8-print-25.png" style="cursor: pointer;">' +
                     "</td>" +
                     "</tr>"
             });
@@ -3724,6 +3776,7 @@ function resetAll() {
     $('#resep_qty').val('');
     $('#resep_stok_box, #resep_stok_lembar, #resep_stok_biji').val('');
     $('#body_detail').html('');
+    $('#body_detail_racik').html('');
     $('#desti_apotek').html('');
     $('#resep_jenis_obat').val('').trigger('change');
     $('#racik_racik').removeAttr('checked');
@@ -3736,8 +3789,48 @@ function resetAll() {
     $('#set_formula').text('');
     $('#set_teral').text('');
     $('#set_noretal').text('');
+    arrListNamaRacik = [];
+    arrListDetailRacik = [];
+    $("#informasi-racik").html("");
 
     resetComboObat();
+}
+
+function setObatPoli(jenis) {
+    var poli = $('#resep_apotek').val();
+    var option = "<option value=''> - </option>";
+    var jenisPasien = $('#jenis_pasien').val();
+    if (poli != '') {
+        var idPel = poli.split('|')[0];
+        var namePel = poli.split('|')[1];
+        ObatPoliAction.getSelectOptionObatByPoli(idPel, jenisPasien, jenis, idDetailCheckup, function (response) {
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qtyBox + "|" + item.qtyLembar + "|" + item.qtyBiji + "|" + item.lembarPerBox + "|" + item.bijiPerLembar + "|" + item.flagKronis + "|" + item.harga + "|" + item.idJenisObat + "'>" + item.namaObat + "</option>";
+                });
+                $('#resep_nama_obat').html(option);
+            }
+        });
+    } else {
+        $('#resep_nama_obat').html(option);
+    }
+}
+
+function setObatPoliSerupa() {
+    var jenisPasien = $('#jenis_pasien').val();
+    var selObat = $("#resep_nama_obat").val();
+    var selPelayanan = $("#resep_apotek").val();
+    var idObat = selObat.split('|')[0];
+    var idPelayanan = selPelayanan.split('|')[0];
+    var option = "<option value=''> - </option>";
+    ObatPoliAction.getSelectOptionObatByPoliKandunganSerupa(idPelayanan, jenisPasien, idObat, function (response) {
+        if (response != null) {
+            $.each(response, function (i, item) {
+                option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qtyBox + "|" + item.qtyLembar + "|" + item.qtyBiji + "|" + item.lembarPerBox + "|" + item.bijiPerLembar + "|" + item.flagKronis + "|" + item.harga + "'>" + item.namaObat + "</option>";
+            });
+            $('#resep_nama_obat_serupa').html(option);
+        }
+    });
 }
 
 function labelKronis(flag) {
@@ -3757,6 +3850,11 @@ function defaultValByJenisSatuan(name) {
     var nilai = "1";
     if (name == "biji") {
         nilai = $("#h-qty-default").val();
+        var warn = $('#war_rep_qty').is(':visible');
+        if (warn) {
+            $('#cor_rep_qty').show().fadeOut(3000);
+            $('#war_rep_qty').hide();
+        }
     }
     $("#resep_qty").val(nilai);
 
@@ -5951,6 +6049,8 @@ var arrListNamaRacik = [];
 var arrListDetailRacik = [];
 function saveObatRacikToSession(){
 
+    var warnaRacik = $('#color_racik').val();
+
     var obat = null;
     var flagSerupa = $("#flag-obat-serupa").val();
     if (flagSerupa == "Y") {
@@ -5959,6 +6059,7 @@ function saveObatRacikToSession(){
         obat = $('#resep_nama_obat').val();
     }
 
+    //alert(obat);
     var idObat = "";
     if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
         idObat = obat.split('|')[0];
@@ -5970,8 +6071,24 @@ function saveObatRacikToSession(){
     }
 
     var namaRacik   = $('#nama_racik').val();
+    if (namaRacik == ""){
+        alert("isikan nama racik");
+        return false;
+    }
+    namaRacik = namaRacik.toUpperCase();
+
     var namaRacik2  = $('#nama_racik').val();
-    var idnamaracik = namaRacik2.replace(' ', '-');
+    var idnamaracik = sisipkanStrip(namaRacik2);
+    if (idnamaracik == "") {
+        alert("isikan nama racik dengan benar");
+        return false;
+    }
+    idnamaracik = idnamaracik.toLowerCase();
+
+    if (obat == null || obat == "") {
+        alert("Pilih Obat");
+        return false;
+    }
 
     var stListSigna = "";
     var found = false;
@@ -5983,10 +6100,10 @@ function saveObatRacikToSession(){
         });
 
         if (!found){
-            arrListNamaRacik.push({"idracik": idnamaracik,"namaracik":namaRacik});
+            arrListNamaRacik.push({"idracik": idnamaracik,"namaracik":namaRacik, "warna":warnaRacik});
             arrListDetailRacik.push({ "idobat":idObat, "namaobat":namaObat, "racik":namaRacik, "idracik":idnamaracik});
         } else {
-            var founDetail = false
+            var founDetail = false;
             $.each(arrListDetailRacik, function(i,item){
                 if (item.idobat == idObat && item.idracik == idnamaracik){
                     founDetail = true;
@@ -5994,8 +6111,8 @@ function saveObatRacikToSession(){
             });
             if (!founDetail){
                 var detail = "<tr>" +
-                    "<td>"+namaObat+"<input type='hidden' id='id-"+namaRacik+"-"+idObat+"' value='"+idObat+"'/><input type='hidden' id='nama-"+namaRacik+"-"+idObat+"' value='"+namaObat+"'></td>" +
-                    "<td width='50%'><textarea id='dosis-"+namaRacik+"-"+idObat+"' class='form-control' cols='4' rows='1'></textarea></td>" +
+                    "<td>"+namaObat+"<input type='hidden' id='id-"+idnamaracik+"-"+idObat+"' value='"+idObat+"'/><input type='hidden' id='nama-"+idnamaracik+"-"+idObat+"' value='"+namaObat+"'></td>" +
+                    "<td width='50%'><textarea id='dosis-"+idnamaracik+"-"+idObat+"' class='form-control' cols='4' rows='1'></textarea></td>" +
                     "<td width='10%' align='center'>"+
                     '<img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
                     "</td>" +
@@ -6006,14 +6123,14 @@ function saveObatRacikToSession(){
             };
         }
     } else {
-        arrListNamaRacik.push({"idracik": idnamaracik,"namaracik":namaRacik});
+        arrListNamaRacik.push({"idracik": idnamaracik,"namaracik":namaRacik, "warna":warnaRacik});
         arrListDetailRacik.push({ "idobat":idObat, "namaobat":namaObat, "racik":namaRacik, "idracik":idnamaracik});
     }
 
     if (!found){
-        var table = "<div id='tabel-del-"+idnamaracik+"'><div class='box-header with-border'><i class='fa fa-file-o'></i> Obat Racik : </div>" +
-            "<table style='font-size: 13px' class='table table-bordered table-striped' width='100%' id='tabel-racik-"+idnamaracik+"'>" +
-            "<thead style='font-weight:bold;'>" +
+        var label = "<div class='box-header with-border'><i class='fa fa-file-o'></i> Obat Racik : </div>";
+        var table = "<table style='font-size: 13px; border-radius:5px;' class='table' width='100%' id='tabel-racik-"+idnamaracik+"'>" +
+            "<thead style='border-top:2px solid "+warnaRacik+"'>" +
             "<td>Nama Racik</td>" +
             "<td>Signa</td>" +
             "<td>qty</td>" +
@@ -6022,7 +6139,7 @@ function saveObatRacikToSession(){
             "</thead>" +
             "<tbody id='body-tabel-racik-"+idnamaracik+"'>"+
             "<tr>" +
-            "<td><span style='font-weight:bold;'>"+namaRacik+"</span></td>" +
+            "<td><div style='width:10px;height:10px;border-radius:50%;background-color:"+warnaRacik+";display:inline-block;'></div> <span style='font-weight:bold;'>"+namaRacik+"</span></td>" +
             "<td width='35%'><textarea class='form-control' cols='4' rows='3' id='signa-racik-"+idnamaracik+"'></textarea></td>" +
             "<td width='15%'><input type='number' class='form-control' id='qty-racik-"+idnamaracik+"'/></td>" +
             "<td><select class='form-control' id='kemasan-racik-"+idnamaracik+"'>"+
@@ -6031,38 +6148,202 @@ function saveObatRacikToSession(){
             "</select>"+
             "</td>" +
             "<td width='10%' align='center'>"+
-            '<img onclick="delRowObat(\'tabel-del-'+idnamaracik+'\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
+            '<img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
             "</td>" +
             "</tr>" +
             "<tr>" +
-            "<td id='body-detail-racik-"+idnamaracik+"' colspan='5'>" +
+            "<td id='body-detail-racik-"+idnamaracik+"' style='background-color:"+warnaRacik+"' colspan='5'>" +
             "</td>" +
             "</tr>" +
             "</tbody>"+
-            "</table>" +
-            "</div>";
+            "</table>";
 
-        $("#informasi-racik").append(table);
+            $("#informasi-racik").append(label+table);
 
-        var detail = "<div id='detail-racik-"+idnamaracik+"-"+idObat+"'><table style='font-size:13px;' id='detail-racik-"+idnamaracik+"' class='table table-bordered table-striped'>"+
-            "<thead>" +
-            "<td>Nama Obat</td>" +
-            "<td>Dosis</td>" +
-            "<td>Action</td>" +
-            "</thead>" +
-            "<tbody id='body-detail-racik-obat-"+idnamaracik+"'>"+
-            "<tr>" +
-            "<td>"+namaObat+"<input type='hidden' id='id-"+idnamaracik+"-"+idObat+"' value='"+idObat+"'/><input type='hidden' id='nama-"+idnamaracik+"-"+idObat+"' value='"+namaObat+"'/></td>" +
-            "<td width='50%'><textarea id='dosis-"+idnamaracik+"-"+idObat+"' class='form-control dosis-racik' cols='4' rows='1'></textarea></td>" +
-            "<td width='10%' align='center'>"+
-            '<img onclick="delRowObat(\'detail-racik-'+idnamaracik+'-'+idObat+'\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
-            '</tr>'+
-            "</td>" +
-            "</tr>" +
-            "</tbody>"+
-            "</table></div>";
+        var detail = "<table style='font-size:13px;' id='detail-racik-"+idnamaracik+"' class='table table-bordered table-striped'>"+
+                "<thead>" +
+                "<td>Nama Obat</td>" +
+                "<td>Dosis</td>" +
+                "<td>Action</td>" +
+                "</thead>" +
+                "<tbody id='body-detail-racik-obat-"+idnamaracik+"'>"+
+                "<tr>" +
+                "<td>"+namaObat+"<input type='hidden' id='id-"+idnamaracik+"-"+idObat+"' value='"+idObat+"'/><input type='hidden' id='nama-"+idnamaracik+"-"+idObat+"' value='"+namaObat+"'/></td>" +
+                "<td width='50%'><textarea id='dosis-"+idnamaracik+"-"+idObat+"' class='form-control dosis-racik' cols='4' rows='1'></textarea></td>" +
+                "<td width='10%' align='center'>"+
+                '<img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
+                '</tr>'+
+                "</td>" +
+                "</tr>" +
+                "</tbody>"+
+                "</table>";
 
         $("#body-detail-racik-"+idnamaracik).append(detail);
     };
+}
+
+function sisipkanStrip(nama){
+
+  var arrSplitNama = nama.split(' ');
+  var gabung = "";
+  for (var i = 0 ; i < arrSplitNama.length ; i++){    
+    if (arrSplitNama[i] != ""){
+      if (arrSplitNama.length - i == 1){
+        gabung += arrSplitNama[i];
+      } else {
+        gabung += arrSplitNama[i] + "-";
+      }
+    }  
+  }
+
+  return gabung;
+}
+
+function repeatOrderObat(idApprovalObat){
+    showModal(7);
+    PermintaanResepAction.getListResepTerakhirByIdApproval(idApprovalObat, function(res){
+        if (res.length > 0) {
+
+            var totalHarga = 0;
+            $.each(res, function(i, item){
+                if (item.listDetailObatNonRacikk.length > 0){
+                    var count = 0;
+                    var strnonracik = "";
+
+                    //console.log(item.listDetailObatNonRacikk);
+                    
+                    $.each(item.listDetailObatNonRacikk, function(i, nonracik){
+
+                        var harga = parseInt(nonracik.qtyApprove) * parseInt(nonracik.harga);
+                        
+                        strnonracik += "<tr id='"+item.idObat+"'>"+
+                           '<td>' + nonracik.namaObat +
+                            '<input type="hidden" value="' + nonracik.idObat + '" id="id_obat_' + count + '">' +
+                            '<input type="hidden" value="' + nonracik.qtyApprove + '" id="qty_' + count + '">' +
+                            '<input type="hidden" value="' + "biji" + '" id="jenis_satuan_' + count + '">' +
+                            '<input type="hidden" value="' + "umum" + '" id="jenis_resep_' + count + '">' +
+                            '<input type="hidden" value="' + "" + '" id="hari_kronis_' + count + '">' +
+                            '<textarea style="display: none" type="hidden" id="keterangan_' + count + '"></textarea>' +
+                            '<input type="hidden" id="keterangan_detail_' + count + '">' +
+                            '<input type="hidden" value="' + "" + '" id="is_racik_' + count + '">' +
+                            '<input type="hidden" value="' + "" + '" id="nama_racik_' + count + '">' +
+                            '<input type="hidden" value="' + "" + '" id="id_racik_' + count + '">' +
+                            '<input type="hidden" value="'+ "" +'" id="temp_waktu_'+count+'">'+
+                            '</td>';
+                        
+                        strnonracik +=
+                            '<td align="center">' + nonracik.qtyApprove + ' ' + "biji" + '</td>'+
+                            '<td>' +
+                            '<div id="body_ket_'+ count +'">' +
+                            '<textarea id="signa-normal-'+ count +'" rows="2" cols="4" class="form-control">'+nonracik.keterangan+'</textarea> '+
+                            '</div>' +
+                            '</td>'+
+                            '<td align="right">' + formatRupiah(harga) + '</td>';
+
+                         strnonracik +=
+                            '<td align="center"><img border="0" onclick="delRowObat(\'' + nonracik.idObat + '\',\'' + harga + '\')" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                            '</tr>';
+
+                        count ++;
+
+                        totalHarga = parseInt(totalHarga) + parseInt(harga);
+
+                    });
+                    $('#body_detail').append(strnonracik);
+                }
+
+                if (item.listNamaObatRacik.length > 0){
+                    $.each(item.listNamaObatRacik, function(i, racik){
+
+                        var namaRacik   = racik.nama;
+                        var idnamaracik = sisipkanStrip(namaRacik);
+                        var warnaRacik  = racik.warna;
+                        var kemasan     = racik.kemasan;
+                        var signaRacik  = racik.signa;
+
+                        var label = "<div class='box-header with-border'><i class='fa fa-file-o'></i> Obat Racik : </div>";
+                        var table = "<table style='font-size: 13px; border-radius:5px;' class='table' width='100%' id='tabel-racik-"+idnamaracik+"'>" +
+                            "<thead style='border-top:2px solid "+warnaRacik+"'>" +
+                            "<td>Nama Racik</td>" +
+                            "<td>Signa</td>" +
+                            "<td>qty</td>" +
+                            "<td>Kemasan</td>" +
+                            "<td>Action</td>" +
+                            "</thead>" +
+                            "<tbody id='body-tabel-racik-"+idnamaracik+"'>"+
+                            "<tr>" +
+                            "<td><div style='width:10px;height:10px;border-radius:50%;background-color:"+warnaRacik+";display:inline-block;'></div> <span style='font-weight:bold;'>"+namaRacik+"</span></td>" +
+                            "<td width='35%'><textarea class='form-control' cols='4' rows='3' id='signa-racik-"+idnamaracik+"'>"+signaRacik+"</textarea></td>" +
+                            "<td width='15%'><input type='number' class='form-control' id='qty-racik-"+idnamaracik+"'/></td>" +
+                            "<td><select class='form-control' id='kemasan-racik-"+idnamaracik+"'>"+
+                            "<option value='Capsule'>Capsule</option>"+
+                            "<option value='Puyer'>Puyer</option>"+
+                            "</select>"+
+                            "</td>" +
+                            "<td width='10%' align='center'>"+
+                            '<img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
+                            "</td>" +
+                            "</tr>" +
+                            "<tr>" +
+                            "<td id='body-detail-racik-"+idnamaracik+"' style='background-color:"+warnaRacik+"' colspan='5'>" +
+                            "</td>" +
+                            "</tr>" +
+                            "</tbody>"+
+                            "</table>";
+
+                            $("#informasi-racik").append(label+table);
+                            $("#kemasan-racik-"+idnamaracik).val(kemasan);
+                            arrListNamaRacik.push({"idracik": idnamaracik,"namaracik":namaRacik});
+
+                        var detail = "<table style='font-size:13px;' id='detail-racik-"+idnamaracik+"' class='table table-bordered table-striped'>"+
+                            "<thead>" +
+                            "<td>Nama Obat</td>" +
+                            "<td>Dosis</td>" +
+                            "<td>Action</td>" +
+                            "</thead>" +
+                            "<tbody id='body-detail-racik-obat-"+idnamaracik+"'>"+
+                            "</tbody>"+
+                            "</table>";
+
+                        $("#body-detail-racik-"+detailracik.idRacik).append(detail);
+    
+                });
+
+
+                    $.each(item.listDetailObatRacik, function(i, detailracik){
+                        var detail = "<tr>" +
+                                    "<td>"+detailracik.namaObat+"<input type='hidden' id='id-"+detailracik.idRacik+"-"+detailracik.idObat+"' value='"+detailracik.idObat+"'/><input type='hidden' id='nama-"+detailracik.idRacik+"-"+detailracik.idObat+"' value='"+detailracik.namaObat+"'></td>" +
+                                    "<td width='50%'><textarea id='dosis-"+detailracik.idRacik+"-"+detailracik.idObat+"' class='form-control' cols='4' rows='1'></textarea></td>" +
+                                    "<td width='10%' align='center'>"+
+                                    '<img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
+                                    "</td>" +
+                                    "</tr>";
+
+                        $("#body-detail-racik-obat-"+detailracik.idRacik).append(detail);
+                        arrListDetailRacik.push({ "idobat":idObat, "namaobat":detailracik.namaObat, "racik":detailracik.namaRacik, "idracik":detailracik.idRacik});
+                    });
+                }
+            });
+
+            // total harga
+            //alert(totalHarga);
+            $("#total_harga_obat").val(formatRupiah(totalHarga));
+        }
+    });
+}
+
+function getApotekRawatJalan() {
+   CheckupAction.getComboApotekList(function (res) {
+       if (res.length == 1){
+           $("#body-apotek").html("");
+           var str = "";
+           $.each(res, function (i, item) {
+               str += "<input type='text' class='form-control' value='"+item.namaPelayanan+"' disabled/>" +
+                   "<input type='hidden' id='resep_apotek' value='"+item.idPelayanan+"' />";
+           });
+           $("#body-apotek").html(str);
+           setObatPoli();
+       };
+   })
 }
 

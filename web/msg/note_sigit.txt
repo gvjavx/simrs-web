@@ -1874,3 +1874,10 @@ ADD COLUMN parent_id VARCHAR(30);
     ADD COLUMN kajian_kritis VARCHAR(1);
 
 --
+
+-- 2021-05-31
+
+    ALTER TABLE it_simrs_obat_racik
+    ADD COLUMN warna VARCHAR(10);
+
+--
