@@ -145,7 +145,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
     protected static transient Logger logger = Logger.getLogger(BillingSystemBoImpl.class);
 
-    private MappingJurnalDao mappingJurnalDao;
+    protected MappingJurnalDao mappingJurnalDao;
     private String userLogin;
     private Timestamp updateTime;
     private TransDao transDao;
@@ -633,16 +633,6 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                             } else if ("K".equalsIgnoreCase(posisi)) {
                                                 itemJurnalDetailEntity.setJumlahDebit(new BigDecimal(0));
                                                 itemJurnalDetailEntity.setJumlahKredit(nilai);
-
-                                                logger.error("--------------------");
-                                                logger.error("parameterCoa = " + parameterCoa);
-                                                logger.error("nilai = " + nilai);
-                                                logger.error("--------------------");
-
-                                                if (parameterCoa.equalsIgnoreCase("pph_gaji")) {
-                                                    testPphNilai = testPphNilai.add(nilai);
-
-                                                }
 
                                                 totalKredit = totalKredit.add(nilai);
                                             }

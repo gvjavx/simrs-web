@@ -288,16 +288,18 @@ public class PayrollSkalaGajiDplkPegawaiAction extends BaseMasterAction{
 
             payrollSkalaGajiDplkPegawaiBoProxy.saveAdd(payrollSkalaGajiDplkPegawai);
         }catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = payrollSkalaGajiDplkPegawaiBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
-            } catch (GeneralBOException e1) {
-                logger.error("[liburAction.saveAdd] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            logger.error("[PayrollSkalaGajiDplkPegawaiAction.saveAdd] " + e.getMessage());
+            throw new GeneralBOException(e);
+//            Long logId = null;
+//            try {
+//                logId = payrollSkalaGajiDplkPegawaiBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
+//            } catch (GeneralBOException e1) {
+//                logger.error("[liburAction.saveAdd] Error when saving error,", e1);
+//                return ERROR;
+//            }
+//            logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+//            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+//            return ERROR;
         }
 
 

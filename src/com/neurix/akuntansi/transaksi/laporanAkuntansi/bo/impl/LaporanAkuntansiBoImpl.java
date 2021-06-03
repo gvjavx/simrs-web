@@ -308,7 +308,7 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
         String posisiManagerKeuangan;
         String posisiGeneralManager;
 
-        if (branchId.equalsIgnoreCase(CommonConstant.ID_KANPUS)){
+        if (branchId.equalsIgnoreCase(CommonConstant.BRANCH_KP)){
             posisiManagerKeuangan = CommonConstant.posisiKasubbidKeuanganKp;
             posisiGeneralManager= CommonConstant.posisiKabidKeuanganKp;
             nama.setJudulGeneralManager(CommonConstant.NAMA_GENERAL_MANAGER_KP);

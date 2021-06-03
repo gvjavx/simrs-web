@@ -15,6 +15,11 @@
 <html>
 <head>
     <%@ include file="/pages/common/header.jsp" %>
+    <style>
+        .dt-center{
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -255,7 +260,7 @@
         <br>
         <br>
         <center>
-            <table id="showdata" width="80%">
+            <table id="showdata" width="95%">
                 <tr>
                     <td align="center">
                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
@@ -282,17 +287,17 @@
                                 </sj:a>
 
                             </display:column>
-                            <display:column property="pgLogTrxId" sortable="true" title="Log ID"/>
+                            <display:column property="pgLogTrxId" class="dt-center" sortable="true" title="Log ID"/>
                             <display:column property="trxId" sortable="true" title="Trx ID"/>
-                            <display:column property="tipeTrx" sortable="true" title="Tipe Transaction"/>
+                            <display:column property="tipeTrx" sortable="true" title="Tipe Trx"/>
                             <display:column property="bankName" sortable="true" title="Bank Name"/>
                             <display:column property="noVirtualAccount" sortable="true" title="No Virtual Account"/>
                             <display:column property="noRekamMedik" sortable="true" title="No Rekam Medik"/>
-                            <display:column property="stTrxAmount" sortable="true" title="Transaction Amount"/>
+                            <display:column property="stTrxAmount" sortable="true" title="Trx Amount"/>
                             <display:column property="namePerson" sortable="true" title="Person Name"/>
-                            <display:column property="status" sortable="true" title="Status"/>
-                            <display:column property="statusBank" sortable="true" title="Status Bank"/>
-                            <display:column property="channel" sortable="true" title="Channel"/>
+                            <display:column property="status" class="dt-center" sortable="true" title="Status"/>
+                            <display:column property="statusBank" class="dt-center" sortable="true" title="Status Bank"/>
+                            <display:column property="channel" class="dt-center" sortable="true" title="Channel"/>
                             <display:column property="stInvoiceDate" sortable="true" title="Inv. Date"/>
                             <display:column property="invoiceNumber" sortable="true" title="Inv. Number"/>
                             <display:column property="sentDate" sortable="true" title="Send Date"/>

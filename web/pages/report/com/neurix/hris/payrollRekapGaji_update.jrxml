@@ -1,0 +1,2231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportPayroll" language="groovy" pageWidth="1684" pageHeight="1190" orientation="Landscape" columnWidth="1662" leftMargin="11" rightMargin="11" topMargin="20" bottomMargin="20" uuid="03e04395-8f92-4fcc-a2df-614fdfb1af97">
+	<property name="ireport.zoom" value="1.3310000000000088"/>
+	<property name="ireport.x" value="1069"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="reportParams.titleReport" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Slip Gaji"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportParams.urlLogo" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:/tomcat/webapps/go-medsys/pages/images/KP.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportParams.branchId" class="java.lang.String">
+		<defaultValueExpression><![CDATA["01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportParams.bulan" class="java.lang.String">
+		<defaultValueExpression><![CDATA["01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportParams.tahun" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2021"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportParams.areaId" class="java.lang.String">
+		<defaultValueExpression><![CDATA["PT. Nusantara Medika Utama"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+       py.department_id,
+       py.department_name,
+       dept.kodering as dep_kodering,
+       py.sub_divisi,
+       py.sub_divisi_name,
+       bag.kodering as bag_kodering,
+       py.position_id,
+       py.position_name,
+
+       py.nip,
+       py.nama_pegawai,
+       concat(py.status_keluarga, '/', py.jumlah_anak) as status_keluarga,
+       py.npwp,
+       case
+         when py.tipe_pegawai_id = 'TP03' then concat(py.golongan_dapen, '/', py.masa_kerja_gol)
+         else py.golongan_name
+           end as golongan_name,
+       py.tipe_pegawai_name,
+       py.jenis_pegawai_name,
+
+       py.gaji_pokok,
+       py.tunjungan_sankhus,
+       py.tunjangan_jabatan_struktural as tunjangan_jabatan,
+       py.tunjangan_struktural,
+       py.tunjangan_fungsional,
+       py.tunjangan_peralihan,
+       (py.peralihan_gapok + py.peralihan_sankhus + py.peralihan_tunjangan) as tot_tunj_peralihan,
+       (py.tunjangan_siaga + py.tunjangan_lokal + py.tunjangan_supervisi + py.tunjangan_pemondokan) as tot_tunj_lain,
+       py.tunjangan_tambahan,
+       py.tunjangan_lembur,
+       py.tunjangan_komunikasi,
+
+       py.total_rlab,
+       py.tunjangan_dapen,
+       py.tunjangan_bpjs_ks,
+       py.tunjangan_bpjs_tk,
+
+       (py.iuran_dapen_kary + py.iuran_bpjs_ks_kary + py.total_iuran_bpjs_tk_kary) as tot_iuran_pegawai,
+       (py.iuran_kopkar + py.iuran_sp + py.iuran_piikb + py.iuran_bank_bri + py.iuran_bank_mandiri + py.iuran_infaq +
+        py.iuran_perkes_dan_obat + py.iuran_listrik + py.iuran_potongan_lain) as tot_potongan_lain,
+       py.pph_gaji,
+       py.tunjangan_pph,
+       py.total_a,
+       py.total_b,
+       py.total_c,
+       py.thp
+
+from it_hris_payroll_header head
+       left join it_hris_payroll py on py.payroll_header_id = head.payroll_header_id
+       left join it_hris_payroll_pph pph on pph.payroll_id = py.payroll_id
+       left join im_hris_department dept on dept.department_id = py.department_id
+       left join im_hris_position_bagian bag on bag.bagian_id = py.sub_divisi
+where head.bulan = $P{reportParams.bulan}
+  and head.tahun = $P{reportParams.tahun}
+  and head.branch_id = $P{reportParams.branchId}
+  and head.tipe_payroll = 'PY'
+  and head.approval_aks_flag = 'Y'
+  and head.flag = 'Y'
+order by
+  (  case
+       when dept.department_id = 'D07' then 1
+       else 2
+     end
+   ),
+py.position_id;]]>
+	</queryString>
+	<field name="department_id" class="java.lang.String"/>
+	<field name="department_name" class="java.lang.String"/>
+	<field name="dep_kodering" class="java.lang.String"/>
+	<field name="sub_divisi" class="java.lang.String"/>
+	<field name="sub_divisi_name" class="java.lang.String"/>
+	<field name="bag_kodering" class="java.lang.String"/>
+	<field name="position_id" class="java.lang.String"/>
+	<field name="position_name" class="java.lang.String"/>
+	<field name="nip" class="java.lang.String"/>
+	<field name="nama_pegawai" class="java.lang.String"/>
+	<field name="status_keluarga" class="java.lang.String"/>
+	<field name="npwp" class="java.lang.String">
+		<fieldDescription><![CDATA[Alamat Master]]></fieldDescription>
+	</field>
+	<field name="golongan_name" class="java.lang.String"/>
+	<field name="tipe_pegawai_name" class="java.lang.String"/>
+	<field name="jenis_pegawai_name" class="java.lang.String"/>
+	<field name="gaji_pokok" class="java.math.BigDecimal"/>
+	<field name="tunjungan_sankhus" class="java.math.BigDecimal"/>
+	<field name="tunjangan_jabatan" class="java.math.BigDecimal"/>
+	<field name="tunjangan_struktural" class="java.math.BigDecimal"/>
+	<field name="tunjangan_fungsional" class="java.math.BigDecimal"/>
+	<field name="tunjangan_peralihan" class="java.math.BigDecimal"/>
+	<field name="tot_tunj_peralihan" class="java.math.BigDecimal"/>
+	<field name="tot_tunj_lain" class="java.math.BigDecimal"/>
+	<field name="tunjangan_tambahan" class="java.math.BigDecimal"/>
+	<field name="tunjangan_lembur" class="java.math.BigDecimal"/>
+	<field name="tunjangan_komunikasi" class="java.math.BigDecimal"/>
+	<field name="total_rlab" class="java.math.BigDecimal"/>
+	<field name="tunjangan_dapen" class="java.math.BigDecimal"/>
+	<field name="tunjangan_bpjs_ks" class="java.math.BigDecimal"/>
+	<field name="tunjangan_bpjs_tk" class="java.math.BigDecimal"/>
+	<field name="tot_iuran_pegawai" class="java.math.BigDecimal"/>
+	<field name="tot_potongan_lain" class="java.math.BigDecimal"/>
+	<field name="pph_gaji" class="java.math.BigDecimal"/>
+	<field name="tunjangan_pph" class="java.math.BigDecimal"/>
+	<field name="total_a" class="java.math.BigDecimal"/>
+	<field name="total_b" class="java.math.BigDecimal"/>
+	<field name="total_c" class="java.math.BigDecimal"/>
+	<field name="thp" class="java.math.BigDecimal"/>
+	<variable name="sumTHP" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{thp}]]></variableExpression>
+	</variable>
+	<variable name="sumPph" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{pph_gaji}]]></variableExpression>
+	</variable>
+	<variable name="sumTotC" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_c}]]></variableExpression>
+	</variable>
+	<variable name="sumPotLain" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{tot_potongan_lain}]]></variableExpression>
+	</variable>
+	<variable name="sumIurPeg" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{tot_iuran_pegawai}]]></variableExpression>
+	</variable>
+	<variable name="sumTotB" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_b}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjPph" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_pph}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjBpjsTk" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_bpjs_tk}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjBpjsKs" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_bpjs_ks}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjDapen" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_dapen}]]></variableExpression>
+	</variable>
+	<variable name="sumTotRlab" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_rlab}]]></variableExpression>
+	</variable>
+	<variable name="sumTotGaji" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_a}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjKom" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_komunikasi}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjLembur" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_lembur}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjTamb" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_tambahan}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjLain" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{tot_tunj_lain}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjPeralihan" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{tot_tunj_peralihan}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjFung" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_fungsional}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjStruk" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_struktural}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjJab" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_jabatan}]]></variableExpression>
+	</variable>
+	<variable name="sumSankhus" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjungan_sankhus}]]></variableExpression>
+	</variable>
+	<variable name="sumGapok" class="java.math.BigDecimal" resetType="Group" resetGroup="Department" calculation="Sum">
+		<variableExpression><![CDATA[$F{gaji_pokok}]]></variableExpression>
+	</variable>
+	<variable name="sumTHP_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{thp}]]></variableExpression>
+	</variable>
+	<variable name="sumPph_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{pph_gaji}]]></variableExpression>
+	</variable>
+	<variable name="sumTotC_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_c}]]></variableExpression>
+	</variable>
+	<variable name="sumPotLain_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{tot_potongan_lain}]]></variableExpression>
+	</variable>
+	<variable name="sumIurPeg_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{tot_iuran_pegawai}]]></variableExpression>
+	</variable>
+	<variable name="sumTotB_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_b}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjPph_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_pph}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjBpjsTk_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_bpjs_tk}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjBpjsKs_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_bpjs_ks}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjDapen_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_dapen}]]></variableExpression>
+	</variable>
+	<variable name="sumTotRlab_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_rlab}]]></variableExpression>
+	</variable>
+	<variable name="sumTotGaji_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_a}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjKom_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_komunikasi}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjLembur_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_lembur}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjTamb_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_tambahan}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjLain_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{tot_tunj_lain}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjPeralihan_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{tot_tunj_peralihan}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjFung_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_fungsional}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjStruk_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_struktural}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjJab_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_jabatan}]]></variableExpression>
+	</variable>
+	<variable name="sumSankhus_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjungan_sankhus}]]></variableExpression>
+	</variable>
+	<variable name="sumGapok_1" class="java.math.BigDecimal" resetType="Group" resetGroup="sub_divisi" calculation="Sum">
+		<variableExpression><![CDATA[$F{gaji_pokok}]]></variableExpression>
+	</variable>
+	<variable name="sumTHP_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{thp}]]></variableExpression>
+	</variable>
+	<variable name="sumPph_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{pph_gaji}]]></variableExpression>
+	</variable>
+	<variable name="sumTotC_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_c}]]></variableExpression>
+	</variable>
+	<variable name="sumPotLain_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tot_potongan_lain}]]></variableExpression>
+	</variable>
+	<variable name="sumIurPeg_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tot_iuran_pegawai}]]></variableExpression>
+	</variable>
+	<variable name="sumTotB_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_b}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjPph_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_pph}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjBpjsTk_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_bpjs_tk}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjBpjsKs_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_bpjs_ks}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjDapen_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_dapen}]]></variableExpression>
+	</variable>
+	<variable name="sumTotRlab_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_rlab}]]></variableExpression>
+	</variable>
+	<variable name="sumTotGaji_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_a}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjKom_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_komunikasi}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjLembur_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_lembur}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjTamb_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_tambahan}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjLain_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tot_tunj_lain}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjPeralihan_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tot_tunj_peralihan}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjFung_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_fungsional}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjStruk_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_struktural}]]></variableExpression>
+	</variable>
+	<variable name="sumTunjJab_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan_jabatan}]]></variableExpression>
+	</variable>
+	<variable name="sumSankhus_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjungan_sankhus}]]></variableExpression>
+	</variable>
+	<variable name="sumGapok_1_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{gaji_pokok}]]></variableExpression>
+	</variable>
+	<group name="Department">
+		<groupExpression><![CDATA[$F{department_id}]]></groupExpression>
+		<groupHeader>
+			<band height="25">
+				<textField>
+					<reportElement x="0" y="5" width="1662" height="20" uuid="bc4e377b-eff3-4aea-85e3-53fc8e1db25e"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph leftIndent="2" rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{dep_kodering} + "       " + $F{department_name}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="20">
+				<textField>
+					<reportElement x="250" y="0" width="158" height="20" uuid="a30be691-7e75-41c8-aee9-f26231f85748"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="0.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Jumlah :"]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1491" y="0" width="57" height="20" uuid="401d9a0d-9ca3-4c38-a0d8-eca17b5234bd"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumPph}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1605" y="0" width="57" height="20" uuid="5542104e-272a-4e18-8027-44cebc8e2067"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTHP}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1548" y="0" width="57" height="20" uuid="062b8ca5-d95e-4e77-b01d-924391832b9d"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTotC}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1434" y="0" width="57" height="20" uuid="c23a3792-0bd5-485e-8d88-d078a4ec2380"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumPotLain}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1377" y="0" width="57" height="20" uuid="3bd79572-3cbc-4868-96f1-64e36fdaf708"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumIurPeg}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1320" y="0" width="57" height="20" uuid="3e7c8c4e-00eb-4435-820f-bd3d76c4ac6a"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTotB} + $V{sumTunjPph}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1263" y="0" width="57" height="20" uuid="94e50550-e500-4cdc-8069-ee7a97b467d2"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjPph}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1206" y="0" width="57" height="20" uuid="e417b9a9-c31e-4d74-bcdf-25c427004473"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjBpjsTk}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1149" y="0" width="57" height="20" uuid="2469f1a3-0fb2-4802-b78b-2ed99c841b87"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjBpjsKs}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1092" y="0" width="57" height="20" uuid="5f0c24c5-3d13-4aff-a49b-7c5ceec7f244"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjDapen}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1035" y="0" width="57" height="20" uuid="5c44729c-1b5c-4b2a-a98d-70db85f0aa91"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTotRlab}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="978" y="0" width="57" height="20" uuid="b6938ce4-bf55-4aba-8a0f-e0241b5d3588"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTotGaji}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="921" y="0" width="57" height="20" uuid="eeac2bc9-892c-41e6-a217-ef60d8d211e6"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjKom}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="864" y="0" width="57" height="20" uuid="043d8423-ffc3-4077-ad60-99a18aecccdd"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjLembur}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="807" y="0" width="57" height="20" uuid="c8ba5195-964b-4709-ad94-e6c6368b6654"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjTamb}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="750" y="0" width="57" height="20" uuid="a987ce4c-2cfb-41d9-944b-ea50ec146c88"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjLain}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="693" y="0" width="57" height="20" uuid="3a95ae76-b976-417c-a24c-b782019c08b4"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjPeralihan}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="636" y="0" width="57" height="20" uuid="3c4ede8a-3f2f-4a8c-acbf-5010745ffe2f"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjFung}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="579" y="0" width="57" height="20" uuid="bd6b30fb-6164-4dc9-9ee2-f7d0ccddd30a"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjStruk}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="522" y="0" width="57" height="20" uuid="06602c61-dfdb-4173-b995-b0cd09795c70"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjJab}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="465" y="0" width="57" height="20" uuid="b00d5152-589d-405e-8fd9-f249c987b084"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumSankhus}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="408" y="0" width="57" height="20" uuid="826ab5cc-e766-42ea-9f55-f819b87ec144"/>
+					<box>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumGapok}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="0" width="250" height="20" uuid="df94ce51-2044-4ee6-b265-fadd6e91eb19"/>
+					<box>
+						<pen lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineStyle="Dashed"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph leftIndent="75"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{department_name}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="sub_divisi">
+		<groupExpression><![CDATA[$F{sub_divisi_name}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement x="0" y="0" width="1662" height="20" uuid="b9f61868-e0e2-4843-8b0d-b5f017b4136b"/>
+					<box>
+						<pen lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph leftIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{bag_kodering} + " " + $F{sub_divisi_name}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="20">
+				<textField>
+					<reportElement x="250" y="0" width="158" height="20" uuid="84ead363-c148-4297-b2a9-a502947f0d38"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="0.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Jumlah :"]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="408" y="0" width="57" height="20" uuid="8f9ef461-1154-4b05-b851-ce3ea7ee941b"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumGapok_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="465" y="0" width="57" height="20" uuid="b5964321-7525-4703-803d-97656d1ac143"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumSankhus_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="522" y="0" width="57" height="20" uuid="f3145d9e-f640-40d8-9741-f2157d1b3b43"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjJab_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="579" y="0" width="57" height="20" uuid="b3c6bd35-d85a-41f5-be8a-3482844a4236"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjStruk_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="636" y="0" width="57" height="20" uuid="5301c74f-4262-4878-a20e-3d1b7ccb8093"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjFung_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="693" y="0" width="57" height="20" uuid="ae73cc6d-fc01-4573-ba84-3864eaf163bb"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjPeralihan_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="750" y="0" width="57" height="20" uuid="9674b0f3-f858-496b-b409-f0bd3311de42"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjLain_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="807" y="0" width="57" height="20" uuid="b225cb0f-b9e9-4d21-b3e0-26b818af223b"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjTamb_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="864" y="0" width="57" height="20" uuid="50ab75c7-f9b9-4e35-ab04-733be93ceaae"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjLembur_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="921" y="0" width="57" height="20" uuid="95a804e7-da66-415a-bdc4-c2379fbdc937"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjKom_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="978" y="0" width="57" height="20" uuid="62fa716b-e60e-4301-b12e-797f181a376b"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTotGaji_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1035" y="0" width="57" height="20" uuid="74fc5734-3dc1-4274-91f2-87de7a1a5f9f"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTotRlab_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1092" y="0" width="57" height="20" uuid="424c9771-2f7f-4bee-9095-49e32ede3b39"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjDapen_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1149" y="0" width="57" height="20" uuid="55cdc5ab-520d-4a66-88c3-ca3bea0f1ddd"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjBpjsKs_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1206" y="0" width="57" height="20" uuid="16109fb3-5441-4830-a5d0-7924b197b66d"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjBpjsTk_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1320" y="0" width="57" height="20" uuid="3a0aad90-c8c8-474f-9a05-5e869a7ef0bb"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTotB_1} + $V{sumTunjPph_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1263" y="0" width="57" height="20" uuid="dec0433e-ca6d-4a4f-877b-92179e011add"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTunjPph_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1377" y="0" width="57" height="20" uuid="5a7010bf-3d37-4f3c-910e-9efa2e5d6532"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumIurPeg_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1434" y="0" width="57" height="20" uuid="8b1f8e63-989c-42a9-9596-71bb03bbfa04"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumPotLain_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1548" y="0" width="57" height="20" uuid="9d2ac335-1169-4f02-a8a3-51c6e4ce5b1a"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTotC_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1491" y="0" width="57" height="20" uuid="9a9a61dd-07a8-461a-8dac-a656aef9da16"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumPph_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="1605" y="0" width="57" height="20" uuid="c5998eaf-b66e-44e9-b2ed-de006c0cc895"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph rightIndent="2"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumTHP_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,###">
+					<reportElement x="0" y="0" width="250" height="20" uuid="264c1a81-d346-4bb8-97b9-707f5361ad7e"/>
+					<box>
+						<pen lineStyle="Dashed"/>
+						<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+						<rightPen lineStyle="Dashed"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph leftIndent="75"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{sub_divisi_name}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="86" splitType="Stretch">
+			<textField>
+				<reportElement x="521" y="26" width="616" height="20" uuid="5bfdc8fc-59c4-42b5-8579-5cc62b1605f4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.titleReport}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="334" y="9" width="95" height="50" uuid="376b08aa-3cfe-4075-91a3-b0e3108616e6"/>
+				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="1176" y="0" width="69" height="70" uuid="6bf70d05-1188-4147-8ec4-76491bcee78c"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
+new com.google.zxing.qrcode.QRCodeWriter().encode(
+"periode : " + $P{reportParams.bulan} + " - " + $P{reportParams.tahun},
+com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="334" y="61" width="187" height="20" uuid="d0bb7042-51fe-4206-8d1d-29c5553124a9"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{reportParams.areaId}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="745" y="50" width="168" height="20" uuid="bbdd4b37-8136-4459-bb4d-29bff5ac6968"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Periode : " + $P{reportParams.bulan} + " - " + $P{reportParams.tahun}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="40">
+			<staticText>
+				<reportElement x="0" y="0" width="70" height="40" uuid="aa9c71ad-a34c-42e1-8d54-36c94a420c70"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NIP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="0" width="120" height="40" uuid="dbe01261-ebf0-454a-be6d-a5a97dc78fd4"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama Pegawai]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="0" width="120" height="40" uuid="8bbf463f-3e53-42d6-89ed-124637db648f"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jabatan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="408" y="0" width="57" height="40" uuid="d4a3ed97-06ef-4f6d-bf36-b7316e6dbb28"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gaji Pokok]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="465" y="0" width="57" height="40" uuid="8e34e525-c1e5-4a18-b657-518f40f2f28a"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sankhus]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="522" y="0" width="57" height="40" uuid="15706db1-f649-4065-becf-69399d61bb0c"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunj. Jabatan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="579" y="0" width="57" height="40" uuid="b53f5873-401c-4a70-b0b2-eedca45046f7"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunj. Struktural]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="636" y="0" width="57" height="40" uuid="678c3a45-1654-49eb-93c5-a902daf40bc2"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunj. Fungsional]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="693" y="0" width="57" height="40" uuid="796cd938-cc5e-4a91-b5e9-639b45869bcb"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Tunj. Peralihan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="864" y="0" width="57" height="40" uuid="25df80fb-7d63-4169-b7e8-38142595575c"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunj. Lembur]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="807" y="0" width="57" height="40" uuid="ab8259fa-b253-481a-9b46-260e58cc0db2"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunj. Tambahan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="750" y="0" width="57" height="40" uuid="570477b2-721d-4fae-bed2-72beeec83f85"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Tunj. Lain]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1035" y="0" width="57" height="40" uuid="45c2aa0d-5a04-408e-b058-3c9878efcdbb"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tot. RLAB]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="921" y="0" width="57" height="40" uuid="0f2dd5a0-1db9-48df-b058-da8f908066ea"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunj. Komunikasi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1092" y="0" width="57" height="40" uuid="33aac2a6-21c5-4987-8233-0f6ae03262f9"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunj. Dapen]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1149" y="0" width="57" height="40" uuid="dbf2eee1-5203-4988-b730-f11ff805c081"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunj. BPJS Ks]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1206" y="0" width="57" height="40" uuid="b15af1ed-148b-4552-bbba-9193d3507e1c"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunj. BPJS Tk]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1377" y="0" width="57" height="40" uuid="e42b2aa4-b5e6-45a5-b332-a300a46b6f6b"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tot. Iuran Pegawai]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1434" y="0" width="57" height="40" uuid="aaee916b-4d1a-43e6-a61f-e5322bfd9740"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tot. Potongan Lain]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1605" y="0" width="57" height="40" uuid="1395a55d-c297-405e-a45d-49e8658a028c"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[THP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="0" width="38" height="40" uuid="8cd3e1a1-0be5-45ca-b2b5-d9f34f3953be"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gol.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1491" y="0" width="57" height="40" uuid="bee85a86-0653-4c9c-85a5-4ff3acef3e24"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Potongan Pph]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1548" y="0" width="57" height="40" uuid="b577acf6-053d-4600-9f9e-91252f3986e5"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Potongan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1320" y="0" width="57" height="40" uuid="e0adad1d-ecc3-442f-a046-89a6f120372a"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Tunj. RLAB dan Sansos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="978" y="0" width="57" height="40" uuid="7a6c261b-6fec-440d-b7b9-5337eb51e27c"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Gaji Kotor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="348" y="0" width="60" height="40" uuid="d5a277e7-9fbf-449a-a3c3-250eaa4c8b45"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipe Pegawai]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1263" y="0" width="57" height="40" uuid="dbdd370c-7e39-4a3f-80b2-c15b3919ae1c"/>
+				<box bottomPadding="2">
+					<pen lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tunj. Pph]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="70" height="20" uuid="a411ac57-aa12-4a76-851c-740998512c83"/>
+				<box leftPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="4" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nip}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="0" width="120" height="20" uuid="197e3b66-9946-4ccc-a68f-8007a07f1d2f"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="4" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nama_pegawai}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="190" y="0" width="120" height="20" uuid="25bef709-04cd-4d1b-9900-3655e07e9c85"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="4" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{position_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="310" y="0" width="38" height="20" uuid="415d3bbc-e551-49d8-bf56-ef9995d6ba9c"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="4" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{golongan_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="408" y="0" width="57" height="20" uuid="39a7f585-b058-4950-8882-892499c59230"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gaji_pokok}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="465" y="0" width="57" height="20" uuid="abe87e5b-7787-491b-826d-4e0d8285153a"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjungan_sankhus}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="522" y="0" width="57" height="20" uuid="0d0c2674-026f-45bb-aaee-f6d43c45a7df"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_jabatan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="579" y="0" width="57" height="20" uuid="a321fe9a-2181-4ca2-80d5-64c9d311f57f"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_struktural}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="636" y="0" width="57" height="20" uuid="bd2e1e9b-16da-482b-b549-0ea1d63aea0b"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_fungsional}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="693" y="0" width="57" height="20" uuid="a7a8fc21-b97c-49ff-9395-502139c726c6"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tot_tunj_peralihan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="864" y="0" width="57" height="20" uuid="b4ea3c2c-076b-484f-a54e-836d087ba9cf"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_lembur}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="807" y="0" width="57" height="20" uuid="e030de0d-88d5-43ac-b4b0-c927ecbb32c5"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_tambahan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="921" y="0" width="57" height="20" uuid="1ee5e305-5f81-4f32-9fe7-a9b78e025e4f"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_komunikasi}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="750" y="0" width="57" height="20" uuid="73f5b241-426f-498f-8cde-b33bbfaefc3b"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tot_tunj_lain}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="1035" y="0" width="57" height="20" uuid="a0aeef83-f412-4e7d-980d-4de6af82ac74"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_rlab}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="1092" y="0" width="57" height="20" uuid="6715cd22-40da-458c-8e23-e4f34d9d3bce"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_dapen}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="1149" y="0" width="57" height="20" uuid="4a5976e3-e4db-424a-bc93-d4bb99856260"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_bpjs_ks}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="1206" y="0" width="57" height="20" uuid="83afb0b1-a8eb-48a4-816b-d959328e2a4f"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_bpjs_tk}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="1377" y="0" width="57" height="20" uuid="6dc168a3-bdad-4df6-ac97-b16502685196"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tot_iuran_pegawai}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="1434" y="0" width="57" height="20" uuid="93597908-beef-430c-8ea4-3f76979673b7"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tot_potongan_lain}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="1491" y="0" width="57" height="20" uuid="ad4675c0-5391-4687-8ea3-3d31891d435a"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pph_gaji}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="1605" y="0" width="57" height="20" uuid="4a98f55e-9584-4465-89e3-a5e164944b12"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{thp}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="348" y="0" width="60" height="20" uuid="96030024-bd42-4135-9d3e-6bb1dfaf679e"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipe_pegawai_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="978" y="0" width="57" height="20" uuid="eb0d0b28-30ef-49ae-9d2e-d90364d4ccf7"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_a}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="1320" y="0" width="57" height="20" uuid="81e98ae8-a605-4916-821d-a7dcf85d4217"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_b}+$F{tunjangan_pph}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="1263" y="0" width="57" height="20" uuid="479d3a40-3945-488d-a410-4e8cf94b6c12"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tunjangan_pph}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="1548" y="0" width="57" height="20" uuid="24c85d85-d089-4445-aa06-bc97c3c999f7"/>
+				<box rightPadding="3">
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_c}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="26">
+			<textField pattern="###,###">
+				<reportElement x="1605" y="6" width="57" height="20" uuid="594d4b76-3239-4cb5-ad1c-c668a618ace3"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumTHP_1_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="1548" y="6" width="57" height="20" uuid="d47a18b0-d266-410c-958c-1c6a3d69539f"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumTotC_1_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="408" y="6" width="57" height="20" uuid="98b6872d-9a99-4787-a3ff-abee5a7ce5c1"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumGapok_1_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="465" y="6" width="57" height="20" uuid="970eb762-ab56-4a9c-a419-71b36fe58fb4"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumSankhus_1_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="522" y="6" width="57" height="20" uuid="4678f758-ff99-439d-8f72-7b18d7454561"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumTunjJab_1_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="579" y="6" width="57" height="20" uuid="54c98a3d-b62e-4db3-8310-d9799eafa38a"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumTunjStruk_1_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="636" y="6" width="57" height="20" uuid="f2d59dfa-4125-4dbd-98b3-a8b03de34153"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumTunjFung_1_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="693" y="6" width="57" height="20" uuid="ae011b89-b005-4ef7-b0a1-b1567d112204"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumTunjPeralihan_1_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="750" y="6" width="57" height="20" uuid="6491785c-d4a8-4154-8860-c5e45f020a95"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumTunjLain_1_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="807" y="6" width="57" height="20" uuid="efdf3b8d-33ce-4ecf-932d-353b0b9e6c2d"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumTunjTamb_1_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="864" y="6" width="57" height="20" uuid="4981cc19-e4c5-4eb2-94be-879ab4795c0d"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumTunjLembur_1_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="921" y="6" width="57" height="20" uuid="0f5f9a18-8ffa-4d1b-bd35-9d09bae46768"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumTunjKom_1_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="978" y="6" width="57" height="20" uuid="f89faae8-ac66-4c05-8f43-1e9ca3cd9ed1"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumTotGaji_1_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="1035" y="6" width="57" height="20" uuid="86fa3213-50b2-4451-85f0-276b0c1f2674"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumTotRlab_1_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="1092" y="6" width="57" height="20" uuid="5c5047f9-5344-4c73-ba0a-7f263b7dafbe"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumTunjDapen_1_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="1149" y="6" width="57" height="20" uuid="6a0c53c2-5ceb-43a4-915b-7d2834aee0bb"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumTunjBpjsKs_1_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="1206" y="6" width="57" height="20" uuid="9c992f47-2cd8-428d-abb7-56cd7dc9f3e4"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumTunjBpjsTk_1_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="1263" y="6" width="57" height="20" uuid="1f182ec6-17c7-4018-a9fd-abd1ef8bbbd5"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumTunjPph_1_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="1320" y="6" width="57" height="20" uuid="f2cac25e-66a3-4528-a912-4d7d7dbd774b"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumTotB_1_2} + $V{sumTunjPph_1_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="1377" y="6" width="57" height="20" uuid="e86105cf-5ae1-4fd0-9382-ed98e68f7e69"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumIurPeg_1_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="1434" y="6" width="57" height="20" uuid="80fc47b7-c18e-42ca-83fd-07d9ec7ebe36"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumPotLain_1_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###">
+				<reportElement x="1491" y="6" width="57" height="20" uuid="ddd65ec5-0106-47d1-b1a1-a1829f82e3cd"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumPph_1_2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="6" width="408" height="20" uuid="1ee915f7-e786-406c-a13d-64882a2f0966"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Jumlah Keseluruhan :"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

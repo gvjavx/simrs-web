@@ -785,6 +785,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
                 logger.error("[cutiPegawaiAction.cekTahunCuti] Error when saving error,", e1);
             }
             logger.error("[cutiPegawaiAction.cekTahunCuti] Error when get data cuti," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+            throw new GeneralBOException(e);
         }
 
         logger.info("[cutiPegawaiAction.cekNipCuti] end process <<<");

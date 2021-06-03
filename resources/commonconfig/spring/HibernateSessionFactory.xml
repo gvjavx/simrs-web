@@ -16,7 +16,6 @@
     <!--</list>-->
     <!--</property>-->
 
-
     <bean id="sessionFactory"
           class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"
           p:dataSource-ref="dataSource">
@@ -318,6 +317,8 @@
                 <value>sshconfig/com/neurix/simrs/master/operatorlab/hibernate/ImSimrsOperatorLabEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/ruangan/hibernate/MtSimrsRuanganEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/pasien/hibernate/imSimrsPasienEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/pasien/hibernate/ImSimrsPasienSementaraEntity.hbm.xml</value>
+
                 <value>sshconfig/com/neurix/simrs/master/pelayanan/hibernate/ImSimrsPelayananEntitiy.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/pelayanan/hibernate/ImSimrsPoliSpesialisEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/spesialis/hibernate/ImSimrsSpesialisEntity.hbm.xml</value>

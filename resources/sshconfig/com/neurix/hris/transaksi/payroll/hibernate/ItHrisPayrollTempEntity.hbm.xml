@@ -485,6 +485,16 @@
             <column name="last_update" sql-type="timestamp" />
         </property>
 
+        <property name="flagKoreksi">
+            <column name="flag_koreksi" sql-type="varchar"/>
+        </property>
+        <property name="noteKoreksi">
+            <column name="note_koreksi" sql-type="varchar"/>
+        </property>
+        <property name="dasarBpjs">
+            <column name="dasar_bpjs" sql-type="numeric(15,2)" precision="15" scale="2"/>
+        </property>
+
         <set name="itHrisPayrollPphTemp" inverse="true" lazy="true" fetch="select" cascade="all" >
             <key>
                 <column name="payroll_temp_id" not-null="true"/>

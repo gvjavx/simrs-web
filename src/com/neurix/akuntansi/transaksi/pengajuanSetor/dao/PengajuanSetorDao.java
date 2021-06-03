@@ -382,7 +382,7 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
                 .add(Restrictions.eq("tahun", tahun))
                 .add(Restrictions.eq("bulan", bulan))
                 .add(Restrictions.eq("cancelFlag", "N"))
-                .add(Restrictions.ne("branchId", CommonConstant.ID_KANPUS))
+                .add(Restrictions.ne("branchId", CommonConstant.BRANCH_KP))
                 .add(Restrictions.eq("approvalFlag", "Y"))
                 .add(Restrictions.eq("tipePengajuanSetor", "PPN"))
                 .add(Restrictions.eq("flag", "Y"))

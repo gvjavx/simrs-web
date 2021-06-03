@@ -65,7 +65,7 @@ public class GenerateBoLog<T> {
             businessObjectLog.setId(logId);
             businessObjectLog.setModuleMethod(moduleMethod);
             businessObjectLog.setMessage(message);
-            businessObjectLog.setBranchId(CommonConstant.ID_KANPUS);
+            businessObjectLog.setBranchId(CommonConstant.BRANCH_KP);
             businessObjectLog.setUserId("Cron");
             businessObjectLog.setErrorTimestamp(new Timestamp(System.currentTimeMillis()));
 

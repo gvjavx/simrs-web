@@ -1834,54 +1834,45 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             Date tanggal = new Date(System.currentTimeMillis());
 
             try{
-                lamaKerja = biodataDao.lamaTahunKerja(tanggal,nip);
+                if(cutiId.equalsIgnoreCase(CommonConstant.CUTI_TAHUNAN)) {
+                    lamaKerja = biodataDao.lamaTahunMasukKerja(tanggal, nip);
+                }else{
+                    lamaKerja = biodataDao.lamaTahunAktifKerja(tanggal, nip);
+                }
             }catch (HibernateException e){
                 logger.error("[CutiPegawaiBoImpl.getComboSisaCutiPegawaiWithCriteria] Error, " + e.getMessage());
                 throw new GeneralBOException("gagal menghitung Lama Tahun Kerja, " + e.getMessage());
             }
 
-            ImBiodataEntity biodataEntity;
-            try {
-                biodataEntity = biodataDao.getById("nip", nip);
-            } catch (HibernateException e) {
-                logger.error("[CutiPegawaiBoImpl.saveAddCuti] Error :, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
-            }
+            CutiPegawai itemComboCutiPegawai = new CutiPegawai();
+            itemComboCutiPegawai.setSisaCutiHari(BigInteger.valueOf(0));
+            itemComboCutiPegawai.setCutiId(cutiId);
 
+            ImCutiEntity cuti;
+            Boolean canCuti = false;
             if(cutiId.equalsIgnoreCase(CommonConstant.CUTI_TAHUNAN)) {
-//                Calendar c = Calendar.getInstance();
-//                java.util.Date tanggalSekarang = new java.util.Date(c.getTimeInMillis());
-//                c.setTime(tanggalSekarang);
-//                int year1 = c.get(Calendar.YEAR);
-//
-//                Calendar d = Calendar.getInstance();
-//                java.util.Date tanggalAktif = new java.util.Date(c.getTimeInMillis());
-//                if (biodataEntity != null && biodataEntity.getTanggalMasuk() != null) {
-//                    tanggalAktif = new java.util.Date(biodataEntity.getTanggalMasuk().getTime());
-//                }
-//                d.setTime(tanggalAktif);
-//                int year2 = d.get(Calendar.YEAR);
-
-                CutiPegawai itemComboCutiPegawai = new CutiPegawai();
-                itemComboCutiPegawai.setSisaCutiHari(BigInteger.valueOf(0));
-                itemComboCutiPegawai.setCutiId(cutiId);
-
-//                if ((year1 - year2) > 0) {
                 if ((lamaKerja) > 0) {
-                    ImCutiEntity cuti;
-                    try {
-                        cuti = cutiDao.getById("cutiId", cutiId);
-                    } catch (HibernateException e) {
-                        logger.error("[CutiPegawaiBoImpl.getComboSisaCutiPegawaiWithCriteria] Error, " + e.getMessage());
-                        throw new GeneralBOException("Error when retrieving Cuti by ID, " + e.getMessage());
-                    }
-
-                    if (cuti != null) {
-                        itemComboCutiPegawai.setSisaCutiHari(BigInteger.valueOf(cuti.getJumlahCuti()));
-                    }
+                    canCuti = true;
                 }
-                listComboSisaCutiPegawai.add(itemComboCutiPegawai);
+            } else {
+                if ((lamaKerja) > 5) {
+                    canCuti = true;
+                }
             }
+
+            if(canCuti){
+                try {
+                    cuti = cutiDao.getById("cutiId", cutiId);
+                } catch (HibernateException e) {
+                    logger.error("[CutiPegawaiBoImpl.getComboSisaCutiPegawaiWithCriteria] Error, " + e.getMessage());
+                    throw new GeneralBOException("Error when retrieving Cuti by ID, " + e.getMessage());
+                }
+
+                if (cuti != null) {
+                    itemComboCutiPegawai.setSisaCutiHari(BigInteger.valueOf(cuti.getJumlahCuti()));
+                }
+            }
+            listComboSisaCutiPegawai.add(itemComboCutiPegawai);
         }
         logger.info("[UserBoImpl.getComboUserWithCriteria] end process <<<");
         return listComboSisaCutiPegawai;
@@ -2533,39 +2524,32 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
         List<ItCutiPegawaiEntity> itCutiPegawaiEntities = null;
 
         //RAKA-27APR2021 ==> cek selisaih tahun masuk u/ validasi dapat jatah cuti
-        ImBiodataEntity biodataEntity;
-        try {
-            biodataEntity = biodataDao.getById("nip", nip);
-        } catch (HibernateException e) {
-            logger.error("[CutiPegawaiBoImpl.saveAddCuti] Error :, " + e.getMessage());
-            throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
-        }
-
-        Calendar c = Calendar.getInstance();
-        java.util.Date tanggalSekarang = new java.util.Date(c.getTimeInMillis());
-        c.setTime(tanggalSekarang);
-        int year1 = c.get(Calendar.YEAR);
-
-        Calendar d = Calendar.getInstance();
-        java.util.Date tanggalAktif = new java.util.Date(c.getTimeInMillis());
-        if(biodataEntity != null && biodataEntity.getTanggalMasuk() != null) {
-            tanggalAktif = new java.util.Date(biodataEntity.getTanggalMasuk().getTime());
-        }
-        d.setTime(tanggalAktif);
-        int year2 = d.get(Calendar.YEAR);
-
         try {
             itCutiPegawaiEntities = cutiPegawaiDao.getSisaCutiSys(nip);
         } catch (HibernateException e) {
             logger.error("[CutiPegawaiBoImpl.sisaCutiSys] Error, " + e.getMessage());
             throw new GeneralBOException("Error when retrieving Sisa Cuti, " + e.getMessage());
         }
+
+        Integer lamaKerja = 0;
+        Date tanggal = new Date(System.currentTimeMillis());
+
         if (itCutiPegawaiEntities != null) {
             for (ItCutiPegawaiEntity itCutiPegawaiEntity : itCutiPegawaiEntities) {
+                Boolean canCuti = false;
                 CutiPegawai cutiPegawai1 = new CutiPegawai();
                 cutiPegawai1.setCutiId(itCutiPegawaiEntity.getCutiId());
                 cutiPegawai1.setCutiName(itCutiPegawaiEntity.getCutiName());
-                if((year1-year2)>0) {
+
+                if(cutiPegawai1.getCutiId().equalsIgnoreCase(CommonConstant.CUTI_TAHUNAN)){
+                    lamaKerja = biodataDao.lamaTahunMasukKerja(tanggal, nip);
+                    if(lamaKerja > 0) canCuti = true;
+                } else {
+                    lamaKerja = biodataDao.lamaTahunAktifKerja(tanggal, nip);
+                    if(lamaKerja > 5) canCuti = true;
+                }
+
+                if(canCuti == true) {
                     cutiPegawai1.setJumlahCutihari(itCutiPegawaiEntity.getJumlahCuti());
                     cutiPegawai1.setSisaCutiHari(itCutiPegawaiEntity.getSisaCutiHari());
                 }else{
@@ -2574,8 +2558,6 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 }
                 cutiPegawai.add(cutiPegawai1);
             }
-        } else {
-
         }
 
         return cutiPegawai;
@@ -2694,7 +2676,8 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
     public List<CutiPegawai> getListSetCuti(String nip) {
         List<ItCutiPegawaiEntity> cutiPegawaiEntityList = new ArrayList<>();
         List<CutiPegawai> listOfResult = new ArrayList<>();
-        CutiPegawai result = new CutiPegawai();
+        CutiPegawai cutiTahunan = new CutiPegawai();
+        CutiPegawai cutiPanjang = new CutiPegawai();
         BigInteger sisaCutiTahunan = BigInteger.valueOf(0);
         BigInteger sisaCutiPanjang = BigInteger.valueOf(0);
         try {
@@ -2716,29 +2699,25 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 sisaCutiTahunan = cutiPegawaiEntity.getSisaCutiHari();
             }
         }
-        if (sisaCutiTahunan.equals(BigInteger.valueOf(0))) {
-            try {
-                cutiPegawaiEntityList = cutiPegawaiDao.getListSisaCutiPegawai(nip, "CT006");
-            } catch (HibernateException e) {
-                logger.error("[CutiPegawaiBoImpl.getListSetCuti] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when retieving list , please info to your admin..." + e.getMessage());
-            }
 
-            for (ItCutiPegawaiEntity cutiPegawaiEntity : cutiPegawaiEntityList) {
-                sisaCutiPanjang = cutiPegawaiEntity.getSisaCutiHari();
-            }
-            if (sisaCutiPanjang.equals(BigInteger.valueOf(0))) {
-                result.setSisaCutiHari(sisaCutiTahunan);
-                result.setCutiId("CT002");
-            } else {
-                result.setSisaCutiHari(sisaCutiPanjang);
-                result.setCutiId("CT006");
-            }
-        } else {
-            result.setSisaCutiHari(sisaCutiTahunan);
-            result.setCutiId("CT002");
+        try {
+            cutiPegawaiEntityList = cutiPegawaiDao.getListSisaCutiPegawai(nip, "CT006");
+        } catch (HibernateException e) {
+            logger.error("[CutiPegawaiBoImpl.getListSetCuti] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retieving list , please info to your admin..." + e.getMessage());
         }
-        listOfResult.add(result);
+
+        for (ItCutiPegawaiEntity cutiPegawaiEntity : cutiPegawaiEntityList) {
+            sisaCutiPanjang = cutiPegawaiEntity.getSisaCutiHari();
+        }
+
+        cutiTahunan.setSisaCutiHari(sisaCutiTahunan);
+        cutiTahunan.setCutiId("CT002");
+        listOfResult.add(cutiTahunan);
+        cutiPanjang.setSisaCutiHari(sisaCutiPanjang);
+        cutiPanjang.setCutiId("CT006");
+        listOfResult.add(cutiPanjang);
+
         return listOfResult;
     }
 
