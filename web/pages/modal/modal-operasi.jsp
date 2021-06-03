@@ -685,7 +685,7 @@
                 </div>
                 <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
                     <div class="col-md-1">
-                        <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker-op  color-picker pull-left" value="#ff0000">
+                        <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker-op color-picker pull-left" value="#ff0000">
                     </div>
                     <div style="display: none">
                         <div class="col-md-9">

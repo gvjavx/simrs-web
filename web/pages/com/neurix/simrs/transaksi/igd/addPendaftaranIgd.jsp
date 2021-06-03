@@ -1884,7 +1884,7 @@
             </div>
             <div class="modal-body" style="height: 70%; overflow-y: scroll">
                 <div class="box-body">
-                    <div class="col-md-12" style="display:inline; padding-left: 6%">
+                    <div class="col-md-12 text-center" style="display:inline; padding-left: 6%">
                         <div class="btn-wrapper">
                             <div id="jadwal_dokter"></div>
                         </div>
@@ -2988,7 +2988,9 @@
 
                         var foto = contextPathHeader+'/pages/images/unknown-person2.jpg';
                         if(item.urlImg != null && item.urlImg != ''){
-                            foto = contextPathHeader+item.urlImg;
+                            if(cekImages(item.urlImg)){
+                                foto = item.urlImg;
+                            }
                         }
 
                         table += '<div id="id_box_' + i + '" class="' + clasBox + '" ' + btnSet + '>\n' +

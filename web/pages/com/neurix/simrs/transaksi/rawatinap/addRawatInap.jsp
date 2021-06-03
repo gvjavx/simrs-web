@@ -1480,7 +1480,7 @@
                                     onchange="var warn =$('#war_jenis_diagnosa').is(':visible'); if (warn){$('#cor_jenis_diagnosa').show().fadeOut(3000);$('#war_jenis_diagnosa').hide()}">
                                 <option value=""> - </option>
                                 <option value="diagnosa_awal">Diagnosa Awal</option>
-                                <option value="diagnosa_utama">Diagnosa Utama</option>
+                                <option value="diagnosa_primer">Diagnosa Primer</option>
                                 <option value="diagnosa_sekunder">Diagnosa Sekunder</option>
                             </select>
                         </div>

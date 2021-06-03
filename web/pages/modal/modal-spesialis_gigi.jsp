@@ -88,53 +88,53 @@
                         <div class="col-md-12">
                             <table class="table table-bordered" style="font-size: 12px">
                                 <tbody>
-                                <tr>
-                                    <td align="center" width="15%" style="vertical-align: middle">11 [51]</td>
-                                    <td><input class="form-control"></td>
-                                    <td><input class="form-control"></td>
-                                    <td align="center" width="15%" style="vertical-align: middle">[61] 21</td>
+                                <tr class="label_gigi">
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kiri_1">11 [51]</td>
+                                    <td><input class="form-control" id="input_kiri_1"></td>
+                                    <td><input class="form-control" id="input_kanan_1"></td>
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kanan_1">[61] 21</td>
                                 </tr>
-                                <tr>
-                                    <td align="center" width="15%" style="vertical-align: middle">12 [52]</td>
-                                    <td><input class="form-control"></td>
-                                    <td><input class="form-control"></td>
-                                    <td align="center" width="15%" style="vertical-align: middle">[62] 22</td>
+                                <tr class="label_gigi">
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kiri_2">12 [52]</td>
+                                    <td><input class="form-control" id="input_kiri_2"></td>
+                                    <td><input class="form-control" id="input_kanan_2"></td>
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kanan_2">[62] 22</td>
                                 </tr>
-                                <tr>
-                                    <td align="center" width="15%" style="vertical-align: middle">13 [53]</td>
-                                    <td><input class="form-control"></td>
-                                    <td><input class="form-control"></td>
-                                    <td align="center" width="15%" style="vertical-align: middle">[63] 23</td>
+                                <tr class="label_gigi">
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kiri_3">13 [53]</td>
+                                    <td><input class="form-control" id="input_kiri_3"></td>
+                                    <td><input class="form-control" id="input_kanan_3"></td>
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kanan_3">[63] 23</td>
                                 </tr>
-                                <tr>
-                                    <td align="center" width="15%" style="vertical-align: middle">14 [54]</td>
-                                    <td><input class="form-control"></td>
-                                    <td><input class="form-control"></td>
-                                    <td align="center" width="15%" style="vertical-align: middle">[64] 24</td>
+                                <tr class="label_gigi">
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kiri_4">14 [54]</td>
+                                    <td><input class="form-control" id="input_kiri_4"></td>
+                                    <td><input class="form-control" id="input_kanan_4"></td>
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kanan_4">[64] 24</td>
                                 </tr>
-                                <tr>
-                                    <td align="center" width="15%" style="vertical-align: middle">15 [55]</td>
-                                    <td><input class="form-control"></td>
-                                    <td><input class="form-control"></td>
-                                    <td align="center" width="15%" style="vertical-align: middle">[65] 25</td>
+                                <tr class="label_gigi">
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kiri_5">15 [55]</td>
+                                    <td><input class="form-control" id="input_kiri_5"></td>
+                                    <td><input class="form-control" id="input_kanan_5"></td>
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kanan_5">[65] 25</td>
                                 </tr>
-                                <tr>
-                                    <td align="center" width="15%" style="vertical-align: middle">16</td>
-                                    <td><input class="form-control"></td>
-                                    <td><input class="form-control"></td>
-                                    <td align="center" width="15%" style="vertical-align: middle">26</td>
+                                <tr class="label_gigi">
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kiri_6">16</td>
+                                    <td><input class="form-control" id="input_kiri_6"></td>
+                                    <td><input class="form-control" id="input_kanan_6"></td>
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kanan_6">26</td>
                                 </tr>
-                                <tr>
-                                    <td align="center" width="15%" style="vertical-align: middle">17</td>
-                                    <td><input class="form-control"></td>
-                                    <td><input class="form-control"></td>
-                                    <td align="center" width="15%" style="vertical-align: middle">27</td>
+                                <tr class="label_gigi">
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kiri_7">17</td>
+                                    <td><input class="form-control" id="input_kiri_7"></td>
+                                    <td><input class="form-control" id="input_kanan_7"></td>
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kanan_7">27</td>
                                 </tr>
-                                <tr>
-                                    <td align="center" width="15%" style="vertical-align: middle">18</td>
-                                    <td><input class="form-control"></td>
-                                    <td><input class="form-control"></td>
-                                    <td align="center" width="15%" style="vertical-align: middle">28</td>
+                                <tr class="label_gigi">
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kiri_8">18</td>
+                                    <td><input class="form-control" id="input_kiri_8"></td>
+                                    <td><input class="form-control" id="input_kanan_8"></td>
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kanan_8">28</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -153,57 +153,62 @@
                             </button>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row jarak">
+                        <div class="col-md-12">
+                            <textarea rows="3" id="keterangan_gambar" class="form-control" placeholder="Keterangan Gambar"></textarea>
+                        </div>
+                    </div>
+                    <div class="row jarak">
                         <div class="col-md-12">
                             <table class="table table-bordered" style="font-size: 12px">
                                 <tbody>
-                                <tr>
-                                    <td align="center" width="15%" style="vertical-align: middle">48</td>
-                                    <td><input class="form-control"></td>
-                                    <td><input class="form-control"></td>
-                                    <td align="center" width="15%" style="vertical-align: middle">38</td>
+                                <tr class="label_gigi">
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kiri_9">48</td>
+                                    <td><input class="form-control" id="input_kiri_9"></td>
+                                    <td><input class="form-control" id="input_kanan_9"></td>
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kanan_9">38</td>
                                 </tr>
-                                <tr>
-                                    <td align="center" width="15%" style="vertical-align: middle">47</td>
-                                    <td><input class="form-control"></td>
-                                    <td><input class="form-control"></td>
-                                    <td align="center" width="15%" style="vertical-align: middle">37</td>
+                                <tr class="label_gigi">
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kiri_10">47</td>
+                                    <td><input class="form-control" id="input_kiri_10"></td>
+                                    <td><input class="form-control" id="input_kanan_10"></td>
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kanan_10">37</td>
                                 </tr>
-                                <tr>
-                                    <td align="center" width="15%" style="vertical-align: middle">46</td>
-                                    <td><input class="form-control"></td>
-                                    <td><input class="form-control"></td>
-                                    <td align="center" width="15%" style="vertical-align: middle">36</td>
+                                <tr class="label_gigi">
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kiri_11">46</td>
+                                    <td><input class="form-control" id="input_kiri_11"></td>
+                                    <td><input class="form-control" id="input_kanan_11"></td>
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kanan_11">36</td>
                                 </tr>
-                                <tr>
-                                    <td align="center" width="15%" style="vertical-align: middle">45 [85]</td>
-                                    <td><input class="form-control"></td>
-                                    <td><input class="form-control"></td>
-                                    <td align="center" width="15%" style="vertical-align: middle">[75] 35</td>
+                                <tr class="label_gigi">
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kiri_12">45 [85]</td>
+                                    <td><input class="form-control" id="input_kiri_12"></td>
+                                    <td><input class="form-control" id="input_kanan_12"></td>
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kanan_12">[75] 35</td>
                                 </tr>
-                                <tr>
-                                    <td align="center" width="15%" style="vertical-align: middle">44 [84]</td>
-                                    <td><input class="form-control"></td>
-                                    <td><input class="form-control"></td>
-                                    <td align="center" width="15%" style="vertical-align: middle">[74] 34</td>
+                                <tr class="label_gigi">
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kiri_13">44 [84]</td>
+                                    <td><input class="form-control" id="input_kiri_13"></td>
+                                    <td><input class="form-control" id="input_kanan_13"></td>
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kanan_13">[74] 34</td>
                                 </tr>
-                                <tr>
-                                    <td align="center" width="15%" style="vertical-align: middle">43 [83]</td>
-                                    <td><input class="form-control"></td>
-                                    <td><input class="form-control"></td>
-                                    <td align="center" width="15%" style="vertical-align: middle">[73] 33</td>
+                                <tr class="label_gigi">
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kiri_14">43 [83]</td>
+                                    <td><input class="form-control" id="input_kiri_14"></td>
+                                    <td><input class="form-control" id="input_kanan_14"></td>
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kanan_14">[73] 33</td>
                                 </tr>
-                                <tr>
-                                    <td align="center" width="15%" style="vertical-align: middle">42 [82]</td>
-                                    <td><input class="form-control"></td>
-                                    <td><input class="form-control"></td>
-                                    <td align="center" width="15%" style="vertical-align: middle">[72] 32</td>
+                                <tr class="label_gigi">
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kiri_15">42 [82]</td>
+                                    <td><input class="form-control" id="input_kiri_15"></td>
+                                    <td><input class="form-control" id="input_kanan_15"></td>
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kanan_15">[72] 32</td>
                                 </tr>
-                                <tr>
-                                    <td align="center" width="15%" style="vertical-align: middle">41 [81]</td>
-                                    <td><input class="form-control"></td>
-                                    <td><input class="form-control"></td>
-                                    <td align="center" width="15%" style="vertical-align: middle">[71] 31</td>
+                                <tr class="label_gigi">
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kiri_16">41 [81]</td>
+                                    <td><input class="form-control" id="input_kiri_16"></td>
+                                    <td><input class="form-control" id="input_kanan_16"></td>
+                                    <td align="center" width="15%" style="vertical-align: middle" id="label_kanan_16">[71] 31</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -487,10 +492,21 @@
                         </div>
                     </div>
                     <div class="row jarak">
+                        <label class="col-md-3">Indikasi Rawat Inap</label>
+                        <div class="col-md-9">
+                            <select class="form-control select2" id="intruksi_asesmen_gigi_lanjut" style="width: 100%" onchange="showKetIntruksi(this.value)">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row jarak" style="display: none" id="int-ket1">
                         <div class="form-group">
-                            <label class="col-md-3">Rencana Tindak Lanjut</label>
-                            <div class="col-md-9">
-                                <textarea rows="3" id="ag8" class="form-control"/>
+                            <div class="col-md-offset-3 col-md-9">
+                                <select class="form-control select2" id="ket_asesmen_gigi_lanjut" style="width: 100%">
+                                    <option value="Preventif">Preventif</option>
+                                    <option value="Paliatif">Paliatif</option>
+                                    <option value="Kuratif">Kuratif</option>
+                                    <option value="Rehabilitatif">Rehabilitatif</option>
+                                </select>
                             </div>
                         </div>
                     </div>

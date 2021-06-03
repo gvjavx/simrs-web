@@ -1011,37 +1011,25 @@ function showModal(select) {
         $('#save_diet').attr('onclick', 'saveDiet(\'' + id + '\')').show();
         $('#load_diet, #warning_diet, #war_bentuk_diet, #war_keterangan_diet').hide();
         $('#modal-diet').modal({show: true, backdrop: 'static'});
-    } else if (select == 7 || select == 10) {
+    } else if (select == 7) {
         resetAll();
         cekRekakanops();
         getApotekRawatJalan();
-        if (select == 7)
-            $('#title-resep').html("Tambah Resep Pasien");
-            $("#sec-jumlah-resep").show();
-            $("#tabel_rese_detail_racik").hide();
-            $("#tabel_rese_detail").show();
-            $("#sec-total-harga").show();
-            $("#form-nama-racik").hide();
-            $("#tipe-trans-resep").val("peritem");
-            $("#btn-save-resep-racik").hide();
-        if (select == 10){
-            $('#title-resep').html("Tambah Resep Racik");
-            $("#sec-jumlah-resep").hide();
-            $("#tabel_rese_detail").hide();
-            $("#tabel_rese_detail_racik").show();
-            $("#sec-total-harga").hide();
-            $("#form-nama-racik").show();
-            $("#tipe-trans-resep").val("racik");
-        }
-
+        $('#btn-save-resep-normal').show();
+        $("#btn-save-resep-racik").hide();
+        $('#title-resep').html("Tambah Resep Pasien");
+        $("#sec-jumlah-resep").show();
+        $("#tabel_rese_detail_racik").hide();
+        $("#tabel_rese_detail").show();
+        $("#sec-total-harga").show();
+        $("#form-nama-racik").hide();
+        $("#tipe-trans-resep").val("peritem");
         $('#resep_jenis_obat').val('').trigger('change');
-        // $('#resep_apotek').val('').trigger('change').attr('disabled', false);
         $('#resep_nama_obat').val('').trigger('change');
         $('#resep_keterangan').val('');
         $('#resep_qty').val('');
         $('#resep_jenis_satuan').val('biji').trigger('change');
         $('#resep_stok_box, #resep_stok_lembar, #resep_stok_biji').val('');
-        // $('#body_detail').html('');
         $('#desti_apotek').html('');
         $('#save_resep_head').show();
         $('#load_resep_head').hide();
@@ -4133,6 +4121,8 @@ function savePemeriksaanPasien() {
                 CheckupDetailAction.initKeteranganKeluar(idKeterangan, function (res) {
                     if("meninggal" == res.kategori){
                         meninggal = "Y";
+                    }else{
+                        ktr = res.keterangan;
                     }
                 });
             }
@@ -4650,7 +4640,9 @@ function showJadwalDokter() {
 
                     var foto = contextPathHeader + '/pages/images/unknown-person2.jpg';
                     if (item.urlImg != null && item.urlImg != '') {
-                        foto = contextPathHeader + item.urlImg;
+                        if(cekImages(item.urlImg)){
+                            foto = item.urlImg;
+                        }
                     }
 
                     var clasBox = 'btn-trans';
@@ -5504,6 +5496,7 @@ function resetOrderPemeriksaan(){
 }
 
 function uploadPemeriksaan(){
+    $('#hidden_add').show();
     $('#btn-uploded').html('<button onclick="doneUplod()" class="btn btn-success"><i class="fa fa-cloud-upload"></i> Upload</button>');
     $('#form-uploded').hide();
     $('#ket_upload_pemeriksan_0, #upload_pemeriksan_0, #label_upload_pemeriksan_0').val('');

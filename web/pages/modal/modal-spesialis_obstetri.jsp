@@ -288,7 +288,20 @@
                     <div class="row jarak">
                         <label class="col-md-4">Indikasi Rawat Inap</label>
                         <div class="col-md-8">
-                            <input class="form-control" id="pt11">
+                            <select class="form-control select2" id="intruksi_pemeriksaan_obstetri" style="width: 100%" onchange="showKetIntruksi(this.value)">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row jarak" style="display: none" id="int-ket1">
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-8">
+                                <select class="form-control select2" id="ket_pemeriksaan_obstetri" style="width: 100%">
+                                    <option value="Preventif">Preventif</option>
+                                    <option value="Paliatif">Paliatif</option>
+                                    <option value="Kuratif">Kuratif</option>
+                                    <option value="Rehabilitatif">Rehabilitatif</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>

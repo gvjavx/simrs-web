@@ -2163,53 +2163,9 @@
                     </table>
 
                     <div id="informasi-racik">
-
-                        <%--<label id="label-racik">Nama Racik</label>--%>
-                        <%--<table class="table table-striped table-bordered" id="tabel_rese_detail_racik" style="font-size: 13px;">--%>
-                            <%--<thead>--%>
-                            <%--<td>Nama Obat</td>--%>
-                            <%--<td width="50%">Dosis</td>--%>
-                            <%--<td align="center" width="5%">Action</td>--%>
-                            <%--</thead>--%>
-                            <%--<tbody id="body_detail_racik">--%>
-                            <%--</tbody>--%>
-                        <%--</table>--%>
-
-                        <%--<div class="row">--%>
-                            <%--<div class="col-md-3">--%>
-                                <%--Signa--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-5">--%>
-                                <%--&lt;%&ndash;<button class="btn btn-sm btn-warning" onclick="showModalKeterangan('0')">Tambah</button>&ndash;%&gt;--%>
-                                <%--&lt;%&ndash;<button class="btn btn-sm btn-danger" onclick="hapusKeterangan('0')">Hapus</button>&ndash;%&gt;--%>
-                                <%--<textarea cols="100%" rows="3" class="form-control" id="signa-racik">--%>
-                            <%--</textarea>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                        <%--<div class="row">--%>
-                            <%--<div class="col-md-3">--%>
-                                <%--Qty Kemasan--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-3">--%>
-                                    <%--<input type="number" class="form-control" id="qty-kemasan-racik"/>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                        <%--<div class="row">--%>
-                            <%--<div class="col-md-3">--%>
-                                <%--Kemasan--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-3">--%>
-                                <%--<select class="form-control" id="kemasan-racik">--%>
-                                    <%--<option value="Capsule"> Capsule </option>--%>
-                                    <%--<option value="Puser"> Puyer </option>--%>
-                                <%--</select>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
                     </div>
                     <br>
                 </div>
-                <%--<div class="box-header with-border">--%>
-                <%--</div>--%>
                 <div class="row" style="margin-top: 10px">
                     <div class="form-group">
                         <div class="col-md-6">
@@ -2835,7 +2791,7 @@
                     <p id="msg_success_pemeriksaan"></p>
                 </div>
                 <div class="box-body">
-                    <div class="row">
+                    <div class="row" id="hidden_add">
                         <div class="col-md-2">
                             <div id="btn-uploded">
                                 <button onclick="doneUplod()" class="btn btn-success"><i class="fa fa-cloud-upload"></i> Upload</button>

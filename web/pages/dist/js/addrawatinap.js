@@ -826,9 +826,10 @@ function showModal(select) {
     } else if (select == 7) {
         resetAll();
         getJenisResep('select-jenis-resep');
-        getApotekRawatInap;
+        getApotekRawatInap();
+        $('#btn-save-resep-normal').show();
+        $("#btn-save-resep-racik").hide();
         $('#resep_jenis_obat').val('').trigger('change');
-        // $('#resep_apotek').val('').trigger('change').attr('disabled', false);
         $('#resep_nama_obat').val('').trigger('change');
         $('#resep_keterangan').val('');
         $('#resep_qty').val('');
@@ -1355,13 +1356,8 @@ function listDiagnosa() {
                     ket = item.keteranganDiagnosa;
                 }
                 if (item.jenisDiagnosa != null) {
-                    if (item.jenisDiagnosa == "diagnosa_awal") {
-                        jen = "Diagnosa Awal";
-                    } else if (item.jenisDiagnosa == "diagnosa_utama") {
-                        jen = "Diagnosa Utama";
-                    } else {
-                        jen = "Diagnosa Sekunder";
-                    }
+                    jen = item.jenisDiagnosa.replace("_"," ");
+                    jen = convertSentenceCaseUp(jen);
                 }
                 table += '<tr '+blink+'>' +
                     "<td>" + dateFormat + "</td>" +
@@ -5681,6 +5677,7 @@ function resetOrderPemeriksaan(){
 }
 
 function uploadPemeriksaan(){
+    $('#hidden_add').show();
     $('#btn-uploded').html('<button onclick="doneUplod()" class="btn btn-success"><i class="fa fa-cloud-upload"></i> Upload</button>');
     $('#form-uploded').hide();
     $('#ket_upload_pemeriksan_0, #upload_pemeriksan_0, #label_upload_pemeriksan_0').val('');
