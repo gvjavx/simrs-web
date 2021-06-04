@@ -918,6 +918,82 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-upload_pemeriksaan">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-image"></i> Upload Pemeriksaan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_pemeriksaan">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_warning_pemeriksaan"></p>
+                </div>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_pemeriksaan">
+                    <h4><i class="icon fa fa-info"></i> Warning!</h4>
+                    <p id="msg_success_pemeriksaan"></p>
+                </div>
+                <div class="box-body">
+                    <div class="row" id="hidden_add">
+                        <div class="col-md-2">
+                            <div id="btn-uploded">
+                                <button onclick="doneUplod()" class="btn btn-success"><i class="fa fa-cloud-upload"></i> Upload</button>
+                            </div>
+                        </div>
+                        <div id="form-uploded" style="display: none">
+                            <div class="col-md-3">
+                                <input class="form-control" style="margin-top: 7px" placeholder="Keterangan" id="ket_upload_pemeriksan_0" oninput="$(this).css('border', '')">
+                            </div>
+                            <div class="col-md-7">
+                                <div class="input-group">
+                                <span class="input-group-btn">
+                                    <span class="btn btn-default btn-file">
+                                        Browse… <input accept="image/*" class="upload_pemeriksan" onchange="parseToByte('upload_pemeriksan_0', 'label_upload_pemeriksan_0', 'ket_upload_pemeriksan_0')" type="file" id="upload_pemeriksan_0">
+                                    </span>
+                                </span>
+                                    <input type="text" class="form-control" readonly id="label_upload_pemeriksan_0" style="margin-top: 7px">
+                                </div>
+                                <span style="color: red; font-size: 12px">* format file upload (.jpg/.jpeg/.png)</span>
+                            </div>
+                            <%--<div class="col-md-1">--%>
+                            <%--<button onclick="addUpload('upload_pemeriksan', 'set_upload_pemeriksan')" class="btn btn-success" style="margin-left: -20px; margin-top: 9px"><i class="fa fa-plus"></i></button>--%>
+                            <%--</div>--%>
+                        </div>
+                    </div>
+                    <div id="set_upload_pemeriksan">
+
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="carousel-pemeriksaan" class="carousel slide">
+                                <ol class="carousel-indicators" id="li_pemeriksaan">
+
+                                </ol>
+                                <div class="carousel-inner" id="item_pemeriksaan">
+
+                                </div>
+                                <a class="left carousel-control" href="#carousel-pemeriksaan" data-slide="prev">
+                                    <span class="fa fa-angle-left"></span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel-pemeriksaan" data-slide="next">
+                                    <span class="fa fa-angle-right"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="modal-temp"></div>
 
 <div class="modal fade" id="modal-confirm-rm">

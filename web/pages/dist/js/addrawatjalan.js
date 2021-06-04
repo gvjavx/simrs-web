@@ -50,9 +50,9 @@ function cekRekakanops() {
 
 function hitungBmi() {
 
-    var berat = $('#berat').val();
-    var tinggi = $('#tinggi').val();
-    var persen = "";
+    var berat = $('#fisik_berat').val();
+    var tinggi = $('#fisik_tinggi').val();
+    var persen = 0;
     var bmi = "";
     var barClass = "";
     var barLabel = "";
@@ -233,10 +233,8 @@ function saveAlergi(id) {
 }
 
 function listAlergi() {
-
     var table = "";
-    var noCheckup = $("#no_checkup").val();
-    CheckupAction.getListAlergi(noCheckup, function (response) {
+    CheckupAction.getListAlergi(idPasien, function (response) {
         if (response.length > 0) {
             $.each(response, function (i, item) {
                 table += "<tr>" +
@@ -245,8 +243,10 @@ function listAlergi() {
                     "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editAlergi(\'' + item.idAlergi + '\',\'' + item.alergi + '\', \'' + item.jenis + '\')" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer;">' + "</td>" +
                     "</tr>";
             });
+            $('#body_alergi').html(table);
+        }else{
+            $('#body_alergi').html('');
         }
-        $('#body_alergi').html(table);
     });
 }
 
@@ -1015,37 +1015,25 @@ function showModal(select) {
         $('#save_diet').attr('onclick', 'saveDiet(\'' + id + '\')').show();
         $('#load_diet, #warning_diet, #war_bentuk_diet, #war_keterangan_diet').hide();
         $('#modal-diet').modal({show: true, backdrop: 'static'});
-    } else if (select == 7 || select == 10) {
+    } else if (select == 7) {
         resetAll();
         cekRekakanops();
         getApotekRawatJalan();
-        if (select == 7)
-            $('#title-resep').html("Tambah Resep Pasien");
-            $("#sec-jumlah-resep").show();
-            $("#tabel_rese_detail_racik").hide();
-            $("#tabel_rese_detail").show();
-            $("#sec-total-harga").show();
-            $("#form-nama-racik").hide();
-            $("#tipe-trans-resep").val("peritem");
-            $("#btn-save-resep-racik").hide();
-        if (select == 10){
-            $('#title-resep').html("Tambah Resep Racik");
-            $("#sec-jumlah-resep").hide();
-            $("#tabel_rese_detail").hide();
-            $("#tabel_rese_detail_racik").show();
-            $("#sec-total-harga").hide();
-            $("#form-nama-racik").show();
-            $("#tipe-trans-resep").val("racik");
-        }
-
+        $('#btn-save-resep-normal').show();
+        $("#btn-save-resep-racik").hide();
+        $('#title-resep').html("Tambah Resep Pasien");
+        $("#sec-jumlah-resep").show();
+        $("#tabel_rese_detail_racik").hide();
+        $("#tabel_rese_detail").show();
+        $("#sec-total-harga").show();
+        $("#form-nama-racik").hide();
+        $("#tipe-trans-resep").val("peritem");
         $('#resep_jenis_obat').val('').trigger('change');
-        // $('#resep_apotek').val('').trigger('change').attr('disabled', false);
         $('#resep_nama_obat').val('').trigger('change');
         $('#resep_keterangan').val('');
         $('#resep_qty').val('');
         $('#resep_jenis_satuan').val('biji').trigger('change');
         $('#resep_stok_box, #resep_stok_lembar, #resep_stok_biji').val('');
-        // $('#body_detail').html('');
         $('#desti_apotek').html('');
         $('#save_resep_head').show();
         $('#load_resep_head').hide();
@@ -3532,29 +3520,44 @@ function saveAnamnese() {
     var nadi = $('#fisik_nadi').val();
     var rr = $('#fisik_rr').val();
     var klinis = $('#kinis').val();
-    if (auto && hetero && tensi && suhu && nadi && rr && klinis != '') {
-        if (!cekSession()) {
-            $('#save_fisik').hide();
-            $('#load_fisik').show();
-            CheckupAction.saveAnamnese(auto, hetero, noCheckup, idDetailCheckup, tensi, suhu, nadi, rr, klinis, {
-                callback: function (response) {
-                    if (response.status == "success") {
-                        $('#suc_anamnese').show().fadeOut(5000);
-                        $('#save_fisik').show();
-                        $('#load_fisik').hide();
-                        $('#msg_suc').text("Berhasil menyimpan data pemeriksaan fisik...");
-                    } else {
-                        $('#war_anamnese').show().fadeOut(5000);
-                        $('#save_fisik').show();
-                        $('#load_fisik').hide();
-                        $('#msg_war').text("Terjadi kesalahan saat penyimpanan data...!");
-                    }
-                }
-            });
+    var tinggi = $('#fisik_tinggi').val();
+    var berat = $('#fisik_berat').val();
+    var spo2 = $('#fisik_spo2').val();
+
+    if (!cekSession()) {
+        var data = {
+            'no_checkup': noCheckup,
+            'id_detail_checkup': idDetailCheckup,
+            'auto': auto,
+            'hetero': hetero,
+            'tensi': tensi,
+            'suhu': suhu,
+            'nadi': nadi,
+            'rr': rr,
+            'klinis': klinis,
+            'tinggi': tinggi,
+            'berat': berat,
+            'spo2': spo2
         }
-    } else {
-        $('#war_anamnese').show().fadeOut(5000);
-        $('#msg_war').text("Silahkan cek kembali data inputan anda...!");
+        var result = JSON.stringify(data);
+        $('#save_fisik').hide();
+        $('#load_fisik').show();
+        CheckupAction.saveAnamnese(result, {
+            callback: function (response) {
+                if (response.status == "success") {
+                    $('#suc_anamnese').show().fadeOut(5000);
+                    $('#save_fisik').show();
+                    $('#load_fisik').hide();
+                    $('#msg_suc').text("Berhasil menyimpan data pemeriksaan fisik...");
+                    hitungBmi();
+                } else {
+                    $('#war_anamnese').show().fadeOut(5000);
+                    $('#save_fisik').show();
+                    $('#load_fisik').hide();
+                    $('#msg_war').text("Terjadi kesalahan saat penyimpanan data...!");
+                }
+            }
+        });
     }
 }
 
@@ -4124,6 +4127,8 @@ function savePemeriksaanPasien() {
                 CheckupDetailAction.initKeteranganKeluar(idKeterangan, function (res) {
                     if("meninggal" == res.kategori){
                         meninggal = "Y";
+                    }else{
+                        ktr = res.keterangan;
                     }
                 });
             }
@@ -4641,7 +4646,9 @@ function showJadwalDokter() {
 
                     var foto = contextPathHeader + '/pages/images/unknown-person2.jpg';
                     if (item.urlImg != null && item.urlImg != '') {
-                        foto = contextPathHeader + item.urlImg;
+                        if(cekImages(item.urlImg)){
+                            foto = item.urlImg;
+                        }
                     }
 
                     var clasBox = 'btn-trans';
@@ -5495,6 +5502,7 @@ function resetOrderPemeriksaan(){
 }
 
 function uploadPemeriksaan(){
+    $('#hidden_add').show();
     $('#btn-uploded').html('<button onclick="doneUplod()" class="btn btn-success"><i class="fa fa-cloud-upload"></i> Upload</button>');
     $('#form-uploded').hide();
     $('#ket_upload_pemeriksan_0, #upload_pemeriksan_0, #label_upload_pemeriksan_0').val('');

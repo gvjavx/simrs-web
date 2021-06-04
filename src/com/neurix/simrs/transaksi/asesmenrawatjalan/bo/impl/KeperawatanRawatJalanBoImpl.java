@@ -229,6 +229,12 @@ public class KeperawatanRawatJalanBoImpl implements KeperawatanRawatJalanBo {
                         if ("dokter".equalsIgnoreCase(entity.getParameter())) {
                             checkup.setTtdDokter(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getJawaban());
                         }
+                        if ("nama_pasien".equalsIgnoreCase(entity.getParameter())) {
+                            checkup.setNama(entity.getJawaban());
+                        }
+                        if ("nama_dokter".equalsIgnoreCase(entity.getParameter())) {
+                            checkup.setNamaDokter(entity.getJawaban());
+                        }
                     }
                 }
             }

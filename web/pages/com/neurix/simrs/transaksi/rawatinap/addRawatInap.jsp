@@ -1480,7 +1480,7 @@
                                     onchange="var warn =$('#war_jenis_diagnosa').is(':visible'); if (warn){$('#cor_jenis_diagnosa').show().fadeOut(3000);$('#war_jenis_diagnosa').hide()}">
                                 <option value=""> - </option>
                                 <option value="diagnosa_awal">Diagnosa Awal</option>
-                                <option value="diagnosa_utama">Diagnosa Utama</option>
+                                <option value="diagnosa_primer">Diagnosa Primer</option>
                                 <option value="diagnosa_sekunder">Diagnosa Sekunder</option>
                             </select>
                         </div>
@@ -2269,7 +2269,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Edit Ruangan</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Pindah Ruangan</h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_ruangan">
@@ -2337,6 +2337,23 @@
                                id="war_ruangan_ruang"><i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_ruangan_ruang"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-8">
+                            <div class="btn-group dropdown">
+                                <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen Rawat Inap</span>
+                                </button>
+                                <button type="button" class="btn btn-primary dropdown-toggle"
+                                        data-toggle="dropdown" style="height: 34px" onclick="setRekamMedisPindah('pindah_ri','asesmen_pindah_ruangan')">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu" id="asesmen_pindah_ruangan">
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>

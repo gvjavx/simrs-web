@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printResumeRawatInap" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.7715610000000115"/>
 	<property name="ireport.x" value="19"/>
-	<property name="ireport.y" value="720"/>
+	<property name="ireport.y" value="480"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -57,7 +57,6 @@
 	<parameter name="reportParams.desa" class="java.lang.String"/>
 	<parameter name="reportParams.auto" class="java.lang.String"/>
 	<parameter name="reportParams.hetero" class="java.lang.String"/>
-	<parameter name="reportParams.diagnosaPrimer" class="java.lang.String"/>
 	<parameter name="reportParams.diagnosaSekunder" class="java.lang.String"/>
 	<parameter name="reportParams.unit" class="java.lang.String"/>
 	<parameter name="reportParams.area" class="java.lang.String"/>
@@ -88,6 +87,7 @@
 	<parameter name="catatanKlinis" class="java.lang.String"/>
 	<parameter name="keadaanPulang" class="java.lang.String"/>
 	<parameter name="kondisiPulang" class="java.lang.String"/>
+	<parameter name="diagnosaPrimer" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT id_detail_checkup FROM it_simrs_header_detail_checkup
 WHERE id_detail_checkup = $P{reportParams.idDetailCheckup}]]>
@@ -326,14 +326,6 @@ WHERE id_detail_checkup = $P{reportParams.idDetailCheckup}]]>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="94" y="298" width="287" height="40" isPrintWhenDetailOverflows="true" uuid="eca0525a-a0b6-4726-8a7e-06d60e1e0783"/>
-				<box topPadding="2" leftPadding="1"/>
-				<textElement verticalAlignment="Top" markup="html">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.diagnosaPrimer} == null ? "" : $P{reportParams.diagnosaPrimer}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="0" y="338" width="90" height="15" uuid="100fe943-4b01-4136-b23f-6fe9b19b5c70"/>
 				<textElement verticalAlignment="Middle">
@@ -743,6 +735,14 @@ WHERE id_detail_checkup = $P{reportParams.idDetailCheckup}]]>
 				</textElement>
 				<text><![CDATA[Prognosis]]></text>
 			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="94" y="298" width="288" height="40" isPrintWhenDetailOverflows="true" uuid="c988090c-930b-48b2-8d4e-611c324a0f0e"/>
+				<box topPadding="2" leftPadding="1"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.diagnosaSekunder} == null ? "" : $P{reportParams.diagnosaSekunder}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<lastPageFooter>

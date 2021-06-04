@@ -182,8 +182,8 @@ public class RingkasanPasienBoImpl implements RingkasanPasienBo {
             }
 
             if (entityList.size() > 0) {
+                String kondisiPulang = "";
                 for (ItSimrsRingkasanPasienEntity entity: entityList){
-                    String kondisiPulang = "";
                     if(entity.getTipe() != null){
                         if("tgl_keluar".equalsIgnoreCase(entity.getTipe())){
                             checkup.setStTglKeluar(entity.getJawaban());
@@ -222,23 +222,23 @@ public class RingkasanPasienBoImpl implements RingkasanPasienBo {
                                     for (String lanjut: tindak){
                                         if("Kontrol Ulang".equalsIgnoreCase(lanjut)){
                                             if(i == 0){
-                                                tindakLanjut = lanjut;
-                                            }else{
-                                                tindakLanjut = tindakLanjut + i +"."+lanjut;
+                                                tindakLanjut += "<li>"+lanjut+"</li>";
                                             }
+                                        }else{
+                                            tindakLanjut += "<li>"+ i +"."+lanjut+"</li>";
                                         }
                                         i++;
                                     }
                                     if(i > 0){
                                         int no = i+1;
-                                        tindakLanjut = tindakLanjut + no+". Bila ada keluhan sebelum kontrol. pasien dapat berobat ke fasilitas kesehatan tingkat I terdekat. Kontrol membawa : FC kartu BPJS/Asuransi, FC KTP/KK, Resume Medis/Surat Kontrol";
+                                        tindakLanjut += "<li>" + no+". Bila ada keluhan sebelum kontrol. pasien dapat berobat ke fasilitas kesehatan tingkat I terdekat. Kontrol membawa : FC kartu BPJS/Asuransi, FC KTP/KK, Resume Medis/Surat Kontrol"+"</li>";
                                         if("catatan_khusus".equalsIgnoreCase(entity.getTipe())){
                                             no = no+1;
-                                            tindakLanjut = tindakLanjut+ no+"."+entity.getJawaban();
+                                            tindakLanjut += "<li>" + no+"."+entity.getJawaban()+"</li>" ;
                                         }
                                     }
                                 }
-                                checkup.setTindakLanjut(tindakLanjut);
+                                checkup.setTindakLanjut("<ul>"+tindakLanjut+"</ul>");
                             }
                         }
                         if("prognosis".equalsIgnoreCase(entity.getTipe())){
@@ -280,8 +280,8 @@ public class RingkasanPasienBoImpl implements RingkasanPasienBo {
                             }
                         }
                     }
-                    checkup.setKondisiPulang(kondisiPulang);
                 }
+                checkup.setKondisiPulang(kondisiPulang);
             }
         }
         return checkup;

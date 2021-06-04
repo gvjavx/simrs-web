@@ -256,6 +256,18 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             diagnosaRawat.setLastUpdateWho(userLogin);
             diagnosaRawat.setAction("U");
 
+            if("diagnosa_utama".equalsIgnoreCase(jenisDiagnosa) || "diagnosa_awal".equalsIgnoreCase(jenisDiagnosa)|| "diagnosa_primer".equalsIgnoreCase(jenisDiagnosa)) {
+                DiagnosaRawat dr = new DiagnosaRawat();
+                dr.setIdDetailCheckup(idDetailCheckup);
+                dr.setJenisDiagnosa(jenisDiagnosa);
+                Boolean cek = diagnosaRawatBo.cekDiagnosa(dr);
+                if (cek) {
+                    response.setStatus("error");
+                    response.setMsg("Data " + jenisDiagnosa.replace("_", " ").toUpperCase() + " sudah ada ...!");
+                    return response;
+                }
+            }
+
             if ("bpjs".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
                 response = updateCoverBpjs(idDetailCheckup, idDiagnosa);
                 if ("success".equalsIgnoreCase(response.getStatus())) {

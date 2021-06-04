@@ -380,7 +380,7 @@
                     </div>
                     <div class="row" style="margin-top: 10px; display: none" id="form_ttd_pemeriksa">
                         <div class="col-md-offset-4 col-md-4 text-center">
-                            <span>TTD Pemeriksa</span>
+                            <span>TTD Dokter Pemeriksa</span>
                             <canvas style="margin-left: -7px; cursor: pointer" class="ttd-paint-canvas" id="ttd_dokter"
                                     width="355" height="250"
                                     onmouseover="paintTtd(this.id)"></canvas>

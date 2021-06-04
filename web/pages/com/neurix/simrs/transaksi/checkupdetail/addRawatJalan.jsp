@@ -490,7 +490,7 @@
                         <div class="col-md-6">
                             <div class="box-header with-border" id="pos_rm"></div>
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-stethoscope"></i> Anamnesa & Pemeriksaan Fisik</h3>
+                                <h3 class="box-title"><i class="fa fa-stethoscope"></i> Anamnesis & Pemeriksaan Fisik</h3>
                             </div>
                             <div class="box-body">
                                 <div class="alert alert-danger alert-dismissible" style="display: none" id="war_anamnese">
@@ -527,6 +527,20 @@
                                     <div class="col-md-3">
                                         <span>RR</span> <small>(x/menit)</small>
                                         <s:textfield cssClass="form-control" id="fisik_rr" name="headerDetailCheckup.pernafasan" type="number"></s:textfield>
+                                    </div>
+                                </div>
+                                <div class="row jarak">
+                                    <div class="col-md-3">
+                                        <span>SPO2</span> <small>(%)</small>
+                                        <s:textfield cssClass="form-control" id="fisik_spo2" name="headerDetailCheckup.spo2" type="number"></s:textfield>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span>Tinggi</span> <small>(Cm)</small>
+                                        <s:textfield cssClass="form-control" id="fisik_tinggi" name="headerDetailCheckup.tinggi" type="number"></s:textfield>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span>Berat</span> <small>(Kg)</small>
+                                        <s:textfield cssClass="form-control" id="fisik_berat" name="headerDetailCheckup.berat" type="number"></s:textfield>
                                     </div>
                                 </div>
                                 <div class="row jarak">
@@ -575,67 +589,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="box-header with-border" id="pos_alergi"></div>
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-user"></i> Tinggi & Berat Badan</h3>
-                            </div>
-                            <div class="box-body">
-                                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_penunjang">
-                                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                                    Silahkan cek kembali data inputan!
-                                </div>
-                                <div class="alert alert-success alert-dismissible" style="display: none" id="success_penunjang">
-                                    <h4><i class="icon fa fa-info"></i> Info!</h4>
-                                    Data berhasil disimpan!
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label>Tinggi</label>
-                                            <div class="input-group date">
-                                                <s:textfield id="tinggi" name="headerDetailCheckup.tinggi"
-                                                             cssClass="form-control" type="number"/>
-                                                <div class="input-group-addon">
-                                                    cm
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label>Berat</label>
-                                            <div class="input-group date">
-                                                <s:textfield id="berat" name="headerDetailCheckup.berat"
-                                                             cssClass="form-control" type="number"/>
-                                                <div class="input-group-addon">
-                                                    Kg
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <button style="margin-top: 25px" id="save_penunjang" onclick="savePenunjangPasien()"
-                                                    class="btn btn-success"><i
-                                                    class="fa fa-check"></i>
-                                                Save
-                                            </button>
-                                            <button style="display: none; cursor: no-drop; margin-top: 25px" type="button"
-                                                    class="btn btn-success"
-                                                    id="load_penunjang">
-                                                <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-heartbeat"></i> Hasil BMI (Body Mass Index)</h3>
@@ -661,7 +614,7 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="box-header with-border"></div>
+                            <div class="box-header with-border" id="pos_alergi"></div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Alergi</h3>
                             </div>
@@ -1649,6 +1602,21 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-9">
+                            <div class="form-check jarak">
+                                <input type="checkbox" id="is_cito" value="yes">
+                                <label for="is_cito"></label>
+                                Centang Jika Pemeriksaan Darurat (CITO)
+                                <i class="fa fa-question-circle box-rm" style="font-size: 18px">
+                                    <span class="box-rmtext" style="font-size: 12px; font-family: Calibri">
+                                        Centang untuk menandai pemeriksaan dengan CITO
+                                    </span></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row" style="display: none" id="form_tarif_lab_luar">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Tarif Lab Luar</label>
@@ -2195,53 +2163,9 @@
                     </table>
 
                     <div id="informasi-racik">
-
-                        <%--<label id="label-racik">Nama Racik</label>--%>
-                        <%--<table class="table table-striped table-bordered" id="tabel_rese_detail_racik" style="font-size: 13px;">--%>
-                            <%--<thead>--%>
-                            <%--<td>Nama Obat</td>--%>
-                            <%--<td width="50%">Dosis</td>--%>
-                            <%--<td align="center" width="5%">Action</td>--%>
-                            <%--</thead>--%>
-                            <%--<tbody id="body_detail_racik">--%>
-                            <%--</tbody>--%>
-                        <%--</table>--%>
-
-                        <%--<div class="row">--%>
-                            <%--<div class="col-md-3">--%>
-                                <%--Signa--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-5">--%>
-                                <%--&lt;%&ndash;<button class="btn btn-sm btn-warning" onclick="showModalKeterangan('0')">Tambah</button>&ndash;%&gt;--%>
-                                <%--&lt;%&ndash;<button class="btn btn-sm btn-danger" onclick="hapusKeterangan('0')">Hapus</button>&ndash;%&gt;--%>
-                                <%--<textarea cols="100%" rows="3" class="form-control" id="signa-racik">--%>
-                            <%--</textarea>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                        <%--<div class="row">--%>
-                            <%--<div class="col-md-3">--%>
-                                <%--Qty Kemasan--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-3">--%>
-                                    <%--<input type="number" class="form-control" id="qty-kemasan-racik"/>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                        <%--<div class="row">--%>
-                            <%--<div class="col-md-3">--%>
-                                <%--Kemasan--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-3">--%>
-                                <%--<select class="form-control" id="kemasan-racik">--%>
-                                    <%--<option value="Capsule"> Capsule </option>--%>
-                                    <%--<option value="Puser"> Puyer </option>--%>
-                                <%--</select>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
                     </div>
                     <br>
                 </div>
-                <%--<div class="box-header with-border">--%>
-                <%--</div>--%>
                 <div class="row" style="margin-top: 10px">
                     <div class="form-group">
                         <div class="col-md-6">
@@ -2867,7 +2791,7 @@
                     <p id="msg_success_pemeriksaan"></p>
                 </div>
                 <div class="box-body">
-                    <div class="row">
+                    <div class="row" id="hidden_add">
                         <div class="col-md-2">
                             <div id="btn-uploded">
                                 <button onclick="doneUplod()" class="btn btn-success"><i class="fa fa-cloud-upload"></i> Upload</button>
@@ -3099,6 +3023,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenUgdAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/MppAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenIcuAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/fisioterapi.js"/>'></script>
@@ -3117,6 +3042,7 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenUgd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/mpp.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/icu.js"/>'></script>
 
 <script type='text/javascript'>
 
@@ -3174,6 +3100,7 @@
     var tanggalMasuk = new Date();
     var idRawatInap = "";
     var namaJenisPasien = $('#nama_jenis_pasien').val();
+    var tempSpo2 = "";
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');

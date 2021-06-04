@@ -1210,8 +1210,6 @@ function saveAsesmenUgd(jenis, keterangan) {
                 }
             }
 
-            console.log(va9);
-
             var ttd1 = document.getElementById("ki10");
             var ttd2 = document.getElementById("ki11");
             var cekTtd1 = isCanvasBlank(ttd1);

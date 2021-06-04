@@ -101,7 +101,7 @@ function hitungCoverBiaya() {
                     var biayaTindakan = response.tarifTindakan;
 
                     var persen = "";
-                    if (coverBiaya != '' && biayaTindakan != '') {
+                    if (coverBiaya != '' && biayaTindakan) {
                         persen = ((parseInt(biayaTindakan) / parseInt(coverBiaya)) * 100).toFixed(2);
                     } else {
                         persen = 0;
@@ -151,7 +151,7 @@ function hitungStatusBiaya() {
                 $('#kode_cbg').text(response.kodeCbg);
 
                 var persen = "";
-                if (coverBiaya != null && biayaTindakan != null) {
+                if (coverBiaya != '' && biayaTindakan) {
                     persen = ((parseInt(biayaTindakan) / parseInt(coverBiaya)) * 100).toFixed(2);
                 } else {
                     persen = 0;
@@ -172,12 +172,12 @@ function hitungStatusBiaya() {
 
                 var barTindakan = '<div class="progress-bar ' + barClass + '" style="width: ' + persen + '%" role="progressbar" aria-valuenow="' + persen + '" aria-valuemin="0" aria-valuemax="100">' + persen + "%" + '</div>';
 
-                if (coverBiaya != null) {
+                if (coverBiaya != '') {
                     $('#sts_cover_biaya').html(barBpjs);
                     $('#b_bpjs').html(formatRupiah(coverBiaya) + " (100%)");
                 }
 
-                if (biayaTindakan != null) {
+                if (biayaTindakan != '') {
                     $('#sts_biaya_tindakan').html(barTindakan);
                     $('#b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
                 }
@@ -427,6 +427,22 @@ function selectKeterangan(idKtg) {
             $('#form-asesmen').show();
             $('#form_order_pemeriksaan').hide();
             $('#body_order_pemeriksaan').html('');
+
+        } else if (idKtg == "kembali_ke_inap") {
+            $('#form-selesai').hide();
+            $('#form-catatan').hide();
+            $('#form-ket-rawat_inap').hide();
+            $('#form-rs-rujukan').hide();
+            $('#form-tgl-kontrol').hide();
+            $('#form-pemeriksaan').hide();
+            $('#form-kamar').hide();
+            $('#form-stay').hide();
+            $('#form-kelas_kamar').hide();
+            $('#form-asesmen').show();
+            $('#form_order_pemeriksaan').hide();
+            $('#body_order_pemeriksaan').html('');
+            $('#title_asesmen').html(keteranganPindah);
+            $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ri\',\'asesmen_pindah\')');
 
         } else {
             $('#form-selesai').hide();
@@ -859,13 +875,12 @@ function showModal(select) {
         }
 
         $('#resep_jenis_obat').val('').trigger('change');
-        // $('#resep_apotek').val('').trigger('change').attr('disabled', false);
         $('#resep_nama_obat').val('').trigger('change');
         $('#resep_keterangan').val('');
         $('#resep_qty').val('');
         $('#resep_jenis_satuan').val('biji').trigger('change');
         $('#resep_stok_box, #resep_stok_lembar, #resep_stok_biji').val('');
-        // $('#body_detail').html('');
+        $('#body_detail').html('');
         $('#desti_apotek').html('');
         $('#save_resep_head').show();
         $('#load_resep_head').hide();
@@ -1386,13 +1401,8 @@ function listDiagnosa() {
                     ket = item.keteranganDiagnosa;
                 }
                 if (item.jenisDiagnosa != null) {
-                    if (item.jenisDiagnosa == "diagnosa_awal") {
-                        jen = "Diagnosa Awal";
-                    } else if (item.jenisDiagnosa == "diagnosa_utama") {
-                        jen = "Diagnosa Utama";
-                    } else {
-                        jen = "Diagnosa Sekunder";
-                    }
+                    jen = item.jenisDiagnosa.replace("_"," ");
+                    jen = convertSentenceCaseUp(jen);
                 }
                 table += '<tr '+blink+'>' +
                     "<td>" + dateFormat + "</td>" +
@@ -3364,7 +3374,7 @@ function saveResepObat() {
                 }
                 listDetailRacik.push(detail);
             });
-            //console.log(listDetailRacik);
+
             var stListDetailRacik = "";
             if (listDetailRacik.length > 0){
                 stListDetailRacik = JSON.stringify(listDetailRacik);
@@ -3466,11 +3476,11 @@ function listResepPasien() {
                     "<td>" + idResep + "</td>" +
                     "<td>" + status + "</td>" +
                     "<td align='center'>";
-                    
+
                     if (status.toLowerCase() == "selesai"){
                         table += '<img border="0" class="hvr-grow" onclick="repeatOrderObat(\'' + item.idApprovalObat + '\')" src="'+pathImages+'/pages/images/icons8-return-25.png" style="cursor: pointer;">';
                     }
-                    
+
                 table += '<img onclick="printResep(\'' + idResep + '\')" class="hvr-grow" src="' + pathImages + '/pages/images/icons8-print-25.png" style="cursor: pointer;">' +
                     "</td>" +
                     "</tr>"
@@ -3850,11 +3860,6 @@ function defaultValByJenisSatuan(name) {
     var nilai = "1";
     if (name == "biji") {
         nilai = $("#h-qty-default").val();
-        var warn = $('#war_rep_qty').is(':visible');
-        if (warn) {
-            $('#cor_rep_qty').show().fadeOut(3000);
-            $('#war_rep_qty').hide();
-        }
     }
     $("#resep_qty").val(nilai);
 
@@ -4622,7 +4627,7 @@ function refreshTable(id, tipe) {
 }
 
 function startInterval() {
-    setNotif = setInterval(cekDokter, 5000);
+    setNotif = setInterval(cekDokter, 50000);
 }
 
 function stopInterval() {
@@ -5763,6 +5768,7 @@ function resetOrderPemeriksaan(){
 }
 
 function uploadPemeriksaan(){
+    $('#hidden_add').show();
     $('#btn-uploded').html('<button onclick="doneUplod()" class="btn btn-success"><i class="fa fa-cloud-upload"></i> Upload</button>');
     $('#form-uploded').hide();
     $('#ket_upload_pemeriksan_0, #upload_pemeriksan_0, #label_upload_pemeriksan_0').val('');
@@ -6186,14 +6192,14 @@ function sisipkanStrip(nama){
 
   var arrSplitNama = nama.split(' ');
   var gabung = "";
-  for (var i = 0 ; i < arrSplitNama.length ; i++){    
+  for (var i = 0 ; i < arrSplitNama.length ; i++){
     if (arrSplitNama[i] != ""){
       if (arrSplitNama.length - i == 1){
         gabung += arrSplitNama[i];
       } else {
         gabung += arrSplitNama[i] + "-";
       }
-    }  
+    }
   }
 
   return gabung;
@@ -6211,11 +6217,11 @@ function repeatOrderObat(idApprovalObat){
                     var strnonracik = "";
 
                     //console.log(item.listDetailObatNonRacikk);
-                    
+
                     $.each(item.listDetailObatNonRacikk, function(i, nonracik){
 
                         var harga = parseInt(nonracik.qtyApprove) * parseInt(nonracik.harga);
-                        
+
                         strnonracik += "<tr id='"+item.idObat+"'>"+
                            '<td>' + nonracik.namaObat +
                             '<input type="hidden" value="' + nonracik.idObat + '" id="id_obat_' + count + '">' +
@@ -6230,7 +6236,7 @@ function repeatOrderObat(idApprovalObat){
                             '<input type="hidden" value="' + "" + '" id="id_racik_' + count + '">' +
                             '<input type="hidden" value="'+ "" +'" id="temp_waktu_'+count+'">'+
                             '</td>';
-                        
+
                         strnonracik +=
                             '<td align="center">' + nonracik.qtyApprove + ' ' + "biji" + '</td>'+
                             '<td>' +
@@ -6306,7 +6312,7 @@ function repeatOrderObat(idApprovalObat){
                             "</table>";
 
                         $("#body-detail-racik-"+detailracik.idRacik).append(detail);
-    
+
                 });
 
 
