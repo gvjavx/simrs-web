@@ -174,10 +174,13 @@ apply the skin class to the body tag so the changes take effect.
             "order": [[ 0, "desc" ]]
         });
 
-        $('#myTable').DataTable();
+        $('#myTable').DataTable({
+            "scrollX": true
+        });
 
         $('#sortTable').DataTable({
-            "order": [[ 0, "desc" ]]
+            "order": [[ 0, "desc" ]],
+            "scrollX": true
         });
 
         $('#myTable').css('width', '100%');

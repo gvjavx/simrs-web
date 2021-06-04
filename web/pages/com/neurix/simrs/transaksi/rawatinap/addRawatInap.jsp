@@ -4625,6 +4625,9 @@
     var tanggalMasuk = $('#h_tgl_masuk').val();
     var namaJenisPasien = $('#nama_jenis_pasien').val();
     var jenisCPO = "perawat";
+    var tempSpo2 = "";
+    var tempNyeri = "";
+    var tempJatuh = "";
 
     if (month.length < 2) {
         month = "0"+month;

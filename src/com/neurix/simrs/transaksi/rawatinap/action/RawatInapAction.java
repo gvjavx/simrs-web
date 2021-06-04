@@ -2235,7 +2235,7 @@ public class RawatInapAction extends BaseMasterAction {
                 response.setStatus("error");
                 response.setMsg("Data object di JSON tidak ada...!");
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             response.setStatus("error");
             response.setMsg("Errror when JSON Parse " + e.getMessage());
         }

@@ -4285,6 +4285,8 @@ function savePemeriksaanPasien() {
                     CheckupDetailAction.initKeteranganKeluar(idKeterangan, function (res) {
                         if("meninggal" == res.kategori){
                             meninggal = "Y";
+                        }else{
+                            ktr = res.keterangan;
                         }
                     });
                 }

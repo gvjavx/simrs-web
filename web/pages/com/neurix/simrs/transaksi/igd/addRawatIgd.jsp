@@ -2818,6 +2818,9 @@
     var tanggalMasuk = new Date();
     var idRawatInap = "";
     var jenisCPO = "perawat";
+    var tempSpo2 = "";
+    var tempNyeri = "";
+    var tempJatuh = "";
 
     $(document).ready(function () {
         $('#igd').addClass('active');

@@ -26,6 +26,15 @@ public class AsesmenUgd extends BaseModel {
     private String namaTerang;
     private String sip;
     private List<String> tipeAsesmen = new ArrayList<>();
+    private String noCheckup;
+
+    public String getNoCheckup() {
+        return noCheckup;
+    }
+
+    public void setNoCheckup(String noCheckup) {
+        this.noCheckup = noCheckup;
+    }
 
     public List<String> getTipeAsesmen() {
         return tipeAsesmen;

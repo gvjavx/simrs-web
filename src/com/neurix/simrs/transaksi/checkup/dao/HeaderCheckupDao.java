@@ -1318,7 +1318,9 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "autoanamnesis, \n" +
                     "heteroanamnesis,\n" +
                     "spo2,\n" +
-                    "catatan_klinis\n" +
+                    "catatan_klinis,\n" +
+                    "nyeri,\n" +
+                    "resiko_jatuh\n" +
                     "FROM it_simrs_header_checkup\n" +
                     "WHERE no_checkup LIKE :id";
             List<Object[]> result = new ArrayList<>();
@@ -1346,7 +1348,42 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 }
                 res.setAutoanamnesis(obj[7] != null ? obj[7].toString() : "");
                 res.setHeteroanamnesis(obj[8] != null ? obj[8].toString() : "");
-                res.setCatatanKlinis(obj[9] != null ? obj[9].toString() : "");
+                res.setCatatanKlinis(obj[10] != null ? obj[10].toString() : "");
+                res.setNyeri(obj[11] != null ? obj[11].toString() : "");
+                res.setResikoJatuh(obj[12] != null ? obj[12].toString() : "");
+            }
+        }
+        return res;
+    }
+
+    public String getTujuanRuangan(String noCheckup){
+        String res = "";
+        String SQL = "SELECT\n" +
+                "f.no_ruangan,\n" +
+                "f.nama_ruangan,\n" +
+                "e.nama_tempat_tidur\n" +
+                "FROM it_simrs_header_detail_checkup a\n" +
+                "INNER JOIN im_simrs_pelayanan b ON a.id_pelayanan = b.id_pelayanan\n" +
+                "INNER JOIN im_simrs_header_pelayanan c ON b.id_header_pelayanan = c.id_header_pelayanan\n" +
+                "INNER JOIN it_simrs_rawat_inap d ON a.id_detail_checkup = d.id_detail_checkup\n" +
+                "INNER JOIN mt_simrs_ruangan_tempat_tidur e ON d.id_ruangan = e.id_tempat_tidur\n" +
+                "INNER JOIN mt_simrs_ruangan f ON e.id_ruangan = f.id_ruangan\n" +
+                "WHERE a.no_checkup = :id AND c.tipe_pelayanan = 'rawat_inap';";
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", noCheckup)
+                .list();
+        if (result.size() > 0){
+            for (Object[] obj: result){
+                if(obj[0] != null){
+                    res = obj[0].toString();
+                }
+                if(obj[1] != null){
+                    res = res+" "+obj[1].toString();
+                }
+                if(obj[2] != null){
+                    res = res+" "+obj[2].toString();
+                }
             }
         }
         return res;

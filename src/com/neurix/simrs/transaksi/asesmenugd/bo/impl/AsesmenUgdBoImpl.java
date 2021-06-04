@@ -7,6 +7,9 @@ import com.neurix.simrs.transaksi.asesmenugd.bo.AsesmenUgdBo;
 import com.neurix.simrs.transaksi.asesmenugd.dao.AsesmenUgdDao;
 import com.neurix.simrs.transaksi.asesmenugd.model.AsesmenUgd;
 import com.neurix.simrs.transaksi.asesmenugd.model.ItSimrsAsesmenUgdEntity;
+import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -18,6 +21,7 @@ import java.util.Map;
 public class AsesmenUgdBoImpl implements AsesmenUgdBo {
     private static transient Logger logger = Logger.getLogger(AsesmenUgdBoImpl.class);
     private AsesmenUgdDao asesmenUgdDao;
+    private HeaderCheckupDao headerCheckupDao;
 
     @Override
     public List<AsesmenUgd> getByCriteria(AsesmenUgd bean) throws GeneralBOException {
@@ -118,6 +122,42 @@ public class AsesmenUgdBoImpl implements AsesmenUgdBo {
                     asesmenUgdEntity.setNamaTerang(bean.getNamaTerang());
                     asesmenUgdEntity.setSip(bean.getSip());
 
+                    if("nyeri".equalsIgnoreCase(bean.getKeterangan())){
+                        if("Skala".equalsIgnoreCase(bean.getParameter())){
+                            HeaderCheckup headerCheckup = new HeaderCheckup();
+                            headerCheckup.setNoCheckup(bean.getNoCheckup());
+                            headerCheckup.setNyeri(bean.getJawaban());
+                            updateKlinis(headerCheckup);
+                        }
+                    }
+
+                    if("nyeri_anak".equalsIgnoreCase(bean.getKeterangan())){
+                        if("Total Skor Nyeri".equalsIgnoreCase(bean.getParameter())){
+                            HeaderCheckup headerCheckup = new HeaderCheckup();
+                            headerCheckup.setNoCheckup(bean.getNoCheckup());
+                            headerCheckup.setNyeri(bean.getJawaban());
+                            updateKlinis(headerCheckup);
+                        }
+                    }
+
+                    if("jatuh".equalsIgnoreCase(bean.getKeterangan())){
+                        if("Resiko Jatuh".equalsIgnoreCase(bean.getParameter())){
+                            HeaderCheckup headerCheckup = new HeaderCheckup();
+                            headerCheckup.setNoCheckup(bean.getNoCheckup());
+                            headerCheckup.setResikoJatuh(bean.getJawaban());
+                            updateKlinis(headerCheckup);
+                        }
+                    }
+
+                    if("jatuh_anak".equalsIgnoreCase(bean.getKeterangan())){
+                        if("Resiko Jatuh".equalsIgnoreCase(bean.getParameter())){
+                            HeaderCheckup headerCheckup = new HeaderCheckup();
+                            headerCheckup.setNoCheckup(bean.getNoCheckup());
+                            headerCheckup.setResikoJatuh(bean.getJawaban());
+                            updateKlinis(headerCheckup);
+                        }
+                    }
+
                     try {
                         asesmenUgdDao.addAndSave(asesmenUgdEntity);
                         response.setStatus("success");
@@ -131,6 +171,23 @@ public class AsesmenUgdBoImpl implements AsesmenUgdBo {
             }
         }
         return response;
+    }
+
+    private void updateKlinis(HeaderCheckup bean){
+        ItSimrsHeaderChekupEntity entity = headerCheckupDao.getById("noCheckup", bean.getNoCheckup());
+        if(entity != null){
+            if(bean.getNyeri() != null){
+                entity.setNyeri(bean.getNyeri());
+            }
+            if(bean.getResikoJatuh() != null){
+                entity.setResikoJatuh(bean.getResikoJatuh());
+            }
+            try {
+                headerCheckupDao.updateAndSave(entity);
+            }catch (HibernateException e){
+                throw new GeneralBOException("Error"+e.getMessage());
+            }
+        }
     }
 
     @Override
@@ -178,5 +235,9 @@ public class AsesmenUgdBoImpl implements AsesmenUgdBo {
 
     public void setAsesmenUgdDao(AsesmenUgdDao asesmenUgdDao) {
         this.asesmenUgdDao = asesmenUgdDao;
+    }
+
+    public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
+        this.headerCheckupDao = headerCheckupDao;
     }
 }

@@ -2855,6 +2855,11 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     }
 
     @Override
+    public String getTujuanRuangan(String noCheckup) throws GeneralBOException {
+        return headerCheckupDao.getTujuanRuangan(noCheckup);
+    }
+
+    @Override
     public HeaderCheckup getDataPemeriksaanFisik(String noCheckup) throws GeneralBOException {
         return headerCheckupDao.getPemeriksaanFisik(noCheckup);
     }

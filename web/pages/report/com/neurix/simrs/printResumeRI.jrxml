@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printResumeRI" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.2396694214876052"/>
+	<property name="ireport.zoom" value="1.8150000000000073"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="560"/>
+	<property name="ireport.y" value="522"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -125,7 +125,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="207" splitType="Stretch">
+		<band height="191" splitType="Stretch">
 			<staticText>
 				<reportElement x="115" y="13" width="153" height="20" uuid="bc81f7c9-c28f-4030-861c-305cac8d2b33"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -482,10 +482,13 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{diagnosaMasuk} == null ? "" : $P{diagnosaMasuk}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="0" y="186" width="381" height="1" uuid="3effce7d-6ba6-4cb1-813f-8ca42070a930"/>
+			</line>
 		</band>
 	</title>
 	<detail>
-		<band height="555">
+		<band height="219">
 			<staticText>
 				<reportElement x="0" y="60" width="104" height="15" uuid="4a57de25-3093-4800-b26c-9ce004de0e10"/>
 				<textElement verticalAlignment="Middle">
@@ -631,162 +634,8 @@
 				<textElement verticalAlignment="Top" markup="html">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.diagnosaPrimer} == null ? "" : $P{reportParams.diagnosaPrimer} ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.diagnosaPrimer} == null ? "" : $P{reportParams.diagnosaPrimer}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="0" y="219" width="105" height="15" uuid="8ed2d97f-3ac1-416b-9412-112fa4acde89"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Terapi]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="104" y="219" width="5" height="15" uuid="27f23e92-f1e5-4d82-87f8-f708f0fc6641"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="109" y="219" width="272" height="15" uuid="8e0c5a13-4663-4f60-878b-120e4d994052"/>
-				<box topPadding="2" leftPadding="1"/>
-				<textElement verticalAlignment="Top" markup="html">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.terapi} == null ? "" : $P{reportParams.terapi}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="109" y="234" width="272" height="46" uuid="2294e28d-f136-4731-902d-eb9ad70e1ebb"/>
-				<box topPadding="0" leftPadding="0"/>
-				<textElement verticalAlignment="Top" markup="html">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{tindakan} == null ? "" : $P{tindakan}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="234" width="105" height="15" uuid="c148cc8e-7ad8-4927-80ad-f7aaf4c34e42"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Tindakan]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="105" y="234" width="4" height="15" uuid="1b3d58db-d961-4b5a-b4f9-a2d017cf75e2"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="-1" y="280" width="105" height="15" uuid="ab15f325-ffc8-4328-b117-494a2382ad72"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Terapi Pulang]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="104" y="280" width="5" height="15" uuid="149089bb-1f5c-40ff-bbd0-3df39462025a"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="109" y="280" width="272" height="43" uuid="af87daf9-0457-4cd4-94e7-2a8cf4120f0d"/>
-				<box leftPadding="1"/>
-				<textElement verticalAlignment="Top" markup="html">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{terapiPulang} == null ? "" : $P{terapiPulang}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="-1" y="325" width="105" height="15" uuid="f3d92f1f-6c0e-4d96-bc63-6315d4790ea5"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Kondisi Saat Pulang]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="109" y="325" width="272" height="44" uuid="4ca76791-8032-4264-8612-2779d61de672"/>
-				<box leftPadding="1"/>
-				<textElement verticalAlignment="Top" markup="html">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{kondisiPulang} == null ? "" : $P{kondisiPulang}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="103" y="325" width="5" height="15" uuid="d1260392-b9be-4b6b-83c3-aa15735af309"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="109" y="367" width="271" height="15" uuid="5f44985b-5f79-45d9-91e2-08fade574526"/>
-				<box leftPadding="1"/>
-				<textElement verticalAlignment="Middle" markup="html">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{keadaanPulang} == null ? "" : $P{keadaanPulang}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="367" width="104" height="15" uuid="1534cd1b-2ba3-4d87-a515-9dc779d43c0a"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Keadaan Saat Pulang]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="103" y="397" width="5" height="15" uuid="4a349ea6-a7bb-46a7-a800-f2039e6b2d43"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="382" width="103" height="15" uuid="d1a36a45-6c4f-48ee-b2f2-0c644c1b1b1b"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Prognosis]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="109" y="382" width="271" height="15" uuid="e005881d-e5b3-4056-80eb-01b2ac02874f"/>
-				<box leftPadding="1"/>
-				<textElement verticalAlignment="Middle" markup="html">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{prognosis} == null ? "" : $P{prognosis}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="103" y="367" width="5" height="15" uuid="1b3a48cf-9508-4300-ae05-d22883825e54"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[:]]></text>
-			</staticText>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="109" y="397" width="271" height="158" isPrintWhenDetailOverflows="true" uuid="055fafa4-651c-4167-9ea4-5ef907e32698"/>
-				<box topPadding="2" leftPadding="1"/>
-				<textElement verticalAlignment="Top" markup="html">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{tindakLanjut} == null ? "" : $P{tindakLanjut}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="397" width="103" height="15" uuid="f76129b1-380f-4789-aa4d-83cc18a7a713"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Instruksi Tindak Lanjut]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="103" y="382" width="5" height="15" uuid="b18b4c75-cafc-45ee-9f27-6d421f115ba3"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[:]]></text>
-			</staticText>
 			<staticText>
 				<reportElement x="0" y="0" width="104" height="15" uuid="7b7f167e-abf3-4dd6-a7b8-2b42f002e2a6"/>
 				<textElement verticalAlignment="Middle">
@@ -804,6 +653,162 @@
 			</textField>
 			<staticText>
 				<reportElement x="104" y="0" width="5" height="15" uuid="06a91c4f-6ec4-4c8b-b119-adccefb2acd2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+		</band>
+		<band height="370">
+			<textField>
+				<reportElement x="110" y="17" width="272" height="46" uuid="2294e28d-f136-4731-902d-eb9ad70e1ebb"/>
+				<box topPadding="0" leftPadding="0"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tindakan} == null ? "" : $P{tindakan}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="65" width="105" height="15" uuid="ab15f325-ffc8-4328-b117-494a2382ad72"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Terapi Pulang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="105" y="65" width="5" height="15" uuid="149089bb-1f5c-40ff-bbd0-3df39462025a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="110" y="65" width="272" height="43" uuid="af87daf9-0457-4cd4-94e7-2a8cf4120f0d"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{terapiPulang} == null ? "" : $P{terapiPulang}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="110" width="105" height="15" uuid="f3d92f1f-6c0e-4d96-bc63-6315d4790ea5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Kondisi Saat Pulang]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="110" y="110" width="272" height="44" uuid="4ca76791-8032-4264-8612-2779d61de672"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{kondisiPulang} == null ? "" : $P{kondisiPulang}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="104" y="110" width="5" height="15" uuid="d1260392-b9be-4b6b-83c3-aa15735af309"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="110" y="152" width="271" height="15" uuid="5f44985b-5f79-45d9-91e2-08fade574526"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{keadaanPulang} == null ? "" : $P{keadaanPulang}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="152" width="104" height="15" uuid="1534cd1b-2ba3-4d87-a515-9dc779d43c0a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Keadaan Saat Pulang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="104" y="182" width="5" height="15" uuid="4a349ea6-a7bb-46a7-a800-f2039e6b2d43"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="167" width="103" height="15" uuid="d1a36a45-6c4f-48ee-b2f2-0c644c1b1b1b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Prognosis]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="110" y="167" width="271" height="15" uuid="e005881d-e5b3-4056-80eb-01b2ac02874f"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{prognosis} == null ? "" : $P{prognosis}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="104" y="152" width="5" height="15" uuid="1b3a48cf-9508-4300-ae05-d22883825e54"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="110" y="182" width="271" height="158" isPrintWhenDetailOverflows="true" uuid="055fafa4-651c-4167-9ea4-5ef907e32698"/>
+				<box topPadding="2" leftPadding="1"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tindakLanjut} == null ? "" : $P{tindakLanjut}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="182" width="103" height="15" uuid="f76129b1-380f-4789-aa4d-83cc18a7a713"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Instruksi Tindak Lanjut]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="104" y="167" width="5" height="15" uuid="b18b4c75-cafc-45ee-9f27-6d421f115ba3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="2" width="104" height="15" uuid="8ed2d97f-3ac1-416b-9412-112fa4acde89"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Terapi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="104" y="2" width="5" height="15" uuid="27f23e92-f1e5-4d82-87f8-f708f0fc6641"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="109" y="2" width="272" height="15" uuid="8e0c5a13-4663-4f60-878b-120e4d994052"/>
+				<box topPadding="2" leftPadding="1"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.terapi} == null ? "" : $P{reportParams.terapi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="17" width="104" height="15" uuid="c148cc8e-7ad8-4927-80ad-f7aaf4c34e42"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Tindakan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="104" y="17" width="5" height="15" uuid="1b3d58db-d961-4b5a-b4f9-a2d017cf75e2"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>

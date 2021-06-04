@@ -230,11 +230,9 @@ public class RingkasanPasienBoImpl implements RingkasanPasienBo {
                                         i++;
                                     }
                                     if(i > 0){
-                                        int no = i+1;
-                                        tindakLanjut += "<li>" + no+". Bila ada keluhan sebelum kontrol. pasien dapat berobat ke fasilitas kesehatan tingkat I terdekat. Kontrol membawa : FC kartu BPJS/Asuransi, FC KTP/KK, Resume Medis/Surat Kontrol"+"</li>";
+                                        tindakLanjut += "<li>" + i +". Bila ada keluhan sebelum kontrol. pasien dapat berobat ke fasilitas kesehatan tingkat I terdekat. Kontrol membawa : FC kartu BPJS/Asuransi, FC KTP/KK, Resume Medis/Surat Kontrol"+"</li>";
                                         if("catatan_khusus".equalsIgnoreCase(entity.getTipe())){
-                                            no = no+1;
-                                            tindakLanjut += "<li>" + no+"."+entity.getJawaban()+"</li>" ;
+                                            tindakLanjut += "<li>" + i +"."+entity.getJawaban()+"</li>" ;
                                         }
                                     }
                                 }
