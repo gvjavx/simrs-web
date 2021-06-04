@@ -596,7 +596,7 @@ public class ObatPoliAction extends BaseMasterAction {
         return obatPoli;
     }
 
-    public List<ObatPoli> getSelectOptionObatByPoli(String idPelayanan, String flagBpjs, String jenis, String idDetailCheckup) {
+    public List<ObatPoli> getSelectOptionObatByPoli(String idPelayanan, String jenisPasien, String jenis, String idDetailCheckup) {
 
         logger.info("[ObatPoliAction.getSelectOptionObatByPoli] start process >>>");
         List<ObatPoli> obatPoliList = new ArrayList<>();
@@ -605,7 +605,7 @@ public class ObatPoliAction extends BaseMasterAction {
         ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
 
         try {
-            obatPoliList = obatPoliBo.getListObatGroupPoli(idPelayanan, branchId, flagBpjs, jenis, idDetailCheckup);
+            obatPoliList = obatPoliBo.getListObatGroupPoli(idPelayanan, branchId, jenisPasien, jenis, idDetailCheckup);
         } catch (GeneralBOException e) {
             logger.error("[ObatPoliAction.getSelectOptionObatByPoli] Error when get data obat poli ," + "Found problem when searching data, please inform to your admin.", e);
         }

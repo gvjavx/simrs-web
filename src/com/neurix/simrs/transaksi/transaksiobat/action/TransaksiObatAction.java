@@ -278,16 +278,16 @@ public class TransaksiObatAction extends BaseMasterAction {
         logger.info("[TransaksiObatAction.searchResep] START >>>>>>>");
 
         HttpSession session = ServletActionContext.getRequest().getSession();
-//        List<PermintaanResep> listOfResult = (List) session.getAttribute("listOfResult");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
         VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
         PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
         PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
 
-        String id = getId();
-        String idPermintaan = getIdPermintaan();
-        HeaderCheckup checkup = new HeaderCheckup();
+        String id               = getId();
+        String idPermintaan     = getIdPermintaan();
+        String tipePelayanan    = "";
+        HeaderCheckup checkup   = new HeaderCheckup();
 
         // mencari data telemedic
         ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = null;
@@ -297,6 +297,12 @@ public class TransaksiObatAction extends BaseMasterAction {
             if (pembayaranOnlineEntity != null) {
                 antrianTelemedicEntity = telemedicBo.getAntrianTelemedicEntityById(pembayaranOnlineEntity.getIdAntrianTelemedic());
             }
+        }
+
+        try {
+            tipePelayanan = permintaanResepBo.getTipePelayananOfIdDetailCheckup(id);
+        } catch (GeneralBOException e) {
+            logger.error(e.getCause());
         }
 
 
@@ -322,6 +328,7 @@ public class TransaksiObatAction extends BaseMasterAction {
             resep.setProvinsi(checkup.getNamaProvinsi());
             resep.setIdPelayanan(checkup.getIdPelayanan());
             resep.setNamaPelayanan(checkup.getNamaPelayanan());
+            resep.setTipePelayanan(tipePelayanan);
             if (checkup.getJenisKelamin() != null) {
                 if ("P".equalsIgnoreCase(checkup.getJenisKelamin())) {
                     jk = "Perempuan";
@@ -348,6 +355,7 @@ public class TransaksiObatAction extends BaseMasterAction {
             resep.setUrlKtp(checkup.getUrlKtp());
             resep.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
             resep.setIdPermintaanResep(idPermintaan);
+            resep.setTipePelayanan(tipePelayanan);
             setPermintaanResep(resep);
 
         } else {
@@ -388,6 +396,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                     resep.setUrlKtp(pasenData.getUrlKtp());
                     resep.setIdPermintaanResep(idPermintaan);
                     resep.setFlagEresep(antrianTelemedicEntity.getFlagEresep());
+                    resep.setTipePelayanan(tipePelayanan);
                     setPermintaanResep(resep);
                 }
             } else {

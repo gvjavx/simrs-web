@@ -2430,7 +2430,7 @@
                                    class="form-control" type="text"
                                    id="nama_racik">
                             <div class="input-group-addon">
-                                <input type="color" id="color_racik" style="height: 20px;">
+                                <input type="color" id="color_racik" style="height: 20px;" value="#a4dfab">
                             </div>
                         </div>
                         <span style="color: red; margin-top: 12px; display: none;"

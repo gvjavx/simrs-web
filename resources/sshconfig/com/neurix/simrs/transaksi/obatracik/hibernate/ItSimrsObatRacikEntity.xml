@@ -38,6 +38,9 @@
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
             </basic>
+            <basic name="warna">
+                <column name="warna"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>
