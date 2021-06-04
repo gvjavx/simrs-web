@@ -6202,7 +6202,7 @@ function sisipkanStrip(nama){
     }
   }
 
-  return gabung;
+  return gabung.toLowerCase();
 }
 
 function repeatOrderObat(idApprovalObat){
