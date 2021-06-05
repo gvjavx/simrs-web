@@ -40,6 +40,24 @@ public class ObatPoli {
     private String merk;
     private String flagBpjs;
     private BigInteger totalQty;
+    private String idDetailCheckup;
+    private String jenisPasien;
+
+    public String getJenisPasien() {
+        return jenisPasien;
+    }
+
+    public void setJenisPasien(String jenisPasien) {
+        this.jenisPasien = jenisPasien;
+    }
+
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
+    }
+
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
+    }
 
     public BigInteger getTotalQty() {
         return totalQty;

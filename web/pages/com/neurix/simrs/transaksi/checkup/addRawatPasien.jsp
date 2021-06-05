@@ -3030,7 +3030,9 @@
 
                         var foto = contextPathHeader+'/pages/images/unknown-person2.jpg';
                         if(item.urlImg != null && item.urlImg != ''){
-                            foto = contextPathHeader+item.urlImg;
+                            if(cekImages(item.urlImg)){
+                                foto = item.urlImg;
+                            }
                         }
 
                         var clasBox = 'btn-trans';

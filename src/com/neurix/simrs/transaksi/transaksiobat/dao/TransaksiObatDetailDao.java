@@ -1104,7 +1104,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
     }
 
     public List<ObatRacik> getListObatRacik(String idRacik){
-        String SQL = "SELECT id, nama, signa, qty, kemasan FROM it_simrs_obat_racik WHERE id = '"+idRacik+"'";
+        String SQL = "SELECT id, nama, signa, qty, kemasan, warna FROM it_simrs_obat_racik WHERE id = '"+idRacik+"'";
         List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
 
         List<ObatRacik> obatRacikList = new ArrayList<>();
@@ -1116,6 +1116,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 obatRacik.setSigna(obj[2] == null ? "" : obj[2].toString());
                 obatRacik.setQty(new Integer(obj[3] == null ? "0" : obj[3].toString()));
                 obatRacik.setKemasan(obj[4] == null ? "" : obj[4].toString());
+                obatRacik.setWarna(obj[5] == null ? "" : obj[5].toString());
                 obatRacikList.add(obatRacik);
             }
         }

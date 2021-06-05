@@ -59,7 +59,6 @@
         <property name="idDokter">
             <column name="id_dokter" sql-type="varchar" length="30" not-null="false" />
         </property>
-
         <property name="ttdPasien">
             <column name="ttd_pasien" sql-type="varchar" length="100" not-null="false" />
         </property>
@@ -75,39 +74,30 @@
         <property name="jenisResep">
             <column name="jenis_resep" sql-type="varchar" length="30" not-null="false" />
         </property>
-
         <property name="isRead">
             <column name="is_read" sql-type="varchar" length="1" not-null="false" />
         </property>
-
         <property name="idTransaksiOnline">
             <column name="id_transaksi_online" sql-type="varchar" />
         </property>
-
         <property name="namaRacik">
             <column name="nama_racik" sql-type="varchar" />
         </property>
-
         <property name="signaRacik">
             <column name="signa_racik" sql-type="varchar" />
         </property>
-
         <property name="kemasanRacik">
             <column name="kemasan_racik" sql-type="varchar" />
         </property>
-
         <property name="qtyKemasanRacik">
             <column name="qty_kemasan_racik" sql-type="int" />
         </property>
-
         <property name="kajianAdministrasi">
             <column name="kajian_administrasi" sql-type="varchar" />
         </property>
-
         <property name="kajianFermasetis">
             <column name="kajian_fermasetis" sql-type="varchar" />
         </property>
-
         <property name="kajianKritis">
             <column name="kajian_kritis" sql-type="varchar" />
         </property>

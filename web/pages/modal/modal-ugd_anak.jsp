@@ -2608,14 +2608,6 @@
                             <label class="col-md-3">Instruksi Tindak Lanjut</label>
                             <div class="col-md-9">
                                 <select class="form-control select2" id="ki9" style="width: 100%" onchange="showKetIntruksi(this.value)">
-                                    <option value="">-</option>
-                                    <option value="Rawat Inap">Rawat Inap</option>
-                                    <option value="Rawat Intensif">Rawat Intensif</option>
-                                    <option value="Rawat Isolasi">Rawat Isolasi</option>
-                                    <option value="Dirujuk">Dirujuk</option>
-                                    <option value="Pulang Atas Permintaan Sendiri">Pulang Atas Permintaan Sendiri</option>
-                                    <option value="Pulang Atas Persetujuan Dokter">Pulang Atas Persetujuan Dokter</option>
-                                    <option value="Pulang Karena Meninggal">Pulang Karena meninggal</option>
                                 </select>
                             </div>
                         </div>
@@ -2632,13 +2624,6 @@
                             </div>
                         </div>
                     </div>
-                    <%--<div class="row jarak" style="display: none" id="int-ket2">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<div class="col-md-offset-3 col-md-9">--%>
-                                <%--<input class="form-control" id="ket_ki92" placeholder="Keterangan">--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
                     <div class="row jarak" style="display: none" id="int-ket3">
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-4">

@@ -232,26 +232,32 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
     }
 
     // flagBpjs adalah = jenis pasien
-    public List<ObatPoli> getIdObatGroupPoli(String idPelayanan, String branchId, String flagBpjs, String idJenisObat, String idDetailCheckup){
+    public List<ObatPoli> getIdObatGroupPoli(ObatPoli bean){
         List<ObatPoli> obatPoliList = new ArrayList<>();
         String queryJenisObat = "";
-
 //        if (idJenisObat != null && !idJenisObat.equalsIgnoreCase("")) {
 //            queryJenisObat = "AND d.id_jenis_obat = '" + idJenisObat + "' \n";
 //        }
 
-        if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan) && branchId != null && !"".equalsIgnoreCase(branchId)){
+        //if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan) && branchId != null && !"".equalsIgnoreCase(branchId)){
+        if(bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan()) && bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
 
             String flag = "";
             String whereQuery = "";
-            if("bpjs".equalsIgnoreCase(flagBpjs) || "bpjs_rekanan".equalsIgnoreCase(flagBpjs)){
+//            if("bpjs".equalsIgnoreCase(flagBpjs) || "bpjs_rekanan".equalsIgnoreCase(flagBpjs)){
+            if("bpjs".equalsIgnoreCase(bean.getJenisPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getJenisPasien())){
                 flag = "WHERE flag_bpjs = 'Y' \n";
-                whereQuery = "WHERE c.harga_jual_khusus_bpjs > 0 \n" +
-                        "AND c.harga_jual_umum_bpjs > 0 \n";
+//                whereQuery = "WHERE c.harga_jual_khusus_bpjs > 0 \n" +
+//                        "AND c.harga_jual_umum_bpjs > 0 \n";
             }else{
                 flag = "WHERE flag_bpjs != 'Y' \n";
-                whereQuery = "WHERE c.harga_jual > 0 \n" +
-                        "AND c.harga_jual_umum > 0 \n";
+//                whereQuery = "WHERE c.harga_jual > 0 \n" +
+//                        "AND c.harga_jual_umum > 0 \n";
+            }
+
+            String whereObat = "";
+            if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())){
+                whereObat = "WHERE a.id_obat = '"+bean.getIdObat()+"' \n";
             }
 
             String SQL = "SELECT \n" +
@@ -281,7 +287,7 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     "\t\t\tFROM im_simrs_obat \n" + flag +
                     "\t\t\tAND id_barang is not null\n" +
                     "\t\t) b ON b.id_obat = a.id_obat\n" +
-                    "\t\tINNER JOIN mt_simrs_obat_poli ob ON ob.id_barang = b.id_barang\n" +
+                    "\t\tINNER JOIN mt_simrs_obat_poli ob ON ob.id_barang = b.id_barang\n" + whereObat +
                     "\t\tGROUP BY \n" +
                     "\t\ta.id_obat,\n" +
                     "\t\ta.nama_obat,\n" +
@@ -327,11 +333,11 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     "c.harga_jual_umum_bpjs \n";
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                    .setParameter("idPelayanan", idPelayanan)
-                    .setParameter("branchId", branchId)
+                    .setParameter("idPelayanan", bean.getIdPelayanan())
+                    .setParameter("branchId", bean.getBranchId())
                     .list();
 
-            Boolean cekKhusus = cekIsKhusus(idDetailCheckup);
+            Boolean cekKhusus = cekIsKhusus(bean.getIdDetailCheckup());
 
             if (results.size() > 0){
                 for (Object[] obj : results){
@@ -346,13 +352,13 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     obatPoli.setBijiPerLembar(obj[7] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[7].toString()));
                     obatPoli.setFlagKronis(obj[8] == null ? "" : obj[8].toString());
                     if(cekKhusus){
-                        if ("bpjs".equalsIgnoreCase(flagBpjs) || "bpjs_rekanan".equalsIgnoreCase(flagBpjs)){
+                        if ("bpjs".equalsIgnoreCase(bean.getJenisPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getJenisPasien())){
                             obatPoli.setHarga(obj[11] == null ? "" : obj[11].toString());
                         } else {
                             obatPoli.setHarga(obj[9] == null ? "" : obj[9].toString());
                         }
                     }else{
-                        if ("bpjs".equalsIgnoreCase(flagBpjs)){
+                        if ("bpjs".equalsIgnoreCase(bean.getJenisPasien())){
                             obatPoli.setHarga(obj[12] == null ? "" : obj[12].toString());
                         } else {
                             obatPoli.setHarga(obj[10] == null ? "" : obj[10].toString());
@@ -360,14 +366,17 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     }
 
                     // Sigit, 2021-04-29. penambahan untuk mencari data per konsumen pada resep;
-                    HeaderCheckup headerDetailCheckup = getHeaderCheckupData(idDetailCheckup);
+                    HeaderCheckup headerDetailCheckup = getHeaderCheckupData(bean.getIdDetailCheckup());
                     if (headerDetailCheckup != null){
-                        HargaObatPerKonsumen perKonsumen = getDataHargaPerKonsumen(obatPoli.getIdObat(), branchId, headerDetailCheckup.getIdJenisPeriksaPasien(), headerDetailCheckup.getIdAsuransi());
+                        HargaObatPerKonsumen perKonsumen = getDataHargaPerKonsumen(obatPoli.getIdObat(), bean.getBranchId(), headerDetailCheckup.getIdJenisPeriksaPasien(), headerDetailCheckup.getIdAsuransi());
                         if (perKonsumen != null){
                             obatPoli.setHarga(perKonsumen.getHargaJual().toString());
                         }
                     }
-                    obatPoliList.add(obatPoli);
+
+                    if (obatPoli.getHarga() != null && !"".equalsIgnoreCase(obatPoli.getHarga())){
+                        obatPoliList.add(obatPoli);
+                    }
                 }
             }
         }

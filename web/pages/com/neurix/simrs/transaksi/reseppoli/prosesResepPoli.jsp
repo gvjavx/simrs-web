@@ -390,7 +390,7 @@
                             <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                             Silahkan lakukan konfirmasi qty untuk masing masing obat...!
                         </div>
-                        <table class="table table-bordered table-striped" id="tabel_list_obat" style="font-size: 14px">
+                        <table class="table table-bordered table-striped" id="tabel_list_obat" style="font-size: 13px">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Nama Obat</td>
@@ -501,9 +501,9 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="table table-bordered table-striped" id="tabel_list_nama_racik" style="font-size: 14px">
+                                <table class="table" id="tabel_list_nama_racik" style="font-size: 13px">
                                     <thead>
-                                    <tr bgcolor="#90ee90">
+                                    <tr>
                                         <td>Nama Racik</td>
                                         <td>Signa</td>
                                         <td align="right" width="15%">qty</td>
@@ -512,11 +512,12 @@
                                     </tr>
                                     </thead>
                                     <s:iterator value="#session.listOfResultNamaRacik" var="racik" status="count">
-                                        <tr style="font-weight: bold;">
+                                        <tr style="font-weight: bold; border-top: 3px solid <s:property value="warna"/>; ">
                                             <td><s:property value="nama"/></td>
                                             <td><s:property value="signa"/></td>
                                             <td align="right" width="10%"><s:property value="qty"/></td>
                                             <td><s:property value="kemasan"/></td>
+                                            <s:if test='<s:property>'/>
                                             <td align="center">
                                                 <div class="form-check">
                                                     <input type="checkbox" class="cek_resep" name="waktu_resep_<s:property value="id"/>" id="waktu_resep1_<s:property value="nama"/>" value="07:00|Y|<s:property value="id"/>|<s:property value="nama"/>|<s:property value="signa"/>">
@@ -540,10 +541,10 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr style="border-top: 3px solid <s:property value="warna"/>">
                                             <td colspan="5">
-                                                <i class="fa fa-tag"></i> Daftar Obat Racik <s:property value="nama"/>
-                                                <table class="table table-bordered table-striped" id="tabel_list_detail_racik" style="font-size: 14px">
+                                                <i class="fa fa-tag"></i> Daftar Obat Racik <s:property value="nama"/> :
+                                                <table class="table table-bordered table-striped" id="tabel_list_detail_racik" style="font-size: 13px">
                                                     <thead>
                                                     <tr>
                                                         <td>Nama Obat</td>
@@ -653,7 +654,7 @@
                                         <td><input type="radio" name="k-farma" value="N"/></td>
                                     </tr>
                                     <tr>
-                                        <td>Aspek Kritis</td>
+                                        <td>Aspek Klinis</td>
                                         <td><input type="radio" name="k-kritis" value="Y"/></td>
                                         <td><input type="radio" name="k-kritis" value="N"/></td>
                                     </tr>

@@ -223,6 +223,15 @@ public class HeaderCheckup {
     private String tindakLanjut;
     private String prognosis;
     private String spo2;
+    private String filePendukung;
+
+    public String getFilePendukung() {
+        return filePendukung;
+    }
+
+    public void setFilePendukung(String filePendukung) {
+        this.filePendukung = filePendukung;
+    }
 
     public String getSpo2() {
         return spo2;

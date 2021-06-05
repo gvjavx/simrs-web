@@ -2424,14 +2424,6 @@
                             <label class="col-md-3">Instruksi Tindak Lanjut</label>
                             <div class="col-md-9">
                                 <select class="form-control select2" id="ki9" style="width: 100%" onchange="showKetIntruksi(this.value)">
-                                    <option value="">[Select One]</option>
-                                    <option value="Rawat Inap">Rawat Inap</option>
-                                    <option value="Rawat Intensif">Rawat Intensif</option>
-                                    <option value="Rawat Isolasi">Rawat Isolasi</option>
-                                    <option value="Dirujuk">Dirujuk</option>
-                                    <option value="Pulang Atas Permintaan Sendiri">Pulang Atas Permintaan Sendiri</option>
-                                    <option value="Pulang Atas Persetujuan Dokter">Pulang Atas Persetujuan Dokter</option>
-                                    <option value="Pulang Karena Meninggal">Pulang Karena meninggal</option>
                                 </select>
                             </div>
                         </div>

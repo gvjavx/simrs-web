@@ -233,7 +233,6 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         }
 
         if (bean.getListNamaObatRacik().size() > 0){
-
             for (ObatRacik obatRacik : bean.getListNamaObatRacik()){
                 ItSimrsObatRacikEntity obatRacikEntity = new ItSimrsObatRacikEntity();
                 obatRacikEntity.setId(getNextObatRacikId());
@@ -247,6 +246,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
                 obatRacikEntity.setLastUpdate(bean.getCreatedDate());
                 obatRacikEntity.setCreatedWho(bean.getCreatedWho());
                 obatRacikEntity.setLastUpdateWho(bean.getCreatedWho());
+                obatRacikEntity.setWarna(obatRacik.getWarna());
 
                 try {
                     obatRacikDao.addAndSave(obatRacikEntity);
@@ -451,7 +451,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
 
                 List<TransaksiObatDetail> listObat = new ArrayList<>();
                 try {
-                    listObat = permintaanResepDao.listIsiResep(permintaanResep.getIdApprovalObat());
+                    listObat = permintaanResepDao.listIsiResep(permintaanResep);
                 } catch (HibernateException e){
                     logger.error("[PermintaanResepBoImpl.getListResepTerakhirByIdPelayanan] ERROR. ", e);
                     throw new GeneralBOException("[PermintaanResepBoImpl.getListResepTerakhirByIdPelayanan] ERROR. ", e);
@@ -510,6 +510,104 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
 
         logger.info("[PermintaanResepBoImpl.getListResepTerakhirByIdPelayanan] En <<<");
         return permintaanResepList;
+    }
+
+    @Override
+    public List<PermintaanResep> getListResepTerakhirByIdApproval(String idApproval) throws GeneralBOException {
+        logger.info("[PermintaanResepBoImpl.getListResepTerakhirByIdApproval] Start >>>");
+
+        List<PermintaanResep> permintaanResepList = new ArrayList<>();
+
+        try {
+            permintaanResepList = permintaanResepDao.listResepPasienByIdApproval(idApproval);
+        } catch (HibernateException e){
+            logger.error("[PermintaanResepBoImpl.getListResepTerakhirByIdApproval] ERROR. ", e);
+            throw new GeneralBOException("[PermintaanResepBoImpl.getListResepTerakhirByIdApproval] ERROR. ", e);
+        }
+
+        if (permintaanResepList.size() > 0){
+
+            for (PermintaanResep permintaanResep : permintaanResepList){
+
+                List<TransaksiObatDetail> listObat = new ArrayList<>();
+                try {
+                    listObat = permintaanResepDao.listIsiResep(permintaanResep);
+                } catch (HibernateException e){
+                    logger.error("[PermintaanResepBoImpl.getListResepTerakhirByIdApproval] ERROR. ", e);
+                    throw new GeneralBOException("[PermintaanResepBoImpl.getListResepTerakhirByIdApproval] ERROR. ", e);
+                }
+
+                if (listObat.size() > 0){
+
+                    List<TransaksiObatDetail> listObatNonRacik = listObat.stream().filter(
+                            p->p.getIdRacik() == null
+                    ).collect(Collectors.toList());
+
+                    if (listObatNonRacik.size() > 0){
+                        permintaanResep.setListDetailObatNonRacikk(listObatNonRacik);
+                    }
+
+                    List<TransaksiObatDetail> listObatRacik = listObat.stream().filter(
+                            p->p.getIdRacik() != null && !"".equalsIgnoreCase(p.getIdRacik())
+                    ).collect(Collectors.toList());
+
+                    if (listObatRacik.size() > 0){
+                        permintaanResep.setListDetailObatRacik(listObatRacik);
+                    }
+
+                    if (listObatRacik.size() > 0){
+                        List<ObatRacik> racikList = new ArrayList<>();
+                        for (TransaksiObatDetail obatDetailRacik : listObatRacik){
+                            if (racikList.size() == 0){
+                                ObatRacik obatRacik = new ObatRacik();
+                                obatRacik.setId(obatDetailRacik.getIdRacik());
+                                obatRacik.setNama(obatDetailRacik.getNamaRacik());
+                                obatRacik.setQty(obatDetailRacik.getQtyRacik());
+                                obatRacik.setKemasan(obatDetailRacik.getKemasan());
+                                obatRacik.setSigna(obatDetailRacik.getSignaRacik());
+                                obatRacik.setWarna(obatDetailRacik.getWarna());
+                                racikList.add(obatRacik);
+                            } else {
+                                List<ObatRacik> filteredRacik = racikList.stream().filter(
+                                        p->p.getId().equalsIgnoreCase(obatDetailRacik.getIdRacik())
+                                ).collect(Collectors.toList());
+
+                                if (filteredRacik.size() == 0){
+                                    ObatRacik obatRacik = new ObatRacik();
+                                    obatRacik.setId(obatDetailRacik.getIdRacik());
+                                    obatRacik.setNama(obatDetailRacik.getNamaRacik());
+                                    obatRacik.setQty(obatDetailRacik.getQtyRacik());
+                                    obatRacik.setKemasan(obatDetailRacik.getKemasan());
+                                    obatRacik.setSigna(obatDetailRacik.getSignaRacik());
+                                    obatRacik.setWarna(obatDetailRacik.getWarna());
+                                    racikList.add(obatRacik);
+                                }
+                            }
+                        }
+                        permintaanResep.setListNamaObatRacik(racikList);
+                    }
+                }
+            }
+        }
+
+        logger.info("[PermintaanResepBoImpl.getListResepTerakhirByIdApproval] End <<<");
+        return permintaanResepList;
+    }
+
+    @Override
+    public String getTipePelayananOfIdDetailCheckup(String idDetailCheckup) throws GeneralBOException {
+        logger.info("[PermintaanResepBoImpl.getTipePelayananOfIdDetailCheckup] Start >>>");
+
+        String tipePelayanan = "";
+        try {
+            tipePelayanan = permintaanResepDao.getTipePelayananOfIdDetailCheckup(idDetailCheckup);
+        } catch (HibernateException e){
+            logger.error("[PermintaanResepBoImpl.getTipePelayananOfIdDetailCheckup] ERROR. ", e);
+            throw new GeneralBOException("[PermintaanResepBoImpl.getTipePelayananOfIdDetailCheckup] ERROR. ", e);
+        }
+
+        logger.info("[PermintaanResepBoImpl.getTipePelayananOfIdDetailCheckup] End <<<");
+        return tipePelayanan;
     }
 
     private String getNextPermintaanResepId() throws GeneralBOException {
