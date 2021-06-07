@@ -787,7 +787,7 @@
                                                             <s:textfield id="noKtp1" type="number" name="biodata.noKtp" disabled="false" readonly="true" cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="noKtp1" type="number" name="biodata.noKtp" disabled="false" cssClass="form-control"/>
+                                                            <s:textfield id="noKtp1" type="number" name="biodata.noKtp" disabled="false" maxlength="16" cssClass="form-control" onchange="console.log(this.value)"/>
                                                         </s:else>
                                                     </table>
                                                 </td>

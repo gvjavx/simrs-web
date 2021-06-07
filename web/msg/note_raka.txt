@@ -3,6 +3,9 @@
     alter table it_hris_payroll_temp
     add column flag_koreksi varchar(5),
     add column note_koreksi varchar(500);
+-- untuk custom dasar bpjs
+    alter table it_hris_payroll_temp
+    add column dasar_bpjs numeric(15,2);
 
 -- update skala pensiun
     update im_hris_payroll_skala_gaji_pensiun

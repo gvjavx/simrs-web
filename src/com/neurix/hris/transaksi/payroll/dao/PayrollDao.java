@@ -227,7 +227,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                  skala_gaji.tahun = :tahunSkalaPayroll\n" +
                 "             left join im_hris_payroll_bpjs param_bpjs on param_bpjs.branch_id = :branchId and param_bpjs.flag = 'Y'\n" +
                 "      where pegawai.flag = 'Y'\n" +
-                "        and pegawai.tipe_pegawai = 'TP02'\n" + //RAKA-update tipe pegawai
+                "        and pegawai.tipe_pegawai in ('TP01', 'TP02')\n" + //RAKA-update tipe pegawai
                 "        and pegawai_posisi.branch_id = :branchId\n" +
                 "      union\n" ;
 
@@ -1292,7 +1292,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                     "                 skala_gaji.tahun = :tahunSkalaPayroll\n" +
                     "\n" +
                     "     where pegawai.flag = 'Y'\n" +
-                    "       and pegawai.tipe_pegawai = 'TP02'\n" + //RAKA-update tipe pegawai
+                    "       and pegawai.tipe_pegawai in ('TP01', 'TP02')\n" + //RAKA-update tipe pegawai
                     "       and pegawai_posisi.branch_id = :branchId\n" +
                     "     union\n" +
                     //pegawai tetap

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportPayroll" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="03e04395-8f92-4fcc-a2df-614fdfb1af97">
 	<property name="ireport.zoom" value="1.5000000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="346"/>
+	<property name="ireport.y" value="39"/>
 	<parameter name="reportParams.titleReport" class="java.lang.String">
 		<defaultValueExpression><![CDATA["Slip Gaji"]]></defaultValueExpression>
 	</parameter>
@@ -21,6 +21,9 @@
 	<parameter name="reportParams.date" class="java.lang.String"/>
 	<parameter name="reportParams.areaId" class="java.lang.String">
 		<defaultValueExpression><![CDATA["PT. Nusantara Medika Utama"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportParams.payrollId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
@@ -72,11 +75,7 @@ left join
 	group by nip
 ) lemburan on payroll.nip = lemburan.nip
 WHERE
-payroll.branch_id = $P{reportParams.branchId}
-and payroll.bulan = $P{reportParams.bulan}
-and payroll.tahun = $P{reportParams.tahun}
-and payroll.tipe_payroll = 'PY'
-and payroll.flag = 'Y';]]>
+payroll.payroll_id = $P{reportParams.payrollId}]]>
 	</queryString>
 	<field name="payroll_id" class="java.lang.String"/>
 	<field name="payroll_header_id" class="java.lang.String"/>
@@ -931,7 +930,9 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="432" y="235" width="80" height="14" uuid="4e3df74e-d41e-4048-9e1a-b03f460c9a57"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{total_c}+$F{pph_gaji}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">

@@ -864,7 +864,8 @@ public class NotifikasiBoImpl implements NotifikasiBo {
         Notifikasi dataUntukAtasan = new Notifikasi();
         dataUntukAtasan.setNip(nip);
         dataUntukAtasan.setTipeNotifId(tipeNotifId);
-        personilPositionList = daftarAtasanLangsung(dataUntukAtasan);
+//        personilPositionList = daftarAtasanLangsung(dataUntukAtasan);
+        personilPositionList = daftarAtasanHngVp(dataUntukAtasan);
 
 //        if (tipeNotifId.equals("TN66"))
 //            action = "TASK_CUTI";
@@ -2566,6 +2567,103 @@ public class NotifikasiBoImpl implements NotifikasiBo {
             }
         }
         return notifikasiList;
+    }
+
+    @Override
+    public List<PersonilPosition> daftarAtasanHngVp(Notifikasi bean){
+        logger.info("[NotifikasiBoImpl.daftarAtasanHngVp] start process >>>");
+        String nip = bean.getNip();
+        List<PersonilPosition> listOfResult = new ArrayList<>();
+        String branchId=null;
+
+        ItPersonilPositionEntity personilPositionEntity = new ItPersonilPositionEntity();
+        try{
+            personilPositionEntity = personilPositionDao.getById("nip",nip);
+        }catch (HibernateException e) {
+            logger.error("[NotifikasiBoImpl.daftarAtasanHngVp] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        branchId = personilPositionEntity.getBranchId();
+
+        ImBiodataEntity biodataPeg = new ImBiodataEntity();
+        try{
+            biodataPeg = biodataDao.getById("nip", nip);
+        }catch (HibernateException e) {
+            logger.error("[NotifikasiBoImpl.daftarAtasanHngVp] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if (biodataPeg != null){
+            try {
+                strukturJabatanList = strukturJabatanDao.searchStrukturRelation2(nip,branchId);
+            } catch (HibernateException e) {
+                logger.error("[NotifikasiBoImpl.daftarAtasanHngVp] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+            }
+
+            for (StrukturJabatan strukturJabatan:strukturJabatanList) {
+                // Search Leader
+                if (strukturJabatan != null) {
+                    //RAKA-29MAR2021 ==> perbaikan logika di atas
+                    String parent = strukturJabatan.getParentId();
+                    if (!"-".equalsIgnoreCase(parent)) {
+                        // search data postion_id from struktur jabatan by parameter parent
+                        Map hsCriteria = new HashMap();
+                        hsCriteria.put("branch_id", branchId);
+                        hsCriteria.put("struktur_jabatan_id", parent);
+                        hsCriteria.put("flag", "Y");
+                        List<ImStrukturJabatanEntity> strukturJabatanEntities = null;
+                        try {
+                            strukturJabatanEntities = strukturJabatanDao.getByCriteria(hsCriteria);
+                        } catch (HibernateException e) {
+                            logger.error("[NotifikasiBoImpl.daftarAtasanHngVp] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                        }
+
+                        if (strukturJabatanEntities != null) {
+                            for (ImStrukturJabatanEntity listStruktur : strukturJabatanEntities) {
+
+                                // search data nip from personil by parameter position_id from struktur jabatan
+                                String stPosition = "";
+                                if (listStruktur.getPositionId() != null) {
+                                    stPosition = String.valueOf(listStruktur.getPositionId());
+                                }
+                                hsCriteria = new HashMap();
+                                hsCriteria.put("branch_id", branchId);
+                                hsCriteria.put("position_id", stPosition);
+                                hsCriteria.put("flag", "Y");
+                                List<ItPersonilPositionEntity> itPersonilPositionEntities = null;
+                                try {
+                                    itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteria);
+                                } catch (HibernateException e) {
+                                    logger.error("[NotifikasiBoImpl.daftarAtasanHngVp] Error, " + e.getMessage());
+                                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                }
+
+                                for (ItPersonilPositionEntity listPersonilPosition : itPersonilPositionEntities) {
+                                    PersonilPosition personilPosition = new PersonilPosition();
+                                    personilPosition.setNip(listPersonilPosition.getNip());
+                                    listOfResult.add(personilPosition);
+
+                                    //RAKA-07JUN2021==> Rekursi untuk notif hingga VP
+                                    if("umum".equalsIgnoreCase(bean.getTipeNotifId())) { //menghindari kirim notif permohonan approval hingga ke VP
+                                        if (listStruktur.getLevel() > 1) {
+                                            List<PersonilPosition> listAtasan = new ArrayList<>();
+                                            Notifikasi notifAtasan = bean;
+                                            notifAtasan.setNip(listPersonilPosition.getNip());
+                                            listAtasan = daftarAtasanHngVp(notifAtasan);
+                                            listOfResult.addAll(listAtasan);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        logger.info("[NotifikasiBoImpl.daftarAtasanHngVp] end process <<<");
+        return listOfResult;
     }
 
     @Override
