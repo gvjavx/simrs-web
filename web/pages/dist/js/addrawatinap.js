@@ -6223,7 +6223,7 @@ function repeatOrderObat(idApprovalObat){
                         var harga = parseInt(nonracik.qtyApprove) * parseInt(nonracik.harga);
 
                         strnonracik += "<tr id='"+item.idObat+"'>"+
-                           '<td>' + nonracik.namaObat +
+                            '<td>' + nonracik.namaObat +
                             '<input type="hidden" value="' + nonracik.idObat + '" id="id_obat_' + count + '">' +
                             '<input type="hidden" value="' + nonracik.qtyApprove + '" id="qty_' + count + '">' +
                             '<input type="hidden" value="' + "biji" + '" id="jenis_satuan_' + count + '">' +
@@ -6246,7 +6246,7 @@ function repeatOrderObat(idApprovalObat){
                             '</td>'+
                             '<td align="right">' + formatRupiah(harga) + '</td>';
 
-                         strnonracik +=
+                        strnonracik +=
                             '<td align="center"><img border="0" onclick="delRowObat(\'' + nonracik.idObat + '\',\'' + harga + '\')" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
                             '</tr>';
 
@@ -6266,6 +6266,7 @@ function repeatOrderObat(idApprovalObat){
                         var warnaRacik  = racik.warna;
                         var kemasan     = racik.kemasan;
                         var signaRacik  = racik.signa;
+                        var qtyRacik    = racik.qty;
 
                         var label = "<div class='box-header with-border'><i class='fa fa-file-o'></i> Obat Racik : </div>";
                         var table = "<table style='font-size: 13px; border-radius:5px;' class='table' width='100%' id='tabel-racik-"+idnamaracik+"'>" +
@@ -6280,7 +6281,7 @@ function repeatOrderObat(idApprovalObat){
                             "<tr>" +
                             "<td><div style='width:10px;height:10px;border-radius:50%;background-color:"+warnaRacik+";display:inline-block;'></div> <span style='font-weight:bold;'>"+namaRacik+"</span></td>" +
                             "<td width='35%'><textarea class='form-control' cols='4' rows='3' id='signa-racik-"+idnamaracik+"'>"+signaRacik+"</textarea></td>" +
-                            "<td width='15%'><input type='number' class='form-control' id='qty-racik-"+idnamaracik+"'/></td>" +
+                            "<td width='15%'><input type='number' class='form-control' id='qty-racik-"+idnamaracik+"' value='"+qtyRacik+"'/></td>" +
                             "<td><select class='form-control' id='kemasan-racik-"+idnamaracik+"'>"+
                             "<option value='Capsule'>Capsule</option>"+
                             "<option value='Puyer'>Puyer</option>"+
@@ -6297,9 +6298,9 @@ function repeatOrderObat(idApprovalObat){
                             "</tbody>"+
                             "</table>";
 
-                            $("#informasi-racik").append(label+table);
-                            $("#kemasan-racik-"+idnamaracik).val(kemasan);
-                            arrListNamaRacik.push({"idracik": idnamaracik,"namaracik":namaRacik});
+                        $("#informasi-racik").append(label+table);
+                        $("#kemasan-racik-"+idnamaracik).val(kemasan);
+                        arrListNamaRacik.push({"idracik": idnamaracik,"namaracik":namaRacik});
 
                         var detail = "<table style='font-size:13px;' id='detail-racik-"+idnamaracik+"' class='table table-bordered table-striped'>"+
                             "<thead>" +
@@ -6311,24 +6312,25 @@ function repeatOrderObat(idApprovalObat){
                             "</tbody>"+
                             "</table>";
 
-                        $("#body-detail-racik-"+detailracik.idRacik).append(detail);
+                        $("#body-detail-racik-"+idnamaracik).append(detail);
 
-                });
+                        $.each(item.listDetailObatRacik, function(i, detailracik){
+                            var detail = "<tr>" +
+                                "<td>"+detailracik.namaObat+"<input type='hidden' id='id-"+detailracik.idRacik+"-"+detailracik.idObat+"' value='"+detailracik.idObat+"'/><input type='hidden' id='nama-"+detailracik.idRacik+"-"+detailracik.idObat+"' value='"+detailracik.namaObat+"'></td>" +
+                                "<td width='50%'><textarea id='dosis-"+detailracik.idRacik+"-"+detailracik.idObat+"' class='form-control' cols='4' rows='1'>"+detailracik.keterangan+"</textarea></td>" +
+                                "<td width='10%' align='center'>"+
+                                '<img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
+                                "</td>" +
+                                "</tr>";
 
+                            $("#body-detail-racik-obat-"+idnamaracik).append(detail);
+                            arrListDetailRacik.push({ "idobat":detailracik.idObat, "namaobat":detailracik.namaObat, "racik":detailracik.namaRacik, "idracik":detailracik.idRacik});
+                        });
 
-                    $.each(item.listDetailObatRacik, function(i, detailracik){
-                        var detail = "<tr>" +
-                                    "<td>"+detailracik.namaObat+"<input type='hidden' id='id-"+detailracik.idRacik+"-"+detailracik.idObat+"' value='"+detailracik.idObat+"'/><input type='hidden' id='nama-"+detailracik.idRacik+"-"+detailracik.idObat+"' value='"+detailracik.namaObat+"'></td>" +
-                                    "<td width='50%'><textarea id='dosis-"+detailracik.idRacik+"-"+detailracik.idObat+"' class='form-control' cols='4' rows='1'></textarea></td>" +
-                                    "<td width='10%' align='center'>"+
-                                    '<img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
-                                    "</td>" +
-                                    "</tr>";
-
-                        $("#body-detail-racik-obat-"+detailracik.idRacik).append(detail);
-                        arrListDetailRacik.push({ "idobat":idObat, "namaobat":detailracik.namaObat, "racik":detailracik.namaRacik, "idracik":detailracik.idRacik});
                     });
+
                 }
+
             });
 
             // total harga

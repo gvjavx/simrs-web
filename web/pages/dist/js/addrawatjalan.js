@@ -6223,7 +6223,9 @@ function copyResep() {
                 }
             
             });
-            
+
+            // total harga
+            //alert(totalHarga);
             $("#total_harga_obat").val(formatRupiah(totalHarga));
         }
     });
