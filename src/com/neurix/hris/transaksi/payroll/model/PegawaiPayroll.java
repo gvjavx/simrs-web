@@ -597,6 +597,7 @@ public class PegawaiPayroll extends BasePayroll {
         BigDecimal pphGaji = getPphGajiNilai();
 
         sumOfComponentA = sumOfComponentA.add(tunjPPHGaji);
+        componentCNilai = componentCNilai.add(pphGaji);
 
         BigDecimal grossIncome = new BigDecimal(0);
         grossIncome = grossIncome.add(sumOfComponentA)
