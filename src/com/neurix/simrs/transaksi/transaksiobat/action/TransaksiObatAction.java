@@ -1056,6 +1056,9 @@ public class TransaksiObatAction extends BaseMasterAction {
                 obatDetail.setBranchId(CommonUtil.userBranchLogin());
                 obatDetail.setLastUpdate(time);
                 obatDetail.setLastUpdateWho(userLogin);
+                if(object.has("tipe_pelayanan")){
+                    obatDetail.setTipePelayanan(object.getString("tipe_pelayanan"));
+                }
 
                 try {
                     if(object.getString("keterangan") != null && !"".equalsIgnoreCase(object.getString("keterangan"))){
@@ -1118,9 +1121,15 @@ public class TransaksiObatAction extends BaseMasterAction {
                         for (int i = 0; i < json.length(); i++) {
                             JSONObject obj = json.getJSONObject(i);
                             TransaksiObatDetail detail = new TransaksiObatDetail();
+                            detail.setIdObat(obj.getString("id"));
+                            detail.setIsRacik(obj.getString("is_racik"));
                             detail.setFrekuensi(obj.getString("waktu"));
-                            detail.setNamaObat(obj.getString("nama_obat"));
-                            detail.setKeterangan(obj.getString("keterangan"));
+                            if(obj.has("nama_obat")){
+                                detail.setNamaObat(obj.getString("nama_obat"));
+                            }
+                            if(obj.has("keterangan")){
+                                detail.setKeterangan(obj.getString("keterangan"));
+                            }
                             entityArrayList.add(detail);
                         }
                         if(entityArrayList.size() > 0){

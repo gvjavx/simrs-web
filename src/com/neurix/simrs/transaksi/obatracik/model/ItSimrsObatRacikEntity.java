@@ -15,6 +15,15 @@ public class ItSimrsObatRacikEntity {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String warna;
+    private String frekuensi;
+
+    public String getFrekuensi() {
+        return frekuensi;
+    }
+
+    public void setFrekuensi(String frekuensi) {
+        this.frekuensi = frekuensi;
+    }
 
     public String getWarna() {
         return warna;

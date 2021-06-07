@@ -394,7 +394,7 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Nama Obat</td>
-                                <td>Keterangan / Signa</td>
+                                <td>Signa Dokter</td>
                                 <td width="21%" align="center">Scan ID Obat</td>
                                 <td align="center">Qty Request</td>
                                 <td align="center">Qty Approve</td>
@@ -404,7 +404,7 @@
                                     <td align="center">Waktu</td>
                                 </s:if>
                                 <s:else>
-                                    <td align="center">Keterangan</td>
+                                    <td align="center">Signa Farmasi</td>
                                 </s:else>
                             </tr>
                             </thead>
@@ -496,8 +496,46 @@
                                         </td>
                                     </s:if>
                                     <s:else>
-                                        <td align="center">
-                                            <textarea class="form-control cek_resep" id="waktu_resep_<s:property value="idObat"/>"></textarea>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <span class="cek_pemberian" title="<s:property value="idObat"/>|N">Pemberian</span>
+                                                    <select class="form-control" id="cek_pemberian_1_<s:property value="idObat"/>">
+                                                        <option value="Sebelum Makan">Sebelum Makan</option>
+                                                        <option value="Saat Makan">Saat Makan</option>
+                                                        <option value="Sesudah Makan">Sesudah Makan</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row" style="margin-top: 7px">
+                                                <div class="col-md-12">
+                                                    <span class="cek_waktu">Waktu</span>
+                                                    <div class="form-check jarak">
+                                                        <input type="checkbox" name="cek_waktu_name_<s:property value="idObat"/>" id="cek_waktu_1_<s:property value="idObat"/>" value="Pagi">
+                                                        <label for="cek_waktu_1_<s:property value="idObat"/>"></label> Pagi
+                                                    </div>
+                                                    <div class="form-check jarak">
+                                                        <input type="checkbox" name="cek_waktu_name_<s:property value="idObat"/>" id="cek_waktu_2_<s:property value="idObat"/>" value="Siang">
+                                                        <label for="cek_waktu_2_<s:property value="idObat"/>"></label> Siang
+                                                    </div>
+                                                    <div class="form-check jarak">
+                                                        <input type="checkbox" name="cek_waktu_name_<s:property value="idObat"/>" id="cek_waktu_3_<s:property value="idObat"/>" value="Sore">
+                                                        <label for="cek_waktu_3_<s:property value="idObat"/>"></label> Sore
+                                                    </div>
+                                                    <div class="form-check jarak">
+                                                        <input type="checkbox" name="cek_waktu_name_<s:property value="idObat"/>" id="cek_waktu_4_<s:property value="idObat"/>" value="Malam">
+                                                        <label for="cek_waktu_4_<s:property value="idObat"/>"></label> Malam
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row" style="margin-top: 7px">
+                                                <div class="col-md-12">
+                                                    <span class="cek_ket">Keterangan</span>
+                                                    <textarea class="form-control" id="cek_ket_1_<s:property value="idObat"/>"></textarea>
+                                                </div>
+                                            </div>
                                         </td>
                                     </s:else>
                                 </tr>
@@ -517,14 +555,14 @@
                                     <thead>
                                     <tr bgcolor="#90ee90">
                                         <td >Nama Racik</td>
-                                        <td>Signa</td>
+                                        <td>Signa Dokter</td>
                                         <td align="right" width="15%">Qty</td>
                                         <td align="kemasan">Kemasan</td>
                                         <s:if test='permintaanResep.tipePelayanan == "rawat_inap"'>
                                             <td align="center">Waktu</td>
                                         </s:if>
                                         <s:else>
-                                            <td align="center">Keterangan</td>
+                                            <td align="center">Signa Farmasi</td>
                                         </s:else>
                                     </tr>
                                     </thead>
@@ -535,10 +573,10 @@
                                         <s:else>
                                             <tr style="font-weight: bold" bgcolor="silver">
                                         </s:else>
-                                            <td style="vertical-align: middle"><s:property value="nama"/></td>
-                                            <td style="vertical-align: middle"><s:property value="signa"/></td>
-                                            <td style="vertical-align: middle" align="right" width="10%"><s:property value="qty"/></td>
-                                            <td style="vertical-align: middle"><s:property value="kemasan"/></td>
+                                            <td><s:property value="nama"/></td>
+                                            <td><s:property value="signa"/></td>
+                                            <td align="right" width="10%"><s:property value="qty"/></td>
+                                            <td><s:property value="kemasan"/></td>
                                             <s:if test='permintaanResep.tipePelayanan == "rawat_inap"'>
                                                 <td align="center">
                                                     <div class="form-check">
@@ -564,8 +602,46 @@
                                                 </td>
                                             </s:if>
                                             <s:else>
-                                                <td align="center">
-                                                    <textarea class="form-control cek_resep" id="waktu_resep_<s:property value="id"/>"></textarea>
+                                                <td>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <span class="cek_pemberian" title="<s:property value="id"/>|Y">Pemberian</span>
+                                                            <select class="form-control" id="cek_pemberian_1_<s:property value="id"/>">
+                                                                <option value="Sebelum Makan">Sebelum Makan</option>
+                                                                <option value="Saat Makan">Saat Makan</option>
+                                                                <option value="Sesudah Makan">Sesudah Makan</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="row" style="margin-top: 7px">
+                                                        <div class="col-md-12">
+                                                            <span class="cek_waktu">Waktu</span>
+                                                            <div class="form-check jarak">
+                                                                <input type="checkbox" name="cek_waktu_name_<s:property value="id"/>" id="cek_waktu_1_<s:property value="id"/>" value="Pagi">
+                                                                <label for="cek_waktu_1_<s:property value="id"/>"></label> Pagi
+                                                            </div>
+                                                            <div class="form-check jarak">
+                                                                <input type="checkbox" name="cek_waktu_name_<s:property value="id"/>" id="cek_waktu_2_<s:property value="id"/>" value="Siang">
+                                                                <label for="cek_waktu_2_<s:property value="id"/>"></label> Siang
+                                                            </div>
+                                                            <div class="form-check jarak">
+                                                                <input type="checkbox" name="cek_waktu_name_<s:property value="id"/>" id="cek_waktu_3_<s:property value="id"/>" value="Sore">
+                                                                <label for="cek_waktu_3_<s:property value="id"/>"></label> Sore
+                                                            </div>
+                                                            <div class="form-check jarak">
+                                                                <input type="checkbox" name="cek_waktu_name_<s:property value="id"/>" id="cek_waktu_4_<s:property value="id"/>" value="Malam">
+                                                                <label for="cek_waktu_4_<s:property value="id"/>"></label> Malam
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="row" style="margin-top: 7px">
+                                                        <div class="col-md-12">
+                                                            <span class="cek_ket">Keterangan</span>
+                                                            <textarea class="form-control" id="cek_ket_1_<s:property value="id"/>"></textarea>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </s:else>
                                         </tr>
@@ -1421,45 +1497,74 @@
             editBiaya = JSON.stringify(dataTambahan);
         }
 
-        var cekResep = $('.cek_resep');
         var dataWaktuResep = [];
-        if(cekResep.length > 0){
-            var cekId = "";
-            $.each(cekResep, function (i, item) {
-                if(item.checked){
-                    var isi = item.value.split("|");
-                    var waktu = isi[0];
-                    var racik = isi[1];
-                    var id    = isi[2];
-                    var namaObat    = isi[3];
-                    var ketObat    = isi[4];
-                    var temId = "";
-                    if(cekId != id){
-                        cekId = id;
-                        var waktuResep = $('[name=waktu_resep_'+id+']');
-                        if(waktuResep.length > 0){
-                            var tempW = "";
-                            $.each(waktuResep, function (i, item) {
-                                if(item.checked){
-                                    var isi = item.value.split("|");
-                                    var waktu = isi[0];
-                                    if(tempW != ""){
-                                        tempW = tempW+"#"+waktu;
-                                    }else{
-                                        tempW = waktu;
+        var jenisPelayanan = '<s:property value="permintaanResep.tipePelayanan"/>';
+        if(jenisPelayanan == "rawat_inap"){
+            var cekResep = $('.cek_resep');
+            if(cekResep.length > 0){
+                var cekId = "";
+                $.each(cekResep, function (i, item) {
+                    if(item.checked){
+                        var isi = item.value.split("|");
+                        var waktu = isi[0];
+                        var racik = isi[1];
+                        var id    = isi[2];
+                        var namaObat    = isi[3];
+                        var ketObat    = isi[4];
+                        var temId = "";
+                        if(cekId != id){
+                            cekId = id;
+                            var waktuResep = $('[name=waktu_resep_'+id+']');
+                            if(waktuResep.length > 0){
+                                var tempW = "";
+                                $.each(waktuResep, function (i, item) {
+                                    if(item.checked){
+                                        var isi = item.value.split("|");
+                                        var waktu = isi[0];
+                                        if(tempW != ""){
+                                            tempW = tempW+"#"+waktu;
+                                        }else{
+                                            tempW = waktu;
+                                        }
                                     }
-                                }
-                            });
-                            dataWaktuResep.push({
-                                'id': id,
-                                'is_racik': racik,
-                                'waktu': tempW,
-                                'nama_obat': namaObat,
-                                'keterangan': ketObat
-                            });
+                                });
+                                dataWaktuResep.push({
+                                    'id': id,
+                                    'is_racik': racik,
+                                    'waktu': tempW,
+                                    'nama_obat': namaObat,
+                                    'keterangan': ketObat
+                                });
+                            }
                         }
                     }
-                }
+                });
+            }
+        }else{
+            var cekPemberian = $('.cek_pemberian');
+            $.each(cekPemberian, function (i, item) {
+                var id = item.title.split("|")[0];
+                var isRacik = item.title.split("|")[1];
+
+                var pemberian = $('#cek_pemberian_1_'+id).val();
+                var waktu = $('[name=cek_waktu_name_'+id+']');
+                var keterangan = $('#cek_ket_1_'+id).val();
+
+                var tempKet = "";
+                $.each(waktu, function (ix, itemx) {
+                    if(itemx.checked){
+                        if(tempKet != ""){
+                            tempKet = tempKet+'|'+itemx.value;
+                        }else{
+                            tempKet = itemx.value;
+                        }
+                    }
+                });
+                dataWaktuResep.push({
+                    'id': id,
+                    'is_racik': isRacik,
+                    'waktu': pemberian+'#'+tempKet+'#'+keterangan
+                });
             });
         }
 
@@ -1488,7 +1593,8 @@
             'keterangan': editKeterangan,
             'biaya_tambahan': editBiaya,
             'waktu': waktuCPO,
-            'kajian': stringPengkajian
+            'kajian': stringPengkajian,
+            'tipe_pelayanan': jenisPelayanan
         }
 
         var dataString = JSON.stringify(obj);
