@@ -39,6 +39,8 @@ public interface NotifikasiBo extends BaseMasterBo<Notifikasi>{
 
     void sendNotif(Notifikasi notifikasi);
 
+    public List<PersonilPosition> daftarAtasanHngVp(Notifikasi bean);
+
     void SendNotifKeAtasanLangsung(String nip, String id, String tipeNotifId, String tipeNotifName, String note, String createdWho,String os);
 
     List<PersonilPosition> daftarAtasanLangsung(Notifikasi bean);
