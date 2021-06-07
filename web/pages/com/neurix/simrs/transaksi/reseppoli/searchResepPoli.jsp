@@ -284,6 +284,11 @@
                                                          '<s:property value="tglLahir"/>'
                                                          )">
                                         </s:if>
+                                        <s:if test='#row.status == "Selesai"'>
+                                            <a target="_blank" href="printLabelResepPasien_reseppoli.action?idResep=<s:property value="idPermintaanResep"/>">
+                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25-yellow.png"/>" style="cursor: pointer;">
+                                            </a>
+                                        </s:if>
                                     </td>
                                 </tr>
                             </s:iterator>

@@ -41,6 +41,9 @@
             <basic name="warna">
                 <column name="warna"/>
             </basic>
+            <basic name="frekuensi">
+                <column name="frekuensi"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

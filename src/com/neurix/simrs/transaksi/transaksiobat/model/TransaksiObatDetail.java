@@ -115,6 +115,24 @@ public class TransaksiObatDetail extends BaseModel {
     private String kFarma;
     private String kKritis;
     private String warna;
+    private String tipePelayanan;
+    private String isRacik;
+
+    public String getIsRacik() {
+        return isRacik;
+    }
+
+    public void setIsRacik(String isRacik) {
+        this.isRacik = isRacik;
+    }
+
+    public String getTipePelayanan() {
+        return tipePelayanan;
+    }
+
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
+    }
 
     public String getWarna() {
         return warna;
