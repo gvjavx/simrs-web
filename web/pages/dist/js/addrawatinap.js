@@ -891,6 +891,7 @@ function showModal(select) {
         $('#resep_nama_obat_serupa').attr("onchange", "var warn =$('#war_rep_obat_serupa').is(':visible'); if (warn){$('#cor_rep_obat_serupa').show().fadeOut(3000);$('#war_rep_obat_serupa').hide()}; setStokObatApotek(this, \'serupa\')");
         $('#body_detail').html('');
         $('#modal-resep-head').modal({show: true, backdrop: 'static'});
+        $('#btn-save-resep-normal').show();
         getJenisResep('select-jenis-resep');
         var option = '<option value=""> - </option>';
         dwr.engine.setAsync(true);
@@ -6142,7 +6143,7 @@ function saveObatRacikToSession(){
         var warnaGanjil = "silver";
         var jumlahArr = arrListNamaRacik.length;
 
-        if (parseInt(jumlahArr) % 2 == 0){
+        if ((parseInt(jumlahArr) + 1) % 2 == 0){
             warnaRacik = warnaGenap;
         } else {
             warnaRacik = warnaGanjil;
@@ -6285,7 +6286,7 @@ function repeatOrderObat(idApprovalObat){
                         var warnaGenap = "#ffe4b5";
                         var warnaGanjil = "silver";
                         
-                        if (parseInt(i_racik) + 1 % 2 == 0){
+                        if (parseInt(i_racik) % 2 == 0){
                             warnaRacik = warnaGenap;
                         } else {
                             warnaRacik = warnaGanjil;
@@ -6323,7 +6324,7 @@ function repeatOrderObat(idApprovalObat){
 
                         $("#informasi-racik").append(label+table);
                         $("#kemasan-racik-"+idnamaracik).val(kemasan);
-                        arrListNamaRacik.push({"idracik": idnamaracik,"namaracik":namaRacik});
+                        arrListNamaRacik.push({"idracik": idnamaracik,"namaracik":namaRacik, "warna":""});
 
                         var detail = "<table style='font-size:13px;' id='detail-racik-"+idnamaracik+"' class='table table-bordered table-striped'>"+
                             "<thead>" +
@@ -6339,15 +6340,15 @@ function repeatOrderObat(idApprovalObat){
 
                         $.each(item.listDetailObatRacik, function(i_detail_racik, detailracik){
                             var detail = "<tr>" +
-                                "<td>"+detailracik.namaObat+"<input type='hidden' id='id-"+detailracik.idRacik+"-"+detailracik.idObat+"' value='"+detailracik.idObat+"'/><input type='hidden' id='nama-"+detailracik.idRacik+"-"+detailracik.idObat+"' value='"+detailracik.namaObat+"'></td>" +
-                                "<td width='50%'><textarea id='dosis-"+detailracik.idRacik+"-"+detailracik.idObat+"' class='form-control' cols='4' rows='1'>"+detailracik.keterangan+"</textarea></td>" +
+                                "<td>"+detailracik.namaObat+"<input type='hidden' id='id-"+sisipkanStrip(detailracik.namaRacik)+"-"+detailracik.idObat+"' value='"+sisipkanStrip(detailracik.namaRacik)+"'/><input type='hidden' id='nama-"+detailracik.idRacik+"-"+detailracik.idObat+"' value='"+detailracik.namaObat+"'></td>" +
+                                "<td width='50%'><textarea id='dosis-"+sisipkanStrip(detailracik.namaRacik)+"-"+detailracik.idObat+"' class='form-control' cols='4' rows='1'>"+detailracik.keterangan+"</textarea></td>" +
                                 "<td width='10%' align='center'>"+
                                 '<img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
                                 "</td>" +
                                 "</tr>";
 
-                            $("#body-detail-racik-obat-"+idnamaracik).append(detail);
-                            arrListDetailRacik.push({ "idobat":detailracik.idObat, "namaobat":detailracik.namaObat, "racik":detailracik.namaRacik, "idracik":detailracik.idRacik});
+                            $("#body-detail-racik-obat-"+sisipkanStrip(detailracik.namaRacik)).append(detail);
+                            arrListDetailRacik.push({ "idobat":detailracik.idObat, "namaobat":detailracik.namaObat, "racik":detailracik.namaRacik, "idracik":sisipkanStrip(detailracik.namaRacik)});
                         });
 
                     });
