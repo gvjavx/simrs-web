@@ -6057,7 +6057,8 @@ var arrListNamaRacik = [];
 var arrListDetailRacik = [];
 function saveObatRacikToSession(){
 
-    var warnaRacik = $('#color_racik').val();
+    //var warnaRacik = $('#color_racik').val();
+    var warnaRacik = "";
 
     var obat = null;
     var flagSerupa = $("#flag-obat-serupa").val();
@@ -6136,6 +6137,17 @@ function saveObatRacikToSession(){
     }
 
     if (!found){
+
+        var warnaGenap = "#ffe4b5";
+        var warnaGanjil = "silver";
+        var jumlahArr = listNamaRacik.length;
+
+        if (parseInt(jumlahArr) % 2 == 0){
+            warnaRacik = warnaGenap;
+        } else {
+            warnaRacik = warnaGanjil;
+        }
+
         var label = "<div class='box-header with-border'><i class='fa fa-file-o'></i> Obat Racik : </div>";
         var table = "<table style='font-size: 13px; border-radius:5px;' class='table' width='100%' id='tabel-racik-"+idnamaracik+"'>" +
             "<thead style='border-top:2px solid "+warnaRacik+"'>" +
