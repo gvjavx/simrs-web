@@ -5825,7 +5825,8 @@ var arrListNamaRacik = [];
 var arrListDetailRacik = [];
 function saveObatRacikToSession(){
 
-    var warnaRacik = $('#color_racik').val();
+    //var warnaRacik = $('#color_racik').val();
+    var warnaRacik = "";
 
     var obat = null;
     var flagSerupa = $("#flag-obat-serupa").val();
@@ -5904,6 +5905,17 @@ function saveObatRacikToSession(){
     }
 
     if (!found){
+
+        var warnaGenap = "#ffe4b5";
+        var warnaGanjil = "silver";
+        var jumlahArr = arrListNamaRacik.length;
+
+        if (parseInt(jumlahArr) % 2 == 0){
+            warnaRacik = warnaGenap;
+        } else {
+            warnaRacik = warnaGanjil;
+        }
+
         var label = "<div class='box-header with-border'><i class='fa fa-file-o'></i> Obat Racik : </div>";
         var table = "<table style='font-size: 13px; border-radius:5px;' class='table' width='100%' id='tabel-racik-"+idnamaracik+"'>" +
             "<thead style='border-top:2px solid "+warnaRacik+"'>" +
@@ -6150,14 +6162,23 @@ function copyResep() {
                 }
 
                 if (item.listNamaObatRacik.length > 0){
-                    $.each(item.listNamaObatRacik, function(i, racik){
+                    $.each(item.listNamaObatRacik, function(i_racik, racik){
 
                         var namaRacik   = racik.nama;
                         var idnamaracik = sisipkanStrip(namaRacik);
-                        var warnaRacik  = racik.warna;
+                        var warnaRacik  = "";
                         var kemasan     = racik.kemasan;
                         var signaRacik  = racik.signa;
                         var qtyRacik    = racik.qty;
+
+                        var warnaGenap = "#ffe4b5";
+                        var warnaGanjil = "silver";
+                        
+                        if (parseInt(i_racik) + 1 % 2 == 0){
+                            warnaRacik = warnaGenap;
+                        } else {
+                            warnaRacik = warnaGanjil;
+                        }
 
                         var label = "<div class='box-header with-border'><i class='fa fa-file-o'></i> Obat Racik : </div>";
                         var table = "<table style='font-size: 13px; border-radius:5px;' class='table' width='100%' id='tabel-racik-"+idnamaracik+"'>" +
@@ -6205,7 +6226,7 @@ function copyResep() {
 
                         $("#body-detail-racik-"+idnamaracik).append(detail);
 
-                        $.each(item.listDetailObatRacik, function(i, detailracik){
+                        $.each(item.listDetailObatRacik, function(i_detail_racik, detailracik){
                             var detail = "<tr>" +
                                 "<td>"+detailracik.namaObat+"<input type='hidden' id='id-"+detailracik.idRacik+"-"+detailracik.idObat+"' value='"+detailracik.idObat+"'/><input type='hidden' id='nama-"+detailracik.idRacik+"-"+detailracik.idObat+"' value='"+detailracik.namaObat+"'></td>" +
                                 "<td width='50%'><textarea id='dosis-"+detailracik.idRacik+"-"+detailracik.idObat+"' class='form-control' cols='4' rows='1'>"+detailracik.keterangan+"</textarea></td>" +
