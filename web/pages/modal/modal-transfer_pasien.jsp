@@ -589,9 +589,9 @@
                             <div class="col-md-4">
                                 <select onchange="setSideValue('kps18', this.value)" class="form-control jatuh-pasien" id="kps17" style="margin-top: 7px">
                                     <option value="">[Select One]</option>
-                                    <option value="Ringan">Rendah</option>
+                                    <option value="Rendah">Rendah</option>
                                     <option value="Sedang">Sedang</option>
-                                    <option value="Berat">Tinggi</option>
+                                    <option value="Tinggi">Tinggi</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
