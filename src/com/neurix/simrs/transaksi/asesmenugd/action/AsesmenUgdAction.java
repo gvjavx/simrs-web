@@ -37,6 +37,7 @@ public class AsesmenUgdAction {
         AsesmenUgdBo asesmenUgdBo = (AsesmenUgdBo) ctx.getBean("asesmenUgdBoProxy");
         try {
             JSONArray json = new JSONArray(data);
+            JSONObject dtaoObj = new JSONObject(dataPasien);
             List<AsesmenUgd> ugdList = new ArrayList<>();
 
             for (int i = 0; i < json.length(); i++) {
@@ -103,6 +104,9 @@ public class AsesmenUgdAction {
                 asesmenUgd.setCreatedDate(time);
                 asesmenUgd.setLastUpdateWho(userLogin);
                 asesmenUgd.setLastUpdate(time);
+                if (dtaoObj.has("no_checkup")) {
+                    asesmenUgd.setNoCheckup(dtaoObj.getString("no_checkup"));
+                }
                 ugdList.add(asesmenUgd);
             }
             try {

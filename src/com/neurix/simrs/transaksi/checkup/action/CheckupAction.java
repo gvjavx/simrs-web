@@ -3684,6 +3684,9 @@ public class CheckupAction extends BaseMasterAction {
             if ("tindakan".equalsIgnoreCase(key)) {
                 response = checkupBo.getTindakanRawat(id);
             }
+            if("tujuan_ruangan".equalsIgnoreCase(key)){
+                response = checkupBo.getTujuanRuangan(id);
+            }
         }
         return response;
     }

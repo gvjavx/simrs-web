@@ -3101,6 +3101,8 @@
     var idRawatInap = "";
     var namaJenisPasien = $('#nama_jenis_pasien').val();
     var tempSpo2 = "";
+    var tempNyeri = "";
+    var tempJatuh = "";
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');

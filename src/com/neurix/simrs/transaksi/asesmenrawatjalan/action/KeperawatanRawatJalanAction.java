@@ -40,6 +40,7 @@ public class KeperawatanRawatJalanAction {
 
         try {
             JSONArray json = new JSONArray(data);
+            JSONObject dtObj = new JSONObject(dataPasien);
             List<KeperawatanRawatJalan> keperawatanRawatJalanList = new ArrayList<>();
             for (int i = 0; i < json.length(); i++) {
 
@@ -108,6 +109,9 @@ public class KeperawatanRawatJalanAction {
                 keperawatanRawatJalan.setCreatedDate(time);
                 keperawatanRawatJalan.setLastUpdateWho(userLogin);
                 keperawatanRawatJalan.setLastUpdate(time);
+                if(obj.has("no_checkup")){
+                    keperawatanRawatJalan.setNoCheckup(obj.getString("no_checkup"));
+                }
                 keperawatanRawatJalanList.add(keperawatanRawatJalan);
             }
 

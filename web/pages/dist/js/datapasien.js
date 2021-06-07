@@ -54,7 +54,10 @@ function setDataPasien() {
         var spo2Pasien = $('.spo2_pasien').length;
         var stsGizi = $('.status_gizi').length;
 
-        if (tensi > 0 || gejala > 0 || bb > 0 || tb > 0) {
+        var nyeriPasien = $('.nyeri-pasien').length;
+        var jatuhPasien = $('.jatuh-pasien').length;
+
+        if (tensi > 0 || gejala > 0 || bb > 0 || tb > 0 || spo2Pasien > 0 || nyeriPasien > 0 || jenisPasien) {
             dwr.engine.setAsync(true);
             CheckupAction.getDataPemeriksaanFisik(noCheckup, {
                 callback: function (res) {
@@ -67,9 +70,19 @@ function setDataPasien() {
                         tempTinggi = res.tinggi;
                         tempAnmnesa = res.anamnese;
                         tempSpo2 = res.spo2;
+                        tempNyeri = res.nyeri;
+                        tempJatuh = res.resikoJatuh;
                     }
                 }
             });
+        }
+
+        if (nyeriPasien > 0) {
+            $('.nyeri-pasien').val(tempNyeri);
+        }
+
+        if (jatuhPasien > 0) {
+            $('.jatuh-pasien').val(tempJatuh);
         }
 
         if (jam > 0) {
@@ -378,7 +391,7 @@ function setDataPasien() {
     }
 
     if(spo2Pasien > 0){
-        $('#spo2_pasien').val(tempSpo2);
+        $('.spo2_pasien').val(tempSpo2);
     }
 
     $('.nama_dokter').on('input', function (e) {
@@ -461,6 +474,16 @@ function setDataPasien() {
                         $('.status_gizi').val(keterangan);
                     }
                 }
+            }
+        });
+    }
+
+    var tujuanRuangan = $('.tujuan-ruangan').length;
+    if(tujuanRuangan > 0){
+        dwr.engine.setAsync(true);
+        CheckupAction.getDataByKey(noCheckup, "tujuan_ruangan", function (res) {
+            if(res != null){
+                $('.tujuan-ruangan').val(res);
             }
         });
     }
