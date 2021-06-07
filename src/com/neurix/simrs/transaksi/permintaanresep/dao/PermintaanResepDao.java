@@ -393,7 +393,7 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
                     "\tGROUP BY id_obat, id_pelayanan, branch_id\n" +
                     "\tHAVING SUM(qty_box) > 0 OR SUM(qty_lembar) > 0 OR SUM(qty_biji) > 0 \n" +
                     ") b ON a.id_obat = b.id_obat\n" +
-                    "INNER JOIN mt_simrs_harga_obat c ON a.id_obat = c.id_obat\n" +
+                    "LEFT JOIN mt_simrs_harga_obat c ON a.id_obat = c.id_obat\n" +
                     "LEFT JOIN (\n" +
                     "\tSELECT\n" +
                     "\tid_obat,\n" +
