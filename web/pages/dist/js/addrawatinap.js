@@ -854,7 +854,7 @@ function showModal(select) {
     } else if (select == 7 || select == 10) {
         resetAll();
         cekRekakanops();
-        //getApotekRawatJalan();
+        getApotekRawatInap();
         if (select == 7)
             $('#title-resep').html("Tambah Resep Pasien");
             $("#sec-jumlah-resep").show();
@@ -927,7 +927,7 @@ function formatRupiah(angka) {
 }
 
 function getApotekRawatInap() {
-    CheckupAction.getComboApotekList(function (res) {
+    CheckupAction.getComboApotekRawatInapList(function (res) {
         if (res.length == 1){
             $("#body-apotek").html("");
             var str = "";
