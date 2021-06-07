@@ -78,7 +78,7 @@
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Ruang Tujuan</label>
                             <div class="col-md-8">
-                                <input class="form-control" id="dr2" style="margin-top: 7px">
+                                <input class="form-control tujuan-ruangan" id="dr2" style="margin-top: 7px">
                             </div>
                         </div>
                     </div>
@@ -576,10 +576,10 @@
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Skala Nyeri</label>
                             <div class="col-md-4">
-                                <input oninput="setSideValue('kps16', this.value)" type="number" class="form-control" id="kps15" style="margin-top: 7px">
+                                <input oninput="setSideValue('kps16', this.value)" type="number" class="form-control nyeri-pasien" id="kps15" style="margin-top: 7px">
                             </div>
                             <div class="col-md-4">
-                                <input type="number" class="form-control" id="kps16" style="margin-top: 7px">
+                                <input type="number" class="form-control nyeri-pasien" id="kps16" style="margin-top: 7px">
                             </div>
                         </div>
                     </div>
@@ -587,19 +587,19 @@
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Resiko Jatuh</label>
                             <div class="col-md-4">
-                                <select onchange="setSideValue('kps18', this.value)" class="form-control" id="kps17" style="margin-top: 7px">
+                                <select onchange="setSideValue('kps18', this.value)" class="form-control jatuh-pasien" id="kps17" style="margin-top: 7px">
                                     <option value="">[Select One]</option>
-                                    <option value="Ringan">Ringan</option>
+                                    <option value="Ringan">Rendah</option>
                                     <option value="Sedang">Sedang</option>
-                                    <option value="Berat">Berat</option>
+                                    <option value="Berat">Tinggi</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <select class="form-control" id="kps18" style="margin-top: 7px">
+                                <select class="form-control jatuh-pasien" id="kps18" style="margin-top: 7px">
                                     <option value="">[Select One]</option>
-                                    <option value="Ringan">Ringan</option>
+                                    <option value="Rendah">Rendah</option>
                                     <option value="Sedang">Sedang</option>
-                                    <option value="Berat">Berat</option>
+                                    <option value="Tinggi">Tinggi</option>
                                 </select>
                             </div>
                         </div>

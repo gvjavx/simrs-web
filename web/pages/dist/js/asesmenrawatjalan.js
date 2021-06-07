@@ -347,6 +347,7 @@ function saveRJ(jenis, ket) {
                 if(resiko != undefined){
                     var isi = resiko.split("|")[0];
                     var skor = resiko.split("|")[1];
+                    console.log(skor);
                     data.push({
                         'parameter': label,
                         'jawaban': isi,
@@ -655,12 +656,12 @@ function detailRJ(jenis) {
                             }
                         }else if("resiko_jatuh" == jenis || "skrining_gizi" == jenis){
                             if("total" == item.tipe){
-                                body += '<tr>' +
+                                body += '<tr align="center">' +
                                     '<td width="40%" colspan="2">' + item.parameter + '</td>' +
-                                    '<td>' + cekItemIsNull(item.score) + '</td>' +
+                                    '<td>' + cekItemIsNull(item.jawaban) + '</td>' +
                                     '</tr>';
                             }else if("kesimpulan" == item.tipe){
-                                body += '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
+                                body += '<tr bgcolor="#ffebcd" style="font-weight: bold" align="center">' +
                                     '<td width="40%" colspan="2">' + item.parameter + '</td>' +
                                     '<td>' + jwb + '</td>' +
                                     '</tr>';

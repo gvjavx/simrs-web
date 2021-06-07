@@ -224,6 +224,24 @@ public class HeaderCheckup {
     private String prognosis;
     private String spo2;
     private String filePendukung;
+    private String nyeri;
+    private String resikoJatuh;
+
+    public String getResikoJatuh() {
+        return resikoJatuh;
+    }
+
+    public void setResikoJatuh(String resikoJatuh) {
+        this.resikoJatuh = resikoJatuh;
+    }
+
+    public String getNyeri() {
+        return nyeri;
+    }
+
+    public void setNyeri(String nyeri) {
+        this.nyeri = nyeri;
+    }
 
     public String getFilePendukung() {
         return filePendukung;

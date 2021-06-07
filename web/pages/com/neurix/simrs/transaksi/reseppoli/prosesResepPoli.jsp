@@ -400,7 +400,12 @@
                                 <td align="center">Qty Approve</td>
                                 <td align="center">Satuan (Rp.)</td>
                                 <td align="center">Total (Rp.)</td>
-                                <td align="center">Waktu</td>
+                                <s:if test='permintaanResep.tipePelayanan == "rawat_inap"'>
+                                    <td align="center">Waktu</td>
+                                </s:if>
+                                <s:else>
+                                    <td align="center">Keterangan</td>
+                                </s:else>
                             </tr>
                             </thead>
                             <tbody>
@@ -466,28 +471,35 @@
                                         </script>
                                         <input type="hidden" value="<s:property value="totalHarga"/>" id='tot_resep_<s:property value="%{#count.index}"/>'>
                                     </td>
-                                    <td align="center">
-                                        <div class="form-check">
-                                            <input type="checkbox" class="cek_resep" name="waktu_resep_<s:property value="idObat"/>" id="waktu_resep1_<s:property value="idObat"/>" value="07:00|N|<s:property value="idObat"/>|<s:property value="namaObat"/>|<s:property value="keterangan"/>">
-                                            <label for="waktu_resep1_<s:property value="idObat"/>"></label> 07:00
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="cek_resep" name="waktu_resep_<s:property value="idObat"/>" id="waktu_resep2_<s:property value="idObat"/>" value="12:00|N|<s:property value="idObat"/>|<s:property value="namaObat"/>|<s:property value="keterangan"/>">
-                                            <label for="waktu_resep2_<s:property value="idObat"/>"></label> 12:00
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="cek_resep" name="waktu_resep_<s:property value="idObat"/>" id="waktu_resep3_<s:property value="idObat"/>" value="18:00|N|<s:property value="idObat"/>|<s:property value="namaObat"/>|<s:property value="keterangan"/>">
-                                            <label for="waktu_resep3_<s:property value="idObat"/>"></label> 18:00
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="cek_resep" name="waktu_resep_<s:property value="idObat"/>" id="waktu_resep4_<s:property value="idObat"/>" value="20:00|N|<s:property value="idObat"/>|<s:property value="namaObat"/>|<s:property value="keterangan"/>">
-                                            <label for="waktu_resep4_<s:property value="idObat"/>"></label> 20:00
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="cek_resep" name="waktu_resep_<s:property value="idObat"/>" id="waktu_resep5_<s:property value="idObat"/>" value="22:00|N|<s:property value="idObat"/>|<s:property value="namaObat"/>|<s:property value="keterangan"/>">
-                                            <label for="waktu_resep5_<s:property value="idObat"/>"></label> 22:00
-                                        </div>
-                                    </td>
+                                    <s:if test='permintaanResep.tipePelayanan == "rawat_inap"'>
+                                        <td align="center">
+                                            <div class="form-check">
+                                                <input type="checkbox" class="cek_resep" name="waktu_resep_<s:property value="idObat"/>" id="waktu_resep1_<s:property value="idObat"/>" value="07:00|N|<s:property value="idObat"/>|<s:property value="namaObat"/>|<s:property value="keterangan"/>">
+                                                <label for="waktu_resep1_<s:property value="idObat"/>"></label> 07:00
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="cek_resep" name="waktu_resep_<s:property value="idObat"/>" id="waktu_resep2_<s:property value="idObat"/>" value="12:00|N|<s:property value="idObat"/>|<s:property value="namaObat"/>|<s:property value="keterangan"/>">
+                                                <label for="waktu_resep2_<s:property value="idObat"/>"></label> 12:00
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="cek_resep" name="waktu_resep_<s:property value="idObat"/>" id="waktu_resep3_<s:property value="idObat"/>" value="18:00|N|<s:property value="idObat"/>|<s:property value="namaObat"/>|<s:property value="keterangan"/>">
+                                                <label for="waktu_resep3_<s:property value="idObat"/>"></label> 18:00
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="cek_resep" name="waktu_resep_<s:property value="idObat"/>" id="waktu_resep4_<s:property value="idObat"/>" value="20:00|N|<s:property value="idObat"/>|<s:property value="namaObat"/>|<s:property value="keterangan"/>">
+                                                <label for="waktu_resep4_<s:property value="idObat"/>"></label> 20:00
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="cek_resep" name="waktu_resep_<s:property value="idObat"/>" id="waktu_resep5_<s:property value="idObat"/>" value="22:00|N|<s:property value="idObat"/>|<s:property value="namaObat"/>|<s:property value="keterangan"/>">
+                                                <label for="waktu_resep5_<s:property value="idObat"/>"></label> 22:00
+                                            </div>
+                                        </td>
+                                    </s:if>
+                                    <s:else>
+                                        <td align="center">
+                                            <textarea class="form-control cek_resep" id="waktu_resep_<s:property value="idObat"/>"></textarea>
+                                        </td>
+                                    </s:else>
                                 </tr>
                             </s:iterator>
                             </tbody>
@@ -501,54 +513,74 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="table" id="tabel_list_nama_racik" style="font-size: 13px">
+                                <table class="table table-bordered" id="tabel_list_nama_racik" style="font-size: 13px">
                                     <thead>
-                                    <tr>
-                                        <td>Nama Racik</td>
+                                    <tr bgcolor="#90ee90">
+                                        <td >Nama Racik</td>
                                         <td>Signa</td>
-                                        <td align="right" width="15%">qty</td>
+                                        <td align="right" width="15%">Qty</td>
                                         <td align="kemasan">Kemasan</td>
-                                        <td align="center">Waktu</td>
+                                        <s:if test='permintaanResep.tipePelayanan == "rawat_inap"'>
+                                            <td align="center">Waktu</td>
+                                        </s:if>
+                                        <s:else>
+                                            <td align="center">Keterangan</td>
+                                        </s:else>
                                     </tr>
                                     </thead>
                                     <s:iterator value="#session.listOfResultNamaRacik" var="racik" status="count">
-                                        <tr style="font-weight: bold; border-top: 3px solid <s:property value="warna"/>; ">
-                                            <td><s:property value="nama"/></td>
-                                            <td><s:property value="signa"/></td>
-                                            <td align="right" width="10%"><s:property value="qty"/></td>
-                                            <td><s:property value="kemasan"/></td>
-                                            <s:if test='<s:property>'/>
-                                            <td align="center">
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="cek_resep" name="waktu_resep_<s:property value="id"/>" id="waktu_resep1_<s:property value="nama"/>" value="07:00|Y|<s:property value="id"/>|<s:property value="nama"/>|<s:property value="signa"/>">
-                                                    <label for="waktu_resep1_<s:property value="nama"/>"></label> 07:00
-                                                </div>
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="cek_resep" name="waktu_resep_<s:property value="id"/>" id="waktu_resep2_<s:property value="nama"/>" value="12:00|Y|<s:property value="id"/>|<s:property value="nama"/>|<s:property value="signa"/>">
-                                                    <label for="waktu_resep2_<s:property value="nama"/>"></label> 12:00
-                                                </div>
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="cek_resep" name="waktu_resep_<s:property value="id"/>" id="waktu_resep3_<s:property value="nama"/>" value="18:00|Y|<s:property value="id"/>|<s:property value="nama"/>|<s:property value="signa"/>">
-                                                    <label for="waktu_resep3_<s:property value="nama"/>"></label> 18:00
-                                                </div>
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="cek_resep" name="waktu_resep_<s:property value="id"/>" id="waktu_resep4_<s:property value="nama"/>" value="20:00|Y|<s:property value="id"/>|<s:property value="nama"/>|<s:property value="signa"/>">
-                                                    <label for="waktu_resep4_<s:property value="nama"/>"></label> 20:00
-                                                </div>
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="cek_resep" name="waktu_resep_<s:property value="id"/>" id="waktu_resep5_<s:property value="nama"/>" value="22:00|Y|<s:property value="id"/>|<s:property value="nama"/>|<s:property value="signa"/>">
-                                                    <label for="waktu_resep5_<s:property value="nama"/>"></label> 22:00
-                                                </div>
-                                            </td>
+                                        <s:if test="#count.index % 2 == 0">
+                                            <tr style="font-weight: bold" bgcolor="#ffe4b5">
+                                        </s:if>
+                                        <s:else>
+                                            <tr style="font-weight: bold" bgcolor="silver">
+                                        </s:else>
+                                            <td style="vertical-align: middle"><s:property value="nama"/></td>
+                                            <td style="vertical-align: middle"><s:property value="signa"/></td>
+                                            <td style="vertical-align: middle" align="right" width="10%"><s:property value="qty"/></td>
+                                            <td style="vertical-align: middle"><s:property value="kemasan"/></td>
+                                            <s:if test='permintaanResep.tipePelayanan == "rawat_inap"'>
+                                                <td align="center">
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="cek_resep" name="waktu_resep_<s:property value="id"/>" id="waktu_resep1_<s:property value="nama"/>" value="07:00|Y|<s:property value="id"/>|<s:property value="nama"/>|<s:property value="signa"/>">
+                                                        <label for="waktu_resep1_<s:property value="nama"/>"></label> 07:00
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="cek_resep" name="waktu_resep_<s:property value="id"/>" id="waktu_resep2_<s:property value="nama"/>" value="12:00|Y|<s:property value="id"/>|<s:property value="nama"/>|<s:property value="signa"/>">
+                                                        <label for="waktu_resep2_<s:property value="nama"/>"></label> 12:00
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="cek_resep" name="waktu_resep_<s:property value="id"/>" id="waktu_resep3_<s:property value="nama"/>" value="18:00|Y|<s:property value="id"/>|<s:property value="nama"/>|<s:property value="signa"/>">
+                                                        <label for="waktu_resep3_<s:property value="nama"/>"></label> 18:00
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="cek_resep" name="waktu_resep_<s:property value="id"/>" id="waktu_resep4_<s:property value="nama"/>" value="20:00|Y|<s:property value="id"/>|<s:property value="nama"/>|<s:property value="signa"/>">
+                                                        <label for="waktu_resep4_<s:property value="nama"/>"></label> 20:00
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="cek_resep" name="waktu_resep_<s:property value="id"/>" id="waktu_resep5_<s:property value="nama"/>" value="22:00|Y|<s:property value="id"/>|<s:property value="nama"/>|<s:property value="signa"/>">
+                                                        <label for="waktu_resep5_<s:property value="nama"/>"></label> 22:00
+                                                    </div>
+                                                </td>
+                                            </s:if>
+                                            <s:else>
+                                                <td align="center">
+                                                    <textarea class="form-control cek_resep" id="waktu_resep_<s:property value="id"/>"></textarea>
+                                                </td>
+                                            </s:else>
                                         </tr>
-                                        <tr style="border-top: 3px solid <s:property value="warna"/>">
+                                        <s:if test="#count.index % 2 == 0">
+                                            <tr style="font-weight: bold" bgcolor="#ffe4b5">
+                                        </s:if>
+                                        <s:else>
+                                            <tr style="font-weight: bold" bgcolor="silver">
+                                        </s:else>
                                             <td colspan="5">
-                                                <i class="fa fa-tag"></i> Daftar Obat Racik <s:property value="nama"/> :
                                                 <table class="table table-bordered table-striped" id="tabel_list_detail_racik" style="font-size: 13px">
                                                     <thead>
                                                     <tr>
-                                                        <td>Nama Obat</td>
-                                                        <td>Dosis</td>
+                                                        <td width="35%">Nama Obat</td>
+                                                        <td width="15%">Dosis</td>
                                                         <td width="21%" align="center">Scan ID Obat</td>
                                                         <td align="center">Qty Approve</td>
                                                         <td align="center">Satuan (Rp.)</td>
@@ -596,7 +628,6 @@
                                                                         </s:else>
                                                                     </div>
                                                                 </td>
-                                                                <%--<td align="center"><s:property value="qty"/> <s:property value="jenisSatuan"/></td>--%>
                                                                 <td align="center"><span id='qtyAppove<s:property value="idObat"/>'><s:property value="qtyApprove"/> <s:property value="jenisSatuan"/></span></td>
                                                                 <td align="right"><script>var val = <s:property value="harga"/>;
                                                                 if (val != null && val != '') {
