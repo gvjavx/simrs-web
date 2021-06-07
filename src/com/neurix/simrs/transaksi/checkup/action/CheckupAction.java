@@ -1563,6 +1563,21 @@ public class CheckupAction extends BaseMasterAction {
         return pelayananList;
     }
 
+    public List<Pelayanan> getComboApotekRawatInapList() {
+        List<Pelayanan> pelayananList = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+
+        try {
+            pelayananList = pelayananBo.getListApotek(CommonUtil.userBranchLogin(), "apotek_ri");
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+            addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
+        }
+        return pelayananList;
+    }
+
     public String getComboAllApotek() {
         List<Pelayanan> pelayananList = new ArrayList<>();
         try {
