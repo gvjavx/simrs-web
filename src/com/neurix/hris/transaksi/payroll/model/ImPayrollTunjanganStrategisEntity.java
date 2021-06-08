@@ -18,6 +18,7 @@ public class ImPayrollTunjanganStrategisEntity implements Serializable {
     private String positionId ;
     private String golonganId ;
     private BigDecimal nilai ;
+    private String profesiId;
 
     private String flag;
     private String action;
@@ -25,6 +26,14 @@ public class ImPayrollTunjanganStrategisEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getProfesiId() {
+        return profesiId;
+    }
+
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
+    }
 
     public String getGolonganId() {
         return golonganId;
