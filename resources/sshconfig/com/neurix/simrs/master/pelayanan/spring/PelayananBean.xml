@@ -22,6 +22,7 @@
           p:antrianOnlineBoProxy-ref="antrianOnlineBoProxy"
           p:jadwalShiftKerjaBoProxy-ref="jadwalShiftKerjaBoProxy"
           p:paketPeriksaBoProxy-ref="paketPeriksaBoProxy"
+          p:biodataBoProxy-ref="biodataBoProxy"
     />
 
     <!--setting untuk action-->

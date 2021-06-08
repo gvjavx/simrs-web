@@ -13,6 +13,8 @@ public class PelayananMobile implements Serializable {
     private String idDokter;
     private String namaDokter;
     private String idSpesialis;
+    /** add by fahmi, untuk menampung data foto dokter. */
+    private String fotoDokter;
     private String namaSpesialis;
     private String idPelayanan;
     private String namaPelayanan;
@@ -200,6 +202,16 @@ public class PelayananMobile implements Serializable {
 
     public void setIdDokter(String idDokter) {
         this.idDokter = idDokter;
+    }
+
+    /** add by fahmi 08 Jun 2021, untuk menampung data foto dokter */
+    public void setFotoDokter(String fotoDokter) {
+        this.fotoDokter = fotoDokter;
+    }
+
+    /** add by fahmi 08 Jun 2021, untuk mengambil data foto dokter*/
+    public String getFotoDokter() {
+        return fotoDokter;
     }
 
     public String getNamaDokter() {

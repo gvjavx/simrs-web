@@ -4,6 +4,7 @@ import com.neurix.authorization.user.bo.UserBo;
 import com.neurix.authorization.user.model.User;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.transaksi.jadwalShiftKerja.bo.JadwalShiftKerjaBo;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalPelayananDTO;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
@@ -44,6 +45,7 @@ public class PelayananController implements ModelDriven<Object> {
     private DokterBo dokterBoProxy;
     private JadwalShiftKerjaBo jadwalShiftKerjaBoProxy;
     private JenisObatBo jenisObatBoProxy;
+    private BiodataBo biodataBoProxy;
     private UserBo userBoProxy;
     private PaketPeriksaBo paketPeriksaBoProxy;
     private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
@@ -119,6 +121,8 @@ public class PelayananController implements ModelDriven<Object> {
     public void setListOfJenisPerika(Collection<JenisPeriksaMobile> listOfJenisPerika) {
         this.listOfJenisPeriksa = listOfJenisPerika;
     }
+
+    public void setBiodataBoProxy(BiodataBo biodataBoProxy) { this.biodataBoProxy = biodataBoProxy;}
 
     public JenisPriksaPasienBo getJenisPriksaPasienBoProxy() {
         return jenisPriksaPasienBoProxy;
@@ -297,6 +301,7 @@ public class PelayananController implements ModelDriven<Object> {
 
     }
 
+    /** edit by fahmi 08 Jun 2021, menambahkan informasi foto dokter saat pengambilan data shift*/
     public HttpHeaders create() {
         logger.info("[PelayananController.create] start process POST / <<<");
 
@@ -320,13 +325,14 @@ public class PelayananController implements ModelDriven<Object> {
             }
 
             int i = 0;
+
             for(JadwalPelayananDTO item : listJadwalPelayananDTO) {
                 PelayananMobile result = new PelayananMobile();
                 result.setIdPelayananApi(String.valueOf(i));
                 result.setIdDokter(item.getIdDokter());
                 result.setIdPelayanan(item.getIdPelayanan());
                 result.setIdSpesialis(item.getIdSpesialis());
-                result.setIdDokter(item.getIdDokter());
+                result.setFotoDokter(item.getUrlImg());
                 result.setNamaDokter(item.getNamaDokter());
                 result.setNamaPelayanan(item.getNamaPelayanan());
                 result.setNamaSpesialis(item.getNamaSpesialis());
