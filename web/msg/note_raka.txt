@@ -7,6 +7,15 @@
     alter table it_hris_payroll_temp
     add column dasar_bpjs numeric(15,2);
 
+------ 2021-06-08 ===> case manager procurement
+    alter sequence seq_kelompok_position restart with 7;
+    alter sequence seq_payroll_tunjangan_jabatan_struktural restart with 109;
+    insert into im_hris_kelompok_position
+        values ('KL07', 'Manager Procurement', 'MOH.IMRON,DRS,APT', 'MOH.IMRON,DRS,APT', 'Y', 'C', '2021-06-08 15:33:31.532', '2021-06-08 15:33:31.532', null, null);
+    insert into im_hris_payroll_tunjangan_jabatan_struktural
+        values ('TJS00109', 'KL07', '2021-06-08 15:42:31.786', 'MOH.IMRON,DRS,APT', '2021-06-08 15:42:31.786', 'MOH.IMRON,DRS,APT', 'Y', 'C', 4000000.00, 5000000.00);
+    update im_position set kelompok_id = 'KL07' where position_id = 'PS483';
+
 ------------------------------------------------
 ------------ AKHIRI MULAI DARI SINI ------------
 ------------------------------------------------
