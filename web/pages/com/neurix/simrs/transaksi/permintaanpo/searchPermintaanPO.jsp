@@ -978,11 +978,18 @@
                     aktive = 'active';
                     liAcktive = 'class="active"';
                 }
-                str += '<div class="item '+aktive+'">\n' +
-                    '<img style="height: 300px; width: 100%" src="'+contextPathHeader+'/images/upload/surat_po/'+img.urlImg+'" alt="Slide'+img.urlImg+'">\n' +
-                    '<div class="carousel-caption">\n' +img.urlImg +
-                    '</div>\n' +
-                    '</div>';
+
+                if(img.tipe == "PDF"){
+                    str += '<div class="item ' + aktive + '">\n' +
+                        '<embed src="'+contextPathHeader + '/images/upload/surat_po/'+img.urlImg+'" style="width: 100%; height: 400px"/>'+
+                        '</div>';
+                }else{
+                    str += '<div class="item '+aktive+'">\n' +
+                        '<img style="height: 300px; width: 100%" src="'+contextPathHeader+'/images/upload/surat_po/'+img.urlImg+'" alt="Slide'+img.urlImg+'">\n' +
+                        '<div class="carousel-caption">\n' +img.urlImg +
+                        '</div>\n' +
+                        '</div>';
+                }
                 li += '<li data-target="#carousel-example-generic_'+idItem+'" data-slide-to="'+n+'" '+liAcktive+'></li>';
             });
             $("#item_"+idItem+jenis).html(str);

@@ -52,10 +52,7 @@ import sun.misc.BASE64Decoder;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
@@ -749,30 +746,50 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 }
                 // upload img
                 if (!"".equalsIgnoreCase(obj.get("img").toString())){
+                    String cekPath =  CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_DOC_PO;
+                    File theDir = new File(cekPath);
+                    if (!theDir.exists()) {
+                        theDir.mkdirs();
+                        theDir.setReadable(true);
+                        theDir.setExecutable(true);
+                        theDir.setWritable(true);
+                    }
 
-                    BASE64Decoder decoder = new BASE64Decoder();
-                    byte[] decodedBytes = decoder.decodeBuffer(obj.getString("img"));
-                    logger.info("Decoded upload data : " + decodedBytes.length);
-                    String fileName = i + docPoEntity.getIdItem()+"-"+dateFormater("MM")+dateFormater("yy")+".jpg";
-                    String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_DOC_PO+fileName;
-                    logger.info("File save path : " + uploadFile);
-                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
-
-                    if (image == null) {
-                        logger.error("Buffered Image is null");
-                    }else{
-                        CrudResponse response = CommonUtil.compressImage(image, "png", uploadFile);
-                        if("success".equalsIgnoreCase(response.getStatus())){
+                    if(obj.has("eks")){
+                        String eks = obj.getString("eks");
+                        String fileName = i + docPoEntity.getIdItem()+"-"+dateFormater("MM")+dateFormater("yy");
+                        BASE64Decoder decoder = new BASE64Decoder();
+                        byte[] decodedBytes = decoder.decodeBuffer(obj.getString("img"));
+                        if ("pdf".equalsIgnoreCase(eks)) {
+                            fileName = fileName + ".pdf";
+                            File file = new File(cekPath + fileName);
+                            FileOutputStream fop = new FileOutputStream(file);
+                            fop.write(decodedBytes);
+                            fop.flush();
+                            fop.close();
                             docPoEntity.setUrlImg(fileName);
-                        }else{
-                            checkObatResponse.setStatus("error");
-                            checkObatResponse.setMessage("Kompress IMG Error, "+response.getMsg());
-                            return checkObatResponse;
+                            docPoEntity.setTipe("PDF");
+                        } else {
+                            fileName = fileName + ".jpg";
+                            String uploadFile = cekPath + fileName;
+                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+                            if (image == null) {
+                                logger.error("Buffered Image is null");
+                            } else {
+                                CrudResponse response = CommonUtil.compressImage(image, "png", uploadFile);
+                                if("success".equalsIgnoreCase(response.getStatus())){
+                                    docPoEntity.setUrlImg(fileName);
+                                    docPoEntity.setTipe("IMG");
+                                }else{
+                                    checkObatResponse.setStatus("error");
+                                    checkObatResponse.setMessage("Kompress IMG Error, "+response.getMsg());
+                                    return checkObatResponse;
+                                }
+                            }
                         }
                     }
                 }
 
-                docPoEntity.setTipe("IMG");
                 docPoEntity.setIdPermintaanObatVendor(idPermintaanVendor);
                 docPoEntity.setFlag("Y");
                 docPoEntity.setAction("C");
