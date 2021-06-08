@@ -377,14 +377,7 @@
                     </div>
                     <hr class="garis">
                     <div class="row">
-                        <div class="col-md-6">
-                            <label>TTD Pasien/Keluarga</label>
-                            <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('gizi20')" class="paint-canvas-ttd" id="gizi20"></canvas>
-                            <input class="form-control" id="nama_gizi20" placeholder="Nama Terang">
-                            <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('gizi20')"><i class="fa fa-trash"></i> Clear
-                            </button>
-                        </div>
-                        <div class="col-md-6">
+                        <div class="col-md-offset-3 col-md-6">
                             <label>TTD Ahli Gizi</label>
                             <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('gizi21')" class="paint-canvas-ttd" id="gizi21"></canvas>
                             <input class="form-control" id="nama_gizi21" placeholder="Nama Terang">

@@ -14,7 +14,10 @@ import com.neurix.simrs.master.labdetail.model.LabDetail;
 import com.neurix.simrs.master.statuspasien.dao.StatusPasienDao;
 import com.neurix.simrs.master.statuspasien.model.ImSimrsStatusPasienEntity;
 import com.neurix.simrs.transaksi.CrudResponse;
+import com.neurix.simrs.transaksi.checkup.dao.AsesmenDao;
+import com.neurix.simrs.transaksi.checkup.model.Asesmen;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
+import com.neurix.simrs.transaksi.checkup.model.ItSimrsAsesmenEntity;
 import com.neurix.simrs.transaksi.icu.model.HeaderIcu;
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
 import com.neurix.simrs.transaksi.periksalab.dao.HeaderPemeriksaanDao;
@@ -46,6 +49,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
     private PeriksaRadiologiDao periksaRadiologiDao;
     private UploadHasilPeriksaDao uploadHasilPeriksaDao;
     private HeaderPemeriksaanDao headerPemeriksaanDao;
+    private AsesmenDao asesmenDao;
 
     @Override
     public List<PeriksaLab> getSearchLab(PeriksaLab bean) throws GeneralBOException {
@@ -297,6 +301,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
             if(bean.getTarifLabLuar() != null){
                 pemeriksaanEntity.setTarifLabLuar(bean.getTarifLabLuar());
             }
+            pemeriksaanEntity.setIsCito(bean.getIsCito());
 
             try {
                 headerPemeriksaanDao.addAndSave(pemeriksaanEntity);
@@ -475,6 +480,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                 entity.setStatusPeriksa("3");
                 entity.setApproveFlag("Y");
                 entity.setCatatan(bean.getCatatan());
+                entity.setIsReadHasil("N");
             }
 
             try {
@@ -490,32 +496,23 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
     }
 
     @Override
-    public CheckResponse updateFlagApprovePeriksaLab(PeriksaLab bean) throws GeneralBOException {
-        logger.info("[PeriksaLabBoImpl.updateFlagApprovePeriksaLab] START <<<<<<<<<");
-
-        CheckResponse response = new CheckResponse();
+    public void updateIsReadHasil(PeriksaLab bean) throws GeneralBOException {
+        logger.info("[PeriksaLabBoImpl.updateIsReadHasil] START <<<<<<<<<");
         if (bean != null) {
-            List<ItSimrsPeriksaLabEntity> entityList = getListEntityPeriksaLab(bean);
-            if (entityList.size() > 0) {
-                for (ItSimrsPeriksaLabEntity entity : entityList) {
-                    entity.setLastUpdate(bean.getLastUpdate());
-                    entity.setLastUpdateWho(bean.getLastUpdateWho());
-
-                    try {
-                        periksaLabDao.updateAndSave(entity);
-                        response.setStatus("success");
-                        response.setMessage("Berhasil update periksa lab");
-                    } catch (HibernateException e) {
-                        response.setMessage("error");
-                        response.setMessage("Error when update periksa lab : " + e.getMessage());
-                        logger.error("[PeriksaLabBoImpl.updateFlagApprovePeriksaLab] Error when update periksa lab ", e);
-                        throw new GeneralBOException("Error when update periksa lab " + e.getMessage());
-                    }
+            ItSimrsHeaderPemeriksaanEntity entity = headerPemeriksaanDao.getById("idHeaderPemeriksaan", bean.getIdHeaderPemeriksaan());
+            if (entity != null) {
+                entity.setIsReadHasil("Y");
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    headerPemeriksaanDao.updateAndSave(entity);
+                } catch (HibernateException e) {
+                    logger.error("[PeriksaLabBoImpl.updateIsReadHasil] Error when update periksa lab ", e);
+                    throw new GeneralBOException("Error when update periksa lab " + e.getMessage());
                 }
             }
         }
-        logger.info("[PeriksaLabBoImpl.updateFlagApprovePeriksaLab] END <<<<<<<<<");
-        return response;
+        logger.info("[PeriksaLabBoImpl.updateIsReadHasil] END <<<<<<<<<");
     }
 
     @Override
@@ -1001,9 +998,6 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
         if(bean != null) {
             ItSimrsPeriksaLabEntity periksaLabEntity = periksaLabDao.getById("idPeriksaLab", bean.getIdPeriksaLab());
             if (periksaLabEntity != null) {
-//                periksaLabEntity.setApproveFlag(bean.getApproveFlag());
-//                periksaLabEntity.setTanggalSelesaiPeriksa(bean.getLastUpdate());
-//                periksaLabEntity.setStatusPeriksa(bean.getStatusPeriksa());
                 periksaLabEntity.setLastUpdate(bean.getLastUpdate());
                 periksaLabEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 periksaLabEntity.setAction(bean.getAction());
@@ -1155,6 +1149,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                     periksaLab.setLastUpdateWho(entity.getLastUpdateWho());
                     periksaLab.setLastUpdate(entity.getLastUpdate());
                     periksaLab.setJenisPeriksaPasien(entity.getJenisPasien());
+                    periksaLab.setIsCito(entity.getIsCito());
 
                     List<UploadHasilPemeriksaan> tempDalam = new ArrayList<>();
                     List<ItSimrsUploadHasilPemeriksaanEntity> dalam = new ArrayList<>();
@@ -1230,6 +1225,92 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
             logger.error(e.getMessage());
         }
         return entity;
+    }
+
+    @Override
+    public List<PeriksaLab> pushListHasil(String id, String branchId) throws GeneralBOException {
+        List<PeriksaLab> periksaLabList = new ArrayList<>();
+        try {
+            periksaLabList = periksaLabDao.pushNotifHasil(id, branchId);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return periksaLabList;
+    }
+
+    @Override
+    public void saveAsesmen(List<Asesmen> bean) throws GeneralBOException {
+        if(bean.size() > 0){
+            for (Asesmen list: bean){
+                ItSimrsAsesmenEntity asesmenEntity = new ItSimrsAsesmenEntity();
+                asesmenEntity.setIdAsesmen(asesmenDao.getNextSeq());
+                asesmenEntity.setIdDetailCheckup(list.getIdDetailCheckup());
+                asesmenEntity.setParameter(list.getParameter());
+                asesmenEntity.setJawaban(list.getJawaban());
+                asesmenEntity.setKeterangan(list.getKeterangan());
+                asesmenEntity.setFlag(list.getFlag());
+                asesmenEntity.setAction(list.getAction());
+                asesmenEntity.setCreatedDate(list.getCreatedDate());
+                asesmenEntity.setCreatedWho(list.getCreatedWho());
+                asesmenEntity.setLastUpdate(list.getLastUpdate());
+                asesmenEntity.setLastUpdateWho(list.getLastUpdateWho());
+                try {
+                    asesmenDao.addAndSave(asesmenEntity);
+                }catch (HibernateException e){
+                    logger.error("Error when insert asesmen data, "+e.getMessage());
+                    throw new GeneralBOException("Error when insert asesmen data, "+e.getMessage());
+                }
+            }
+        }
+    }
+
+    @Override
+    public List<Asesmen> getByCriteriaAsesmen(Asesmen bean) throws GeneralBOException {
+        List<Asesmen> asesmenList = new ArrayList<>();
+        if(bean != null){
+            HashMap hsCriteria = new HashMap();
+            if(bean.getIdAsesmen() != null && !"".equalsIgnoreCase(bean.getIdAsesmen())){
+                hsCriteria.put("id_asesmen", bean.getIdAsesmen());
+            }
+            if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+                hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+            }
+            if(bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())){
+                hsCriteria.put("keterangan", bean.getKeterangan());
+            }
+
+            List<ItSimrsAsesmenEntity> asesmenEntityList = new ArrayList<>();
+            if(hsCriteria.size() > 0){
+                try {
+                    asesmenEntityList = asesmenDao.getByCriteria(hsCriteria);
+                }catch (HibernateException e){
+                    logger.error("Error when search asesmen data, "+e.getMessage());
+                    throw new GeneralBOException("Error when search asesmen data, "+e.getMessage());
+                }
+
+                if(asesmenEntityList.size() > 0){
+                    for (ItSimrsAsesmenEntity entity: asesmenEntityList){
+                        Asesmen asesmen = new Asesmen();
+                        asesmen.setIdAsesmen(entity.getIdAsesmen());
+                        asesmen.setIdDetailCheckup(entity.getIdDetailCheckup());
+                        asesmen.setParameter(entity.getParameter());
+                        asesmen.setKeterangan(entity.getKeterangan());
+                        asesmen.setFlag(entity.getFlag());
+                        asesmen.setAction(entity.getAction());
+                        asesmen.setCreatedWho(entity.getCreatedWho());
+                        asesmen.setCreatedDate(entity.getCreatedDate());
+                        asesmen.setLastUpdateWho(entity.getLastUpdateWho());
+                        asesmen.setLastUpdate(entity.getLastUpdate());
+                        asesmenList.add(asesmen);
+                    }
+                }
+            }
+        }
+        return asesmenList;
+    }
+
+    public void setAsesmenDao(AsesmenDao asesmenDao) {
+        this.asesmenDao = asesmenDao;
     }
 
     public void setUploadHasilPeriksaDao(UploadHasilPeriksaDao uploadHasilPeriksaDao) {

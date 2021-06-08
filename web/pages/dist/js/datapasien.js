@@ -51,8 +51,13 @@ function setDataPasien() {
         var rrMon = $('.rr_mon').length;
         var suhuMon = $('.suhu_mon').length;
         var noregistrasi = $('.no_registrasi').length;
+        var spo2Pasien = $('.spo2_pasien').length;
+        var stsGizi = $('.status_gizi').length;
 
-        if (tensi > 0 || gejala > 0 || bb > 0 || tb > 0) {
+        var nyeriPasien = $('.nyeri-pasien').length;
+        var jatuhPasien = $('.jatuh-pasien').length;
+
+        if (tensi > 0 || gejala > 0 || bb > 0 || tb > 0 || spo2Pasien > 0 || nyeriPasien > 0 || jenisPasien) {
             dwr.engine.setAsync(true);
             CheckupAction.getDataPemeriksaanFisik(noCheckup, {
                 callback: function (res) {
@@ -64,9 +69,20 @@ function setDataPasien() {
                         tempBerat = res.berat;
                         tempTinggi = res.tinggi;
                         tempAnmnesa = res.anamnese;
+                        tempSpo2 = res.spo2;
+                        tempNyeri = res.nyeri;
+                        tempJatuh = res.resikoJatuh;
                     }
                 }
             });
+        }
+
+        if (nyeriPasien > 0) {
+            $('.nyeri-pasien').val(tempNyeri);
+        }
+
+        if (jatuhPasien > 0) {
+            $('.jatuh-pasien').val(tempJatuh);
         }
 
         if (jam > 0) {
@@ -202,8 +218,11 @@ function setDataPasien() {
             CheckupAction.getDataDokterSip(idDetailCheckup, "RJ", {
                 callback: function (res) {
                     if (res != '') {
-                        $('.sip_dokter').val(res.sip);
+                        $('.sip_dokter').val(res.idDokter);
                         $('.nama_dokter').val(res.namaDokter);
+
+                        $('.sip_dokter').attr('autocomplete', 'off');
+                        $('.nama_dokter').attr('autocomplete', 'off');
                     }
                 }
             });
@@ -213,8 +232,11 @@ function setDataPasien() {
             CheckupAction.getDataDokterSip(idDetailCheckup, "RI", {
                 callback: function (res) {
                     if (res != '') {
-                        $('.sip_dokter_ri').val(res.sip);
+                        $('.sip_dokter_ri').val(res.idDokter);
                         $('.nama_dokter_ri').val(res.namaDokter);
+
+                        $('.sip_dokter_ri').attr('autocomplete', 'off');
+                        $('.nama_dokter_ri').attr('autocomplete', 'off');
                     }
                 }
             });
@@ -349,7 +371,6 @@ function setDataPasien() {
         if(tensiMon > 0 || nadiMon > 0 || rrMon > 0){
             dwr.engine.setAsync(true);
             AsesmenOperasiAction.getVitalSingMonAnestesi(idDetailCheckup, function (res) {
-                console.log(res);
                 if(res != null){
                     if(tensiMon > 0){
                         $('.tensi_mon').val(res.sistole+"/"+res.diastole);
@@ -367,5 +388,103 @@ function setDataPasien() {
 
     if(noregistrasi > 0){
         $('.no_registrasi').val(idDetailCheckup);
+    }
+
+    if(spo2Pasien > 0){
+        $('.spo2_pasien').val(tempSpo2);
+    }
+
+    $('.nama_dokter').on('input', function (e) {
+        $('#' + e.target.id).typeahead({
+            minLength: 3,
+            source: function (query, process) {
+                functions = [];
+                mapped = {};
+                var data = [];
+                dwr.engine.setAsync(false);
+                CheckupAction.getComboNamaDokterPelayanan(e.target.value, function (res) {
+                    data = res;
+                });
+                $.each(data, function (i, item) {
+                    var labelItem = item.idDokter + "-" + item.namaDokter;
+                    mapped[labelItem] = {
+                        id: item.idDokter,
+                        nama: item.namaDokter
+                    };
+                    functions.push(labelItem);
+                });
+                process(functions);
+
+            },
+            updater: function (item) {
+                var selectedObj = mapped[item];
+                $('.sip_dokter').val(selectedObj.id);
+                return selectedObj.nama;
+            }
+        });
+    });
+
+    $('.nama_dokter_ri').on('input', function (e) {
+        $('#' + e.target.id).typeahead({
+            minLength: 3,
+            source: function (query, process) {
+                functions = [];
+                mapped = {};
+                var data = [];
+                dwr.engine.setAsync(false);
+                CheckupAction.getComboNamaDokterPelayanan(e.target.value, function (res) {
+                    data = res;
+                });
+                $.each(data, function (i, item) {
+                    var labelItem = item.idDokter + "-" + item.namaDokter;
+                    mapped[labelItem] = {
+                        id: item.idDokter,
+                        nama: item.namaDokter
+                    };
+                    functions.push(labelItem);
+                });
+                process(functions);
+
+            },
+            updater: function (item) {
+                var selectedObj = mapped[item];
+                $('.sip_dokter_ri').val(selectedObj.id);
+                return selectedObj.nama;
+            }
+        });
+    });
+
+    if(stsGizi > 0){
+        CheckupAction.getDataPemeriksaanFisik(noCheckup, {
+            callback: function (res) {
+                if (res != '') {
+                    if (res.berat != '' && res.tinggi != '') {
+                        var tom = (parseInt(tinggi) * 0.01);
+                        var bmi = (parseInt(berat) / (tom * tom)).toFixed(2);
+                        var keterangan = "";
+                        if (parseInt(bmi) < 18.5) {
+                            keterangan = 'Kurang';
+                        } else if (parseInt(bmi) >= 18.5 && parseInt(bmi) <= 22.9) {
+                            keterangan = 'Normal';
+                        } else if (parseInt(bmi) >= 23 && parseInt(bmi) <= 29.9) {
+                            keterangan = 'Lebih';
+                        } else if (parseInt(bmi) > 30) {
+                            keterangan = 'Obesitas';
+                        }
+                        $('.status_gizi').val(keterangan);
+                    }
+                }
+            }
+        });
+    }
+
+    var tujuanRuangan = $('.tujuan-ruangan').length;
+    if(tujuanRuangan > 0){
+        dwr.engine.setAsync(true);
+        CheckupAction.getDataByKey(noCheckup, "tujuan_ruangan", function (res) {
+            if(res != null){
+                $('.tujuan-ruangan').val(res);
+            }
+        });
     }
 }

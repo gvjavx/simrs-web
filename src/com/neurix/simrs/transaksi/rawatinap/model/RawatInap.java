@@ -136,6 +136,15 @@ public class RawatInap {
     private String isTindakanRawat;
     private String flagBatal;
     private String idBentukGizi;
+    private String indikasi;
+
+    public String getIndikasi() {
+        return indikasi;
+    }
+
+    public void setIndikasi(String indikasi) {
+        this.indikasi = indikasi;
+    }
 
     public String getIdBentukGizi() {
         return idBentukGizi;

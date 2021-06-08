@@ -73,13 +73,13 @@
                         </div>
                         <label class="col-md-2">BB <small><b>(Kg)</b></small></label>
                         <div class="col-md-3">
-                            <input class="form-control" id="gizi2" type="number">
+                            <input class="form-control berat-pasien" id="gizi2" type="number">
                         </div>
                     </div>
                     <div class="row jarak">
                         <label class="col-md-3">Status Gizi</label>
                         <div class="col-md-4">
-                            <input class="form-control" id="gizi3">
+                            <input class="form-control status_gizi" id="gizi3">
                         </div>
                         <label class="col-md-2">Intakea</label>
                         <div class="col-md-3">
@@ -112,14 +112,7 @@
                     </div>
                     <hr class="garis">
                     <div class="row">
-                        <div class="col-md-6">
-                            <label>TTD Pasien/Keluarga</label>
-                            <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('gizi_keluarga')" class="paint-canvas-ttd" id="gizi_keluarga"></canvas>
-                            <input class="form-control" id="nama_gizi20" placeholder="Nama Terang">
-                            <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('gizi_keluarga')"><i class="fa fa-trash"></i> Clear
-                            </button>
-                        </div>
-                        <div class="col-md-6">
+                        <div class="col-md-offset-3 col-md-6">
                             <label>TTD Ahli Gizi</label>
                             <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('gizi_dokter')" class="paint-canvas-ttd" id="gizi_dokter"></canvas>
                             <input class="form-control" id="nama_gizi21" placeholder="Nama Terang">

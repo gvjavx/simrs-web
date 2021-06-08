@@ -1064,7 +1064,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group">
-                                                <label class="col-md-4" style="margin-top: 7px">No Telp.</label>
+                                                <label class="col-md-4" style="margin-top: 7px">No HP</label>
                                                 <div class="col-md-8">
                                                     <div class="input-group" style="margin-top: 7px">
                                                         <div class="input-group-addon">
@@ -2623,28 +2623,36 @@
                 var msg = "";
                 var icon = "";
                 var val = "";
-                if (response.keteranganStatusPeserta == "AKTIF") {
-                    $('#kelas_pasien').val(response.kodeKelas);
-                    $('#no_mr').val(response.noMr);
-                    val = "aktif";
-                    icon = "fa-info";
-                    title = "Info!";
-                    warnClass = "alert-success";
-                    msg = "No BPJS berhasil diverifikasi dengan status AKTIF!";
-                    $('#no_rujukan').val(response.noKunjungan).trigger('input');
-                    cekNoRujukan();
-                } else if (response.keteranganStatusPeserta == "TIDAK AKTIF") {
+                if(response.status == "error"){
                     val = "tidak aktif";
                     icon = "fa-warning";
                     title = "Warning!";
                     warnClass = "alert-warning";
-                    msg = "No BPJS berhasil diverifikasi dengan status TIDAK AKTIF!";
-                } else {
-                    val = "tidak ditemukan";
-                    icon = "fa-warning";
-                    title = "Warning!";
-                    warnClass = "alert-danger";
-                    msg = "No BPJS tidak ditemukan atau periksa kembali koneksi internet anda...!";
+                    msg = response.message;
+                }else{
+                    if (response.keteranganStatusPeserta == "AKTIF") {
+                        $('#kelas_pasien').val(response.kodeKelas);
+                        $('#no_mr').val(response.noMr);
+                        val = "aktif";
+                        icon = "fa-info";
+                        title = "Info!";
+                        warnClass = "alert-success";
+                        msg = "No BPJS berhasil diverifikasi dengan status AKTIF!";
+                        $('#no_rujukan').val(response.noKunjungan).trigger('input');
+                        cekNoRujukan();
+                    } else if (response.keteranganStatusPeserta == "TIDAK AKTIF") {
+                        val = "tidak aktif";
+                        icon = "fa-warning";
+                        title = "Warning!";
+                        warnClass = "alert-warning";
+                        msg = "No BPJS berhasil diverifikasi dengan status TIDAK AKTIF!";
+                    } else {
+                        val = "tidak ditemukan";
+                        icon = "fa-warning";
+                        title = "Warning!";
+                        warnClass = "alert-danger";
+                        msg = "No BPJS tidak ditemukan atau periksa kembali koneksi internet anda...!";
+                    }
                 }
 
                 var warning = '<div class="alert ' + warnClass + ' alert-dismissible">' +
@@ -2708,7 +2716,7 @@
                         if("umum" == jenisPasien){
                             $('#form-nominal_uang_muka').show();
                             $('#pembayaran').val('tunai');
-                            $('#form_eksekutif').show();
+                            $('#form_eksekutif').hide();
                         }else{
                             $('#form-nominal_uang_muka').hide();
                             $('#pembayaran').val('');
@@ -3022,7 +3030,9 @@
 
                         var foto = contextPathHeader+'/pages/images/unknown-person2.jpg';
                         if(item.urlImg != null && item.urlImg != ''){
-                            foto = contextPathHeader+item.urlImg;
+                            if(cekImages(item.urlImg)){
+                                foto = item.urlImg;
+                            }
                         }
 
                         var clasBox = 'btn-trans';
@@ -3459,7 +3469,7 @@
             $('#form-no-bpjs').hide();
             $('#form-rujukan').hide();
             $('#poli').attr('disabled', false);
-            $('#form_eksekutif').show();
+            $('#form_eksekutif').hide();
             $('#pembayaran').val('tunai');
             $('#form_diagnosa_bpjs').hide();
             $('#diagnosa_awal, #diagnosa_ket').val(null);

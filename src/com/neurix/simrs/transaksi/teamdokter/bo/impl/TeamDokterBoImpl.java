@@ -254,6 +254,32 @@ public class TeamDokterBoImpl extends DokterBoImpl implements TeamDokterBo{
     }
 
     @Override
+    public List<DokterTeam> getListDokterToday(String idPelayanan) throws GeneralBOException {
+        List<DokterTeam> entityList = new ArrayList<>();
+        if(idPelayanan != null){
+            try {
+                entityList = dokterTeamDao.getListDokterToday(idPelayanan);
+            }catch (HibernateException e){
+                logger.error(e.getMessage());
+            }
+        }
+        return entityList;
+    }
+
+    @Override
+    public List<DokterTeam> getTtdNamaDokter(String branchId, String nama) throws GeneralBOException {
+        List<DokterTeam> entityList = new ArrayList<>();
+        if(branchId != null){
+            try {
+                entityList = dokterTeamDao.getTtdNamaDokter(branchId, nama);
+            }catch (HibernateException e){
+                logger.error(e.getMessage());
+            }
+        }
+        return entityList;
+    }
+
+    @Override
     public List<ItSimrsDokterTeamEntity> getListEntityTeamDokter(DokterTeam bean) throws GeneralBOException{
         logger.info("[TeamDokterBoImpl.getListEntityTeamDokter] Start >>>>>>>>");
         List<ItSimrsDokterTeamEntity> entities = new ArrayList<>();

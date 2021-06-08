@@ -2685,7 +2685,12 @@ ADD COLUMN tipe VARCHAR(100);
 2. Penambahan Asesmen Pra Bedah
 3. Perbaikan Rencana Asuah Keperawatan Di ICU
 4. Perbaikan Signature Bisa melalui device tablet
-
+5. Perbaikan Keseimbangan pada Asesmen ICU
+6. Penambahan Notif Lab dan Radiologi di halaman periksa Rawat Jalan, Rawat Igd, dan Rawat Inap
+7. Penambahan Label CITO pada pemeriksaan Lab dan Radiologi
+8. Perbaikan Resume Medis Rawat Jalan dan IGD
+9. Perbaikan Resume Medis Rawat Inap
+10. Penambahan Pindah Ke Hemodialisa Di Rawat Inap
 
 /=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
 ---------------------------------B E L U M - D I P R O D -------------------------------------------------------
@@ -2733,7 +2738,90 @@ ALTER TABLE public.it_simrs_keseimbangan_icu
 
 CREATE SEQUENCE seq_keseimbangan_icu;
 
+ALTER TABLE it_simrs_header_pemeriksaan
+ADD COLUMN is_cito VARCHAR(1);
 
+ALTER TABLE it_simrs_header_pemeriksaan
+ADD COLUMN is_read_hasil VARCHAR(1);
 
+--FUNCTION
+INSERT INTO im_functions VALUES
+(6928, 'Hemodialisa', '/hemodialisa/initForm_hemodialisa.action', 2600, 2, now(), 'admin', now(), 'admin', 'Y','C', 6928),
+(6929, 'init', '/hemodialisa/initForm_hemodialisa.action', 6928, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6930, 'search', '/hemodialisa/searchHemodialisa_hemodialisa.action', 6928, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6931, 'add', '/hemodialisa/add_hemodialisa.action', 6928, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6928, 32, 'Y', now(), now(), 'admin', 'admin'),
+(6929, 32, 'Y', now(), now(), 'admin', 'admin'),
+(6930, 32, 'Y', now(), now(), 'admin', 'admin'),
+(6931, 32, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE im_simrs_lab
+ADD COLUMN is_asesmen VARCHAR(1);
+
+UPDATE im_simrs_lab
+SET is_asesmen = 'Y'
+WHERE id_lab IN ('LAB00000012','LAB00000010');
+
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+---------------------------------SU DAH - D I P R O D -------------------------------------------------------
+------------------------------------- 26 05 2021 ---------------------------------------------------------------
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000297','RMM00000039','farmasi','1','Y','C','migrasi', now(), now(),'migrasi'),
+('RMP000000298','RMM00000040','farmasi','2','Y','C','migrasi', now(), now(),'migrasi');
+
+ALTER TABLE it_simrs_rekonsiliasi_obat
+ADD COLUMN keluarga VARCHAR(100),
+ADD COLUMN apoteker VARCHAR(100),
+ADD COLUMN sip VARCHAR(100);
+
+ALTER TABLE it_simrs_catatan_pemberian_obat
+ADD COLUMN jenis VARCHAR(100);
+
+ALTER TABLE it_simrs_catatan_pemberian_obat
+ADD COLUMN sip_perawat VARCHAR(100);
+
+UPDATE im_simrs_rekam_medis_pelayanan
+SET flag = 'N'
+WHERE id_rekam_medis_pelayanan = 'RMP000000247';
+
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+---------------------------------B E L U M - D I P R O D -------------------------------------------------------
+------------------------------------- 31 05 2021 ---------------------------------------------------------------
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+
+INSERT INTO im_simrs_rekam_medis_pasien VALUES
+('RMM00000117','TP 013','Privasi Pasien','form','privasi','privasi','showModalAsesmenRawatInap','Y','C','migrasi',now(),now(),'migrasi','1');
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000299','RMM00000117','tppri','2','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000300','RMM00000068','tppri','3','Y','C','migrasi',now(),now(),'migrasi');
+
+ALTER TABLE it_simrs_header_checkup
+ADD COLUMN spo2 VARCHAR (10);
+
+UPDATE im_simrs_rekam_medis_pasien
+SET jumlah_kategori = '1'
+WHERE id_rekam_medis_pasien = 'RMM00000089';
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000301','RMM00000116','pindah_ok','3','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000302','RMM00000044','pindah_ok','4','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000303','RMM00000045','pindah_ok','5','Y','C','migrasi',now(),now(),'migrasi');
+
+ALTER TABLE it_simrs_header_checkup
+ADD COLUMN nyeri VARCHAR(10),
+ADD COLUMN resiko_jatuh VARCHAR(50);
+
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+---------------------------------B E L U M - D I P R O D -------------------------------------------------------
+------------------------------------- 07 06 2021 ---------------------------------------------------------------
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+
+ALTER TABLE it_simrs_obat_racik
+ADD COLUMN frekuensi TEXT;
 
 

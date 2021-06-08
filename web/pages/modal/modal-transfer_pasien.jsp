@@ -18,52 +18,18 @@
                     <p id="msg_transfer_pasien"></p>
                 </div>
                 <div class="box-body btn-hide">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
+                        <button onclick="showModalAsesmenRawatInap('add_transfer_pasien')" type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Asesmen Transfer
                         </button>
-                        <button type="button" class="btn btn-success dropdown-toggle"
-                                data-toggle="dropdown" style="height: 34px">
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a onclick="showModalAsesmenRawatInap('data_ruangan')" style="cursor: pointer"><i
-                                    class="fa fa-plus"></i> Data Ruangan</a></li>
-                            <li><a onclick="showModalAsesmenRawatInap('catatan_klinis')" style="cursor: pointer"><i
-                                    class="fa fa-plus"></i> Catatan Klinis</a></li>
-                            <li><a onclick="showModalAsesmenRawatInap('kondisi_serah_terima')" style="cursor: pointer"><i
-                                    class="fa fa-plus"></i> Kondisi Pasien Saat Serah Terima</a></li>
-                        </ul>
-                    </div>
                 </div>
                 <div class="box-body">
                     <table class="table" id="tabel_ina_transfer_pasien">
                         <tbody>
-                        <tr id="row_ina_data_ruangan">
-                            <td>Data Ruangan</td>
+                        <tr id="row_ina_add_transfer_pasien">
+                            <td>Asesmen Transfer</td>
                             <td width="20%" align="center">
-                                <img id="btn_ina_data_ruangan" class="hvr-grow"
-                                     onclick="detailAsesmenRawatInap('data_ruangan')"
-                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_data_ruangan" class="hvr-grow btn-hide" onclick="conRI('data_ruangan', 'transfer_pasien')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
-                            </td>
-                        </tr>
-                        <tr id="row_ina_catatan_klinis">
-                            <td>Catatan Klinis</td>
-                            <td width="20%" align="center">
-                                <img id="btn_ina_catatan_klinis" class="hvr-grow"
-                                     onclick="detailAsesmenRawatInap('catatan_klinis')"
-                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_catatan_klinis" class="hvr-grow btn-hide" onclick="conRI('catatan_klinis', 'transfer_pasien')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
-                            </td>
-                        </tr>
-                        <tr id="row_ina_kondisi_serah_terima">
-                            <td>Kondisi Pasien Saat Serah Terima</td>
-                            <td width="20%" align="center">
-                                <img id="btn_ina_kondisi_serah_terima" class="hvr-grow"
-                                     onclick="detailAsesmenRawatInap('kondisi_serah_terima')"
-                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_kondisi_serah_terima" class="hvr-grow btn-hide" onclick="conRI('kondisi_serah_terima', 'transfer_pasien')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="btn_ina_add_transfer_pasien" class="hvr-grow"
+                                     onclick="detailAsesmenRawatInap('add_transfer_pasien')"
+                                     src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
                         </tbody>
@@ -78,22 +44,28 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-ina-data_ruangan">
+<div class="modal fade" id="modal-ina-add_transfer_pasien">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Data Ruangan
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Tambah Asesmen Transfer Pasien
                 </h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none"
-                     id="warning_ina_data_ruangan">
+                     id="warning_ina_add_transfer_pasien">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_ina_data_ruangan"></p>
+                    <p id="msg_ina_add_transfer_pasien"></p>
                 </div>
                 <div class="box-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-12"><b>Data Ruangan</b></label>
+                        </div>
+                    </div>
+                    <hr>
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Ruang Asal</label>
@@ -106,7 +78,7 @@
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Ruang Tujuan</label>
                             <div class="col-md-8">
-                                <input class="form-control" id="dr2" style="margin-top: 7px">
+                                <input class="form-control tujuan-ruangan" id="dr2" style="margin-top: 7px">
                             </div>
                         </div>
                     </div>
@@ -256,40 +228,15 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-                <button id="save_ina_data_ruangan" class="btn btn-success pull-right"
-                        onclick="saveAsesmenRawatInap('data_ruangan','transfer_pasien')"><i class="fa fa-check"></i>
-                    Save
-                </button>
-                <button id="load_ina_data_ruangan" style="display: none; cursor: no-drop" type="button"
-                        class="btn btn-success"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal-ina-catatan_klinis">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a; color: white">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Catatan Klinis
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none"
-                     id="warning_ina_catatan_klinis">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_ina_catatan_klinis"></p>
-                </div>
-                <div class="box-body">
+                    <hr>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label><b>Catatan Klinis</b></label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3">Anamnesis</label>
@@ -304,15 +251,7 @@
                             <label class="col-md-3">Alergi</label>
                             <div class="col-md-8">
                                 <input class="form-control alergi-pasien" id="ck2">
-                                <%--<div class="custom02">--%>
-                                    <%--<input type="radio" value="Tidak" id="ck21" name="ck2" /><label for="ck21">Tidak</label>--%>
-                                <%--</div>--%>
                             </div>
-                            <%--<div class="col-md-3">--%>
-                                <%--<div class="custom02">--%>
-                                    <%--<input type="radio" value="Tidak" id="ck22" name="ck2" /><label for="ck22">Ya</label>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
                         </div>
                     </div>
                     <hr class="garis">
@@ -439,8 +378,8 @@
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-3">
                                 <div class="form-check" style="margin-top: -10px">
-                                    <input type="checkbox" name="ck7" id="ck74" value="Cetater">
-                                    <label for="ck74"></label> Cetater
+                                    <input type="checkbox" name="ck7" id="ck74" value="Catheter">
+                                    <label for="ck74"></label> Catheter
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -451,8 +390,8 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-check" style="margin-top: -10px">
-                                    <input type="checkbox" name="ck7" id="ck76" value="Ortotrakeal">
-                                    <label for="ck76"></label> Ortotrakeal
+                                    <input type="checkbox" name="ck7" id="ck76" value="Orotracheal">
+                                    <label for="ck76"></label> Orotracheal
                                 </div>
                             </div>
                         </div>
@@ -477,40 +416,15 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-                <button id="save_ina_catatan_klinis" class="btn btn-success pull-right"
-                        onclick="saveAsesmenRawatInap('catatan_klinis','transfer_pasien')"><i class="fa fa-check"></i>
-                    Save
-                </button>
-                <button id="load_ina_catatan_klinis" style="display: none; cursor: no-drop" type="button"
-                        class="btn btn-success"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal-ina-kondisi_serah_terima">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a; color: white">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Kondisi Pasien Saat Serah Terima
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none"
-                     id="warning_ina_kondisi_serah_terima">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_ina_kondisi_serah_terima"></p>
-                </div>
-                <div class="box-body">
+                    <hr>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label><b>Kondisi Pasien Saat Serah Terima</b></label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-4"><b>Pemeriksaan</b></label>
@@ -546,7 +460,7 @@
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Kesadaran / GCS</label>
                             <div class="col-md-4">
-                               <input oninput="setSideValue('kps4', this.value)" class="form-control" id="kps3" style="margin-top: 7px" type="number">
+                                <input oninput="setSideValue('kps4', this.value)" class="form-control" id="kps3" style="margin-top: 7px" type="number">
                             </div>
                             <div class="col-md-4">
                                 <input class="form-control" id="kps4" style="margin-top: 7px" type="number">
@@ -642,7 +556,7 @@
                             <label class="col-md-4" style="margin-top: 7px">Saturasi</label>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input oninput="setSideValue('kps14', this.value)" type="number" class="form-control" id="kps13">
+                                    <input oninput="setSideValue('kps14', this.value)" type="number" class="form-control spo2_pasien" id="kps13">
                                     <div class="input-group-addon" style="font-size: 10px; width: 35%">
                                         %
                                     </div>
@@ -650,9 +564,9 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input type="number" class="form-control" id="kps14">
+                                    <input type="number" class="form-control spo2_pasien" id="kps14">
                                     <div class="input-group-addon" style="font-size: 10px; width: 35%">
-                                       %
+                                        %
                                     </div>
                                 </div>
                             </div>
@@ -662,10 +576,10 @@
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Skala Nyeri</label>
                             <div class="col-md-4">
-                                <input oninput="setSideValue('kps16', this.value)" type="number" class="form-control" id="kps15" style="margin-top: 7px">
+                                <input oninput="setSideValue('kps16', this.value)" type="number" class="form-control nyeri-pasien" id="kps15" style="margin-top: 7px">
                             </div>
                             <div class="col-md-4">
-                                <input type="number" class="form-control" id="kps16" style="margin-top: 7px">
+                                <input type="number" class="form-control nyeri-pasien" id="kps16" style="margin-top: 7px">
                             </div>
                         </div>
                     </div>
@@ -673,34 +587,34 @@
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Resiko Jatuh</label>
                             <div class="col-md-4">
-                                <select onchange="setSideValue('kps18', this.value)" class="form-control" id="kps17" style="margin-top: 7px">
+                                <select onchange="setSideValue('kps18', this.value)" class="form-control jatuh-pasien" id="kps17" style="margin-top: 7px">
                                     <option value="">[Select One]</option>
-                                    <option value="Ringan">Ringan</option>
+                                    <option value="Ringan">Rendah</option>
                                     <option value="Sedang">Sedang</option>
-                                    <option value="Berat">Berat</option>
+                                    <option value="Berat">Tinggi</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <select class="form-control" id="kps18" style="margin-top: 7px">
+                                <select class="form-control jatuh-pasien" id="kps18" style="margin-top: 7px">
                                     <option value="">[Select One]</option>
-                                    <option value="Ringan">Ringan</option>
+                                    <option value="Rendah">Rendah</option>
                                     <option value="Sedang">Sedang</option>
-                                    <option value="Berat">Berat</option>
+                                    <option value="Tinggi">Tinggi</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                    <div class="form-group">
-                        <label class="col-md-4" style="margin-top: 7px">Lain-Lain</label>
-                        <div class="col-md-4">
-                            <input oninput="setSideValue('kps20', this.value)" class="form-control" id="kps19" style="margin-top: 7px">
-                        </div>
-                        <div class="col-md-4">
-                            <input class="form-control" id="kps20" style="margin-top: 7px">
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Lain-Lain</label>
+                            <div class="col-md-4">
+                                <input oninput="setSideValue('kps20', this.value)" class="form-control" id="kps19" style="margin-top: 7px">
+                            </div>
+                            <div class="col-md-4">
+                                <input class="form-control" id="kps20" style="margin-top: 7px">
+                            </div>
                         </div>
                     </div>
-                </div>
                     <hr>
                     <div class="row">
                         <div class="form-group">
@@ -722,11 +636,11 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_ina_kondisi_serah_terima" class="btn btn-success pull-right"
-                        onclick="saveAsesmenRawatInap('kondisi_serah_terima','transfer_pasien')"><i class="fa fa-check"></i>
+                <button id="save_ina_add_transfer_pasien" class="btn btn-success pull-right"
+                        onclick="saveAsesmenRawatInap('add_transfer_pasien','transfer_pasien')"><i class="fa fa-check"></i>
                     Save
                 </button>
-                <button id="load_ina_kondisi_serah_terima" style="display: none; cursor: no-drop" type="button"
+                <button id="load_ina_add_transfer_pasien" style="display: none; cursor: no-drop" type="button"
                         class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>

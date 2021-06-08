@@ -318,5 +318,6 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/makananpendamping/struts/PendampingMakananAction.xml"/>
 
     <include file="sshconfig/com/neurix/akuntansi/transaksi/billingSystem/struts/LogTrxAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/rawatinap/struts/HemodialisaAction.xml"/>
 
 </struts>

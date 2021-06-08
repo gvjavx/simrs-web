@@ -131,7 +131,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="45%"><b>No Checkup</b></td>
+                                        <td width="40%"><b>No Checkup</b></td>
                                         <td>
                                             <s:hidden id="id_periksa_lab" name="periksaLab.idPeriksaLab"></s:hidden>
                                             <s:hidden id="no_checkup" name="periksaLab.noCheckup"></s:hidden>
@@ -187,6 +187,16 @@
                                             </table>
                                         </td>
                                     </tr>
+                                    <s:if test='periksaLab.isCito == "Y"'>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <table>
+                                                    <span class="span-warning">CITO</span>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -196,7 +206,7 @@
                                 </script>
                                 <table class="table table-striped">
                                     <tr>
-                                        <td><b>Pelayanan</b></td>
+                                        <td width="40%"><b>Pelayanan</b></td>
                                         <td>
                                             <table><s:label name="periksaLab.namaPelayanan"></s:label></table>
                                         </td>
@@ -232,7 +242,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="40%"><b>Dokter Pengirim</b></td>
+                                        <td><b>Dokter Pengirim</b></td>
                                         <td>
                                             <table>
                                                 <s:label name="periksaLab.namaDokterPengirim"></s:label>
@@ -253,7 +263,6 @@
                                     </tr>
                                 </table>
                             </div>
-                            <!-- /.col -->
                             <div class="form-group" style="display: none">
                                 <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
                                            closeOnEscape="false"
@@ -1243,6 +1252,8 @@
         var data = [];
         var jenisKelamin = '<s:property value="periksaLab.jenisKelamin"/>';
         var catatan = "N";
+        var asesmen = "N";
+
         PeriksaLabAction.listParameterPemeriksaan(idHeaderPemeriksaan, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
@@ -1312,6 +1323,9 @@
                     if("Y" == item.isCatatan){
                         catatan = "Y";
                     }
+                    if("Y" == item.isAsesmen){
+                        asesmen = "Y";
+                    }
                 });
                 $('#body_parameter').html(table);
                 if("Y" == catatan){
@@ -1341,6 +1355,12 @@
                     $('#form_note').hide();
                     $('#qa_note').show();
                     $('#is_note').prop("checked", false);
+                }
+
+                if("Y" == asesmen){
+
+                }else{
+
                 }
             }
         });
@@ -1715,6 +1735,68 @@
                 });
             }
             $('#jenis_pemeriksaan').html(option);
+        });
+    }
+
+    function getListRekamMedis() {
+        var li = "";
+        var jenisRm = "";
+        CheckupAction.getListRekammedisPasien("radiologi", jenisRm, idDetailCheckup, function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    var cek = "";
+                    var tgl = "";
+                    var icons = '<i class="fa fa-file-o"></i>';
+                    var icons2 = '<i class="fa fa-print"></i>';
+                    var tol = "";
+                    var tolText = "";
+                    var labelTerisi = "";
+                    var constan = 0;
+                    var terIsi = 0;
+                    var labelPrint = "";
+                    var terIsiPrint = "";
+                    var enter = '';
+
+                    if (item.jumlahKategori != null) {
+                        constan = item.jumlahKategori;
+                    }
+                    if (item.terisi != null && item.terisi != '') {
+                        terIsi = item.terisi;
+                        terIsiPrint = item.terisi;
+                    }
+
+                    if (constan == terIsi || parseInt(terIsi) > parseInt(constan)) {
+                        var conver = "";
+                        if (item.createdDate != null) {
+                            conver = converterDate(new Date(item.createdDate));
+                            tgl = '<label class="label label-success">' + conver + '</label>';
+                            tol = 'class="box-rm"';
+                            tolText = '<span class="box-rmtext">Tanggal mengisi ' + conver + '</span>';
+                        }
+                        icons = '<i class="fa fa-check" style="color: #449d44"></i>';
+                        icons2 = '<i class="fa fa-check" style="color: #449d44"></i>';
+                        enter = '<br>';
+                    }
+
+                    labelTerisi = '<span style="color: #367fa9; font-weight: bold">' + terIsi + '/' + constan + '</span>';
+                    labelPrint = '<span style="color: #367fa9; font-weight: bold">' + terIsiPrint + '</span>';
+
+                    if (item.jenis == 'ringkasan_rj') {
+                        li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-television"></i>' + item.namaRm + '</a></li>'
+                    } else {
+                        if (item.function == 'addMonitoringFisioterapi') {
+                            li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-television"></i>' + item.namaRm + '</a></li>'
+                        } else {
+                            if (item.keterangan == 'form') {
+                                li += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \'' + item.function + '\', \'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>' + enter;
+                            } else if (item.keterangan == "surat") {
+                                li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>' + enter;
+                            }
+                        }
+                    }
+                });
+                $('#asesmen_rj').html(li);
+            }
         });
     }
 

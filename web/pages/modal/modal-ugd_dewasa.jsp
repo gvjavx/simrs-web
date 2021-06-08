@@ -2074,17 +2074,9 @@
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-3">Kategori Tindakan</label>
-                            <div class="col-md-9">
-                                <select class="form-control" id="ra3" onchange="listTindakanPoli(this.value)"></select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
                             <label class="col-md-3">Tindakan</label>
                             <div class="col-md-9">
-                                <select style="width: 100%;" class="form-control select2" id="ra4"></select>
+                                <textarea class="form-control" id="ra4"></textarea>
                             </div>
                         </div>
                     </div>

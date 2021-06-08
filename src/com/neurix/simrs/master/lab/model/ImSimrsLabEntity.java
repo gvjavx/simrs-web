@@ -15,6 +15,15 @@ public class ImSimrsLabEntity implements Serializable {
     private String lastUpdateWho;
     private String isCatatan;
     private String isPaket;
+    private String isAsesmen;
+
+    public String getIsAsesmen() {
+        return isAsesmen;
+    }
+
+    public void setIsAsesmen(String isAsesmen) {
+        this.isAsesmen = isAsesmen;
+    }
 
     public String getIsPaket() {
         return isPaket;

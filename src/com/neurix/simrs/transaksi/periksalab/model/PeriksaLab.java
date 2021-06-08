@@ -133,6 +133,24 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String tensi;
     private String rr;
     private String catatanKlinis;
+    private String isCito;
+    private String isAsesmen;
+
+    public String getIsAsesmen() {
+        return isAsesmen;
+    }
+
+    public void setIsAsesmen(String isAsesmen) {
+        this.isAsesmen = isAsesmen;
+    }
+
+    public String getIsCito() {
+        return isCito;
+    }
+
+    public void setIsCito(String isCito) {
+        this.isCito = isCito;
+    }
 
     public String getCatatanKlinis() {
         return catatanKlinis;

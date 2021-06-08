@@ -177,13 +177,14 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             String statusBayar = "";
 
             String tipePelayanan = "";
+            String idDokter = "%";
 
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
                 idPasien = bean.getIdPasien();
             }
 
             if (bean.getNamaPasien() != null && !"".equalsIgnoreCase(bean.getNamaPasien())) {
-                nama = bean.getNamaPasien();
+                nama = "%"+bean.getNamaPasien()+"%";
             }
 
             if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())) {
@@ -208,6 +209,10 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
             if (bean.getIdJenisPeriksaPasien() != null && !"".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                 jenisPasien = bean.getIdJenisPeriksaPasien();
+            }
+
+            if (bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter())) {
+                idDokter = bean.getIdDokter();
             }
 
             if ("kasir".equalsIgnoreCase(bean.getTypeTransaction())) {
@@ -252,7 +257,9 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "dt.tgl_cekup, \n" +
                     "jp.keterangan as jenis_pasien,\n" +
                     "hd.tgl_lahir,\n"+
-                    "dt.tindak_lanjut \n"+
+                    "dt.tindak_lanjut,\n"+
+                    "team.id_dokter,\n"+
+                    "team.nama_dokter\n"+
                     "FROM it_simrs_header_checkup hd\n" +
                     "INNER JOIN it_simrs_header_detail_checkup dt ON dt.no_checkup = hd.no_checkup\n" +
                     "INNER JOIN im_simrs_status_pasien st ON st.id_status_pasien = dt.status_periksa\n" +
@@ -267,17 +274,25 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "b.kode_vclaim\n" +
                     "FROM im_simrs_pelayanan a\n" +
                     "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) ply ON dt.id_pelayanan = ply.id_pelayanan \n" +
+                    "INNER JOIN (SELECT\n" +
+                    "a.id_detail_checkup, \n" +
+                    "b.id_dokter,\n" +
+                    "b.nama_dokter\n" +
+                    "FROM it_simrs_dokter_team a\n" +
+                    "INNER JOIN im_simrs_dokter b ON a.id_dokter = b.id_dokter) team ON team.id_detail_checkup = dt.id_detail_checkup\n"+
                     "LEFT JOIN it_simrs_rawat_inap ri ON ri.id_detail_checkup = dt.id_detail_checkup\n" +
                     "LEFT JOIN it_simrs_uang_muka_pendaftaran um ON um.id_detail_checkup = dt.id_detail_checkup\n" +
                     "WHERE ri.id_detail_checkup is null\n" +
                     "AND hd.branch_id LIKE :branchId \n" +
                     "AND hd.id_pasien LIKE :idPasien \n" +
-                    "AND hd.nama LIKE :nama \n" +
+                    "AND hd.nama ILIKE :nama \n" +
                     "AND dt.id_pelayanan LIKE :idPelayanan \n" +
                     "AND dt.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
                     "AND dt.is_kronis IS NULL \n" +
                     "AND dt.id_transaksi_online IS NULL \n" +
-                    "AND dt.status_periksa LIKE :status \n" + statusBayar + forRekanan + tipePelayanan;
+                    "AND dt.status_periksa LIKE :status \n" +
+                    "AND team.id_dokter LIKE :idDokter \n" +
+                    statusBayar + forRekanan + tipePelayanan;
 
             String order = "\n ORDER BY dt.tgl_antrian ASC";
             if ("kasir".equalsIgnoreCase(bean.getTypeTransaction())) {
@@ -288,9 +303,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             }
             List<Object[]> results = new ArrayList<>();
             if (!"".equalsIgnoreCase(dateFrom) && !"".equalsIgnoreCase(dateTo)) {
-
                 SQL = SQL + "\n AND CAST(hd.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') AND CAST(hd.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy')" + order;
-
                 results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                         .setParameter("idPasien", idPasien)
                         .setParameter("nama", nama)
@@ -300,12 +313,11 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                         .setParameter("dateTo", dateTo)
                         .setParameter("branchId", branchId)
                         .setParameter("jenisPasien", jenisPasien)
+                        .setParameter("idDokter", idDokter)
                         .list();
 
             } else {
-
                 SQL = SQL + order;
-
                 results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                         .setParameter("idPasien", idPasien)
                         .setParameter("nama", nama)
@@ -313,17 +325,16 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                         .setParameter("jenisPasien", jenisPasien)
                         .setParameter("branchId", branchId)
                         .setParameter("status", statusPeriksa)
+                        .setParameter("idDokter", idDokter)
                         .list();
             }
 
-            if (!results.isEmpty()) {
+            if (results.size() > 0) {
                 for (Object[] obj : results) {
-
                     HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
                     detailCheckup.setStatusPeriksa(obj[7] == null ? "" : obj[7].toString());
                     detailCheckup.setIdJenisPeriksaPasien(obj[13] == null ? "" : obj[13].toString());
                     detailCheckup.setStatusBayar(obj[12] == null ? "" : obj[12].toString());
-
                     HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
                     if (obj[14] != null) {
                         if ("umum".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {

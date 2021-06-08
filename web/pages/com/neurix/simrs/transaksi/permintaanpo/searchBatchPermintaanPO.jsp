@@ -983,72 +983,134 @@
 
         var data = "";
         var listOfimg = [];
-        if (noFaktur != '' && tglFaktur != '' && noInvoice != '' && noDo != '') {
-            data = {
-                'no_batch': noBatch,
-                'no_faktur': noFaktur,
-                'tgl_faktur': tgl,
-                'no_invoice': noInvoice,
-                'no_do': noDo,
-                'img_url': "",
-                'tgl_invoice': tglInvoice,
-                'tgl_do': tglDo
-            }
-
-            var cekFaktur = $('.faktur');
-            var cekInvoice = $('.invoice');
-            var cekDo = $('.do');
-
-            if (cekFaktur.length > 0) {
-                $.each(cekFaktur, function (i, item) {
-                    if (!cekFile('upload-faktur-' + i)) {
-                        var canvas = document.getElementById('canvas-faktur-' + i);
-                        listOfimg.push({
-                            "jenisnomor": "faktur",
-                            "batch": noBatch,
-                            "iditem": noFaktur,
-                            "img": convertToDataURLAtas(canvas)
-                        });
-                    }
-                });
-            }
-
-            if (cekInvoice.length > 0) {
-                $.each(cekInvoice, function (i, item) {
-                    if (!cekFile('upload-invoice-' + i)) {
-                        var canvas = document.getElementById('canvas-invoice-' + i);
-                        listOfimg.push({
-                            "jenisnomor": "invoice",
-                            "batch": noBatch,
-                            "iditem": noInvoice,
-                            "img": convertToDataURLAtas(canvas)
-                        });
-                    }
-                });
-            }
-
-            if (cekDo.length > 0) {
-                $.each(cekDo, function (i, item) {
-                    if (!cekFile('upload-do-' + i)) {
-                        var canvas = document.getElementById('canvas-do-' + i);
-                        listOfimg.push({
-                            "jenisnomor": "do",
-                            "batch": noBatch,
-                            "iditem": noDo,
-                            "img": convertToDataURLAtas(canvas)
-                        });
-                    }
-                });
-            }
-
-            var result = JSON.stringify(data);
-            var listimg = JSON.stringify(listOfimg);
-            $('#modal-confirm-dialog').modal('show');
-            $('#save_con').attr('onclick', 'approveBatch(\'' + result + '\', \'' + listimg + '\')');
-        } else {
-            $('#warning_app').show().fadeOut(5000);
-            $('#msg_app').text("Silahkan cek kembali data inputan anda...!");
+        data = {
+            'no_batch': noBatch,
+            'no_faktur': noFaktur,
+            'tgl_faktur': tgl,
+            'no_invoice': noInvoice,
+            'no_do': noDo,
+            'img_url': "",
+            'tgl_invoice': tglInvoice,
+            'tgl_do': tglDo
         }
+
+        var cekFaktur = $('.faktur');
+        var cekInvoice = $('.invoice');
+        var cekDo = $('.do');
+
+        if (cekFaktur.length > 0) {
+            $.each(cekFaktur, function (i, item) {
+                if (!cekFile('upload-faktur-' + i)) {
+                    var canvas = document.getElementById('canvas-faktur-' + i);
+                    listOfimg.push({
+                        "jenisnomor": "faktur",
+                        "batch": noBatch,
+                        "iditem": noFaktur,
+                        "img": convertToDataURLAtas(canvas)
+                    });
+                }
+            });
+        }
+
+        if (cekInvoice.length > 0) {
+            $.each(cekInvoice, function (i, item) {
+                if (!cekFile('upload-invoice-' + i)) {
+                    var canvas = document.getElementById('canvas-invoice-' + i);
+                    listOfimg.push({
+                        "jenisnomor": "invoice",
+                        "batch": noBatch,
+                        "iditem": noInvoice,
+                        "img": convertToDataURLAtas(canvas)
+                    });
+                }
+            });
+        }
+
+        if (cekDo.length > 0) {
+            $.each(cekDo, function (i, item) {
+                if (!cekFile('upload-do-' + i)) {
+                    var canvas = document.getElementById('canvas-do-' + i);
+                    listOfimg.push({
+                        "jenisnomor": "do",
+                        "batch": noBatch,
+                        "iditem": noDo,
+                        "img": convertToDataURLAtas(canvas)
+                    });
+                }
+            });
+        }
+
+        var result = JSON.stringify(data);
+        var listimg = JSON.stringify(listOfimg);
+        $('#modal-confirm-dialog').modal('show');
+        $('#save_con').attr('onclick', 'approveBatch(\'' + result + '\', \'' + listimg + '\')');
+
+//        if (noFaktur != '' && tglFaktur != '' && noInvoice != '' && noDo != '') {
+//            data = {
+//                'no_batch': noBatch,
+//                'no_faktur': noFaktur,
+//                'tgl_faktur': tgl,
+//                'no_invoice': noInvoice,
+//                'no_do': noDo,
+//                'img_url': "",
+//                'tgl_invoice': tglInvoice,
+//                'tgl_do': tglDo
+//            }
+//
+//            var cekFaktur = $('.faktur');
+//            var cekInvoice = $('.invoice');
+//            var cekDo = $('.do');
+//
+//            if (cekFaktur.length > 0) {
+//                $.each(cekFaktur, function (i, item) {
+//                    if (!cekFile('upload-faktur-' + i)) {
+//                        var canvas = document.getElementById('canvas-faktur-' + i);
+//                        listOfimg.push({
+//                            "jenisnomor": "faktur",
+//                            "batch": noBatch,
+//                            "iditem": noFaktur,
+//                            "img": convertToDataURLAtas(canvas)
+//                        });
+//                    }
+//                });
+//            }
+//
+//            if (cekInvoice.length > 0) {
+//                $.each(cekInvoice, function (i, item) {
+//                    if (!cekFile('upload-invoice-' + i)) {
+//                        var canvas = document.getElementById('canvas-invoice-' + i);
+//                        listOfimg.push({
+//                            "jenisnomor": "invoice",
+//                            "batch": noBatch,
+//                            "iditem": noInvoice,
+//                            "img": convertToDataURLAtas(canvas)
+//                        });
+//                    }
+//                });
+//            }
+//
+//            if (cekDo.length > 0) {
+//                $.each(cekDo, function (i, item) {
+//                    if (!cekFile('upload-do-' + i)) {
+//                        var canvas = document.getElementById('canvas-do-' + i);
+//                        listOfimg.push({
+//                            "jenisnomor": "do",
+//                            "batch": noBatch,
+//                            "iditem": noDo,
+//                            "img": convertToDataURLAtas(canvas)
+//                        });
+//                    }
+//                });
+//            }
+//
+//            var result = JSON.stringify(data);
+//            var listimg = JSON.stringify(listOfimg);
+//            $('#modal-confirm-dialog').modal('show');
+//            $('#save_con').attr('onclick', 'approveBatch(\'' + result + '\', \'' + listimg + '\')');
+//        } else {
+//            $('#warning_app').show().fadeOut(5000);
+//            $('#msg_app').text("Silahkan cek kembali data inputan anda...!");
+//        }
     }
 
     function cekFile(id) {

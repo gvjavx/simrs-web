@@ -149,6 +149,7 @@
                                 <label style="margin-left: 8px">TTD Pembuat Pernyataan</label>
                                 <canvas class="paint-canvas-ttd" id="pp7" width="220"
                                         onmouseover="paintTtd('pp7')"></canvas>
+                                <input class="form-control" id="nama_pembuat" placeholder="Nama Pembuat">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="clearConvas('pp7')"><i
                                         class="fa fa-trash"></i> Clear

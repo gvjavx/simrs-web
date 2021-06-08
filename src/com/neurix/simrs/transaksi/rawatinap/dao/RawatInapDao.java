@@ -178,7 +178,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "INNER JOIN im_simrs_kelas_ruangan f ON e.id_kelas_ruangan = f.id_kelas_ruangan\n" +
                     "LEFT JOIN it_simrs_uang_muka_pendaftaran um ON um.id_detail_checkup = b.id_detail_checkup\n" +
                     "WHERE a.id_pasien LIKE :idPasien\n" +
-                    "AND a.nama LIKE :nama\n" +
+                    "AND a.nama ILIKE :nama\n" +
                     "AND b.id_pelayanan LIKE :idPelayanan\n" +
                     "AND b.status_periksa LIKE :status\n" +
                     "AND a.jenis_kelamin LIKE :jenisKelamin\n" +
