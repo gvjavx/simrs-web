@@ -7,6 +7,10 @@
     alter table it_hris_payroll_temp
     add column dasar_bpjs numeric(15,2);
 
+------------------------------------------------
+------------ AKHIRI MULAI DARI SINI ------------
+------------------------------------------------
+
 -- update skala pensiun
     update im_hris_payroll_skala_gaji_pensiun
     set flag = 'N'
@@ -15,7 +19,7 @@
             'SGP00167','SGP00168','SGP00169','SGP00170',
             'SGP00171','SGP00172','SGP00173','SGP00174',
             'SGP00175','SGP00176','SGP00177','SGP00178',
-            'SGP00179');
+            'SGP00179','SGP00297');
 
 ------ 2021-05-15 ===> keperluan MBT
 -- penambahan status mutasi
