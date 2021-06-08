@@ -1085,9 +1085,8 @@
             }
 
             var result = JSON.stringify(data);
-            var listimg = "";
             $('#modal-confirm-dialog').modal('show');
-            $('#save_con').attr('onclick', 'approveBatch(\'' + result + '\', \'' + listimg + '\')');
+            $('#save_con').attr('onclick', 'approveBatch(\'' + result + '\')');
         } else {
             $('#warning_app').show().fadeOut(5000);
             $('#msg_app').text("Silahkan cek kembali data inputan anda...!");
