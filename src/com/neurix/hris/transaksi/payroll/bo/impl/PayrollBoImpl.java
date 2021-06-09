@@ -1846,6 +1846,13 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         filterPegawaiPayrollTetapUtama.stream()
                 .forEachOrdered(listOfSortedInitialPayroll::add);
 
+        List<PegawaiPayroll> filterPegawaiPayrollTetapManPro = filterPegawaiPayrollTetap.stream().filter(
+                p -> p.getKelompokPosisiId().equalsIgnoreCase(CommonConstant.KELOMPOK_ID_MAN_PROCUREMENT)
+        ).collect(Collectors.toList());
+
+        filterPegawaiPayrollTetapManPro.stream()
+                .forEachOrdered(listOfSortedInitialPayroll::add);
+
         List<PegawaiPayroll> filterPegawaiPayrollTetapMadya = filterPegawaiPayrollTetap.stream().filter(
                 p -> p.getKelompokPosisiId().equalsIgnoreCase(CommonConstant.KELOMPOK_ID_PEJABAT_MADYA)
         ).collect(Collectors.toList());

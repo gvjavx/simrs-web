@@ -184,6 +184,9 @@ public class CommonConstant {
     public final static String COA_PAYROLL = CommonUtil.getPropertyParams("coa.bank.payroll");
     public final static String KELOMPOK_ID_PEJABAT_MUDA = CommonUtil.getPropertyParams("kelompok.id.pejabat.muda");
     public final static String KELOMPOK_ID_PEJABAT_MADYA = CommonUtil.getPropertyParams("kelompok.id.pejabat.madya");
+    //RAKA-09JUN2021 ===> kelompok khusus manager procurement, dibuat untuk handle tunj.Jab & Struk yg berbeda (antara Madya dan Utama)
+    public final static String KELOMPOK_ID_MAN_PROCUREMENT = CommonUtil.getPropertyParams("kelompok.id.pejabat.man_procurement");
+    //RAKA-end
     public final static String KELOMPOK_ID_PEJABAT_UTAMA = CommonUtil.getPropertyParams("kelompok.id.pejabat.utama");
     public final static String KELOMPOK_ID_STAFF = CommonUtil.getPropertyParams("kelompok.id.pelaksana");
     public final static String BAGIAN_ID_BOD =CommonUtil.getPropertyParams("bagian.bod");

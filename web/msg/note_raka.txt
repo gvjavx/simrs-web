@@ -2,7 +2,7 @@
 -- untuk pengajuan payroll
     alter table it_hris_payroll_temp
     add column flag_koreksi varchar(5),
-    add column note_koreksi varchar(500);
+    add column note_koreksi varchar(500);payr
 -- untuk custom dasar bpjs
     alter table it_hris_payroll_temp
     add column dasar_bpjs numeric(15,2);
