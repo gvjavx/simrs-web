@@ -152,7 +152,7 @@
                                                 <td>
                                                     <label class="control-label"><small>Unit :</small></label>
                                                 </td>
-                                                <td>
+                                                <td width="300px">
                                                     <table>
                                                         <s:if test='laporanAkuntansi.unit == "01"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
