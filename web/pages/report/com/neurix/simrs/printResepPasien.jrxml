@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printResepPasien" language="groovy" pageWidth="297" pageHeight="421" columnWidth="257" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="2.143588810000021"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="200"/>
+	<property name="ireport.y" value="384"/>
 	<parameter name="reportParams.resepId" class="java.lang.String"/>
 	<parameter name="reportParams.logo" class="java.lang.String"/>
 	<parameter name="reportParams.nik" class="java.lang.String"/>
@@ -33,11 +33,18 @@ b.id_obat,
 b.jenis_satuan,
 c.nama_obat,
 b.qty,
-b.keterangan
+b.keterangan,
+b.id_racik,
+d.nama as nama_racik,
+d.qty as qty_racik,
+d.kemasan as kemasan_racik,
+d.signa as signa_racik
 FROM mt_simrs_permintaan_resep a
 INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat
 INNER JOIN (SELECT id_obat, nama_obat FROM im_simrs_obat GROUP BY id_obat, nama_obat) c ON b.id_obat = c.id_obat
-WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
+LEFT JOIN it_simrs_obat_racik d ON d.id = b.id_racik
+WHERE a.id_permintaan_resep LIKE 'RSP00000418'
+ORDER BY b.id_racik ILIKE $P{reportParams.resepId}]]>
 	</queryString>
 	<field name="id_permintaan_resep" class="java.lang.String"/>
 	<field name="id_pasien" class="java.lang.String"/>
@@ -47,6 +54,11 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 	<field name="nama_obat" class="java.lang.String"/>
 	<field name="qty" class="java.lang.Long"/>
 	<field name="keterangan" class="java.lang.String"/>
+	<field name="id_racik" class="java.lang.String"/>
+	<field name="nama_racik" class="java.lang.String"/>
+	<field name="qty_racik" class="java.lang.Integer"/>
+	<field name="kemasan_racik" class="java.lang.String"/>
+	<field name="signa_racik" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

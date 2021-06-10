@@ -40,7 +40,7 @@ public interface CheckupBo {
     public void updatePenunjang(HeaderCheckup bean) throws GeneralBOException;
     public void saveAddAlergi(CheckupAlergi bean) throws GeneralBOException;
     public void saveEditAlergi(CheckupAlergi bean) throws GeneralBOException;
-    public List<ItSImrsCheckupAlergiEntity> getListAlergi(String noCheckup) throws GeneralBOException;
+    public List<ItSImrsCheckupAlergiEntity> getListAlergi(String idPasien) throws GeneralBOException;
     public AlertPasien getAlertPasien(String idPasien, String branchId) throws GeneralBOException;
     public List<AlertPasien> listOfRekamMedic(HeaderCheckup bean) throws GeneralBOException;
     public ItSimrsPemeriksaanFisikEntity getEntityPemeriksaanFisikByNoCheckup(String noCheckup) throws GeneralBOException;
@@ -101,10 +101,12 @@ public interface CheckupBo {
     public String getTindakanRawat(String idDetailCheckup) throws GeneralBOException;
     public String getTindakanRawatICD9(String idDetailCheckup) throws GeneralBOException;
     public String getDiagnosaPrimer(String idDetailCheckup) throws GeneralBOException;
+    public String getDiagnosaMasuk(String idDetailCheckup) throws GeneralBOException;
     public String getDiagnosaSekunder(String idDetailCheckup) throws GeneralBOException;
     public String getPenunjangMedis(String idDetailCheckup, String tipe) throws GeneralBOException;
     public String getResepPasien(String idDetailCheckup) throws GeneralBOException;
     public String getAlergi(String noCheckup) throws GeneralBOException;
+    public String getTujuanRuangan(String noCheckup) throws GeneralBOException;
 
     public HeaderCheckup getDataPemeriksaanFisik(String noCheckup) throws GeneralBOException;
     public List<HeaderCheckup> getRiwayatPemeriksaan(String idPasien) throws GeneralBOException;

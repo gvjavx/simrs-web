@@ -622,6 +622,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             detailCheckup.setIsEksekutif(checkup.getIsEksekutif());
             detailCheckup.setIsVaksin(checkup.getIsVaksin());
             detailCheckup.setCatatanKlinis(checkup.getCatatanKlinis());
+            detailCheckup.setSpo2(checkup.getSpo2());
 
             if ("rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
                 RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
@@ -797,9 +798,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
 
         if (CommonConstant.ROLE_ADMIN_POLI.equalsIgnoreCase(userRoleLogin)) {
-            HeaderDetailCheckup headerDetailCheckup1 = new HeaderDetailCheckup();
-            headerDetailCheckup1.setIdPelayanan(CommonUtil.userPelayananIdLogin());
-            setHeaderDetailCheckup(headerDetailCheckup1);
+            headerDetailCheckup.setIdPelayanan(CommonUtil.userPelayananIdLogin());
             headerDetailCheckup.setTipePelayanan("rawat_jalan");
         }
 
@@ -812,6 +811,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfsearchHeaderDetailCheckup);
+        setHeaderDetailCheckup(headerDetailCheckup);
 
         logger.info("[CheckupDetailAction.search] end process <<<");
         return "search";
@@ -835,7 +835,8 @@ public class CheckupDetailAction extends BaseMasterAction {
             setEnabledPoli(true);
         }
 
-        if (CommonConstant.ROLE_ADMIN_POLI.equalsIgnoreCase(userRoleLogin)) {
+        if (CommonConstant.ROLE_ADMIN_POLI.equalsIgnoreCase(userRoleLogin) || CommonConstant.ROLE_DOKTER_UMUM.equalsIgnoreCase(userRoleLogin)
+                || CommonConstant.ROLE_DOKTER_SPESIALIS.equalsIgnoreCase(userRoleLogin)) {
             checkupdetail.setIdPelayanan(idPelayanan);
         }
 
@@ -3279,18 +3280,17 @@ public class CheckupDetailAction extends BaseMasterAction {
         return ruanganList;
     }
 
-    public List<Ruangan> listJustRuangan(String idKelas) {
+    public List<Ruangan> listJustRuangan(String idKelas, String kategori) {
         List<Ruangan> ruanganList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
         String branchId = CommonUtil.userBranchLogin();
         try {
-            ruanganList = ruanganBo.getJustListRuangan(idKelas, branchId);
+            ruanganList = ruanganBo.getJustListRuangan(idKelas, branchId, kategori);
         } catch (GeneralBOException e) {
             logger.error("[TindakanRawatAction.listTindakanRawat] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
         }
         return ruanganList;
-
     }
 
     public String getListComboKeteranganKeluar() {
@@ -5068,6 +5068,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             if ("SP15".equalsIgnoreCase(tipe) || "SP16".equalsIgnoreCase(tipe) || "SP17".equalsIgnoreCase(tipe) || "SP19".equalsIgnoreCase(tipe)) {
                 String penunjang = checkupBoProxy.getPenunjangMedis(checkup.getIdDetailCheckup(), null);
                 String terapi = checkupBoProxy.getResepPasien(checkup.getIdDetailCheckup());
+                String diagnosaMasuk = checkupBoProxy.getDiagnosaMasuk(checkup.getIdDetailCheckup());
                 String diagnosaPrimer = checkupBoProxy.getDiagnosaPrimer(checkup.getIdDetailCheckup());
                 String diagnosaSekunder = checkupBoProxy.getDiagnosaSekunder(checkup.getIdDetailCheckup());
                 String tindakanIcd9 = checkupBoProxy.getTindakanRawatICD9(checkup.getIdDetailCheckup());
@@ -5085,7 +5086,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 DokterTeam dokterTeam = teamDokterBoProxy.getNamaDokter(checkup.getIdDetailCheckup(), false);
                 reportParams.put("dokter", dokterTeam.getNamaDokter());
                 reportParams.put("sip", dokterTeam.getSip());
-                reportParams.put("diagnosaMasuk", diagnosaPrimer);
+                reportParams.put("diagnosaMasuk", diagnosaMasuk);
                 reportParams.put("indikasi", checkup.getIndikasi());
 
                 if("SP15".equalsIgnoreCase(tipe)){
@@ -5116,7 +5117,22 @@ public class CheckupDetailAction extends BaseMasterAction {
                         reportParams.put("tglKeluar", headerCheckup.getStTglKeluar());
                         reportParams.put("terapiPulang", headerCheckup.getTerapi());
                         reportParams.put("tindakLanjut", headerCheckup.getTindakLanjut());
+                        reportParams.put("prognosis", headerCheckup.getPrognosis());
                     }
+                }
+            }
+
+            if("CK04".equalsIgnoreCase(tipe) || "CK01".equalsIgnoreCase(tipe)){
+                KeperawatanRawatJalanBo keperawatanRawatJalanBo = (KeperawatanRawatJalanBo) ctx.getBean("keperawatanRawatJalanBoProxy");
+                KeperawatanRawatJalan keperawatanRawatJalan = new KeperawatanRawatJalan();
+                keperawatanRawatJalan.setIdDetailCheckup(checkup.getIdDetailCheckup());
+                keperawatanRawatJalan.setJenis("general_concent");
+                HeaderCheckup headerCheckup = keperawatanRawatJalanBo.getDataResumeMedis(keperawatanRawatJalan);
+                if(headerCheckup != null){
+                    reportParams.put("namaPasien", headerCheckup.getNama());
+                    reportParams.put("namaPemberi", headerCheckup.getNamaDokter());
+                    reportParams.put("pasien", headerCheckup.getTtdPasien());
+                    reportParams.put("petugas", headerCheckup.getTtdDokter());
                 }
             }
         }

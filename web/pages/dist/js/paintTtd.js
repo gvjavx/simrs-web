@@ -35,6 +35,7 @@ function paintTtd(id, change){
     let isMouseDown = false;
 
     if ('ontouchstart' in document.documentElement) {
+        context.canvas.style.touchAction = "none";
         var rect = paintCanvas.getBoundingClientRect();
 
         const stopDrawing = function () {

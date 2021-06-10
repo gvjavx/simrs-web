@@ -235,7 +235,7 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-1">
-                                <input type="color" class="js-color-picker-op  color-picker pull-left">
+                                <input type="color" class="js-color-picker-op color-picker pull-left" value="#ff0000">
                             </div>
                         </div>
                     </div>
@@ -247,7 +247,11 @@
                             <canvas style="display: none" id="area_cek"></canvas>
                             <button type="button" class="btn btn-danger" onclick="removePaint('area_kulit_kelamin')"><i class="fa fa-trash"></i> Clear
                             </button>
-                            <textarea class="form-control jarak" id="ket_gambar" placeholder="Keterangan Gambar"></textarea>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="col-md-12">
+                            <textarea rows="3" id="ket_gambar" class="form-control" placeholder="Keterangan Gambar"></textarea>
                         </div>
                     </div>
                     <hr class="garis">
@@ -292,10 +296,24 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row jarak">
                         <label class="col-md-4">Indikasi Rawat Inap</label>
                         <div class="col-md-8">
-                            <input class="form-control" id="pt12">
+                            <select class="form-control select2" id="intruksi_pemeriksaan_kk" style="width: 100%" onchange="showKetIntruksi(this.value)">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row jarak" style="display: none" id="int-ket1">
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-8">
+                                <select class="form-control select2" id="ket_pemeriksaan_kk" style="width: 100%">
+                                    <option value="Preventif">Preventif</option>
+                                    <option value="Paliatif">Paliatif</option>
+                                    <option value="Kuratif">Kuratif</option>
+                                    <option value="Rehabilitatif">Rehabilitatif</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>

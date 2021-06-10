@@ -1,8 +1,356 @@
 ------ 2021-05-22 ===> pelengkapan payroll
 -- untuk pengajuan payroll
+--     alter table it_hris_payroll_temp
+--     add column flag_koreksi varchar(5),
+--     add column note_koreksi varchar(500);
+-- untuk custom dasar bpjs
+    alter table it_hris_payroll_temp
+    add column dasar_bpjs numeric(15,2);
+
+------ 2021-06-08 ===> case manager procurement
+    alter sequence seq_kelompok_position restart with 7;
+    alter sequence seq_payroll_tunjangan_jabatan_struktural restart with 109;
+    insert into im_hris_kelompok_position
+        values ('KL07', 'Manager Procurement', 'MOH.IMRON,DRS,APT', 'MOH.IMRON,DRS,APT', 'Y', 'C', '2021-06-08 15:33:31.532', '2021-06-08 15:33:31.532', null, null);
+    insert into im_hris_payroll_tunjangan_jabatan_struktural
+        values ('TJS00109', 'KL07', '2021-06-08 15:42:31.786', 'MOH.IMRON,DRS,APT', '2021-06-08 15:42:31.786', 'MOH.IMRON,DRS,APT', 'Y', 'C', 4000000.00, 5000000.00);
+    update im_position set kelompok_id = 'KL07' where position_id = 'PS483';
+------------------------------------------------
+------- [PAYROLL] AKHIRI MULAI DARI SINI -------
+------------------------------------------------
+
+-- update skala pensiun
+    update im_hris_payroll_skala_gaji_pensiun
+    set flag = 'N'
+    where skala_gaji_pensiun_id
+        in ('SGP00163','SGP00164','SGP00165','SGP00166',
+            'SGP00167','SGP00168','SGP00169','SGP00170',
+            'SGP00171','SGP00172','SGP00173','SGP00174',
+            'SGP00175','SGP00176','SGP00177','SGP00178',
+            'SGP00179','SGP00297');
+
+------ 2021-05-21 ===> anggap saja titipan
+    alter sequence seq_detail_rekanan_ops restart 21;
+
+    alter table im_akun_tipe_jurnal
+        add column is_operasional varchar(10);
+
+------ 2021-05-19 ===> Kebutuhan Report Closing kasir
+INSERT INTO public.im_akun_report_detail (report_detail_id, report_id, rekening_id, flag, action, created_who, last_update_who, created_date, last_update, tipe_laporan) VALUES ('RD00058', 'RPT19', '00005', 'Y', 'C', 'Elvi Sukaisi', 'Elvi Sukaisi', '2021-03-31 16:18:10.025000', '2021-03-31 16:18:10.025000', null);
+INSERT INTO public.im_akun_report_detail (report_detail_id, report_id, rekening_id, flag, action, created_who, last_update_who, created_date, last_update, tipe_laporan) VALUES ('RD00059', 'RPT19', '00006', 'Y', 'C', 'Elvi Sukaisi', 'Elvi Sukaisi', '2021-03-31 16:18:10.076000', '2021-03-31 16:18:10.076000', null);
+INSERT INTO public.im_akun_report_detail (report_detail_id, report_id, rekening_id, flag, action, created_who, last_update_who, created_date, last_update, tipe_laporan) VALUES ('RD00060', 'RPT19', '00008', 'Y', 'C', 'Elvi Sukaisi', 'Elvi Sukaisi', '2021-03-31 16:18:10.122000', '2021-03-31 16:18:10.122000', null);
+INSERT INTO public.im_akun_report_detail (report_detail_id, report_id, rekening_id, flag, action, created_who, last_update_who, created_date, last_update, tipe_laporan) VALUES ('RD00061', 'RPT19', '00010', 'Y', 'C', 'Elvi Sukaisi', 'Elvi Sukaisi', '2021-03-31 16:18:10.171000', '2021-03-31 16:18:10.171000', null);
+--------------------------------
+
+------ 2021-04-29 ===> sql harian
+-- menambahkan column pada it_akun_pengajuan_biaya_detail
+    alter table it_akun_pengajuan_biaya_detail
+    add column url_ipa varchar(100);
+
+-- sepertinya belum tereksekusi (2021-04-17)
+    -- Menambahkan Length Kodering dari 11 ke 20
+        ALTER TABLE im_simrs_dokter_kso ALTER COLUMN kodering TYPE VARCHAR(20);
+    -- Menambahkan column Position ID
+        ALTER TABLE im_simrs_dokter_kso
+        ADD COLUMN position_id VARCHAR(10);
+
+-- menambahkan im_functions
+    INSERT INTO im_functions
+    VALUES
+    (6527, 'Print Rekap Closing Kasir', '/laporanAkuntansi/printReportRekapClosingKasir_laporanAkuntansi.action', 1703, NULL, '2016-10-09 15:27:54.756', 'admin', '2016-10-09 15:27:54.756', 'admin', 'Y', 'C', NULL);
+
+-- menambahkan setting_report_user
+    INSERT INTO im_akun_setting_report_user
+    VALUES
+    ('RU0000021', 'RPT19', 'adminakun', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754'),
+    ('RU0000022', 'RPT19', 'adminakungt', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754'),
+    ('RU0000023', 'RPT19', '123456', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754'),
+    ('RU0000024', 'RPT19', '789011', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754'),
+    ('RU0000025', 'RPT19', '121314', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754'),
+    ('RU0000026', 'RPT19', '151617', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754');
+
+------ 2021-04-28 ===> function kas koreksi
+-- Update Function
+    UPDATE im_functions
+    SET url = REPLACE(url, 'kas','koreksi')
+    WHERE func_id IN (2058, 2059, 2060, 2061, 2062, 2063);
+
+-- Insert new Functions
+    INSERT INTO im_functions
+    VALUES
+        (1774, 'Print Bukti Posting Koreksi', '/koreksi/printReportBuktiPosting_koreksi.action', 2058, NULL, '2016-10-09 15:27:54.756', 'admin', '2016-10-09 15:27:54.756', 'admin', 'Y', 'C', NULL),
+        (6523, 'Edit Koreksi / Penyesuaian', '/koreksi/editKoreksi_koreksi.action', 2058, NULL, '2016-10-09 15:27:54.756', 'MOH.IMRON,DRS,APT', '2016-10-09 15:27:54.756', 'MOH.IMRON,DRS,APT', 'Y', 'C', NULL),
+        (6524, 'Save Edit Koreksi / Penyesuaian', '/koreksi/saveEditKoreksi_koreksi.action', 2058, NULL, '2016-10-09 15:27:54.756', 'MOH.IMRON,DRS,APT', '2016-10-09 15:27:54.756', 'MOH.IMRON,DRS,APT', 'Y', 'C', NULL);
+
+-- Insert Role Functions
+    INSERT INTO im_func_roles
+    VALUES
+--     (1774, 1, 'N', NULL, NULL, 'admin', 'admin'),
+    (1774, 39, 'Y', now(), now(), 'admin', 'admin'),
+    (6523, 39, 'Y', now(), now(), 'admin', 'admin'),
+    (6524, 39, 'Y', now(), now(), 'admin', 'admin');
+
+
+
+------ 2021-04-28 ===> table sewa lahan & koreksi
+-- Table: public.it_akun_sewa_lahan
+
+-- DROP TABLE public.it_akun_sewa_lahan;
+
+CREATE TABLE public.it_akun_sewa_lahan
+(
+    sewa_lahan_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    nama_penyewa character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    keterangan text COLLATE pg_catalog."default" NOT NULL,
+    tanggal_bayar date,
+    nilai numeric(25,2),
+    cancel_flag character varying(1) COLLATE pg_catalog."default",
+    cancel_who character varying(100) COLLATE pg_catalog."default",
+    cancel_date timestamp without time zone,
+    no_jurnal character varying(30) COLLATE pg_catalog."default",
+    nilai_ppn numeric(25,2),
+    nilai_netto numeric(25,2),
+    nilai_pph numeric(25,2),
+    branch_id character varying(5) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    no_faktur character varying(10) COLLATE pg_catalog."default",
+    bank character varying(20) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_sewa_lahan_pkey PRIMARY KEY (sewa_lahan_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.it_akun_sewa_lahan
+    OWNER to postgres;
+
+-- SEQUENCE: public.seq_master_sewa
+
+-- DROP SEQUENCE public.seq_master_sewa;
+
+-- CREATE SEQUENCE public.seq_master_sewa
+--     INCREMENT 1
+--     START 1
+--     MINVALUE 1
+--     MAXVALUE 987654321
+--     CACHE 1;
+
+-- ALTER SEQUENCE public.seq_master_sewa
+--     OWNER TO postgres;
+
+
+------ 2021-04-27 ===> keperluan table Kas
+-- Table: public.it_akun_kas
+
+-- DROP TABLE public.it_akun_kas;
+
+CREATE TABLE public.it_akun_kas
+(
+    kas_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    tipe_transaksi character varying(2) COLLATE pg_catalog."default",
+    tanggal date,
+    coa_kas character varying(20) COLLATE pg_catalog."default",
+    bayar numeric(15,2),
+    keterangan character varying(400) COLLATE pg_catalog."default",
+    no_slip_bank character varying(20) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    branch_id character varying(5) COLLATE pg_catalog."default",
+    no_jurnal character varying(20) COLLATE pg_catalog."default",
+    registered_flag character varying(1) COLLATE pg_catalog."default",
+    registered_date date,
+    registered_who character varying(100) COLLATE pg_catalog."default",
+    tipe_kas character varying(5) COLLATE pg_catalog."default",
+    approval_keuangan_flag character varying(1) COLLATE pg_catalog."default",
+    approval_keuangan_id character varying(100) COLLATE pg_catalog."default",
+    approval_keuangan_name character varying(100) COLLATE pg_catalog."default",
+    approval_keuangan_date timestamp without time zone,
+    approval_kasub_keuangan_flag character varying(1) COLLATE pg_catalog."default",
+    approval_kasub_keuangan_id character varying(100) COLLATE pg_catalog."default",
+    approval_kasub_keuangan_name character varying(100) COLLATE pg_catalog."default",
+    approval_kasub_keuangan_date timestamp without time zone,
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    metode_pembayaran character varying(10) COLLATE pg_catalog."default",
+    currencyid character varying(4) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_kas_pkey PRIMARY KEY (kas_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.it_akun_kas
+    OWNER to postgres;
+
+
+-- Table: public.it_akun_kas_detail
+
+-- DROP TABLE public.it_akun_kas_detail;
+
+CREATE TABLE public.it_akun_kas_detail
+(
+    kas_detail_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    kas_id character varying(15) COLLATE pg_catalog."default",
+    master_id character varying(13) COLLATE pg_catalog."default",
+    no_nota character varying(20) COLLATE pg_catalog."default",
+    jumlah_pembayaran numeric(15,2),
+    flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    kode_coa character varying(30) COLLATE pg_catalog."default",
+    divisi_id character varying(13) COLLATE pg_catalog."default",
+    no_faktur_pajak character varying(30) COLLATE pg_catalog."default",
+    url_faktur_image character varying(100) COLLATE pg_catalog."default",
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    ppn numeric(15,2),
+    pph numeric(15,2),
+    CONSTRAINT it_akun_kas_detail_pkey PRIMARY KEY (kas_detail_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.it_akun_kas_detail
+    OWNER to postgres;
+
+-- Sequence Kas
+    CREATE SEQUENCE public.seq_kas
+        INCREMENT 1
+        START 1
+        MINVALUE 1
+        MAXVALUE 9223372036854775807
+        CACHE 1;
+
+    ALTER SEQUENCE public.seq_kas
+        OWNER TO postgres;
+
+
+-- Table: public.it_akun_koreksi
+
+-- DROP TABLE public.it_akun_koreksi;
+
+CREATE TABLE public.it_akun_koreksi
+(
+    koreksi_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    tipe_transaksi character varying(2) COLLATE pg_catalog."default",
+    tanggal_koreksi date,
+    keterangan character varying(400) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    branch_id character varying(5) COLLATE pg_catalog."default",
+    no_jurnal character varying(20) COLLATE pg_catalog."default",
+    registered_flag character varying(1) COLLATE pg_catalog."default",
+    registered_date date,
+    registered_who character varying(100) COLLATE pg_catalog."default",
+    approval_keuangan_flag character varying(1) COLLATE pg_catalog."default",
+    approval_keuangan_id character varying(100) COLLATE pg_catalog."default",
+    approval_keuangan_name character varying(100) COLLATE pg_catalog."default",
+    approval_keuangan_date timestamp without time zone,
+    approval_kasub_keuangan_flag character varying(1) COLLATE pg_catalog."default",
+    approval_kasub_keuangan_id character varying(100) COLLATE pg_catalog."default",
+    approval_kasub_keuangan_name character varying(100) COLLATE pg_catalog."default",
+    approval_kasub_keuangan_date timestamp without time zone,
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_koreksi_penyesuaian_pkey PRIMARY KEY (koreksi_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.it_akun_koreksi
+    OWNER to postgres;
+
+-- Table: public.it_akun_koreksi_detail
+
+-- DROP TABLE public.it_akun_koreksi_detail;
+
+CREATE TABLE public.it_akun_koreksi_detail
+(
+    koreksi_detail_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    koreksi_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    kode_coa character varying(30) COLLATE pg_catalog."default",
+    kode_vendor character varying(13) COLLATE pg_catalog."default",
+    divisi_id character varying(13) COLLATE pg_catalog."default",
+    no_nota character varying(20) COLLATE pg_catalog."default",
+    jumlah_pembayaran numeric(15,2),
+    posisi character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_koreksi_detail_pkey PRIMARY KEY (koreksi_detail_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.it_akun_koreksi_detail
+    OWNER to postgres;
+
+-- SEQUENCE: public.seq_koreksi
+
+-- DROP SEQUENCE public.seq_koreksi;
+
+CREATE SEQUENCE public.seq_koreksi
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE public.seq_koreksi
+    OWNER TO postgres;
+
+
+------ 2021-04-26 ===> update IM_FUNCTIONS untuk kas & sewa lahan
+-- Kas Masuk & Keluar
+    UPDATE im_functions
+    SET url = REPLACE(url, 'pembayaranUtangPiutang', 'kas')
+    WHERE url ILIKE '%pembayaranUtangPiutang%';
+
+-- Sewa Lahan
+    UPDATE im_functions
+    SET url = REPLACE(url, 'penyewaanLahan', 'sewaLahan')
+    WHERE url ILIKE '%penyewaanLahan%';
+
+------ 2021-04-17 ===> perbaikan Table Log Transaction
+--     ALTER TABLE it_pg_log_transaction
+--     ADD COLUMN status_bank character varying(5),
+--     ADD COLUMN channel character varying(1000),
+--     ADD COLUMN invoice_date date,
+--     ADD COLUMN invoice_number bigint;
+
+
+
+
+----------------------------------------------
+----------- LUPAKAN YANG DI BAWAH ------------
+----- BUKA LEMBARAN BARU MULAI DARI ATAS -----
+----------------------------------------------
+
+
+
+
+
+
+------ 2021-05-22 ===> pelengkapan payroll
+-- untuk pengajuan payroll
     alter table it_hris_payroll_temp
     add column flag_koreksi varchar(5),
-    add column note_koreksi varchar(500);payr
+    add column note_koreksi varchar(500);
 -- untuk custom dasar bpjs
     alter table it_hris_payroll_temp
     add column dasar_bpjs numeric(15,2);

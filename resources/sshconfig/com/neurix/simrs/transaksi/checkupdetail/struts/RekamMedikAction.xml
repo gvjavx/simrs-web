@@ -223,7 +223,7 @@
             </result>
 
             <result name="print_resume_medis_rawat_inap" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/printResumeRawatInap.jasper</param>
+                <param name="location">/pages/report/com/neurix/simrs/printResumeRI.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>

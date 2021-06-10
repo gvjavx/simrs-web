@@ -588,6 +588,10 @@ function getLocalStorageAtas(key){
     return localStorage.getItem(key);
 }
 
+function removeLocalStorageAtas(key){
+    localStorage.removeItem(key);
+}
+
 function getAge(dateString) {
     var now = new Date();
     var today = new Date(now.getYear(),now.getMonth(),now.getDate());

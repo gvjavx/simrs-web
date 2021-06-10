@@ -164,35 +164,8 @@ public class AsesmenGiziAction {
             asesmenGizi.setIntervensi(obj.getString("intervensi"));
             asesmenGizi.setRencana(obj.getString("rencana"));
             asesmenGizi.setEdukasi(obj.getString("edukasi"));
-            asesmenGizi.setNamaPasien(obj.getString("nama_pasien"));
             asesmenGizi.setNamaDokter(obj.getString("nama_dokter"));
             asesmenGizi.setSipDokter(obj.getString("sip_dokter"));
-            if(obj.has("ttd_pasien")){
-                if(obj.getString("ttd_pasien") != null && !"".equalsIgnoreCase(obj.getString("ttd_pasien"))){
-                    try {
-                        BASE64Decoder decoder = new BASE64Decoder();
-                        byte[] decodedBytes = decoder.decodeBuffer(obj.getString("ttd_pasien"));
-                        String wkt = time.toString();
-                        String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                        String fileName = obj.getString("id_detail_checkup") + "-ttd_pasien-" + patten + ".png";
-                        String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
-                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
-                        if (image == null) {
-                            logger.error("Buffered Image is null");
-                            response.setStatus("error");
-                            response.setMsg("Buffered Image is null");
-                            return response;
-                        } else {
-                            File f = new File(uploadFile);
-                            ImageIO.write(image, "png", f);
-                            asesmenGizi.setTtdPasien(fileName);
-                        }
-                    }catch (IOException e){
-                        response.setStatus("error");
-                        response.setMsg("Found Error when IO Images, "+e.getMessage());
-                    }
-                }
-            }
             if(obj.has("ttd_dokter")){
                 if(obj.getString("ttd_dokter") != null && !"".equalsIgnoreCase(obj.getString("ttd_dokter"))){
                     try {
@@ -279,35 +252,8 @@ public class AsesmenGiziAction {
             asesmenGizi.setBiokimia(obj.getString("biokimia"));
             asesmenGizi.setIntervensi(obj.getString("intervensi"));
             asesmenGizi.setLainLain(obj.getString("lain_lain"));
-            asesmenGizi.setNamaPasien(obj.getString("nama_pasien"));
             asesmenGizi.setNamaDokter(obj.getString("nama_dokter"));
             asesmenGizi.setSipDokter(obj.getString("sip_dokter"));
-            if(obj.has("ttd_pasien")){
-                if(obj.getString("ttd_pasien") != null && !"".equalsIgnoreCase(obj.getString("ttd_pasien"))){
-                    try {
-                        BASE64Decoder decoder = new BASE64Decoder();
-                        byte[] decodedBytes = decoder.decodeBuffer(obj.getString("ttd_pasien"));
-                        String wkt = time.toString();
-                        String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                        String fileName = obj.getString("id_detail_checkup") + "-ttd_pasien-" + patten + ".png";
-                        String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
-                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
-                        if (image == null) {
-                            logger.error("Buffered Image is null");
-                            response.setStatus("error");
-                            response.setMsg("Buffered Image is null");
-                            return response;
-                        } else {
-                            File f = new File(uploadFile);
-                            ImageIO.write(image, "png", f);
-                            asesmenGizi.setTtdPasien(fileName);
-                        }
-                    }catch (IOException e){
-                        response.setStatus("error");
-                        response.setMsg("Found Error when IO Images, "+e.getMessage());
-                    }
-                }
-            }
             if(obj.has("ttd_dokter")){
                 if(obj.getString("ttd_dokter") != null && !"".equalsIgnoreCase(obj.getString("ttd_dokter"))){
                     try {

@@ -323,7 +323,8 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
 
         String SQL = "SELECT \n" +
                 "id_item,\n" +
-                "url_img\n" +
+                "url_img,\n" +
+                "tipe\n" +
                 "FROM it_simrs_doc_po\n" +
                 "WHERE id_item = :idItem \n" +
                 "ORDER BY created_date DESC";
@@ -338,6 +339,7 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
                 DocPo docPo = new DocPo();
                 docPo.setIdItem(obj[0].toString());
                 docPo.setUrlImg(obj[1] == null ? "" : obj[1].toString());
+                docPo.setTipe(obj[2] == null ? "" : obj[2].toString());
                 docPoList.add(docPo);
             }
         }
@@ -699,5 +701,52 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
             return null;
         else
             return obj.toString();
+    }
+
+    public List<Obat> getListObatByVendor(String branchId, String idVendor){
+
+        String SQL = "SELECT \n" +
+                "hod.id_obat,\n" +
+                "hod.nama_obat,\n" +
+                "odv.id_vendor,\n" +
+                "odv.tanggal_terakhir_pemesanan\n" +
+                "FROM (\n" +
+                "\tSELECT \n" +
+                "\thod.id_obat, \n" +
+                "\thod.nama_obat \n" +
+                "\tFROM \n" +
+                "\tim_simrs_header_obat hod\n" +
+                "\tWHERE hod.flag = 'Y'\n" +
+                ") hod\n" +
+                "LEFT JOIN (\n" +
+                "\tSELECT \n" +
+                "\tod.id_obat, \n" +
+                "\tpov.id_vendor,\n" +
+                "\tMAX(od.created_date) as tanggal_terakhir_pemesanan\n" +
+                "\tFROM mt_simrs_transaksi_obat_detail od\n" +
+                "\tINNER JOIN (\n" +
+                "\t\tSELECT id_approval_obat, id_vendor, branch_id FROM mt_simrs_permintaan_obat_vendor WHERE branch_id = '03'\n" +
+                "\t) pov ON pov.id_approval_obat = od.id_approval_obat\n" +
+                "\tWHERE pov.id_vendor = '"+idVendor+"'\n" +
+                "\tAND pov.branch_id = '"+branchId+"'\n" +
+                "\tGROUP BY id_obat, pov.id_vendor\n" +
+                ") odv ON odv.id_obat = hod.id_obat\n" +
+                "ORDER BY odv.id_vendor, odv.tanggal_terakhir_pemesanan, hod.nama_obat";
+
+        List<Object[]> objects = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<Obat> obatList = new ArrayList<>();
+        if (objects.size() > 0){
+
+            Obat obat;
+            for (Object[] obj : objects){
+                obat = new Obat();
+                obat.setIdObat(obj[0].toString());
+                obat.setNamaObat(obj[1].toString());
+                obat.setIdVendor(obj[2] != null ? obj[2].toString() : null);
+                obatList.add(obat);
+            }
+        }
+        return obatList;
     }
 }

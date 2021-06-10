@@ -914,7 +914,6 @@
     }
 
     function formateDate(tanggal) {
-
         var tgl = "";
         if (tanggal != null && tanggal != '') {
             tgl = $.datepicker.formatDate("dd-mm-yy", new Date(tanggal));

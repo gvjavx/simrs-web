@@ -1884,7 +1884,7 @@
             </div>
             <div class="modal-body" style="height: 70%; overflow-y: scroll">
                 <div class="box-body">
-                    <div class="col-md-12" style="display:inline; padding-left: 6%">
+                    <div class="col-md-12 text-center" style="display:inline; padding-left: 6%">
                         <div class="btn-wrapper">
                             <div id="jadwal_dokter"></div>
                         </div>
@@ -2620,33 +2620,40 @@
         dwr.engine.setAsync(true);
         CheckupAction.checkStatusBpjs(noBpjs, jenisRujukan, {
             callback: function (response) {
+                console.log(response);
                 var warnClass = "";
                 var title = "";
                 var msg = "";
                 var icon = "";
                 var val = "";
-                if (response.keteranganStatusPeserta == "AKTIF") {
-                    $('#kelas_pasien').val(response.kodeKelas);
-                    $('#no_mr').val(response.noMr);
-                    val = "aktif";
-                    icon = "fa-info";
-                    title = "Info!";
-                    warnClass = "alert-success";
-                    msg = "No BPJS berhasil diverifikasi dengan status AKTIF!";
-                    //$('#no_rujukan').val(response.noKunjungan).trigger('input');
-                    //cekNoRujukan();
-                } else if (response.keteranganStatusPeserta == "TIDAK AKTIF") {
+                if(response.status == "error"){
                     val = "tidak aktif";
                     icon = "fa-warning";
                     title = "Warning!";
                     warnClass = "alert-warning";
-                    msg = "No BPJS berhasil diverifikasi dengan status TIDAK AKTIF!";
-                } else {
-                    val = "tidak ditemukan";
-                    icon = "fa-warning";
-                    title = "Warning!";
-                    warnClass = "alert-danger";
-                    msg = "No BPJS tidak ditemukan atau periksa kembali koneksi internet anda...!";
+                    msg = response.message;
+                }else{
+                    if (response.keteranganStatusPeserta == "AKTIF") {
+                        $('#kelas_pasien').val(response.kodeHakKelas);
+                        $('#no_mr').val(response.noMr);
+                        val = "aktif";
+                        icon = "fa-info";
+                        title = "Info!";
+                        warnClass = "alert-success";
+                        msg = "No BPJS berhasil diverifikasi dengan status AKTIF!";
+                    } else if (response.keteranganStatusPeserta == "TIDAK AKTIF") {
+                        val = "tidak aktif";
+                        icon = "fa-warning";
+                        title = "Warning!";
+                        warnClass = "alert-warning";
+                        msg = "No BPJS berhasil diverifikasi dengan status TIDAK AKTIF!";
+                    } else {
+                        val = "tidak ditemukan";
+                        icon = "fa-warning";
+                        title = "Warning!";
+                        warnClass = "alert-danger";
+                        msg = "No BPJS tidak ditemukan atau periksa kembali koneksi internet anda...!";
+                    }
                 }
 
                 var warning = '<div class="alert ' + warnClass + ' alert-dismissible">' +
@@ -2980,7 +2987,9 @@
 
                         var foto = contextPathHeader+'/pages/images/unknown-person2.jpg';
                         if(item.urlImg != null && item.urlImg != ''){
-                            foto = contextPathHeader+item.urlImg;
+                            if(cekImages(item.urlImg)){
+                                foto = item.urlImg;
+                            }
                         }
 
                         table += '<div id="id_box_' + i + '" class="' + clasBox + '" ' + btnSet + '>\n' +

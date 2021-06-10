@@ -503,6 +503,7 @@ public class RawatInapAction extends BaseMasterAction {
 
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfRawatInap);
+        setRawatInap(rawatInap);
 
         logger.info("[RawatInapAction.search] end process <<<");
         return "search";
@@ -1379,7 +1380,7 @@ public class RawatInapAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultTppri");
         session.setAttribute("listOfResultTppri", list);
-
+        setRawatInap(rawatInap);
         logger.info("[RawatInapAction.searchTppri] END process <<<");
         return "search_tppri";
     }
@@ -2235,7 +2236,7 @@ public class RawatInapAction extends BaseMasterAction {
                 response.setStatus("error");
                 response.setMsg("Data object di JSON tidak ada...!");
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             response.setStatus("error");
             response.setMsg("Errror when JSON Parse " + e.getMessage());
         }
@@ -2787,7 +2788,7 @@ public class RawatInapAction extends BaseMasterAction {
 
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfRawatInap);
-
+        setRawatInap(rawatInap);
         logger.info("[RawatInapAction.searchIntensif] end process <<<");
         return "search";
     }
@@ -2812,7 +2813,7 @@ public class RawatInapAction extends BaseMasterAction {
 
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfRawatInap);
-
+        setRawatInap(rawatInap);
         logger.info("[RawatInapAction.searchIsolasi] end process <<<");
         return "search";
     }
@@ -2862,7 +2863,7 @@ public class RawatInapAction extends BaseMasterAction {
 
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfRawatInap);
-
+        setRawatInap(rawatInap);
         logger.info("[RawatInapAction.searchRR] end process <<<");
         return "search";
     }
@@ -2887,8 +2888,33 @@ public class RawatInapAction extends BaseMasterAction {
 
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfRawatInap);
-
+        setRawatInap(rawatInap);
         logger.info("[RawatInapAction.searchBersalin] end process <<<");
+        return "search";
+    }
+
+    public String searchHemodialisa() {
+
+        logger.info("[RawatInapAction.searchHemodialisa] start process >>>");
+
+        RawatInap rawatInap = getRawatInap();
+        List<RawatInap> listOfRawatInap = new ArrayList();
+        rawatInap.setBranchId(CommonUtil.userBranchLogin());
+        rawatInap.setTindakLanjut("hemodialisa");
+
+        try {
+            listOfRawatInap = rawatInapBoProxy.getSearchRawatInap(rawatInap);
+        } catch (GeneralBOException e) {
+            logger.error("[RawatInapAction.searchHemodialisa] Error when searching rawat inap by criteria, Found problem when searching data by criteria, please inform to your admin." + e.getMessage());
+            throw new GeneralBOException("Error when search pasien intensif", e);
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", listOfRawatInap);
+        setRawatInap(rawatInap);
+
+        logger.info("[RawatInapAction.searchHemodialisa] end process <<<");
         return "search";
     }
 

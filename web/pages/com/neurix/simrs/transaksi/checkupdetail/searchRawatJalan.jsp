@@ -14,6 +14,8 @@
     <script type='text/javascript'>
         $( document ).ready(function() {
             $('#rawat_jalan').addClass('active');
+            console.log('<s:property value="headerDetailCheckup.idDokter"/>');
+            listSelectDokter('<s:property value="headerDetailCheckup.idPelayanan"/>', '<s:property value="headerDetailCheckup.idDokter"/>');
         });
     </script>
 </head>
@@ -56,21 +58,20 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="headerDetailCheckup.nama"
+                                        <s:textfield id="nama_pasien" name="headerDetailCheckup.namaPasien"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
-
                                 <s:if test="isEnabledPoli()">
-
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Poli</label>
                                     <div class="col-sm-4">
                                         <s:action id="initComboPoli" namespace="/checkup"
-                                                  name="getComboPelayanan_checkup"/>
+                                                  name="getComboPelayananRJ_checkup"/>
                                         <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                  list="#initComboPoli.listOfPelayanan" id="poli"
+                                                  list="#initComboPoli.listOfPelayananRJ"
+                                                  onchange="listSelectDokter(this.value)"
                                                   name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"
                                                   listValue="namaPelayanan"
                                                   headerKey="" headerValue=" - "
@@ -78,24 +79,29 @@
                                     </div>
                                 </div>
                                 </s:if>
-
                                 <s:else>
                                     <div class="form-group">
                                         <label class="control-label col-sm-4">Poli</label>
                                         <div class="col-sm-4">
                                             <s:action id="initComboPoli" namespace="/checkup"
-                                                      name="getComboPelayanan_checkup"/>
+                                                      name="getComboPelayananRJ_checkup"/>
                                             <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                      list="#initComboPoli.listOfPelayanan" id="poli"
+                                                      list="#initComboPoli.listOfPelayananRJ"
                                                       listKey="idPelayanan"
                                                       name="headerDetailCheckup.idPelayanan"
                                                       listValue="namaPelayanan"
                                                       headerKey="" headerValue="[Select one]"
                                                       cssClass="form-control select2" theme="simple" disabled="true"/>
                                         </div>
-                                        <s:hidden name="headerDetailCheckup.idPelayanan" id=""></s:hidden>
+                                        <s:hidden name="headerDetailCheckup.idPelayanan"></s:hidden>
                                     </div>
                                 </s:else>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Dokter</label>
+                                    <div class="col-sm-4">
+                                        <select name="headerDetailCheckup.idDokter" class="form-control select2" id="nama_dokter"></select>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
@@ -346,4 +352,22 @@
 <%@ include file="/pages/common/lastScript.jsp" %>
 
 </body>
+<script>
+    function listSelectDokter(idPelayanan, idDokter) {
+        var option = "<option value=''>-</option>";
+        CheckupAction.getComboDokterPelayanan(idPelayanan, function (response) {
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idDokter +"'>" + item.namaDokter + "</option>";
+                });
+                $('#nama_dokter').html(option);
+                if(idDokter != undefined && idDokter != ''){
+                    $('#nama_dokter').val(idDokter).trigger('change');
+                }
+            } else {
+                $('#nama_dokter').html(option);
+            }
+        });
+    }
+</script>
 </html>

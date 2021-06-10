@@ -1,8 +1,13 @@
 package com.neurix.simrs.transaksi.permintaanresep.model;
 
+import com.neurix.simrs.transaksi.obatracik.model.ObatRacik;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+
 import java.io.Serializable;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Toshiba on 11/12/2019.
@@ -70,6 +75,79 @@ public class PermintaanResep{
     private String flagEresep;
     private String flagDelayAsuransi;
     private String flagRacik;
+    private String umur;
+    private String kategoriPelayanan;
+    private String stTglAntrian;
+    private String tipePelayanan;
+    private String idObat;
+
+    public String getIdObat() {
+        return idObat;
+    }
+
+    public void setIdObat(String idObat) {
+        this.idObat = idObat;
+    }
+
+    public String getTipePelayanan() {
+        return tipePelayanan;
+    }
+
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
+    }
+
+    private List<TransaksiObatDetail> listDetailObatNonRacikk;
+    private List<ObatRacik> listNamaObatRacik = new ArrayList<>();
+    private List<TransaksiObatDetail> listDetailObatRacik = new ArrayList<>();
+
+    public List<TransaksiObatDetail> getListDetailObatNonRacikk() {
+        return listDetailObatNonRacikk;
+    }
+
+    public void setListDetailObatNonRacikk(List<TransaksiObatDetail> listDetailObatNonRacikk) {
+        this.listDetailObatNonRacikk = listDetailObatNonRacikk;
+    }
+
+    public String getStTglAntrian() {
+        return stTglAntrian;
+    }
+
+    public void setStTglAntrian(String stTglAntrian) {
+        this.stTglAntrian = stTglAntrian;
+    }
+
+    public List<ObatRacik> getListNamaObatRacik() {
+        return listNamaObatRacik;
+    }
+
+    public void setListNamaObatRacik(List<ObatRacik> listNamaObatRacik) {
+        this.listNamaObatRacik = listNamaObatRacik;
+    }
+
+    public List<TransaksiObatDetail> getListDetailObatRacik() {
+        return listDetailObatRacik;
+    }
+
+    public void setListDetailObatRacik(List<TransaksiObatDetail> listDetailObatRacik) {
+        this.listDetailObatRacik = listDetailObatRacik;
+    }
+
+    public String getKategoriPelayanan() {
+        return kategoriPelayanan;
+    }
+
+    public void setKategoriPelayanan(String kategoriPelayanan) {
+        this.kategoriPelayanan = kategoriPelayanan;
+    }
+
+    public String getUmur() {
+        return umur;
+    }
+
+    public void setUmur(String umur) {
+        this.umur = umur;
+    }
 
     public String getFlagRacik() {
         return flagRacik;

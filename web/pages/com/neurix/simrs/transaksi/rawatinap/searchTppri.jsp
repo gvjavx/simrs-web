@@ -50,8 +50,8 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/RawatInapAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/KeperawatanRawatJalanAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/spinner.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 
 </head>
 
@@ -1068,6 +1068,59 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-ttd_concent">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tanda Tangan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_ttd_concent">
+                        <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                        <p id="msg_ttd_concent"></p>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-6 text-center">
+                                <label>Keluarga</label>
+                                <canvas class="paint-canvas-ttd" id="ttd_keluarga" width="220"
+                                        onmouseover="paintTtd('ttd_keluarga')"></canvas>
+                                <input class="form-control" id="nama_pasien_1" placeholder="Nama Pasien/Keluarga">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('ttd_keluarga')"><i
+                                        class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <label>Pemberi Informasi</label>
+                                <canvas class="paint-canvas-ttd" id="ttd_pemberi" width="220"
+                                        onmouseover="paintTtd('ttd_pemberi')"></canvas>
+                                <input class="form-control" id="nama_pemberi_1" placeholder="Nama Pemberi">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('ttd_pemberi')"><i
+                                        class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_ttd_concent"><i class="fa fa-check"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_ttd_concent"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-confirm-rm">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -1094,10 +1147,12 @@
 
 <script type='text/javascript' src='<s:url value="/dwr/interface/RingkasanPasienAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenRawatInapAction.js"/>'></script>
 
 <script type="text/javascript" src="<s:url value="/pages/dist/js/datapasien.js"/>"></script>
 <script type="text/javascript" src="<s:url value="/pages/dist/js/ringkasanpasien.js"/>"></script>
 <script type="text/javascript" src="<s:url value="/pages/dist/js/paintTtd.js"/>"></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatinap.js"/>'></script>
 
 <script type='text/javascript'>
 
@@ -1232,6 +1287,7 @@
                         $('#kelas_kamar').removeAttr('disabled');
                         $('#msg_dpjp').hide();
                         $('#modal-detail').modal({show: true, backdrop: 'static'});
+                        namaPasien = res.nama;
                     }
                 }
             });
@@ -1557,16 +1613,87 @@
     }
 
     function printPernyataan(kode, idRm, flag, namaRm) {
-        $('#tanya').text("Apakah anda yakin print ?");
-        $('#print_form').text(namaRm);
-        $('#save_con_rm').attr('onclick', 'printPernyataanRM(\'' + kode + '\', \'' + idRm + '\')');
-        $('#modal-confirm-rm').modal('show');
+        if(kode == "CK01"){
+            $('#save_ttd_concent').attr('onclick', 'saveResume(\'' + kode + '\', \'' + idRm + '\')');
+            $('#modal-ttd_concent').modal('show');
+        }else{
+            $('#tanya').text("Apakah anda yakin print ?");
+            $('#print_form').text(namaRm);
+            $('#save_con_rm').attr('onclick', 'printPernyataanRM(\'' + kode + '\', \'' + idRm + '\')');
+            $('#modal-confirm-rm').modal('show');
+        }
     }
 
     function printPernyataanRM(kode, idRM) {
         var idDetailCheckup = $('#h_id_detail_pasien').val();
         window.open(contextPathHeader + '/rekammedik/printSuratPernyataan_rekammedik?id=' + idDetailCheckup + '&tipe=' + kode + '&ids=' + idRM, '_blank');
         $('#modal-confirm-rm').modal('hide');
+    }
+
+    function saveResume(kode, idRm){
+        var data = [];
+        var ttd1 = document.getElementById('ttd_keluarga');
+        var ttd2 = document.getElementById('ttd_pemberi');
+        var cek1 = isCanvasBlank(ttd1);
+        var cek2 = isCanvasBlank(ttd2);
+        var nama1 = $('#nama_pasien_1').val();
+        var nama2 = $('#nama_pemberi_1').val();
+
+        if(nama1 && nama2 != '' && !cek1 && !cek2){
+            var can1 = convertToDataURLAtas(ttd1);
+            var can2 = convertToDataURLAtas(ttd2);
+            data.push({
+                'parameter': 'nama_pasien',
+                'jawaban': nama1,
+                'keterangan': 'general_concent',
+                'jenis': 'general_concent',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'nama_dokter',
+                'jawaban': nama2,
+                'keterangan': 'general_concent',
+                'jenis': 'general_concent',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'pasien',
+                'jawaban': can1,
+                'keterangan': 'general_concent',
+                'jenis': 'general_concent',
+                'tipe': 'ttd',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'dokter',
+                'jawaban': can2,
+                'keterangan': 'general_concent',
+                'jenis': 'general_concent',
+                'tipe': 'ttd',
+                'id_detail_checkup': idDetailCheckup
+            });
+            var result = JSON.stringify(data);
+            $('#save_ttd_concent').hide();
+            $('#load_ttd_concent').show();
+            dwr.engine.setAsync(true);
+            KeperawatanRawatJalanAction.saveTtdResumenMeis(result, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#modal-ttd_concent').modal('hide');
+                        $('#save_ttd_concent').show();
+                        $('#load_ttd_concent').hide();
+                        printPernyataanRM(kode, idRm);
+                    } else {
+                        $('#save_ttd_concent').show();
+                        $('#load_ttd_concent').hide();
+                    }
+                }
+            });
+        }else{
+            $('#modal-ttd_concent').scrollTop(0);
+            $('#warning_ttd_concent').show().fadeOut(5000);
+            $('#msg_ttd_concent').text("Silahkan cek kembali inputan dan TTD berikut...!");
+        }
     }
 
     function getListRekamMedis(tipePelayanan, jenis, id) {
@@ -1585,6 +1712,7 @@
                     var terIsi = 0;
                     var labelPrint = "";
                     var terIsiPrint = "";
+                    var enter = '';
 
                     if (item.jumlahKategori != null) {
                         constan = item.jumlahKategori;
@@ -1604,6 +1732,7 @@
                         }
                         icons = '<i class="fa fa-check" style="color: #449d44"></i>';
                         icons2 = '<i class="fa fa-check" style="color: #449d44"></i>';
+                        enter = '<br>';
                     }
 
                     labelTerisi = '<span style="color: #367fa9; font-weight: bold">' + terIsi + '/' + constan + '</span>';
@@ -1613,9 +1742,9 @@
                         li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-file-o"></i>' + item.namaRm + '</a></li>'
                     } else {
                         if (item.keterangan == 'form') {
-                            li += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'
+                            li += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'+enter;
                         } else if (item.keterangan == "surat") {
-                            li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>'
+                            li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>'+enter;
                         }
                     }
                 });

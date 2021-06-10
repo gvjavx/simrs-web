@@ -19,6 +19,7 @@
           p:approvalTransaksiObatDao-ref="approvalTransaksiObatDao"
           p:transaksiObatDetailDao-ref="transaksiObatDetailDao"
           p:transKeteranganObatDao-ref="transKeteranganObatDao"
+          p:obatRacikDao-ref="obatRacikDao"
     />
 
     <bean id="permintaanResepBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -50,6 +51,9 @@
           p:sessionFactory-ref="sessionFactory" />
 
     <bean id="transaksiObatDetailDao" class="com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="obatRacikDao" class="com.neurix.simrs.transaksi.obatracik.dao.ObatRacikDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

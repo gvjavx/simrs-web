@@ -40,6 +40,34 @@ public class ImSimrsPermintaanResepEntity implements Serializable {
     private String kemasanRacik;
     private Integer qtyKemasanRacik;
 
+    private String kajianAdministrasi;
+    private String kajianFermasetis;
+    private String kajianKritis;
+
+    public String getKajianAdministrasi() {
+        return kajianAdministrasi;
+    }
+
+    public void setKajianAdministrasi(String kajianAdministrasi) {
+        this.kajianAdministrasi = kajianAdministrasi;
+    }
+
+    public String getKajianFermasetis() {
+        return kajianFermasetis;
+    }
+
+    public void setKajianFermasetis(String kajianFermasetis) {
+        this.kajianFermasetis = kajianFermasetis;
+    }
+
+    public String getKajianKritis() {
+        return kajianKritis;
+    }
+
+    public void setKajianKritis(String kajianKritis) {
+        this.kajianKritis = kajianKritis;
+    }
+
     public String getNamaRacik() {
         return namaRacik;
     }

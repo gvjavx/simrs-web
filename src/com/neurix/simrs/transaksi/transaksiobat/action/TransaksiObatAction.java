@@ -56,6 +56,7 @@ import com.neurix.simrs.transaksi.makananpendamping.model.HeaderPendampingMakana
 import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
+import com.neurix.simrs.transaksi.obatracik.model.ObatRacik;
 import com.neurix.simrs.transaksi.ordergizi.bo.OrderGiziBo;
 import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
 import com.neurix.simrs.transaksi.paketperiksa.bo.PaketPeriksaBo;
@@ -116,6 +117,7 @@ import java.util.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 
 import sun.misc.BASE64Decoder;
@@ -276,16 +278,16 @@ public class TransaksiObatAction extends BaseMasterAction {
         logger.info("[TransaksiObatAction.searchResep] START >>>>>>>");
 
         HttpSession session = ServletActionContext.getRequest().getSession();
-//        List<PermintaanResep> listOfResult = (List) session.getAttribute("listOfResult");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
         VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
         PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
         PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
 
-        String id = getId();
-        String idPermintaan = getIdPermintaan();
-        HeaderCheckup checkup = new HeaderCheckup();
+        String id               = getId();
+        String idPermintaan     = getIdPermintaan();
+        String tipePelayanan    = "";
+        HeaderCheckup checkup   = new HeaderCheckup();
 
         // mencari data telemedic
         ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = null;
@@ -295,6 +297,12 @@ public class TransaksiObatAction extends BaseMasterAction {
             if (pembayaranOnlineEntity != null) {
                 antrianTelemedicEntity = telemedicBo.getAntrianTelemedicEntityById(pembayaranOnlineEntity.getIdAntrianTelemedic());
             }
+        }
+
+        try {
+            tipePelayanan = permintaanResepBo.getTipePelayananOfIdDetailCheckup(id);
+        } catch (GeneralBOException e) {
+            logger.error(e.getCause());
         }
 
 
@@ -320,6 +328,7 @@ public class TransaksiObatAction extends BaseMasterAction {
             resep.setProvinsi(checkup.getNamaProvinsi());
             resep.setIdPelayanan(checkup.getIdPelayanan());
             resep.setNamaPelayanan(checkup.getNamaPelayanan());
+            resep.setTipePelayanan(tipePelayanan);
             if (checkup.getJenisKelamin() != null) {
                 if ("P".equalsIgnoreCase(checkup.getJenisKelamin())) {
                     jk = "Perempuan";
@@ -346,6 +355,7 @@ public class TransaksiObatAction extends BaseMasterAction {
             resep.setUrlKtp(checkup.getUrlKtp());
             resep.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
             resep.setIdPermintaanResep(idPermintaan);
+            resep.setTipePelayanan(tipePelayanan);
             setPermintaanResep(resep);
 
         } else {
@@ -386,6 +396,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                     resep.setUrlKtp(pasenData.getUrlKtp());
                     resep.setIdPermintaanResep(idPermintaan);
                     resep.setFlagEresep(antrianTelemedicEntity.getFlagEresep());
+                    resep.setTipePelayanan(tipePelayanan);
                     setPermintaanResep(resep);
                 }
             } else {
@@ -414,13 +425,47 @@ public class TransaksiObatAction extends BaseMasterAction {
         List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
 
         if (transaksiObatDetail != null) {
-
             if (transaksiObatDetail.getIdPermintaanResep() != null && !"".equalsIgnoreCase(transaksiObatDetail.getIdPermintaanResep())) {
                 try {
                     obatDetailList = transaksiObatBoProxy.getSearchObatTransaksiByCriteria(transaksiObatDetail);
                 } catch (GeneralBOException e) {
                     logger.error("[TransaksiObatAction.searchResep] ERROR error when get searh resep. ", e);
                     addActionError("[TransaksiObatAction.searchResep] ERROR error when get searh resep. " + e.getMessage());
+                }
+            }
+        }
+
+        List<TransaksiObatDetail> obatDetailsRacik = obatDetailList.stream().filter(
+                p->p.getIdRacik() != null && !"".equalsIgnoreCase(p.getIdRacik())
+        ).collect(Collectors.toList());
+
+        obatDetailList = obatDetailList.stream().filter(
+                p->p.getIdRacik() == null || "".equalsIgnoreCase(p.getIdRacik())
+        ).collect(Collectors.toList());
+
+        List<ObatRacik> listNamaRacik = new ArrayList<>();
+        if (obatDetailsRacik.size() > 0){
+            for (TransaksiObatDetail obatDetail : obatDetailsRacik){
+
+                if (listNamaRacik.size() == 0){
+                    List<ObatRacik> listRacik = transaksiObatBoProxy.getListNamaRacik(obatDetail.getIdRacik());
+                    if (listRacik.size() > 0){
+                        listNamaRacik.add(listRacik.get(0));
+                    }
+                } else {
+
+                    List<ObatRacik> filteredObatRacik = listNamaRacik.stream().filter(
+                            p->p.getId().equalsIgnoreCase(obatDetail.getIdRacik())
+                    ).collect(Collectors.toList());
+
+                    if (filteredObatRacik.size() > 0){
+                        continue;
+                    } else {
+                        List<ObatRacik> listRacik = transaksiObatBoProxy.getListNamaRacik(obatDetail.getIdRacik());
+                        if (listRacik.size() > 0){
+                            listNamaRacik.add(listRacik.get(0));
+                        }
+                    }
                 }
             }
         }
@@ -458,6 +503,8 @@ public class TransaksiObatAction extends BaseMasterAction {
         setTransaksiObatDetail(transaksiObatDetail);
         session.removeAttribute("listOfResultResep");
         session.setAttribute("listOfResultResep", obatDetailList);
+        session.setAttribute("listOfResultNamaRacik", listNamaRacik);
+        session.setAttribute("listOfResultDetailRacik", obatDetailsRacik);
         logger.info("[TransaksiObatAction.searchResep] END <<<<<<<");
         return "init_bayar";
 
@@ -784,31 +831,22 @@ public class TransaksiObatAction extends BaseMasterAction {
 
 
     public String searchResepPasien() {
-
-        logger.info("[CheckupAction.search] start process >>>");
-
+        logger.info("[TransaksiObatAction.searchResepPasien] start process >>>");
         PermintaanResep permintaanResep = getPermintaanResep();
         List<PermintaanResep> listResep = new ArrayList();
         permintaanResep.setBranchId(CommonUtil.userBranchLogin());
         permintaanResep.setTujuanPelayanan(CommonUtil.userPelayananIdLogin());
 
         try {
-
             listResep = transaksiObatBoProxy.getListResepPasien(permintaanResep);
-
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[CheckupAction.save] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
-            return ERROR;
+            logger.error("[TransaksiObatAction.searchResepPasien] Error when searching pasien by criteria," + "Found problem when searching data by criteria, please inform to your admin.", e);
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
-
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listResep);
-
-        logger.info("[CheckupAction.search] end process <<<");
+        logger.info("[TransaksiObatAction.searchResepPasien] end process <<<");
         return "search";
 
     }
@@ -942,20 +980,17 @@ public class TransaksiObatAction extends BaseMasterAction {
 
     public CheckObatResponse saveVerifikasiResep(String idTransaksi, String jsonString) throws JSONException {
         logger.info("[TransaksiObatAction.saveVerifikasiResep] START process >>>");
-
         CheckObatResponse response = new CheckObatResponse();
-
         Timestamp time = new Timestamp(System.currentTimeMillis());
         String userLogin = CommonUtil.userLogin();
-
         MtSimrsTransaksiObatDetailBatchEntity batchEntity;
         List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = new ArrayList<>();
+        BigInteger qtyApprove = new BigInteger("0");
         if (jsonString != null && !"".equalsIgnoreCase(jsonString)) {
             JSONArray json = new JSONArray(jsonString);
             for (int i = 0; i < json.length(); i++) {
                 batchEntity = new MtSimrsTransaksiObatDetailBatchEntity();
                 JSONObject obj = json.getJSONObject(i);
-
                 if (!"".equalsIgnoreCase(obj.getString("qty_approve"))) {
                     batchEntity.setIdTransaksiObatDetail(idTransaksi);
                     batchEntity.setIdBarang(obj.getString("id_barang"));
@@ -969,6 +1004,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                     batchEntity.setCreatedDate(time);
                     batchEntity.setCreatedWho(userLogin);
                     batchEntities.add(batchEntity);
+                    qtyApprove = qtyApprove.add(batchEntity.getQtyApprove());
                 }
             }
         }
@@ -977,15 +1013,13 @@ public class TransaksiObatAction extends BaseMasterAction {
         TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
 
         try {
-            transaksiObatBo.saveVerifikasiObat(batchEntities);
+            transaksiObatBo.saveVerifikasiObat(batchEntities, qtyApprove);
             response.setStatus(SUCCESS);
             response.setMessage("SUCCESS");
         } catch (GeneralBOException e) {
             response.setStatus(ERROR);
             response.setMessage("[TransaksiObatAction.saveVerifikasiResep] ERROR when save list obat, " + e.getMessage());
-
             logger.error("[TransaksiObatAction.saveVerifikasiResep] ERROR when save list obat, ", e);
-            addActionError("[TransaksiObatAction.saveVerifikasiResep] ERROR when save list obat, " + e.getMessage());
         }
 
         logger.info("[TransaksiObatAction.saveVerifikasiResep] END process <<<");
@@ -1017,6 +1051,9 @@ public class TransaksiObatAction extends BaseMasterAction {
                 obatDetail.setBranchId(CommonUtil.userBranchLogin());
                 obatDetail.setLastUpdate(time);
                 obatDetail.setLastUpdateWho(userLogin);
+                if(object.has("tipe_pelayanan")){
+                    obatDetail.setTipePelayanan(object.getString("tipe_pelayanan"));
+                }
 
                 try {
                     if(object.getString("keterangan") != null && !"".equalsIgnoreCase(object.getString("keterangan"))){
@@ -1073,9 +1110,59 @@ public class TransaksiObatAction extends BaseMasterAction {
                 }
 
                 try {
-                    // create jurnal Pengeluaran Obat Apotik
-                    JurnalResponse jurnalResponse = createJurnalPengeluaranObatApotik(idApproval);
+                    if(object.getString("waktu") != null && !"".equalsIgnoreCase(object.getString("waktu"))){
+                        JSONArray json = new JSONArray(object.getString("waktu"));
+                        List<TransaksiObatDetail> entityArrayList = new ArrayList<>();
+                        for (int i = 0; i < json.length(); i++) {
+                            JSONObject obj = json.getJSONObject(i);
+                            TransaksiObatDetail detail = new TransaksiObatDetail();
+                            detail.setIdObat(obj.getString("id"));
+                            detail.setIsRacik(obj.getString("is_racik"));
+                            detail.setFrekuensi(obj.getString("waktu"));
+                            if(obj.has("nama_obat")){
+                                detail.setNamaObat(obj.getString("nama_obat"));
+                            }
+                            if(obj.has("keterangan")){
+                                detail.setKeterangan(obj.getString("keterangan"));
+                            }
+                            entityArrayList.add(detail);
+                        }
+                        if(entityArrayList.size() > 0){
+                            obatDetail.setWaktuObat(entityArrayList);
+                        }
+                    }
+                }catch (Exception e){
+                    response.setStatus(ERROR);
+                    response.setMessage("Terjadi kesalah saat parse JSON object, "+e.getMessage());
+                    return response;
+                }
+
+                try {
+                    if(object.getString("kajian") != null && !"".equalsIgnoreCase(object.getString("kajian"))){
+                        JSONObject jsonObject = new JSONObject(object.getString("kajian"));
+                        if(jsonObject.has("admin")){
+                            obatDetail.setkAdmin(jsonObject.getString("admin"));
+                        }
+                        if(jsonObject.has("farma")){
+                            obatDetail.setkFarma(jsonObject.getString("farma"));
+                        }
+                        if(jsonObject.has("kritis")){
+                            obatDetail.setkKritis(jsonObject.getString("kritis"));
+                        }
+                    }
+                }catch (Exception e){
+                    response.setStatus(ERROR);
+                    response.setMessage("Terjadi kesalah saat parse JSON object, "+e.getMessage());
+                    return response;
+                }
+
+                try {
+                     //create jurnal Pengeluaran Obat Apotik
+                    //JurnalResponse jurnalResponse = createJurnalPengeluaranObatApotik(idApproval);
+                    JurnalResponse jurnalResponse = new JurnalResponse();
+                    jurnalResponse.setStatus("success");
                     if ("error".equalsIgnoreCase(jurnalResponse.getStatus())) {
+                        response.setMessage(jurnalResponse.getMsg());
                         return response;
                     } else {
                         obatDetail.setNoJurnal(jurnalResponse.getNoJurnal());
@@ -3868,6 +3955,296 @@ public class TransaksiObatAction extends BaseMasterAction {
         }
 
         return noJurnal;
+    }
+
+    public CrudResponse addObatNormalToList(String stObat, String stSignaObat) throws JSONException{
+        logger.info("[TransaksiObatAction.addObatToList] Start >>>");
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        CrudResponse response = new CrudResponse();
+
+        List<TransaksiObatDetail> listObat = (List<TransaksiObatDetail>) session.getAttribute("listOfObat");
+        listObat = listObat == null ? new ArrayList<>() : listObat;
+
+        if (stObat == null || "".equalsIgnoreCase(stObat)){
+            response.hasError("Tidak ditemukan list obat. Hubungi Admin !");
+            return response;
+        }
+
+        if (stSignaObat != null && !"".equalsIgnoreCase(stSignaObat)){
+            JSONArray arraySigna = new JSONArray(stSignaObat);
+            for (int i = 0; i < arraySigna.length() ; i++){
+                JSONObject objSigna     = arraySigna.getJSONObject(i);
+                String idObatSigna      = objSigna.getString("idobat");
+                String signadarilist    = objSigna.getString("signa");
+
+                List<TransaksiObatDetail> filteredObat = listObat.stream().filter(
+                        p->p.getIdObat().equalsIgnoreCase(idObatSigna)
+                ).collect(Collectors.toList());
+
+                listObat.remove(filteredObat.get(0));
+                TransaksiObatDetail newObatSigna = filteredObat.get(0);
+                newObatSigna.setKeterangan(signadarilist);
+                listObat.add(newObatSigna);
+            }
+        }
+
+        JSONObject obj = new JSONObject(stObat);
+        String idObat   = obj.getString("idobat");
+        String namaObat = obj.getString("namaobat");
+        String qty      = obj.getString("qty");
+        String harga    = obj.getString("harga");
+        //String signa    = obj.getString("signa");
+
+        List<TransaksiObatDetail> filteredByIdObat = listObat.stream().filter(
+                p->p.getIdObat().equalsIgnoreCase(idObat)
+        ).collect(Collectors.toList());
+
+        if (filteredByIdObat.size() > 0){
+            TransaksiObatDetail obatDetail = filteredByIdObat.get(0);
+
+            listObat.remove(obatDetail);
+
+            obatDetail.setQty(obatDetail.getQty().add(new BigInteger(qty)));
+            listObat.add(obatDetail);
+        } else {
+            TransaksiObatDetail obatDetail = new TransaksiObatDetail();
+            obatDetail.setIdObat(idObat);
+            obatDetail.setNamaObat(namaObat);
+            obatDetail.setQty(new BigInteger(qty));
+            obatDetail.setHarga(new BigInteger(harga));
+            listObat.add(obatDetail);
+            //obatDetail.setKeterangan(signa);
+        }
+
+        session.removeAttribute("listOfObat");
+        session.setAttribute("listOfObat", listObat);
+        response.hasSuccess("berhasil");
+        logger.info("[TransaksiObatAction.addObatToList] END <<<");
+        return response;
+    }
+
+    public CrudResponse addObatRacikToList(String stObatRacik) throws JSONException{
+        logger.info("[TransaksiObatAction.addObatRacikToList] Start >>>");
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        CrudResponse response = new CrudResponse();
+
+        List<TransaksiObatDetail> listObat = (List<TransaksiObatDetail>) session.getAttribute("listOfDetailRacik");
+        List<ObatRacik> listNamaRacik = (List<ObatRacik>) session.getAttribute("listOfNamaRacik");
+        listObat = listObat == null ? new ArrayList<>() : listObat;
+
+        if (stObatRacik == null || "".equalsIgnoreCase(stObatRacik)){
+            response.hasError("Tidak ditemukan list obat racik. Hubungi Admin !");
+            return response;
+        }
+
+        JSONObject obj = new JSONObject(stObatRacik);
+        String idObat       = obj.getString("idobat");
+        String namaObat     = obj.getString("namaobat");
+        //String qty          = obj.getString("qty");
+        //String dosis        = obj.getString("dosis");
+        String namaRacik    = obj.getString("namaracik");
+
+        List<TransaksiObatDetail> filteredByIdObat = listObat == null ? new ArrayList<>() :
+                listObat.stream().filter(
+                p->p.getIdObat().equalsIgnoreCase(idObat) &&
+                        p.getNamaRacik().equalsIgnoreCase(namaRacik)
+        ).collect(Collectors.toList());
+
+        if (filteredByIdObat.size() == 0){
+            TransaksiObatDetail obatDetail = new TransaksiObatDetail();
+            obatDetail.setIdObat(idObat);
+            obatDetail.setNamaObat(namaObat);
+            //obatDetail.setQty(new BigInteger(qty));
+            //obatDetail.setKeterangan(dosis);
+            obatDetail.setNamaRacik(namaRacik);
+            listObat.add(obatDetail);
+        }
+
+        List<ObatRacik> filteredNamaRacik = listNamaRacik == null ? new ArrayList<>() :
+                listNamaRacik.stream().filter(
+                p->p.getNama().equalsIgnoreCase(namaRacik)
+        ).collect(Collectors.toList());
+
+        if (filteredNamaRacik.size() == 0){
+            listNamaRacik = listNamaRacik == null || listNamaRacik.size() == 0 ? new ArrayList<>() : listNamaRacik;
+            ObatRacik obatRacik = new ObatRacik();
+            obatRacik.setNama(namaRacik);
+            listNamaRacik.add(obatRacik);
+        }
+
+        session.removeAttribute("listOfDetailRacik");
+        session.removeAttribute("listOfNamaRacik");
+        session.setAttribute("listOfDetailRacik", listObat);
+        session.setAttribute("listOfNamaRacik", listNamaRacik);
+        response.hasSuccess("berhasil");
+        logger.info("[TransaksiObatAction.addObatRacikToList] End <<<");
+        return response;
+    }
+
+    public CrudResponse saveSignaAndKemasanRacik(String stSigna) throws JSONException{
+        logger.info("[TransaksiObatAction.saveSignaAndKemasanRacik] Start >>>");
+
+        CrudResponse response           = new CrudResponse();
+        HttpSession session             = ServletActionContext.getRequest().getSession();
+        List<ObatRacik> listNamaRacik   = (List<ObatRacik>) session.getAttribute("listOfNamaRacik");
+
+        if (stSigna == null || "".equalsIgnoreCase(stSigna)){
+            response.hasError("Tidak Ditemukan Data Signa/Kemasan untuk Disimpan");
+            return response;
+        }
+
+        JSONObject object = new JSONObject(stSigna);
+        String nama     = object.getString("namaracik");
+        String signa    = object.getString("signa");
+        String qty      = object.getString("qty");
+        String kemasan  = object.getString("kemasan");
+
+        List<ObatRacik> filteredNamaRacik = listNamaRacik.stream().filter(
+                p->p.getNama().equalsIgnoreCase(nama)
+        ).collect(Collectors.toList());
+
+        ObatRacik obatRacik = filteredNamaRacik.get(0);
+        listNamaRacik.remove(obatRacik);
+        obatRacik.setSigna(signa);
+        obatRacik.setQty(new Integer(qty));
+        obatRacik.setKemasan(kemasan);
+        listNamaRacik.add(obatRacik);
+
+        session.removeAttribute("listOfNamaRacik");
+        session.setAttribute("listOfNamaRacik", listNamaRacik);
+
+        logger.info("[TransaksiObatAction.saveSignaAndKemasanRacik] End <<<");
+        return response;
+    }
+
+    public CrudResponse deleteListObatNormal(String idObat){
+        logger.info("[TransaksiObatAction.deleteListObatNormal] Start >>>");
+        CrudResponse response = new CrudResponse();
+        HttpSession session                     = ServletActionContext.getRequest().getSession();
+        List<TransaksiObatDetail> listOfObat    = (List<TransaksiObatDetail>) session.getAttribute("listOfObat");
+
+        List<TransaksiObatDetail> filteredObat = listOfObat.stream().filter(
+                p->p.getIdObat().equalsIgnoreCase(idObat)
+        ).collect(Collectors.toList());
+
+        TransaksiObatDetail obatDetail = filteredObat.get(0);
+        listOfObat.remove(obatDetail);
+
+        session.removeAttribute("listOfObat");
+        session.setAttribute("listOfObat", listOfObat);
+
+        logger.info("[TransaksiObatAction.deleteListObatNormal] End <<<");
+        return response;
+    }
+
+    public CrudResponse deleteListDetailRacik(String idObat, String namaRacik){
+        logger.info("[TransaksiObatAction.deleteListDetailRacik] Start >>>");
+        CrudResponse response = new CrudResponse();
+        HttpSession session                     = ServletActionContext.getRequest().getSession();
+        List<TransaksiObatDetail> listOfObat    = (List<TransaksiObatDetail>) session.getAttribute("listOfDetailRacik");
+
+        List<TransaksiObatDetail> filteredObat = listOfObat.stream().filter(
+                p->p.getIdObat().equalsIgnoreCase(idObat) &&
+                        p.getNamaRacik().equalsIgnoreCase(namaRacik)
+        ).collect(Collectors.toList());
+
+        TransaksiObatDetail obatDetail = filteredObat.get(0);
+        listOfObat.remove(obatDetail);
+
+        session.removeAttribute("listOfDetailRacik");
+        session.setAttribute("listOfDetailRacik", listOfObat);
+
+        logger.info("[TransaksiObatAction.deleteListDetailRacik] End <<<");
+        return response;
+    }
+
+    public CrudResponse deleteListNamaRacik(String namaRacik){
+        logger.info("[TransaksiObatAction.deleteListDetailRacik] Start >>>");
+        CrudResponse response = new CrudResponse();
+        HttpSession session                     = ServletActionContext.getRequest().getSession();
+        List<TransaksiObatDetail> listOfObat    = (List<TransaksiObatDetail>) session.getAttribute("listOfDetailRacik");
+        List<ObatRacik> listNamaRacik           = (List<ObatRacik>) session.getAttribute("listOfNamaRacik");
+
+        List<TransaksiObatDetail> filteredObat = listOfObat.stream().filter(
+                p->p.getNamaRacik().equalsIgnoreCase(namaRacik)
+        ).collect(Collectors.toList());
+
+        List<ObatRacik> filteredNamaRacik = listNamaRacik.stream().filter(
+                p->p.getNama().equalsIgnoreCase(namaRacik)
+        ).collect(Collectors.toList());
+
+        for (TransaksiObatDetail obatDetail : filteredObat){
+            listOfObat.remove(obatDetail);
+        }
+
+        for (ObatRacik obatRacik : filteredNamaRacik){
+            listNamaRacik.remove(obatRacik);
+        }
+
+        session.removeAttribute("listOfDetailRacik");
+        session.removeAttribute("listOfNamaRacik");
+        session.setAttribute("listOfDetailRacik", listOfObat);
+        session.setAttribute("listOfNamaRacik", listNamaRacik);
+
+        logger.info("[TransaksiObatAction.deleteListDetailRacik] End <<<");
+        return response;
+    }
+
+    public List<TransaksiObatDetail> getListObatResep(){
+        logger.info("[TransaksiObatAction.getListObatResep] Start >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<TransaksiObatDetail> listOfObat = (List<TransaksiObatDetail>) session.getAttribute("listOfObat");
+        if (listOfObat.size() == 0){
+            listOfObat = new ArrayList<>();
+            return listOfObat;
+        }
+        logger.info("[TransaksiObatAction.getListObatResep] End <<<");
+        return listOfObat;
+    }
+
+    public List<TransaksiObatDetail> getListDetailRacik(){
+        logger.info("[TransaksiObatAction.getListDetailRacik] Start >>>");
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<TransaksiObatDetail> listOfObat = (List<TransaksiObatDetail>) session.getAttribute("listOfDetailRacik");
+        if (listOfObat.size() == 0){
+            listOfObat = new ArrayList<>();
+            return listOfObat;
+        }
+
+        logger.info("[TransaksiObatAction.getListDetailRacik] End <<<");
+        return listOfObat;
+    }
+
+    public List<ObatRacik> getListNamaRacik(){
+        logger.info("[TransaksiObatAction.getListNamaRacik] Start >>>");
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<ObatRacik> listOfObat = (List<ObatRacik>) session.getAttribute("listOfNamaRacik");
+        if (listOfObat.size() == 0){
+            listOfObat = new ArrayList<>();
+            return listOfObat;
+        }
+
+        logger.info("[TransaksiObatAction.getListNamaRacik] End <<<");
+        return listOfObat;
+    }
+
+    public CrudResponse deleteAllSessionOrderObat(){
+        logger.info("[TransaksiObatAction.deleteAllSessionOrderObat] Start >>>");
+
+        CrudResponse response = new CrudResponse();
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfNamaRacik");
+        session.removeAttribute("listOfDetailRacik");
+        session.removeAttribute("listOfObat");
+
+        logger.info("[TransaksiObatAction.deleteAllSessionOrderObat] End <<<");
+        response.hasSuccess("Berhasil");
+        return response;
     }
 
 }

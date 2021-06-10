@@ -243,7 +243,7 @@ function saveDataOperasi(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Persiapan Prosuk Darah',
+                'parameter': 'Persiapan Produk Darah',
                 'jawaban1': cekList013,
                 'jawaban2': "N",
                 'keterangan': jenis,
@@ -638,7 +638,7 @@ function saveDataOperasi(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Skala Malampahty',
+                'parameter': 'Skala Malapaty',
                 'jawaban1': pf16,
                 'keterangan': jenis,
                 'jenis': 'pra_anestesi',
@@ -2633,7 +2633,7 @@ function saveDataOperasi(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': '1. Keluahan',
+                'parameter': '1. Keluhan',
                 'jawaban1': pa1,
                 'keterangan': jenis,
                 'jenis': ket,
@@ -3549,7 +3549,7 @@ function saveMonAnestesi(jenis, ket) {
     var cek = false;
 
     if ("mon_intra_anestesi" == jenis) {
-        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 != '') {
+        if (va1 && va2 && va3 && va4 != '') {
             cek = true;
         }
     }
@@ -3569,9 +3569,9 @@ function saveMonAnestesi(jenis, ket) {
             'nadi': va2,
             'sistole': va3,
             'diastole': va4,
-            'o2': va5,
-            'n2o': va6,
-            'inhalasi': va7,
+            'o2': va5 != '' ? va5 : "",
+            'n2o': va6 != '' ? va6 : "",
+            'inhalasi': va7 != '' ? va7 : "",
             'keterangan': jenis,
             'jenis': ket
         };

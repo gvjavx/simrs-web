@@ -2,6 +2,8 @@ package com.neurix.simrs.transaksi.transaksiobat.dao;
 
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.transaksi.obatracik.model.ObatRacik;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
@@ -14,10 +16,8 @@ import org.hibernate.criterion.Restrictions;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDetailEntity, String> {
     @Override
@@ -72,6 +72,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         String branchId             = "%";
         String tipePermintaan       = "001";
         String isOrder              = "";
+        String isRacik              = "";
 
         if (bean.getIdTransaksiObatDetail() != null && !"".equalsIgnoreCase(bean.getIdTransaksiObatDetail())){
             idTransaksi = bean.getIdTransaksiObatDetail();
@@ -375,11 +376,23 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 "a.flag, \n" +
                 "a.id_transaksi_online, \n" +
                 "a.ttd_pasien, \n" +
-                "a.ttd_apoteker \n" +
+                "a.ttd_apoteker,\n" +
+                "c.no_checkup,\n" +
+                "c.id_pasien,\n" +
+                "c.jenis_kelamin,\n" +
+                "c.tgl_lahir,\n"+
+                "e.nama_pelayanan,\n"+
+                "e.tipe_pelayanan\n" +
                 "FROM mt_simrs_permintaan_resep a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
                 "INNER JOIN im_simrs_status_pasien d ON a.status = d.id_status_pasien\n" +
+                "INNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "b.tipe_pelayanan\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) e ON b.id_pelayanan = e.id_pelayanan\n"+
                 "WHERE a.flag LIKE :flag \n" +
                 "AND a.branch_id LIKE :branchId\n" +
                 "AND a.is_umum LIKE :isUmum\n" +
@@ -412,12 +425,9 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
             statusName = "Selesai";
         }
 
-        if (results.size() > 0)
-        {
-            PermintaanResep permintaanResep;
-            for (Object[] obj : results)
-            {
-                permintaanResep = new PermintaanResep();
+        if (results.size() > 0) {
+            for (Object[] obj : results) {
+                PermintaanResep permintaanResep = new PermintaanResep();
                 permintaanResep.setIdPermintaanResep(obj[0].toString());
                 permintaanResep.setIdDetailCheckup(obj[1].toString());
                 permintaanResep.setNamaPasien(obj[2].toString());
@@ -432,6 +442,16 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 if(obj[9] != null){
                     permintaanResep.setTtdApoteker(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_APOTEKER+obj[9].toString());
                 }
+                permintaanResep.setNoCheckup(obj[10].toString());
+                permintaanResep.setIdPasien(obj[11].toString());
+                permintaanResep.setJenisKelamin(obj[12].toString());
+                if (obj[13] != null && !"".equalsIgnoreCase(obj[13].toString())) {
+                    String tglLahir = new SimpleDateFormat("dd-MM-yyyy").format((Date) obj[13]);
+                    permintaanResep.setTglLahir(tglLahir);
+                    permintaanResep.setUmur(CommonUtil.calculateAge((java.sql.Date) obj[13], true));
+                }
+                permintaanResep.setNamaPelayanan(obj[14].toString());
+                permintaanResep.setKategoriPelayanan(obj[15].toString());
                 permintaanResepList.add(permintaanResep);
             }
         }
@@ -1081,5 +1101,26 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return sId;
+    }
+
+    public List<ObatRacik> getListObatRacik(String idRacik){
+        String SQL = "SELECT id, nama, signa, qty, kemasan, warna FROM it_simrs_obat_racik WHERE id = '"+idRacik+"'";
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<ObatRacik> obatRacikList = new ArrayList<>();
+        if (list.size() > 0){
+            for (Object[] obj : list){
+                ObatRacik obatRacik = new ObatRacik();
+                obatRacik.setId(obj[0] == null ? "" : obj[0].toString());
+                obatRacik.setNama(obj[1] == null ? "" : obj[1].toString());
+                obatRacik.setSigna(obj[2] == null ? "" : obj[2].toString());
+                obatRacik.setQty(new Integer(obj[3] == null ? "0" : obj[3].toString()));
+                obatRacik.setKemasan(obj[4] == null ? "" : obj[4].toString());
+                obatRacik.setWarna(obj[5] == null ? "" : obj[5].toString());
+                obatRacikList.add(obatRacik);
+            }
+        }
+
+        return obatRacikList;
     }
 }

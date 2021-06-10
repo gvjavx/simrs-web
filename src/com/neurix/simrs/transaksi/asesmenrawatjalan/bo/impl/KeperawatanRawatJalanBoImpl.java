@@ -7,7 +7,9 @@ import com.neurix.simrs.transaksi.asesmenrawatjalan.bo.KeperawatanRawatJalanBo;
 import com.neurix.simrs.transaksi.asesmenrawatjalan.dao.KeperawatanRawatJalanDao;
 import com.neurix.simrs.transaksi.asesmenrawatjalan.model.ItSimrsAsesmenKeperawatanRawatJalanEntity;
 import com.neurix.simrs.transaksi.asesmenrawatjalan.model.KeperawatanRawatJalan;
+import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -19,6 +21,7 @@ import java.util.Map;
 public class KeperawatanRawatJalanBoImpl implements KeperawatanRawatJalanBo {
     private static transient Logger logger = Logger.getLogger(KeperawatanRawatJalanBoImpl.class);
     private KeperawatanRawatJalanDao keperawatanRawatJalanDao;
+    private HeaderCheckupDao headerCheckupDao;
 
     @Override
     public List<KeperawatanRawatJalan> getByCriteria(KeperawatanRawatJalan bean) throws GeneralBOException {
@@ -143,6 +146,33 @@ public class KeperawatanRawatJalanBoImpl implements KeperawatanRawatJalanBo {
                         keperawatanRawatJalanEntity.setNamaTerang(bean.getNamaTerang());
                         keperawatanRawatJalanEntity.setSip(bean.getSip());
 
+                        if("nyeri".equalsIgnoreCase(bean.getKeterangan())){
+                            if("Intensitas".equalsIgnoreCase(bean.getParameter())){
+                                HeaderCheckup headerCheckup = new HeaderCheckup();
+                                headerCheckup.setNoCheckup(bean.getNoCheckup());
+                                headerCheckup.setNyeri(bean.getJawaban());
+                                updateKlinis(headerCheckup);
+                            }
+                        }
+
+                        if("nyeri".equalsIgnoreCase(bean.getKeterangan())){
+                            if("Total Skor Nyeri".equalsIgnoreCase(bean.getParameter())){
+                                HeaderCheckup headerCheckup = new HeaderCheckup();
+                                headerCheckup.setNoCheckup(bean.getNoCheckup());
+                                headerCheckup.setNyeri(bean.getJawaban());
+                                updateKlinis(headerCheckup);
+                            }
+                        }
+
+                        if("resiko_jatuh".equalsIgnoreCase(bean.getKeterangan())){
+                            if("Resiko Jatuh".equalsIgnoreCase(bean.getParameter())){
+                                HeaderCheckup headerCheckup = new HeaderCheckup();
+                                headerCheckup.setNoCheckup(bean.getNoCheckup());
+                                headerCheckup.setResikoJatuh(bean.getJawaban());
+                                updateKlinis(headerCheckup);
+                            }
+                        }
+
                         try {
                             keperawatanRawatJalanDao.addAndSave(keperawatanRawatJalanEntity);
                             response.setStatus("success");
@@ -157,6 +187,23 @@ public class KeperawatanRawatJalanBoImpl implements KeperawatanRawatJalanBo {
             }
         }
         return response;
+    }
+
+    private void updateKlinis(HeaderCheckup bean){
+        ItSimrsHeaderChekupEntity entity = headerCheckupDao.getById("noCheckup", bean.getNoCheckup());
+        if(entity != null){
+            if(bean.getNyeri() != null){
+                entity.setNyeri(bean.getNyeri());
+            }
+            if(bean.getResikoJatuh() != null){
+                entity.setResikoJatuh(bean.getResikoJatuh());
+            }
+            try {
+                headerCheckupDao.updateAndSave(entity);
+            }catch (HibernateException e){
+                throw new GeneralBOException("Error"+e.getMessage());
+            }
+        }
     }
 
     @Override
@@ -229,6 +276,12 @@ public class KeperawatanRawatJalanBoImpl implements KeperawatanRawatJalanBo {
                         if ("dokter".equalsIgnoreCase(entity.getParameter())) {
                             checkup.setTtdDokter(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getJawaban());
                         }
+                        if ("nama_pasien".equalsIgnoreCase(entity.getParameter())) {
+                            checkup.setNama(entity.getJawaban());
+                        }
+                        if ("nama_dokter".equalsIgnoreCase(entity.getParameter())) {
+                            checkup.setNamaDokter(entity.getJawaban());
+                        }
                     }
                 }
             }
@@ -242,5 +295,9 @@ public class KeperawatanRawatJalanBoImpl implements KeperawatanRawatJalanBo {
 
     public void setKeperawatanRawatJalanDao(KeperawatanRawatJalanDao keperawatanRawatJalanDao) {
         this.keperawatanRawatJalanDao = keperawatanRawatJalanDao;
+    }
+
+    public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
+        this.headerCheckupDao = headerCheckupDao;
     }
 }

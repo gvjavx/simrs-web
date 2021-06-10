@@ -169,6 +169,15 @@ public class HeaderDetailCheckup extends BaseModel{
     private String indikasi;
     private String triase;
     private String catatanKlinis;
+    private String spo2;
+
+    public String getSpo2() {
+        return spo2;
+    }
+
+    public void setSpo2(String spo2) {
+        this.spo2 = spo2;
+    }
 
     public String getCatatanKlinis() {
         return catatanKlinis;

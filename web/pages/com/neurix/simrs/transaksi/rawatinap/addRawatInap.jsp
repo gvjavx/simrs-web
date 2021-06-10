@@ -858,33 +858,19 @@
                                                     onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this.value)">
                                                 <option value="">-</option>
                                                 <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
-                                                    <s:if test='rawatInap.idJenisPeriksa == "umum" || rawatInap.idJenisPeriksa == "rekanan"'>
-                                                        <option value="selesai">Selesai</option>
-                                                        <option value="rawat_intensif">Rawat Intensif</option>
-                                                        <option value="rawat_isolasi">Rawat Isolasi</option>
-                                                        <option value="kamar_operasi">Kamar Operasi</option>
-                                                        <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
-                                                            <option value="ruang_bersalin">Ruang Bersalin</option>
-                                                        </s:if>
-                                                        <option value="rujuk_rs_lain">Dirujuk</option>
-                                                        <option value="kontrol_ulang">Kontrol Ulang</option>
+                                                    <option value="selesai">Selesai</option>
+                                                    <option value="rawat_intensif">Rawat Intensif</option>
+                                                    <option value="rawat_isolasi">Rawat Isolasi</option>
+                                                    <option value="kamar_operasi">Kamar Operasi</option>
+                                                    <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
+                                                        <option value="ruang_bersalin">Ruang Bersalin</option>
                                                     </s:if>
-                                                    <s:elseif test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "asuransi"'>
-                                                        <option value="selesai">Selesai</option>
-                                                        <option value="rawat_intensif">Rawat Intensif</option>
-                                                        <option value="rawat_isolasi">Rawat Isolasi</option>
-                                                        <option value="kamar_operasi">Kamar Operasi</option>
-                                                        <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
-                                                            <option value="ruang_bersalin">Ruang Bersalin</option>
-                                                        </s:if>
-                                                        <option value="rujuk_rs_lain">Dirujuk</option>
-                                                        <option value="kontrol_ulang">Kontrol Ulang</option>
+                                                    <option value="hemodialisa">Hemodialisa</option>
+                                                    <option value="rujuk_rs_lain">Dirujuk</option>
+                                                    <option value="kontrol_ulang">Kontrol Ulang</option>
+                                                    <s:if test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "asuransi"'>
                                                         <option value="lanjut_biaya">Lanjut Biaya</option>
-                                                    </s:elseif>
-                                                    <s:else>
-                                                        <option value="selesai">Selesai</option>
-                                                        <option value="kontrol_ulang">Kontrol Ulang</option>
-                                                    </s:else>
+                                                    </s:if>
                                                 </s:if>
                                                 <s:elseif test='rawatInap.kategoriRuangan == "rawat_intensif"'>
                                                     <s:if test='rawatInap.isStay == "Y"'>
@@ -899,9 +885,7 @@
                                                     <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
                                                         <option value="ruang_bersalin">Ruang Bersalin</option>
                                                     </s:if>
-                                                    <%--<option value="rujuk_rs_lain">Dirujuk</option>--%>
-                                                    <%--<option value="kontrol_ulang">Kontrol Ulang</option>--%>
-                                                    <%--<option value="lanjut_biaya">Lanjut Biaya</option>--%>
+                                                    <option value="hemodialisa">Hemodialisa</option>
                                                 </s:elseif>
                                                 <s:elseif test='rawatInap.kategoriRuangan == "rawat_isolasi"'>
                                                     <s:if test='rawatInap.isStay == "Y"'>
@@ -916,9 +900,7 @@
                                                     <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
                                                         <option value="ruang_bersalin">Ruang Bersalin</option>
                                                     </s:if>
-                                                    <%--<option value="rujuk_rs_lain">Dirujuk</option>--%>
-                                                    <%--<option value="kontrol_ulang">Kontrol Ulang</option>--%>
-                                                    <%--<option value="lanjut_biaya">Lanjut Biaya</option>--%>
+                                                    <option value="hemodialisa">Hemodialisa</option>
                                                 </s:elseif>
                                                 <s:elseif test='rawatInap.kategoriRuangan == "kamar_operasi"'>
                                                     <s:if test='rawatInap.isStay == "Y"'>
@@ -934,6 +916,7 @@
                                                         <option value="ruang_bersalin">Ruang Bersalin</option>
                                                     </s:if>
                                                     <option value="rr">Recovery Room</option>
+                                                    <option value="hemodialisa">Hemodialisa</option>
                                                 </s:elseif>
                                                 <s:elseif test='rawatInap.kategoriRuangan == "ruang_bersalin"'>
                                                     <s:if test='rawatInap.isStay == "Y"'>
@@ -946,6 +929,7 @@
                                                     <option value="rawat_intensif">Rawat Intensif</option>
                                                     <option value="rawat_isolasi">Rawat Isolasi</option>
                                                     <option value="kamar_operasi">Kamar Operasi</option>
+                                                    <option value="hemodialisa">Hemodialisa</option>
                                                 </s:elseif>
                                                 <s:elseif test='rawatInap.kategoriRuangan == "rr"'>
                                                     <s:if test='rawatInap.isStay == "Y"'>
@@ -957,6 +941,21 @@
                                                     </s:else>
                                                     <option value="rawat_intensif">Rawat Intensif</option>
                                                     <option value="rawat_isolasi">Rawat Isolasi</option>
+                                                    <option value="kamar_operasi">Kamar Operasi</option>
+                                                    <option value="hemodialisa">Hemodialisa</option>
+                                                </s:elseif>
+                                                <s:elseif test='rawatInap.kategoriRuangan == "hemodialisa"'>
+                                                    <s:if test='rawatInap.isStay == "Y"'>
+                                                        <option value="kembali_ke_inap">Kembali Ke Inap</option>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <option value="rawat_inap">Rawat Inap</option>
+                                                    </s:else>
+                                                    <option value="rawat_intensif">Rawat Intensif</option>
+                                                    <option value="rawat_isolasi">Rawat Isolasi</option>
+                                                    <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
+                                                        <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                    </s:if>
                                                     <option value="kamar_operasi">Kamar Operasi</option>
                                                 </s:elseif>
                                             </select>
@@ -1193,6 +1192,13 @@
                                                         class="fa fa-arrow-left hvr-icon"></i> Back
                                             </a>
                                         </s:elseif>
+                                        <s:elseif test='rawatInap.kategoriRuangan == "hemodialisa"'>
+                                            <a href="initForm_hemodialisa.action" class="btn btn-warning hvr-icon-wobble-horizontal"
+                                               style="margin-top: 15px;">
+                                                <i
+                                                        class="fa fa-arrow-left hvr-icon"></i> Back
+                                            </a>
+                                        </s:elseif>
                                         <button class="btn btn-success hvr-icon-pulse-grow" onclick="confirmPemeriksaanPasien()"
                                                 style="margin-top: 15px;" id="save_ket"><i
                                                 class="fa fa-check hvr-icon"></i> Selesai
@@ -1394,7 +1400,7 @@
                     </div>
                     <div class="form-group" id="form-list" style="display: none">
                         <label class="col-md-12">
-                            <table id="table_list_tindakan" class="table table-bordered table-hover" style="font-size: 12px; margin-top: 20px">
+                            <table id="table_list_tindakan" class="table table-bordered table-hover" style="font-size: 12px; margin-top: 20px; width: 100%">
                                 <thead>
                                 <tr>
                                     <td>Dokter</td>
@@ -1474,7 +1480,7 @@
                                     onchange="var warn =$('#war_jenis_diagnosa').is(':visible'); if (warn){$('#cor_jenis_diagnosa').show().fadeOut(3000);$('#war_jenis_diagnosa').hide()}">
                                 <option value=""> - </option>
                                 <option value="diagnosa_awal">Diagnosa Awal</option>
-                                <option value="diagnosa_utama">Diagnosa Utama</option>
+                                <option value="diagnosa_primer">Diagnosa Primer</option>
                                 <option value="diagnosa_sekunder">Diagnosa Sekunder</option>
                             </select>
                         </div>
@@ -2263,7 +2269,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Edit Ruangan</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Pindah Ruangan</h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_ruangan">
@@ -2334,6 +2340,23 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-8">
+                            <div class="btn-group dropdown">
+                                <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen Rawat Inap</span>
+                                </button>
+                                <button type="button" class="btn btn-primary dropdown-toggle"
+                                        data-toggle="dropdown" style="height: 34px" onclick="setRekamMedisPindah('pindah_ri','asesmen_pindah_ruangan')">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu" id="asesmen_pindah_ruangan">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -2362,6 +2385,7 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_resep"></p>
                 </div>
+                <input type="hidden" id="tipe-trans-resep"/>
                 <div class="row">
                     <label class="col-md-3" style="margin-top: 7px">Obat Racik ?</label>
                     <div class="col-md-9">
@@ -2375,17 +2399,43 @@
                               id="cor_rep_racik"><i class="fa fa-check"></i> correct</span>
                     </div>
                 </div>
+                <div class="row">
+                    <label class="col-md-3" style="margin-top: 7px">Apotek</label>
+                    <div class="col-md-9">
+                        <div id="body-apotek">
+                            <s:action id="initApotek" namespace="/checkup"
+                                      name="getComboApotekRi_checkup"/>
+                            <s:select cssStyle="margin-top: 7px; width: 100%"
+                                      list="#initApotek.listOfApotek" id="resep_apotek"
+                                      listKey="idPelayanan + '|' + namaPelayanan"
+                                      listValue="namaPelayanan"
+                                      headerKey="" headerValue=" - "
+                                      cssClass="form-control select2"/>
+                            <span style="color: red; margin-top: 12px; display: none;"
+                                  id="war_rep_apotek"><i class="fa fa-times"></i> required</span>
+                            <span style="color: green; margin-top: 12px; display: none;"
+                                  id="cor_rep_apotek"><i class="fa fa-check"></i> correct</span>
+                        </div>
+                        <span style="color: red; margin-top: 12px; display: none;"
+                              id="war_rep_apotek"><i class="fa fa-times"></i> required</span>
+                        <span style="color: green; margin-top: 12px; display: none;"
+                              id="cor_rep_apotek"><i class="fa fa-check"></i> correct</span>
+                    </div>
+                </div>
                 <div class="row" id="form-nama-racik" style="display: none">
                     <label class="col-md-3" style="margin-top: 7px;">Nama Racik</label>
                     <div class="col-md-9">
-                        <div class="input-group" style="margin-top: 7px;">
-                            <input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"
-                                   class="form-control" type="text"
-                                   id="nama_racik">
-                            <div class="input-group-addon">
-                                <input type="color" id="color_racik" style="height: 20px;">
-                            </div>
-                        </div>
+                        <input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"
+                               class="form-control" type="text"
+                               id="nama_racik" style="margin-top: 7px;">
+                        <%--<div class="input-group" style="margin-top: 7px;">--%>
+                            <%--<input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"--%>
+                                   <%--class="form-control" type="text"--%>
+                                   <%--id="nama_racik">--%>
+                            <%--<div class="input-group-addon">--%>
+                                <%--<input type="color" id="color_racik" style="height: 20px;" value="#a4dfab">--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                         <span style="color: red; margin-top: 12px; display: none;"
                               id="war_nama_racik"><i class="fa fa-times"></i> required</span>
                         <span style="color: green; margin-top: 12px; display: none;"
@@ -2393,37 +2443,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-md-3" style="margin-top: 7px">Apotek</label>
-                    <div class="col-md-9">
-                        <s:action id="initApotek" namespace="/checkup"
-                                  name="getComboApotekRi_checkup"/>
-                        <s:select cssStyle="margin-top: 7px; width: 100%"
-                                  list="#initApotek.listOfApotek" id="resep_apotek"
-                                  listKey="idPelayanan + '|' + namaPelayanan"
-                                  listValue="namaPelayanan"
-                                  headerKey="" headerValue=" - "
-                                  cssClass="form-control select2"/>
-                        <span style="color: red; margin-top: 12px; display: none;"
-                              id="war_rep_apotek"><i class="fa fa-times"></i> required</span>
-                        <span style="color: green; margin-top: 12px; display: none;"
-                              id="cor_rep_apotek"><i class="fa fa-check"></i> correct</span>
-                    </div>
-                </div>
-                <%--<div class="row">--%>
-                    <%--<label class="col-md-3" style="margin-top: 7px">Kategori</label>--%>
-                    <%--<div class="col-md-9">--%>
-                        <%--<select class="form-control select2" style="margin-top: 7px; width: 100%"--%>
-                                <%--id="resep_jenis_obat">--%>
-                            <%--<option value=""> - </option>--%>
-                        <%--</select>--%>
-                        <%--<span style="color: red; margin-top: 12px; display: none;"--%>
-                              <%--id="war_jenis_obat"><i class="fa fa-times"></i> required</span>--%>
-                        <%--<span style="color: green; margin-top: 12px; display: none;"--%>
-                              <%--id="cor_jenis_obat"><i class="fa fa-check"></i> correct</span>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-                <div class="row">
-                    <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
+                    <label class="col-md-3" style="margin-top: 7px">Pilih Obat</label>
                     <div class="col-md-9">
                         <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                 id="resep_nama_obat">
@@ -2461,9 +2481,9 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-md-3" style="margin-top: -13px;">Stok Obat</label>
+                    <label class="col-md-3" style="margin-top: 7px">Stok Obat</label>
                     <div class="col-md-9">
-                        <div class="input-group" style="margin-top: -13px;">
+                        <div class="input-group" style="margin-top: 7px;">
                             <input class="form-control" type="number" min="1" id="resep_stok_biji" readonly>
                             <div class="input-group-addon">
                                 Biji
@@ -2476,7 +2496,7 @@
                     <div class="row">
                         <label class="col-md-12" style="color: black"><b class="blink_me">Obat Kandungan Serupa</b></label>
                         <input type="hidden" value="N" id="flag-obat-serupa">
-                        <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
+                        <label class="col-md-3" style="margin-top: 7px">Pilih Obat</label>
                         <div class="col-md-9">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                     id="resep_nama_obat_serupa">
@@ -2501,7 +2521,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" style="display: none">
+                <div class="row" style="display: none;">
                     <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
                     <div class="col-md-9">
                         <s:select list="#{'lembar':'Lembar','box':'Box'}"
@@ -2516,7 +2536,7 @@
                               id="cor_rep_jenis_satuan"><i class="fa fa-check"></i> correct</span>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" id="sec-jumlah-resep">
                     <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                     <div class="col-md-9">
                         <div class="input-group" style="margin-top: 7px;">
@@ -2552,38 +2572,12 @@
                         </select>
                     </div>
                 </div>
-                <div class="row jarak">
-                    <div class="col-md-offset-3 col-md-3">
-                        <div class="form-check">
-                            <input type="checkbox" name="waktu_resep" id="waktu_resep1" value="07:00">
-                            <label for="waktu_resep1"></label> 07:00
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-check">
-                            <input type="checkbox" name="waktu_resep" id="waktu_resep2" value="12:00">
-                            <label for="waktu_resep2"></label> 12:00
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-check">
-                            <input type="checkbox" name="waktu_resep" id="waktu_resep3" value="04:00">
-                            <label for="waktu_resep3"></label> 18:00
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-offset-3 col-md-3">
-                        <div class="form-check">
-                            <input type="checkbox" name="waktu_resep" id="waktu_resep4" value="08:00">
-                            <label for="waktu_resep4"></label> 08:00
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="row" style="margin-top: -10px">
+                <hr/>
+                <div class="row" style="margin-top: -10px" id="btn-add-resep">
                     <div class="col-md-12">
-                        <button class="btn btn-success" onclick="addObatToList()"><i class="fa fa-plus"></i> Tambah
+                        <button class="btn btn-success" onclick="addObatToList()" id="btn-save-resep-normal"><i class="fa fa-plus"></i> Tambah
+                        </button>
+                        <button class="btn btn-success" onclick="saveObatRacikToSession()" id="btn-save-resep-racik"><i class="fa fa-plus"></i> Tambah Racik
                         </button>
                         <button class="btn btn-danger" onclick="resetAll()"><i
                                 class="fa fa-refresh"></i> Reset
@@ -2604,25 +2598,28 @@
                         <thead>
                         <td>Nama Obat</td>
                         <td align="center">Qty</td>
-                        <td>Keterangan</td>
+                        <td>Keterangan / Signa</td>
                         <td align="center">Harga (Rp.)</td>
                         <td align="center" width="5%">Action</td>
                         </thead>
                         <tbody id="body_detail">
                         </tbody>
                     </table>
-                </div>
-                <div class="box-header with-border">
+                    <div id="informasi-racik">
+                    </div>
+                    <br>
                 </div>
                 <div class="row" style="margin-top: 10px">
                     <div class="form-group">
                         <div class="col-md-6">
-                            <label><b>Total Harga</b></label>
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    Rp.
+                            <div id="sec-total-harga">
+                                <label><b>Total Harga</b></label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        Rp.
+                                    </div>
+                                    <input class="form-control" id="total_harga_obat" readonly>
                                 </div>
-                                <input class="form-control" id="total_harga_obat" readonly>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -4630,6 +4627,10 @@
     var namaRuanganPasien = $('#h_nama_ruangan_pasien').val();
     var tanggalMasuk = $('#h_tgl_masuk').val();
     var namaJenisPasien = $('#nama_jenis_pasien').val();
+    var jenisCPO = "perawat";
+    var tempSpo2 = "";
+    var tempNyeri = "";
+    var tempJatuh = "";
 
     if (month.length < 2) {
         month = "0"+month;
@@ -4703,6 +4704,13 @@
             $('#rr').addClass('active');
             urlPage = 'recoveryroom';
             $('#pel_ri_active, #rr').addClass('active');
+            $('#pel_ri_open').addClass('menu-open');
+        }
+        if(kategoriRuangan == 'hemodialisa'){
+            $('#title-pages').text("Hemodialisa");
+            $('#hemodialisa').addClass('active');
+            urlPage = 'hemodialisa';
+            $('#pel_ri_active, #hemodialisa').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
         }
 
