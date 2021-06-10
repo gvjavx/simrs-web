@@ -203,7 +203,11 @@ public class PermintaanVendorAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
 
-        setPermintaanVendor(new PermintaanVendor());
+        String branchId = CommonUtil.userBranchLogin();
+        PermintaanVendor permintaanVendor = new PermintaanVendor();
+        permintaanVendor.setBranchId(branchId);
+
+        setPermintaanVendor(permintaanVendor);
 
         logger.info("[PermintaanVendorAction.add] END <<<<<<<");
         return "init_add";
@@ -2075,6 +2079,24 @@ public class PermintaanVendorAction extends BaseMasterAction {
             }
         }
         return obatArrayList;
+    }
+
+    public List<Obat> getListObatByVendor(String branchId, String idObat){
+        logger.info("[PermintaanVendorAction.getListObatByVendor] Start >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+
+        List<Obat> obatList = new ArrayList<>();
+
+        try {
+            obatList = permintaanVendorBo.getListObatByIdVendor(branchId, idObat);
+        } catch (HibernateException e){
+            logger.error("Found Error when search list obat " + e.getMessage());
+        }
+
+        logger.info("[PermintaanVendorAction.getListObatByVendor] End <<<");
+        return obatList;
     }
 
     @Override
