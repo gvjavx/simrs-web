@@ -137,9 +137,9 @@ function hitungCoverBiaya() {
 }
 
 function hitungStatusBiaya() {
-    var jenis = $("#id_jenis_pasien").val();
-    CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RI", function (response) {
-        if (jenis == "bpjs" || jenis == "ptpn") {
+    CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RWJ", function (response) {
+        console.log(jenisPeriksaPasien);
+        if (jenisPeriksaPasien == "bpjs" || jenisPeriksaPasien == "ptpn") {
             $('#status_bpjs').show();
             if (response.tarifBpjs != null && response.tarifTindakan != null) {
 

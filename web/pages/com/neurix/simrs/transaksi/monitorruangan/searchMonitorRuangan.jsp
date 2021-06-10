@@ -478,10 +478,10 @@
     }
 
     function listSelectRuangan(id){
-        //var option = "<option value=''> - </option>";
         var option = "";
         if(id != ''){
-            CheckupDetailAction.listJustRuangan(id, { callback: function (response) {
+            CheckupDetailAction.listJustRuangan(id, null, {
+                callback: function (response) {
                     if (response != null) {
                         $.each(response, function (i, item) {
                             option += "<option value='" + item.idRuangan + "'>" + item.namaRuangan + "</option>";

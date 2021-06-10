@@ -3279,18 +3279,17 @@ public class CheckupDetailAction extends BaseMasterAction {
         return ruanganList;
     }
 
-    public List<Ruangan> listJustRuangan(String idKelas) {
+    public List<Ruangan> listJustRuangan(String idKelas, String kategori) {
         List<Ruangan> ruanganList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
         String branchId = CommonUtil.userBranchLogin();
         try {
-            ruanganList = ruanganBo.getJustListRuangan(idKelas, branchId);
+            ruanganList = ruanganBo.getJustListRuangan(idKelas, branchId, kategori);
         } catch (GeneralBOException e) {
             logger.error("[TindakanRawatAction.listTindakanRawat] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
         }
         return ruanganList;
-
     }
 
     public String getListComboKeteranganKeluar() {

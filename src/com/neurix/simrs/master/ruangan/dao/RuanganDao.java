@@ -300,23 +300,30 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
         return results;
     }
 
-    public List<Ruangan> getListJustRuanganKamar(String idKelas, String branchId) throws HibernateException{
+    public List<Ruangan> getListJustRuanganKamar(String idKelas, String branchId, String kategori) throws HibernateException{
         List<Ruangan> results = new ArrayList<>();
+        String condition = "";
+        if(idKelas != null && !"".equalsIgnoreCase(idKelas)){
+            condition += "AND a.id_kelas_ruangan = '"+idKelas+"'\n";
+        }
+        if(branchId != null && !"".equalsIgnoreCase(branchId)){
+            condition += "AND b.branch_id = '"+branchId+"' \n";
+        }
+        if(kategori != null && !"".equalsIgnoreCase(kategori)){
+            condition += "AND a.kategori = '"+kategori+"' \n";
+        }
         String query = "SELECT\n" +
                 "b.id_ruangan,\n" +
                 "b.nama_ruangan,\n" +
                 "b.no_ruangan\n" +
                 "FROM im_simrs_kelas_ruangan a\n" +
                 "INNER JOIN mt_simrs_ruangan b ON a.id_kelas_ruangan = b.id_kelas_ruangan\n" +
-                "WHERE a.id_kelas_ruangan = :idKelas\n"+
-                "AND b.branch_id = :branchId\n" +
+                "WHERE a.flag = 'Y' \n"+ condition +
                 "ORDER BY b.nama_ruangan ASC";
 
         List<Object[]> objects = new ArrayList<>();
         objects = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
-                .setParameter("branchId",branchId)
-                .setParameter("idKelas", idKelas)
                 .list();
 
         if(objects.size() > 0){

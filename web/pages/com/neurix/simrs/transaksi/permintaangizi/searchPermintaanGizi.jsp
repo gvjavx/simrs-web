@@ -905,7 +905,7 @@
     function listSelectRuangan(id) {
         var option = "";
         if (id != '') {
-            CheckupDetailAction.listJustRuangan(id, function (response) {
+            CheckupDetailAction.listJustRuangan(id, null, function (response) {
                 option = "<option value=''>[Select One]</option>";
                 if (response != null) {
                     $.each(response, function (i, item) {

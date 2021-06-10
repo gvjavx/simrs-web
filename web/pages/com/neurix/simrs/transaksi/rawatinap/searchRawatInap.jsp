@@ -15,7 +15,7 @@
         $( document ).ready(function() {
             $('#pel_ri_active, #bayar_rawat_inap').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
-            getKelasKamar();
+            getKelasKamar('<s:property value="rawatInap.idKelas"/>');
         });
 
     </script>
@@ -81,15 +81,6 @@
                                         <select style="margin-top: 7px" class="form-control select2" id="kelas_kamar" name="rawatInap.idKelas" onchange="listSelectRuangan(this.value)">
                                             <option value=''> - </option>
                                         </select>
-                                        <%--<s:action id="initComboKelas" namespace="/checkupdetail"--%>
-                                                  <%--name="getListComboKelasRuangan_checkupdetail"/>--%>
-                                        <%--<s:select cssStyle="margin-top: 7px" onchange="$(this).css('border',''); listSelectRuangan(this)"--%>
-                                                  <%--list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"--%>
-                                                  <%--name="rawatInap.idKelas"--%>
-                                                  <%--listKey="idKelasRuangan"--%>
-                                                  <%--listValue="namaKelasRuangan"--%>
-                                                  <%--headerKey="" headerValue="[Select one]"--%>
-                                                  <%--cssClass="form-control select2"/>--%>
                                     </div>
                                     <div class="col-sm-3" style="display: none;" id="load_ruang">
                                         <img border="0" src="<s:url value="/pages/images/spinner.gif"/>" style="cursor: pointer; width: 45px; height: 45px"><b style="color: #00a157;">Sedang diproses...</b></div>
@@ -267,7 +258,7 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
-    function getKelasKamar(){
+    function getKelasKamar(kelas){
         var option = '<option value=""> - </option>';
         dwr.engine.setAsync(true);
         CheckupDetailAction.getListKelasKamar('rawat_inap', function (res) {
@@ -276,6 +267,9 @@
                     option += '<option value="' + item.idKelasRuangan + '">' + item.namaKelasRuangan + '</option>';
                 });
                 $('#kelas_kamar').html(option);
+                if(kelas != '' && kelas != null){
+                    $('#kelas_kamar').val(kelas).trigger('change');
+                }
             }else{
                 $('#kelas_kamar').html(option);
             }
@@ -287,23 +281,22 @@
     }
 
     function listSelectRuangan(id){
-        var option  = "<option value=''> - </option>";;
-        var flag    = false;
-        $('#load_ruang').show();
-        setTimeout(function () {
-
-        },100);
+        var option    = "<option value=''> - </option>";
+        var idRuangan = '<s:property value="rawatInap.idRuang"/>';
         if(id != ''){
-            CheckupDetailAction.listRuangan(id, flag, { callback: function (response) {
+            CheckupDetailAction.listJustRuangan(id, null,{
+                callback: function (response) {
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
                     });
                     $('#nama_ruangan').html(option);
+                    if(idRuangan != null && idRuangan != ''){
+                        $('#nama_ruangan').val(idRuangan).trigger('change');
+                    }
                 } else {
                     $('#nama_ruangan').html(option);
                 }
-                $('#load_ruang').hide();
             }
             });
         }else{
