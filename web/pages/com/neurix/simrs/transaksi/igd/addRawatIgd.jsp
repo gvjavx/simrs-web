@@ -313,7 +313,7 @@
                                 </table>
                             </div>
                             <!-- /.col -->
-                            <s:hidden value="headerDetailCheckup.jenisPeriksaPasien" id="jenis_periksa"></s:hidden>
+                            <s:hidden name="headerDetailCheckup.jenisPeriksaPasien" id="jenis_periksa"></s:hidden>
                             <div class="col-md-6">
                                 <script>
                                     document.write(imagesDefault('<s:property value="headerDetailCheckup.urlKtp"/>'));

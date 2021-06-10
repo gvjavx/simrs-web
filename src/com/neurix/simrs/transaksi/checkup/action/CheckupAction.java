@@ -223,7 +223,17 @@ public class CheckupAction extends BaseMasterAction {
 
     private String noCheckupOnline;
 
+    private List<Pelayanan> listOfPelayananRJ = new ArrayList<>();
+
     private List<Pelayanan> listOfPelayananWithLab = new ArrayList<>();
+
+    public List<Pelayanan> getListOfPelayananRJ() {
+        return listOfPelayananRJ;
+    }
+
+    public void setListOfPelayananRJ(List<Pelayanan> listOfPelayananRJ) {
+        this.listOfPelayananRJ = listOfPelayananRJ;
+    }
 
     public List<Pelayanan> getListOfPelayananWithLab() {
         return listOfPelayananWithLab;
@@ -1371,6 +1381,19 @@ public class CheckupAction extends BaseMasterAction {
         }
 
         listOfPelayanan.addAll(pelayananList);
+        return "init_add";
+    }
+
+    public String getComboPelayananRJ() {
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        Pelayanan pelayanan = new Pelayanan();
+        try {
+            pelayananList = pelayananBoProxy.getListPelayananByTipe("rawat_jalan", CommonUtil.userBranchLogin());
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+        }
+
+        listOfPelayananRJ.addAll(pelayananList);
         return "init_add";
     }
 

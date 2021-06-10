@@ -15,6 +15,8 @@ public class ItSimrsObatRacikEntity {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String warna;
+
+    //sodiq, 07-06-2021
     private String frekuensi;
 
     public String getFrekuensi() {

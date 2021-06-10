@@ -425,7 +425,6 @@ public class TransaksiObatAction extends BaseMasterAction {
         List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
 
         if (transaksiObatDetail != null) {
-
             if (transaksiObatDetail.getIdPermintaanResep() != null && !"".equalsIgnoreCase(transaksiObatDetail.getIdPermintaanResep())) {
                 try {
                     obatDetailList = transaksiObatBoProxy.getSearchObatTransaksiByCriteria(transaksiObatDetail);
@@ -981,20 +980,17 @@ public class TransaksiObatAction extends BaseMasterAction {
 
     public CheckObatResponse saveVerifikasiResep(String idTransaksi, String jsonString) throws JSONException {
         logger.info("[TransaksiObatAction.saveVerifikasiResep] START process >>>");
-
         CheckObatResponse response = new CheckObatResponse();
-
         Timestamp time = new Timestamp(System.currentTimeMillis());
         String userLogin = CommonUtil.userLogin();
-
         MtSimrsTransaksiObatDetailBatchEntity batchEntity;
         List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = new ArrayList<>();
+        BigInteger qtyApprove = new BigInteger("0");
         if (jsonString != null && !"".equalsIgnoreCase(jsonString)) {
             JSONArray json = new JSONArray(jsonString);
             for (int i = 0; i < json.length(); i++) {
                 batchEntity = new MtSimrsTransaksiObatDetailBatchEntity();
                 JSONObject obj = json.getJSONObject(i);
-
                 if (!"".equalsIgnoreCase(obj.getString("qty_approve"))) {
                     batchEntity.setIdTransaksiObatDetail(idTransaksi);
                     batchEntity.setIdBarang(obj.getString("id_barang"));
@@ -1008,6 +1004,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                     batchEntity.setCreatedDate(time);
                     batchEntity.setCreatedWho(userLogin);
                     batchEntities.add(batchEntity);
+                    qtyApprove = qtyApprove.add(batchEntity.getQtyApprove());
                 }
             }
         }
@@ -1016,15 +1013,13 @@ public class TransaksiObatAction extends BaseMasterAction {
         TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
 
         try {
-            transaksiObatBo.saveVerifikasiObat(batchEntities);
+            transaksiObatBo.saveVerifikasiObat(batchEntities, qtyApprove);
             response.setStatus(SUCCESS);
             response.setMessage("SUCCESS");
         } catch (GeneralBOException e) {
             response.setStatus(ERROR);
             response.setMessage("[TransaksiObatAction.saveVerifikasiResep] ERROR when save list obat, " + e.getMessage());
-
             logger.error("[TransaksiObatAction.saveVerifikasiResep] ERROR when save list obat, ", e);
-            addActionError("[TransaksiObatAction.saveVerifikasiResep] ERROR when save list obat, " + e.getMessage());
         }
 
         logger.info("[TransaksiObatAction.saveVerifikasiResep] END process <<<");

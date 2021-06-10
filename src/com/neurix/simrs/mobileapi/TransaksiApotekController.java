@@ -545,8 +545,8 @@ public class TransaksiApotekController implements ModelDriven<Object> {
 
         if (action.equalsIgnoreCase("saveVerifikasiObat")){
 
-
             List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = new ArrayList<>();
+            BigInteger qtyApprove = new BigInteger("0");
 
             if (jsonObat != null){
                 for (Obat item : jsonObat){
@@ -562,13 +562,13 @@ public class TransaksiApotekController implements ModelDriven<Object> {
                     batchEntity.setCreatedDate(time);
                     batchEntity.setCreatedWho(username);
                     batchEntity.setLastUpdateWho(username);
-
                     batchEntities.add(batchEntity);
+                    qtyApprove = qtyApprove.add(batchEntity.getQtyApprove());
                 }
             }
 
             try {
-                transaksiObatBoProxy.saveVerifikasiObat(batchEntities);
+                transaksiObatBoProxy.saveVerifikasiObat(batchEntities, qtyApprove);
                 model.setMessage("Success");
             } catch (GeneralBOException e){
                 logger.error("[TransaksiApotekController.create] Error, save verifikasi obat " + e.getMessage());

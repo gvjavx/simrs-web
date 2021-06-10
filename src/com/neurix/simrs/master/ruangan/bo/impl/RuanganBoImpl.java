@@ -398,8 +398,14 @@ public class RuanganBoImpl implements RuanganBo {
     }
 
     @Override
-    public List<Ruangan> getJustListRuangan(String idKelas, String branchId) throws GeneralBOException {
-        return ruanganDao.getListJustRuanganKamar(idKelas, branchId);
+    public List<Ruangan> getJustListRuangan(String idKelas, String branchId, String kategori) throws GeneralBOException {
+        List<Ruangan> ruanganList = new ArrayList<>();
+        try {
+            ruanganList = ruanganDao.getListJustRuanganKamar(idKelas, branchId, kategori);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return ruanganList;
     }
 
     public String getIdRuangan() {

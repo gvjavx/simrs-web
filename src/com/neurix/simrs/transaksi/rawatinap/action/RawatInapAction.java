@@ -503,6 +503,7 @@ public class RawatInapAction extends BaseMasterAction {
 
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfRawatInap);
+        setRawatInap(rawatInap);
 
         logger.info("[RawatInapAction.search] end process <<<");
         return "search";
@@ -1379,7 +1380,7 @@ public class RawatInapAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultTppri");
         session.setAttribute("listOfResultTppri", list);
-
+        setRawatInap(rawatInap);
         logger.info("[RawatInapAction.searchTppri] END process <<<");
         return "search_tppri";
     }
@@ -2787,7 +2788,7 @@ public class RawatInapAction extends BaseMasterAction {
 
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfRawatInap);
-
+        setRawatInap(rawatInap);
         logger.info("[RawatInapAction.searchIntensif] end process <<<");
         return "search";
     }
@@ -2812,7 +2813,7 @@ public class RawatInapAction extends BaseMasterAction {
 
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfRawatInap);
-
+        setRawatInap(rawatInap);
         logger.info("[RawatInapAction.searchIsolasi] end process <<<");
         return "search";
     }
@@ -2862,7 +2863,7 @@ public class RawatInapAction extends BaseMasterAction {
 
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfRawatInap);
-
+        setRawatInap(rawatInap);
         logger.info("[RawatInapAction.searchRR] end process <<<");
         return "search";
     }
@@ -2887,7 +2888,7 @@ public class RawatInapAction extends BaseMasterAction {
 
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfRawatInap);
-
+        setRawatInap(rawatInap);
         logger.info("[RawatInapAction.searchBersalin] end process <<<");
         return "search";
     }
@@ -2911,6 +2912,7 @@ public class RawatInapAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfRawatInap);
+        setRawatInap(rawatInap);
 
         logger.info("[RawatInapAction.searchHemodialisa] end process <<<");
         return "search";

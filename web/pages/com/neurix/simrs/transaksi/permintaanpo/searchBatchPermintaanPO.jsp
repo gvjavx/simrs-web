@@ -323,6 +323,7 @@
                                 <div class="input-group">
                                     <input type="file" class="form-control" name="uploadFaktur" id="upload-faktur-0"
                                            onchange="uploadDoc('faktur', '0')"/>
+                                    <span id="warning-faktur-0" style="font-size: 12px; color: red; display: none"><i class="fa fa-warning"></i> File harus .jpg, .png .pdf</span>
                                     <div class="input-group-btn">
                                         <a class="btn btn-warning" style="padding: 9px" onclick="addUpload('faktur')"><i
                                                 class="fa fa-plus"></i></a>
@@ -369,6 +370,7 @@
                             <div class="input-group">
                                 <input type="file" class="form-control" name="uploadInvoice" id="upload-invoice-0"
                                        onchange="uploadDoc('invoice', '0')"/>
+                                <span id="warning-invoice-0" style="font-size: 12px; color: red; display: none"><i class="fa fa-warning"></i> File harus .jpg, .png .pdf</span>
                                 <div class="input-group-btn">
                                     <a class="btn btn-warning" style="padding: 9px" onclick="addUpload('invoice')"><i
                                             class="fa fa-plus"></i></a>
@@ -413,6 +415,7 @@
                             <div class="input-group">
                                 <input type="file" class="form-control" name="uploadDo" id="upload-do-0"
                                        onchange="uploadDoc('do', '0')"/>
+                                <span id="warning-do-0" style="font-size: 12px; color: red; display: none"><i class="fa fa-warning"></i> File harus .jpg, .png .pdf</span>
                                 <div class="input-group-btn">
                                     <a class="btn btn-warning" style="padding: 9px" onclick="addUpload('do')"><i
                                             class="fa fa-plus"></i></a>
@@ -961,6 +964,7 @@
     }
 
     function confirmDialog() {
+        removeLocalStorageAtas("img_list");
         var noBatch = $('#app_no_batch').val();
         var noFaktur = $('#app_no_faktur').val();
         var tgl = $('#app_tgl_faktur').val();
@@ -983,144 +987,121 @@
 
         var data = "";
         var listOfimg = [];
-        data = {
-            'no_batch': noBatch,
-            'no_faktur': noFaktur,
-            'tgl_faktur': tgl,
-            'no_invoice': noInvoice,
-            'no_do': noDo,
-            'img_url': "",
-            'tgl_invoice': tglInvoice,
-            'tgl_do': tglDo
+        if (noFaktur != '' && tglFaktur != '' && noInvoice != '' && noDo != '') {
+            data = {
+                'no_batch': noBatch,
+                'no_faktur': noFaktur,
+                'tgl_faktur': tgl,
+                'no_invoice': noInvoice,
+                'no_do': noDo,
+                'img_url': "",
+                'tgl_invoice': tglInvoice,
+                'tgl_do': tglDo
+            }
+
+            var cekFaktur = $('.faktur');
+            var cekInvoice = $('.invoice');
+            var cekDo = $('.do');
+
+            if (cekFaktur.length > 0) {
+                $.each(cekFaktur, function (i, item) {
+                    var files = document.getElementById('upload-faktur-' + i).files;
+                    if (files.length > 0) {
+                        var fileToLoad = files[0];
+                        var fileReader = new FileReader();
+                        var base64File = "";
+                        fileReader.onload = function(event) {
+                            base64File = event.target.result;
+                            var eks = cekEks(base64File);
+                            var place = replaceFile(base64File);
+                            if(eks != ""){
+                                listOfimg.push({
+                                    "jenisnomor": "faktur",
+                                    "batch": noBatch,
+                                    "iditem": noFaktur,
+                                    "img": place,
+                                    "eks": eks
+                                });
+                                setLocalStoregeAtas('img_list', JSON.stringify(listOfimg));
+                            }
+                        };
+                        fileReader.readAsDataURL(fileToLoad);
+                    }
+                });
+            }
+
+            if (cekInvoice.length > 0) {
+                $.each(cekInvoice, function (i, item) {
+                    var files = document.getElementById('upload-invoice-' + i).files;
+                    if (files.length > 0) {
+                        var fileToLoad = files[0];
+                        var fileReader = new FileReader();
+                        var base64File;
+                        fileReader.onload = function(event) {
+                            base64File = event.target.result;
+                            var eks = cekEks(base64File);
+                            var place = replaceFile(base64File);
+                            if(eks != ""){
+                                listOfimg.push({
+                                    "jenisnomor": "invoice",
+                                    "batch": noBatch,
+                                    "iditem": noInvoice,
+                                    "img": place,
+                                    "eks": eks
+                                });
+                                setLocalStoregeAtas('img_list', JSON.stringify(listOfimg));
+                            }
+                        };
+                        fileReader.readAsDataURL(fileToLoad);
+                    }
+                });
+            }
+
+            if (cekDo.length > 0) {
+                $.each(cekDo, function (i, item) {
+                    var files = document.getElementById('upload-do-' + i).files;
+                    if (files.length > 0) {
+                        var fileToLoad = files[0];
+                        var fileReader = new FileReader();
+                        var base64File;
+                        fileReader.onload = function(event) {
+                            base64File = event.target.result;
+                            var eks = cekEks(base64File);
+                            var place = replaceFile(base64File);
+                            if(eks != ""){
+                                listOfimg.push({
+                                    "jenisnomor": "do",
+                                    "batch": noBatch,
+                                    "iditem": noDo,
+                                    "img": place,
+                                    "eks": eks
+                                });
+                                setLocalStoregeAtas('img_list', JSON.stringify(listOfimg));
+                            }
+                        };
+                        fileReader.readAsDataURL(fileToLoad);
+                    }
+                });
+            }
+
+            var result = JSON.stringify(data);
+            $('#modal-confirm-dialog').modal('show');
+            $('#save_con').attr('onclick', 'approveBatch(\'' + result + '\')');
+        } else {
+            $('#warning_app').show().fadeOut(5000);
+            $('#msg_app').text("Silahkan cek kembali data inputan anda...!");
         }
-
-        var cekFaktur = $('.faktur');
-        var cekInvoice = $('.invoice');
-        var cekDo = $('.do');
-
-        if (cekFaktur.length > 0) {
-            $.each(cekFaktur, function (i, item) {
-                if (!cekFile('upload-faktur-' + i)) {
-                    var canvas = document.getElementById('canvas-faktur-' + i);
-                    listOfimg.push({
-                        "jenisnomor": "faktur",
-                        "batch": noBatch,
-                        "iditem": noFaktur,
-                        "img": convertToDataURLAtas(canvas)
-                    });
-                }
-            });
-        }
-
-        if (cekInvoice.length > 0) {
-            $.each(cekInvoice, function (i, item) {
-                if (!cekFile('upload-invoice-' + i)) {
-                    var canvas = document.getElementById('canvas-invoice-' + i);
-                    listOfimg.push({
-                        "jenisnomor": "invoice",
-                        "batch": noBatch,
-                        "iditem": noInvoice,
-                        "img": convertToDataURLAtas(canvas)
-                    });
-                }
-            });
-        }
-
-        if (cekDo.length > 0) {
-            $.each(cekDo, function (i, item) {
-                if (!cekFile('upload-do-' + i)) {
-                    var canvas = document.getElementById('canvas-do-' + i);
-                    listOfimg.push({
-                        "jenisnomor": "do",
-                        "batch": noBatch,
-                        "iditem": noDo,
-                        "img": convertToDataURLAtas(canvas)
-                    });
-                }
-            });
-        }
-
-        var result = JSON.stringify(data);
-        var listimg = JSON.stringify(listOfimg);
-        $('#modal-confirm-dialog').modal('show');
-        $('#save_con').attr('onclick', 'approveBatch(\'' + result + '\', \'' + listimg + '\')');
-
-//        if (noFaktur != '' && tglFaktur != '' && noInvoice != '' && noDo != '') {
-//            data = {
-//                'no_batch': noBatch,
-//                'no_faktur': noFaktur,
-//                'tgl_faktur': tgl,
-//                'no_invoice': noInvoice,
-//                'no_do': noDo,
-//                'img_url': "",
-//                'tgl_invoice': tglInvoice,
-//                'tgl_do': tglDo
-//            }
-//
-//            var cekFaktur = $('.faktur');
-//            var cekInvoice = $('.invoice');
-//            var cekDo = $('.do');
-//
-//            if (cekFaktur.length > 0) {
-//                $.each(cekFaktur, function (i, item) {
-//                    if (!cekFile('upload-faktur-' + i)) {
-//                        var canvas = document.getElementById('canvas-faktur-' + i);
-//                        listOfimg.push({
-//                            "jenisnomor": "faktur",
-//                            "batch": noBatch,
-//                            "iditem": noFaktur,
-//                            "img": convertToDataURLAtas(canvas)
-//                        });
-//                    }
-//                });
-//            }
-//
-//            if (cekInvoice.length > 0) {
-//                $.each(cekInvoice, function (i, item) {
-//                    if (!cekFile('upload-invoice-' + i)) {
-//                        var canvas = document.getElementById('canvas-invoice-' + i);
-//                        listOfimg.push({
-//                            "jenisnomor": "invoice",
-//                            "batch": noBatch,
-//                            "iditem": noInvoice,
-//                            "img": convertToDataURLAtas(canvas)
-//                        });
-//                    }
-//                });
-//            }
-//
-//            if (cekDo.length > 0) {
-//                $.each(cekDo, function (i, item) {
-//                    if (!cekFile('upload-do-' + i)) {
-//                        var canvas = document.getElementById('canvas-do-' + i);
-//                        listOfimg.push({
-//                            "jenisnomor": "do",
-//                            "batch": noBatch,
-//                            "iditem": noDo,
-//                            "img": convertToDataURLAtas(canvas)
-//                        });
-//                    }
-//                });
-//            }
-//
-//            var result = JSON.stringify(data);
-//            var listimg = JSON.stringify(listOfimg);
-//            $('#modal-confirm-dialog').modal('show');
-//            $('#save_con').attr('onclick', 'approveBatch(\'' + result + '\', \'' + listimg + '\')');
-//        } else {
-//            $('#warning_app').show().fadeOut(5000);
-//            $('#msg_app').text("Silahkan cek kembali data inputan anda...!");
-//        }
     }
 
     function cekFile(id) {
         return $('#' + id).get(0).files.length === 0;
     }
 
-    function approveBatch(data, listimg) {
+    function approveBatch(data) {
         $('#modal-confirm-dialog').modal('hide');
         $('#save_approve').hide();
         $('#load_approve').show();
+        var listimg = getLocalStorageAtas("img_list");
         dwr.engine.setAsync(true);
         PermintaanVendorAction.saveApproveBatch(idpermintaanPo, data, jenis, listimg, {
             callback: function (response) {
@@ -1139,6 +1120,19 @@
                 }
             }
         });
+    }
+
+    function cekEks(byte) {
+        var res = "";
+        var conditon = byte.split(",")[0];
+        if (conditon == "data:image/jpeg;base64") {
+            res = "jpg";
+        } else if (conditon == "data:image/png;base64") {
+            res = "png";
+        } else if (conditon == "data:application/pdf;base64") {
+            res = "pdf";
+        }
+        return res;
     }
 
     function showDetailListObat(noBatch, img, noFaktur, tglFaktur, noInvoice, noDo, tglInvoice, tglDo) {
@@ -1185,20 +1179,30 @@
     }
 
     function uploadDoc(tipe, ind) {
-        var canvas = document.getElementById("canvas-" + tipe + "-" + ind);
-        var ctx = canvas.getContext('2d');
-        var reader = new FileReader();
-        reader.onload = function (event) {
-            var img = new Image();
-            img.onload = function () {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(img, 0, 0);
-            }
-            img.src = event.target.result;
+        var files = document.getElementById('upload-' + tipe + '-' + ind).files;
+        if (files.length > 0) {
+            var fileToLoad = files[0];
+            var fileReader = new FileReader();
+            var base64File;
+            fileReader.onload = function(event) {
+                base64File = event.target.result;
+                var eks = cekEks(base64File);
+                if(eks == ""){
+                    $('#upload-' + tipe + '-' + ind).css('border-bottom','solid 5px #c9302c');
+                    $('#warning-'+tipe+'-'+ind).show();
+                }else{
+                    $('#upload-' + tipe + '-' + ind).css('border-bottom','solid 5px #5cb85c');
+                    $('#warning-'+tipe+'-'+ind).hide();
+                }
+            };
+            fileReader.readAsDataURL(fileToLoad);
         }
-        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    function replaceFile(byte){
+        var conditon = byte.split(",")[0]+',';
+        var res = byte.replace(conditon, "");
+        return res;
     }
 
     function viewUpload(idBatch) {
@@ -1211,9 +1215,9 @@
                 $.each(list, function (i, item) {
                     var id = 'carousel-example-generic_' + item.idItem;
                     str += '<h5>' + item.jenisNomor.toUpperCase() + ' - ' + item.idItem + '</h5><div id="' + id + '" class="carousel slide" data-ride="carousel">\n' +
-                        '<ol class="carousel-indicators" id="li_' + item.idItem +'_'+item.jenisNomor+'">\n' +
+                        '<ol class="carousel-indicators" id="li_' + item.idItem + '_' + item.jenisNomor + '">\n' +
                         '</ol>\n' +
-                        '<div class="carousel-inner" id="item_' + item.idItem +'_'+item.jenisNomor+'">\n' +
+                        '<div class="carousel-inner" id="item_' + item.idItem + '_' + item.jenisNomor + '">\n' +
                         '</div>\n' +
                         '<a class="left carousel-control" href="#' + id + '" data-slide="prev">\n' +
                         '    <span class="fa fa-angle-left"></span>\n' +
@@ -1243,15 +1247,21 @@
                     aktive = 'active';
                     liAcktive = 'class="active"';
                 }
-                str += '<div class="item ' + aktive + '">\n' +
-                    '<img style="height: 300px; width: 100%" src="' + contextPathHeader + '/images/upload/surat_po/' + img.urlImg + '" alt="Slide' + img.urlImg + '">\n' +
-                    '<div class="carousel-caption">\n' + img.urlImg +
-                    '</div>\n' +
-                    '</div>';
+                if(img.tipe == "PDF"){
+                    str += '<div class="item ' + aktive + '">\n' +
+                        '<embed src="'+contextPathHeader + '/images/upload/surat_po/'+img.urlImg+'" style="width: 100%; height: 400px"/>'+
+                        '</div>';
+                }else{
+                    str += '<div class="item ' + aktive + '">\n' +
+                        '<img style="height: 300px; width: 100%" src="' + contextPathHeader + '/images/upload/surat_po/' + img.urlImg + '" alt="Slide' + img.urlImg + '">\n' +
+                        '<div class="carousel-caption">\n' + img.urlImg +
+                        '</div>\n' +
+                        '</div>';
+                }
                 li += '<li data-target="#carousel-example-generic_' + idItem + '" data-slide-to="' + n + '" ' + liAcktive + '></li>';
             });
-            $("#item_" + idItem+'_'+jenis).html(str);
-            $("#li_" + idItem+'_'+jenis).html(li);
+            $("#item_" + idItem + '_' + jenis).html(str);
+            $("#li_" + idItem + '_' + jenis).html(li);
         });
     }
 
@@ -1261,6 +1271,7 @@
         var set = '<div id="' + remove + '">' +
             '<div class="input-group" style="margin-top: 7px">\n' +
             '<input type="file" class="form-control" id="upload-' + tipe + '-' + cekTipe + '" onchange="uploadDoc(\'' + tipe + '\', \'' + cekTipe + '\')"/>\n' +
+            '<span id="warning-'+tipe+'-'+cekTipe+'" style="font-size: 12px; color: red; display: none"><i class="fa fa-warning"></i> File harus .jpg, .png .pdf</span>'+
             '<div class="input-group-btn">\n' +
             '    <a class="btn btn-danger" style="padding: 9px" onclick="delUpload(\'' + remove + '\')"><i class="fa fa-trash"></i></a>\n' +
             '</div>\n' +

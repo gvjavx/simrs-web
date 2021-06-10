@@ -216,45 +216,19 @@
         window.open('printGelangPasien_rawatinap.action?id=' + noCheckup, '_blank');
     }
 
-    function listSelectRuangan(id){
-        var idx     = id.selectedIndex;
-        var idKelas = id.options[idx].value;
-        var option  = "";
-        var flag    = false;
-
-        $('#load_ruang').show();
-        setTimeout(function () {
-
-        },100);
-        if(idKelas != ''){
-            CheckupDetailAction.listRuangan(idKelas, flag, { callback: function (response) {
-                option = "<option value=''>[Select One]</option>";
-                if (response != null) {
-                    $.each(response, function (i, item) {
-                        option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
-                    });
-                } else {
-                    option = option;
-                }
-                $('#load_ruang').hide();
-            }
-            });
-        }else{
-            option = "<option value=''>[Select One]</option>";
-        }
-
-        $('#nama_ruangan').html(option);
-    }
-
     function selectKamar(){
         var option = "<option value=''>[Select One]</option>";
-        CheckupDetailAction.listRuangan(null, false, 'ruang_bersalin',
-            { callback: function (response) {
+        var idRuangan = '<s:property value="rawatInap.idRuang"/>';
+        CheckupDetailAction.listJustRuangan(null, 'hemodialisa', {
+            callback: function (response) {
                     if (response.length > 0) {
                         $.each(response, function (i, item) {
                             option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
                         });
                         $('#nama_ruangan').html(option);
+                        if(idRuangan != null && idRuangan != ''){
+                            $('#nama_ruangan').val(idRuangan).trigger('change');
+                        }
                     } else {
                         $('#nama_ruangan').html(option);
                     }

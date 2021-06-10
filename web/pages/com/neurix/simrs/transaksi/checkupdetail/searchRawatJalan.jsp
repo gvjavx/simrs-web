@@ -68,9 +68,9 @@
                                     <label class="control-label col-sm-4">Poli</label>
                                     <div class="col-sm-4">
                                         <s:action id="initComboPoli" namespace="/checkup"
-                                                  name="getComboPelayanan_checkup"/>
+                                                  name="getComboPelayananRJ_checkup"/>
                                         <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                  list="#initComboPoli.listOfPelayanan"
+                                                  list="#initComboPoli.listOfPelayananRJ"
                                                   onchange="listSelectDokter(this.value)"
                                                   name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"
                                                   listValue="namaPelayanan"
@@ -84,9 +84,9 @@
                                         <label class="control-label col-sm-4">Poli</label>
                                         <div class="col-sm-4">
                                             <s:action id="initComboPoli" namespace="/checkup"
-                                                      name="getComboPelayanan_checkup"/>
+                                                      name="getComboPelayananRJ_checkup"/>
                                             <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                      list="#initComboPoli.listOfPelayanan"
+                                                      list="#initComboPoli.listOfPelayananRJ"
                                                       listKey="idPelayanan"
                                                       name="headerDetailCheckup.idPelayanan"
                                                       listValue="namaPelayanan"

@@ -323,7 +323,8 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
 
         String SQL = "SELECT \n" +
                 "id_item,\n" +
-                "url_img\n" +
+                "url_img,\n" +
+                "tipe\n" +
                 "FROM it_simrs_doc_po\n" +
                 "WHERE id_item = :idItem \n" +
                 "ORDER BY created_date DESC";
@@ -338,6 +339,7 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
                 DocPo docPo = new DocPo();
                 docPo.setIdItem(obj[0].toString());
                 docPo.setUrlImg(obj[1] == null ? "" : obj[1].toString());
+                docPo.setTipe(obj[2] == null ? "" : obj[2].toString());
                 docPoList.add(docPo);
             }
         }

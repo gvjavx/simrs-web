@@ -93,8 +93,6 @@
                 $('#ref').val(1);
                 $('#modal-ttd').modal('hide');
                 $('body').scrollTop(0);
-                // $('#warning_ttd').show().fadeOut(5000);
-                // $('#msg_ttd').text("Silahkan lakukan ttd pada canvas berikut...!");
             }
         }
 
@@ -427,13 +425,13 @@
                                         <td>
                                             <div class="input-group">
                                                 <s:if test='#row.flagVerifikasi == "Y"'>
-                                                    <input type="text" id='input<s:property value="idObat"/>' value="<s:property value="idObat"/>" disabled class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')">
+                                                    <input type="text" value="<s:property value="idObat"/>" disabled class="form-control">
                                                     <div class="input-group-addon">
                                                         <img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">
                                                     </div>
                                                 </s:if>
                                                 <s:else>
-                                                    <input type="text" id='input<s:property value="idObat"/>' class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')">
+                                                    <input type="text" id='input<s:property value="idObat"/>' class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>','N', '<s:property value="harga"/>')">
                                                     <div class="input-group-addon">
                                                         <span id='status<s:property value="idObat"/>'></span>
                                                     </div>
@@ -466,10 +464,12 @@
                                         <script>
                                             var val = <s:property value="totalHarga"/>;
                                             if (val != null && val != '') {
-                                                document.write(formatRupiah(val))
+                                                document.write('<span id="total_<s:property value="idObat"/>">'+formatRupiah(val)+'</span>');
+                                            }else{
+                                                document.write('<span id="total_<s:property value="idObat"/>"></span>');
                                             }
                                         </script>
-                                        <input type="hidden" value="<s:property value="totalHarga"/>" id='tot_resep_<s:property value="%{#count.index}"/>'>
+                                        <input id="hide_total_<s:property value="idObat"/>" type="hidden" class="total_resep" value="<s:property value="totalHarga"/>">
                                     </td>
                                     <s:if test='permintaanResep.tipePelayanan == "rawat_inap"'>
                                         <td align="center">
@@ -691,37 +691,38 @@
                                                                 <td>
                                                                     <div class="input-group">
                                                                         <s:if test='#row.flagVerifikasi == "Y"'>
-                                                                            <input type="text" id='input<s:property value="idObat"/>' value="<s:property value="idObat"/>" disabled class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')">
+                                                                            <input type="text" value="<s:property value="idObat"/>" disabled class="form-control">
                                                                             <div class="input-group-addon">
                                                                                 <img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">
                                                                             </div>
                                                                         </s:if>
                                                                         <s:else>
-                                                                            <input type="text" id='input<s:property value="idObat"/>' class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')">
+                                                                            <input type="text" id='input_racik_<s:property value="idObat"/>' class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>','Y', '<s:property value="harga"/>')">
                                                                             <div class="input-group-addon">
-                                                                                <span id='status<s:property value="idObat"/>'></span>
+                                                                                <span id='status_racik_<s:property value="idObat"/>'></span>
                                                                             </div>
                                                                         </s:else>
                                                                     </div>
                                                                 </td>
-                                                                <td align="center"><span id='qtyAppove<s:property value="idObat"/>'><s:property value="qtyApprove"/> <s:property value="jenisSatuan"/></span></td>
-                                                                <td align="right"><script>var val = <s:property value="harga"/>;
-                                                                if (val != null && val != '') {
-                                                                    document.write(formatRupiah(val))
-                                                                }</script></td>
+                                                                <td align="center"><span id='qtyAppove_racik_<s:property value="idObat"/>'><s:property value="qtyApprove"/> <s:property value="jenisSatuan"/></span></td>
+                                                                <td align="right">
+                                                                    <script>
+                                                                        var val = <s:property value="harga"/>;
+                                                                        if (val != null && val != '') {
+                                                                            document.write(formatRupiah(val))
+                                                                        }
+                                                                    </script>
+                                                                </td>
                                                                 <td align="right">
                                                                     <script>
                                                                         var val = <s:property value="totalHarga"/>;
-                                                                        var qty = <s:property value="qtyApprove"/>;
-                                                                        var harga = <s:property value="harga"/>;
                                                                         if (val != null && val != '') {
-                                                                            document.write(formatRupiah(val))
-                                                                        } else if (qty != null && qty != '' && harga != null && harga != ''){
-                                                                            var total = parseInt(qty) * parseInt(harga);
-                                                                            document.write(formatRupiah(total))
+                                                                            document.write('<span id="total_racik_<s:property value="idObat"/>">'+formatRupiah(val)+'</span>');
+                                                                        }else{
+                                                                            document.write('<span id="total_racik_<s:property value="idObat"/>"></span>');
                                                                         }
                                                                     </script>
-                                                                    <input type="hidden" value="<s:property value="totalHarga"/>" id='tot_resep_<s:property value="%{#count.index}"/>'>
+                                                                    <input id="hide_total_racik_<s:property value="idObat"/>" type="hidden" class="total_resep" value="<s:property value="totalHarga"/>">
                                                                 </td>
                                                             </s:if>
                                                         </tr>
@@ -827,7 +828,7 @@
                         <div class="row">
                             <div class="col-md-offset-4 col-md-4 text-center">
                                 <a href="initForm_reseppoli.action" class="btn btn-warning"><i class="fa fa-times"></i> Back</a>
-                                <a onclick="printLabelResep()" class="btn btn-primary"><i class="fa fa-print"></i> Print Label</a>
+                                <%--<a onclick="printLabelResep()" class="btn btn-primary"><i class="fa fa-print"></i> Print Label</a>--%>
                                 <a onclick="confirm()" class="btn btn-success"><i class="fa fa-check"></i> Save</a>
                             </div>
                         </div>
@@ -940,9 +941,9 @@
                     </tr>
                     <tr>
                         <td>Nama Obat</td>
-                        <td><span id="app_nama"></span></td>
+                        <td><span id="app_nama"></span> <small style="color: red; font-size: 12px"><span id="ket_racik"></span></small></td>
                     </tr>
-                    <tr>
+                    <tr id="hidde_for_racik">
                         <td>Qty Request</td>
                         <td><span id="app_req"></span></td>
                     </tr>
@@ -1097,7 +1098,7 @@
         $('#modal-ttd').modal({show:true, backdrop:'static'});
     }
 
-    function printLabelResep(){
+    function printLabelResep(idResep){
         window.open('printLabelResepPasien_reseppoli.action?idResep='+idResep, "_blank");
     }
 
@@ -1110,18 +1111,33 @@
             TransaksiObatAction.getListResepPasien(idResep, function (response) {
                 if(response.length > 0) {
                     $.each(response, function (i, item) {
-                        if(item.flagVerifikasi == "Y"){
-                            $('#input'+item.idObat).attr('disabled','true');
-                            $('#input'+item.idObat).val(item.idObat);
-                            $('#status'+item.idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
+                        if("Y" == item.flagVerifikasi){
+                            var total = 0;
+                            if(item.totalHarga != null){
+                                total = item.totalHarga;
+                            }
+                            if("Y" == item.flagRacik){
+                                $('#input_racik_'+item.idObat).attr('disabled','true');
+                                $('#input_racik_'+item.idObat).val(item.idObat);
+                                $('#status_racik_'+item.idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
+                                $('#total_racik_'+item.idObat).text(formatRupiah(total));
+                                $('#hide_total_racik_'+item.idObat).val(total);
+                            }else{
+                                $('#input'+item.idObat).attr('disabled','true');
+                                $('#input'+item.idObat).val(item.idObat);
+                                $('#status'+item.idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
+                                $('#total_'+item.idObat).text(formatRupiah(total));
+                                $('#hide_total_'+item.idObat).val(total);
+                            }
                         }else {
                             $('#input'+item.idObat).removeAttr('disabled');
                             $('#status'+item.idObat).html('<span id="status'+item.idObat+'"></span>');
                         }
-                    })
+                    });
+                    countBiaya();
                 }
             });
-        },1000);
+        },5000);
     }
     function toContent(){
         var ref = $('#ref').val();
@@ -1166,8 +1182,7 @@
         return today;
     }
 
-    function confirmObat(idObatVal, idObat, namaObat, qtyReq, jenisSatuan, idTransaksi) {
-
+    function confirmObat(idObatVal, idObat, namaObat, qtyReq, jenisSatuan, idTransaksi, isRacik, hargaSatuan) {
         var jenisObat = '<s:property value="permintaanResep.idJenisPeriksa"/>';
         jenisObat = jenisObat.toLowerCase();
 
@@ -1189,7 +1204,6 @@
             TransaksiObatAction.listObatPoliEntity(idObatVal, jenisObat, {
                 callback: function (response) {
                     if (response.length > 0 && idObat == idObatVal) {
-
                         $('#loading_data').show();
                         $('#modal-approve').modal({show: true, backdrop: 'static'});
 
@@ -1242,6 +1256,16 @@
                             var str = idBar.substring(8, 15);
                             var idBarang = idBar.replace(str, '*******');
 
+                            var cekValid = '';
+                            if(isRacik == "N"){
+                                $('#hidde_for_racik').show();
+                                $('#ket_racik').text("");
+                                cekValid = 'onchange="validasiInput(this.value,\''+qtyReq+'\', \''+qtyBox+'\',\''+qtyLembar+'\',\''+qtyBiji+'\',\''+item.lembarPerBox+'\',\''+item.bijiPerLembar+'\',\''+jenisSatuan+'\',\''+dateFormat+'\')"';
+                            }else{
+                                $('#hidde_for_racik').hide();
+                                $('#ket_racik').text("*Untuk Obat Racik");
+                            }
+
                             table += '<tr bgcolor=' + warna + ' style="color: ' + color + '">' +
                                     '<td>' + idBarang +
                                     '<input type="hidden" id=id_barang' + i + ' value='+item.idBarang+'>'+
@@ -1258,7 +1282,7 @@
                                     '</div>' +
                                     '</div>' +
                                     '</td>' +
-                                    '<td><input style="display: none" id=newQty' + i + ' type="number" class="form-control" onchange="validasiInput(this.value,\''+qtyReq+'\', \''+qtyBox+'\',\''+qtyLembar+'\',\''+qtyBiji+'\',\''+item.lembarPerBox+'\',\''+item.bijiPerLembar+'\',\''+jenisSatuan+'\',\''+dateFormat+'\')"></td>' +
+                                    '<td><input style="display: none" id=newQty' + i + ' type="number" class="form-control" '+cekValid+'></td>' +
                                     '<td>' + jenisSatuan + '</td>' +
                                     '</tr>';
 
@@ -1266,7 +1290,7 @@
                             bijiPerLembar = item.bijiPerLembar;
                             $('#loading_data').hide();
                         });
-                        $('#save_app').attr('onclick', 'confirmSaveApprove(\'' + idObat + '\',\'' + qtyReq + '\',\'' + idTransaksi + '\',\'' + lembarPerBox + '\',\'' + bijiPerLembar + '\',\'' + jenisSatuan + '\')');
+                        $('#save_app').attr('onclick', 'confirmSaveApprove(\'' + idObat + '\',\'' + qtyReq + '\',\'' + idTransaksi + '\',\'' + lembarPerBox + '\',\'' + bijiPerLembar + '\',\'' + jenisSatuan + '\', \''+isRacik+'\', \''+hargaSatuan+'\')');
                         $('#body_approve').html(table);
                     } else {
                         $('#status' + idObat).html('<img src="<s:url value="/pages/images/icon_failure.ico"/>" style="height: 20px; width: 20px;">');
@@ -1345,7 +1369,7 @@
         }
     }
 
-    function confirmSaveApprove(idObat, qtyReq, idTransaksi, lembarPerBox, bijiPerLembar, jenisSatuan){
+    function confirmSaveApprove(idObat, qtyReq, idTransaksi, lembarPerBox, bijiPerLembar, jenisSatuan, isRacik, hargaSatuan){
         var data = $('#tabel_approve').tableToJSON();
         var result = [];
         var qtyApp = 0;
@@ -1391,7 +1415,7 @@
         if (qtyApp > 0) {
             if (parseInt(qtyApp) <= parseInt(stok) && parseInt(qtyApp) <= parseInt(qtyReq) || flagRacik == "Y") {
                 $('#modal-confirm-dialog').modal('show');
-                $('#save_con').attr('onclick','saveApprove(\'' + idObat + '\',\'' + idTransaksi + '\',\'' + stringData + '\',\'' + qtyApp + '\',\''+jenisSatuan+'\')');
+                $('#save_con').attr('onclick','saveApprove(\'' + idObat + '\',\'' + idTransaksi + '\',\'' + stringData + '\',\'' + qtyApp + '\',\''+jenisSatuan+'\', \''+isRacik+'\', \''+hargaSatuan+'\')');
             } else {
                 $('#warning_app').show().fadeOut(5000);
                 $('#msg_app').text("Qty Approve tidak boleh melebihi stok dan qty request..!");
@@ -1402,20 +1426,31 @@
         }
     }
 
-    function saveApprove(idObat, idTransaksi, stringData, qtyApp, jenisSatuan){
+    function saveApprove(idObat, idTransaksi, stringData, qtyApp, jenisSatuan, isRacik, hargaSatuan){
         $('#modal-confirm-dialog').modal('hide');
-        dwr.engine.setAsync(true);
         $('#load_app').show();
         $('#save_app').hide();
+        dwr.engine.setAsync(true);
         TransaksiObatAction.saveVerifikasiResep(idTransaksi, stringData, {callback: function (response) {
             if (response.status == "success") {
                 $('#load_app').hide();
                 $('#save_app').show();
                 $('#modal-approve').modal('hide');
                 $('#info_dialog').dialog('open');
-                $('#qtyAppove'+idObat).text(qtyApp+' '+jenisSatuan);
-                $('#status'+idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
-                $('#input'+idObat).attr('disabled', true);
+                var total = parseInt(qtyApp)+parseInt(hargaSatuan);
+                if("Y" == isRacik){
+                    $('#qtyAppove_racik_'+idObat).text(qtyApp+' '+jenisSatuan);
+                    $('#status_racik_'+idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
+                    $('#input_racik_'+idObat).attr('disabled', true);
+                    $('#total_racik_'+idObat).text(formatRupiah(total));
+                    $('#hide_total_racik_'+idObat).val(total);
+                }else{
+                    $('#qtyAppove'+idObat).text(qtyApp+' '+jenisSatuan);
+                    $('#status'+idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
+                    $('#input'+idObat).attr('disabled', true);
+                    $('#total_'+idObat).text(formatRupiah(total));
+                    $('#hide_total_'+idObat).val(total);
+                }
                 $('#top_top').scrollTop(0);
             } else {
                 $('#load_app').hide();
@@ -1608,6 +1643,7 @@
                     $('#info_dialog').dialog('open');
                     $('#waiting_dialog').dialog('close');
                     $('body').scrollTop(0);
+                    printLabelResep(idResep);
                 } else {
                     $('#ref').val(1);
                     $('#info_dialog').dialog('close');
@@ -1725,15 +1761,14 @@
     }
 
     function countBiaya(){
-        var data = $('#tabel_list_obat').tableToJSON();
+        var data = $('.total_resep');
         var jumlah = 0;
         $.each(data, function (i, item) {
-            var jml = $('#tot_resep_'+i).val();
-            if(jml != ''){
+            if(item.value != ''){
                 if(jumlah != 0){
-                    jumlah = parseInt(jumlah) + parseInt(jml);
+                    jumlah = parseInt(jumlah) + parseInt(item.value);
                 }else{
-                    jumlah = jml;
+                    jumlah = item.value;
                 }
             }
         });

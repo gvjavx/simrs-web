@@ -22,6 +22,8 @@
 
         $(document).ready(function () {
             $('#tindakan').addClass('active');
+            var branchId = '<s:property value="dokter.branchId"/>';
+            listPelayanan(branchId);
         });
 
     </script>
@@ -75,23 +77,27 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Branch / Unit</label>
                                     <div class="col-sm-4">
-                                        <s:action id="initComboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                        <s:select list="#initComboBranch.listOfComboBranches" id="branch-id"
-                                                  listKey="branchId" listValue="branchName" onchange="listPelayanan()"
-                                                  headerKey="" headerValue=" - " cssClass="form-control select2"/>
+                                        <s:if test='dokter.branchId != null'>
+                                            <s:action id="initComboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                                            <s:select list="#initComboBranch.listOfComboBranches" disabled="true" name="dokter.branchId"
+                                                      listKey="branchId" listValue="branchName" onchange="listPelayanan(this.value)"
+                                                      headerKey="" headerValue=" - " cssClass="form-control select2"/>
+                                            <s:hidden name="dokter.branchId"></s:hidden>
+                                        </s:if>
+                                        <s:else>
+                                            <s:action id="initComboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                                            <s:select list="#initComboBranch.listOfComboBranches" id="branch-id"
+                                                      listKey="branchId" listValue="branchName" onchange="listPelayanan(this.value)"
+                                                      headerKey="" headerValue=" - " cssClass="form-control select2"/>
+                                        </s:else>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Pelayanan</label>
                                     <div class="col-sm-4">
-                                        <select class="form-control" id="list-pelayanan" name="dokter.idPelayanan" style="margin-top: 7px;">
-
+                                        <select class="form-control select2" id="list-pelayanan" name="dokter.idPelayanan">
                                         </select>
-                                        <%--<s:action id="initComboPelayanan" namespace="/dokter" name="initComboPelayanan_dokter"/>--%>
-                                        <%--<s:select list="#initComboPelayanan.listOfComboPelayanan" id="idPelayanan" name="dokter.idPelayanan"--%>
-                                                  <%--listKey="idPelayanan" listValue="namaPelayanan"--%>
-                                                  <%--headerKey="" headerValue=" - " cssClass="form-control select2"/>--%>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -779,11 +785,8 @@
         }
     }
 
-    function listPelayanan(){
-
-        var branchId = $("#branch-id option:selected").val();
+    function listPelayanan(branchId){
         PelayananAction.getListPelayananByBranch(branchId, function (res) {
-
             var str = "<option value=''> - </option>";
             $.each(res, function (i, item) {
                str += "<option value='"+item.idPelayanan+"'>"+item.namaPelayanan+"</option>"

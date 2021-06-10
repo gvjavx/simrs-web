@@ -10,6 +10,7 @@ import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.transaksiobat.model.*;
 
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public interface TransaksiObatBo {
     public List<PermintaanResep> getListResepPasien(PermintaanResep bean) throws GeneralBOException;
     public void saveAntrianResep(PermintaanResep bean) throws GeneralBOException;
     public void updateAntrianResep(PermintaanResep bean) throws GeneralBOException;
-    public void saveVerifikasiObat(List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities) throws GeneralBOException;
+    public void saveVerifikasiObat(List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities, BigInteger qtyApprove) throws GeneralBOException;
     public CheckObatResponse saveApproveResepPoli(TransaksiObatDetail bean) throws GeneralBOException;
     public List<MtSimrsHargaObatEntity> getListEntityHargaObat(HargaObat bean) throws GeneralBOException;
 

@@ -158,7 +158,7 @@ public class LaporanOpsAction extends BaseTransactionAction {
         RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
         List<Ruangan> ruanganList = new ArrayList<>();
         try {
-            ruanganList = ruanganBo.getJustListRuangan(idKelas, branchId);
+            ruanganList = ruanganBo.getJustListRuangan(idKelas, branchId, null);
         } catch (GeneralBOException e) {
             logger.error("[LaporanOpsAction.listRuangan] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
