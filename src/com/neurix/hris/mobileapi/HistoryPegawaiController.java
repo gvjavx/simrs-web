@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -153,22 +154,21 @@ public class HistoryPegawaiController implements ModelDriven<Object> {
 
             absensiPegawai = getAbsensi(nip, branchId, CommonUtil.convertTimestampToDate(now));
             ijinKeluar = getDispen(nip, branchId, CommonUtil.convertTimestampToDate(now));
+            BigInteger sisaCutiTahunan = BigInteger.ZERO;
+            BigInteger sisaCutiPanjang = BigInteger.ZERO;
+            BigInteger sisaCutiTotal = BigInteger.ZERO;
 
-            //jika cuti tahunan 0, ambil sisa cuti panjang
-            boolean isCutiTahunan = true;
             for (CutiPegawai item : cutiPegawai) {
                 if (item.getCutiName().equalsIgnoreCase("Cuti Tahunan")) {
-                    if (!item.getSisaCutiHari().toString().equalsIgnoreCase("0")) {
-                        model.setSisaCuti(item.getSisaCutiHari().toString());
-                        break;
-                    } else isCutiTahunan = false;
+                    sisaCutiTahunan = item.getSisaCutiHari();
                 }
                 if (item.getCutiName().equalsIgnoreCase("Cuti Panjang")) {
-                    if (!isCutiTahunan){
-                        model.setSisaCuti(item.getSisaCutiHari().toString());
-                    }
+                    sisaCutiPanjang = item.getSisaCutiHari();
                 }
             }
+
+            sisaCutiTotal = sisaCutiTahunan.add(sisaCutiPanjang);
+            model.setSisaCuti(sisaCutiTotal.toString());
 
             if (absensiPegawai != null){
                 model.setJumlahHadir(String.valueOf(absensiPegawai.size()));
@@ -186,8 +186,6 @@ public class HistoryPegawaiController implements ModelDriven<Object> {
                }
                 model.setJumlahDispen(String.valueOf(totalIjin));
             } else model.setJumlahDispen("0");
-
-
         }
 
         if  (action.equalsIgnoreCase("getDispen")) {
@@ -230,7 +228,6 @@ public class HistoryPegawaiController implements ModelDriven<Object> {
                         historyPegawaiMobile.setNamaStatus(CommonUtil.statusName(item.getStatusAbsensi()));
 
                         listOfHistoryPegawaiMoblile.add(historyPegawaiMobile);
-
                 }
             }
         }

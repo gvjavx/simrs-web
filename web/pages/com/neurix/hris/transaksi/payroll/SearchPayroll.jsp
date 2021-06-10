@@ -868,7 +868,7 @@
                         alert('Payroll Berhasil Tidak Di Approve');
                         $('#modal-approve-keu').modal('hide');
                         showDialogPy("success");
-                        $('#myForm')[0].reset();
+                        // $('#myForm')[0].reset();
                         window.location.href="<s:url action='initForm_payroll.action'/>";
                     } else {
                         showDialogPy("error");
@@ -1120,7 +1120,7 @@
             var tipePayroll = $(this).attr('draftTipe');
 
             if (confirm('Apakah Anda ingin mencetak detail rekap payroll?')) {
-                window.location.href = 'payrollRekapReportExcel_payroll?branchId='+branchId+'&tahun='+tahun+'&bulan='+bulan;
+                window.location.href = 'payrollRekapReportExcel_payroll?branchId='+branchId+'&tahun='+tahun+'&bulan='+bulan+'&idPayrollHeader='+idPayrollHeader;
             }
         });
 

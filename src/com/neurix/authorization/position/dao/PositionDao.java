@@ -546,16 +546,18 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         return false;
     }
 
-    public PersonilPosition getPersonilPositionAktif(String branchId, String positionId){
+    public PersonilPosition getPersonilPositionAktif(String branchId, String positionId, String nip){
 
         String SQL = "SELECT a.nip, b.nama_pegawai \n" +
                 "FROM (SELECT * FROM it_hris_pegawai_position WHERE flag = 'Y' and (flag_mbt is null or flag_mbt = 'N')) a\n" +
                 "INNER JOIN (SELECT nip, nama_pegawai FROM im_hris_pegawai WHERE flag = 'Y') b ON b.nip = a.nip\n" +
                 "WHERE a.position_id LIKE :positionid \n" +
+                "AND a.nip NOT LIKE :nip \n" +
                 "AND a.branch_id LIKE :unit ";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("positionid", positionId)
+                .setParameter("nip", nip)
                 .setParameter("unit", branchId)
                 .list();
 

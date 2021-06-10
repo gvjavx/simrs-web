@@ -746,20 +746,20 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
                     throw new GeneralBOException("Error when saving Log Cron, " + err.getMessage());
                 }
 
-                //Kirim Notif
-                List<User> usersList = userBoProxy.getUserByRoleAndBranch(CommonConstant.ROLE_ID_ADMIN,branchId);
-                for (User user : usersList){
-                    Notifikasi notif = new Notifikasi();
-                    notif.setNip(user.getUserId());
-                    notif.setNoRequest("");
-                    notif.setTipeNotifId("umum");
-                    notif.setTipeNotifName(("Pemberitahuan"));
-                    notif.setNote("Data mesin absensi pada tanggal "+CommonUtil.convertDateToString(tanggalSekarang)+" tidak bisa di sync secara otomatis lakukan sync manual (" + e + ")");
-                    notif.setCreatedWho("Cron");
-                    notif.setTo("self");
-
-                    notifikasiBoProxy.sendNotif(notif);
-                }
+//                //Kirim Notif
+//                List<User> usersList = userBoProxy.getUserByRoleAndBranch(CommonConstant.ROLE_ID_ADMIN,branchId);
+//                for (User user : usersList){
+//                    Notifikasi notif = new Notifikasi();
+//                    notif.setNip(user.getUserId());
+//                    notif.setNoRequest("");
+//                    notif.setTipeNotifId("umum");
+//                    notif.setTipeNotifName(("Pemberitahuan"));
+//                    notif.setNote("Data mesin absensi pada tanggal "+CommonUtil.convertDateToString(tanggalSekarang)+" tidak bisa di sync secara otomatis lakukan sync manual (" + e + ")");
+//                    notif.setCreatedWho("Cron");
+//                    notif.setTo("self");
+//
+//                    notifikasiBoProxy.sendNotif(notif);
+//                }
 
                 logger.error(error);
             }
@@ -790,23 +790,42 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
                     throw new GeneralBOException("Error when saving Log Cron, " + err.getMessage());
                 }
 
-                //Kirim Notif
-                List<User> usersList = userBoProxy.getUserByRoleAndBranch(CommonConstant.ROLE_ID_ADMIN,branchId);
-                for (User user : usersList){
-                    Notifikasi notif = new Notifikasi();
-                    notif.setNip(user.getUserId());
-                    notif.setNoRequest("");
-                    notif.setTipeNotifId("umum");
-                    notif.setTipeNotifName(("Pemberitahuan"));
-                    notif.setNote("Data mesin absensi pada tanggal "+CommonUtil.convertDateToString(tanggalSekarang)+" tidak bisa di sync secara otomatis lakukan sync manual (" + e + ").");
-                    notif.setCreatedWho("Cron");
-                    notif.setTo("self");
-
-                    notifikasiBoProxy.sendNotif(notif);
-                }
+//                //Kirim Notif
+//                List<User> usersList = userBoProxy.getUserByRoleAndBranch(CommonConstant.ROLE_ID_ADMIN,branchId);
+//                for (User user : usersList){
+//                    Notifikasi notif = new Notifikasi();
+//                    notif.setNip(user.getUserId());
+//                    notif.setNoRequest("");
+//                    notif.setTipeNotifId("umum");
+//                    notif.setTipeNotifName(("Pemberitahuan"));
+//                    notif.setNote("Data mesin absensi pada tanggal "+CommonUtil.convertDateToString(tanggalSekarang)+" tidak bisa di sync secara otomatis lakukan sync manual (" + e + ").");
+//                    notif.setCreatedWho("Cron");
+//                    notif.setTo("self");
+//
+//                    notifikasiBoProxy.sendNotif(notif);
+//                }
 
                 logger.error(error);
             }
+        }
+
+        //Kirim Notif
+        List<User> usersList = userBoProxy.getUserByRoleAndBranch(CommonConstant.ROLE_ID_ADMIN,branchId);
+        for (User user : usersList){
+            Notifikasi notif = new Notifikasi();
+            notif.setNip(user.getUserId());
+            notif.setNoRequest("");
+            notif.setTipeNotifId("umum");
+            notif.setTipeNotifName(("Pemberitahuan"));
+            if("success".equalsIgnoreCase(logCron.getNote())) {
+                notif.setNote("Data mesin absensi pada tanggal " + CommonUtil.convertDateToString(tanggalSekarang) + " : " + logCron.getNote());
+            }else{
+                notif.setNote("Data mesin absensi pada tanggal "+CommonUtil.convertDateToString(tanggalSekarang)+" tidak bisa di sync secara otomatis lakukan sync manual (" + logCron.getNote() + ")");
+            }
+            notif.setCreatedWho("Cron");
+            notif.setTo("self");
+
+            notifikasiBoProxy.sendNotif(notif);
         }
     }
 

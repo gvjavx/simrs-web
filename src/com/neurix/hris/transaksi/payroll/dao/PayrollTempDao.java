@@ -191,7 +191,7 @@ public class PayrollTempDao extends GenericDao<ItHrisPayrollTempEntity, String> 
                 "\n" +
                 "from it_hris_payroll_header head\n" +
                 "       left join it_hris_payroll_temp py on py.payroll_header_id = head.payroll_header_id\n" +
-                "       left join it_hris_payroll_pph_temp pph on pph.payroll_id = py.payroll_id\n" +
+                "       left join it_hris_payroll_pph_temp pph on pph.payroll_temp_id = py.payroll_temp_id\n" +
                 "       left join im_hris_department dept on dept.department_id = py.department_id\n" +
                 "       left join im_hris_position_bagian bag on bag.bagian_id = py.sub_divisi\n" +
                 "       left join\n" +

@@ -540,3 +540,7 @@ CREATE SEQUENCE seq_pasien_sementara
 
 --2021-05-19
 ALTER TABLE im_simrs_pasien_sementara ADD profesi VARCHAR(100)
+ALTER TABLE im_simrs_pasien_sementara ADD email VARCHAR(100)
+ALTER TABLE im_simrs_pasien_sementara ADD password VARCHAR(100)
+ALTER TABLE im_simrs_pasien_sementara ADD flag_login VARCHAR(1)
+

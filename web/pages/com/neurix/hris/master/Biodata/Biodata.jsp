@@ -472,7 +472,7 @@
                                                     <td>
                                                         <div class="row">
                                                             <div class="col-md-4">
-                                                                <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" disabled="false" cssClass="form-control"/>
+                                                            <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" disabled="false" cssClass="form-control"/>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <input type="checkbox" id="manualPtkp" class="checkZakat" disabled onchange="cekManualPtkp()" />
@@ -488,19 +488,13 @@
                                                     <td>
                                                         <label><small>Jumlah Anak :</small></label>
                                                     </td>
-
-
-
-
-
-
                                                     <td>
                                                         <div class="row">
                                                             <div class="col-md-4">
                                                                 <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="false" disabled="false" cssClass="form-control"/>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <table>
+                                                        <table>
                                                                     <tr>
                                                                         <td>
                                                                             <input type="checkbox" id="manualPtkp" class="checkZakat" onchange="cekManualPtkp()" />
@@ -510,7 +504,7 @@
                                                                             <small>(set manual)</small>
                                                                         </td>
                                                                     </tr>
-                                                                </table>
+                                                        </table>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -793,7 +787,7 @@
                                                             <s:textfield id="noKtp1" type="number" name="biodata.noKtp" disabled="false" readonly="true" cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield id="noKtp1" type="number" name="biodata.noKtp" disabled="false" cssClass="form-control"/>
+                                                            <s:textfield id="noKtp1" type="number" name="biodata.noKtp" disabled="false" maxlength="16" cssClass="form-control" onchange="console.log(this.value)"/>
                                                         </s:else>
                                                     </table>
                                                 </td>

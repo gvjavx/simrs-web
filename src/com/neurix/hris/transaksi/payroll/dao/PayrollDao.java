@@ -227,7 +227,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                  skala_gaji.tahun = :tahunSkalaPayroll\n" +
                 "             left join im_hris_payroll_bpjs param_bpjs on param_bpjs.branch_id = :branchId and param_bpjs.flag = 'Y'\n" +
                 "      where pegawai.flag = 'Y'\n" +
-                "        and pegawai.tipe_pegawai = 'TP02'\n" + //RAKA-update tipe pegawai
+                "        and pegawai.tipe_pegawai in ('TP01', 'TP02')\n" + //RAKA-update tipe pegawai
                 "        and pegawai_posisi.branch_id = :branchId\n" +
                 "      union\n" ;
 
@@ -414,7 +414,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "             left join im_hris_payroll_skala_gaji_pensiun skala_gaji_pensiun\n" +
                 "               on skala_gaji_pensiun.tipe_dapen_id = pegawai.dana_pensiun and\n" +
                 "                  skala_gaji_pensiun.golongan_id = pegawai.golongan_id and\n" +
-                "                  skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol\n" +
+                "                  skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol and\n" +
+                "                  skala_gaji_pensiun.flag = 'Y'\n" +
                 "             left join im_hris_payroll_skala_gaji_dplk_pegawai skala_gaji_dplk_pegawai\n" +
                 "               on skala_gaji_dplk_pegawai.golongan_id = pegawai.golongan_id\n" +
                 "             left join im_hris_payroll_bpjs param_bpjs on param_bpjs.branch_id = :branchId and param_bpjs.flag = 'Y'\n" +
@@ -767,7 +768,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "             left join im_hris_payroll_skala_gaji_pensiun skala_gaji_pensiun\n" +
                 "               on skala_gaji_pensiun.tipe_dapen_id = pegawai.dana_pensiun and\n" +
                 "                  skala_gaji_pensiun.golongan_id = pegawai.golongan_id and\n" +
-                "                  skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol\n" +
+                "                  skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol and\n" +
+                "                  skala_gaji_pensiun.flag = 'Y'\n" +
                 "             left join im_hris_payroll_skala_gaji_dplk_pegawai skala_gaji_dplk_pegawai\n" +
                 "               on skala_gaji_dplk_pegawai.golongan_id = pegawai.golongan_id\n" +
                 "             left join im_hris_payroll_bpjs param_bpjs on param_bpjs.branch_id = '01' and param_bpjs.flag = 'Y'\n" +
@@ -1290,7 +1292,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                     "                 skala_gaji.tahun = :tahunSkalaPayroll\n" +
                     "\n" +
                     "     where pegawai.flag = 'Y'\n" +
-                    "       and pegawai.tipe_pegawai = 'TP02'\n" + //RAKA-update tipe pegawai
+                    "       and pegawai.tipe_pegawai in ('TP01', 'TP02')\n" + //RAKA-update tipe pegawai
                     "       and pegawai_posisi.branch_id = :branchId\n" +
                     "     union\n" +
                     //pegawai tetap
@@ -2283,7 +2285,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                     else tunj_struktural.tunj_jabatan end                                    as tunj_jabatan,\n" +
                 "                   case\n" +
                 "                     when tunj_struktural.tunj_struktural is null then 0\n" +
-                "                     else (tunj_struktural.tunj_struktural * jenis_pegawai.persen_gaji)/100 end        as tunj_struktural,\n" +
+                "                     else tunj_struktural.tunj_struktural end        as tunj_struktural,\n" +
                 "                   case\n" +
                 "                     when tunj_strategis.nilai is null then 0\n" +
                 "                     else tunj_strategis.nilai end                                            as tunj_fungsional,\n" +
@@ -2436,7 +2438,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                   left join im_hris_payroll_skala_gaji_pensiun skala_gaji_pensiun\n" +
                 "                     on skala_gaji_pensiun.tipe_dapen_id = pegawai.dana_pensiun and\n" +
                 "                        skala_gaji_pensiun.golongan_id = pegawai.golongan_id and\n" +
-                "                        skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol\n" +
+                "                        skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol and\n" +
+                "                        skala_gaji_pensiun.flag = 'Y'\n" +
                 "                   left join im_hris_payroll_skala_gaji_dplk_pegawai skala_gaji_dplk_pegawai\n" +
                 "                     on skala_gaji_dplk_pegawai.golongan_id = pegawai.golongan_id\n" +
                 "                   left join it_hris_payroll transaksi_payroll\n" +
@@ -2701,7 +2704,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                     else tunj_struktural.tunj_jabatan end                                    as tunj_jabatan,\n" +
                 "                   case\n" +
                 "                     when tunj_struktural.tunj_struktural is null then 0\n" +
-                "                     else (tunj_struktural.tunj_struktural * jenis_pegawai.persen_gaji) / 100 end      as tunj_struktural,\n" +
+                "                     else tunj_struktural.tunj_struktural end      as tunj_struktural,\n" +
                 "                   case\n" +
                 "                     when tunj_strategis.nilai is null then 0\n" +
                 "                     else tunj_strategis.nilai end                                            as tunj_fungsional,\n" +
@@ -2858,7 +2861,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                   left join im_hris_payroll_skala_gaji_pensiun skala_gaji_pensiun\n" +
                 "                     on skala_gaji_pensiun.tipe_dapen_id = pegawai.dana_pensiun and\n" +
                 "                        skala_gaji_pensiun.golongan_id = pegawai.golongan_id and\n" +
-                "                        skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol\n" +
+                "                        skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol and\n" +
+                "                        skala_gaji_pensiun.flag = 'Y'\n" +
                 "                   left join im_hris_payroll_skala_gaji_dplk_pegawai skala_gaji_dplk_pegawai\n" +
                 "                     on skala_gaji_dplk_pegawai.golongan_id = pegawai.golongan_id\n" +
                 "                   left join it_hris_payroll transaksi_payroll\n" +
@@ -8699,6 +8703,31 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
         }
         return listOfResult;
     }
+
+    public String statApprovPayroll(String idPayroalHeader){
+        String statPayroll = "";
+        List<Object[]> results = new ArrayList<Object[]>();
+        final String query = "select\n" +
+                "\tapproval_sdm_flag,\n" +
+                "\tapproval_aks_flag\n" +
+                "from it_hris_payroll_header\n" +
+                "where payroll_header_id = '"+ idPayroalHeader +"'\n";
+        results = this.sessionFactory.getCurrentSession().createSQLQuery(query).list();
+
+        if(results != null){
+            String aks = results.get(0)[1]!=null ? results.get(0)[1].toString() : "N";
+            String sdm = results.get(0)[0]!=null ? results.get(0)[0].toString() : "N";
+            if("Y".equalsIgnoreCase(aks)){
+                statPayroll = "approveAKS";
+            }else if("Y".equalsIgnoreCase(sdm)){
+                statPayroll = "approveSDM";
+            }else{
+                statPayroll = "inProcess";
+            }
+        }
+        return statPayroll;
+    }
+
     //RAKA-end
 //
 //    public List<ItPayrollEntity> searchReportTarikanPendapatanPPH(final String tahun, final String unit) {

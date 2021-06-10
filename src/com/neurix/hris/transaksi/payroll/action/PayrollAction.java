@@ -997,7 +997,7 @@ public class PayrollAction extends BaseTransactionAction {
     public String saveEditData(String payrollId, String nip, String bulan,  //data pegawai
                              String kopkar, String iuranSp, String iuranPiikb, String bankBri, String bankMandiri, // Komponen rincian C
                              String infaq, String perkesDanObat, String listrik, String iuranProfesi, String potonganLain, // Komponen rincian C
-                             String selisihPph21){
+                             String selisihPph21, String dasarBpjs){
 
         logger.info("[PayrollAction.saveEditData] start process >>>");
 
@@ -1045,6 +1045,9 @@ public class PayrollAction extends BaseTransactionAction {
 
                 itemEditDataPayroll.setPotonganLain(potonganLain);
                 itemEditDataPayroll.setPotonganLainNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(potonganLain))));
+
+                itemEditDataPayroll.setDasarBpjs(dasarBpjs);
+                itemEditDataPayroll.setDasarBpjsNilai((dasarBpjs != null && !"".equalsIgnoreCase(dasarBpjs)) ? BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(dasarBpjs))) : BigDecimal.ZERO);
 
                 if (CommonConstant.BULAN_12.equalsIgnoreCase(bulan)) {
                     PayrollPph itemEditPayrollPph = itemEditDataPayroll.getPayrollPph();
@@ -1098,6 +1101,75 @@ public class PayrollAction extends BaseTransactionAction {
             return "01";
         }
     }
+
+    //RAKA-27MEI2021==> save catatan koreksi AKS
+    public String saveKoreksiAks(String payrollId, String nip, String bulan, String flagKoreksi, String noteKoreksi) {
+        logger.info("[PayrollAction.saveKoreksiAks] start process >>>");
+
+        boolean flag = true;
+        PegawaiPayroll itemEditDataPayroll = new PegawaiPayroll();
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<PegawaiPayroll> listOfDataPayroll = (List<PegawaiPayroll>) session.getAttribute("listDataPayroll");
+
+        if (listOfDataPayroll!=null && !listOfDataPayroll.isEmpty()) {
+
+            itemEditDataPayroll = listOfDataPayroll.stream()
+                    .filter(x -> payrollId.equals(x.getPayrollId()))
+                    .findAny()
+                    .orElse(null);
+
+            if (itemEditDataPayroll!=null) {
+
+                itemEditDataPayroll.setFlagKoreksi(flagKoreksi);
+                itemEditDataPayroll.setNoteKoreksi(noteKoreksi);
+
+                String userLogin = CommonUtil.userLogin();
+                itemEditDataPayroll.setLastUpdateWho(userLogin);
+
+                ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+                PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
+                PegawaiPayroll itemResultPegawaiPayroll = new PegawaiPayroll();
+
+                try {
+                    itemResultPegawaiPayroll = payrollBo.saveEditItemCalculatePayroll(itemEditDataPayroll);
+                } catch (GeneralBOException e) {
+                    flag = false;
+                    Long logId = null;
+                    try {
+                        logId = payrollBo.saveErrorMessage(e.getMessage(), "PayrollBo.saveEditItemCalculatePayroll");
+                    } catch (GeneralBOException e1) {
+                        logger.error("[PayrollAction.saveEditData] Error when saving error,", e1);
+                    }
+                    logger.error("[PayrollAction.saveEditData] Error when saving update item payroll," + "[" + logId + "] Found problem when saving update item payroll, please inform to your admin.", e);
+                }
+
+                if (flag) {
+
+                    int idx = listOfDataPayroll.indexOf(itemEditDataPayroll);
+                    listOfDataPayroll.set(idx,itemResultPegawaiPayroll);
+
+                    //updated session
+                    session.removeAttribute("listDataPayroll");
+                    session.setAttribute("listDataPayroll", listOfDataPayroll);
+
+                }
+
+            } else {
+                flag = false;
+            }
+        } else {
+            flag = false;
+        }
+        logger.info("[PayrollAction.saveKoreksiAks] end process >>>");
+
+        if (flag) {
+            return "00";
+        } else {
+            return "01";
+        }
+    }
+    //RAKA-end
 
     //updated by ferdi, 01-12-2020, to get total pph s.d nov
     public List<PayrollPph> searchTotalPPh11Bulan(String payrollId , String tahun){
@@ -12346,6 +12418,7 @@ public class PayrollAction extends BaseTransactionAction {
         final String tahun = this.getTahun();
         final String bulan = this.getBulan();
         final String unit = this.getBranchId();
+        final String idHeader = this.getIdPayrollHeader();
         String titleReport = "";
         String filename = "";
         final ApplicationContext ctx = (ApplicationContext)ContextLoader.getCurrentWebApplicationContext();
@@ -12360,7 +12433,7 @@ public class PayrollAction extends BaseTransactionAction {
 
         titleReport = "Rekap Payroll " + branch.getBranchName() + periode;
         filename = "Rekap Payroll " + branch.getBranchName() + periode;
-        listData = payrollBo.searchReportPayroll(bulan, tahun, unit);
+        listData = payrollBo.searchReportPayroll(bulan, tahun, unit, idHeader);
 
         listOfColumn.add("nip");
         listOfColumn.add("nama pegawai");
@@ -12554,7 +12627,7 @@ public class PayrollAction extends BaseTransactionAction {
             // tunjalih
             cellDetail = new CellDetail();
             cellDetail.setCellID(16);
-            cellDetail.setValueCell(data.getTjAlihGapok().doubleValue());
+            cellDetail.setValueCell(data.getTunjAlihTot().doubleValue());
             cellDetail.setAlignmentCell(3);
             listOfCell.add(cellDetail);
 

@@ -94,9 +94,10 @@ public class CommonConstant {
     public final static String URL_IMAGE_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/logo-nmu.png";
     public final static String URL_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/";
     public final static String IMAGE_LOGO_KP = "KP.png";
-    public final static String RESOURCE_DOCUMENT_PAYROLL = CommonUtil.getPropertyParams("upload.folder2")+CommonConstant.RESOURCE_PATH_PAYROLL;
+    public final static String RESOURCE_DOCUMENT_PAYROLL = CommonUtil.getPropertyParams("upload.folder")+CommonConstant.RESOURCE_PATH_PAYROLL;
 
-    public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayroll3.jrxml";
+//    public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayroll3.jrxml";
+    public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollPeg_update.jrxml";
     public final static String REPORT_PAYROLL_THR = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollThrBranch3.jrxml";
     public final static String REPORT_PAYROLL_JASPROD = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollJasoprBranch3jrxml";
     public final static String REPORT_PAYROLL_PENSIUN = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollPensiun3.jrxml";
@@ -183,6 +184,9 @@ public class CommonConstant {
     public final static String COA_PAYROLL = CommonUtil.getPropertyParams("coa.bank.payroll");
     public final static String KELOMPOK_ID_PEJABAT_MUDA = CommonUtil.getPropertyParams("kelompok.id.pejabat.muda");
     public final static String KELOMPOK_ID_PEJABAT_MADYA = CommonUtil.getPropertyParams("kelompok.id.pejabat.madya");
+    //RAKA-09JUN2021 ===> kelompok khusus manager procurement, dibuat untuk handle tunj.Jab & Struk yg berbeda (antara Madya dan Utama)
+    public final static String KELOMPOK_ID_MAN_PROCUREMENT = CommonUtil.getPropertyParams("kelompok.id.pejabat.man_procurement");
+    //RAKA-end
     public final static String KELOMPOK_ID_PEJABAT_UTAMA = CommonUtil.getPropertyParams("kelompok.id.pejabat.utama");
     public final static String KELOMPOK_ID_STAFF = CommonUtil.getPropertyParams("kelompok.id.pelaksana");
     public final static String BAGIAN_ID_BOD =CommonUtil.getPropertyParams("bagian.bod");
