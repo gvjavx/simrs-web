@@ -222,18 +222,7 @@
                         </div>
                     </div>
                     <div class="row jarak">
-                        <label class="col-md-4">Anjuran Kontrol Kembali</label>
-                        <div class="col-md-8">
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                <input class="form-control ptr-tgl" id="pt7">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <label class="col-md-4">Indikasi Rawat Inap</label>
+                        <label class="col-md-4">Intruksi Tindak Lanjut</label>
                         <div class="col-md-8">
                             <select class="form-control select2" id="intruksi_pemeriksaan_bedah" style="width: 100%" onchange="showKetIntruksi(this.value)">
                             </select>
@@ -248,6 +237,17 @@
                                     <option value="Kuratif">Kuratif</option>
                                     <option value="Rehabilitatif">Rehabilitatif</option>
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <label class="col-md-4">Anjuran Kontrol Kembali</label>
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input class="form-control ptr-tgl" id="pt7">
                             </div>
                         </div>
                     </div>
