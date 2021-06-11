@@ -20,6 +20,7 @@ public class KodeRekening extends BaseModel {
     private Long level;
     private String postCoa;
 
+    private String tipeCoa;
     private String tampilanCoa;
     private String posisi;
     private String posisiName;
@@ -33,12 +34,13 @@ public class KodeRekening extends BaseModel {
     private String tipeBudgeting;
     private BigInteger bLevel;
 
-    public BigInteger getbLevel() {
-        return bLevel;
+
+    public String getTipeCoa() {
+        return tipeCoa;
     }
 
-    public void setbLevel(BigInteger bLevel) {
-        this.bLevel = bLevel;
+    public void setTipeCoa(String tipeCoa) {
+        this.tipeCoa = tipeCoa;
     }
 
     public String getTipeBudgeting() {
@@ -167,5 +169,13 @@ public class KodeRekening extends BaseModel {
 
     public void setFlagDivisi(String flagDivisi) {
         this.flagDivisi = flagDivisi;
+    }
+
+    public BigInteger getbLevel() {
+        return bLevel;
+    }
+
+    public void setbLevel(BigInteger bLevel) {
+        this.bLevel = bLevel;
     }
 }

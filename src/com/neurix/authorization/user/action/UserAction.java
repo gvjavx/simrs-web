@@ -276,7 +276,7 @@ public class UserAction extends BaseMasterAction {
         }
 
         for (Branch branch : listOfBranches) {
-            if (!CommonConstant.ID_KANPUS.equalsIgnoreCase(branch.getBranchId())) {
+            if (!CommonConstant.BRANCH_KP.equalsIgnoreCase(branch.getBranchId())) {
                 listOfResult.add(branch);
             }
         }

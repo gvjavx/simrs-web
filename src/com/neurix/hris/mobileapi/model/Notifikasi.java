@@ -23,6 +23,15 @@ public class Notifikasi implements Serializable {
     private String note;
     private String read;
     private String tanggal;
+    private String lamaJam;
+
+    public String getLamaJam() {
+        return lamaJam;
+    }
+
+    public void setLamaJam(String lamaJam) {
+        this.lamaJam = lamaJam;
+    }
 
     public String getTipeNotifName() {
         return tipeNotifName;

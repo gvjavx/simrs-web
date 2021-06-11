@@ -773,8 +773,13 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataEntity.setGender(bean.getGender());
                             imBiodataEntity.setAgama(bean.getAgama());
                             imBiodataEntity.setStatusKeluarga(bean.getStatusKeluarga());
-//                            imBiodataEntity.setJumlahAnak(bean.getJumlahAnak());
-                            imBiodataEntity.setJumlahAnak(BigInteger.valueOf(jumlahAnak));
+                            //RAKA-20MEI2021 ===> memberikan akses set Jumlah Anak (PTKP)
+                            if("Y".equalsIgnoreCase(bean.getFlagManualPtkp())) {
+                                imBiodataEntity.setJumlahAnak(bean.getJumlahAnak());
+                            }else {
+                                imBiodataEntity.setJumlahAnak(BigInteger.valueOf(jumlahAnak));
+                            }
+                            //RAKA-end
                             imBiodataEntity.setTempatLahir(bean.getTempatLahir());
                             imBiodataEntity.setTanggalLahir(bean.getTanggalLahir());
                             if (CommonConstant.PEGAWAI_PKWT.equalsIgnoreCase(bean.getTipePegawai())) {
@@ -1987,15 +1992,19 @@ public class BiodataBoImpl implements BiodataBo {
 
                 imBiodataEntity.setGender(bean.getGender());
 
-                if (listKeluarga != null) {
-                    for (Keluarga keluarga : listKeluarga) {
-                        if (!"I".equalsIgnoreCase(keluarga.getStatusKeluargaId()) && !"S".equalsIgnoreCase(keluarga.getStatusKeluargaId())) {
-                            jumlahAnak += 1;
+                if(!"Y".equalsIgnoreCase(bean.getFlagManualPtkp()) || bean.getFlagManualPtkp() == null) {
+                    if (listKeluarga != null) {
+                        for (Keluarga keluarga : listKeluarga) {
+                            if (!"I".equalsIgnoreCase(keluarga.getStatusKeluargaId()) && !"S".equalsIgnoreCase(keluarga.getStatusKeluargaId())) {
+                                jumlahAnak += 1;
+                            }
                         }
                     }
-                }
 
-                imBiodataEntity.setJumlahAnak(BigInteger.valueOf(jumlahAnak));
+                    imBiodataEntity.setJumlahAnak(BigInteger.valueOf(jumlahAnak));
+                }else{
+                    imBiodataEntity.setJumlahAnak(bean.getJumlahAnak());
+                }
 
                 imBiodataEntity.setNpwp(bean.getNpwp());
                 imBiodataEntity.setDanaPensiun(bean.getDanaPensiun());

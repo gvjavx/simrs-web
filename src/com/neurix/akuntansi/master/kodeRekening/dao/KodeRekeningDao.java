@@ -6,6 +6,7 @@ import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
@@ -211,6 +212,15 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
         }
         return result;
     }
+
+    /*//untuk mendapat kode rekening kas yang suda mapping dengan jurnal
+    public List<ImKodeRekeningEntity> getByMappingJurnal(Map mapCriteria) {
+        List<ImKodeRekeningEntity> result = null;
+        String query = "";
+
+        return result;
+    }*/
+
     //untuk mendapat kode rekening kas dari jurnal
     public String getNamaRekeningKasForJurnal(String noJurnal){
         String result="";
@@ -219,10 +229,10 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
                 "  nama_kode_rekening\n" +
                 "from \n" +
                 "  it_akun_jurnal_detail jd INNER JOIN \n" +
-                "  im_akun_kode_rekening kr ON jd.rekening_id=kr.rekening_id\n" +
+                "  im_akun_kode_rekening kr ON jd.nomor_rekening=kr.kode_rekening\n" +
                 "where \n" +
                 "  no_jurnal='"+noJurnal+"'\n" +
-                "  and kode_rekening ilike '"+kodeRekeningKas+"%'\n";
+                "  and kode_rekening ilike '"+kodeRekeningKas+"%'\n limit 1";
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
         if (results!=null){
@@ -265,7 +275,8 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
                 " where \n" +
                 "\t kr.level=5 \n"+
                 "\t and trans_id='"+transId+"' " +
-                " and posisi='"+posisiLawan+"' ";
+                " and posisi='"+posisiLawan+"' " +
+                "and j.flag = 'Y' ";
 
                 results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -281,6 +292,18 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
             listOfResult.add(data);
         }
         return listOfResult;
+    }
+
+    public List<String> getParentByCoa(String coa) {
+        List<String> result = new ArrayList<>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "select  kode_rekening, rekening_id from  im_akun_kode_rekening  where  tipe_coa = '"+coa+"' and  kode_rekening not like '%.%'";
+        results = this.sessionFactory.getCurrentSession().createSQLQuery(query).list();
+
+        for (Object[] row : results) {
+            result.add((String) row[0]);
+        }
+        return result;
     }
 
     //untuk mendapat rekening id dari coa

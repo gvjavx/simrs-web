@@ -1,6 +1,5 @@
 package com.neurix.akuntansi.master.tipeJurnal.action;
 
-//import com.neurix.authorization.company.bo.AreaBo;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.tipeJurnal.bo.TipeJurnalBo;
 import com.neurix.akuntansi.master.tipeJurnal.model.TipeJurnal;
@@ -12,6 +11,7 @@ import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
+import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -58,11 +58,6 @@ public class TipeJurnalAction extends BaseMasterAction {
     public static Logger getLogger() {
         return logger;
     }
-
-    public static void setLogger(Logger logger) {
-        TipeJurnalAction.logger = logger;
-    }
-
 
     public String initComboTipeJurnal() {
         logger.info("[TipeJurnalAction.initComboTipeJurnal] start process >>>");
@@ -231,11 +226,11 @@ public class TipeJurnalAction extends BaseMasterAction {
 
         String itemId = getId();
         String itemFlag = getFlag();
-        TipeJurnal deleteTipeJurnal = new TipeJurnal();
+        TipeJurnal viewTipeJurnal = new TipeJurnal();
 
         if (itemFlag != null ) {
             try {
-                deleteTipeJurnal = init(itemId, itemFlag);
+                viewTipeJurnal = init(itemId, itemFlag);
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {
@@ -248,20 +243,20 @@ public class TipeJurnalAction extends BaseMasterAction {
                 return "failure";
             }
 
-            if (deleteTipeJurnal != null) {
-                setTipeJurnal(deleteTipeJurnal);
+            if (viewTipeJurnal != null) {
+                setTipeJurnal(viewTipeJurnal);
 
             } else {
-                deleteTipeJurnal.setTipeJurnalId(itemId);
-                deleteTipeJurnal.setFlag(itemFlag);
-                setTipeJurnal(deleteTipeJurnal);
+                viewTipeJurnal.setTipeJurnalId(itemId);
+                viewTipeJurnal.setFlag(itemFlag);
+                setTipeJurnal(viewTipeJurnal);
                 addActionError("Error, Unable to find data with id = " + itemId);
                 return "failure";
             }
         } else {
-            deleteTipeJurnal.setTipeJurnalId(itemId);
-            deleteTipeJurnal.setFlag(itemFlag);
-            setTipeJurnal(deleteTipeJurnal);
+            viewTipeJurnal.setTipeJurnalId(itemId);
+            viewTipeJurnal.setFlag(itemFlag);
+            setTipeJurnal(viewTipeJurnal);
             addActionError("Error, Unable to delete again with flag = N.");
             return "failure";
         }
@@ -280,17 +275,21 @@ public class TipeJurnalAction extends BaseMasterAction {
 
     public String saveEdit(){
         logger.info("[TipeJurnalAction.saveEdit] start process >>>");
-        try {
             TipeJurnal editTipeJurnal = getTipeJurnal();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
             editTipeJurnal.setLastUpdateWho(userLogin);
             editTipeJurnal.setLastUpdate(updateTime);
+        editTipeJurnal.setIsOperasional(editTipeJurnal.getIsOperasional() == null ? "N" : "Y");
             editTipeJurnal.setAction("U");
             editTipeJurnal.setFlag("Y");
 
+        try {
             tipeJurnalBoProxy.saveEdit(editTipeJurnal);
+            HttpSession session = ServletActionContext.getRequest().getSession();
+            session.setAttribute("param_tipeJurnal",editTipeJurnal.getTipeJurnalId());
+            logger.info("[TipeJurnalAction.saveEdit] end process <<<");
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -303,9 +302,6 @@ public class TipeJurnalAction extends BaseMasterAction {
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
             throw new GeneralBOException(e.getMessage());
         }
-
-        logger.info("[TipeJurnalAction.saveEdit] end process <<<");
-
         return "success_save_edit";
     }
 
@@ -352,10 +348,16 @@ public class TipeJurnalAction extends BaseMasterAction {
             tipeJurnal.setLastUpdate(updateTime);
             tipeJurnal.setCreatedDate(updateTime);
             tipeJurnal.setLastUpdateWho(userLogin);
+            tipeJurnal.setIsOperasional(tipeJurnal.getIsOperasional() == null ? "N" : "Y");
             tipeJurnal.setAction("C");
             tipeJurnal.setFlag("Y");
 
-            tipeJurnalBoProxy.saveAdd(tipeJurnal);
+            TipeJurnal statusTipeJurnal = tipeJurnalBoProxy.saveAdd(tipeJurnal);
+            if(statusTipeJurnal != null){
+                HttpSession session =  ServletActionContext.getRequest().getSession();
+                session.setAttribute("param_tipeJurnal", tipeJurnal.getTipeJurnalId());
+                return SUCCESS;
+            }
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -380,8 +382,21 @@ public class TipeJurnalAction extends BaseMasterAction {
     @Override
     public String search() {
         logger.info("[TipeJurnalAction.search] start process >>>");
-        TipeJurnal searchTipeJurnal = getTipeJurnal();
-        List<TipeJurnal> listOfsearchTipeJurnal = new ArrayList();
+        TipeJurnal searchTipeJurnal ;
+        List<TipeJurnal> listOfsearchTipeJurnal;
+        HttpSession session =  ServletActionContext.getRequest().getSession();
+        Object tipeJurnal = session.getAttribute("param_tipeJurnal");
+        if(tipeJurnal != null){
+            searchTipeJurnal = new TipeJurnal();
+            searchTipeJurnal.setTipeJurnalId(tipeJurnal.toString());
+            searchTipeJurnal.setFlag("Y");
+            session.removeAttribute("param_tipeJurnal");
+
+        }
+        else {
+            searchTipeJurnal = getTipeJurnal();
+        }
+
         try {
             listOfsearchTipeJurnal = tipeJurnalBoProxy.getByCriteria(searchTipeJurnal);
         } catch (GeneralBOException e) {
@@ -396,8 +411,6 @@ public class TipeJurnalAction extends BaseMasterAction {
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
             return ERROR;
         }
-
-        HttpSession session = ServletActionContext.getRequest().getSession();
 
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfsearchTipeJurnal);
@@ -431,5 +444,58 @@ public class TipeJurnalAction extends BaseMasterAction {
     @Override
     public String downloadXls() {
         return SUCCESS;
+    }
+
+
+
+   /*function DWR*/
+    public List<TipeJurnal> comboTipeJurnal() {
+        logger.info("[TipeJurnalAction.comboTipeJurnal] start process >>>");
+
+        TipeJurnal search = new TipeJurnal();
+        List<TipeJurnal> tipeJurnalList = new ArrayList();
+        search.setFlag("Y");
+        TipeJurnalBo tipeJurnalBo = null;
+        try {
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            tipeJurnalBo = (TipeJurnalBo) ctx.getBean("tipeJurnalBoProxy");
+            tipeJurnalList = tipeJurnalBo.getByCriteria(search);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = tipeJurnalBo.saveErrorMessage(e.getMessage(), "IjinBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[TipeJurnalAction.comboTipeJurnal] Error when saving error,", e1);
+            }
+            logger.error("[TipeJurnalAction.initComboTipeJurnal] Error when searching function by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return tipeJurnalList;
+        }
+        logger.info("[TipeJurnalAction.comboTipeJurnal] end process <<<");
+        return tipeJurnalList;
+    }
+
+    public TipeJurnal getByIdTipeJurnal(String tipeJurnalId) {
+        logger.info("[TipeJurnalAction.getByIdTipeJurnal] start process >>>");
+
+        TipeJurnalBo tipeJurnalBo = null;
+        TipeJurnal tipeJurnalDwr = null;
+        try {
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            tipeJurnalBo = (TipeJurnalBo) ctx.getBean("tipeJurnalBoProxy");
+            tipeJurnalDwr = tipeJurnalBo.getTipeJurnalById(tipeJurnalId);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = tipeJurnalBo.saveErrorMessage(e.getMessage(), "IjinBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[TipeJurnalAction.getByIdTipeJurnal] Error when saving error,", e1);
+            }
+            logger.error("[TipeJurnalAction.getByIdTipeJurnal] Error when searching function by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return tipeJurnalDwr;
+        }
+        logger.info("[TipeJurnalAction.getByIdTipeJurnal] end process <<<");
+        return tipeJurnalDwr;
     }
 }

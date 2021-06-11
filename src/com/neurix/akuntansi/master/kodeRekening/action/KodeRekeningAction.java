@@ -47,6 +47,7 @@ public class KodeRekeningAction extends BaseMasterAction {
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
+            kodeRekening.setTipeCoa(kodeRekening.getTipeCoa());
             kodeRekening.setCreatedWho(userLogin);
             kodeRekening.setLastUpdate(updateTime);
             kodeRekening.setCreatedDate(updateTime);
@@ -191,6 +192,27 @@ public class KodeRekeningAction extends BaseMasterAction {
         return kodeRekeningList;
     }
 
+    public List<String> cekAvailableTipeCoa(String tipeCoa) {
+        logger.info("[KodeRekeningAction.cekAvailableTipeCoa] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KodeRekeningBo kodeRekeningBo = (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
+        List<String> kodeRekeningList = new ArrayList();
+        try {
+            kodeRekeningList = kodeRekeningBo.getParentByTipeCoa(tipeCoa);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = kodeRekeningBo.saveErrorMessage(e.getMessage(), "StrukturJabatanBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[KodeRekeningAction.cekAvailableTipeCoa] Error when saving error,", e1);
+            }
+            logger.error("[KodeRekeningAction.cekAvailableTipeCoa] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+        }
+
+        return kodeRekeningList;
+    }
+
     public boolean cekAvailableParent(String nilai) {
         logger.info("[KodeRekeningAction.cekAvailableParent] start process >>>");
         boolean adaParent=true;
@@ -213,7 +235,7 @@ public class KodeRekeningAction extends BaseMasterAction {
                 } catch (GeneralBOException e) {
                     Long logId = null;
                     try {
-                        logId = kodeRekeningBo.saveErrorMessage(e.getMessage(), "StrukturJabatanBO.getByCriteria");
+                        logId = kodeRekeningBo.saveErrorMessage(e.getMessage(), "KodeRekeningBo.getByCriteria");
                     } catch (GeneralBOException e1) {
                         logger.error("[KodeRekeningAction.cekAvailableParent] Error when saving error,", e1);
                     }
@@ -281,7 +303,7 @@ public class KodeRekeningAction extends BaseMasterAction {
         return listOfsearchKodeRekening;
     }
 
-    public String saveEdit(String id, String kodeRekeningName,String coa,String tipeEdit, String tipeRekening, String flagMaster, String flagDivisi){
+    public String saveEdit(String id, String kodeRekeningName,String coa,String tipeEdit, String tipeCoa, String flagMaster, String flagDivisi){
         logger.info("[KodeRekeningAction.saveEdit] start process >>>");
         String status="";
         String userLogin = CommonUtil.userLogin();
@@ -289,15 +311,18 @@ public class KodeRekeningAction extends BaseMasterAction {
         KodeRekening edit = new KodeRekening();
         edit.setRekeningId(id);
         edit.setKodeRekening(coa);
-        edit.setNamaKodeRekening(kodeRekeningName);
-        edit.setTipeRekeningId(tipeRekening == null ? "" : tipeRekening);
-        edit.setFlagMaster(flagMaster == null ? "" : flagMaster);
-        edit.setFlagDivisi(flagDivisi == null ? "" : flagDivisi);
+//        edit.setNamaKodeRekening(kodeRekeningName);
+//        edit.setTipeRekeningId(tipeRekening == null ? "" : tipeRekening);
+//        edit.setFlagMaster(flagMaster == null ? "" : flagMaster);
+//        edit.setFlagDivisi(flagDivisi == null ? "" : flagDivisi);
         edit.setLastUpdateWho(userLogin);
         edit.setLastUpdate(updateTime);
         edit.setAction("U");
         if ("edit".equalsIgnoreCase(tipeEdit)){
+            edit.setNamaKodeRekening(kodeRekeningName);
             edit.setFlag("Y");
+            edit.setTipeCoa(tipeCoa);
+
         }else if ("delete".equalsIgnoreCase(tipeEdit)){
             edit.setFlag("N");
         }
@@ -341,7 +366,7 @@ public class KodeRekeningAction extends BaseMasterAction {
         logger.info("[KodeRekeningAction.searchKodeRekening] end process >>>");
         return kodeRekeningList;
     }
-    public String cekStatusBeforeSave() {
+    /*public String cekStatusBeforeSave() {
         logger.info("[KodeRekeningAction.cekStatusBeforeSave] start process >>>");
         String status="";
         boolean adaKredit=false;
@@ -373,15 +398,17 @@ public class KodeRekeningAction extends BaseMasterAction {
 
         logger.info("[KodeRekeningAction.cekStatusBeforeSave] end process >>>");
         return status;
-    }
+    }*/
+
+
     public void saveAddKodeRekening(String kodeRekening,String namaKodeRekening,String posisi) {
         logger.info("[KodeRekeningAction.saveAddKodeRekening] start process >>>");
         String posisiName = "";
-        if ("D".equalsIgnoreCase(posisi)){
-            posisiName="Debet";
-        }else{
-            posisiName="Kredit";
-        }
+//        if ("D".equalsIgnoreCase(posisi)){
+//            posisiName="Debet";
+//        }else{
+//            posisiName="Kredit";
+//        }
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<KodeRekening> kodeRekeningList = (List<KodeRekening>) session.getAttribute("listOfResultKodeRekening");
         List<KodeRekening> kodeRekeningArrayList = new ArrayList<>();
@@ -390,8 +417,8 @@ public class KodeRekeningAction extends BaseMasterAction {
             KodeRekening newData = new KodeRekening();
             newData.setKodeRekening(kodeRekening);
             newData.setNamaKodeRekening(namaKodeRekening);
-            newData.setPosisi(posisi);
-            newData.setPosisiName(posisiName);
+//            newData.setPosisi(posisi);
+//            newData.setPosisiName(posisiName);
 
             kodeRekeningArrayList.add(newData);
             session.setAttribute("listOfResultKodeRekening",kodeRekeningArrayList);
@@ -407,8 +434,8 @@ public class KodeRekeningAction extends BaseMasterAction {
                 KodeRekening newData = new KodeRekening();
                 newData.setKodeRekening(kodeRekening);
                 newData.setNamaKodeRekening(namaKodeRekening);
-                newData.setPosisi(posisi);
-                newData.setPosisiName(posisiName);
+//                newData.setPosisi(posisi);
+//                newData.setPosisiName(posisiName);
                 kodeRekeningArrayList.add(newData);
                 session.setAttribute("listOfResultKodeRekening",kodeRekeningArrayList);
             }
@@ -525,6 +552,20 @@ public class KodeRekeningAction extends BaseMasterAction {
         KodeRekening searchKodeRekening = new KodeRekening();
         searchKodeRekening.setFlag("Y");
         searchKodeRekening.setLevel(Long.valueOf("5"));
+        List<KodeRekening> listOfsearchKodeRekening = new ArrayList();
+        try {
+            listOfsearchKodeRekening = kodeRekeningBoProxy.getByCriteria(searchKodeRekening);
+        } catch (GeneralBOException e) {
+            logger.error("ini error, "+e.getMessage());
+            throw new GeneralBOException("ini error, "+e.getMessage());
+        }
+        listOfComboKodeRekening.addAll(listOfsearchKodeRekening);
+        return "init_combo_kode_rekening";
+    }
+
+    public String initComboKodeRekeningAll(){
+        KodeRekening searchKodeRekening = new KodeRekening();
+        searchKodeRekening.setFlag("Y");
         List<KodeRekening> listOfsearchKodeRekening = new ArrayList();
         try {
             listOfsearchKodeRekening = kodeRekeningBoProxy.getByCriteria(searchKodeRekening);

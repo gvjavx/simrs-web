@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportPayroll" language="groovy" pageWidth="421" pageHeight="595" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="03e04395-8f92-4fcc-a2df-614fdfb1af97">
-	<property name="ireport.zoom" value="2.357947691000016"/>
-	<property name="ireport.x" value="19"/>
-	<property name="ireport.y" value="555"/>
-	<parameter name="reportParams.titleReport" class="java.lang.String"/>
-	<parameter name="reportParams.branchId" class="java.lang.String"/>
-	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
-	<parameter name="reportParams.bulan" class="java.lang.String"/>
-	<parameter name="reportParams.tahun" class="java.lang.String"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="45"/>
+	<parameter name="reportParams.titleReport" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Slip Gaji"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportParams.branchId" class="java.lang.String">
+		<defaultValueExpression><![CDATA["01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportParams.urlLogo" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:/tomcat/webapps/go-medsys/pages/images/KP.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportParams.bulan" class="java.lang.String">
+		<defaultValueExpression><![CDATA["01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportParams.tahun" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2021"]]></defaultValueExpression>
+	</parameter>
 	<parameter name="reportParams.date" class="java.lang.String"/>
-	<parameter name="reportParams.areaId" class="java.lang.String"/>
+	<parameter name="reportParams.areaId" class="java.lang.String">
+		<defaultValueExpression><![CDATA["PT. Nusantara Medika Utama"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
   payroll.*,
@@ -33,9 +45,10 @@ FROM it_hris_payroll payroll
 left join im_hris_pegawai pegawai on pegawai.nip = payroll.nip
 left join im_branches branch on payroll.branch_id = branch.branch_id
 WHERE
-payroll.branch_id = '01'
-and payroll.bulan = '04'
-and payroll.tahun = '2021'
+payroll.branch_id = $P{reportParams.branchId}
+and payroll.bulan = $P{reportParams.bulan}
+and payroll.tahun = $P{reportParams.tahun}
+and payroll.tipe_payroll = 'PY'
 and payroll.flag = 'Y';]]>
 	</queryString>
 	<field name="payroll_id" class="java.lang.String"/>

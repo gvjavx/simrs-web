@@ -33,10 +33,12 @@
             var periodeTahun = document.getElementById("periodeTahun").value;
             var periodeBulan = document.getElementById("periodeBulan").value;
             var tipeLaporan = document.getElementById("tipeLaporanId").value;
+            var reportId = document.getElementById("reportId").value;
 
-            if ( unit != '' && periodeTahun != ''&& periodeBulan != ''&&tipeLaporan!='') {
+
+            if ( unit != '' && periodeTahun != ''&& periodeBulan != ''&&tipeLaporan!=''&&reportId!='') {
                 event.originalEvent.options.submit = false;
-                var url = "printReportIkhtisarSubBukuBesar_laporanAkuntansi.action?laporanAkuntansi.tipeLaporan="+tipeLaporan+"&laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan;
+                var url = "printReportIkhtisarSubBukuBesar_laporanAkuntansi.action?laporanAkuntansi.tipeLaporan="+tipeLaporan+"&laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.reportId="+reportId;
                 window.open(url,'_blank');
             } else {
                 event.originalEvent.options.submit = false;
@@ -52,6 +54,9 @@
                 }
                 if ( tipeLaporan == '') {
                     msg += 'Field <strong>Tipe Laporan </strong> masih belum dipilih' + '<br/>';
+                }
+                if ( reportId == '') {
+                    msg += 'Field <strong>Error </strong> hubungi admin' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -136,6 +141,8 @@
                                                     <s:select list="#{'hutang_usaha':'Hutang Usaha', 'piutang_usaha' : 'Piutang Usaha', 'uang_muka':'Uang Muka','piutang_pasien':'Piutang Pasien','uang_muka_p':'Uang Muka Pasien','persediaan':'Persediaan'}"
                                                               id="tipeLaporanId" name="laporanAkuntansi.tipeLaporanId"
                                                               headerKey="" headerValue="[Select One]" cssClass="form-control" />
+                                                    <s:hidden name="laporanAkuntansi.reportId" id="reportId" />
+
                                                 </td>
                                             </tr>
                                             <tr>

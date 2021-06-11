@@ -421,7 +421,8 @@ public class NotifikasiDao extends GenericDao<ImNotifikasiEntity, String> {
                 "      branches.branch_name,\n" +
                 "      notif.notif_id,\n" +
                 "      lembur.jam_awal,\n" +
-                "      lembur.jam_akhir\n" +
+                "      lembur.jam_akhir,\n" +
+                "      lembur.lama_jam\n" +
                 "FROM\n" +
                 " (SELECT * FROM it_hris_notifikasi WHERE nip = :nip AND flag = 'Y' AND tipe_notif_id = :typeNotifId) notif LEFT JOIN\n" +
                 " (SELECT * FROM im_hris_pegawai) users ON notif.from_person = users.nip LEFT JOIN\n" +

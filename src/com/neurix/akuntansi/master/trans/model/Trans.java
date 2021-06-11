@@ -14,17 +14,52 @@ public class Trans extends BaseModel {
     private String transName;
     private String tipePembayaran;
     private String tipePembayaranName;
-//    private String master;
     private String masterName;
 
     private String stCreatedDate;
     private String stLastUpdate;
 
+    private String tipeJurnalId;
+    private String flagSumberBaru;
+    private String flagPengajuanBiaya;
     private String master;
     private String masterId;
     private String divisiId;
     private String noNota;
     private String biaya;
+    private String isOtomatis;
+
+    public String getFlagPengajuanBiaya() {
+        return flagPengajuanBiaya;
+    }
+
+    public void setFlagPengajuanBiaya(String flagPengajuanBiaya) {
+        this.flagPengajuanBiaya = flagPengajuanBiaya;
+    }
+
+    public String getTipeJurnalId() {
+        return tipeJurnalId;
+    }
+
+    public void setTipeJurnalId(String tipeJurnalId) {
+        this.tipeJurnalId = tipeJurnalId;
+    }
+
+    public String getIsOtomatis() {
+        return isOtomatis;
+    }
+
+    public void setIsOtomatis(String isOtomatis) {
+        this.isOtomatis = isOtomatis;
+    }
+
+    public String getFlagSumberBaru() {
+        return flagSumberBaru;
+    }
+
+    public void setFlagSumberBaru(String flagSumberBaru) {
+        this.flagSumberBaru = flagSumberBaru;
+    }
 
     public String getMasterId() {
         return masterId;
@@ -89,14 +124,6 @@ public class Trans extends BaseModel {
     public void setTransName(String transName) {
         this.transName = transName;
     }
-
-//    public String getMaster() {
-//        return master;
-//    }
-//
-//    public void setMaster(String master) {
-//        this.master = master;
-//    }
 
     @Override
     public String getStCreatedDate() {

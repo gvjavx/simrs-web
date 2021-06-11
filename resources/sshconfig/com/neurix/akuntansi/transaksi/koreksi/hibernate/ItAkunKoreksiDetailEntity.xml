@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 version="2.0">
+
+    <entity class="com.neurix.akuntansi.transaksi.koreksi.model.ItAkunKoreksiDetailEntity">
+        <table name="it_akun_koreksi_detail" schema="public"/>
+        <attributes>
+            <id name="koreksiDetailId">
+                <column name="koreksi_detail_id"/>
+            </id>
+            <basic name="koreksiId">
+                <column name="koreksi_id"/>
+            </basic>
+            <basic name="kodeCoa">
+                <column name="kode_coa"/>
+            </basic>
+            <basic name="kodeVendor">
+                <column name="kode_vendor"/>
+            </basic>
+            <basic name="divisiId">
+                <column name="divisi_id"/>
+            </basic>
+            <basic name="noNota">
+                <column name="no_nota"/>
+            </basic>
+            <basic name="jumlahPembayaran">
+                <column name="jumlah_pembayaran" length="15" precision="2"/>
+            </basic>
+            <basic name="posisi">
+                <column name="posisi"/>
+            </basic>
+
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>
+
+<!--
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.akuntansi.transaksi.koreksi.model.ItAkunKoreksiDetailEntity" dynamic-update="true"
+            table  ="it_akun_koreksi_detail" select-before-update="true" schema="public">
+        <id name="koreksiDetailId">
+            <column name="koreksi_detail_id"/>
+        </id>
+        <basic name="koreksiId">
+            <column name="koreksi_id"/>
+        </basic>
+        <basic name="kodeCoa">
+            <column name="kode_coa"/>
+        </basic>
+        <basic name="kodeVendor">
+            <column name="kode_vendor"/>
+        </basic>
+        <basic name="divisiId">
+            <column name="divisi_id"/>
+        </basic>
+        <basic name="noNota">
+            <column name="no_nota"/>
+        </basic>
+        <basic name="jumlahPembayaran">
+            <column name="jumlah_pembayaran" sql-type="numeric" length="15" precision="2"/>
+        </basic>
+        <basic name="posisi">
+            <column name="posisi"/>
+        </basic>
+
+        <basic name="flag">
+            <column name="flag"/>
+        </basic>
+        <basic name="createdDate">
+            <column name="created_date"/>
+        </basic>
+        <basic name="lastUpdate">
+            <column name="last_update"/>
+        </basic>
+        <basic name="createdWho">
+            <column name="created_who"/>
+        </basic>
+        <basic name="lastUpdateWho">
+            <column name="last_update_who"/>
+        </basic>
+</class>
+</hibernate-mapping>-->

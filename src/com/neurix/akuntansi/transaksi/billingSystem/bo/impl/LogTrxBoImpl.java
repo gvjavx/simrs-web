@@ -9,6 +9,7 @@ import com.neurix.akuntansi.transaksi.billingSystem.model.LogTransaction;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.*;
@@ -202,8 +203,12 @@ public class LogTrxBoImpl implements LogTrxBo {
                     returnLogTransaction.setBankName(itLogTransactionEntity.getBankName());
                     returnLogTransaction.setNoVirtualAccount(itLogTransactionEntity.getNoVirtualAccount());
                     returnLogTransaction.setNoRekamMedik(itLogTransactionEntity.getNoRekamMedik());
-                    returnLogTransaction.setTrxAmount(itLogTransactionEntity.getTrxAmount());
-                    returnLogTransaction.setStTrxAmount(CommonUtil.numbericFormat(itLogTransactionEntity.getTrxAmount(),"###,###"));
+                    if(itLogTransactionEntity.getTrxAmount() != null) {
+                        returnLogTransaction.setTrxAmount(itLogTransactionEntity.getTrxAmount());
+                    } else {
+                        returnLogTransaction.setTrxAmount(new BigDecimal(0));
+                    }
+                    returnLogTransaction.setStTrxAmount(CommonUtil.numbericFormat(returnLogTransaction.getTrxAmount(),"###,###"));
                     returnLogTransaction.setNamePerson(itLogTransactionEntity.getNamePerson());
                     returnLogTransaction.setAddressPerson(itLogTransactionEntity.getAddressPerson());
                     returnLogTransaction.setPhonePerson(itLogTransactionEntity.getPhonePerson());

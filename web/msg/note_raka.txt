@@ -1,7 +1,808 @@
+------ 2021-05-22 ===> pelengkapan payroll
+-- untuk pengajuan payroll
+--     alter table it_hris_payroll_temp
+--     add column flag_koreksi varchar(5),
+--     add column note_koreksi varchar(500);
+-- untuk custom dasar bpjs
+    alter table it_hris_payroll_temp
+    add column dasar_bpjs numeric(15,2);
+
+------ 2021-06-08 ===> case manager procurement
+    alter sequence seq_kelompok_position restart with 7;
+    alter sequence seq_payroll_tunjangan_jabatan_struktural restart with 109;
+    insert into im_hris_kelompok_position
+        values ('KL07', 'Manager Procurement', 'MOH.IMRON,DRS,APT', 'MOH.IMRON,DRS,APT', 'Y', 'C', '2021-06-08 15:33:31.532', '2021-06-08 15:33:31.532', null, null);
+    insert into im_hris_payroll_tunjangan_jabatan_struktural
+        values ('TJS00109', 'KL07', '2021-06-08 15:42:31.786', 'MOH.IMRON,DRS,APT', '2021-06-08 15:42:31.786', 'MOH.IMRON,DRS,APT', 'Y', 'C', 4000000.00, 5000000.00);
+    update im_position set kelompok_id = 'KL07' where position_id = 'PS483';
+------------------------------------------------
+------- [PAYROLL] AKHIRI MULAI DARI SINI -------
+------------------------------------------------
+
+-- update skala pensiun
+    update im_hris_payroll_skala_gaji_pensiun
+    set flag = 'N'
+    where skala_gaji_pensiun_id
+        in ('SGP00163','SGP00164','SGP00165','SGP00166',
+            'SGP00167','SGP00168','SGP00169','SGP00170',
+            'SGP00171','SGP00172','SGP00173','SGP00174',
+            'SGP00175','SGP00176','SGP00177','SGP00178',
+            'SGP00179','SGP00297');
+
+------ 2021-05-21 ===> anggap saja titipan
+    alter sequence seq_detail_rekanan_ops restart 21;
+
+    alter table im_akun_tipe_jurnal
+        add column is_operasional varchar(10);
+
+------ 2021-05-19 ===> Kebutuhan Report Closing kasir
+INSERT INTO public.im_akun_report_detail (report_detail_id, report_id, rekening_id, flag, action, created_who, last_update_who, created_date, last_update, tipe_laporan) VALUES ('RD00058', 'RPT19', '00005', 'Y', 'C', 'Elvi Sukaisi', 'Elvi Sukaisi', '2021-03-31 16:18:10.025000', '2021-03-31 16:18:10.025000', null);
+INSERT INTO public.im_akun_report_detail (report_detail_id, report_id, rekening_id, flag, action, created_who, last_update_who, created_date, last_update, tipe_laporan) VALUES ('RD00059', 'RPT19', '00006', 'Y', 'C', 'Elvi Sukaisi', 'Elvi Sukaisi', '2021-03-31 16:18:10.076000', '2021-03-31 16:18:10.076000', null);
+INSERT INTO public.im_akun_report_detail (report_detail_id, report_id, rekening_id, flag, action, created_who, last_update_who, created_date, last_update, tipe_laporan) VALUES ('RD00060', 'RPT19', '00008', 'Y', 'C', 'Elvi Sukaisi', 'Elvi Sukaisi', '2021-03-31 16:18:10.122000', '2021-03-31 16:18:10.122000', null);
+INSERT INTO public.im_akun_report_detail (report_detail_id, report_id, rekening_id, flag, action, created_who, last_update_who, created_date, last_update, tipe_laporan) VALUES ('RD00061', 'RPT19', '00010', 'Y', 'C', 'Elvi Sukaisi', 'Elvi Sukaisi', '2021-03-31 16:18:10.171000', '2021-03-31 16:18:10.171000', null);
+--------------------------------
+
+------ 2021-04-29 ===> sql harian
+-- menambahkan column pada it_akun_pengajuan_biaya_detail
+    alter table it_akun_pengajuan_biaya_detail
+    add column url_ipa varchar(100);
+
+-- sepertinya belum tereksekusi (2021-04-17)
+    -- Menambahkan Length Kodering dari 11 ke 20
+        ALTER TABLE im_simrs_dokter_kso ALTER COLUMN kodering TYPE VARCHAR(20);
+    -- Menambahkan column Position ID
+        ALTER TABLE im_simrs_dokter_kso
+        ADD COLUMN position_id VARCHAR(10);
+
+-- menambahkan im_functions
+    INSERT INTO im_functions
+    VALUES
+    (6527, 'Print Rekap Closing Kasir', '/laporanAkuntansi/printReportRekapClosingKasir_laporanAkuntansi.action', 1703, NULL, '2016-10-09 15:27:54.756', 'admin', '2016-10-09 15:27:54.756', 'admin', 'Y', 'C', NULL);
+
+-- menambahkan setting_report_user
+    INSERT INTO im_akun_setting_report_user
+    VALUES
+    ('RU0000021', 'RPT19', 'adminakun', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754'),
+    ('RU0000022', 'RPT19', 'adminakungt', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754'),
+    ('RU0000023', 'RPT19', '123456', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754'),
+    ('RU0000024', 'RPT19', '789011', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754'),
+    ('RU0000025', 'RPT19', '121314', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754'),
+    ('RU0000026', 'RPT19', '151617', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754');
+
+------ 2021-04-28 ===> function kas koreksi
+-- Update Function
+    UPDATE im_functions
+    SET url = REPLACE(url, 'kas','koreksi')
+    WHERE func_id IN (2058, 2059, 2060, 2061, 2062, 2063);
+
+-- Insert new Functions
+    INSERT INTO im_functions
+    VALUES
+        (1774, 'Print Bukti Posting Koreksi', '/koreksi/printReportBuktiPosting_koreksi.action', 2058, NULL, '2016-10-09 15:27:54.756', 'admin', '2016-10-09 15:27:54.756', 'admin', 'Y', 'C', NULL),
+        (6523, 'Edit Koreksi / Penyesuaian', '/koreksi/editKoreksi_koreksi.action', 2058, NULL, '2016-10-09 15:27:54.756', 'MOH.IMRON,DRS,APT', '2016-10-09 15:27:54.756', 'MOH.IMRON,DRS,APT', 'Y', 'C', NULL),
+        (6524, 'Save Edit Koreksi / Penyesuaian', '/koreksi/saveEditKoreksi_koreksi.action', 2058, NULL, '2016-10-09 15:27:54.756', 'MOH.IMRON,DRS,APT', '2016-10-09 15:27:54.756', 'MOH.IMRON,DRS,APT', 'Y', 'C', NULL);
+
+-- Insert Role Functions
+    INSERT INTO im_func_roles
+    VALUES
+--     (1774, 1, 'N', NULL, NULL, 'admin', 'admin'),
+    (1774, 39, 'Y', now(), now(), 'admin', 'admin'),
+    (6523, 39, 'Y', now(), now(), 'admin', 'admin'),
+    (6524, 39, 'Y', now(), now(), 'admin', 'admin');
+
+
+
+------ 2021-04-28 ===> table sewa lahan & koreksi
+-- Table: public.it_akun_sewa_lahan
+
+-- DROP TABLE public.it_akun_sewa_lahan;
+
+CREATE TABLE public.it_akun_sewa_lahan
+(
+    sewa_lahan_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    nama_penyewa character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    keterangan text COLLATE pg_catalog."default" NOT NULL,
+    tanggal_bayar date,
+    nilai numeric(25,2),
+    cancel_flag character varying(1) COLLATE pg_catalog."default",
+    cancel_who character varying(100) COLLATE pg_catalog."default",
+    cancel_date timestamp without time zone,
+    no_jurnal character varying(30) COLLATE pg_catalog."default",
+    nilai_ppn numeric(25,2),
+    nilai_netto numeric(25,2),
+    nilai_pph numeric(25,2),
+    branch_id character varying(5) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    no_faktur character varying(10) COLLATE pg_catalog."default",
+    bank character varying(20) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_sewa_lahan_pkey PRIMARY KEY (sewa_lahan_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.it_akun_sewa_lahan
+    OWNER to postgres;
+
+-- SEQUENCE: public.seq_master_sewa
+
+-- DROP SEQUENCE public.seq_master_sewa;
+
+-- CREATE SEQUENCE public.seq_master_sewa
+--     INCREMENT 1
+--     START 1
+--     MINVALUE 1
+--     MAXVALUE 987654321
+--     CACHE 1;
+
+-- ALTER SEQUENCE public.seq_master_sewa
+--     OWNER TO postgres;
+
+
+------ 2021-04-27 ===> keperluan table Kas
+-- Table: public.it_akun_kas
+
+-- DROP TABLE public.it_akun_kas;
+
+CREATE TABLE public.it_akun_kas
+(
+    kas_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    tipe_transaksi character varying(2) COLLATE pg_catalog."default",
+    tanggal date,
+    coa_kas character varying(20) COLLATE pg_catalog."default",
+    bayar numeric(15,2),
+    keterangan character varying(400) COLLATE pg_catalog."default",
+    no_slip_bank character varying(20) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    branch_id character varying(5) COLLATE pg_catalog."default",
+    no_jurnal character varying(20) COLLATE pg_catalog."default",
+    registered_flag character varying(1) COLLATE pg_catalog."default",
+    registered_date date,
+    registered_who character varying(100) COLLATE pg_catalog."default",
+    tipe_kas character varying(5) COLLATE pg_catalog."default",
+    approval_keuangan_flag character varying(1) COLLATE pg_catalog."default",
+    approval_keuangan_id character varying(100) COLLATE pg_catalog."default",
+    approval_keuangan_name character varying(100) COLLATE pg_catalog."default",
+    approval_keuangan_date timestamp without time zone,
+    approval_kasub_keuangan_flag character varying(1) COLLATE pg_catalog."default",
+    approval_kasub_keuangan_id character varying(100) COLLATE pg_catalog."default",
+    approval_kasub_keuangan_name character varying(100) COLLATE pg_catalog."default",
+    approval_kasub_keuangan_date timestamp without time zone,
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    metode_pembayaran character varying(10) COLLATE pg_catalog."default",
+    currencyid character varying(4) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_kas_pkey PRIMARY KEY (kas_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.it_akun_kas
+    OWNER to postgres;
+
+
+-- Table: public.it_akun_kas_detail
+
+-- DROP TABLE public.it_akun_kas_detail;
+
+CREATE TABLE public.it_akun_kas_detail
+(
+    kas_detail_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    kas_id character varying(15) COLLATE pg_catalog."default",
+    master_id character varying(13) COLLATE pg_catalog."default",
+    no_nota character varying(20) COLLATE pg_catalog."default",
+    jumlah_pembayaran numeric(15,2),
+    flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    kode_coa character varying(30) COLLATE pg_catalog."default",
+    divisi_id character varying(13) COLLATE pg_catalog."default",
+    no_faktur_pajak character varying(30) COLLATE pg_catalog."default",
+    url_faktur_image character varying(100) COLLATE pg_catalog."default",
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    ppn numeric(15,2),
+    pph numeric(15,2),
+    CONSTRAINT it_akun_kas_detail_pkey PRIMARY KEY (kas_detail_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.it_akun_kas_detail
+    OWNER to postgres;
+
+-- Sequence Kas
+    CREATE SEQUENCE public.seq_kas
+        INCREMENT 1
+        START 1
+        MINVALUE 1
+        MAXVALUE 9223372036854775807
+        CACHE 1;
+
+    ALTER SEQUENCE public.seq_kas
+        OWNER TO postgres;
+
+
+-- Table: public.it_akun_koreksi
+
+-- DROP TABLE public.it_akun_koreksi;
+
+CREATE TABLE public.it_akun_koreksi
+(
+    koreksi_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    tipe_transaksi character varying(2) COLLATE pg_catalog."default",
+    tanggal_koreksi date,
+    keterangan character varying(400) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    branch_id character varying(5) COLLATE pg_catalog."default",
+    no_jurnal character varying(20) COLLATE pg_catalog."default",
+    registered_flag character varying(1) COLLATE pg_catalog."default",
+    registered_date date,
+    registered_who character varying(100) COLLATE pg_catalog."default",
+    approval_keuangan_flag character varying(1) COLLATE pg_catalog."default",
+    approval_keuangan_id character varying(100) COLLATE pg_catalog."default",
+    approval_keuangan_name character varying(100) COLLATE pg_catalog."default",
+    approval_keuangan_date timestamp without time zone,
+    approval_kasub_keuangan_flag character varying(1) COLLATE pg_catalog."default",
+    approval_kasub_keuangan_id character varying(100) COLLATE pg_catalog."default",
+    approval_kasub_keuangan_name character varying(100) COLLATE pg_catalog."default",
+    approval_kasub_keuangan_date timestamp without time zone,
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_koreksi_penyesuaian_pkey PRIMARY KEY (koreksi_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.it_akun_koreksi
+    OWNER to postgres;
+
+-- Table: public.it_akun_koreksi_detail
+
+-- DROP TABLE public.it_akun_koreksi_detail;
+
+CREATE TABLE public.it_akun_koreksi_detail
+(
+    koreksi_detail_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    koreksi_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    kode_coa character varying(30) COLLATE pg_catalog."default",
+    kode_vendor character varying(13) COLLATE pg_catalog."default",
+    divisi_id character varying(13) COLLATE pg_catalog."default",
+    no_nota character varying(20) COLLATE pg_catalog."default",
+    jumlah_pembayaran numeric(15,2),
+    posisi character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_koreksi_detail_pkey PRIMARY KEY (koreksi_detail_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.it_akun_koreksi_detail
+    OWNER to postgres;
+
+-- SEQUENCE: public.seq_koreksi
+
+-- DROP SEQUENCE public.seq_koreksi;
+
+CREATE SEQUENCE public.seq_koreksi
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE public.seq_koreksi
+    OWNER TO postgres;
+
+
+------ 2021-04-26 ===> update IM_FUNCTIONS untuk kas & sewa lahan
+-- Kas Masuk & Keluar
+    UPDATE im_functions
+    SET url = REPLACE(url, 'pembayaranUtangPiutang', 'kas')
+    WHERE url ILIKE '%pembayaranUtangPiutang%';
+
+-- Sewa Lahan
+    UPDATE im_functions
+    SET url = REPLACE(url, 'penyewaanLahan', 'sewaLahan')
+    WHERE url ILIKE '%penyewaanLahan%';
+
+------ 2021-04-17 ===> perbaikan Table Log Transaction
+--     ALTER TABLE it_pg_log_transaction
+--     ADD COLUMN status_bank character varying(5),
+--     ADD COLUMN channel character varying(1000),
+--     ADD COLUMN invoice_date date,
+--     ADD COLUMN invoice_number bigint;
+
+
+
+
+----------------------------------------------
+----------- LUPAKAN YANG DI BAWAH ------------
+----- BUKA LEMBARAN BARU MULAI DARI ATAS -----
+----------------------------------------------
+
+
+
+
+
+
+------ 2021-05-22 ===> pelengkapan payroll
+-- untuk pengajuan payroll
+    alter table it_hris_payroll_temp
+    add column flag_koreksi varchar(5),
+    add column note_koreksi varchar(500);
+-- untuk custom dasar bpjs
+    alter table it_hris_payroll_temp
+    add column dasar_bpjs numeric(15,2);
+
+------ 2021-06-08 ===> case manager procurement
+    alter sequence seq_kelompok_position restart with 7;
+    alter sequence seq_payroll_tunjangan_jabatan_struktural restart with 109;
+    insert into im_hris_kelompok_position
+        values ('KL07', 'Manager Procurement', 'MOH.IMRON,DRS,APT', 'MOH.IMRON,DRS,APT', 'Y', 'C', '2021-06-08 15:33:31.532', '2021-06-08 15:33:31.532', null, null);
+    insert into im_hris_payroll_tunjangan_jabatan_struktural
+        values ('TJS00109', 'KL07', '2021-06-08 15:42:31.786', 'MOH.IMRON,DRS,APT', '2021-06-08 15:42:31.786', 'MOH.IMRON,DRS,APT', 'Y', 'C', 4000000.00, 5000000.00);
+    update im_position set kelompok_id = 'KL07' where position_id = 'PS483';
+------------------------------------------------
+------- [PAYROLL] AKHIRI MULAI DARI SINI -------
+------------------------------------------------
+
+-- update skala pensiun
+    update im_hris_payroll_skala_gaji_pensiun
+    set flag = 'N'
+    where skala_gaji_pensiun_id
+        in ('SGP00163','SGP00164','SGP00165','SGP00166',
+            'SGP00167','SGP00168','SGP00169','SGP00170',
+            'SGP00171','SGP00172','SGP00173','SGP00174',
+            'SGP00175','SGP00176','SGP00177','SGP00178',
+            'SGP00179','SGP00297');
+
+------ 2021-05-21 ===> anggap saja titipan
+    alter sequence seq_detail_rekanan_ops restart 21;
+
+    alter table im_akun_tipe_jurnal
+        add column is_operasional varchar(10);
+
+------ 2021-05-19 ===> Kebutuhan Report Closing kasir
+INSERT INTO public.im_akun_report_detail (report_detail_id, report_id, rekening_id, flag, action, created_who, last_update_who, created_date, last_update, tipe_laporan) VALUES ('RD00058', 'RPT19', '00005', 'Y', 'C', 'Elvi Sukaisi', 'Elvi Sukaisi', '2021-03-31 16:18:10.025000', '2021-03-31 16:18:10.025000', null);
+INSERT INTO public.im_akun_report_detail (report_detail_id, report_id, rekening_id, flag, action, created_who, last_update_who, created_date, last_update, tipe_laporan) VALUES ('RD00059', 'RPT19', '00006', 'Y', 'C', 'Elvi Sukaisi', 'Elvi Sukaisi', '2021-03-31 16:18:10.076000', '2021-03-31 16:18:10.076000', null);
+INSERT INTO public.im_akun_report_detail (report_detail_id, report_id, rekening_id, flag, action, created_who, last_update_who, created_date, last_update, tipe_laporan) VALUES ('RD00060', 'RPT19', '00008', 'Y', 'C', 'Elvi Sukaisi', 'Elvi Sukaisi', '2021-03-31 16:18:10.122000', '2021-03-31 16:18:10.122000', null);
+INSERT INTO public.im_akun_report_detail (report_detail_id, report_id, rekening_id, flag, action, created_who, last_update_who, created_date, last_update, tipe_laporan) VALUES ('RD00061', 'RPT19', '00010', 'Y', 'C', 'Elvi Sukaisi', 'Elvi Sukaisi', '2021-03-31 16:18:10.171000', '2021-03-31 16:18:10.171000', null);
+--------------------------------
+
+------ 2021-04-29 ===> sql harian
+-- menambahkan column pada it_akun_pengajuan_biaya_detail
+    alter table it_akun_pengajuan_biaya_detail
+    add column url_ipa varchar(100);
+
+-- sepertinya belum tereksekusi (2021-04-17)
+    -- Menambahkan Length Kodering dari 11 ke 20
+        ALTER TABLE im_simrs_dokter_kso ALTER COLUMN kodering TYPE VARCHAR(20);
+    -- Menambahkan column Position ID
+        ALTER TABLE im_simrs_dokter_kso
+        ADD COLUMN position_id VARCHAR(10);
+
+-- menambahkan im_functions
+    INSERT INTO im_functions
+    VALUES
+    (6527, 'Print Rekap Closing Kasir', '/laporanAkuntansi/printReportRekapClosingKasir_laporanAkuntansi.action', 1703, NULL, '2016-10-09 15:27:54.756', 'admin', '2016-10-09 15:27:54.756', 'admin', 'Y', 'C', NULL);
+
+-- menambahkan setting_report_user
+    INSERT INTO im_akun_setting_report_user
+    VALUES
+    ('RU0000021', 'RPT19', 'adminakun', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754'),
+    ('RU0000022', 'RPT19', 'adminakungt', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754'),
+    ('RU0000023', 'RPT19', '123456', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754'),
+    ('RU0000024', 'RPT19', '789011', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754'),
+    ('RU0000025', 'RPT19', '121314', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754'),
+    ('RU0000026', 'RPT19', '151617', 'C', 'Y', 'TRI SUAKA', 'TRI SUAKA', '2020-05-15 17:10:36.754', '2020-05-15 17:10:36.754');
+
+------ 2021-04-28 ===> function kas koreksi
+-- Update Function
+    UPDATE im_functions
+    SET url = REPLACE(url, 'kas','koreksi')
+    WHERE func_id IN (2058, 2059, 2060, 2061, 2062, 2063);
+
+-- Insert new Functions
+    INSERT INTO im_functions
+    VALUES
+        (1774, 'Print Bukti Posting Koreksi', '/koreksi/printReportBuktiPosting_koreksi.action', 2058, NULL, '2016-10-09 15:27:54.756', 'admin', '2016-10-09 15:27:54.756', 'admin', 'Y', 'C', NULL),
+        (6523, 'Edit Koreksi / Penyesuaian', '/koreksi/editKoreksi_koreksi.action', 2058, NULL, '2016-10-09 15:27:54.756', 'MOH.IMRON,DRS,APT', '2016-10-09 15:27:54.756', 'MOH.IMRON,DRS,APT', 'Y', 'C', NULL),
+        (6524, 'Save Edit Koreksi / Penyesuaian', '/koreksi/saveEditKoreksi_koreksi.action', 2058, NULL, '2016-10-09 15:27:54.756', 'MOH.IMRON,DRS,APT', '2016-10-09 15:27:54.756', 'MOH.IMRON,DRS,APT', 'Y', 'C', NULL);
+
+-- Insert Role Functions
+    INSERT INTO im_func_roles
+    VALUES
+    (1774, 1, 'N', NULL, NULL, 'admin', 'admin'),
+    (1774, 39, 'Y', now(), now(), 'admin', 'admin'),
+    (6523, 39, 'Y', now(), now(), 'admin', 'admin'),
+    (6524, 39, 'Y', now(), now(), 'admin', 'admin');
+
+
+
+------ 2021-04-28 ===> table sewa lahan & koreksi
+-- Table: public.it_akun_sewa_lahan
+
+-- DROP TABLE public.it_akun_sewa_lahan;
+
+CREATE TABLE public.it_akun_sewa_lahan
+(
+    sewa_lahan_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    nama_penyewa character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    keterangan text COLLATE pg_catalog."default" NOT NULL,
+    tanggal_bayar date,
+    nilai numeric(25,2),
+    cancel_flag character varying(1) COLLATE pg_catalog."default",
+    cancel_who character varying(100) COLLATE pg_catalog."default",
+    cancel_date timestamp without time zone,
+    no_jurnal character varying(30) COLLATE pg_catalog."default",
+    nilai_ppn numeric(25,2),
+    nilai_netto numeric(25,2),
+    nilai_pph numeric(25,2),
+    branch_id character varying(5) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    no_faktur character varying(10) COLLATE pg_catalog."default",
+    bank character varying(20) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_sewa_lahan_pkey PRIMARY KEY (sewa_lahan_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.it_akun_sewa_lahan
+    OWNER to postgres;
+
+-- SEQUENCE: public.seq_master_sewa
+
+-- DROP SEQUENCE public.seq_master_sewa;
+
+CREATE SEQUENCE public.seq_master_sewa
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 987654321
+    CACHE 1;
+
+ALTER SEQUENCE public.seq_master_sewa
+    OWNER TO postgres;
+
+
+------ 2021-04-27 ===> keperluan table Kas
+-- Table: public.it_akun_kas
+
+-- DROP TABLE public.it_akun_kas;
+
+CREATE TABLE public.it_akun_kas
+(
+    kas_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    tipe_transaksi character varying(2) COLLATE pg_catalog."default",
+    tanggal date,
+    coa_kas character varying(20) COLLATE pg_catalog."default",
+    bayar numeric(15,2),
+    keterangan character varying(400) COLLATE pg_catalog."default",
+    no_slip_bank character varying(20) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    branch_id character varying(5) COLLATE pg_catalog."default",
+    no_jurnal character varying(20) COLLATE pg_catalog."default",
+    registered_flag character varying(1) COLLATE pg_catalog."default",
+    registered_date date,
+    registered_who character varying(100) COLLATE pg_catalog."default",
+    tipe_kas character varying(5) COLLATE pg_catalog."default",
+    approval_keuangan_flag character varying(1) COLLATE pg_catalog."default",
+    approval_keuangan_id character varying(100) COLLATE pg_catalog."default",
+    approval_keuangan_name character varying(100) COLLATE pg_catalog."default",
+    approval_keuangan_date timestamp without time zone,
+    approval_kasub_keuangan_flag character varying(1) COLLATE pg_catalog."default",
+    approval_kasub_keuangan_id character varying(100) COLLATE pg_catalog."default",
+    approval_kasub_keuangan_name character varying(100) COLLATE pg_catalog."default",
+    approval_kasub_keuangan_date timestamp without time zone,
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    metode_pembayaran character varying(10) COLLATE pg_catalog."default",
+    currencyid character varying(4) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_kas_pkey PRIMARY KEY (kas_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.it_akun_kas
+    OWNER to postgres;
+
+
+-- Table: public.it_akun_kas_detail
+
+-- DROP TABLE public.it_akun_kas_detail;
+
+CREATE TABLE public.it_akun_kas_detail
+(
+    kas_detail_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    kas_id character varying(15) COLLATE pg_catalog."default",
+    master_id character varying(13) COLLATE pg_catalog."default",
+    no_nota character varying(20) COLLATE pg_catalog."default",
+    jumlah_pembayaran numeric(15,2),
+    flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    kode_coa character varying(30) COLLATE pg_catalog."default",
+    divisi_id character varying(13) COLLATE pg_catalog."default",
+    no_faktur_pajak character varying(30) COLLATE pg_catalog."default",
+    url_faktur_image character varying(100) COLLATE pg_catalog."default",
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    ppn numeric(15,2),
+    pph numeric(15,2),
+    CONSTRAINT it_akun_kas_detail_pkey PRIMARY KEY (kas_detail_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.it_akun_kas_detail
+    OWNER to postgres;
+
+-- Sequence Kas
+    CREATE SEQUENCE public.seq_kas
+        INCREMENT 1
+        START 1
+        MINVALUE 1
+        MAXVALUE 9223372036854775807
+        CACHE 1;
+
+    ALTER SEQUENCE public.seq_kas
+        OWNER TO postgres;
+
+
+-- Table: public.it_akun_koreksi
+
+-- DROP TABLE public.it_akun_koreksi;
+
+CREATE TABLE public.it_akun_koreksi
+(
+    koreksi_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    tipe_transaksi character varying(2) COLLATE pg_catalog."default",
+    tanggal_koreksi date,
+    keterangan character varying(400) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    branch_id character varying(5) COLLATE pg_catalog."default",
+    no_jurnal character varying(20) COLLATE pg_catalog."default",
+    registered_flag character varying(1) COLLATE pg_catalog."default",
+    registered_date date,
+    registered_who character varying(100) COLLATE pg_catalog."default",
+    approval_keuangan_flag character varying(1) COLLATE pg_catalog."default",
+    approval_keuangan_id character varying(100) COLLATE pg_catalog."default",
+    approval_keuangan_name character varying(100) COLLATE pg_catalog."default",
+    approval_keuangan_date timestamp without time zone,
+    approval_kasub_keuangan_flag character varying(1) COLLATE pg_catalog."default",
+    approval_kasub_keuangan_id character varying(100) COLLATE pg_catalog."default",
+    approval_kasub_keuangan_name character varying(100) COLLATE pg_catalog."default",
+    approval_kasub_keuangan_date timestamp without time zone,
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_koreksi_penyesuaian_pkey PRIMARY KEY (koreksi_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.it_akun_koreksi
+    OWNER to postgres;
+
+-- Table: public.it_akun_koreksi_detail
+
+-- DROP TABLE public.it_akun_koreksi_detail;
+
+CREATE TABLE public.it_akun_koreksi_detail
+(
+    koreksi_detail_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    koreksi_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    kode_coa character varying(30) COLLATE pg_catalog."default",
+    kode_vendor character varying(13) COLLATE pg_catalog."default",
+    divisi_id character varying(13) COLLATE pg_catalog."default",
+    no_nota character varying(20) COLLATE pg_catalog."default",
+    jumlah_pembayaran numeric(15,2),
+    posisi character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_koreksi_detail_pkey PRIMARY KEY (koreksi_detail_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.it_akun_koreksi_detail
+    OWNER to postgres;
+
+-- SEQUENCE: public.seq_koreksi
+
+-- DROP SEQUENCE public.seq_koreksi;
+
+CREATE SEQUENCE public.seq_koreksi
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE public.seq_koreksi
+    OWNER TO postgres;
+
+
+------ 2021-04-26 ===> update IM_FUNCTIONS untuk kas & sewa lahan
+-- Kas Masuk & Keluar
+    UPDATE im_functions
+    SET url = REPLACE(url, 'pembayaranUtangPiutang', 'kas')
+    WHERE url ILIKE '%pembayaranUtangPiutang%';
+
+-- Sewa Lahan
+    UPDATE im_functions
+    SET url = REPLACE(url, 'penyewaanLahan', 'sewaLahan')
+    WHERE url ILIKE '%penyewaanLahan%';
+
+------ 2021-04-17 ===> perbaikan Table Log Transaction
+    ALTER TABLE it_pg_log_transaction
+    ADD COLUMN status_bank character varying(5),
+    ADD COLUMN channel character varying(1000),
+    ADD COLUMN invoice_date date,
+    ADD COLUMN invoice_number bigint;
+
+
+----------------------------------------------
+--------------- KAS DI ATAS ------------------
+----------------------------------------------
+
+------ 2021-05-15 ===> keperluan MBT
+-- penambahan status mutasi
+    insert into im_hris_status_mutasi(
+    	status_mutasi_id, status_mutasi_name, action, flag, created_date, created_who, last_update, last_update_who, flag_gaji_proporsional)
+    	VALUES ('BT', 'Bebas Tugas', 'C', 'Y', now(), 'admin', now(), 'admin', null);
+
+-- set pegawai MBT
+    update it_hris_pegawai_position
+        set flag = 'Y', flag_mbt = 'Y'
+        where nip = '2208196501108';
+    update it_hris_pegawai_position
+        set flag_mbt = 'Y'
+        where nip = '0405196500172';
+    update it_hris_pegawai_position
+        set flag_mbt = 'Y'
+        where nip = '1306196500634';
+
+------ 2021-05-09 ===> jurnal payroll tidak balance
+delete from im_akun_mapping_jurnal where trans_id = '37';
+
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000124', '5.0.00.00.02', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_pph_dekom', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000125', '5.0.00.00.03', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_transport_kom_dekom', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000126', '5.0.00.00.04', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_rumah_dekom', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000132', '5.0.00.00.99', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_lain_lain_dekom', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000133', '5.0.00.01.01', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'penghasilan_direksi', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000134', '5.0.00.01.02', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_pph_direksi', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000135', '5.0.00.01.03', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_transport_kom_direksi', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000136', '5.0.00.01.04', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_rumah_direksi', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000142', '5.0.00.01.99', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_lain_lain_direksi', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000144', '5.0.00.02.02', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_jabatan_karyawan_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000145', '5.0.00.02.03', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_struktural_karyawan_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000146', '5.0.00.02.04', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_pajak_karyawan_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000147', '5.0.00.02.05', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_RLAB_karyawan_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000148', '5.0.00.02.06', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_pensiun_karyawan_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000149', '5.0.00.02.07', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_bpjs_tk_karyawan_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000150', '5.0.00.02.08', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_bpjs_ks_karyawan_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000151', '5.0.00.02.09', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_khusus_karyawan_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000152', '5.0.00.02.10', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_lembur_karyawan_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000153', '5.0.00.02.11', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_peralihan_karyawan_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000155', '5.0.00.02.13', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_fungsional_karyawan_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000156', '5.0.00.02.99', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_lainnya_karyawan_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000157', '5.0.00.03.01', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'gaji_karyawan_tidak_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000158', '5.0.00.03.02', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_fungsional_karyawan_tidak_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000159', '5.0.00.03.03', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_tambahan_karyawan_tidak_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000160', '5.0.00.03.04', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_pajak_karyawan_tidak_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000161', '5.0.00.03.05', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_bpjs_tk_karyawan_tidak_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000162', '5.0.00.03.06', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_bpjs_ks_karyawan_tidak_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000163', '5.0.00.03.07', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_khusus_karyawan_tidak_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000164', '5.0.00.03.08', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_lembur_karyawan_tidak_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000166', '1.1.01.02.03', 'K', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'kas', 'N', 'N', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000123', '5.0.00.00.01', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'penghasilan_dekom', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000143', '5.0.00.02.01', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'gaji_karyawan_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000154', '5.0.00.02.12', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_supervisi_karyawan_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPJ0000165', '5.0.00.03.99', 'D', 'Y', 'U', 'admin', 'Elvi Sukaisi', '2020-04-06 00:00:00.000000', '2020-08-10 11:03:44.043000', 'N', 'N', '37', 'N', 'tunj_lainnya_karyawan_tidak_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPT0000168', '2.1.03.00.02', 'K', 'Y', 'C', 'Elvi Sukaisi', 'Elvi Sukaisi', '2020-08-10 11:03:44.043000', '2020-08-10 11:03:44.043000', 'Y', 'Y', '37', 'N', 'pph_gaji', 'Y', 'N', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPT0000169', '5.0.00.06.08', 'D', 'Y', 'C', 'admin', 'admin', '2021-03-21 09:44:20.796218', '2021-03-21 09:44:20.796218', 'N', 'N', '37', 'N', 'tunj_pemondokan_karyawan_tetap', 'Y', 'Y', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPT0000170', '2.1.10.00.09', 'K', 'Y', 'C', 'admin', 'admin', '2021-03-21 09:46:13.337020', '2021-03-21 09:46:13.337020', 'Y', 'Y', '37', 'N', 'titipan_iuran_bpjs_tk', 'Y', 'N', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPT0000171', '2.1.10.00.08', 'K', 'Y', 'C', 'admin', 'admin', '2021-03-21 09:47:34.830633', '2021-03-21 09:47:34.830633', 'Y', 'Y', '37', 'N', 'titipan_iuran_bpjs_ks', 'Y', 'N', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPT0000172', '2.1.10.00.10', 'K', 'Y', 'C', 'admin', 'admin', '2021-03-21 09:47:34.840992', '2021-03-21 09:47:34.840992', 'Y', 'Y', '37', 'N', 'titipan_potongan_karyawan', 'Y', 'N', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPT0000173', '2.1.10.00.05', 'K', 'Y', 'C', 'admin', 'admin', '2021-03-21 09:47:34.864762', '2021-03-21 09:47:34.864762', 'Y', 'Y', '37', 'N', 'titipan_iuran_dapenbun', 'Y', 'N', 'N');
+INSERT INTO public.im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, parameter_coa, kirim_list, divisi_id, edit_biaya) VALUES ('MPT0000174', '2.1.10.00.07', 'K', 'Y', 'C', 'admin', 'admin', '2021-03-21 09:47:34.873723', '2021-03-21 09:47:34.873723', 'Y', 'Y', '37', 'N', 'titipan_iuran_dplk', 'Y', 'N', 'N');
+
+
+
+------ 2021-05-07 ===> update sg_pensiun
+    UPDATE im_hris_payroll_skala_gaji_pensiun
+        SET golongan_id = 'IVD'
+        WHERE skala_gaji_pensiun_id in ('SGP00001', 'SGP00002', 'SGP00003', 'SGP00004', 'SGP00005', 'SGP00006', 'SGP00007');
+    UPDATE im_hris_payroll_skala_gaji_pensiun
+        SET golongan_id = 'IVC'
+        WHERE skala_gaji_pensiun_id in ('SGP00008', 'SGP00009', 'SGP00010', 'SGP00011', 'SGP00012', 'SGP00013', 'SGP00014', 'SGP00015', 'SGP00016', 'SGP00017');
+
+------ 2021-05-07 ===> for MBT
+    alter table it_hris_pegawai_position
+        add column flag_mbt varchar(5);
+
+------ 2021-05-06 ===> update im_company
+-- update im_company
+    update im_company set persen_cuti_panjang = 100, persen_cuti_tahunan=55;
+    update im_company set biaya_jabatan_persentase = 5 , param_biaya_jabatan = 500000;
+-- update skala_gaji_bod
+    update im_hris_payroll_skala_gaji_bod
+        set position_id = 'PS466'
+        where position_id = 'PS177'; -- komisaris
+    update im_hris_payroll_skala_gaji_bod
+        set position_id = 'PS467'
+        where position_id = 'PS178'; -- sekdekom
+    update im_hris_payroll_skala_gaji_bod
+        set position_id = 'PS468'
+        where position_id = 'PS179'; -- komite audit
+    update im_hris_payroll_skala_gaji_bod
+        set position_id = 'PS469'
+        where position_id = 'PS180'; -- direktur
+-- update im_akun_mapping_jurnal
+    alter table im_akun_mapping_jurnal
+        alter column parameter_coa type varchar(200);
+    update im_akun_mapping_jurnal
+        set parameter_coa = keterangan;
+-- master_id di im_branches
+    ALTER TABLE im_branches
+      ADD COLUMN master_id varchar(10) ;
+    update im_branches set master_id = '00.001' where branch_id = '01';
+    update im_branches set master_id = '00.002' where branch_id = '02';
+    update im_branches set master_id = '00.003' where branch_id = '03';
+    update im_branches set master_id = '00.004' where branch_id = '05';
+    update im_branches set master_id = '00.005' where branch_id = '04';
+    update im_branches set master_id = '00.099' where branch_id = '99';
+    -- update im_branches set tunj_pemondokan=500000 where branch_id = '01';
+-- it_akun_jurnal
+    alter table it_akun_jurnal
+        add column registered_user_id varchar(20),
+        add column metode_bayar varchar(50);
+
 ------ 2021-05-05 ===> update table trans (tidak drop)
 -- im_akun_trans
     ALTER TABLE im_akun_trans
-      ADD COLUMN tipe_jurnal_id varchar(10),
+    --  ADD COLUMN tipe_jurnal_id varchar(10),
       ADD COLUMN is_otomatis varchar(1),
     --  DROP COLUMN tipe_pembayaran,
     --  DROP COLUMN master_id,
@@ -16,49 +817,50 @@
 		    ('65','Pembayaran Insentive','Y','C','admin','admin',now(),now(),'Y',null,'N','JKK','Y'),
 		    ('87','Pembayaran Jasop','Y','C','admin','admin',now(),now(),'Y',null,'N','JKK','Y'),
 		    ('94','Pembayaran Cuti','Y','C','admin','admin',now(),now(),'Y',null,'N','JKK','Y');
+    alter table it_akun_jurnal_detail alter column rekening_id drop not null;
 
 
 -- im_akun_mapping_jurnal
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
-    ) values('MPJ011','5.0.00.00.06','D','Y','C','admin','admin',now(),now(),'N','N','91','N','tunj_hariraya_dekom','Y','Y','N');
+    ) values('MPJ011','5.0.00.00.06','D','Y','C','admin','admin',now(),now(),'N','N','64','N','tunj_hariraya_dekom','Y','Y','N');
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
-    ) values('MPJ012','5.0.00.01.06','D','Y','C','admin','admin',now(),now(),'N','N','91','N','tunj_hariraya_direksi','Y','Y','N');
+    ) values('MPJ012','5.0.00.01.06','D','Y','C','admin','admin',now(),now(),'N','N','64','N','tunj_hariraya_direksi','Y','Y','N');
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
-    ) values('MPJ013','5.0.00.05.07','D','Y','C','admin','admin',now(),now(),'N','N','91','N','tunj_hari_raya_keagamaan','Y','Y','N');
+    ) values('MPJ013','5.0.00.05.07','D','Y','C','admin','admin',now(),now(),'N','N','64','N','tunj_hari_raya_keagamaan','Y','Y','N');
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
-    ) values('MPJ014','1.1.01.02.03','K','Y','C','admin','admin',now(),now(),'N','N','91','N','kas','N','N','N');
+    ) values('MPJ014','1.1.01.02.03','K','Y','C','admin','admin',now(),now(),'N','N','64','N','kas','N','N','N');
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
-    ) values('MPJ015','2.1.03.00.02','K','Y','C','admin','admin',now(),now(),'Y','Y','91','N','pph_thr','Y','N','N');
+    ) values('MPJ015','2.1.03.00.02','K','Y','C','admin','admin',now(),now(),'Y','Y','64','N','pph_thr','Y','N','N');
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
-    ) values('MPJ016','5.0.00.00.02','D','Y','C','admin','admin',now(),now(),'N','N','91','N','tunj_pph_hariraya_dekom','Y','Y','N');
+    ) values('MPJ016','5.0.00.00.02','D','Y','C','admin','admin',now(),now(),'N','N','64','N','tunj_pph_hariraya_dekom','Y','Y','N');
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
-    ) values('MPJ017','5.0.00.01.02','D','Y','C','admin','admin',now(),now(),'N','N','91','N','tunj_pph_hariraya_direksi','Y','Y','N');
+    ) values('MPJ017','5.0.00.01.02','D','Y','C','admin','admin',now(),now(),'N','N','64','N','tunj_pph_hariraya_direksi','Y','Y','N');
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
-    ) values('MPJ018','5.0.00.02.04','D','Y','C','admin','admin',now(),now(),'N','N','91','N','tunj_pajak_karyawan_tetap','Y','Y','N');
+    ) values('MPJ018','5.0.00.02.04','D','Y','C','admin','admin',now(),now(),'N','N','64','N','tunj_pajak_karyawan_tetap','Y','Y','N');
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
-    ) values('MPJ019','5.0.00.03.04','D','Y','C','admin','admin',now(),now(),'N','N','91','N','tunj_pajak_karyawan_tidak_tetap','Y','Y','N');
+    ) values('MPJ019','5.0.00.03.04','D','Y','C','admin','admin',now(),now(),'N','N','64','N','tunj_pajak_karyawan_tidak_tetap','Y','Y','N');
 
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
-    ) values('MPJ021','5.0.00.05.05','D','Y','C','admin','admin',now(),now(),'N','N','92','N','tunj_insentive','Y','Y','N');
+    ) values('MPJ021','5.0.00.05.05','D','Y','C','admin','admin',now(),now(),'N','N','65','N','tunj_insentive','Y','Y','N');
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
-    ) values('MPJ022','1.1.01.02.03','K','Y','C','admin','admin',now(),now(),'N','N','92','N','kas','N','N','N');
+    ) values('MPJ022','1.1.01.02.03','K','Y','C','admin','admin',now(),now(),'N','N','65','N','kas','N','N','N');
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
-    ) values('MPJ023','2.1.03.00.02','K','Y','C','admin','admin',now(),now(),'Y','Y','92','N','pph_insentive','Y','N','N');
+    ) values('MPJ023','2.1.03.00.02','K','Y','C','admin','admin',now(),now(),'Y','Y','65','N','pph_insentive','Y','N','N');
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
-    ) values('MPJ024','5.0.00.02.04','D','Y','C','admin','admin',now(),now(),'N','N','92','N','tunj_pajak_karyawan_tetap','Y','Y','N');
+    ) values('MPJ024','5.0.00.02.04','D','Y','C','admin','admin',now(),now(),'N','N','65','N','tunj_pajak_karyawan_tetap','Y','Y','N');
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
-    ) values('MPJ025','5.0.00.03.04','D','Y','C','admin','admin',now(),now(),'N','N','92','N','tunj_pajak_karyawan_tidak_tetap','Y','Y','N');
+    ) values('MPJ025','5.0.00.03.04','D','Y','C','admin','admin',now(),now(),'N','N','65','N','tunj_pajak_karyawan_tidak_tetap','Y','Y','N');
 
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
-    ) values('MPJ031','5.0.00.05.04','D','Y','C','admin','admin',now(),now(),'N','N','93','N','tunj_jasa_operasional','Y','Y','N');
+    ) values('MPJ031','5.0.00.05.04','D','Y','C','admin','admin',now(),now(),'N','N','87','N','tunj_jasa_operasional','Y','Y','N');
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
-    ) values('MPJ032','1.1.01.02.03','K','Y','C','admin','admin',now(),now(),'N','N','93','N','kas','N','N','N');
+    ) values('MPJ032','1.1.01.02.03','K','Y','C','admin','admin',now(),now(),'N','N','87','N','kas','N','N','N');
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
-    ) values('MPJ033','2.1.03.00.02','K','Y','C','admin','admin',now(),now(),'Y','Y','93','N','pph_jasop','Y','N','N');
+    ) values('MPJ033','2.1.03.00.02','K','Y','C','admin','admin',now(),now(),'Y','Y','87','N','pph_jasop','Y','N','N');
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
-    ) values('MPJ034','5.0.00.02.04','D','Y','C','admin','admin',now(),now(),'N','N','93','N','tunj_pajak_karyawan_tetap','Y','Y','N');
+    ) values('MPJ034','5.0.00.02.04','D','Y','C','admin','admin',now(),now(),'N','N','87','N','tunj_pajak_karyawan_tetap','Y','Y','N');
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
-    ) values('MPJ035','5.0.00.03.04','D','Y','C','admin','admin',now(),now(),'N','N','93','N','tunj_pajak_karyawan_tidak_tetap','Y','Y','N');
+    ) values('MPJ035','5.0.00.03.04','D','Y','C','admin','admin',now(),now(),'N','N','87','N','tunj_pajak_karyawan_tidak_tetap','Y','Y','N');
 
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
     ) values('MPJ041','5.0.00.06.03','D','Y','C','admin','admin',now(),now(),'N','N','94','N','uang_cuti','Y','Y','N');
@@ -81,6 +883,11 @@
     ) values('MPJ005','2.1.10.00.05','K','Y','C','admin','admin',now(),now(),'Y','Y','37','N','titipan_iuran_dapenbun','Y','N','N');
     insert into im_akun_mapping_jurnal (mapping_jurnal_id, kode_rekening, posisi, flag, action, created_who, last_update_who, created_date, last_update, master_id, bukti, trans_id, kode_barang, keterangan, kirim_list, divisi_id, edit_biaya
     ) values('MPJ006','2.1.10.00.07','K','Y','C','admin','admin',now(),now(),'Y','Y','37','N','titipan_iuran_dplk','Y','N','N');
+
+
+-------------------------------------------------
+---------     SAMPAI SINI SAJA      -------------
+-------------------------------------------------
 
 ------ 2021-05-04 ===> query edit untuk payroll
 -- update sg bod

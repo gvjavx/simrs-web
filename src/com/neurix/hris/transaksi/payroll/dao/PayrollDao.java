@@ -227,7 +227,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                  skala_gaji.tahun = :tahunSkalaPayroll\n" +
                 "             left join im_hris_payroll_bpjs param_bpjs on param_bpjs.branch_id = :branchId and param_bpjs.flag = 'Y'\n" +
                 "      where pegawai.flag = 'Y'\n" +
-                "        and pegawai.tipe_pegawai = 'TP02'\n" + //RAKA-update tipe pegawai
+                "        and pegawai.tipe_pegawai in ('TP01', 'TP02')\n" + //RAKA-update tipe pegawai
                 "        and pegawai_posisi.branch_id = :branchId\n" +
                 "      union\n" ;
 
@@ -414,7 +414,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "             left join im_hris_payroll_skala_gaji_pensiun skala_gaji_pensiun\n" +
                 "               on skala_gaji_pensiun.tipe_dapen_id = pegawai.dana_pensiun and\n" +
                 "                  skala_gaji_pensiun.golongan_id = pegawai.golongan_id and\n" +
-                "                  skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol\n" +
+                "                  skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol and\n" +
+                "                  skala_gaji_pensiun.flag = 'Y'\n" +
                 "             left join im_hris_payroll_skala_gaji_dplk_pegawai skala_gaji_dplk_pegawai\n" +
                 "               on skala_gaji_dplk_pegawai.golongan_id = pegawai.golongan_id\n" +
                 "             left join im_hris_payroll_bpjs param_bpjs on param_bpjs.branch_id = :branchId and param_bpjs.flag = 'Y'\n" +
@@ -767,10 +768,11 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "             left join im_hris_payroll_skala_gaji_pensiun skala_gaji_pensiun\n" +
                 "               on skala_gaji_pensiun.tipe_dapen_id = pegawai.dana_pensiun and\n" +
                 "                  skala_gaji_pensiun.golongan_id = pegawai.golongan_id and\n" +
-                "                  skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol\n" +
+                "                  skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol and\n" +
+                "                  skala_gaji_pensiun.flag = 'Y'\n" +
                 "             left join im_hris_payroll_skala_gaji_dplk_pegawai skala_gaji_dplk_pegawai\n" +
                 "               on skala_gaji_dplk_pegawai.golongan_id = pegawai.golongan_id\n" +
-                "             left join im_hris_payroll_bpjs param_bpjs on param_bpjs.branch_id = 'KP' and param_bpjs.flag = 'Y'\n" +
+                "             left join im_hris_payroll_bpjs param_bpjs on param_bpjs.branch_id = '01' and param_bpjs.flag = 'Y'\n" +
                 "             left join (select nip, sum(biaya_lembur) as tunj_lembur\n" +
                 "                        from it_hris_absensi_pegawai\n" +
                 "                        where tanggal between to_date(:tglAwalLembur, 'DD-MM-YYYY') and to_date(:tglAkhirLembur, 'DD-MM-YYYY') and flag = 'Y'\n" +
@@ -1040,7 +1042,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
             result.setTunjFungsionalNilai(result.getTunjFungsionalNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjFungsional(CommonUtil.numbericFormat(result.getTunjFungsionalNilai(),"###,###"));
 
-            result.setTunjTambahanNilai(row[40]!=null ? new BigDecimal((Integer)row[40]) : new BigDecimal(0));
+            result.setTunjTambahanNilai(row[40]!=null ? (BigDecimal) row[40] : new BigDecimal(0));
             result.setTunjTambahanNilai(result.getTunjTambahanNilai().setScale(0, BigDecimal.ROUND_HALF_UP));
             result.setTunjTambahan(CommonUtil.numbericFormat(result.getTunjTambahanNilai(),"###,###"));
 
@@ -1290,7 +1292,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                     "                 skala_gaji.tahun = :tahunSkalaPayroll\n" +
                     "\n" +
                     "     where pegawai.flag = 'Y'\n" +
-                    "       and pegawai.tipe_pegawai = 'TP02'\n" + //RAKA-update tipe pegawai
+                    "       and pegawai.tipe_pegawai in ('TP01', 'TP02')\n" + //RAKA-update tipe pegawai
                     "       and pegawai_posisi.branch_id = :branchId\n" +
                     "     union\n" +
                     //pegawai tetap
@@ -2280,10 +2282,10 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                     else 0 end                                                               as tunj_bbm,\n" +
                 "                   case\n" +
                 "                     when tunj_struktural.tunj_jabatan is null then 0\n" +
-                "                     else (tunj_struktural.tunj_jabatan * jenis_pegawai.persen_gaji)/100 end           as tunj_jabatan,\n" + //RAKA-update disini
+                "                     else tunj_struktural.tunj_jabatan end                                    as tunj_jabatan,\n" +
                 "                   case\n" +
                 "                     when tunj_struktural.tunj_struktural is null then 0\n" +
-                "                     else (tunj_struktural.tunj_struktural * jenis_pegawai.persen_gaji)/100 end        as tunj_struktural,\n" +
+                "                     else tunj_struktural.tunj_struktural end        as tunj_struktural,\n" +
                 "                   case\n" +
                 "                     when tunj_strategis.nilai is null then 0\n" +
                 "                     else tunj_strategis.nilai end                                            as tunj_fungsional,\n" +
@@ -2436,7 +2438,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                   left join im_hris_payroll_skala_gaji_pensiun skala_gaji_pensiun\n" +
                 "                     on skala_gaji_pensiun.tipe_dapen_id = pegawai.dana_pensiun and\n" +
                 "                        skala_gaji_pensiun.golongan_id = pegawai.golongan_id and\n" +
-                "                        skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol\n" +
+                "                        skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol and\n" +
+                "                        skala_gaji_pensiun.flag = 'Y'\n" +
                 "                   left join im_hris_payroll_skala_gaji_dplk_pegawai skala_gaji_dplk_pegawai\n" +
                 "                     on skala_gaji_dplk_pegawai.golongan_id = pegawai.golongan_id\n" +
                 "                   left join it_hris_payroll transaksi_payroll\n" +
@@ -2698,10 +2701,10 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                     else 0 end                                                               as tunj_bbm,\n" +
                 "                   case\n" +
                 "                     when tunj_struktural.tunj_jabatan is null then 0\n" +
-                "                     else (tunj_struktural.tunj_jabatan * jenis_pegawai.persen_gaji) / 100 end         as tunj_jabatan,\n" + //RAKA-update disini
+                "                     else tunj_struktural.tunj_jabatan end                                    as tunj_jabatan,\n" +
                 "                   case\n" +
                 "                     when tunj_struktural.tunj_struktural is null then 0\n" +
-                "                     else (tunj_struktural.tunj_struktural * jenis_pegawai.persen_gaji) / 100 end      as tunj_struktural,\n" +
+                "                     else tunj_struktural.tunj_struktural end      as tunj_struktural,\n" +
                 "                   case\n" +
                 "                     when tunj_strategis.nilai is null then 0\n" +
                 "                     else tunj_strategis.nilai end                                            as tunj_fungsional,\n" +
@@ -2858,7 +2861,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                   left join im_hris_payroll_skala_gaji_pensiun skala_gaji_pensiun\n" +
                 "                     on skala_gaji_pensiun.tipe_dapen_id = pegawai.dana_pensiun and\n" +
                 "                        skala_gaji_pensiun.golongan_id = pegawai.golongan_id and\n" +
-                "                        skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol\n" +
+                "                        skala_gaji_pensiun.masa_kerja_gol = pegawai.masa_kerja_gol and\n" +
+                "                        skala_gaji_pensiun.flag = 'Y'\n" +
                 "                   left join im_hris_payroll_skala_gaji_dplk_pegawai skala_gaji_dplk_pegawai\n" +
                 "                     on skala_gaji_dplk_pegawai.golongan_id = pegawai.golongan_id\n" +
                 "                   left join it_hris_payroll transaksi_payroll\n" +
@@ -8409,7 +8413,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
     //RAKA-04MEI2021 ==> recover by raka (penyesuaian perlu dicek)
     public List<PayrollEsptDTO> searchReportEspt(String tahun, String unit) {
         List<PayrollEsptDTO> listOfResult = new ArrayList<>();
-        List<Object[]> results;
+        List<Object[]> results = new ArrayList<Object[]>();
         final String query = "SELECT\n" +
                 "                MIN(p.bulan) AS masaperolehanawal, \n" +
                 "                MAX(p.bulan) AS masaperolehanakhir, \n" +
@@ -8423,14 +8427,16 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                pos.position_name AS namajabatan, \n" +
                 "                sum(p.gaji_pokok) as jumlah1gaji, \n" +
                 "                sum(p.tunjangan_pph) as jumlah2tunjpph, \n" +
-                "                sum(p.tunjangan_umk+p.tunjangan_jabatan_struktural+p.tunjangan_struktural+p.tunjangan_strategis+p.tunjangan_peralihan+p.tunjangan_lain+p.tunjangan_tambahan+p.tunjangan_lembur+p.tunjangan_pemondokan+p.tunjangan_komunikasi+p.total_rlab+p.tunjangan_dapen+p.tunjangan_bpjs_ks+p.tunjangan_bpjs_tk) as jumlah3tunjanganlemburlainnya, \n" +
+                "                sum(p.tunjangan_jabatan_struktural+p.tunjangan_struktural+p.tunjangan_peralihan+p.tunjangan_lain+p.tunjangan_tambahan+p.tunjangan_lembur+p.tunjangan_pemondokan+p.tunjangan_komunikasi+p.total_rlab+p.tunjangan_dapen+p.tunjangan_bpjs_ks+p.tunjangan_bpjs_tk) as jumlah3tunjanganlemburlainnya, \n" +
                 "                sum(p.iuran_dapen_kary+p.iuran_bpjs_tk_kary+p.iuran_bpjs_ks_kary) as jumlah10iuranpensiunthtjht, \n" +
-                "                p.nip  \n" +
+                "                p.nip,  \n" +
+                "                pph.ptkp  \n" +
                 "                from \n" +
                 "                it_hris_payroll p \n" +
                 "                left join it_hris_pegawai_position pp on p.nip = pp.nip \n" +
                 "                left join im_position pos on pp.position_id = pos.position_id \n" +
                 "                left join im_hris_pegawai peg on peg.nip = p.nip \n" +
+                "                left join it_hris_payroll_pph pph on pph.payroll_id = p.payroll_id\n" +
                 "                where \n" +
                 "                pp.branch_id= '"+ unit +"' \n" +
                 "                and peg.flag ='Y' \n" +
@@ -8449,7 +8455,8 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "                peg.status_keluarga, \n" +
                 "                peg.jumlah_anak, \n" +
                 "                pos.position_name, \n" +
-                "                pos.kelompok_id \n" +
+                "                pos.kelompok_id, \n" +
+                "                pph.ptkp \n" +
                 "                order by \n" +
                 "                pos.kelompok_id ";
 
@@ -8471,10 +8478,256 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
             result.setJumlah3(BigDecimal.valueOf(Double.valueOf(row[12].toString())));
             result.setJumlah10(BigDecimal.valueOf(Double.valueOf(row[13].toString())));
             result.setNip((String)row[14]);
+            result.setJumlah15(BigDecimal.valueOf(Double.valueOf(row[15].toString())));
             listOfResult.add(result);
         }
         return listOfResult;
     }
+    //RAKA-end
+    //RAKA-11MEI2021===>detail rekap payroll excel
+    public List<ReportPayroll> reportRekapPayroll(String bulan, String tahun, String unit){
+        List<ReportPayroll> listOfResult = new ArrayList<>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        final String query = "select\n" +
+                "       py.nip,\n" +            // 0
+                "       py.nama_pegawai,\n" +   // 1
+                "       py.golongan_name,\n" +  // 2
+                "       py.npwp,\n" +           // 3
+                "       case\n" +
+                "         when py.tipe_pegawai_id = 'TP03' then concat(py.golongan_dapen, '/', py.masa_kerja_gol)\n" +
+                "         else py.golongan_dapen\n" +
+                "           end as golongan_pens,\n" +  // 4
+                "       py.tipe_pegawai_name,\n" +      // 5
+                "       cast('-' as varchar) as no_cek,\n" +     // 6
+                "       concat(py.status_keluarga, '/', py.jumlah_anak) as status_keluarga,\n" +    // 7
+                "       py.gaji_pokok,\n" +         // 8
+                "       py.tunjungan_sankhus,\n" +  // 9
+                "       py.tunjangan_jabatan_struktural as tunjangan_jabatan,\n" +  // 10
+                "       py.tunjangan_struktural,\n" +   // 11
+                "       py.tunjangan_fungsional,\n" +   // 12
+                "       py.tunjangan_strategis as tunjangan_profesional,\n" +   // 13
+                "       py.peralihan_gapok,\n" +        // 14
+                "       py.peralihan_sankhus,\n" +      // 15
+                "       py.peralihan_tunjangan,\n" +    // 16
+                "       py.tunjangan_peralihan as tot_tunj_peralihan,\n" +  // 17
+                "       0.0 as rpl_gaji,\n" +         // 18
+                "       0.0 as rpl_sankhus,\n" +      // 19
+                "       0.0 as rpl_tjjab,\n" +        // 20
+                "       0.0 as rpl_tjstr,\n" +        // 21
+                "       0.0 as rpl_tjfung,\n" +       // 22
+                "       0.0 as rpl_tjprof,\n" +       // 23
+                "       0.0 as rpl_tjalih,\n" +       // 24
+                "       py.tunjangan_komunikasi,\n" +   // 25
+                "       py.tunjangan_tambahan,\n" +     // 26
+                "       (py.tunjangan_siaga + py.tunjangan_lokal + py.tunjangan_supervisi + py.tunjangan_pemondokan) as tot_tunj_lain,\n" + // 27
+                "       py.tunjangan_lokal,\n" +    // 28
+                "       absen.jam_lembur,\n" +       // 29
+                "       absen.fak_lembur,\n" +       // 30
+                "       0.0 as by_lembur,\n" +        // 31
+                "       py.tunjangan_lembur,\n" +   // 32
+                "       py.tunjangan_perumahan,\n" +    // 33
+                "       py.tunjangan_listrik,\n" +  // 34
+                "       py.tunjangan_air,\n" +      // 35
+                "       py.tunjangan_bbm,\n" +      // 36
+                "       0.0 as tunj_sos,\n" +         // 37
+                "       (py.tunjangan_dapen + py.tunjangan_bpjs_tk +py.tunjangan_bpjs_ks) as tot_tunj_sos,\n" + // 38
+                "       py.total_rlab,\n" +         // 39
+                "       py.tunjangan_siaga,\n" +    // 40
+                "       py.tunjangan_dapen,\n" +    // 41
+                "       py.tunjangan_bpjs_tk,\n" +  // 42
+                "       py.tunjangan_bpjs_ks,\n" +  // 43
+                "       0.0 as pend_rutin,\n" +       // 44
+                "       0.0 as pend_tdk_rutin,\n" +   // 45
+                "       py.pph_gaji,\n" +   // 46
+                "       0.0 as poypks,\n" +   // 47
+                "       py.iuran_dapen_kary,\n" +   // 48
+                "       py.iuran_dapen_pers,\n" +   // 49
+                "       py.total_iuran_bpjs_tk_kary,\n" +   // 50
+                "       py.total_iuran_bpjs_tk_pers,\n" +   // 51
+                "       py.iuran_bpjs_ks_kary,\n" +     // 52
+                "       py.iuran_bpjs_ks_pers,\n" +     // 53
+                "       (py.iuran_kopkar + py.iuran_sp + py.iuran_piikb + py.iuran_bank_bri + py.iuran_bank_mandiri + py.iuran_infaq +\n" +
+                "        py.iuran_perkes_dan_obat + py.iuran_listrik + py.iuran_potongan_lain) as tot_potongan_lain,\n" +   // 54
+                "       cast('-' as varchar) as perkbayar,\n" +  // 55
+                "       cast('-' as varchar) as klomperk,\n" +   // 56
+                "       cast('-' as varchar) as kdpoli,\n" +     // 57
+                "       cast('-' as varchar) as bkodeb,\n" +     // 58
+                "       cast('-' as varchar) as pgol,\n" +       // 59
+                "       cast('-' as varchar) as pruang,\n" +     // 60
+                "       cast('-' as varchar) as pmasa,\n" +      // 61
+                "       cast('-' as varchar) as noskdapen,\n" +  // 62
+                "       cast('-' as varchar) as noskgaji,\n" +   // 63
+                "       cast('-' as varchar) as noidbio,\n" +    // 64
+                "       cast('-' as varchar) as prypks,\n" +     // 65
+                "       cast('-' as varchar) as prdapenp,\n" +   // 66
+                "       cast('-' as varchar) as prdapeng,\n" +   // 67
+                "       cast('-' as varchar) as prbpjstp,\n" +   // 68
+                "       cast('-' as varchar) as prbpjstg,\n" +   // 69
+                "       cast('-' as varchar) as prbpjssp,\n" +   // 70
+                "       cast('-' as varchar) as prbpjssg,\n" +   // 71
+                "       0.0 as rpl_rlab,\n" +   // 72
+                "       py.tanggal_awal_lembur,\n" +    // 73
+                "       py.tanggal_akhir_lembur,\n" +   // 74
+                "       py.department_id,\n" +
+                "       py.department_name,\n" +
+                "       dept.kodering as dep_kodering,\n" +
+                "       py.sub_divisi,\n" +
+                "       py.sub_divisi_name,\n" +
+                "       bag.kodering as bag_kodering,\n" +
+                "       py.position_id,\n" +
+                "       py.position_name\n" +
+                "\n" +
+                "from it_hris_payroll_header head\n" +
+                "       left join it_hris_payroll py on py.payroll_header_id = head.payroll_header_id\n" +
+                "       left join it_hris_payroll_pph pph on pph.payroll_id = py.payroll_id\n" +
+                "       left join im_hris_department dept on dept.department_id = py.department_id\n" +
+                "       left join im_hris_position_bagian bag on bag.bagian_id = py.sub_divisi\n" +
+                "       left join\n" +
+                "         (select\n" +
+                "             ap.nip,\n" +
+                "             sum(realisasi_jam_lembur) as jam_lembur,\n" +
+                "             sum(jam_lembur) as fak_lembur\n" +
+                "           from it_hris_absensi_pegawai ap\n" +
+                "           left join it_hris_payroll pay on pay.nip = ap.nip\n" +
+                "           where ap.tanggal between pay.tanggal_awal_lembur and pay.tanggal_akhir_lembur\n" +
+                "           and pay.bulan = '"+ bulan +"'\n" +
+                "           and pay.tahun = '"+ tahun +"'\n" +
+                "           group by ap.nip\n" +
+                "        ) absen on absen.nip = py.nip \n" +
+                "where head.bulan = '"+ bulan +"'\n" +
+                "    and head.tahun = '"+ tahun +"'\n" +
+                "    and head.branch_id = '"+ unit +"'\n" +
+                "    and head.tipe_payroll = 'PY'\n" +
+                "    and head.approval_aks_flag = 'Y'\n" +
+                "    and head.flag = 'Y'\n" +
+                "    order by\n" +
+                "    (  case\n" +
+                "    when dept.department_id = 'D07' then 1\n" +
+                "    else 2\n" +
+                "    end\n" +
+                "    ),\n" +
+                "    py.position_id;";
+
+        results = this.sessionFactory.getCurrentSession().createSQLQuery(query).list();
+        for (Object[] row : results) {
+            ReportPayroll result = new ReportPayroll();
+
+            result.setNip((String) row[0]);
+            result.setNama((String) row[1]);
+            result.setGolKary((String) row[2]);
+            result.setNpwp((String) row[3]);
+            result.setGolPens((String) row[4]);
+            result.setStatPeg((String) row[5]);
+            result.setNoCek((String) row[6]);
+            result.setStatKeluarga((String) row[7]);
+            result.setGaji((BigDecimal) row[8]);
+            result.setSankhus((BigDecimal) row[9]);
+            result.setTunjJab((BigDecimal) row[10]);
+            result.setTunjStruk((BigDecimal) row[11]);
+            result.setTunjFung((BigDecimal) row[12]);
+            if(row[13] == null){
+                result.setTunjProf(BigDecimal.ZERO);
+            }else {
+                result.setTunjProf((BigDecimal) row[13]);
+            }
+            result.setTjAlihGapok((BigDecimal) row[14]);
+            result.setTjAlihSankhus((BigDecimal) row[15]);
+            result.setTjAlihTunj((BigDecimal) row[16]);
+            result.setTunjAlihTot((BigDecimal) row[17]);
+            result.setRplGaji((BigDecimal) row[18]);
+            result.setRplSankhus((BigDecimal) row[19]);
+            result.setRplTunjJab((BigDecimal) row[20]);
+            result.setRplTunjStr((BigDecimal) row[21]);
+            result.setRplTunjFung((BigDecimal) row[22]);
+            result.setRplTunjProf((BigDecimal) row[23]);
+            result.setRplTunjAlih((BigDecimal) row[24]);
+            result.setTunjKom((BigDecimal) row[25]);
+            result.setTunjTbh((BigDecimal) row[26]);
+            result.setTunjLain((BigDecimal) row[27]);
+            result.setTunjLok((BigDecimal) row[28]);
+            if(row[29] == null) {
+                result.setJamLbr(BigDecimal.ZERO);
+            }else {
+                result.setJamLbr((BigDecimal) row[29]);
+            }
+            if(row[30] == null) {
+                result.setfJamLbr(BigDecimal.ZERO);
+            }else{
+                result.setfJamLbr((BigDecimal) row[30]);
+            }
+            result.setByLembur((BigDecimal) row[31]);
+            result.setUpahLembur((BigDecimal) row[32]);
+            result.setTunjRmh((BigDecimal) row[33]);
+            result.setTunjList((BigDecimal) row[34]);
+            result.setTunjAir((BigDecimal) row[35]);
+            result.setTunjBbm((BigDecimal) row[36]);
+            result.setTunjSos((BigDecimal) row[37]);
+            result.setRplRlab((BigDecimal) row[72]);
+            result.setTunjSiaga((BigDecimal) row[40]);
+            result.setTjPensiunPers((BigDecimal) row[41]);
+            result.setTjBpjsTkPers((BigDecimal) row[42]);
+            result.setTjBpjsKsPers((BigDecimal) row[43]);
+            result.setPendRutin((BigDecimal) row[44]);
+            result.setPendTdkRutin((BigDecimal) row[45]);
+            result.setPoPph((BigDecimal) row[46]);
+            result.setPoYpks((BigDecimal) row[47]);
+            result.setIurPensiunPeg((BigDecimal) row[48]);
+            result.setIurPensiunPers((BigDecimal) row[49]);
+            result.setIurBpjsTkPeg((BigDecimal) row[50]);
+            result.setIurBpjsTkPers((BigDecimal) row[51]);
+            result.setIurBpjsKsPeg((BigDecimal) row[52]);
+            result.setIurBpjsKsPers((BigDecimal) row[53]);
+            result.setPoLain((BigDecimal) row[54]);
+            result.setPerkbayar((String) row[55]);
+            result.setKlomperk((String) row[56]);
+            result.setKdpoli((String) row[57]);
+            result.setBkodeb((String) row[58]);
+            result.setPgol((String) row[59]);
+            result.setPruang((String) row[60]);
+            result.setPmasa((String) row[61]);
+            result.setNoskdapen((String) row[62]);
+            result.setNoskgaji((String) row[63]);
+            result.setNoidbio((String) row[64]);
+            result.setPrypks((String) row[65]);
+            result.setPrdapenp((String) row[66]);
+            result.setPrdapeng((String) row[67]);
+            result.setPrbpjstp((String) row[68]);
+            result.setPrbpjstg((String) row[69]);
+            result.setPrbpjssp((String) row[70]);
+            result.setPrbpjssg((String) row[71]);
+
+            result.setTglAwalLbr((Date) row[73]);
+            result.setTglAkhirLbr((Date) row[74]);
+
+            listOfResult.add(result);
+        }
+        return listOfResult;
+    }
+
+    public String statApprovPayroll(String idPayroalHeader){
+        String statPayroll = "";
+        List<Object[]> results = new ArrayList<Object[]>();
+        final String query = "select\n" +
+                "\tapproval_sdm_flag,\n" +
+                "\tapproval_aks_flag\n" +
+                "from it_hris_payroll_header\n" +
+                "where payroll_header_id = '"+ idPayroalHeader +"'\n";
+        results = this.sessionFactory.getCurrentSession().createSQLQuery(query).list();
+
+        if(results != null){
+            String aks = results.get(0)[1]!=null ? results.get(0)[1].toString() : "N";
+            String sdm = results.get(0)[0]!=null ? results.get(0)[0].toString() : "N";
+            if("Y".equalsIgnoreCase(aks)){
+                statPayroll = "approveAKS";
+            }else if("Y".equalsIgnoreCase(sdm)){
+                statPayroll = "approveSDM";
+            }else{
+                statPayroll = "inProcess";
+            }
+        }
+        return statPayroll;
+    }
+
     //RAKA-end
 //
 //    public List<ItPayrollEntity> searchReportTarikanPendapatanPPH(final String tahun, final String unit) {
@@ -8769,48 +9022,51 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
 //        }
 //        return total;
 //    }
-//    public BigDecimal getPPhGaji12Bulan(String tahun,String nip){
-//        BigDecimal total = new BigDecimal(0);
-//        String query="select \n" +
-//                "\tsum(pph_gaji\n" +
-//                "\t\t  ) as jumlah\n" +
-//                "\tfrom it_hris_payroll\n" +
-//                "\t\twhere nip = '"+nip+"'\n" +
-//                "\t\tand tahun='"+tahun+"'\n" +
-//                "\t\tand flag='Y'\n" +
-//                "\t\tand flag_payroll='Y'\n" +
-//                "\t\tand approval_flag='Y'";
-//        Object results = this.sessionFactory.getCurrentSession()
-//                .createSQLQuery(query).uniqueResult();
-//        if (results!=null){
-//            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
-//        }else{
-//            total = BigDecimal.valueOf(0);
-//        }
-//        return total;
-//    }
+    public BigDecimal getPPhGaji12Bulan(String tahun,String nip){
+        BigDecimal total = new BigDecimal(0);
+        String query="select\n" +
+                "\tsum(pph.pph_gaji\n" +
+                "\t  ) as jumlah\n" +
+                "from it_hris_payroll py\n" +
+                "    left join it_hris_payroll_header hd on hd.payroll_header_id = py.payroll_header_id\n" +
+                "    left join it_hris_payroll_pph pph on pph.payroll_id = py.payroll_id\n" +
+                "where py.nip = '"+ nip +"'\n" +
+                "\tand hd.tahun='"+tahun+"'\n" +
+                "\tand hd.flag='Y'\n" +
+                "\tand py.tipe_payroll='PY'\n" +
+                "\tand hd.approval_aks_flag='Y'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
+    }
 //
-//    public BigDecimal getPPhGajiBonusSetahun(String tahun,String nip){
-//        BigDecimal total = new BigDecimal(0);
-//        String query="select \n" +
-//                "\tsum(pph_gaji\n" +
-//                "\t\t  ) as jumlah\n" +
-//                "\tfrom it_hris_payroll\n" +
-//                "\t\twhere nip = '"+nip+"'\n" +
-//                "\t\tand tahun='"+tahun+"'\n" +
-//                "\t\tand flag='Y'\n" +
-//                "\t\tand flag_payroll<>'Y'\n" +
-//                "\t\tand flag_pensiun<>'Y'\n" +
-//                "\t\tand approval_flag='Y'";
-//        Object results = this.sessionFactory.getCurrentSession()
-//                .createSQLQuery(query).uniqueResult();
-//        if (results!=null){
-//            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
-//        }else{
-//            total = BigDecimal.valueOf(0);
-//        }
-//        return total;
-//    }
+    public BigDecimal getPPhGajiBonusSetahun(String tahun,String nip){
+        BigDecimal total = new BigDecimal(0);
+        String query="select\n" +
+                "\tsum(pph.pph_gaji\n" +
+                "\t  ) as jumlah\n" +
+                "from it_hris_payroll py\n" +
+                "    left join it_hris_payroll_header hd on hd.payroll_header_id = py.payroll_header_id\n" +
+                "    left join it_hris_payroll_pph pph on pph.payroll_id = py.payroll_id\n" +
+                "where py.nip = '"+ nip +"'\n" +
+                "\tand hd.tahun='"+ tahun +"'\n" +
+                "\tand hd.flag='Y'\n" +
+                "\tand py.tipe_payroll not in ('PY','PN')\n" +
+                "\tand hd.approval_aks_flag='Y';";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
+    }
 //
 //    public BigDecimal getTunjanganPPhGaji11Bulan(String tahun,String nip){
 //        BigDecimal total = new BigDecimal(0);
@@ -8852,27 +9108,28 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
         return total;
     }
 //
-//    public BigDecimal getTotalBonusSetahun(String tahun,String nip){
-//        BigDecimal total = new BigDecimal(0);
-//        String query="select \n" +
-//                "\tsum(tambahan_lain\n" +
-//                "\t\t  ) as jumlah\n" +
-//                "\tfrom it_hris_payroll\n" +
-//                "\t\twhere nip = '"+nip+"'\n" +
-//                "\t\tand tahun='"+tahun+"'\n" +
-//                "\t\tand flag='Y'\n" +
-//                "\t\tand flag_payroll<>'Y'\n" +
-//                "\t\tand flag_pensiun<>'Y'\n" +
-//                "\t\tand approval_flag='Y'";
-//        Object results = this.sessionFactory.getCurrentSession()
-//                .createSQLQuery(query).uniqueResult();
-//        if (results!=null){
-//            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
-//        }else{
-//            total = BigDecimal.valueOf(0);
-//        }
-//        return total;
-//    }
+    public BigDecimal getTotalBonusSetahun(String tahun,String nip){
+        BigDecimal total = new BigDecimal(0);
+        String query="select\n" +
+                "sum(py.thp\n" +
+                "  ) as jumlah\n" +
+                "from it_hris_payroll py\n" +
+                "left join it_hris_payroll_header head on head.payroll_header_id = py.payroll_header_id\n" +
+                "left join it_hris_payroll_pph pph on pph.payroll_id = py.payroll_id\n" +
+                "where py.nip = '" + nip + "'\n" +
+                "and head.tahun ='" + tahun + "'\n" +
+                "and head.flag='Y'\n" +
+                "and approval_aks_flag = 'Y'\n" +
+                "and py.tipe_payroll not in ('PY', 'PN');";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
+    }
 //    public BigDecimal getIuran11Bulan(String tahun,String nip){
 //        BigDecimal total = new BigDecimal(0);
 //        String query="select \n" +

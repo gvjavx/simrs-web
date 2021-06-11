@@ -33,10 +33,12 @@
             var periodeTahun = document.getElementById("periodeTahun").value;
             var periodeBulan = document.getElementById("periodeBulan").value;
             var tipePendapatan = document.getElementById("tipePendapatan").value;
+            var reportId = document.getElementById("reportId").value;
 
-            if ( unit != '' && periodeTahun != ''&& periodeBulan != ''&&tipePendapatan!='') {
+
+            if ( unit != '' && periodeTahun != ''&& periodeBulan != ''&&tipePendapatan!=''&&reportId!='') {
                 event.originalEvent.options.submit = false;
-                var url = "printReportIkhtisarPendapatan_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.tipeLaporan="+tipePendapatan;
+                var url = "printReportIkhtisarPendapatan_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.tipeLaporan="+tipePendapatan+"&laporanAkuntansi.reportId="+reportId;
                 window.open(url,'_blank');
             } else {
                 event.originalEvent.options.submit = false;
@@ -52,6 +54,9 @@
                 }
                 if ( tipePendapatan == '') {
                     msg += 'Field <strong>Tipe Pendapatan</strong> masih belum dipilih' + '<br/>';
+                }
+                if ( reportId == '') {
+                    msg += 'Field <strong>Error </strong> hubungi admin' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -165,6 +170,8 @@
                                                                   id="tipePendapatan" name="laporanAkuntansi.tipeLaporan"
                                                                   headerKey="" headerValue="[Select One]" cssClass="form-control" />
                                                     </table>
+                                                    <s:hidden name="laporanAkuntansi.reportId" id="reportId" />
+
                                                 </td>
                                             </tr>
                                         </table>

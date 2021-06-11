@@ -35,9 +35,25 @@
         }
 
         function getReportURL(selectReport) {
-            var reportId = selectReport.value;
-            document.reportForm.action= "<s:property value="appname" />laporanAkuntansi/" + reportId;
-            document.reportForm.submit();
+            var url = selectReport.value;
+            var splitter = url.split("|");
+            var urlReport = splitter[0];
+            var reportId = splitter[1];
+            if(urlReport != null && reportId != null){
+                const form = document.createElement('form');
+                form.method = "post";
+                form.action =  "<s:property value="appname" />laporanAkuntansi/" + urlReport;
+
+                const hiddenField = document.createElement('input');
+                hiddenField.type = 'hidden';
+                hiddenField.name = "laporanAkuntansi.reportId";
+                hiddenField.value = reportId;
+                form.appendChild(hiddenField);
+                document.body.appendChild(form);
+                form.submit();
+            }
+
+
         };
 
     </script>
@@ -94,7 +110,7 @@
                                                     <table>
                                                         <s:action id="comboLaporan" namespace="/laporanAkuntansi" name="searchLaporanAkuntansi_laporanAkuntansi"/>
                                                         <s:select list="#comboLaporan.listComboLaporanAkuntansi" id="positionId" onchange="getReportURL(this);"
-                                                                  listKey="url" listValue="laporanAkuntansiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                                  listKey="url+'|'+laporanAkuntansiId" listValue="laporanAkuntansiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                     </table>
 
                                                 </td>

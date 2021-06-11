@@ -106,11 +106,13 @@ public class PengajuanBiayaDetailDao extends GenericDao<ItPengajuanBiayaDetailEn
         return "RK"+sId;
     }
 
-    public List<ItPengajuanBiayaDetailEntity> getListMasihMengajukan(String branchId, String divisiId) throws HibernateException {
+    //ubah cari erdasarkan no_budgeting dan closed - aji noor 05-03-2021
+    public List<ItPengajuanBiayaDetailEntity>  getListMasihMengajukan(String branchId, String divisiId, String noBudgeting) throws HibernateException {
         List<ItPengajuanBiayaDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPengajuanBiayaDetailEntity.class)
                 .add(Restrictions.eq("flag", "Y"))
                 .add(Restrictions.eq("branchId", branchId))
                 .add(Restrictions.eq("divisiId", divisiId))
+                .add(Restrictions.eq("noBudgeting", noBudgeting))
                 .add(Restrictions.isNull("closed"))
                 .addOrder(Order.desc("createdDate"))
                 .list();
@@ -137,13 +139,20 @@ public class PengajuanBiayaDetailDao extends GenericDao<ItPengajuanBiayaDetailEn
         return results;
     }
     public List<ItPengajuanBiayaDetailEntity> getListPengajuanBiayaDetailForKasKeluar(String id) throws HibernateException {
-        List<ItPengajuanBiayaDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPengajuanBiayaDetailEntity.class)
+            List<ItPengajuanBiayaDetailEntity> results = null;
+            try {
+                results = this.sessionFactory.getCurrentSession().createCriteria(ItPengajuanBiayaDetailEntity.class)
                 .add(Restrictions.ilike("pengajuanBiayaDetailId", "%"+id+"%"))
                 .add(Restrictions.eq("approvalKeuanganFlag", "Y"))
                 .add(Restrictions.eq("diterimaFlag", "Y"))
                 .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.desc("pengajuanBiayaDetailId"))
                 .list();
+
+            }
+            catch (Exception e){
+            System.out.println(e.getMessage());
+        }
         return results;
     }
 
@@ -240,6 +249,7 @@ public class PengajuanBiayaDetailDao extends GenericDao<ItPengajuanBiayaDetailEn
         }
         return total;
     }
+
     public BigDecimal getBudgetTerpakaiPadaPengajuanSdBulanIni (String branchId,String divisiId,String bulan , String tahun , String noBudgeting){
         BigDecimal total = new BigDecimal(0);
         Integer tahunSekarang = Integer.valueOf(tahun);

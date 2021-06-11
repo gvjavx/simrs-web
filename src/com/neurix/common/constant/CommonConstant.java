@@ -94,9 +94,10 @@ public class CommonConstant {
     public final static String URL_IMAGE_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/logo-nmu.png";
     public final static String URL_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/";
     public final static String IMAGE_LOGO_KP = "KP.png";
-    public final static String RESOURCE_DOCUMENT_PAYROLL = CommonUtil.getPropertyParams("upload.folder2")+CommonConstant.RESOURCE_PATH_PAYROLL;
+    public final static String RESOURCE_DOCUMENT_PAYROLL = CommonUtil.getPropertyParams("upload.folder")+CommonConstant.RESOURCE_PATH_PAYROLL;
 
-    public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayroll3.jrxml";
+//    public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayroll3.jrxml";
+    public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollPeg_update.jrxml";
     public final static String REPORT_PAYROLL_THR = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollThrBranch3.jrxml";
     public final static String REPORT_PAYROLL_JASPROD = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollJasoprBranch3jrxml";
     public final static String REPORT_PAYROLL_PENSIUN = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollPensiun3.jrxml";
@@ -112,6 +113,14 @@ public class CommonConstant {
     public final static String ROLE_ADMIN_APOTEK = "ADMIN APOTEK";
     public final static String ROLE_DOKTER_UMUM = "Dokter Umum";
     public final static String ROLE_DOKTER_SPESIALIS = "Dokter Spesialis";
+
+
+    //JENIS PEGAWAI
+    public final static String JP_NORMAL = CommonUtil.getPropertyParams("jenis.pegawai.normal");
+    public final static String JP_PLT = CommonUtil.getPropertyParams("jenis.pegawai.plt");
+    public final static String JP_PJS = CommonUtil.getPropertyParams("jenis.pegawai.pjs");
+    public final static String JP_PERCOBAAN = CommonUtil.getPropertyParams("jenis.pegawai.percobaan");
+
 
     //BPJS
     public final static String APP_NAME = ServletActionContext.getRequest().getContextPath();
@@ -177,8 +186,11 @@ public class CommonConstant {
     public final static String COA_PAYROLL = CommonUtil.getPropertyParams("coa.bank.payroll");
     public final static String KELOMPOK_ID_PEJABAT_MUDA = CommonUtil.getPropertyParams("kelompok.id.pejabat.muda");
     public final static String KELOMPOK_ID_PEJABAT_MADYA = CommonUtil.getPropertyParams("kelompok.id.pejabat.madya");
+    //RAKA-09JUN2021 ===> kelompok khusus manager procurement, dibuat untuk handle tunj.Jab & Struk yg berbeda (antara Madya dan Utama)
+    public final static String KELOMPOK_ID_MAN_PROCUREMENT = CommonUtil.getPropertyParams("kelompok.id.pejabat.man_procurement");
+    //RAKA-end
     public final static String KELOMPOK_ID_PEJABAT_UTAMA = CommonUtil.getPropertyParams("kelompok.id.pejabat.utama");
-    public final static String KELOMPOK_ID_STAFF = CommonUtil.getPropertyParams("kelompok.id.staff");
+    public final static String KELOMPOK_ID_STAFF = CommonUtil.getPropertyParams("kelompok.id.pelaksana");
     public final static String BAGIAN_ID_BOD =CommonUtil.getPropertyParams("bagian.bod");
     public final static String BAGIAN_ID_BOC =CommonUtil.getPropertyParams("bagian.boc");
     public final static String KELOMPOK_ID_BOD =CommonUtil.getPropertyParams("kelompok.id.bod");
@@ -190,7 +202,7 @@ public class CommonConstant {
     public final static String ROLE_ID_ADMIN_DIVISI = CommonUtil.getPropertyParams("role.id.admin.divisi");
     public final static String ROLE_ID_ADMIN = CommonUtil.getPropertyParams("role.id.admin");
     public final static String ROLE_ID_ADMIN_SDM = CommonUtil.getPropertyParams("role.id.admin.sdm");
-    public final static String ID_KANPUS = "KP";
+//    public final static String ID_KANPUS = "KP";
     public final static String MASTER_PAJAK_OBAT = "03.00";
 
     //updated by ferdi, 01-12-2020
@@ -265,6 +277,11 @@ public class CommonConstant {
     public final static String TRANSAKSI_ID_TERIMA_PENGAJUAN_PEMBAYARAN_DO = CommonUtil.getPropertyParams("transaksi.id.terima.pengajuan.pembayaran.do");
     public final static String TRANSAKSI_ID_PEMBAYARAN_DO = CommonUtil.getPropertyParams("transaksi.id.pembayaran.do");
     public final static String TRANSAKSI_ID_KOREKSI_PENGAJUAN_BIAYA = CommonUtil.getPropertyParams("transaksi.id.koreksi.pengajuan.biaya");
+
+    //untuk sewa lahan - aji noor
+    public final static String REKENING_KODE_PPN_KELUARAN = CommonUtil.getPropertyParams("rekening.kode.ppn.keluaran");
+    public final static String REKENING_KODE_PPH_PASAL4_AYAT2 = CommonUtil.getPropertyParams("rekening.kode.pph.pasal4.ayat2");
+    public final static String REKENING_KODE_PENDAPATAN_DILUAR_USAHA = CommonUtil.getPropertyParams("rekening.kode.pendapatan.diluar.usaha");
 
     public final static String REKENING_ID_PPN_MASUKAN = CommonUtil.getPropertyParams("rekening.id.ppn.masukan");
     public final static String REKENING_ID_PPN_KELUARAN = CommonUtil.getPropertyParams("rekening.id.ppn.keluaran");

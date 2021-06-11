@@ -170,6 +170,35 @@ public class ItHrisPayrollTempEntity {
     private Timestamp createdDate;
     private Timestamp lastUpdate;
 
+    //RAKA-23MEI2021==>untuk koreksi aks & custom dasar Bpjs
+    private String flagKoreksi;
+    private String noteKoreksi;
+    private BigDecimal dasarBpjs;
+
+    public String getFlagKoreksi() {
+        return flagKoreksi;
+    }
+
+    public void setFlagKoreksi(String flagKoreksi) {
+        this.flagKoreksi = flagKoreksi;
+    }
+
+    public String getNoteKoreksi() {
+        return noteKoreksi;
+    }
+
+    public void setNoteKoreksi(String noteKoreksi) {
+        this.noteKoreksi = noteKoreksi;
+    }
+
+    public BigDecimal getDasarBpjs() {
+        return dasarBpjs;
+    }
+
+    public void setDasarBpjs(BigDecimal dasarBpjs) {
+        this.dasarBpjs = dasarBpjs;
+    }
+
     public String getPayrollHeaderId() {
         return payrollHeaderId;
     }

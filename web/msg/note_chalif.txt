@@ -501,3 +501,46 @@ create sequence seq_pg_log_trx;
 
 alter sequence seq_pg_log_trx
   owner to postgres;
+
+--2021-05-17
+
+-- Table: public.im_simrs_pasien_sementara
+
+-- DROP TABLE public.im_simrs_pasien_sementara;
+
+CREATE TABLE public.im_simrs_pasien_sementara
+(
+    id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    nama character varying(100) COLLATE pg_catalog."default",
+    jenis_kelamin character varying(5) COLLATE pg_catalog."default",
+    no_ktp character varying(100) COLLATE pg_catalog."default",
+    tempat_lahir character varying(100) COLLATE pg_catalog."default",
+    tgl_lahir date,
+    desa_id bigint,
+    jalan character varying(100) COLLATE pg_catalog."default",
+    suku character varying(100) COLLATE pg_catalog."default",
+    agama character varying(50) COLLATE pg_catalog."default",
+    no_telp character varying(50) COLLATE pg_catalog."default",
+    url_ktp character varying(100) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    created_who character varying(50) COLLATE pg_catalog."default",
+    last_update_who character varying(50) COLLATE pg_catalog."default",
+    CONSTRAINT im_simrs_pasien_sementara_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.im_simrs_pasien_sementara
+    OWNER to postgres;
+
+CREATE SEQUENCE seq_pasien_sementara
+
+--2021-05-19
+ALTER TABLE im_simrs_pasien_sementara ADD profesi VARCHAR(100)
+ALTER TABLE im_simrs_pasien_sementara ADD email VARCHAR(100)
+ALTER TABLE im_simrs_pasien_sementara ADD password VARCHAR(100)
+ALTER TABLE im_simrs_pasien_sementara ADD flag_login VARCHAR(1)
+

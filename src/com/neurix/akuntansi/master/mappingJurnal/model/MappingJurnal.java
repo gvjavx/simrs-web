@@ -10,23 +10,79 @@ import com.neurix.common.model.BaseModel;
  * To change this template use File | Settings | File Templates.
  */
 public class MappingJurnal extends BaseModel {
-    private String mappingJurnalId;
-    private String tipeJurnalId;
-    private String kodeRekening;
-    private String posisi;
+    //untuk set new Trans
     private String transId;
+    private String transName;
+    private String isPengajuanBiaya;
+    private String isOtomatis;
+    private String isSumberBaru;
+    private String tipeJurnalId;
+    private String master;
+    private String tipeRekening;
+
+    private String kodeRekeningBintang;
+    private String kodeRekening;
+    private String mappingJurnalId;
+    private String posisi;
     private String masterId;
     private String bukti;
     private String kodeBarang;
     private String keterangan;
     private String tipeJurnalName;
-    private String transName;
     private String kirimList;
     private String divisiId;
     private String editBiaya;
 
     private String kodeRekeningName;
     private boolean transBaru=false;
+
+    public String getKodeRekeningBintang() {
+        return kodeRekeningBintang;
+    }
+
+    public void setKodeRekeningBintang(String kodeRekeningBintang) {
+        this.kodeRekeningBintang = kodeRekeningBintang;
+    }
+
+    public String getIsPengajuanBiaya() {
+        return isPengajuanBiaya;
+    }
+
+    public void setIsPengajuanBiaya(String isPengajuanBiaya) {
+        this.isPengajuanBiaya = isPengajuanBiaya;
+    }
+
+    public String getIsOtomatis() {
+        return isOtomatis;
+    }
+
+    public void setIsOtomatis(String isOtomatis) {
+        this.isOtomatis = isOtomatis;
+    }
+
+    public String getIsSumberBaru() {
+        return isSumberBaru;
+    }
+
+    public void setIsSumberBaru(String isSumberBaru) {
+        this.isSumberBaru = isSumberBaru;
+    }
+
+    public String getTipeRekening() {
+        return tipeRekening;
+    }
+
+    public void setTipeRekening(String tipeRekening) {
+        this.tipeRekening = tipeRekening;
+    }
+
+    public String getMaster() {
+        return master;
+    }
+
+    public void setMaster(String master) {
+        this.master = master;
+    }
 
     public String getDivisiId() {
         return divisiId;
