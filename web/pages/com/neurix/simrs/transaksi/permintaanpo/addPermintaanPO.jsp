@@ -12,27 +12,33 @@
     </style>
     <script type='text/javascript'>
 
+        var branchLogin = '<s:property value="permintaanVendor.branchId" />';
+
         function formatRupiah2(angka) {
-            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            if (angka != ''){
+                var number_string = angka.replace(/[^,\d]/g, '').toString(),
                     split = number_string.split(','),
                     sisa = split[0].length % 3,
                     rupiah = split[0].substr(0, sisa),
                     ribuan = split[0].substr(sisa).match(/\d{3}/gi);
 
-            if (ribuan) {
-                separator = sisa ? '.' : '';
-                rupiah += separator + ribuan.join('.');
-            }
+                if (ribuan) {
+                    separator = sisa ? '.' : '';
+                    rupiah += separator + ribuan.join('.');
+                }
 
-            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-            return rupiah;
+                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+                return rupiah;
+            }
         }
 
         function formatRupiah(angka) {
-            var reverse = angka.toString().split('').reverse().join(''),
+            if(angka != ''){
+                var reverse = angka.toString().split('').reverse().join(''),
                     ribuan = reverse.match(/\d{1,3}/g);
-            ribuan = ribuan.join('.').split('').reverse().join('');
-            return ribuan;
+                ribuan = ribuan.join('.').split('').reverse().join('');
+                return ribuan;
+            }
         }
 
         $(document).ready(function () {
@@ -77,6 +83,8 @@
                 readURL(this);
             });
         });
+
+
 
     </script>
 
@@ -128,7 +136,7 @@
                                                   list="#initVendor.listOfVendor" id="nama_vendor"
                                                   name="headerCheckup.idPelayanan" listKey="idVendor"
                                                   listValue="namaVendor"
-                                                  onchange="var warn =$('#war_po_vendor').is(':visible'); if (warn){$('#cor_po_vendor').show().fadeOut(3000);$('#war_po_vendor').hide()};"
+                                                  onchange="var warn =$('#war_po_vendor').is(':visible'); if (warn){$('#cor_po_vendor').show().fadeOut(3000);$('#war_po_vendor').hide()};showListObat()"
                                                   headerKey="" headerValue=" - "
                                                   cssClass="form-control select2"/>
                                         <span style="color: red; display: none;"
@@ -137,16 +145,16 @@
                                            id="cor_po_vendor"><i class="fa fa-check"></i> correct</span>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 7px">Nama Obat</label>
-                                    <div class="col-md-8">
-                                        <input placeholder="masukkan minimal 3 karakter nama obat" class="form-control" style="margin-top: 7px" id="nama_obat" oninput="var warn =$('#war_po_obat').is(':visible'); if (warn){$('#cor_po_obat').show().fadeOut(3000);$('#war_po_obat').hide()}; resetField(this.value);">
-                                        <span style="color: red; display: none;"
-                                              id="war_po_obat"><i class="fa fa-times"></i> required</span>
-                                        <span style="color: green; display: none;"
-                                              id="cor_po_obat"><i class="fa fa-check"></i> correct</span>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="col-md-4" style="margin-top: 7px">Nama Obat</label>--%>
+                                    <%--<div class="col-md-8">--%>
+                                        <%--<input placeholder="masukkan minimal 3 karakter nama obat" class="form-control" style="margin-top: 7px" id="nama_obat" oninput="var warn =$('#war_po_obat').is(':visible'); if (warn){$('#cor_po_obat').show().fadeOut(3000);$('#war_po_obat').hide()}; resetField(this.value);">--%>
+                                        <%--<span style="color: red; display: none;"--%>
+                                              <%--id="war_po_obat"><i class="fa fa-times"></i> required</span>--%>
+                                        <%--<span style="color: green; display: none;"--%>
+                                              <%--id="cor_po_obat"><i class="fa fa-check"></i> correct</span>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <input id="id_obat" type="hidden">
                                 <input id="id_pabrik" type="hidden">
                                 <input id="lb_bx" type="hidden">
@@ -313,7 +321,7 @@
                                                <%--oninput="var warn =$('#war_combo_pabrik').is(':visible'); if (warn){$('#cor_combo_pabrik').show().fadeOut(3000);$('#war_combo_pabrik').hide()};">--%>
                                         <%--</select>--%>
                                         <%--<span style="color: red; display: none;"--%>
-                                           <%--id="war_combo_pabrik"><i class="fa fa-times"></i> required</span>--%>
+                                           <%--id="war_combo_pabrik"><i class=R"fa fa-times"></i> required</span>--%>
                                         <%--<span style="color: green; display: none;"--%>
                                            <%--id="cor_combo_pabrik"><i class="fa fa-check"></i> correct</span>--%>
                                     <%--</div>--%>
@@ -323,52 +331,52 @@
                         <div class="box-header with-border"></div>
                         <div class="row" style="margin-top: 20px">
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 7px">Jenis Satuan</label>
-                                    <div class="col-md-8">
-                                        <s:select list="#{'lembar':'Lembar'}"
-                                                  cssStyle="margin-top: 7px; width: 100%"
-                                                  onchange="var warn =$('#war_po_jenis').is(':visible'); if (warn){$('#cor_po_jenis').show().fadeOut(3000);$('#war_po_jenis').hide()};"
-                                                  id="jenis_satuan"
-                                                  headerKey="biji" headerValue="Biji"
-                                                  cssClass="form-control select2" disabled="true"/>
-                                        <span style="color: red; display: none;"
-                                           id="war_po_jenis"><i class="fa fa-times"></i> required</span>
-                                        <span style="color: green; display: none;"
-                                           id="cor_po_jenis"><i class="fa fa-check"></i> correct</span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 7px">Jumlah</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control" id="jumlah" type="number"
-                                               style="margin-top: 7px"
-                                               oninput="var warn =$('#war_po_jumlah').is(':visible'); if (warn){$('#cor_po_jumlah').show().fadeOut(3000);$('#war_po_jumlah').hide()};"/>
-                                        <span style="color: red; display: none;"
-                                           id="war_po_jumlah"><i class="fa fa-times"></i> required</span>
-                                        <span style="color: green; display: none;"
-                                           id="cor_po_jumlah"><i class="fa fa-check"></i> correct</span>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="col-md-4" style="margin-top: 7px">Jenis Satuan</label>--%>
+                                    <%--<div class="col-md-8">--%>
+                                        <%--<s:select list="#{'lembar':'Lembar'}"--%>
+                                                  <%--cssStyle="margin-top: 7px; width: 100%"--%>
+                                                  <%--onchange="var warn =$('#war_po_jenis').is(':visible'); if (warn){$('#cor_po_jenis').show().fadeOut(3000);$('#war_po_jenis').hide()};"--%>
+                                                  <%--id="jenis_satuan"--%>
+                                                  <%--headerKey="biji" headerValue="Biji"--%>
+                                                  <%--cssClass="form-control select2" disabled="true"/>--%>
+                                        <%--<span style="color: red; display: none;"--%>
+                                           <%--id="war_po_jenis"><i class="fa fa-times"></i> required</span>--%>
+                                        <%--<span style="color: green; display: none;"--%>
+                                           <%--id="cor_po_jenis"><i class="fa fa-check"></i> correct</span>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="col-md-4" style="margin-top: 7px">Jumlah</label>--%>
+                                    <%--<div class="col-md-8">--%>
+                                        <%--<input class="form-control" id="jumlah" type="number"--%>
+                                               <%--style="margin-top: 7px"--%>
+                                               <%--oninput="var warn =$('#war_po_jumlah').is(':visible'); if (warn){$('#cor_po_jumlah').show().fadeOut(3000);$('#war_po_jumlah').hide()};"/>--%>
+                                        <%--<span style="color: red; display: none;"--%>
+                                           <%--id="war_po_jumlah"><i class="fa fa-times"></i> required</span>--%>
+                                        <%--<span style="color: green; display: none;"--%>
+                                           <%--id="cor_po_jumlah"><i class="fa fa-check"></i> correct</span>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                             </div>
                             <input type="hidden" id="h_harga_awal">
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 7px">Harga Awal / Item</label>
-                                    <div class="col-md-8">
-                                        <div class="input-group" style="margin-top: 7px; width: 100%">
-                                            <div class="input-group-addon" style="width: 15%">
-                                                Rp.
-                                            </div>
-                                            <input class="form-control" id="harga"
-                                                   oninput="var warn =$('#war_po_harga').is(':visible'); if (warn){$('#cor_po_harga').show().fadeOut(3000);$('#war_po_harga').hide()}; convertRpAtas(this.id, this.value, 'h_harga_awal');"/>
-                                        </div>
-                                        <span style="color: red; display: none;"
-                                           id="war_po_harga"><i class="fa fa-times"></i> required</span>
-                                        <span style="color: green; display: none;"
-                                           id="cor_po_harga"><i class="fa fa-check"></i> correct</span>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="col-md-4" style="margin-top: 7px">Harga Awal / Item</label>--%>
+                                    <%--<div class="col-md-8">--%>
+                                        <%--<div class="input-group" style="margin-top: 7px; width: 100%">--%>
+                                            <%--<div class="input-group-addon" style="width: 15%">--%>
+                                                <%--Rp.--%>
+                                            <%--</div>--%>
+                                            <%--<input class="form-control" id="harga"--%>
+                                                   <%--oninput="var warn =$('#war_po_harga').is(':visible'); if (warn){$('#cor_po_harga').show().fadeOut(3000);$('#war_po_harga').hide()}; convertRpAtas(this.id, this.value, 'h_harga_awal');"/>--%>
+                                        <%--</div>--%>
+                                        <%--<span style="color: red; display: none;"--%>
+                                           <%--id="war_po_harga"><i class="fa fa-times"></i> required</span>--%>
+                                        <%--<span style="color: green; display: none;"--%>
+                                           <%--id="cor_po_harga"><i class="fa fa-check"></i> correct</span>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 7px">Tanggal Penyerahan</label>
                                     <div class="col-md-8">
@@ -393,11 +401,10 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <div class="col-md-5 col-md-offset-4">
-                                        <a type="button" class="btn btn-success" onclick="addToListPo()"><i
-                                                class="fa fa-arrow-down"></i> Insert</a>
-                                        <a type="button" class="btn btn-danger" onclick="reset()"><i
-                                                class="fa fa-refresh"></i>
-                                            Reset</a>
+                                        <%--<a type="button" class="btn btn-success" onclick="addToListPo()"><i--%>
+                                                <%--class="fa fa-arrow-down"></i> Insert</a>--%>
+                                        <%--<a type="button" class="btn btn-danger" onclick="reset()"><i--%>
+                                                <%--class="fa fa-refresh"></i> Reset</a>--%>
                                     </div>
                                 </div>
                             </div>
@@ -418,25 +425,30 @@
                         <h3 class="box-title"><i class="fa fa-file-text-o"></i> Daftar PO <span id="title_tipe_obat"></span></h3>
                     </div>
                     <div class="box-body">
-                        <table class="table table-bordered table-striped" id="tabel_po">
+                        <table class="table table-bordered table-striped" style="font-size: 13px" id="tabel_po">
                             <thead>
                             <tr bgcolor="#90ee90">
+                                <td align="center" width="5%">Pilih</td>
                                 <td>ID Obat</td>
                                 <td>Nama Obat</td>
-                                <td align="center">Jumlah</td>
                                 <td align="center">Jenis Satuan</td>
-                                <%--<td align="center">Jml Lembar/Box</td>--%>
-                                <%--<td align="center">Jml Biji/Lembar</td>--%>
+                                <td align="center">Qty</td>
                                 <td align="center">Harga Awal/Item (Rp.)</td>
                                 <td align="center">Total Harga (Rp.)</td>
-                                <%--<td align="center">Tipe</td>--%>
-                                <%--<td align="center">Pabrik Obat</td>--%>
-                                <td align="center" width="10%">Action</td>
                             </tr>
                             </thead>
                             <tbody id="body_po">
                             </tbody>
+                            <tbody>
+                                <tr>
+                                    <td colspan="6" align="right">Total : </td>
+                                    <td id="total-request"></td>
+                                </tr>
+                            </tbody>
                         </table>
+                        <div id="paging_po" style="float:right">
+
+                        </div>
                         <br>
                     </div>
                     <div class="box-header with-border"></div>
@@ -467,6 +479,8 @@
                                 <a type="button" class="btn btn-warning" href="initForm_permintaanpo.action"><i
                                         class="fa fa-arrow-left"></i>
                                     Back</a>
+                                <a type="button" class="btn btn-danger" onclick="reset()"><i
+                                        class="fa fa-refresh"></i> Reset</a>
                                 <a type="button" class="btn btn-success" onclick="confirm()"><i
                                         class="fa fa-check"></i> Save</a>
                             </div>
@@ -546,10 +560,22 @@
     }
 
     function confirm() {
-        var data = $('#tabel_po').tableToJSON();
-        var stringData = JSON.stringify(data);
+//        var data = $('#tabel_po').tableToJSON();
+//        var stringData = JSON.stringify(data);
+
         var vendor = $('#nama_vendor').val();
-        if (stringData != '[]' && vendor != '') {
+        var ditemukan = false;
+        $.each(arrListRequest, function(i, item){
+            if (item.qty == '' || parseInt(item.qty) == 0){
+                detemukan = true;
+            }
+
+            if (item.hargaitem == '' || parseInt(item.hargaitem) == 0){
+                detemukan = true;
+            }
+        });
+
+        if (!ditemukan && vendor != '') {
             $('#confirm_dialog').dialog('open');
         } else {
             $('#warning_po').show().fadeOut(5000);
@@ -729,7 +755,8 @@
         $('#confirm_dialog').dialog('close');
         var result = [];
 
-        var tipe = $("#h_tipe_obat").val();
+        //var tipe = $("#h_tipe_obat").val();
+        var tipe = $("#tipe_obat option:selected").val();
         var tipeObat = "";
         if (tipe == "bpjs"){
             tipeObat = "Y";
@@ -738,34 +765,48 @@
         }
 
         var list_aktif = [];
-        $.each(status_n, function (i, item) {
+//        $.each(status_n, function (i, item) {
+//
+//            var statusobj = status_n[i];
+//            if (statusobj.status != "delete"){
+//
+//                var hargaRaw = $("#harga-"+i).val();
+//                var harga = replaceTitik(hargaRaw);
+//                var totalHarga = replaceTitik($("#harga-total-"+i).val());
+//                var idObat = $("#id-obat-"+i).val();
+//                var namaObat = $("#nama-obat-"+i).val();
+//                var qty = $("#jumlah-"+i).val();
+//                var jenis = $("#jenis-"+i).val();
+//                var lembarPerBox = $("#lembar-per-box-"+i).val();
+//                var bijiPerLembar = $("#biji-per-lembar-"+i).val();
+//                var idPabrikObat = $("#id-pabrik-"+i).val();
+//                var kodeProduksi = $('#kode-produksi-'+i).val();
+//
+//                result.push({
+//                    'id_obat':idObat,
+//                    'nama_obat':namaObat,
+//                    'qty':qty,
+//                    'jenis_satuan':jenis,
+//                    'lembar_per_box':lembarPerBox,
+//                    'biji_per_lembar':bijiPerLembar,
+//                    'harga':harga,
+//                    'tipe_obat':tipeObat,
+//                    'id_pabrik_obat':idPabrikObat,
+//                    'nomor_produksi':kodeProduksi
+//                });
+//            }
+//        });
 
-            var statusobj = status_n[i];
-            if (statusobj.status != "delete"){
+        $.each(arrListRequest, function (i, item) {
 
-                var hargaRaw = $("#harga-"+i).val();
-                var harga = replaceTitik(hargaRaw);
-                var totalHarga = replaceTitik($("#harga-total-"+i).val());
-                var idObat = $("#id-obat-"+i).val();
-                var namaObat = $("#nama-obat-"+i).val();
-                var qty = $("#jumlah-"+i).val();
-                var jenis = $("#jenis-"+i).val();
-                var lembarPerBox = $("#lembar-per-box-"+i).val();
-                var bijiPerLembar = $("#biji-per-lembar-"+i).val();
-                var idPabrikObat = $("#id-pabrik-"+i).val();
-                var kodeProduksi = $('#kode-produksi-'+i).val();
-
+            if (item.pilih == "Y"){
                 result.push({
-                    'id_obat':idObat,
-                    'nama_obat':namaObat,
-                    'qty':qty,
-                    'jenis_satuan':jenis,
-                    'lembar_per_box':lembarPerBox,
-                    'biji_per_lembar':bijiPerLembar,
-                    'harga':harga,
-                    'tipe_obat':tipeObat,
-                    'id_pabrik_obat':idPabrikObat,
-                    'nomor_produksi':kodeProduksi
+                    "id_obat":item.idobat,
+                    "nama_obat":item.namaobat,
+                    "jenis_satuan":"biji",
+                    "qty":item.qty,
+                    "harga":item.hargaitem,
+                    "tipe_obat":tipeObat
                 });
             }
         });
@@ -914,6 +955,279 @@
         });
     }
     // END
+
+    var arrObat = [];
+    var arrPaging = [];
+    var arrListRequest = [];
+
+    function showListObat(){
+        $("#body_po").html("");
+        $("#paging_po").html("");
+        arrListRequest = [];
+        generateListObat();
+        selectPage(1);
+        generatePaging(1, 'normal');
+    }
+
+    function generateListObat() {
+
+        arrObat = [];
+        arrPaging = [];
+
+        var idVendor = $("#nama_vendor option:selected").val();
+        var step = 10;
+
+        PermintaanVendorAction.getListObatByVendor(branchLogin, idVendor, function(res){
+
+            if (res.length > 0){
+
+                var fromnum         = 0;
+                var tonum           = 0;
+                $.each(res, function(i, item){
+
+                    if (arrObat.length == 0){
+                        fromnum = i;
+                    }
+
+                    arrObat.push({"ind":i, "idobat": item.idObat, "nama":item.namaObat, "idvendor":item.idVendor});
+                    var x = arrObat.length;
+                    var z = x % step;
+
+                    if (z == 0){
+                        tonum = i;
+                        arrPaging.push({"nomor":parseInt(arrPaging.length) + 1, "fromnum":fromnum, "tonum":tonum});
+                        fromnum = parseInt(i) + 1;
+                    }
+                });
+
+                var x = res.length;
+                var z = x % step;
+
+                if (z > 0){
+                    arrPaging.push({"nomor":parseInt(arrPaging.length) + 1, "fromnum":x - z, "tonum":x - 1});
+                }
+            };
+        });
+    }
+
+    function generatePaging(nomor, jenis) {
+
+        var step    = 7;
+        var str     = "";
+        if (parseInt(nomor) < step && arrPaging.length > step && jenis == "normal"){
+
+            for (var i = 1 ; i <= step ; i++){
+                if (parseInt(nomor) == i){
+                    str += "<button class='btn btn-sm btn-primary' id='btn-page-"+i+"' onclick=\"generatePaging(\'"+i+"\', \'normal\')\">"+i+"</button>";
+                } else {
+                    str += "<button class='btn btn-sm btn-default' id='btn-page-"+i+"' onclick=\"generatePaging(\'"+i+"\', \'normal\')\">"+i+"</button>";
+                }
+            }
+
+            str += "<button class='btn btn-sm btn-default' id='btn-page-"+arrPaging.length+"' onclick=\"generatePaging(\'"+arrPaging.length+"\', \'last\')\" style='padding-top: 8px; padding-bottom: 8px'><i class='fa fa-angle-double-right'></i></button>";
+
+        } else if (parseInt(nomor) >= step && arrPaging.length > step && jenis == "normal"){
+
+            var tigaKebelakang  = parseInt(nomor) - 3;
+            var tigaKedepan     = parseInt(nomor) + 4;
+
+            str += "<button class='btn btn-sm btn-default' id='btn-page-"+1+"' onclick=\"generatePaging(\'1\', \'normal\')\" style='padding-top: 8px; padding-bottom: 8px'><i class='fa fa-angle-double-left'></i></button>";
+
+            for (var i = tigaKebelakang ; i < nomor ; i++){
+                str += "<button class='btn btn-sm btn-default' id='btn-page-"+i+"' onclick=\"generatePaging(\'"+i+"\', \'normal\')\">"+i+"</button>";
+            }
+
+            str += "<button class='btn btn-sm btn-primary' id='btn-page-"+i+"' onclick=\"generatePaging(\'"+i+"\', \'normal\')\">"+i+"</button>";
+
+            for (var i = parseInt(nomor) + 1 ; i < tigaKedepan ; i++){
+                if (i <= arrPaging.length){
+                    str += "<button class='btn btn-sm btn-default' id='btn-page-"+i+"' onclick=\"generatePaging(\'"+i+"\', \'normal\')\">"+i+"</button>";
+                }
+            }
+
+            if (tigaKedepan <= arrPaging.length){
+                str += "<button class='btn btn-sm btn-default' id='btn-page-"+arrPaging.length+"' onclick=\"generatePaging(\'"+arrPaging.length+"\', \'last\')\" style='padding-top: 8px; padding-bottom: 8px'><i class='fa fa-angle-double-right'></i></button>";
+            }
+
+        } else if (arrPaging.length < step){
+
+            for (var i = 1 ; i < arrPaging.length ; i++){
+                str += "<button class='btn btn-sm btn-default' id='btn-page-"+i+"' onclick=\"generatePaging(\'"+i+"\', \'normal\')\">"+i+"</button>";
+            }
+
+        } else if (arrPaging.length == nomor || jenis == "last"){
+            str += "<button class='btn btn-sm btn-default' id='btn-page-"+1+"' onclick=\"generatePaging(\'1\', \'normal\')\" style='padding-top: 8px; padding-bottom: 8px'><i class='fa fa-angle-double-left'></i></button>";
+
+            var tigaKebelakang  = parseInt(nomor) - 3;
+
+            for (var i = tigaKebelakang ; i <= nomor ; i++){
+
+                if (i == nomor){
+                    str += "<button class='btn btn-sm btn-primary' id='btn-page-"+i+"' onclick=\"generatePaging(\'"+i+"\', \'normal\')\">"+i+"</button>";
+                } else {
+                    str += "<button class='btn btn-sm btn-default' id='btn-page-"+i+"' onclick=\"generatePaging(\'"+i+"\', \'normal\')\">"+i+"</button>";
+                }
+
+            }
+        }
+
+        selectPage(nomor);
+        $("#paging_po").html(str);
+
+    }
+
+    function selectPage(nomor){
+
+        $("#body_po").html("");
+
+        $.each(arrPaging, function(i, page){
+            if (parseInt(page.nomor) == parseInt(nomor)){
+                $.each(arrObat, function(n, obat){
+
+                    if (parseInt(obat.ind) >= parseInt(page.fromnum) && parseInt(obat.ind) <= parseInt(page.tonum)){
+                        var str = "<tr>" +
+                            "<td align='center'><input type='checkbox' id='pilih-"+obat.idobat+"' value='Y' onclick=\"addToListRequest(\'"+obat.idobat+"\')\"/></td>" +
+                            "<td>"+obat.idobat+"</td>" +
+                            "<td>"+obat.nama+"</td>" +
+                            "<td>Satuan Terkecil (Per Item)</td>" +
+                            "<td align='right'><input type='number' id='qty-"+obat.idobat+"' class='form-control' oninput=\"updateValueList(\'"+obat.idobat+"\')\" /></td>" +
+                            "<td align='right'><input type='number' id='harga-item-"+obat.idobat+"' class='form-control' oninput=\"updateValueList(\'"+obat.idobat+"\')\" /></td>" +
+                            "<td align='right'><input type='number' id='harga-total-"+obat.idobat+"' class='form-control' readonly/></td>" +
+                            "</tr>";
+
+                        $("#body_po").append(str);
+                        getValueFromArrRequest(obat.idobat);
+                    }
+                });
+            }
+        });
+    }
+
+    function unselectAll(){
+        $.each(arrObat, function(i,item){
+            $("#pilih-"+item.idobat).prop('checked', true);
+            $("#qty-"+item.idobat).prop('disabled', true);
+            $("#harga-item-"+item.idobat).prop('disabled', true);
+            $("#harga-total-"+item.idobat).prop('disabled', true);
+        });
+    }
+
+    function addToListRequest(idobat){
+        var dicentang = $("#pilih-"+idobat).is(':checked');
+        if (dicentang){
+
+            var listFoundByIdObat = arrListRequest.filter(p => p.idobat == idobat);
+
+            if (listFoundByIdObat == '' || listFoundByIdObat.length == 0){
+
+                arrListRequest.push({"idobat":idobat, "pilih":"Y", "qty":"", "hargaitem":"", "hargatotal":""});
+
+            } else {
+                $.each(arrListRequest, function (i, item) {
+                    if (item.idobat == idobat){
+                        item.pilih = "Y";
+                    }
+                });
+            }
+
+        } else {
+
+            var qty         = $("#qty-"+idobat).val();
+            var hargaitem   = $("#harga-item-"+idobat).val();
+            var hargatotal  = $("#harga-total-"+idobat).val();
+
+            $.each(arrListRequest, function (i, item) {
+                if (item.idobat == idobat){
+                    item.pilih      = "N";
+                    item.qty        = qty;
+                    item.hargaitem  = hargaitem;
+                    item.hargatotal = hargatotal;
+                }
+            });
+        }
+
+        console.log(arrListRequest);
+        getValueFromArrRequest(idobat);
+    }
+
+    function getValueFromArrRequest(idobat){
+
+        var listFoundByIdObat = arrListRequest.filter(p => p.idobat == idobat);
+
+        if (listFoundByIdObat.length > 0){
+            $.each(listFoundByIdObat, function(i,item){
+                $("#qty-"+idobat).val(item.qty);
+                $("#harga-item-"+idobat).val(formatRupiah(item.hargaitem));
+                $("#harga-total-"+idobat).val(formatRupiah(item.hargatotal));
+
+                if (item.pilih == "Y"){
+                    $("#pilih-"+idobat).prop("checked", "true");
+                    $("#qty-"+idobat).removeAttr("readOnly");
+                    $("#harga-item-"+idobat).removeAttr("readOnly");
+                } else {
+                    $("#pilih-"+idobat).removeAttr("checked");
+                    $("#qty-"+idobat).prop("readOnly", "true");
+                    $("#harga-item-"+idobat).prop("readOnly", "true");
+                }
+            })
+        } else {
+            $("#pilih-"+idobat).removeAttr("checked");
+            $("#qty-"+idobat).prop("readOnly", "true");
+            $("#harga-item-"+idobat).prop("readOnly", "true");
+        }
+    }
+
+    function updateValueList(idobat){
+        var qty     = $("#qty-"+idobat).val();
+        var harga   = parseRibuan($("#harga-item-"+idobat).val());
+
+        if (qty == null || qty == '')
+            qty = 0;
+
+        if (harga == null || harga == '')
+            harga = 0;
+
+        var total = parseInt(harga) * parseInt(qty);
+
+        $.each(arrListRequest, function (i, item) {
+            if (item.idobat == idobat){
+                item.qty        = qty;
+                item.hargaitem  = harga;
+                item.hargatotal = total.toString();
+            }
+        });
+
+        $("#harga-item-"+idobat).val(formatRupiah(harga));
+        $("#harga-total-"+idobat).val(formatRupiah(total));
+
+        hitungTotal();
+    }
+
+    function parseRibuan(angka){
+        if (angka != ''){
+
+            var spangka = angka.split('.');
+            var stTotal = "";
+            $.each(spangka, function (i, item) {
+                stTotal = stTotal + item;
+            });
+
+            return stTotal;
+        }
+    }
+
+    function hitungTotal(){
+
+        var total = 0;
+        $.each(arrListRequest, function(i, item){
+            total = parseInt(total) + parseInt(item.hargatotal);
+        });
+
+        console.log(total);
+
+        $("#total-request").html(formatRupiah(total));
+
+    }
 
 </script>
 

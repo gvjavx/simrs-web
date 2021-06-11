@@ -1985,17 +1985,17 @@
                 <div class="row" id="form-nama-racik" style="display: none">
                     <label class="col-md-3" style="margin-top: 7px;">Nama Racik</label>
                     <div class="col-md-9">
-                        <%--<input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"--%>
-                               <%--class="form-control" type="text"--%>
-                               <%--id="nama_racik">--%>
-                        <div class="input-group" style="margin-top: 7px;">
-                            <input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"
-                            class="form-control" type="text"
-                            id="nama_racik">
-                            <div class="input-group-addon">
-                                <input type="color" id="color_racik" style="height: 20px;" value="#a4dfab">
-                            </div>
-                        </div>
+                        <input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"
+                               class="form-control" type="text"
+                               id="nama_racik" style="margin-top: 7px;">
+                        <%--<div class="input-group" style="margin-top: 7px;">--%>
+                            <%--<input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"--%>
+                            <%--class="form-control" type="text"--%>
+                            <%--id="nama_racik">--%>
+                            <%--<div class="input-group-addon">--%>
+                                <%--<input type="color" id="color_racik" style="height: 20px;" value="#a4dfab">--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                         <span style="color: red; margin-top: 12px; display: none;"
                               id="war_nama_racik"><i class="fa fa-times"></i> required</span>
                         <span style="color: green; margin-top: 12px; display: none;"

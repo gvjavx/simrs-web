@@ -762,7 +762,7 @@
                                         <td><input type="radio" name="k-farma" value="N"/></td>
                                     </tr>
                                     <tr>
-                                        <td>Aspek Kritis</td>
+                                        <td>Aspek Klinis</td>
                                         <td><input type="radio" name="k-kritis" value="Y"/></td>
                                         <td><input type="radio" name="k-kritis" value="N"/></td>
                                     </tr>

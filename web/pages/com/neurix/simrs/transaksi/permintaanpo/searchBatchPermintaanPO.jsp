@@ -426,19 +426,19 @@
                         </div>
                     </div>
                     <%--<div class="row">--%>
-                    <%--<div class="col-md-6">--%>
-                    <%--<table class="table table-striped">--%>
-                    <%--<tr>--%>
-                    <%--<td width="40%"></td>--%>
-                    <%--<td>--%>
-                    <%--<button class="btn btn-sm btn-info" style="float: right;"--%>
-                    <%--onclick="viewUpload('mod_batch')"><i class="fa fa-image"></i> View--%>
-                    <%--Uploaded Document--%>
-                    <%--</button>--%>
-                    <%--</td>--%>
-                    <%--</tr>--%>
-                    <%--</table>--%>
-                    <%--</div>--%>
+                        <%--<div class="col-md-6">--%>
+                            <%--<table class="table table-striped">--%>
+                                <%--<tr>--%>
+                                    <%--<td width="40%"></td>--%>
+                                    <%--<td>--%>
+                                        <%--<button class="btn btn-sm btn-info" style="float: right;"--%>
+                                                <%--onclick="viewUpload('mod_batch')"><i class="fa fa-image"></i> View--%>
+                                            <%--Uploaded Document--%>
+                                        <%--</button>--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
+                            <%--</table>--%>
+                        <%--</div>--%>
                     <%--</div>--%>
 
                     <div class="alert alert-danger" id="alert-panel" style="display: none;"></div>

@@ -80,4 +80,6 @@ public interface PermintaanVendorBo {
     public Obat cekNoProduksi(String noProduksi) throws GeneralBOException;
 
     public void saveUploadDocPoAfterApprove(List<ItSimrsDocPoEntity> listImg, BatchPermintaanObat batchData) throws GeneralBOException;
+
+    public List<Obat> getListObatByIdVendor(String branchId, String idVendor) throws GeneralBOException;
 }
