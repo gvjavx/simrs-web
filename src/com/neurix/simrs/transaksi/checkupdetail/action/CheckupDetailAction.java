@@ -5111,7 +5111,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 reportParams.put("penunjang", penunjang);
                 reportParams.put("diagnosaPrimer", diagnosaPrimer);
                 reportParams.put("diagnosaSekunder", diagnosaSekunder);
-                reportParams.put("diagnosa", diagnosaPrimer);
+                reportParams.put("diagnosa", diagnosaMasuk);
                 reportParams.put("terapi", terapi);
                 reportParams.put("tindakan", tindakanIcd9);
                 reportParams.put("lab", lab);
@@ -5122,6 +5122,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 reportParams.put("sip", dokterTeam.getSip());
                 reportParams.put("diagnosaMasuk", diagnosaMasuk);
                 reportParams.put("indikasi", checkup.getIndikasi());
+                reportParams.put("ketCheckup", checkup.getKeterangan());
 
                 if("SP15".equalsIgnoreCase(tipe)){
                     KeperawatanRawatJalanBo keperawatanRawatJalanBo = (KeperawatanRawatJalanBo) ctx.getBean("keperawatanRawatJalanBoProxy");

@@ -6143,13 +6143,17 @@ function saveObatRacikToSession(){
                     "<td>"+namaObat+"<input type='hidden' id='id-"+idnamaracik+"-"+idObat+"' value='"+idObat+"'/><input type='hidden' id='nama-"+idnamaracik+"-"+idObat+"' value='"+namaObat+"'></td>" +
                     "<td width='50%'><textarea id='dosis-"+idnamaracik+"-"+idObat+"' class='form-control' cols='4' rows='1'></textarea></td>" +
                     "<td width='10%' align='center'>"+
-                    '<img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
+                    '<img onclick="delRacik(\'detail_racik_'+idnamaracik+idObat+'\', \''+idnamaracik+'\', \''+idObat+'\', \'detail\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
                     "</td>" +
                     "</tr>";
 
                 $("#body-detail-racik-obat-"+idnamaracik).append(detail);
                 arrListDetailRacik.push({ "idobat":idObat, "namaobat":namaObat, "racik":namaRacik, "idracik":idnamaracik});
-            };
+            }else{
+                $('#warning_resep_head').show().fadeOut(5000);
+                $('#msg_resep').text("Obat "+namaObat+ " Sudah ada dalam list Racik "+namaRacik);
+                $('#modal-resep-head').scrollTop(0);
+            }
         }
     } else {
         arrListNamaRacik.push({"idracik": idnamaracik,"namaracik":namaRacik, "warna":warnaRacik});
@@ -6168,8 +6172,8 @@ function saveObatRacikToSession(){
             warnaRacik = warnaGanjil;
         }
 
-        var label = "<div class='box-header with-border'><i class='fa fa-file-o'></i> Obat Racik : </div>";
-        var table = "<table style='font-size: 13px; border-radius:5px;' class='table' width='100%' id='tabel-racik-"+idnamaracik+"'>" +
+        var label = "<div id='tabel-racik-"+idnamaracik+"'><div class='box-header with-border'><i class='fa fa-file-o'></i> Obat Racik : </div>";
+        var table = "<table style='font-size: 13px; border-radius:5px;' class='table' width='100%'>" +
             "<thead style='border-top:2px solid "+warnaRacik+"'>" +
             "<td>Nama Racik</td>" +
             "<td>Signa</td>" +
@@ -6188,7 +6192,7 @@ function saveObatRacikToSession(){
             "</select>"+
             "</td>" +
             "<td width='10%' align='center'>"+
-            '<img border="0" onclick="delRacik(\'tabel-racik-'+idnamaracik+'\')" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
+            '<img border="0" onclick="delRacik(\'tabel-racik-'+idnamaracik+'\', \''+idnamaracik+'\', \''+idObat+'\', \'head\')" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
             "</td>" +
             "</tr>" +
             "<tr>" +
@@ -6196,7 +6200,7 @@ function saveObatRacikToSession(){
             "</td>" +
             "</tr>" +
             "</tbody>"+
-            "</table>";
+            "</table></div>";
             $("#informasi-racik").append(label+table);
 
         var detail = "<table style='font-size:13px;' id='detail-racik-"+idnamaracik+"' class='table table-bordered table-striped'>"+
@@ -6210,18 +6214,32 @@ function saveObatRacikToSession(){
                 "<td>"+namaObat+"<input type='hidden' id='id-"+idnamaracik+"-"+idObat+"' value='"+idObat+"'/><input type='hidden' id='nama-"+idnamaracik+"-"+idObat+"' value='"+namaObat+"'/></td>" +
                 "<td width='50%'><textarea id='dosis-"+idnamaracik+"-"+idObat+"' class='form-control dosis-racik' cols='4' rows='1'></textarea></td>" +
                 "<td width='10%' align='center'>"+
-                '<img onclick="delRacik(\'detail_racik_'+idnamaracik+idObat+'\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
+                '<img onclick="delRacik(\'detail_racik_'+idnamaracik+idObat+'\', \''+idnamaracik+'\', \''+idObat+'\', \'detail\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;">' +
                 '</tr>'+
                 "</td>" +
                 "</tr>" +
                 "</tbody>"+
                 "</table>";
         $("#body-detail-racik-"+idnamaracik).append(detail);
-    };
+    }
 }
 
-function delRacik(id){
+function delRacik(id, idracik, idobat, tipe){
     $('#'+id).remove();
+    if(tipe == 'head'){
+        $.each(arrListNamaRacik, function (i, item) {
+            if(item.idracik == idracik){
+                arrListNamaRacik.splice(i, 1);
+                arrListDetailRacik = [];
+            }
+        });
+    }else{
+        $.each(arrListDetailRacik, function (i, item) {
+            if(item.idracik == idracik && item.idobat == idobat){
+                arrListDetailRacik.splice(i, 1);
+            }
+        });
+    }
 }
 
 function sisipkanStrip(nama){

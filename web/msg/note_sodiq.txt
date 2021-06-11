@@ -2849,4 +2849,12 @@ ALTER TABLE public.it_simrs_kontrol_ulang
 
  CREATE SEQUENCE seq_kontrol_ulang;
 
+INSERT INTO im_simrs_rekam_medis_pasien VALUES
+('RMM00000118','SK 001','Surat Kontrol','surat','SP21','SP21','printPernyataan','Y','C','migrasi',now(),now(),'migrasi','1');
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000304','RMM00000118','rawat_jalan','19','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000305','RMM00000118','igd','19','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000306','RMM00000118','rawat_inap','19','Y','C','migrasi',now(),now(),'migrasi');
+
 
