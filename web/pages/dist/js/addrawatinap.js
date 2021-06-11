@@ -1203,7 +1203,7 @@ function saveTindakan(id) {
                     'qty': qty[i].value,
                     'jenis_pasien': idJenisPeriksa,
                     'id_pelayanan': idPelayanan[i].value,
-                    'id_ruangan': ''
+                    'id_ruangan': idRuangan
                 });
             });
             $('#save_tindakan').hide();
