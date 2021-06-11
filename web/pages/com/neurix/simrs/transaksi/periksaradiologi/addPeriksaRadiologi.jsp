@@ -218,6 +218,12 @@
                                             <table><s:label name="periksaLab.catatanKlinis"></s:label></table>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td><b>Penyakit Dahulu</b></td>
+                                        <td>
+                                            <table><s:label name="periksaLab.penyakitDahulu"></s:label></table>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
                             <!-- /.col -->
