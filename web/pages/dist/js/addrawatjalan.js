@@ -138,7 +138,6 @@ function hitungCoverBiaya() {
 
 function hitungStatusBiaya() {
     CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RWJ", function (response) {
-        console.log(jenisPeriksaPasien);
         if (jenisPeriksaPasien == "bpjs" || jenisPeriksaPasien == "ptpn") {
             $('#status_bpjs').show();
             if (response.tarifBpjs != null && response.tarifTindakan != null) {
@@ -2976,7 +2975,6 @@ function saveResepObat() {
     var dataURL = canvas.toDataURL("image/png"),
         dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
     var ttd = isBlank(canvas);
-    console.log(arrListDetailRacik);
     if (data.length > 0 || arrListDetailRacik.length > 0 && !ttd) {
         if (!cekSession()) {
             var idPelayanan = apotek.split('|')[0];
@@ -3956,7 +3954,6 @@ function savePemeriksaanPasien() {
     var keterangan = $('#ket_selesai option:selected').text();
     var ketRawatInap = $('#keterangan_rw').val();
     var rsRujukan = $('#rs_rujukan').val();
-    var tglKontrol = $('#tgl_kontrol').val().split("-").reverse().join("-");
     var isPemeriksaan = $('#pemeriksaan_lab').is(':checked');
     var kategoriLab = $('#ckp_kategori').val();
     var unitLab = $('#ckp_unit').val();

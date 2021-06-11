@@ -24,6 +24,7 @@
         }
     </style>
 
+    <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/radio_checkbox.css"/>">
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaRadiologiAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaLabAction.js"/>'></script>
@@ -685,6 +686,28 @@
 
 <div id="modal-temp"></div>
 
+<div class="modal fade" id="modal-confirm-rm">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Konfirmasi
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-center" id="tanya"></h4>
+                <h4 class="text-center" id="print_form"></h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Tidak
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con_rm"><i class="fa fa-check"></i> Ya            </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -707,7 +730,11 @@
     </div>
 </div>
 
-<!-- /.content-wrapper -->
+<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenRawatInapAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/EdukasiPasienAction.js"/>'></script>
+
+<script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatinap.js"/>'></script>
 <script type='text/javascript'>
 
     var idHeaderPemeriksaan = '<s:property value="periksaLab.idHeaderPemeriksaan"/>';
@@ -723,6 +750,9 @@
     var keterangan = '<s:property value="periksaLab.keterangan"/>';
     var tipeLab = 'radiologi';
     var jenisKelamin = '<s:property value="periksaLab.jenisKelamin"/>';
+    var isReadRM = false;
+    var namaPasien = "";
+    var contextPath = '<%= request.getContextPath() %>';
 
     $(document).ready(function () {
         $('#penunjang_active, #periksa_radiologi').addClass('active');
@@ -1023,11 +1053,12 @@
                 $('.editors').each(function () {
                     CKEDITOR.replace($(this).attr('id'));
                 });
-                if("Y" == asesmen){
-                    $('#asesmen_radiolgi').show();
-                }else{
-                    $('#asesmen_radiolgi').hide();
-                }
+                $('#asesmen_radiolgi').show();
+                // if("Y" == asesmen){
+                //     $('#asesmen_radiolgi').show();
+                // }else{
+                //     $('#asesmen_radiolgi').hide();
+                // }
             }
         });
     }
