@@ -1989,7 +1989,8 @@ public class BiodataBoImpl implements BiodataBo {
 
                 if (listKeluarga != null) {
                     for (Keluarga keluarga : listKeluarga) {
-                        if (!"I".equalsIgnoreCase(keluarga.getStatusKeluargaId()) && !"S".equalsIgnoreCase(keluarga.getStatusKeluargaId())) {
+//                        if (!"I".equalsIgnoreCase(keluarga.getStatusKeluargaId()) && !"S".equalsIgnoreCase(keluarga.getStatusKeluargaId())) {
+                        if("Y".equalsIgnoreCase(keluarga.getDitanggung())){
                             jumlahAnak += 1;
                         }
                     }
@@ -6224,7 +6225,8 @@ public class BiodataBoImpl implements BiodataBo {
 
         if (imKeluargaEntity != null) {
             for (ImKeluargaEntity entity : imKeluargaEntity) {
-                if (!"I".equalsIgnoreCase(entity.getStatusKeluarga()) && !"S".equalsIgnoreCase(entity.getStatusKeluarga())) {
+//                if (!"I".equalsIgnoreCase(entity.getStatusKeluarga()) && !"S".equalsIgnoreCase(entity.getStatusKeluarga())) {
+                if("Y".equalsIgnoreCase(entity.getDitanggung())){
                     jumlahAnak += 1;
                 }
             }

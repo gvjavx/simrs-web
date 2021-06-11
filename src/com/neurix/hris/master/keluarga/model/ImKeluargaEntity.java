@@ -28,6 +28,16 @@ public class ImKeluargaEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
+    private String ditanggung;
+
+    public String getDitanggung() {
+        return ditanggung;
+    }
+
+    public void setDitanggung(String ditanggung) {
+        this.ditanggung = ditanggung;
+    }
+
     public String getGender() {
         return gender;
     }

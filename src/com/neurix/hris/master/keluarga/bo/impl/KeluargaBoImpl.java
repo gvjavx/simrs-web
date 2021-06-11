@@ -294,6 +294,8 @@ public class KeluargaBoImpl implements KeluargaBo {
                         returnKeluarga.setStTanggalLahir("");
                     }
 
+                    returnKeluarga.setDitanggung(keluargaEntity.getDitanggung());
+
                     returnKeluarga.setCreatedWho(keluargaEntity.getCreatedWho());
                     returnKeluarga.setCreatedDate(keluargaEntity.getCreatedDate());
                     returnKeluarga.setLastUpdate(keluargaEntity.getLastUpdate());

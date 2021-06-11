@@ -48,6 +48,9 @@
         <property name="lastUpdate">
             <column name="last_update" sql-type="date" not-null="false" />
         </property>
+        <property name="ditanggung">
+            <column name="ditanggung" sql-type="varchar" not-null="false" />
+        </property>
 
     </class>
 </hibernate-mapping>

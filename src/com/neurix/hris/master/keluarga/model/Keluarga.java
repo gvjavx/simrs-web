@@ -21,6 +21,15 @@ public class Keluarga extends BaseModel {
     private String statusKeluargaName;
     private String stTanggalLahir;
     private Date tanggalLahir;
+    private String ditanggung;
+
+    public String getDitanggung() {
+        return ditanggung;
+    }
+
+    public void setDitanggung(String ditanggung) {
+        this.ditanggung = ditanggung;
+    }
 
     public String getGender() {
         return gender;

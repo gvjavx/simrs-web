@@ -4609,6 +4609,7 @@
                     "<th style='text-align: center; background-color:  #3c8dbc''>Status Keluarga</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc''>Gender</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Lahir</th>" +
+                    // "<th style='text-align: center; background-color:  #3c8dbc'>Ditanggung</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
                     "</tr></thead>";
@@ -4620,6 +4621,7 @@
                     "<th style='text-align: center; background-color:  #3c8dbc''>Status Keluarga</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc''>Gender</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Lahir</th>" +
+                    // "<th style='text-align: center; background-color:  #3c8dbc'>Ditanggung</th>" +
                     "</tr></thead>";
                 </s:else>
 
@@ -4636,6 +4638,9 @@
                     }else{
                         tmp_table += '<td align="center">' + ' - ' + '</td>';
                     }
+                    // if(item.ditanggung == 'Y'){
+                    //     tmp_table += '<td > <input type="checkbox" class="checkZakat" onchange="cekTanggungPtkp()" /> </td>';
+                    // }
                         /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/
                     tmp_table += '<td align="center">' +
                         "<a href='javascript:;' class ='item-edit' data ='" + item.keluargaId + "' >" +
@@ -4681,6 +4686,7 @@
                     "<th style='text-align: center; background-color:  #3c8dbc'>Name</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc''>Status Keluarga</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Lahir</th>" +
+                    // "<th style='text-align: center; background-color:  #3c8dbc'>Ditanggung</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
                     "</tr></thead>";
@@ -4693,6 +4699,7 @@
                         '<td align="center">' + item.statusKeluargaName + '</td>' +
                         '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>' +
                         /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/
+                        // '<td align="center"> <input type="checkbox" id="kel-' + item.statusKeluargaId + '" onclick="cekTanggungan('+ +')"/></td>' +
                         '<td align="center">' +
                         "<a href='javascript:;' class ='item-edit' data ='" + item.statusKeluargaId + "' >" +
                         "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
