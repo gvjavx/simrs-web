@@ -135,6 +135,15 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String catatanKlinis;
     private String isCito;
     private String isAsesmen;
+    private String penyakitDahulu;
+
+    public String getPenyakitDahulu() {
+        return penyakitDahulu;
+    }
+
+    public void setPenyakitDahulu(String penyakitDahulu) {
+        this.penyakitDahulu = penyakitDahulu;
+    }
 
     public String getIsAsesmen() {
         return isAsesmen;
