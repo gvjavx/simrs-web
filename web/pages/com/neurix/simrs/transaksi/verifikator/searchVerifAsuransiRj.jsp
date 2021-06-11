@@ -524,7 +524,7 @@
 
                         $('#no_rm').html(res.idPasien);
                         $('#no_checkup').html(noCheckup);
-                        $('#no_detail_checkup').html(idDetailCheckup);
+                        $('#no_detail_checkup').html(idDetail);
                         $('#nik').html(res.noKtp);
                         $('#nama').html(res.nama);
                         $('#jenis_kelamin').html(jk);

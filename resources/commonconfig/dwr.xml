@@ -1023,6 +1023,7 @@
         <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity"/>
         <convert converter="bean" match="com.neurix.simrs.transaksi.asesmenicu.model.KeseimbanganIcu"/>
         <convert converter="bean" match="com.neurix.simrs.transaksi.obatracik.model.ObatRacik"/>
+        <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsKontrolUlangEntity"/>
 
     </allow>
 </dwr>

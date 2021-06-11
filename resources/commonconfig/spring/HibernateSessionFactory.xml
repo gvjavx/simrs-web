@@ -618,6 +618,7 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/hargaobat/hibernate/MtSimrsHargaObatPerKonsumenEntity.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/asesmenicu/hibernate/ItSimrsKeseimbanganIcuEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/obatracik/hibernate/ItSimrsObatRacikEntity.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/checkupdetail/hibernate/ItSimrsKontrolUlangEntity.hbm.xml</value>
             </list>
 
         </property>

@@ -1202,7 +1202,7 @@ function saveTindakan(id) {
                     'qty': qty[i].value,
                     'jenis_pasien': idJenisPeriksa,
                     'id_pelayanan': idPelayanan[i].value,
-                    'id_ruangan': ''
+                    'id_ruangan': idRuangan
                 });
             });
             $('#save_tindakan').hide();
@@ -3300,13 +3300,7 @@ function saveResepObat() {
     $('#modal-confirm-dialog').modal('hide');
     var idDokter = $('#tin_id_dokter').val();
     var tipeTrans = $("#tipe-trans-resep").val();
-
-    var data = [];
-    if (tipeTrans == "racik")
-        data = $("#tabel_rese_detail_racik").tableToJSON();
-    else
-        data = $('#tabel_rese_detail').tableToJSON();
-
+    var data = $('#tabel_rese_detail').tableToJSON();
     var apotek = $('#resep_apotek').val();
     var canvas = document.getElementById('ttd_canvas');
     var dataURL = canvas.toDataURL("image/png"),
@@ -4293,7 +4287,29 @@ function savePemeriksaanPasien() {
                     cek = true;
                 }
             } else if (tindakLanjut == "kontrol_ulang") {
-                if (tglKontrol != '') {
+                var cekKontrol = false;
+                var kontrol = [];
+                var tgl = $('.close_tanggal_kontrol');
+                var pelayanan = $('.close_pelayanan_kontrol');
+                var dokter = $('.close_dokter_kontrol');
+                var dataKontrol = "";
+
+                $.each(tgl, function (i, item) {
+                    if(item.value != '' && pelayanan[i].value != '' && dokter[i].value != ''){
+                        kontrol.push({
+                            'tgl_kontrol': item.value.split("-").reverse().join("-"),
+                            'pelayanan': pelayanan[i].value,
+                            'dokter': dokter[i].value,
+                        });
+                        cekKontrol = true;
+                    }
+                });
+
+                if(kontrol.length > 0){
+                    dataKontrol = JSON.stringify(kontrol);
+                }
+
+                if (cekKontrol) {
                     if (isPemeriksaan) {
                         var tabelOrderPemeriksaan = $('#tabel_order_pemeriksaan').tableToJSON();
                         var namaPemeriksaan = $('.nama_order_jenis_pemeriksaan');
@@ -4334,7 +4350,7 @@ function savePemeriksaanPasien() {
                                 'keterangan': 'Kontrol Ulang dengan Pemeriksaan Penunjang Medis',
                                 'catatan': catatan,
                                 'jenis_pasien': jenisPeriksaPasien,
-                                'tgl_kontrol': tglKontrol,
+                                'data_kontrol': dataKontrol,
                                 'list_pemeriksaan': JSON.stringify(pemeriksan),
                                 'id_kategori_lab': kategoriLab,
                                 'is_order_lab': 'Y',
@@ -4351,7 +4367,7 @@ function savePemeriksaanPasien() {
                             'keterangan': 'Kontrol Ulang',
                             'catatan': catatan,
                             'jenis_pasien': jenisPeriksaPasien,
-                            'tgl_kontrol': tglKontrol,
+                            'data_kontrol': dataKontrol,
                             'id_ruangan_lama': idRuanganLama
                         }
                         cek = true;

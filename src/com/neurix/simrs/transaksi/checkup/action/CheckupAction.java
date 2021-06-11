@@ -3855,6 +3855,20 @@ public class CheckupAction extends BaseMasterAction {
         return dokterList;
     }
 
+    public List<Dokter> getListDokterByPelayanan(String idPelayanan) {
+        logger.info("[CheckupAction.getListDokterByPelayanan] START process >>>");
+        List<Dokter> dokterList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        DokterBo dokterBo = (DokterBo) ctx.getBean("dokterBoProxy");
+        try {
+            dokterList = dokterBo.getDokterByPelayanan(idPelayanan, "");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error, " + e.getMessage());
+        }
+        logger.info("[CheckupAction.getListDokterByPelayanan] END process >>>");
+        return dokterList;
+    }
+
     public List<Dokter> getListDokterByIdDetailCheckup(String idDetailCheckup, String approve) {
 
         logger.info("[CheckupAction.getListDokterByIdDetailCheckup] START process >>>");
