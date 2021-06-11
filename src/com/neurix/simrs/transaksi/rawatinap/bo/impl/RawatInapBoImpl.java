@@ -19,11 +19,9 @@ import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
+import com.neurix.simrs.transaksi.checkupdetail.dao.KontrolUlangDao;
 import com.neurix.simrs.transaksi.checkupdetail.dao.UangMukaDao;
-import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
-import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
-import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
-import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
+import com.neurix.simrs.transaksi.checkupdetail.model.*;
 import com.neurix.simrs.transaksi.moncairan.dao.MonCairanDao;
 import com.neurix.simrs.transaksi.moncairan.model.ItSimrsMonCairanEntity;
 import com.neurix.simrs.transaksi.moncairan.model.MonCairan;
@@ -88,6 +86,7 @@ public class RawatInapBoImpl implements RawatInapBo {
     private TempatTidurDao tempatTidurDao;
     private UangMukaDao uangMukaDao;
     private PasienDao pasienDao;
+    private KontrolUlangDao kontrolUlangDao;
 
     public List<ItSimrsRawatInapEntity> getListEntityByCriteria(RawatInap bean) throws GeneralBOException {
         logger.info("[RawatInapBoImpl.getListEntityByCriteria] Start >>>>>>>");
@@ -1117,8 +1116,46 @@ public class RawatInapBoImpl implements RawatInapBo {
                         }
                     }
                 }
+
+                //sodiq, set kontrol ulang jumat menjalang siang 11-06-2021
+                if("kontrol_ulang".equalsIgnoreCase(bean.getTindakLanjut())){
+                    if(bean.getKontrolUlangEntityList().size() > 0){
+
+                        //jika kontrol ada kontrol ulang dihapus dahulu
+                        List<ItSimrsKontrolUlangEntity> entityList = new ArrayList<>();
+                        HashMap hashMap = new HashMap();
+                        hashMap.put("id_detail_checkup", bean.getIdDetailCheckup());
+                        try {
+                            entityList = kontrolUlangDao.getByCriteria(hashMap);
+                        }catch (HibernateException e){
+                            logger.error("Error"+e.getMessage());
+                        }
+                        if(entityList.size() > 0){
+                            for (ItSimrsKontrolUlangEntity kontrolUlangEntity: bean.getKontrolUlangEntityList()){
+                                try {
+                                    kontrolUlangDao.deleteAndSave(kontrolUlangEntity);
+                                }catch (HibernateException e){
+                                    logger.error("Error"+e.getMessage());
+                                }
+                            }
+                        }
+
+                        //insertkan kembali
+                        for (ItSimrsKontrolUlangEntity kontrolUlangEntity: bean.getKontrolUlangEntityList()){
+                            kontrolUlangEntity.setIdKontrolUlang(kontrolUlangDao.getNextId());
+                            kontrolUlangEntity.setNoCheckup(bean.getNoCheckup());
+                            kontrolUlangEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                            try {
+                                kontrolUlangDao.addAndSave(kontrolUlangEntity);
+                            }catch (HibernateException e){
+                                logger.error("Error"+e.getMessage());
+                            }
+                        }
+                    }
+                }
             }
         }
+
         if (bean.getIdRuangLama() != null && !"".equalsIgnoreCase(bean.getIdRuangLama())) {
             if (!"Y".equalsIgnoreCase(bean.getIsStay())) {
                 if(!"hemodialisa".equalsIgnoreCase(bean.getTindakLanjut())){
@@ -1583,5 +1620,9 @@ public class RawatInapBoImpl implements RawatInapBo {
 
     public void setPasienDao(PasienDao pasienDao) {
         this.pasienDao = pasienDao;
+    }
+
+    public void setKontrolUlangDao(KontrolUlangDao kontrolUlangDao) {
+        this.kontrolUlangDao = kontrolUlangDao;
     }
 }
