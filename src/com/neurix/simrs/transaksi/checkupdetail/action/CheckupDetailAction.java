@@ -68,11 +68,8 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkup.model.PelayananPaket;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
-import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.model.*;
 
-import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
-import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUploadPendukungPemeriksaanEntity;
-import com.neurix.simrs.transaksi.checkupdetail.model.UploadPendukungPemeriksaan;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.kandungan.bo.KandunganBo;
@@ -1084,7 +1081,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 String tindakLanjut = object.getString("tindak_lanjut");
                 String jenisPasien = object.getString("jenis_pasien");
                 String rsRujukan = null;
-                String tglKontrol = null;
+                String dataKontrol = null;
                 String listPemeriksaan = null;
                 String kategoriLab = null;
                 String isOrderLab = null;
@@ -1104,8 +1101,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                 if (object.has("rs_rujukan")) {
                     rsRujukan = object.getString("rs_rujukan");
                 }
-                if (object.has("tgl_kontrol")) {
-                    tglKontrol = object.getString("tgl_kontrol");
+                if (object.has("data_kontrol")) {
+                    dataKontrol = object.getString("data_kontrol");
                 }
                 if (object.has("id_kategori_lab")) {
                     kategoriLab = object.getString("id_kategori_lab");
@@ -1164,9 +1161,6 @@ public class CheckupDetailAction extends BaseMasterAction {
                     headerDetailCheckup.setTindakLanjut(tindakLanjut);
                     headerDetailCheckup.setCatatan(object.getString("catatan"));
                     headerDetailCheckup.setKeteranganSelesai(object.getString("keterangan"));
-                    if (tglKontrol != null) {
-                        headerDetailCheckup.setTglCekup(java.sql.Date.valueOf(tglKontrol));
-                    }
                     headerDetailCheckup.setRsRujukan(rsRujukan);
                     headerDetailCheckup.setIsMeninggal(isMeninggal);
                     headerDetailCheckup.setIndikasi(indikasi);
@@ -1256,6 +1250,31 @@ public class CheckupDetailAction extends BaseMasterAction {
                             } catch (Exception e) {
                                 response.setStatus("error");
                                 response.setMsg("[Found Error] JSON data asuransi tidak bisa dilakukan...!");
+                            }
+                        }
+                    }
+
+                    if("kontrol_ulang".equalsIgnoreCase(tindakLanjut)){
+                        if(dataKontrol != null && !"".equalsIgnoreCase(dataKontrol)){
+                            JSONArray jsonArray = new JSONArray(dataKontrol);
+                            List<ItSimrsKontrolUlangEntity> list = new ArrayList<>();
+                            for (int i=0; i < jsonArray.length(); i++){
+                                JSONObject obj = jsonArray.getJSONObject(i);
+                                ItSimrsKontrolUlangEntity kontrolUlangEntity = new ItSimrsKontrolUlangEntity();
+                                kontrolUlangEntity.setTglKontrol(java.sql.Date.valueOf(obj.getString("tgl_kontrol")));
+                                kontrolUlangEntity.setIdPelayanan(obj.getString("pelayanan"));
+                                kontrolUlangEntity.setIdDokter(obj.getString("dokter"));
+                                kontrolUlangEntity.setStatusKontrol("N");
+                                kontrolUlangEntity.setFlag("Y");
+                                kontrolUlangEntity.setAction("C");
+                                kontrolUlangEntity.setCreatedDate(now);
+                                kontrolUlangEntity.setCreatedWho(user);
+                                kontrolUlangEntity.setLastUpdate(now);
+                                kontrolUlangEntity.setLastUpdateWho(user);
+                                list.add(kontrolUlangEntity);
+                            }
+                            if(list.size() > 0){
+                                headerDetailCheckup.setKontrolUlangEntityList(list);
                             }
                         }
                     }
@@ -3311,6 +3330,21 @@ public class CheckupDetailAction extends BaseMasterAction {
         return SUCCESS;
     }
 
+    public List<KeteranganKeluar> listOfKeteranganKeluar() {
+        logger.info("[CheckupDetailAction.listOfKeteranganKeluar] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KeteranganKeluarBo keteranganKeluarBo = (KeteranganKeluarBo) ctx.getBean("keteranganKeluarBoProxy");
+        List<KeteranganKeluar> keteranganKeluarList = new ArrayList<>();
+        KeteranganKeluar keteranganKeluar = new KeteranganKeluar();
+        try {
+            keteranganKeluarList = keteranganKeluarBo.getByCriteria(keteranganKeluar);
+        } catch (GeneralBOException e) {
+            logger.error("[CheckupDetailAction.listOfKeteranganKeluar] Error when get keterangan keluar ," + "Found problem when saving add data, please inform to your admin.", e);
+        }
+        logger.info("[CheckupDetailAction.listOfKeteranganKeluar] end process <<<");
+        return keteranganKeluarList;
+    }
+
     public CrudResponse saveUpdateRuangan(String idRawatInap, String idRuangan, String idDetailCheckup, String tanggal) {
         logger.info("[CheckupDetailAction.saveUpdateRuangan] start process >>>");
         CrudResponse response = new CrudResponse();
@@ -5077,7 +5111,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 reportParams.put("penunjang", penunjang);
                 reportParams.put("diagnosaPrimer", diagnosaPrimer);
                 reportParams.put("diagnosaSekunder", diagnosaSekunder);
-                reportParams.put("diagnosa", diagnosaPrimer);
+                reportParams.put("diagnosa", diagnosaMasuk);
                 reportParams.put("terapi", terapi);
                 reportParams.put("tindakan", tindakanIcd9);
                 reportParams.put("lab", lab);
@@ -5088,6 +5122,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 reportParams.put("sip", dokterTeam.getSip());
                 reportParams.put("diagnosaMasuk", diagnosaMasuk);
                 reportParams.put("indikasi", checkup.getIndikasi());
+                reportParams.put("ketCheckup", checkup.getKeterangan());
 
                 if("SP15".equalsIgnoreCase(tipe)){
                     KeperawatanRawatJalanBo keperawatanRawatJalanBo = (KeperawatanRawatJalanBo) ctx.getBean("keperawatanRawatJalanBoProxy");
@@ -5344,6 +5379,9 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
             if ("SP20".equalsIgnoreCase(tipe)) {
                 return "print_buta_warna";
+            }
+            if ("SP21".equalsIgnoreCase(tipe)) {
+                return "print_checkup_ulang";
             }
             if ("SK01".equalsIgnoreCase(tipe)) {
                 return "print_keterangan_dokter";
@@ -6100,27 +6138,60 @@ public class CheckupDetailAction extends BaseMasterAction {
         return response;
     }
 
-    public CrudResponse sendToTppti(String id, String lanjut, String indikasi, String selesai) {
+    public CrudResponse sendToTppti(String data) {
         logger.info("[CheckupDetailAction.sendToTppti] start process >>>");
         CrudResponse response = new CrudResponse();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-        if (id != null && !"".equalsIgnoreCase(id)) {
-            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
-            detailCheckup.setIdDetailCheckup(id);
-            detailCheckup.setTindakLanjut(lanjut);
-            detailCheckup.setIndikasi(indikasi);
-            detailCheckup.setKeteranganSelesai(selesai);
-            detailCheckup.setLastUpdateWho(userLogin);
-            detailCheckup.setLastUpdate(updateTime);
+        if (data != null && !"".equalsIgnoreCase(data)) {
             try {
-                checkupDetailBo.sendToTppti(detailCheckup);
-                response.setStatus("success");
-                response.setMsg("OK");
-            } catch (Exception e) {
-                logger.error(e.getMessage());
+                JSONObject object = new JSONObject(data);
+                HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+                detailCheckup.setIdDetailCheckup(object.getString("id_detail_checkup"));
+                detailCheckup.setTindakLanjut(object.getString("tindak_lanjut"));
+                if(object.has("indikasi")){
+                    detailCheckup.setIndikasi(object.getString("indikasi"));
+                }
+                if(object.has("rujuk_rs")){
+                    detailCheckup.setRsRujukan(object.getString("rujuk_rs"));
+                }
+                detailCheckup.setKeteranganSelesai(object.getString("keterangan"));
+                if(object.has("data_kontrol")){
+                    JSONArray json = new JSONArray(object.getString("data_kontrol"));
+                    if(json != null){
+                        List<ItSimrsKontrolUlangEntity> kontrolUlangEntityList = new ArrayList<>();
+                        for (int i = 0; i < json.length(); i++){
+                            JSONObject obj = json.getJSONObject(i);
+                            ItSimrsKontrolUlangEntity kontrolUlangEntity = new ItSimrsKontrolUlangEntity();
+                            kontrolUlangEntity.setTglKontrol(java.sql.Date.valueOf(obj.getString("tgl_kontrol")));
+                            kontrolUlangEntity.setIdPelayanan(obj.getString("pelayanan"));
+                            kontrolUlangEntity.setIdDokter(obj.getString("dokter"));
+                            kontrolUlangEntity.setStatusKontrol("N");
+                            kontrolUlangEntity.setFlag("Y");
+                            kontrolUlangEntity.setAction("C");
+                            kontrolUlangEntity.setCreatedDate(updateTime);
+                            kontrolUlangEntity.setCreatedWho(userLogin);
+                            kontrolUlangEntity.setLastUpdate(updateTime);
+                            kontrolUlangEntity.setLastUpdateWho(userLogin);
+                            kontrolUlangEntityList.add(kontrolUlangEntity);
+                        }
+                        detailCheckup.setKontrolUlangEntityList(kontrolUlangEntityList);
+                    }
+                }
+                detailCheckup.setLastUpdateWho(userLogin);
+                detailCheckup.setLastUpdate(updateTime);
+                try {
+                    checkupDetailBo.sendToTppti(detailCheckup);
+                    response.setStatus("success");
+                    response.setMsg("OK");
+                } catch (Exception e) {
+                    logger.error(e.getMessage());
+                    response.setStatus("error");
+                    response.setMsg("[CheckupDetailAction.sendToTppti] ERROR, " + e.getMessage());
+                }
+            }catch (Exception e){
                 response.setStatus("error");
                 response.setMsg("[CheckupDetailAction.sendToTppti] ERROR, " + e.getMessage());
             }
@@ -6129,9 +6200,9 @@ public class CheckupDetailAction extends BaseMasterAction {
         return response;
     }
 
-    public ItSimrsHeaderDetailCheckupEntity getDetailCheckup(String id) {
+    public HeaderDetailCheckup getDetailCheckup(String id) {
         logger.info("[CheckupDetailAction.getDetailCheckup] start process >>>");
-        ItSimrsHeaderDetailCheckupEntity response = new ItSimrsHeaderDetailCheckupEntity();
+        HeaderDetailCheckup response = new HeaderDetailCheckup();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
         if (id != null && !"".equalsIgnoreCase(id)) {

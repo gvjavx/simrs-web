@@ -40,6 +40,7 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsKontrolUlangEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
@@ -68,7 +69,6 @@ import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
-import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
 import com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsKategoriSkorRanapEntity;
 import com.neurix.simrs.transaksi.skorrawatinap.model.ImSimrsSkorRanapEntity;
 import com.neurix.simrs.transaksi.skorrawatinap.model.ItSimrsSkorRanapEntity;
@@ -2111,7 +2111,7 @@ public class RawatInapAction extends BaseMasterAction {
                 String idRuangan = null;
                 String isStay = null;
                 String rsRujukan = null;
-                String tglKontrol = null;
+                String dataKontrol = null;
                 String kategoriLab = null;
                 String isOrderLab = null;
                 String idRuanganLama = null;
@@ -2128,8 +2128,8 @@ public class RawatInapAction extends BaseMasterAction {
                 if (object.has("rs_rujukan")) {
                     rsRujukan = object.getString("rs_rujukan");
                 }
-                if (object.has("tgl_kontrol")) {
-                    tglKontrol = object.getString("tgl_kontrol");
+                if (object.has("data_kontrol")) {
+                    dataKontrol = object.getString("data_kontrol");
                 }
                 if (object.has("id_kategori_lab")) {
                     kategoriLab = object.getString("id_kategori_lab");
@@ -2214,13 +2214,38 @@ public class RawatInapAction extends BaseMasterAction {
                     rawatInap.setAction("C");
                     rawatInap.setFlag("Y");
                     rawatInap.setRsRujukan(rsRujukan);
-                    rawatInap.setTglRujukan(tglKontrol);
                     rawatInap.setCatatan(catatan);
                     rawatInap.setKeteranganSelesai(keterangan);
                     rawatInap.setIdRuangLama(idRuanganLama);
                     rawatInap.setIdJenisPeriksa(jenisPasien);
                     rawatInap.setIsMeninggal(isMeninggal);
                     rawatInap.setIndikasi(indikasi);
+
+                    if("kontrol_ulang".equalsIgnoreCase(tindakLanjut)){
+                        if(dataKontrol != null && !"".equalsIgnoreCase(dataKontrol)){
+                            JSONArray jsonArray = new JSONArray(dataKontrol);
+                            List<ItSimrsKontrolUlangEntity> list = new ArrayList<>();
+                            for (int i=0; i < jsonArray.length(); i++){
+                                JSONObject obj = jsonArray.getJSONObject(i);
+                                ItSimrsKontrolUlangEntity kontrolUlangEntity = new ItSimrsKontrolUlangEntity();
+                                kontrolUlangEntity.setTglKontrol(java.sql.Date.valueOf(obj.getString("tgl_kontrol")));
+                                kontrolUlangEntity.setIdPelayanan(obj.getString("pelayanan"));
+                                kontrolUlangEntity.setIdDokter(obj.getString("dokter"));
+                                kontrolUlangEntity.setStatusKontrol("N");
+                                kontrolUlangEntity.setFlag("Y");
+                                kontrolUlangEntity.setAction("C");
+                                kontrolUlangEntity.setCreatedDate(now);
+                                kontrolUlangEntity.setCreatedWho(user);
+                                kontrolUlangEntity.setLastUpdate(now);
+                                kontrolUlangEntity.setLastUpdateWho(user);
+                                list.add(kontrolUlangEntity);
+                            }
+                            if(list.size() > 0){
+                                rawatInap.setKontrolUlangEntityList(list);
+                            }
+                        }
+                    }
+
 
                     saveApproveAllTindakan(idDetailCheckup, jenisPasien);
                     response = rawatInapBo.saveAdd(rawatInap);

@@ -3,6 +3,11 @@ package com.neurix.hris.mobileapi;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.common.util.FirebasePushNotif;
+import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
+import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiFcmBo;
+import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
+import com.neurix.hris.transaksi.notifikasi.model.NotifikasiFcm;
 import com.neurix.simrs.master.kurir.bo.KurirBo;
 import com.neurix.simrs.master.kurir.model.Kurir;
 import com.neurix.simrs.master.obat.bo.ObatBo;
@@ -263,6 +268,9 @@ public class TesTelemedicController implements ModelDriven<Object> {
                 break;
             case "tes-approve-va":
                 testApproveVa();
+                break;
+            case "tes-fcm":
+                sendNotifFcm();
                 break;
             default:
                 logger.info("==========NO ONE CARE============");
@@ -682,5 +690,41 @@ public class TesTelemedicController implements ModelDriven<Object> {
         }
 
         logger.info("[TesTelemedicController.testApproveVa] END <<<");
+    }
+
+    public void sendNotifFcm(){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        NotifikasiFcmBo notifikasiFcmBo = (NotifikasiFcmBo) ctx.getBean("notifikasiFcmBoProxy");
+        NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
+
+        List<NotifikasiFcm> notifikasiFcm = null;
+
+        String note = "Pembayaran Virtual Account Telah Berhasil. Anda telah memasuki Antrian Short List. Buka aplikasi untuk menunggu panggilan dokter";
+
+        Notifikasi notifBean = new Notifikasi();
+        notifBean.setTipeNotifId("TN10");
+        notifBean.setNip("022020003408");
+        notifBean.setNamaPegawai("admin");
+        notifBean.setNote(note);
+        notifBean.setTo("022020003408");
+        notifBean.setFromPerson("admin");
+        notifBean.setNoRequest("TMC2021051000403");
+        notifBean.setFlag("Y");
+        notifBean.setRead("N");
+        notifBean.setAction("C");
+        notifBean.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        notifBean.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        notifBean.setCreatedWho("admin");
+        notifBean.setLastUpdateWho("admin");
+
+        notifikasiBo.saveAdd(notifBean);
+
+        NotifikasiFcm bean = new NotifikasiFcm();
+
+        //Push Notif ke Pasien terkait perubahan status menjadi SL
+        bean.setUserId("022020003408");
+        notifikasiFcm = notifikasiFcmBo.getByCriteria(bean);
+        FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Telemedic", note, "SL", notifikasiFcm.get(0).getOs(), null);
     }
 }

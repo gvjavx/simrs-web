@@ -41,6 +41,7 @@
           p:tempatTidurDao-ref="tempatTidurDao"
           p:pasienDao-ref="pasienDao"
           p:uploadPendukungPemeriksaanDao-ref="uploadPendukungPemeriksaanDao"
+          p:kontrolUlangDao-ref="kontrolUlangDao"
     />
 
     <bean id="checkupController" class="com.neurix.simrs.mobileapi.CheckupController"
@@ -83,6 +84,9 @@
           p:sessionFactory-ref="sessionFactory" />
 
     <bean id="uploadPendukungPemeriksaanDao" class="com.neurix.simrs.transaksi.checkupdetail.dao.UploadPendukungPemeriksaanDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="kontrolUlangDao" class="com.neurix.simrs.transaksi.checkupdetail.dao.KontrolUlangDao"
           p:sessionFactory-ref="sessionFactory" />
 
 

@@ -170,6 +170,15 @@ public class HeaderDetailCheckup extends BaseModel{
     private String triase;
     private String catatanKlinis;
     private String spo2;
+    private List<ItSimrsKontrolUlangEntity> kontrolUlangEntityList = new ArrayList<>();
+
+    public List<ItSimrsKontrolUlangEntity> getKontrolUlangEntityList() {
+        return kontrolUlangEntityList;
+    }
+
+    public void setKontrolUlangEntityList(List<ItSimrsKontrolUlangEntity> kontrolUlangEntityList) {
+        this.kontrolUlangEntityList = kontrolUlangEntityList;
+    }
 
     public String getSpo2() {
         return spo2;
