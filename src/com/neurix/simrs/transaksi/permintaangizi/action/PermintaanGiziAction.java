@@ -1,11 +1,13 @@
 package com.neurix.simrs.transaksi.permintaangizi.action;
 
-import com.neurix.common.action.BaseMasterAction;
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
+import com.neurix.common.action.BaseTransactionAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
-import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.ordergizi.bo.OrderGiziBo;
 import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
 import com.neurix.simrs.transaksi.permintaangizi.bo.PermintaanGiziBo;
@@ -25,77 +27,19 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PermintaanGiziAction extends BaseMasterAction {
+public class PermintaanGiziAction extends BaseTransactionAction {
 
     protected static transient Logger logger = Logger.getLogger(PermintaanGiziAction.class);
     private RawatInap rawatInap;
     private PermintaanGiziBo permintaanGiziBoProxy;
+    private BranchBo branchBoProxy;
     private String id;
     private String order;
-
-    public String getOrder() {
-        return order;
-    }
-
-    public void setOrder(String order) {
-        this.order = order;
-    }
-
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setPermintaanGiziBoProxy(PermintaanGiziBo permintaanGiziBoProxy) {
-        this.permintaanGiziBoProxy = permintaanGiziBoProxy;
-    }
-
-    public RawatInap getRawatInap() {
-        return rawatInap;
-    }
-
-    public void setRawatInap(RawatInap rawatInap) {
-        this.rawatInap = rawatInap;
-    }
-
-    public static Logger getLogger() {
-        return logger;
-    }
-
-    @Override
-    public String add() {
-        return null;
-    }
-
-    @Override
-    public String edit() {
-        return null;
-    }
-
-    @Override
-    public String delete() {
-        return null;
-    }
-
-    @Override
-    public String view() {
-        return null;
-    }
-
-    @Override
-    public String save() {
-        return null;
-    }
+    private List<RawatInap> myList = new ArrayList<>();
 
     @Override
     public String search() {
         logger.info("[PermintaanGiziAction.search] start process >>>");
-
         RawatInap rawatInap = getRawatInap();
         rawatInap.setBranchId(CommonUtil.userBranchLogin());
         List<RawatInap> listOfRawatInap = new ArrayList();
@@ -103,17 +47,13 @@ public class PermintaanGiziAction extends BaseMasterAction {
         try {
             listOfRawatInap = permintaanGiziBoProxy.getListOrderGizi(rawatInap);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[PermintaanGiziAction.save] Error when searching rawat inap by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
-            return ERROR;
+            logger.error("[PermintaanGiziAction.save] Error when searching rawat inap by criteria," + "Found problem when searching data by criteria, please inform to your admin.", e);
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
-
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfRawatInap);
-
+        setRawatInap(rawatInap);
         logger.info("[PermintaanGiziAction.search] end process <<<");
         return "search";
     }
@@ -171,10 +111,17 @@ public class PermintaanGiziAction extends BaseMasterAction {
 
                 for (RawatInap rawatInap : listOfResult) {
                     if (id.equalsIgnoreCase(rawatInap.getNoCheckup())) {
-
                         reportParams.put("idOrderGizi",idOrder);
                         reportParams.put("nama",rawatInap.getNamaPasien());
-                        reportParams.put("ruang",rawatInap.getNamaRangan()+" ["+rawatInap.getNoRuangan()+"]");
+                        reportParams.put("tgllahir",rawatInap.getTglLahir());
+                        reportParams.put("idPasien",rawatInap.getIdPasien());
+                        if(rawatInap.getNoRuangan() != null && !"".equalsIgnoreCase(rawatInap.getNoRuangan())){
+                            reportParams.put("ruang",rawatInap.getNamaRangan()+" ["+rawatInap.getNoRuangan()+"]");
+                        }else{
+                            reportParams.put("ruang",rawatInap.getNamaRangan());
+                        }
+                        reportParams.put("bentukDiet", rawatInap.getBentukGizi());
+                        reportParams.put("jenisDiet", rawatInap.getJenisDiet());
                         break;
                     }
                 }
@@ -251,13 +198,79 @@ public class PermintaanGiziAction extends BaseMasterAction {
         return response;
     }
 
-    @Override
-    public String downloadPdf() {
-        return null;
+    public String printListGizi(){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<RawatInap> listOfResult = (List) session.getAttribute("listOfResult");
+        String branch = CommonUtil.userBranchLogin();
+        String logo = "";
+        Branch branches = new Branch();
+
+        try {
+            branches = branchBoProxy.getBranchById(branch, "Y");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when searhc branch logo");
+        }
+
+        if (branches != null) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+        }
+
+        reportParams.put("area", CommonUtil.userAreaName());
+        reportParams.put("unit", CommonUtil.userBranchNameLogin());
+        reportParams.put("logo", logo);
+        if(listOfResult != null){
+            myList.addAll(listOfResult);
+        }
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[PermintaanGiziAction.printListGizi] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+        }
+
+        return "print_list_gizi";
     }
 
-    @Override
-    public String downloadXls() {
-        return null;
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setPermintaanGiziBoProxy(PermintaanGiziBo permintaanGiziBoProxy) {
+        this.permintaanGiziBoProxy = permintaanGiziBoProxy;
+    }
+
+    public RawatInap getRawatInap() {
+        return rawatInap;
+    }
+
+    public void setRawatInap(RawatInap rawatInap) {
+        this.rawatInap = rawatInap;
+    }
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public List<RawatInap> getMyList() {
+        return myList;
+    }
+
+    public void setMyList(List<RawatInap> myList) {
+        this.myList = myList;
+    }
+
+    public void setBranchBoProxy(BranchBo branchBoProxy) {
+        this.branchBoProxy = branchBoProxy;
     }
 }

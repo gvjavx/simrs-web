@@ -67,6 +67,9 @@ public class RekeningTelemedicBoImpl implements RekeningTelemedicBo {
         if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
             hsCriteria.put("branch_id", bean.getBranchId());
         }
+        if (bean.getTipeRekening() != null && !"".equalsIgnoreCase(bean.getTipeRekening())) {
+            hsCriteria.put("tipe_rekening", bean.getTipeRekening());
+        }
 
         List<ImSimrsRekeningTelemedicEntity> imSimrsRekeningTelemedicEntities = null;
         try {
@@ -104,6 +107,9 @@ public class RekeningTelemedicBoImpl implements RekeningTelemedicBo {
             rekeningTelemedic.setCreatedWho(data.getCreatedWho());
             rekeningTelemedic.setLastUpdate(data.getLastUpdate());
             rekeningTelemedic.setLastUpdateWho(data.getLastUpdateWho());
+            rekeningTelemedic.setTipeRekening(data.getTipeRekening());
+            rekeningTelemedic.setClientId(data.getClientId());
+            rekeningTelemedic.setKeterangan(data.getKeterangan());
 
             rekeningTelemedic.setStCreatedDate(formatter.format(data.getCreatedDate()));
             rekeningTelemedic.setStLastUpdate(formatter.format(data.getLastUpdate()));
@@ -164,5 +170,21 @@ public class RekeningTelemedicBoImpl implements RekeningTelemedicBo {
 
         logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] End >>>>>>>");
         return id;
+    }
+
+    @Override
+    public ImSimrsRekeningTelemedicEntity getRekeningTelemedicById(String id) throws GeneralBOException {
+        logger.info("[RekeningTelemedicBoImpl.getRekeningTelemedicById] Start >>>>>>>");
+
+        ImSimrsRekeningTelemedicEntity rekeningTelemedicEntity = new ImSimrsRekeningTelemedicEntity();
+
+        try {
+            rekeningTelemedicEntity = rekeningTelemedicDao.getById("idRekening", id);
+        } catch (HibernateException e){
+            logger.info("[RekeningTelemedicBoImpl.getRekeningTelemedicById] Error :"+ e );
+        }
+
+        logger.info("[RekeningTelemedicBoImpl.getRekeningTelemedicById] End <<<<<<<");
+        return rekeningTelemedicEntity;
     }
 }

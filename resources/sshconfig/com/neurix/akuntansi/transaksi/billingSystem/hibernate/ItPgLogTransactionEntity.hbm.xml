@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+  ~ Copyright (c) GO-MEDSYS(TM) 2020 created by MGI
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.akuntansi.transaksi.billingSystem.model.ItPgLogTransactionEntity" table="it_pg_log_transaction"
+           schema="public">
+        <id name="pgLogTrxId">
+            <column name="pg_log_trx_id" sql-type="bigint" not-null="true"/>
+        </id>
+        <property name="trxId">
+            <column name="trx_id" sql-type="varchar(10)" length="10" />
+        </property>
+        <property name="tipeTrx">
+            <column name="tipe_trx" sql-type="varchar(10)" length="10" />
+        </property>
+        <property name="bankName">
+            <column name="bank_name" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="noVirtualAccount">
+            <column name="no_virtual_account" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="noRekamMedik">
+            <column name="no_rekam_medik" sql-type="varchar(30)" length="30" />
+        </property>
+        <property name="trxAmount">
+            <column name="trx_amount" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="namePerson">
+            <column name="name_person" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="addressPerson">
+            <column name="address_person" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="phonePerson">
+            <column name="phone_person" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="emailPerson">
+            <column name="email_person" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="status">
+            <column name="status" sql-type="varchar(5)" length="5" />
+        </property>
+        <property name="statusBank">
+            <column name="status_bank" sql-type="varchar(5)" length="5" />
+        </property>
+        <property name="message">
+            <column name="message" sql-type="varchar(10000)" length="10000" />
+        </property>
+        <property name="channel">
+            <column name="channel" sql-type="varchar(1000)" length="1000" />
+        </property>
+        <property name="invoiceDate">
+            <column name="invoice_date" sql-type="date" />
+        </property>
+        <property name="invoiceNumber">
+            <column name="invoice_number" sql-type="bigint" />
+        </property>
+        <property name="sentDate">
+            <column name="sent_date" sql-type="timestamp" />
+        </property>
+        <property name="receivedDate">
+            <column name="received_date" sql-type="timestamp" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar(1)" length="1" />
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar(1)" length="1" />
+        </property>
+    </class>
+</hibernate-mapping>

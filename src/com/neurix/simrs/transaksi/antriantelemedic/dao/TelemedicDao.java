@@ -2,8 +2,10 @@ package com.neurix.simrs.transaksi.antriantelemedic.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.master.shift.model.Shift;
+import com.neurix.simrs.master.telemedic.model.RekeningTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
+import com.neurix.simrs.transaksi.verifikatorpembayaran.model.PembayaranOnline;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -268,6 +270,7 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
         String where = "";
         String idPasien = bean.getIdPasien();
         String id = bean.getId();
+        String order = "";
 
         if (bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter())){
             where += "AND at.id_dokter = '"+bean.getIdDokter()+"' \n";
@@ -300,6 +303,10 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
             idPasien = "%";
         if (id == null || "".equalsIgnoreCase(id))
             id = "%";
+        if (!"mobile".equalsIgnoreCase(bean.getTipePencarian()))
+            order +=  "ORDER BY b.tanggal_upload";
+        else
+            order += "ORDER BY b.last_update";
 
         String SQL = "SELECT \n" +
                 "a.id,\n" +
@@ -327,8 +334,8 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
                 "\t) a \n" +
                 "\tWHERE a.last_update IS NOT NULL\n" +
                 ") a \n" +
-                "LEFT JOIN (SELECT * FROM it_simrs_pembayaran_online WHERE tanggal_upload IS NOT NULL) b ON b.id_antrian_telemedic = a.id AND b.last_update = a.last_update\n" +
-                "ORDER BY tanggal_upload";
+                "LEFT JOIN (SELECT * FROM it_simrs_pembayaran_online WHERE tanggal_upload IS NOT NULL) b ON b.id_antrian_telemedic = a.id AND b.last_update = a.last_update \n" + order;
+
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
 
@@ -355,6 +362,21 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
                     telemedic.setStatus(entity.getStatus());
                     telemedic.setFlagBayarKonsultasi(entity.getFlagBayarKonsultasi());
                     telemedic.setFlagBayarResep(entity.getFlagBayarResep());
+
+
+                    PembayaranOnline pembayaranKonsul = getListPembayaranOnlineById(telemedic.getId(), "konsultasi");
+                    if (pembayaranKonsul != null){
+                        if (pembayaranKonsul.getNoJurnal() != null){
+                            telemedic.setFlagBayarKonsultasi("Y");
+                        }
+                    }
+                    if ("Y".equalsIgnoreCase(telemedic.getFlagResep())){
+                        PembayaranOnline pembayaranResep = getListPembayaranOnlineById(telemedic.getId(), "resep");
+                        if (pembayaranResep != null && pembayaranResep.getNoJurnal() != null){
+                            telemedic.setFlagBayarResep("Y");
+                        }
+                    }
+
                     telemedic.setCreatedDate(entity.getCreatedDate());
                     telemedic.setCreatedWho(entity.getCreatedWho());
                     telemedic.setLastUpdateWho(entity.getLastUpdateWho());
@@ -379,12 +401,31 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
                     telemedic.setIdRekening(entity.getIdRekening());
                     telemedic.setJumlahCover(entity.getJumlahCover());
                     telemedic.setStCreatedDate(entity.getCreatedDate() == null ? "" : entity.getCreatedDate().toString());
+                    telemedic.setFlagCall(entity.getFlagCall());
                     antrianTelemedicList.add(telemedic);
                 }
 
             }
         }
         return antrianTelemedicList;
+    }
+
+    private PembayaranOnline getListPembayaranOnlineById(String idTrans, String keterangan){
+
+        String SQL = "SELECT no_jurnal, tipe_pembayaran, id FROM it_simrs_pembayaran_online WHERE id_antrian_telemedic = '"+idTrans+"' \n" +
+                "AND keterangan = '"+keterangan+"' \n" +
+                "AND tipe_pembayaran = 'virtual_account'";
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+        if (list.size() > 0){
+            Object[] obj = list.get(0);
+            PembayaranOnline pembayaranOnline = new PembayaranOnline();
+            pembayaranOnline.setNoJurnal(stringNulEscape(obj[0]));
+            pembayaranOnline.setTipePembayaran(stringNulEscape(obj[1]));
+            pembayaranOnline.setId(obj[2].toString());
+            return pembayaranOnline;
+        }
+
+        return null;
     }
 
     public List<Shift> getJadwalShiftKasirTelemedicineByDate(String branchId, String stDate, String shiftId){
@@ -416,5 +457,111 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
         }
 
         return shifts;
+    }
+
+    public RekeningTelemedic getRekeningTelemedic(String idRekening){
+
+        String SQL = "SELECT \n" +
+                "pembayaran_name, \n" +
+                "client_id,\n" +
+                "init_va_name\n" +
+                "FROM im_simrs_rekening_telemedic \n" +
+                "WHERE id_rekening = '"+idRekening+"'";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+
+            RekeningTelemedic rekeningTelemedic = new RekeningTelemedic();
+            Object[] obj = list.get(0);
+            rekeningTelemedic.setPembayaranId(stringNulEscape(obj[0]));
+            rekeningTelemedic.setClientId(stringNulEscape(obj[1]));
+            rekeningTelemedic.setInitVaName(stringNulEscape(obj[2]));
+            return rekeningTelemedic;
+
+        }
+        return null;
+    }
+
+    public String getNoMasterFromTelemedic(String id){
+
+        String SQL = "SELECT \n" +
+                "jpp.master_id\n" +
+                "FROM \n" +
+                "it_simrs_antrian_telemedic at\n" +
+                "INNER JOIN im_simrs_jenis_periksa_pasien jpp ON jpp.id_jenis_periksa_pasien = at.id_jenis_periksa_pasien\n" +
+                "WHERE at.id = '"+id+"'";
+
+        List<Object> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+
+            return list.get(0).toString();
+        }
+
+        return null;
+
+    }
+
+    public String getNoKoderingDivisiFromTelemedic(String id){
+
+        String SQL = "SELECT \n" +
+                "ps.kodering\n" +
+                "FROM \n" +
+                "it_simrs_antrian_telemedic at\n" +
+                "INNER JOIN im_simrs_pelayanan pl ON pl.id_pelayanan = at.id_pelayanan\n" +
+                "INNER JOIN im_simrs_header_pelayanan hp ON hp.id_header_pelayanan = pl.id_header_pelayanan\n" +
+                "INNER JOIN im_position ps ON ps.position_id = hp.divisi_id\n" +
+                "WHERE at.id = '"+id+"'";
+
+        List<Object> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+
+            return list.get(0).toString();
+        }
+
+        return null;
+
+    }
+
+    public AntrianTelemedic getAntrianFirstOrder(String idPelayanan, String idDokter, String status){
+
+        String SQL = "SELECT \n" +
+                "id, \n" +
+                "branch_id,\n" +
+                "kode_bank,\n" +
+                "id_pasien\n" +
+                "FROM\n" +
+                "it_simrs_antrian_telemedic\n" +
+                "WHERE \n" +
+                "id_pelayanan = '"+idPelayanan+"'\n" +
+                "AND id_dokter = '"+idDokter+"'\n" +
+                "AND status = '"+status+"'\n" +
+                "AND flag = 'Y'\n" +
+                "ORDER BY created_date ASC LIMIT 1";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+
+            Object[] obj = list.get(0);
+
+            AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
+            antrianTelemedic.setId(stringNulEscape(obj[0]));
+            antrianTelemedic.setBranchId(stringNulEscape(obj[1]));
+            antrianTelemedic.setKodeBank(stringNulEscape(obj[2]));
+            antrianTelemedic.setIdPasien(stringNulEscape(obj[3]));
+            return antrianTelemedic;
+        }
+
+        return null;
+    }
+
+    private String stringNulEscape(Object obj) {
+        if (obj == null)
+            return null;
+        else
+            return obj.toString();
     }
 }

@@ -1,9 +1,11 @@
 package com.neurix.hris.mobileapi;
 
+import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.kurir.bo.KurirBo;
 import com.neurix.simrs.master.kurir.model.Kurir;
+import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.parameterketeranganobat.bo.ParameterKeteranganObatBo;
 import com.neurix.simrs.master.parameterketeranganobat.bo.impl.ParameterKeteranganObatBoImpl;
 import com.neurix.simrs.master.parameterketeranganobat.model.ParameterKeteranganObat;
@@ -51,6 +53,15 @@ public class TesTelemedicController implements ModelDriven<Object> {
     private BigDecimal tindakan;
     private BigDecimal resep;
     private BigDecimal pasien;
+    private String pembayaran;
+
+    public String getPembayaran() {
+        return pembayaran;
+    }
+
+    public void setPembayaran(String pembayaran) {
+        this.pembayaran = pembayaran;
+    }
 
     private TelemedicBo telemedicBoProxy;
     private KurirBo kurirBoProxy;
@@ -59,6 +70,20 @@ public class TesTelemedicController implements ModelDriven<Object> {
     private PelayananBo pelayananBoProxy;
     private TeamDokterBo teamDokterBoProxy;
     private ParameterKeteranganObatBo parameterKeteranganObatBoProxy;
+    private ObatBo obatBoProxy;
+    private BillingSystemBo billingSystemBoProxy;
+
+    public void setTeamDokterBoProxy(TeamDokterBo teamDokterBoProxy) {
+        this.teamDokterBoProxy = teamDokterBoProxy;
+    }
+
+    public void setBillingSystemBoProxy(BillingSystemBo billingSystemBoProxy) {
+        this.billingSystemBoProxy = billingSystemBoProxy;
+    }
+
+    public void setObatBoProxy(ObatBo obatBoProxy) {
+        this.obatBoProxy = obatBoProxy;
+    }
 
     public void setParameterKeteranganObatBoProxy(ParameterKeteranganObatBo parameterKeteranganObatBoProxy) {
         this.parameterKeteranganObatBoProxy = parameterKeteranganObatBoProxy;
@@ -233,6 +258,12 @@ public class TesTelemedicController implements ModelDriven<Object> {
             case "tes-keterangan-obat":
                 searchParameterKeterangan();
                 break;
+            case "tes-sum-obat":
+                testSumObat();
+                break;
+            case "tes-approve-va":
+                testApproveVa();
+                break;
             default:
                 logger.info("==========NO ONE CARE============");
         }
@@ -244,6 +275,7 @@ public class TesTelemedicController implements ModelDriven<Object> {
         logger.info("[TesTelemedicController.insertDataTelemedic] START >>>");
 
         Timestamp time = new Timestamp(System.currentTimeMillis());
+        String jenisPembayaran = this.pembayaran;
 
         ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = new ItSimrsAntrianTelemedicEntity();
         antrianTelemedicEntity.setBranchId("RS01");
@@ -279,7 +311,7 @@ public class TesTelemedicController implements ModelDriven<Object> {
         antrianTelemedicEntity.setJenisPengambilan("kirim");
 
         try {
-            telemedicBoProxy.saveAdd(antrianTelemedicEntity, "RS01", "1.1.01.02.01");
+            telemedicBoProxy.saveAdd(antrianTelemedicEntity, "03", "1.1.01.02.01", jenisPembayaran);
         } catch (GeneralBOException e){
             logger.error("[TesTelemedicController.insertDataTelemedic] ERROR. ",e);
             throw new GeneralBOException("[TesTelemedicController.insertDataTelemedic] ERROR. ", e);
@@ -296,6 +328,7 @@ public class TesTelemedicController implements ModelDriven<Object> {
         logger.info("[TesTelemedicController.insertDataTelemedic] START >>>");
 
         Timestamp time = new Timestamp(System.currentTimeMillis());
+        String jenisPembayaran = this.pembayaran;
 
         ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = new ItSimrsAntrianTelemedicEntity();
         antrianTelemedicEntity.setBranchId("RS01");
@@ -321,7 +354,7 @@ public class TesTelemedicController implements ModelDriven<Object> {
         antrianTelemedicEntity.setJenisPengambilan("kirim");
 
         try {
-            telemedicBoProxy.saveAdd(antrianTelemedicEntity, "RS01", "");
+            telemedicBoProxy.saveAdd(antrianTelemedicEntity, "RS01", "", this.pembayaran);
         } catch (GeneralBOException e){
             logger.error("[TesTelemedicController.insertDataTelemedic] ERROR. ",e);
             throw new GeneralBOException("[TesTelemedicController.insertDataTelemedic] ERROR. ", e);
@@ -603,7 +636,7 @@ public class TesTelemedicController implements ModelDriven<Object> {
         if ("pelayanan".equalsIgnoreCase(this.result)){
 
             try {
-                resultDokter  = teamDokterBoProxy.getNamaDokter(id);
+                resultDokter  = teamDokterBoProxy.getNamaDokter(id, true);
             } catch (GeneralBOException e){
                 logger.error("[TesTelemedicController.tesDokterTeam] Test dokter team. dokter",e);
             }
@@ -623,5 +656,31 @@ public class TesTelemedicController implements ModelDriven<Object> {
 
         System.out.println("ISI -> "+listParam.size());
         logger.info("[TesTelemedicController.searchParameterKeterangan] END <<<");
+    }
+
+    public void testSumObat(){
+        logger.info("[TesTelemedicController.testSumObat] START >>>");
+
+        try {
+            obatBoProxy.testSumPersediaanObat(this.id, "", "RS01");
+        } catch (GeneralBOException e){
+            logger.error("[TesTelemedicController.searchParameterKeterangan] ERROR. ",e);
+        }
+
+        logger.info("[TesTelemedicController.testSumObat] END <<<");
+    }
+
+    public void testApproveVa(){
+        logger.info("[TesTelemedicController.testApproveVa] START >>>");
+
+        String id = this.id;
+
+        try {
+            billingSystemBoProxy.testApproveVA(id);
+        } catch (GeneralBOException e){
+            logger.error("[TesTelemedicController.testApproveVa] ERROR. ",e);
+        }
+
+        logger.info("[TesTelemedicController.testApproveVa] END <<<");
     }
 }

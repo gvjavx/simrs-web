@@ -4,11 +4,13 @@ import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.mappingJurnal.dao.MappingJurnalDao;
+import com.neurix.akuntansi.master.mappingJurnal.model.ImMappingJurnalEntity;
 import com.neurix.akuntansi.master.tipeJurnal.bo.TipeJurnalBo;
 import com.neurix.akuntansi.master.tipeJurnal.dao.TipeJurnalDao;
 import com.neurix.akuntansi.master.mappingJurnal.model.ImMappingJurnalEntity;
 import com.neurix.akuntansi.master.tipeJurnal.model.TipeJurnal;
 import com.neurix.akuntansi.master.tipeJurnal.model.ImTipeJurnalEntity;
+import com.neurix.akuntansi.master.tipeJurnal.model.TipeJurnal;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
 import org.apache.log4j.Logger;
@@ -33,24 +35,12 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
     private BiodataDao biodataDao;
     private KodeRekeningDao kodeRekeningDao;
 
-    public KodeRekeningDao getKodeRekeningDao() {
-        return kodeRekeningDao;
-    }
-
     public void setKodeRekeningDao(KodeRekeningDao kodeRekeningDao) {
         this.kodeRekeningDao = kodeRekeningDao;
     }
 
-    public MappingJurnalDao getMappingJurnalDao() {
-        return mappingJurnalDao;
-    }
-
     public void setMappingJurnalDao(MappingJurnalDao mappingJurnalDao) {
         this.mappingJurnalDao = mappingJurnalDao;
-    }
-
-    public BiodataDao getBiodataDao() {
-        return biodataDao;
     }
 
     public void setBiodataDao(BiodataDao biodataDao) {
@@ -65,17 +55,13 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
         TipeJurnalBoImpl.logger = logger;
     }
 
-    public TipeJurnalDao getTipeJurnalDao() {
-        return tipeJurnalDao;
-    }
-
     public void setTipeJurnalDao(TipeJurnalDao tipeJurnalDao) {
         this.tipeJurnalDao = tipeJurnalDao;
     }
 
     @Override
     public void saveDelete(TipeJurnal bean) throws GeneralBOException {
-        logger.info("[saveDelete.saveDelete] start process >>>");
+        logger.info("[TipeJurnalBoImpl.saveDelete] start process >>>");
         if (bean!=null) {
             //Validasi jurnal pada mapping jurnal
             List<ImMappingJurnalEntity> mappingJurnalEntityList = new ArrayList<>();
@@ -83,21 +69,20 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
                 mappingJurnalEntityList = mappingJurnalDao.getListMappingJurnalByTipeJurnalId(bean.getTipeJurnalId());
             } catch (HibernateException e) {
                 logger.error("[TipeJurnalBoImpl.saveDelete] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
             }
             if (mappingJurnalEntityList.size()>0){
                 String status = "ERROR : Tipe jurnal sudah ada pada Mapping";
                 logger.error("[TipeJurnalBoImpl.saveDelete] "+status);
                 throw new GeneralBOException(status);
             }
-
-            ImTipeJurnalEntity imTipeJurnalEntity = new ImTipeJurnalEntity();
+            ImTipeJurnalEntity imTipeJurnalEntity;
             try {
                 // Get data from database by ID
                 imTipeJurnalEntity = tipeJurnalDao.getById("tipeJurnalId", bean.getTipeJurnalId());
             } catch (HibernateException e) {
                 logger.error("[TipeJurnalBoImpl.saveDelete] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
             }
 
             if (imTipeJurnalEntity != null) {
@@ -141,6 +126,7 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
                 imTipeJurnalEntity.setTipeJurnalName(bean.getTipeJurnalName());
                 imTipeJurnalEntity.setFlag(bean.getFlag());
                 imTipeJurnalEntity.setAction(bean.getAction());
+                imTipeJurnalEntity.setIsOperasional(bean.getIsOperasional());
                 imTipeJurnalEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 imTipeJurnalEntity.setLastUpdate(bean.getLastUpdate());
                 try {
@@ -161,17 +147,18 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
     @Override
     public TipeJurnal saveAdd(TipeJurnal bean) throws GeneralBOException {
         logger.info("[TipeJurnalBoImpl.saveAdd] start process >>>");
+        TipeJurnal result = null;
         if (bean!=null) {
             ImTipeJurnalEntity jurnalEntity = null;
             try {
                 jurnalEntity = tipeJurnalDao.getById("tipeJurnalId",bean.getTipeJurnalId());
             } catch (HibernateException e) {
-                logger.error("[SettingReportUserBoImpl.saveEdit] Error, " + e.getMessage());
+                logger.error("[TipeJurnalBoImpl.saveAdd] Error, " + e.getMessage());
                 throw new GeneralBOException("Error , please info to your admin..." + e.getMessage());
             }
             if (jurnalEntity!=null){
                 String status ="ERROR : tipe jurnal ID sudah ada";
-                logger.error("[SettingReportUserBoImpl.saveEdit] "+status);
+                logger.error("[TipeJurnalBoImpl.saveAdd] "+status);
                 throw new GeneralBOException(status);
             }
 
@@ -182,6 +169,7 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
             imTipeJurnalEntity.setTipeJurnalName(bean.getTipeJurnalName());
             imTipeJurnalEntity.setFlag(bean.getFlag());
             imTipeJurnalEntity.setAction(bean.getAction());
+            imTipeJurnalEntity.setIsOperasional(bean.getIsOperasional());
             imTipeJurnalEntity.setCreatedWho(bean.getCreatedWho());
             imTipeJurnalEntity.setLastUpdateWho(bean.getLastUpdateWho());
             imTipeJurnalEntity.setCreatedDate(bean.getCreatedDate());
@@ -190,6 +178,8 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
             try {
                 // insert into database
                 tipeJurnalDao.addAndSave(imTipeJurnalEntity);
+                result = new TipeJurnal();
+                result.setTipeJurnalId(imTipeJurnalEntity.getTipeJurnalId());
             } catch (HibernateException e) {
                 logger.error("[TipeJurnalBoImpl.saveAdd] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when saving new data TipeJurnal, please info to your admin..." + e.getMessage());
@@ -197,7 +187,7 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
         }
 
         logger.info("[TipeJurnalBoImpl.saveAdd] end process <<<");
-        return null;
+        return result;
     }
 
     @Override
@@ -227,12 +217,12 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
                 hsCriteria.put("flag", "Y");
             }
 
-            List<ImTipeJurnalEntity> imTipeJurnalEntity = null;
+            List<ImTipeJurnalEntity> imTipeJurnalEntity;
             try {
 
                 imTipeJurnalEntity = tipeJurnalDao.getByCriteria(hsCriteria);
             } catch (HibernateException e) {
-                logger.error("[TipeJurnalBoImpl.getSearchTipeJurnalByCriteria] Error, " + e.getMessage());
+                logger.error("[TipeJurnalBoImpl.getByCriteria] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
             }
 
@@ -243,7 +233,7 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
                     returnTipeJurnal = new TipeJurnal();
                     returnTipeJurnal.setTipeJurnalId(tipeJurnalEntity.getTipeJurnalId());
                     returnTipeJurnal.setTipeJurnalName(tipeJurnalEntity.getTipeJurnalName());;
-
+                    returnTipeJurnal.setIsOperasional(tipeJurnalEntity.getIsOperasional());
                     returnTipeJurnal.setCreatedWho(tipeJurnalEntity.getCreatedWho());
                     returnTipeJurnal.setCreatedDate(tipeJurnalEntity.getCreatedDate());
                     returnTipeJurnal.setLastUpdate(tipeJurnalEntity.getLastUpdate());
@@ -270,7 +260,7 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
     @Override
     public List<KodeRekening> getMappingJurnalInKodeRekening(String id) throws GeneralBOException {
         logger.info("[TipeJurnalBoImpl.getMappingJurnalInKodeRekening] start process >>>");
-        List<ImMappingJurnalEntity> mappingJurnalEntityList = new ArrayList<>();
+        List<ImMappingJurnalEntity> mappingJurnalEntityList;
         try {
             // Get data from database by ID
             mappingJurnalEntityList = mappingJurnalDao.getListMappingJurnalByTipeJurnalId(id);
@@ -280,23 +270,25 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
         }
 
         List<KodeRekening> kodeRekeningList = new ArrayList<>();
-
+        if (kodeRekeningList != null){
         for (ImMappingJurnalEntity mappingJurnalEntity : mappingJurnalEntityList){
             KodeRekening kodeRekening = new KodeRekening();
             kodeRekening.setKodeRekening(mappingJurnalEntity.getKodeRekening());
-            kodeRekening.setPosisi(mappingJurnalEntity.getPosisi());
+                /*kodeRekening.setPosisi(mappingJurnalEntity.getPosisi());
             if (mappingJurnalEntity.getPosisi().equalsIgnoreCase("D")){
                 kodeRekening.setPosisiName("Debet");
             }else{
                 kodeRekening.setPosisiName("Kredit");
-            }
+                }*/
             List<ImKodeRekeningEntity> kodeRekeningEntityList = kodeRekeningDao.getIdByCoa(mappingJurnalEntity.getKodeRekening());
+                if(kodeRekeningEntityList != null) {
             for (ImKodeRekeningEntity kodeRekeningEntity : kodeRekeningEntityList){
                 kodeRekening.setNamaKodeRekening(kodeRekeningEntity.getNamaKodeRekening());
             }
+                }
             kodeRekeningList.add(kodeRekening);
         }
-
+    }
         logger.info("[TipeJurnalBoImpl.getMappingJurnalInKodeRekening] end process <<<");
         return kodeRekeningList;
     }
@@ -306,7 +298,7 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
         logger.info("[TipeJurnalBoImpl.getTipeJurnalByTransId] start process >>>");
         String tipeJurnal=null;
 
-        List<ImMappingJurnalEntity> mappingJurnalEntityList = new ArrayList<>();
+        List<ImMappingJurnalEntity> mappingJurnalEntityList;
         try {
             // Get data from database by ID
             mappingJurnalEntityList = mappingJurnalDao.getMappingByTransId(transId);
@@ -314,8 +306,10 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
             logger.error("[TipeJurnalBoImpl.getTipeJurnalByTransId] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data TipeJurnal by Kode TipeJurnal, please inform to your admin...," + e.getMessage());
         }
+        if(mappingJurnalEntityList != null) {
         for (ImMappingJurnalEntity mappingJurnalEntity : mappingJurnalEntityList){
             tipeJurnal=mappingJurnalEntity.getTipeJurnalId();
+        }
         }
         return tipeJurnal;
     }
@@ -335,9 +329,13 @@ public class TipeJurnalBoImpl implements TipeJurnalBo {
             logger.error("[TipeJurnalBoImpl.getTipeJurnalById] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data TipeJurnal by Kode TipeJurnal, please inform to your admin...," + e.getMessage());
         }
+        if(tipeJurnalEntityList != null) {
         for (ImTipeJurnalEntity tipeJurnalEntity: tipeJurnalEntityList){
             tipeJurnal.setTipeJurnalId(tipeJurnalEntity.getTipeJurnalId());
+                tipeJurnal.setIsOperasional(tipeJurnalEntity.getIsOperasional());
             tipeJurnal.setTipeJurnalName(tipeJurnalEntity.getTipeJurnalName());
+                break;
+            }
         }
         return tipeJurnal;
     }

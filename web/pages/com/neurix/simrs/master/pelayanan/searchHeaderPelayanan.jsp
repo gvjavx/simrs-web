@@ -58,7 +58,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">ID Header Pelayanan</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="id_tindakan" name="headerPelayanan.idPelayanan"
+                                        <s:textfield id="id_tindakan" name="headerPelayanan.idHeaderPelayanan"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>

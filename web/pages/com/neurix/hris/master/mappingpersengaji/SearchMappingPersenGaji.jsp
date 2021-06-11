@@ -166,7 +166,7 @@
                                                             </center>
                                                         </sj:dialog>
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                                   height="500" width="600" autoOpen="false"
+                                                                   height="350" width="600" autoOpen="false"
                                                                    title="Mapping Persen Gaji ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
@@ -224,7 +224,7 @@
                                                                 </s:if>
                                                             </display:column>
                                                             <display:column property="mappingPersenGajiId" sortable="true" title="ID" />
-                                                            <display:column property="strNamaMappingPersenGaji" sortable="true" title="Nama Mapping"  />
+                                                            <display:column property="namaMappingPersenGaji" sortable="true" title="Nama Mapping"  />
                                                             <display:column property="strJenisGaji" sortable="true" title="Jenis Gaji"  />
                                                             <display:column property="presentase" sortable="true" title="Presentase"  />
                                                             <display:column property="flag" sortable="true" title="flag"  />

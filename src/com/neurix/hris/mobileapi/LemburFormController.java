@@ -10,6 +10,7 @@ import com.neurix.hris.transaksi.lembur.model.Lembur;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.opensymphony.xwork2.ModelDriven;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
@@ -34,6 +35,7 @@ public class LemburFormController implements ModelDriven<Object> {
     private PengajuanLembur model = new PengajuanLembur();
 
     private String id;
+    private String nip;
     private String statusApprove;
 
     public NotifikasiBo getNotifikasiBoProxy() {
@@ -72,6 +74,14 @@ public class LemburFormController implements ModelDriven<Object> {
         this.statusApprove = statusApprove;
     }
 
+    public String getNip() {
+        return nip;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
+    }
+
     @Override
     public Object getModel() {
         return (listOfLemburPegawai != null ? listOfLemburPegawai: model);
@@ -79,10 +89,19 @@ public class LemburFormController implements ModelDriven<Object> {
 
     public HttpHeaders create() {
         logger.info("[LemburFormPegawaiController.create] start process POST /pengajuanlembur <<<");
-
+        Boolean isLembur;
+        try {
+           isLembur =  lemburBoProxy.cekHakLembur(nip);
+           if(isLembur)
+               model.setMessage("Y");
+           else
+               model.setMessage("N");
+        } catch (GeneralBOException e) {
+            model.setActionError(e.getMessage());
+            logger.error("[LemburFormPegawaiController.update] Error when cek lembur,", e);
+        }
 
         logger.info("[LemburFormPegawaiController.create] end process POST /pengajuanlembur <<<");
-
         return new DefaultHttpHeaders("create").disableCaching();
     }
 

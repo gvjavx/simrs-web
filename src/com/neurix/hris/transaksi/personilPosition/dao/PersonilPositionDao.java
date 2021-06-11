@@ -74,8 +74,8 @@ public class PersonilPositionDao extends GenericDao<ItPersonilPositionEntity, St
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_personil_position')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%06d", iter.next());
-
-        return "PP"+sId;
+        String output = "PP"+sId;
+        return output;
     }
 
     public List<ItPersonilPositionEntity> getListPersonilPosition(String term) throws HibernateException {
@@ -228,6 +228,31 @@ public class PersonilPositionDao extends GenericDao<ItPersonilPositionEntity, St
                 "\tit_hris_pegawai_position.nip = '"+nip+"'\n" +
                 "and\n" +
                 "\tim_position.bagian_id = im_hris_position_bagian.bagian_id";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }else {
+            result="";
+        }
+        return result;
+    }
+
+    public String getDivisiId(String nip){
+        String result = "";
+        String query = "select\n" +
+                "   im_hris_department.department_id\n" +
+                "from\n" +
+                "   im_hris_department, im_hris_position_bagian, it_hris_pegawai_position, im_position\n" +
+                "where\n" +
+                "   it_hris_pegawai_position.position_id = im_position.position_id\n" +
+                "and\n" +
+                "   it_hris_pegawai_position.nip = '"+nip+"' and it_hris_pegawai_position.flag = 'Y' and it_hris_pegawai_position.jenis_pegawai = 'JP01'\n" +   //Jenis Pegawai Normal (Jabtan Utama)
+                "and\n" +
+                "   im_position.bagian_id = im_hris_position_bagian.bagian_id\n" +
+                "and\n" +
+                "   im_hris_position_bagian.divisi_id = im_hris_department.department_id\n" +
+                "limit 1";
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
         if (results!=null){

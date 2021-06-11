@@ -451,7 +451,7 @@ public class BranchAction extends BaseMasterAction {
         }
 
         for (Branch branch : listOfSearchBranch){
-            if (!(CommonConstant.ID_KANPUS).equalsIgnoreCase(branch.getBranchId())){
+            if (!(CommonConstant.BRANCH_KP).equalsIgnoreCase(branch.getBranchId())){
                 listOfSearch.add(branch);
             }
         }
@@ -559,7 +559,8 @@ public class BranchAction extends BaseMasterAction {
 
         Branch branch = new Branch();
         branch.setAreaId(CommonUtil.userAreaId());
-        return branchBo.getByCriteria(branch);
+        List<Branch> results = branchBo.getByCriteria(branch);
+        return results;
     }
 
     public List<Branch> getComboBranchByArea(String area){

@@ -13,16 +13,22 @@
           p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
           p:branchBoProxy-ref="branchBoProxy"
           p:periksaLabBoProxy-ref="periksaLabBoProxy"
+          p:pasienBoProxy-ref="pasienBoProxy"
+          p:dokterBoProxy-ref="dokterBoProxy"
+          p:bpjsBoProxy-ref="bpjsBoProxy"
+          p:eklaimBoProxy-ref="eklaimBoProxy"
+          p:tindakanBoProxy-ref="tindakanBoProxy"
     />
 
     <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
           p:rawatInapBoProxy-ref="rawatInapBoProxy"
     />
-
     <bean id="checkupController" class="com.neurix.simrs.mobileapi.CheckupController"
           p:rawatInapBoProxy-ref="rawatInapBoProxy"
     />
-
+    <bean id="dokterController" class="com.neurix.simrs.mobileapi.DokterController"
+          p:dokterBoProxy-ref="dokterBoProxy"
+    />
     <bean id="rawatInapBo" class="com.neurix.simrs.transaksi.rawatinap.bo.impl.RawatInapBoImpl"
           p:rawatInapDao-ref="rawatInapDao"
           p:parameterSkorRanapDao-ref="parameterSkorRanapDao"
@@ -40,6 +46,7 @@
           p:rekananOpsDao-ref="rekananOpsDao"
           p:tempatTidurDao-ref="tempatTidurDao"
           p:uangMukaDao-ref="uangMukaDao"
+          p:pasienDao-ref="pasienDao"
     />
 
     <bean id="rawatInapBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

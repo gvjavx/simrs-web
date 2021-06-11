@@ -78,109 +78,115 @@ public class ExceptionHandlerInterceptor extends MethodFilterInterceptor {
                     throw new SecurityException("Your access is denied. Operation not allowed!");
 
                 }
-            } else if ("/mobileapi/plant".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/plant")) {
                 logger.info("[ExceptionHandlerInterceptor.checkingApi] skiping token");
-            }else if ("/mobileapi/cronproccess".equalsIgnoreCase(namespace)) {
+            }else if (namespace.contains("/mobileapi/cronproccess")) {
                 logger.info("[ExceptionHandlerInterceptor.cronproccess] skiping token");
-            } else if ("/mobileapi/bpjs".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/bpjs")) {
                 logger.info("[ExceptionHandlerInterceptor.testbpjs] skiping token");
-
-            } else if ("/mobileapi/loginpasien".equalsIgnoreCase(namespace)){
+            } else if (namespace.contains("/mobileapi/loginpasien")) {
                 logger.info("[ExceptionHandlerInterceptor.loginpasien] skiping token");
-
-            } else if ("/mobileapi/pelayanan".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/pelayanan")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            }else if ("/mobileapi/branch".equalsIgnoreCase(namespace)) {
+            }else if (namespace.contains("/mobileapi/branch")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            }else if ("/mobileapi/registrasi".equalsIgnoreCase(namespace)) {
+            }else if (namespace.contains("/mobileapi/registrasi")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/antrian".equalsIgnoreCase(namespace)) {
-            logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/purchaseorder".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/antrian")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/permintaanobat".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/purchaseorder")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/transaksiapotek".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/permintaanobat")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/rawatinap".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/transaksiapotek")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/ruangan".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/rawatinap")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/cutipegawai".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/ruangan")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            }  else if ("/mobileapi/ijinkeluar".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/cutipegawai")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/notifikasi".equalsIgnoreCase(namespace)) {
+            }  else if (namespace.contains("/mobileapi/ijinkeluar"))  {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/biodataprofile".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/notifikasi"))  {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/payroll".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/biodataprofile")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/viewpayroll".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/payroll"))  {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            }  else if ("/mobileapi/sisacuti".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/viewpayroll")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            }  else if ("/mobileapi/lembur".equalsIgnoreCase(namespace)) {
+            }  else if (namespace.contains("/mobileapi/sisacuti"))  {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/branch".equalsIgnoreCase(namespace)) {
+            }  else if (namespace.contains("/mobileapi/lembur")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/pengajuancuti".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/branch")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/biodata".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/pengajuancuti")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/dispensasi".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/biodata")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/payrol".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/dispensasi")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/historycuti".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/payrol")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/checkup".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/historycuti")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/user".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/checkup")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/absensi".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/user")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/dokter".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/absensi"))  {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            }else if ("/mobileapi/kasir".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/dokter")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/telemedicine".equalsIgnoreCase(namespace)) {
+            }else if (namespace.contains("/mobileapi/kasir")) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
-            } else if ("/mobileapi/testelemedic".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/telemedicine")) {
+                logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
+            } else if (namespace.contains("/mobileapi/testelemedic")) {
                 logger.info("[ExceptionHandlerInterceptor.testelemedic] skiping token");
-            } else if ("/mobileapi/pembayaran".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/pembayaran")) {
                 logger.info("[ExceptionHandlerInterceptor.testelemedic] skiping token");
-            } else if ("/mobileapi/testnotif".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/testnotif")) {
                 logger.info("[ExceptionHandlerInterceptor.testnotif] skiping token");
-            } else if ("/mobileapi/kurir".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/kurir")) {
                 logger.info("[ExceptionHandlerInterceptor.testnotif] skiping token");
-            } else if ("/mobileapi/reseponline".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/reseponline")) {
                 logger.info("[ExceptionHandlerInterceptor.reseponline] skiping token");
-            } else if ("/mobileapi/pengiriman".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/pengiriman")) {
                 logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
-            } else if ("/mobileapi/asuransi".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/asuransi")) {
                 logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
-            }  else if ("/mobileapi/rekening".equalsIgnoreCase(namespace)) {
+            }  else if (namespace.contains("/mobileapi/rekening")) {
                 logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
-            } else if ("/mobileapi/historypegawai".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/historypegawai")) {
                 logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
-            } else if ("/mobileapi/jadwalshift".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/jadwalshift")) {
                 logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
-            } else if ("/mobileapi/antrianpoli".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/antrianpoli")) {
                 logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
-            } else if ("/mobileapi/company".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/company"))  {
                 logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
-            } else if ("/mobileapi/license".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/license")) {
                 logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
-            } else if ("/mobileapi/version".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/version")) {
                 logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
-            } else if ("/mobileapi/versionmobile".equalsIgnoreCase(namespace)) {
+            } else if (namespace.contains("/mobileapi/versionmobile")) {
                 logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
+            }else if (namespace.contains("/mobileapi/settlementinvoice")) { //updated by ferdi, 01-12-2020, for billing system payment gateway
+                logger.info("[ExceptionHandlerInterceptor.billingsystem] skiping token");
+            } else if (namespace.contains("/mobileapi/provinsi")) {
+                logger.info("[ExceptionHandlerInterceptor.provinsi] skiping token");
+            } else if (namespace.contains("/mobileapi/kota")) {
+                logger.info("[ExceptionHandlerInterceptor.kota] skiping token");
+            } else if (namespace.contains("/mobileapi/kecamatan")) {
+                logger.info("[ExceptionHandlerInterceptor.kecamatan] skiping token");
+            } else if (namespace.contains("/mobileapi/desa")) {
+                logger.info("[ExceptionHandlerInterceptor.desa] skiping token");
             }
 
             else {
-
-
                 String token = request.getHeader("tokenId");
                 if (token != null) {
 

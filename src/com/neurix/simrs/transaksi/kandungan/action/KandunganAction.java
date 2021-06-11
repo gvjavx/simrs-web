@@ -74,11 +74,13 @@ public class KandunganAction {
                             String wkt = time.toString();
                             String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
                             logger.info("PATTERN :" + patten);
-                            String fileName = obj.getString("id_detail_checkup") + "-" + i + "-" + patten + ".png";
+                            String fileName = "";
                             String uploadFile = "";
                             if ("gambar".equalsIgnoreCase(obj.getString("tipe"))) {
+                                fileName = obj.getString("id_detail_checkup") + "-" + i + "-" + patten + ".jpg";
                                 uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
                             } else {
+                                fileName = obj.getString("id_detail_checkup") + "-" + i + "-" + patten + ".png";
                                 uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
                             }
                             BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
@@ -88,10 +90,18 @@ public class KandunganAction {
                                 response.setStatus("error");
                                 response.setMsg("Buffered Image is null");
                             } else {
-                                File f = new File(uploadFile);
-                                // write the image
-                                ImageIO.write(image, "png", f);
-                                kandungan.setJawaban(fileName);
+                                if("gambar".equalsIgnoreCase(obj.getString("tipe"))){
+                                    if (image == null) {
+                                        logger.error("Buffered Image is null");
+                                    } else {
+                                        CommonUtil.compressImage(image, "png", uploadFile);
+                                        kandungan.setJawaban(fileName);
+                                    }
+                                }else {
+                                    File f = new File(uploadFile);
+                                    ImageIO.write(image, "png", f);
+                                    kandungan.setJawaban(fileName);
+                                }
                             }
                         } catch (IOException e) {
                             response.setStatus("error");
@@ -163,7 +173,7 @@ public class KandunganAction {
         return list;
     }
 
-    public CrudResponse saveDelete(String idDetailCheckup, String keterangan, String dataPasien) {
+    public CrudResponse saveDelete(String idDetailCheckup, String keterangan, String dataPasien, String date) {
         CrudResponse response = new CrudResponse();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         KandunganBo kandunganBo = (KandunganBo) ctx.getBean("kandunganBoProxy");
@@ -174,6 +184,9 @@ public class KandunganAction {
                 kandungan.setKeterangan(keterangan);
                 kandungan.setLastUpdate(time);
                 kandungan.setLastUpdateWho(userLogin);
+                if(date != null && !"".equalsIgnoreCase(date)){
+                    kandungan.setCreatedDate(Timestamp.valueOf(date));
+                }
                 response = kandunganBo.saveDelete(kandungan);
                 if("success".equalsIgnoreCase(response.getStatus())){
                     try {
@@ -229,6 +242,9 @@ public class KandunganAction {
                 }
                 if(obj.has("kontraksi")){
                     partograf.setKontraksi(obj.getString("kontraksi"));
+                }
+                if(obj.has("lama_kontraksi")){
+                    partograf.setLamaKontraksi(obj.getString("lama_kontraksi"));
                 }
                 if(obj.has("oksitosin")){
                     partograf.setOksitosin(obj.getString("oksitosin"));

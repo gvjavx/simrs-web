@@ -2,6 +2,9 @@ package com.neurix.simrs.transaksi.obatpoli.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.hargaobat.model.HargaObatPerKonsumen;
 import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsObatPoliEntity;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
@@ -11,7 +14,9 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -226,21 +231,33 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
         return stringList;
     }
 
-    public List<ObatPoli> getIdObatGroupPoli(String idPelayanan, String branchId, String flagBpjs, String idJenisObat, String idDetailCheckup){
+    // flagBpjs adalah = jenis pasien
+    public List<ObatPoli> getIdObatGroupPoli(ObatPoli bean){
         List<ObatPoli> obatPoliList = new ArrayList<>();
         String queryJenisObat = "";
+//        if (idJenisObat != null && !idJenisObat.equalsIgnoreCase("")) {
+//            queryJenisObat = "AND d.id_jenis_obat = '" + idJenisObat + "' \n";
+//        }
 
-        if (idJenisObat != null && !idJenisObat.equalsIgnoreCase("")) {
-            queryJenisObat = "AND id_jenis_obat = '" + idJenisObat + "' \n";
-        }
-
-        if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan) && branchId != null && !"".equalsIgnoreCase(branchId)){
+        //if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan) && branchId != null && !"".equalsIgnoreCase(branchId)){
+        if(bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan()) && bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
 
             String flag = "";
-            if("bpjs".equalsIgnoreCase(flagBpjs)){
-                flag = "WHERE flag_bpjs = 'Y'";
+            String whereQuery = "";
+//            if("bpjs".equalsIgnoreCase(flagBpjs) || "bpjs_rekanan".equalsIgnoreCase(flagBpjs)){
+            if("bpjs".equalsIgnoreCase(bean.getJenisPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getJenisPasien())){
+                flag = "WHERE flag_bpjs = 'Y' \n";
+//                whereQuery = "WHERE c.harga_jual_khusus_bpjs > 0 \n" +
+//                        "AND c.harga_jual_umum_bpjs > 0 \n";
             }else{
-                flag = "WHERE flag_bpjs IS NULL OR flag_bpjs = 'N'";
+                flag = "WHERE flag_bpjs != 'Y' \n";
+//                whereQuery = "WHERE c.harga_jual > 0 \n" +
+//                        "AND c.harga_jual_umum > 0 \n";
+            }
+
+            String whereObat = "";
+            if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())){
+                whereObat = "WHERE a.id_obat = '"+bean.getIdObat()+"' \n";
             }
 
             String SQL = "SELECT \n" +
@@ -254,17 +271,30 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     "a.biji_per_lembar,\n" +
                     "a.flag_kronis,\n" +
                     "c.harga_jual,\n" +
-                    "d.id_jenis_obat,\n"+
-                    "c.harga_jual_umum\n"+
+                    "c.harga_jual_umum,\n" +
+                    "c.harga_jual_khusus_bpjs,\n" +
+                    "c.harga_jual_umum_bpjs\n" +
                     "FROM (\n" +
-                    "\tSELECT \n" +
-                    "\tid_obat,\n" +
-                    "\tnama_obat,\n" +
-                    "\tflag_kronis,\n" +
-                    "\tlembar_per_box,\n" +
-                    "\tbiji_per_lembar,\n" +
-                    "\tflag_bpjs\n" +
-                    "\tFROM im_simrs_header_obat\n" + flag +
+                    "\t\tSELECT \n" +
+                    "\t\ta.id_obat,\n" +
+                    "\t\ta.nama_obat,\n" +
+                    "\t\ta.flag_kronis,\n" +
+                    "\t\ta.lembar_per_box,\n" +
+                    "\t\ta.biji_per_lembar\n" +
+                    "\t\tFROM im_simrs_header_obat a\n" +
+                    "\t\tINNER JOIN (\n" +
+                    "\t\t\tSELECT id_barang, id_obat, flag_bpjs  \n" +
+                    "\t\t\tFROM im_simrs_obat \n" + flag +
+                    "\t\t\tAND id_barang is not null\n" +
+                    "\t\t) b ON b.id_obat = a.id_obat\n" +
+                    "\t\tINNER JOIN mt_simrs_obat_poli ob ON ob.id_barang = b.id_barang\n" + whereObat +
+                    "\t\tGROUP BY \n" +
+                    "\t\ta.id_obat,\n" +
+                    "\t\ta.nama_obat,\n" +
+                    "\t\ta.flag_kronis,\n" +
+                    "\t\ta.lembar_per_box,\n" +
+                    "\t\ta.biji_per_lembar,\n" +
+                    "\t\ta.flag_bpjs\n" +
                     ") a\n" +
                     "INNER JOIN (\n" +
                     "\tSELECT\n" +
@@ -278,24 +308,36 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     "\tWHERE id_pelayanan = :idPelayanan \n" +
                     "\tAND branch_id = :branchId \n" +
                     "\tGROUP BY id_obat, id_pelayanan, branch_id\n" +
-                    "\tHAVING SUM(qty_box) > 0 OR SUM(qty_lembar) > 0 OR SUM(qty_biji) > 0 \n"+
+                    "\tHAVING SUM(qty_box) > 0 OR SUM(qty_lembar) > 0 OR SUM(qty_biji) > 0 \n" +
                     ") b ON a.id_obat = b.id_obat\n" +
-                    "INNER JOIN mt_simrs_harga_obat c ON a.id_obat = c.id_obat\n" +
-                    "INNER JOIN (\n" +
+                    "LEFT JOIN mt_simrs_harga_obat c ON a.id_obat = c.id_obat\n" +
+                    "LEFT JOIN (\n" +
                     "\tSELECT\n" +
                     "\tid_obat,\n" +
                     "\tid_jenis_obat\n" +
                     "\tFROM im_simrs_obat_gejala \n" +
-                    ")d ON d.id_obat = b.id_obat \n"+
-                    "WHERE c.harga_jual > 0 \n" +
-                    "AND c.harga_jual_umum > 0 \n" +queryJenisObat;
+                    ")d ON d.id_obat = b.id_obat \n" + whereQuery + queryJenisObat +
+                    "GROUP BY \n" +
+                    "b.id_pelayanan,\n" +
+                    "a.id_obat,\n" +
+                    "a.nama_obat,\n" +
+                    "b.box,\n" +
+                    "b.lembar,\n" +
+                    "b.biji,\n" +
+                    "a.lembar_per_box,\n" +
+                    "a.biji_per_lembar,\n" +
+                    "a.flag_kronis,\n" +
+                    "c.harga_jual,\n" +
+                    "c.harga_jual_umum,\n" +
+                    "c.harga_jual_khusus_bpjs,\n" +
+                    "c.harga_jual_umum_bpjs \n";
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                    .setParameter("idPelayanan", idPelayanan)
-                    .setParameter("branchId", branchId)
+                    .setParameter("idPelayanan", bean.getIdPelayanan())
+                    .setParameter("branchId", bean.getBranchId())
                     .list();
 
-            Boolean cekKhusus = cekIsKhusus(idDetailCheckup);
+            Boolean cekKhusus = cekIsKhusus(bean.getIdDetailCheckup());
 
             if (results.size() > 0){
                 for (Object[] obj : results){
@@ -309,17 +351,100 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     obatPoli.setLembarPerBox(obj[6] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[6].toString()));
                     obatPoli.setBijiPerLembar(obj[7] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[7].toString()));
                     obatPoli.setFlagKronis(obj[8] == null ? "" : obj[8].toString());
-                    obatPoli.setIdJenisObat(obj[10] == null ? "" : obj[10].toString());
                     if(cekKhusus){
-                        obatPoli.setHarga(obj[9] == null ? "" : obj[9].toString());
+                        if ("bpjs".equalsIgnoreCase(bean.getJenisPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getJenisPasien())){
+                            obatPoli.setHarga(obj[11] == null ? "" : obj[11].toString());
+                        } else {
+                            obatPoli.setHarga(obj[9] == null ? "" : obj[9].toString());
+                        }
                     }else{
-                        obatPoli.setHarga(obj[11] == null ? "" : obj[11].toString());
+                        if ("bpjs".equalsIgnoreCase(bean.getJenisPasien())){
+                            obatPoli.setHarga(obj[12] == null ? "" : obj[12].toString());
+                        } else {
+                            obatPoli.setHarga(obj[10] == null ? "" : obj[10].toString());
+                        }
                     }
-                    obatPoliList.add(obatPoli);
+
+                    // Sigit, 2021-04-29. penambahan untuk mencari data per konsumen pada resep;
+                    HeaderCheckup headerDetailCheckup = getHeaderCheckupData(bean.getIdDetailCheckup());
+                    if (headerDetailCheckup != null){
+                        HargaObatPerKonsumen perKonsumen = getDataHargaPerKonsumen(obatPoli.getIdObat(), bean.getBranchId(), headerDetailCheckup.getIdJenisPeriksaPasien(), headerDetailCheckup.getIdAsuransi());
+                        if (perKonsumen != null){
+                            obatPoli.setHarga(perKonsumen.getHargaJual().toString());
+                        }
+                    }
+
+                    if (obatPoli.getHarga() != null && !"".equalsIgnoreCase(obatPoli.getHarga())){
+                        obatPoliList.add(obatPoli);
+                    }
                 }
             }
         }
         return obatPoliList;
+    }
+
+    private HeaderCheckup getHeaderCheckupData(String idHeaderCheckup){
+
+        String SQL = "SELECT \n" +
+                "id_detail_checkup, \n" +
+                "id_asuransi,\n" +
+                "id_jenis_periksa_pasien\n" +
+                "FROM \n" +
+                "it_simrs_header_detail_checkup\n" +
+                "WHERE id_asuransi is not null\n" +
+                "AND id_detail_checkup = '"+idHeaderCheckup+"'";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+            Object[] obj = list.get(0);
+            HeaderCheckup headerCheckup = new HeaderCheckup();
+            headerCheckup.setIdDetailCheckup(obj[0].toString());
+            headerCheckup.setIdAsuransi(obj[1].toString());
+            headerCheckup.setIdJenisPeriksaPasien(obj[2].toString());
+            return headerCheckup;
+        }
+
+        return null;
+    }
+
+    private HargaObatPerKonsumen getDataHargaPerKonsumen(String idObat, String branchId, String jenisKonsumen, String idRekanan){
+
+        String sqlRekanan = "";
+        if (idRekanan != null && !"".equalsIgnoreCase(idRekanan)){
+            sqlRekanan = "AND hopk.id_rekanan = '"+idRekanan+"' \n";
+        }
+
+        String SQL = "SELECT \n" +
+                "hopk.id_harga_obat, \n" +
+                "ho.branch_id, \n" +
+                "hopk.harga_jual \n" +
+                "FROM (SELECT * FROM mt_simrs_harga_obat_per_konsumen WHERE flag ='Y') hopk\n" +
+                "INNER JOIN mt_simrs_harga_obat ho ON ho.id_harga_obat = hopk.id_harga_obat \n" +
+                "WHERE ho.id_obat = '"+idObat+"'\n" +
+                "AND ho.branch_id = '"+branchId+"'\n" +
+                "AND hopk.jenis_konsumen = '"+jenisKonsumen+"'\n" + sqlRekanan;
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+            Object[] obj = list.get(0);
+            HargaObatPerKonsumen perKonsumen = new HargaObatPerKonsumen();
+            perKonsumen.setIdHargaObat(obj[0].toString());
+            perKonsumen.setBranchId(obj[1].toString());
+            perKonsumen.setHargaJual(objToBigDecimal(obj[2]));
+
+            return perKonsumen;
+        }
+
+        return null;
+    }
+
+    private BigDecimal objToBigDecimal(Object obj){
+        if (obj == null)
+            return new BigDecimal(0);
+        else
+            return new BigDecimal(obj.toString());
     }
 
     private Boolean cekIsKhusus(String idDetailCheckup){
@@ -346,10 +471,9 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
 
         if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan) && branchId != null && !"".equalsIgnoreCase(branchId)){
 
-            String flag = "N";
-
-            if("bpjs".equalsIgnoreCase(flagBpjs)){
-                flag = "%";
+            String flag = "flag_bpjs != 'Y' ";
+            if("bpjs".equalsIgnoreCase(flagBpjs) || "rekanan_bpjs".equalsIgnoreCase(flagBpjs)){
+                flag = "flag_bpjs = 'Y' ";
             }
 
             String SQL = "SELECT\n" +
@@ -370,7 +494,7 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     "\tFROM mt_simrs_obat_poli a\n" +
                     "\tINNER JOIN (\n" +
                     "\tSELECT id_obat, nama_obat, lembar_per_box, biji_per_lembar, flag_kronis\n" +
-                    "\tFROM im_simrs_obat WHERE flag_bpjs LIKE :flag GROUP BY id_obat, nama_obat, lembar_per_box, biji_per_lembar, flag_kronis\n" +
+                    "\tFROM im_simrs_obat WHERE "+flag+" GROUP BY id_obat, nama_obat, lembar_per_box, biji_per_lembar, flag_kronis\n" +
                     "\t) b ON a.id_obat = b.id_obat\n" +
                     "\tINNER JOIN mt_simrs_harga_obat c ON a.id_obat = c.id_obat\n" +
                     "\tINNER JOIN im_simrs_kandungan_obat_detail d ON d.id_obat = a.id_obat\n" +
@@ -390,7 +514,6 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("idPelayanan", idPelayanan)
                     .setParameter("branchId", branchId)
-                    .setParameter("flag", flag)
                     .setParameterList("listKandungan", kandugans)
                     .list();
 
@@ -445,4 +568,144 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
         return obatPoli;
     }
 
+    public List<ObatPoli> getStokObatPoli(ObatPoli bean){
+        List<ObatPoli> obatPoliList = new ArrayList<>();
+        if(bean != null){
+            String flag = "Y";
+            String condition= "";
+            if(bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+                flag = bean.getFlag();
+            }
+            if(bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
+                condition += "AND a.id_pelayanan = '"+bean.getIdPelayanan()+"'\n";
+            }
+            if(bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+                condition += "AND a.branch_id = '"+bean.getBranchId()+"'\n";
+            }
+            if(bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())){
+                condition += "AND a.id_obat LIKE '%"+bean.getIdObat()+"%'\n";
+            }
+            if(bean.getNamaObat() != null && !"".equalsIgnoreCase(bean.getNamaObat())){
+                condition += "AND b.nama_obat ILIKE '%"+bean.getNamaObat()+"%'\n";
+            }
+            if(bean.getIdBarang() != null && !"".equalsIgnoreCase(bean.getIdBarang())){
+                condition += "AND a.id_barang LIKE '%"+bean.getIdBarang()+"%' \n";
+            }
+            if(bean.getFlagBpjs() != null && "Y".equalsIgnoreCase(bean.getFlagBpjs())){
+                condition += "AND c.flag_bpjs = 'Y' \n";
+            } else if (bean.getFlagBpjs() != null && "N".equalsIgnoreCase(bean.getFlagBpjs())){
+                condition += "AND c.flag_bpjs != 'Y' \n";
+            }
+
+            String SQL = "SELECT\n" +
+                    "a.id_obat,\n" +
+                    "b.nama_obat,\n" +
+                    "a.id_barang,\n" +
+                    "a.expired_date,\n" +
+                    "a.qty_biji,\n" +
+                    "a.id_pelayanan,\n" +
+                    "a.branch_id,\n" +
+                    "c.lembar_per_box,\n" +
+                    "c.biji_per_lembar,\n" +
+                    "c.flag_bpjs,\n" +
+                    "a.qty_lembar,\n" +
+                    "a.qty_box\n" +
+                    "FROM mt_simrs_obat_poli a\n" +
+                    "INNER JOIN im_simrs_header_obat b ON a.id_obat = b.id_obat\n" +
+                    "INNER JOIN im_simrs_obat c ON a.id_barang = c.id_barang\n" +
+                    "WHERE a.flag = :flag \n" + condition +
+                    "AND (a.qty_biji, a.qty_lembar, a.qty_box) > ('0','0','0') ";
+
+            List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("flag", flag)
+                    .list();
+
+            if (results.size() > 0){
+                for (Object[] obj : results){
+                    ObatPoli obatPoli = new ObatPoli();
+                    obatPoli.setIdObat(obj[0] != null ? obj[0].toString() : "");
+                    obatPoli.setNamaObat(obj[1] != null ? obj[1].toString() : "");
+                    obatPoli.setIdBarang(obj[2] != null ? obj[2].toString() : "");
+                    obatPoli.setExpiredDate(obj[3] != null ? (Date) obj[3] : null);
+                    obatPoli.setQtyBiji(obj[4] != null ? (BigInteger) obj[4] : new BigInteger(String.valueOf("0")));
+                    obatPoli.setIdPelayanan(obj[5] != null ? obj[5].toString() : "");
+                    obatPoli.setBranchId(obj[6] != null ? obj[6].toString() : "");
+                    obatPoli.setLembarPerBox(obj[7] != null ? (BigInteger) obj[7] : new BigInteger(String.valueOf("0")));
+                    obatPoli.setBijiPerLembar(obj[8] != null ? (BigInteger) obj[8] : new BigInteger(String.valueOf("0")));
+                    obatPoli.setFlagBpjs(obj[9] != null ? obj[9].toString() : "");
+                    obatPoli.setQtyLembar(objToBigInteger(obj[10]));
+                    obatPoli.setQtyBox(objToBigInteger(obj[11]));
+
+                    BigInteger qtyBox       = obatPoli.getQtyBox().multiply(obatPoli.getLembarPerBox()).multiply(obatPoli.getBijiPerLembar());
+                    BigInteger qtyLembar    = obatPoli.getQtyLembar().multiply(obatPoli.getBijiPerLembar());
+                    BigInteger qtyBiji      = obatPoli.getQtyBiji();
+                    BigInteger totalQty     = qtyBiji.add(qtyLembar).add(qtyBox);
+
+                    obatPoli.setTotalQty(totalQty);
+                    obatPoliList.add(obatPoli);
+                }
+            }
+        }
+        return obatPoliList;
+    }
+
+    private BigInteger objToBigInteger(Object obj){
+        if (obj == null)
+            return new BigInteger(String.valueOf(0));
+        else
+            return new BigInteger(obj.toString());
+    }
+
+    public ObatPoli getStokObatPoliById(String idObat, String flagBpjs, String idPelayanan){
+
+        String SQL = "SELECT \n" +
+                "ab.id_obat,\n" +
+                "ab.flag_bpjs,\n" +
+                "SUM(ab.qty_box) + SUM(ab.qty_lembar) + SUM(ab.qty_biji) as total_bijian\n" +
+                "FROM \n" +
+                "(\n" +
+                "\tSELECT \n" +
+                "\taa.id_obat,\n" +
+                "\taa.id_barang,\n" +
+                "\taa.flag_bpjs,\n" +
+                "\tSUM(aa.qty_box) as qty_box,\n" +
+                "\tSUM(aa.qty_lembar) as qty_lembar,\n" +
+                "\tSUM(aa.qty_biji) as qty_biji\n" +
+                "\tFROM (\n" +
+                "\t\tSELECT\n" +
+                "\t\ta.id_obat, \n" +
+                "\t\ta.id_barang,\n" +
+                "\t\tb.flag_bpjs,\n" +
+                "\t\ta.qty_box * b.lembar_per_box * b.biji_per_lembar as qty_box,\n" +
+                "\t\ta.qty_lembar * b.biji_per_lembar as qty_lembar,\n" +
+                "\t\ta.qty_biji \n" +
+                "\t\tFROM mt_simrs_obat_poli a\n" +
+                "\t\tINNER JOIN im_simrs_obat b ON b.id_barang = a.id_barang\n" +
+                "\t\tWHERE a.id_pelayanan = '"+idPelayanan+"'\n" +
+                "\t) aa\n" +
+                "\tGROUP BY\n" +
+                "\taa.id_obat,\n" +
+                "\taa.id_barang,\n" +
+                "\taa.flag_bpjs\n" +
+                ")ab\n" +
+                "WHERE ab.id_obat = '"+idObat+"'\n" +
+                "AND ab.flag_bpjs = '"+flagBpjs+"'\n" +
+                "GROUP BY \n" +
+                "ab.id_obat,\n" +
+                "ab.flag_bpjs\n" +
+                "ORDER BY ab.id_obat";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (results.size() > 0){
+            Object[] obj = results.get(0);
+
+            ObatPoli obatPoli = new ObatPoli();
+            obatPoli.setIdObat(obj[0].toString());
+            obatPoli.setFlagBpjs(obj[1].toString());
+            obatPoli.setTotalQty(objToBigInteger(obj[2]));
+            return obatPoli;
+        }
+        return null;
+    }
 }

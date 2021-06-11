@@ -17,12 +17,13 @@
     <%@ include file="/pages/common/header.jsp" %>
 
     <style>
-        .pagebanner{
+        .pagebanner {
             background-color: #ededed;
             width: 100%;
             font-size: 14px;
         }
-        .pagelinks{
+
+        .pagelinks {
             background-color: #ededed;
             width: 100%;
             font-size: 14px;
@@ -31,14 +32,14 @@
     </style>
     <script type='text/javascript'>
 
-        function link(){
-            window.location.href="<s:url action='initForm_mappingJurnal'/>";
+        function link() {
+            window.location.href = "<s:url action='initForm_mappingJurnal'/>";
         }
 
     </script>
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini" >
+<body class="hold-transition skin-blue sidebar-mini">
 <%@ include file="/pages/common/headerNav.jsp" %>
 <ivelincloud:mainMenu/>
 
@@ -59,10 +60,10 @@
                         <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Mapping Jurnal</h3>
                     </div>
                     <div class="box-body">
-                        <table width="100%" align="center">
+                        <table width="100%" align="center" >
                             <tr>
                                 <td align="center">
-                                    <s:form id="mappingJurnalForm" method="post"  theme="simple" namespace="/mappingJurnal" action="search_mappingJurnal.action" cssClass="form-horizontal">
+                                    <s:form id="mappingJurnalForm" method="post" theme="simple" namespace="/mappingJurnal" action="search_mappingJurnal.action" cssClass="form-horizontal">
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -71,40 +72,93 @@
                                             </tr>
                                         </table>
 
-                                        <table >
+                                        <table width="500px">
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tipe Jurnal :</small></label>
+                                                    <label class="control-label">
+                                                        <small>Tipe Jurnal :</small>
+                                                    </label>
                                                 </td>
-                                                <td>
-                                                    <table>
-                                                        <s:action id="initComboTipeJurnal" namespace="/tipeJurnal" name="initComboTipeJurnal_tipeJurnal"/>
-                                                        <s:select list="#initComboTipeJurnal.listOfComboTipeJurnal" id="tipeJurnalId" name="mappingJurnal.tipeJurnalId"
-                                                                  listKey="tipeJurnalId" listValue="tipeJurnalName" headerKey="" headerValue="[ Select One ]" cssClass="form-control"/>
+                                                <td >
+                                                    <table width="300px">
+                                                        <small>
+                                                        <s:action id="initComboTipeJurnal" namespace="/tipeJurnal"
+                                                                  name="initComboTipeJurnal_tipeJurnal"/>
+                                                        <s:select list="#initComboTipeJurnal.listOfComboTipeJurnal"
+                                                                  id="tipeJurnalId" name="mappingJurnal.tipeJurnalId"
+                                                                  listKey="tipeJurnalId" listValue="tipeJurnalName"
+                                                                  headerKey="" headerValue="[ Select One ]"
+                                                                  cssClass="form-control select2"/></small>
                                                     </table>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tipe Transaksi :</small></label>
+                                                    <label class="control-label">
+                                                        <small>Nama Transaksi :</small>
+                                                    </label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:action id="comboTrans" namespace="/trans" name="initComboTrans_trans"/>
-                                                        <s:select list="#comboTrans.listOfComboTrans" id="transId" name="mappingJurnal.transId"
+                                                        <small>
+                                                        <s:action id="comboTrans" namespace="/trans"
+                                                                  name="initComboTrans_trans"/>
+                                                        <s:select list="#comboTrans.listOfComboTrans" id="transId"
+                                                                  name="mappingJurnal.transId"
                                                                   onchange="$(this).css('border','')"
-                                                                  listKey="transId" listValue="transName" headerKey="" headerValue="[ Select One ]" cssClass="form-control" />
+                                                                  listKey="transId" listValue="transName" headerKey=""
+                                                                  headerValue="[ Select One ]" cssClass="form-control select2"/></small>
                                                     </table>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Flag :</small></label>
+                                                    <label class="control-label">
+                                                        <small>Flag :</small>
+                                                    </label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="mappingJurnal.flag"
-                                                                  headerKey="Y" headerValue="Active" cssClass="form-control" />
+                                                        <small>
+                                                        <s:select list="#{'N':'Non-Active'}" id="flag"
+                                                                  name="mappingJurnal.flag"
+                                                                  headerKey="Y" headerValue="Active"
+                                                                  cssClass="form-control"/></small>
+                                                    </table>
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label">
+                                                        <small>Kode Rekening :</small>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <small>
+                                                        <s:action id="koderek" namespace="/kodeRekening"
+                                                                  name="initComboKodeRekeningAll_kodeRekening"/>
+                                                        <s:select cssStyle="margin-top: 7px; width: 100%" list="#koderek.listOfComboKodeRekening"
+                                                                  id="rekeningId" name="mappingJurnal.kodeRekening"
+                                                                  listKey="kodeRekening" listValue="kodeRekening+' | '+namaKodeRekening" headerKey="" headerValue="[Select one]"
+                                                                  cssClass="form-control select2"/></small>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label">
+                                                        <small>Posisi :</small>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <small>
+                                                        <s:select list="#{'D':'Debit','K':'Kredit'}"
+                                                                  name="mappingJurnal.posisi"
+                                                                  headerKey="" headerValue="[Select one]"
+                                                                  cssClass="form-control"/></small>
                                                     </table>
 
                                                 </td>
@@ -115,17 +169,22 @@
                                             <table align="center">
                                                 <tr>
                                                     <td>
-                                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="mappingJurnalForm" id="search" name="search"
-                                                                   onClickTopics="showDialog" onCompleteTopics="closeDialog" >
+                                                        <sj:submit type="button" cssClass="btn btn-primary"
+                                                                   formIds="mappingJurnalForm" id="search" name="search"
+                                                                   onClickTopics="showDialog"
+                                                                   onCompleteTopics="closeDialog">
                                                             <i class="fa fa-search"></i>
                                                             Search
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <a href="add_mappingJurnal.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Mapping Jurnal</a>
+                                                        <a href="add_mappingJurnal.action" class="btn btn-success"><i
+                                                                class="fa fa-plus"></i> Add Mapping Jurnal</a>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_mappingJurnal"/>'">
+                                                        <button type="button" class="btn btn-danger"
+                                                                onclick="window.location.href='<s:url
+                                                                        action="initForm_mappingJurnal"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
@@ -139,63 +198,94 @@
                                             <table id="showdata" width="90%">
                                                 <tr>
                                                     <td align="center">
-                                                        <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
+                                                        <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu"
+                                                                   modal="true"
                                                                    height="300" width="550" autoOpen="false"
                                                                    title="MappingJurnalaksi Billing">
-                                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
+                                                            <center><img border="0"
+                                                                         src="<s:url value="/pages/images/loading11.gif"/>"
+                                                                         alt="Loading..."/></center>
                                                         </sj:dialog>
 
-                                                        <s:set name="listOfMappingJurnal" value="#session.listOfResult" scope="request" />
-                                                        <display:table name="listOfMappingJurnal" class="table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_mappingJurnal.action" export="true" id="row" pagesize="30" style="font-size:10">
+                                                        <s:set name="listOfMappingJurnal" value="#session.listOfResult"
+                                                               scope="request"/>
+                                                        <display:table name="listOfMappingJurnal"
+                                                                       class="table table-condensed table-striped table-hover"
+                                                                       requestURI="paging_displaytag_mappingJurnal.action"
+                                                                       export="true" id="row" pagesize="30"
+                                                                       style="font-size:10">
                                                             <s:if test='#attr.row.flag == "Y"'>
                                                                 <display:column media="html" title="View">
                                                                     <s:if test='#attr.row.tipeJurnalName != ""'>
-                                                                        <s:url var="urlView" namespace="/mappingJurnal" action="view_mappingJurnal" escapeAmp="false">
-                                                                            <s:param name="transId"><s:property value="#attr.row.transId"/></s:param>
-                                                                            <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                        <s:url var="urlView" namespace="/mappingJurnal"
+                                                                               action="view_mappingJurnal"
+                                                                               escapeAmp="false">
+                                                                            <s:param name="transId"><s:property
+                                                                                    value="#attr.row.transId"/></s:param>
+                                                                            <s:param name="flag"><s:property
+                                                                                    value="#attr.row.flag"/></s:param>
                                                                         </s:url>
                                                                         <s:a href="%{urlView}">
-                                                                            <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
+                                                                            <img border="0"
+                                                                                 src="<s:url value="/pages/images/view.png"/>"
+                                                                                 name="icon_view">
                                                                         </s:a>
                                                                     </s:if>
                                                                 </display:column>
 
                                                                 <display:column media="html" title="Edit">
                                                                     <s:if test='#attr.row.tipeJurnalName != ""'>
-                                                                        <s:url var="urlEdit" namespace="/mappingJurnal" action="edit_mappingJurnal" escapeAmp="false">
-                                                                            <s:param name="transId"><s:property value="#attr.row.transId"/></s:param>
-                                                                            <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                        <s:url var="urlEdit" namespace="/mappingJurnal"
+                                                                               action="edit_mappingJurnal"
+                                                                               escapeAmp="false">
+                                                                            <s:param name="transId"><s:property
+                                                                                    value="#attr.row.transId"/></s:param>
+                                                                            <s:param name="flag"><s:property
+                                                                                    value="#attr.row.flag"/></s:param>
                                                                         </s:url>
                                                                         <s:a href="%{urlEdit}">
-                                                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
+                                                                            <img border="0"
+                                                                                 src="<s:url value="/pages/images/icon_edit.ico"/>"
+                                                                                 name="icon_edit">
                                                                         </s:a>
                                                                     </s:if>
                                                                 </display:column>
                                                                 <display:column media="html" title="Delete">
                                                                     <s:if test='#attr.row.tipeJurnalName != ""'>
-                                                                        <s:url var="urlDelete" namespace="/mappingJurnal" action="delete_mappingJurnal" escapeAmp="false">
-                                                                            <s:param name="transId"><s:property value="#attr.row.transId"/></s:param>
-                                                                            <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                        <s:url var="urlDelete"
+                                                                               namespace="/mappingJurnal"
+                                                                               action="delete_mappingJurnal"
+                                                                               escapeAmp="false">
+                                                                            <s:param name="transId"><s:property
+                                                                                    value="#attr.row.transId"/></s:param>
+                                                                            <s:param name="flag"><s:property
+                                                                                    value="#attr.row.flag"/></s:param>
                                                                         </s:url>
                                                                         <s:a href="%{urlDelete}">
-                                                                            <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_delete">
+                                                                            <img border="0"
+                                                                                 src="<s:url value="/pages/images/icon_trash.ico"/>"
+                                                                                 name="icon_delete">
                                                                         </s:a>
                                                                     </s:if>
                                                                 </display:column>
                                                             </s:if>
                                                             <%--<display:column property="mappingJurnalId" sortable="true" title="Mapping Jurnal ID" />--%>
-                                                            <display:column property="tipeJurnalName" sortable="true" title="Tipe Jurnal"  />
-                                                            <display:column property="transName" sortable="true" title="Nama Trans"  />
-                                                            <display:column property="kodeRekening" sortable="true" title="Kode Rekening"  />
-                                                            <display:column property="kodeRekeningName" sortable="true" title="Nama Kode Rekening"  />
-                                                            <display:column property="posisi" title="Posisi"  />
-                                                            <display:column property="masterId" title="Master"  />
-                                                            <display:column property="bukti" title="Bukti"  />
-                                                            <display:column property="kodeBarang" title="Kode Barang"  />
-                                                            <display:column property="divisiId" title="Divisi ID"  />
-                                                            <display:column property="kirimList" title="List Kirim"  />
-                                                            <display:column property="keterangan" sortable="true" title="Parameter"  />
+                                                            <display:column property="tipeJurnalName" sortable="true"
+                                                                            title="Tipe Jurnal"/>
+                                                            <display:column property="transName" sortable="true"
+                                                                            title="Nama Trans"/>
+                                                            <display:column property="kodeRekeningBintang" sortable="true"
+                                                                            title="Kode Rekening"/>
+                                                            <display:column property="kodeRekeningName" sortable="true" maxWords="30"
+                                                                            title="Nama Kode Rekening"/>
+                                                            <display:column property="posisi" title="Posisi"/>
+                                                            <display:column property="masterId" title="Master"/>
+                                                            <display:column property="bukti" title="Bukti"/>
+                                                            <display:column property="kodeBarang" title="Kode Barang"/>
+                                                            <display:column property="divisiId" title="Divisi ID"/>
+                                                            <display:column property="kirimList" title="List Kirim"/>
+                                                            <display:column property="keterangan" sortable="true"
+                                                                            title="Parameter"/>
                                                             <%--<display:column property="lastUpdate" sortable="true" title="Last Update"/>--%>
                                                         </display:table>
                                                     </td>

@@ -26,11 +26,12 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a onclick="showModalOperasi('pre_operasi')" style="cursor: pointer;"><i class="fa fa-plus"></i> Pre Operasi</a></li>
-                            <li><a onclick="showModalOperasi('kondisi_pasien')" style="cursor: pointer;"><i class="fa fa-plus"></i> Kondisi Pasien</a></li>
+                            <li><a id="btn_pre_operasi" onclick="showModalOperasi('pre_operasi')" style="cursor: pointer;"><i class="fa fa-plus"></i> Pre Operasi</a></li>
+                            <li><a id="btn_kondisi_pasien" onclick="showModalOperasi('kondisi_pasien')" style="cursor: pointer;"><i class="fa fa-plus"></i> Kondisi Pasien</a></li>
                         </ul>
                     </div>
                 </div>
+                <input type="hidden" id="h_cek">
                 <div class="box-body">
                     <table class="table" id="tabel_op_ceklist_operasi">
                         <tbody>
@@ -75,6 +76,10 @@
                         <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                         <p id="msg_op_pre_operasi"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="success_pre_operasi">
+                        <h4><i class="icon fa fa-info"></i> Info!</h4>
+                        <p id="msg_pre_operasi"></p>
+                    </div>
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3">Tanggal</label>
@@ -101,7 +106,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Ruangan</label>
                             <div class="col-md-9">
-                                <input class="form-control" id="ruangan1">
+                                <input class="form-control nama_ruangan" id="ruangan1">
                             </div>
                         </div>
                     </div>
@@ -125,7 +130,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Dokter Operator</label>
                             <div class="col-md-9">
-                                <input class="form-control" id="operator1">
+                                <input class="form-control nama_dokter_ri" id="operator1">
                             </div>
                         </div>
                     </div>
@@ -146,7 +151,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="form-check" style="margin-top: 7px;">
+                                <div class="form-check btn-check" style="margin-top: 7px;">
                                     <input type="checkbox" name="cek_list11" id="cek_list12" value="Ya">
                                     <label for="cek_list12"></label>
                                 </div>
@@ -161,7 +166,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="form-check" style="margin-top: 7px;">
+                                <div class="form-check btn-check" style="margin-top: 7px;">
                                     <input type="checkbox" name="cek_list22" id="cek_list22" value="Ya">
                                     <label for="cek_list22"></label>
                                 </div>
@@ -176,7 +181,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="form-check" style="margin-top: 7px;">
+                                <div class="form-check btn-check" style="margin-top: 7px;">
                                     <input type="checkbox" name="cek_list33" id="cek_list32" value="Ya">
                                     <label for="cek_list32"></label>
                                 </div>
@@ -191,7 +196,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="form-check" style="margin-top: 7px;">
+                                <div class="form-check btn-check" style="margin-top: 7px;">
                                     <input type="checkbox" name="cek_list44" id="cek_list42" value="Ya">
                                     <label for="cek_list42"></label>
                                 </div>
@@ -206,7 +211,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="form-check" style="margin-top: 7px;">
+                                <div class="form-check btn-check" style="margin-top: 7px;">
                                     <input type="checkbox" name="cek_list55" id="cek_list52" value="Ya">
                                     <label for="cek_list52"></label>
                                 </div>
@@ -221,7 +226,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="form-check" style="margin-top: 7px;">
+                                <div class="form-check btn-check" style="margin-top: 7px;">
                                     <input type="checkbox" name="cek_list66" id="cek_list62" value="Ya">
                                     <label for="cek_list62"></label>
                                 </div>
@@ -236,7 +241,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="form-check" style="margin-top: 7px;">
+                                <div class="form-check btn-check" style="margin-top: 7px;">
                                     <input type="checkbox" name="cek_list77" id="cek_list72" value="Ya">
                                     <label for="cek_list72"></label>
                                 </div>
@@ -251,7 +256,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="form-check" style="margin-top: 7px;">
+                                <div class="form-check btn-check" style="margin-top: 7px;">
                                     <input type="checkbox" name="cek_list88" id="cek_list82" value="Ya">
                                     <label for="cek_list82"></label>
                                 </div>
@@ -266,7 +271,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="form-check" style="margin-top: 7px;">
+                                <div class="form-check btn-check" style="margin-top: 7px;">
                                     <input type="checkbox" name="cek_list99" id="cek_list92" value="Ya">
                                     <label for="cek_list92"></label>
                                 </div>
@@ -281,7 +286,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="form-check" style="margin-top: 7px;">
+                                <div class="form-check btn-check" style="margin-top: 7px;">
                                     <input type="checkbox" name="cek_list1010" id="cek_list102" value="Ya">
                                     <label for="cek_list102"></label>
                                 </div>
@@ -296,7 +301,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="form-check" style="margin-top: 7px;">
+                                <div class="form-check btn-check" style="margin-top: 7px;">
                                     <input type="checkbox" name="cek_list1111" id="cek_list112" value="Ya">
                                     <label for="cek_list112"></label>
                                 </div>
@@ -311,23 +316,23 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="form-check" style="margin-top: 7px;">
+                                <div class="form-check btn-check" style="margin-top: 7px;">
                                     <input type="checkbox" name="cek_list1212" id="cek_list122" value="Ya">
                                     <label for="cek_list122"></label>
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td>Persiapan Prosuk Darah</td>
+                            <td>Persiapan Produk Darah</td>
                             <td>
                                 <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="cek_list1313" id="cek_list131" value="Ya">
+                                    <input type="checkbox" name="cek_list13" id="cek_list131" value="Ya">
                                     <label for="cek_list131"></label>
                                 </div>
                             </td>
                             <td>
-                                <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="cek_list13" id="cek_list132" value="Ya">
+                                <div class="form-check btn-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="cek_list1313" id="cek_list132" value="Ya">
                                     <label for="cek_list132"></label>
                                 </div>
                             </td>
@@ -441,12 +446,12 @@
                            <div class="form-group">
                                <label class="col-md-4"><b>Pemeriksaan</b></label>
                                <label class="col-md-4"><b>Sebelum di Transfer</b></label>
-                               <label class="col-md-4"><b>Saat di terima</b></label>
+                               <label class="col-md-4"><b>Saat perjalanan</b></label>
                            </div>
                            <div class="form-group">
-                               <label class="col-md-4" style="margin-top: 7px">Kesadaran Umum</label>
+                               <label class="col-md-4">Kesadaran Umum</label>
                                <div class="col-md-4">
-                                   <select class="form-control select2" style="width: 100%" id="cek_list171">
+                                   <select onchange="setSideValue('cek_list172', this.value)" class="form-control" id="cek_list171">
                                        <option value="">[Select One]</option>
                                        <option value="Baik">Baik</option>
                                        <option value="Cukup">Cukup</option>
@@ -455,7 +460,7 @@
                                    </select>
                                </div>
                                <div class="col-md-4">
-                                   <select class="form-control select2" style="width: 100%" id="cek_list172">
+                                   <select class="form-control" id="cek_list172">
                                        <option value="">[Select One]</option>
                                        <option value="Baik">Baik</option>
                                        <option value="Cukup">Cukup</option>
@@ -467,7 +472,7 @@
                            <div class="form-group">
                                <label class="col-md-4" style="margin-top: 7px">Kesadaran / GCS</label>
                                <div class="col-md-4">
-                                   <input class="form-control" style="margin-top: 7px" id="cek_list181">
+                                   <input oninput="setSideValue('cek_list182', this.value)" class="form-control" style="margin-top: 7px" id="cek_list181">
                                </div>
                                <div class="col-md-4">
                                    <input class="form-control" style="margin-top: 7px" id="cek_list182">
@@ -477,7 +482,7 @@
                                <label class="col-md-4" style="margin-top: 7px">Tekanan Darah</label>
                                <div class="col-md-4">
                                    <div class="input-group" style="margin-top: 7px">
-                                       <input class="form-control" data-inputmask="'mask': ['999/999']" data-mask="" id="cek_list191">
+                                       <input oninput="setSideValue('cek_list192', this.value)" class="form-control tensi-pasien" data-inputmask="'mask': ['999/999']" data-mask="" id="cek_list191">
                                        <div class="input-group-addon">
                                            mmHg
                                        </div>
@@ -485,7 +490,7 @@
                                </div>
                                <div class="col-md-4">
                                    <div class="input-group" style="margin-top: 7px">
-                                       <input class="form-control" data-inputmask="'mask': ['999/999']" data-mask="" id="cek_list192">
+                                       <input class="form-control tensi-pasien" data-inputmask="'mask': ['999/999']" data-mask="" id="cek_list192">
                                        <div class="input-group-addon">
                                            mmHg
                                        </div>
@@ -496,7 +501,7 @@
                                <label class="col-md-4" style="margin-top: 7px">Suhu</label>
                                <div class="col-md-4">
                                    <div class="input-group" style="margin-top: 7px">
-                                       <input class="form-control" type="number" id="cek_list201">
+                                       <input oninput="setSideValue('cek_list202', this.value)" class="form-control suhu-pasien" type="number" id="cek_list201">
                                        <div class="input-group-addon">
                                            C
                                        </div>
@@ -504,7 +509,7 @@
                                </div>
                                <div class="col-md-4">
                                    <div class="input-group" style="margin-top: 7px">
-                                       <input class="form-control" type="number" id="cek_list202">
+                                       <input class="form-control suhu-pasien" type="number" id="cek_list202">
                                        <div class="input-group-addon">
                                            C
                                        </div>
@@ -515,7 +520,7 @@
                                <label class="col-md-4" style="margin-top: 7px">Nadi</label>
                                <div class="col-md-4">
                                    <div class="input-group" style="margin-top: 7px">
-                                       <input class="form-control" type="number" id="cek_list211">
+                                       <input oninput="setSideValue('cek_list212', this.value)" class="form-control nadi-pasien" type="number" id="cek_list211">
                                        <div class="input-group-addon">
                                            x/menit
                                        </div>
@@ -523,7 +528,7 @@
                                </div>
                                <div class="col-md-4">
                                    <div class="input-group" style="margin-top: 7px">
-                                       <input class="form-control" type="number" id="cek_list212">
+                                       <input class="form-control nadi-pasien" type="number" id="cek_list212">
                                        <div class="input-group-addon">
                                            x/menit
                                        </div>
@@ -534,7 +539,7 @@
                                <label class="col-md-4" style="margin-top: 7px">Respirator</label>
                                <div class="col-md-4">
                                    <div class="input-group" style="margin-top: 7px">
-                                       <input class="form-control" type="number" id="cek_list221">
+                                       <input oninput="setSideValue('cek_list222', this.value)" class="form-control rr-pasien" type="number" id="cek_list221">
                                        <div class="input-group-addon">
                                            x/menit
                                        </div>
@@ -542,7 +547,7 @@
                                </div>
                                <div class="col-md-4">
                                    <div class="input-group" style="margin-top: 7px">
-                                       <input class="form-control" type="number" id="cek_list222">
+                                       <input class="form-control rr-pasien" type="number" id="cek_list222">
                                        <div class="input-group-addon">
                                            x/menit
                                        </div>
@@ -553,7 +558,7 @@
                                <label class="col-md-4" style="margin-top: 7px">DJJ</label>
                                <div class="col-md-4">
                                    <div class="input-group" style="margin-top: 7px">
-                                       <input class="form-control" type="number" id="cek_list231">
+                                       <input oninput="setSideValue('cek_list232', this.value)" class="form-control" type="number" id="cek_list231" step="any">
                                        <div class="input-group-addon">
                                            x/menit
                                        </div>
@@ -561,7 +566,7 @@
                                </div>
                                <div class="col-md-4">
                                    <div class="input-group" style="margin-top: 7px">
-                                       <input class="form-control" type="number" id="cek_list232">
+                                       <input class="form-control" type="number" id="cek_list232" step="any">
                                        <div class="input-group-addon">
                                            x/menit
                                        </div>
@@ -571,20 +576,10 @@
                            <div class="form-group">
                                <label class="col-md-4" style="margin-top: 7px">Skala Nyeri</label>
                                <div class="col-md-4">
-                                   <div class="input-group" style="margin-top: 7px">
-                                       <input class="form-control" type="number" id="cek_list241">
-                                       <div class="input-group-addon">
-                                           x/menit
-                                       </div>
-                                   </div>
+                                   <input oninput="setSideValue('cek_list242', this.value)" class="form-control" type="number" id="cek_list241">
                                </div>
                                <div class="col-md-4">
-                                   <div class="input-group" style="margin-top: 7px">
-                                       <input class="form-control" type="number" id="cek_list242">
-                                       <div class="input-group-addon">
-                                           x/menit
-                                       </div>
-                                   </div>
+                                   <input class="form-control" type="number" id="cek_list242">
                                </div>
                            </div>
                        </div>
@@ -598,6 +593,7 @@
                                 <canvas class="paint-canvas-ttd" id="ttd_pengirim" width="220"
                                         onmouseover="paintTtd('ttd_pengirim')"></canvas>
                                 <input class="form-control" id="nama_terang_pengirim" placeholder="Nama Terang">
+                                <input class="form-control" id="sip_terang_pengirim" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd_pengirim')"><i
                                         class="fa fa-trash"></i> Clear
@@ -608,6 +604,7 @@
                                 <canvas class="paint-canvas-ttd" id="ttd_perawat" width="220"
                                         onmouseover="paintTtd('ttd_perawat')"></canvas>
                                 <input class="form-control nama_petugas" id="nama_terang_perawat" placeholder="Nama Terang">
+                                <input class="form-control" id="sip_terang_perawat" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd_perawat')"><i
                                         class="fa fa-trash"></i> Clear
@@ -688,13 +685,15 @@
                 </div>
                 <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
                     <div class="col-md-1">
-                        <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker-op  color-picker pull-left">
+                        <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker-op color-picker pull-left" value="#ff0000">
                     </div>
-                    <div class="col-md-9">
-                        <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72" value="1">
-                    </div>
-                    <div class="col-md-2">
-                        <div style="margin-top: -8px;" class="js-range-value">1 px</div>
+                    <div style="display: none">
+                        <div class="col-md-9">
+                            <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72" value="1">
+                        </div>
+                        <div class="col-md-2">
+                            <div style="margin-top: -8px;" class="js-range-value">1 px</div>
+                        </div>
                     </div>
                 </div>
                 <div class="text-center">
@@ -1198,7 +1197,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Skala Malampahty</label>
+                            <label class="col-md-4" style="margin-top: 7px">Skala Malapaty</label>
                             <div class="col-md-6">
                                 <%--<input class="form-control" id="cek_pf166" style="margin-top: 7px">--%>
                                 <select class="form-control" id="cek_pf166" style="margin-top: 7px">
@@ -1293,7 +1292,7 @@
                 <div class="box-body">
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Status Fisik Anestesi</label>
+                            <label class="col-md-12" style="margin-top: 7px">Status Fisik Anestesi</label>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">ASA</label>
@@ -1432,27 +1431,38 @@
                 <div class="box-body">
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Makan minum terakhir</label>
-                            <div class="col-md-7">
-                                <textarea class="form-control" id="pa1" style="margin-top: 7px"></textarea>
+                            <label class="col-md-5" style="margin-top: 7px">Makan minum terakhir jam</label>
+                            <div class="col-md-6">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control jam" id="pa1">
+                                </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Infus</label>
                             <div class="col-md-7">
                                 <textarea class="form-control" id="pa2" style="margin-top: 7px"></textarea>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Obat pre medikasi</label>
                             <div class="col-md-7">
                                 <textarea class="form-control" id="pa3" style="margin-top: 7px"></textarea>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Pesanan Pra Anestesi</label>
                             <div class="col-md-7">
-                                <textarea class="form-control" id="pa4" style="margin-top: 7px"></textarea>
+                                <textarea rows="5" class="form-control" id="pa4" style="margin-top: 7px"></textarea>
                             </div>
                         </div>
                     </div>
@@ -2164,7 +2174,7 @@
                         <tr id="row_op_laporan_operasi">
                             <td>Laporan Operasi</td>
                             <td width="20%" align="center">
-                                <img id="btn_op_laporan_operasi" class="hvr-grow" onclick="detailOperasi('laporan_operasi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="btn_op_laporan_operasi" class="hvr-grow" onclick="detailOperasi('laporan_operasi')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                                 <img id="delete_add_laporan_operasi" class="hvr-grow btn-hide" onclick="conOP('add_laporan_operasi', 'laporan_operasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
@@ -2212,7 +2222,7 @@
                         <div class="form-group">
                             <label class="col-md-4">Nama Ahli Bedah</label>
                             <div class="col-md-8">
-                                <input class="form-control" id="lap2">
+                                <input class="form-control dokter_bedah" id="lap2">
                             </div>
                         </div>
                     </div>
@@ -2220,7 +2230,7 @@
                         <div class="form-group">
                             <label class="col-md-4">Nama Asisten Bedah</label>
                             <div class="col-md-8">
-                                <input class="form-control" id="lap3">
+                                <input class="form-control perawat_anestesi" id="lap3">
                             </div>
                         </div>
                     </div>
@@ -2228,7 +2238,7 @@
                         <div class="form-group">
                             <label class="col-md-4">Nama Perawat Instrumen</label>
                             <div class="col-md-8">
-                                <input class="form-control" id="lap4">
+                                <input class="form-control asisten_instrumen" id="lap4">
                             </div>
                         </div>
                     </div>
@@ -2437,14 +2447,14 @@
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-4">Jml Perdarahan</label>
-                            <div class="col-md-3">
-                                <input class="form-control" id="lap17">
-                            </div>
-                            <label class="col-md-2">Jml Cairan masuk</label>
-                            <div class="col-md-3">
+                            <label class="col-md-4">Jml Cairan masuk</label>
+                            <div class="col-md-4">
                                 <input class="form-control" id="lap18">
                             </div>
+                            <%--<label class="col-md-4">Jml Perdarahan</label>--%>
+                            <%--<div class="col-md-3">--%>
+                                <%--<input class="form-control" id="lap17">--%>
+                            <%--</div>--%>
                         </div>
                     </div>
                     <div class="row">
@@ -2472,7 +2482,10 @@
                         <div class="form-group">
                             <label class="col-md-4" id="label_op_3">3. Desinfektan</label>
                             <div class="col-md-8">
-                                <textarea class="form-control urutan_op"></textarea>
+                                <select class="form-control urutan_op">
+                                    <option value="Betadin">Betadin</option>
+                                    <option value="Salvon">Salvon</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -2480,7 +2493,10 @@
                         <div class="form-group">
                             <label class="col-md-4" id="label_op_4">4. Insisi kulit dan pembukaan lapangan operasi</label>
                             <div class="col-md-8">
-                                <textarea class="form-control urutan_op"></textarea>
+                                <select class="form-control urutan_op">
+                                    <option value="Midline">Midline</option>
+                                    <option value="Pfanenstil">Pfanenstil</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -2587,6 +2603,69 @@
                 </button>
                 <button id="save_op_add_laporan_operasi" class="btn btn-success pull-right" onclick="saveDataOperasi('add_laporan_operasi','laporan_operasi')"><i class="fa fa-check"></i> Save</button>
                 <button id="load_op_add_laporan_operasi" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-op-ttd_perawat">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> TTD Perawat
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_op_ttd_perawat">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_op_ttd_perawat"></p>
+                </div>
+                <div class="modal-body">
+                    <div class="box-body">
+                        <div class="form-group" style="display: none">
+                            <div class="col-md-1">
+                                <input type="color" style="margin-left: -6px; margin-top: -8px"
+                                       class="js-color-picker  color-picker pull-left">
+                            </div>
+                            <div class="col-md-9">
+                                <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72"
+                                       value="1">
+                            </div>
+                            <div class="col-md-2">
+                                <div style="margin-top: -8px;" class="js-range-value">1 px</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-8">
+                                    <label>TTD Perawat OK</label>
+                                    <canvas class="paint-canvas-ttd del-canvas" id="ttd_edit" width="300"
+                                            onmouseover="paintTtd('ttd_edit')"></canvas>
+                                    <input class="form-control" id="nama_ttd_perawat_edit" placeholder="Nama Terang">
+                                    <input style="margin-top: 3px" class="form-control" id="sip_ttd_perawat_edit" placeholder="SIP">
+                                    <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                            onclick="removePaint('ttd_edit')"><i
+                                            class="fa fa-trash"></i> Clear
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_ttd_perawat" class="btn btn-success pull-right"><i class="fa fa-check"></i>
+                    Save
+                </button>
+                <button id="load_ttd_perawat" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>

@@ -132,7 +132,7 @@
                                         <div id="actions" class="form-actions">
                                             <table align="center">
                                                 <tr>
-                                                    <s:if test='pengajuanSetor.branchId == "KP"'>
+                                                    <s:if test='pengajuanSetor.branchId == "01"'>
                                                     <td>
                                                         <sj:submit type="button" cssClass="btn btn-primary" formIds="pengajuanSetorForm" id="search" name="search"
                                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >

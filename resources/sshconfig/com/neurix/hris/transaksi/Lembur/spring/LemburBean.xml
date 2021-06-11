@@ -37,6 +37,7 @@
           p:trainingPersonDao-ref="trainingPersonDao"
           p:absensiPegawaiDao-ref="absensiPegawaiDao"
           p:notifikasiFcmDao-ref="notifikasiFcmDao"
+          p:profesiDao-ref="profesiDao"
     />
 
     <bean id="lemburBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

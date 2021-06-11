@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RekananOpsBoImpl implements RekananOpsBo {
     protected static transient Logger logger = Logger.getLogger(RekananOpsBoImpl.class);
@@ -277,6 +278,90 @@ public class RekananOpsBoImpl implements RekananOpsBo {
     }
 
     @Override
+    public void saveAllListTarifRekanan(RekananOps bean, List<DetailRekananOps> listDetailRekanan) throws GeneralBOException {
+        logger.info("[RekanaOpsBoImpl.saveAllListTarifRekanan] START >>>");
+
+        // first round, dahulukan data lama yg diupdate;
+        List<DetailRekananOps> listDetailEdit = listDetailRekanan.stream().filter(
+                p->p.getIdDetailRekananOps() != null && !"".equalsIgnoreCase(p.getIdDetailRekananOps())
+        ).collect(Collectors.toList());
+
+        if (listDetailEdit.size() > 0){
+            for (DetailRekananOps detailEdit : listDetailEdit){
+
+                ImSimrsDetailRekananOpsEntity detailRekananOpsEntity = new ImSimrsDetailRekananOpsEntity();
+
+                try {
+                    detailRekananOpsEntity = detailRekananOpsDao.getById("idDetailRekananOps", detailEdit.getIdDetailRekananOps());
+                } catch (HibernateException e){
+                    logger.error("[RekananOpsBoImpl.saveAllListTarifRekanan] ERROR," + e.getMessage());
+                    throw new GeneralBOException("[RekananOpsBoImpl.saveAllListTarifRekanan] ERROR, " + e.getMessage());
+                }
+
+                if (detailRekananOpsEntity == null || detailRekananOpsEntity.getIdDetailRekananOps() == null || !"".equalsIgnoreCase(detailRekananOpsEntity.getIdDetailRekananOps())){
+                    logger.error("[RekananOpsBoImpl.saveAllListTarifRekanan] ERROR, tidak ditemukan data pada database saat akan update");
+                    throw new GeneralBOException("[RekananOpsBoImpl.saveAllListTarifRekanan] ERROR, tidak ditemukan data pada database saat akan update" );
+                }
+
+                detailRekananOpsEntity.setLastUpdate(bean.getLastUpdate());
+                detailRekananOpsEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                detailRekananOpsEntity.setFlag(detailEdit.getFlag());
+                detailRekananOpsEntity.setAction("U");
+
+                // jika edit ada set tarif untuk diupdate
+                // selain edit adalah delete dimana merubah flag menjadi N saja tanpa merubah yg lain
+                if ("edit".equalsIgnoreCase(detailEdit.getTipe())){
+                    detailRekananOpsEntity.setTarif(detailEdit.getTarif());
+                }
+                // END
+
+                try {
+                    detailRekananOpsDao.updateAndSave(detailRekananOpsEntity);
+                } catch (HibernateException e){
+                    logger.error("[RekananOpsBoImpl.saveAllListTarifRekanan] ERROR," + e.getMessage());
+                    throw new GeneralBOException("[RekananOpsBoImpl.saveAllListTarifRekanan] ERROR, " + e.getMessage());
+                }
+            }
+        }
+
+        // END
+
+        // second round, setelah mendahulukan data lama insert data baru
+        List<DetailRekananOps> listDetailAdd = listDetailRekanan.stream().filter(
+                p -> "add".equalsIgnoreCase(p.getTipe())
+        ).collect(Collectors.toList());
+
+        if (listDetailAdd.size() > 0){
+            for (DetailRekananOps detailAdd : listDetailAdd){
+
+                ImSimrsDetailRekananOpsEntity detailRekananOpsEntity = new ImSimrsDetailRekananOpsEntity();
+
+                detailRekananOpsEntity.setIdDetailRekananOps("DRK"+getNextDetailRekanan());
+                detailRekananOpsEntity.setTarif(detailAdd.getTarif());
+                detailRekananOpsEntity.setIdRekananOps(detailAdd.getIdRekananOps());
+                detailRekananOpsEntity.setParentId(detailAdd.getParentId());
+                detailRekananOpsEntity.setIdItem(detailAdd.getIdItem());
+                detailRekananOpsEntity.setFlag(detailAdd.getFlag());
+                detailRekananOpsEntity.setAction("C");
+                detailRekananOpsEntity.setCreatedDate(bean.getCreatedDate());
+                detailRekananOpsEntity.setCreatedWho(bean.getCreatedWho());
+                detailRekananOpsEntity.setLastUpdate(bean.getLastUpdate());
+                detailRekananOpsEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                try {
+                    detailRekananOpsDao.addAndSave(detailRekananOpsEntity);
+                } catch (HibernateException e){
+                    logger.error("[RekananOpsBoImpl.saveAllListTarifRekanan] ERROR," + e.getMessage());
+                    throw new GeneralBOException("[RekananOpsBoImpl.saveAllListTarifRekanan] ERROR, " + e.getMessage());
+                }
+            }
+        }
+        // END
+
+        logger.info("[RekanaOpsBoImpl.saveAllListTarifRekanan] END <<<");
+    }
+
+    @Override
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
         return null;
     }
@@ -295,6 +380,35 @@ public class RekananOpsBoImpl implements RekananOpsBo {
     @Override
     public ImSimrsRekananOpsEntity getRekananEntityById(String id) throws GeneralBOException {
         return rekananOpsDao.getById("idRekananOps", id);
+    }
+
+    @Override
+    public DetailRekananOps getTarifRekanan(String idRekananOps, String branchId, String idTindakn) throws GeneralBOException {
+        logger.info("[RekanaOpsBoImpl.getTarifRekanan] START >>>");
+
+        DetailRekananOps detailRekananOps = new DetailRekananOps();
+
+        try {
+            detailRekananOps = rekananOpsDao.getTarifRekananByIdRekanan(idRekananOps, branchId, idTindakn);
+        }catch (HibernateException e){
+            logger.error("Error when search detail rekanan ops,"+e.getMessage());
+            throw new GeneralBOException("[RekanaOpsBoImpl.getTarifRekanan] Error, "+e.getMessage());
+        }
+
+        logger.info("[RekanaOpsBoImpl.getTarifRekanan] END <<<");
+        return detailRekananOps;
+    }
+
+    private String getNextDetailRekanan(){
+        String id = "";
+
+        try {
+            id = detailRekananOpsDao.getNextId();
+        } catch (HibernateException e){
+            logger.error("[RekananOpsBoImpl.getRekananEntityById] ERROR when get seq ,"+e.getMessage());
+        }
+
+        return id;
     }
 
     public static Logger getLogger() {

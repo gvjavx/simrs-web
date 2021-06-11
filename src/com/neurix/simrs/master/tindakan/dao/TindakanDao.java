@@ -216,8 +216,8 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
         if (bean.getIdTindakan() != null && !"".equalsIgnoreCase(bean.getIdTindakan())) {
             condition = condition + "AND b.id_tindakan = '" + bean.getIdTindakan() + "' \n";
         }
-        if (bean.getTindakan() != null && !"".equalsIgnoreCase(bean.getIdTindakan())) {
-            condition = condition + "AND a.nama_tindakan ILIKE '%" + bean.getIdTindakan() + "%' \n";
+        if (bean.getTindakan() != null && !"".equalsIgnoreCase(bean.getTindakan())) {
+            condition = condition + "AND a.nama_tindakan ILIKE '%" + bean.getTindakan() + "%' \n";
         }
         if (bean.getIdHeaderTindakan() != null && !"".equalsIgnoreCase(bean.getIdHeaderTindakan())) {
             condition = condition + "AND a.id_header_tindakan = '" + bean.getIdHeaderTindakan() + "' \n";
@@ -237,6 +237,9 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
         if (bean.getKategoriInaBpjs() != null && !"".equalsIgnoreCase(bean.getKategoriInaBpjs())) {
             condition = condition + "AND a.kategori_ina_bpjs = '" + bean.getKategoriInaBpjs() + "' \n";
         }
+        if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())) {
+            condition = condition + "AND b.id_pelayanan = '" + bean.getIdPelayanan() + "' \n";
+        }
         String SQL = "SELECT \n" +
                 "a.id_header_tindakan,\n" +
                 "a.nama_tindakan,\n" +
@@ -253,7 +256,8 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                 "f.branch_id,\n" +
                 "f.branch_name,\n" +
                 "b.is_ina,\n" +
-                "b.is_elektif\n" +
+                "b.is_elektif,\n" +
+                "a.flag_konsul_gizi\n" +
                 "FROM im_simrs_header_tindakan a\n" +
                 "INNER JOIN im_simrs_tindakan b ON  a.id_header_tindakan = b.id_header_tindakan\n" +
                 "INNER JOIN im_simrs_kategori_tindakan c ON b.id_kategori_tindakan = c.id_kategori_tindakan\n" +
@@ -294,6 +298,7 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                 tindakan.setBranchName(obj[13] != null ? obj[13].toString() : null);
                 tindakan.setIsIna(obj[14] != null ? obj[14].toString() : null);
                 tindakan.setIsElektif(obj[15] != null ? obj[15].toString() : null);
+                tindakan.setFlagKonsulGizi(obj[16] != null ? obj[16].toString() : null);
                 tindakanList.add(tindakan);
             }
         }
@@ -406,6 +411,31 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                 tindakan.setTarifBpjs(obj[3] == null ? null : (BigInteger) obj[3]);
                 tindakan.setDiskon(obj[4] == null ? null : (BigDecimal) obj[4]);
                 tindakan.setIsElektif(obj[5] == null ? "" : obj[5].toString());
+                tindakanList.add(tindakan);
+            }
+        }
+        return tindakanList;
+    }
+
+    public List<Tindakan> getTindakanPelayanan(String idPelayanan, String branchId) throws HibernateException{
+        List<Tindakan> tindakanList = new ArrayList<>();
+        String SQL = "SELECT\n" +
+                "a.id_tindakan,\n" +
+                "b.nama_tindakan\n" +
+                "FROM im_simrs_tindakan a\n" +
+                "INNER JOIN im_simrs_header_tindakan b ON a.id_header_tindakan = b.id_header_tindakan\n" +
+                "WHERE a.id_pelayanan = '" + idPelayanan + "'\n" +
+                "AND a.branch_id = '" + branchId + "'\n" +
+                "AND a.flag = 'Y'";
+
+        List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (result.size() > 0) {
+            Tindakan tindakan;
+            for (Object[] obj : result) {
+                tindakan = new Tindakan();
+                tindakan.setIdTindakan(obj[0] == null ? "" : obj[0].toString());
+                tindakan.setTindakan(obj[1] == null ? "" : obj[1].toString());
                 tindakanList.add(tindakan);
             }
         }

@@ -17,6 +17,7 @@
     <%@ include file="/pages/common/header.jsp" %>
     <script type='text/javascript' src='<s:url value="/dwr/interface/MasterAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/ObatAction.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -42,12 +43,17 @@
             var tipeTanggal= document.getElementById("tipeTanggal").value;
             var tanggalAwal= document.getElementById("tglFrom").value;
             var tanggalAkhir= document.getElementById("tglTo").value;
-
+            var kdBarang = document.getElementById("kdBarang").value;
+            var nmBarang = document.getElementById("nmBarang").value;
+console.log(kdBarang+nmBarang)
             if ( unit != ''&&tipeTanggal!=''&&kodeRekening!="") {
                 if (tipeTanggal=='P'){
                     if (periodeTahun != ''&& periodeBulan != ''){
                         event.originalEvent.options.submit = false;
-                        var url = "printReportKartuBukuBesar_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.masterId="+masterId+"&laporanAkuntansi.kodeRekening="+kodeRekening+"&laporanAkuntansi.tipeTanggal="+tipeTanggal+"&laporanAkuntansi.namaMaster="+namaMaster+"&laporanAkuntansi.namaKodeRekening="+namaKodeRekening;
+                        var url = "printReportKartuBukuBesar_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="
+                            +periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.masterId="+masterId+"&laporanAkuntansi.kodeRekening="
+                            +kodeRekening+"&laporanAkuntansi.tipeTanggal="+tipeTanggal+"&laporanAkuntansi.namaMaster="+namaMaster+"&laporanAkuntansi.namaKodeRekening="
+                            +namaKodeRekening+"&laporanAkuntansi.kodeBarang="+kdBarang+"&laporanAkuntansi.namaBarang="+nmBarang;
                         window.open(url,'_blank');
                     } else {
                         event.originalEvent.options.submit = false;
@@ -65,7 +71,10 @@
                 }else if (tipeTanggal=='T'){
                     if (tanggalAwal != ''&& tanggalAkhir != ''){
                         event.originalEvent.options.submit = false;
-                        var url = "printReportKartuBukuBesar_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.stTanggalAwal="+tanggalAwal+"&laporanAkuntansi.stTanggalAkhir="+tanggalAkhir+"&laporanAkuntansi.masterId="+masterId+"&laporanAkuntansi.kodeRekening="+kodeRekening+"&laporanAkuntansi.tipeTanggal="+tipeTanggal+"&laporanAkuntansi.namaMaster="+namaMaster+"&laporanAkuntansi.namaKodeRekening="+namaKodeRekening;
+                        var url = "printReportKartuBukuBesar_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.stTanggalAwal="+tanggalAwal
+                            +"&laporanAkuntansi.stTanggalAkhir="+tanggalAkhir+"&laporanAkuntansi.masterId="+masterId+"&laporanAkuntansi.kodeRekening="+kodeRekening
+                            +"&laporanAkuntansi.tipeTanggal="+tipeTanggal+"&laporanAkuntansi.namaMaster="+namaMaster+"&laporanAkuntansi.namaKodeRekening="+namaKodeRekening
+                            +"&laporanAkuntansi.kodeBarang="+kdBarang+"&laporanAkuntansi.namaBarang="+nmBarang;
                         window.open(url,'_blank');
                     }else {
                         event.originalEvent.options.submit = false;
@@ -155,7 +164,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test='laporanAkuntansi.unit == "KP"'>
+                                                        <s:if test='laporanAkuntansi.unit == "01"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranchAkuntansi_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
@@ -330,6 +339,53 @@
                                                 <td>
                                                     <table>
                                                         <s:textfield  id="masterName" name="laporanAkuntansi.masterName" required="true" readonly="true" cssClass="form-control"/>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Kode Barang :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:textfield  id="kdBarang" name="laporanAkuntansi.kodeBarang" cssClass="form-control" maxLength="10"/>
+                                                    </table>
+                                                    <script>
+                                                        $(document).ready(function() {
+                                                            var functions, mapped;
+                                                            $('#kdBarang').typeahead({
+                                                                minLength: 1,
+                                                                source: function (query, process) {
+                                                                    functions = [];
+                                                                    mapped = {};
+                                                                    var data = [];
+                                                                    dwr.engine.setAsync(false);
+                                                                    ObatAction.initTypeaheadObat(query,function (listdata) {
+                                                                        data = listdata;
+                                                                    });
+                                                                    $.each(data, function (i, item) {
+                                                                        var labelItem = item.idBarang + " | " + item.namaObat;
+                                                                        mapped[labelItem] = {
+                                                                            id: item.idBarang,
+                                                                            nama: item.namaObat
+                                                                        };
+                                                                        functions.push(labelItem);
+                                                                    });
+                                                                    process(functions);
+                                                                },
+                                                                updater: function (item) {
+                                                                    var selectedObj = mapped[item];
+                                                                    $('#nmBarang').val(selectedObj.nama);
+                                                                    return selectedObj.id;
+                                                                }
+                                                            });
+                                                        });
+                                                    </script>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:textfield  id="nmBarang" name="laporanAkuntansi.namaBarang" required="true" readonly="true" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>

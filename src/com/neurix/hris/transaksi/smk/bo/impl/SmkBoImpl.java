@@ -781,7 +781,7 @@ public class SmkBoImpl implements SmkBo {
 
         if(imBiodataEntity != null){
             poin += imBiodataEntity.getPoint();
-            poinLebih += imBiodataEntity.getPoinLebih();
+//            poinLebih += imBiodataEntity.getPoinLebih();
         }
 
         return poin + "-" + poinLebih;
@@ -817,7 +817,13 @@ public class SmkBoImpl implements SmkBo {
         }
 
         if(imBiodataEntity != null){
-            imBiodataHistoryEntity.setId(biodataHistoryDao.getNextPersonalHistoryId());
+            try {
+                String bioHisId = biodataHistoryDao.getNextPersonalHistoryId();
+                imBiodataHistoryEntity.setId(bioHisId);
+            }catch (HibernateException e){
+                logger.error("[SmkBoImpl.updatePointPegawai] Error, " + e.getMessage());
+                throw new GeneralBOException("Error when retrieving Next Biodata History ID, " + e.getMessage());
+            }
             imBiodataHistoryEntity.setNip(imBiodataEntity.getNip());
             imBiodataHistoryEntity.setNamaPegawai(imBiodataEntity.getNamaPegawai());
             imBiodataHistoryEntity.setGelarDepan(imBiodataEntity.getGelarDepan());
@@ -843,16 +849,12 @@ public class SmkBoImpl implements SmkBo {
             imBiodataHistoryEntity.setStatusKeluarga(imBiodataEntity.getStatusKeluarga());
             imBiodataHistoryEntity.setJumlahAnak(imBiodataEntity.getJumlahAnak());
             imBiodataHistoryEntity.setJenisKelamin(imBiodataEntity.getGender());
-            imBiodataHistoryEntity.setStatusGiling(imBiodataEntity.getStatusGiling());
             imBiodataHistoryEntity.setNoSkAktif(imBiodataEntity.getNoSkAktif());
             imBiodataHistoryEntity.setPin(imBiodataEntity.getPin());
             imBiodataHistoryEntity.setPoint(imBiodataEntity.getPoint());
-            imBiodataHistoryEntity.setPoinLebih(imBiodataEntity.getPoinLebih());
             imBiodataHistoryEntity.setZakatProfesi(imBiodataEntity.getZakatProfesi());
             imBiodataHistoryEntity.setTanggalPensiun(imBiodataEntity.getTanggalPensiun());
             imBiodataHistoryEntity.setDanaPensiun(imBiodataEntity.getDanaPensiun());
-            imBiodataHistoryEntity.setStrukturGaji(imBiodataEntity.getStrukturGaji());
-            imBiodataHistoryEntity.setGaji(imBiodataEntity.getGaji());
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -864,7 +866,6 @@ public class SmkBoImpl implements SmkBo {
             imBiodataHistoryEntity.setLastUpdateWho(userLogin);
 
             imBiodataEntity.setPoint(jumlahPoin);
-            imBiodataEntity.setPoinLebih(hasiljumlahPoin);
 
             try {
                 biodataDao.updateAndSave(imBiodataEntity);
@@ -2832,7 +2833,6 @@ public class SmkBoImpl implements SmkBo {
 
 //                itemComboBiodata.setDivisi(imBiodataEntity.getDivisi());
                 itemComboBiodata.setTipePegawai(imBiodataEntity.getTipePegawai());
-                itemComboBiodata.setMasaGiling(imBiodataEntity.getMasaGiling());
                 itemComboBiodata.setTanggalAktif(imBiodataEntity.getTanggalAktif());
                 itemComboBiodata.setGolonganId(imBiodataEntity.getGolongan());
 //                itemComboBiodata.setPositionId(imBiodataEntity.getPositionId());

@@ -864,7 +864,8 @@ public class NotifikasiBoImpl implements NotifikasiBo {
         Notifikasi dataUntukAtasan = new Notifikasi();
         dataUntukAtasan.setNip(nip);
         dataUntukAtasan.setTipeNotifId(tipeNotifId);
-        personilPositionList = daftarAtasanLangsung(dataUntukAtasan);
+//        personilPositionList = daftarAtasanLangsung(dataUntukAtasan);
+        personilPositionList = daftarAtasanHngVp(dataUntukAtasan);
 
 //        if (tipeNotifId.equals("TN66"))
 //            action = "TASK_CUTI";
@@ -897,7 +898,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
                 try {
                     notifikasiDao.addAndSave(addNotif);
                 } catch (HibernateException e) {
-                    logger.error("[TrainingBoImpl.saveMedicalRecord] Error, " + e.getMessage());
+                    logger.error("[NotifikasiBoImpl.SendNotifKeAtasanLangsung] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
                 }
 
@@ -906,7 +907,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
                 try {
                     notifikasiFcm = notifikasiFcmDao.getAll();
                 } catch (HibernateException e) {
-                    logger.error("[TrainingBoImpl.saveMedicalRecord] Error, " + e.getMessage());
+                    logger.error("[NotifikasiBoImpl.SendNotifKeAtasanLangsung] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
                 }
 
@@ -944,7 +945,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
             try {
                 notifikasiDao.addAndSave(addNotif);
             } catch (HibernateException e) {
-                logger.error("[TrainingBoImpl.saveMedicalRecord] Error, " + e.getMessage());
+                logger.error("[NotifikasiBoImpl.SendNotifKeAtasanLangsung] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
             }
             //send notification android
@@ -952,7 +953,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
             try {
                 notifikasiFcm = notifikasiFcmDao.getAll();
             } catch (HibernateException e) {
-                logger.error("[TrainingBoImpl.saveMedicalRecord] Error, " + e.getMessage());
+                logger.error("[NotifikasiBoImpl.SendNotifKeAtasanLangsung] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
             }
 
@@ -969,6 +970,44 @@ public class NotifikasiBoImpl implements NotifikasiBo {
                     break;
                 }
             }
+
+            if("TN66".equalsIgnoreCase(tipeNotifId)){
+                ItCutiPegawaiEntity cutiPegawaiEntity = new ItCutiPegawaiEntity();
+                try{
+                    cutiPegawaiEntity = cutiPegawaiDao.getById("cutiPegawaiId",id);
+                }catch (HibernateException e){
+                    logger.error("[NotifikasiBoImpl.SendNotifKeAtasanLangsung] Error, " + e.getMessage());
+                    throw new GeneralBOException("Error when retrieving Cuti Pegawai By ID, " + e.getMessage());
+                }
+                cutiPegawaiEntity.setApprovalId(nip);
+                cutiPegawaiEntity.setApprovalDate(updateTime);
+                cutiPegawaiEntity.setApprovalFlag("Y");
+                try{
+                    cutiPegawaiDao.updateAndSave(cutiPegawaiEntity);
+                }catch (HibernateException e){
+                    logger.error("[NotifikasiBoImpl.SendNotifKeAtasanLangsung] Error, " + e.getMessage());
+                    throw new GeneralBOException("Error when Update And Save Cuti Pegawai, " + e.getMessage());
+                }
+            }else if("TN55".equalsIgnoreCase(tipeNotifId)){
+                IjinKeluarEntity ijinKeluarEntity = new IjinKeluarEntity();
+                try{
+                    ijinKeluarEntity = ijinKeluarDao.getById("ijinKeluarId", id);
+                }catch (HibernateException e){
+                    logger.error("[NotifikasiBoImpl.SendNotifKeAtasanLangsung] Error, " + e.getMessage());
+                    throw new GeneralBOException("Error when retrieving Ijin Keluar, " + e.getMessage());
+                }
+                ijinKeluarEntity.setApprovalId(nip);
+                ijinKeluarEntity.setApprovalName(ijinKeluarEntity.getNamaPegawai());
+                ijinKeluarEntity.setApprovalDate(updateTime);
+                ijinKeluarEntity.setApprovalFlag("Y");
+                try{
+                    ijinKeluarDao.updateAndSave(ijinKeluarEntity);
+                }catch (HibernateException e){
+                    logger.error("[NotifikasiBoImpl.SendNotifKeAtasanLangsung] Error, " + e.getMessage());
+                    throw new GeneralBOException("Error when Update And Save Ijin Keluar, " + e.getMessage());
+                }
+            }
+
 
         }
 
@@ -1933,7 +1972,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
         if (bean != null){
             Map hsCriteria = new HashMap();
 
-            if (!"".equalsIgnoreCase(bean.getCutiId())){
+            if (!"".equalsIgnoreCase(bean.getCutiPegawaiId())){
                 hsCriteria.put("cuti_pegawai_id", bean.getCutiPegawaiId());
             }
 
@@ -1965,20 +2004,44 @@ public class NotifikasiBoImpl implements NotifikasiBo {
                     addData.setApprovalFlag(listData.getApprovalFlag());
                     addData.setCutiId(listData.getCutiId());
 
-                    ImCutiEntity cutiEntity = cutiDao.getById("cutiId",listData.getCutiId(),"Y");
+                    ImCutiEntity cutiEntity;
+                    try{
+                        cutiEntity = cutiDao.getById("cutiId",listData.getCutiId(),"Y");
+                    }catch (HibernateException e){
+                        logger.error("[NotifikasiBoImpl.searchCutiPegawaiPerson] Error, " + e.getMessage());
+                        throw new GeneralBOException("Problem when receiving Cuti by ID, " + e.getMessage());
+                    }
                     addData.setCutiName(cutiEntity.getCutiName());
 
-                    List<ItPersonilPositionEntity> personilPositionEntityListAsli = personilPositionDao.getListPersonilPosition(listData.getNip());
+                    List<ItPersonilPositionEntity> personilPositionEntityListAsli =new ArrayList<>();
+                    try{
+                        personilPositionEntityListAsli = personilPositionDao.getListPersonilPosition(listData.getNip());
+                    }catch (HibernateException e){
+                        logger.error("[NotifikasiBoImpl.searchCutiPegawaiPerson] Error, " + e.getMessage());
+                        throw new GeneralBOException("Problem when receiving Personil Position by NIP, " + e.getMessage());
+                    }
 
                     if (personilPositionEntityListAsli!=null){
                         for (ItPersonilPositionEntity personilPosition : personilPositionEntityListAsli){
-                            ImPosition imPosition = positionDao.getById("positionId",personilPosition.getPositionId());
+                            ImPosition imPosition;
+                            try{
+                                imPosition = positionDao.getById("positionId",personilPosition.getPositionId());
+                            }catch (HibernateException e){
+                                logger.error("[NotifikasiBoImpl.searchCutiPegawaiPerson] Error, " + e.getMessage());
+                                throw new GeneralBOException("Problem when receiving Position by ID, " + e.getMessage());
+                            }
                             if (imPosition!=null){
                                 addData.setPosisiName(imPosition.getPositionName());
                                 addData.setPosisiId(imPosition.getPositionId());
                                 addData.setDivisiId(imPosition.getDepartmentId());
                                 addData.setUnitId(personilPosition.getBranchId());
-                                ImDepartmentEntity imDepartmentEntity = departmentDao.getById("departmentId",imPosition.getDepartmentId());
+                                ImDepartmentEntity imDepartmentEntity;
+                                try{
+                                    imDepartmentEntity = departmentDao.getById("departmentId",imPosition.getDepartmentId());
+                                }catch (HibernateException e){
+                                    logger.error("[NotifikasiBoImpl.searchCutiPegawaiPerson] Error, " + e.getMessage());
+                                    throw new GeneralBOException("Problem when receiving Department by NIP, " + e.getMessage());
+                                }
                                 if (imDepartmentEntity!=null){
                                     addData.setDivisiName(imDepartmentEntity.getDepartmentName());
                                 }
@@ -1986,7 +2049,13 @@ public class NotifikasiBoImpl implements NotifikasiBo {
                             hsCriteria = new HashMap();
                             hsCriteria.put("branch_id",personilPosition.getBranchId());
                             hsCriteria.put("flag","Y");
-                            List<ImBranches> branchesList = branchDao.getByCriteria(hsCriteria);
+                            List<ImBranches> branchesList = new ArrayList<>();
+                            try{
+                                branchesList = branchDao.getByCriteria(hsCriteria);
+                            }catch (HibernateException e){
+                                logger.error("[NotifikasiBoImpl.searchCutiPegawaiPerson] Error, " + e.getMessage());
+                                throw new GeneralBOException("Problem when receiving Branch using Criteria, " + e.getMessage());
+                            }
                             if (branchesList!=null){
                                 for(ImBranches imBranches : branchesList){
                                     addData.setUnitName(imBranches.getBranchName());
@@ -2007,7 +2076,13 @@ public class NotifikasiBoImpl implements NotifikasiBo {
                     DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                     addData.setStTanggalDari(df.format(listData.getTanggalDari()));
                     addData.setStTanggalSelesai(df.format(listData.getTanggalSelesai()));
-                    ImBiodataEntity biodataEntity = biodataDao.getById("nip",listData.getNip(),"Y");
+                    ImBiodataEntity biodataEntity;
+                    try{
+                        biodataEntity = biodataDao.getById("nip",listData.getNip(),"Y");
+                    }catch (HibernateException e){
+                        logger.error("[NotifikasiBoImpl.searchCutiPegawaiPerson] Error, " + e.getMessage());
+                        throw new GeneralBOException("Problem when receiving Biodata by ID, " + e.getMessage());
+                    }
                     addData.setNamaPegawai(biodataEntity.getNamaPegawai());
                     addData.setNote(listData.getNote());
                     addData.setNoteApproval(listData.getNoteApproval());
@@ -2492,6 +2567,103 @@ public class NotifikasiBoImpl implements NotifikasiBo {
             }
         }
         return notifikasiList;
+    }
+
+    @Override
+    public List<PersonilPosition> daftarAtasanHngVp(Notifikasi bean){
+        logger.info("[NotifikasiBoImpl.daftarAtasanHngVp] start process >>>");
+        String nip = bean.getNip();
+        List<PersonilPosition> listOfResult = new ArrayList<>();
+        String branchId=null;
+
+        ItPersonilPositionEntity personilPositionEntity = new ItPersonilPositionEntity();
+        try{
+            personilPositionEntity = personilPositionDao.getById("nip",nip);
+        }catch (HibernateException e) {
+            logger.error("[NotifikasiBoImpl.daftarAtasanHngVp] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        branchId = personilPositionEntity.getBranchId();
+
+        ImBiodataEntity biodataPeg = new ImBiodataEntity();
+        try{
+            biodataPeg = biodataDao.getById("nip", nip);
+        }catch (HibernateException e) {
+            logger.error("[NotifikasiBoImpl.daftarAtasanHngVp] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if (biodataPeg != null){
+            try {
+                strukturJabatanList = strukturJabatanDao.searchStrukturRelation2(nip,branchId);
+            } catch (HibernateException e) {
+                logger.error("[NotifikasiBoImpl.daftarAtasanHngVp] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+            }
+
+            for (StrukturJabatan strukturJabatan:strukturJabatanList) {
+                // Search Leader
+                if (strukturJabatan != null) {
+                    //RAKA-29MAR2021 ==> perbaikan logika di atas
+                    String parent = strukturJabatan.getParentId();
+                    if (!"-".equalsIgnoreCase(parent)) {
+                        // search data postion_id from struktur jabatan by parameter parent
+                        Map hsCriteria = new HashMap();
+                        hsCriteria.put("branch_id", branchId);
+                        hsCriteria.put("struktur_jabatan_id", parent);
+                        hsCriteria.put("flag", "Y");
+                        List<ImStrukturJabatanEntity> strukturJabatanEntities = null;
+                        try {
+                            strukturJabatanEntities = strukturJabatanDao.getByCriteria(hsCriteria);
+                        } catch (HibernateException e) {
+                            logger.error("[NotifikasiBoImpl.daftarAtasanHngVp] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                        }
+
+                        if (strukturJabatanEntities != null) {
+                            for (ImStrukturJabatanEntity listStruktur : strukturJabatanEntities) {
+
+                                // search data nip from personil by parameter position_id from struktur jabatan
+                                String stPosition = "";
+                                if (listStruktur.getPositionId() != null) {
+                                    stPosition = String.valueOf(listStruktur.getPositionId());
+                                }
+                                hsCriteria = new HashMap();
+                                hsCriteria.put("branch_id", branchId);
+                                hsCriteria.put("position_id", stPosition);
+                                hsCriteria.put("flag", "Y");
+                                List<ItPersonilPositionEntity> itPersonilPositionEntities = null;
+                                try {
+                                    itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteria);
+                                } catch (HibernateException e) {
+                                    logger.error("[NotifikasiBoImpl.daftarAtasanHngVp] Error, " + e.getMessage());
+                                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                }
+
+                                for (ItPersonilPositionEntity listPersonilPosition : itPersonilPositionEntities) {
+                                    PersonilPosition personilPosition = new PersonilPosition();
+                                    personilPosition.setNip(listPersonilPosition.getNip());
+                                    listOfResult.add(personilPosition);
+
+                                    //RAKA-07JUN2021==> Rekursi untuk notif hingga VP
+                                    if("umum".equalsIgnoreCase(bean.getTipeNotifId())) { //menghindari kirim notif permohonan approval hingga ke VP
+                                        if (listStruktur.getLevel() > 1) {
+                                            List<PersonilPosition> listAtasan = new ArrayList<>();
+                                            Notifikasi notifAtasan = bean;
+                                            notifAtasan.setNip(listPersonilPosition.getNip());
+                                            listAtasan = daftarAtasanHngVp(notifAtasan);
+                                            listOfResult.addAll(listAtasan);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        logger.info("[NotifikasiBoImpl.daftarAtasanHngVp] end process <<<");
+        return listOfResult;
     }
 
     @Override
@@ -3072,10 +3244,13 @@ public class NotifikasiBoImpl implements NotifikasiBo {
                     for (StrukturJabatan strukturJabatan:strukturJabatanList) {
                         // Search Leader
                         if (strukturJabatan != null) {
-                            String[] parts = strukturJabatan.getParentId().split("-");
-                            String parent = parts[0];
+//                            String[] parts = strukturJabatan.getParentId().split("-");
+//                            String parent = parts[0];
 
-                            if (parent != null) {
+//                            if (parent != null) {
+                            //RAKA-29MAR2021 ==> perbaikan logika di atas
+                            String parent = strukturJabatan.getParentId();
+                            if (!"-".equalsIgnoreCase(parent)) {
                                 // search data postion_id from struktur jabatan by parameter parent
                                 Map hsCriteria = new HashMap();
                                 hsCriteria.put("branch_id", branchId);
@@ -3103,10 +3278,9 @@ public class NotifikasiBoImpl implements NotifikasiBo {
                                         hsCriteria.put("flag", "Y");
                                         List<ItPersonilPositionEntity> itPersonilPositionEntities = null;
                                         try {
-
                                             itPersonilPositionEntities = personilPositionDao.getByCriteria(hsCriteria);
                                         } catch (HibernateException e) {
-                                            logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
+                                            logger.error("[NotifikasiBoImpl.daftarAtasanLangsung] Error, " + e.getMessage());
                                             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
                                         }
 

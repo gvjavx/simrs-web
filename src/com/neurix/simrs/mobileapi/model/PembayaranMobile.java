@@ -27,6 +27,24 @@ public class PembayaranMobile {
     private String namaRekening;
     private String waktuBayar;
     private String flagUploadUlang;
+    private String tipeRekening;
+    private String clientId;
+
+    public String getTipeRekening() {
+        return tipeRekening;
+    }
+
+    public void setTipeRekening(String tipeRekening) {
+        this.tipeRekening = tipeRekening;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
 
     public String getFlagUploadUlang() {
         return flagUploadUlang;

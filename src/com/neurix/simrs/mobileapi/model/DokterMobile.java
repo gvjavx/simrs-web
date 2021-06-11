@@ -42,6 +42,100 @@ public class DokterMobile {
 
     private String message;
 
+    private String namaPasien;
+    private String idPasien;
+    private String tglLahir;
+
+    private String kelasRuangan;
+    private String noRuangan;
+
+    private String tipePelayanan;
+    private String createdDate;
+
+    private String umur;
+    private String jalan;
+    private String jenisKelamin;
+
+    public String getJalan() {
+        return jalan;
+    }
+
+    public void setJalan(String jalan) {
+        this.jalan = jalan;
+    }
+
+    public String getJenisKelamin() {
+        return jenisKelamin;
+    }
+
+    public void setJenisKelamin(String jenisKelamin) {
+        this.jenisKelamin = jenisKelamin;
+    }
+
+    public String getUmur() {
+        return umur;
+    }
+
+    public void setUmur(String umur) {
+        this.umur = umur;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getTipePelayanan() {
+        return tipePelayanan;
+    }
+
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
+    }
+
+    public String getKelasRuangan() {
+        return kelasRuangan;
+    }
+
+    public void setKelasRuangan(String kelasRuangan) {
+        this.kelasRuangan = kelasRuangan;
+    }
+
+    public String getNoRuangan() {
+        return noRuangan;
+    }
+
+    public void setNoRuangan(String noRuangan) {
+        this.noRuangan = noRuangan;
+    }
+
+    public String getNamaPasien() {
+        return namaPasien;
+    }
+
+    public void setNamaPasien(String namaPasien) {
+        this.namaPasien = namaPasien;
+    }
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
+
+    public String getTglLahir() {
+        return tglLahir;
+    }
+
+    public void setTglLahir(String tglLahir) {
+        this.tglLahir = tglLahir;
+    }
+
     public String getMessage() {
         return message;
     }

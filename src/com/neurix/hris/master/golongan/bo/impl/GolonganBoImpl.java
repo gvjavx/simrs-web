@@ -210,6 +210,9 @@ public class GolonganBoImpl implements GolonganBo {
                 imGolonganEntity.setGolonganId(golonganId);
                 imGolonganEntity.setGolonganName(bean.getGolonganName());
                 imGolonganEntity.setLevel(bean.getLevel());
+                imGolonganEntity.setGolPensiun(bean.getGolPensiun());
+                imGolonganEntity.setMsKerjaGolAwal(bean.getMsKerjaAwal());
+                imGolonganEntity.setMsKerjaGolAkhir(bean.getMsKerjaAkhir());
                 imGolonganEntity.setFlag(bean.getFlag());
                 imGolonganEntity.setAction(bean.getAction());
                 imGolonganEntity.setCreatedWho(bean.getCreatedWho());
@@ -284,6 +287,9 @@ public class GolonganBoImpl implements GolonganBo {
                     returnGolongan.setGolonganName(golonganEntity.getGolonganName());
                     returnGolongan.setLevel(golonganEntity.getLevel());
                     returnGolongan.setStLevel(golonganEntity.getLevel().toString());
+                    returnGolongan.setGolPensiun(golonganEntity.getGolPensiun());
+                    returnGolongan.setMsKerjaAwal(golonganEntity.getMsKerjaGolAwal());
+                    returnGolongan.setMsKerjaAkhir(golonganEntity.getMsKerjaGolAkhir());
                     returnGolongan.setCreatedWho(golonganEntity.getCreatedWho());
 
                     if (golonganEntity.getCreatedDate() != null){

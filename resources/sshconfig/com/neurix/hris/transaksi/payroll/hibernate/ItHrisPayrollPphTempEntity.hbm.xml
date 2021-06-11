@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+  ~ Copyright (c) GO-MEDSYS(TM) 2020 created by MGI
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.hris.transaksi.payroll.model.ItHrisPayrollPphTempEntity" table="it_hris_payroll_pph_temp"
+           schema="public">
+        <id name="pphTempId">
+            <column name="pph_temp_id" sql-type="varchar(15)" length="15" not-null="true"/>
+        </id>
+        <property name="payrollTempId">
+            <column name="payroll_temp_id" sql-type="varchar(15)" length="15" />
+        </property>
+        <property name="pkp">
+            <column name="pkp" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="pphGaji">
+            <column name="pph_gaji" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="bruto">
+            <column name="bruto" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="reduce">
+            <column name="reduce" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="nip">
+            <column name="nip" sql-type="varchar(15)" length="15" />
+        </property>
+        <property name="bulan">
+            <column name="bulan" sql-type="varchar(2)" length="2" />
+        </property>
+        <property name="tahun">
+            <column name="tahun" sql-type="varchar(4)" length="4" />
+        </property>
+        <property name="ptkp">
+            <column name="ptkp" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="netto">
+            <column name="netto" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="biayaJabatan">
+            <column name="biaya_jabatan" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="hutangPphSetahun">
+            <column name="hutang_pph_setahun" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="selisihPphSetahun">
+            <column name="selisih_pph_setahun" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+
+        <property name="tunjPph">
+            <column name="tunj_pph" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="gaji">
+            <column name="gaji" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="sankhus">
+            <column name="sankhus" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjJabatan">
+            <column name="tunj_jabatan" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjStruktural">
+            <column name="tunj_struktural" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjFungsional">
+            <column name="tunj_fungsional" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjPeralihan">
+            <column name="tunj_peralihan" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="totalTunjLain">
+            <column name="total_tunj_lain" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjTambahan">
+            <column name="tunj_tambahan" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="pemondokan">
+            <column name="pemondokan" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="komunikasi">
+            <column name="komunikasi" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="totalRlab">
+            <column name="total_rlab" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="iuranPegawai">
+            <column name="iuran_pegawai" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="lembur">
+            <column name="lembur" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="tunjPensiun">
+            <column name="tunj_pensiun" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="bpjsTk">
+            <column name="bpjs_tk" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="bpjsKs">
+            <column name="bpjs_ks" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="bonus">
+            <column name="bonus" sql-type="numeric(15,2)" precision="15" scale="2" />
+        </property>
+        <property name="keterangan">
+            <column name="keterangan" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar(100)" length="100" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar(1)" length="1" />
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar(1)" length="1" />
+        </property>
+
+        <many-to-one name="itHrisPayrollTemp" class="com.neurix.hris.transaksi.payroll.model.ItHrisPayrollTempEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="payroll_temp_id"/>
+        </many-to-one>
+
+    </class>
+</hibernate-mapping>

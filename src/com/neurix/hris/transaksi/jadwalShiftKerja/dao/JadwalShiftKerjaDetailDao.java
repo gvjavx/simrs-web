@@ -48,6 +48,9 @@ public class JadwalShiftKerjaDetailDao extends GenericDao<ItJadwalShiftKerjaDeta
             if (mapCriteria.get("profesi_id")!=null) {
                 criteria.add(Restrictions.eq("profesiId", (String) mapCriteria.get("profesi_id")));
             }
+            if (mapCriteria.get("shift_id")!=null) {
+                criteria.add(Restrictions.eq("shiftId", (String) mapCriteria.get("shift_id")));
+            }
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));

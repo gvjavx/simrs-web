@@ -6,6 +6,8 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.catatanterintegrasi.bo.CatatanTerintegrasiBo;
 import com.neurix.simrs.transaksi.catatanterintegrasi.model.CatatanTerintegrasi;
+import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.rekammedik.bo.RekamMedikBo;
 import com.neurix.simrs.transaksi.rekammedik.model.StatusPengisianRekamMedis;
 import org.apache.log4j.Logger;
@@ -42,39 +44,53 @@ public class CatatanTerintegrasiAction {
                 catatan.setWaktu(Timestamp.valueOf(obj.getString("waktu")));
                 catatan.setPpa(obj.getString("ppa"));
                 catatan.setKeterangan(obj.getString("keterangan"));
-                catatan.setTtdPetugas(obj.getString("ttd_petugas"));
-                catatan.setTtdDpjp(obj.getString("ttd_dpjp"));
 
-                if (obj.has("ttd_petugas") || obj.has("ttd_dpjp")) {
-                    if (!"".equalsIgnoreCase(obj.getString("ttd_petugas")) || !"".equalsIgnoreCase(obj.getString("ttd_dpjp"))) {
+                if (obj.has("ttd_petugas")) {
+                    if (!"".equalsIgnoreCase(obj.getString("ttd_petugas")) && obj.getString("ttd_petugas") != null) {
                         try {
                             BASE64Decoder decoder = new BASE64Decoder();
                             byte[] decodedBytes1 = decoder.decodeBuffer(obj.getString("ttd_petugas"));
-                            byte[] decodedBytes2 = decoder.decodeBuffer(obj.getString("ttd_dpjp"));
-
                             String wkt = time.toString();
                             String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-
                             String fileName1 = obj.getString("id_detail_checkup") + "-" + "ttd_petugas" + "-" + patten + ".png";
-                            String fileName2 = obj.getString("id_detail_checkup") + "-" + "ttd_dpjp" + "-" + patten + ".png";
                             String uploadFile1 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName1;
-                            String uploadFile2 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName2;
-
                             BufferedImage image1 = ImageIO.read(new ByteArrayInputStream(decodedBytes1));
-                            BufferedImage image2 = ImageIO.read(new ByteArrayInputStream(decodedBytes2));
-
-                            if (image1 == null || image2 == null) {
+                            if (image1 == null) {
                                 logger.error("Buffered Image is null");
                                 response.setStatus("error");
                                 response.setMsg("Buffered Image is null");
                             } else {
                                 File f1 = new File(uploadFile1);
-                                File f2 = new File(uploadFile2);
                                 // write the image
                                 ImageIO.write(image1, "png", f1);
-                                ImageIO.write(image2, "png", f2);
-
                                 catatan.setTtdPetugas(fileName1);
+                            }
+                        } catch (IOException e) {
+                            response.setStatus("error");
+                            response.setMsg("Found Error, " + e.getMessage());
+                        }
+                    }
+                }
+
+                if (obj.has("ttd_dpjp")) {
+                    if (!"".equalsIgnoreCase(obj.getString("ttd_dpjp")) && obj.getString("ttd_dpjp") != null) {
+                        try {
+                            BASE64Decoder decoder = new BASE64Decoder();
+                            byte[] decodedBytes2 = decoder.decodeBuffer(obj.getString("ttd_dpjp"));
+                            String wkt = time.toString();
+                            String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                            String fileName2 = obj.getString("id_detail_checkup") + "-" + "ttd_dpjp" + "-" + patten + ".png";
+                            String uploadFile2 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName2;
+                            BufferedImage image2 = ImageIO.read(new ByteArrayInputStream(decodedBytes2));
+
+                            if (image2 == null) {
+                                logger.error("Buffered Image is null");
+                                response.setStatus("error");
+                                response.setMsg("Buffered Image is null");
+                            } else {
+                                File f2 = new File(uploadFile2);
+                                // write the image
+                                ImageIO.write(image2, "png", f2);
                                 catatan.setTtdDpjp(fileName2);
                             }
                         } catch (IOException e) {
@@ -124,6 +140,27 @@ public class CatatanTerintegrasiAction {
                 if (obj.has("sip_petugas")) {
                     catatan.setSipPetugas(obj.getString("sip_petugas"));
                 }
+                if (obj.has("kesadaran")) {
+                    catatan.setKesadaran(obj.getString("kesadaran"));
+                }
+                if (obj.has("spo2")) {
+                    catatan.setSpo2(obj.getString("spo2"));
+                }
+                if (obj.has("o2")) {
+                    catatan.setO2(obj.getString("o2"));
+                }
+                if (obj.has("total_ews")) {
+                    catatan.setEws(obj.getString("total_ews"));
+                }
+                if (obj.has("kesimpulan")) {
+                    catatan.setKesimpulan(obj.getString("kesimpulan"));
+                }
+                if (obj.has("frekuensi")) {
+                    catatan.setMonitoring(obj.getString("frekuensi"));
+                }
+                if (obj.has("data_ews")) {
+                    catatan.setDataEws(obj.getString("data_ews"));
+                }
 
                 catatan.setAction("C");
                 catatan.setFlag("Y");
@@ -136,6 +173,7 @@ public class CatatanTerintegrasiAction {
                     response = catatanTerintegrasiBo.saveAdd(catatan);
                     if("success".equalsIgnoreCase(response.getStatus())){
                         RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
+                        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
                         JSONObject objt = new JSONObject(dataPasien);
                         if(objt != null){
                             StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
@@ -151,13 +189,23 @@ public class CatatanTerintegrasiAction {
                             status.setLastUpdateWho(userLogin);
                             status.setLastUpdate(time);
                             response = rekamMedikBo.saveAdd(status);
+
+                            HeaderCheckup checkup = new HeaderCheckup();
+                            checkup.setNoCheckup(status.getNoCheckup());
+                            checkup.setLastUpdate(time);
+                            checkup.setLastUpdateWho(userLogin);
+                            checkup.setTensi(catatan.getTensi());
+                            checkup.setNadi(catatan.getNadi());
+                            checkup.setPernafasan(catatan.getRr());
+                            checkup.setSuhu(catatan.getSuhu());
+                            checkupBo.updateVitalSign(checkup);
                         }
                     }
                 } catch (GeneralBOException e) {
                     response.setStatus("error");
                     response.setMsg(e.getMessage());
                 }
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 response.setStatus("error");
                 response.setMsg("Found Error, " + e.getMessage());
             }
@@ -216,6 +264,196 @@ public class CatatanTerintegrasiAction {
                 }
             } catch (GeneralBOException e) {
                 logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return response;
+    }
+
+    public CrudResponse updateTtdDpjp(String data){
+        CrudResponse response = new CrudResponse();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CatatanTerintegrasiBo catatanTerintegrasiBo = (CatatanTerintegrasiBo) ctx.getBean("catatanTerintegrasiBoProxy");
+        CatatanTerintegrasi catatan = new CatatanTerintegrasi();
+        try {
+            if(data != null && !"".equalsIgnoreCase(data)){
+                JSONObject obj = new JSONObject(data);
+                if(obj != null){
+                    if (obj.has("ttd_dpjp")) {
+                        if (!"".equalsIgnoreCase(obj.getString("ttd_dpjp")) && obj.getString("ttd_dpjp") != null) {
+                            BASE64Decoder decoder = new BASE64Decoder();
+                            byte[] decodedBytes2 = decoder.decodeBuffer(obj.getString("ttd_dpjp"));
+                            String wkt = time.toString();
+                            String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                            String fileName2 = obj.getString("id_catatan_integrasi") + "-" + "ttd_dpjp" + "-" + patten + ".png";
+                            String uploadFile2 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName2;
+                            BufferedImage image2 = ImageIO.read(new ByteArrayInputStream(decodedBytes2));
+
+                            if (image2 == null) {
+                                logger.error("Buffered Image is null");
+                                response.setStatus("error");
+                                response.setMsg("Buffered Image is null");
+                                return response;
+                            } else {
+                                File f2 = new File(uploadFile2);
+                                ImageIO.write(image2, "png", f2);
+                                catatan.setTtdDpjp(fileName2);
+                                catatan.setIdCatatanTerintegrasi(obj.getString("id_catatan_integrasi"));
+                                catatan.setNamaDokter(obj.getString("nama_dokter"));
+                                catatan.setSipDokter(obj.getString("sip_dokter"));
+                            }
+                        }
+                    }
+                    if (obj.has("ttd_penerima")) {
+                        if (!"".equalsIgnoreCase(obj.getString("ttd_penerima")) && obj.getString("ttd_penerima") != null) {
+                            BASE64Decoder decoder = new BASE64Decoder();
+                            byte[] decodedBytes2 = decoder.decodeBuffer(obj.getString("ttd_penerima"));
+                            String wkt = time.toString();
+                            String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                            String fileName2 = obj.getString("id_catatan_integrasi") + "-" + "ttd_penerima" + "-" + patten + ".png";
+                            String uploadFile2 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName2;
+                            BufferedImage image2 = ImageIO.read(new ByteArrayInputStream(decodedBytes2));
+
+                            if (image2 == null) {
+                                logger.error("Buffered Image is null");
+                                response.setStatus("error");
+                                response.setMsg("Buffered Image is null");
+                                return response;
+                            } else {
+                                File f2 = new File(uploadFile2);
+                                ImageIO.write(image2, "png", f2);
+                                catatan.setTtdPenerima(fileName2);
+                                catatan.setIdCatatanTerintegrasi(obj.getString("id_catatan_integrasi"));
+                                catatan.setNamaPenerima(obj.getString("nama_penerima"));
+                                catatan.setSipPenerima(obj.getString("sip_penerima"));
+                            }
+                        }
+                    }
+
+                    if(catatan != null){
+                        catatanTerintegrasiBo.saveEdit(catatan);
+                        response.setStatus("success");
+                        response.setMsg("OK!");
+                    }else{
+                        response.setStatus("error");
+                        response.setMsg("Tidak ada data yang dikirim...!");
+                    }
+
+                }else{
+                    response.setStatus("error");
+                    response.setMsg("Tidak ada data yang dikirim...!");
+                }
+            }else{
+                response.setStatus("error");
+                response.setMsg("Tidak ada data yang dikirim...!");
+            }
+        }catch (Exception e){
+            response.setStatus("error");
+            response.setMsg("Tidak ada data yang dikirim...!");
+            logger.error(e.getMessage());
+        }
+        return response;
+    }
+
+    public CrudResponse saveHandOver(String data) {
+        CrudResponse response = new CrudResponse();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CatatanTerintegrasiBo catatanTerintegrasiBo = (CatatanTerintegrasiBo) ctx.getBean("catatanTerintegrasiBoProxy");
+        if (data != null) {
+            try {
+                JSONObject obj = new JSONObject(data);
+                CatatanTerintegrasi catatan = new CatatanTerintegrasi();
+                catatan.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                catatan.setWaktu(Timestamp.valueOf(obj.getString("waktu")));
+                catatan.setKeterangan(obj.getString("keterangan"));
+
+                if (obj.has("ttd_pemberi")) {
+                    if (!"".equalsIgnoreCase(obj.getString("ttd_pemberi")) && obj.getString("ttd_pemberi") != null) {
+                        try {
+                            BASE64Decoder decoder = new BASE64Decoder();
+                            byte[] decodedBytes1 = decoder.decodeBuffer(obj.getString("ttd_pemberi"));
+                            String wkt = time.toString();
+                            String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                            String fileName1 = obj.getString("id_detail_checkup") + "-" + "ttd_pemberi" + "-" + patten + ".png";
+                            String uploadFile1 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName1;
+                            BufferedImage image1 = ImageIO.read(new ByteArrayInputStream(decodedBytes1));
+                            if (image1 == null) {
+                                logger.error("Buffered Image is null");
+                                response.setStatus("error");
+                                response.setMsg("Buffered Image is null");
+                            } else {
+                                File f1 = new File(uploadFile1);
+                                // write the image
+                                ImageIO.write(image1, "png", f1);
+                                catatan.setTtdPemberi(fileName1);
+                            }
+                        } catch (IOException e) {
+                            response.setStatus("error");
+                            response.setMsg("Found Error, " + e.getMessage());
+                        }
+                    }
+                }
+
+                if (obj.has("ttd_penerima")) {
+                    if (!"".equalsIgnoreCase(obj.getString("ttd_penerima")) && obj.getString("ttd_penerima") != null) {
+                        try {
+                            BASE64Decoder decoder = new BASE64Decoder();
+                            byte[] decodedBytes2 = decoder.decodeBuffer(obj.getString("ttd_penerima"));
+                            String wkt = time.toString();
+                            String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                            String fileName2 = obj.getString("id_detail_checkup") + "-" + "ttd_penerima" + "-" + patten + ".png";
+                            String uploadFile2 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName2;
+                            BufferedImage image2 = ImageIO.read(new ByteArrayInputStream(decodedBytes2));
+
+                            if (image2 == null) {
+                                logger.error("Buffered Image is null");
+                                response.setStatus("error");
+                                response.setMsg("Buffered Image is null");
+                            } else {
+                                File f2 = new File(uploadFile2);
+                                // write the image
+                                ImageIO.write(image2, "png", f2);
+                                catatan.setTtdPenerima(fileName2);
+                            }
+                        } catch (IOException e) {
+                            response.setStatus("error");
+                            response.setMsg("Found Error, " + e.getMessage());
+                        }
+                    }
+                }
+
+                if (obj.has("nama_pemberi")) {
+                    catatan.setNamaPemberi(obj.getString("nama_pemberi"));
+                }
+                if (obj.has("sip_pemberi")) {
+                    catatan.setSipPemberi(obj.getString("sip_pemberi"));
+                }
+                if (obj.has("nama_penerima")) {
+                    catatan.setNamaPenerima(obj.getString("nama_penerima"));
+                }
+                if (obj.has("sip_penerima")) {
+                    catatan.setSipPenerima(obj.getString("sip_penerima"));
+                }
+
+                catatan.setAction("C");
+                catatan.setFlag("Y");
+                catatan.setTipe("hand_over");
+                catatan.setCreatedWho(userLogin);
+                catatan.setCreatedDate(time);
+                catatan.setLastUpdateWho(userLogin);
+                catatan.setLastUpdate(time);
+
+                try {
+                    response = catatanTerintegrasiBo.saveAdd(catatan);
+                } catch (GeneralBOException e) {
+                    response.setStatus("error");
+                    response.setMsg(e.getMessage());
+                }
+            } catch (Exception e) {
+                response.setStatus("error");
+                response.setMsg("Found Error, " + e.getMessage());
             }
         }
         return response;

@@ -15,7 +15,7 @@
         $( document ).ready(function() {
             $('#pel_ri_active, #bayar_rawat_inap').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
-            getKelasKamar();
+            getKelasKamar('<s:property value="rawatInap.idKelas"/>');
         });
 
     </script>
@@ -79,17 +79,8 @@
                                     <label class="control-label col-sm-4">Kelas Ruangan</label>
                                     <div class="col-sm-4">
                                         <select style="margin-top: 7px" class="form-control select2" id="kelas_kamar" name="rawatInap.idKelas" onchange="listSelectRuangan(this.value)">
-                                            <option value=''>[Select One]</option>
+                                            <option value=''> - </option>
                                         </select>
-                                        <%--<s:action id="initComboKelas" namespace="/checkupdetail"--%>
-                                                  <%--name="getListComboKelasRuangan_checkupdetail"/>--%>
-                                        <%--<s:select cssStyle="margin-top: 7px" onchange="$(this).css('border',''); listSelectRuangan(this)"--%>
-                                                  <%--list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"--%>
-                                                  <%--name="rawatInap.idKelas"--%>
-                                                  <%--listKey="idKelasRuangan"--%>
-                                                  <%--listValue="namaKelasRuangan"--%>
-                                                  <%--headerKey="" headerValue="[Select one]"--%>
-                                                  <%--cssClass="form-control select2"/>--%>
                                     </div>
                                     <div class="col-sm-3" style="display: none;" id="load_ruang">
                                         <img border="0" src="<s:url value="/pages/images/spinner.gif"/>" style="cursor: pointer; width: 45px; height: 45px"><b style="color: #00a157;">Sedang diproses...</b></div>
@@ -98,7 +89,7 @@
                                     <label class="control-label col-sm-4">Ruangan</label>
                                     <div class="col-sm-4">
                                         <select style="margin-top: 7px" class="form-control select2" id="nama_ruangan" name="rawatInap.idRuang">
-                                            <option value=''>[Select One]</option>
+                                            <option value=''> - </option>
                                         </select>
                                     </div>
                                 </div>
@@ -173,12 +164,15 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Rawat Inap Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="myTable" class="table table-bordered table-striped" style="font-size: 13px">
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>ID Detail Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
+                                <td>Umur</td>
+                                <td>Tanggal Masuk</td>
+                                <td>Ruangan</td>
                                 <td>Desa</td>
                                 <td>Status</td>
                                 <td align="center">Jenis Pasien</td>
@@ -191,6 +185,16 @@
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="umur"/></td>
+                                    <td><s:property value="formatTglMasuk"/></td>
+                                    <td>
+                                        <s:if test='#row.noRuangan != ""'>
+                                            [<s:property value="noRuangan"/>]-<s:property value="namaRangan"/>
+                                        </s:if>
+                                        <s:else>
+                                            <s:property value="namaRangan"/>
+                                        </s:else>
+                                    </td>
                                     <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td align="center">
@@ -226,6 +230,19 @@
                                                 <img onclick="printGelangPasien('<s:property value="noCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
                                             </s:else>
                                         </s:if>
+
+                                        <s:if test='#row.tindakLanjut == "kontrol_ulang"'>
+                                            <a target="_blank" href="printSuratKeterangan_rawatinap.action?id=<s:property value="idDetailCheckup"/>&tipe=KU">
+                                                <img src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                            </a>
+                                        </s:if>
+
+                                        <s:if test='#row.tindakLanjut == "rujuk_rs_lain"'>
+                                            <a target="_blank" href="printSuratKeterangan_rawatinap.action?id=<s:property value="idDetailCheckup"/>&tipe=RSL">
+                                                <img src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                            </a>
+                                        </s:if>
+
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -241,8 +258,8 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
-    function getKelasKamar(){
-        var option = '<option value="">[Select One]</option>';
+    function getKelasKamar(kelas){
+        var option = '<option value=""> - </option>';
         dwr.engine.setAsync(true);
         CheckupDetailAction.getListKelasKamar('rawat_inap', function (res) {
             if(res.length > 0){
@@ -250,6 +267,9 @@
                     option += '<option value="' + item.idKelasRuangan + '">' + item.namaKelasRuangan + '</option>';
                 });
                 $('#kelas_kamar').html(option);
+                if(kelas != '' && kelas != null){
+                    $('#kelas_kamar').val(kelas).trigger('change');
+                }
             }else{
                 $('#kelas_kamar').html(option);
             }
@@ -261,23 +281,22 @@
     }
 
     function listSelectRuangan(id){
-        var option  = "<option value=''>[Select One]</option>";;
-        var flag    = false;
-        $('#load_ruang').show();
-        setTimeout(function () {
-
-        },100);
+        var option    = "<option value=''> - </option>";
+        var idRuangan = '<s:property value="rawatInap.idRuang"/>';
         if(id != ''){
-            CheckupDetailAction.listRuangan(id, flag, { callback: function (response) {
+            CheckupDetailAction.listJustRuangan(id, null,{
+                callback: function (response) {
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
                     });
                     $('#nama_ruangan').html(option);
+                    if(idRuangan != null && idRuangan != ''){
+                        $('#nama_ruangan').val(idRuangan).trigger('change');
+                    }
                 } else {
                     $('#nama_ruangan').html(option);
                 }
-                $('#load_ruang').hide();
             }
             });
         }else{

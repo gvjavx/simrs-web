@@ -37,7 +37,12 @@ public class AsesmenUgdAction {
         AsesmenUgdBo asesmenUgdBo = (AsesmenUgdBo) ctx.getBean("asesmenUgdBoProxy");
         try {
             JSONArray json = new JSONArray(data);
+            JSONObject dtaObj = new JSONObject(dataPasien);
             List<AsesmenUgd> ugdList = new ArrayList<>();
+            String noCheckup = null;
+            if (dtaObj.has("no_checkup")) {
+                noCheckup = dtaObj.getString("no_checkup");
+            }
 
             for (int i = 0; i < json.length(); i++) {
 
@@ -103,6 +108,7 @@ public class AsesmenUgdAction {
                 asesmenUgd.setCreatedDate(time);
                 asesmenUgd.setLastUpdateWho(userLogin);
                 asesmenUgd.setLastUpdate(time);
+                asesmenUgd.setNoCheckup(noCheckup);
                 ugdList.add(asesmenUgd);
             }
             try {
@@ -131,7 +137,7 @@ public class AsesmenUgdAction {
                 response.setMsg("Found Error " + e.getMessage());
                 return response;
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             response.setStatus("Error");
             response.setMsg("Found Error " + e.getMessage());
         }
@@ -194,6 +200,26 @@ public class AsesmenUgdAction {
             }
         }
         return response;
+    }
+
+    public List<AsesmenUgd> getKesimpulanAsesmen(String idDetailCheckup) {
+        List<AsesmenUgd> list = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        AsesmenUgdBo asesmenUgdBo = (AsesmenUgdBo) ctx.getBean("asesmenUgdBoProxy");
+        if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
+            try {
+                AsesmenUgd asesmenUgd = new AsesmenUgd();
+                asesmenUgd.setIdDetailCheckup(idDetailCheckup);
+                List<String> listIn = new ArrayList<>();
+                listIn.add("total");
+                listIn.add("kesimpulan");
+                asesmenUgd.setTipeAsesmen(listIn);
+                list = asesmenUgdBo.getByCriteria(asesmenUgd);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return list;
     }
 
     public static Logger getLogger() {

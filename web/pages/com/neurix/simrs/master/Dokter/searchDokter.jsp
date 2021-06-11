@@ -22,6 +22,8 @@
 
         $(document).ready(function () {
             $('#tindakan').addClass('active');
+            var branchId = '<s:property value="dokter.branchId"/>';
+            listPelayanan(branchId);
         });
 
     </script>
@@ -71,13 +73,31 @@
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Branch / Unit</label>
+                                    <div class="col-sm-4">
+                                        <s:if test='dokter.branchId != null'>
+                                            <s:action id="initComboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                                            <s:select list="#initComboBranch.listOfComboBranches" disabled="true" name="dokter.branchId"
+                                                      listKey="branchId" listValue="branchName" onchange="listPelayanan(this.value)"
+                                                      headerKey="" headerValue=" - " cssClass="form-control select2"/>
+                                            <s:hidden name="dokter.branchId"></s:hidden>
+                                        </s:if>
+                                        <s:else>
+                                            <s:action id="initComboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                                            <s:select list="#initComboBranch.listOfComboBranches" id="branch-id"
+                                                      listKey="branchId" listValue="branchName" onchange="listPelayanan(this.value)"
+                                                      headerKey="" headerValue=" - " cssClass="form-control select2"/>
+                                        </s:else>
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Pelayanan</label>
                                     <div class="col-sm-4">
-                                        <s:action id="initComboPelayanan" namespace="/dokter" name="initComboPelayanan_dokter"/>
-                                        <s:select list="#initComboPelayanan.listOfComboPelayanan" id="idPelayanan" name="dokter.idPelayanan"
-                                                  listKey="idPelayanan" listValue="namaPelayanan"
-                                                  headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
+                                        <select class="form-control select2" id="list-pelayanan" name="dokter.idPelayanan">
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -172,7 +192,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Dokter</h3>
                     </div>
                     <div class="box-body">
-                        <table id="sortTable" class="table table-bordered table-striped">
+                        <table id="sortTable" class="table table-bordered table-striped" style="font-size: 13px;">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID Dokter</td>
@@ -763,6 +783,17 @@
                 }
             });
         }
+    }
+
+    function listPelayanan(branchId){
+        PelayananAction.getListPelayananByBranch(branchId, function (res) {
+            var str = "<option value=''> - </option>";
+            $.each(res, function (i, item) {
+               str += "<option value='"+item.idPelayanan+"'>"+item.namaPelayanan+"</option>"
+            });
+
+            $("#list-pelayanan").html(str);
+        });
     }
 </script>
 

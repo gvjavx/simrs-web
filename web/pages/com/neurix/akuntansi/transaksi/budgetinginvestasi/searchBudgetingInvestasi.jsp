@@ -43,6 +43,7 @@
             $('#bayar_rawat_jalan, #pembayaran_active').addClass('active');
             $('#pembayaran_open').addClass('menu-open');
             changeAction('');
+            getSelectTahun('sel-tahun');
         });
 
     </script>
@@ -82,10 +83,10 @@
                                             <label class="control-label col-sm-2">Tahun</label>
                                             <div class="col-sm-2">
                                                 <select class="form-control" id="sel-tahun" onchange="changeAction('')">
-                                                    <option value="2020">2020</option>
-                                                    <option value="2021">2021</option>
-                                                    <option value="2022">2022</option>
-                                                    <option value="2023">2023</option>
+                                                    <%--<option value="2020">2020</option>--%>
+                                                    <%--<option value="2021">2021</option>--%>
+                                                    <%--<option value="2022">2022</option>--%>
+                                                    <%--<option value="2023">2023</option>--%>
                                                 </select>
                                             </div>
                                         </div>
@@ -1003,6 +1004,20 @@
         } else {
             alert("Pilih Unit dan Tahun Dulu.")
         }
+    }
+
+    function getSelectTahun(idelement) {
+
+        //var str = "<option value=''> - </option>";
+        var str = "";
+        TutuPeriodAction.getListTahunKedepan('5', function (res) {
+
+            $.each(res, function (i, item) {
+                str += "<option value='"+item+"'>" + item + "</option>";
+            });
+
+            $("#"+idelement).html(str);
+        });
     }
 
 </script>

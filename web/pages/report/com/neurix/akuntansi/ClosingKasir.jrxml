@@ -38,7 +38,7 @@
 FROM
   it_akun_jurnal_detail jd
   INNER JOIN it_akun_jurnal ju ON ju.no_jurnal = jd.no_jurnal
-  INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = jd.rekening_id
+  INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jd.nomor_rekening
 WHERE
   ju.tanggal_jurnal >= $P{tglFrom}
   AND ju.tanggal_jurnal <= $P{tglTo}
@@ -46,15 +46,6 @@ WHERE
   AND ju.flag = 'Y'
   AND ju.branch_id = $P{branchId}
   AND ju.registered_flag = 'Y'
-  AND jd.rekening_id IN (
-    SELECT
-      rekening_id
-    from
-      im_akun_kode_rekening
-    where
-      level = '5'
-      AND kode_rekening ilike $P{kodeRekeningKas}
-  )
   AND jumlah_kredit = 0
   AND jd.created_who = $P{kasirNip}]]>
 	</queryString>

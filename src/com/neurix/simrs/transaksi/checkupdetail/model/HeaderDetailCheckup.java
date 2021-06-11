@@ -5,7 +5,6 @@ import com.neurix.simrs.master.rekammedis.model.RekamMedisPasien;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
@@ -165,6 +164,60 @@ public class HeaderDetailCheckup extends BaseModel{
     private String kategoriPelayanan;
     private String pemeriksaanTerakhir;
     private String dibayarPasien;
+    private String formatTglMasuk;
+    private String isTindakan;
+    private String indikasi;
+    private String triase;
+    private String catatanKlinis;
+    private String spo2;
+
+    public String getSpo2() {
+        return spo2;
+    }
+
+    public void setSpo2(String spo2) {
+        this.spo2 = spo2;
+    }
+
+    public String getCatatanKlinis() {
+        return catatanKlinis;
+    }
+
+    public void setCatatanKlinis(String catatanKlinis) {
+        this.catatanKlinis = catatanKlinis;
+    }
+
+    public String getTriase() {
+        return triase;
+    }
+
+    public void setTriase(String triase) {
+        this.triase = triase;
+    }
+
+    public String getIndikasi() {
+        return indikasi;
+    }
+
+    public void setIndikasi(String indikasi) {
+        this.indikasi = indikasi;
+    }
+
+    public String getIsTindakan() {
+        return isTindakan;
+    }
+
+    public void setIsTindakan(String isTindakan) {
+        this.isTindakan = isTindakan;
+    }
+
+    public String getFormatTglMasuk() {
+        return formatTglMasuk;
+    }
+
+    public void setFormatTglMasuk(String formatTglMasuk) {
+        this.formatTglMasuk = formatTglMasuk;
+    }
 
     public String getDibayarPasien() {
         return dibayarPasien;
@@ -209,6 +262,24 @@ public class HeaderDetailCheckup extends BaseModel{
     private String noTelp;
     private String isEksekutif;
     private String isVaksin;
+    private String isMeninggal;
+    private Date tanggalLahir;
+
+    public Date getTanggalLahir() {
+        return tanggalLahir;
+    }
+
+    public void setTanggalLahir(Date tanggalLahir) {
+        this.tanggalLahir = tanggalLahir;
+    }
+
+    public String getIsMeninggal() {
+        return isMeninggal;
+    }
+
+    public void setIsMeninggal(String isMeninggal) {
+        this.isMeninggal = isMeninggal;
+    }
 
     public String getIsVaksin() {
         return isVaksin;

@@ -20,10 +20,12 @@
                         value: item.strukturJabatanId + "-" + item.level,
                         text : item.positionName
                     }));
-                    $('#levelAdd').val(item.level);
-//                    getPosisi(item.parentId);
+                    // $('#levelAdd').val(item.level);
                 });
-
+                var parent = $('#parentIdAdd').val();
+                if(parent != null) {
+                    getPosisi(parent);
+                }
             });
         }
 

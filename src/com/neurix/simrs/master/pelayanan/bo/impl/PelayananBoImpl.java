@@ -262,11 +262,23 @@ public class PelayananBoImpl implements PelayananBo {
 
     @Override
     public List<Pelayanan> getJustPelayananOnly(String branchId) throws GeneralBOException {
-        return pelayananDao.getJutsPelayananOnly(branchId);
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        try {
+            pelayananList = pelayananDao.getJutsPelayananOnly(branchId);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return pelayananList;
     }
 
     public List<Pelayanan> getJustPelayananOnlyRJ(String branchId) throws GeneralBOException {
-        return pelayananDao.getJutsPelayananOnlyRJ(branchId);
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        try {
+            pelayananList = pelayananDao.getJutsPelayananOnlyRJ(branchId);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return pelayananList;
     }
 
     @Override
@@ -298,6 +310,9 @@ public class PelayananBoImpl implements PelayananBo {
             }
             if (bean.getKodePoliVclaim() != null) {
                 hsCriteria.put("kode_poli_vclaim", bean.getKodePoliVclaim());
+            }
+            if (bean.getIsNotNull() != null) {
+                hsCriteria.put("not_null", bean.getIsNotNull());
             }
 
             List<ImSimrsPelayananEntity> entityList = new ArrayList<>();
@@ -454,45 +469,122 @@ public class PelayananBoImpl implements PelayananBo {
 
     @Override
     public List<Pelayanan> getListPelayananFarmasi(String branchId) throws GeneralBOException {
-        return pelayananDao.getListPelayananFarmasi(branchId);
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        try {
+            pelayananList = pelayananDao.getListPelayananFarmasi(branchId);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return pelayananList;
     }
 
     @Override
     public List<Pelayanan> getListPelayananWithLab(String tipe) throws GeneralBOException {
-        return pelayananDao.getListPelayananWithLab(tipe);
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        try {
+            pelayananList = pelayananDao.getListPelayananWithLab(tipe);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return pelayananList;
     }
 
     @Override
     public List<ImSimrsPelayananEntity> getByCriteria(Map criteria) throws GeneralBOException {
-        return pelayananDao.getByCriteria(criteria);
+        List<ImSimrsPelayananEntity> pelayananList = new ArrayList<>();
+        try {
+            pelayananList = pelayananDao.getByCriteria(criteria);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return pelayananList;
     }
 
     @Override
     public List<ImSimrsPelayananEntity> getPelayananByBranch(String branchId) throws GeneralBOException {
-        return pelayananDao.getPelayananByBranch(branchId);
+        List<ImSimrsPelayananEntity> pelayananList = new ArrayList<>();
+        try {
+            pelayananList = pelayananDao.getPelayananByBranch(branchId);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return pelayananList;
     }
 
     @Override
     public List<Pelayanan> getJustPelayananByBranch(String branchId) throws GeneralBOException {
-        return pelayananDao.getJutsPelayananByBranch(branchId);
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        try {
+            pelayananList = pelayananDao.getJutsPelayananByBranch(branchId);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return pelayananList;
     }
 
     @Override
     public List<Pelayanan> getJustPelayananAndLab(String branchId) throws GeneralBOException {
-        return pelayananDao.getJutsPelayananAndLab(branchId);
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        try {
+            pelayananList = pelayananDao.getJutsPelayananAndLab(branchId);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return pelayananList;
     }
 
     @Override
     public Pelayanan getObjectPelayanan(Pelayanan bean) throws GeneralBOException {
-        return pelayananDao.getObjectPelayanan(bean);
+        Pelayanan pelayanan = new Pelayanan();
+        try {
+            pelayanan = pelayananDao.getObjectPelayanan(bean);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return pelayanan;
     }
 
     @Override
     public List<Pelayanan> getListObjectPelayanan(Pelayanan bean) throws GeneralBOException {
-        return pelayananDao.getListObjectPelayanan(bean);
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        try {
+            pelayananList = pelayananDao.getListObjectPelayanan(bean);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return pelayananList;
     }
 
+    @Override
+    public List<Pelayanan> getListPelayananByTipe(String tipe, String branchId) throws GeneralBOException {
+        logger.info("[PelayananBoImpl.getListPelayananByTipe] START >>>");
 
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        try {
+            pelayananList = pelayananDao.getListPelayananByTipe(tipe, branchId);
+        } catch (HibernateException e){
+            logger.error("[PelayananBoImpl.getListPelayananByTipe] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
 
+        logger.info("[PelayananBoImpl.getListPelayananByTipe] END <<<");
+        return pelayananList;
+    }
 
+    @Override
+    public List<Pelayanan> getListPelayananByBranch(String branchId) throws GeneralBOException {
+        logger.info("[PelayananBoImpl.getListPelayananByBranch] START >>>");
+
+        List<Pelayanan> pelayananList = new ArrayList<>();
+
+        try {
+            pelayananList = pelayananDao.getListPelayananByBranch(branchId);
+        } catch (HibernateException e){
+            logger.error("[PelayananBoImpl.getListPelayananByBranch] ERROR, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[PelayananBoImpl.getListPelayananByBranch] END <<<");
+        return pelayananList;
+    }
 }

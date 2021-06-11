@@ -195,6 +195,54 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 10px">Cap Kaki Bayi</label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                <span class="input-group-btn">
+                                    <span class="btn btn-default btn-file">
+                                        Browse… <input accept="image/*" onchange="setCanvasAtasWithText('cap_kaki_bayi', 'label_cap_kaki_bayi')" type="file">
+                                    </span>
+                                </span>
+                                    <input id="label_cap_kaki_bayi" type="text" class="form-control" readonly style="margin-top: 7px">
+                                </div>
+                                <canvas id="cap_kaki_bayi" style="border: grey solid 1px; width: 100%; height: 200px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 10px">Cap Jempol Bayi</label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                <span class="input-group-btn">
+                                    <span class="btn btn-default btn-file">
+                                        Browse… <input accept="image/*" onchange="setCanvasAtasWithText('cap_jempol_bayi', 'label_cap_jempol_bayi')" type="file">
+                                    </span>
+                                </span>
+                                    <input id="label_cap_jempol_bayi" type="text" class="form-control" readonly style="margin-top: 7px">
+                                </div>
+                                <canvas id="cap_jempol_bayi" style="border: grey solid 1px; width: 100%; height: 200px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 10px">Cap Jempol Ibu</label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                <span class="input-group-btn">
+                                    <span class="btn btn-default btn-file">
+                                        Browse… <input accept="image/*" onchange="setCanvasAtasWithText('cap_jempol_ibu', 'label_cap_jempol_ibu')" type="file">
+                                    </span>
+                                </span>
+                                    <input id="label_cap_jempol_ibu" type="text" class="form-control" readonly style="margin-top: 7px">
+                                </div>
+                                <canvas id="cap_jempol_ibu" style="border: grey solid 1px; width: 100%; height: 200px"></canvas>
+                            </div>
+                        </div>
+                    </div>
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">

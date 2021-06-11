@@ -41,9 +41,49 @@ public class LaporanAkuntansi extends BaseModel {
     private String nip;
     private String koderingDivisi;
     private String levelKodeRekening;
+    private String kodeBarang;
+    private String namaBarang;
 
     private String namaKodeRekening;
     private String namaMaster;
+
+    //UNTUK REPORT KASIR
+    private String reportId;
+    private String tipeKasir;
+
+
+    public String getKodeBarang() {
+        return kodeBarang;
+    }
+
+    public void setKodeBarang(String kodeBarang) {
+        this.kodeBarang = kodeBarang;
+    }
+
+
+    public String getNamaBarang() {
+        return namaBarang;
+    }
+
+    public void setNamaBarang(String namaBarang) {
+        this.namaBarang = namaBarang;
+    }
+
+    public String getReportId() {
+        return reportId;
+    }
+
+    public void setReportId(String reportId) {
+        this.reportId = reportId;
+    }
+
+    public String getTipeKasir() {
+        return tipeKasir;
+    }
+
+    public void setTipeKasir(String tipeKasir) {
+        this.tipeKasir = tipeKasir;
+    }
 
     public String getNamaKodeRekening() {
         return namaKodeRekening;

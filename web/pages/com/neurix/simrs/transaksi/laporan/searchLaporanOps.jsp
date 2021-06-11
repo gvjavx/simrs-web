@@ -77,25 +77,24 @@
                                         <s:hidden name="laporanOps.branchId" id="h_branch"></s:hidden>
                                     </div>
                                 </div>
+                                <div class="form-group" style="display: none" id="form_tipe_penunjang">
+                                    <label class="control-label col-sm-4">Tipe Penunjang</label>
+                                    <div class="col-sm-4">
+                                        <select style="width: 100%" class="form-control select2" id="tipe_penunjang"
+                                                name="laporanOps.tipePenunjang"
+                                                onchange="setDetailPenunjang(this.value)">
+                                            <option value="farmasi" selected>Farmasi</option>
+                                            <option value="kamar">Kamar</option>
+                                            <option value="radiologi">Radiologi</option>
+                                            <option value="lab">Laboratorium</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="form-group" style="display: none" id="form_tipe_pelayanan">
                                     <label class="control-label col-sm-4">Tipe Pelayanan</label>
                                     <div class="col-sm-4">
                                         <select style="width: 100%" class="form-control select2" id="tipe_pelayanan"
                                                 name="laporanOps.tipePelayanan">
-                                            <option value="rawat_jalan">Rawat Jalan</option>
-                                            <option value="rawat_inap">Rawat Inap</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group" style="display: none" id="form_tipe_penunjang">
-                                    <label class="control-label col-sm-4">Tipe Penunjang</label>
-                                    <div class="col-sm-4">
-                                        <select style="width: 100%" class="form-control select2" id="tipe_penunjang"
-                                                name="laporanOps.tipePelayanan" onchange="setDetailPenunjang(this.value)">
-                                            <option value="farmasi" selected>Farmasi</option>
-                                            <option value="kamar">Kamar</option>
-                                            <option value="radiologi">Radiologi</option>
-                                            <option value="lab">Laboratorium</option>
                                         </select>
                                     </div>
                                 </div>
@@ -140,13 +139,15 @@
                                     <label class="control-label col-sm-4">Kelas Ruangan</label>
                                     <div class="col-sm-4">
                                         <select style="width: 100%" class="form-control select2" id="kelas_kamar"
-                                                name="laporanOps.idKelasRuangan" onchange="getRuangan(this.value); inputWarning('war_kelas','')">
+                                                name="laporanOps.idKelasRuangan"
+                                                onchange="getRuangan(this.value); inputWarning('war_kelas','')">
                                             <option value=''>[Select One]</option>
                                         </select>
                                         <s:hidden name="laporanOps.namaKelasRuangan" id="nama_kelas_ruangan"></s:hidden>
                                     </div>
                                     <div class="col-md-2">
-                                        <div id="war_kelas" style="color: #d9534f; margin-left: -20px; margin-top: 12px; display: none">
+                                        <div id="war_kelas"
+                                             style="color: #d9534f; margin-left: -20px; margin-top: 12px; display: none">
                                             <i class="fa fa-warning"></i> reqiured
                                         </div>
                                     </div>
@@ -160,16 +161,19 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group" style="display: none; margin-top: 8px; margin-bottom: -20px" id="form_choice">
+                                <div class="form-group" style="display: none; margin-top: 8px; margin-bottom: -20px"
+                                     id="form_choice">
                                     <div class="col-md-offset-4 col-md-2">
                                         <div class="custom02">
-                                            <input onclick="setChoose(this.value)" type="radio" value="tanggal" id="choice1" name="choice" />
+                                            <input onclick="setChoose(this.value)" type="radio" value="tanggal"
+                                                   id="choice1" name="choice"/>
                                             <label for="choice1">Tanggal</label>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="custom02">
-                                            <input onclick="setChoose(this.value)" type="radio" value="tahun" id="choice2" name="choice" />
+                                            <input onclick="setChoose(this.value)" type="radio" value="tahun"
+                                                   id="choice2" name="choice"/>
                                             <label for="choice2">Tahun</label>
                                         </div>
                                     </div>
@@ -181,7 +185,8 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_from" name="laporanOps.dateFrom" cssClass="form-control datemask2"
+                                            <s:textfield id="tgl_from" name="laporanOps.dateFrom"
+                                                         cssClass="form-control datemask2"
                                                          required="false"/>
                                         </div>
                                     </div>
@@ -190,7 +195,8 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <s:textfield id="tgl_to" name="laporanOps.dateTo" cssClass="form-control datemask2"
+                                            <s:textfield id="tgl_to" name="laporanOps.dateTo"
+                                                         cssClass="form-control datemask2"
                                                          required="false"/>
                                         </div>
                                     </div>
@@ -291,6 +297,7 @@
     function getLaporan() {
         var option = '<option value="">[Select One]</option>';
         LaporanOpsAction.getListLaporanOps(function (res) {
+            console.log(res);
             if (res.length > 0) {
                 $.each(res, function (i, item) {
                     option += '<option value="' + item.idLaporanOps + '">' + item.namaLaporan + '</option>';
@@ -380,43 +387,43 @@
         }
     }
 
-    function cekSearch(){
+    function cekSearch() {
         var jenis = $('#jenis_laporan').val();
-        if(jenis != ''){
-            if("rawat_inap" == jenis){
+        if (jenis != '') {
+            if ("rawat_inap" == jenis) {
                 var kelas = $('#kelas_kamar').val();
-                if(kelas != ''){
+                if (kelas != '') {
                     return true;
-                }else{
+                } else {
                     $('#warning_search').show().fadeOut(5000);
                     $('#msg_search').text("Silahkan cek kembali inputan berikut..!");
                     $('#war_kelas').show();
                     return false;
                 }
-            } else if("unggulan" == jenis){
+            } else if ("unggulan" == jenis) {
                 var tgla = $('#tgl_from').val();
                 var tglb = $('#tgl_from').val();
                 var choice = $('[name=choice]:checked').val();
-                if(choice != undefined){
-                    if("tanggal" == choice){
-                        if(tgla && tglb != ''){
+                if (choice != undefined) {
+                    if ("tanggal" == choice) {
+                        if (tgla && tglb != '') {
                             return true;
-                        }else{
+                        } else {
                             $('#warning_search').show().fadeOut(5000);
                             $('#msg_search').text("Silahkan cek kembali inputan berikut..!");
                             $('#war_kelas').show();
                             return false;
                         }
-                    }else{
+                    } else {
                         return true;
                     }
-                }else{
+                } else {
                     return false;
                 }
-            }else{
+            } else {
                 return true;
             }
-        }else{
+        } else {
             return false;
         }
 
@@ -435,7 +442,9 @@
                 $('#form_choice').hide();
                 getTahun();
                 getBranch();
-            } else if("rawat_inap" == tipe){
+                $('#tipe_pelayanan').html('');
+
+            } else if ("rawat_inap" == tipe) {
                 $('#form_branch, #form_tahun').show();
                 $('#form_kelas, #form_ruangan').show();
 
@@ -445,7 +454,9 @@
                 $('#form_pelayanan, #form_tanggal, #form_tipe_pelayanan, #form_bulan').hide();
                 $('#form_detail_penunjang, #form_tipe_penunjang').hide();
                 $('#form_choice').hide();
-            } else if("unggulan" == tipe){
+                $('#tipe_pelayanan').html('');
+
+            } else if ("unggulan" == tipe) {
                 $('#form_branch, #form_tahun, #form_choice').show();
 
                 getTahun();
@@ -455,7 +466,9 @@
                 $('#form_kelas, #form_ruangan, #form_tipe_pelayanan').hide();
                 $('#form_pelayanan').hide();
                 $('#form_detail_penunjang, #form_tipe_penunjang').hide();
-            } else if("diagnosa" == tipe){
+                $('#tipe_pelayanan').html('');
+
+            } else if ("diagnosa" == tipe) {
                 $('#form_tipe_pelayanan, #form_branch, #form_bulan, #form_tahun').show();
 
                 getTahun();
@@ -466,8 +479,14 @@
                 $('#form_kelas, #form_ruangan').hide();
                 $('#form_choice').hide();
                 $('#form_detail_penunjang, #form_tipe_penunjang').hide();
-            } else if("penunjang_medis" == tipe){
-                $('#form_tipe_penunjang, #form_detail_penunjang, #form_branch, #form_tahun').show();
+
+                $('#text_tipe').text("Tipe Pelayanan");
+                var option = '<option value="rawat_jalan">Rawat Jalan</option>\n' +
+                    '<option value="rawat_inap">Rawat Inap</option>';
+                $('#tipe_pelayanan').html(option);
+
+            } else if ("penunjang_medis" == tipe) {
+                $('#form_tipe_penunjang, #form_tipe_pelayanan, #form_detail_penunjang, #form_branch, #form_tahun').show();
 
                 getTahun();
                 getBranch();
@@ -475,13 +494,17 @@
                 $('#form_pelayanan').hide();
                 $('#form_kelas, #form_ruangan').hide();
                 $('#form_choice').hide();
-                $('#form_tipe_pelayanan, #form_bulan').hide();
+                $('#form_bulan').hide();
+                $('#text_tipe').text("Farmasi");
+                $('#tipe_penunjang').val('farmasi').trigger('change');
+
             } else {
                 $('#form_branch, #form_tahun, #form_tanggal').hide();
                 $('#form_pelayanan, #form_tipe_pelayanan, #form_bulan').hide();
                 $('#form_kelas, #form_ruangan').hide();
                 $('#form_choice').hide();
                 $('#form_detail_penunjang, #form_tipe_penunjang').hide();
+                $('#tipe_pelayanan').html('');
             }
         } else {
             $('#form_button').hide();
@@ -489,15 +512,16 @@
             $('#form_pelayanan, #form_tipe_pelayanan, #form_bulan').hide();
             $('#form_choice').hide();
             $('#form_detail_penunjang, #form_tipe_penunjang').hide();
+            $('#tipe_pelayanan').html('');
         }
     }
 
-    function setChoose(value){
-        if(value == "tanggal"){
+    function setChoose(value) {
+        if (value == "tanggal") {
             $('#form_tanggal').show();
             $('#form_tahun').hide();
             $('#tahun').val('');
-        }else{
+        } else {
             $('#form_tanggal').hide();
             $('#form_tahun').show();
             $('#tgl_from, #tgl_to').val('');
@@ -521,24 +545,39 @@
         });
     }
 
-    function setBulan(){
+    function setBulan() {
         var dt = new Date();
-        var bulan = dt.getMonth()+1;
+        var bulan = dt.getMonth() + 1;
         $('#bulan').val(bulan).trigger('change');
     }
 
-    function setDetailPenunjang(tipe){
-        if(tipe == "farmasi"){
+    function setDetailPenunjang(tipe) {
+        if (tipe == "farmasi") {
             $("#text_tipe").text("Farmasi");
-        }else if(tipe == "kamar"){
+        } else if (tipe == "kamar") {
             $("#text_tipe").text("Kamar");
-        }else if(tipe == "radiologi"){
+        } else if (tipe == "radiologi") {
             $("#text_tipe").text("Radiologi");
-        }else if(tipe == "lab"){
+        } else if (tipe == "lab") {
             $("#text_tipe").text("Laboratorium");
-        }else{
+        } else {
             $("#text_tipe").text("Tidak sesuai");
         }
+
+        var branchId = $('#branch').val();
+        var option = '';
+        LaporanOpsAction.getListPenunjangMedis(tipe, branchId, {
+            callback:function (res) {
+                if(res.length > 0){
+                    $.each(res, function (i, item) {
+                        option += '<option value="'+item.idPelayanan+'">'+item.namaPelayanan+'</option>';
+                    });
+                    $('#tipe_pelayanan').html(option);
+                }else{
+                    $('#tipe_pelayanan').html(option);
+                }
+            }
+        });
     }
 
 </script>

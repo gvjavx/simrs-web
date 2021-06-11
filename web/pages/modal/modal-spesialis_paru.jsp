@@ -93,7 +93,7 @@
                     </div>
                     <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
                         <div class="col-md-1">
-                            <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker-op  color-picker pull-left">
+                            <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker-op  color-picker pull-left" value="#ff0000">
                         </div>
                     </div>
                     <div class="row jarak">
@@ -104,6 +104,11 @@
                             <canvas style="display: none" id="area_cek"></canvas>
                             <button type="button" class="btn btn-danger" onclick="removePaint('area_paru')"><i class="fa fa-trash"></i> Clear
                             </button>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="col-md-12">
+                            <textarea rows="3" id="keterangan_gambar" class="form-control" placeholder="Keterangan Gambar"></textarea>
                         </div>
                     </div>
                     <hr class="garis">
@@ -144,14 +149,27 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input class="form-control tgl" id="pt7">
+                                <input class="form-control ptr-tgl" id="pt7">
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <label class="col-md-4">Indikasi Rawat Inap</label>
                         <div class="col-md-8">
-                            <input class="form-control anamnese" id="pt8">
+                            <select class="form-control select2" id="intruksi_anamnesa_pemeriksaan_paru" style="width: 100%" onchange="showKetIntruksi(this.value)">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row jarak" style="display: none" id="int-ket1">
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-8">
+                                <select class="form-control select2" id="ket_anamnesa_pemeriksaan_paru" style="width: 100%">
+                                    <option value="Preventif">Preventif</option>
+                                    <option value="Paliatif">Paliatif</option>
+                                    <option value="Kuratif">Kuratif</option>
+                                    <option value="Rehabilitatif">Rehabilitatif</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>

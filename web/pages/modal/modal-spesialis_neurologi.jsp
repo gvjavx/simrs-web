@@ -254,7 +254,7 @@
                     <div class="row jarak">
                         <label class="col-md-4">Pemeriksaan Neurologi</label>
                         <div class="col-md-8">
-                            <textarea rows="2" class="form-control" id="pt7"></textarea>
+                            <textarea rows="3" class="form-control" id="pt7"></textarea>
                         </div>
                     </div>
                     <div class="row jarak">
@@ -288,14 +288,27 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input class="form-control tgl" id="pt12">
+                                <input class="form-control ptr-tgl" id="pt12">
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <label class="col-md-4">Indikasi Rawat Inap</label>
                         <div class="col-md-8">
-                            <input class="form-control" id="pt13">
+                            <select class="form-control select2" id="intruksi_pemeriksaan_neurologi" style="width: 100%" onchange="showKetIntruksi(this.value)">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row jarak" style="display: none" id="int-ket1">
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-8">
+                                <select class="form-control select2" id="ket_pemeriksaan_neurologi" style="width: 100%">
+                                    <option value="Preventif">Preventif</option>
+                                    <option value="Paliatif">Paliatif</option>
+                                    <option value="Kuratif">Kuratif</option>
+                                    <option value="Rehabilitatif">Rehabilitatif</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>

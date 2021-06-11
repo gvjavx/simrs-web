@@ -103,23 +103,24 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>No Ruangan :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield  id="no_ruangan1"
-                                             name="ruangan.noRuangan" required="false" readonly="false" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
                             <label class="control-label"><small>Nama Ruangan :</small></label>
                         </td>
                         <td>
                             <table>
                                 <s:textfield   id="nama_ruangan1"
                                              name="ruangan.namaRuangan" required="false" readonly="false" cssClass="form-control" cssStyle="margin-top: 5px"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>No Ruangan :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield  id="no_ruangan1"
+                                              name="ruangan.noRuangan" required="false" readonly="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -133,7 +134,7 @@
                                     <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
                                     <%--<s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId"--%>
                                     <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
-                                <s:if test='pelayanan.branchUser == "KP"'>
+                                <s:if test='pelayanan.branchUser == "01"'>
                                     <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch" />
                                     <s:select list="#initComboBranch.listOfComboBranch" id="branchId1" name="ruangan.branchId"
                                               listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
@@ -267,7 +268,7 @@
                                         <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); window.location.reload(true)}
+                                                                        'OK':function() { $('#error_validation_dialog').dialog('close');}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">

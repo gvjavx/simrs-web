@@ -7,7 +7,7 @@ import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.common.exception.GeneralBOException;
 
 
-
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.rekananops.bo.DetailRekananOpsBo;
 import com.neurix.simrs.master.rekananops.dao.DetailRekananOpsDao;
 import com.neurix.simrs.master.rekananops.dao.RekananOpsDao;
@@ -15,6 +15,8 @@ import com.neurix.simrs.master.rekananops.model.DetailRekananOps;
 import com.neurix.simrs.master.rekananops.model.ImSimrsDetailRekananOpsEntity;
 import com.neurix.simrs.master.rekananops.model.ImSimrsRekananOpsEntity;
 
+import com.neurix.simrs.master.rekananops.model.RekananOps;
+import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -73,6 +75,8 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
             } else {
                 hsCriteria.put("tipe", "ptpn");
             }
+
+            hsCriteria.put("flag_parent", "Y");
 
             List<ImSimrsDetailRekananOpsEntity> listOfDetail = null;
             try {
@@ -141,7 +145,7 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
     }
 
     @Override
-    public CrudResponse saveAdd(DetailRekananOps bean) throws GeneralBOException {
+    public void saveAdd(DetailRekananOps bean) throws GeneralBOException {
         if (bean != null) {
             List<ImSimrsDetailRekananOpsEntity> cekList = new ArrayList<>();
             try {
@@ -170,6 +174,7 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
                 imSimrsDetailRekananOpsEntity.setIsBpjs(bean.getIsBpjs());
                 imSimrsDetailRekananOpsEntity.setDiskon(bean.getDiskon());
                 imSimrsDetailRekananOpsEntity.setBranchId(bean.getBranchId());
+                imSimrsDetailRekananOpsEntity.setFlagParent("Y");
 
                 imSimrsDetailRekananOpsEntity.setFlag(bean.getFlag());
                 imSimrsDetailRekananOpsEntity.setAction(bean.getAction());
@@ -186,23 +191,12 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
                 }
             }
         }
-        return null;
     }
 
     @Override
-    public CrudResponse saveEdit(DetailRekananOps bean) throws GeneralBOException {
+    public void saveEdit(DetailRekananOps bean) throws GeneralBOException {
         logger.info("[DetailRekananOps.saveEdit] start process >>>");
         if (bean != null) {
-
-//            List<ImSimrsDetailRekananOpsEntity> cekList = new ArrayList<>();
-//            try {
-//                cekList = detailRekananOpsDao.getDetailRekananOps(bean.getIdRekananOps() , bean.getBranchId());
-//            } catch (HibernateException e) {
-//                logger.error(e.getMessage());
-//            }
-//            if (cekList.size() > 0) {
-//                throw new GeneralBOException("nama Detail rekanan ops dan branch sudah ada sudah ada...!");
-//            } else {
 
             String idDetailRekananOps = bean.getIdDetailRekananOps();
             ImSimrsDetailRekananOpsEntity imSimrsDetailRekananOpsEntity = null;
@@ -215,7 +209,6 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
             }
 
             if (imSimrsDetailRekananOpsEntity != null) {
-//                imSimrsDetailRekananOpsEntity.setIdDetailRekananOps(bean.getIdDetailRekananOps());
                 imSimrsDetailRekananOpsEntity.setBranchId(bean.getBranchId());
                 imSimrsDetailRekananOpsEntity.setIdRekananOps(bean.getIdRekananOps());
                 imSimrsDetailRekananOpsEntity.setDiskon(bean.getDiskon());
@@ -242,12 +235,11 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
         }
 //        }
         logger.info("[DetailImpl.saveEdit] end process <<<");
-        return null;
     }
 
     @Override
-    public CrudResponse saveDelete(DetailRekananOps bean) throws GeneralBOException {
-        logger.info("[saveDelete.saveDelete] start process >>>");
+    public void saveDelete(DetailRekananOps bean) throws GeneralBOException {
+        logger.info("[DetailRekananOpsBoImpl.saveDelete] start process >>>");
         if (bean != null) {
 
             String idDetailRekananOps = bean.getIdDetailRekananOps();
@@ -291,7 +283,249 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
             }
         }
         logger.info("[DetailRekananOpsBoImpl.saveDelete] end process <<<");
-        return null;
+    }
+
+    @Override
+    public List<DetailRekananOps> getParentDataById(String id) throws GeneralBOException {
+        logger.info("[DetailRekananOpsBoImpl.getParentDataById] start process >>>");
+
+        List<DetailRekananOps> detailRekananOps = new ArrayList<>();
+        try {
+            detailRekananOps = detailRekananOpsDao.getParentRekananOpsById(id);
+        } catch (HibernateException e){
+            logger.error("[DetailRekananOpsBoImpl.getParentDataById] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when gate data DetailRekananOps, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[DetailRekananOpsBoImpl.getParentDataById] end process <<<");
+        return detailRekananOps;
+    }
+
+    @Override
+    public List<DetailRekananOps> getDetailDataByIdParent(String idParent) throws GeneralBOException {
+        logger.info("[DetailRekananOpsBoImpl.getDetailDataByIdParent] start process >>>");
+
+        List<DetailRekananOps> detailRekananOps = new ArrayList<>();
+        try {
+            detailRekananOps = detailRekananOpsDao.getListDetailRekananOpsByIdParent(idParent);
+        } catch (HibernateException e){
+            logger.error("[DetailRekananOpsBoImpl.getParentDataById] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when gate data DetailRekananOps, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[DetailRekananOpsBoImpl.getDetailDataByIdParent] end process <<<");
+        return detailRekananOps;
+    }
+
+    @Override
+    public Pelayanan getPelayananByIdItem(String idItem) throws GeneralBOException {
+        logger.info("[DetailRekananOpsBoImpl.getPelayananByIdItem] start process >>>");
+
+        Pelayanan pelayanan = new Pelayanan();
+        try {
+            pelayanan = detailRekananOpsDao.getPelayananByIdItem(idItem);
+        } catch (HibernateException e){
+            logger.error("[DetailRekananOpsBoImpl.getPelayananByIdItem] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when gate data, please info to your admin..." + e.getMessage());
+        }
+
+
+        logger.info("[DetailRekananOpsBoImpl.getPelayananByIdItem] end process <<<");
+        return pelayanan;
+    }
+
+    @Override
+    public List<Pelayanan> getListPelayananByBranchId(String branchId) throws GeneralBOException {
+        logger.info("[DetailRekananOpsBoImpl.getListPelayananByBranchId] start process >>>");
+
+        List<Pelayanan> pelayananList = new ArrayList<>();
+
+        try {
+            pelayananList = detailRekananOpsDao.getListPelayananByBranchId(branchId);
+        } catch (HibernateException e){
+            logger.error("[DetailRekananOpsBoImpl.getListPelayananByBranchId] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when gate data, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[DetailRekananOpsBoImpl.getListPelayananByBranchId] end process <<<");
+        return pelayananList;
+    }
+
+    @Override
+    public List<Tindakan> getListTindakanByPelayanan(String idPelayanan) throws GeneralBOException {
+        logger.info("[DetailRekananOpsBoImpl.getListTindakanByPelayanan] start process >>>");
+
+        List<Tindakan> tindakanList = new ArrayList<>();
+
+        try {
+            tindakanList = detailRekananOpsDao.getListTindakanByIdPelayanan(idPelayanan);
+        } catch (HibernateException e){
+            logger.error("[DetailRekananOpsBoImpl.getListTindakanByPelayanan] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when gate data, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[DetailRekananOpsBoImpl.getListTindakanByPelayanan] end process <<<");
+        return tindakanList;
+    }
+
+    @Override
+    public Tindakan getTindakanById(String idTindakan) throws GeneralBOException {
+        logger.info("[DetailRekananOpsBoImpl.getTindakanById] start process >>>");
+
+        Tindakan tindakan = new Tindakan();
+
+        try {
+            tindakan = detailRekananOpsDao.getTindakanById(idTindakan);
+        } catch (HibernateException e){
+            logger.error("[DetailRekananOpsBoImpl.getTindakanById] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when gate data, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[DetailRekananOpsBoImpl.getTindakanById] end process <<<");
+        return tindakan;
+    }
+
+    @Override
+    public void saveAddDetail(DetailRekananOps bean) throws GeneralBOException {
+        logger.info("[DetailRekananOpsBoImpl.saveAddDetail] START process >>>");
+
+        if (bean != null) {
+
+            // get parent data
+            ImSimrsDetailRekananOpsEntity parentEntity = getDetailRekananOpsEntityById(bean.getParentId());
+            // END
+
+            // Cari tindakan dan rekanan yg sama
+            Boolean foundSameItem = foundSameItem(bean.getIdItem(), parentEntity.getIdRekananOps());
+            if (foundSameItem){
+                logger.error("Tindakan Sudah Ditamhakan Check pada List");
+                throw new GeneralBOException("Tindakan Sudah Ditamhakan Check pada List");
+            }
+            // END
+
+            String detailrekanan;
+            try {
+                // Generating ID, get from postgre sequence
+                detailrekanan = detailRekananOpsDao.getNextId();
+            } catch (HibernateException e) {
+                logger.error("[AsuransiBoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when getting sequence Asuransi id, please info to your admin..." + e.getMessage());
+            }
+
+
+            // creating object entity serializable
+            ImSimrsDetailRekananOpsEntity imSimrsDetailRekananOpsEntity = new ImSimrsDetailRekananOpsEntity();
+
+            imSimrsDetailRekananOpsEntity.setIdDetailRekananOps(detailrekanan);
+            //cari ke dao akun Master berdasarkan no master
+
+            imSimrsDetailRekananOpsEntity.setIdRekananOps(bean.getIdRekananOps());
+            imSimrsDetailRekananOpsEntity.setIsBpjs(bean.getIsBpjs());
+            imSimrsDetailRekananOpsEntity.setDiskon(bean.getDiskon());
+            imSimrsDetailRekananOpsEntity.setBranchId(bean.getBranchId());
+            imSimrsDetailRekananOpsEntity.setIdItem(bean.getIdItem());
+
+            imSimrsDetailRekananOpsEntity.setFlag(bean.getFlag());
+            imSimrsDetailRekananOpsEntity.setAction(bean.getAction());
+            imSimrsDetailRekananOpsEntity.setCreatedWho(bean.getCreatedWho());
+            imSimrsDetailRekananOpsEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            imSimrsDetailRekananOpsEntity.setCreatedDate(bean.getCreatedDate());
+            imSimrsDetailRekananOpsEntity.setLastUpdate(bean.getLastUpdate());
+            imSimrsDetailRekananOpsEntity.setTarif(bean.getTarif());
+            imSimrsDetailRekananOpsEntity.setTarifBpjs(bean.getTarifBpjs());
+            imSimrsDetailRekananOpsEntity.setDiskonNonBpjs(bean.getDiskonNonBpjs());
+            imSimrsDetailRekananOpsEntity.setDiskonBpjs(bean.getDiskonBpjs());
+            imSimrsDetailRekananOpsEntity.setParentId(bean.getParentId());
+            imSimrsDetailRekananOpsEntity.setIdRekananOps(parentEntity.getIdRekananOps());
+
+            try {
+                // insert into database
+                detailRekananOpsDao.addAndSave(imSimrsDetailRekananOpsEntity);
+            } catch (HibernateException e) {
+                logger.error("[AsuransiiBoImpl.saveAddDetail] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when saving new data Asuransi, please info to your admin..." + e.getMessage());
+            }
+        }
+
+        logger.info("[DetailRekananOpsBoImpl.saveAddDetail] END process <<<");
+    }
+
+    private ImSimrsDetailRekananOpsEntity getDetailRekananOpsEntityById(String id){
+        logger.info("[DetailRekananOpsBoImpl.saveAddDetail] START process >>>");
+
+        ImSimrsDetailRekananOpsEntity detailRekananOpsEntity = new ImSimrsDetailRekananOpsEntity();
+
+        try {
+            // insert into database
+            detailRekananOpsEntity = detailRekananOpsDao.getById("idDetailRekananOps", id);
+        } catch (HibernateException e) {
+            logger.error("[AsuransiiBoImpl.getDetailRekananOpsEntityById] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when get Detail, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[DetailRekananOpsBoImpl.saveAddDetail] END process <<<");
+        return detailRekananOpsEntity;
+    }
+
+    @Override
+    public void saveEditDetail(DetailRekananOps bean) throws GeneralBOException {
+        logger.info("[DetailRekananOpsBoImpl.saveEditDetail] START process >>>");
+
+        ImSimrsDetailRekananOpsEntity detailRekananOpsEntity = getDetailRekananOpsEntityById(bean.getIdDetailRekananOps());
+
+        detailRekananOpsEntity.setTarif(bean.getTarif());
+        detailRekananOpsEntity.setTarifBpjs(bean.getTarifBpjs());
+        detailRekananOpsEntity.setDiskonNonBpjs(bean.getDiskonNonBpjs());
+        detailRekananOpsEntity.setDiskonBpjs(bean.getDiskonBpjs());
+        detailRekananOpsEntity.setAction(bean.getAction());
+        detailRekananOpsEntity.setLastUpdate(bean.getLastUpdate());
+        detailRekananOpsEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+        try {
+            // insert into database
+            detailRekananOpsDao.updateAndSave(detailRekananOpsEntity);
+        } catch (HibernateException e) {
+            logger.error("[AsuransiiBoImpl.saveEditDetail] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when saving new data Asuransi, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[DetailRekananOpsBoImpl.saveEditDetail] END process <<<");
+    }
+
+    @Override
+    public void saveDeleteDetail(DetailRekananOps bean) throws GeneralBOException {
+        logger.info("[DetailRekananOpsBoImpl.saveDeleteDetail] START process >>>");
+
+        ImSimrsDetailRekananOpsEntity detailRekananOpsEntity = getDetailRekananOpsEntityById(bean.getIdDetailRekananOps());
+        detailRekananOpsEntity.setFlag("N");
+        detailRekananOpsEntity.setLastUpdate(bean.getLastUpdate());
+        detailRekananOpsEntity.setLastUpdateWho(bean.getLastUpdateWho());
+        try {
+            // insert into database
+            detailRekananOpsDao.updateAndSave(detailRekananOpsEntity);
+        } catch (HibernateException e) {
+            logger.error("[AsuransiiBoImpl.saveDeleteDetail] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when saving new data Asuransi, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[DetailRekananOpsBoImpl.saveDeleteDetail] END process <<<");
+    }
+
+    private Boolean foundSameItem(String idTindakan, String idRekananOps){
+        logger.info("[DetailRekananOpsBoImpl.foundSameItem] START process >>>");
+
+        Boolean found = false;
+
+        try {
+            // insert into database
+            found = detailRekananOpsDao.foundSameItem(idTindakan, idRekananOps);
+        } catch (HibernateException e) {
+            logger.error("[DetailRekananOpsBoImpl.foundSameItem] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when saving new data Asuransi, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[DetailRekananOpsBoImpl.foundSameItem] END process <<<");
+        return found;
     }
 }
 

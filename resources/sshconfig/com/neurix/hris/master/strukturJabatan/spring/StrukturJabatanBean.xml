@@ -11,6 +11,7 @@
     <bean id="strukturJabatanBo" class="com.neurix.hris.master.strukturJabatan.bo.impl.StrukturJabatanBoImpl"
           p:strukturJabatanDao-ref="strukturJabatanDao"
           p:positionBagianDao-ref="positionBagianDao"
+          p:positionDao-ref="positionDao"
     />
 
     <bean id="strukturJabatanBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

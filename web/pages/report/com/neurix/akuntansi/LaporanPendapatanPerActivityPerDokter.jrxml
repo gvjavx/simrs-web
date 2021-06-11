@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MutasiJurnal" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" isFloatColumnFooter="true" uuid="772f1804-f1af-4e5f-8cf2-ffcc355aa079">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.4641000000000035"/>
+	<property name="ireport.zoom" value="1.6105100000000039"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -22,17 +22,58 @@
 	<parameter name="reportParams.areaId" class="java.lang.String"/>
 	<parameter name="reportParams.reportId" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[]]>
+		<![CDATA[SELECT
+       akunJurnal.*,
+       riwayatTindakan.nama_tindakan as activityName,
+       dokter.nama_dokter as dokterName,
+       dokter.kodering as koderingDokter,
+       tindakanRawat.id_tindakan,
+       ruangan.nama_ruangan,
+       riwayatTindakan.keterangan as keterangantindakan
+FROM
+     ( select
+              akunJurnal.keterangan,
+              detailActivity.person_id,
+              detailActivity.activity_id as activityId,
+              detailActivity.jumlah as biaya,
+              detailActivity.no_trans as noTrans
+       from
+            it_akun_jurnal akunJurnal
+              inner join it_akun_jurnal_detail y on akunJurnal.no_jurnal = y.no_jurnal
+              inner join it_akun_jurnal_detail_activity detailActivity on y.jurnal_detail_id = detailActivity.jurnal_detail_id
+              join im_akun_kode_rekening kodering on kodering.kode_rekening = y.nomor_rekening
+       where
+           to_char(akunJurnal.tanggal_jurnal, 'MM-yyyy') = $P{periode}
+         and akunJurnal.registered_flag = 'Y'
+         and akunJurnal.branch_id IN ($P!{reportParams.branchId})
+         AND kodering.rekening_id IN (
+         SELECT
+         rekening_id
+         FROM
+         im_akun_report_detail
+         WHERE
+         report_id = $P{reportParams.reportId}
+         AND flag = 'Y'
+         )
+     ) akunJurnal
+       LEFT JOIN it_simrs_riwayat_tindakan riwayatTindakan ON akunJurnal.activityId=riwayatTindakan.id_tindakan
+       LEFT JOIN im_simrs_dokter dokter ON dokter.id_dokter = akunJurnal.person_id
+       LEFT JOIN it_simrs_tindakan_rawat tindakanRawat ON akunJurnal.activityId=tindakanRawat.id_tindakan_rawat
+       LEFT JOIN mt_simrs_ruangan ruangan ON ruangan.id_ruangan=akunJurnal.activityId
+ORDER BY
+         activityId,noTrans]]>
 	</queryString>
-	<field name="dokterId" class="java.lang.String"/>
-	<field name="dokterName" class="java.lang.String"/>
 	<field name="keterangan" class="java.lang.String"/>
-	<field name="activityId" class="java.lang.String"/>
-	<field name="activityName" class="java.lang.String"/>
+	<field name="person_id" class="java.lang.String"/>
+	<field name="activityid" class="java.lang.String"/>
 	<field name="biaya" class="java.math.BigDecimal"/>
-	<field name="noTrans" class="java.lang.String"/>
-	<field name="koderingDokter" class="java.lang.String"/>
-	<field name="idTindakan" class="java.lang.String"/>
+	<field name="notrans" class="java.lang.String"/>
+	<field name="activityname" class="java.lang.String"/>
+	<field name="doktername" class="java.lang.String"/>
+	<field name="koderingdokter" class="java.lang.String"/>
+	<field name="id_tindakan" class="java.lang.String"/>
+	<field name="nama_ruangan" class="java.lang.String"/>
+	<field name="keterangantindakan" class="java.lang.String"/>
 	<variable name="SUM_jumlah" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{biaya}]]></variableExpression>
 	</variable>
@@ -40,7 +81,7 @@
 		<variableExpression><![CDATA[$F{biaya}]]></variableExpression>
 	</variable>
 	<group name="jurnal" isReprintHeaderOnEachPage="true">
-		<groupExpression><![CDATA[$F{activityId}]]></groupExpression>
+		<groupExpression><![CDATA[$F{activityid}]]></groupExpression>
 		<groupHeader>
 			<band height="18" splitType="Stretch">
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
@@ -54,7 +95,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{activityId}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{activityid}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 					<reportElement key="textField" stretchType="RelativeToTallestObject" x="76" y="0" width="491" height="15" printWhenGroupChanges="jurnal" uuid="3e00da47-9e40-4443-a174-0f9ebacf03dd"/>
@@ -67,7 +108,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{activityName}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{activityname}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -388,7 +429,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{koderingDokter}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{person_id}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField" stretchType="RelativeToTallestObject" x="252" y="0" width="62" height="15" uuid="6f0d2eea-6a06-4534-b91a-c9e1d773c5c3"/>
@@ -401,7 +442,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{noTrans}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{notrans}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField" stretchType="RelativeToTallestObject" x="95" y="0" width="157" height="15" uuid="23cda4f5-dbc0-4b71-8150-84cdcc799354"/>
@@ -414,7 +455,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{dokterName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{koderingdokter} +" - "+$F{doktername}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField" stretchType="RelativeToTallestObject" x="476" y="0" width="91" height="15" uuid="93608b2d-8b3a-44ce-8f1c-6ed4483fea81"/>

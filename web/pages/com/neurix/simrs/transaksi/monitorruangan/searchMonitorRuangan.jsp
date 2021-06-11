@@ -108,7 +108,7 @@
         }
 
         function getKelasKamar(){
-            var option = '<option value="">[Select One]</option>';
+            var option = '<option value=""> - </option>';
             dwr.engine.setAsync(true);
             CheckupDetailAction.getListKelasKamar(null, function (res) {
                 if(res.length > 0){
@@ -159,21 +159,17 @@
                             <s:form id="monitorruanganForm" method="post" namespace="/monitorruangan"
                                     action="search_monitorruangan.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
+                                    <label class="control-label col-sm-4">Nama Pasien</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield cssClass="form-control" name="ruangan.namaPasien"></s:textfield>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-sm-4">Kelas Ruangan</label>
                                     <div class="col-sm-4">
-                                        <%--<s:action id="initComboKelas" namespace="/checkupdetail"--%>
-                                                  <%--name="getListComboKelasRuangan_checkupdetail"/>--%>
-                                        <%--<s:select cssStyle="margin-top: 7px"--%>
-                                                  <%--onchange="$(this).css('border',''); listSelectRuangan(this.value)"--%>
-                                                  <%--list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"--%>
-                                                  <%--name="ruangan.idKelasRuangan"--%>
-                                                  <%--listKey="idKelasRuangan"--%>
-                                                  <%--listValue="namaKelasRuangan"--%>
-                                                  <%--headerKey="" headerValue="[Select one]"--%>
-                                                  <%--cssClass="form-control select2"/>--%>
                                             <select id="kelas_kamar" style="margin-top: 7px" class="form-control select2"
                                                     name="ruangan.idKelasRuangan" onchange="listSelectRuangan(this.value)">
-                                                <option value=''>[Select One]</option>
+                                                <option value=''> - </option>
                                             </select>
 
                                     </div>
@@ -187,7 +183,7 @@
                                     <div class="col-sm-4">
                                         <select id="ruangan_ruang" style="margin-top: 7px" class="form-control select2"
                                                 name="ruangan.idRuangan">
-                                            <option value=''>[Select One]</option>
+                                            <option value=''> - </option>
                                         </select>
                                     </div>
                                 </div>
@@ -286,7 +282,7 @@
                                         <div id="id_box" class="btn-trans">
                                             </s:else>
                                             <button class="btn btn-default" style="height: 20px; width: 100%; font-size: 10px; align-content: center">
-                                                <s:property value="namaRuangan"/>-[<s:property value="namaTempatTidur"/>]
+                                                <s:property value="namaRuangan"/> - <span style="font-weight: bold"><s:property value="namaTempatTidur"/></span>
                                             </button>
                                             <div style="text-align:left; cursor:pointer; font-size:11px;">
                                                 <table align="center"
@@ -482,12 +478,13 @@
     }
 
     function listSelectRuangan(id){
-        var option = "<option value=''>[Select One]</option>";
+        var option = "";
         if(id != ''){
-            CheckupDetailAction.listRuangan(id, false, { callback: function (response) {
+            CheckupDetailAction.listJustRuangan(id, null, {
+                callback: function (response) {
                     if (response != null) {
                         $.each(response, function (i, item) {
-                            option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
+                            option += "<option value='" + item.idRuangan + "'>" + item.namaRuangan + "</option>";
                         });
                         $('#ruangan_ruang').html(option);
                     } else {

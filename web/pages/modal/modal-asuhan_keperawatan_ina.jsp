@@ -20,21 +20,6 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    <%--<table style="font-size: 12px" class="table table-striped table-bordered" id="tabel_ina_asuhan">--%>
-                        <%--<thead>--%>
-                        <%--<tr>--%>
-                            <%--<td width="10%" style="vertical-align: middle" align="center">Tanggal Jam</td>--%>
-                            <%--<td width="20%" style="vertical-align: middle" align="center">Diagnosa Keperawatan</td>--%>
-                            <%--<td width="20%" style="vertical-align: middle" align="center">Hasil Luaran Keperawatan</td>--%>
-                            <%--<td width="20%" style="vertical-align: middle" align="center">Planning/ Rencana Tindakan</td>--%>
-                            <%--<td width="20%" style="vertical-align: middle" align="center">Implementasi</td>--%>
-                            <%--<td width="10%" style="vertical-align: middle" align="center">Evaluasi</td>--%>
-                        <%--</tr>--%>
-                        <%--</thead>--%>
-                        <%--<tbody id="body_asuhan">--%>
-
-                        <%--</tbody>--%>
-                    <%--</table>--%>
                         <table class="table" id="tabel_hd_monitoring_hd">
                             <tbody>
                             <tr id="row_ina_asuhan_keperawatan_ina">
@@ -57,7 +42,7 @@
 </div>
 
 <div class="modal fade" id="modal-ina-asuhan_keperawatan_ina">
-    <div class="modal-dialog" style="width: 80%">
+    <div class="modal-dialog modal-xtra">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -98,7 +83,7 @@
                         <div class="form-group">
                             <label class="col-md-2">Diagnosa</label>
                             <div class="col-md-8">
-                                <input class="form-control" id="diagnosa_askep" oninput="searchDiagnosaAskep(this.id, 'all')">
+                                <input autocomplete="off" placeholder="masukkan diagnosa minimal 3 karakter" class="form-control" id="diagnosa_askep" oninput="searchDiagnosaAskep(this.id, 'all')">
                             </div>
                         </div>
                     </div>
@@ -107,7 +92,7 @@
                         <thead>
                         <tr style="font-weight: bold">
                             <td width="20%">Diagnosis</td>
-                            <td width="20%">Hasil</td>
+                            <td width="20%">Tujuan dan Kriteria Hasil</td>
                             <td width="20%">Planning</td>
                             <td width="20%">Implementasi</td>
                             <td width="20%">Evaluasi</td>
@@ -129,8 +114,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button id="save_ina_asuhan_keperawatan_ina" class="btn btn-success pull-right"
-                        onclick="saveAsuhanKeperawatan('asuhan_keperawatan_ina','asuhan')"><i class="fa fa-check"></i>
-                    Save
+                        onclick="saveRA('asuhan_keperawatan_ina','asuhan')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_ina_asuhan_keperawatan_ina" style="display: none; cursor: no-drop" type="button"
                         class="btn btn-success"><i

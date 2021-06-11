@@ -544,6 +544,47 @@
                             </div>
                         </div>
                     </div>
+                    <hr>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-8 text-center">
+                                <div>TTD DPJP</div>
+                                <canvas class="paint-canvas-ttd" id="ttd_dpjp" width="220"
+                                        onmouseover="paintTtd('ttd_dpjp')"></canvas>
+                                <input style="margin-left: 10px" class="form-control nama_dokter_ri" id="nama_dpjp" placeholder="Nama Terang">
+                                <input style="margin-left: 10px; margin-top: 3px" class="form-control sip_dokter_ri" id="sip_dpjp" placeholder="SIP">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="removePaint('ttd_dpjp')"><i class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-8 text-center">
+                                <div>TTD Keluarga</div>
+                                <canvas class="paint-canvas-ttd" id="ttd1_keluarga" width="220"
+                                        onmouseover="paintTtd('ttd1_keluarga')"></canvas>
+                                <input style="margin-left: 10px" class="form-control" id="nama_keluarga" placeholder="Nama Terang">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="removePaint('ttd1_keluarga')"><i class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-8 text-center">
+                                <div>TTD Perawat</div>
+                                <canvas class="paint-canvas-ttd" id="ttd_perawat" width="220"
+                                        onmouseover="paintTtd('ttd_perawat')"></canvas>
+                                <input style="margin-left: 10px" class="form-control nama_petugas" id="nama_perawat" placeholder="Nama Terang">
+                                <input style="margin-left: 10px; margin-top: 3px" class="form-control nip_petugas" id="sip_perawat" placeholder="SIP">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="removePaint('ttd_perawat')"><i class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">

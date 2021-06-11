@@ -20,6 +20,15 @@ public class KeperawatanRawatJalan {
     private String tipe;
     private String namaTerang;
     private String sip;
+    private String noCheckup;
+
+    public String getNoCheckup() {
+        return noCheckup;
+    }
+
+    public void setNoCheckup(String noCheckup) {
+        this.noCheckup = noCheckup;
+    }
 
     public String getSip() {
         return sip;

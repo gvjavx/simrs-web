@@ -8,6 +8,8 @@ import com.neurix.hris.master.profesi.bo.ProfesiBo;
 import com.neurix.hris.master.profesi.model.Profesi;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -359,6 +361,32 @@ public class ProfesiAction extends BaseMasterAction{
         return SUCCESS;
     }
 
+    public String searchProfesiDokter() {
+        logger.info("[ProfesiAction.search] start process >>>");
+
+        Profesi searchProfesi = new Profesi();
+        searchProfesi.setFlag("Y");
+        searchProfesi.setTipeProfesi("dokter");
+        List<Profesi> listOfsearchProfesi = new ArrayList();
+
+        try {
+            listOfsearchProfesi = profesiBoProxy.getByCriteria(searchProfesi);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = profesiBoProxy.saveErrorMessage(e.getMessage(), "ProfesiBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[ProfesiAction.search] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[ProfesiAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return ERROR;
+        }
+        listComboProfesi.addAll(listOfsearchProfesi);
+        return SUCCESS;
+    }
+
     @Override
     public String initForm() {
         logger.info("[ProfesiAction.initForm] start process >>>");
@@ -399,6 +427,20 @@ public class ProfesiAction extends BaseMasterAction{
         logger.info("[ProfesiAction.search] end process <<<");
 
         return "";
+    }
+
+    public String getTipeProfesi(String profesiId){
+        logger.info("[ProfesiAction.getTipeProfesi] start >>>>>>");
+        String tipeProfesi = "";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ProfesiBo profesiBo = (ProfesiBo) ctx.getBean("profesiBoProxy");
+        try{
+            tipeProfesi = profesiBo.getTipeProfesi(profesiId);
+        }catch (GeneralBOException e){
+            logger.error("[ProfesiAction.getTipeProfesi] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retrieving Tipe Profesi, " + e.getMessage());
+        }
+        return tipeProfesi;
     }
 
     public String paging(){

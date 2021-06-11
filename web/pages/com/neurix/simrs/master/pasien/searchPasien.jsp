@@ -453,7 +453,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_password"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_password">
                     <i
@@ -652,7 +652,7 @@
                             <div class="form-group">
                                 <label style="margin-top: 7px">Pendidikan</label>
                                 <s:select id="add_pendidikan"
-                                          list="#{'SD/Sederajat':'SD/Sederajat','SMP/Sederajat':'SMP/Sederajat','SMA/Sederajat':'SMA/Sederajat','S1':'S1','S2':'S3','S3':'S3'}"
+                                          list="#{'Belum Sekolah':'Belum Sekolah','SD/Sederajat':'SD/Sederajat','SMP/Sederajat':'SMP/Sederajat','SMA/Sederajat':'SMA/Sederajat','S1':'S1','S2':'S2','S3':'S3'}"
                                           onchange="$(this).css('border','')"
                                           headerKey="" headerValue="[Select One]"
                                           cssClass="form-control"/>
@@ -665,7 +665,7 @@
                             <div class="form-group">
                                 <label style="margin-top: 7px">Status Perkawinan</label>
                                 <s:select id="add_status_perkawinan"
-                                          list="#{'Kawin':'Kawin','Belum Kawin':'Belum Kawin'}"
+                                          list="#{'Kawin':'Kawin','Belum Kawin':'Belum Kawin','Duda':'Duda','Janda':'Janda'}"
                                           onchange="$(this).css('border','')"
                                           headerKey="" headerValue="[Select One]"
                                           cssClass="form-control"/>
@@ -765,7 +765,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-check"></i> Yes
                 </button>
             </div>
         </div>
@@ -914,7 +914,6 @@
     }
 
     function formateDate(tanggal) {
-
         var tgl = "";
         if (tanggal != null && tanggal != '') {
             tgl = $.datepicker.formatDate("dd-mm-yy", new Date(tanggal));
@@ -1155,13 +1154,10 @@
             images = '';
         }
 
-        console.log(profesi);
-        console.log(suku);
-
         var foto = isCanvasBlank(canvas);
         if (nik != '' && nama != '' && jk != '' && tempatLahir != '' && tanggalLahir != '' &&
             agama != '' && provinsi != '' && kota != '' && kecamatan != '' && desa != '' &&
-            password != '' && statusPerkawinan != '' && pendidikan != '' && !foto && noTelp != '' && profesi != '' && suku != '') {
+            statusPerkawinan != '' && pendidikan != '' && noTelp != '' && profesi != '' && suku != '') {
             $('#modal-confirm-dialog').modal({show: true, backdrop: 'static'});
             $('#save_con').attr('onclick', 'saveEditPasien()');
         }else {
@@ -1207,12 +1203,12 @@
             if (pendidikan == '') {
                 $('#add_pendidikan').css('border', 'solid 1px red');
             }
-            if (password == '') {
-                $('#add_password').css('border', 'solid 1px red');
-            }
-            if(foto){
-                $('#img_ktp_canvas').css('border', 'solid 1px red');
-            }
+            // if (password == '') {
+            //     $('#add_password').css('border', 'solid 1px red');
+            // }
+            // if(foto){
+            //     $('#img_ktp_canvas').css('border', 'solid 1px red');
+            // }
             if(noTelp == ''){
                 $('#add_no_telp').css('border', 'solid 1px red');
             }
@@ -1262,7 +1258,7 @@
         }
 
         if (nik != '' && nama != '' && jk != '' && tempatLahir != '' && tanggalLahir != '' &&
-            agama != '' && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && password != '' && statusPerkawinan != '' && pendidikan != '') {
+            agama != '' && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && statusPerkawinan != '' && pendidikan != '') {
 
             data = {
                 'id_pasien': idPasien,
@@ -1356,9 +1352,9 @@
             if (pendidikan == '') {
                 $('#add_pendidikan').css('border', 'solid 1px red');
             }
-            if (password == '') {
-                $('#add_password').css('border', 'solid 1px red');
-            }
+            // if (password == '') {
+            //     $('#add_password').css('border', 'solid 1px red');
+            // }
         }
 
     }

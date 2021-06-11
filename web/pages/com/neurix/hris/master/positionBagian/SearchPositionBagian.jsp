@@ -250,9 +250,9 @@
                                                     <%--<td>Departement ID</td>--%>
                                                 <td>Name</td>
                                                 <td>Kodering</td>
-                                                    <%--<td>Created Date</td>--%>
+                                                <%--<td>Created Date</td>--%>
                                                 <td>Last Update</td>
-                                                    <%--<td>Created Who</td>--%>
+                                                <%--<td>Created Who</td>--%>
                                                 <td>Last Update Who</td>
                                                 <td>Edit</td>
                                                 <td>Delete</td>

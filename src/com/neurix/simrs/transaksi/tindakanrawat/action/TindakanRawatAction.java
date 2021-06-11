@@ -9,6 +9,7 @@ import com.neurix.simrs.bpjs.eklaim.model.KlaimDetailResponse;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.rekananops.bo.RekananOpsBo;
+import com.neurix.simrs.master.rekananops.model.DetailRekananOps;
 import com.neurix.simrs.master.rekananops.model.RekananOps;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
@@ -20,6 +21,8 @@ import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -141,105 +144,201 @@ public class TindakanRawatAction extends BaseMasterAction {
         return "init_add";
     }
 
-    public CrudResponse saveTindakanRawat(String idDetailCheckup, String idTindakan, String idDokter, String tipeRawat, BigInteger qty, String jenisTransaksi, String idPelayanan, String idRuangan) {
+    public CrudResponse saveTindakanRawat(String data) {
         logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
         CrudResponse response = new CrudResponse();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
         TindakanRawatBo tindakanRawatBo = (TindakanRawatBo) ctx.getBean("tindakanRawatBoProxy");
         RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
+        String userLogin = CommonUtil.userLogin();
+        String userArea = CommonUtil.userBranchLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
         try {
-            String userLogin = CommonUtil.userLogin();
-            String userArea = CommonUtil.userBranchLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-            TindakanRawat tindakanRawat = new TindakanRawat();
-            tindakanRawat.setIdDetailCheckup(idDetailCheckup);
-            tindakanRawat.setIdTindakan(idTindakan);
-            if (!"".equalsIgnoreCase(idRuangan) && idRuangan != null) {
-                tindakanRawat.setIdRuangan(idRuangan);
-            }
+            if(data != null && !"".equalsIgnoreCase(data)){
+                List<TindakanRawat> tindakanRawatList = new ArrayList<>();
+                JSONArray json = new JSONArray(data);
+                if(json.length() > 0){
+                    for (int i=0; i < json.length(); i++){
+                        JSONObject obj = json.getJSONObject(i);
+                        if(obj != null){
+                            TindakanRawat tindakanRawat = new TindakanRawat();
+                            String idRuangan = null;
+                            BigInteger qty = new BigInteger("0");
+                            String idDetailCheckup = obj.getString("id_detail_checkup");
+                            String idTindakan = obj.getString("id_tindakan");
+                            String idDokter = obj.getString("id_dokter");
+                            if(obj.has("qty")){
+                                if(obj.getString("qty") != null && !"".equalsIgnoreCase(obj.getString("qty"))){
+                                    qty = new BigInteger(obj.getString("qty"));
+                                }
+                            }
+                            String jenisTransaksi = obj.getString("jenis_pasien");
+                            String idPelayanan = obj.getString("id_pelayanan");
+                            if(obj.has("id_ruangan")){
+                                if(obj.getString("id_ruangan") != null && !"".equalsIgnoreCase(obj.getString("id_ruangan"))){
+                                    idRuangan = obj.getString("id_ruangan");
+                                }
+                            }
 
-            List<Tindakan> tindakanList = new ArrayList<>();
-            Tindakan tindakan = new Tindakan();
-            tindakan.setIdTindakan(idTindakan);
-            Tindakan tindakanResult = new Tindakan();
-            try {
-                tindakanList = tindakanBo.getDataTindakan(tindakan);
-            } catch (GeneralBOException e) {
-                logger.error("[TindakanRawatAction.saveTindakanRawat] Error when search tarif dan decs tindakan by id ," + "Found problem when saving add data, please inform to your admin.", e);
-            }
-            if (tindakanList.size() > 0) {
-                tindakanResult = tindakanList.get(0);
-            } else {
-                response.setStatus("error");
-                response.setMsg("Tidak dapat menemukan detail tindakan..!");
-                return response;
-            }
+                            tindakanRawat.setIdDetailCheckup(idDetailCheckup);
+                            tindakanRawat.setIdTindakan(idTindakan);
+                            if (!"".equalsIgnoreCase(idRuangan) && idRuangan != null) {
+                                tindakanRawat.setIdRuangan(idRuangan);
+                            }
 
-            RekananOps ops = new RekananOps();
-            if ("rekanan".equalsIgnoreCase(jenisTransaksi) || "bpjs_rekanan".equalsIgnoreCase(jenisTransaksi)) {
-                try {
-                    ops = rekananOpsBo.getDetailRekananOpsByDetail(idDetailCheckup, userArea);
-                } catch (GeneralBOException e) {
-                    logger.error("Error, " + e.getMessage());
+                            List<Tindakan> tindakanList = new ArrayList<>();
+                            Tindakan tindakan = new Tindakan();
+                            tindakan.setIdTindakan(idTindakan);
+                            Tindakan tindakanResult = new Tindakan();
+                            try {
+                                tindakanList = tindakanBo.getDataTindakan(tindakan);
+                            } catch (GeneralBOException e) {
+                                logger.error("[TindakanRawatAction.saveTindakanRawat] Error when search tarif dan decs tindakan by id ," + "Found problem when saving add data, please inform to your admin.", e);
+                            }
+                            if (tindakanList.size() > 0) {
+                                tindakanResult = tindakanList.get(0);
+                            } else {
+                                response.setStatus("error");
+                                response.setMsg("Tidak dapat menemukan detail tindakan..!");
+                                return response;
+                            }
+
+                            RekananOps ops = new RekananOps();
+                            DetailRekananOps detailRekananOps = new DetailRekananOps();
+                            if ("rekanan".equalsIgnoreCase(jenisTransaksi) || "bpjs_rekanan".equalsIgnoreCase(jenisTransaksi)) {
+                                try {
+                                    ops = rekananOpsBo.getDetailRekananOpsByDetail(idDetailCheckup, userArea);
+                                } catch (GeneralBOException e) {
+                                    logger.error("Error, " + e.getMessage());
+                                    response.setStatus("error");
+                                    response.setMsg("Tidak dapat menemukan id detail checkup");
+                                    return response;
+                                }
+
+                                // medapatkan tarif per tindakan rekanan
+                                if (ops != null && ops.getIdRekananOps() != null && !"".equalsIgnoreCase(ops.getIdRekananOps())){
+                                    try {
+                                        detailRekananOps = rekananOpsBo.getTarifRekanan(ops.getIdRekananOps(), userArea, idTindakan);
+                                    } catch (GeneralBOException e) {
+                                        logger.error("Error, " + e.getMessage());
+                                        response.setStatus("error");
+                                        response.setMsg("Tidak dapat menemukan tarif per tindakan rekanan");
+                                        return response;
+                                    }
+                                }
+                                // END
+                            }
+
+                            BigInteger tarifBpjs = tindakanResult.getTarifBpjs();
+                            BigInteger tarifNormal = tindakanResult.getTarif();
+                            if (tindakanResult.getDiskon() != null && !"".equalsIgnoreCase(tindakanResult.getDiskon().toString()) && tindakanResult.getDiskon().intValue() > 0) {
+                                BigDecimal diskonTarif = (new BigDecimal(100).subtract(tindakanResult.getDiskon())).divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                                BigDecimal hasilTarifBpjs = new BigDecimal(tindakanResult.getTarifBpjs()).multiply(diskonTarif);
+                                BigDecimal hasilTarifNormal = new BigDecimal(tindakanResult.getTarif()).multiply(diskonTarif);
+                                tarifBpjs = hasilTarifBpjs.toBigInteger();
+                                tarifNormal = hasilTarifNormal.toBigInteger();
+                            }
+
+                            if ("bpjs".equalsIgnoreCase(jenisTransaksi)) {
+                                tindakanRawat.setTarif(tarifBpjs);
+                            } else if ("rekanan".equalsIgnoreCase(jenisTransaksi)) {
+
+                                if (detailRekananOps != null){
+                                    tindakanRawat.setTarif(new BigInteger(detailRekananOps.getTarif().toString()));
+                                } else {
+                                    if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
+                                        BigDecimal hasil = new BigDecimal(tarifNormal).multiply(ops.getDiskon());
+                                        tindakanRawat.setTarif(hasil.toBigInteger());
+                                    } else {
+                                        tindakanRawat.setTarif(tarifNormal);
+                                    }
+                                }
+                            } else if ("bpjs_rekanan".equalsIgnoreCase(jenisTransaksi)) {
+
+                                if (detailRekananOps != null){
+                                    tindakanRawat.setTarif(new BigInteger(detailRekananOps.getTarifBpjs().toString()));
+                                } else {
+                                    if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
+                                        BigDecimal hasil = new BigDecimal(tarifBpjs).multiply(ops.getDiskon());
+                                        tindakanRawat.setTarif(hasil.toBigInteger());
+                                    } else {
+                                        tindakanRawat.setTarif(tarifBpjs);
+                                    }
+                                }
+
+                            } else {
+                                tindakanRawat.setTarif(tarifNormal);
+                            }
+
+                            tindakanRawat.setNamaTindakan(tindakanResult.getTindakan());
+                            tindakanRawat.setIdDokter(idDokter);
+                            tindakanRawat.setIdPerawat(userLogin);
+                            tindakanRawat.setQty(qty);
+                            tindakanRawat.setTarifTotal(tindakanRawat.getQty().multiply(tindakanRawat.getTarif()));
+                            tindakanRawat.setCreatedWho(userLogin);
+                            tindakanRawat.setLastUpdate(updateTime);
+                            tindakanRawat.setCreatedDate(updateTime);
+                            tindakanRawat.setLastUpdateWho(userLogin);
+                            tindakanRawat.setAction("C");
+                            tindakanRawat.setFlag("Y");
+                            tindakanRawat.setIdPelayanan(idPelayanan);
+                            tindakanRawat.setFlagKonsulGizi(tindakanResult.getFlagKonsulGizi());
+                            tindakanRawatList.add(tindakanRawat);
+                        }else{
+                            response.setStatus("error");
+                            response.setMsg("Tidak ada data yang dikirim...!@-@");
+                        }
+                    }
+
+                    if(tindakanRawatList.size() > 0){
+                        tindakanRawatBo.saveAdd(tindakanRawatList);
+                        response.setStatus("success");
+                        response.setMsg("OK");
+                    }
+                }else{
                     response.setStatus("error");
-                    response.setMsg("Tidak dapat menemukan id detail checkup");
-                    return response;
+                    response.setMsg("Tidak ada data yang dikirim...!@-@");
                 }
+            }else{
+                response.setStatus("error");
+                response.setMsg("Tidak ada data yang dikirim...!@-@");
             }
-
-            BigInteger tarifBpjs = tindakanResult.getTarifBpjs();
-            BigInteger tarifNormal = tindakanResult.getTarif();
-            if (tindakanResult.getDiskon() != null && !"".equalsIgnoreCase(tindakanResult.getDiskon().toString()) && tindakanResult.getDiskon().intValue() > 0) {
-                BigDecimal diskonTarif = (new BigDecimal(100).subtract(tindakanResult.getDiskon())).divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
-                BigDecimal hasilTarifBpjs = new BigDecimal(tindakanResult.getTarifBpjs()).multiply(diskonTarif);
-                BigDecimal hasilTarifNormal = new BigDecimal(tindakanResult.getTarif()).multiply(diskonTarif);
-                tarifBpjs = hasilTarifBpjs.toBigInteger();
-                tarifNormal = hasilTarifNormal.toBigInteger();
-            }
-
-            if ("bpjs".equalsIgnoreCase(jenisTransaksi)) {
-                tindakanRawat.setTarif(tarifBpjs);
-            } else if ("rekanan".equalsIgnoreCase(jenisTransaksi)) {
-                if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
-                    BigDecimal hasil = new BigDecimal(tarifNormal).multiply(ops.getDiskon());
-                    tindakanRawat.setTarif(hasil.toBigInteger());
-                } else {
-                    tindakanRawat.setTarif(tarifNormal);
-                }
-            } else if ("bpjs_rekanan".equalsIgnoreCase(jenisTransaksi)) {
-                if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
-                    BigDecimal hasil = new BigDecimal(tarifBpjs).multiply(ops.getDiskon());
-                    tindakanRawat.setTarif(hasil.toBigInteger());
-                } else {
-                    tindakanRawat.setTarif(tarifBpjs);
-                }
-            } else {
-                tindakanRawat.setTarif(tarifNormal);
-            }
-
-            tindakanRawat.setNamaTindakan(tindakanResult.getTindakan());
-            tindakanRawat.setIdDokter(idDokter);
-            tindakanRawat.setIdPerawat(userLogin);
-            tindakanRawat.setQty(qty);
-            tindakanRawat.setTarifTotal(tindakanRawat.getQty().multiply(tindakanRawat.getTarif()));
-            tindakanRawat.setCreatedWho(userLogin);
-            tindakanRawat.setLastUpdate(updateTime);
-            tindakanRawat.setCreatedDate(updateTime);
-            tindakanRawat.setLastUpdateWho(userLogin);
-            tindakanRawat.setAction("C");
-            tindakanRawat.setFlag("Y");
-            tindakanRawat.setIdPelayanan(idPelayanan);
-
-            response = tindakanRawatBo.saveAdd(tindakanRawat);
-
-        } catch (GeneralBOException e) {
+        } catch (Exception e) {
             logger.error(e.getMessage());
             response.setStatus("error");
             response.setMsg(e.getMessage());
         }
         return response;
+    }
+
+    public DetailRekananOps getTarifDetailRekanaOps(String idDetailCheckup, String idTindakan){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
+
+        String userArea = CommonUtil.userBranchLogin();
+
+        RekananOps ops = new RekananOps();
+        DetailRekananOps detailRekananOps = new DetailRekananOps();
+
+        try {
+            ops = rekananOpsBo.getDetailRekananOpsByDetail(idDetailCheckup, userArea);
+        } catch (GeneralBOException e) {
+            logger.error("Error, " + e.getMessage());
+        }
+
+        // medapatkan tarif per tindakan rekanan
+        if (ops != null && ops.getIdRekananOps() != null && !"".equalsIgnoreCase(ops.getIdRekananOps())){
+            try {
+                detailRekananOps = rekananOpsBo.getTarifRekanan(ops.getIdRekananOps(), userArea, idTindakan);
+            } catch (GeneralBOException e) {
+                logger.error("Error, " + e.getMessage());
+            }
+        }
+
+        return detailRekananOps;
     }
 
     public List<TindakanRawat> listTindakanRawat(String idDetailCheckup) {
@@ -347,6 +446,7 @@ public class TindakanRawatAction extends BaseMasterAction {
             tindakanRawat.setLastUpdateWho(userLogin);
             tindakanRawat.setAction("U");
             tindakanRawat.setIdPelayanan(idPelayanan);
+            tindakanRawat.setFlagKonsulGizi(tindakanResult.getFlagKonsulGizi());
 
             response = tindakanRawatBo.saveEdit(tindakanRawat);
 

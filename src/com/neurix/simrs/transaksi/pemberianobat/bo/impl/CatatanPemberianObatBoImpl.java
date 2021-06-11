@@ -32,6 +32,9 @@ public class CatatanPemberianObatBoImpl implements CatatanPemberianObatBo {
             if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
+            if(bean.getJenis() != null && !"".equalsIgnoreCase(bean.getJenis())){
+                hsCriteria.put("jenis", bean.getJenis());
+            }
 
             List<ItSimrsCatatanPemberianObatEntity> entityList = new ArrayList<>();
             try {
@@ -51,8 +54,12 @@ public class CatatanPemberianObatBoImpl implements CatatanPemberianObatBo {
                     catatan.setAturanPakai(entity.getAturanPakai());
                     catatan.setTanggalMulai(entity.getTanggalMulai());
                     catatan.setTanggalStop(entity.getTanggalStop());
-                    catatan.setTtdDokter(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getTtdDokter());
-                    catatan.setTtdApoteker(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getTtdApoteker());
+                    if(entity.getTtdApoteker() != null && !"".equalsIgnoreCase(entity.getTtdApoteker())){
+                        catatan.setTtdApoteker(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getTtdApoteker());
+                    }
+                    if(entity.getTtdDokter() != null && !"".equalsIgnoreCase(entity.getTtdDokter())){
+                        catatan.setTtdDokter(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getTtdDokter());
+                    }
                     catatan.setKeterangan(entity.getKeterangan());
                     catatan.setStatus(entity.getStatus());
                     catatan.setAction(entity.getAction());
@@ -64,6 +71,7 @@ public class CatatanPemberianObatBoImpl implements CatatanPemberianObatBo {
                     catatan.setNamaTerangDokter(entity.getNamaTerangDokter());
                     catatan.setNamaTerangPerawat(entity.getNamaTerangPerawat());
                     catatan.setSipDokter(entity.getSipDokter());
+                    catatan.setJenis(entity.getJenis());
                     list.add(catatan);
                 }
             }
@@ -99,6 +107,7 @@ public class CatatanPemberianObatBoImpl implements CatatanPemberianObatBo {
             catatanPemberianObatEntity.setNamaTerangDokter(bean.getNamaTerangDokter());
             catatanPemberianObatEntity.setNamaTerangPerawat(bean.getNamaTerangPerawat());
             catatanPemberianObatEntity.setSipDokter(bean.getSipDokter());
+            catatanPemberianObatEntity.setJenis(bean.getJenis());
 
             try {
                 catatanPemberianObatDao.addAndSave(catatanPemberianObatEntity);
@@ -141,6 +150,46 @@ public class CatatanPemberianObatBoImpl implements CatatanPemberianObatBo {
             }
         }
         return response;
+    }
+
+    @Override
+    public void saveUpdate(CatatanPemberianObat bean) throws GeneralBOException {
+        if(bean.getIdCatatanPemberianObat() != null){
+            ItSimrsCatatanPemberianObatEntity catatanPemberianObatEntity = new ItSimrsCatatanPemberianObatEntity();
+            try {
+                catatanPemberianObatEntity = catatanPemberianObatDao.getById("idCatatanPemberianObat", bean.getIdCatatanPemberianObat());
+            }catch (HibernateException e){
+                logger.error(e.getMessage());
+                throw new GeneralBOException(e.getMessage());
+            }
+
+            HashMap hs = new HashMap();
+            hs.put("waktu", catatanPemberianObatEntity.getWaktu());
+            hs.put("created_date", catatanPemberianObatEntity.getCreatedDate());
+            hs.put("id_detail_checkup", catatanPemberianObatEntity.getIdDetailCheckup());
+            hs.put("jenis", catatanPemberianObatEntity.getJenis());
+
+            List<ItSimrsCatatanPemberianObatEntity> pemberianObatEntities = catatanPemberianObatDao.getByCriteria(hs);
+            for (ItSimrsCatatanPemberianObatEntity pemberianObatEntities1: pemberianObatEntities){
+                pemberianObatEntities1.setWaktu(bean.getWaktu());
+                pemberianObatEntities1.setTtdApoteker(bean.getTtdApoteker());
+                pemberianObatEntities1.setTtdDokter(bean.getTtdDokter());
+                pemberianObatEntities1.setKeterangan(bean.getKeterangan());
+                pemberianObatEntities1.setNamaTerangDokter(bean.getNamaTerangDokter());
+                pemberianObatEntities1.setNamaTerangPerawat(bean.getNamaTerangPerawat());
+                pemberianObatEntities1.setSipDokter(bean.getSipDokter());
+                pemberianObatEntities1.setSipPerawat(bean.getSipPerawat());
+                pemberianObatEntities1.setAction("U");
+                pemberianObatEntities1.setLastUpdate(bean.getLastUpdate());
+                pemberianObatEntities1.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    catatanPemberianObatDao.updateAndSave(pemberianObatEntities1);
+                }catch (HibernateException e){
+                    logger.error(e.getMessage());
+                    throw new GeneralBOException(e.getMessage());
+                }
+            }
+        }
     }
 
     public static Logger getLogger() {

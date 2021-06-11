@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.ordergizi.model;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,6 +33,79 @@ public class OrderGizi {
     private String bentukDiet;
     private List<String> listJenisGizi;
     private String waktu;
+    private String idDetailCheckup;
+    private String jenisDiet;
+    private List<String> listSnack = new ArrayList<>();
+    private List<String> listMakananLuar = new ArrayList<>();
+
+    private String idPendampingGizi;
+    private String nama;
+    private String tipe;
+    private String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getIdPendampingGizi() {
+        return idPendampingGizi;
+    }
+
+    public void setIdPendampingGizi(String idPendampingGizi) {
+        this.idPendampingGizi = idPendampingGizi;
+    }
+
+    public String getNama() {
+        return nama;
+    }
+
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
+
+    public List<String> getListSnack() {
+        return listSnack;
+    }
+
+    public void setListSnack(List<String> listSnack) {
+        this.listSnack = listSnack;
+    }
+
+    public List<String> getListMakananLuar() {
+        return listMakananLuar;
+    }
+
+    public void setListMakananLuar(List<String> listMakananLuar) {
+        this.listMakananLuar = listMakananLuar;
+    }
+
+    public String getJenisDiet() {
+        return jenisDiet;
+    }
+
+    public void setJenisDiet(String jenisDiet) {
+        this.jenisDiet = jenisDiet;
+    }
+
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
+    }
+
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
+    }
 
     public String getWaktu() {
         return waktu;

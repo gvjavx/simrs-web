@@ -32,12 +32,13 @@
         $.subscribe('beforeProcessSave', function (event, data) {
             var unit    = document.getElementById("branchId").value;
             var tglFrom = document.getElementById("tglFrom").value;
-            var tglTo = document.getElementById("tglTo").value;
             var nipKasir = document.getElementById("kasir").value;
+            var tipeKasir = document.getElementById("tipe_kasir").value;
+            var reportId = document.getElementById("reportId").value;
 
-            if ( unit != '' && tglFrom != ''&& tglTo != ''&&nipKasir!='') {
+            if ( unit != '' && tglFrom != ''&&nipKasir!=''&&tipeKasir!=''&&reportId!='') {
                 event.originalEvent.options.submit = false;
-                var url = "printReportClosingKasir_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.stTanggalAwal="+tglFrom+"&laporanAkuntansi.stTanggalAkhir="+tglTo+"&laporanAkuntansi.nip="+nipKasir;
+                var url = "printReportClosingKasir_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.stTanggalAwal="+tglFrom+"&laporanAkuntansi.nip="+nipKasir+"&laporanAkuntansi.tipeKasir="+tipeKasir+"&laporanAkuntansi.reportId="+reportId;
                 window.open(url,'_blank');
             } else {
                 event.originalEvent.options.submit = false;
@@ -45,14 +46,51 @@
                 if ( unit == '') {
                     msg += 'Field <strong>Unit </strong> masih belum dipilih' + '<br/>';
                 }
-                if ( tglFrom == '') {
-                    msg += 'Field <strong>Tanggal dari </strong> masih belum dipilih' + '<br/>';
+                if ( tipeKasir == '') {
+                    msg += 'Field <strong>Tipe Kasir </strong> masih belum dipilih' + '<br/>';
                 }
-                if ( tglTo == '') {
-                    msg += 'Field <strong>Tanggal sampai </strong> masih belum dipilih' + '<br/>';
+                if ( tglFrom == '') {
+                    msg += 'Field <strong>Tanggal </strong> masih belum dipilih' + '<br/>';
                 }
                 if ( nipKasir == '') {
                     msg += 'Field <strong>Kasir </strong> masih belum dipilih' + '<br/>';
+                }
+                if ( reportId == '') {
+                    msg += 'Field <strong>Error </strong> hubungi admin' + '<br/>';
+                }
+                document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                $.publish('showErrorValidationDialog');
+            }
+        });
+        $.subscribe('beforeProcessSaveRekap', function (event, data) {
+            var unit    = document.getElementById("branchId").value;
+            var tglFrom = document.getElementById("tglFrom").value;
+            var nipKasir = document.getElementById("kasir").value;
+            var tipeKasir = document.getElementById("tipe_kasir").value;
+            var reportId = document.getElementById("reportId").value;
+
+            if ( unit != '' && tglFrom != ''&&nipKasir!=''&&tipeKasir!=''&&reportId!='') {
+                event.originalEvent.options.submit = false;
+                var url = "printReportRekapClosingKasir_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.stTanggalAwal="+tglFrom+"&laporanAkuntansi.nip="+nipKasir+"&laporanAkuntansi.tipeKasir="+tipeKasir+"&laporanAkuntansi.reportId="+reportId;
+                window.open(url,'_blank');
+            } else {
+                event.originalEvent.options.submit = false;
+                var msg = "";
+                if ( unit == '') {
+                    msg += 'Field <strong>Unit </strong> masih belum dipilih' + '<br/>';
+                }
+                if ( tipeKasir == '') {
+                    msg += 'Field <strong>Tipe Kasir </strong> masih belum dipilih' + '<br/>';
+                }
+                if ( tglFrom == '') {
+                    msg += 'Field <strong>Tanggal </strong> masih belum dipilih' + '<br/>';
+                }
+                if ( nipKasir == '') {
+                    msg += 'Field <strong>Kasir </strong> masih belum dipilih' + '<br/>';
+                }
+                if ( reportId == '') {
+                    msg += 'Field <strong>Error </strong> hubungi admin' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -67,7 +105,6 @@
         });
 
         $.subscribe('errorDialog', function (event, data) {
-
 //            alert(event.originalEvent.request.getResponseHeader('message'));
             document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
             $.publish('showErrorDialog');
@@ -86,7 +123,7 @@
     <section class="content-header">
         <h1>
             Closing Kasir Tunai
-            <small>e-HEALTH</small>
+            <%--<small>e-HEALTH</small>--%>
         </h1>
     </section>
     <!-- Main content -->
@@ -101,7 +138,7 @@
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="laporanAkuntansiForm" method="post"  theme="simple" namespace="/laporanAkuntansi" action="printReportNeracaSaldo_laporanAkuntansi.action" cssClass="form-horizontal">
+                                    <s:form id="laporanAkuntansiForm" method="post"  theme="simple" cssClass="form-horizontal">
                                         <s:hidden name="tipeLaporan" value="neraca_saldo"/>
                                         <table>
                                             <tr>
@@ -115,12 +152,12 @@
                                                 <td>
                                                     <label class="control-label"><small>Unit :</small></label>
                                                 </td>
-                                                <td>
+                                                <td width="300px">
                                                     <table>
-                                                        <s:if test='#laporanAkuntansi.unit == "KP"'>
+                                                        <s:if test='laporanAkuntansi.unit == "01"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="laporanAkuntansi.unit"
-                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" onchange="listKasir();" cssClass="form-control"/>
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"  cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
@@ -141,7 +178,7 @@
                                                             <div class="input-group-addon">
                                                                 <i class="fa fa-calendar"></i>
                                                             </div>
-                                                            <s:textfield id="tglFrom" cssClass="form-control pull-right" onchange="listKasir();"
+                                                            <s:textfield id="tglFrom" cssClass="form-control pull-right"
                                                                          required="false" size="7"  cssStyle="background-color: white" readonly="true"/>
                                                             <script>
                                                                 var today = new Date();
@@ -152,32 +189,25 @@
                                                                 today = dd + '-' + mm + '-' + yyyy;
                                                                 $('#tglFrom').val(today);
                                                             </script>
-                                                            <div class="input-group-addon">
-                                                                s/d
-                                                            </div>
-                                                            <div class="input-group-addon">
-                                                                <i class="fa fa-calendar"></i>
-                                                            </div>
-                                                            <s:textfield id="tglTo" cssClass="form-control pull-right" onchange="listKasir();"
-                                                                         required="false" size="7" cssStyle="background-color: white" readonly="true"/>
-                                                            <script>
-                                                                var today = new Date();
-                                                                var dd = String(today.getDate()).padStart(2, '0');
-                                                                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-                                                                var yyyy = today.getFullYear();
-
-                                                                today = dd + '-' + mm + '-' + yyyy;
-                                                                $('#tglTo').val(today);
-                                                            </script>
                                                         </div>
                                                         <script>
                                                             $('#tglFrom').datepicker({
                                                                 dateFormat: 'dd-mm-yy'
                                                             });
-                                                            $('#tglTo').datepicker({
-                                                                dateFormat: 'dd-mm-yy'
-                                                            });
                                                         </script>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Tipe Kasir :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:select list="#{'kasir_ri':'Kasir Rawat Inap', 'kasir_rj' : 'Kasir Rawat Jalan'}"
+                                                                  id="tipe_kasir"  onchange="listKasir()"
+                                                                  headerKey="" headerValue="[Select One]" cssClass="form-control" />
+                                                        <s:hidden name="laporanAkuntansi.reportId" id="reportId" />
                                                     </table>
                                                 </td>
                                             </tr>
@@ -198,6 +228,13 @@
                                         <div id="actions" class="form-actions">
                                             <table align="center">
                                                 <tr>
+                                                    <td>
+                                                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="laporanAkuntansiForm" id="printRekap" name="printRekap"
+                                                                   onBeforeTopics="beforeProcessSaveRekap">
+                                                            <i class="fa fa-print"></i>
+                                                            Print Rekap
+                                                        </sj:submit>
+                                                    </td>
                                                     <td>
                                                         <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="laporanAkuntansiForm" id="print" name="print"
                                                                    onBeforeTopics="beforeProcessSave">
@@ -286,11 +323,11 @@
     function listKasir(){
         var branchId =$('#branchId').val();
         var tglFrom =$('#tglFrom').val();
-        var tglTo=$('#tglTo').val();
+        var tipeKasir =$('#tipe_kasir').val();
         var option = "";
-        if (branchId!=''&&tglFrom!=''&&tglTo!=''){
-            LaporanAkuntansiAction.listKasirByBranch(branchId,tglFrom,tglTo, function(response){
-                option = "<option value=''>[Select One]</option>";
+        option = "<option value=''>[Select One]</option>";
+        if (branchId!=''&&tglFrom!=''&&tipeKasir!=''){
+            LaporanAkuntansiAction.listKasirByBranch(branchId,tglFrom,tipeKasir, function(response){
                 if (response != null){
                     $.each(response, function (i, item) {
                         option += "<option value='"+item.nip+"'>"+item.shiftName+" | "+item.namaPegawai+ "</option>";
@@ -300,9 +337,9 @@
                 }
             });
             $('#kasir').html(option);
-        }
+        }else { $('#kasir').html(option);}
     }
-    $(document).ready(function () {
+    /*$(document).ready(function () {
         listKasir();
-    })
+    })*/
 </script>

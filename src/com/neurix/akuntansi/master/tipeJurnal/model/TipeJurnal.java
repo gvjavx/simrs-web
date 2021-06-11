@@ -12,6 +12,15 @@ import com.neurix.common.model.BaseModel;
 public class TipeJurnal extends BaseModel {
     private String tipeJurnalId;
     private String tipeJurnalName;
+    private String isOperasional;
+
+    public String getIsOperasional() {
+        return isOperasional;
+    }
+
+    public void setIsOperasional(String isOperasional) {
+        this.isOperasional = isOperasional;
+    }
 
     public String getTipeJurnalId() {
         return tipeJurnalId;

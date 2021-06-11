@@ -36,7 +36,9 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
             if (mapCriteria.get("not_own_branch") != null){
                 criteria.add(Restrictions.ne("branchId", mapCriteria.get("not_own_branch")));
             }
-
+            if (mapCriteria.get("not_null") != null){
+                criteria.add(Restrictions.isNotNull("idHeaderPelayanan"));
+            }
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
         }
 
@@ -300,13 +302,17 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
             if(bean.getKategoriPelayanan() != null && !"".equalsIgnoreCase(bean.getKategoriPelayanan())){
                 condition += "AND b.kategori_pelayanan = '"+bean.getKategoriPelayanan()+"' \n";
             }
+            if(bean.getKodePoliVclaim() != null && !"".equalsIgnoreCase(bean.getKodePoliVclaim())){
+                condition += "AND b.kode_vclaim = '"+bean.getKodePoliVclaim()+"' \n";
+            }
             String SQL = "SELECT\n" +
                     "a.id_pelayanan,\n" +
                     "b.nama_pelayanan,\n" +
                     "b.tipe_pelayanan,\n" +
                     "b.kategori_pelayanan,\n" +
                     "b.divisi_id,\n" +
-                    "b.kode_vclaim\n" +
+                    "b.kode_vclaim,\n" +
+                    "a.branch_id\n" +
                     "FROM im_simrs_pelayanan a\n" +
                     "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
                     "WHERE a.flag = 'Y'\n" + condition +
@@ -323,6 +329,7 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
                 pelayanan.setKategoriPelayanan(obj[3] != null ? obj[3].toString() : "");
                 pelayanan.setDivisiId(obj[4] != null ? obj[4].toString() : "");
                 pelayanan.setKodePoliVclaim(obj[5] != null ? obj[5].toString() : "");
+                pelayanan.setBranchId(obj[6] != null ? obj[6].toString() : "");
             }
         }
         return pelayanan;
@@ -466,4 +473,58 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
 
     }
 
+    public List<Pelayanan> getListPelayananByTipe(String tipe, String branchId){
+
+        String SQL = "SELECT \n" +
+                "b.id_pelayanan,\n" +
+                "a.nama_pelayanan,\n" +
+                "a.tipe_pelayanan,\n" +
+                "a.divisi_id\n" +
+                "FROM\n" +
+                "im_simrs_header_pelayanan a\n" +
+                "INNER JOIN (SELECT id_pelayanan, id_header_pelayanan, branch_id FROM im_simrs_pelayanan WHERE flag = 'Y') b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
+                "WHERE \n" +
+                "b.branch_id = '"+branchId+"'\n" +
+                "AND a.tipe_pelayanan = '"+tipe+"'";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<Pelayanan> listPelayanan = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                Pelayanan pelayanan = new Pelayanan();
+                pelayanan.setIdPelayanan(obj[0].toString());
+                pelayanan.setNamaPelayanan(obj[1].toString());
+                pelayanan.setTipePelayanan(obj[2].toString());
+                pelayanan.setDivisiId(obj[3].toString());
+                listPelayanan.add(pelayanan);
+            }
+        }
+        return listPelayanan;
+    }
+
+    public List<Pelayanan> getListPelayananByBranch(String branchId){
+
+        String SQL = "SELECT \n" +
+                "p.id_pelayanan,\n" +
+                "hp.nama_pelayanan\n" +
+                "FROM (SELECT * FROM im_simrs_pelayanan WHERE flag = 'Y') p \n" +
+                "INNER JOIN im_simrs_header_pelayanan hp ON hp.id_header_pelayanan = p.id_header_pelayanan\n" +
+                "WHERE p.branch_id = '"+branchId+"'";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        if (list.size() > 0){
+
+            for (Object[] obj : list){
+                Pelayanan pelayanan = new Pelayanan();
+                pelayanan.setIdPelayanan(obj[0].toString());
+                pelayanan.setNamaPelayanan(obj[1].toString());
+                pelayananList.add(pelayanan);
+            }
+        }
+
+        return pelayananList;
+    }
 }

@@ -283,7 +283,7 @@
                     window.location.href = "printReportAbsensi_absensi.action?tglFrom="+tglFrom+"&tglTo="+tglTo+"&branchId="+branchId+"&bagian="+bagian+"&nip="+nip+"&divisiId=''";
                 }
             }else{
-                alert("ada yang masih kosong");
+                alert("Unit dan Tanggal Harus Diisi !");
             }
         });
         $('#btnPrintUangMakan').click(function(){
@@ -301,7 +301,7 @@
                     window.location.href = "printReportUangMakan_absensi.action?tglFrom="+tglFrom+"&tglTo="+tglTo+"&branchId="+branchId+"&bagian="+bagian+"&nip="+nip+"&divisiId=''";
                 }
             }else{
-                alert("ada yang masih kosong");
+                alert("Unit dan Tanggal Harus Diisi !");
             }
         });
         $('#btnPrintTriwulan').click(function(){
@@ -311,15 +311,15 @@
             var bagian = document.getElementById("bagian").value;
             var nip = document.getElementById("nip").value;
             if (tglFrom!=""&&tglTo!=""&&branchId!=""){
-                var msg='Apakah Anda ingin mencetak laporan uang makan tanggal '+tglFrom+' sampai tanggal '+tglTo+' ?';
-                if (bagian!=""){
-                    var msg='Apakah Anda ingin mencetak laporan uang makan tanggal '+tglFrom+' sampai tanggal '+tglTo+'  ?';
-                }
+                var msg='Apakah Anda ingin mencetak evaluasi Absensi tanggal '+tglFrom+' sampai tanggal '+tglTo+' ?';
+                // if (bagian!=""){
+                //     var msg='Apakah Anda ingin mencetak evaluasi Absensi tanggal '+tglFrom+' sampai tanggal '+tglTo+'  ?';
+                // }
                 if (confirm(msg)) {
                     window.location.href = "printReportAbsensiTriwulan_absensi.action?tglFrom="+tglFrom+"&tglTo="+tglTo+"&branchId="+branchId+"&bagian="+bagian+"&nip="+nip;
                 }
             }else{
-                alert("ada yang masih kosong");
+                alert("Unit dan Tanggal Harus Diisi !");
             }
         });
         $('#btnCetakKoperasi').click(function(){
@@ -327,12 +327,12 @@
             var tglTo = document.getElementById("tglTo").value;
             var bagian = "KOPERASI";
             if (tglFrom!=""&&tglTo!=""){
-                var msg='Apakah Anda ingin mencetak laporan uang makan tanggal '+tglFrom+' sampai tanggal '+tglTo+' ?';
+                var msg='Apakah Anda ingin mencetak laporan Koperasi tanggal '+tglFrom+' sampai tanggal '+tglTo+' ?';
                 if (confirm(msg)) {
                     window.location.href = "printReportUangMakanTambahan_absensi.action?tglFrom="+tglFrom+"&tglTo="+tglTo+"&bagian="+bagian;
                 }
             }else{
-                alert("ada yang masih kosong");
+                alert("Tanggal harus diisi !");
             }
         });
         $('#btnCetakDapur').click(function(){
@@ -340,12 +340,12 @@
             var tglTo = document.getElementById("tglTo").value;
             var bagian = "DAPUR";
             if (tglFrom!=""&&tglTo!=""){
-                var msg='Apakah Anda ingin mencetak laporan uang makan tanggal '+tglFrom+' sampai tanggal '+tglTo+' ?';
+                var msg='Apakah Anda ingin mencetak laporan Dapur tanggal '+tglFrom+' sampai tanggal '+tglTo+' ?';
                 if (confirm(msg)) {
                     window.location.href = "printReportUangMakanTambahan_absensi.action?tglFrom="+tglFrom+"&tglTo="+tglTo+"&bagian="+bagian;
                 }
             }else{
-                alert("ada yang masih kosong");
+                alert("Tanggal harus diisi !");
             }
         });
         $('#btnCetakAbsensiOutsourcing').click(function(){
@@ -353,12 +353,12 @@
             var tglTo = document.getElementById("tglTo").value;
             var bagian = "OUTSOURCING";
             if (tglFrom!=""&&tglTo!=""){
-                var msg='Apakah Anda ingin mencetak laporan uang makan tanggal '+tglFrom+' sampai tanggal '+tglTo+' ?';
+                var msg='Apakah Anda ingin mencetak laporan Outsourcing tanggal '+tglFrom+' sampai tanggal '+tglTo+' ?';
                 if (confirm(msg)) {
                     window.location.href = "printReportAbsensiOutsourcing_absensi.action?tglFrom="+tglFrom+"&tglTo="+tglTo+"&bagian="+bagian;
                 }
             }else{
-                alert("ada yang masih kosong");
+                alert("Tanggal harus diisi !");
             }
         });
     });

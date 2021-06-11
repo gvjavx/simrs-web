@@ -36,6 +36,60 @@ public class ObatPoli {
 
     private String harga;
     private String idJenisObat;
+    private String namaPabrikObat;
+    private String merk;
+    private String flagBpjs;
+    private BigInteger totalQty;
+    private String idDetailCheckup;
+    private String jenisPasien;
+
+    public String getJenisPasien() {
+        return jenisPasien;
+    }
+
+    public void setJenisPasien(String jenisPasien) {
+        this.jenisPasien = jenisPasien;
+    }
+
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
+    }
+
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
+    }
+
+    public BigInteger getTotalQty() {
+        return totalQty;
+    }
+
+    public void setTotalQty(BigInteger totalQty) {
+        this.totalQty = totalQty;
+    }
+
+    public String getFlagBpjs() {
+        return flagBpjs;
+    }
+
+    public void setFlagBpjs(String flagBpjs) {
+        this.flagBpjs = flagBpjs;
+    }
+
+    public String getNamaPabrikObat() {
+        return namaPabrikObat;
+    }
+
+    public void setNamaPabrikObat(String namaPabrikObat) {
+        this.namaPabrikObat = namaPabrikObat;
+    }
+
+    public String getMerk() {
+        return merk;
+    }
+
+    public void setMerk(String merk) {
+        this.merk = merk;
+    }
 
     public String getIdJenisObat() {
         return idJenisObat;

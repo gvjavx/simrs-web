@@ -6,6 +6,8 @@ import com.neurix.common.action.BaseTransactionAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.transaksi.laporan.bo.LaporanOpsBo;
@@ -151,18 +153,18 @@ public class LaporanOpsAction extends BaseTransactionAction {
 
     public List<Ruangan> listRuangan(String idKelas, String branchId) {
 
-        logger.info("[TindakanRawatAction.listTindakanRawat] start process >>>");
+        logger.info("[LaporanOpsAction.listRuangan] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
         List<Ruangan> ruanganList = new ArrayList<>();
         try {
-            ruanganList = ruanganBo.getJustListRuangan(idKelas, branchId);
+            ruanganList = ruanganBo.getJustListRuangan(idKelas, branchId, null);
         } catch (GeneralBOException e) {
-            logger.error("[TindakanRawatAction.listTindakanRawat] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+            logger.error("[LaporanOpsAction.listRuangan] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
         }
 
-        logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
+        logger.info("[LaporanOpsAction.listRuangan] start process >>>");
         return ruanganList;
     }
 
@@ -176,6 +178,24 @@ public class LaporanOpsAction extends BaseTransactionAction {
             logger.error(e.getMessage());
         }
         return laporanOpsList;
+    }
+
+    public List<Pelayanan> getListPenunjangMedis(String tipePelayanan, String branchId){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LaporanOpsBo laporanOpsBo = (LaporanOpsBo) ctx.getBean("laporanOpsBoProxy");
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        Pelayanan pelayanan = new Pelayanan();
+        pelayanan.setTipePelayanan(tipePelayanan);
+        pelayanan.setBranchId(branchId);
+        if(tipePelayanan != null && !"".equalsIgnoreCase(tipePelayanan) &&
+        branchId != null && !"".equalsIgnoreCase(branchId)){
+            try {
+                pelayananList = laporanOpsBo.getListPenunjangMedis(pelayanan);
+            }catch (Exception e){
+                logger.error(e.getMessage());
+            }
+        }
+        return pelayananList;
     }
 
     public static Logger getLogger() {

@@ -1,5 +1,7 @@
 package com.neurix.common.util;
 
+import com.neurix.akuntansi.transaksi.kas.model.ItAkunLampiranEntity;
+import com.neurix.akuntansi.transaksi.kas.model.Lampiran;
 import com.neurix.authorization.role.model.Roles;
 import com.neurix.authorization.user.model.UserDetailsLogin;
 import com.neurix.common.constant.CommonConstant;
@@ -12,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import sun.misc.BASE64Decoder;
 
 import javax.imageio.*;
 import javax.imageio.stream.ImageInputStream;
@@ -27,7 +30,10 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
 import java.sql.Time;
@@ -38,6 +44,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -427,9 +434,21 @@ public class  CommonUtil {
 
     public static String numbericFormat(BigDecimal number,String pattern) {
 //        NumberFormat nf = NumberFormat.getNumberInstance(Locale.GERMANY); //for indo money format
+        //edited by Aji Noor 07-03-2021 ~ handle jika number bernilai null default jadi 0
+        if(number == null){number = BigDecimal.ZERO;}
         NumberFormat nf = NumberFormat.getNumberInstance(Locale.US); //for international money format
         DecimalFormat df = (DecimalFormat)nf;
         df.applyPattern(pattern);
+        return df.format(number);
+    }
+
+    public static String numbericFormatIndo(BigDecimal number) {
+        NumberFormat nf = NumberFormat.getNumberInstance(Locale.GERMANY); //for indo money format
+        //edited by Aji Noor 07-03-2021 ~ handle jika number bernilai null default jadi 0
+        if(number == null){number = BigDecimal.ZERO;}
+//        NumberFormat nf = NumberFormat.getNumberInstance(Locale.US); //for international money format
+        DecimalFormat df = (DecimalFormat)nf;
+        df.applyPattern("###,###");
         return df.format(number);
     }
 
@@ -693,7 +712,7 @@ public class  CommonUtil {
 
     public static String convertTimestampToStringLengkap(Timestamp date){
         String tanggal = "";
-        String DATE_FORMAT = "dd-MM-yyyy hh:mm:ss";
+        String DATE_FORMAT = "dd-MM-yyyy HH:mm:ss";
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         java.util.Date tanggalApp = date;
         tanggal = sdf.format(tanggalApp);
@@ -1010,6 +1029,9 @@ public class  CommonUtil {
                 break;
             case "16":
                 status="On Call";
+                break;
+            case "17":
+                status="Stand By On Call";
                 break;
         }
         return status;
@@ -1481,6 +1503,38 @@ public class  CommonUtil {
         return m2 - m1 + 1;
     }
 
+    public static String uploadImage(Lampiran lampiran) throws IOException {
+        String result = null;
+        BASE64Decoder decoder = new BASE64Decoder();
+        byte[] decodedBytes;
+        decodedBytes = decoder.decodeBuffer(lampiran.getUploadFile());
+        logger.info("Decoded upload data : " + decodedBytes.length);
+        String potNama = lampiran.getNamaLampiran().replace(" ", "");
+        if (potNama.length() > 20) {
+            potNama = potNama.substring(0, 20);
+        }
+        String randomNumber = "-" + String.valueOf(CommonUtil.getRandomNumberInts(1, 999)) + "-";
+        String fileName = potNama + randomNumber + convertDateToString(new java.util.Date()) + ".png";
+        String folder = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_LAMPIRAN;
+        String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_LAMPIRAN + fileName;
+        Path path = Paths.get(folder);
+        if (!Files.exists(path)) {
+            File file = new File(folder);
+            file.mkdirs();
+        }
+        logger.info("File save path : " + uploadFile);
+        BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+        if (image == null) {
+            logger.error("Buffered Image is null");
+        } else {
+            File f = new File(uploadFile);
+            // write the image
+            ImageIO.write(image, "png", f);
+            result = fileName;
+        }
+        return result;
+    }
+
     public static BigDecimal StringDenganFormatToBigDecimal(String number){
         number = number.replace(".","");
 
@@ -1586,8 +1640,8 @@ public class  CommonUtil {
             props.put("mail.smtp.user", username);
             props.put("mail.smtp.password", password);
             props.put("mail.smtp.port", "587");
-            props.put("mail.smtp.auth", "true");
-            props.put("mail.debug", "true");
+            props.put("mail.smtp.auth", "false");
+            props.put("mail.debug", "false");
 
             Session session = Session.getInstance(props,null);
             MimeMessage message = new MimeMessage(session);
@@ -1617,4 +1671,155 @@ public class  CommonUtil {
             throw new GeneralBOException("Error send email...!"+e.getMessage());
         }
     }
+
+    public static String calculateAge(java.sql.Date birthDate, boolean justTahun) {
+        String umur = "";
+        if (birthDate != null && !"".equalsIgnoreCase(birthDate.toString())) {
+            int years = 0;
+            int months = 0;
+            int days = 0;
+
+            //create calendar object for birth day
+            Calendar birthDay = Calendar.getInstance();
+            birthDay.setTimeInMillis(birthDate.getTime());
+
+            //create calendar object for current day
+            long currentTime = System.currentTimeMillis();
+            Calendar now = Calendar.getInstance();
+            now.setTimeInMillis(currentTime);
+
+            //Get difference between years
+            years = now.get(Calendar.YEAR) - birthDay.get(Calendar.YEAR);
+            int currMonth = now.get(Calendar.MONTH) + 1;
+            int birthMonth = birthDay.get(Calendar.MONTH) + 1;
+
+            //Get difference between months
+            months = currMonth - birthMonth;
+
+            //if month difference is in negative then reduce years by one
+            //and calculate the number of months.
+            if (months < 0) {
+                years--;
+                months = 12 - birthMonth + currMonth;
+                if (now.get(Calendar.DATE) < birthDay.get(Calendar.DATE))
+                    months--;
+            } else if (months == 0 && now.get(Calendar.DATE) < birthDay.get(Calendar.DATE)) {
+                years--;
+                months = 11;
+            }
+
+            //Calculate the days
+            if (now.get(Calendar.DATE) > birthDay.get(Calendar.DATE))
+                days = now.get(Calendar.DATE) - birthDay.get(Calendar.DATE);
+            else if (now.get(Calendar.DATE) < birthDay.get(Calendar.DATE)) {
+                int today = now.get(Calendar.DAY_OF_MONTH);
+                now.add(Calendar.MONTH, -1);
+                days = now.getActualMaximum(Calendar.DAY_OF_MONTH) - birthDay.get(Calendar.DAY_OF_MONTH) + today;
+            } else {
+                days = 0;
+                if (months == 12) {
+                    years++;
+                    months = 0;
+                }
+            }
+
+            if (justTahun) {
+                umur = String.valueOf(years);
+            } else {
+                if (days > 0) {
+                    umur = years + " Tahun, " + months + " Bulan, " + days + " Hari";
+                } else if (months > 0) {
+                    umur = years + " Tahun, " + months + " Bulan";
+                } else {
+                    umur = years + " Tahun";
+                }
+            }
+
+        }
+
+        return umur;
+    }
+
+    public static String sendPostRequest(String requestUrl, String payload) {
+        try {
+            URL url = new URL(requestUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded");
+            connection.setRequestProperty("Accept", "application/json");
+            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
+            writer.write(payload);
+            writer.close();
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuffer jsonString = new StringBuffer();
+            String line;
+            while ((line = br.readLine()) != null) {
+                jsonString.append(line);
+            }
+            br.close();
+            connection.disconnect();
+            return jsonString.toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public static String sendGetRequest(String requestUrl) {
+        try {
+            URL url = new URL(requestUrl);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Authorization", "02210");
+            con.setDoInput(true);
+            con.setDoOutput(true);
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            StringBuffer jsonString = new StringBuffer();
+            String line;
+            while ((line = br.readLine()) != null) {
+                jsonString.append(line);
+            }
+            br.close();
+            con.disconnect();
+            return jsonString.toString();
+        } catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    /*Aji Noor common getComboYear*/
+    public static List<List> initComboPeriode(Integer batasBawah, Integer batasAtas) {
+        List<List> listOfComboPeriode = new ArrayList<>();
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        List listOfPeriode = new ArrayList();
+        int yearBawah = year-batasBawah;
+        int yearAtas = year+batasAtas;
+
+        while (yearBawah <= yearAtas){
+            listOfPeriode.add(yearBawah++);
+        }
+        listOfComboPeriode.addAll(listOfPeriode);
+        return listOfComboPeriode;
+    }
+
+    public static String formatKodeRekeningBintang(String kodeRekening) {
+        String result=kodeRekening;
+        String [] splitKode  =kodeRekening.split("\\.");
+        if(splitKode.length < 5 ) {
+            result="";
+            for (int i = 0; i <= 4; i++) {
+                if (i <= splitKode.length - 1) {
+                    result += splitKode[i];
+                } else {
+                    result += "*";
+                }
+                if (i < 4) {
+                    result += ".";
+                }
+            }
+        }
+        return result;
+    }
+
 }

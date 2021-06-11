@@ -154,12 +154,14 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Rawat Inap Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="myTable" class="table table-bordered table-striped" style="font-size: 13px">
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>ID Detail Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
+                                <td>Umur</td>
+                                <td>Tanggal Masuk</td>
                                 <td>Status</td>
                                 <td align="center">Jenis Pasien</td>
                                 <td align="center">Action</td>
@@ -171,6 +173,8 @@
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="umur"/></td>
+                                    <td><s:property value="formatTglMasuk"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td align="center">
                                         <script>
@@ -222,45 +226,19 @@
         window.open('printGelangPasien_rawatinap.action?id=' + noCheckup, '_blank');
     }
 
-    function listSelectRuangan(id){
-        var idx     = id.selectedIndex;
-        var idKelas = id.options[idx].value;
-        var option  = "";
-        var flag    = false;
-
-        $('#load_ruang').show();
-        setTimeout(function () {
-
-        },100);
-        if(idKelas != ''){
-            CheckupDetailAction.listRuangan(idKelas, flag, { callback: function (response) {
-                option = "<option value=''>[Select One]</option>";
-                if (response != null) {
-                    $.each(response, function (i, item) {
-                        option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
-                    });
-                } else {
-                    option = option;
-                }
-                $('#load_ruang').hide();
-            }
-            });
-        }else{
-            option = "<option value=''>[Select One]</option>";
-        }
-
-        $('#nama_ruangan').html(option);
-    }
-
     function selectKamar(){
         var option = "<option value=''>[Select One]</option>";
-        CheckupDetailAction.listRuangan(null, false, 'kamar_operasi',
-            { callback: function (response) {
+        var idRuangan = '<s:property value="rawatInap.idRuang"/>';
+        CheckupDetailAction.listJustRuangan(null, 'kamar_operasi', {
+            callback: function (response) {
                     if (response.length > 0) {
                         $.each(response, function (i, item) {
                             option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
                         });
                         $('#nama_ruangan').html(option);
+                        if(idRuangan != null && idRuangan != ''){
+                            $('#nama_ruangan').val(idRuangan).trigger('change');
+                        }
                     } else {
                         $('#nama_ruangan').html(option);
                     }

@@ -4,6 +4,8 @@ import com.neurix.common.model.BaseModel;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AsesmenUgd extends BaseModel {
 
@@ -23,6 +25,24 @@ public class AsesmenUgd extends BaseModel {
     private String tipe;
     private String namaTerang;
     private String sip;
+    private List<String> tipeAsesmen = new ArrayList<>();
+    private String noCheckup;
+
+    public String getNoCheckup() {
+        return noCheckup;
+    }
+
+    public void setNoCheckup(String noCheckup) {
+        this.noCheckup = noCheckup;
+    }
+
+    public List<String> getTipeAsesmen() {
+        return tipeAsesmen;
+    }
+
+    public void setTipeAsesmen(List<String> tipeAsesmen) {
+        this.tipeAsesmen = tipeAsesmen;
+    }
 
     public String getNamaTerang() {
         return namaTerang;

@@ -83,10 +83,13 @@ public class TempatTidurDao extends GenericDao<MtSimrsRuanganTempatTidurEntity, 
                 "b.tarif,\n" +
                 "c.id_tempat_tidur,\n" +
                 "c.nama_tempat_tidur,\n" +
-                "c.status\n" +
+                "c.status,\n" +
+                "b.position_id,\n" +
+                "d.kodering\n" +
                 "FROM im_simrs_kelas_ruangan a\n" +
                 "INNER JOIN mt_simrs_ruangan b ON a.id_kelas_ruangan = b.id_kelas_ruangan\n" +
                 "INNER JOIN mt_simrs_ruangan_tempat_tidur c ON b.id_ruangan = c.id_ruangan\n" +
+                "LEFT JOIN im_position d ON d.position_id = b.position_id\n" +
                 "WHERE c.flag = :flag \n" + condition;
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -104,6 +107,8 @@ public class TempatTidurDao extends GenericDao<MtSimrsRuanganTempatTidurEntity, 
                 tempatTidur.setIdTempatTidur(obj[6] != null ? obj[6].toString() : null);
                 tempatTidur.setNamaTempatTidur(obj[7] != null ? obj[7].toString() : null);
                 tempatTidur.setStatus(obj[8] != null ? obj[8].toString() : null);
+                tempatTidur.setPositionId(obj[9] != null ? obj[9].toString() : null);
+                tempatTidur.setKodering(obj[10] != null ? obj[10].toString() : null);
                 tidurList.add(tempatTidur);
             }
         }

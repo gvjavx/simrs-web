@@ -25,7 +25,7 @@
                         <tr>
                             <td width="10%" style="vertical-align: middle" align="center">Tanggal Jam</td>
                             <td width="20%" style="vertical-align: middle" align="center">Diagnosa Keperawatan</td>
-                            <td width="20%" style="vertical-align: middle" align="center">Hasil Luaran Keperawatan</td>
+                            <td width="20%" style="vertical-align: middle" align="center">Tujuan dan Kriteria Hasil</td>
                             <td width="20%" style="vertical-align: middle" align="center">Planning/ Rencana Tindakan</td>
                             <td width="20%" style="vertical-align: middle" align="center">Implementasi</td>
                             <td width="10%" style="vertical-align: middle" align="center">Evaluasi</td>
@@ -87,7 +87,7 @@
                         <div class="form-group">
                             <label class="col-md-2">Diagnosa</label>
                             <div class="col-md-8">
-                                <input class="form-control" id="diagnosa_askep" oninput="searchDiagnosaAskep(this.id, 'rb')">
+                                <input placeholder="masukkan diagnosa minimal 3 karakter" class="form-control" id="diagnosa_askep" oninput="searchDiagnosaAskep(this.id, 'rb')">
                             </div>
                         </div>
                     </div>

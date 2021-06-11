@@ -157,6 +157,10 @@
         <property name="warna">
             <column name="warna" sql-type="varchar" length="100"/>
         </property>
+        <property name="masterId">
+            <column name="master_id" sql-type="varchar" length="10"/>
+        </property>
+
 
         <set name="imAreasBranchesUsers" inverse="true" lazy="true" where="flag='Y'">
             <key>

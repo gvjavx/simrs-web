@@ -38,7 +38,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Data All Parameter Pemeriksaan
+            Data All Tindakan Pemeriksaan Lab & Radiologi
         </h1>
     </section>
 
@@ -259,19 +259,22 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="display: none" id="form_kategori">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Kategori</label>
                         <div class="col-md-7">
                             <s:action id="comboLab" namespace="/kategorilab"
                                       name="getListKategoriLab_kategorilab"/>
-                            <s:select cssStyle="margin-top: 7px; width: 100%"
-                                      list="#comboLab.listOfKategoriLab" id="set_kategori"
-                                      listKey="idKategoriLab"
-                                      onchange="var warn =$('#war_set_kategori').is(':visible'); if (warn){$('#cor_set_kategori').show().fadeOut(3000);$('#war_set_kategori').hide()}"
-                                      listValue="namaKategori"
-                                      headerKey="" headerValue="[Select one]"
-                                      cssClass="form-control select2"/>
+                            <select class="form-control select2" id="set_kategori" style="width: 100%"
+                                    onchange="var warn =$('#war_set_kategori').is(':visible'); if (warn){$('#cor_set_kategori').show().fadeOut(3000);$('#war_set_kategori').hide()}; cekKategori(this.value)"></select>
+
+                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                      <%--list="#comboLab.listOfKategoriLab" id="set_kategori"--%>
+                                      <%--listKey="idKategoriLab"--%>
+                                      <%--onchange="var warn =$('#war_set_kategori').is(':visible'); if (warn){$('#cor_set_kategori').show().fadeOut(3000);$('#war_set_kategori').hide()}"--%>
+                                      <%--listValue="namaKategori"--%>
+                                      <%--headerKey="" headerValue="[Select one]"--%>
+                                      <%--cssClass="form-control select2"/>--%>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -279,6 +282,23 @@
                                 <i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_set_kategori"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <input id="h_new_kategori" type="hidden">
+                <div class="row" style="display: none" id="form_new">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px"><span id="label_kategori"></span></label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="set_new_kategori" style="margin-top: 7px"
+                                   oninput="var warn =$('#war_set_new_kategori').is(':visible'); if (warn){$('#cor_set_new_kategori').show().fadeOut(3000);$('#war_set_new_kategori').hide()}">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_new_kategori">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_set_new_kategori"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                 </div>
@@ -447,6 +467,10 @@
 
     function showModal(tipe, id) {
         if ('add' == tipe) {
+            getKategori(tipe);
+            $('#form_kategori').show();
+            $('#form_new').hide();
+            $('#label_kategori').text("New Kategori");
             $('#save_add').attr('onclick', 'saveParams("")');
             $('#set_judul').text("Tambah Parameter Pemeriksaan");
             $('#modal-add').modal({show: true, backdrop: 'static'});
@@ -456,7 +480,11 @@
             $('#modal-view').modal({show: true, static: 'backdrop'});
         }
         if ('edit' == tipe) {
+            getKategori(tipe);
             getDataParams(id);
+            $('#form_kategori').hide();
+            $('#form_new').show();
+            $('#label_kategori').text("Kategori");
             $('#set_judul').text("Edit Parameter Pemeriksaan");
             $('#save_add').attr('onclick', 'saveParams(\'' + id + '\')');
             $('#modal-add').modal({show: true, static: 'backdrop'});
@@ -477,20 +505,36 @@
             var ketAcuanP = $('#set_ket_acuan_p').val();
             var satuan = $('#set_satuan').val();
             var tarif = $('#h_tarif').val();
-            if (namaPemeriksaan && kategori && ketAcuanL && ketAcuanP && satuan && tarif != '') {
-                data = {
-                    'id_parameter_pemeriksaan':id,
-                    'nama_pemeriksaan': namaPemeriksaan,
-                    'id_kategori_lab': kategori,
-                    'keterangan_acuan_p': ketAcuanP,
-                    'keterangan_acuan_l': ketAcuanL,
-                    'tarif': tarif,
-                    'satuan': satuan
+            var newKat = $('#set_new_kategori').val();
+            var idKat = $('#h_new_kategori').val();
+
+            var tempKategori = "";
+            var newKategori = "N";
+
+            if(kategori == "new"){
+                if(newKat != ''){
+                    tempKategori = newKat;
+                    newKategori = newKat;
                 }
-                var dataString = JSON.stringify(data);
-                $('#save_add').hide();
-                $('#load_add').show();
-                if(id != ''){
+            }else{
+                tempKategori = kategori;
+            }
+
+            if(id != ''){
+                if (namaPemeriksaan && idKat && newKat && ketAcuanL && ketAcuanP && satuan && tarif != '') {
+                    data = {
+                        'id_parameter_pemeriksaan':id,
+                        'nama_pemeriksaan': namaPemeriksaan,
+                        'id_kategori_lab': idKat,
+                        'keterangan_acuan_p': ketAcuanP,
+                        'keterangan_acuan_l': ketAcuanL,
+                        'tarif': tarif,
+                        'satuan': satuan,
+                        'new_kategori_lab': newKat
+                    }
+                    var dataString = JSON.stringify(data);
+                    $('#save_add').hide();
+                    $('#load_add').show();
                     dwr.engine.setAsync(true);
                     ParameterPemeriksaanAction.saveEdit(dataString, {
                         callback: function (response) {
@@ -509,7 +553,45 @@
                             }
                         }
                     });
-                }else{
+                }else {
+                    $('#warning_add').show().fadeOut(5000);
+                    $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
+
+                    if (namaPemeriksaan == '') {
+                        $('#war_set_nama_pemeriksaan').show();
+                    }
+                    if (newKat == '') {
+                        $('#war_set_new_kategori').show();
+                    }
+                    if (ketAcuanP == '') {
+                        $('#war_set_ket_acuan_p').show();
+                    }
+                    if (ketAcuanL == '') {
+                        $('#war_set_ket_acuan_l').show();
+                    }
+                    if (satuan == '') {
+                        $('#war_set_satuan').show();
+                    }
+                    if (tarif == '') {
+                        $('#war_set_tarif').show();
+                    }
+                }
+            }else{
+                if (namaPemeriksaan && tempKategori && ketAcuanL && ketAcuanP && satuan && tarif != '') {
+                    data = {
+                        'id_parameter_pemeriksaan':id,
+                        'nama_pemeriksaan': namaPemeriksaan,
+                        'id_kategori_lab': kategori,
+                        'keterangan_acuan_p': ketAcuanP,
+                        'keterangan_acuan_l': ketAcuanL,
+                        'tarif': tarif,
+                        'satuan': satuan,
+                        'new_kategori_lab': newKategori
+                    }
+
+                    var dataString = JSON.stringify(data);
+                    $('#save_add').hide();
+                    $('#load_add').show();
                     dwr.engine.setAsync(true);
                     ParameterPemeriksaanAction.saveAdd(dataString, {
                         callback: function (response) {
@@ -528,28 +610,31 @@
                             }
                         }
                     });
-                }
-            }else {
-                $('#warning_add').show().fadeOut(5000);
-                $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
+                }else {
+                    $('#warning_add').show().fadeOut(5000);
+                    $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
 
-                if (namaPemeriksaan == '') {
-                    $('#war_set_nama_pemeriksaan').show();
-                }
-                if (kategori == '') {
-                    $('#war_set_kategori').show();
-                }
-                if (ketAcuanP == '') {
-                    $('#war_set_ket_acuan_p').show();
-                }
-                if (ketAcuanL == '') {
-                    $('#war_set_ket_acuan_l').show();
-                }
-                if (satuan == '') {
-                    $('#war_set_satuan').show();
-                }
-                if (tarif == '') {
-                    $('#war_set_tarif').show();
+                    if (namaPemeriksaan == '') {
+                        $('#war_set_nama_pemeriksaan').show();
+                    }
+                    if (kategori == '') {
+                        $('#war_set_kategori').show();
+                    }
+                    if (newKat == '') {
+                        $('#war_set_new_kategori').show();
+                    }
+                    if (ketAcuanP == '') {
+                        $('#war_set_ket_acuan_p').show();
+                    }
+                    if (ketAcuanL == '') {
+                        $('#war_set_ket_acuan_l').show();
+                    }
+                    if (satuan == '') {
+                        $('#war_set_satuan').show();
+                    }
+                    if (tarif == '') {
+                        $('#war_set_tarif').show();
+                    }
                 }
             }
         }
@@ -567,6 +652,8 @@
                 $('#v_tarif').text("Rp. " + formatRupiahAtas(res.tarif));
 
                 $('#set_nama_pemeriksaan').val(res.namaPemeriksaan);
+                $('#set_new_kategori').val(res.namaKategori);
+                $('#h_new_kategori').val(res.idKategoriLab);
                 $('#set_kategori').val(res.idKategoriLab).trigger('change');
                 $('#set_ket_acuan_l').val(res.keteranganAcuanL);
                 $('#set_ket_acuan_p').val(res.keteranganAcuanP);
@@ -597,6 +684,30 @@
                 }
             });
         }
+    }
+
+    function cekKategori(value){
+        if(value == "new"){
+            $('#form_new').show();
+        }else{
+            $('#form_new').hide();
+        }
+
+    }
+
+    function getKategori(tipe){
+        var option = '<option value="">[Select One]</option>';
+        ParameterPemeriksaanAction.getListKategoriLab(function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    option += '<option value="'+item.idKategoriLab+'">'+item.namaKategori+'</option>';
+                });
+                if('add' == tipe){
+                    option = option + '<option value="new">New Kategori</option>';
+                }
+            }
+            $('#set_kategori').html(option);
+        });
     }
 
 </script>

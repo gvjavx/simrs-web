@@ -80,7 +80,9 @@ public class RingkasanPasienAction {
                     }
                     ringkasanPasien.setTipe(obj.getString("tipe"));
                 }else{
-                    ringkasanPasien.setJawaban(obj.getString("jawaban"));
+                    if(obj.has("jawaban")){
+                        ringkasanPasien.setJawaban(obj.getString("jawaban"));
+                    }
                 }
 
                 if (obj.has("jenis")) {
@@ -180,7 +182,7 @@ public class RingkasanPasienAction {
                             status.setLastUpdate(time);
                             response = rekamMedikBo.saveEdit(status);
                         }
-                    }catch (JSONException e){
+                    }catch (Exception e){
                         response.setStatus("error");
                         response.setMsg(e.getMessage());
                     }

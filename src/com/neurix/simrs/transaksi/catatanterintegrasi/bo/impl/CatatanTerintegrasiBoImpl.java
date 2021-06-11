@@ -53,7 +53,9 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
                     catatan.setSubjective(entity.getSubjective());
                     catatan.setIntruksi(entity.getIntruksi());
                     catatan.setTtdPetugas(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getTtdPetugas());
-                    catatan.setTtdDpjp(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getTtdDpjp());
+                    if(entity.getTtdDpjp() != null && !"".equalsIgnoreCase(entity.getTtdDpjp())){
+                        catatan.setTtdDpjp(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getTtdDpjp());
+                    }
                     catatan.setKeterangan(entity.getKeterangan());
                     catatan.setAction(entity.getAction());
                     catatan.setFlag(entity.getFlag());
@@ -72,6 +74,22 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
                     catatan.setNamaPetugas(entity.getNamaPetugas());
                     catatan.setSipDokter(entity.getSipDokter());
                     catatan.setSipPetugas(entity.getSipPetugas());
+                    catatan.setKesadaran(entity.getKesadaran());
+                    catatan.setSpo2(entity.getSpo2());
+                    catatan.setO2(entity.getO2());
+                    catatan.setEws(entity.getEws());
+                    catatan.setKesimpulan(entity.getKesimpulan());
+                    catatan.setMonitoring(entity.getMonitoring());
+                    catatan.setDataEws(entity.getDataEws());
+                    catatan.setNamaPemberi(entity.getNamaPemberi());
+                    catatan.setSipPemberi(entity.getSipPemberi());
+                    catatan.setTtdPemberi(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getTtdPemberi());
+                    catatan.setNamaPenerima(entity.getNamaPenerima());
+                    catatan.setSipPenerima(entity.getSipPenerima());
+                    if(entity.getTtdPenerima() != null && !"".equalsIgnoreCase(entity.getTtdPenerima())){
+                        catatan.setTtdPenerima(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getTtdPenerima());
+                    }
+                    catatan.setTipe(entity.getTipe());
                     list.add(catatan);
                 }
             }
@@ -112,6 +130,22 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
             catatanTerintegrasiEntity.setNamaPetugas(bean.getNamaPetugas());
             catatanTerintegrasiEntity.setSipDokter(bean.getSipDokter());
             catatanTerintegrasiEntity.setSipPetugas(bean.getSipPetugas());
+            catatanTerintegrasiEntity.setKesadaran(bean.getKesadaran());
+            catatanTerintegrasiEntity.setSpo2(bean.getSpo2());
+            catatanTerintegrasiEntity.setO2(bean.getO2());
+            catatanTerintegrasiEntity.setEws(bean.getEws());
+            catatanTerintegrasiEntity.setKesimpulan(bean.getKesimpulan());
+            catatanTerintegrasiEntity.setMonitoring(bean.getMonitoring());
+            catatanTerintegrasiEntity.setDataEws(bean.getDataEws());
+
+            catatanTerintegrasiEntity.setNamaPemberi(bean.getNamaPemberi());
+            catatanTerintegrasiEntity.setSipPemberi(bean.getSipPemberi());
+            catatanTerintegrasiEntity.setTtdPemberi(bean.getTtdPemberi());
+
+            catatanTerintegrasiEntity.setNamaPenerima(bean.getNamaPenerima());
+            catatanTerintegrasiEntity.setSipPenerima(bean.getSipPenerima());
+            catatanTerintegrasiEntity.setTtdPenerima(bean.getTtdPenerima());
+            catatanTerintegrasiEntity.setTipe(bean.getTipe());
 
             try {
                 catatanTerintegrasiDao.addAndSave(catatanTerintegrasiEntity);
@@ -157,6 +191,52 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
             response.setMsg("Found Error, Data yang dicari tidak ditemukan...!");
         }
         return response;
+    }
+
+    @Override
+    public void saveEdit(CatatanTerintegrasi bean) throws GeneralBOException {
+        ItSimrsCatatanTerintegrasiEntity entity = new ItSimrsCatatanTerintegrasiEntity();
+        try {
+            entity = catatanTerintegrasiDao.getById("idCatatanTerintegrasi", bean.getIdCatatanTerintegrasi());
+        } catch (HibernateException e) {
+            logger.error(e.getMessage());
+            throw new GeneralBOException("Error when get id cppt, "+e.getMessage());
+        }
+        if (entity != null) {
+            if(bean.getTtdDpjp() != null && !"".equalsIgnoreCase(bean.getTtdDpjp())){
+                entity.setTtdDpjp(bean.getTtdDpjp());
+            }
+            if(bean.getNamaDokter() != null && !"".equalsIgnoreCase(bean.getNamaDokter())){
+                entity.setNamaDokter(bean.getNamaDokter());
+            }
+            if(bean.getSipDokter() != null && !"".equalsIgnoreCase(bean.getSipDokter())){
+                entity.setSipDokter(bean.getSipDokter());
+            }
+
+            if(bean.getTtdPenerima() != null && !"".equalsIgnoreCase(bean.getTtdPenerima())){
+                entity.setTtdPenerima(bean.getTtdPenerima());
+            }
+            if(bean.getNamaPenerima() != null && !"".equalsIgnoreCase(bean.getNamaPenerima())){
+                entity.setNamaPenerima(bean.getNamaPenerima());
+            }
+            if(bean.getSipPenerima() != null && !"".equalsIgnoreCase(bean.getSipPenerima())){
+                entity.setSipPenerima(bean.getSipPenerima());
+            }
+
+            entity.setFlag("Y");
+            entity.setAction("U");
+            entity.setLastUpdate(bean.getLastUpdate());
+            entity.setLastUpdateWho(bean.getLastUpdateWho());
+            try {
+                catatanTerintegrasiDao.updateAndSave(entity);
+            } catch (HibernateException e) {
+                logger.error(e.getMessage());
+                throw new GeneralBOException("Error when saveedit cppt, "+e.getMessage());
+            }
+        } else {
+            logger.error("Data cppt tidak ditemukan");
+            throw new GeneralBOException("Data cppt tidak ditemukan");
+        }
     }
 
     public static Logger getLogger() {

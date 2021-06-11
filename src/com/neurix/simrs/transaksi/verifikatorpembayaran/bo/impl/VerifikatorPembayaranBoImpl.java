@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.verifikatorpembayaran.bo.impl;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.shift.model.Shift;
@@ -225,18 +226,38 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                         pembayaranOnline.setNoSep(antrianTelemedicEntity.getNoSep());
                         pembayaranOnline.setFlagEresep(antrianTelemedicEntity.getFlagEresep());
                         if ("konsultasi".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
-                            if ("Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagBayarKonsultasi())){
-                                pembayaranOnline.setFlagBayar("Y");
-                                pembayaranOnline.setUrutan(2);
+                            if (CommonConstant.JENIS_PEMBAYARAN_VA.equalsIgnoreCase(pembayaranOnlineEntity.getTipePembayaran())){
+                                if (pembayaranOnlineEntity.getNoJurnal() != null){
+                                    pembayaranOnline.setFlagBayar("Y");
+                                    pembayaranOnline.setUrutan(2);
+                                } else {
+                                    pembayaranOnline.setUrutan(1);
+                                }
                             } else {
-                                pembayaranOnline.setUrutan(1);
+                                if ("Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagBayarKonsultasi())){
+                                    pembayaranOnline.setFlagBayar("Y");
+                                    pembayaranOnline.setUrutan(2);
+                                } else {
+                                    pembayaranOnline.setUrutan(1);
+                                }
                             }
+
                         } else if ("resep".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
-                            if ("Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagBayarResep())){
-                                pembayaranOnline.setFlagBayar("Y");
-                                pembayaranOnline.setUrutan(2);
+
+                            if (CommonConstant.JENIS_PEMBAYARAN_VA.equalsIgnoreCase(pembayaranOnlineEntity.getTipePembayaran())){
+                                if (pembayaranOnlineEntity.getNoJurnal() != null){
+                                    pembayaranOnline.setFlagBayar("Y");
+                                    pembayaranOnline.setUrutan(2);
+                                } else {
+                                    pembayaranOnline.setUrutan(1);
+                                }
                             } else {
-                                pembayaranOnline.setUrutan(1);
+                                if ("Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagBayarResep())){
+                                    pembayaranOnline.setFlagBayar("Y");
+                                    pembayaranOnline.setUrutan(2);
+                                } else {
+                                    pembayaranOnline.setUrutan(1);
+                                }
                             }
                         }
                         pembayaranOnline.setNoKartu(antrianTelemedicEntity.getNoKartu());
@@ -1281,5 +1302,20 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
     @Override
     public String generateIdSementara() {
         return transaksiStokDao.getNextSeq();
+    }
+
+    @Override
+    public List<AntrianTelemedic> reportVa (String dateFrom, String dateTo, String branchId) throws GeneralBOException {
+        logger.info("[VerifikatorPembayaranBoImpl.reportVa] START >>>>>>");
+        List<AntrianTelemedic> listResult = new ArrayList<>();
+
+        try{
+            listResult = verifikatorPembayaranDao.reportVa(dateFrom, dateTo, branchId);
+        }catch (HibernateException e){
+            logger.error("[VerifikatorPembayaranBoImpl] Error, " + e.getMessage());
+            throw new GeneralBOException("Error when retrieving data for report VA, " + e.getMessage());
+        }
+        logger.info("[VerifikatorPembayaranBoImpl.reportVa]  END  <<<<<<");
+        return listResult;
     }
 }

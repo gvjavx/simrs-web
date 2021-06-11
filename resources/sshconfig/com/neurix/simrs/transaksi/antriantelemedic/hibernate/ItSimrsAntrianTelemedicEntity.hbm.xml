@@ -116,6 +116,9 @@
             <basic name="idRekening">
                 <column name="id_rekening"/>
             </basic>
+            <basic name="flagCall">
+                <column name="flag_call"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

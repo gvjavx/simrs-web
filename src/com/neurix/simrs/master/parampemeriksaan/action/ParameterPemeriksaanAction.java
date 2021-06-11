@@ -3,6 +3,8 @@ package com.neurix.simrs.master.parampemeriksaan.action;
 import com.neurix.common.action.BaseTransactionAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.kategorilab.bo.KategoriLabBo;
+import com.neurix.simrs.master.kategorilab.model.KategoriLab;
 import com.neurix.simrs.master.parampemeriksaan.bo.ParameterPemeriksaanBo;
 import com.neurix.simrs.master.parampemeriksaan.model.ParameterPemeriksaan;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -56,6 +58,7 @@ public class ParameterPemeriksaanAction extends BaseTransactionAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", pemeriksaanList);
+        setPemeriksaan(parameterPemeriksaan);
         return "search";
     }
 
@@ -83,6 +86,9 @@ public class ParameterPemeriksaanAction extends BaseTransactionAction {
                 pemeriksaan.setKeteranganAcuanL(object.getString("keterangan_acuan_l"));
                 pemeriksaan.setTarif(new BigDecimal(object.getString("tarif")));
                 pemeriksaan.setSatuan(object.getString("satuan"));
+                if(object.has("new_kategori_lab")){
+                    pemeriksaan.setNamaKategori(object.getString("new_kategori_lab"));
+                }
                 pemeriksaan.setCreatedWho(userLogin);
                 pemeriksaan.setLastUpdate(updateTime);
                 pemeriksaan.setCreatedDate(updateTime);
@@ -118,6 +124,9 @@ public class ParameterPemeriksaanAction extends BaseTransactionAction {
                 pemeriksaan.setKeteranganAcuanL(object.getString("keterangan_acuan_l"));
                 pemeriksaan.setTarif(new BigDecimal(object.getString("tarif")));
                 pemeriksaan.setSatuan(object.getString("satuan"));
+                if(object.has("new_kategori_lab")){
+                    pemeriksaan.setNamaKategori(object.getString("new_kategori_lab"));
+                }
                 pemeriksaan.setLastUpdate(updateTime);
                 pemeriksaan.setLastUpdateWho(userLogin);
                 pemeriksaan.setAction("U");
@@ -153,6 +162,19 @@ public class ParameterPemeriksaanAction extends BaseTransactionAction {
             response.setMsg("Mohon maaf data tindakan tidak ada...!");
         }
         return response;
+    }
+
+    public List<KategoriLab> getListKategoriLab(){
+        List<KategoriLab> kategoriLabList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KategoriLabBo kategoriLabBo = (KategoriLabBo) ctx.getBean("kategoriLabBoProxy");
+        KategoriLab kategoriLab = new KategoriLab();
+        try {
+            kategoriLabList = kategoriLabBo.getByCriteria(kategoriLab);
+        }catch (GeneralBOException e){
+            logger.error("Error when get kategori lab ," + "Found problem when saving add data, please inform to your admin.", e);
+        }
+        return kategoriLabList;
     }
 
     public ParameterPemeriksaan getPemeriksaan() {

@@ -23,6 +23,7 @@ import com.neurix.simrs.transaksi.paketperiksa.bo.PaketPeriksaBo;
 import com.neurix.simrs.transaksi.paketperiksa.model.PaketPasien;
 import com.neurix.simrs.transaksi.paketperiksa.model.PaketPeriksa;
 import com.opensymphony.xwork2.ModelDriven;
+import io.agora.recording.common.Common;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
@@ -636,6 +637,8 @@ public class PelayananController implements ModelDriven<Object> {
                   pelayananMobile.setIdItem(item.getIdItem());
                   pelayananMobile.setNamaItem(item.getNamaItem());
                   pelayananMobile.setJenisItem(item.getJenisItem());
+                  pelayananMobile.setTarifAwal(CommonUtil.numbericFormat(item.getTarifAwal(),"###,###"));
+                  pelayananMobile.setTarif(CommonUtil.numbericFormat(item.getTarif(), "###,###"));
 
                   listOfPelayanan.add(pelayananMobile);
               }

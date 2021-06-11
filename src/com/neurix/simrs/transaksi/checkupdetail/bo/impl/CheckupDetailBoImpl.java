@@ -1,12 +1,14 @@
 package com.neurix.simrs.transaksi.checkupdetail.bo.impl;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.dokter.dao.DokterDao;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
+import com.neurix.simrs.master.pasien.dao.PasienDao;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
-import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.ruangan.dao.RuanganDao;
 import com.neurix.simrs.master.ruangan.dao.TempatTidurDao;
@@ -28,16 +30,12 @@ import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.dao.UangMukaDao;
-import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
-import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
-import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
-import com.neurix.simrs.transaksi.checkupdetail.model.RiwayatTindakanDTO;
+import com.neurix.simrs.transaksi.checkupdetail.dao.UploadPendukungPemeriksaanDao;
+import com.neurix.simrs.transaksi.checkupdetail.model.*;
 import com.neurix.simrs.transaksi.diagnosarawat.dao.DiagnosaRawatDao;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.diagnosarawat.model.ItSimrsDiagnosaRawatEntity;
 import com.neurix.simrs.transaksi.ordergizi.dao.OrderGiziDao;
-import com.neurix.simrs.transaksi.ordergizi.model.ItSimrsOrderGiziEntity;
-import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
 import com.neurix.simrs.transaksi.paketperiksa.dao.PaketPasienDao;
 import com.neurix.simrs.transaksi.paketperiksa.model.ItSimrsPaketPasienEntity;
 import com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDao;
@@ -53,17 +51,15 @@ import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEn
 import com.neurix.simrs.transaksi.teamdokter.dao.DokterTeamDao;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
-import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 import com.neurix.simrs.transaksi.tindakanrawat.dao.TindakanRawatDao;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
-import org.apache.log4j.Hierarchy;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -92,6 +88,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     private PaketPasienDao paketPasienDao;
     private TempatTidurDao tempatTidurDao;
     private PelayananDao pelayananDao;
+    private PasienDao pasienDao;
+    private UploadPendukungPemeriksaanDao uploadPendukungPemeriksaanDao;
 
     @Override
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
@@ -289,8 +287,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     @Override
     public CrudResponse updateDetailCheckup(List<HeaderDetailCheckup> list) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        if(list.size() > 0){
-            for (HeaderDetailCheckup bean: list){
+        if (list.size() > 0) {
+            for (HeaderDetailCheckup bean : list) {
                 try {
                     ItSimrsHeaderChekupEntity chekupEntity = new ItSimrsHeaderChekupEntity();
                     ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
@@ -439,17 +437,17 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     public CrudResponse setNoRujukan(HeaderDetailCheckup bean) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
         ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
-        if(bean.getNoRujukanInternal() != null && !"".equalsIgnoreCase(bean.getNoRujukanInternal())){
+        if (bean.getNoRujukanInternal() != null && !"".equalsIgnoreCase(bean.getNoRujukanInternal())) {
             try {
                 entity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
                 response.setStatus("success");
                 response.setMsg("Berhasil");
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error(e.getMessage());
                 response.setStatus("error");
-                response.setMsg("Error when search data detail checkup, "+e.getMessage());
+                response.setMsg("Error when search data detail checkup, " + e.getMessage());
             }
-            if(entity != null){
+            if (entity != null) {
                 entity.setNoRujukanInternal(bean.getNoRujukanInternal());
                 entity.setAction("U");
                 entity.setLastUpdate(bean.getLastUpdate());
@@ -459,16 +457,167 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                     checkupDetailDao.updateAndSave(entity);
                     response.setStatus("success");
                     response.setMsg("Berhasil");
-                }catch (HibernateException e){
+                } catch (HibernateException e) {
                     response.setStatus("error");
-                    response.setMsg("Error when search data detail checkup, "+e.getMessage());
+                    response.setMsg("Error when search data detail checkup, " + e.getMessage());
                 }
             }
-        }else{
+        } else {
             response.setStatus("error");
             response.setMsg("No rujukan tidak ditemukan...!");
         }
         return response;
+    }
+
+    @Override
+    public CrudResponse saveUploadPemeriksaan(ItSimrsUploadPendukungPemeriksaanEntity bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        if (bean != null) {
+            List<ItSimrsUploadPendukungPemeriksaanEntity> pemeriksaanEntityList = new ArrayList<>();
+            HashMap hsCriteria = new HashMap();
+            hsCriteria.put("url_img", bean.getUrlImg());
+            hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+            try {
+                pemeriksaanEntityList = uploadPendukungPemeriksaanDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e) {
+                logger.error(e.getMessage());
+            }
+            if (pemeriksaanEntityList.size() > 0) {
+                for (ItSimrsUploadPendukungPemeriksaanEntity pendukungPemeriksaanEntity : pemeriksaanEntityList) {
+                    try {
+                        uploadPendukungPemeriksaanDao.deleteAndSave(pendukungPemeriksaanEntity);
+                    } catch (HibernateException e) {
+                        logger.error(e.getMessage());
+                        throw new GeneralBOException("Error when delete data" + e.getMessage());
+                    }
+                }
+            }
+
+            bean.setIdUpload(uploadPendukungPemeriksaanDao.getNextId());
+            try {
+                uploadPendukungPemeriksaanDao.addAndSave(bean);
+                response.setMsg(bean.getIdUpload());
+            } catch (HibernateException e) {
+                logger.error(e.getMessage());
+                throw new GeneralBOException("Error when save data" + e.getMessage());
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public void deleteUploadPemeriksaan(String id) throws GeneralBOException {
+        if (id != null) {
+            ItSimrsUploadPendukungPemeriksaanEntity pendukungPemeriksaanEntity = uploadPendukungPemeriksaanDao.getById("idUpload", id);
+            if (pendukungPemeriksaanEntity != null) {
+                try {
+                    uploadPendukungPemeriksaanDao.deleteAndSave(pendukungPemeriksaanEntity);
+                    File myFile = new File(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_PENDUKUNG_PEMERIKSAAN + pendukungPemeriksaanEntity.getUrlImg());
+                    if (!myFile.isDirectory()) {
+                        myFile.delete();
+                    }
+                } catch (HibernateException e) {
+                    logger.error(e.getMessage());
+                    throw new GeneralBOException("Error when delete data");
+                }
+            }
+        }
+    }
+
+    @Override
+    public List<UploadPendukungPemeriksaan> getListUploadPemeriksaan(UploadPendukungPemeriksaan bean) throws GeneralBOException {
+        List<UploadPendukungPemeriksaan> uploadPendukungPemeriksaanList = new ArrayList<>();
+        if (bean != null) {
+            List<ItSimrsUploadPendukungPemeriksaanEntity> pendukungPemeriksaanEntityList = new ArrayList<>();
+            HashMap hsCriteria = new HashMap();
+            if (bean.getIdUpload() != null) {
+                hsCriteria.put("id_upload", bean.getIdUpload());
+            }
+            if (bean.getIdDetailCheckup() != null) {
+                hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+            }
+            try {
+                pendukungPemeriksaanEntityList = uploadPendukungPemeriksaanDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e) {
+                logger.error(e.getMessage());
+            }
+            if (pendukungPemeriksaanEntityList.size() > 0) {
+                for (ItSimrsUploadPendukungPemeriksaanEntity entity : pendukungPemeriksaanEntityList) {
+                    UploadPendukungPemeriksaan pendukungPemeriksaanEntity = new UploadPendukungPemeriksaan();
+                    pendukungPemeriksaanEntity.setIdUpload(entity.getIdUpload());
+                    pendukungPemeriksaanEntity.setIdDetailCheckup(entity.getIdDetailCheckup());
+                    pendukungPemeriksaanEntity.setKeterangan(entity.getKeterangan());
+                    pendukungPemeriksaanEntity.setUrlImg(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_PENDUKUNG_PEMERIKSAAN + entity.getUrlImg());
+                    pendukungPemeriksaanEntity.setFlag(entity.getFlag());
+                    pendukungPemeriksaanEntity.setAction(entity.getAction());
+                    pendukungPemeriksaanEntity.setCreatedWho(entity.getCreatedWho());
+                    pendukungPemeriksaanEntity.setCreatedDate(entity.getCreatedDate());
+                    pendukungPemeriksaanEntity.setLastUpdateWho(entity.getLastUpdateWho());
+                    pendukungPemeriksaanEntity.setLastUpdate(entity.getLastUpdate());
+                    uploadPendukungPemeriksaanList.add(pendukungPemeriksaanEntity);
+                }
+            }
+        }
+        return uploadPendukungPemeriksaanList;
+    }
+
+    @Override
+    public ItSimrsHeaderDetailCheckupEntity getEntityById(String id) throws GeneralBOException {
+        ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
+        try {
+            entity = checkupDetailDao.getById("idDetailCheckup", id);
+        } catch (HibernateException e) {
+            logger.error(e.getMessage());
+        }
+        return entity;
+    }
+
+    @Override
+    public void sendToTppti(HeaderDetailCheckup bean) throws GeneralBOException {
+        if (bean != null) {
+            ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
+            try {
+                entity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
+            } catch (HibernateException e) {
+                logger.error(e.getMessage());
+            }
+            if (entity != null) {
+                entity.setAction("U");
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setTindakLanjut(bean.getTindakLanjut());
+                entity.setKeteranganSelesai(bean.getKeteranganSelesai());
+                entity.setIndikasi(bean.getIndikasi());
+                try {
+                    checkupDetailDao.updateAndSave(entity);
+                } catch (HibernateException e) {
+                    logger.error(e.getMessage());
+                }
+            }
+        }
+    }
+
+    @Override
+    public void updateStatusPeriksa(HeaderDetailCheckup bean) throws GeneralBOException {
+        if (bean != null) {
+            ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
+            try {
+                entity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
+            } catch (HibernateException e) {
+                logger.error(e.getMessage());
+            }
+            if (entity != null) {
+                entity.setAction("U");
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setStatusPeriksa(bean.getStatusPeriksa());
+                try {
+                    checkupDetailDao.updateAndSave(entity);
+                } catch (HibernateException e) {
+                    logger.error(e.getMessage());
+                }
+            }
+        }
     }
 
     @Override
@@ -523,6 +672,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             detailCheckup.setPerujuk(entity.getRujuk());
             detailCheckup.setSuratRujukan(entity.getUrlDocRujuk());
             detailCheckup.setDibayarPasien(entity.getDibayarPasien() != null ? CommonUtil.numbericFormat(entity.getDibayarPasien(), "###,###") : "0");
+            detailCheckup.setIndikasi(entity.getIndikasi());
 
             if (detailCheckup.getStatusPeriksa() != null && !"".equalsIgnoreCase(detailCheckup.getStatusPeriksa())) {
                 StatusPasien statusPasien = new StatusPasien();
@@ -548,7 +698,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             Pelayanan pelayanan = new Pelayanan();
             pelayanan.setIdPelayanan(detailCheckup.getIdPelayanan());
             Pelayanan resultPelayanan = pelayananDao.getObjectPelayanan(pelayanan);
-            if(resultPelayanan != null){
+            if (resultPelayanan != null) {
                 detailCheckup.setNamaPelayanan(resultPelayanan.getNamaPelayanan());
                 detailCheckup.setTipePelayanan(resultPelayanan.getTipePelayanan());
             }
@@ -595,16 +745,17 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             if ("".equalsIgnoreCase(bean.getCatatan()) && bean.getCatatan() != null) {
                 entity.setCatatan(bean.getCatatan());
             }
-            if(bean.getNoRujukan() != null && !"".equalsIgnoreCase(bean.getNoRujukan())){
+            if (bean.getNoRujukan() != null && !"".equalsIgnoreCase(bean.getNoRujukan())) {
                 entity.setNoRujukan(bean.getNoRujukan());
             }
-            if(bean.getTglRujukan() != null && !"".equalsIgnoreCase(bean.getTglRujukan())){
+            if (bean.getTglRujukan() != null && !"".equalsIgnoreCase(bean.getTglRujukan())) {
                 entity.setTglRujukan(java.sql.Date.valueOf(bean.getTglRujukan()));
             }
-            if(bean.getSuratRujukan() != null && !"".equalsIgnoreCase(bean.getSuratRujukan())){
+            if (bean.getSuratRujukan() != null && !"".equalsIgnoreCase(bean.getSuratRujukan())) {
                 entity.setUrlDocRujuk(bean.getSuratRujukan());
             }
             entity.setRsRujukan(bean.getRsRujukan());
+            entity.setIndikasi(bean.getIndikasi());
 
             try {
                 checkupDetailDao.updateAndSave(entity);
@@ -667,6 +818,26 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                         response.setMsg("Error when update checkup " + e.getMessage());
                         logger.error("[CheckupDetailBoImpl.saveEdit] Error when update checkup ", e);
                         throw new GeneralBOException("[CheckupDetailBoImpl.saveEdit] Error when update checkup " + e.getMessage());
+                    }
+                }
+            }
+
+            //sodiq, update flag meninggal, minggu malem 23.35 2021,03,28
+            if ("Y".equalsIgnoreCase(bean.getIsMeninggal())) {
+                ItSimrsHeaderChekupEntity chekupEntity = headerCheckupDao.getById("noCheckup", entity.getNoCheckup());
+                if (chekupEntity != null) {
+                    ImSimrsPasienEntity pasienEntity = pasienDao.getById("idPasien", chekupEntity.getIdPasien());
+                    if (pasienEntity != null) {
+                        pasienEntity.setLastUpdate(bean.getLastUpdate());
+                        pasienEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                        pasienEntity.setAction("U");
+                        pasienEntity.setFlagMeninggal("Y");
+                        pasienEntity.setTanggalMeninggal(bean.getLastUpdate());
+                        try {
+                            pasienDao.updateAndSave(pasienEntity);
+                        } catch (HibernateException e) {
+                            logger.error(e.getMessage());
+                        }
                     }
                 }
             }
@@ -759,14 +930,10 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         CrudResponse response = new CrudResponse();
 
         // create new detail
-        String id = "";
-        id = getNextDetailCheckupId();
-
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = new ItSimrsHeaderDetailCheckupEntity();
-        detailCheckupEntity.setIdDetailCheckup("DCM" + id);
+        detailCheckupEntity.setIdDetailCheckup("DCM" + getNextDetailCheckupId());
         detailCheckupEntity.setNoCheckup(bean.getNoCheckup());
         detailCheckupEntity.setIdPelayanan(bean.getIdPelayanan());
-        detailCheckupEntity.setStatusPeriksa(bean.getStatusPeriksa());
         detailCheckupEntity.setFlag("Y");
         detailCheckupEntity.setAction("C");
         detailCheckupEntity.setCreatedDate(bean.getCreatedDate());
@@ -776,7 +943,6 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setTglAntrian(bean.getCreatedDate());
         detailCheckupEntity.setNoSep(bean.getNoSep());
         detailCheckupEntity.setTarifBpjs(bean.getTarifBpjs());
-        detailCheckupEntity.setMetodePembayaran(bean.getMetodePembayaran());
         detailCheckupEntity.setKodeCbg(bean.getKodeCbg());
         detailCheckupEntity.setBranchId(bean.getBranchId());
         detailCheckupEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
@@ -789,8 +955,12 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setFlagKunjungan(bean.getFlagKunjungan());
         detailCheckupEntity.setIsEksekutif(bean.getIsEksekutif());
         detailCheckupEntity.setIsVaksin(bean.getIsVaksin());
-        if(bean.getIsEksekutif() != null && !"".equalsIgnoreCase(bean.getIsEksekutif())){
-            if("Y".equalsIgnoreCase(bean.getIsEksekutif())){
+        detailCheckupEntity.setIndikasi(bean.getIndikasi());
+
+        if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+            detailCheckupEntity.setMetodePembayaran("non_tunai");
+        } else {
+            if ("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                 detailCheckupEntity.setMetodePembayaran("tunai");
             }
         }
@@ -806,31 +976,38 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             detailCheckupEntity.setUrlDocRujuk(bean.getSuratRujukan() != null && !"".equalsIgnoreCase(bean.getSuratRujukan()) ? bean.getSuratRujukan() : null);
         }
 
-        if("pindah_poli".equalsIgnoreCase(bean.getTypeTransaction())){
-            if(!"paket_perusahaan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
-                String noAntrian = "";
-                HeaderCheckup lastAntrian = new HeaderCheckup();
-                String idDokter = null;
-                if(bean.getDokterTeamList().size() > 0){
-                    idDokter = bean.getDokterTeamList().get(0).getIdDokter();
-                }
-                try {
-                    lastAntrian = headerCheckupDao.lastAntrian(bean.getBranchId(), bean.getIdPelayanan(), idDokter);
-                }catch (HibernateException e){
-                    logger.error("[CheckupBoImpl.saveAdd] Error When search no antrian" + e.getMessage());
-                    throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When search no antrian");
-                }
-                if(lastAntrian.getStNoAntrian() != null){
-                    int jumlah = Integer.valueOf(lastAntrian.getStNoAntrian()) + 1;
-                    noAntrian = String.valueOf(jumlah);
-                }else{
-                    noAntrian = "1";
-                }
+        if ("pindah_poli".equalsIgnoreCase(bean.getTypeTransaction())) {
+            if ("igd".equalsIgnoreCase(bean.getTipePelayanan())) {
+                detailCheckupEntity.setStatusPeriksa("1");
+            } else {
+                if (!"paket_perusahaan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+                    String noAntrian = "";
+                    HeaderCheckup lastAntrian = new HeaderCheckup();
+                    String idDokter = null;
+                    if (bean.getDokterTeamList().size() > 0) {
+                        idDokter = bean.getDokterTeamList().get(0).getIdDokter();
+                    }
+                    try {
+                        lastAntrian = headerCheckupDao.lastAntrian(bean.getBranchId(), bean.getIdPelayanan(), idDokter);
+                    } catch (HibernateException e) {
+                        logger.error("[CheckupBoImpl.saveAdd] Error When search no antrian" + e.getMessage());
+                        throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When search no antrian");
+                    }
+                    if (lastAntrian.getStNoAntrian() != null) {
+                        int jumlah = Integer.valueOf(lastAntrian.getStNoAntrian()) + 1;
+                        noAntrian = String.valueOf(jumlah);
+                    } else {
+                        noAntrian = "1";
+                    }
 
-                if(!"".equalsIgnoreCase(noAntrian)){
-                    detailCheckupEntity.setNoAntrian(noAntrian);
+                    if (!"".equalsIgnoreCase(noAntrian)) {
+                        detailCheckupEntity.setNoAntrian(noAntrian);
+                    }
                 }
+                detailCheckupEntity.setStatusPeriksa(bean.getStatusPeriksa());
             }
+        } else {
+            detailCheckupEntity.setStatusPeriksa(bean.getStatusPeriksa());
         }
 
         try {
@@ -858,8 +1035,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             }
         }
 
+        // save to table rawat inap
         if (bean.getRawatInap()) {
-            // save to table rawat inap
             RawatInap rawatInap = new RawatInap();
             rawatInap.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
             rawatInap.setIdRuangan(bean.getIdRuangan());
@@ -943,12 +1120,13 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         }
 
         if ("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
-            if(bean.getJumlahUangMuka() != null && !"".equalsIgnoreCase(bean.getJumlahUangMuka().toString())){
+            if (bean.getJumlahUangMuka() != null && !"".equalsIgnoreCase(bean.getJumlahUangMuka().toString())) {
                 ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = new ItSimrsUangMukaPendaftaranEntity();
                 if (bean.getBranchId() != null && !bean.getBranchId().equalsIgnoreCase("")) {
                     uangMukaPendaftaranEntity.setId("UM" + bean.getBranchId() + dateFormater("MM") + dateFormater("yy") + uangMukaDao.getNextId());
-                } else
+                } else {
                     uangMukaPendaftaranEntity.setId("UM" + CommonUtil.userBranchLogin() + dateFormater("MM") + dateFormater("yy") + uangMukaDao.getNextId());
+                }
                 uangMukaPendaftaranEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
                 uangMukaPendaftaranEntity.setFlag("Y");
                 uangMukaPendaftaranEntity.setAction("C");
@@ -979,9 +1157,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             diagnosaRawat.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
             diagnosaRawat.setIdDiagnosa(bean.getDiagnosa());
             diagnosaRawat.setKeteranganDiagnosa(bean.getNamaDiagnosa());
-            if(bean.getRawatInap()){
+            if (bean.getRawatInap()) {
                 diagnosaRawat.setJenisDiagnosa("diagnosa_awal");
-            }else{
+            } else {
                 diagnosaRawat.setJenisDiagnosa("1");
             }
             response = saveDiagnosa(diagnosaRawat);
@@ -1111,7 +1289,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 // set ketersedian ruangan to tidak tersedia
                 if (tempatTidur != null) {
                     MtSimrsRuanganTempatTidurEntity tempatTidurEntity = tempatTidurDao.getById("idTempatTidur", tempatTidur.getIdTempatTidur());
-                    if(tempatTidurEntity != null){
+                    if (tempatTidurEntity != null) {
                         tempatTidurEntity.setStatus("N");
                         tempatTidurEntity.setAction("U");
                         tempatTidurEntity.setLastUpdate(bean.getCreatedDate());
@@ -1390,8 +1568,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
     public void updateStatusBayarDetailCheckup(List<HeaderDetailCheckup> list) throws GeneralBOException {
 
-        if(list.size() > 0){
-            for (HeaderDetailCheckup bean: list){
+        if (list.size() > 0) {
+            for (HeaderDetailCheckup bean : list) {
                 ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
                 if (detailCheckupEntity != null) {
                     detailCheckupEntity.setStatusBayar("Y");
@@ -1743,5 +1921,13 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     @Override
     public void setPelayananDao(PelayananDao pelayananDao) {
         this.pelayananDao = pelayananDao;
+    }
+
+    public void setPasienDao(PasienDao pasienDao) {
+        this.pasienDao = pasienDao;
+    }
+
+    public void setUploadPendukungPemeriksaanDao(UploadPendukungPemeriksaanDao uploadPendukungPemeriksaanDao) {
+        this.uploadPendukungPemeriksaanDao = uploadPendukungPemeriksaanDao;
     }
 }

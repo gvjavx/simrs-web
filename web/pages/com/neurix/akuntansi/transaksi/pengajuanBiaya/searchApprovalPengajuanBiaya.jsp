@@ -582,7 +582,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Metode Pembiayaan : </label>
                         <div class="col-sm-6">
-                            <s:select list="#{'A':'Unit','KP':'Kantor Pusat'}" onchange="changeKas(this.value)"
+                            <s:select list="#{'A':'Unit','01':'Kantor Pusat'}" onchange="changeKas(this.value)"
                                       id="mod_status_keuangan" headerKey="" headerValue="[Select One]" cssClass="form-control" />
                         </div>
                     </div>
@@ -952,7 +952,7 @@
         var namaApproveKeuKp = "";
         var namaApproveKeu = "";
 
-        if (branchId=="KP"){
+        if (branchId=="01"){
             namaApproveKasubdiv = "<th style='text-align: center; background-color:  #90ee90'>App. Kasubid</th>";
             namaApproveKadiv = "<th style='text-align: center; background-color:  #90ee90'>App. Kabid </th>";
             namaApproveKaRs = "<th style='text-align: center; background-color:  #90ee90'>App. Dirkeu</th>";
@@ -1098,7 +1098,7 @@
                         break;
                 }
 
-                if (branchId =="KP"){
+                if (branchId =="01"){
                     approvalKEKP = "";
                     terimaKE = "";
                 }
@@ -1298,7 +1298,7 @@
 
         var branchId = $(this).attr('unit');
 
-        if (branchId=="KP") {
+        if (branchId=="01") {
             var option = '<option value="A">Kantor Pusat</option>';
             $('#mod_status_keuangan').html(option);
         }

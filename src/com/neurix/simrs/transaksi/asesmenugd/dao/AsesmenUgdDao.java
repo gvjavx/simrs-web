@@ -36,6 +36,9 @@ public class AsesmenUgdDao extends GenericDao<ItSimrsAsesmenUgdEntity, String> {
             if (mapCriteria.get("jenis")!=null) {
                 criteria.add(Restrictions.eq("jenis", (String) mapCriteria.get("jenis")));
             }
+            if (mapCriteria.get("tipe_asesmen")!=null) {
+                criteria.add(Restrictions.in("tipe", (List<String>) mapCriteria.get("tipe_asesmen")));
+            }
         }
 
         criteria.add(Restrictions.eq("flag", "Y"));

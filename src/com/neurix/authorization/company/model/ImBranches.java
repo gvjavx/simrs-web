@@ -45,6 +45,17 @@ public class ImBranches implements Serializable {
     private String lon;
     private String warna;
 
+    //updated by ferdi, 01-12-2020, untuk initial master di payroll
+    private String masterId;
+
+    public String getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(String masterId) {
+        this.masterId = masterId;
+    }
+
     public String getWarna() {
         return warna;
     }

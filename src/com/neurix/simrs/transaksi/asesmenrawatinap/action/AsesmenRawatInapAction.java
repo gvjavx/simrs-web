@@ -37,19 +37,28 @@ public class AsesmenRawatInapAction {
         CrudResponse response = new CrudResponse();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AsesmenRawatInapBo asesmenRawatInapBo = (AsesmenRawatInapBo) ctx.getBean("asesmenRawatInapBoProxy");
+        String noCheckup = "";
+        String idDetailCheckup = "";
+        String idPasien = "";
+        String idRm = "";
 
         try {
+            JSONObject object = new JSONObject(dataPasien);
+            if(object != null){
+                noCheckup = object.getString("no_checkup");
+                idDetailCheckup = object.getString("id_detail_checkup");
+                idPasien = object.getString("id_pasien");
+                idRm = object.getString("id_rm");
+            }
             JSONArray json = new JSONArray(data);
-
             List<AsesmenRawatInap> rawatInapList = new ArrayList<>();
-
             for (int i = 0; i < json.length(); i++) {
-
                 JSONObject obj = json.getJSONObject(i);
                 AsesmenRawatInap asesmenRawatInap = new AsesmenRawatInap();
                 asesmenRawatInap.setParameter(obj.getString("parameter"));
                 asesmenRawatInap.setIdDetailCheckup(obj.getString("id_detail_checkup"));
                 asesmenRawatInap.setKeterangan(obj.getString("keterangan"));
+                asesmenRawatInap.setNoCheckup(noCheckup);
 
                 if (obj.has("jawaban")) {
                     if (obj.has("tipe")) {
@@ -66,7 +75,6 @@ public class AsesmenRawatInapAction {
                                 } else {
                                     uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
                                 }
-
                                 BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
                                 if (image == null) {
@@ -74,7 +82,6 @@ public class AsesmenRawatInapAction {
                                     response.setMsg("Buffered Image is null");
                                 } else {
                                     File f = new File(uploadFile);
-                                    // write the image
                                     ImageIO.write(image, "png", f);
                                     asesmenRawatInap.setJawaban(fileName);
                                 }
@@ -120,22 +127,19 @@ public class AsesmenRawatInapAction {
                 response = asesmenRawatInapBo.saveAdd(rawatInapList);
                 if("success".equalsIgnoreCase(response.getStatus())){
                     RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
-                    JSONObject obj = new JSONObject(dataPasien);
-                    if(obj != null){
-                        StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
-                        status.setNoCheckup(obj.getString("no_checkup"));
-                        status.setIdDetailCheckup(obj.getString("id_detail_checkup"));
-                        status.setIdPasien(obj.getString("id_pasien"));
-                        status.setIdRekamMedisPasien(obj.getString("id_rm"));
-                        status.setIsPengisian("Y");
-                        status.setAction("C");
-                        status.setFlag("Y");
-                        status.setCreatedWho(userLogin);
-                        status.setCreatedDate(time);
-                        status.setLastUpdateWho(userLogin);
-                        status.setLastUpdate(time);
-                        response = rekamMedikBo.saveAdd(status);
-                    }
+                    StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
+                    status.setNoCheckup(noCheckup);
+                    status.setIdDetailCheckup(idDetailCheckup);
+                    status.setIdPasien(idPasien);
+                    status.setIdRekamMedisPasien(idRm);
+                    status.setIsPengisian("Y");
+                    status.setAction("C");
+                    status.setFlag("Y");
+                    status.setCreatedWho(userLogin);
+                    status.setCreatedDate(time);
+                    status.setLastUpdateWho(userLogin);
+                    status.setLastUpdate(time);
+                    response = rekamMedikBo.saveAdd(status);
                 }
             } catch (GeneralBOException e) {
                 response.setStatus("Error");
@@ -149,14 +153,14 @@ public class AsesmenRawatInapAction {
         return response;
     }
 
-    public List<AsesmenRawatInap> getListAsesmenRawat(String idDetailCheckup, String keterangan) {
+    public List<AsesmenRawatInap> getListAsesmenRawat(String noCheckup, String keterangan) {
         List<AsesmenRawatInap> list = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AsesmenRawatInapBo asesmenRawatInapBo = (AsesmenRawatInapBo) ctx.getBean("asesmenRawatInapBoProxy");
-        if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(keterangan)) {
+        if (!"".equalsIgnoreCase(noCheckup) && !"".equalsIgnoreCase(keterangan)) {
             try {
                 AsesmenRawatInap asesmenRawatInap = new AsesmenRawatInap();
-                asesmenRawatInap.setIdDetailCheckup(idDetailCheckup);
+                asesmenRawatInap.setNoCheckup(noCheckup);
                 asesmenRawatInap.setKeterangan(keterangan);
                 list = asesmenRawatInapBo.getByCriteria(asesmenRawatInap);
             } catch (GeneralBOException e) {
@@ -354,10 +358,75 @@ public class AsesmenRawatInapAction {
                 asesmenRawatInap.setJawaban(jawaban);
                 asesmenRawatInap.setLastUpdate(time);
                 asesmenRawatInap.setLastUpdateWho(userLogin);
+                asesmenRawatInap.setTipe("tipe");
                 response = asesmenRawatInapBo.saveEdit(asesmenRawatInap);
             } catch (GeneralBOException e) {
                 logger.error("Found Error" + e.getMessage());
             }
+        }
+        return response;
+    }
+
+    public CrudResponse updateTTD(String data) {
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        AsesmenRawatInapBo asesmenRawatInapBo = (AsesmenRawatInapBo) ctx.getBean("asesmenRawatInapBoProxy");
+        try {
+            if(data != null && !"".equalsIgnoreCase(data)){
+                JSONObject obj = new JSONObject(data);
+                if(obj != null){
+                    if (obj.has("ttd")) {
+                        if (!"".equalsIgnoreCase(obj.getString("ttd")) && obj.getString("ttd") != null) {
+                            BASE64Decoder decoder = new BASE64Decoder();
+                            byte[] decodedBytes2 = decoder.decodeBuffer(obj.getString("ttd"));
+                            String wkt = time.toString();
+                            String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                            String fileName2 = obj.getString("id_asesmen") + "-" + "-" + patten + ".png";
+                            String uploadFile2 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName2;
+                            BufferedImage image2 = ImageIO.read(new ByteArrayInputStream(decodedBytes2));
+
+                            if (image2 == null) {
+                                logger.error("Buffered Image is null");
+                                response.setStatus("error");
+                                response.setMsg("Buffered Image is null");
+                                return response;
+                            } else {
+                                File f2 = new File(uploadFile2);
+                                ImageIO.write(image2, "png", f2);
+                                AsesmenRawatInap asesmenRawatInap = new AsesmenRawatInap();
+                                asesmenRawatInap.setIdAsesmenKeperawatanRawatInap(obj.getString("id_asesmen"));
+                                asesmenRawatInap.setJawaban(fileName2);
+                                asesmenRawatInap.setNamaTerang(obj.getString("nama"));
+                                asesmenRawatInap.setSip(obj.getString("sip"));
+                                asesmenRawatInap.setLastUpdate(time);
+                                asesmenRawatInap.setLastUpdateWho(userLogin);
+                                try {
+                                    asesmenRawatInapBo.saveEdit(asesmenRawatInap);
+                                    response.setStatus("success");
+                                    response.setMsg("OK!");
+                                } catch (GeneralBOException e) {
+                                    logger.error("Found Error" + e.getMessage());
+                                    response.setStatus("error");
+                                    response.setMsg("Error"+e.getMessage());
+                                }
+                            }
+                        }
+                    }else{
+                        response.setStatus("error");
+                        response.setMsg("Tidak ada data yang dikirim...!");
+                    }
+                }else{
+                    response.setStatus("error");
+                    response.setMsg("Tidak ada data yang dikirim...!");
+                }
+            }else{
+                response.setStatus("error");
+                response.setMsg("Tidak ada data yang dikirim...!");
+            }
+        }catch (Exception e){
+            response.setStatus("error");
+            response.setMsg("Tidak ada data yang dikirim...!");
+            logger.error(e.getMessage());
         }
         return response;
     }

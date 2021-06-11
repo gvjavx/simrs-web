@@ -4,6 +4,8 @@ import com.neurix.common.exception.GeneralBOException;
 
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.pasien.dao.PasienDao;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.rekananops.dao.RekananOpsDao;
 import com.neurix.simrs.master.rekananops.model.RekananOps;
 import com.neurix.simrs.master.ruangan.dao.RuanganDao;
@@ -85,6 +87,7 @@ public class RawatInapBoImpl implements RawatInapBo {
     private RekananOpsDao rekananOpsDao;
     private TempatTidurDao tempatTidurDao;
     private UangMukaDao uangMukaDao;
+    private PasienDao pasienDao;
 
     public List<ItSimrsRawatInapEntity> getListEntityByCriteria(RawatInap bean) throws GeneralBOException {
         logger.info("[RawatInapBoImpl.getListEntityByCriteria] Start >>>>>>>");
@@ -330,7 +333,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                     monVitalSign.setTb(entity.getTb());
                     monVitalSign.setBb(entity.getBb());
                     monVitalSigns.add(monVitalSign);
-                } else if (bean.getIsMobile().equalsIgnoreCase("Y")) {
+                } else if ("Y".equalsIgnoreCase(bean.getIsMobile())) {
                     monVitalSign = new MonVitalSign();
                     monVitalSign.setId(entity.getId());
                     monVitalSign.setNoCheckup(entity.getNoCheckup());
@@ -526,7 +529,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                     monCairan.setLastUpdateWho(entity.getLastUpdateWho());
                     monCairan.setStDate(stringDate(entity.getCreatedDate()));
                     monCairans.add(monCairan);
-                } else if (bean.getIsMobile().equalsIgnoreCase("Y")) {
+                } else if ("Y".equalsIgnoreCase(bean.getIsMobile())) {
                     monCairan = new MonCairan();
                     monCairan.setId(entity.getId());
                     monCairan.setNoCheckup(entity.getNoCheckup());
@@ -548,6 +551,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                     monCairan.setLastUpdate(entity.getLastUpdate());
                     monCairan.setLastUpdateWho(entity.getLastUpdateWho());
                     monCairan.setStDate(stringDate(entity.getCreatedDate()));
+                    monCairan.setSisa(entity.getSisa());
                     monCairans.add(monCairan);
                 }
             }
@@ -665,7 +669,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                     monPemberianObat.setStDate(stringDate(entity.getCreatedDate()));
                     monPemberianObat.setKategori(entity.getKategori());
                     monPemberianObats.add(monPemberianObat);
-                } else if (bean.getIsMobile().equalsIgnoreCase("Y")) {
+                } else if ("Y".equalsIgnoreCase(bean.getIsMobile())) {
                     monPemberianObat = new MonPemberianObat();
                     monPemberianObat.setId(entity.getId());
                     monPemberianObat.setNoCheckup(entity.getNoCheckup());
@@ -753,7 +757,6 @@ public class RawatInapBoImpl implements RawatInapBo {
         List<MonVitalSign> monVitalSigns = monVitalSignDao.getListGraf(bean);
         if (monVitalSigns.size() > 0) {
             for (MonVitalSign monVitalSign : monVitalSigns) {
-//                SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
                 SimpleDateFormat f = new SimpleDateFormat("MM/dd");
                 String stDate = f.format(monVitalSign.getCreatedDate());
                 monVitalSign.setStDate("tgl : " + stDate + ", jam : " + monVitalSign.getJam());
@@ -909,12 +912,24 @@ public class RawatInapBoImpl implements RawatInapBo {
 
     @Override
     public List<Obat> getListObatParenteral(String idDetailCheckup) {
-        return monPemberianObatDao.getListObatParenteral(idDetailCheckup);
+        List<Obat> obatList = new ArrayList<>();
+        try {
+            obatList = monPemberianObatDao.getListObatParenteral(idDetailCheckup);
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.getListObatParenteral] ERROR ", e);
+        }
+        return obatList;
     }
 
     @Override
     public List<Obat> getListObatNonParenteral(String idDetailCheckup) {
-        return monPemberianObatDao.getListObatNonParenteral(idDetailCheckup);
+        List<Obat> obatList = new ArrayList<>();
+        try {
+            obatList = monPemberianObatDao.getListObatNonParenteral(idDetailCheckup);
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.getListObatNonParenteral] ERROR ", e);
+        }
+        return obatList;
     }
 
     @Override
@@ -932,12 +947,24 @@ public class RawatInapBoImpl implements RawatInapBo {
 
     @Override
     public RawatInap getLastUsedRoom(String id) throws GeneralBOException {
-        return rawatInapDao.getLastRuanganById(id);
+        RawatInap rawatInap = new RawatInap();
+        try {
+            rawatInap = rawatInapDao.getLastRuanganById(id);
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.getLastUsedRoom] ERROR " + e.getMessage());
+        }
+        return rawatInap;
     }
 
     @Override
     public List<RawatInap> getListTppri(RawatInap bean) throws GeneralBOException {
-        return rawatInapDao.getListTppri(bean);
+        List<RawatInap> rawatInapList = new ArrayList<>();
+        try {
+            rawatInapList = rawatInapDao.getListTppri(bean);
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.getListTppri] ERROR " + e.getMessage());
+        }
+        return rawatInapList;
     }
 
     @Override
@@ -950,7 +977,8 @@ public class RawatInapBoImpl implements RawatInapBo {
                 "ruang_bersalin".equalsIgnoreCase(bean.getTindakLanjut()) ||
                 "rawat_inap".equalsIgnoreCase(bean.getTindakLanjut()) ||
                 "kembali_ke_inap".equalsIgnoreCase(bean.getTindakLanjut()) ||
-                "rr".equalsIgnoreCase(bean.getTindakLanjut())) {
+                "rr".equalsIgnoreCase(bean.getTindakLanjut()) ||
+                "hemodialisa".equalsIgnoreCase(bean.getTindakLanjut())) {
 
             if ("rawat_inap".equalsIgnoreCase(bean.getTindakLanjut())) {
                 response = updateRawatInap(bean);
@@ -965,15 +993,16 @@ public class RawatInapBoImpl implements RawatInapBo {
             detailCheckup.setTindakLanjut(bean.getTindakLanjut());
             detailCheckup.setLastUpdate(bean.getLastUpdate());
             detailCheckup.setLastUpdateWho(bean.getLastUpdateWho());
-            if("Y".equalsIgnoreCase(bean.getIsStay())){
+            detailCheckup.setIndikasi(bean.getIndikasi());
+            if ("Y".equalsIgnoreCase(bean.getIsStay())) {
                 detailCheckup.setIsStay(bean.getIsStay());
             }
-            if("kembali_ke_inap".equalsIgnoreCase(bean.getTindakLanjut())){
+            if ("kembali_ke_inap".equalsIgnoreCase(bean.getTindakLanjut())) {
                 detailCheckup.setIsStay("N");
             }
             response = updateDetail(detailCheckup);
             if ("success".equalsIgnoreCase(response.getStatus())) {
-                if (!"kembali_ke_inap".equalsIgnoreCase(bean.getTindakLanjut())){
+                if (!"kembali_ke_inap".equalsIgnoreCase(bean.getTindakLanjut())) {
                     ItSimrsRawatInapEntity entity = new ItSimrsRawatInapEntity();
                     TempatTidur tempatTidur = new TempatTidur();
                     if (bean.getIdRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())) {
@@ -1000,36 +1029,46 @@ public class RawatInapBoImpl implements RawatInapBo {
                                 entity.setStatus("1");
                                 try {
                                     rawatInapDao.addAndSave(entity);
-                                    MtSimrsRuanganTempatTidurEntity tempatTidurEntity = tempatTidurDao.getById("idTempatTidur", tempatTidur.getIdTempatTidur());
-                                    if(tempatTidurEntity != null) {
-                                        tempatTidurEntity.setStatus("N");
-                                        tempatTidurEntity.setAction("U");
-                                        tempatTidurEntity.setLastUpdate(bean.getCreatedDate());
-                                        tempatTidurEntity.setLastUpdateWho(bean.getCreatedWho());
-                                        try {
-                                            tempatTidurDao.updateAndSave(tempatTidurEntity);
-                                            response.setStatus("success");
-                                            response.setMsg("berhasil");
-                                        } catch (HibernateException e) {
+                                    if(!"hemodialisa".equalsIgnoreCase(bean.getTindakLanjut())){
+                                        MtSimrsRuanganTempatTidurEntity tempatTidurEntity = tempatTidurDao.getById("idTempatTidur", tempatTidur.getIdTempatTidur());
+                                        if (tempatTidurEntity != null) {
+                                            tempatTidurEntity.setStatus("N");
+                                            tempatTidurEntity.setAction("U");
+                                            tempatTidurEntity.setLastUpdate(bean.getCreatedDate());
+                                            tempatTidurEntity.setLastUpdateWho(bean.getCreatedWho());
+                                            try {
+                                                tempatTidurDao.updateAndSave(tempatTidurEntity);
+                                                response.setStatus("success");
+                                                response.setMsg("berhasil");
+                                            } catch (HibernateException e) {
+                                                response.setStatus("error");
+                                                response.setMsg("Error When Saving data detail checkup " + e.getMessage());
+                                                logger.error("[CheckupDetailBoImpl.saveRawatInap] Error when Update data ruangan ", e);
+                                            }
+                                        } else {
                                             response.setStatus("error");
-                                            response.setMsg("Error When Saving data detail checkup " + e.getMessage());
-                                            logger.error("[CheckupDetailBoImpl.saveRawatInap] Error when Update data ruangan ", e);
+                                            response.setMsg("Data Tempat Tidur Tidak Ditemukan...!");
                                         }
                                     }
-
                                 } catch (HibernateException e) {
                                     response.setStatus("error");
                                     response.setMsg(" Error when save add Rawat Inap " + e.getMessage());
                                     logger.error("[CheckupDetailBoImpl.saveRawatInap] Error when save add Rawat Inap ", e);
                                 }
+                            } else {
+                                response.setStatus("error");
+                                response.setMsg("Data Tempat Tidur Tidak Ditemukan...!");
                             }
+                        } else {
+                            response.setStatus("error");
+                            response.setMsg("Data Tempat Tidur Tidak Ditemukan...!");
                         }
-                    }else{
+                    } else {
                         response.setStatus("error");
                         response.setMsg("Errro Id Ruangan tidak ada...!");
                     }
                 }
-            }else{
+            } else {
                 response.setStatus("error");
                 response.setMsg("Errro When update detail checkup...!");
             }
@@ -1048,28 +1087,56 @@ public class RawatInapBoImpl implements RawatInapBo {
                 detailCheckup.setCatatan(bean.getCatatan());
                 detailCheckup.setKeteranganSelesai(bean.getKeteranganSelesai());
                 detailCheckup.setStatusPeriksa("3");
+                if (bean.getRsRujukan() != null) {
+                    detailCheckup.setRsRujukan(bean.getRsRujukan());
+                }
+                if (bean.getTglRujukan() != null) {
+                    detailCheckup.setTglCekup(Date.valueOf(bean.getTglRujukan()));
+                }
                 response = updateDetail(detailCheckup);
                 if ("success".equalsIgnoreCase(response.getStatus())) {
                     response = updateRawatInap(bean);
+                }
+
+                //sodiq, update flag meninggal, minggu malem 23.35 2021,03,28
+                if ("Y".equalsIgnoreCase(bean.getIsMeninggal())) {
+                    ItSimrsHeaderChekupEntity chekupEntity = headerCheckupDao.getById("noCheckup", bean.getNoCheckup());
+                    if (chekupEntity != null) {
+                        ImSimrsPasienEntity pasienEntity = pasienDao.getById("idPasien", chekupEntity.getIdPasien());
+                        if (pasienEntity != null) {
+                            pasienEntity.setLastUpdate(bean.getLastUpdate());
+                            pasienEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                            pasienEntity.setAction("U");
+                            pasienEntity.setFlagMeninggal("Y");
+                            pasienEntity.setTanggalMeninggal(bean.getLastUpdate());
+                            try {
+                                pasienDao.updateAndSave(pasienEntity);
+                            } catch (HibernateException e) {
+                                logger.error(e.getMessage());
+                            }
+                        }
+                    }
                 }
             }
         }
         if (bean.getIdRuangLama() != null && !"".equalsIgnoreCase(bean.getIdRuangLama())) {
             if (!"Y".equalsIgnoreCase(bean.getIsStay())) {
-                MtSimrsRuanganTempatTidurEntity tempatTidurEntity = tempatTidurDao.getById("idTempatTidur", bean.getIdRuangLama());
-                if(tempatTidurEntity != null) {
-                    tempatTidurEntity.setStatus("Y");
-                    tempatTidurEntity.setAction("U");
-                    tempatTidurEntity.setLastUpdate(bean.getCreatedDate());
-                    tempatTidurEntity.setLastUpdateWho(bean.getCreatedWho());
-                    try {
-                        tempatTidurDao.updateAndSave(tempatTidurEntity);
-                        response.setStatus("success");
-                        response.setMsg("berhasil");
-                    } catch (HibernateException e) {
-                        response.setStatus("error");
-                        response.setMsg("Error When Saving data detail checkup " + e.getMessage());
-                        logger.error("[CheckupDetailBoImpl.saveRawatInap] Error when Update data ruangan ", e);
+                if(!"hemodialisa".equalsIgnoreCase(bean.getTindakLanjut())){
+                    MtSimrsRuanganTempatTidurEntity tempatTidurEntity = tempatTidurDao.getById("idTempatTidur", bean.getIdRuangLama());
+                    if (tempatTidurEntity != null) {
+                        tempatTidurEntity.setStatus("Y");
+                        tempatTidurEntity.setAction("U");
+                        tempatTidurEntity.setLastUpdate(bean.getCreatedDate());
+                        tempatTidurEntity.setLastUpdateWho(bean.getCreatedWho());
+                        try {
+                            tempatTidurDao.updateAndSave(tempatTidurEntity);
+                            response.setStatus("success");
+                            response.setMsg("berhasil");
+                        } catch (HibernateException e) {
+                            response.setStatus("error");
+                            response.setMsg("Error When Saving data detail checkup " + e.getMessage());
+                            logger.error("[CheckupDetailBoImpl.saveRawatInap] Error when Update data ruangan ", e);
+                        }
                     }
                 }
             }
@@ -1080,7 +1147,13 @@ public class RawatInapBoImpl implements RawatInapBo {
 
     @Override
     public List<RawatInap> getRuanganRawatInap(RawatInap bean) throws GeneralBOException {
-        return rawatInapDao.getRuanganRawatInap(bean);
+        List<RawatInap> rawatInapList = new ArrayList<>();
+        try {
+            rawatInapList = rawatInapDao.getRuanganRawatInap(bean);
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.getRuanganRawatInap] Error when get seq ", e);
+        }
+        return rawatInapList;
     }
 
     private CrudResponse updateCheckup(HeaderCheckup bean) {
@@ -1136,12 +1209,15 @@ public class RawatInapBoImpl implements RawatInapBo {
                 if (bean.getKeteranganSelesai() != null && !"".equalsIgnoreCase(bean.getKeteranganSelesai())) {
                     entity.setKeteranganSelesai(bean.getKeteranganSelesai());
                 }
-                if(bean.getIsStay() != null && !"".equalsIgnoreCase(bean.getIsStay())){
-                    if("N".equalsIgnoreCase(bean.getIsStay())){
+                if (bean.getIsStay() != null && !"".equalsIgnoreCase(bean.getIsStay())) {
+                    if ("N".equalsIgnoreCase(bean.getIsStay())) {
                         entity.setIsStay(null);
-                    }else{
+                    } else {
                         entity.setIsStay(bean.getIsStay());
                     }
+                }
+                if (bean.getIndikasi() != null) {
+                    entity.setIndikasi(bean.getIndikasi());
                 }
                 try {
                     checkupDetailDao.updateAndSave(entity);
@@ -1203,46 +1279,46 @@ public class RawatInapBoImpl implements RawatInapBo {
         try {
             rawatInapList = rawatInapDao.getRuanganRawatInap(bean.getIdDetailCheckup());
             if (rawatInapList.size() > 0) {
-                for (RawatInap rawatInap: rawatInapList){
+                for (RawatInap rawatInap : rawatInapList) {
                     Map hsCriteria = new HashMap();
                     hsCriteria.put("id_tindakan", rawatInap.getIdRawatInap());
                     List<ItSimrsRiwayatTindakanEntity> riwayatTindakanEntityList = new ArrayList<>();
                     try {
                         riwayatTindakanEntityList = riwayatTindakanDao.getByCriteria(hsCriteria);
-                    }catch (HibernateException e){
+                    } catch (HibernateException e) {
                         response.setStatus("error");
-                        response.setMsg("When insert to riwayat unutk kamar...!, "+e.getMessage());
+                        response.setMsg("When insert to riwayat unutk kamar...!, " + e.getMessage());
                     }
-                    if(riwayatTindakanEntityList.isEmpty()){
+                    if (riwayatTindakanEntityList.isEmpty()) {
                         ItSimrsRiwayatTindakanEntity entity = new ItSimrsRiwayatTindakanEntity();
                         RekananOps ops = new RekananOps();
-                        entity.setIdRiwayatTindakan("RWT"+riwayatTindakanDao.getNextSeq());
+                        entity.setIdRiwayatTindakan("RWT" + riwayatTindakanDao.getNextSeq());
                         entity.setIdDetailCheckup(bean.getIdDetailCheckup());
                         entity.setIdTindakan(rawatInap.getIdRawatInap());
-                        entity.setNamaTindakan("Kamar "+rawatInap.getNamaRangan()+" ("+rawatInap.getLamakamar()+" hari @Rp."+rawatInap.getTarif()+")");
+                        entity.setNamaTindakan("Kamar " + rawatInap.getNamaRangan() + " (" + rawatInap.getLamakamar() + " hari @Rp." + rawatInap.getTarif() + ")");
                         entity.setKeterangan("kamar");
 
                         try {
                             ops = rekananOpsDao.getRekananOpsByIdDetail(rawatInap.getIdDetailCheckup(), CommonUtil.userBranchLogin());
-                        }catch (HibernateException e){
+                        } catch (HibernateException e) {
                             response.setStatus("error");
-                            response.setMsg("When insert to riwayat unutk kamar...!, "+e.getMessage());
+                            response.setMsg("When insert to riwayat unutk kamar...!, " + e.getMessage());
                         }
 
-                        if("rekanan".equalsIgnoreCase(bean.getIdJenisPeriksa()) && "Y".equalsIgnoreCase(ops.getIsBpjs())){
+                        if ("rekanan_bpjs".equalsIgnoreCase(bean.getIdJenisPeriksa()) || "bpjs".equalsIgnoreCase(bean.getIdJenisPeriksa())) {
                             entity.setJenisPasien("bpjs");
-                        }else{
+                        } else {
                             entity.setJenisPasien(bean.getIdJenisPeriksa());
                         }
 
-                        if("rekanan".equalsIgnoreCase(bean.getIdJenisPeriksa())){
-                            if(ops.getDiskon() != null){
+                        if ("rekanan".equalsIgnoreCase(bean.getIdJenisPeriksa())) {
+                            if (ops.getDiskon() != null) {
                                 BigDecimal desimal = (new BigDecimal(rawatInap.getTarif().multiply(rawatInap.getLamakamar())).multiply(ops.getDiskon()));
                                 entity.setTotalTarif(desimal);
-                            }else{
+                            } else {
                                 entity.setTotalTarif(new BigDecimal(rawatInap.getTarif().multiply(rawatInap.getLamakamar())));
                             }
-                        }else{
+                        } else {
                             entity.setTotalTarif(new BigDecimal(rawatInap.getTarif().multiply(rawatInap.getLamakamar())));
                         }
 
@@ -1258,8 +1334,8 @@ public class RawatInapBoImpl implements RawatInapBo {
 
                         try {
                             riwayatTindakanDao.addAndSave(entity);
-                        }catch (HibernateException e){
-                            logger.error("[RiwayatTindakanBoImpl.saveAdd] error when insert riwayat tindakan, Found error :["+e.getMessage()+"]");
+                        } catch (HibernateException e) {
+                            logger.error("[RiwayatTindakanBoImpl.saveAdd] error when insert riwayat tindakan, Found error :[" + e.getMessage() + "]");
                         }
                     }
                 }
@@ -1278,7 +1354,7 @@ public class RawatInapBoImpl implements RawatInapBo {
     @Override
     public CrudResponse saveUangMuka(UangMuka bean) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        if(bean != null){
+        if (bean != null) {
             ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = new ItSimrsUangMukaPendaftaranEntity();
             uangMukaPendaftaranEntity.setId("UM" + bean.getBranchId() + dateFormater("MM") + dateFormater("yy") + uangMukaDao.getNextId());
             uangMukaPendaftaranEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
@@ -1296,7 +1372,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                 response.setMsg("success");
             } catch (HibernateException e) {
                 response.setStatus("error");
-                response.setMsg("Error ketika insert data ke databse, "+e.getMessage());
+                response.setMsg("Error ketika insert data ke databse, " + e.getMessage());
                 logger.error("[CheckupBoImpl.saveAdd] Error When Saving" + e.getMessage());
             }
         }
@@ -1305,12 +1381,57 @@ public class RawatInapBoImpl implements RawatInapBo {
 
     @Override
     public List<UangMuka> getAllListUangMuka(UangMuka bean) throws GeneralBOException {
-        return rawatInapDao.getAllListUangMuka(bean);
+        List<UangMuka> uangMukaList = new ArrayList<>();
+        try {
+            uangMukaList = rawatInapDao.getAllListUangMuka(bean);
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.getAllListUangMuka] Error, " + e.getMessage());
+        }
+        return uangMukaList;
     }
 
     @Override
     public HeaderCheckup getDetailGelang(String noCheckup) throws GeneralBOException {
-        return rawatInapDao.getDetailGelang(noCheckup);
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+        try {
+            headerCheckup = rawatInapDao.getDetailGelang(noCheckup);
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.getDetailGelang] Error, " + e.getMessage());
+        }
+        return headerCheckup;
+    }
+
+    @Override
+    public void deleteMon(MonCairan bean) throws GeneralBOException {
+        if ("cairan".equalsIgnoreCase(bean.getKeterangan())) {
+            ItSimrsMonCairanEntity monCairanEntity = monCairanDao.getById("id", bean.getId());
+            if (monCairanEntity != null) {
+                monCairanEntity.setFlag("N");
+                monCairanEntity.setAction("D");
+                monCairanEntity.setLastUpdate(bean.getLastUpdate());
+                monCairanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    monCairanDao.updateAndSave(monCairanEntity);
+                } catch (HibernateException e) {
+                    logger.error(e.getMessage());
+                    throw new GeneralBOException(e.getMessage());
+                }
+            }
+        } else {
+            ItSimrsMonPemberianObatEntity pemberianObatEntity = monPemberianObatDao.getById("id", bean.getId());
+            if (pemberianObatEntity != null) {
+                pemberianObatEntity.setFlag("N");
+                pemberianObatEntity.setAction("D");
+                pemberianObatEntity.setLastUpdate(bean.getLastUpdate());
+                pemberianObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    monPemberianObatDao.updateAndSave(pemberianObatEntity);
+                } catch (HibernateException e) {
+                    logger.error(e.getMessage());
+                    throw new GeneralBOException(e.getMessage());
+                }
+            }
+        }
     }
 
     private String dateFormater(String type) {
@@ -1458,5 +1579,9 @@ public class RawatInapBoImpl implements RawatInapBo {
 
     public void setUangMukaDao(UangMukaDao uangMukaDao) {
         this.uangMukaDao = uangMukaDao;
+    }
+
+    public void setPasienDao(PasienDao pasienDao) {
+        this.pasienDao = pasienDao;
     }
 }

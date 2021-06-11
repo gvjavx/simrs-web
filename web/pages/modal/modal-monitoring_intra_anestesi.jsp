@@ -74,61 +74,86 @@
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3">Teknik Anestesi</label>
-                            <div class="col-md-3">
-                                <div class="form-check" style="font-size: 12px">
-                                    <input type="checkbox" name="dt1" id="dt11" value="General Anestesi">
-                                    <label for="dt11"></label> General Anestesi
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-check">
-                                    <input type="checkbox" name="dt1" id="dt12" value="Intubasi">
-                                    <label for="dt12"></label> Intubasi
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-check">
-                                    <input type="checkbox" name="dt1" id="dt13" value="Facemask">
-                                    <label for="dt13"></label> Facemask
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-3 col-md-3">
-                                <div class="form-check">
-                                    <input type="checkbox" name="dt1" id="dt14" value="LMA">
-                                    <label for="dt14"></label> LMA
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-check">
-                                    <input type="checkbox" name="dt1" id="dt15" value="TIVA">
-                                    <label for="dt15"></label> TIVA
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-check" style="font-size: 12px">
-                                    <input type="checkbox" name="dt1" id="dt16" value="Regional Anestesi">
-                                    <label for="dt16"></label> Regional Anestesi
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-offset-3 col-md-3">
-                                    <div class="form-check">
-                                        <input type="checkbox" name="dt1" id="dt17" value="SAB">
-                                        <label for="dt17"></label> SAB
+                            <div class="col-md-9">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label><b>General Anesti</b></label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="dt1" id="dt14" value="LMA">
+                                                    <label for="dt14"></label> LMA
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="dt1" id="dt13" value="Facemask">
+                                                    <label for="dt13"></label> Facemask
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="dt1" id="dt12" value="Intubasi">
+                                                    <label for="dt12"></label> Intubasi
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="dt1" id="dt15" value="TIVA">
+                                                    <label for="dt15"></label> TIVA
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-check">
-                                        <input type="checkbox" name="dt1" id="dt18" value="Epidural">
-                                        <label for="dt18"></label> Epidural
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-check" style="font-size: 11px">
-                                        <input type="checkbox" name="dt1" id="dt19" value="Blok Syaraf perifer">
-                                        <label for="dt19"></label> Blok Syaraf perifer
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label><b>Regional Anestesi</b></label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="dt1" id="dt17" value="SAB">
+                                                    <label for="dt17"></label> SAB
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="dt1" id="dt18" value="Epidural">
+                                                    <label for="dt18"></label> Epidural
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="dt1" id="dt19" value="Blok Syaraf perifer">
+                                                    <label for="dt19"></label> Blok Syaraf perifer
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="dt1" id="dt20" value="Local Anestesi">
+                                                    <label for="dt20"></label> Local Anestesi
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

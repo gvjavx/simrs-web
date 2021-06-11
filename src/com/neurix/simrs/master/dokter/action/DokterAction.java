@@ -3,6 +3,7 @@ package com.neurix.simrs.master.dokter.action;
 import com.neurix.authorization.position.bo.PositionBo;
 import com.neurix.authorization.position.model.Position;
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
@@ -243,6 +244,7 @@ public class DokterAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfsearchDokter);
+        setDokter(searchDokter);
         logger.info("[DokterAction.search] end process <<<");
         return "search";
     }
@@ -251,7 +253,11 @@ public class DokterAction extends BaseMasterAction {
     public String initForm() {
         logger.info("[DokterAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
-        setDokter(new Dokter());
+        Dokter dokter = new Dokter();
+        if(!CommonConstant.BRANCH_KP.equalsIgnoreCase(CommonUtil.userBranchLogin())){
+            dokter.setBranchId(CommonUtil.userBranchLogin());
+        }
+        setDokter(dokter);
         session.removeAttribute("listOfResult");
         logger.info("[DokterAction.initForm] end process >>>");
         return "search";
@@ -271,6 +277,7 @@ public class DokterAction extends BaseMasterAction {
 
         Pelayanan pelayanan = new Pelayanan();
         pelayanan.setFlag("Y");
+        pelayanan.setIsNotNull("Y");
 
         List<Pelayanan> listOfPelayanan = new ArrayList<Pelayanan>();
         try {

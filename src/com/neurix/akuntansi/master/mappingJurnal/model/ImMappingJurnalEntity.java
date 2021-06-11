@@ -21,6 +21,7 @@ public class ImMappingJurnalEntity implements Serializable {
     private String bukti;
     private String kodeBarang;
     private String keterangan;
+    private String parameterCoa;
     private String kirimList;
     private String divisiId;
     private String editBiaya;
@@ -62,6 +63,14 @@ public class ImMappingJurnalEntity implements Serializable {
 
     public void setKeterangan(String keterangan) {
         this.keterangan = keterangan;
+    }
+
+    public String getParameterCoa() {
+        return parameterCoa;
+    }
+
+    public void setParameterCoa(String parameterCoa) {
+        this.parameterCoa = parameterCoa;
     }
 
     public String getKodeBarang() {

@@ -88,8 +88,8 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_mutasi')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%04d", iter.next());
-
-        return "M"+sId;
+        String output = "M"+sId;
+        return output;
     }
 
     public List<Mutasi> getKualifikasi(String qryWhere) throws HibernateException {
@@ -169,8 +169,6 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
                 "  mutasi.pjs,\n" +
                 "  to_char(now(), 'dd-MM-yyyy') AS tanggal_sekarang,\n" +
                 "  mutasi.branch_lama_id,\n" +
-                "  mutasi.level_baru_name,\n" +
-                "  mutasi.level_baru\n," +
                 "  mutasi.no_sk\n" +
                 "FROM it_hris_mutasi_jabatan mutasi\n" +
                 "LEFT JOIN im_hris_pegawai personil\n" +
@@ -242,9 +240,7 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
             }else{
                 mutasi.setBranchLamaId("");
             }
-            mutasi.setLevelBaruName(rows[13].toString());
-            mutasi.setLevelBaru(rows[14].toString());
-            mutasi.setNoSk(rows[15] == null ? "" : rows[15].toString());
+            mutasi.setNoSk(rows[13] == null ? "" : rows[13].toString());
             listOfResult.add(mutasi);
         }
 

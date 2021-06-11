@@ -38,6 +38,16 @@
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
             </basic>
+
+            <basic name="hargaTerakhirBpjs">
+                <column name="harga_terakhir_bpjs"/>
+            </basic>
+            <basic name="hargaRataUmum">
+                <column name="harga_rata_umum"/>
+            </basic>
+            <basic name="hargaRataBpjs">
+                <column name="harga_rata_bpjs"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

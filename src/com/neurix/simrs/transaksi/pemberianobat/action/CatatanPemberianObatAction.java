@@ -131,7 +131,7 @@ public class CatatanPemberianObatAction {
         return response;
     }
 
-    public List<CatatanPemberianObat> getListCatatanPemberianObat(String idDetailCheckup) {
+    public List<CatatanPemberianObat> getListCatatanPemberianObat(String idDetailCheckup, String jenis) {
         List<CatatanPemberianObat> list = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CatatanPemberianObatBo catatanPemberianObatBo = (CatatanPemberianObatBo) ctx.getBean("catatanPemberianObatBoProxy");
@@ -139,6 +139,9 @@ public class CatatanPemberianObatAction {
             try {
                 CatatanPemberianObat catatan = new CatatanPemberianObat();
                 catatan.setIdDetailCheckup(idDetailCheckup);
+                if(!"".equalsIgnoreCase(jenis)){
+                    catatan.setJenis(jenis);
+                }
                 list = catatanPemberianObatBo.getByCriteria(catatan);
             } catch (GeneralBOException e) {
                 logger.error("Found Error" + e.getMessage());
@@ -158,6 +161,72 @@ public class CatatanPemberianObatAction {
                 response = catatanPemberianObatBo.saveDelete(catatan);
             } catch (GeneralBOException e) {
                 logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return response;
+    }
+
+    public CrudResponse saveUpdate(String data) {
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CatatanPemberianObatBo catatanPemberianObatBo = (CatatanPemberianObatBo) ctx.getBean("catatanPemberianObatBoProxy");
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        if (!"".equalsIgnoreCase(data)) {
+            try {
+                JSONObject obj = new JSONObject(data);
+                CatatanPemberianObat catatan = new CatatanPemberianObat();
+                catatan.setIdCatatanPemberianObat(obj.getString("id"));
+                catatan.setWaktu(obj.getString("waktu"));
+                catatan.setNamaTerangDokter(obj.getString("nama1"));
+                catatan.setNamaTerangPerawat(obj.getString("nama2"));
+                if(obj.has("sip1")){
+                    catatan.setSipDokter(obj.getString("sip1"));
+                }
+                if(obj.has("sip2")){
+                    catatan.setSipPerawat(obj.getString("sip2"));
+                }
+                catatan.setKeterangan(obj.getString("keterangan"));
+                if(obj.has("ttd_keluarga") || obj.has("ttd_perawat")){
+                    if(!"".equalsIgnoreCase(obj.getString("ttd_keluarga")) || !"".equalsIgnoreCase(obj.getString("ttd_perawat"))){
+                        try {
+                            BASE64Decoder decoder = new BASE64Decoder();
+                            byte[] decodedBytes1 = decoder.decodeBuffer(obj.getString("ttd_keluarga"));
+                            byte[] decodedBytes2 = decoder.decodeBuffer(obj.getString("ttd_perawat"));
+
+                            String wkt = time.toString();
+                            String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+
+                            String fileName1 = obj.getString("id") + "-" + "ttd_keluarga" + "-" + patten + ".png";
+                            String fileName2 = obj.getString("id") + "-" + "ttd_perawat" + "-" + patten + ".png";
+                            String uploadFile1 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName1;
+                            String uploadFile2 = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName2;
+
+                            BufferedImage image1 = ImageIO.read(new ByteArrayInputStream(decodedBytes1));
+                            BufferedImage image2 = ImageIO.read(new ByteArrayInputStream(decodedBytes2));
+
+                            if (image1 == null || image2 == null) {
+                                logger.error("Buffered Image is null");
+                                response.setStatus("error");
+                                response.setMsg("Buffered Image is null");
+                            } else {
+                                File f1 = new File(uploadFile1);
+                                File f2 = new File(uploadFile2);
+                                ImageIO.write(image1, "png", f1);
+                                ImageIO.write(image2, "png", f2);
+                                catatan.setTtdDokter(fileName1);
+                                catatan.setTtdApoteker(fileName2);
+                            }
+                        }catch (IOException e){
+                            response.setStatus("error");
+                            response.setMsg("Errror when prse IO Images, "+e.getMessage());
+                        }
+                    }
+                }
+                catatanPemberianObatBo.saveUpdate(catatan);
+            } catch (Exception e) {
+                logger.error("Found Error" + e.getMessage());
+                response.setStatus("error");
+                response.setMsg("Error, "+e.getMessage());
             }
         }
         return response;

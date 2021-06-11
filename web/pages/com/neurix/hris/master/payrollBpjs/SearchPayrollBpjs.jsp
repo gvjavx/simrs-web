@@ -152,7 +152,7 @@
                                 <tr>
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                   height="900" width="550" autoOpen="false"
+                                                   height="600" width="550" autoOpen="false"
                                                    title="Payroll BPJS">
                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>

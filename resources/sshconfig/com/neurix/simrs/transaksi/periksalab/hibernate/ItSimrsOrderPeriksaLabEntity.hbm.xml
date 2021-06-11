@@ -11,11 +11,23 @@
             <basic name="idDetailCheckup">
                 <column name="id_detail_checkup"/>
             </basic>
-            <basic name="idLab">
-                <column name="id_lab"/>
+            <basic name="idPemeriksaan">
+                <column name="id_pemeriksaan"/>
+            </basic>
+            <basic name="namaPemeriksaan">
+                <column name="nama_pemeriksaan"/>
             </basic>
             <basic name="idLabDetail">
                 <column name="id_lab_detail"/>
+            </basic>
+            <basic name="namaDetailPemeriksaan">
+                <column name="nama_detail_pemeriksaan"/>
+            </basic>
+            <basic name="idKategoriLab">
+                <column name="id_kategori_lab"/>
+            </basic>
+            <basic name="keterangan">
+                <column name="keterangan"/>
             </basic>
             <basic name="isPemeriksaan">
                 <column name="is_pemeriksaan"/>
@@ -37,9 +49,6 @@
             </basic>
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
-            </basic>
-            <basic name="keterangan">
-                <column name="keterangan"/>
             </basic>
         </attributes>
     </entity>

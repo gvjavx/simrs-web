@@ -43,7 +43,7 @@ public interface ObatPoliBo {
 
     public List<ObatPoli> getListObatPoliGroup(String idPelayanan, String branchId) throws GeneralBOException;
 
-    public List<ObatPoli> getListObatGroupPoli(String idPelayanan, String branchId, String flagBpjs, String idJenisObat, String idDetailCheckup) throws GeneralBOException;
+    public List<ObatPoli> getListObatGroupPoli(String idPelayanan, String branchId, String jenisPasien, String idJenisObat, String idDetailCheckup) throws GeneralBOException;
     public List<ObatPoli> getListObatGroupPoliSerupa(String idPelayanan, String branchId, String flagBpjs, String idObat) throws GeneralBOException;
     public List<PermintaanObatPoli> getCekRequestExist(PermintaanObatPoli bean) throws GeneralBOException;
     public MtSimrsPermintaanObatPoliEntity getEntityPermintaanObatPoliById(String id) throws GeneralBOException;
@@ -51,4 +51,6 @@ public interface ObatPoliBo {
     public MtSimrsPermintaanObatPoliEntity getPermintaanObatPolyByIdApproval(String idApproval) throws GeneralBOException;
     public ImtSimrsApprovalTransaksiObatEntity getApprovalEntityById(String id) throws GeneralBOException;
 
+    public List<ObatPoli> getStokObatPoli(ObatPoli bean) throws GeneralBOException;
+    public List<PermintaanObatPoli> getListDetailPermintaanByIdApproval(String idApproval) throws GeneralBOException;
 }

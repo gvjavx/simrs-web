@@ -53,6 +53,8 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_PHOTO_PROFILE = "/upload/profile/";
     public static final String RESOURCE_PATH_FOTO_KIRIM = "/upload/foto_kirim/";
     public static final String RESOURCE_PATH_APK_ZEBRA = "/upload/apk_zebra";
+    public static final String RESOURCE_PATH_PEMERIKSAAN = "/upload/pemeriksaan/";
+    public static final String RESOURCE_PATH_PENDUKUNG_PEMERIKSAAN = "/upload/pendukung_pemeriksaan/";
 
 //    public final static String RESOURCE_PATH_USER_UPLOAD = CommonUtil.getPropertyParams("resource.dir")+"/profile/";
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";
@@ -73,7 +75,7 @@ public class CommonConstant {
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\user\\Pictures";
 
     public final static String EXTERNAL_IMG_URI = ServletActionContext.getRequest().getContextPath()+"/images";
-    public final static String EXTERNAL_IMG_URI_PROFILE = ServletActionContext.getRequest().getContextPath()+"/images/profile/";
+    public final static String EXTERNAL_IMG_URI_PROFILE = ServletActionContext.getRequest().getContextPath()+"/images/"; // profile/";
 //    public final static String EXTERNAL_IMG_URI_PROFILE = ServletActionContext.getRequest().getContextPath()+"/profile/";
     public final static String RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY = CommonUtil.getUploadFolderValue();
 
@@ -92,9 +94,10 @@ public class CommonConstant {
     public final static String URL_IMAGE_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/logo-nmu.png";
     public final static String URL_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/";
     public final static String IMAGE_LOGO_KP = "KP.png";
-    public final static String RESOURCE_DOCUMENT_PAYROLL = CommonUtil.getPropertyParams("upload.folder2")+CommonConstant.RESOURCE_PATH_PAYROLL;
+    public final static String RESOURCE_DOCUMENT_PAYROLL = CommonUtil.getPropertyParams("upload.folder")+CommonConstant.RESOURCE_PATH_PAYROLL;
 
-    public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayroll3.jrxml";
+//    public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayroll3.jrxml";
+    public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollPeg_update.jrxml";
     public final static String REPORT_PAYROLL_THR = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollThrBranch3.jrxml";
     public final static String REPORT_PAYROLL_JASPROD = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollJasoprBranch3jrxml";
     public final static String REPORT_PAYROLL_PENSIUN = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollPensiun3.jrxml";
@@ -103,11 +106,21 @@ public class CommonConstant {
     public final static String REPORT_PAYROLL_CUTI_PANJANG = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollCutiPanjangBranch3.jrxml";
     public final static String REPORT_PAYROLL_CUTI_TAHUNAN = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollCutiTahunanBranch3.jrxml";
 
-    //ptpnx e-farming
+    //role name
     public final static String ROLE_ADMIN_POLI = "ADMIN POLI";
     public final static String ROLE_ADMIN_RS = "ADMIN RS";
     public final static String ROLE_ADMIN_IGD = "ADMIN IGD";
     public final static String ROLE_ADMIN_APOTEK = "ADMIN APOTEK";
+    public final static String ROLE_DOKTER_UMUM = "Dokter Umum";
+    public final static String ROLE_DOKTER_SPESIALIS = "Dokter Spesialis";
+
+
+    //JENIS PEGAWAI
+    public final static String JP_NORMAL = CommonUtil.getPropertyParams("jenis.pegawai.normal");
+    public final static String JP_PLT = CommonUtil.getPropertyParams("jenis.pegawai.plt");
+    public final static String JP_PJS = CommonUtil.getPropertyParams("jenis.pegawai.pjs");
+    public final static String JP_PERCOBAAN = CommonUtil.getPropertyParams("jenis.pegawai.percobaan");
+
 
     //BPJS
     public final static String APP_NAME = ServletActionContext.getRequest().getContextPath();
@@ -142,10 +155,13 @@ public class CommonConstant {
 
     public final static String IMAGE_CARD = "/pages/images/card.png";
 
-    public final static String BRANCH_RS01 = "RS01";
-    public final static String BRANCH_RS02 = "RS02";
-    public final static String BRANCH_RS03 = "RS03";
-    public final static String BRANCH_KP = "KP";
+    public final static String BRANCH_RS01 = "02"; //CommonUtil.getPropertyParams("branch.gatoel");
+    public final static String BRANCH_RS02 = "03"; //CommonUtil.getPropertyParams("branch.toeloengredjo");
+    public final static String BRANCH_RS03 = "04"; //CommonUtil.getPropertyParams("branch.perkebunan");
+    public final static String BRANCH_KP = "01"; //CommonUtil.getPropertyParams("branch.kp");
+    public final static String BRANCH_RS04 = "05"; //RS medika Utama
+    public final static String BRANCH_RS05 = "98"; // Estetika Meditama
+    public final static String BRANCH_RS06 = "99"; // Unit Rawat Jalan
 
     public static final String RESOURCE_IMAGE_TTD = CommonUtil.getPropertyParams("upload.folder");
     //    public static final String RESOURCE_IMAGE_TTD = "C:/Users/pc001/Pictures/";
@@ -170,8 +186,13 @@ public class CommonConstant {
     public final static String COA_PAYROLL = CommonUtil.getPropertyParams("coa.bank.payroll");
     public final static String KELOMPOK_ID_PEJABAT_MUDA = CommonUtil.getPropertyParams("kelompok.id.pejabat.muda");
     public final static String KELOMPOK_ID_PEJABAT_MADYA = CommonUtil.getPropertyParams("kelompok.id.pejabat.madya");
+    //RAKA-09JUN2021 ===> kelompok khusus manager procurement, dibuat untuk handle tunj.Jab & Struk yg berbeda (antara Madya dan Utama)
+    public final static String KELOMPOK_ID_MAN_PROCUREMENT = CommonUtil.getPropertyParams("kelompok.id.pejabat.man_procurement");
+    //RAKA-end
     public final static String KELOMPOK_ID_PEJABAT_UTAMA = CommonUtil.getPropertyParams("kelompok.id.pejabat.utama");
-    public final static String BAGIAN_ID_BOD_BOC =CommonUtil.getPropertyParams("bagian.bod.boc");
+    public final static String KELOMPOK_ID_STAFF = CommonUtil.getPropertyParams("kelompok.id.pelaksana");
+    public final static String BAGIAN_ID_BOD =CommonUtil.getPropertyParams("bagian.bod");
+    public final static String BAGIAN_ID_BOC =CommonUtil.getPropertyParams("bagian.boc");
     public final static String KELOMPOK_ID_BOD =CommonUtil.getPropertyParams("kelompok.id.bod");
     public final static String KELOMPOK_ID_BOC =CommonUtil.getPropertyParams("kelompok.id.boc");
     public final static String ROLE_ID_KARYAWAN = CommonUtil.getPropertyParams("role.id.karyawan");
@@ -180,8 +201,13 @@ public class CommonConstant {
     public final static String ROLE_ID_KA_KEU = CommonUtil.getPropertyParams("role.id.ka.keu");
     public final static String ROLE_ID_ADMIN_DIVISI = CommonUtil.getPropertyParams("role.id.admin.divisi");
     public final static String ROLE_ID_ADMIN = CommonUtil.getPropertyParams("role.id.admin");
-    public final static String ID_KANPUS = "KP";
+    public final static String ROLE_ID_ADMIN_SDM = CommonUtil.getPropertyParams("role.id.admin.sdm");
+//    public final static String ID_KANPUS = "KP";
     public final static String MASTER_PAJAK_OBAT = "03.00";
+
+    //updated by ferdi, 01-12-2020
+    public final static String FLAG_TUTUP_PERIODE = "Y";
+    public final static String FLAG_LOCK_PERIODE = "L";
 
 
     public final static String RESOURCE_PATH_FAKTUR_PAJAK = "/upload/faktur_pajak/";
@@ -206,6 +232,7 @@ public class CommonConstant {
 
     //TELEMEDICINE
     public static final int ADD_JAM_BAYAR = 30; //MENIT
+    public static final String URL_RECORDING = CommonUtil.getPropertyParams("recording.handler.baseurl");
 
     public final static String posisiKabidKeuanganKp = CommonUtil.getPropertyParams("posisi.kabid.keuangan.kp");
     public final static String posisiKasubbidKeuanganKp = CommonUtil.getPropertyParams("posisi.kasubbid.keuangan.kp");
@@ -215,7 +242,18 @@ public class CommonConstant {
     // CONSTANT ID TRANSAKSI BILLING
     public final static String TRANSAKSI_ID_PENYEWAAN_LAHAN =CommonUtil.getPropertyParams("transaksi.id.penyewaan.lahan");
     public final static String TRANSAKSI_ID_PENGAJUAN_SETOR_PPH21 =CommonUtil.getPropertyParams("transaksi.id.pengajuan.setor.pph21");
-    public final static String TRANSAKSI_ID_PAYROLL =CommonUtil.getPropertyParams("transaksi.id.payroll");
+
+    //updated by ferdi, 01-12-2021, untuk mapping trans id di bagian payroll
+    public final static String TRANSAKSI_ID_PAYROLL_BULANAN =CommonUtil.getPropertyParams("transaksi.id.payroll");
+    public final static String TRANSAKSI_ID_THR =CommonUtil.getPropertyParams("transaksi.id.thr");
+    public final static String TRANSAKSI_ID_JASOP =CommonUtil.getPropertyParams("transaksi.id.jasop");
+    public final static String TRANSAKSI_ID_INSENTIVE =CommonUtil.getPropertyParams("transaksi.id.insentive");
+    public final static String TRANSAKSI_ID_CUTI_PANJANG =CommonUtil.getPropertyParams("transaksi.id.cutipanjang");
+    public final static String TRANSAKSI_ID_CUTI_TAHUNAN =CommonUtil.getPropertyParams("transaksi.id.cutitahunan");
+    public final static String TRANSAKSI_ID_PENSIUN =CommonUtil.getPropertyParams("transaksi.id.pensiun");
+    public final static String TRANSAKSI_ID_RAPEL =CommonUtil.getPropertyParams("transaksi.id.rapel");
+    public final static String TRANSAKSI_ID_PMP =CommonUtil.getPropertyParams("transaksi.id.pmp");
+
     public final static String TRANSAKSI_ID_KIRIM_RK =CommonUtil.getPropertyParams("transaksi.id.kirim.rk");
     public final static String TRANSAKSI_ID_TERIMA_RK =CommonUtil.getPropertyParams("transaksi.id.terima.rk");
     public final static String TRANSAKSI_ID_PENGIRIMAN_PENDAPATAN_KE_PUSAT =CommonUtil.getPropertyParams("transaksi.id.pengiriman.pendapatan.ke.pusat");
@@ -240,6 +278,11 @@ public class CommonConstant {
     public final static String TRANSAKSI_ID_PEMBAYARAN_DO = CommonUtil.getPropertyParams("transaksi.id.pembayaran.do");
     public final static String TRANSAKSI_ID_KOREKSI_PENGAJUAN_BIAYA = CommonUtil.getPropertyParams("transaksi.id.koreksi.pengajuan.biaya");
 
+    //untuk sewa lahan - aji noor
+    public final static String REKENING_KODE_PPN_KELUARAN = CommonUtil.getPropertyParams("rekening.kode.ppn.keluaran");
+    public final static String REKENING_KODE_PPH_PASAL4_AYAT2 = CommonUtil.getPropertyParams("rekening.kode.pph.pasal4.ayat2");
+    public final static String REKENING_KODE_PENDAPATAN_DILUAR_USAHA = CommonUtil.getPropertyParams("rekening.kode.pendapatan.diluar.usaha");
+
     public final static String REKENING_ID_PPN_MASUKAN = CommonUtil.getPropertyParams("rekening.id.ppn.masukan");
     public final static String REKENING_ID_PPN_KELUARAN = CommonUtil.getPropertyParams("rekening.id.ppn.keluaran");
     public final static String REKENING_PPH21 = "00187";
@@ -259,6 +302,122 @@ public class CommonConstant {
     public final static String TRANSAKSI_ID_RK_PERSEDIAAN_PENERIMA ="89";
     public final static String ID_BG_KATEGORI_BIAYA_RUTIN = "KTB000005";
 
+    public final static String PEGAWAI_TETAP = "TP03";
+    public final static String PEGAWAI_PKWT = "TP04";
+
+    //constant PAYROLL
+    public final static String CODE_PAYROLL = "PY";
+    public final static String CODE_THR = "TH";
+    public final static String CODE_RAPEL = "RP";
+    public final static String CODE_INSENTIF = "IN";
+    public final static String CODE_JASOP = "JP";
+    public final static String CODE_PENSIUN = "PN";
+    public final static String CODE_CUTI_PANJANG = "CP";
+    public final static String CODE_CUTI_TAHUNAN = "CT";
+    public final static String CODE_PMP = "JB";
+
+    //mapping jurnal untuk payroll, ferdi, 01-12-2021
+    public final static String MAPPING_PAYROLL_GAJI_DEKOM = CommonUtil.getPropertyParams("mapping.payroll.gaji.dekom");
+    public final static String MAPPING_PAYROLL_TUNJ_PPH_DEKOM = CommonUtil.getPropertyParams("mapping.payroll.tunj.pph.dekom");
+    public final static String MAPPING_PAYROLL_TUNJ_TRANSPORT_KOMUNIKASI_DEKOM = CommonUtil.getPropertyParams("mapping.payroll.tunj.transport.komunikasi.dekom");
+    public final static String MAPPING_PAYROLL_TUNJ_RUMAH_DEKOM = CommonUtil.getPropertyParams("mapping.payroll.tunj.rumah.dekom");
+    public final static String MAPPING_PAYROLL_TUNJ_LAIN_DEKOM = CommonUtil.getPropertyParams("mapping.payroll.tunj.lain.dekom");
+
+    public final static String MAPPING_PAYROLL_GAJI_DIREKSI = CommonUtil.getPropertyParams("mapping.payroll.gaji.direksi");
+    public final static String MAPPING_PAYROLL_TUNJ_PPH_DIREKSI = CommonUtil.getPropertyParams("mapping.payroll.tunj.pph.direksi");
+    public final static String MAPPING_PAYROLL_TUNJ_TRANSPORT_KOMUNIKASI_DIREKSI = CommonUtil.getPropertyParams("mapping.payroll.tunj.transport.komunikasi.direksi");
+    public final static String MAPPING_PAYROLL_TUNJ_RUMAH_DIREKSI = CommonUtil.getPropertyParams("mapping.payroll.tunj.rumah.direksi");
+    public final static String MAPPING_PAYROLL_TUNJ_LAIN_DIREKSI = CommonUtil.getPropertyParams("mapping.payroll.tunj.lain.direksi");
+
+    public final static String MAPPING_PAYROLL_GAJI_KARY_TETAP = CommonUtil.getPropertyParams("mapping.payroll.gaji.kary.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_JABATAN_KARY_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.jabatan.kary.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_STRUKTURAL_KARY_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.struktural.kary.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_PAJAK_KARY_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.pajak.kary.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_RLAB_KARY_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.rlab.kary.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_PENSIUN_KARY_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.pensiun.kary.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_BPJS_TK_KARY_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.bpjs.tk.kary.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_BPJS_KS_KARY_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.bpjs.ks.kary.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_KHUSUS_KARY_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.khusus.kary.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_LEMBUR_KARY_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.lembur.kary.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_PERALIHAN_KARY_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.peralihan.kary.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_SUPERVISI_KARY_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.supervisi.kary.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_FUNGSIONAL_KARY_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.fungsional.kary.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_PEMONDOKAN_KARY_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.pemondokan.kary.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_LAIN_KARY_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.lainnya.kary.tetap");
+
+    public final static String MAPPING_PAYROLL_GAJI_KARY_TIDAK_TETAP = CommonUtil.getPropertyParams("mapping.payroll.gaji.kary.tidak.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_FUNGSIONAL_KARY_TIDAK_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.fungsional.kary.tidak.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_TAMBAHAN_KARY_TIDAK_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.tambahan.kary.tidak.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_PAJAK_KARY_TIDAK_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.pajak.kary.tidak.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_BPJS_TK_KARY_TIDAK_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.bpjs.tk.kary.tidak.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_BPJS_KS_KARY_TIDAK_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.bpjs.ks.kary.tidak.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_KHUSUS_KARY_TIDAK_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.khusus.kary.tidak.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_LEMBUR_KARY_TIDAK_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.lembur.kary.tidak.tetap");
+    public final static String MAPPING_PAYROLL_TUNJ_LAIN_KARY_TIDAK_TETAP = CommonUtil.getPropertyParams("mapping.payroll.tunj.lainnya.kary.tidak.tetap");
+
+    public final static String MAPPING_PAYROLL_IURAN_BPJS_TK = CommonUtil.getPropertyParams("mapping.payroll.iuran.bpjs.tk");
+    public final static String MAPPING_PAYROLL_IURAN_BPJS_KS = CommonUtil.getPropertyParams("mapping.payroll.iuran.bpjs.ks");
+    public final static String MAPPING_PAYROLL_IURAN_DAPENBUN = CommonUtil.getPropertyParams("mapping.payroll.iuran.dapenbun");
+    public final static String MAPPING_PAYROLL_IURAN_DPLK = CommonUtil.getPropertyParams("mapping.payroll.iuran.dplk");
+    public final static String MAPPING_PAYROLL_IURAN_KARYAWAN = CommonUtil.getPropertyParams("mapping.payroll.iuran.karyawan");
+
+    public final static String MAPPING_PAYROLL_KAS = CommonUtil.getPropertyParams("mapping.payroll.kas");
+    public final static String MAPPING_PAYROLL_PPH_GAJI = CommonUtil.getPropertyParams("mapping.payroll.pph.gaji");
+
+    public final static String MAPPING_THR_TUNJ_HARI_RAYA_DEKOM = CommonUtil.getPropertyParams("mapping.thr.tunj.hari.raya.dekom");
+    public final static String MAPPING_THR_TUNJ_PPH_DEKOM = CommonUtil.getPropertyParams("mapping.thr.tunj.pph.dekom");
+    public final static String MAPPING_THR_TUNJ_HARI_RAYA_DIREKSI = CommonUtil.getPropertyParams("mapping.thr.tunj.hari.raya.direksi");
+    public final static String MAPPING_THR_TUNJ_PPH_DIREKSI = CommonUtil.getPropertyParams("mapping.thr.tunj.pph.direksi");
+    public final static String MAPPING_THR_TUNJ_HARI_RAYA = CommonUtil.getPropertyParams("mapping.thr.tunj.hari.raya");
+    public final static String MAPPING_THR_TUNJ_PPH_KARY_TETAP = CommonUtil.getPropertyParams("mapping.thr.tunj.pph.kary.tetap");
+    public final static String MAPPING_THR_TUNJ_PPH_KARY_TIDAK_TETAP = CommonUtil.getPropertyParams("mapping.thr.tunj.pph.kary.tidak.tetap");
+    public final static String MAPPING_THR_KAS = CommonUtil.getPropertyParams("mapping.thr.kas");
+    public final static String MAPPING_THR_PPH = CommonUtil.getPropertyParams("mapping.thr.pph");
+
+    public final static String MAPPING_INSENTIVE_TUNJ_INSENTIVE = CommonUtil.getPropertyParams("mapping.insentive.tunj.insentive");
+    public final static String MAPPING_INSENTIVE_TUNJ_PPH_KARY_TETAP = CommonUtil.getPropertyParams("mapping.insentive.tunj.pph.kary.tetap");
+    public final static String MAPPING_INSENTIVE_TUNJ_PPH_KARY_TIDAK_TETAP = CommonUtil.getPropertyParams("mapping.insentive.tunj.pph.kary.tidak.tetap");
+    public final static String MAPPING_INSENTIVE_KAS = CommonUtil.getPropertyParams("mapping.insentive.kas");
+    public final static String MAPPING_INSENTIVE_PPH = CommonUtil.getPropertyParams("mapping.insentive.pph");
+
+    public final static String MAPPING_JASOP_TUNJ_JASOP = CommonUtil.getPropertyParams("mapping.jasop.tunj.jasop");
+    public final static String MAPPING_JASOP_TUNJ_PPH_KARY_TETAP = CommonUtil.getPropertyParams("mapping.jasop.tunj.pph.kary.tetap");
+    public final static String MAPPING_JASOP_TUNJ_PPH_KARY_TIDAK_TETAP = CommonUtil.getPropertyParams("mapping.jasop.tunj.pph.kary.tidak.tetap");
+    public final static String MAPPING_JASOP_KAS = CommonUtil.getPropertyParams("mapping.jasop.kas");
+    public final static String MAPPING_JASOP_PPH = CommonUtil.getPropertyParams("mapping.jasop.pph");
+
+    public final static String MAPPING_CUTI_UANG_CUTI = CommonUtil.getPropertyParams("mapping.cuti.uang.cuti");
+    public final static String MAPPING_CUTI_TUNJ_PPH_KARY_TETAP = CommonUtil.getPropertyParams("mapping.cuti.tunj.pph.kary.tetap");
+    public final static String MAPPING_CUTI_KAS = CommonUtil.getPropertyParams("mapping.cuti.kas");
+    public final static String MAPPING_CUTI_PPH = CommonUtil.getPropertyParams("mapping.cuti.pph");
+
+    public final static String TIPE_PEGAWAI_BOC = "TP01";
+    public final static String TIPE_PEGAWAI_BOD = "TP02";
+    public final static String TIPE_PEGAWAI_TETAP = "TP03";
+    public final static String TIPE_PEGAWAI_TIDAK_TETAP = "TP04";
+
+    public final static String TIPE_DPLK = "DP01";
+    public final static String TIPE_DAPENBUN = "DP02";
+
+    public final static String TANGGAL_GAJI = "25";
+    public final static String BULAN_12 = "12";
+    public final static String MATA_UANG_RPH = "032";
+    public final static String KAS_TUNAI = CommonUtil.getPropertyParams("coa.kas.tunai");
+    public final static String METODE_TRANSFER = "TRANSFER";
+    public final static String METODE_TRANSFER_VA = "TRANSFER VA";
+    public final static String METODE_TUNAI = "TUNAI";
+
+    //updated by ferdi, 01-12-2021, untuk mapping trans id di telemedicine
+    public final static String TRANSAKSI_ID_TELEMEDICINE =CommonUtil.getPropertyParams("transaksi.id.telemedicine");
+    public final static String MAPPING_TELEMEDICINE_KAS = CommonUtil.getPropertyParams("mapping.telemedicine.kas");
+    public final static String MAPPING_TELEMEDICINE_PENDAPATAN = CommonUtil.getPropertyParams("mapping.telemedicine.pendapatan");
+
+    //CONSTANT STATUS LOG CRON
+    public final static String LOG_CRON_SUCCESS = "success";
+    public final static String LOG_CRON_CON_PROBLEM = "connection_problem";
+    public final static String LOG_CRON_PROG_PROBLEM = "program_problem";
+    public final static String LOG_CRON_OTHER = "other";
+
     //EMAIL
     public final static String EMAIL_USERNAME = CommonUtil.getPropertyParams("email.username");
     public final static String EMAIL_PASSWORD = CommonUtil.getPropertyParams("email.pasword");
@@ -277,6 +436,11 @@ public class CommonConstant {
     //PATH NEW RM LAMA
     public final static String URL_RM_LAMA = CommonUtil.getPropertyParams("path.rm.lama");
 
+    public final static String CODE_VA_BSI = CommonUtil.getPropertyParams("code.va.bsi");
+    public final static String DESC_VA_TELE = CommonUtil.getPropertyParams("desc.va.telemedic");
+    public final static String CODE_INVOICE_VA_TELE = CommonUtil.getPropertyParams("code.invoice.telemedic");
+    public final static String JENIS_PEMBAYARAN_TRANSFER_TUNAI = CommonUtil.getPropertyParams("jenis.pembayaran.tt");
+    public final static String JENIS_PEMBAYARAN_VA = CommonUtil.getPropertyParams("jenis.pembayaran.va");
 
 
 }

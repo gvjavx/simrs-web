@@ -151,11 +151,11 @@
                         <br>
                         <br>
                         <center>
-                            <table id="showdata" width="40%">
+                            <table id="showdata" width="70%">
                                 <tr>
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                   height="500" width="900" autoOpen="false"
+                                                   height="350" width="600" autoOpen="false"
                                                    title="GolonganPkwt ">
                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
@@ -186,7 +186,7 @@
                                                     </sj:a>
                                                 </s:if>
                                             </display:column>
-                                            <display:column property="golonganPkwtId" sortable="true" title="GolonganPkwt ID" />
+                                            <display:column property="golonganPkwtId" sortable="true" title="Gol. Pkwt ID" />
                                             <display:column property="golonganPkwtName" sortable="true" title="Nama"  />
                                             <display:column property="flag" sortable="true" title="flag"  />
                                             <display:column property="action" sortable="true" title="action"  />

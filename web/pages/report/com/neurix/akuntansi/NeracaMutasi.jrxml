@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="NeracaMutasi" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="814" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" isFloatColumnFooter="true" uuid="cceafb7a-fad7-473b-93f1-95b3c60e87df">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.3660269107301442"/>
+	<property name="ireport.zoom" value="2.0000000000000058"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="11"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -15,8 +15,8 @@
 	<parameter name="reportParams.kota" class="java.lang.String"/>
 	<parameter name="reportParams.tanggal" class="java.lang.String"/>
 	<parameter name="reportParams.periodeTitle" class="java.lang.String"/>
-	<parameter name="reportParams.periode" class="java.lang.String"/>
-	<parameter name="reportParams.branchId" class="java.lang.String">
+	<parameter name="periode" class="java.lang.String"/>
+	<parameter name="branchId" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="reportParams.urlLogo" class="java.lang.String">
@@ -27,197 +27,75 @@
 	<parameter name="reportParams.areaId" class="java.lang.String"/>
 	<parameter name="judulGm" class="java.lang.String"/>
 	<parameter name="judulManagerKeu" class="java.lang.String"/>
+	<parameter name="periodeLalu" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[]]>
+		<![CDATA[select grup.nama_kode_rekening as grup,mainValue.* from (
+                                                        select coalesce(saldo.debit,0)               debit_lalu,
+                                                               coalesce(saldo.kredit,0)              kredit_lalu,
+                                                               rekening.kode_rekening,
+                                                               rekening.nama_kode_rekening,
+                                                               coalesce(sum(detail.jumlah_debit), 0)  debit,
+                                                               coalesce(sum(detail.jumlah_kredit), 0) kredit
+                                                        from it_akun_jurnal_detail detail
+                                                               join it_akun_jurnal jurnal on jurnal.no_jurnal = detail.no_jurnal
+                                                                                               and registered_flag = 'Y'
+                                                                                               and to_char(jurnal.registered_date, 'MM-yyyy') = $P{periode}
+                                                            and jurnal.branch_id in ($P!{branchId})
+                                                            right join (select kodering.kode_rekening, kodering.nama_kode_rekening
+                                                            from im_akun_report_detail reportSetting
+                                                            join im_akun_kode_rekening kodering on kodering.rekening_id = reportSetting.rekening_id
+                                                            where reportSetting.report_id = $P{reportId}
+                                                            and reportSetting.flag = 'Y') rekening
+                                                            on detail.nomor_rekening ilike concat(rekening.kode_rekening, '%')
+                                                            left outer join (select left(kode_rekening, 3)                 kode_rekening,
+                                                            sum(jumlah_debit)                      debit,
+                                                            sum(jumlah_kredit)                     kredit,
+                                                            sum(jumlah_debit) - sum(jumlah_kredit) saldo
+                                                            from it_akun_saldo_akhir
+                                                            where periode = $P{periodeLalu}
+                                                            and branch_id in ($P!{branchId})
+                                                            and kode_rekening in (select rekening.kode_rekening
+                                                            from im_akun_report_detail reportDetail
+                                                            join im_akun_kode_rekening rekening
+                                                            on rekening.rekening_id = reportDetail.rekening_id
+                                                            where report_id = $P{reportId}
+                                                            and reportDetail.flag = 'Y')
+                                                            group by left(kode_rekening, 3)) saldo on saldo.kode_rekening = rekening.kode_rekening
+                                                            group by rekening.kode_rekening, rekening.nama_kode_rekening, saldo.debit, saldo.kredit) mainValue
+                                                          join im_akun_kode_rekening grup on grup.kode_rekening = left(mainValue.kode_rekening,1)
+order by mainValue.kode_rekening]]>
 	</queryString>
 	<field name="grup" class="java.lang.String"/>
-	<field name="koderekening" class="java.lang.String"/>
-	<field name="namarekening" class="java.lang.String"/>
-	<field name="lastdebit" class="java.math.BigDecimal"/>
-	<field name="lastkredit" class="java.math.BigDecimal"/>
-	<field name="jumlahdebit" class="java.math.BigDecimal"/>
-	<field name="jumlahkredit" class="java.math.BigDecimal"/>
-	<field name="currdebit" class="java.math.BigDecimal"/>
-	<field name="currkredit" class="java.math.BigDecimal"/>
-	<field name="currsaldo" class="java.math.BigDecimal"/>
-	<field name="currposisi" class="java.lang.String"/>
-	<variable name="SUM_jumlahDebit_1" class="java.math.BigDecimal" resetType="Group" resetGroup="grup" calculation="Sum">
-		<variableExpression><![CDATA[$F{jumlahdebit}]]></variableExpression>
+	<field name="debit_lalu" class="java.math.BigDecimal"/>
+	<field name="kredit_lalu" class="java.math.BigDecimal"/>
+	<field name="kode_rekening" class="java.lang.String"/>
+	<field name="nama_kode_rekening" class="java.lang.String"/>
+	<field name="debit" class="java.math.BigDecimal"/>
+	<field name="kredit" class="java.math.BigDecimal"/>
+	<variable name="sumDebitLalu" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{debit_lalu}]]></variableExpression>
 	</variable>
-	<variable name="SUM_jumlahKredit_1" class="java.math.BigDecimal" resetType="Group" resetGroup="grup" calculation="Sum">
-		<variableExpression><![CDATA[$F{jumlahkredit}]]></variableExpression>
+	<variable name="sumKreditLalu" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{kredit_lalu}]]></variableExpression>
 	</variable>
-	<variable name="SUM_lastDebit_1" class="java.math.BigDecimal" resetType="Group" resetGroup="grup" calculation="Sum">
-		<variableExpression><![CDATA[$F{lastdebit}]]></variableExpression>
+	<variable name="sumDebit" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{debit}]]></variableExpression>
 	</variable>
-	<variable name="SUM_lastKredit_1" class="java.math.BigDecimal" resetType="Group" resetGroup="grup" calculation="Sum">
-		<variableExpression><![CDATA[$F{lastkredit}]]></variableExpression>
+	<variable name="sumKredit" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{kredit}]]></variableExpression>
 	</variable>
-	<variable name="SUM_currDebit_1" class="java.math.BigDecimal" resetType="Group" resetGroup="grup" calculation="Sum">
-		<variableExpression><![CDATA[$F{currdebit}]]></variableExpression>
+	<variable name="sumDebitSampai" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{debit_lalu}.add( $F{debit} )]]></variableExpression>
 	</variable>
-	<variable name="SUM_currKredit_1" class="java.math.BigDecimal" resetType="Group" resetGroup="grup" calculation="Sum">
-		<variableExpression><![CDATA[$F{currkredit}]]></variableExpression>
-	</variable>
-	<variable name="jumlah_aktiva_last_debit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("AKTIVA TETAP") || $F{grup}.equals("AKUM PENYUSUTAN AKTIVA TETAP") ?
-	$F{lastdebit}: BigDecimal.ZERO )]]></variableExpression>
-	</variable>
-	<variable name="jumlah_aktiva_last_kredit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("AKTIVA TETAP") || $F{grup}.equals("AKUM PENYUSUTAN AKTIVA TETAP") ?
-	$F{lastkredit}: BigDecimal.ZERO )]]></variableExpression>
-	</variable>
-	<variable name="jumlah_aktiva_debit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("AKTIVA TETAP") || $F{grup}.equals("AKUM PENYUSUTAN AKTIVA TETAP") ?
-	$F{jumlahdebit}: BigDecimal.ZERO )]]></variableExpression>
-	</variable>
-	<variable name="jumlah_aktiva_kredit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("AKTIVA TETAP") || $F{grup}.equals("AKUM PENYUSUTAN AKTIVA TETAP") ?
-	$F{jumlahkredit}: BigDecimal.ZERO )]]></variableExpression>
-	</variable>
-	<variable name="jumlah_aktiva_curr_debit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("AKTIVA TETAP") || $F{grup}.equals("AKUM PENYUSUTAN AKTIVA TETAP") ?
-	$F{currdebit}: BigDecimal.ZERO )]]></variableExpression>
-	</variable>
-	<variable name="jumlah_aktiva_curr_credit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("AKTIVA TETAP") || $F{grup}.equals("AKUM PENYUSUTAN AKTIVA TETAP") ?
-	$F{currkredit}: BigDecimal.ZERO )]]></variableExpression>
-	</variable>
-	<variable name="jumlah_pendapatan_last_debit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("PENDAPATAN") ? $F{lastdebit}:
-( $F{grup}.equals("REDUKSI PENDAPATAN USAHA") ? $F{lastdebit}.multiply(BigDecimal.valueOf(-1.0)) :
-BigDecimal.ZERO ) )]]></variableExpression>
-	</variable>
-	<variable name="jumlah_pendapatan_last_kredit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("PENDAPATAN") ? $F{lastkredit}:
-( $F{grup}.equals("REDUKSI PENDAPATAN USAHA") ? $F{lastkredit}.multiply(BigDecimal.valueOf(-1.0)) :
-BigDecimal.ZERO ) )]]></variableExpression>
-	</variable>
-	<variable name="jumlah_pendapatan_debit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("PENDAPATAN") ? $F{jumlahdebit}:
-( $F{grup}.equals("REDUKSI PENDAPATAN USAHA") ? $F{jumlahdebit}.multiply(BigDecimal.valueOf(-1.0)) :
-BigDecimal.ZERO ) )]]></variableExpression>
-	</variable>
-	<variable name="jumlah_pendapatan_kredit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("PENDAPATAN") ? $F{jumlahkredit}:
-( $F{grup}.equals("REDUKSI PENDAPATAN USAHA") ? $F{jumlahkredit}.multiply(BigDecimal.valueOf(-1.0)) :
-BigDecimal.ZERO ) )]]></variableExpression>
-	</variable>
-	<variable name="jumlah_pendapatan_curr_debit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("PENDAPATAN") ? $F{currdebit}:
-( $F{grup}.equals("REDUKSI PENDAPATAN USAHA") ? $F{currdebit}.multiply(BigDecimal.valueOf(-1.0)) :
-BigDecimal.ZERO ) )]]></variableExpression>
-	</variable>
-	<variable name="jumlah_pendapatan_curr_kredit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("PENDAPATAN") ? $F{currkredit}:
-( $F{grup}.equals("REDUKSI PENDAPATAN USAHA") ? $F{currkredit}.multiply(BigDecimal.valueOf(-1.0)) :
-BigDecimal.ZERO ) )]]></variableExpression>
-	</variable>
-	<variable name="total_pendapatan_last_debit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("PENDAPATAN") ? $F{lastdebit}:
-( $F{grup}.equals("REDUKSI PENDAPATAN USAHA") ? $F{lastdebit}.multiply(BigDecimal.valueOf(-1.0)) :
-( $F{grup}.equals("PENDAPATAN DILUAR USAHA") ? $F{lastdebit} :
-BigDecimal.ZERO ) ) )]]></variableExpression>
-	</variable>
-	<variable name="total_pendapatan_last_kredit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("PENDAPATAN") ? $F{lastkredit}:
-( $F{grup}.equals("REDUKSI PENDAPATAN USAHA") ? $F{lastkredit}.multiply(BigDecimal.valueOf(-1.0)) :
-( $F{grup}.equals("PENDAPATAN DILUAR USAHA") ? $F{lastdebit} :
-BigDecimal.ZERO ) ) )]]></variableExpression>
-	</variable>
-	<variable name="total_pendapatan_debit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("PENDAPATAN") ? $F{jumlahdebit}:
-( $F{grup}.equals("REDUKSI PENDAPATAN USAHA") ? $F{jumlahdebit}.multiply(BigDecimal.valueOf(-1.0)) :
-( $F{grup}.equals("PENDAPATAN DILUAR USAHA") ? $F{lastdebit} :
-BigDecimal.ZERO ) ) )]]></variableExpression>
-	</variable>
-	<variable name="total_pendapatan_kredit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("PENDAPATAN") ? $F{jumlahkredit}:
-( $F{grup}.equals("REDUKSI PENDAPATAN USAHA") ? $F{jumlahkredit}.multiply(BigDecimal.valueOf(-1.0)) :
-( $F{grup}.equals("PENDAPATAN DILUAR USAHA") ? $F{lastdebit} :
-BigDecimal.ZERO ) ) )]]></variableExpression>
-	</variable>
-	<variable name="total_pendapatan_curr_debit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("PENDAPATAN") ? $F{currdebit}:
-( $F{grup}.equals("REDUKSI PENDAPATAN USAHA") ? $F{currdebit}.multiply(BigDecimal.valueOf(-1.0)) :
-( $F{grup}.equals("PENDAPATAN DILUAR USAHA") ? $F{lastdebit} :
-BigDecimal.ZERO ) ) )]]></variableExpression>
-	</variable>
-	<variable name="total_pendapatan_curr_kredit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("PENDAPATAN") ? $F{currkredit}:
-( $F{grup}.equals("REDUKSI PENDAPATAN USAHA") ? $F{currkredit}.multiply(BigDecimal.valueOf(-1.0)) :
-( $F{grup}.equals("PENDAPATAN DILUAR USAHA") ? $F{lastdebit} :
-BigDecimal.ZERO ) ) )]]></variableExpression>
-	</variable>
-	<variable name="jumlah_biaya_last_debit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("BIAYA OPERASI LANGSUNG")
-|| $F{grup}.equals("BIAYA OPERASI TIDAK LANGSUNG")
-|| $F{grup}.equals("BIAYA PENUNJANG OPERASI")
-|| $F{grup}.equals("BIAYA PENGELOLAAN")
-|| $F{grup}.equals("BIAYA DILUAR USAHA")
-?  $F{lastdebit}: BigDecimal.ZERO )]]></variableExpression>
-	</variable>
-	<variable name="jumlah_biaya_last_kredit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("BIAYA OPERASI LANGSUNG")
-|| $F{grup}.equals("BIAYA OPERASI TIDAK LANGSUNG")
-|| $F{grup}.equals("BIAYA PENUNJANG OPERASI")
-|| $F{grup}.equals("BIAYA PENGELOLAAN")
-|| $F{grup}.equals("BIAYA DILUAR USAHA")
-?
-	$F{lastkredit}: BigDecimal.ZERO )]]></variableExpression>
-	</variable>
-	<variable name="jumlah_biaya_debit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("BIAYA OPERASI LANGSUNG")
-|| $F{grup}.equals("BIAYA OPERASI TIDAK LANGSUNG")
-|| $F{grup}.equals("BIAYA PENUNJANG OPERASI")
-|| $F{grup}.equals("BIAYA PENGELOLAAN")
-|| $F{grup}.equals("BIAYA DILUAR USAHA") ?
-	$F{jumlahdebit}: BigDecimal.ZERO )]]></variableExpression>
-	</variable>
-	<variable name="jumlah_biaya_kredit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("BIAYA OPERASI LANGSUNG")
-|| $F{grup}.equals("BIAYA OPERASI TIDAK LANGSUNG")
-|| $F{grup}.equals("BIAYA PENUNJANG OPERASI")
-|| $F{grup}.equals("BIAYA PENGELOLAAN")
-|| $F{grup}.equals("BIAYA DILUAR USAHA") ?
-	$F{jumlahkredit}: BigDecimal.ZERO )]]></variableExpression>
-	</variable>
-	<variable name="jumlah_biaya_curr_debit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("BIAYA OPERASI LANGSUNG")
-|| $F{grup}.equals("BIAYA OPERASI TIDAK LANGSUNG")
-|| $F{grup}.equals("BIAYA PENUNJANG OPERASI")
-|| $F{grup}.equals("BIAYA PENGELOLAAN")
-|| $F{grup}.equals("BIAYA DILUAR USAHA") ?
-	$F{currdebit}: BigDecimal.ZERO )]]></variableExpression>
-	</variable>
-	<variable name="jumlah_biaya_curr_credit" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[( $F{grup}.equals("BIAYA OPERASI LANGSUNG")
-|| $F{grup}.equals("BIAYA OPERASI TIDAK LANGSUNG")
-|| $F{grup}.equals("BIAYA PENUNJANG OPERASI")
-|| $F{grup}.equals("BIAYA PENGELOLAAN")
-|| $F{grup}.equals("BIAYA DILUAR USAHA") ?
-	$F{currkredit}: BigDecimal.ZERO )]]></variableExpression>
-	</variable>
-	<variable name="SUM_currDebit_2" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{currdebit}]]></variableExpression>
-	</variable>
-	<variable name="SUM_jumlahKredit_2" class="java.math.BigDecimal" resetType="Group" resetGroup="all" calculation="Sum">
-		<variableExpression><![CDATA[$F{jumlahkredit}]]></variableExpression>
-	</variable>
-	<variable name="SUM_lastDebit_2" class="java.math.BigDecimal" resetType="Group" resetGroup="all" calculation="Sum">
-		<variableExpression><![CDATA[$F{lastdebit}]]></variableExpression>
-	</variable>
-	<variable name="SUM_lastKredit_2" class="java.math.BigDecimal" resetType="Group" resetGroup="all" calculation="Sum">
-		<variableExpression><![CDATA[$F{lastkredit}]]></variableExpression>
-	</variable>
-	<variable name="SUM_jumlahDebit_2" class="java.math.BigDecimal" resetType="Group" resetGroup="all" calculation="Sum">
-		<variableExpression><![CDATA[$F{jumlahdebit}]]></variableExpression>
-	</variable>
-	<variable name="SUM_currKredit_2" class="java.math.BigDecimal" resetType="Group" resetGroup="all" calculation="Sum">
-		<variableExpression><![CDATA[$F{currkredit}]]></variableExpression>
+	<variable name="sumKreditSampai" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{kredit_lalu}.add( $F{kredit} )]]></variableExpression>
 	</variable>
 	<group name="all">
-		<groupExpression><![CDATA[]]></groupExpression>
 		<groupHeader>
 			<band splitType="Stretch"/>
 		</groupHeader>
@@ -299,7 +177,7 @@ BigDecimal.ZERO ) ) )]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{SUM_currDebit_2}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{sumDebitSampai}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement key="staticText-38" x="27" y="0" width="163" height="20" uuid="384d50a5-f054-43e2-af55-6d1c2d76f862"/>
@@ -325,7 +203,7 @@ BigDecimal.ZERO ) ) )]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{SUM_jumlahKredit_2}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{sumKredit}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
 					<reportElement key="textField" x="190" y="0" width="99" height="20" uuid="a9805f58-33cb-417a-ac60-8fbf4a702cb6"/>
@@ -338,7 +216,7 @@ BigDecimal.ZERO ) ) )]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{SUM_lastDebit_2} == null ? BigDecimal.ZERO : $V{SUM_lastDebit_2} )]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{sumDebitLalu}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
 					<reportElement key="textField" x="289" y="0" width="99" height="20" uuid="fac09142-5220-4a0d-ac88-71d67e1cbe2d"/>
@@ -351,7 +229,7 @@ BigDecimal.ZERO ) ) )]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[( $V{SUM_lastKredit_2} == null ? BigDecimal.ZERO : $V{SUM_lastKredit_2} )]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{sumKreditLalu}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
 					<reportElement key="textField" x="388" y="0" width="114" height="20" uuid="317bebb0-f960-4c08-bda8-166fdaf4b684"/>
@@ -364,7 +242,7 @@ BigDecimal.ZERO ) ) )]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{SUM_jumlahDebit_2}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{sumDebit}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
 					<reportElement key="textField" x="715" y="0" width="99" height="20" uuid="9e7c5aaf-707e-4f43-988c-219a72d9b35f"/>
@@ -377,7 +255,7 @@ BigDecimal.ZERO ) ) )]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{SUM_currKredit_2}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{sumKreditSampai}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement key="textField" x="4" y="88" width="186" height="14" uuid="4342457a-df80-4617-8f6e-4df4d09ec6ef"/>
@@ -408,131 +286,21 @@ BigDecimal.ZERO ) ) )]]></variableExpression>
 			</band>
 		</groupFooter>
 	</group>
-	<group name="grup" isReprintHeaderOnEachPage="true">
+	<group name="grup">
 		<groupExpression><![CDATA[$F{grup}]]></groupExpression>
 		<groupHeader>
-			<band splitType="Stretch"/>
+			<band height="13">
+				<textField>
+					<reportElement x="2" y="1" width="145" height="11" uuid="32ea7918-4c8f-49df-a4fe-32b9f300ab8b"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{grup}]]></textFieldExpression>
+				</textField>
+			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="19" splitType="Stretch">
-				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField" x="403" y="4" width="99" height="15" uuid="2cf03f50-686a-4d2b-88d2-f54edc2bfdc6"/>
-					<box rightPadding="2">
-						<topPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[( $V{SUM_jumlahDebit_1} == null ? BigDecimal.ZERO : $V{SUM_jumlahDebit_1} )]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField" x="502" y="4" width="99" height="15" uuid="1ee7c9d2-dbe0-45c9-a430-5e8b4e5470eb"/>
-					<box rightPadding="2">
-						<topPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[( $V{SUM_jumlahKredit_1} == null ? BigDecimal.ZERO : $V{SUM_jumlahKredit_1} )]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField" x="190" y="4" width="99" height="15" uuid="68a46fc4-4537-45fc-8184-966cfbba0e0e"/>
-					<box rightPadding="2">
-						<topPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[( $V{SUM_lastDebit_1} == null ? BigDecimal.ZERO : $V{SUM_lastDebit_1} )]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField" x="289" y="4" width="99" height="15" uuid="ac321ef0-65fc-4f17-8402-7cb0366bc331"/>
-					<box rightPadding="2">
-						<topPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[( $V{SUM_lastKredit_1} == null ? BigDecimal.ZERO : $V{SUM_lastKredit_1} )]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField" x="616" y="4" width="99" height="15" uuid="f8d78c7b-1aa9-4a90-b00d-87ede084b454"/>
-					<box rightPadding="2">
-						<topPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[( $V{SUM_currDebit_1} == null ? BigDecimal.ZERO : $V{SUM_currDebit_1} )]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField" x="715" y="4" width="99" height="15" uuid="43c1781c-0ed7-400f-af3e-d28063ea928e"/>
-					<box rightPadding="2">
-						<topPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[( $V{SUM_currKredit_1} == null ? BigDecimal.ZERO : $V{SUM_currKredit_1} )]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="false">
-					<reportElement key="textField-10" x="27" y="4" width="163" height="15" uuid="0a97c981-9ca0-48be-aebd-38b99dda6540"/>
-					<box leftPadding="2" rightPadding="3">
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA["JUMLAH " + $F{grup}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement key="staticText-36" x="388" y="4" width="15" height="15" uuid="40eaee19-8fb1-40ee-8b75-46e16ec108c9"/>
-					<box rightPadding="2">
-						<topPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement>
-						<font fontName="SansSerif"/>
-					</textElement>
-					<text><![CDATA[]]></text>
-				</staticText>
-				<staticText>
-					<reportElement key="staticText-37" x="601" y="4" width="15" height="15" uuid="8e6b7eff-2abc-4a0c-a1e2-4d57b60da5b6"/>
-					<box rightPadding="2">
-						<topPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement>
-						<font fontName="SansSerif"/>
-					</textElement>
-					<text><![CDATA[]]></text>
-				</staticText>
-			</band>
+			<band height="4"/>
 		</groupFooter>
 	</group>
 	<background>
@@ -872,35 +640,9 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="28" splitType="Stretch">
-			<textField isBlankWhenNull="true">
-				<reportElement key="textField" mode="Transparent" x="0" y="17" width="27" height="11" uuid="33f12ce7-b0eb-4922-a241-4d4503f680f7"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{koderekening}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement key="textField" mode="Transparent" x="27" y="17" width="163" height="11" uuid="36f28a72-a4ff-477d-9665-c6feb38d3ad6"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{namarekening}]]></textFieldExpression>
-			</textField>
+		<band height="13" splitType="Stretch">
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField" mode="Transparent" x="616" y="17" width="99" height="11" uuid="4c25ec1c-0efe-4a6c-99ae-ec2c15c04530"/>
+				<reportElement key="textField" mode="Transparent" x="616" y="2" width="99" height="11" uuid="4c25ec1c-0efe-4a6c-99ae-ec2c15c04530"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -910,10 +652,10 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[( $F{currdebit} == null ? BigDecimal.valueOf(0.0) : $F{currdebit} )]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{debit_lalu}.add( $F{debit} )]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField" mode="Transparent" x="715" y="17" width="99" height="11" uuid="b6302e46-6211-46e7-a249-c899eae8cd33"/>
+				<reportElement key="textField" mode="Transparent" x="715" y="2" width="99" height="11" uuid="b6302e46-6211-46e7-a249-c899eae8cd33"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -923,72 +665,49 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{currkredit} == null ? BigDecimal.valueOf(0.0) : $F{currkredit} )]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{kredit_lalu}.add( $F{kredit} )]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-6" mode="Transparent" x="403" y="17" width="99" height="11" uuid="cc535391-2218-4851-bff0-e641ad0eb558"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
+			<textField>
+				<reportElement x="27" y="2" width="120" height="11" uuid="6bc516d7-4e80-4b9b-adab-ddbaf5b93b55"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nama_kode_rekening}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="2" width="25" height="11" uuid="91a88c10-daae-43c9-8b09-3e1d7eacd422"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{kode_rekening}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="190" y="2" width="100" height="11" uuid="cb7396fd-e883-40d2-9a9a-6a86d9936bdf"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8"/>
+					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[( $F{jumlahdebit} == null ? BigDecimal.valueOf(0.0) : $F{jumlahdebit} )]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{debit_lalu}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-7" mode="Transparent" x="502" y="17" width="99" height="11" uuid="fc8f7f08-78cd-49ae-be43-550000672980"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="290" y="2" width="98" height="11" uuid="4893116d-6ac9-419c-a7fd-e9eb0181544d"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8"/>
+					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[( $F{jumlahkredit} == null ? BigDecimal.valueOf(0.0) : $F{jumlahkredit} )]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{kredit_lalu}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-8" mode="Transparent" x="190" y="17" width="99" height="11" uuid="c49d9fba-8fe8-49e9-abff-0c4670f8921a"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="388" y="2" width="114" height="11" uuid="8033409f-90ea-4f06-8ca9-a0980dd072f5"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8"/>
+					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[( $F{lastdebit} == null ? BigDecimal.valueOf(0.0) :$F{lastdebit})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{debit}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-9" mode="Transparent" x="289" y="17" width="99" height="11" uuid="ee143285-f442-4435-99dd-f684ba05bff0"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="502" y="2" width="100" height="11" uuid="6d6c86ad-8eec-4966-b18d-39d5620b25a2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8"/>
+					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[( $F{lastkredit} == null ? BigDecimal.valueOf(0.0) : $F{lastkredit} )]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField" isPrintRepeatedValues="false" x="27" y="0" width="163" height="15" isRemoveLineWhenBlank="true" printWhenGroupChanges="grup" uuid="1b87f324-d2f3-4880-af4f-4dfda840b7db"/>
-				<box leftPadding="2" rightPadding="3">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{grup}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{kredit}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

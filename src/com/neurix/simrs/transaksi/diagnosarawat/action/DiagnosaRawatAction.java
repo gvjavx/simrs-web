@@ -17,6 +17,8 @@ import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
+import com.neurix.simrs.transaksi.profilrekammedisrj.bo.RekamMedisRawatJalanBo;
+import com.neurix.simrs.transaksi.profilrekammedisrj.model.RekamMedisRawatJalan;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.verifikator.bo.VerifikatorBo;
@@ -130,10 +132,8 @@ public class DiagnosaRawatAction extends BaseMasterAction {
         try {
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
-            DiagnosaBo diagnosaBo = (DiagnosaBo) ctx.getBean("diagnosaBoProxy");
 
             DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
             diagnosaRawat.setIdDetailCheckup(idDetailCheckup);
@@ -147,7 +147,7 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             diagnosaRawat.setAction("C");
             diagnosaRawat.setFlag("Y");
 
-            if("diagnosa_utama".equalsIgnoreCase(jenisDiagnosa) || "diagnosa_awal".equalsIgnoreCase(jenisDiagnosa)){
+            if("diagnosa_utama".equalsIgnoreCase(jenisDiagnosa) || "diagnosa_awal".equalsIgnoreCase(jenisDiagnosa)|| "diagnosa_primer".equalsIgnoreCase(jenisDiagnosa)){
                 DiagnosaRawat dr = new DiagnosaRawat();
                 dr.setIdDetailCheckup(idDetailCheckup);
                 dr.setJenisDiagnosa(jenisDiagnosa);
@@ -179,6 +179,9 @@ public class DiagnosaRawatAction extends BaseMasterAction {
                     }
                 } else {
                     response = diagnosaRawatBo.saveAdd(diagnosaRawat);
+                    if("success".equalsIgnoreCase(response.getStatus())){
+                        insertProfilRJ(idDetailCheckup, idDiagnosa+"-"+ketDiagnosa);
+                    }
                 }
             }
 
@@ -252,6 +255,18 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             diagnosaRawat.setLastUpdate(updateTime);
             diagnosaRawat.setLastUpdateWho(userLogin);
             diagnosaRawat.setAction("U");
+
+            if("diagnosa_utama".equalsIgnoreCase(jenisDiagnosa) || "diagnosa_awal".equalsIgnoreCase(jenisDiagnosa)|| "diagnosa_primer".equalsIgnoreCase(jenisDiagnosa)) {
+                DiagnosaRawat dr = new DiagnosaRawat();
+                dr.setIdDetailCheckup(idDetailCheckup);
+                dr.setJenisDiagnosa(jenisDiagnosa);
+                Boolean cek = diagnosaRawatBo.cekDiagnosa(dr);
+                if (cek) {
+                    response.setStatus("error");
+                    response.setMsg("Data " + jenisDiagnosa.replace("_", " ").toUpperCase() + " sudah ada ...!");
+                    return response;
+                }
+            }
 
             if ("bpjs".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
                 response = updateCoverBpjs(idDetailCheckup, idDiagnosa);
@@ -481,5 +496,44 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             }
         }
         return response;
+    }
+
+    public void insertProfilRJ(String idDetailCheckup, String diagnosa) {
+        CrudResponse response = new CrudResponse();
+        if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+            RekamMedisRawatJalanBo rekamMedisRawatJalanBo = (RekamMedisRawatJalanBo) ctx.getBean("rekamMedisRawatJalanBoProxy");
+            List<RekamMedisRawatJalan> rekamMedisRawatJalanList = new ArrayList<>();
+            try {
+                RekamMedisRawatJalan rekamMedisRawatJalan = new RekamMedisRawatJalan();
+                rekamMedisRawatJalan.setIdDetailCheckup(idDetailCheckup);
+                rekamMedisRawatJalanList = rekamMedisRawatJalanBo.getByCriteria(rekamMedisRawatJalan);
+                if (rekamMedisRawatJalanList.size() > 0) {
+                    RekamMedisRawatJalan rawatJalan = new RekamMedisRawatJalan();
+                    rawatJalan.setWaktu(new Timestamp(System.currentTimeMillis()));
+                    rawatJalan.setDiagnosa(diagnosa);
+                    rawatJalan.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                    rawatJalan.setLastUpdateWho(CommonUtil.userLogin());
+                    rawatJalan.setAction("U");
+                    response = rekamMedisRawatJalanBo.saveEdit(rawatJalan);
+                } else {
+                    RekamMedisRawatJalan rawatJalan = new RekamMedisRawatJalan();
+                    rawatJalan.setWaktu(new Timestamp(System.currentTimeMillis()));
+                    rawatJalan.setDiagnosa(diagnosa);
+                    rawatJalan.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                    rawatJalan.setLastUpdateWho(CommonUtil.userLogin());
+                    rawatJalan.setCreatedWho(CommonUtil.userLogin());
+                    rawatJalan.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+                    rawatJalan.setIdDetailCheckup(idDetailCheckup);
+                    rawatJalan.setAction("C");
+                    rawatJalan.setFlag("Y");
+                    response = rekamMedisRawatJalanBo.saveAdd(rawatJalan);
+                }
+            } catch (GeneralBOException e) {
+                response.setStatus("error");
+                response.setMsg("error");
+            }
+        }
     }
 }

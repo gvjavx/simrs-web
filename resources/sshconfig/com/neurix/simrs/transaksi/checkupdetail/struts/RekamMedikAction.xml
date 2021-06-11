@@ -223,7 +223,7 @@
             </result>
 
             <result name="print_resume_medis_rawat_inap" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/printResumeRawatInap.jasper</param>
+                <param name="location">/pages/report/com/neurix/simrs/printResumeRI.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
@@ -246,6 +246,27 @@
             <result name="print_surat_cuti" type="jasper">
                 <param name="location">/pages/report/com/neurix/simrs/printSuratCuti.jasper</param>
                 <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_aturan_makan_diluar" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printSuratAturanMakananDariLuar.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_buta_warna" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printSuratButaWarna.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="print_persetujuan_medis" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printPersetujuanMedisIna.jasper</param>
+                <param name="dataSource">myList</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>

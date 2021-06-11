@@ -14,6 +14,8 @@
     <script type='text/javascript'>
         $( document ).ready(function() {
             $('#rawat_jalan').addClass('active');
+            console.log('<s:property value="headerDetailCheckup.idDokter"/>');
+            listSelectDokter('<s:property value="headerDetailCheckup.idPelayanan"/>', '<s:property value="headerDetailCheckup.idDokter"/>');
         });
     </script>
 </head>
@@ -44,7 +46,7 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="checkupDetailForm" method="post" namespace="/checkupdetail" action="search_checkupdetail.action" theme="simple" cssClass="form-horizontal">
+                            <s:form id="checkupDetailForm" method="post" theme="simple" cssClass="form-horizontal" name="checkupdetail" action="search_checkupdetail.action">
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">No RM</label>
                                     <div class="col-sm-4">
@@ -56,46 +58,50 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="headerDetailCheckup.nama"
+                                        <s:textfield id="nama_pasien" name="headerDetailCheckup.namaPasien"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
-
                                 <s:if test="isEnabledPoli()">
-
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Poli</label>
                                     <div class="col-sm-4">
                                         <s:action id="initComboPoli" namespace="/checkup"
-                                                  name="getComboPelayanan_checkup"/>
+                                                  name="getComboPelayananRJ_checkup"/>
                                         <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                  list="#initComboPoli.listOfPelayanan" id="poli"
+                                                  list="#initComboPoli.listOfPelayananRJ"
+                                                  onchange="listSelectDokter(this.value)"
                                                   name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"
                                                   listValue="namaPelayanan"
-                                                  headerKey="" headerValue="[Select one]"
+                                                  headerKey="" headerValue=" - "
                                                   cssClass="form-control select2" theme="simple"/>
                                     </div>
                                 </div>
                                 </s:if>
-
                                 <s:else>
                                     <div class="form-group">
                                         <label class="control-label col-sm-4">Poli</label>
                                         <div class="col-sm-4">
                                             <s:action id="initComboPoli" namespace="/checkup"
-                                                      name="getComboPelayanan_checkup"/>
+                                                      name="getComboPelayananRJ_checkup"/>
                                             <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                      list="#initComboPoli.listOfPelayanan" id="poli"
+                                                      list="#initComboPoli.listOfPelayananRJ"
                                                       listKey="idPelayanan"
                                                       name="headerDetailCheckup.idPelayanan"
                                                       listValue="namaPelayanan"
                                                       headerKey="" headerValue="[Select one]"
                                                       cssClass="form-control select2" theme="simple" disabled="true"/>
                                         </div>
-                                        <s:hidden name="headerDetailCheckup.idPelayanan" id=""></s:hidden>
+                                        <s:hidden name="headerDetailCheckup.idPelayanan"></s:hidden>
                                     </div>
                                 </s:else>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Dokter</label>
+                                    <div class="col-sm-4">
+                                        <select name="headerDetailCheckup.idDokter" class="form-control select2" id="nama_dokter"></select>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
@@ -131,7 +137,7 @@
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-6" style="margin-top: 7px">
                                         <sj:submit type="button" cssClass="btn btn-success" formIds="checkupDetailForm" id="search" name="search"
-                                                   onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
+                                                   onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading">
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
@@ -197,12 +203,14 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Rawat Jalan Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="myTable" class="table table-bordered table-striped" style="font-size: 13px">
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>ID Detail Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
+                                <td>Umur</td>
+                                <td>Tanggal Masuk</td>
                                 <td>Desa</td>
                                 <td>Status</td>
                                 <td align="center">Jenis Pasien</td>
@@ -215,6 +223,8 @@
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="umur"/></td>
+                                    <td><s:property value="formatTglMasuk"/></td>
                                     <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td align="center">
@@ -232,9 +242,6 @@
                                                     <s:a href="%{add_rawat_jalan}">
                                                         <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                                     </s:a>
-                                                    <s:if test='#row.statusPeriksa == "0"'>
-                                                        <img onclick="cancelPeriksa('<s:property value="idDetailCheckup"/>')" style="cursor: pointer" class="hvr-grow" src="<s:url value="/pages/images/cancel-flat-new.png"/>">
-                                                    </s:if>
                                                 </s:if>
                                                 <s:else>
                                                     <span class="span-warning">Uang muka belum bayar</span>
@@ -247,21 +254,17 @@
                                                 <s:a href="%{add_rawat_jalan}">
                                                     <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                                 </s:a>
-                                                <s:if test='#row.statusPeriksa == "0"'>
-                                                    <img onclick="cancelPeriksa('<s:property value="idDetailCheckup"/>')" style="cursor: pointer" class="hvr-grow" src="<s:url value="/pages/images/cancel-flat-new.png"/>">
-                                                </s:if>
                                             </s:else>
                                         </s:if>
-                                        <s:if test='#row.tglCekup == null'>
-                                        </s:if>
-                                        <s:else>
-                                            <a target="_blank" href="printSuratKeterangan_checkupdetail.action?id=<s:property value="idDetailCheckup"/>">
+
+                                        <s:if test='#row.tindakLanjut == "kontrol_ulang"'>
+                                            <a target="_blank" href="printSuratKeterangan_checkupdetail.action?id=<s:property value="idDetailCheckup"/>&tipe=KU">
                                                 <img src="<s:url value="/pages/images/icons8-print-25.png"/>">
                                             </a>
-                                        </s:else>
+                                        </s:if>
 
-                                        <s:if test='#row.keteranganSelesai == "Rujuk Rumah Sakit Lain"'>
-                                            <a target="_blank" href="printFormulirPindahRS_checkupdetail.action?id=<s:property value="idDetailCheckup"/>">
+                                        <s:if test='#row.tindakLanjut == "rujuk_rs_lain"'>
+                                            <a target="_blank" href="printSuratKeterangan_checkupdetail.action?id=<s:property value="idDetailCheckup"/>&tipe=RSL">
                                                 <img src="<s:url value="/pages/images/icons8-print-25.png"/>">
                                             </a>
                                         </s:if>
@@ -348,51 +351,23 @@
 <%@ include file="/pages/common/footer.jsp" %>
 <%@ include file="/pages/common/lastScript.jsp" %>
 
+</body>
 <script>
-    function cancelPeriksa(idDetailCHeckup){
-        CheckupAction.listDataPasien(idDetailCHeckup, {
-            callback: function (res) {
-                $('#det_no_checkup').text(res.noCheckup);
-                $('#det_id_detail_checkup').text(res.idDetailCheckup);
-                $('#det_no_rm').text(res.idPasien);
-                $('#det_nama_pasien').text(res.nama);
-                $('#det_pelayanan').text(res.namaPelayanan);
-                $('#det_jenis_pasien').text(res.statusPeriksaName);
-                $('#det_alamat').text(res.namaDesa+", "+res.namaKecamatan+", "+res.namaKota);
+    function listSelectDokter(idPelayanan, idDokter) {
+        var option = "<option value=''>-</option>";
+        CheckupAction.getComboDokterPelayanan(idPelayanan, function (response) {
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idDokter +"'>" + item.namaDokter + "</option>";
+                });
+                $('#nama_dokter').html(option);
+                if(idDokter != undefined && idDokter != ''){
+                    $('#nama_dokter').val(idDokter).trigger('change');
+                }
+            } else {
+                $('#nama_dokter').html(option);
             }
         });
-        $('#save_add').attr('onclick', 'saveCancel(\''+idDetailCHeckup+'\')');
-        $('#modal-detail').modal({show: true, backdrop:'static'});
     }
-
-    function saveCancel(idDetailCHeckup){
-        var alsan = $('#set_alasan').val();
-        if(alsan != ''){
-            $('#save_add').hide();
-            $('#load_add').show();
-            dwr.engine.setAsync(true);
-            CheckupAction.cancelPeriksa(idDetailCHeckup, alsan, {
-                callback: function (res) {
-                    if(res.status == "success"){
-                        $('#save_add').show();
-                        $('#load_add').hide();
-                        $('#modal-detail').modal('hide');
-                        $('#info_dialog').dialog('open');
-                    }else{
-                        $('#save_add').show();
-                        $('#load_add').hide();
-                        $('#warning_cancel').show().fadeOut(5000);
-                        $('#msg_cancel').text(res.msg);
-                    }
-                }
-            });
-        }else{
-            $('#warning_cancel').show().fadeOut(5000);
-            $('#msg_cancel').text("Silahkan masukkan alasan pasien...!");
-        }
-    }
-
 </script>
-
-</body>
 </html>

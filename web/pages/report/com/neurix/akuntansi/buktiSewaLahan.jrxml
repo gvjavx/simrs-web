@@ -13,11 +13,11 @@
 	<parameter name="reportParams.kota" class="java.lang.String"/>
 	<parameter name="reportParams.reportName" class="java.lang.String"/>
 	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
-	<parameter name="penyewaanLahanId" class="java.lang.String"/>
+	<parameter name="sewaLahanId" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select * from it_akun_penyewaan_lahan limit 1]]>
+		<![CDATA[select * from it_akun_sewa_lahan limit 1]]>
 	</queryString>
-	<field name="penyewaan_lahan_id" class="java.lang.String"/>
+	<field name="sewa_lahan_id" class="java.lang.String"/>
 	<field name="nama_penyewa" class="java.lang.String"/>
 	<field name="keterangan" class="java.lang.String"/>
 	<field name="tanggal_bayar" class="java.sql.Date"/>
@@ -59,7 +59,7 @@
 				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
 new com.google.zxing.qrcode.QRCodeWriter().encode(
 "Nama Report   : " + $P{reportParams.reportName}+"\n"+
-"ID            : " + $P{penyewaanLahanId}+"\n"+
+"ID            : " + $P{sewaLahanId}+"\n"+
 "Nama Penyewa  : " + $P{namaPenyewa}+"\n"+
 "Unit          : " + $P{reportParams.kota},
 com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>

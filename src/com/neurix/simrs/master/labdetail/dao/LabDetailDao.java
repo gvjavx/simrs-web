@@ -135,7 +135,7 @@ public class LabDetailDao extends GenericDao<ImSimrsLabDetailEntity, String> {
             condition = condition + "AND a.id_parameter_pemeriksaan = '"+bean.getIdParameterPemeriksaan()+"' \n";
         }
         if(bean.getNamaDetailPeriksa() != null && !"".equalsIgnoreCase(bean.getNamaDetailPeriksa())){
-            condition = condition + "AND a.nama_pemeriksaan ILIKE '%"+bean.getNamaDetailPeriksa()+"%' \n";
+            condition = condition + "AND c.nama_pemeriksaan ILIKE '%"+bean.getNamaDetailPeriksa()+"%' \n";
         }
         if(bean.getIdKategoriLab() != null && !"".equalsIgnoreCase(bean.getIdKategoriLab())){
             condition = condition + "AND d.id_kategori_lab = '"+bean.getIdKategoriLab()+"' \n";
@@ -156,12 +156,13 @@ public class LabDetailDao extends GenericDao<ImSimrsLabDetailEntity, String> {
                 "c.satuan,\n" +
                 "d.id_kategori_lab,\n" +
                 "d.nama_kategori,\n" +
-                "a.branch_id\n" +
+                "a.branch_id,\n" +
+                "b.is_paket\n" +
                 "FROM im_simrs_lab_detail a\n" +
                 "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
                 "INNER JOIN im_simrs_parameter_pemeriksaan c ON a.id_parameter_pemeriksaan = c.id_parameter_pemeriksaan\n" +
                 "INNER JOIN im_simrs_kategori_lab d ON c.id_kategori_lab = d.id_kategori_lab\n" +
-                "WHERE a.flag = :flag \n" + condition;
+                "WHERE a.flag = :flag \n" + condition + "ORDER BY c.order_index \n";
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("flag", flag)
@@ -181,6 +182,7 @@ public class LabDetailDao extends GenericDao<ImSimrsLabDetailEntity, String> {
                 detail.setIdKategoriLab(obj[9] != null ? obj[9].toString() : null);
                 detail.setNamaKategoriLab(obj[10] != null ? obj[10].toString() : null);
                 detail.setBranchId(obj[11] != null ? obj[11].toString() : null);
+                detail.setIsPaket(obj[12] != null ? obj[12].toString() : null);
                 labDetailList.add(detail);
             }
         }

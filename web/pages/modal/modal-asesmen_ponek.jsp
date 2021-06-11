@@ -243,9 +243,9 @@
                             <div class="col-md-3">
                                 <input class="form-control" id="po21">
                             </div>
-                            <label class="col-md-3">Siklus menstruasi</label>
+                            <label class="col-md-3">lamanya</label>
                             <div class="col-md-3">
-                                <input class="form-control" id="po22" placeholder="hari">
+                                <input class="form-control" id="po22" placeholder="hari" oninput="setHPL('po24', 'po23', this.id)">
                             </div>
                         </div>
                     </div>
@@ -253,11 +253,11 @@
                         <div class="form-group">
                             <label class="col-md-3">HPHT</label>
                             <div class="col-md-3">
-                                <input class="form-control" id="po23">
+                                <input style="cursor: pointer" class="form-control tgl" id="po23" onchange="setHPL('po24', this.id, 'po22')" readonly>
                             </div>
                             <label class="col-md-3">HPL</label>
                             <div class="col-md-3">
-                                <input class="form-control" id="po24">
+                                <input class="form-control ptr-tgl" id="po24">
                             </div>
                         </div>
                     </div>

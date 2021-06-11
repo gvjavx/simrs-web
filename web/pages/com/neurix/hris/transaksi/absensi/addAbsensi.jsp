@@ -166,7 +166,7 @@
                                             </td>
                                             <td>
                                                 <table>
-                                                    <s:if test='absensiPegawai.branchIdUser == "KP"'>
+                                                    <s:if test='absensiPegawai.branchIdUser == "01"'>
                                                         <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                         <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="absensiPegawai.branchId"
                                                                   listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
@@ -309,11 +309,14 @@
 </html>
 <script>
     $(document).ready(function(){
+        var limNow = new Date();
         $('#tanggal1').datepicker({
-            dateFormat: 'dd-mm-yy'
+            dateFormat: 'dd-mm-yy',
+            maxDate: limNow
         });
         $('#tanggal2').datepicker({
-            dateFormat: 'dd-mm-yy'
+            dateFormat: 'dd-mm-yy',
+            maxDate: limNow
         });
     });
 </script>

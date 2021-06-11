@@ -7,6 +7,7 @@ import com.neurix.simrs.transaksi.transketeranganobat.model.ItSimrsKeteranganRes
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,6 +105,168 @@ public class TransaksiObatDetail extends BaseModel {
     private List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
     private List<ItSimrsRiwayatTindakanEntity> biayaTambahanList = new ArrayList<>();
     private List<ItSimrsKeteranganResepEntity> keteranganResepEntityList = new ArrayList<>();
+    private String idPabrikObat;
+    private String idBatch;
+    private String nomorProduksi;
+    private String flagBpjs;
+    private String frekuensi;
+    private List<TransaksiObatDetail> waktuObat = new ArrayList<>();
+    private String kAdmin;
+    private String kFarma;
+    private String kKritis;
+    private String warna;
+    private String tipePelayanan;
+    private String isRacik;
+
+    public String getIsRacik() {
+        return isRacik;
+    }
+
+    public void setIsRacik(String isRacik) {
+        this.isRacik = isRacik;
+    }
+
+    public String getTipePelayanan() {
+        return tipePelayanan;
+    }
+
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
+    }
+
+    public String getWarna() {
+        return warna;
+    }
+
+    public void setWarna(String warna) {
+        this.warna = warna;
+    }
+
+    public String getkAdmin() {
+        return kAdmin;
+    }
+
+    public void setkAdmin(String kAdmin) {
+        this.kAdmin = kAdmin;
+    }
+
+    public String getkFarma() {
+        return kFarma;
+    }
+
+    public void setkFarma(String kFarma) {
+        this.kFarma = kFarma;
+    }
+
+    public String getkKritis() {
+        return kKritis;
+    }
+
+    public void setkKritis(String kKritis) {
+        this.kKritis = kKritis;
+    }
+
+    public List<TransaksiObatDetail> getWaktuObat() {
+        return waktuObat;
+    }
+
+    public void setWaktuObat(List<TransaksiObatDetail> waktuObat) {
+        this.waktuObat = waktuObat;
+    }
+    private Timestamp tglAntrian;
+    private String stTglAntrian;
+    private Integer qtyRacik;
+    private String stQtyRacik;
+    private String kemasan;
+    private String signaRacik;
+
+    public String getKemasan() {
+        return kemasan;
+    }
+
+    public void setKemasan(String kemasan) {
+        this.kemasan = kemasan;
+    }
+
+    public String getSignaRacik() {
+        return signaRacik;
+    }
+
+    public void setSignaRacik(String signaRacik) {
+        this.signaRacik = signaRacik;
+    }
+
+    public Integer getQtyRacik() {
+        return qtyRacik;
+    }
+
+    public void setQtyRacik(Integer qtyRacik) {
+        this.qtyRacik = qtyRacik;
+    }
+
+    public String getStQtyRacik() {
+        return stQtyRacik;
+    }
+
+    public void setStQtyRacik(String stQtyRacik) {
+        this.stQtyRacik = stQtyRacik;
+    }
+
+    public Timestamp getTglAntrian() {
+        return tglAntrian;
+    }
+
+    public void setTglAntrian(Timestamp tglAntrian) {
+        this.tglAntrian = tglAntrian;
+    }
+
+    public String getStTglAntrian() {
+        return stTglAntrian;
+    }
+
+    public void setStTglAntrian(String stTglAntrian) {
+        this.stTglAntrian = stTglAntrian;
+    }
+
+    public String getFrekuensi() {
+        return frekuensi;
+    }
+
+    public void setFrekuensi(String frekuensi) {
+        this.frekuensi = frekuensi;
+    }
+
+    public String getFlagBpjs() {
+        return flagBpjs;
+    }
+
+    public void setFlagBpjs(String flagBpjs) {
+        this.flagBpjs = flagBpjs;
+    }
+
+    public String getNomorProduksi() {
+        return nomorProduksi;
+    }
+
+    public void setNomorProduksi(String nomorProduksi) {
+        this.nomorProduksi = nomorProduksi;
+    }
+
+    public String getIdBatch() {
+        return idBatch;
+    }
+
+    public void setIdBatch(String idBatch) {
+        this.idBatch = idBatch;
+    }
+
+    public String getIdPabrikObat() {
+        return idPabrikObat;
+    }
+
+    public void setIdPabrikObat(String idPabrikObat) {
+        this.idPabrikObat = idPabrikObat;
+    }
 
     public List<ItSimrsKeteranganResepEntity> getKeteranganResepEntityList() {
         return keteranganResepEntityList;

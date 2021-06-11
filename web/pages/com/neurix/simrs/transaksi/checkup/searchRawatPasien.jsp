@@ -45,20 +45,6 @@
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Rawat Pasien</h3>
-                        <%--<div class="row">--%>
-                            <%--<div class="col-md-4">--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-3 pull-right">--%>
-                                <%--<div class="input-group date">--%>
-                                    <%--<input class="form-control" id="id_antrian" placeholder="Antrian Online"--%>
-                                           <%--onchange="saveAntrian()">--%>
-                                    <%--<div class="input-group-btn">--%>
-                                        <%--<button class="btn btn-success"onclick="saveAntrian()" id="save_resep"><i class="fa fa-arrow-right"></i> Save</button>--%>
-                                        <%--<button class="btn btn-success" id="load_resep" style="cursor: no-drop; display: none"><i class="fa fa-spinner fa-spin"></i> Sedang mencari...</button>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
@@ -73,7 +59,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4" for="headerCheckup.noKtp">No KTP</label>
+                                    <label class="control-label col-sm-4" for="headerCheckup.noKtp">NIK</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="no_ktp" cssStyle="margin-top: 7px"
                                                      name="headerCheckup.noKtp" required="true"
@@ -98,7 +84,7 @@
                                                   list="#initComboPoli.listOfPelayanan" id="poli"
                                                   name="headerCheckup.idPelayanan" listKey="idPelayanan"
                                                   listValue="namaPelayanan"
-                                                  headerKey="" headerValue="[Select one]"
+                                                  headerKey="" headerValue=" - "
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
@@ -109,7 +95,7 @@
                                         <s:select list="#{'0':'Antrian','1':'Periksa','2':'Rujuk','3':'Selesai'}"
                                                   cssStyle="margin-top: 7px; width: 100%"
                                                   id="status" name="headerCheckup.statusPeriksa"
-                                                  headerKey="" headerValue="[Select one]"
+                                                  headerKey="" headerValue=" - "
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
@@ -148,32 +134,6 @@
                                             Search
                                         </sj:submit>
                                         <a href="add_checkup.action" type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</a>
-                                        <%--<div class="btn-group">--%>
-                                            <%--<button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</button>--%>
-                                            <%--<button type="button" class="btn btn-primary dropdown-toggle"--%>
-                                                    <%--data-toggle="dropdown" style="height: 34px">--%>
-                                                <%--<span class="caret"></span>--%>
-                                                <%--<span class="sr-only">Toggle Dropdown</span>--%>
-                                            <%--</button>--%>
-                                            <%--<ul class="dropdown-menu" role="menu">--%>
-                                                <%--<li><a href="add_checkup.action?tipe=umum">--%>
-                                                    <%--<i class="fa fa-user-plus"></i>Pasien Umum</a></li>--%>
-                                                <%--<li><a href="add_checkup.action?tipe=bpjs">--%>
-                                                    <%--<i class="fa fa-user-plus"></i>Pasien BPJS</a></li>--%>
-                                                <%--<li><a href="add_checkup.action?tipe=paket_perusahaan">--%>
-                                                    <%--<i class="fa fa-user-plus"></i>Pasien Medical Checkup</a></li>--%>
-                                                <%--<li><a href="add_checkup.action?tipe=paket_individu">--%>
-                                                    <%--<i class="fa fa-user-plus"></i>Pasien Promo</a></li>--%>
-                                                <%--<li><a href="add_checkup.action?tipe=asuransi">--%>
-                                                    <%--<i class="fa fa-user-plus"></i>Pasien Asuransi</a></li>--%>
-                                                <%--<li><a href="add_checkup.action?tipe=rekanan">--%>
-                                                    <%--<i class="fa fa-user-plus"></i>Pasien Rekanan</a></li>--%>
-                                            <%--</ul>--%>
-                                        <%--</div>--%>
-                                        <%--<a type="button" class="btn btn-primary" href="add_checkup.action"><i--%>
-                                                <%--class="fa fa-plus"></i> Tambah Rawat Pasien</a>--%>
-                                        <%--<a type="button" class="btn btn-warning" id="btnFingerPrint"><i--%>
-                                                <%--class="fa fa-plus"></i> With Finger Print</a>--%>
                                         <a type="button" class="btn btn-danger" href="initForm_checkup.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
@@ -207,6 +167,7 @@
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
                                                                                          $('#id_antrian').val('');
+                                                                                         window.location.reload(true);
                                                                                      }
                                                                             }"
                                         >
@@ -238,13 +199,17 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Rawat Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="sortTable" class="table table-bordered table-striped">
+                        <table id="sortTable" class="table table-bordered table-striped" style="font-size: 12px">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>No Checkup</td>
                                 <td>NO RM</td>
                                 <td>Nama</td>
+                                <td>Umur</td>
+                                <td>Penanggung Jawab</td>
+                                <td>Tanggal Masuk</td>
                                 <td>Poli Terakhir</td>
+                                <td>Dokter</td>
                                 <td>Status Terakhir</td>
                                 <td>Desa</td>
                                 <td align="center">Action</td>
@@ -256,10 +221,19 @@
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="nama"/></td>
+                                    <td><s:property value="umur"/></td>
+                                    <td><s:property value="namaPenanggung"/></td>
+                                    <td><s:property value="formatTglMasuk"/></td>
                                     <td><s:property value="namaPelayanan"/></td>
+                                    <td><s:property value="namaDokter"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td><s:property value="namaDesa"/></td>
-                                    <td align="center">
+                                    <td align="center" width="12%">
+                                        <s:if test='#row.statusPeriksa == "0"'>
+                                            <a href="add_checkup.action?id=<s:property value="idDetailCheckup"/>">
+                                                <img style="cursor: pointer" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-orange-25.png"/>">
+                                            </a>
+                                        </s:if>
                                         <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
                                              src="<s:url value="/pages/images/icons8-search-25.png"/>"
                                              style="cursor: pointer;" onclick="detail_pasien('<s:property value="noCheckup"/>','<s:property value="idDetailCheckup"/>')">
@@ -271,6 +245,9 @@
                                         <a target="_blank" href="printNoAntrian_checkup.action?id=<s:property value="idPasien"/>&tipe=<s:property value="idPelayanan"/>">
                                             <img src="<s:url value="/pages/images/icons8-print-25-yellow.png"/>">
                                         </a>
+                                        <s:if test='#row.statusPeriksa == "0"'>
+                                            <img onclick="cancelPeriksa('<s:property value="idDetailCheckup"/>')" style="cursor: pointer" class="hvr-grow" src="<s:url value="/pages/images/cancel-flat-new.png"/>">
+                                        </s:if>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -321,16 +298,12 @@
                                     <td><span id="det_jenis_kelamin"></span></td>
                                 </tr>
                                 <tr>
-                                    <td><b>Tempat, TGL Lahir</b></td>
+                                    <td><b>Tempat, Tgl Lahir</b></td>
                                     <td><span id="det_tgl"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>Agama</b></td>
                                     <td><span id="det_agama"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Suku</b></td>
-                                    <td><span id="det_suku"></span></td>
                                 </tr>
                             </table>
                         </div>
@@ -338,24 +311,28 @@
                         <div class="col-md-6">
                             <table class="table table-striped">
                                 <tr>
+                                    <td><b>Suku</b></td>
+                                    <td><span id="det_suku"></span></td>
+                                </tr>
+                                <tr>
                                     <td><b>Alamat</b></td>
                                     <td><span id="det_alamat"></span></td>
                                 </tr>
                                 <tr>
-                                    <td><b>Desa</b></td>
-                                    <td><span id="det_desa"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Kecamatan</b></td>
-                                    <td><span id="det_kecamatan"></span></td>
+                                    <td><b>Provinsi</b></td>
+                                    <td><span id="det_provinsi"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>Kabupaten</b></td>
                                     <td><span id="det_kabupaten"></span></td>
                                 </tr>
                                 <tr>
-                                    <td><b>Provinsi</b></td>
-                                    <td><span id="det_provinsi"></span></td>
+                                    <td><b>Kecamatan</b></td>
+                                    <td><span id="det_kecamatan"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Desa</b></td>
+                                    <td><span id="det_desa"></span></td>
                                 </tr>
                                 <tr id="surat_rujukan">
                                     <td></td>
@@ -609,6 +586,72 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-detail">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Data Pasien</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_cancel">
+                                <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                                <p id="msg_cancel"></p>
+                            </div>
+                            <table class="table table-striped" style="font-size: 13px">
+                                <tr>
+                                    <td width="30%">No Checkup</td>
+                                    <td><span id="det_no_checkup_cancel"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ID Detail Checkup</td>
+                                    <td><span id="det_id_detail_checkup"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>NO RM</td>
+                                    <td><span id="det_no_rm_cancel"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Nama Pasien</td>
+                                    <td><span id="det_nama_pasien"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Pelayanan</td>
+                                    <td><span id="det_pelayanan"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Jenis Pasien</td>
+                                    <td><span id="det_jenis_pasien"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Alamat</td>
+                                    <td><span id="det_alamat_batal"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-12">
+                            <textarea id="set_alasan" class="form-control" rows="2" placeholder="Alasan"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_add" ><i class="fa fa-check"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
+                        id="load_add"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type='text/javascript'>
     function detail_pasien(idCheckup, idDetail) {
@@ -779,14 +822,6 @@
 
                         if (tanggalToday == tanggalCheckup) {
                             if(Math.abs(timeToday) <= Math.abs(timeDaftar)){
-                                // var tipe = "";
-                                //
-                                // if (response.idJenisPeriksaPasien == "bpjs") {
-                                //     tipe = "bpjs";
-                                // } else {
-                                //     tipe = "umum";
-                                // }
-
                                 window.location.href = 'add_checkup.action?tipe='+response.idJenisPeriksaPasien+'&noCheckupOnline='+response.noCheckupOnline;
                                 $('#load_resep').hide();
                                 $('#save_resep').show();
@@ -831,6 +866,53 @@
         }else{
 
         }
+    }
+
+    function cancelPeriksa(idDetailCHeckup){
+        CheckupAction.listDataPasien(idDetailCHeckup, {
+            callback: function (res) {
+                $('#det_no_checkup_cancel').text(res.noCheckup);
+                $('#det_id_detail_checkup').text(res.idDetailCheckup);
+                $('#det_no_rm_cancel').text(res.idPasien);
+                $('#det_nama_pasien').text(res.nama);
+                $('#det_pelayanan').text(res.namaPelayanan);
+                $('#det_jenis_pasien').text(res.statusPeriksaName);
+                $('#det_alamat_batal').text(res.namaDesa+", "+res.namaKecamatan+", "+res.namaKota);
+            }
+        });
+        $('#save_add').attr('onclick', 'saveCancel(\''+idDetailCHeckup+'\')');
+        $('#modal-detail').modal({show: true, backdrop:'static'});
+    }
+
+    function saveCancel(idDetailCHeckup){
+        var alsan = $('#set_alasan').val();
+        if(alsan != ''){
+            $('#save_add').hide();
+            $('#load_add').show();
+            dwr.engine.setAsync(true);
+            CheckupAction.cancelPeriksa(idDetailCHeckup, alsan, {
+                callback: function (res) {
+                    if(res.status == "success"){
+                        $('#save_add').show();
+                        $('#load_add').hide();
+                        $('#modal-detail').modal('hide');
+                        $('#info_dialog').dialog('open');
+                    }else{
+                        $('#save_add').show();
+                        $('#load_add').hide();
+                        $('#warning_cancel').show().fadeOut(5000);
+                        $('#msg_cancel').text(res.msg);
+                    }
+                }
+            });
+        }else{
+            $('#warning_cancel').show().fadeOut(5000);
+            $('#msg_cancel').text("Silahkan masukkan alasan pasien...!");
+        }
+    }
+
+    function editPeriksa(id){
+        $('#modal-edit-pasien').modal({show: true, backdrop: 'static'});
     }
 </script>
 

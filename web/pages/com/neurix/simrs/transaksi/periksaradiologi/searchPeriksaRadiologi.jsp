@@ -18,6 +18,7 @@
         });
 
     </script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaLabAction.js"/>'></script>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -42,16 +43,31 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Periksa Radiologi Pasien</h3>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Periksa Radiologi Pasien</h3>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="pull-right" style="margin-top: 7px; color: red" id="warning_text"></div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group pull-right">
+                                    <input onchange="cekHasil()" class="form-control" placeholder="Scan No Order Radiologi" id="id_order" oninput="$(this).css('border','');">
+                                    <div class="input-group-btn" onclick="cekHasil()">
+                                        <button class="btn btn-success"><i class="fa fa-search"></i> Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
                             <s:form id="radiologiForm" method="post" namespace="/radiologi" action="search_radiologi.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Periksa Lab</label>
+                                    <label class="control-label col-sm-4">ID Periksa Radiologi</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_periksa_lab" cssStyle="margin-top: 7px"
-                                                     name="periksaLab.idPeriksaLab" required="false"
+                                                     name="periksaLab.idHeaderPemeriksaan" required="false"
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
@@ -74,24 +90,11 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="periksaLab.nama"
+                                        <s:textfield id="nama_pasien" name="periksaLab.namaPasien"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">Radiologi</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:action id="comboRadiologi" namespace="/lab"--%>
-                                                  <%--name="getListRadiologi_lab"/>--%>
-                                        <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                  <%--list="#comboRadiologi.lisOfRadiologi" id="lab"--%>
-                                                  <%--name="periksaLab.idLab" listKey="idLab"--%>
-                                                  <%--listValue="namaLab"--%>
-                                                  <%--headerKey="" headerValue="[Select one]"--%>
-                                                  <%--cssClass="form-control select2" theme="simple"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
@@ -178,20 +181,25 @@
                                 <td>Tanggal Masuk</td>
                                 <td>ID Detail Checkup</td>
                                 <td>Nama Pasien</td>
-                                <td>Pemeriksaan</td>
+                                <td>Pelayanan</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
-                                    <td><s:property value="stCreatedDate"/></td>
+                                    <td>
+                                        <s:property value="stCreatedDate"/>
+                                        <s:if test='#row.isCito == "Y"'>
+                                            <span class="span-warning">CITO</span>
+                                        </s:if>
+                                    </td>
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="labName"/></td>
+                                    <td><s:property value="namaPelayanan"/></td>
                                     <td align="center">
                                         <s:if test='#row.statusPeriksa == "3"'>
-                                            <a target="_blank" href="printRadiologi_radiologi.action?id=<s:property value="idDetailCheckup"/>&lab=<s:property value="idPeriksaLab"/>">
+                                            <a target="_blank" href="printRadiologi_radiologi.action?id=<s:property value="idDetailCheckup"/>&lab=<s:property value="idHeaderPemeriksaan"/>">
                                                 <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer; ">
                                             </a>
                                         </s:if>
@@ -200,8 +208,8 @@
                                                 <s:if test='#row.statusBayar == "Y"'>
                                                     <s:url var="add_periksa_radiologi" namespace="/radiologi" action="add_radiologi" escapeAmp="false">
                                                         <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                                        <s:param name="lab"><s:property value="idPeriksaLab"/></s:param>
-                                                        <s:param name="ket"><s:property value="keterangan"/></s:param>
+                                                        <s:param name="lab"><s:property value="idHeaderPemeriksaan"/></s:param>
+                                                        <s:param name="ket"><s:property value="isJustLab"/></s:param>
                                                     </s:url>
                                                     <s:a href="%{add_periksa_radiologi}">
                                                         <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
@@ -214,14 +222,25 @@
                                             <s:else>
                                                 <s:url var="add_periksa_radiologi" namespace="/radiologi" action="add_radiologi" escapeAmp="false">
                                                     <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                                    <s:param name="lab"><s:property value="idPeriksaLab"/></s:param>
-                                                    <s:param name="ket"><s:property value="keterangan"/></s:param>
+                                                    <s:param name="lab"><s:property value="idHeaderPemeriksaan"/></s:param>
+                                                    <s:param name="ket"><s:property value="isJustLab"/></s:param>
                                                 </s:url>
                                                 <s:a href="%{add_periksa_radiologi}">
                                                     <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                                 </s:a>
                                             </s:else>
                                         </s:else>
+
+                                        <s:if test='#row.isUpload == "Y"'>
+                                            <img border="0" class="hvr-grow" onclick="hasilUploadPM('<s:property value="idHeaderPemeriksaan"/>')" src="<s:url value="/pages/images/icons8-pictures-folder-25.png"/>" style="cursor: pointer;">
+                                        </s:if>
+
+                                        <img onclick="detail('<s:property value="idHeaderPemeriksaan"/>', '<s:property value="namaPasien"/>', '<s:property value="idPasien"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer; ">
+
+                                        <a href="printRadiologi_radiologi.action?id=<s:property value="idDetailCheckup"/>&lab=<s:property value="idHeaderPemeriksaan"/>&ket=label" target="_blank">
+                                            <img class="hvr-grow" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>" style="cursor: pointer; ">
+                                        </a>
+
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -232,10 +251,216 @@
             </div>
         </div>
     </section>
-    <!-- /.content -->
+</div>
+
+<div class="modal fade" id="modal-detail_lab">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Detail Pemeriksaan Lab <span id="nama_text"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <table class="table table-striped table-bordered" style="font-size: 13px">
+                        <thead>
+                        <td>Jenis Pemeriksaan</td>
+                        <td>Parameter</td>
+                        <tbody id="body_detail_lab">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-hasil_lab">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-image"></i> <span
+                        id="title_hasil_lab"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="carousel-hasil_lab" class="carousel slide">
+                                <ol class="carousel-indicators" id="li_hasil_lab">
+
+                                </ol>
+                                <div class="carousel-inner" id="item_hasil_lab">
+
+                                </div>
+                                <a class="left carousel-control" href="#carousel-hasil_lab" data-slide="prev">
+                                    <span class="fa fa-angle-left"></span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel-hasil_lab" data-slide="next">
+                                    <span class="fa fa-angle-right"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
+
+    function detail(id, nama, idPasien){
+        $('#nama_text').text(nama);
+        var tempPemeriksaan = "";
+        var tempPemeriksa = "";
+        var tempDetail = "";
+        var tempIdPemeriksa = "";
+        var tempIdDetail = "";
+        PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    var namaPemeriksaan = "";
+                    var idPemeriksaan = "";
+                    var namaDetailPemeriksaan = "";
+                    var idDetailPemeriksaan = "";
+
+                    if(item.namaPemeriksaan != null){
+                        namaPemeriksaan = item.namaPemeriksaan;
+                    }
+                    if(item.idPemeriksaan != null){
+                        idPemeriksaan = item.idPemeriksaan;
+                    }
+                    if(item.namaDetailPemeriksaan != null){
+                        namaDetailPemeriksaan = item.namaDetailPemeriksaan;
+                    }
+                    if(item.idDetailPemeriksaan != null){
+                        idDetailPemeriksaan = item.idDetailPemeriksaan;
+                    }
+
+                    if(namaPemeriksaan.toLowerCase() != tempPemeriksaan){
+                        tempPemeriksaan = item.namaPemeriksaan.toLowerCase();
+                        if(tempPemeriksa != ''){
+                            tempPemeriksa = tempPemeriksa+'='+namaPemeriksaan;
+                            tempIdPemeriksa = tempIdPemeriksa+'='+idPemeriksaan;
+                        }else{
+                            tempPemeriksa = namaPemeriksaan;
+                            tempIdPemeriksa = idPemeriksaan;
+                        }
+                    }
+
+                    if(i == 0){
+                        tempDetail = namaDetailPemeriksaan;
+                        tempIdDetail = idDetailPemeriksaan;
+                    }else{
+                        if(response[i - 1]["namaPemeriksaan"].toLowerCase() == tempPemeriksaan){
+                            tempDetail = tempDetail+'#'+namaDetailPemeriksaan;
+                            tempIdDetail = tempIdDetail+'#'+idDetailPemeriksaan;
+                        }else{
+                            tempDetail = tempDetail+'='+namaDetailPemeriksaan;
+                            tempIdDetail = tempIdDetail+'='+idDetailPemeriksaan;
+                        }
+                    }
+                });
+                if(tempPemeriksa != '' && tempDetail != '') {
+                    var templ = tempPemeriksa.split("=");
+                    var temp2 = tempDetail.split("=");
+                    var temp3 = tempIdPemeriksa.split("=");
+                    var temp4 = tempIdDetail.split("=");
+                    var row = "";
+                    $.each(templ, function (i, item) {
+                        var tempParameter = temp2[i].split("#");
+                        var tempParameterLi = "";
+                        $.each(tempParameter, function (i, item) {
+                            tempParameterLi += '<li>' + item + '</li>';
+                        });
+                        row += '<tr id="row_' + i + '">' +
+                            '<td>' + item + '</td>' +
+                            '<td><ul style="margin-left: 20px">' + tempParameterLi + '</ul></td>' +
+                            '</tr>';
+                    });
+                    if (row != '') {
+                        $('#body_detail_lab').html(row);
+                    }
+                }
+            }else{
+                $('#body_detail_lab').html('');
+            }
+        });
+        $('#modal-detail_lab').modal({show:true, backdrop:'static'});
+    }
+
+    function cekHasil(){
+        var id = $('#id_order').val();
+        if(id != ''){
+            PeriksaLabAction.getEntityHeaderpemeriksaan(id, function (res) {
+                if(res != null){
+                    if(res.idHeaderPemeriksaan != '' && res.idHeaderPemeriksaan != null){
+                        if("3" != res.statusPeriksa){
+                            window.location.href = 'add_radiologi.action?id='+res.idDetailCheckup+'&lab='+res.idHeaderPemeriksaan+'&ket='+res.isJustLab;
+                        }else{
+                            $('#id_order').css('border','red solid 1px');
+                            $('#warning_text').html('<i class="fa fa-warning blink_me_atas"></i> Pasien sudah selesai...!');
+                        }
+                    }
+                }else{
+                    $('#id_order').css('border','red solid 1px');
+                    $('#warning_text').html('<i class="fa fa-warning blink_me_atas"></i> Data tidak ada...!');
+                }
+            });
+        }else{
+            $('#id_order').css('border','red solid 1px');
+            $('#id_order').focus();
+        }
+    }
+
+    function hasilUploadPM(id){
+        $('#item_hasil_lab').html('');
+        $('#li_hasil_lab').html('');
+        $('#title_hasil_lab').html("Hasil Pemeriksaan Laboratorium");
+        PeriksaLabAction.getUploadHasilPemeriksaan(id, function (res) {
+            if (res.length > 0) {
+                var set = '';
+                var li = '';
+                $.each(res, function (i, item) {
+                    var cla = 'class="item"';
+                    var claLi = '';
+                    if (i == 0) {
+                        cla = 'class="item active"';
+                        claLi = 'class="active"';
+                    }
+                    var x = item.urlImg;
+                    var tipe = x.split('.').pop();
+                    if("pdf" == tipe){
+                        set += '<div ' + cla + '>\n' +
+                            '<embed src="'+item.urlImg+'" style="width: 100%; height: 70%"/>'+
+                            '</div>';
+                    }else{
+                        set += '<div ' + cla + '>\n' +
+                            '<img src="' + item.urlImg + '" style="width: 100%">\n' +
+                            '</div>';
+                    }
+                    li += '<li data-target="#carousel-hasil_lab" data-slide-to="' + i + '" ' + claLi + '></li>';
+                });
+                $('#item_hasil_lab').html(set);
+                $('#li_hasil_lab').html(li);
+            }
+
+        });
+        $('#modal-hasil_lab').modal({show: true, backdrop: 'static'});
+    }
+
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

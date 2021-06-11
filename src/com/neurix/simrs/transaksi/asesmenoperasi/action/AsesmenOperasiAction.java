@@ -39,12 +39,21 @@ public class AsesmenOperasiAction {
         Timestamp time = new Timestamp(System.currentTimeMillis());
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AsesmenOperasiBo asesmenOperasiBo = (AsesmenOperasiBo) ctx.getBean("asesmenOperasiBoProxy");
+        String noCheckup = "";
+        String idDetailCheckup = "";
+        String idPasien = "";
+        String idRm = "";
+
         try {
+            JSONObject objt = new JSONObject(dataPasien);
+            noCheckup = objt.getString("no_checkup");
+            idDetailCheckup = objt.getString("id_detail_checkup");
+            idPasien = objt.getString("id_pasien");
+            idRm = objt.getString("id_rm");
+
             JSONArray json = new JSONArray(data);
             List<AsesmenOperasi> operasiList = new ArrayList<>();
-
             for (int i = 0; i < json.length(); i++) {
-
                 JSONObject obj = json.getJSONObject(i);
                 AsesmenOperasi asesmenOperasi = new AsesmenOperasi();
                 if(obj.has("parameter")){
@@ -57,42 +66,42 @@ public class AsesmenOperasiAction {
                     if ("ttd".equalsIgnoreCase(obj.getString("tipe")) ||
                             "penanda".equalsIgnoreCase(obj.getString("tipe")) ||
                             "gambar".equalsIgnoreCase(obj.getString("tipe"))) {
-
                         try {
-                            String name = obj.getString("jawaban1");
-                            String nameFile1 = name.substring(name.length() - 13);
-                            String nameFile2 = nameFile1.replace("=", "a");
-                            BASE64Decoder decoder = new BASE64Decoder();
-                            byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban1"));
-                            logger.info("Decoded upload data : " + decodedBytes.length);
-                            String wkt = time.toString();
-                            String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                            logger.info("PATTERN :" + patten);
-                            String fileName = obj.getString("id_detail_checkup") + "-" + nameFile2 + i + "-" + patten + ".png";
-                            String uploadFile = "";
+                            if(obj.getString("jawaban1") != null && !"".equalsIgnoreCase(obj.getString("jawaban1"))){
+                                String name = obj.getString("jawaban1");
+                                String nameFile1 = name.substring(name.length() - 13);
+                                String nameFile2 = nameFile1.replace("=", "a");
+                                BASE64Decoder decoder = new BASE64Decoder();
+                                byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban1"));
+                                logger.info("Decoded upload data : " + decodedBytes.length);
+                                String wkt = time.toString();
+                                String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                                logger.info("PATTERN :" + patten);
+                                String fileName = obj.getString("id_detail_checkup") + "-" + nameFile2 + i + "-" + patten + ".png";
+                                String uploadFile = "";
 
-                            if ("penanda".equalsIgnoreCase(obj.getString("tipe"))) {
-                                uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_AREA_OPERASI + fileName;
-                            }
-                            if ("ttd".equalsIgnoreCase(obj.getString("tipe"))) {
-                                uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
-                            }
-                            if ("gambar".equalsIgnoreCase(obj.getString("tipe"))) {
-                                uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
-                            }
+                                if ("penanda".equalsIgnoreCase(obj.getString("tipe"))) {
+                                    uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_AREA_OPERASI + fileName;
+                                }
+                                if ("ttd".equalsIgnoreCase(obj.getString("tipe"))) {
+                                    uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+                                }
+                                if ("gambar".equalsIgnoreCase(obj.getString("tipe"))) {
+                                    uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
+                                }
 
-                            logger.info("File save path : " + uploadFile);
-                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+                                logger.info("File save path : " + uploadFile);
+                                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
-                            if (image == null) {
-                                logger.error("Buffered Image is null");
-                                response.setStatus("error");
-                                response.setMsg("Buffered Image is null");
-                            } else {
-                                File f = new File(uploadFile);
-                                // write the image
-                                ImageIO.write(image, "png", f);
-                                asesmenOperasi.setJawaban1(fileName);
+                                if (image == null) {
+                                    logger.error("Buffered Image is null");
+                                    response.setStatus("error");
+                                    response.setMsg("Buffered Image is null");
+                                } else {
+                                    File f = new File(uploadFile);
+                                    ImageIO.write(image, "png", f);
+                                    asesmenOperasi.setJawaban1(fileName);
+                                }
                             }
                         } catch (IOException e) {
                             response.setStatus("error");
@@ -143,6 +152,7 @@ public class AsesmenOperasiAction {
                 asesmenOperasi.setCreatedDate(time);
                 asesmenOperasi.setLastUpdateWho(userLogin);
                 asesmenOperasi.setLastUpdate(time);
+                asesmenOperasi.setNoCheckup(noCheckup);
                 operasiList.add(asesmenOperasi);
             }
 
@@ -150,13 +160,12 @@ public class AsesmenOperasiAction {
                 response = asesmenOperasiBo.saveAdd(operasiList);
                 if ("success".equalsIgnoreCase(response.getStatus())) {
                     RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
-                    JSONObject objt = new JSONObject(dataPasien);
                     if (objt != null) {
                         StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
-                        status.setNoCheckup(objt.getString("no_checkup"));
-                        status.setIdDetailCheckup(objt.getString("id_detail_checkup"));
-                        status.setIdPasien(objt.getString("id_pasien"));
-                        status.setIdRekamMedisPasien(objt.getString("id_rm"));
+                        status.setNoCheckup(noCheckup);
+                        status.setIdDetailCheckup(idDetailCheckup);
+                        status.setIdPasien(idPasien);
+                        status.setIdRekamMedisPasien(idRm);
                         status.setIsPengisian("Y");
                         status.setAction("C");
                         status.setFlag("Y");
@@ -172,21 +181,21 @@ public class AsesmenOperasiAction {
                 response.setMsg("Found Error " + e.getMessage());
                 return response;
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             response.setStatus("error");
             response.setMsg("Error when parse JSON array, " + e.getMessage());
         }
         return response;
     }
 
-    public List<AsesmenOperasi> getListAsesmenOperasi(String idDetailCheckup, String keterangan) {
+    public List<AsesmenOperasi> getListAsesmenOperasi(String noCheckup, String keterangan) {
         List<AsesmenOperasi> list = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AsesmenOperasiBo asesmenOperasiBo = (AsesmenOperasiBo) ctx.getBean("asesmenOperasiBoProxy");
-        if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(keterangan)) {
+        if (!"".equalsIgnoreCase(noCheckup) && !"".equalsIgnoreCase(keterangan)) {
             try {
                 AsesmenOperasi operasi = new AsesmenOperasi();
-                operasi.setIdDetailCheckup(idDetailCheckup);
+                operasi.setNoCheckup(noCheckup);
                 operasi.setKeterangan(keterangan);
                 list = asesmenOperasiBo.getByCriteria(operasi);
             } catch (GeneralBOException e) {
@@ -269,7 +278,7 @@ public class AsesmenOperasiAction {
         return list;
     }
 
-    public CrudResponse saveDelete(String idDetailCheckup, String keterangan, String dataPasien) {
+    public CrudResponse saveDelete(String idDetailCheckup, String keterangan, String dataPasien, String date) {
         CrudResponse response = new CrudResponse();
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -282,6 +291,9 @@ public class AsesmenOperasiAction {
                 operasi.setKeterangan(keterangan);
                 operasi.setLastUpdate(time);
                 operasi.setLastUpdateWho(userLogin);
+                if(date != null && !"".equalsIgnoreCase(date) && !"undefined".equalsIgnoreCase(date)){
+                    operasi.setCreatedDate(Timestamp.valueOf(date));
+                }
                 response = asesmenOperasiBo.saveDelete(operasi);
                 if ("success".equalsIgnoreCase(response.getStatus())) {
                     try {
@@ -327,6 +339,121 @@ public class AsesmenOperasiAction {
             }
         }
         return response;
+    }
+
+    public String getDataByKey(String id, String key) {
+        String responses = "";
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        AsesmenOperasiBo asesmenOperasiBo = (AsesmenOperasiBo) ctx.getBean("asesmenOperasiBoProxy");
+        if (!"".equalsIgnoreCase(id) && id != null) {
+            try {
+                String params = "";
+                if("dokter_anestesi".equalsIgnoreCase(key)){
+                    params = "Dokter Spesialis Anestesi";
+                }else if("perawat_anestesi".equalsIgnoreCase(key)){
+                    params = "Perawat Anestesi";
+                }else if("dokter_bedah".equalsIgnoreCase(key)){
+                    params = "Dokter Bedah";
+                }else if("asisten_instrumen".equalsIgnoreCase(key)){
+                    params = "Asisten dan Instrumen";
+                }
+                responses = asesmenOperasiBo.getDataByKey(id, params);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return responses;
+    }
+
+    public CrudResponse saveEditAsesmenOP(String id, String jawaban, String jenis) {
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        AsesmenOperasiBo asesmenOperasiBo = (AsesmenOperasiBo) ctx.getBean("asesmenOperasiBoProxy");
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        if (!"".equalsIgnoreCase(id) && !"".equalsIgnoreCase(jawaban)) {
+            try {
+                AsesmenOperasi asesmenOperasi = new AsesmenOperasi();
+                asesmenOperasi.setIdAsesmenOperasi(id);
+                asesmenOperasi.setJawaban2(jawaban);
+                asesmenOperasi.setLastUpdate(time);
+                asesmenOperasi.setLastUpdateWho(userLogin);
+                asesmenOperasi.setJenis(jenis);
+                asesmenOperasiBo.saveEdit(asesmenOperasi);
+                response.setStatus("success");
+                response.setMsg("OK");
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+                response.setStatus("error");
+                response.setMsg("Error, "+e.getMessage());
+            }
+        }
+        return response;
+    }
+
+    public CrudResponse updateTtdPerawat(String id, String ttd, String sip, String nama) {
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        AsesmenOperasiBo asesmenOperasiBo = (AsesmenOperasiBo) ctx.getBean("asesmenOperasiBoProxy");
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        if (!"".equalsIgnoreCase(id) && !"".equalsIgnoreCase(ttd)) {
+            try {
+                BASE64Decoder decoder = new BASE64Decoder();
+                byte[] decodedBytes = decoder.decodeBuffer(ttd);
+                String wkt = time.toString();
+                String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                String fileName = id + "-" + patten + ".png";
+                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+                if (image == null) {
+                    response.setStatus("error");
+                    response.setMsg("Buffered Image is null");
+                    return response;
+                } else {
+                    File f = new File(uploadFile);
+                    ImageIO.write(image, "png", f);
+                    AsesmenOperasi asesmenOperasi = new AsesmenOperasi();
+                    asesmenOperasi.setIdAsesmenOperasi(id);
+                    asesmenOperasi.setJawaban1(fileName);
+                    asesmenOperasi.setNamaterang(nama);
+                    asesmenOperasi.setSip(sip);
+                    asesmenOperasi.setLastUpdate(time);
+                    asesmenOperasi.setLastUpdateWho(userLogin);
+                    asesmenOperasi.setJenis("ttd");
+                    asesmenOperasiBo.saveEdit(asesmenOperasi);
+                    response.setStatus("success");
+                    response.setMsg("OK");
+                }
+            } catch (Exception e) {
+                logger.error("Found Error" + e.getMessage());
+                response.setStatus("error");
+                response.setMsg("Error, "+e.getMessage());
+            }
+        }
+        return response;
+    }
+
+    public MonitoringAnestesi getVitalSingMonAnestesi(String idDetailCheckup) {
+        MonitoringAnestesi monitoringAnestesi = new MonitoringAnestesi();
+        List<MonitoringAnestesi> list = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        MonAnestesiBo monAnestesiBo = (MonAnestesiBo) ctx.getBean("monAnestesiBoProxy");
+        if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
+            try {
+                monitoringAnestesi.setIdDetailCheckup(idDetailCheckup);
+                monitoringAnestesi.setIsDesc("Y");
+                list = monAnestesiBo.getByCriteria(monitoringAnestesi);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+            if(list.size() > 0){
+                monitoringAnestesi = list.get(0);
+            }
+        }
+        return monitoringAnestesi;
     }
 
     public static Logger getLogger() {

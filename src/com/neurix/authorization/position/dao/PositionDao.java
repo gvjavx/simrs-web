@@ -61,10 +61,20 @@ public class PositionDao extends GenericDao<ImPosition,String> {
             if (mapCriteria.get("kategori")!=null) {
                 criteria.add(Restrictions.eq("kategori", (String) mapCriteria.get("kategori")));
             }
+            if (mapCriteria.get("flag_cost_unit")!=null) {
+                if("N".equalsIgnoreCase((String) mapCriteria.get("flag_cost_unit"))){
+                    criteria.add(Restrictions.or(Restrictions.eq("flagCostUnit", "N"),Restrictions.isNull("flagCostUnit")));
+                }else if("Y".equalsIgnoreCase((String) mapCriteria.get("flag_cost_unit"))) {
+                    criteria.add(Restrictions.eq("flagCostUnit", (String) mapCriteria.get("flag_cost_unit")));
+                }
+            }else{
+                criteria.add(Restrictions.or(Restrictions.eq("flagCostUnit", "N"),Restrictions.isNull("flagCostUnit")));
+            }
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
-        criteria.addOrder(Order.desc("positionId"));
+        criteria.addOrder(Order.asc("kodering"));
+        criteria.addOrder(Order.desc("flagCostUnit"));
 //        criteria.addOrder(Order.asc("departmentId"));
 //        criteria.addOrder(Order.asc("bagianId"));
 //        criteria.addOrder(Order.asc("kelompokId"));
@@ -79,20 +89,27 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
                 .add(Restrictions.eq("positionId", term))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.desc("createdDate"))
+                .addOrder(Order.asc("kodering"))
                 .setMaxResults(1)
                 .list();
 
         return results;
     }
 
-    public List<ImPosition> getListPosition(String term) throws HibernateException {
+    public List<ImPosition> getListPosition(String term, String flagCostUnit) throws HibernateException {
 
-        List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
                 .add(Restrictions.ilike("positionName",term))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("positionId"))
-                .list();
+                .addOrder(Order.asc("kodering"));
+        if("Y".equalsIgnoreCase(flagCostUnit)){
+            criteria.add(Restrictions.eq("flagCostUnit", "Y"));
+        }else{
+            criteria.add(Restrictions.or(Restrictions.eq("flagCostUnit", "N"),Restrictions.isNull("flagCostUnit")));
+        }
+
+
+        List<ImPosition> results = criteria.list();
 
         return results;
     }
@@ -102,7 +119,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
                 .add(Restrictions.ilike("kodering",term))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
 
         return results;
@@ -115,7 +132,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 .add(Restrictions.eq("bagianId",bagian))
                 .add(Restrictions.eq("kelompokId", kelompok))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
 
         return results;
@@ -124,7 +141,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
     public List<ImPosition> getListPositionSppd(String positionId) throws HibernateException {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
         return results;
     }
@@ -133,7 +150,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
                 .add(Restrictions.eq("positionId", positionId))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
         return results;
     }
@@ -141,7 +158,9 @@ public class PositionDao extends GenericDao<ImPosition,String> {
     public String getNextPosition() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_position')");
         Iterator<BigInteger> iter=query.list().iterator();
-        return "PS" + iter.next() + "";
+        String sId = String.format("%03d", iter.next());
+        String output =  "PS" + sId + "";
+        return output;
     }
 
     public void addAndSaveHistory(ImPositionHistory entity) throws HibernateException {
@@ -163,14 +182,15 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select DISTINCT \n" +
                 "\tim_position.position_id,\n" +
-                "\tim_position.position_name\n" +
+                "\tim_position.position_name,\n" +
+                "\tkodering\n" +
                 "from\n" +
                 "\tim_position, it_hris_pegawai_position\n" +
                 "where\n" +
                 "\tbranch_id is not null\n" + unit + bagian + "\n" +
                 "\tand nip is not null\n" +
                 "\tand im_position.position_id = it_hris_pegawai_position.position_id\n" +
-                "\torder by position_name";
+                "\torder by kodering";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -198,13 +218,15 @@ public class PositionDao extends GenericDao<ImPosition,String> {
 
         List<ImPosition> listOfResult = new ArrayList<ImPosition>();
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "select DISTINCT \n" +
+        String query = "select\n" +
                 "\tposition_id,\n" +
-                "\tposition_name\n" +
+                "\tposition_name,\n" +
+                "\tkodering\n" +
                 "from\n" +
                 "\tim_position\n" +
                 "where\n" + bagian + " and flag='Y'\n" +
-                "\torder by position_name";
+                "\tand (flag_cost_unit IS NULL or flag_cost_unit != 'Y')\n" +
+                "\torder by kodering";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -225,17 +247,18 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         String bagian = "";
 
         if(!branchId.equalsIgnoreCase("")){
-            unit = " and branch_id = '"+branchId+"'  ";
+            unit = "\t and branch_id = '"+branchId+"' \n";
         }
 
         List<Position> listOfResult = new ArrayList<Position>();
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "select DISTINCT \n" +
+        String query = "select \n" +
                 "\tdepartment_id,\n" +
-                "\tdepartment_name\n" +
+                "\tdepartment_name,\n" +
+                "\tkodering\n" +
                 "from\n" +
                 "\tim_hris_department where flag='Y'\n" +
-                "order by department_name";
+                "order by kodering";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -264,13 +287,15 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
                 "\tposition_id,\n" +
-                "\tposition_name\n" +
+                "\tposition_name,\n" +
+                "\tkodering\n" +
                 "from\n" +
                 "\tim_position\n" +
                 "where\n" +
                 "\tposition_id is not null\n" + bagian + "\n" +
+                "\tAND (flag_cost_unit = 'N' OR flag_cost_unit IS NULL) \n" +
                 "order by\n" +
-                "\tposition_name";
+                "\tkodering";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -298,13 +323,15 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
                 "\tposition_id,\n" +
-                "\tposition_name\n" +
+                "\tposition_name,\n" +
+                "\tkodering\n" +
                 "from\n" +
                 "\tim_position\n" +
                 "where\n" +
                 "\tposition_id is not null\n" + bagian + "\n" +
+                "\tAND flag_cost_unit = 'N' OR flag_cost_unit IS NULL \n" +
                 "order by\n" +
-                "\tposition_name";
+                "\tkodering";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -331,11 +358,12 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select DISTINCT \n" +
                 "\tposition_id,\n" +
-                "\tposition_name\n" +
+                "\tposition_name,\n" +
+                "\tkodering\n" +
                 "from\n" +
                 "\tstruktur_jabatan\n" +
                 "where\n" +
-                "\tbranch_id is not null\n" + unit + " order by position_name";
+                "\tbranch_id is not null\n" + unit + " order by kodering";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -353,28 +381,29 @@ public class PositionDao extends GenericDao<ImPosition,String> {
 
     public List<ImPosition> getListPositionDekom () throws HibernateException {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
-                .add(Restrictions.eq("bagianId", CommonConstant.BAGIAN_ID_BOD_BOC))
+                .add(Restrictions.eq("bagianId", CommonConstant.BAGIAN_ID_BOC))
                 .add(Restrictions.eq("kelompokId", CommonConstant.KELOMPOK_ID_BOC))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
         return results;
     }
 
     public List<ImPosition> getListPositionSelainDekomDanDirkom () throws HibernateException {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
-                .add(Restrictions.ne("bagianId", CommonConstant.BAGIAN_ID_BOD_BOC))
+                .add(Restrictions.ne("bagianId", CommonConstant.BAGIAN_ID_BOD))
+                .add(Restrictions.ne("bagianId", CommonConstant.BAGIAN_ID_BOC))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
         return results;
     }
     public List<ImPosition> getListPositionDireksi () throws HibernateException {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
-                .add(Restrictions.eq("bagianId", CommonConstant.BAGIAN_ID_BOD_BOC))
+                .add(Restrictions.eq("bagianId", CommonConstant.BAGIAN_ID_BOD))
                 .add(Restrictions.eq("kelompokId", CommonConstant.KELOMPOK_ID_BOD))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
         return results;
     }
@@ -387,8 +416,9 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                                 Restrictions.ilike("positionName", "%" + key + "%")
                         )
                 )
+                .add(Restrictions.eq("flagCostUnit", "Y"))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
         return results;
     }
@@ -420,7 +450,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 .add(Restrictions.ilike("kodering", term))
                 .add(Restrictions.eq("kelompokId", kelompok))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
 
         return results;
@@ -447,8 +477,8 @@ public class PositionDao extends GenericDao<ImPosition,String> {
     }
 
     public List<ImPosition> getPositionBodBoc() {
-        String idBod = "KL44";
-        String idBoc = "KL43";
+        String idBod = "KL01";
+        String idBoc = "KL02";
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class);
         criteria.add(
                 Restrictions.or(
@@ -456,8 +486,14 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                         Restrictions.eq("kelompokId", "" + idBoc + "")
                 )
         );
+        criteria.add(
+                Restrictions.or(
+                        Restrictions.eq("flagCostUnit", "N"),
+                        Restrictions.isNull("flagCostUnit")
+                )
+        );
         criteria.add(Restrictions.eq("flag", "Y"));
-        criteria.addOrder(Order.asc("positionId"));
+        criteria.addOrder(Order.asc("kodering"));
 
         List<ImPosition> results = criteria.list();
         return results;
@@ -467,7 +503,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
 
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
                 .add(Restrictions.eq("kelompokId", kelompok))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
 
         return results;
@@ -477,7 +513,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
 
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
                 .add(Restrictions.eq("bagianId", id))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
         return results;
     }
@@ -510,16 +546,18 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         return false;
     }
 
-    public PersonilPosition getPersonilPositionAktif(String branchId, String positionId){
+    public PersonilPosition getPersonilPositionAktif(String branchId, String positionId, String nip){
 
         String SQL = "SELECT a.nip, b.nama_pegawai \n" +
-                "FROM (SELECT * FROM it_hris_pegawai_position WHERE flag = 'Y') a\n" +
+                "FROM (SELECT * FROM it_hris_pegawai_position WHERE flag = 'Y' and (flag_mbt is null or flag_mbt = 'N')) a\n" +
                 "INNER JOIN (SELECT nip, nama_pegawai FROM im_hris_pegawai WHERE flag = 'Y') b ON b.nip = a.nip\n" +
                 "WHERE a.position_id LIKE :positionid \n" +
+                "AND a.nip NOT LIKE :nip \n" +
                 "AND a.branch_id LIKE :unit ";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("positionid", positionId)
+                .setParameter("nip", nip)
                 .setParameter("unit", branchId)
                 .list();
 
@@ -534,5 +572,88 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         }
 
         return null;
+    }
+
+    public List<Position> getListUnitCost(String bagianId){
+
+        String id = bagianId == null || "".equalsIgnoreCase(bagianId) ? "%" : bagianId;
+
+        String SQL = "SELECT \n" +
+                "position_id, \n" +
+                "position_name, \n" +
+                "kodering \n" +
+                "FROM im_position\n" +
+                "WHERE bagian_id LIKE '"+id+"'\n" +
+                "AND flag_cost_unit = 'Y'\n" +
+                "AND flag = 'Y'";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+        List<Position> positionList = new ArrayList<>();
+        if (list.size() > 0){
+            for (Object[] obj : list){
+                Position position = new Position();
+                position.setPositionId(obj[0].toString());
+                position.setPositionName(obj[1].toString());
+                position.setKodering(obj[2] == null ? "" : obj[2].toString());
+                positionList.add(position);
+            }
+        }
+
+        return positionList;
+    }
+
+    public Position getOnePositionByKodering(String kodering){
+
+        String SQL = "SELECT \n" +
+                "position_id, \n" +
+                "position_name,\n" +
+                "kodering\n" +
+                "FROM im_position \n" +
+                "WHERE kodering = '"+kodering+"'\n" +
+                "ORDER BY flag_cost_unit\n";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+            Object[] obj = list.get(0);
+            Position position = new Position();
+            position.setPositionId(obj[0].toString());
+            position.setPositionName(obj[1].toString());
+            position.setKodering(obj[2] == null ? "" : obj[2].toString());
+            return position;
+        }
+        return null;
+
+    }
+
+    public String getLastKodering(String koderingsubbid){
+
+        String kodering = koderingsubbid + "%";
+
+        String SQL = "SELECT \n" +
+                "RIGHT(a.kodering, 2) as kodering\n" +
+                "FROM (\n" +
+                "\tSELECT kodering FROM im_position \n" +
+                "\tWHERE kodering LIKE '"+kodering+"' ORDER BY kodering DESC LIMIT 1\n" +
+                ") a";
+
+        List<Object> objects = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        String stCount = "";
+        if (objects.size() > 0){
+            stCount = objects.get(0).toString();
+        } else {
+            stCount = "0";
+        }
+
+        int count = Integer.parseInt(stCount);
+        int finalCount = count + 1;
+        String stFinalCount = String.valueOf(finalCount);
+
+        if (stFinalCount.length() == 1){
+            stFinalCount = "0" + stFinalCount;
+        }
+
+        return stFinalCount;
     }
 }

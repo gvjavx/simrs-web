@@ -10,6 +10,7 @@
     />
     <bean id="tipeLiburBo" class="com.neurix.hris.master.tipelibur.bo.impl.TipeLiburBoImpl"
           p:tipeLiburDao-ref="tipeLiburDao"
+          p:liburDao-ref="liburDao"
     />
     <bean id="tipeLiburBoProxy"
           class="org.springframework.aop.framework.ProxyFactoryBean"

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="439178ee-4584-4e86-b765-559a2351e7e6">
 	<property name="ireport.zoom" value="1.461537825000002"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="17"/>
+	<property name="ireport.y" value="45"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -170,15 +170,22 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						<dataSourceExpression><![CDATA[$P{reportParams.itemDataSource}]]></dataSourceExpression>
 					</datasetRun>
 					<jr:column width="22" uuid="3f2739d4-f6d1-41ba-a53e-762a2064a0e3">
-						<jr:columnHeader height="24" rowSpan="2">
+						<jr:columnHeader height="23" rowSpan="2">
+							<box>
+								<pen lineStyle="Dashed"/>
+								<topPen lineStyle="Dashed"/>
+								<leftPen lineStyle="Dashed"/>
+								<bottomPen lineStyle="Dashed"/>
+								<rightPen lineStyle="Dashed"/>
+							</box>
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="22" height="23" backcolor="#E1E1E1" uuid="2bef004e-5a21-4428-8ad3-4fcf3753ac5a"/>
+								<reportElement mode="Opaque" x="0" y="0" width="22" height="23" backcolor="#FFFFFF" uuid="2bef004e-5a21-4428-8ad3-4fcf3753ac5a"/>
 								<box>
-									<pen lineWidth="1.0"/>
-									<topPen lineWidth="1.0"/>
-									<leftPen lineWidth="1.0"/>
-									<bottomPen lineWidth="1.0"/>
-									<rightPen lineWidth="1.0"/>
+									<pen lineWidth="1.0" lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+									<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+									<rightPen lineWidth="1.0" lineStyle="Dashed"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="7"/>
@@ -190,12 +197,23 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							<staticText>
 								<reportElement x="0" y="0" width="22" height="43" uuid="fbb4ff55-fcb3-4150-bd4b-b3ec7140e6fe"/>
 								<box>
-									<topPen lineWidth="1.0"/>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineStyle="Dashed"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<text><![CDATA[]]></text>
 							</staticText>
 						</jr:columnFooter>
 						<jr:detailCell height="14" rowSpan="1">
+							<box>
+								<pen lineStyle="Dashed"/>
+								<topPen lineStyle="Dashed"/>
+								<leftPen lineStyle="Dashed"/>
+								<bottomPen lineStyle="Dashed"/>
+								<rightPen lineStyle="Dashed"/>
+							</box>
 							<textField>
 								<reportElement style="Style1" x="0" y="0" width="22" height="14" uuid="fdf2631f-9e81-4425-846e-a4696bcecf42"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -206,15 +224,22 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="147" uuid="75366ce3-7823-4d7d-a222-104c5fb32d61">
-						<jr:columnHeader height="24" rowSpan="2">
+						<jr:columnHeader height="23" rowSpan="2">
+							<box>
+								<pen lineStyle="Dashed"/>
+								<topPen lineStyle="Dashed"/>
+								<leftPen lineStyle="Dashed"/>
+								<bottomPen lineStyle="Dashed"/>
+								<rightPen lineStyle="Dashed"/>
+							</box>
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="147" height="23" backcolor="#E1E1E1" uuid="8ee22972-5b37-4fdc-8b70-d8e5ddd8a6ea"/>
+								<reportElement mode="Opaque" x="0" y="0" width="147" height="23" backcolor="#FFFFFF" uuid="8ee22972-5b37-4fdc-8b70-d8e5ddd8a6ea"/>
 								<box>
-									<pen lineWidth="1.0"/>
-									<topPen lineWidth="1.0"/>
-									<leftPen lineWidth="1.0"/>
-									<bottomPen lineWidth="1.0"/>
-									<rightPen lineWidth="1.0"/>
+									<pen lineWidth="1.0" lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+									<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+									<rightPen lineWidth="1.0" lineStyle="Dashed"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="7"/>
@@ -226,31 +251,42 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							<staticText>
 								<reportElement x="0" y="0" width="147" height="43" uuid="cd1383b5-af3b-4250-af20-531d65520385"/>
 								<box>
-									<topPen lineWidth="1.0"/>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineStyle="Dashed"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<text><![CDATA[]]></text>
 							</staticText>
 						</jr:columnFooter>
 						<jr:detailCell height="14" rowSpan="1">
+							<box>
+								<pen lineStyle="Dashed"/>
+								<topPen lineStyle="Dashed"/>
+								<leftPen lineStyle="Dashed"/>
+								<bottomPen lineStyle="Dashed"/>
+								<rightPen lineStyle="Dashed"/>
+							</box>
 							<textField>
 								<reportElement style="Style1" x="0" y="0" width="147" height="14" uuid="e1cf9379-2bda-4e93-a9a6-8865db152244"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="7"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="8" isUnderline="true"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="142" uuid="d38a8b19-6c0a-4c65-8a08-ee62824cd2e2">
-						<jr:columnHeader height="24" rowSpan="2">
+						<jr:columnHeader height="23" rowSpan="2">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="142" height="23" backcolor="#E1E1E1" uuid="10d07f24-9c13-443c-9d7c-c647abd1cc79"/>
+								<reportElement mode="Opaque" x="0" y="0" width="142" height="23" backcolor="#FFFFFF" uuid="10d07f24-9c13-443c-9d7c-c647abd1cc79"/>
 								<box>
-									<pen lineWidth="1.0"/>
-									<topPen lineWidth="1.0"/>
-									<leftPen lineWidth="1.0"/>
-									<bottomPen lineWidth="1.0"/>
-									<rightPen lineWidth="1.0"/>
+									<pen lineWidth="1.0" lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+									<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+									<rightPen lineWidth="1.0" lineStyle="Dashed"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="7"/>
@@ -262,31 +298,49 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							<staticText>
 								<reportElement x="0" y="0" width="142" height="43" uuid="b3c37262-c3c6-4b85-8c4d-64de50593991"/>
 								<box>
-									<topPen lineWidth="1.0"/>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineStyle="Dashed"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<text><![CDATA[]]></text>
 							</staticText>
 						</jr:columnFooter>
 						<jr:detailCell height="14" rowSpan="1">
+							<box>
+								<pen lineStyle="Dashed"/>
+								<topPen lineStyle="Dashed"/>
+								<leftPen lineStyle="Dashed"/>
+								<bottomPen lineStyle="Dashed"/>
+								<rightPen lineStyle="Dashed"/>
+							</box>
 							<textField>
 								<reportElement style="Style1" x="0" y="0" width="142" height="14" uuid="1c9fdba2-99d1-4a8d-b3d0-3c7a9f400e57"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="7"/>
+								<box>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="0.0" lineStyle="Dashed"/>
+									<leftPen lineWidth="0.0" lineStyle="Dashed"/>
+									<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
+									<rightPen lineWidth="0.0" lineStyle="Dashed"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="8"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{jabatan}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="21" uuid="4cc755ff-6b4b-42f1-a2aa-846e08802d6e">
-						<jr:columnHeader height="24" rowSpan="2">
+						<jr:columnHeader height="23" rowSpan="2">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="21" height="23" backcolor="#E1E1E1" uuid="0cdf9dc4-61a9-48f1-bd90-24cc5b6e7929"/>
+								<reportElement mode="Opaque" x="0" y="0" width="21" height="23" backcolor="#FFFFFF" uuid="0cdf9dc4-61a9-48f1-bd90-24cc5b6e7929"/>
 								<box>
-									<pen lineWidth="1.0"/>
-									<topPen lineWidth="1.0"/>
-									<leftPen lineWidth="1.0"/>
-									<bottomPen lineWidth="1.0"/>
-									<rightPen lineWidth="1.0"/>
+									<pen lineWidth="1.0" lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+									<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+									<rightPen lineWidth="1.0" lineStyle="Dashed"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="7"/>
@@ -298,7 +352,11 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							<staticText>
 								<reportElement x="0" y="0" width="21" height="43" uuid="0fa328b8-91f2-414a-8e91-b00dd0d554ce"/>
 								<box>
-									<topPen lineWidth="1.0"/>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineStyle="Dashed"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<text><![CDATA[]]></text>
 							</staticText>
@@ -314,15 +372,15 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="22" uuid="869c4f5e-133d-447a-9ed7-bd9f75f80dbe">
-						<jr:columnHeader height="24" rowSpan="2">
+						<jr:columnHeader height="23" rowSpan="2">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="22" height="23" backcolor="#E1E1E1" uuid="f94065ac-ea09-42dd-ad48-1dd80af2f0f4"/>
+								<reportElement mode="Opaque" x="0" y="0" width="22" height="23" backcolor="#FFFFFF" uuid="f94065ac-ea09-42dd-ad48-1dd80af2f0f4"/>
 								<box>
-									<pen lineWidth="1.0"/>
-									<topPen lineWidth="1.0"/>
-									<leftPen lineWidth="1.0"/>
-									<bottomPen lineWidth="1.0"/>
-									<rightPen lineWidth="1.0"/>
+									<pen lineWidth="1.0" lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+									<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+									<rightPen lineWidth="1.0" lineStyle="Dashed"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="7"/>
@@ -334,7 +392,11 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							<staticText>
 								<reportElement x="0" y="0" width="22" height="43" uuid="03feef8b-3152-404e-81d8-100166a76850"/>
 								<box>
-									<topPen lineWidth="1.0"/>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineStyle="Dashed"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<text><![CDATA[]]></text>
 							</staticText>
@@ -350,27 +412,31 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="28" uuid="4b2bd294-6699-4fae-8232-e6d43e74cb69">
-						<jr:columnHeader height="24" rowSpan="2">
+						<jr:columnHeader height="23" rowSpan="2">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="28" height="23" backcolor="#E1E1E1" uuid="d4cf560b-779a-4f9b-85cf-6796f6f832c1"/>
+								<reportElement mode="Opaque" x="0" y="0" width="28" height="23" backcolor="#FFFFFF" uuid="d4cf560b-779a-4f9b-85cf-6796f6f832c1"/>
 								<box>
-									<pen lineWidth="1.0"/>
-									<topPen lineWidth="1.0"/>
-									<leftPen lineWidth="1.0"/>
-									<bottomPen lineWidth="1.0"/>
-									<rightPen lineWidth="1.0"/>
+									<pen lineWidth="1.0" lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+									<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+									<rightPen lineWidth="1.0" lineStyle="Dashed"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="7"/>
 								</textElement>
-								<text><![CDATA[Masuk <07:00]]></text>
+								<text><![CDATA[Sesuai]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter height="43" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="28" height="43" uuid="86d43963-a73d-4713-abb7-f0ea3501bb77"/>
 								<box>
-									<topPen lineWidth="1.0"/>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineStyle="Dashed"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<text><![CDATA[]]></text>
 							</staticText>
@@ -388,13 +454,13 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<jr:columnGroup width="57" uuid="f683ab3c-e7fe-4609-993d-a71e36374384">
 						<jr:columnHeader height="12" rowSpan="1">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="57" height="12" backcolor="#E1E1E1" uuid="bb5b3f19-3088-4f0e-9df3-09ef7d4a5877"/>
+								<reportElement mode="Opaque" x="0" y="0" width="57" height="12" backcolor="#FFFFFF" uuid="bb5b3f19-3088-4f0e-9df3-09ef7d4a5877"/>
 								<box>
-									<pen lineWidth="1.0"/>
-									<topPen lineWidth="1.0"/>
-									<leftPen lineWidth="1.0"/>
-									<bottomPen lineWidth="1.0"/>
-									<rightPen lineWidth="1.0"/>
+									<pen lineWidth="1.0" lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+									<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+									<rightPen lineWidth="1.0" lineStyle="Dashed"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="6"/>
@@ -406,21 +472,25 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							<staticText>
 								<reportElement x="0" y="0" width="57" height="43" uuid="c7049c55-fcf1-427c-8118-ba7be20c01e6"/>
 								<box>
-									<topPen lineWidth="1.0"/>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineStyle="Dashed"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<text><![CDATA[]]></text>
 							</staticText>
 						</jr:columnFooter>
 						<jr:column width="26" uuid="946a7dac-57d3-4d6a-8b35-404c4a337a4e">
-							<jr:columnHeader height="12" rowSpan="1">
+							<jr:columnHeader height="11" rowSpan="1">
 								<staticText>
-									<reportElement mode="Opaque" x="0" y="0" width="26" height="11" backcolor="#E1E1E1" uuid="314eb4ab-98af-4efa-90bd-0d54fe15c3c1"/>
+									<reportElement mode="Opaque" x="0" y="0" width="26" height="11" backcolor="#FFFFFF" uuid="314eb4ab-98af-4efa-90bd-0d54fe15c3c1"/>
 									<box>
-										<pen lineWidth="1.0"/>
-										<topPen lineWidth="1.0"/>
-										<leftPen lineWidth="1.0"/>
-										<bottomPen lineWidth="1.0"/>
-										<rightPen lineWidth="1.0"/>
+										<pen lineWidth="1.0" lineStyle="Dashed"/>
+										<topPen lineWidth="1.0" lineStyle="Dashed"/>
+										<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+										<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+										<rightPen lineWidth="1.0" lineStyle="Dashed"/>
 									</box>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font size="7"/>
@@ -439,15 +509,15 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</jr:detailCell>
 						</jr:column>
 						<jr:column width="31" uuid="bf861b88-986b-41e8-80a3-59443f9040e9">
-							<jr:columnHeader height="12" rowSpan="1">
+							<jr:columnHeader height="11" rowSpan="1">
 								<staticText>
-									<reportElement mode="Opaque" x="0" y="0" width="31" height="11" backcolor="#E1E1E1" uuid="d38c612a-cbb1-46e7-bb47-f89c49e582cf"/>
+									<reportElement mode="Opaque" x="0" y="0" width="31" height="11" backcolor="#FFFFFF" uuid="d38c612a-cbb1-46e7-bb47-f89c49e582cf"/>
 									<box>
-										<pen lineWidth="1.0"/>
-										<topPen lineWidth="1.0"/>
-										<leftPen lineWidth="1.0"/>
-										<bottomPen lineWidth="1.0"/>
-										<rightPen lineWidth="1.0"/>
+										<pen lineWidth="1.0" lineStyle="Dashed"/>
+										<topPen lineWidth="1.0" lineStyle="Dashed"/>
+										<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+										<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+										<rightPen lineWidth="1.0" lineStyle="Dashed"/>
 									</box>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font size="7"/>
@@ -467,15 +537,15 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						</jr:column>
 					</jr:columnGroup>
 					<jr:column width="39" uuid="d6ac2de7-a450-46ee-aa6b-d994d7a922a9">
-						<jr:columnHeader height="24" rowSpan="2">
+						<jr:columnHeader height="23" rowSpan="2">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="39" height="23" backcolor="#E1E1E1" uuid="baad9a90-d620-4a49-a5fd-96a218e147b2"/>
+								<reportElement mode="Opaque" x="0" y="0" width="39" height="23" backcolor="#FFFFFF" uuid="baad9a90-d620-4a49-a5fd-96a218e147b2"/>
 								<box leftPadding="3">
-									<pen lineWidth="1.0"/>
-									<topPen lineWidth="1.0"/>
-									<leftPen lineWidth="1.0"/>
-									<bottomPen lineWidth="1.0"/>
-									<rightPen lineWidth="1.0"/>
+									<pen lineWidth="1.0" lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+									<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+									<rightPen lineWidth="1.0" lineStyle="Dashed"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="6"/>
@@ -487,7 +557,11 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							<staticText>
 								<reportElement x="0" y="0" width="39" height="43" uuid="ee933e0e-53d7-4cbb-b0ec-34fade9bffa7"/>
 								<box>
-									<topPen lineWidth="1.0"/>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineStyle="Dashed"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<text><![CDATA[]]></text>
 							</staticText>
@@ -503,51 +577,15 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="37" uuid="cfa069b7-e8b8-474d-be2f-185c7f5f522a">
-						<jr:columnHeader height="24" rowSpan="2">
+						<jr:columnHeader height="23" rowSpan="2">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="37" height="23" backcolor="#E1E1E1" uuid="8c8b9ffc-9786-4774-9b73-dce66ea7861e"/>
+								<reportElement mode="Opaque" x="0" y="0" width="37" height="23" backcolor="#FFFFFF" uuid="8c8b9ffc-9786-4774-9b73-dce66ea7861e"/>
 								<box leftPadding="3">
-									<pen lineWidth="1.0"/>
-									<topPen lineWidth="1.0"/>
-									<leftPen lineWidth="1.0"/>
-									<bottomPen lineWidth="1.0"/>
-									<rightPen lineWidth="1.0"/>
-								</box>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="6"/>
-								</textElement>
-								<text><![CDATA[Masuk di Kantor]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:columnFooter height="43" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="37" height="43" uuid="a90dff2e-c601-4e82-82b3-fde5e12366f5"/>
-								<box>
-									<topPen lineWidth="1.0"/>
-								</box>
-								<text><![CDATA[]]></text>
-							</staticText>
-						</jr:columnFooter>
-						<jr:detailCell height="14" rowSpan="1">
-							<textField>
-								<reportElement x="0" y="0" width="37" height="14" uuid="7ef2cdbb-e17b-44e4-b4b3-bbe0472c15aa"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="8"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$F{masukKerjaKantor}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="45" uuid="a74fb18a-3c0b-4e27-81b8-0a21f1bbd933">
-						<jr:columnHeader height="24" rowSpan="2">
-							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="45" height="23" backcolor="#E1E1E1" uuid="4a32431a-18e5-40f0-b3ce-841a1709e12c"/>
-								<box leftPadding="3">
-									<pen lineWidth="1.0"/>
-									<topPen lineWidth="1.0"/>
-									<leftPen lineWidth="1.0"/>
-									<bottomPen lineWidth="1.0"/>
-									<rightPen lineWidth="1.0"/>
+									<pen lineWidth="1.0" lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+									<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+									<rightPen lineWidth="1.0" lineStyle="Dashed"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="6"/>
@@ -557,16 +595,20 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						</jr:columnHeader>
 						<jr:columnFooter height="43" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="45" height="43" uuid="062840c8-2e16-4fe6-a1d5-2bca687d1cf1"/>
+								<reportElement x="0" y="0" width="37" height="43" uuid="a90dff2e-c601-4e82-82b3-fde5e12366f5"/>
 								<box>
-									<topPen lineWidth="1.0"/>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineStyle="Dashed"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<text><![CDATA[]]></text>
 							</staticText>
 						</jr:columnFooter>
 						<jr:detailCell height="14" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="45" height="14" uuid="c7779738-1adc-4491-8ccf-952ed8e16b63"/>
+								<reportElement x="0" y="0" width="37" height="14" uuid="c7779738-1adc-4491-8ccf-952ed8e16b63"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
@@ -574,16 +616,16 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="51" uuid="a8707311-d174-4601-8644-ed6f17a91c0b">
-						<jr:columnHeader height="24" rowSpan="2">
+					<jr:column width="45" uuid="a74fb18a-3c0b-4e27-81b8-0a21f1bbd933">
+						<jr:columnHeader height="23" rowSpan="2">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="51" height="23" backcolor="#E1E1E1" uuid="8ce6522e-bdaf-468e-8405-2a7aa8a39b03"/>
+								<reportElement mode="Opaque" x="0" y="0" width="45" height="23" backcolor="#FFFFFF" uuid="4a32431a-18e5-40f0-b3ce-841a1709e12c"/>
 								<box leftPadding="3">
-									<pen lineWidth="1.0"/>
-									<topPen lineWidth="1.0"/>
-									<leftPen lineWidth="1.0"/>
-									<bottomPen lineWidth="1.0"/>
-									<rightPen lineWidth="1.0"/>
+									<pen lineWidth="1.0" lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+									<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+									<rightPen lineWidth="1.0" lineStyle="Dashed"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="6"/>
@@ -593,16 +635,20 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						</jr:columnHeader>
 						<jr:columnFooter height="43" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="51" height="43" uuid="1c833cf8-ccd4-4a9d-8f9d-f17e3b4248c4"/>
+								<reportElement x="0" y="0" width="45" height="43" uuid="062840c8-2e16-4fe6-a1d5-2bca687d1cf1"/>
 								<box>
-									<topPen lineWidth="1.0"/>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineStyle="Dashed"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<text><![CDATA[]]></text>
 							</staticText>
 						</jr:columnFooter>
 						<jr:detailCell height="14" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="51" height="14" uuid="078c94f9-7ccd-4353-8537-9ea88fbf6273"/>
+								<reportElement x="0" y="0" width="45" height="14" uuid="078c94f9-7ccd-4353-8537-9ea88fbf6273"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
@@ -610,16 +656,56 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
+					<jr:column width="51" uuid="a8707311-d174-4601-8644-ed6f17a91c0b">
+						<jr:columnHeader height="23" rowSpan="2">
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="51" height="23" backcolor="#FFFFFF" uuid="8ce6522e-bdaf-468e-8405-2a7aa8a39b03"/>
+								<box leftPadding="3">
+									<pen lineWidth="1.0" lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+									<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+									<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="6"/>
+								</textElement>
+								<text><![CDATA[Masuk Kantor]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter height="43" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="51" height="43" uuid="1c833cf8-ccd4-4a9d-8f9d-f17e3b4248c4"/>
+								<box>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineStyle="Dashed"/>
+									<rightPen lineStyle="Dashed"/>
+								</box>
+								<text><![CDATA[]]></text>
+							</staticText>
+						</jr:columnFooter>
+						<jr:detailCell height="14" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="51" height="14" uuid="7ef2cdbb-e17b-44e4-b4b3-bbe0472c15aa"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{masukKerjaKantor}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
 					<jr:columnGroup width="190" uuid="b11d199d-7ee9-42b3-a8df-ba82cb38a483">
 						<jr:columnHeader height="12" rowSpan="1">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="190" height="12" backcolor="#E1E1E1" uuid="0133994f-e012-45a1-a1c1-8ca514383624"/>
+								<reportElement mode="Opaque" x="0" y="0" width="190" height="12" backcolor="#FFFFFF" uuid="0133994f-e012-45a1-a1c1-8ca514383624"/>
 								<box>
-									<pen lineWidth="1.0"/>
-									<topPen lineWidth="1.0"/>
-									<leftPen lineWidth="1.0"/>
-									<bottomPen lineWidth="1.0"/>
-									<rightPen lineWidth="1.0"/>
+									<pen lineWidth="1.0" lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+									<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+									<rightPen lineWidth="1.0" lineStyle="Dashed"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="7"/>
@@ -631,21 +717,25 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							<staticText>
 								<reportElement x="0" y="0" width="190" height="43" uuid="c8e4d824-c14c-423f-be3c-52164a66aab9"/>
 								<box>
-									<topPen lineWidth="1.0"/>
+									<pen lineStyle="Dashed"/>
+									<topPen lineWidth="1.0" lineStyle="Dashed"/>
+									<leftPen lineStyle="Dashed"/>
+									<bottomPen lineStyle="Dashed"/>
+									<rightPen lineStyle="Dashed"/>
 								</box>
 								<text><![CDATA[]]></text>
 							</staticText>
 						</jr:columnFooter>
 						<jr:column width="23" uuid="616189d9-b6c7-4540-8662-0dfe247e9150">
-							<jr:columnHeader height="12" rowSpan="1">
+							<jr:columnHeader height="11" rowSpan="1">
 								<staticText>
-									<reportElement mode="Opaque" x="0" y="0" width="23" height="11" backcolor="#E1E1E1" uuid="bd927fd9-9261-4efe-a14a-42268c4d1e12"/>
+									<reportElement mode="Opaque" x="0" y="0" width="23" height="11" backcolor="#FFFFFF" uuid="bd927fd9-9261-4efe-a14a-42268c4d1e12"/>
 									<box>
-										<pen lineWidth="1.0"/>
-										<topPen lineWidth="1.0"/>
-										<leftPen lineWidth="1.0"/>
-										<bottomPen lineWidth="1.0"/>
-										<rightPen lineWidth="1.0"/>
+										<pen lineWidth="1.0" lineStyle="Dashed"/>
+										<topPen lineWidth="1.0" lineStyle="Dashed"/>
+										<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+										<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+										<rightPen lineWidth="1.0" lineStyle="Dashed"/>
 									</box>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font size="7"/>
@@ -664,15 +754,15 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</jr:detailCell>
 						</jr:column>
 						<jr:column width="19" uuid="6d3e6c11-2a54-4a87-9512-63be5396854f">
-							<jr:columnHeader height="12" rowSpan="1">
+							<jr:columnHeader height="11" rowSpan="1">
 								<staticText>
-									<reportElement mode="Opaque" x="0" y="0" width="19" height="11" backcolor="#E1E1E1" uuid="f406aee4-7f0c-4f05-af70-9e2aaa01f6f4"/>
+									<reportElement mode="Opaque" x="0" y="0" width="19" height="11" backcolor="#FFFFFF" uuid="f406aee4-7f0c-4f05-af70-9e2aaa01f6f4"/>
 									<box>
-										<pen lineWidth="1.0"/>
-										<topPen lineWidth="1.0"/>
-										<leftPen lineWidth="1.0"/>
-										<bottomPen lineWidth="1.0"/>
-										<rightPen lineWidth="1.0"/>
+										<pen lineWidth="1.0" lineStyle="Dashed"/>
+										<topPen lineWidth="1.0" lineStyle="Dashed"/>
+										<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+										<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+										<rightPen lineWidth="1.0" lineStyle="Dashed"/>
 									</box>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font size="7"/>
@@ -691,15 +781,15 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</jr:detailCell>
 						</jr:column>
 						<jr:column width="29" uuid="4739ed4b-c1f6-430d-874e-154686e1a38f">
-							<jr:columnHeader height="12" rowSpan="1">
+							<jr:columnHeader height="11" rowSpan="1">
 								<staticText>
-									<reportElement mode="Opaque" x="0" y="0" width="29" height="11" backcolor="#E1E1E1" uuid="89ba9f26-2d46-48ac-9a36-83e83831b7fc"/>
+									<reportElement mode="Opaque" x="0" y="0" width="29" height="11" backcolor="#FFFFFF" uuid="89ba9f26-2d46-48ac-9a36-83e83831b7fc"/>
 									<box leftPadding="3">
-										<pen lineWidth="1.0"/>
-										<topPen lineWidth="1.0"/>
-										<leftPen lineWidth="1.0"/>
-										<bottomPen lineWidth="1.0"/>
-										<rightPen lineWidth="1.0"/>
+										<pen lineWidth="1.0" lineStyle="Dashed"/>
+										<topPen lineWidth="1.0" lineStyle="Dashed"/>
+										<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+										<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+										<rightPen lineWidth="1.0" lineStyle="Dashed"/>
 									</box>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font size="7"/>
@@ -718,15 +808,15 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</jr:detailCell>
 						</jr:column>
 						<jr:column width="18" uuid="3f9f690d-c9af-4a11-85b2-bd3704a46e97">
-							<jr:columnHeader height="12" rowSpan="1">
+							<jr:columnHeader height="11" rowSpan="1">
 								<staticText>
-									<reportElement mode="Opaque" x="0" y="0" width="18" height="11" backcolor="#E1E1E1" uuid="4039cff6-15ab-418f-bdb2-ab2fc7e079c1"/>
+									<reportElement mode="Opaque" x="0" y="0" width="18" height="11" backcolor="#FFFFFF" uuid="4039cff6-15ab-418f-bdb2-ab2fc7e079c1"/>
 									<box>
-										<pen lineWidth="1.0"/>
-										<topPen lineWidth="1.0"/>
-										<leftPen lineWidth="1.0"/>
-										<bottomPen lineWidth="1.0"/>
-										<rightPen lineWidth="1.0"/>
+										<pen lineWidth="1.0" lineStyle="Dashed"/>
+										<topPen lineWidth="1.0" lineStyle="Dashed"/>
+										<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+										<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+										<rightPen lineWidth="1.0" lineStyle="Dashed"/>
 									</box>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font size="7"/>
@@ -745,15 +835,15 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</jr:detailCell>
 						</jr:column>
 						<jr:column width="37" uuid="c55e1407-7a68-44d7-8a1e-ef7880e6a5dc">
-							<jr:columnHeader height="12" rowSpan="1">
+							<jr:columnHeader height="11" rowSpan="1">
 								<staticText>
-									<reportElement mode="Opaque" x="0" y="0" width="37" height="11" backcolor="#E1E1E1" uuid="c417c6cd-9b67-43ac-8c92-423231073ad6"/>
+									<reportElement mode="Opaque" x="0" y="0" width="37" height="11" backcolor="#FFFFFF" uuid="c417c6cd-9b67-43ac-8c92-423231073ad6"/>
 									<box>
-										<pen lineWidth="1.0"/>
-										<topPen lineWidth="1.0"/>
-										<leftPen lineWidth="1.0"/>
-										<bottomPen lineWidth="1.0"/>
-										<rightPen lineWidth="1.0"/>
+										<pen lineWidth="1.0" lineStyle="Dashed"/>
+										<topPen lineWidth="1.0" lineStyle="Dashed"/>
+										<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+										<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+										<rightPen lineWidth="1.0" lineStyle="Dashed"/>
 									</box>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font size="7"/>
@@ -772,15 +862,15 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</jr:detailCell>
 						</jr:column>
 						<jr:column width="64" uuid="57d51eef-bc9b-4193-8a9e-d0cb235ab726">
-							<jr:columnHeader height="12" rowSpan="1">
+							<jr:columnHeader height="11" rowSpan="1">
 								<staticText>
-									<reportElement mode="Opaque" x="0" y="0" width="64" height="11" backcolor="#E1E1E1" uuid="82ea2370-8c79-4a48-be54-0651e181c24d"/>
+									<reportElement mode="Opaque" x="0" y="0" width="64" height="11" backcolor="#FFFFFF" uuid="82ea2370-8c79-4a48-be54-0651e181c24d"/>
 									<box>
-										<pen lineWidth="1.0"/>
-										<topPen lineWidth="1.0"/>
-										<leftPen lineWidth="1.0"/>
-										<bottomPen lineWidth="1.0"/>
-										<rightPen lineWidth="1.0"/>
+										<pen lineWidth="1.0" lineStyle="Dashed"/>
+										<topPen lineWidth="1.0" lineStyle="Dashed"/>
+										<leftPen lineWidth="1.0" lineStyle="Dashed"/>
+										<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+										<rightPen lineWidth="1.0" lineStyle="Dashed"/>
 									</box>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font size="7"/>

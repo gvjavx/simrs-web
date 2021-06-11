@@ -1,8 +1,9 @@
 
-function loadPositionJabatan() {
+function loadPositionJabatan(stAction) {
+    console.log("stAction is " + stAction);
+    $("#inputKodeDokter").css('display','block');
     var nip = $("#nip1").val();
     BiodataAction.listPersonilPosition(nip, function (res) {
-
         var str = "";
         $.each(res, function (i, item) {
 
@@ -22,12 +23,19 @@ function loadPositionJabatan() {
                 '<td align="center">';
 
             if (item.flag != 'N'){
-                str += '<button class="btn btn-primary btn-sm" onclick="initEditJabatan(\''+item.nip+'\',\''+item.positionId+'\')"><i class="fa fa-edit"></i></button>' +
-                    '<button class="btn btn-danger btn-sm" onclick="initDeleteJabatan(\''+item.nip+'\',\''+item.positionId+'\')"><i class="fa fa-trash"></i></button>';
+                // if(stAction === 'addOrEdit') {
+                if(stAction === 'add') {
+                    str += '<button class="btn btn-primary btn-sm" onclick="initEditJabatan(\'' + item.nip + '\',\'' + item.positionId + '\')"><i class="fa fa-edit"></i></button>' +
+                        '<button class="btn btn-danger btn-sm" onclick="initDeleteJabatan(\'' + item.nip + '\',\'' + item.positionId + '\')"><i class="fa fa-trash"></i></button>';
+                }
             }
 
             str += '</td>' +
                 '</tr>';
+
+            // if(item.tipeProfesi == "dokter"){
+            //     $("#inputKodeDokter").css('display','block');
+            // }
         });
 
         $("#tbody-position").html(str);
@@ -46,8 +54,8 @@ function listPositionJabatan(divisi, positionId) {
         divisi = $("#department-jabatan option:selected").val();
     }
 
-    PositionAction.searchPositionBiodataHistory(divisi, function (listdata) {
-
+    // PositionAction.searchPositionBiodataHistory(divisi, function (listdata) {
+    PositionAction.searchPositionBiodata(divisi, function (listdata) {
         var str = "";
         $.each(listdata, function (i, item) {
             if (positionId == item.positionId){
@@ -183,7 +191,7 @@ function saveEditJabatan() {
         } else {
             alert("Data Berhasil Di Update")
             cleanAllFormPositionJabatan();
-            loadPositionJabatan();
+            loadPositionJabatan("add");
             $("#modal-edit-jabatan").modal('hide');
         }
     });
@@ -234,7 +242,7 @@ function saveAddJabatan() {
         } else {
             alert("Data Berhasil Di Tambahkan")
             cleanAllFormPositionJabatan();
-            loadPositionJabatan();
+            loadPositionJabatan('add');
             $("#modal-edit-jabatan").modal('hide');
         }
     });

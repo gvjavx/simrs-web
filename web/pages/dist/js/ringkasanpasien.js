@@ -26,7 +26,12 @@ function showModalRingkasanPasien(jenis, idRM, isSetIdRM) {
 function saveRingkasanPasien(jenis, ket) {
     var data = [];
     var cek = false;
-    var dataPasien = "";
+    var dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
 
     if ("ringkasan_pulang_pasien" == jenis) {
         var pe1 = $('#rps1').val();
@@ -49,13 +54,27 @@ function saveRingkasanPasien(jenis, ket) {
         var pe18 = $('#rps18').val();
         var pe19 = $('#rps19').val();
         var pe20 = $('#rps20').val();
-        var pe21 = $('[name=rps21]').val();
-        var pe22 = $('[name=rps22]').val();
+        var pe21 = $('[name=rps21]:checked').val();
+        var pe22 = $('[name=rps22]:checked').val();
         var pe23 = $('#rps23').val();
+        var spo1 = $('#spo1').val();
+        var spo2 = $('#spo2').val();
+        var hasilRadiologi = $('#hasil_radiologi').val();
+        var pro = $('#prognosis').val();
+        var catatan = $('#catatan_khusus').val();
 
+        var ttd1 = document.getElementById('gen2');
+        var ttd2 = document.getElementById('gen3');
+        var nama1 = $('#nama_terang_gen2').val();
+        var nama2 = $('#nama_terang_gen3').val();
+        var sip2 = $('#sip_gen3').val();
+
+        var cek1 = isCanvasBlank(ttd1);
+        var cek2 = isCanvasBlank(ttd2);
 
         if (pe1 && pe2 && pe3 && pe4 && pe5 && pe6 && pe7 && pe8 && pe9 && pe10 &&
-            pe11 && pe12 && pe13 && pe14 && pe15 && pe16 && pe17 && pe18 && pe19 && pe20 && pe23 != '' && pe21 && pe22 != undefined) {
+            pe11 && pe12 && pe13 && pe14 && pe15 && pe16 && pe17 && pe18 && pe19 &&
+            pe20 && pe23 != '' && pe21 != undefined && nama1 && nama2 && sip2 != '' && !cek1 && !cek2) {
 
             data.push({
                 'parameter': 'Tanggal Masuk',
@@ -69,6 +88,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe2,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'tgl_keluar',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -83,6 +103,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe4,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'riwayat_penyakit',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -114,7 +135,7 @@ function saveRingkasanPasien(jenis, ket) {
             });
             data.push({
                 'parameter': 'Tensi',
-                'jawaban': pe8 + ' mmHg',
+                'jawaban': replaceUnderLine(pe8) + ' mmHg',
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
                 'id_detail_checkup': idDetailCheckup
@@ -127,10 +148,26 @@ function saveRingkasanPasien(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Pemeriksaan Penunjang/Diagnotik Terpeing',
+                'parameter': 'SPO2',
+                'jawaban': spo1,
+                'keterangan': jenis,
+                'jenis': 'ringkasan_pulang',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Pemeriksaan Lab',
                 'jawaban': pe10,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'pemeriksaan_lab',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Pemeriksaan Radiologi',
+                'jawaban': hasilRadiologi,
+                'keterangan': jenis,
+                'jenis': 'ringkasan_pulang',
+                'tipe': 'pemeriksaan_radiologi',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -179,6 +216,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe16 + ' C',
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'suhu',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -186,6 +224,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe17 + ' x/mnt',
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'nadi',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -193,13 +232,15 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe18 + ' x/mnt',
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'rr',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Tensi',
-                'jawaban': pe19 + ' mmHg',
+                'jawaban': replaceUnderLine(pe19) + ' mmHg',
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'tensi',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -207,6 +248,15 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe20,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'gcs',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'SPO2',
+                'jawaban': spo2,
+                'keterangan': jenis,
+                'jenis': 'ringkasan_pulang',
+                'tipe': 'spo2',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -214,22 +264,64 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe21,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'keadaan_pulang',
                 'id_detail_checkup': idDetailCheckup
             });
+            if(pe22 != undefined){
+                data.push({
+                    'parameter': 'Penyebab Kematian',
+                    'jawaban': pe22,
+                    'keterangan': jenis,
+                    'jenis': 'ringkasan_pulang',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
             data.push({
-                'parameter': 'Penyebab Kematian',
-                'jawaban': pe22,
+                'parameter': 'Prognosis',
+                'jawaban': pro,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'prognosis',
                 'id_detail_checkup': idDetailCheckup
             });
+
+            var kontrol = "";
+            var tglKontorl = $('.tanggal_kontrol');
+            var poliKontorl = $('.poli_kontrol');
+            var dokterKontorl = $('.dokter_kontrol');
+            $.each(tglKontorl, function (i, item) {
+                if(item.value != '' && poliKontorl[i].value != '' && dokterKontorl[i].value != ''){
+                    if(kontrol != ''){
+                        kontrol = kontrol+'|'+'Tanggal '+item.value+', Poli '+poliKontorl[i].value+', Dokter '+dokterKontorl[i].value;
+                    }else{
+                        kontrol = 'Tanggal '+item.value+', Poli '+poliKontorl[i].value+', Dokter '+dokterKontorl[i].value;
+                    }
+                }
+            });
+
+            var kon = "";
+            if("Kontrol Ulang" == pe23){
+                kon = '|'+kontrol;
+            }
+
             data.push({
                 'parameter': 'Instruksi tindak lanjut',
-                'jawaban': pe23,
+                'jawaban': pe23+kon,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
+                'tipe': 'instruksi_lanjut',
                 'id_detail_checkup': idDetailCheckup
             });
+            if(catatan != ''){
+                data.push({
+                    'parameter': 'Catatan Khusus',
+                    'jawaban': catatan,
+                    'keterangan': jenis,
+                    'jenis': 'ringkasan_pulang',
+                    'tipe': 'catatan_khusus',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
 
             var obatTerapi = $('.obat-terapi');
             var jmlTerapi = $('.jml-terapi');
@@ -251,9 +343,33 @@ function saveRingkasanPasien(jenis, ket) {
                     'jawaban': terapi,
                     'keterangan': jenis,
                     'jenis': 'ringkasan_pulang',
+                    'tipe': 'terapi_pulang',
                     'id_detail_checkup': idDetailCheckup
                 });
             }
+
+            var cvs1 = convertToDataURL(ttd1);
+            var cvs2 = convertToDataURL(ttd2);
+
+            data.push({
+                'parameter': 'TTD Keluarga',
+                'jawaban': cvs1,
+                'keterangan': jenis,
+                'jenis': ket,
+                'nama_terang': nama1,
+                'tipe': 'ttd',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'TTD DPJP',
+                'jawaban': cvs2,
+                'keterangan': jenis,
+                'jenis': ket,
+                'nama_terang': nama2,
+                'sip': sip2,
+                'tipe': 'ttd',
+                'id_detail_checkup': idDetailCheckup
+            });
             cek = true;
         }
     }
@@ -385,7 +501,7 @@ function saveRingkasanPasien(jenis, ket) {
             });
             data.push({
                 'parameter': 'Tensi',
-                'jawaban': pe15 + ' mmHg',
+                'jawaban': replaceUnderLine(pe15) + ' mmHg',
                 'keterangan': jenis,
                 'jenis': 'resume_medis',
                 'id_detail_checkup': idDetailCheckup
@@ -461,14 +577,7 @@ function saveRingkasanPasien(jenis, ket) {
     }
 
     if ("ringkasan_keluar_pasien" == jenis) {
-        var idDetailCheckup = $('#h_id_detail_pasien').val();
-        dataPasien = {
-            'no_checkup': $('#h_no_checkup').val(),
-            'id_detail_checkup': idDetailCheckup,
-            'id_pasien': $('#h_id_pasien').val(),
-            'id_rm': tempidRm
-        }
-        var pe1 = $('[name=rkp1]:checked').val();
+        var pe1 = $('#rkp1').val();
         var pe2 = "";
         var p2 = $('[name=rkp2]:checked').val();
         if (p2 != undefined) {
@@ -508,7 +617,7 @@ function saveRingkasanPasien(jenis, ket) {
             }
         }
 
-        if (pe1 && pe11 && pe12 != undefined && pe3 && pe4 && pe5 && pe6 && pe7 && pe8 && pe9 && pe10 && pe2 && pe13 != '') {
+        if (pe1 != '') {
             data.push({
                 'parameter': 'MRS Melalui',
                 'jawaban': pe1,
@@ -622,13 +731,6 @@ function saveRingkasanPasien(jenis, ket) {
     }
 
     if ("pre_admisi" == jenis) {
-        var idDetailCheckup = $('#h_id_detail_pasien').val();
-        dataPasien = {
-            'no_checkup': $('#h_no_checkup').val(),
-            'id_detail_checkup': idDetailCheckup,
-            'id_pasien': $('#h_id_pasien').val(),
-            'id_rm': tempidRm
-        }
         var check1 = $('[name=pre01]:checked').val();
         var check2 = $('[name=pre02]:checked').val();
         var check3 = $('[name=pre03]:checked').val();
@@ -646,26 +748,27 @@ function saveRingkasanPasien(jenis, ket) {
 
         var hslAlergi = "";
 
-        if (alergi != '' && ketAlergi != '') {
-            hslAlergi = alergi + ', ' + ketAlergi;
-        } else {
-            if (alergi != '') {
-                hslAlergi = alergi;
+        if(check6 == "Ya"){
+            if (alergi != '' && ketAlergi != '') {
+                hslAlergi = alergi + ', ' + ketAlergi;
+            } else {
+                if (alergi != '') {
+                    hslAlergi = alergi;
+                }
             }
         }
 
         var ttd1 = document.getElementById("et4");
         var ttd2 = document.getElementById("et5");
 
-        var nama1 = $('#nama_petugas').val();
-        var sip1 = $('#nip_petugas').val();
+        var nama1 = $('#nama_keluarga').val();
         var nama2 = $('#nama_dokter').val();
         var sip2 = $('#sip_dokter').val();
 
         var cek1 = isCanvasBlank(ttd1);
         var cek2 = isCanvasBlank(ttd2);
 
-        if(check1 && check2 && check3 && check4 && check5 && check6 != undefined && nama1 && sip1 && nama2 && sip2 != '' && !cek1 && !cek2){
+        if(check1 && check2 && check3 && check4 && check5 && check6 != undefined && nama1 && nama2 && sip2 != '' && !cek1 && !cek2){
             var va1 = check1;
             var va2 = check2;
             var va3 = check3;
@@ -738,17 +841,16 @@ function saveRingkasanPasien(jenis, ket) {
             var cvs1 = convertToDataURL(ttd1);
             var cvs2 = convertToDataURL(ttd2);
             data.push({
-                'parameter': 'TTD Petugas',
+                'parameter': 'TTD Pasien',
                 'jawaban': cvs1,
                 'keterangan': jenis,
                 'jenis': 'admisi',
                 'nama_terang': nama1,
-                'sip':sip1,
                 'tipe': 'ttd',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'TTD Dokter',
+                'parameter': 'TTD Petugas',
                 'jawaban': cvs2,
                 'keterangan': jenis,
                 'jenis': 'admisi',
@@ -777,6 +879,8 @@ function saveRingkasanPasien(jenis, ket) {
                        $('#warning_ring_' + ket).show().fadeOut(5000);
                        $('#msg_ring_' + ket).text("Berhasil menambahkan data ringkasan pasien...");
                        $('#modal-ring-' + jenis).scrollTop(0);
+                       delRowRingkasanPasien(jenis);
+                       detailRingkasanPasien(jenis);
                    } else {
                        $('#save_ring_' + jenis).show();
                        $('#load_ring_' + jenis).hide();
@@ -796,13 +900,6 @@ function saveRingkasanPasien(jenis, ket) {
 
 function detailRingkasanPasien(jenis) {
     if(!cekSession()){
-        var cekId = "";
-        var idDetail = $('#h_id_detail_pasien').val();
-        if(idDetail != null && idDetail != ''){
-            cekId = idDetail;
-        }else{
-            cekId = idDetailCheckup;
-        }
         if (jenis != '') {
             var head = "";
             var body = "";
@@ -812,7 +909,7 @@ function detailRingkasanPasien(jenis) {
             var tgl = "";
             var cekData = false;
 
-            RingkasanPasienAction.getListDetail(cekId, jenis, function (res) {
+            RingkasanPasienAction.getListDetail(idDetailCheckup, jenis, function (res) {
                 if (res.length > 0) {
                     $.each(res, function (i, item) {
                         var jwb = "";
@@ -861,6 +958,14 @@ function detailRingkasanPasien(jenis) {
                                         '<td colspan="2">' + table + '</td>' +
                                         '</tr>';
                                 }
+                            }else if(item.tipe == 'ttd'){
+                                body += '<tr>' +
+                                    '<td>' + item.parameter + '</td>' +
+                                    '<td>' + '<img src="' + item.jawaban + '" style="height: 100px">' +
+                                    '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                    '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                    '</td>' +
+                                    '</tr>';
                             } else {
                                 body += '<tr>' +
                                     '<td>' + item.parameter + '</td>' +
@@ -1131,6 +1236,12 @@ function showKetRing(value, ket) {
             $('#form-ring-' + ket).hide();
             $('#pre_ket_alergi').hide();
         }
+    } else if(ket == "penyembab_kematian"){
+        if(value == "Meninggal"){
+            $('#form-ring-' + ket).show();
+        }else{
+            $('#form-ring-' + ket).hide();
+        }
     }else{
         if (value == "Meninggal dunia, sebab kematian" || value == "Rujuk" ||
             value == "Puskesmas" || value == "Polisi" || value == "Dirujuk" ||
@@ -1163,6 +1274,7 @@ function delRing(jenis, ket) {
         dwr.engine.setAsync(true);
         RingkasanPasienAction.saveDelete(idDetailCheckup, jenis, result, {
             callback: function (res) {
+                console.log(res);
                 if (res.status == "success") {
                     stopSpin('delete_'+jenis);
                     $('#modal-ring-'+ket).scrollTop(0);
@@ -1174,7 +1286,52 @@ function delRing(jenis, ket) {
                     $('#warn_'+ket).show().fadeOut(5000);
                     $('#msg_'+ket).text(res.msg);
                 }
+                delRowRingkasanPasien(jenis);
+                detailRingkasanPasien(jenis);
             }
         });
+    }
+}
+
+function setSideValue(id, value) {
+    if (value == '' || value == '___/___') {
+        $('#' + id).val('');
+    } else {
+        $('#' + id).val(value);
+    }
+}
+
+function setKontrol(tipe, id) {
+    if(tipe == 'dell'){
+        $('#'+id).remove();
+    }else if(tipe == 'add'){
+        var jumlah = $('#tanggal_kontrol').length;
+        var idRow = 'wor_'+jumlah;
+        var html = '<div class="row" style="margin-top: 7px" id="'+idRow+'">\n' +
+            '<div class="form-group">\n' +
+            '    <div class="col-md-3">\n' +
+            '        <input style="cursor: pointer" class="form-control tgl tanggal_kontrol" placeholder="Tanggal" readonly>\n' +
+            '    </div>\n' +
+            '    <div class="col-md-4">\n' +
+            '        <input class="form-control poli_kontrol" placeholder="Poli">\n' +
+            '    </div>\n' +
+            '    <div class="col-md-4">\n' +
+            '        <input class="form-control dokter_kontrol" placeholder="Dokter">\n' +
+            '    </div>\n' +
+            '    <div class="col-md-1">\n' +
+            '        <button onclick="setKontrol(\'dell\', \''+idRow+'\')" class="btn btn-danger" style="margin-left: -20px; margin-top: 0px"><i class="fa fa-trash"></i></button>\n' +
+            '    </div>\n' +
+            '</div>\n' +
+            '</div>';
+        $('#set_kontrol').append(html);
+        $('.tgl').datepicker({
+            dateFormat: 'dd-mm-yy'
+        });
+    }else{
+        if(id == "Kontrol Ulang"){
+            $('#form_kontrol_ringkasan').show();
+        }else{
+            $('#form_kontrol_ringkasan').hide();
+        }
     }
 }

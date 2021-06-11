@@ -28,6 +28,24 @@ public class CatatanPemberianObat extends BaseModel {
     private String namaTerangDokter;
     private String namaTerangPerawat;
     private String sipDokter;
+    private String jenis;
+    private String sipPerawat;
+
+    public String getSipPerawat() {
+        return sipPerawat;
+    }
+
+    public void setSipPerawat(String sipPerawat) {
+        this.sipPerawat = sipPerawat;
+    }
+
+    public String getJenis() {
+        return jenis;
+    }
+
+    public void setJenis(String jenis) {
+        this.jenis = jenis;
+    }
 
     public String getNamaTerangDokter() {
         return namaTerangDokter;

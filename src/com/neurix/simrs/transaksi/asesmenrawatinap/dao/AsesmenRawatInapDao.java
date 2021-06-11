@@ -30,6 +30,9 @@ public class AsesmenRawatInapDao extends GenericDao<ItSimrsAsesmenRawatInapEntit
             if (mapCriteria.get("id_asesmen_keperawatan_rawat_inap") != null) {
                 criteria.add(Restrictions.eq("idAsesmenKeperawatanRawatInap", (String) mapCriteria.get("id_asesmen_keperawatan_rawat_inap")));
             }
+            if (mapCriteria.get("no_checkup") != null) {
+                criteria.add(Restrictions.eq("noCheckup", (String) mapCriteria.get("no_checkup")));
+            }
             if (mapCriteria.get("id_detail_checkup") != null) {
                 criteria.add(Restrictions.eq("idDetailCheckup", (String) mapCriteria.get("id_detail_checkup")));
             }
@@ -71,6 +74,7 @@ public class AsesmenRawatInapDao extends GenericDao<ItSimrsAsesmenRawatInapEntit
                     "WHERE jenis = :jenis\n" +
                     "AND jawaban = :waktu\n" +
                     "AND id_detail_checkup = :id\n" +
+                    "AND flag = 'Y'\n" +
                     "AND CAST(created_date AS DATE) = CURRENT_DATE";
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

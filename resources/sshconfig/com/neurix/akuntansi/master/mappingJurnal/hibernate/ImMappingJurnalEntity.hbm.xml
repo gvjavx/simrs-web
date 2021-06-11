@@ -11,7 +11,7 @@
         </id>
 
         <property name="tipeJurnalId">
-            <column name="tipe_jurnal_id" sql-type="varchar" length="10" not-null="true" />
+            <column name="tipe_jurnal_id" sql-type="varchar" length="10" not-null="false" />
         </property>
         <property name="kodeRekening">
             <column name="kode_rekening" sql-type="varchar" length="20" not-null="true" />
@@ -20,7 +20,7 @@
             <column name="posisi" sql-type="varchar" length="1" not-null="true" />
         </property>
         <property name="transId">
-            <column name="trans_id" sql-type="varchar" length="2" not-null="false" />
+            <column name="trans_id" sql-type="varchar" length="5" not-null="false" />
         </property>
         <property name="masterId">
             <column name="master_id" sql-type="varchar" length="1" not-null="false" />
@@ -33,6 +33,9 @@
         </property>
         <property name="keterangan">
             <column name="keterangan" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="parameterCoa">
+            <column name="parameter_coa" sql-type="varchar" length="20" not-null="false" />
         </property>
         <property name="kirimList">
             <column name="kirim_list" sql-type="varchar" length="1" not-null="false" />

@@ -2,8 +2,6 @@ package com.neurix.hris.transaksi.medicalrecord.action;
 
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
-import com.neurix.authorization.user.bo.UserBo;
-import com.neurix.authorization.user.model.User;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -15,14 +13,11 @@ import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.keluarga.bo.KeluargaBo;
 import com.neurix.hris.master.keluarga.model.Keluarga;
 import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
-import com.neurix.hris.master.positionBagian.model.positionBagian;
-import com.neurix.hris.master.strukturJabatan.bo.StrukturJabatanBo;
-import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
+import com.neurix.hris.master.positionBagian.model.PositionBagian;
 import com.neurix.hris.transaksi.medicalrecord.bo.MedicalRecordBo;
 import com.neurix.hris.transaksi.medicalrecord.model.BuktiPengobatan;
 import com.neurix.hris.transaksi.medicalrecord.model.MedicalRecord;
 import com.neurix.hris.transaksi.medicalrecord.model.Pengobatan;
-import com.neurix.hris.transaksi.training.model.Training;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -31,7 +26,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -39,7 +33,6 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -493,10 +486,10 @@ public class MedicalRecordAction extends BaseMasterAction {
             BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
             PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
 
-            positionBagian searchBagian = new positionBagian();
+            PositionBagian searchBagian = new PositionBagian();
             searchBagian.setBagianName(CommonUtil.userLogin());
-            List<positionBagian> positionBagianList = positionBagianBo.getByCriteria(searchBagian);
-            for (positionBagian bagian : positionBagianList){
+            List<PositionBagian> positionBagianList = positionBagianBo.getByCriteria(searchBagian);
+            for (PositionBagian bagian : positionBagianList){
                 List<MedicalRecord> medicalRecordList = new ArrayList<>();
                 List<Biodata> biodataList = biodataBo.getBiodataByBagian(null,null,bagian.getBagianId(),null);
                 for (Biodata biodata : biodataList){
@@ -1848,7 +1841,7 @@ public class MedicalRecordAction extends BaseMasterAction {
         BranchBo branchBo= (BranchBo) ctx.getBean("branchBoProxy");
         PositionBagianBo positionBagianBo= (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
         Branch branch = new Branch();
-        positionBagian positionBagian = new positionBagian();
+        PositionBagian positionBagian = new PositionBagian();
         biodataList = biodataBo.getBiodataforAbsensi(getBranchId(),"",getBagianId(),getNip());
 
         for (Biodata biodata : biodataList){

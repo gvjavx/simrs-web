@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.hargaobat.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
 import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatEntity;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
@@ -9,8 +10,10 @@ import org.hibernate.criterion.Restrictions;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by reza on 23/01/20.
@@ -51,105 +54,187 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
     public List<Obat> listObatForHargaJual(Obat bean){
 
         List<Obat> obats = new ArrayList<>();
+        if(bean != null){
+            String condition = "";
+            if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())){
+                condition = "AND ob.id_obat LIKE '%"+bean.getIdObat()+"%' \n";
+            }
+            if (bean.getNamaObat() != null && !"".equalsIgnoreCase(bean.getNamaObat())){
+                condition = "AND ob.nama_obat ILIKE '%"+bean.getNamaObat()+"%'\n";
+            }
 
-        String idObat = "%";
-        if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())){
-            idObat = bean.getIdObat();
-        }
+            String SQL = "SELECT \n" +
+                    "ob.id_obat,\n" +
+                    "ob.nama_obat,\n" +
+                    "mg.standar_margin,\n" +
+                    "ht.harga_terakhir as harga_terakhir_umum_non_bpjs,\n" +
+                    "ho.harga_jual_umum as harga_jual_umum_non_bpjs,\n" +
+                    "ht.harga_rata_umum as harga_terakhir_khusus_non_bpjs,\n" +
+                    "ho.harga_jual as harga_jual_khusus_non_bpjs,\n" +
+                    "ht.harga_terakhir_bpjs as harga_terakhir_umum_bpjs,\n" +
+                    "ho.harga_jual_umum_bpjs as harga_jual_umum_bpjs,\n" +
+                    "ht.harga_rata_bpjs as harga_terakhir_khusus_bpjs,\n" +
+                    "ho.harga_jual_khusus_bpjs as harga_jual_khusus_bpjs\n" +
+                    "FROM im_simrs_header_obat ob\n" +
+                    "INNER JOIN \n" +
+                    "(\n" +
+                    "\tSELECT \n" +
+                    "\tid_obat,\n" +
+                    "\tbranch_id\n" +
+                    "\tFROM im_simrs_obat \n" +
+                    "\tWHERE flag = 'Y' \n" +
+                    "\tGROUP BY id_obat, branch_id\n" +
+                    ") obd ON obd.id_obat = ob.id_obat\n" +
+                    "LEFT JOIN im_simrs_margin_obat mg ON mg.id_obat = ob.id_obat\n" +
+                    "LEFT JOIN (SELECT * FROM mt_simrs_harga_terakhir WHERE branch_id = :branch) ht ON ht.id_obat = ob.id_obat  \n" +
+                    "LEFT JOIN (SELECT * FROM mt_simrs_harga_obat WHERE branch_id = :branch) ho ON ho.id_obat = ob.id_obat \n" +
+                    "WHERE obd.branch_id = :branch " + condition;
 
-        String SQL = "SELECT \n" +
-                "ob.id_obat,\n" +
-                "ob.nama_obat,\n" +
-                "ob.average_harga_box,\n" +
-                "ob.average_harga_lembar,\n" +
-                "ob.average_harga_biji,\n" +
-                "ob.lembar_per_box,\n" +
-                "ob.biji_per_lembar,\n" +
-                "ob.merk,\n" +
-                "ho.harga_jual,\n" +
-                "ho.harga_net,\n" +
-                "ho.diskon,\n" +
-                "ob.id_barang,\n" +
-                "mg.standar_margin,\n" +
-                "ht.harga_terakhir,\n" +
-                "ho.diskon_umum,\n" +
-                "ho.harga_net_umum,\n" +
-                "ho.harga_jual_umum\n" +
-                "FROM im_simrs_obat ob\n" +
-                "INNER JOIN (SELECT id_obat, MAX(id_barang) as id_barang FROM im_simrs_obat WHERE branch_id = :branch GROUP BY id_obat ) \n" +
-                "obb ON obb.id_obat = ob.id_obat AND obb.id_barang = ob.id_barang\n" +
-                "LEFT JOIN ( SELECT * FROM mt_simrs_harga_obat WHERE branch_id = :branch ) ho ON ho.id_obat = ob.id_obat \n" +
-                "LEFT JOIN im_simrs_margin_obat mg ON mg.id_obat = ob.id_obat\n" +
-                "LEFT JOIN mt_simrs_harga_terakhir ht ON ht.id_obat = ob.id_obat AND ht.branch_id = ob.branch_id\n" +
-                "WHERE ob.id_obat LIKE :id \n" +
-                "AND ob.branch_id = :branch";
+            List<Object[]> resuts = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("branch", bean.getBranchId())
+                    .list();
 
-        List<Object[]> resuts = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                .setParameter("id", idObat)
-                .setParameter("branch", bean.getBranchId())
-                .list();
+            if (resuts.size() > 0){
 
-        if (resuts.size() > 0){
+                Obat obat;
+                for (Object[] obj : resuts){
+                    obat = new Obat();
+                    obat.setIdObat(obj[0].toString());
+                    obat.setNamaObat(obj[1].toString());
+                    obat.setStandarMargin(obj[2] == null ? (Integer) 0 : (Integer) obj[2]);
+                    obat.setHargaTerakhirUmumNonBpjs(objToBigDecimal(obj[3]));
+                    obat.setHargaJualUmumNonBpjs(objToBigDecimal(obj[4]));
+                    obat.setHargaTerakhirKhususNonBpjs(objToBigDecimal(obj[5]));
+                    obat.setHargaJualKhususNonBpjs(objToBigDecimal(obj[6]));
+                    obat.setHargaTerakhirUmumBpjs(objToBigDecimal(obj[7]));
+                    obat.setHargaJualUmumBpjs(objToBigDecimal(obj[8]));
+                    obat.setHargaTerakhirKhususBpjs(objToBigDecimal(obj[9]));
+                    obat.setHargaJualKhususBpjs(objToBigDecimal(obj[10]));
 
-            Obat obat;
-            for (Object[] obj : resuts){
-                obat = new Obat();
-                obat.setIdObat(obj[0].toString());
-                obat.setNamaObat(obj[1].toString());
-                obat.setAverageHargaBox((BigDecimal) obj[2]);
-                obat.setAverageHargaLembar((BigDecimal) obj[3]);
-                obat.setAverageHargaBiji((BigDecimal) obj[4]);
-                obat.setLembarPerBox((BigInteger) obj[5]);
-                obat.setBijiPerLembar((BigInteger) obj[6]);
-                obat.setMerk(obj[7] == null ? "" : obj[7].toString());
-                obat.setHargaJual(obj[8] == null ? new BigDecimal(0) : (BigDecimal) obj[8]);
-                obat.setHargaNet(obj[9] == null ? new BigDecimal(0) : (BigDecimal) obj[9]);
-                obat.setDiskon(obj[10] == null ? new BigDecimal(0) : (BigDecimal) obj[10]);
-                obat.setIdBarang(obj[11].toString());
-                obat.setStandarMargin(obj[12] == null ? null : (Integer) obj[12]);
-                obat.setHargaBeli(obj[13] == null ? null : (BigDecimal) obj[13]);
-                obat.setDiskonUmum(obj[14] == null ? new BigDecimal(0) : (BigDecimal) obj[14]);
-                obat.setHargaNetUmum(obj[15] == null ? new BigDecimal(0) : (BigDecimal) obj[15]);
-                obat.setHargaJualUmum(obj[16] == null ? new BigDecimal(0) : (BigDecimal) obj[16]);
-
-                // Sigit 2020-12-08, hitung margin obat khusus, Start
-                BigDecimal hargaRata    = obat.getAverageHargaBiji();
-                BigDecimal hargaJual    = obat.getHargaJual();
-                Integer intMargin       = new Integer(0);
-                if (hargaJual != null){
-                    BigDecimal selisih      = hargaJual.subtract(hargaRata);
-                    BigDecimal margin       = hargaJual.intValue() != 0 ? selisih.divide(hargaRata, BigDecimal.ROUND_HALF_UP, 2).multiply(new BigDecimal(100)) : new BigDecimal(0);
-                    intMargin               = margin.intValue();
-                }
-                obat.setMargin(intMargin);
-                // END
-
-                // Sigit 2020-12-08, hitung margin obat umum, Start
-                BigDecimal hargaBeli        = obat.getHargaBeli();
-                BigDecimal hargaJualUmum    = obat.getHargaJualUmum();
-                Integer intMarginUmum       = new Integer(0);
-                if (hargaJualUmum != null){
-                    BigDecimal selisihUmum      = hargaJualUmum.subtract(hargaBeli);
-                    BigDecimal marginUmum       = hargaJualUmum.intValue() != 0 ? selisihUmum.divide(hargaBeli, BigDecimal.ROUND_HALF_UP, 2).multiply(new BigDecimal(100)) : new BigDecimal(0);
-                    intMarginUmum               = marginUmum.intValue();
-                }
-                obat.setMarginUmum(intMarginUmum);
-                // END
-
-                if (obat.getStandarMargin() != null){
-                    if (Integer.compare(obat.getStandarMargin(), obat.getMargin()) == 1){
-                        obat.setFlagKurangMargin("Y");
+                    // Sigit 2020-12-08, hitung margin obat khusus, Start
+                    BigDecimal hargaRata        = obat.getHargaTerakhirKhususNonBpjs();
+                    BigDecimal hargaJual        = obat.getHargaJualKhususNonBpjs();
+                    Integer intMargin           = new Integer(0);
+                    if (hargaJual != null){
+                        BigDecimal selisih      = hargaJual.subtract(hargaRata);
+                        BigDecimal margin       = new BigDecimal(0);
+                        //sodiq, cek harga rata diatas 0, 04,02,2021 12.21
+                        if(hargaJual.intValue() > 0 && hargaRata.intValue() > 0){
+                            margin = selisih.divide(hargaRata, BigDecimal.ROUND_HALF_UP, 2).multiply(new BigDecimal(100));
+                        }
+                        intMargin               = margin.intValue();
                     }
-                    if (Integer.compare(obat.getStandarMargin(), obat.getMarginUmum()) == 1){
-                        obat.setFlagKurangMargin("Y");
-                    }
-                } else {
-                    obat.setFlagKurangMargin("R");
-                }
+                    obat.setMarginKhususNonBpjs(intMargin);
+                    // END
 
-                obats.add(obat);
+                    // Sigit 2020-12-08, hitung margin obat umum, Start
+                    BigDecimal hargaBeli            = obat.getHargaTerakhirUmumNonBpjs();
+                    BigDecimal hargaJualUmum        = obat.getHargaJualUmumNonBpjs();
+                    Integer intMarginUmum           = new Integer(0);
+                    if (hargaJualUmum != null){
+                        BigDecimal selisihUmum      = hargaJualUmum.subtract(hargaBeli);
+                        BigDecimal marginUmum       = new BigDecimal(0);
+                        //sodiq, cek harga rata diatas 0, 04,02,2021 12.21
+                        if(hargaJualUmum.intValue() > 0 && hargaBeli.intValue() > 0){
+                            marginUmum = selisihUmum.divide(hargaBeli, BigDecimal.ROUND_HALF_UP, 2).multiply(new BigDecimal(100));
+                        }
+                        intMarginUmum               = marginUmum.intValue();
+                    }
+
+                    obat.setMarginUmumNonBpjs(intMarginUmum);
+                    // END
+
+                    // Sigit 2020-12-08, hitung margin obat umum BPJS, Start
+                    BigDecimal hargaBeliUmumBpjs        = obat.getHargaTerakhirUmumBpjs();
+                    BigDecimal hargaJualUmumBpjs        = obat.getHargaJualUmumBpjs();
+                    Integer intMarginUmumBpjs           = new Integer(0);
+                    if (hargaJualUmum != null){
+                        BigDecimal selisihUmum          = hargaJualUmumBpjs.subtract(hargaBeliUmumBpjs);
+                        BigDecimal marginUmum           = new BigDecimal(0);
+
+                        //sodiq, cek harga rata diatas 0, 04,02,2021 12.21
+                        if(hargaJualUmumBpjs.intValue() > 0 && hargaBeliUmumBpjs.intValue() > 0){
+                            marginUmum = selisihUmum.divide(hargaBeliUmumBpjs, BigDecimal.ROUND_HALF_UP, 2).multiply(new BigDecimal(100));
+                        }
+                        intMarginUmumBpjs               = marginUmum.intValue();
+                    }
+
+                    obat.setMarginUmumBpjs(intMarginUmumBpjs);
+                    // END
+
+                    // Sigit 2020-12-08, hitung margin obat khusu BPJS, Start
+                    BigDecimal hargaBeliKhususBpjs        = obat.getHargaTerakhirKhususBpjs();
+                    BigDecimal hargaJualKhususBpjs        = obat.getHargaJualKhususBpjs();
+                    Integer intMarginKhususBpjs           = new Integer(0);
+                    if (hargaJualUmum != null){
+                        BigDecimal selisihKhusus          = hargaJualKhususBpjs.subtract(hargaBeliKhususBpjs);
+                        BigDecimal marginKhusus           = new BigDecimal(0);
+
+                        //sodiq, cek harga rata diatas 0, 04,02,2021 12.21
+                        if(hargaJualKhususBpjs.intValue() > 0 && hargaBeliKhususBpjs.intValue() > 0){
+                            marginKhusus = selisihKhusus.divide(hargaBeliKhususBpjs, BigDecimal.ROUND_HALF_UP, 2).multiply(new BigDecimal(100));
+                        }
+
+                        intMarginKhususBpjs               = marginKhusus.intValue();
+                    }
+
+                    obat.setMarginKhususBpjs(intMarginKhususBpjs);
+                    // END
+
+                    if (obat.getStandarMargin() != null){
+                        if (Integer.compare(obat.getStandarMargin(), obat.getMarginKhususNonBpjs()) == 1){
+                            obat.setFlagKurangMargin("Y");
+                        }
+                        if (Integer.compare(obat.getStandarMargin(), obat.getMarginUmumNonBpjs()) == 1){
+                            obat.setFlagKurangMargin("Y");
+                        }
+                        if (Integer.compare(obat.getStandarMargin(), obat.getMarginKhususBpjs()) == 1){
+                            obat.setFlagKurangMargin("Y");
+                        }
+                        if (Integer.compare(obat.getStandarMargin(), obat.getMarginUmumBpjs()) == 1){
+                            obat.setFlagKurangMargin("Y");
+                        }
+                    } else {
+                        obat.setFlagKurangMargin("R");
+                    }
+                    obats.add(obat);
+                }
             }
         }
+
+        // ORDER BY flagKurangMargin;
+        //List<Obat> sortedList = obats.stream().sorted(
+          //      Comparator.comparing(Obat::getFlagKurangMargin).reversed()
+        //).collect(Collectors.toList());
+
+        //return sortedList;
         return obats;
     }
+
+    private BigDecimal objToBigDecimal(Object obj){
+
+        if (obj == null)
+            return new BigDecimal(0);
+        else
+            return new BigDecimal(obj.toString());
+
+    }
+
+    public String getIdHargaObatByIdObatAndBranch(String idObat, String branchId){
+
+        String SQL = "SELECT id_harga_obat FROM mt_simrs_harga_obat " +
+                "WHERE id_obat = '"+idObat+"'" +
+                "AND branch_id = '"+branchId+"'";
+
+        List<Object> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0)
+            return list.get(0).toString();
+        else
+            return null;
+
+    }
+
+
+
 }

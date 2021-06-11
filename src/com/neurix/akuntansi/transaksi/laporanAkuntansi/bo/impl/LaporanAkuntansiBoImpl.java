@@ -308,7 +308,7 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
         String posisiManagerKeuangan;
         String posisiGeneralManager;
 
-        if (branchId.equalsIgnoreCase(CommonConstant.ID_KANPUS)){
+        if (branchId.equalsIgnoreCase(CommonConstant.BRANCH_KP)){
             posisiManagerKeuangan = CommonConstant.posisiKasubbidKeuanganKp;
             posisiGeneralManager= CommonConstant.posisiKabidKeuanganKp;
             nama.setJudulGeneralManager(CommonConstant.NAMA_GENERAL_MANAGER_KP);
@@ -355,6 +355,26 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
             }else if (("pegawai").equalsIgnoreCase(tipeAging)){
                 agingList = laporanAkuntansiDao.getAgingPegawai(branch,periode,masterId,reportId,tipeLaporan);
             }
+        } catch (HibernateException e) {
+            logger.error("[LaporanAkuntansiBoImpl.getSearchLaporanAkuntansiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        return agingList;
+    }
+
+    @Override
+    public List<Aging> getLawanAging(String tipeAging,String branch, String noJurnal, String noNota) throws GeneralBOException {
+//        getLawanAging
+        List<Aging> agingList = new ArrayList<>();
+        try {
+            if (("usaha").equalsIgnoreCase(tipeAging)){
+                agingList = laporanAkuntansiDao.getLawanAging(branch,noJurnal,noNota);
+                System.out.println(agingList);
+            }
+            /*else if (("pasien").equalsIgnoreCase(tipeAging)){
+            }else if (("dokter").equalsIgnoreCase(tipeAging)){
+            }else if (("pegawai").equalsIgnoreCase(tipeAging)){
+            }*/
         } catch (HibernateException e) {
             logger.error("[LaporanAkuntansiBoImpl.getSearchLaporanAkuntansiByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

@@ -98,6 +98,7 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
             flag = bean.getFlag();
         }
 
+
         String joinPelayanan = "";
         String andBranch = "";
         String otherBranch = "";
@@ -139,7 +140,6 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
                     "INNER JOIN mt_simrs_transaksi_obat_detail tod ON tod.id_approval_obat = ato.id_approval_obat\n" +
                     "INNER JOIN im_simrs_obat_gejala og On og.id_obat = tod.id_obat\n" +
                     "WHERE pop.flag LIKE :flag\n" +
-//                    "AND ato.branch_id LIKE :branchId\n" +
                     "AND tod.id_obat LIKE :idObat\n" +
                     "AND ato.tipe_permintaan LIKE :tipePermintaan\n" +
                     "AND pop.id_pelayanan LIKE :idPelayanan\n" +
@@ -173,7 +173,6 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
                     "INNER JOIN mt_simrs_transaksi_obat_detail tod ON tod.id_approval_obat = ato.id_approval_obat\n" +
                     "INNER JOIN im_simrs_obat_gejala og On og.id_obat = tod.id_obat\n" + joinPelayanan +
                     "WHERE pop.flag LIKE :flag\n" +
-//                    "AND ato.branch_id LIKE :branchId\n" +
                     "AND tod.id_obat LIKE :idObat\n" +
                     "AND ato.tipe_permintaan LIKE :tipePermintaan\n" +
                     "AND pop.id_pelayanan LIKE :idPelayanan\n" +
@@ -185,7 +184,6 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
         }
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-//                .setParameter("branchId", branchId)
                 .setParameter("idPelayanan", idPelayanan)
                 .setParameter("idTujuan", idTujuan)
                 .setParameter("idObat", idObat)
@@ -225,6 +223,216 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
                 }
 
                 listOfResults.add(obatPoliEntity);
+            }
+        }
+
+
+        return listOfResults;
+    }
+
+    public List<PermintaanObatPoli> getListPermintaanObatPoliGudang(PermintaanObatPoli bean, boolean isPoli) {
+        List<PermintaanObatPoli> listOfResults = new ArrayList<>();
+
+        String branchId = "%";
+        String idPelayanan = "%";
+        String idTujuan = "%";
+        String idObat = "%";
+        String idPermintaanObatPoli = "%";
+        String flag = "%";
+        String tipePermintaan = "%";
+        String jenisObat = "%";
+
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
+            branchId = bean.getBranchId();
+        }
+        if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())) {
+            idPelayanan = bean.getIdPelayanan();
+        }
+        if (bean.getTujuanPelayanan() != null && !"".equalsIgnoreCase(bean.getTujuanPelayanan())) {
+            idTujuan = bean.getTujuanPelayanan();
+        }
+        if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())) {
+            idObat = bean.getIdObat();
+        }
+        if (bean.getIdPermintaanObatPoli() != null && !"".equalsIgnoreCase(bean.getIdPermintaanObatPoli())) {
+            idPermintaanObatPoli = bean.getIdPermintaanObatPoli();
+        }
+        if (bean.getTipePermintaan() != null && !"".equalsIgnoreCase(bean.getTipePermintaan())) {
+            tipePermintaan = bean.getTipePermintaan();
+        }
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
+            flag = bean.getFlag();
+        }
+        if (bean.getJenisObat() != null && !"".equalsIgnoreCase(bean.getJenisObat())) {
+            jenisObat = bean.getJenisObat();
+        }
+
+
+        String joinPelayanan = "";
+        String andBranch = "";
+        String otherBranch = "";
+        if (bean.getFlagOtherBranch() != null && "Y".equalsIgnoreCase(bean.getFlagOtherBranch())){
+            andBranch = "AND pop.branch_id LIKE '"+branchId+"' \n";
+        } else {
+            andBranch = "AND ato.branch_id LIKE '"+branchId+"' \n";
+            if (bean.getFlagReqPelayanan() != null && "Y".equalsIgnoreCase(bean.getFlagReqPelayanan())){
+                otherBranch = "AND pop.branch_id != ato.branch_id \n";
+            } else {
+                otherBranch = "AND pop.branch_id = ato.branch_id \n";
+            }
+        }
+
+        String SQL = "SELECT\n" +
+                "pop.id_permintaan_obat_poli,\n" +
+                "pop.id_obat,\n" +
+                "pop.id_pelayanan,\n" +
+                "pop.id_approval_obat,\n" +
+                "pop.qty,\n" +
+                "pop.flag,\n" +
+                "pop.action,\n" +
+                "pop.created_date,\n" +
+                "pop.created_who,\n" +
+                "pop.last_update,\n" +
+                "pop.last_update_who,\n" +
+                "pop.tujuan_pelayanan,\n" +
+                "pop.diterima_flag,\n" +
+                "pop.reture_flag,\n" +
+                "popo.count_obat,\n" +
+                "popo.jenis_obat,\n" +
+                "pelasal.nama_pelayanan as pelayanan_asal,\n" +
+                "tujuan.nama_pelayanan as pelayanan_tujuan,\n" +
+                "popo.approval_flag,\n" +
+                "popo.approve_person,\n" +
+                "popo.last_update as last_update_approval,\n" +
+                "popo.last_update_who as last_update_approval_person\n" +
+                "FROM mt_simrs_permintaan_obat_poli pop\n" +
+                "INNER JOIN\n" +
+                "(\n" +
+                "\tSELECT \n" +
+                "\tpop.id_permintaan_obat_poli,\n" +
+                "\ttoda.count_obat,\n" +
+                "\tato.approval_flag,\n" +
+                "\tato.approve_person,\n" +
+                "\tato.last_update,\n" +
+                "\tato.last_update_who,\n" +
+                "\tCASE WHEN tod.flag_obat_bpjs = 'Y' THEN 'bpjs' ELSE 'umum' END as jenis_obat\n" +
+                "\tFROM mt_simrs_permintaan_obat_poli pop\n" +
+                "\tINNER JOIN mt_simrs_approval_transaksi_obat ato ON ato.id_approval_obat = pop.id_approval_obat\n" +
+                "\tINNER JOIN (\n" +
+                "\t\tSELECT\n" +
+                "\t\tid_approval_obat,\n" +
+                "\t\tCOUNT(id_obat) as count_obat,\n" +
+                "\t\tmax(created_date) as created_date\n" +
+                "\t\tFROM mt_simrs_transaksi_obat_detail\n" +
+                "\t\tGROUP BY \n" +
+                "\t\tid_approval_obat\n" +
+                "\t) toda ON toda.id_approval_obat = ato.id_approval_obat \n" +
+                "\tINNER JOIN mt_simrs_transaksi_obat_detail tod \n" +
+                "\tON tod.id_approval_obat = toda.id_approval_obat AND tod.created_date = toda.created_date\n" +
+                //"\tINNER JOIN im_simrs_obat_gejala og On og.id_obat = tod.id_obat\n" +
+                "\tWHERE pop.flag LIKE :flag\n" +
+                "\tAND tod.id_obat LIKE :idObat\n" +
+                "\tAND ato.tipe_permintaan LIKE :tipePermintaan\n" +
+                "\tAND pop.id_pelayanan LIKE :idPelayanan\n" +
+                //"\tAND og.id_jenis_obat LIKE :idJenisObat\n" +
+                "\tAND pop.id_permintaan_obat_poli LIKE :idPermintaanObatPoli\n" +
+                "\tAND pop.tujuan_pelayanan LIKE :idTujuan\n" + andBranch + otherBranch +
+                "\tGROUP BY \n" +
+                "\tpop.id_permintaan_obat_poli,\n" +
+                "\ttoda.count_obat,\n" +
+                "\ttod.flag_obat_bpjs,\n" +
+                "\tato.approval_flag,\n" +
+                "\tato.approve_person,\n" +
+                "\tato.last_update,\n" +
+                "\tato.last_update_who\n" +
+                ") popo ON popo.id_permintaan_obat_poli = pop.id_permintaan_obat_poli\n" +
+                "INNER JOIN (\n" +
+                "\tSELECT \n" +
+                "\ta.id_pelayanan,\n" +
+                "\tb.nama_pelayanan\n" +
+                "\tFROM im_simrs_pelayanan a\n" +
+                "\tINNER JOIN im_simrs_header_pelayanan b ON b.id_header_pelayanan = a.id_header_pelayanan\n" +
+                ")\n" +
+                "pelasal ON pelasal.id_pelayanan = pop.id_pelayanan\n" +
+                "INNER JOIN (\n" +
+                "\tSELECT \n" +
+                "\ta.id_pelayanan,\n" +
+                "\tb.nama_pelayanan\n" +
+                "\tFROM im_simrs_pelayanan a\n" +
+                "\tINNER JOIN im_simrs_header_pelayanan b ON b.id_header_pelayanan = a.id_header_pelayanan\n" +
+                ")\n" +
+                "tujuan ON tujuan.id_pelayanan = pop.tujuan_pelayanan\n" +
+                "WHERE popo.jenis_obat ILIKE :jenisObat \n";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idPelayanan", idPelayanan)
+                .setParameter("idTujuan", idTujuan)
+                .setParameter("idObat", idObat)
+                .setParameter("idPermintaanObatPoli", idPermintaanObatPoli)
+                .setParameter("tipePermintaan", tipePermintaan)
+                .setParameter("flag", flag)
+                .setParameter("jenisObat", jenisObat)
+                .list();
+
+        if (results.size() > 0) {
+            for (Object[] obj : results) {
+                PermintaanObatPoli obatPoli = new PermintaanObatPoli();
+                obatPoli.setIdPermintaanObatPoli(obj[0].toString());
+                if (obj[1] != null && !"".equalsIgnoreCase(obj[1].toString())) {
+                    obatPoli.setIdObat(obj[1].toString());
+                } else {
+                    obatPoli.setIdObat("");
+                }
+                obatPoli.setIdPelayanan(obj[2].toString());
+                obatPoli.setIdApprovalObat(obj[3].toString());
+                obatPoli.setQty((BigInteger) obj[4]);
+                obatPoli.setFlag(obj[5].toString());
+                obatPoli.setAction(obj[6].toString());
+                obatPoli.setCreatedDate((Timestamp) obj[7]);
+                obatPoli.setCreatedWho(obj[8].toString());
+                obatPoli.setLastUpdate((Timestamp) obj[9]);
+                obatPoli.setLastUpdateWho(obj[10].toString());
+                obatPoli.setTujuanPelayanan(obj[11].toString());
+
+                if (obj[12] != null && !"".equalsIgnoreCase(obj[12].toString()))
+                    obatPoli.setDiterimaFlag(obj[12].toString());
+
+                if (obj[13] != null && !"".equalsIgnoreCase(obj[13].toString()))
+                    obatPoli.setRetureFlag(obj[13].toString());
+
+                if (obj[14] != null)
+                    obatPoli.setJumlahObat(obj[14].toString());
+
+                if (obj[15] != null)
+                    obatPoli.setJenisObat(obj[15].toString().toUpperCase());
+
+                if (obj[16] != null)
+                    obatPoli.setNamaPelayanan(obj[16].toString());
+
+                if (obj[17] != null)
+                    obatPoli.setNamaTujuanPelayanan(obj[17].toString());
+
+                if (obj[18] != null)
+                    obatPoli.setApprovalFlag(obj[18].toString());
+
+                if ("Y".equalsIgnoreCase(obatPoli.getApprovalFlag()))
+                    obatPoli.setKeterangan("Telah Dikonfirmasi");
+                else
+                    obatPoli.setKeterangan("Menunggu Konfirmasi");
+
+                if (obj[19] != null)
+                    obatPoli.setApprovePerson(obj[19].toString());
+
+                if (obj[20] != null)
+                    obatPoli.setApprovalLastUpdate((Timestamp) obj[20]);
+
+                if (obj[21] != null)
+                    obatPoli.setApprovalLastUpdateWho(obj[21].toString());
+
+                obatPoli.setRequest(bean.getRequest());
+                obatPoli.setTipePermintaan(bean.getTipePermintaan());
+                obatPoli.setStCreatedDate(obatPoli.getCreatedDate().toString());
+                listOfResults.add(obatPoli);
             }
         }
 
@@ -510,6 +718,38 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
             }
         }
         return obatDetails;
+    }
+
+    public List<PermintaanObatPoli> getListDetailPermintaan(String idInvoice){
+
+        String SQL = "SELECT\n" +
+                "a.id_obat,\n" +
+                "b.nama_obat,\n" +
+                "a.qty,\n" +
+                "a.jenis_satuan\n" +
+                "FROM \n" +
+                "mt_simrs_transaksi_obat_detail a\n" +
+                "INNER JOIN im_simrs_header_obat b ON b.id_obat = a.id_obat\n" +
+                "WHERE a.id_approval_obat = '"+idInvoice+"'\n" +
+                "ORDER BY b.nama_obat";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<PermintaanObatPoli> permintaanObatPolis = new ArrayList<>();
+
+        if (results.size() > 0){
+            for (Object[] obj : results){
+
+                PermintaanObatPoli permintaanObatPoli = new PermintaanObatPoli();
+                permintaanObatPoli.setIdObat(obj[0].toString());
+                permintaanObatPoli.setNamaObat(obj[1].toString());
+                permintaanObatPoli.setQty((BigInteger) obj[2]);
+                permintaanObatPoli.setJenisSatuan(obj[3].toString());
+                permintaanObatPolis.add(permintaanObatPoli);
+            }
+        }
+
+        return permintaanObatPolis;
     }
 
     public String getNextId() {

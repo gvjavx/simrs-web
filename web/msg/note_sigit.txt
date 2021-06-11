@@ -754,10 +754,6 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
 
     ALTER TABLE it_akun_nilai_parameter_budgeting
     ADD COLUMN periode VARCHAR(100);
-
-    ALTER TABLE it_akun_nilai_parameter_budgeting
-    ADD COLUMN periode VARCHAR(100);
-
 --
 
 -- 2020-08-27
@@ -807,11 +803,11 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
 
 -- 2020-08-30
 
-    -- Table: public.it_akun_nilai_parameter_pengadaaan
+    -- Table: public.it_akun_nilai_parameter_pengadaan
 
-    -- DROP TABLE public.it_akun_nilai_parameter_pengadaaan;
+    -- DROP TABLE public.it_akun_nilai_parameter_pengadaan;
 
-    CREATE TABLE public.it_akun_nilai_parameter_pengadaaan
+    CREATE TABLE public.it_akun_nilai_parameter_pengadaan
     (
         id character varying(30) COLLATE pg_catalog."default" NOT NULL,
         nama text COLLATE pg_catalog."default",
@@ -825,14 +821,14 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
         created_who character varying(100) COLLATE pg_catalog."default",
         last_update timestamp without time zone,
         last_update_who character varying(100) COLLATE pg_catalog."default",
-        CONSTRAINT it_akun_nilai_parameter_pengadaaan_pkey PRIMARY KEY (id)
+        CONSTRAINT it_akun_nilai_parameter_pengadaan_pkey PRIMARY KEY (id)
     )
     WITH (
         OIDS = FALSE
     )
     TABLESPACE pg_default;
 
-    ALTER TABLE public.it_akun_nilai_parameter_pengadaaan
+    ALTER TABLE public.it_akun_nilai_parameter_pengadaan
         OWNER to postgres;
 
 
@@ -1604,5 +1600,284 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
 
     ALTER TABLE mt_simrs_transaksi_obat_detail_batch
     ADD COLUMN id_pabrik_obat VARCHAR(50);
+
+--
+
+-- 2021-03-02
+
+    CREATE TABLE migrasi_dokter (
+    	status VARCHAR(1),
+    	nama_pelayanan TEXT,
+    	nama_dokter TEXT,
+    	dpjp VARCHAR(100),
+    	nip VARCHAR(100) PRIMARY KEY,
+    	branch_id VARCHAR(5),
+    	id_pelayanan VARCHAR(100)
+
+--
+
+--2021-03-10
+
+    ALTER TABLE im_simrs_detail_rekanan_ops
+    ADD COLUMN id_item VARCHAR(100),
+    ADD COLUMN jenis_item VARCHAR(100),
+    ADD COLUMN tarif NUMERIC;
+
+    ALTER TABLE im_simrs_detail_rekanan_ops
+    ADD COLUMN parent_id VARCHAR(100),
+    ADD COLUMN flag_parent VARCHAR(1);
+
+--
+
+--2021-03-16
+
+    ALTER TABLE im_simrs_detail_rekanan_ops
+    ADD COLUMN tarif_bpjs NUMERIC,
+    ADD COLUMN diskon_non_bpjs NUMERIC,
+    ADD COLUMN diskon_bpjs NUMERIC;
+
+--
+
+--2021-03-24
+    ALTER TABLE im_position
+    ADD COLUMN flag_cost_unit VARCHAR(1);
+--
+
+--2021-03-25
+
+    ALTER TABLE mt_simrs_transaksi_obat_detail_batch
+    ALTER COLUMN id TYPE VARCHAR(100);
+
+    ALTER TABLE mt_simrs_harga_terakhir
+    ADD COLUMN harga_terakhir_bpjs NUMERIC;
+
+    ALTER TABLE mt_simrs_harga_obat
+    ADD COLUMN diskon_umum_bpjs numeric,
+    ADD COLUMN diskon_khusus_bpjs numeric,
+    ADD COLUMN margin_umum_bpjs numeric,
+    ADD COLUMN margin_khusus_bpjs numeric,
+    ADD COLUMN harga_terakhir_umum_bpjs numeric,
+    ADD COLUMN harga_net_umum_bpjs numeric,
+    ADD COLUMN harga_net_khusus_bpjs numeric,
+    ADD COLUMN harga_jual_umum_bpjs numeric,
+    ADD COLUMN harga_jual_khusus_bpjs numeric;
+--
+
+--2021-03-29
+    ALTER TABLE mt_simrs_harga_terakhir
+    ADD COLUMN harga_rata_umum numeric,
+    ADD COLUMN harga_rata_bpjs numeric;
+--
+
+--2021-04-12
+
+    ALTER TABLE im_akun_jenis_budgeting
+    ADD COLUMN tipe_rekening_id VARCHAR(10);
+
+    UPDATE im_akun_jenis_budgeting SET tipe_rekening_id = '01'
+    WHERE id = 'INV';
+
+    UPDATE im_akun_jenis_budgeting SET tipe_rekening_id = '02'
+    WHERE id = 'PDT';
+
+    UPDATE im_akun_jenis_budgeting SET tipe_rekening_id = '03'
+    WHERE id = 'BYA'
+
+--
+
+--2021-04-14
+
+    UPDATE im_akun_kode_rekening
+    SET tipe_coa = '01' WHERE kode_rekening ILIKE '1%';
+
+    UPDATE im_akun_kode_rekening
+    SET tipe_coa = '02' WHERE kode_rekening ILIKE '4%';
+
+    UPDATE im_akun_kode_rekening
+    SET tipe_coa = '03' WHERE kode_rekening ILIKE '5%';
+
+    ALTER TABLE im_akun_parameter_budgeting
+    ADD COLUMN position_id VARCHAR(50);
+
+    ALTER TABLE it_akun_nilai_parameter_budgeting
+    ADD COLUMN periode VARCHAR(20);
+
+--
+
+-- 2021-04-16
+    ALTER TABLE it_akun_nilai_parameter_budgeting
+    ADD COLUMN position_id VARCHAR(50);
+
+
+    -- Table: public.it_akun_nilai_parameter_pengadaan
+
+    -- DROP TABLE public.it_akun_nilai_parameter_pengadaan;
+
+    CREATE TABLE public.it_akun_nilai_parameter_pengadaan
+    (
+        id character varying(30) COLLATE pg_catalog."default" NOT NULL,
+        nama text COLLATE pg_catalog."default",
+        nilai numeric,
+        qty bigint,
+        nilai_total numeric,
+        id_nilai_param character varying(50) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT it_akun_nilai_parameter_pengadaan_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_akun_nilai_parameter_pengadaan
+        OWNER to postgres;
+
+
+    CREATE SEQUENCE seq_nilai_pengadaan;
+--
+
+-- 2021-04-26
+
+    ALTER TABLE it_simrs_transaksi_stok
+    ADD COLUMN flag_bpjs VARCHAR(1),
+    ADD COLUMN total_harga_beli NUMERIC,
+    ADD COLUMN sub_total_harga_beli NUMERIC;
+
+    ALTER TABLE it_simrs_transaksi_stok
+    ADD COLUMN total_harga_beli_lalu NUMERIC,
+    ADD COLUMN sub_total_harga_beli_lalu NUMERIC;
+
+--
+
+-- 2021-04-27
+CREATE TABLE mt_simrs_harga_obat_per_konsumen(
+	id VARCHAR(100) PRIMARY KEY NOT NULL,
+	id_harga_obat VARCHAR(30),
+	jenis_konsumen VARCHAR(30),
+	id_rekanan VARCHAR(30),
+	harga_bruto NUMERIC,
+	margin NUMERIC,
+	harga_jual NUMERIC,
+	flag VARCHAR(1),
+	action VARCHAR(1),
+	created_date TIMESTAMP WITHOUT TIME ZONE,
+	created_who VARCHAR(100),
+	last_update TIMESTAMP WITHOUT TIME ZONE,
+	last_update_who VARCHAR(100)
+);
+
+CREATE SEQUENCE seq_harga_obat_per_konsumen;
+
+ALTER TABLE im_simrs_keterangan_obat
+ADD COLUMN parent_id VARCHAR(30);
+
+--
+
+-- 2021-04-29
+
+    ALTER TABLE im_simrs_keterangan_obat
+    ADD COLUMN level VARCHAR(1),
+    ADD COLUMN jenis VARCHAR(100);
+
+--
+
+-- 2021-05-05
+    ALTER TABLE it_simrs_pembayaran_online
+    ADD COLUMN no_jurnal VARCHAR(100);
+--
+
+-- 2021-05-06
+
+    ALTER TABLE it_akun_jurnal
+    ADD COLUMN registered_user_id VARCHAR(100);
+
+    ALTER TABLE it_akun_jurnal
+    ADD COLUMN metode_bayar VARCHAR(20);
+
+    ALTER TABLE im_akun_mapping_jurnal
+    ALTER COLUMN parameter_coa TYPE VARCHAR(100);
+    UPDATE im_akun_mapping_jurnal a SET parameter_coa = a.keterangan;
+
+    ALTER TABLE im_akun_trans
+    ADD COLUMN is_otomatis VARCHAR(1);
+
+    UPDATE im_akun_mapping_jurnal SET
+    flag = 'N' WHERE mapping_jurnal_id = 'NPJ0000077';
+
+--
+
+--2021-05-07
+
+     ALTER TABLE it_akun_jurnal_detail
+     ALTER COLUMN rekening_id DROP NOT NULL;
+
+--
+
+--2021-05-08
+
+    ALTER TABLE it_simrs_pembayaran_online
+    ADD COLUMN tipe_pembayaran VARCHAR(100);
+
+--
+
+--2021-05-09
+    ALTER TABLE im_simrs_rekening_telemedic
+    ADD init_va_name VARCHAR(100);
+
+    UPDATE im_simrs_rekening_telemedic a SET init_va_name = 'BSI'
+    WHERE id_rekening = 'RKN00013';
+
+    UPDATE im_akun_trans
+    SET is_otomatis = 'Y' WHERE trans_id = '04';
+--
+
+-- 2021-05-21
+
+    ALTER TABLE mt_simrs_permintaan_resep
+    ADD COLUMN nama_racik TEXT,
+    ADD COLUMN signa_racik TEXT,
+    ADD COLUMN kemasan_racik VARCHAR(100),
+    ADD COLUMN qty_kemasan_racik integer;
+
+--
+
+-- 2021-05-25
+
+
+    CREATE TABLE it_simrs_obat_racik(
+        id VARCHAR(100) NOT NULL PRIMARY KEY,
+        nama TEXT,
+        signa TEXT,
+        qty INTEGER,
+        kemasan VARCHAR,
+        flag VARCHAR(1),
+        action VARCHAR(1),
+        created_date TIMESTAMP WITHOUT TIME ZONE,
+        created_who VARCHAR(100),
+        last_update TIMESTAMP WITHOUT TIME ZONE,
+        last_update_who VARCHAR(100)
+    );
+
+    CREATE SEQUENCE seq_obat_racik;
+--
+
+-- 2021-05-27
+
+    ALTER TABLE mt_simrs_permintaan_resep
+    ADD COLUMN kajian_administrasi VARCHAR(1),
+    ADD COLUMN kajian_fermasetis VARCHAR(1),
+    ADD COLUMN kajian_kritis VARCHAR(1);
+
+--
+
+-- 2021-05-31
+
+    ALTER TABLE it_simrs_obat_racik
+    ADD COLUMN warna VARCHAR(10);
 
 --

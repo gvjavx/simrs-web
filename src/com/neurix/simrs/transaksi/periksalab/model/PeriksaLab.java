@@ -7,12 +7,14 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PeriksaLab extends BaseModel implements Serializable{
 
     private String idPeriksaLab;
     private String idDetailCheckup;
-    private Date tanggalMasukLab;
+    private Timestamp tanggalMasukLab;
     private Timestamp tanggalSelesaiPeriksa;
     private String idDokterPengirim;
     private String idDokter;
@@ -88,7 +90,382 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String statusBayar;
     private String diagnosa;
 
+    private String idPetugas;
+    private String idValidator;
+    private String namaValidator;
+    private String ttdValidator;
+    private String isLuar;
+    private String namaLabLuar;
+    private BigDecimal tarifLabLuar;
+
+    private String idPeriksaLabDetail;
+    private String hasil;
+    private String catatan;
+    private String idKategoriPemeriksaan;
+
+    private List<PeriksaLab> listLab = new ArrayList<>();
+    private List<PeriksaLabDetail> detailLab = new ArrayList<>();
+
+    private String namaLab;
+    private String namaDokterPengirim;
+    private String namaPemeriksaan;
+    private String idHeaderPemeriksaan;
+    private String idPemeriksaan;
+    private String isJustLab;
+    private String isPeriksaLuar;
+    private String idDetailPemeriksaan;
+    private String namaDetailPemeriksaan;
+
+    private String keteranganAcuanL;
+    private String keteranganAcuanP;
+    private String keteranganHasil;
+    private String satuan;
+    private String isCatatan;
+    private List<UploadHasilPemeriksaan> uploadDalam = new ArrayList<>();
+    private List<UploadHasilPemeriksaan> uploadLuar = new ArrayList<>();
+    private String umur;
+    private String isUpload;
+
+    private String hetero;
+    private String auto;
+    private String nadi;
+    private String suhu;
+    private String tensi;
+    private String rr;
+    private String catatanKlinis;
+    private String isCito;
+    private String isAsesmen;
+
+    public String getIsAsesmen() {
+        return isAsesmen;
+    }
+
+    public void setIsAsesmen(String isAsesmen) {
+        this.isAsesmen = isAsesmen;
+    }
+
+    public String getIsCito() {
+        return isCito;
+    }
+
+    public void setIsCito(String isCito) {
+        this.isCito = isCito;
+    }
+
+    public String getCatatanKlinis() {
+        return catatanKlinis;
+    }
+
+    public void setCatatanKlinis(String catatanKlinis) {
+        this.catatanKlinis = catatanKlinis;
+    }
+
+    public String getHetero() {
+        return hetero;
+    }
+
+    public void setHetero(String hetero) {
+        this.hetero = hetero;
+    }
+
+    public String getAuto() {
+        return auto;
+    }
+
+    public void setAuto(String auto) {
+        this.auto = auto;
+    }
+
+    public String getNadi() {
+        return nadi;
+    }
+
+    public void setNadi(String nadi) {
+        this.nadi = nadi;
+    }
+
+    public String getSuhu() {
+        return suhu;
+    }
+
+    public void setSuhu(String suhu) {
+        this.suhu = suhu;
+    }
+
+    public String getTensi() {
+        return tensi;
+    }
+
+    public void setTensi(String tensi) {
+        this.tensi = tensi;
+    }
+
+    public String getRr() {
+        return rr;
+    }
+
+    public void setRr(String rr) {
+        this.rr = rr;
+    }
+
+    public String getIsUpload() {
+        return isUpload;
+    }
+
+    public void setIsUpload(String isUpload) {
+        this.isUpload = isUpload;
+    }
+
+    public String getUmur() {
+        return umur;
+    }
+
+    public void setUmur(String umur) {
+        this.umur = umur;
+    }
+
+    public String getIsCatatan() {
+        return isCatatan;
+    }
+
+    public void setIsCatatan(String isCatatan) {
+        this.isCatatan = isCatatan;
+    }
+
+    public String getSatuan() {
+        return satuan;
+    }
+
+    public void setSatuan(String satuan) {
+        this.satuan = satuan;
+    }
+
+    public String getKeteranganAcuanP() {
+        return keteranganAcuanP;
+    }
+
+    public void setKeteranganAcuanP(String keteranganAcuanP) {
+        this.keteranganAcuanP = keteranganAcuanP;
+    }
+
+    public String getKeteranganHasil() {
+        return keteranganHasil;
+    }
+
+    public void setKeteranganHasil(String keteranganHasil) {
+        this.keteranganHasil = keteranganHasil;
+    }
+
+    public String getKeteranganAcuanL() {
+        return keteranganAcuanL;
+    }
+
+    public void setKeteranganAcuanL(String keteranganAcuanL) {
+        this.keteranganAcuanL = keteranganAcuanL;
+    }
+
+    public String getIdDetailPemeriksaan() {
+        return idDetailPemeriksaan;
+    }
+
+    public void setIdDetailPemeriksaan(String idDetailPemeriksaan) {
+        this.idDetailPemeriksaan = idDetailPemeriksaan;
+    }
+
+    public String getNamaDetailPemeriksaan() {
+        return namaDetailPemeriksaan;
+    }
+
+    public void setNamaDetailPemeriksaan(String namaDetailPemeriksaan) {
+        this.namaDetailPemeriksaan = namaDetailPemeriksaan;
+    }
+
+    public String getIsPeriksaLuar() {
+        return isPeriksaLuar;
+    }
+
+    public void setIsPeriksaLuar(String isPeriksaLuar) {
+        this.isPeriksaLuar = isPeriksaLuar;
+    }
+
+    public String getIsJustLab() {
+        return isJustLab;
+    }
+
+    public void setIsJustLab(String isJustLab) {
+        this.isJustLab = isJustLab;
+    }
+
+    public String getIdHeaderPemeriksaan() {
+        return idHeaderPemeriksaan;
+    }
+
+    public void setIdHeaderPemeriksaan(String idHeaderPemeriksaan) {
+        this.idHeaderPemeriksaan = idHeaderPemeriksaan;
+    }
+
+    public String getIdPemeriksaan() {
+        return idPemeriksaan;
+    }
+
+    public void setIdPemeriksaan(String idPemeriksaan) {
+        this.idPemeriksaan = idPemeriksaan;
+    }
+
+    public String getNamaPemeriksaan() {
+        return namaPemeriksaan;
+    }
+
+    public void setNamaPemeriksaan(String namaPemeriksaan) {
+        this.namaPemeriksaan = namaPemeriksaan;
+    }
+
+    public String getNamaDokterPengirim() {
+        return namaDokterPengirim;
+    }
+
+    public void setNamaDokterPengirim(String namaDokterPengirim) {
+        this.namaDokterPengirim = namaDokterPengirim;
+    }
+
+    public String getNamaLab() {
+        return namaLab;
+    }
+
+    public void setNamaLab(String namaLab) {
+        this.namaLab = namaLab;
+    }
+
+    public List<PeriksaLab> getListLab() {
+        return listLab;
+    }
+
+    public void setListLab(List<PeriksaLab> listLab) {
+        this.listLab = listLab;
+    }
+
+    public List<PeriksaLabDetail> getDetailLab() {
+        return detailLab;
+    }
+
+    public void setDetailLab(List<PeriksaLabDetail> detailLab) {
+        this.detailLab = detailLab;
+    }
+
+    public String getIdKategoriPemeriksaan() {
+        return idKategoriPemeriksaan;
+    }
+
+    public void setIdKategoriPemeriksaan(String idKategoriPemeriksaan) {
+        this.idKategoriPemeriksaan = idKategoriPemeriksaan;
+    }
+
+    public String getCatatan() {
+        return catatan;
+    }
+
+    public void setCatatan(String catatan) {
+        this.catatan = catatan;
+    }
+
+    public String getHasil() {
+        return hasil;
+    }
+
+    public void setHasil(String hasil) {
+        this.hasil = hasil;
+    }
+
+    public String getIdPeriksaLabDetail() {
+        return idPeriksaLabDetail;
+    }
+
+    public void setIdPeriksaLabDetail(String idPeriksaLabDetail) {
+        this.idPeriksaLabDetail = idPeriksaLabDetail;
+    }
+
+    public BigDecimal getTarifLabLuar() {
+        return tarifLabLuar;
+    }
+
+    public void setTarifLabLuar(BigDecimal tarifLabLuar) {
+        this.tarifLabLuar = tarifLabLuar;
+    }
+
+    public String getNamaLabLuar() {
+        return namaLabLuar;
+    }
+
+    public void setNamaLabLuar(String namaLabLuar) {
+        this.namaLabLuar = namaLabLuar;
+    }
+
+    public String getIsLuar() {
+        return isLuar;
+    }
+
+    public void setIsLuar(String isLuar) {
+        this.isLuar = isLuar;
+    }
+
+    public List<UploadHasilPemeriksaan> getUploadDalam() {
+        return uploadDalam;
+    }
+
+    public void setUploadDalam(List<UploadHasilPemeriksaan> uploadDalam) {
+        this.uploadDalam = uploadDalam;
+    }
+
+    public List<UploadHasilPemeriksaan> getUploadLuar() {
+        return uploadLuar;
+    }
+
+    public void setUploadLuar(List<UploadHasilPemeriksaan> uploadLuar) {
+        this.uploadLuar = uploadLuar;
+    }
+
+    public String getIdPetugas() {
+        return idPetugas;
+    }
+
+    public void setIdPetugas(String idPetugas) {
+        this.idPetugas = idPetugas;
+    }
+
+    public String getIdValidator() {
+        return idValidator;
+    }
+
+    public void setIdValidator(String idValidator) {
+        this.idValidator = idValidator;
+    }
+
+    public String getNamaValidator() {
+        return namaValidator;
+    }
+
+    public void setNamaValidator(String namaValidator) {
+        this.namaValidator = namaValidator;
+    }
+
+    public String getTtdValidator() {
+        return ttdValidator;
+    }
+
+    public void setTtdValidator(String ttdValidator) {
+        this.ttdValidator = ttdValidator;
+    }
+
     private String isRead;
+    private List<ItSimrsUploadHasilPemeriksaanEntity> uploadHasil = new ArrayList<>();
+
+    public List<ItSimrsUploadHasilPemeriksaanEntity> getUploadHasil() {
+        return uploadHasil;
+    }
+
+    public void setUploadHasil(List<ItSimrsUploadHasilPemeriksaanEntity> uploadHasil) {
+        this.uploadHasil = uploadHasil;
+    }
 
     public String getIsRead() {
         return isRead;
@@ -516,11 +893,11 @@ public class PeriksaLab extends BaseModel implements Serializable{
         this.idDetailCheckup = idDetailCheckup;
     }
 
-    public Date getTanggalMasukLab() {
+    public Timestamp getTanggalMasukLab() {
         return tanggalMasukLab;
     }
 
-    public void setTanggalMasukLab(Date tanggalMasukLab) {
+    public void setTanggalMasukLab(Timestamp tanggalMasukLab) {
         this.tanggalMasukLab = tanggalMasukLab;
     }
 

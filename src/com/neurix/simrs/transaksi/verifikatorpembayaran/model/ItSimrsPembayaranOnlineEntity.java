@@ -31,70 +31,10 @@ public class ItSimrsPembayaranOnlineEntity {
     private String flagUploadUlang;
     private Timestamp tanggalUpload;
     private String shiftId;
-
-    public String getShiftId() {
-        return shiftId;
-    }
-
-    public void setShiftId(String shiftId) {
-        this.shiftId = shiftId;
-    }
-
-    public Timestamp getTanggalUpload() {
-        return tanggalUpload;
-    }
-
-    public void setTanggalUpload(Timestamp tanggalUpload) {
-        this.tanggalUpload = tanggalUpload;
-    }
-
-    public String getFlagUploadUlang() {
-        return flagUploadUlang;
-    }
-
-    public void setFlagUploadUlang(String flagUploadUlang) {
-        this.flagUploadUlang = flagUploadUlang;
-    }
-
-    public Timestamp getWaktuBayar() {
-        return waktuBayar;
-    }
-
-    public void setWaktuBayar(Timestamp waktuBayar) {
-        this.waktuBayar = waktuBayar;
-    }
-
-    public String getIdRekening() {
-        return idRekening;
-    }
-
-    public void setIdRekening(String idRekening) {
-        this.idRekening = idRekening;
-    }
-
-    public String getAlamat() {
-        return alamat;
-    }
-
-    public void setAlamat(String alamat) {
-        this.alamat = alamat;
-    }
-
-    public String getJenisPengambilan() {
-        return jenisPengambilan;
-    }
-
-    public void setJenisPengambilan(String jenisPengambilan) {
-        this.jenisPengambilan = jenisPengambilan;
-    }
-
-    public String getKodeBank() {
-        return kodeBank;
-    }
-
-    public void setKodeBank(String kodeBank) {
-        this.kodeBank = kodeBank;
-    }
+    private String tipeRekening;
+    private String clientId;
+    private String noJurnal;
+    private String tipePembayaran;
 
     public String getId() {
         return id;
@@ -214,6 +154,102 @@ public class ItSimrsPembayaranOnlineEntity {
 
     public void setIdRiwayatTindakan(String idRiwayatTindakan) {
         this.idRiwayatTindakan = idRiwayatTindakan;
+    }
+
+    public String getKodeBank() {
+        return kodeBank;
+    }
+
+    public void setKodeBank(String kodeBank) {
+        this.kodeBank = kodeBank;
+    }
+
+    public String getJenisPengambilan() {
+        return jenisPengambilan;
+    }
+
+    public void setJenisPengambilan(String jenisPengambilan) {
+        this.jenisPengambilan = jenisPengambilan;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public String getIdRekening() {
+        return idRekening;
+    }
+
+    public void setIdRekening(String idRekening) {
+        this.idRekening = idRekening;
+    }
+
+    public Timestamp getWaktuBayar() {
+        return waktuBayar;
+    }
+
+    public void setWaktuBayar(Timestamp waktuBayar) {
+        this.waktuBayar = waktuBayar;
+    }
+
+    public String getFlagUploadUlang() {
+        return flagUploadUlang;
+    }
+
+    public void setFlagUploadUlang(String flagUploadUlang) {
+        this.flagUploadUlang = flagUploadUlang;
+    }
+
+    public Timestamp getTanggalUpload() {
+        return tanggalUpload;
+    }
+
+    public void setTanggalUpload(Timestamp tanggalUpload) {
+        this.tanggalUpload = tanggalUpload;
+    }
+
+    public String getShiftId() {
+        return shiftId;
+    }
+
+    public void setShiftId(String shiftId) {
+        this.shiftId = shiftId;
+    }
+
+    public String getTipeRekening() {
+        return tipeRekening;
+    }
+
+    public void setTipeRekening(String tipeRekening) {
+        this.tipeRekening = tipeRekening;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
+
+    public String getTipePembayaran() {
+        return tipePembayaran;
+    }
+
+    public void setTipePembayaran(String tipePembayaran) {
+        this.tipePembayaran = tipePembayaran;
     }
 
     @Override

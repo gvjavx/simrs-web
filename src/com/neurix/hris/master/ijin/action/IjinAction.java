@@ -395,14 +395,12 @@ public class IjinAction extends BaseMasterAction {
     }
 
     public String initComboIjin() {
-        logger.info("[IjinAction.search] start process >>>");
+        logger.info("[IjinAction.initComboIjin] start process >>>");
 
         Ijin searchIjin = new Ijin();
         List<Ijin> listOfSearchIjin = new ArrayList();
         searchIjin.setFlag("Y");
-        if (CommonConstant.ROLE_ID_ADMIN.equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
-            searchIjin.setFlagDiajukanAdmin(null);
-        }else{
+        if (!CommonConstant.ROLE_ID_ADMIN.equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
             searchIjin.setFlagDiajukanAdmin("N");
         }
 
@@ -413,29 +411,29 @@ public class IjinAction extends BaseMasterAction {
             try {
                 logId = ijinBoProxy.saveErrorMessage(e.getMessage(), "IjinBO.getByCriteria");
             } catch (GeneralBOException e1) {
-                logger.error("[IjinAction.search] Error when saving error,", e1);
+                logger.error("[IjinAction.initComboIjin] Error when saving error,", e1);
             }
-            logger.error("[IjinAction.save] Error when searching function by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            logger.error("[IjinAction.initComboIjin] Error when searching Ijin by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
             return "failure";
         }
 
         listOfComboIjin.addAll(listOfSearchIjin);
-        logger.info("[BranchAction.search] end process <<<");
+        logger.info("[BranchAction.initComboIjin] end process <<<");
 
         return SUCCESS;
     }
 
     public List initComboLamaIjin(String query) {
-        logger.info("[IjinKeluarAction.initComboLamaCuti] start process >>>");
+        logger.info("[IjinAction.initComboLamaIjin] start process >>>");
 
-        List<Ijin> listOfAlat = new ArrayList();
+        List<Ijin> listOfIjin = new ArrayList();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         IjinBo ijinBo = (IjinBo) ctx.getBean("ijinBoProxy");
 
         try {
-            listOfAlat = ijinBo.getComboLamaIjinWithCriteria(query);
+            listOfIjin = ijinBo.getComboLamaIjinWithCriteria(query);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -443,12 +441,12 @@ public class IjinAction extends BaseMasterAction {
             } catch (GeneralBOException e1) {
                 logger.error("[IjinAction.initComboLamaIjin] Error when saving error,", e1);
             }
-            logger.error("[IjinAction.initComboLokasiKebun] Error when get combo ijin keluar," + "[" + logId + "] Found problem when retrieving combo ijin keluar data, please inform to your admin.", e);
+            logger.error("[IjinAction.initComboLamaIjin] Error when get combo ijin keluar," + "[" + logId + "] Found problem when retrieving combo ijin keluar data, please inform to your admin.", e);
         }
 
-        logger.info("[PermohonanLahanAction.initComboLokasiKebun] end process <<<");
+        logger.info("[IjinAction.initComboLamaIjin] end process <<<");
 
-        return listOfAlat;
+        return listOfIjin;
     }
 
     public List initComboIjinId(String query) {
@@ -477,11 +475,9 @@ public class IjinAction extends BaseMasterAction {
         List<Ijin> listOfIjin = new ArrayList();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         IjinBo ijinBo = (IjinBo) ctx.getBean("ijinBoProxy");
-        String flagDiajukanAdmin;
+        String flagDiajukanAdmin = null;
         String agama;
-        if (CommonConstant.ROLE_ID_ADMIN.equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
-            flagDiajukanAdmin=null;
-        }else{
+        if (!CommonConstant.ROLE_ID_ADMIN.equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
             flagDiajukanAdmin="N";
         }
 

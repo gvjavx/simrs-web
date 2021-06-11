@@ -105,14 +105,14 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/admin/position" action="saveDelete_position" cssClass="well form-horizontal">
+            <s:form id="delPositionForm" method="post" theme="simple" namespace="/admin/position" action="saveDelete_position" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
 
 
-                <legend align="left">Delete Golongan</legend>
+                <legend align="left">Delete Position</legend>
 
 
                 <table>
@@ -124,6 +124,20 @@
                 </table>
 
                 <table >
+
+                    <tr>
+                        <s:if test='position.flagCostUnit == "Y"'>
+                            <td colspan="2">
+                                <label class="control-label" style="background-color: #00a65a;padding: 6px;margin:2px;border-radius: 5px;" align="center"><big>UNIT COST</big></label>
+                            </td>
+                        </s:if>
+                        <s:else>
+                            <td colspan="2">
+                                <label class="control-label" style="background-color: lightgrey;padding: 6px;margin: 2px;border-radius: 5px;" align="center"><big>JABATAN</big></label>
+                            </td>
+                        </s:else>
+                        <s:hidden name="position.flagCostUnit"/>
+                    </tr>
                     <tr>
                         <td>
                             <label class="control-label"><small>Posisi Id :</small></label>
@@ -191,7 +205,6 @@
                             </table>
                         </td>
                     </tr>
-
                 </table>
 
 
@@ -200,7 +213,7 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="modifyRolefuncForm" id="save" name="save"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="delPositionForm" id="save" name="save"
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-trash"></i>

@@ -179,10 +179,19 @@
                     <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-3">Keadaan Umum</label>
+                            <div class="col-md-9">
+                                <textarea rows="3" class="form-control" id="keadaan_umum"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
                             <div class="col-md-4">
+                                <span>Tinggi Badan</span>
                                 <input type="number" class="form-control tinggi-pasien" id="af6" placeholder="Tingi Badan (Cm)">
                             </div>
                             <div class="col-md-4">
+                                <span>Berat Badan</span>
                                 <input type="number" class="form-control berat-pasien" id="af7" placeholder="Berat Badan (Kg)">
                             </div>
                         </div>
@@ -230,6 +239,15 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-3">
+                                <div class="custom02">
+                                    <input type="radio" onclick="showKetRJ(this.value, 'af12')" value="Tidak Ada" id="af124" name="af12" /><label for="af124">Tidak Ada</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row jarak" style="display: none" id="form_af12">
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-9">
@@ -270,22 +288,34 @@
                     <div class="row">
                         <label class="col-md-6">Persepsi Klien terhadap penyakitnya</label>
                         <div class="col-md-6">
-                            <select class="form-control" id="ps1">
+                            <select class="form-control" id="ps1" onchange="cekGiziRJ(this.value, 'form-1')">
                                 <option value="">[Select One]</option>
                                 <option value="Cobaan Tuhan">Cobaan Tuhan</option>
                                 <option value="Hukuman">Hukuman</option>
+                                <option value="Lainnya">Lainnya</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="row jarak" style="display: none" id="form-1">
+                        <div class="col-md-offset-6 col-md-6">
+                            <input class="form-control" id="ket_ps1">
                         </div>
                     </div>
                     <div class="row jarak">
                         <label class="col-md-6">Ekspresi klien terhadap penyakitnya</label>
                         <div class="col-md-6">
-                            <select class="form-control" id="ps2">
+                            <select class="form-control" id="ps2" onchange="cekGiziRJ(this.value, 'form-2')">
                                 <option value="">[Select One]</option>
                                 <option value="Murung/Diam">Murung/Diam</option>
                                 <option value="Gelisah">Gelisah</option>
                                 <option value="Marah/Menangis">Marah/Menangis</option>
+                                <option value="Lainnya">Lainnya</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="row jarak" style="display: none" id="form-2">
+                        <div class="col-md-offset-6 col-md-6">
+                            <input class="form-control" id="ket_ps2">
                         </div>
                     </div>
                     <div class="row jarak">
@@ -356,12 +386,36 @@
                             <label class="col-md-8">1. Apakah pasien mengalami penuruanan / peningkatan BB yang tidak di inginkan dalam 6 bulan terakhir ?</label>
                             <div class="col-md-2">
                                 <div class="custom02">
-                                    <input type="radio" value="Ya|2" id="gz11" name="gz1" /><label for="gz11">Ya</label>
+                                    <input onclick="cekGiziRJ(this.value, 'form-ina-penurunan')" type="radio" value="Ya|2" id="gz11" name="gz1" /><label for="gz11">Ya</label>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="custom02">
-                                    <input type="radio" value="Tidak|0" id="gz12" name="gz1" /><label for="gz12">Tidak</label>
+                                    <input onclick="cekGiziRJ(this.value, 'form-ina-penurunan')" type="radio" value="Tidak|0" id="gz12" name="gz1" /><label for="gz12">Tidak</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="display: none;" id="form-ina-penurunan">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="1 - 5 kg" id="aud_penurunan1" name="penurunan" /><label for="aud_penurunan1">1 - 5 kg</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="6 - 10 kg" id="aud_penurunan2" name="penurunan" /><label for="aud_penurunan2">6 - 10 kg</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="11 - 15 kg" id="aud_penurunan3" name="penurunan" /><label for="aud_penurunan3">11 - 15 kg</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="> 15 kg" id="aud_penurunan4" name="penurunan" /><label for="aud_penurunan4">> 15 kg</label>
                                 </div>
                             </div>
                         </div>
@@ -386,17 +440,17 @@
                             <label class="col-md-8">3. Pasien dengan diagnosa khusus / kondisi khusus ?</label>
                             <div class="col-md-2">
                                 <div class="custom02">
-                                    <input type="radio" value="Ya|2" id="gz31" name="gz3" /><label for="gz31">Ya</label>
+                                    <input onclick="cekGiziRJ(this.value, 'form-sakit')" type="radio" value="Ya|2" id="gz31" name="gz3" /><label for="gz31">Ya</label>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="custom02">
-                                    <input type="radio" value="Tidak|0" id="gz32" name="gz3" /><label for="gz32">Tidak</label>
+                                    <input onclick="cekGiziRJ(this.value, 'form-sakit')" type="radio" value="Tidak|0" id="gz32" name="gz3" /><label for="gz32">Tidak</label>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="display: none" id="form-sakit">
                         <div class="form-group">
                             <label class="col-md-3">Penyakit : </label>
                             <div class="col-md-9">
@@ -493,7 +547,6 @@
     </div>
 </div>
 
-
 <div class="modal fade" id="modal-rj-nyeri">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -520,42 +573,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-5" style="margin-top: 7px">Lokasi</label>
-                            <div class="col-md-5">
-                                <input class="form-control" style="margin-top: 7px;" id="y_lokasi">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-5" style="margin-top: 7px">Jenis</label>
-                            <div class="col-md-5">
-                                <div class="custom02" style="margin-top: 7px">
-                                    <input type="radio" value="Akut" id="nyeri3" name="radio_nyeri_jenis" /><label for="nyeri3">Akut</label>
-                                    <input type="radio" value="Kronis" id="nyeri4" name="radio_nyeri_jenis" /><label for="nyeri4">Kronis</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-5" style="margin-top: 7px">Intensitas</label>
-                            <div class="col-md-5">
-                                <input class="form-control" style="margin-top: 7px;" id="y_inten">
-                            </div>
-                        </div>
-                    </div>
                     <input id="temp_scala" type="hidden">
                     <input id="temp_jenis" type="hidden">
                     <canvas id="choice_emoji" style="display: none"></canvas>
                     <hr class="garis">
-                    <div id="set_nyeri"></div>
+                    <div id="set_nyeri" style="display: none">
+
+                    </div>
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">
-                            <div class="col-md-6">
+                            <div class="col-md-offset-3 col-md-6 text-center">
                                 <label>TTD Perawat</label>
                                 <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('ttdPerawat')" class="paint-canvas-ttd" id="ttdPerawat"></canvas>
                                 <input id="nama_terang" class="form-control nama_petugas" placeholder="Nama Terang">

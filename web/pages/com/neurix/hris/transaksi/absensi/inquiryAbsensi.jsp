@@ -173,7 +173,7 @@
                                             </td>
                                             <td>
                                                 <table>
-                                                    <s:if test='absensiPegawai.branchId == "KP"'>
+                                                    <s:if test='absensiPegawai.branchId == "01"'>
                                                         <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                         <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="absensiPegawai.branchId"
                                                                   listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
@@ -544,15 +544,33 @@
     };
     $(document).ready(function(){
         loadFinal();
+        var limNow = new Date();
         $('#tanggal1').datepicker({
-            dateFormat: 'dd-mm-yy'
+            dateFormat: 'dd-mm-yy',
+            maxDate: limNow
         });
         $('#tanggal2').datepicker({
-            dateFormat: 'dd-mm-yy'
+            dateFormat: 'dd-mm-yy',
+            maxDate: limNow
         });
+
+        canSave();
         $("#btnProses").click(function() {
             $("#btnProsesSave").trigger( "click" );
         });
         $('input:checkbox').removeAttr('checked');
     });
+
+    function canSave() {
+        var lastDate = $("#tanggal2").val().split("-");
+        var inqDate = new Date(lastDate[2],lastDate[1]-1,lastDate[0]);
+        var nowDate = new Date();
+        console.log(inqDate + " - " + nowDate);
+        if(inqDate >= nowDate){
+            $("#btnProses").hide();
+        }else {
+            $("#btnProses").show();
+
+        }
+    }
 </script>

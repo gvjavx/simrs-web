@@ -4,27 +4,32 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-md"></i> Pemberian Informasi dan Persetujuan Tindakan Kedokteran
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> Persetujuan Tindakan Medis
                 </h4>
             </div>
             <div class="modal-body">
                 <div class="box-body btn-hide">
+                    <div class="alert alert-danger alert-dismissible" style="display: none"
+                         id="warn_tindakan_icu">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_tindakan_icu"></p>
+                    </div>
                     <div class="alert alert-success alert-dismissible" style="display: none"
                          id="warning_icu_tindakan_icu">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_icu_tindakan_icu"></p>
                     </div>
-                    <button type="button" onclick="showModalICU('add_tindakan_icu')" class="btn btn-success"><i class="fa fa-plus"></i> Tindakan Dokter
+                    <button type="button" onclick="showModalICU('add_tindakan_icu')" class="btn btn-success"><i class="fa fa-plus"></i> Persetujuan Tindakan Medis
                     </button>
                 </div>
                 <div class="box-body">
                     <table class="table" id="tabel_icu_data_laporan">
                         <tbody>
-                        <tr id="row_icu_tindakan_icu">
-                            <td>Persetujuan Tindakan</td>
+                        <tr id="row_icu_add_tindakan_icu">
+                            <td>Persetujuan Tindakan Medis</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_tindakan_icu" class="hvr-grow"
-                                     onclick="detailICU('tindakan_icu')"
+                                <img id="btn_icu_add_tindakan_icu" class="hvr-grow"
+                                     onclick="detailICU('add_tindakan_icu')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
@@ -46,7 +51,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Pemberian Informasi dan Persetujuan Tindakan
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Persetujuan Tindakan Medis
                 </h4>
             </div>
             <div class="modal-body">
@@ -58,17 +63,16 @@
                 <div class="box-body">
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3">Tindakan</label>
+                            <label class="col-md-3" style="margin-top: 10px">Pilih Tindakan Medis</label>
                             <div class="col-md-9">
-                                <select class="form-control select2" id="tindakan_icu" style="width: 100%" onchange="pilihTindakanICU(this.value)">
-                                    <option value="">[Select One]</option>
-                                    <option value="Ventilator">Ventilator</option>
+                                <select class="form-control select2" id="tindakan_icu" style="width: 100%" onchange="pilihTindakanMedis(this.value, 'tindakan_icu'); setTindakanMedisValue(this.value, 'icu', 'nama_tindakan_medis')">
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="box-body" style="display: none" id="form-tindakan-icu">
+                <input type="hidden" id="nama_tindakan_medis">
+                <div class="box-body" style="display: none" id="form-tindakan_icu">
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3">Tanggal</label>
@@ -77,7 +81,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control tgl" id="icu1">
+                                    <input class="form-control tgl" id="op1">
                                 </div>
                             </div>
                         </div>
@@ -85,28 +89,29 @@
                     <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-3">Dokter Pelaksana Tindakan</label>
-                            <div class="col-md-9">
-                                <input class="form-control" id="icu2">
+                            <div class="col-md-6">
+                                <input class="form-control nama_dokter_ri" id="op2">
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-3">Pemberi Informasi</label>
-                            <div class="col-md-9">
-                                <input class="form-control" id="icu3">
+                            <div class="col-md-6">
+                                <input class="form-control" id="op3">
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-3">Penerima Informasi</label>
-                            <div class="col-md-9">
-                                <input class="form-control" id="icu4">
+                            <div class="col-md-6">
+                                <input class="form-control" id="op4">
                             </div>
                         </div>
                     </div>
                     <br>
+                    <hr class="garis">
                     <table class="table table-bordered" style="font-size: 12px">
                         <thead>
                         <tr style="font-weight: bold">
@@ -119,12 +124,15 @@
                         </tbody>
                     </table>
                     <br>
+                    <hr class="garis">
                     <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-7" style="text-align: justify">Dengan ini menyatakan bahwa saya telah menerangkan hal-hal di atas secara benar dan jelas dengan memberikan kesempatakan bertanya dan atau diskusi kepada pasien dan/atau keluarganya sedemikian rupa sehingga telah memahaminya</label>
                             <div class="col-md-4">
                                 <canvas class="paint-canvas-ttd" id="ttd1" width="220" height="100"
                                         onmouseover="paintTtd('ttd1')"></canvas>
+                                <input style="margin-left: 10px" class="form-control nama_dokter_ri" id="nama_terang_ttd1" placeholder="Nama Terang">
+                                <input style="margin-left: 10px; margin-top: 3px" class="form-control sip_dokter_ri" id="sip_ttd1" placeholder="SIP">
                             </div>
                             <div class="col-md-1">
                                 <button style="margin-left: -42px; margin-top: 10px" type="button" class="btn btn-danger"
@@ -140,6 +148,7 @@
                             <div class="col-md-4">
                                 <canvas class="paint-canvas-ttd" id="ttd2" width="220" height="100"
                                         onmouseover="paintTtd('ttd2')"></canvas>
+                                <input style="margin-left: 10px" class="form-control" id="nama_terang_ttd2" placeholder="Nama Terang">
                             </div>
                             <div class="col-md-1">
                                 <button style="margin-left: -42px; margin-top: 10px" type="button" class="btn btn-danger"
@@ -149,20 +158,22 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row jarak">
+                    <hr class="garis">
+                    <input type="hidden" id="h_is_biaya">
+                    <div class="row jarak" style="display: none" id="form_biaya">
                         <div class="form-group">
-                            <label class="col-md-12" style="text-align: justify">Biaya adalah perkiraan biaya yang harus dibayarkan oleh pihak pasien erdasarkan perkiraan dalam kasus-kasus sewajarnya dan tidak mengikat kedua belah pihak apabila ada perluasan</label>
+                            <label class="col-md-12" style="text-align: justify">Biaya adalah perkiraan biaya yang harus dibayarkan oleh pihak pasien berdasarkan perkiraan dalam kasus-kasus sewajarnya dan tidak mengikat kedua belah pihak apabila ada perluasan</label>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-3">Nama</label>
                             <div class="col-md-4">
-                                <input class="form-control" id="icu5">
+                                <input class="form-control" id="op5">
                             </div>
                             <label class="col-md-2">Tanggal Lahir</label>
                             <div class="col-md-3">
-                                <input class="form-control ptr-tgl" id="icu6">
+                                <input class="form-control ptr-tgl" id="op6">
                             </div>
                         </div>
                     </div>
@@ -170,7 +181,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Jenis Kelamin</label>
                             <div class="col-md-4">
-                                <select class="form-control" id="icu7">
+                                <select class="form-control" id="op7">
                                     <option value="">[Select One]</option>
                                     <option value="Laki-Laki">Laki-Laki</option>
                                     <option value="Perempuan">Perempuan</option>
@@ -178,7 +189,7 @@
                             </div>
                             <label class="col-md-2">Tindakan</label>
                             <div class="col-md-3">
-                                <input class="form-control" readonly id="icu8">
+                                <input class="form-control" readonly id="tindakan_medis_tindakan_icu">
                             </div>
                         </div>
                     </div>
@@ -186,11 +197,11 @@
                         <div class="form-group">
                             <label class="col-md-3">Nama Pasien</label>
                             <div class="col-md-4">
-                                <input class="form-control nama-pasien" id="icu9" readonly>
+                                <input class="form-control nama-pasien" id="op9" readonly>
                             </div>
                             <label class="col-md-2">Tanggal Lahir Pasien</label>
                             <div class="col-md-3">
-                                <input class="form-control tgl-lahir-pasien" id="icu10" readonly>
+                                <input class="form-control tgl-lahir-pasien" id="op10" readonly>
                             </div>
                         </div>
                     </div>
@@ -198,7 +209,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Alamat Pasien</label>
                             <div class="col-md-9">
-                                <textarea class="form-control alamat-pasien" id="icu11"></textarea>
+                                <textarea class="form-control alamat-pasien" id="op11"></textarea>
                             </div>
                         </div>
                     </div>
@@ -209,6 +220,8 @@
                                 <label style="margin-left: 8px">TTD Yang Menyatakan</label>
                                 <canvas class="paint-canvas-ttd" id="ttd3" width="220" height="100"
                                         onmouseover="paintTtd('ttd3')"></canvas>
+                                <input class="form-control" id="nama_terang_ttd3" placeholder="Nama Terang">
+                                <%--<input style="margin-top: 3px" class="form-control" id="sip_ttd3" placeholder="SIP">--%>
                             </div>
                             <div class="col-md-1">
                                 <button style="margin-left: -100px; margin-top: 35px" type="button" class="btn btn-danger"
@@ -218,12 +231,14 @@
                             </div>
                         </div>
                     </div>
+                    <hr class="garis">
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-offset-5 col-md-3">Saksi</label>
                             <div class="col-md-5">
+                                <span>Saksi Keluarga</span>
                                 <canvas class="paint-canvas-ttd" id="ttd4" width="220" height="100"
                                         onmouseover="paintTtd('ttd4')"></canvas>
+                                <input class="form-control" id="nama_terang_ttd4" placeholder="Nama Terang">
                             </div>
                             <div class="col-md-1">
                                 <button style="margin-left: -100px; margin-top: 10px" type="button" class="btn btn-danger"
@@ -232,8 +247,11 @@
                                 </button>
                             </div>
                             <div class="col-md-5">
+                                <span>Perawat Pendamping</span>
                                 <canvas class="paint-canvas-ttd" id="ttd5" width="220" height="100"
                                         onmouseover="paintTtd('ttd5')"></canvas>
+                                <input class="form-control" id="nama_terang_ttd5" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_ttd5" placeholder="SIP">
                             </div>
                             <div class="col-md-1">
                                 <button style="margin-left: -100px; margin-top: 10px" type="button" class="btn btn-danger"

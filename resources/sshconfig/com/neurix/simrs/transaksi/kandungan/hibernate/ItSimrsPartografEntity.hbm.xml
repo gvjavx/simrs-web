@@ -77,6 +77,9 @@
             <basic name="ttd">
                 <column name="ttd"/>
             </basic>
+            <basic name="lamaKontraksi">
+                <column name="lama_kontraksi"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

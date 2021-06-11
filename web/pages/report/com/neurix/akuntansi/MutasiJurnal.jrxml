@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MutasiJurnal" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" isFloatColumnFooter="true" uuid="772f1804-f1af-4e5f-8cf2-ffcc355aa079">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.771561000000003"/>
+	<property name="ireport.zoom" value="3.45227121439311"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="78"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -21,42 +21,40 @@
 	<parameter name="reportParams.branchId" class="java.lang.String"/>
 	<parameter name="reportParams.areaId" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT DISTINCT
-  a.no_jurnal,
-  a.tanggal_jurnal,
-  a.sumber,
-  a.pengajuan_biaya_id,
-  a.sumber_dana_id,
-  f.kode_mata_uang,
-  g.nilai_kurs,
-  a.keterangan,
-  c.kode_rekening,
-  b.master_id,
-  b.pasien_id,
-  b.biaya,
-  b.no_nota,
-  b.kd_barang,
-  d.nama,
-  c.nama_kode_rekening,
-  b.jumlah_debit,
-  b.jumlah_kredit,
-  b.divisi_id
-FROM
-  it_akun_jurnal a
-  INNER JOIN it_akun_jurnal_detail b ON (a.no_jurnal = b.no_jurnal)
-  INNER JOIN im_akun_tipe_jurnal h ON (a.tipe_jurnal_id = h.tipe_jurnal_id)
-  LEFT OUTER JOIN im_akun_kode_rekening c ON (b.rekening_id = c.rekening_id)
-  LEFT OUTER JOIN im_akun_master d ON (b.master_id = d.nomor_master)
-  LEFT OUTER JOIN im_akun_mata_uang f ON (a.mata_uang_id = f.mata_uang_id)
-  LEFT OUTER JOIN mt_akun_kurs g
-  	ON ((f.mata_uang_id = g.mata_uang_id)
-    	AND (g.flag = 'A'))
-WHERE
-  h.tipe_jurnal_id = $P{jurnalType}
-  AND to_char(a.tanggal_jurnal, 'MM-yyyy') = $P{periode}
-  and a.registered_flag = 'Y' and a.flag='Y'
-and a.branch_id IN ($P!{reportParams.branchId})
-  order by a.no_jurnal DESC,a.tanggal_jurnal DESC,b.jumlah_kredit,c.kode_rekening]]>
+		<![CDATA[SELECT akunJurnal.no_jurnal,
+       akunJurnal.tanggal_jurnal,
+       akunJurnal.sumber,
+       akunJurnal.pengajuan_biaya_id,
+       akunJurnal.sumber_dana_id,
+       mataUang.kode_mata_uang,
+       kurs.nilai_kurs,
+       akunJurnal.keterangan,
+       koderekening.kode_rekening,
+       jurnalDetail.master_id,
+       jurnalDetail.pasien_id,
+       jurnalDetail.biaya,
+       jurnalDetail.no_nota,
+       jurnalDetail.kd_barang,
+       master.nama,
+       koderekening.nama_kode_rekening,
+       jurnalDetail.jumlah_debit,
+       jurnalDetail.jumlah_kredit,
+       jurnalDetail.divisi_id,
+       tipeJurnal.tipe_jurnal_id
+FROM it_akun_jurnal akunJurnal
+       INNER JOIN it_akun_jurnal_detail jurnalDetail ON (akunJurnal.no_jurnal = jurnalDetail.no_jurnal)
+       INNER JOIN im_akun_tipe_jurnal tipeJurnal ON (akunJurnal.tipe_jurnal_id = tipeJurnal.tipe_jurnal_id)
+       LEFT OUTER JOIN im_akun_kode_rekening koderekening ON (jurnalDetail.nomor_rekening = koderekening.kode_rekening)
+       LEFT OUTER JOIN im_akun_master master ON (jurnalDetail.master_id = master.nomor_master)
+       LEFT OUTER JOIN im_akun_mata_uang mataUang ON (akunJurnal.mata_uang_id = mataUang.mata_uang_id)
+       LEFT OUTER JOIN mt_akun_kurs kurs ON ((mataUang.mata_uang_id = kurs.mata_uang_id)
+                                               AND (kurs.flag = 'A'))
+WHERE tipeJurnal.tipe_jurnal_id = $P{jurnalType}
+  AND to_char(akunJurnal.tanggal_jurnal, 'MM-yyyy') = $P{periode}
+  and akunJurnal.registered_flag = 'Y'
+  and akunJurnal.flag = 'Y'
+  and akunJurnal.branch_id IN ($P!{reportParams.branchId})
+order by akunJurnal.no_jurnal, akunJurnal.tanggal_jurnal, jurnalDetail.jumlah_kredit, koderekening.kode_rekening]]>
 	</queryString>
 	<field name="no_jurnal" class="java.lang.String"/>
 	<field name="tanggal_jurnal" class="java.sql.Date"/>
@@ -76,13 +74,12 @@ and a.branch_id IN ($P!{reportParams.branchId})
 	<field name="biaya" class="java.lang.String"/>
 	<field name="no_nota" class="java.lang.String"/>
 	<field name="kd_barang" class="java.lang.String"/>
-	<field name="nama" class="java.lang.String">
-		<fieldDescription><![CDATA[Nama Master]]></fieldDescription>
-	</field>
+	<field name="nama" class="java.lang.String"/>
 	<field name="nama_kode_rekening" class="java.lang.String"/>
 	<field name="jumlah_debit" class="java.math.BigDecimal"/>
 	<field name="jumlah_kredit" class="java.math.BigDecimal"/>
 	<field name="divisi_id" class="java.lang.String"/>
+	<field name="tipe_jurnal_id" class="java.lang.String"/>
 	<variable name="SUM_jumlah_debit_rph" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[($F{kode_mata_uang}.equalsIgnoreCase("rph") ? $F{jumlah_debit}:BigDecimal.ZERO)]]></variableExpression>
 	</variable>
@@ -163,7 +160,7 @@ and a.branch_id IN ($P!{reportParams.branchId})
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
-					<textElement verticalAlignment="Top">
+					<textElement verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{sumber}]]></textFieldExpression>

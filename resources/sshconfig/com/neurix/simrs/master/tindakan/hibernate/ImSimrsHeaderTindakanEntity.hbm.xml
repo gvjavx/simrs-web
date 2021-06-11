@@ -44,6 +44,9 @@
             <basic name="kategori">
                 <column name="kategori"/>
             </basic>
+            <basic name="flagKonsulGizi">
+                <column name="flag_konsul_gizi"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

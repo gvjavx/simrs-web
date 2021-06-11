@@ -28,6 +28,15 @@ public class ItSimrsPartografEntity {
     private String namaTerang;
     private String sip;
     private String ttd;
+    private String lamaKontraksi;
+
+    public String getLamaKontraksi() {
+        return lamaKontraksi;
+    }
+
+    public void setLamaKontraksi(String lamaKontraksi) {
+        this.lamaKontraksi = lamaKontraksi;
+    }
 
     public String getTtd() {
         return ttd;

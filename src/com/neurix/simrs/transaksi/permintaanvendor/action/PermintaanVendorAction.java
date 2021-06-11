@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.permintaanvendor.action;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.billingSystem.model.MappingDetail;
 import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.authorization.company.bo.AreaBo;
 import com.neurix.authorization.company.bo.BranchBo;
@@ -17,6 +18,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.pabrikobat.model.PabrikObat;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
@@ -50,10 +52,7 @@ import sun.misc.BASE64Decoder;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
@@ -62,6 +61,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Toshiba on 27/12/2019.
@@ -200,7 +200,11 @@ public class PermintaanVendorAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
 
-        setPermintaanVendor(new PermintaanVendor());
+        String branchId = CommonUtil.userBranchLogin();
+        PermintaanVendor permintaanVendor = new PermintaanVendor();
+        permintaanVendor.setBranchId(branchId);
+
+        setPermintaanVendor(permintaanVendor);
 
         logger.info("[PermintaanVendorAction.add] END <<<<<<<");
         return "init_add";
@@ -343,37 +347,57 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return checkObatResponse;
     }
 
-    public CheckObatResponse saveUpdateListObat(String idTransaksiDetailObat, String qty, String idPabrik, String flag, BigInteger lembarPerBox, BigInteger bijiPerLembar, Integer noBatch, String expDate, BigDecimal diskon, BigDecimal bruto, BigDecimal netto) {
+    public CheckObatResponse saveUpdateListObat(String dataJson) {
         logger.info("[PermintaanVendorAction.checkIdPabrikan] START >>>>>>>");
         CheckObatResponse checkObatResponse = new CheckObatResponse();
-
-        TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
-        transaksiObatDetail.setIdTransaksiObatDetail(idTransaksiDetailObat);
-        transaksiObatDetail.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-        transaksiObatDetail.setLastUpdateWho(CommonUtil.userLogin());
-        transaksiObatDetail.setQty(new BigInteger(qty));
-        transaksiObatDetail.setIdPabrik(idPabrik);
-        transaksiObatDetail.setFlagDiterima(flag);
-        transaksiObatDetail.setLembarPerBox(lembarPerBox);
-        transaksiObatDetail.setBijiPerLembar(bijiPerLembar);
-        transaksiObatDetail.setNoBatch(noBatch);
-        transaksiObatDetail.setExpDate(Date.valueOf(expDate));
-        transaksiObatDetail.setQtyApprove(new BigInteger(qty));
-        transaksiObatDetail.setDiskon(diskon);
-        transaksiObatDetail.setBruto(bruto);
-        transaksiObatDetail.setNetto(netto);
-
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
 
         try {
-            checkObatResponse = permintaanVendorBo.saveUpdateTransObatDetail(transaksiObatDetail);
-        } catch (HibernateException e) {
+            if(dataJson != null && !"".equalsIgnoreCase(dataJson)){
+                JSONObject obj = new JSONObject(dataJson);
+                if(obj != null){
+                    TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
+                    transaksiObatDetail.setIdTransaksiObatDetail(obj.getString("id_detail_obat"));
+                    transaksiObatDetail.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                    transaksiObatDetail.setLastUpdateWho(CommonUtil.userLogin());
+                    transaksiObatDetail.setQty(new BigInteger(obj.getString("qty_approve")));
+                    transaksiObatDetail.setIdPabrik(obj.getString("no_produksi"));
+                    transaksiObatDetail.setIdPabrikObat(obj.getString("id_pabrik"));
+                    transaksiObatDetail.setNomorProduksi(obj.getString("no_produksi"));
+                    transaksiObatDetail.setFlagDiterima("Y");
+                    transaksiObatDetail.setLembarPerBox(new BigInteger(obj.getString("lembar_per_box")));
+                    transaksiObatDetail.setBijiPerLembar(new BigInteger(obj.getString("biji_per_lembar")));
+                    transaksiObatDetail.setNoBatch(Integer.valueOf(obj.getString("no_batch")));
+                    transaksiObatDetail.setExpDate(Date.valueOf(obj.getString("expired")));
+                    transaksiObatDetail.setQtyApprove(new BigInteger(obj.getString("qty_approve")));
+                    transaksiObatDetail.setDiskon(new BigDecimal(obj.getString("diskon")));
+                    transaksiObatDetail.setBruto(new BigDecimal(obj.getString("bruto")));
+                    transaksiObatDetail.setNetto(new BigDecimal(obj.getString("netto")));
+                    transaksiObatDetail.setMerek(obj.getString("merek"));
+
+                    try {
+                        checkObatResponse = permintaanVendorBo.saveUpdateTransObatDetail(transaksiObatDetail);
+                    } catch (HibernateException e) {
+                        checkObatResponse.setStatus("error");
+                        checkObatResponse.setMessage("Error when "+e.getMessage());
+                        logger.error("[PermintaanVendorAction.saveUpdateListObat] ERROR error when update data. ", e);
+                    }
+                }else{
+                    checkObatResponse.setStatus("error");
+                    checkObatResponse.setMessage("Error when parse JSON, data yang dikirim tidak ada @_@");
+                    logger.error("[PermintaanVendorAction.saveUpdateListObat] ERROR error when update data. ");
+                }
+            }else{
+                checkObatResponse.setStatus("error");
+                checkObatResponse.setMessage("Error when parse JSON, data yang dikirim tidak ada @_@");
+                logger.error("[PermintaanVendorAction.saveUpdateListObat] ERROR error when update data. ");
+            }
+        }catch (Exception e){
             checkObatResponse.setStatus("error");
             checkObatResponse.setMessage("Error when "+e.getMessage());
             logger.error("[PermintaanVendorAction.saveUpdateListObat] ERROR error when update data. ", e);
         }
-
         logger.info("[PermintaanVendorAction.checkIdPabrikan] END <<<<<<<");
         return checkObatResponse;
     }
@@ -437,12 +461,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
     public CheckResponse savePermintaanPO(String idVendor, String tgl, String po) {
 
         logger.info("[PermintaanVendorAction.savePermintaanPO] START >>>>>>>");
-
         CheckResponse response = new CheckResponse();
-
-//        HttpSession session = ServletActionContext.getRequest().getSession();
-//        PermintaanVendor permintaan = (PermintaanVendor) session.getAttribute("poupload");
-
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
         String userLogin = CommonUtil.userLogin();
@@ -461,12 +480,6 @@ public class PermintaanVendorAction extends BaseMasterAction {
         permintaanVendor.setBranchId(userBranch);
         permintaanVendor.setIdPelayanan(idPelayanan);
         permintaanVendor.setTglCair(tgl);
-
-//        if(permintaan != null){
-//            if(permintaan.getUrlDocPo() != null){
-//                permintaanVendor.setUrlDocPo(permintaan.getUrlDocPo());
-//            }
-//        }
 
         List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
         TransaksiObatDetail obatDetail;
@@ -493,26 +506,39 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
                     obatDetail.setQty(new BigInteger(obj.getString("qty")));
                     obatDetail.setJenisSatuan(obj.getString("jenis_satuan"));
-                    obatDetail.setLembarPerBox(new BigInteger(obj.getString("lembar_per_box")));
-                    obatDetail.setBijiPerLembar(new BigInteger(obj.getString("biji_per_lembar")));
-                    obatDetail.setTipeObat(obj.getString("tipe_obat"));
 
+                    if(obj.has("biji_per_lemar")){
+                        obatDetail.setBijiPerLembar(new BigInteger(obj.getString("biji_per_lembar")));
+                    }
+                    if(obj.has("lembar_per_box")){
+                        obatDetail.setLembarPerBox(new BigInteger(obj.getString("lembar_per_box")));
+                    }
+                    if(obj.has("id_pabrik_obat")){
+                        obatDetail.setIdPabrikObat(obj.getString("id_pabrik_obat"));
+                    }
+                    if(obj.has("nomor_produksi")){
+                        obatDetail.setNomorProduksi(obj.getString("nomor_produksi"));
+                    }
+                    if(obj.has("tipe_obat")){
+                        obatDetail.setTipeObat(obj.getString("tipe_obat"));
+                    }
                     obatDetailList.add(obatDetail);
                 }
 
                 permintaanVendor.setListOfTransaksiObatDetail(obatDetailList);
             }
         } catch (JSONException e) {
+            response.setStatus("error");
+            response.setMessage("Found Error when save permintaan vendor " + e.getMessage());
             logger.error("[PermintaanVendorAction.savePermintaanPO] Error when save permintaan po", e);
         }
 
         try {
             response = permintaanVendorBo.saveListObatPo(permintaanVendor);
-        } catch (GeneralBOException e) {
+        } catch (Exception e) {
             response.setStatus("error");
-            response.setMessage("Found Error when searh save permintaan vendor " + e.getMessage());
+            response.setMessage("Found Error when save permintaan vendor " + e.getMessage());
             logger.error("[PermintaanVendorAction.savePermintaanPO] ERROR error when get searh obat. ", e);
-            addActionError("[PermintaanVendorAction.savePermintaanPO] ERROR error when get searh obat. " + e.getMessage());
         }
 
         logger.info("[PermintaanVendorAction.savePermintaanPO] END <<<<<<<");
@@ -724,30 +750,50 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 }
                 // upload img
                 if (!"".equalsIgnoreCase(obj.get("img").toString())){
+                    String cekPath =  CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_DOC_PO;
+                    File theDir = new File(cekPath);
+                    if (!theDir.exists()) {
+                        theDir.mkdirs();
+                        theDir.setReadable(true);
+                        theDir.setExecutable(true);
+                        theDir.setWritable(true);
+                    }
 
-                    BASE64Decoder decoder = new BASE64Decoder();
-                    byte[] decodedBytes = decoder.decodeBuffer(obj.getString("img"));
-                    logger.info("Decoded upload data : " + decodedBytes.length);
-                    String fileName = i + docPoEntity.getIdItem()+"-"+dateFormater("MM")+dateFormater("yy")+".jpg";
-                    String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_DOC_PO+fileName;
-                    logger.info("File save path : " + uploadFile);
-                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
-
-                    if (image == null) {
-                        logger.error("Buffered Image is null");
-                    }else{
-                        CrudResponse response = CommonUtil.compressImage(image, "png", uploadFile);
-                        if("success".equalsIgnoreCase(response.getStatus())){
+                    if(obj.has("eks")){
+                        String eks = obj.getString("eks");
+                        String fileName = i + docPoEntity.getIdItem()+"-"+dateFormater("MM")+dateFormater("yy");
+                        BASE64Decoder decoder = new BASE64Decoder();
+                        byte[] decodedBytes = decoder.decodeBuffer(obj.getString("img"));
+                        if ("pdf".equalsIgnoreCase(eks)) {
+                            fileName = fileName + ".pdf";
+                            File file = new File(cekPath + fileName);
+                            FileOutputStream fop = new FileOutputStream(file);
+                            fop.write(decodedBytes);
+                            fop.flush();
+                            fop.close();
                             docPoEntity.setUrlImg(fileName);
-                        }else{
-                            checkObatResponse.setStatus("error");
-                            checkObatResponse.setMessage("Kompress IMG Error, "+response.getMsg());
-                            return checkObatResponse;
+                            docPoEntity.setTipe("PDF");
+                        } else {
+                            fileName = fileName + ".jpg";
+                            String uploadFile = cekPath + fileName;
+                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+                            if (image == null) {
+                                logger.error("Buffered Image is null");
+                            } else {
+                                CrudResponse response = CommonUtil.compressImage(image, "png", uploadFile);
+                                if("success".equalsIgnoreCase(response.getStatus())){
+                                    docPoEntity.setUrlImg(fileName);
+                                    docPoEntity.setTipe("IMG");
+                                }else{
+                                    checkObatResponse.setStatus("error");
+                                    checkObatResponse.setMessage("Kompress IMG Error, "+response.getMsg());
+                                    return checkObatResponse;
+                                }
+                            }
                         }
                     }
                 }
 
-                docPoEntity.setTipe("IMG");
                 docPoEntity.setIdPermintaanObatVendor(idPermintaanVendor);
                 docPoEntity.setFlag("Y");
                 docPoEntity.setAction("C");
@@ -766,12 +812,12 @@ public class PermintaanVendorAction extends BaseMasterAction {
             }
         }
 
-        permintaanVendor.setNoFaktur(noFaktur);
-        permintaanVendor.setTanggalFaktur(Date.valueOf(tglFaktur));
+        permintaanVendor.setNoFaktur(noFaktur != null && !"".equalsIgnoreCase(noFaktur) ? noFaktur : null);
+        permintaanVendor.setTanggalFaktur(tglFaktur != null && !"".equalsIgnoreCase(tglFaktur) ? Date.valueOf(tglFaktur) : null);
         permintaanVendor.setTglInvoice( "".equalsIgnoreCase(tglInvoice) ? null : Date.valueOf(tglInvoice));
         permintaanVendor.setTglDo( "".equalsIgnoreCase(tglDo) ? null : Date.valueOf(tglDo));
-        permintaanVendor.setNoInvoice(noInvoice);
-        permintaanVendor.setNoDo(noDo);
+        permintaanVendor.setNoInvoice(noInvoice != null && !"".equalsIgnoreCase(noInvoice) ? noInvoice : null);
+        permintaanVendor.setNoDo(noDo != null && !"".equalsIgnoreCase(noDo) ? noDo : null);
         permintaanVendor.setIdPelayanan(pelayananId);
 
         List<PermintaanVendor> permintaanVendorList = new ArrayList<>();
@@ -796,18 +842,17 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 addActionError("[PermintaanVendorAction.saveApproveBatch] ERROR. " + e.getMessage());
             }
 
-            List<TransaksiObatDetail> transaksiObatDetailNew = new ArrayList<>();
+            // List<TransaksiObatDetail> transaksiObatDetailNew = new ArrayList<>();
+            // fitur list obat baru sudah dinonaktifkan
 
             try {
-                checkObatResponse = permintaanVendorBo.saveConfirm(permintaanVendor, transaksiObatDetails, transaksiObatDetailNew);
+                checkObatResponse = permintaanVendorBo.saveConfirm(permintaanVendor, transaksiObatDetails, null);
             } catch (GeneralBOException e) {
                 logger.error("[PermintaanVendorAction.saveApproveBatch] Error when save data approve PO", e);
                 addActionError(" Error when save data approve PO" + e.getMessage());
             }
 
-
-
-            List<Map> listMapPersediaan = new ArrayList<>();
+            List<MappingDetail> listMapPersediaan = new ArrayList<>();
             BigDecimal hutangUsaha = new BigDecimal(0);
             BigDecimal ppn = new BigDecimal(0);
             if (transaksiObatDetails.size() > 0) {
@@ -851,9 +896,9 @@ public class PermintaanVendorAction extends BaseMasterAction {
                         ppn = ppn.add(hargaPpn);
                     }
 
-                    Map mapHutangUsaha = new HashMap();
-                    mapHutangUsaha.put("kd_barang", trans.getIdBarang());
-                    mapHutangUsaha.put("nilai", hargaTotal.subtract(hargaPpn));
+                    MappingDetail mapHutangUsaha = new MappingDetail();
+                    mapHutangUsaha.setKodeBarang(trans.getIdBarang());
+                    mapHutangUsaha.setNilai(hargaTotal.subtract(hargaPpn));
                     listMapPersediaan.add(mapHutangUsaha);
                 }
             }
@@ -881,32 +926,41 @@ public class PermintaanVendorAction extends BaseMasterAction {
                     }
                 }
 
-                Map mapBiaya = new HashMap();
-                mapBiaya.put("divisi_id", divisiId);
-                mapBiaya.put("nilai", hutangUsaha);
+                List<MappingDetail> listMapBiaya = new ArrayList<>();
+
+                MappingDetail mapBiaya = new MappingDetail();
+                mapBiaya.setMasterId(divisiId);
+                mapBiaya.setNilai(hutangUsaha);
+                listMapBiaya.add(mapBiaya);
 
                 jurnalMap.put("divisi_id", divisiId);
                 jurnalMap.put("persediaan_gudang", listMapPersediaan);
-                jurnalMap.put("biaya_persediaan_obat", mapBiaya);
+                jurnalMap.put("biaya_persediaan_obat", listMapBiaya);
 
                 catatan = "Pengganti Barang No. Transaksi "+idPermintaanVendor+". Retur Vendor ke Gudang dari Vendor " + requestVendor.getIdVendor() + " - " + namaVendor;
                 transId = "36";
             } else {
 
-                Map mapPajakObat = new HashMap();
-                mapPajakObat.put("bukti", noFaktur);
-                mapPajakObat.put("nilai", ppn);
-                mapPajakObat.put("master_id", requestVendor.getIdVendor());
+                List<MappingDetail> listMapPajakObat = new ArrayList<>();
 
-                Map mapHutangVendor = new HashMap();
-                mapHutangVendor.put("bukti", noDo);
-                mapHutangVendor.put("nilai", hutangUsaha);
-                mapHutangVendor.put("master_id", requestVendor.getIdVendor());
-                mapHutangVendor.put("divisi_id", divisiId);
+                MappingDetail mapPajakObat = new MappingDetail();
+                mapPajakObat.setBukti(noFaktur);
+                mapPajakObat.setNilai(ppn);
+                mapPajakObat.setMasterId(requestVendor.getIdVendor());
+                listMapPajakObat.add(mapPajakObat);
+
+                List<MappingDetail> listMapHutangVendor = new ArrayList<>();
+
+                MappingDetail mapHutangVendor = new MappingDetail();
+                mapHutangVendor.setBukti(noDo);
+                mapHutangVendor.setNilai(hutangUsaha);
+                mapHutangVendor.setMasterId(requestVendor.getIdVendor());
+                mapHutangVendor.setDivisiId(divisiId);
+                listMapHutangVendor.add(mapHutangVendor);
 
                 jurnalMap.put("persediaan_gudang", listMapPersediaan);
-                jurnalMap.put("hutang_farmasi_vendor", mapHutangVendor);
-                jurnalMap.put("ppn_masukan", mapPajakObat);
+                jurnalMap.put("hutang_farmasi_vendor", listMapHutangVendor);
+                jurnalMap.put("ppn_masukan", listMapPajakObat);
 
                 catatan = "Penerimaan Barang Gudang dari Vendor " + requestVendor.getIdVendor() + " - " + namaVendor;
                 transId = "27";
@@ -927,6 +981,173 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
         logger.info("[PermintaanVendorAction.saveApproveBatch] START >>>>>>>");
         return checkObatResponse;
+    }
+
+    public CrudResponse saveDocPo(String idPermintaanVendor, String noBatch, String listImg, String objData) throws JSONException, IOException{
+        logger.info("[PermintaanVendorAction.saveDocPo] Start >>>");
+
+        String userLogin    = CommonUtil.userLogin();
+        Timestamp time      = CommonUtil.getCurrentDateTimes();
+
+        CrudResponse response = new CrudResponse();
+
+        List<ItSimrsDocPoEntity> docPoEntities = new ArrayList<>();
+
+        if (idPermintaanVendor == null || "".equalsIgnoreCase(idPermintaanVendor)){
+            response.hasError("Tidak Ditemukan No. Permintaan");
+            return response;
+        }
+
+        if (noBatch == null || "".equalsIgnoreCase(noBatch)){
+            response.hasError("Tidak Ditemukan No. Batch");
+            return response;
+        }
+
+        if (listImg == null || "".equalsIgnoreCase(listImg)){
+            response.hasError("Tidak Ditemukan list Document Dikirim");
+            return response;
+        }
+
+        if (objData == null || "".equalsIgnoreCase(objData)){
+            response.hasError("Tidak Ditemukan data No. Document");
+            return response;
+        }
+
+        // passing data uploaded document to list document entity
+        JSONArray json = new JSONArray(listImg);
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject obj = json.getJSONObject(i);
+            ItSimrsDocPoEntity docPoEntity = new ItSimrsDocPoEntity();
+            if (!"".equalsIgnoreCase(obj.get("jenisnomor").toString())) {
+                docPoEntity.setJenisNomor(obj.get("jenisnomor") == null ? "" : obj.get("jenisnomor").toString());
+            }
+            if (!"".equalsIgnoreCase(obj.get("iditem").toString())) {
+                docPoEntity.setIdItem(obj.get("iditem") == null ? null : obj.get("iditem").toString());
+            }
+            // upload img
+            if (!"".equalsIgnoreCase(obj.get("img").toString())) {
+
+                BASE64Decoder decoder = new BASE64Decoder();
+                byte[] decodedBytes = decoder.decodeBuffer(obj.getString("img"));
+                logger.info("Decoded upload data : " + decodedBytes.length);
+                String fileName = i + docPoEntity.getIdItem() + "-" + dateFormater("MM") + dateFormater("yy") + ".jpg";
+                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_PO + fileName;
+                logger.info("File save path : " + uploadFile);
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                if (image == null) {
+                    logger.error("Buffered Image is null");
+                } else {
+                    response = CommonUtil.compressImage(image, "png", uploadFile);
+                    if ("success".equalsIgnoreCase(response.getStatus())) {
+                        docPoEntity.setUrlImg(fileName);
+                    } else {
+                        response.hasError("Kompress IMG Error, " + response.getMsg());
+                    }
+                }
+            }
+
+            docPoEntity.setTipe("IMG");
+            docPoEntity.setIdPermintaanObatVendor(idPermintaanVendor);
+            docPoEntity.setNoBatch(Integer.valueOf(noBatch));
+            docPoEntity.setFlag("Y");
+            docPoEntity.setAction("C");
+            docPoEntity.setCreatedDate(time);
+            docPoEntity.setCreatedWho(userLogin);
+            docPoEntity.setLastUpdate(time);
+            docPoEntity.setLastUpdateWho(userLogin);
+            docPoEntities.add(docPoEntity);
+        }
+        // END
+
+        // set json object to object BatchPermintaanObat
+        BatchPermintaanObat batchPermintaanObat = new BatchPermintaanObat();
+        JSONObject obj = new JSONObject(objData);
+
+        batchPermintaanObat.setNoFaktur(obj.getString("no_faktur"));
+        batchPermintaanObat.setNoInvoice(obj.getString("no_invoice"));
+        batchPermintaanObat.setNoDo(obj.getString("no_do"));
+        batchPermintaanObat.setTanggalFaktur(obj.getString("tgl_faktur") == null ? null : CommonUtil.convertStringToDate2(obj.getString("tgl_faktur")));
+        batchPermintaanObat.setTglInvoice(obj.getString("tgl_invoice") == null ? null : CommonUtil.convertStringToDate2(obj.getString("tgl_invoice")));
+        batchPermintaanObat.setTglDo(obj.getString("tgl_do") == null ? null : CommonUtil.convertStringToDate2(obj.getString("tgl_do")));
+        batchPermintaanObat.setIdPermintaan(idPermintaanVendor);
+        batchPermintaanObat.setStNoBatch(noBatch);
+        batchPermintaanObat.setLastUpdate(time);
+        batchPermintaanObat.setLastUpdateWho(userLogin);
+        // END
+
+        // check jika list dokumen tidak ada nomor dokumen
+        response = checkDocumentNumb(docPoEntities, batchPermintaanObat);
+        if ("error".equalsIgnoreCase(response.getStatus())){
+            return response;
+        }
+        // END
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+
+        try {
+            permintaanVendorBo.saveUploadDocPoAfterApprove(docPoEntities, batchPermintaanObat);
+            response.hasSuccess("Berhasil Menyimpan");
+        } catch (GeneralBOException e) {
+            logger.error("[PermintaanVendorAction.saveApproveBatch] ERROR error when save DOC PO. ", e);
+            response.hasError("[PermintaanVendorAction.saveApproveBatch] ERROR error when save DOC PO. " + e.getMessage());
+            return response;
+        }
+
+        logger.info("[PermintaanVendorAction.saveDocPo] END <<<");
+        return response;
+    }
+
+    private CrudResponse checkDocumentNumb(List<ItSimrsDocPoEntity> docPoEntities, BatchPermintaanObat batchObat){
+        logger.info("[PermintaanVendorAction.checkDocumentNumb] Start >>>");
+        CrudResponse response = new CrudResponse();
+
+        if (batchObat.getNoFaktur() == null
+                || "".equalsIgnoreCase(batchObat.getNoFaktur())
+                || batchObat.getTanggalFaktur() == null )
+        {
+            List<ItSimrsDocPoEntity> filterdList = docPoEntities.stream().filter(
+                    p->p.getJenisNomor().equalsIgnoreCase("faktur")
+            ).collect(Collectors.toList());
+
+            if (filterdList.size() > 0){
+                response.hasError("Tidak ditemukan no. faktur pada list faktur yang dikirim");
+                return response;
+            }
+        }
+
+        if (batchObat.getNoInvoice() == null
+                || "".equalsIgnoreCase(batchObat.getNoInvoice())
+                || batchObat.getTglInvoice() == null)
+        {
+            List<ItSimrsDocPoEntity> filterdList = docPoEntities.stream().filter(
+                    p->p.getJenisNomor().equalsIgnoreCase("invoice")
+            ).collect(Collectors.toList());
+
+            if (filterdList.size() > 0){
+                response.hasError("Tidak ditemukan no. invoice pada list invoice yang dikirim");
+                return response;
+            }
+        }
+
+        if (batchObat.getNoDo() == null
+                || "".equalsIgnoreCase(batchObat.getNoDo())
+                || batchObat.getTglDo() == null)
+        {
+            List<ItSimrsDocPoEntity> filterdList = docPoEntities.stream().filter(
+                    p->p.getJenisNomor().equalsIgnoreCase("do")
+            ).collect(Collectors.toList());
+
+            if (filterdList.size() > 0){
+                response.hasError("Tidak ditemukan no. invoice pada list invoice yang dikirim");
+                return response;
+            }
+        }
+
+        response.setStatus("success");
+        logger.info("[PermintaanVendorAction.checkDocumentNumb] End <<<");
+        return response;
     }
 
     public List<TransaksiObatDetail> searchNewListObat(String idApproval) {
@@ -1842,6 +2063,57 @@ public class PermintaanVendorAction extends BaseMasterAction {
         MtSimrsPermintaanVendorEntity permintaanVendorEntity = permintaanVendorBo.getPermintaanVendorEntityById(idPermintaan);
 
         return permintaanVendorBo.getListBatchByJenisItem(idItem, jenis, permintaanVendorEntity.getIdApprovalObat(), batch);
+    }
+
+    public List<PabrikObat> getListPabrikObatForPo(String idObat, String tipePencarian){
+        logger.info("[PermintaanVendorAction.getListPabrikObatForPo] START >>>>>>>");
+
+        List<PabrikObat> pabrikObatList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+
+        try {
+            pabrikObatList = permintaanVendorBo.getListPabrikObatByIdObatForPo(idObat, tipePencarian);
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorBoImpl.getListPabrikObatForPo] ERROR when get data. " + e.getMessage());
+            throw new GeneralBOException("[PermintaanVendorBoImpl.getListPabrikObatForPo] ERROR when get data. " + e.getMessage());
+        }
+
+
+        logger.info("[PermintaanVendorAction.getListPabrikObatForPo] END <<<<<<<");
+        return pabrikObatList;
+    }
+
+    public Obat cekNoProduksi(String noProduksi) {
+        Obat obatArrayList = new Obat();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+        if (noProduksi != null && !"".equalsIgnoreCase(noProduksi)) {
+            try {
+                obatArrayList = permintaanVendorBo.cekNoProduksi(noProduksi);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error when search list obat " + e.getMessage());
+            }
+        }
+        return obatArrayList;
+    }
+
+    public List<Obat> getListObatByVendor(String branchId, String idObat){
+        logger.info("[PermintaanVendorAction.getListObatByVendor] Start >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+
+        List<Obat> obatList = new ArrayList<>();
+
+        try {
+            obatList = permintaanVendorBo.getListObatByIdVendor(branchId, idObat);
+        } catch (HibernateException e){
+            logger.error("Found Error when search list obat " + e.getMessage());
+        }
+
+        logger.info("[PermintaanVendorAction.getListObatByVendor] End <<<");
+        return obatList;
     }
 
     @Override

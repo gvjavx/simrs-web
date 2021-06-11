@@ -9,68 +9,193 @@
 	<parameter name="reportParams.branchId" class="java.lang.String"/>
 	<parameter name="reportParams.branchName" class="java.lang.String"/>
 	<parameter name="reportParams.alamatSurat" class="java.lang.String"/>
+	<parameter name="reportParams.bulan" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportParams.tahun" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[select distinct
-	pegawai.nip,
-	pegawai.nama_pegawai,
-	thr.*,
-	payroll.tahun,
-	case when golongan.golongan_name is null then golongan_pkwt.golongan_pkwt_name else golongan.golongan_name end,
-	position.position_name,
-	payroll.gaji_bersih,
-	payroll.pph_gaji
+		<![CDATA[select
+   payroll.*,
+   case
+      when to_date('01' || '-' || $P{reportParams.bulan} || '-' || $P{reportParams.tahun}, 'DD-MM-YYYY') - INTERVAL '1 YEAR' < peg.tanggal_masuk  then
+         (to_date('01' || '-' || $P{reportParams.bulan} || '-' || $P{reportParams.tahun}, 'DD-MM-YYYY')  - peg.tanggal_masuk + 1) / 30
+      else 12 end as bulan_aktif
 from
-	it_hris_payroll_thr thr
-	left join it_hris_payroll payroll on payroll.payroll_id = thr.payroll_id
-	left join im_hris_pegawai pegawai on pegawai.nip = payroll.nip
-	left join im_hris_golongan golongan on golongan.golongan_id = pegawai.golongan_id
-	left join im_hris_golongan_pkwt golongan_pkwt on golongan_pkwt.golongan_pkwt_id = pegawai.golongan_id
-	left join it_hris_pegawai_position posisi on posisi.nip = payroll.nip
-	left join im_position position on position.position_id = posisi.position_id
+   it_hris_payroll payroll
+   join im_hris_pegawai peg on peg.nip = payroll.nip
 where
-	payroll.branch_id = 'RS02'
-	and payroll.flag = 'Y'
-	and payroll.payroll_id = $P{reportParams.payrollId}]]>
+   payroll.flag = 'Y'
+   and payroll.tipe_payroll = 'TH'
+   and payroll.payroll_id = $P{reportParams.payrollId}]]>
 	</queryString>
-	<field name="nip" class="java.lang.String"/>
-	<field name="nama_pegawai" class="java.lang.String"/>
-	<field name="thr_id" class="java.lang.String"/>
 	<field name="payroll_id" class="java.lang.String"/>
-	<field name="created_date" class="java.sql.Timestamp"/>
+	<field name="payroll_header_id" class="java.lang.String"/>
+	<field name="tipe_payroll" class="java.lang.String"/>
+	<field name="bulan" class="java.lang.String"/>
+	<field name="tahun" class="java.lang.String"/>
+	<field name="tahun_skala_gaji" class="java.lang.String"/>
+	<field name="nip" class="java.lang.String"/>
+	<field name="nip_lama" class="java.lang.String"/>
+	<field name="nama_pegawai" class="java.lang.String"/>
+	<field name="gelar" class="java.lang.String"/>
+	<field name="position_id" class="java.lang.String"/>
+	<field name="position_name" class="java.lang.String"/>
+	<field name="golongan_id" class="java.lang.String"/>
+	<field name="golongan_name" class="java.lang.String"/>
+	<field name="department_id" class="java.lang.String"/>
+	<field name="department_name" class="java.lang.String"/>
+	<field name="sub_divisi" class="java.lang.String"/>
+	<field name="sub_divisi_name" class="java.lang.String"/>
+	<field name="kelompok_position_id" class="java.lang.String"/>
+	<field name="kelompok_position_name" class="java.lang.String"/>
+	<field name="profesi_id" class="java.lang.String"/>
+	<field name="profesi_name" class="java.lang.String"/>
+	<field name="branch_id" class="java.lang.String"/>
+	<field name="branch_name" class="java.lang.String"/>
+	<field name="golongan_dapen" class="java.lang.String"/>
+	<field name="grade_level" class="java.lang.Integer"/>
+	<field name="tipe_pegawai_id" class="java.lang.String"/>
+	<field name="tipe_pegawai_name" class="java.lang.String"/>
+	<field name="status_pegawai_id" class="java.lang.String"/>
+	<field name="status_pegawai_name" class="java.lang.String"/>
+	<field name="jenis_pegawai_id" class="java.lang.String"/>
+	<field name="jenis_pegawai_name" class="java.lang.String"/>
+	<field name="dapen_id" class="java.lang.String"/>
+	<field name="dapen_name" class="java.lang.String"/>
+	<field name="status_keluarga" class="java.lang.String"/>
+	<field name="jumlah_anak" class="java.lang.Integer"/>
+	<field name="jumlah_anak_ditanggung" class="java.lang.Integer"/>
+	<field name="npwp" class="java.lang.String">
+		<fieldDescription><![CDATA[Alamat Master]]></fieldDescription>
+	</field>
+	<field name="no_rek_bank" class="java.lang.String"/>
+	<field name="nama_bank" class="java.lang.String"/>
+	<field name="gender" class="java.lang.String"/>
+	<field name="masa_kerja_gol" class="java.lang.Integer"/>
+	<field name="masa_kerja" class="java.lang.Integer"/>
+	<field name="tanggal_aktif" class="java.sql.Date"/>
+	<field name="tanggal_akhir_kontrak" class="java.sql.Date"/>
+	<field name="tanggal_pra_pensiun" class="java.sql.Date"/>
+	<field name="tanggal_pensiun" class="java.sql.Date"/>
+	<field name="tanggal_keluar" class="java.sql.Date"/>
+	<field name="tanggal_awal_lembur" class="java.sql.Date"/>
+	<field name="tanggal_akhir_lembur" class="java.sql.Date"/>
+	<field name="kodering" class="java.lang.String"/>
+	<field name="gaji_pensiun" class="java.math.BigDecimal"/>
+	<field name="gaji_pensiun_bpjs" class="java.math.BigDecimal"/>
+	<field name="gaji_pokok" class="java.math.BigDecimal"/>
+	<field name="gaji_kotor" class="java.math.BigDecimal"/>
+	<field name="thp" class="java.math.BigDecimal"/>
+	<field name="gaji_bersih" class="java.math.BigDecimal"/>
+	<field name="total_a" class="java.math.BigDecimal"/>
+	<field name="total_b" class="java.math.BigDecimal"/>
+	<field name="total_c" class="java.math.BigDecimal"/>
+	<field name="total_d" class="java.math.BigDecimal"/>
+	<field name="total_rlab" class="java.math.BigDecimal"/>
+	<field name="tunjungan_sankhus" class="java.math.BigDecimal"/>
+	<field name="tunjangan_umk" class="java.math.BigDecimal"/>
+	<field name="tunjangan_struktural" class="java.math.BigDecimal"/>
+	<field name="tunjangan_peralihan" class="java.math.BigDecimal"/>
+	<field name="tunjangan_jabatan_struktural" class="java.math.BigDecimal"/>
+	<field name="tunjangan_strategis" class="java.math.BigDecimal"/>
+	<field name="kompensasi" class="java.math.BigDecimal"/>
+	<field name="tunjangan_transport" class="java.math.BigDecimal"/>
+	<field name="tunjangan_air_listrik" class="java.math.BigDecimal"/>
+	<field name="tunjangan_pengobatan" class="java.math.BigDecimal"/>
+	<field name="tunjangan_perumahan" class="java.math.BigDecimal"/>
+	<field name="tunjangan_air" class="java.math.BigDecimal"/>
+	<field name="tunjangan_listrik" class="java.math.BigDecimal"/>
+	<field name="tunjangan_bbm" class="java.math.BigDecimal"/>
+	<field name="tunjangan_fungsional" class="java.math.BigDecimal"/>
+	<field name="tunjangan_tambahan" class="java.math.BigDecimal"/>
+	<field name="tunjangan_pph" class="java.math.BigDecimal"/>
+	<field name="tunjangan_baju_dinas" class="java.math.BigDecimal"/>
+	<field name="tunjangan_lain" class="java.math.BigDecimal"/>
+	<field name="tunjangan_lembur" class="java.math.BigDecimal"/>
+	<field name="peralihan_gapok" class="java.math.BigDecimal"/>
+	<field name="peralihan_sankhus" class="java.math.BigDecimal"/>
+	<field name="peralihan_tunjangan" class="java.math.BigDecimal"/>
+	<field name="tunjangan_pemondokan" class="java.math.BigDecimal"/>
+	<field name="tunjangan_komunikasi" class="java.math.BigDecimal"/>
+	<field name="tunjangan_supervisi" class="java.math.BigDecimal"/>
+	<field name="tunjangan_lokal" class="java.math.BigDecimal"/>
+	<field name="tunjangan_siaga" class="java.math.BigDecimal"/>
+	<field name="pph_gaji" class="java.math.BigDecimal"/>
+	<field name="pph_pengobatan" class="java.math.BigDecimal"/>
+	<field name="pph_seharusnya" class="java.math.BigDecimal"/>
+	<field name="selisih_pph" class="java.math.BigDecimal"/>
+	<field name="tunjangan_dapen" class="java.math.BigDecimal"/>
+	<field name="persen_dapen_kary" class="java.math.BigDecimal"/>
+	<field name="persen_dapen_pers" class="java.math.BigDecimal"/>
+	<field name="iuran_dapen_kary" class="java.math.BigDecimal"/>
+	<field name="iuran_dapen_pers" class="java.math.BigDecimal"/>
+	<field name="iuran_kopkar" class="java.math.BigDecimal"/>
+	<field name="iuran_sp" class="java.math.BigDecimal"/>
+	<field name="iuran_piikb" class="java.math.BigDecimal"/>
+	<field name="iuran_bank_mandiri" class="java.math.BigDecimal"/>
+	<field name="iuran_bank_bri" class="java.math.BigDecimal"/>
+	<field name="iuran_infaq" class="java.math.BigDecimal"/>
+	<field name="iuran_perkes_dan_obat" class="java.math.BigDecimal"/>
+	<field name="iuran_listrik" class="java.math.BigDecimal"/>
+	<field name="iuran_profesi" class="java.math.BigDecimal"/>
+	<field name="iuran_potongan_lain" class="java.math.BigDecimal"/>
+	<field name="tambahan_lain" class="java.math.BigDecimal"/>
+	<field name="uang_muka_lainnya" class="java.math.BigDecimal"/>
+	<field name="kekurangan_bpjs_tk" class="java.math.BigDecimal"/>
+	<field name="pengobatan" class="java.math.BigDecimal"/>
+	<field name="koperasi" class="java.math.BigDecimal"/>
+	<field name="dansos" class="java.math.BigDecimal"/>
+	<field name="sp" class="java.math.BigDecimal"/>
+	<field name="bazis" class="java.math.BigDecimal"/>
+	<field name="bapor" class="java.math.BigDecimal"/>
+	<field name="zakat" class="java.math.BigDecimal"/>
+	<field name="lain_lain" class="java.math.BigDecimal"/>
+	<field name="umr" class="java.math.BigDecimal"/>
+	<field name="total_potongan_lain" class="java.math.BigDecimal"/>
+	<field name="ptkp_pegawai" class="java.math.BigDecimal"/>
+	<field name="tunjangan_bpjs_ks" class="java.math.BigDecimal"/>
+	<field name="tunjangan_bpjs_tk" class="java.math.BigDecimal"/>
+	<field name="total_iuran_bpjs_tk_kary" class="java.math.BigDecimal"/>
+	<field name="total_iuran_bpjs_tk_pers" class="java.math.BigDecimal"/>
+	<field name="min_bpjs_ks" class="java.math.BigDecimal"/>
+	<field name="max_bpjs_ks" class="java.math.BigDecimal"/>
+	<field name="persen_bpjs_ks_kary" class="java.math.BigDecimal"/>
+	<field name="persen_bpjs_ks_pers" class="java.math.BigDecimal"/>
+	<field name="min_bpjs_tk" class="java.math.BigDecimal"/>
+	<field name="max_bpjs_tk" class="java.math.BigDecimal"/>
+	<field name="persen_bpjs_tk_iuran_kary" class="java.math.BigDecimal"/>
+	<field name="persen_bpjs_tk_jpk_kary" class="java.math.BigDecimal"/>
+	<field name="persen_bpjs_tk_jkk_pers" class="java.math.BigDecimal"/>
+	<field name="persen_bpjs_tk_jht_pers" class="java.math.BigDecimal"/>
+	<field name="persen_bpjs_tk_jkm_pers" class="java.math.BigDecimal"/>
+	<field name="persen_bpjs_tk_jpk_pers" class="java.math.BigDecimal"/>
+	<field name="dasar_bpjs_ks" class="java.math.BigDecimal"/>
+	<field name="dasar_bpjs_tk" class="java.math.BigDecimal"/>
+	<field name="iuran_bpjs_ks_kary" class="java.math.BigDecimal"/>
+	<field name="iuran_bpjs_ks_pers" class="java.math.BigDecimal"/>
+	<field name="iuran_bpjs_tk_kary" class="java.math.BigDecimal"/>
+	<field name="jpk_bpjs_tk_kary" class="java.math.BigDecimal"/>
+	<field name="jkk_bpjs_tk_pers" class="java.math.BigDecimal"/>
+	<field name="jht_bpjs_tk_pers" class="java.math.BigDecimal"/>
+	<field name="jkm_bpjs_tk_pers" class="java.math.BigDecimal"/>
+	<field name="jpk_bpjs_tk_pers" class="java.math.BigDecimal"/>
+	<field name="multifikator" class="java.math.BigDecimal"/>
 	<field name="created_who" class="java.lang.String"/>
-	<field name="last_update" class="java.sql.Timestamp"/>
 	<field name="last_update_who" class="java.lang.String"/>
 	<field name="flag" class="java.lang.String"/>
 	<field name="action" class="java.lang.String"/>
-	<field name="tunjangan_umk" class="java.math.BigDecimal"/>
-	<field name="tunjangan_struktural" class="java.math.BigDecimal"/>
-	<field name="tunjangan_jabatan_struktural" class="java.math.BigDecimal"/>
-	<field name="tunjangan_strategis" class="java.math.BigDecimal"/>
-	<field name="tunjangan_pph" class="java.math.BigDecimal"/>
-	<field name="gaji_golongan" class="java.math.BigDecimal"/>
-	<field name="total_thr" class="java.math.BigDecimal"/>
+	<field name="created_date" class="java.sql.Timestamp"/>
+	<field name="last_update" class="java.sql.Timestamp"/>
 	<field name="bulan_aktif" class="java.lang.Integer"/>
-	<field name="thr_bersih" class="java.math.BigDecimal"/>
-	<field name="tunjangan_peralihan" class="java.math.BigDecimal"/>
-	<field name="pemondokan" class="java.math.BigDecimal"/>
-	<field name="komunikasi" class="java.math.BigDecimal"/>
-	<field name="tunjangan_lain" class="java.math.BigDecimal"/>
-	<field name="tunjangan_tambahan" class="java.math.BigDecimal"/>
-	<field name="total_rlab" class="java.math.BigDecimal"/>
-	<field name="pph_thr" class="java.math.BigDecimal"/>
-	<field name="thp" class="java.math.BigDecimal"/>
-	<field name="tahun" class="java.lang.String"/>
-	<field name="golongan_name" class="java.lang.String"/>
-	<field name="position_name" class="java.lang.String"/>
-	<field name="gaji_bersih" class="java.math.BigDecimal"/>
-	<field name="pph_gaji" class="java.math.BigDecimal"/>
 	<pageHeader>
 		<band height="64" splitType="Stretch">
 			<image>
 				<reportElement x="497" y="4" width="60" height="54" uuid="c252741d-c95f-46b9-b389-2aa80b30778f"/>
 				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
 new com.google.zxing.qrcode.QRCodeWriter().encode(
-"Thr id " + $P{reportParams.payrollId} + "\nPeriode : 2019" ,
+"Thr id " + $F{payroll_id} + "\nPeriode : 2019" ,
 com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			</image>
 			<line>
@@ -184,7 +309,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			<textField pattern="#,##0">
 				<reportElement x="145" y="118" width="100" height="20" uuid="37b3ae88-b4bc-4f17-bec5-dc82b106df10"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{gaji_golongan}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{gaji_pokok}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="10" y="138" width="121" height="20" uuid="4764ec9f-9342-4e24-9367-44ae62226066"/>
@@ -248,7 +373,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			<textField pattern="#,##0">
 				<reportElement x="145" y="138" width="100" height="20" uuid="c873f1ee-5790-4a0e-bcd2-4b7bdbc67f93"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{tunjangan_umk}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tunjangan_umk}$F{tunjungan_sankhus}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="10" y="218" width="121" height="20" uuid="b74246c0-3133-401c-9210-82226366c9a0"/>
@@ -313,7 +438,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			<textField pattern="#,##0">
 				<reportElement x="427" y="158" width="86" height="20" uuid="4515f6bc-05f3-42b2-b4ae-82dc9db3adcb"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{thr_bersih}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{gaji_kotor}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="278" y="138" width="121" height="20" uuid="ce034441-23ed-4669-8c8f-8d87a07173ab"/>

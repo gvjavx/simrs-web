@@ -16,7 +16,7 @@
             <column name="id_periksa_lab" sql-type="varchar" length="30" not-null="true"/>
         </property>
         <property name="idLabDetail">
-            <column name="id_lab_detail" sql-type="varchar" length="30" not-null="true"/>
+            <column name="id_lab_detail" sql-type="varchar" length="30"/>
         </property>
         <property name="namaDetailPeriksa">
             <column name="nama_detail_periksa" sql-type="varchar" length="100" not-null="false"/>
@@ -31,7 +31,7 @@
             <column name="keterangan_acuan_p" sql-type="varchar" length="1000" not-null="false"/>
         </property>
         <property name="hasil">
-            <column name="hasil" sql-type="varchar" length="20" not-null="false"/>
+            <column name="hasil"/>
         </property>
         <property name="keteranganPeriksa">
             <column name="keterangan_periksa" sql-type="varchar" length="1000" not-null="false"/>

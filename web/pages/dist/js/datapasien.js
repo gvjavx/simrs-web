@@ -38,7 +38,26 @@ function setDataPasien() {
         var namaRuangan = $('.nama_ruangan').length;
         var masukRS = $('.tanggal_masuk_rs').length;
 
-        if (tensi > 0 || gejala > 0 || bb > 0 || tb > 0) {
+        var dokterAnestesi = $('.dokter_anestesi').length;
+        var perawatAnestesi = $('.perawat_anestesi').length;
+        var dokterBedah = $('.dokter_bedah').length;
+        var asistenInts = $('.asisten_instrumen').length;
+
+        var jenisPasien = $('.nama_jenis_pasien').length;
+        var asalMasuk = $('.asal_masuk').length;
+
+        var tensiMon = $('.tensi_mon').length;
+        var nadiMon = $('.nadi_mon').length;
+        var rrMon = $('.rr_mon').length;
+        var suhuMon = $('.suhu_mon').length;
+        var noregistrasi = $('.no_registrasi').length;
+        var spo2Pasien = $('.spo2_pasien').length;
+        var stsGizi = $('.status_gizi').length;
+
+        var nyeriPasien = $('.nyeri-pasien').length;
+        var jatuhPasien = $('.jatuh-pasien').length;
+
+        if (tensi > 0 || gejala > 0 || bb > 0 || tb > 0 || spo2Pasien > 0 || nyeriPasien > 0 || jenisPasien) {
             dwr.engine.setAsync(true);
             CheckupAction.getDataPemeriksaanFisik(noCheckup, {
                 callback: function (res) {
@@ -50,9 +69,20 @@ function setDataPasien() {
                         tempBerat = res.berat;
                         tempTinggi = res.tinggi;
                         tempAnmnesa = res.anamnese;
+                        tempSpo2 = res.spo2;
+                        tempNyeri = res.nyeri;
+                        tempJatuh = res.resikoJatuh;
                     }
                 }
             });
+        }
+
+        if (nyeriPasien > 0) {
+            $('.nyeri-pasien').val(tempNyeri);
+        }
+
+        if (jatuhPasien > 0) {
+            $('.jatuh-pasien').val(tempJatuh);
         }
 
         if (jam > 0) {
@@ -66,7 +96,10 @@ function setDataPasien() {
 
         if (tgl > 0) {
             $('.tgl').datepicker({
-                dateFormat: 'dd-mm-yy'
+                dateFormat: 'dd-mm-yy',
+                autoclose: true,
+                changeMonth: true,
+                changeYear:true
             });
             $('.tgl').val(converterDate(new Date()));
             $('.tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
@@ -185,8 +218,11 @@ function setDataPasien() {
             CheckupAction.getDataDokterSip(idDetailCheckup, "RJ", {
                 callback: function (res) {
                     if (res != '') {
-                        $('.sip_dokter').val(res.sip);
+                        $('.sip_dokter').val(res.idDokter);
                         $('.nama_dokter').val(res.namaDokter);
+
+                        $('.sip_dokter').attr('autocomplete', 'off');
+                        $('.nama_dokter').attr('autocomplete', 'off');
                     }
                 }
             });
@@ -196,8 +232,11 @@ function setDataPasien() {
             CheckupAction.getDataDokterSip(idDetailCheckup, "RI", {
                 callback: function (res) {
                     if (res != '') {
-                        $('.sip_dokter_ri').val(res.sip);
+                        $('.sip_dokter_ri').val(res.idDokter);
                         $('.nama_dokter_ri').val(res.namaDokter);
+
+                        $('.sip_dokter_ri').attr('autocomplete', 'off');
+                        $('.nama_dokter_ri').attr('autocomplete', 'off');
                     }
                 }
             });
@@ -231,7 +270,10 @@ function setDataPasien() {
         }
         if (patTgl > 0) {
             $('.ptr-tgl').datepicker({
-                dateFormat: 'dd-mm-yy'
+                dateFormat: 'dd-mm-yy',
+                autoclose: true,
+                changeMonth: true,
+                changeYear:true,
             });
             $('.ptr-tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
         }
@@ -267,5 +309,182 @@ function setDataPasien() {
         if(masukRS > 0){
             $('.tanggal_masuk_rs').val(tanggalMasuk);
         }
+
+        if(dokterAnestesi > 0){
+            dwr.engine.setAsync(true);
+            AsesmenOperasiAction.getDataByKey(idDetailCheckup, "dokter_anestesi", {
+                callback: function (res) {
+                    if (res != '') {
+                        $('.dokter_anestesi').val(res);
+                    }
+                }
+            });
+        }
+        if(perawatAnestesi > 0){
+            dwr.engine.setAsync(true);
+            AsesmenOperasiAction.getDataByKey(idDetailCheckup, "perawat_anestesi", {
+                callback: function (res) {
+                    if (res != '') {
+                        $('.perawat_anestesi').val(res);
+                    }
+                }
+            });
+        }
+        if(dokterBedah > 0){
+            dwr.engine.setAsync(true);
+            AsesmenOperasiAction.getDataByKey(idDetailCheckup, "dokter_bedah", {
+                callback: function (res) {
+                    if (res != '') {
+                        $('.dokter_bedah').val(res);
+                    }
+                }
+            });
+        }
+        if(asistenInts > 0){
+            dwr.engine.setAsync(true);
+            AsesmenOperasiAction.getDataByKey(idDetailCheckup, "asisten_instrumen", {
+                callback: function (res) {
+                    if (res != '') {
+                        $('.asisten_instrumen').val(res);
+                    }
+                }
+            });
+        }
+
+        if(jenisPasien > 0){
+            if(namaJenisPasien != undefined){
+                $('.nama_jenis_pasien').val(namaJenisPasien);
+            }
+        }
+
+        if(asalMasuk > 0){
+            dwr.engine.setAsync(true);
+            CheckupAction.fistCheckup(noCheckup, {
+                callback: function (res) {
+                    if (res != '') {
+                        $('.asal_masuk').val(res);
+                    }
+                }
+            });
+        }
+
+        if(tensiMon > 0 || nadiMon > 0 || rrMon > 0){
+            dwr.engine.setAsync(true);
+            AsesmenOperasiAction.getVitalSingMonAnestesi(idDetailCheckup, function (res) {
+                if(res != null){
+                    if(tensiMon > 0){
+                        $('.tensi_mon').val(res.sistole+"/"+res.diastole);
+                    }
+                    if(nadiMon > 0){
+                        $('.nadi_mon').val(res.nadi);
+                    }
+                    if(rrMon > 0){
+                        $('.rr_mon').val(res.rr);
+                    }
+                }
+            });
+        }
+    }
+
+    if(noregistrasi > 0){
+        $('.no_registrasi').val(idDetailCheckup);
+    }
+
+    if(spo2Pasien > 0){
+        $('.spo2_pasien').val(tempSpo2);
+    }
+
+    $('.nama_dokter').on('input', function (e) {
+        $('#' + e.target.id).typeahead({
+            minLength: 3,
+            source: function (query, process) {
+                functions = [];
+                mapped = {};
+                var data = [];
+                dwr.engine.setAsync(false);
+                CheckupAction.getComboNamaDokterPelayanan(e.target.value, function (res) {
+                    data = res;
+                });
+                $.each(data, function (i, item) {
+                    var labelItem = item.idDokter + "-" + item.namaDokter;
+                    mapped[labelItem] = {
+                        id: item.idDokter,
+                        nama: item.namaDokter
+                    };
+                    functions.push(labelItem);
+                });
+                process(functions);
+
+            },
+            updater: function (item) {
+                var selectedObj = mapped[item];
+                $('.sip_dokter').val(selectedObj.id);
+                return selectedObj.nama;
+            }
+        });
+    });
+
+    $('.nama_dokter_ri').on('input', function (e) {
+        $('#' + e.target.id).typeahead({
+            minLength: 3,
+            source: function (query, process) {
+                functions = [];
+                mapped = {};
+                var data = [];
+                dwr.engine.setAsync(false);
+                CheckupAction.getComboNamaDokterPelayanan(e.target.value, function (res) {
+                    data = res;
+                });
+                $.each(data, function (i, item) {
+                    var labelItem = item.idDokter + "-" + item.namaDokter;
+                    mapped[labelItem] = {
+                        id: item.idDokter,
+                        nama: item.namaDokter
+                    };
+                    functions.push(labelItem);
+                });
+                process(functions);
+
+            },
+            updater: function (item) {
+                var selectedObj = mapped[item];
+                $('.sip_dokter_ri').val(selectedObj.id);
+                return selectedObj.nama;
+            }
+        });
+    });
+
+    if(stsGizi > 0){
+        CheckupAction.getDataPemeriksaanFisik(noCheckup, {
+            callback: function (res) {
+                if (res != '') {
+                    if (res.berat != '' && res.tinggi != '') {
+                        var tom = (parseInt(tinggi) * 0.01);
+                        var bmi = (parseInt(berat) / (tom * tom)).toFixed(2);
+                        var keterangan = "";
+                        if (parseInt(bmi) < 18.5) {
+                            keterangan = 'Kurang';
+                        } else if (parseInt(bmi) >= 18.5 && parseInt(bmi) <= 22.9) {
+                            keterangan = 'Normal';
+                        } else if (parseInt(bmi) >= 23 && parseInt(bmi) <= 29.9) {
+                            keterangan = 'Lebih';
+                        } else if (parseInt(bmi) > 30) {
+                            keterangan = 'Obesitas';
+                        }
+                        $('.status_gizi').val(keterangan);
+                    }
+                }
+            }
+        });
+    }
+
+    var tujuanRuangan = $('.tujuan-ruangan').length;
+    if(tujuanRuangan > 0){
+        dwr.engine.setAsync(true);
+        CheckupAction.getDataByKey(noCheckup, "tujuan_ruangan", function (res) {
+            if(res != null){
+                $('.tujuan-ruangan').val(res);
+            }
+        });
     }
 }

@@ -75,10 +75,11 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "from \n" +
                 "  (\n" +
                 "    select \n" +
-                "\t  kr.kode_rekening,\n" +
-                "      b.rekening_id, \n" +
-                "      b.no_nota as noNota, \n" +
-                "      a.tanggal_jurnal as tglJurnal, \n" +
+                "\t  kr.rekening_id,\n" +
+                "      b.nomor_rekening as kode_rekening, \n" +
+                "      b.no_nota as noNota, " +
+                "      b.no_jurnal as noJurnal, " +
+                "      a.registered_date as tglJurnal, \n" +
                 "      c.kode_mata_uang as mataUang, \n" +
                 "      (b.jumlah_debit - b.jumlah_kredit) as total, \n" +
                 "      b.master_id as masterId, \n" +
@@ -101,7 +102,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "      inner join it_akun_jurnal_detail b on b.no_jurnal = a.no_jurnal \n" +
                 "      inner join im_akun_mata_uang c on a.mata_uang_id = c.mata_uang_id \n" +
                 "      left join im_akun_master d on b.master_id = d.nomor_master \n" +
-                "\t  INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = b.rekening_id\n" +
+                "\t  INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = b.nomor_rekening\n" +
                 "      INNER JOIN (\n" +
                 "        select \n" +
                 "          * \n" +
@@ -147,18 +148,48 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
             data.setKodeRekening((String) row[0]);
             data.setRekeningId((String) row[1]);
             data.setNoNota((String) row[2]);
-            data.setTglJurnal((Date) row[3]);
-            data.setMataUang((String) row[4]);
-            data.setTotal(BigDecimal.valueOf(Double.parseDouble(row[5].toString())));
-            data.setMasterId((String) row[6]);
-            if ((String) row[7]!=null){
-                data.setNamaMaster((String) row[7]);
+            data.setNoJurnal((String) row[3]);
+            data.setTglJurnal((Date) row[4]);
+            data.setMataUang((String) row[5]);
+            data.setTotal(BigDecimal.valueOf(Double.parseDouble(row[6].toString())));
+            data.setMasterId((String) row[7]);
+            if ((String) row[8]!=null){
+                data.setNamaMaster((String) row[8]);
             }else{
                 data.setNamaMaster("");
             }
 //            data.setMasterGrp(row[8].toString());
-            data.setKurs(BigDecimal.valueOf(Double.parseDouble(row[8].toString())));
-            data.setNamaRekening((String) row[9]);
+            data.setKurs(BigDecimal.valueOf(Double.parseDouble(row[9].toString())));
+            data.setNamaRekening((String) row[10]);
+            listOfResult.add(data);
+        }
+        return listOfResult;
+    }
+    public List<Aging> getLawanAging(String branchId, String noJurnal,String noNota){
+        List<Aging> listOfResult = new ArrayList<>();
+        String tipeWhere = "";
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "select * from it_akun_jurnal_detail detail\n" +
+                "join it_akun_jurnal jurnal on jurnal.no_jurnal = detail.no_jurnal\n" +
+                "where no_nota = :noNota and detail.no_jurnal != :noJurnal and jurnal.branch_id in ( :branchId )";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .setParameter("noNota", noNota)
+                .setParameter("noJurnal", noJurnal)
+                .setParameter("branchId", branchId)
+                .list();
+
+        for (Object[] row : results) {
+            Aging data= new Aging();
+            data.setNoJurnal((String) row[0]);
+            data.setKodeRekening((String) row[1]);
+            data.setMasterId((String) row[2]);
+            data.setNoNota((String) row[3]);
+            data.setTotal(BigDecimal.valueOf(Double.parseDouble(row[5].toString())));
+//            data.setMasterId((String) row[6]);
+            data.setMataUang((String) row[23]);
+            data.setKurs(BigDecimal.valueOf(Double.parseDouble(row[24].toString())));
+            data.setTglJurnal((Date) row[33]);
             listOfResult.add(data);
         }
         return listOfResult;
@@ -286,7 +317,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "    from\n" +
                 "      (\n" +
                 "        select\n" +
-                "          y.rekening_id as rekening_id,\n" +
+                "          y.nomor_rekening as rekening_id,\n" +
                 "          rek.rekening_id_parent as rekening_id_parent,\n" +
                 "\t\t  (y.jumlah_debit * x.kurs) as jumlah_debit,\n" +
                 "          (y.jumlah_kredit * x.kurs) as jumlah_kredit,\n" +
@@ -313,12 +344,12 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "                  report_id = '"+reportId+"'\n" +
                 "\t\tand rd.flag='Y'\n" +
                 "              ) a ON kr.kode_rekening ilike CONCAT(a.kode_rekening_parent, '%')\n" +
-                "          ) rek ON rek.rekening_id = y.rekening_id\n" +
+                "          ) rek ON rek.kode_rekening = y.rekening_id\n" +
                 "        where\n" +
-                "          to_char(x.tanggal_jurnal, 'MM-yyyy') = '"+periode+"'\n" +
+                "          to_char(x.registered_date, 'MM-yyyy') = '"+periode+"'\n" +
                 "          and x.registered_flag = 'Y'\n" +
                 "          and x.flag = 'Y'\n" +
-                "          AND y.rekening_id IN (rek.rekening_id)\n" +
+                "          AND y.rekening_id IN (rek.kode_rekening)\n" +
                 "\t\t  and branch_id IN ("+branchId+")\n" +
                 "      ) k\n" +
                 "    group by\n" +
@@ -526,7 +557,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "              ) a ON kr.kode_rekening ilike CONCAT(a.kode_rekening_parent, '%')\n" +
                 "          ) rek ON rek.rekening_id = y.rekening_id\n" +
                 "        where\n" +
-                "          to_char(x.tanggal_jurnal, 'MM-yyyy') = '"+periode+"'\n" +
+                "          to_char(x.registered_date, 'MM-yyyy') = '"+periode+"'\n" +
                 "          and x.registered_flag = 'Y'\n" +
                 "          and x.flag = 'Y'\n" +
                 "          AND y.rekening_id IN (rek.rekening_id)\n" +
@@ -727,7 +758,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "          inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal\n" +
                 "          INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = y.rekening_id\n" +
                 "        where\n" +
-                "          to_char(tanggal_jurnal, 'MM-yyyy') = '"+periode+"'\n" +
+                "          to_char(registered_date, 'MM-yyyy') = '"+periode+"'\n" +
                 "      \t\tand x.branch_id IN ("+branchId+")\n" +
                 "        group by\n" +
                 "          concat(\n" +
@@ -799,7 +830,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
         String whereMaster = "";
         if (masterId!=null){
             if (!masterId.equalsIgnoreCase("")){
-                whereMaster = "\t and a.master_id = = '"+masterId+"' \n";
+                whereMaster = "\t and a.master_id = '"+masterId+"' \n";
             }
         }
         BigDecimal total = new BigDecimal(0);
@@ -872,22 +903,22 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "        where\n" +
                 "          to_date(periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '1 month'\n" +
                 whereMaster2+
-                "      ) sa ON rk.rekening_id = sa.rekening_id\n" +
+                "      ) sa ON rk.kode_rekening = sa.kode_rekening\n" +
                 "      LEFT JOIN (\n" +
                 "        select\n" +
-                "          rekening_id,\n" +
+                "          nomor_rekening,\n" +
                 "          jumlah_debit,\n" +
                 "          jumlah_kredit\n" +
                 "        from\n" +
                 "          it_akun_jurnal_detail x\n" +
                 "          LEFT JOIN it_akun_jurnal y ON y.no_jurnal = x.no_jurnal\n" +
                 "        WHERE\n" +
-                "          y.tanggal_jurnal < '"+tanggalAwalPertama+"'\n" +
-                "          AND y.tanggal_jurnal >= '"+dtTanggalAwal+"'\n" +
+                "          y.registered_date < '"+tanggalAwalPertama+"'\n" +
+                "          AND y.registered_date >= '"+dtTanggalAwal+"'\n" +
                 "          and y.registered_flag = 'Y'\n" +
                 "          and y.branch_id IN ("+branchId+")\n" +
                 whereMaster+
-                "      ) a ON a.rekening_id = rk.rekening_id\n" +
+                "      ) a ON a.nomor_rekening = rk.kode_rekening\n" +
                 "  ) a";
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
@@ -906,9 +937,9 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
         String wherePeriode="";
 
         if ("P".equalsIgnoreCase(tipe)){
-            wherePeriode= "\t and to_char(x.tanggal_jurnal, 'MM-yyyy') = '"+periode+"' \n";
+            wherePeriode= "\t and to_char(x.registered_date, 'MM-yyyy') = '"+periode+"' \n";
         }else if ("T".equalsIgnoreCase(tipe)){
-            wherePeriode= "\t and x.tanggal_jurnal between '"+tanggalDari+"' and '"+tanggalSampai+"' \n";
+            wherePeriode= "\t and x.registered_date between '"+tanggalDari+"' and '"+tanggalSampai+"' \n";
         }
 
         if (kodeRekening!=null){
@@ -925,7 +956,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
 
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
-                "    x.tanggal_jurnal,\n" +
+                "    x.registered_date,\n" +
                 "    x.no_jurnal,\n" +
                 "    x.spum_id,\n" +
                 "    x.keterangan as keterangan,\n" +
@@ -940,18 +971,27 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "    it_akun_jurnal x\n" +
                 "    left outer join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal\n" +
                 "    left outer join im_akun_master z on y.master_id = z.nomor_master\n" +
-                "    left outer join im_akun_kode_rekening rek on y.rekening_id = rek.rekening_id\n" +
+                "    left outer join im_akun_kode_rekening rek on y.nomor_rekening = rek.kode_rekening\n" +
                 "    left outer join im_akun_mata_uang mu ON (x.mata_uang_id = mu.mata_uang_id)\n" +
                 "where\n" +
                 "    lower(mu.kode_mata_uang) = 'rph'\n" +
+                "    and x.registered_flag = 'Y'\n" +
                 whereKodeRekening+
                 whereNomorMaster+
                 wherePeriode+
-                "    and x.registered_flag = 'Y'\n" +
                 "    and x.branch_id IN ("+branchId+")";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
+
+        /*List<Object[]> resultQuery = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .setParameter("periode", periode)
+                .setParameter("tanggalDari", tanggalDari)
+                .setParameter("tanggalSampai", tanggalSampai)
+                .setParameter("kodeRekening", kodeRekening)
+                .setParameter("kodeRekening", kodeRekening)
+                .list();*/
 
         for (Object[] row : results) {
             KartuBukuBesarPerBukuBantuDTO data= new KartuBukuBesarPerBukuBantuDTO();
@@ -998,12 +1038,13 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "    from\n" +
                 "      it_akun_jurnal x\n" +
                 "      inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal\n" +
-                "\t  inner join it_akun_jurnal_detail_activity z on y.jurnal_detail_id = z.jurnal_detail_id\n" +
+                "\t  inner join it_akun_jurnal_detail_activity z on y.jurnal_detail_id = z.jurnal_detail_id " +
+                "join im_akun_kode_rekening kodering on kodering.kode_rekening = y.nomor_rekening\n" +
                 "    where\n" +
-                "      to_char(x.tanggal_jurnal, 'MM-yyyy') = '"+periode+"'\n" +
+                "      to_char(x.registered_date, 'MM-yyyy') = '"+periode+"'\n" +
                 "      and x.registered_flag = 'Y'\n" +
                 "      and x.branch_id IN ("+unit+")\n" +
-                "      AND y.rekening_id IN (\n" +
+                "      AND kodering.rekening_id IN (\n" +
                 "        SELECT\n" +
                 "          rekening_id\n" +
                 "        FROM\n" +
@@ -1069,12 +1110,13 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "    from\n" +
                 "      it_akun_jurnal x\n" +
                 "      inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal\n" +
-                "\t  inner join it_akun_jurnal_detail_activity z on y.jurnal_detail_id = z.jurnal_detail_id\n" +
+                "\t  inner join it_akun_jurnal_detail_activity z on y.jurnal_detail_id = z.jurnal_detail_id " +
+                "join im_akun_kode_rekening kodering on kodering.kode_rekening = y.nomor_rekening\n" +
                 "    where\n" +
-                "      to_char(x.tanggal_jurnal, 'MM-yyyy') = '"+periode+"'\n" +
+                "      to_char(x.registered_date, 'MM-yyyy') = '"+periode+"'\n" +
                 "      and x.registered_flag = 'Y'\n" +
                 "      and x.branch_id IN ("+unit+")\n" +
-                "      AND y.rekening_id IN (\n" +
+                "      AND kodering.rekening_id IN (\n" +
                 "        SELECT\n" +
                 "          rekening_id\n" +
                 "        FROM\n" +
@@ -1129,10 +1171,10 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "from \n" +
                 "  (\n" +
                 "    select \n" +
-                "      kr.kode_rekening, \n" +
-                "      b.rekening_id, \n" +
+                "      kr.rekening_id, \n" +
+                "      b.nomor_rekening as kode_rekening, \n" +
                 "      b.no_nota as noNota, \n" +
-                "      a.tanggal_jurnal as tglJurnal, \n" +
+                "      a.registered_date as tglJurnal, \n" +
                 "      c.kode_mata_uang as mataUang, \n" +
                 "      (b.jumlah_debit - b.jumlah_kredit) as total, \n" +
                 "      b.pasien_id as masterId, \n" +
@@ -1154,7 +1196,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "      inner join it_akun_jurnal_detail b on b.no_jurnal = a.no_jurnal \n" +
                 "      inner join im_akun_mata_uang c on a.mata_uang_id = c.mata_uang_id \n" +
                 "      inner join im_simrs_pasien d on b.pasien_id = d.id_pasien \n" +
-                "      INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = b.rekening_id \n" +
+                "      INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = b.nomor_rekening \n" +
                 "      INNER JOIN (\n" +
                 "        select \n" +
                 "          * \n" +
@@ -1222,10 +1264,10 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "from \n" +
                 "  (\n" +
                 "    select \n" +
-                "      kr.kode_rekening, \n" +
-                "      b.rekening_id, \n" +
+                "      kr.rekening_id, \n" +
+                "      b.nomor_rekening as kode_rekening, \n" +
                 "      b.no_nota as noNota, \n" +
-                "      a.tanggal_jurnal as tglJurnal, \n" +
+                "      a.registered_date as tglJurnal, \n" +
                 "      c.kode_mata_uang as mataUang, \n" +
                 "      (b.jumlah_debit - b.jumlah_kredit) as total, \n" +
                 "      b.master_id as masterId, \n" +
@@ -1246,8 +1288,8 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "      ) a \n" +
                 "      inner join it_akun_jurnal_detail b on b.no_jurnal = a.no_jurnal \n" +
                 "      inner join im_akun_mata_uang c on a.mata_uang_id = c.mata_uang_id \n" +
-                "      inner join im_hris_pegawai d on b.master_id = d.nip \n" +
-                "      INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = b.rekening_id \n" +
+                "      join im_hris_pegawai d on b.master_id = d.nip \n" +
+                "      INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = b.nomor_rekening \n" +
                 "      INNER JOIN (\n" +
                 "        select \n" +
                 "          * \n" +
@@ -1316,10 +1358,10 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "from \n" +
                 "  (\n" +
                 "    select \n" +
-                "      kr.kode_rekening, \n" +
-                "      b.rekening_id, \n" +
+                "      kr.rekening_id, \n" +
+                "      b.nomor_rekening as kode_rekening, \n" +
                 "      b.no_nota as noNota, \n" +
-                "      a.tanggal_jurnal as tglJurnal, \n" +
+                "      a.registered_date as tglJurnal, \n" +
                 "      c.kode_mata_uang as mataUang, \n" +
                 "      (b.jumlah_debit - b.jumlah_kredit) as total, \n" +
                 "      b.master_id as masterId, \n" +
@@ -1338,10 +1380,11 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "          and registered_flag = 'Y' \n" +
                 "\t\t  and branch_id IN ("+branchId+")\n" +
                 "      ) a \n" +
-                "      inner join it_akun_jurnal_detail b on b.no_jurnal = a.no_jurnal \n" +
+                "      inner join it_akun_jurnal_detail b on b.no_jurnal = a.no_jurnal " +
+                "             join it_akun_jurnal_detail_activity z on b.jurnal_detail_id = z.jurnal_detail_id\n" +
                 "      inner join im_akun_mata_uang c on a.mata_uang_id = c.mata_uang_id \n" +
-                "      inner join im_simrs_dokter d on b.master_id = d.kodering \n" +
-                "      INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = b.rekening_id \n" +
+                "      inner join im_simrs_dokter d on z.person_id = d.id_dokter \n" +
+                "      INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = b.nomor_rekening \n" +
                 "      INNER JOIN (\n" +
                 "        select \n" +
                 "          * \n" +
@@ -1444,8 +1487,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
     public List<AkunSettingReportKeuanganKonsolDetail> getAllDataLaporanAkuntansiKonsol(String periode, String branchId1, String branchId2, String branchId3, String branchId4, String branchId5, String branchId6, String branchId7, String branchIdAll){
         List<AkunSettingReportKeuanganKonsolDetail> listOfResult = new ArrayList<>();
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "SELECT \n" +
-                "  a.namarekening, \n" +
+        String query = "SELECT a.namarekening,\n" +
                 "  a.koderekening, \n" +
                 "  a.konsolid, \n" +
                 "  a.operator, \n" +
@@ -1497,436 +1539,328 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "  ) - (\n" +
                 "    a.jumlahkreditunitAll + a.jumlahlastkreditunitAll\n" +
                 "  ) as cursaldounitAll\n" +
-                "FROM \n" +
-                "  (\n" +
-                "    SELECT \n" +
-                "      distinct a.konsolid, \n" +
+                "FROM (SELECT distinct a.konsolid,\n" +
                 "      a.operator, \n" +
                 "      a.nama_kode_rekening as namaRekening, \n" +
                 "      a.kode_rekening as koderekening, \n" +
                 "      --unit 1\n" +
-                "      CASE WHEN junit1.jumlah_debit IS NULL THEN 0 ELSE junit1.jumlah_debit END as jumlahdebitunit1, \n" +
-                "      CASE WHEN junit1.jumlah_kredit IS NULL THEN 0 ELSE junit1.jumlah_kredit END as jumlahkreditunit1, \n" +
+                "                      CASE\n" +
+                "                        WHEN junit1.jumlah_debit IS NULL THEN 0\n" +
+                "                        ELSE junit1.jumlah_debit END                                          as jumlahdebitunit1,\n" +
+                "                      CASE\n" +
+                "                        WHEN junit1.jumlah_kredit IS NULL THEN 0\n" +
+                "                        ELSE junit1.jumlah_kredit END                                         as jumlahkreditunit1,\n" +
                 "      CASE WHEN sa1.jumlah_debit IS NULL THEN 0 ELSE sa1.jumlah_debit END as jumlahlastdebitunit1, \n" +
                 "      CASE WHEN sa1.jumlah_kredit IS NULL THEN 0 ELSE sa1.jumlah_kredit END as jumlahlastkreditunit1, \n" +
                 "      -- unit 2\n" +
-                "      CASE WHEN junit2.jumlah_debit IS NULL THEN 0 ELSE junit2.jumlah_debit END as jumlahdebitunit2, \n" +
-                "      CASE WHEN junit2.jumlah_kredit IS NULL THEN 0 ELSE junit2.jumlah_kredit END as jumlahkreditunit2, \n" +
+                "                      CASE\n" +
+                "                        WHEN junit2.jumlah_debit IS NULL THEN 0\n" +
+                "                        ELSE junit2.jumlah_debit END                                          as jumlahdebitunit2,\n" +
+                "                      CASE\n" +
+                "                        WHEN junit2.jumlah_kredit IS NULL THEN 0\n" +
+                "                        ELSE junit2.jumlah_kredit END                                         as jumlahkreditunit2,\n" +
                 "      CASE WHEN sa2.jumlah_debit IS NULL THEN 0 ELSE sa2.jumlah_debit END as jumlahlastdebitunit2, \n" +
                 "      CASE WHEN sa2.jumlah_kredit IS NULL THEN 0 ELSE sa2.jumlah_kredit END as jumlahlastkreditunit2, \n" +
                 "      -- unit 3\n" +
-                "      CASE WHEN junit3.jumlah_debit IS NULL THEN 0 ELSE junit3.jumlah_debit END as jumlahdebitunit3, \n" +
-                "      CASE WHEN junit3.jumlah_kredit IS NULL THEN 0 ELSE junit3.jumlah_kredit END as jumlahkreditunit3, \n" +
+                "                      CASE\n" +
+                "                        WHEN junit3.jumlah_debit IS NULL THEN 0\n" +
+                "                        ELSE junit3.jumlah_debit END                                          as jumlahdebitunit3,\n" +
+                "                      CASE\n" +
+                "                        WHEN junit3.jumlah_kredit IS NULL THEN 0\n" +
+                "                        ELSE junit3.jumlah_kredit END                                         as jumlahkreditunit3,\n" +
                 "      CASE WHEN sa3.jumlah_debit IS NULL THEN 0 ELSE sa3.jumlah_debit END as jumlahlastdebitunit3, \n" +
                 "      CASE WHEN sa3.jumlah_kredit IS NULL THEN 0 ELSE sa3.jumlah_kredit END as jumlahlastkreditunit3, \n" +
                 "      -- unit 4\n" +
-                "      CASE WHEN junit4.jumlah_debit IS NULL THEN 0 ELSE junit4.jumlah_debit END as jumlahdebitunit4, \n" +
-                "      CASE WHEN junit4.jumlah_kredit IS NULL THEN 0 ELSE junit4.jumlah_kredit END as jumlahkreditunit4, \n" +
+                "                      CASE\n" +
+                "                        WHEN junit4.jumlah_debit IS NULL THEN 0\n" +
+                "                        ELSE junit4.jumlah_debit END                                          as jumlahdebitunit4,\n" +
+                "                      CASE\n" +
+                "                        WHEN junit4.jumlah_kredit IS NULL THEN 0\n" +
+                "                        ELSE junit4.jumlah_kredit END                                         as jumlahkreditunit4,\n" +
                 "      CASE WHEN sa4.jumlah_debit IS NULL THEN 0 ELSE sa4.jumlah_debit END as jumlahlastdebitunit4, \n" +
                 "      CASE WHEN sa4.jumlah_kredit IS NULL THEN 0 ELSE sa4.jumlah_kredit END as jumlahlastkreditunit4,\n" +
-                "\t  -- unit 5\n" +
-                "      CASE WHEN junit5.jumlah_debit IS NULL THEN 0 ELSE junit5.jumlah_debit END as jumlahdebitunit5, \n" +
-                "      CASE WHEN junit5.jumlah_kredit IS NULL THEN 0 ELSE junit5.jumlah_kredit END as jumlahkreditunit5, \n" +
+                "          -- unit 5\n" +
+                "                      CASE\n" +
+                "                        WHEN junit5.jumlah_debit IS NULL THEN 0\n" +
+                "                        ELSE junit5.jumlah_debit END                                          as jumlahdebitunit5,\n" +
+                "                      CASE\n" +
+                "                        WHEN junit5.jumlah_kredit IS NULL THEN 0\n" +
+                "                        ELSE junit5.jumlah_kredit END                                         as jumlahkreditunit5,\n" +
                 "      CASE WHEN sa5.jumlah_debit IS NULL THEN 0 ELSE sa5.jumlah_debit END as jumlahlastdebitunit5, \n" +
                 "      CASE WHEN sa5.jumlah_kredit IS NULL THEN 0 ELSE sa5.jumlah_kredit END as jumlahlastkreditunit5,\n" +
-                "\t  -- unit 6\n" +
-                "      CASE WHEN junit6.jumlah_debit IS NULL THEN 0 ELSE junit6.jumlah_debit END as jumlahdebitunit6, \n" +
-                "      CASE WHEN junit6.jumlah_kredit IS NULL THEN 0 ELSE junit6.jumlah_kredit END as jumlahkreditunit6, \n" +
+                "          -- unit 6\n" +
+                "                      CASE\n" +
+                "                        WHEN junit6.jumlah_debit IS NULL THEN 0\n" +
+                "                        ELSE junit6.jumlah_debit END                                          as jumlahdebitunit6,\n" +
+                "                      CASE\n" +
+                "                        WHEN junit6.jumlah_kredit IS NULL THEN 0\n" +
+                "                        ELSE junit6.jumlah_kredit END                                         as jumlahkreditunit6,\n" +
                 "      CASE WHEN sa6.jumlah_debit IS NULL THEN 0 ELSE sa6.jumlah_debit END as jumlahlastdebitunit6, \n" +
                 "      CASE WHEN sa6.jumlah_kredit IS NULL THEN 0 ELSE sa6.jumlah_kredit END as jumlahlastkreditunit6,\n" +
-                "\t  -- unit 7\n" +
-                "      CASE WHEN junit7.jumlah_debit IS NULL THEN 0 ELSE junit7.jumlah_debit END as jumlahdebitunit7, \n" +
-                "      CASE WHEN junit7.jumlah_kredit IS NULL THEN 0 ELSE junit7.jumlah_kredit END as jumlahkreditunit7, \n" +
+                "          -- unit 7\n" +
+                "                      CASE\n" +
+                "                        WHEN junit7.jumlah_debit IS NULL THEN 0\n" +
+                "                        ELSE junit7.jumlah_debit END                                          as jumlahdebitunit7,\n" +
+                "                      CASE\n" +
+                "                        WHEN junit7.jumlah_kredit IS NULL THEN 0\n" +
+                "                        ELSE junit7.jumlah_kredit END                                         as jumlahkreditunit7,\n" +
                 "      CASE WHEN sa7.jumlah_debit IS NULL THEN 0 ELSE sa7.jumlah_debit END as jumlahlastdebitunit7, \n" +
                 "      CASE WHEN sa7.jumlah_kredit IS NULL THEN 0 ELSE sa7.jumlah_kredit END as jumlahlastkreditunit7,\n" +
                 "      --total\n" +
-                "      CASE WHEN junitAll.jumlah_debit IS NULL THEN 0 ELSE junitAll.jumlah_debit END as jumlahdebitunitAll, \n" +
-                "      CASE WHEN junitAll.jumlah_kredit IS NULL THEN 0 ELSE junitAll.jumlah_kredit END as jumlahkreditunitAll, \n" +
+                "                      CASE\n" +
+                "                        WHEN junitAll.jumlah_debit IS NULL THEN 0\n" +
+                "                        ELSE junitAll.jumlah_debit END                                        as jumlahdebitunitAll,\n" +
+                "                      CASE\n" +
+                "                        WHEN junitAll.jumlah_kredit IS NULL THEN 0\n" +
+                "                        ELSE junitAll.jumlah_kredit END                                       as jumlahkreditunitAll,\n" +
                 "      CASE WHEN saAll.jumlah_debit IS NULL THEN 0 ELSE saAll.jumlah_debit END as jumlahlastdebitunitAll, \n" +
-                "      CASE WHEN saAll.jumlah_kredit IS NULL THEN 0 ELSE saAll.jumlah_kredit END as jumlahlastkreditunitAll\n" +
-                "    FROM \n" +
-                "      (\n" +
-                "        select \n" +
-                "          setting_report_konsol_id AS konsolid, \n" +
+                "                      CASE\n" +
+                "                        WHEN saAll.jumlah_kredit IS NULL THEN 0\n" +
+                "                        ELSE saAll.jumlah_kredit END                                          as jumlahlastkreditunitAll\n" +
+                "      FROM (select setting_report_konsol_id AS konsolid,\n" +
                 "          operator AS operator, \n" +
                 "          kode.kode_rekening, \n" +
                 "          kode.rekening_id, \n" +
                 "          kode.nama_kode_rekening \n" +
-                "        from \n" +
-                "          im_akun_kode_rekening kode \n" +
+                "            from im_akun_kode_rekening kode\n" +
                 "          INNER JOIN im_akun_setting_report_keuangan_konsol_detail rd ON rd.rekening_id = kode.rekening_id \n" +
-                "        where \n" +
-                "          rd.flag = 'Y' \n" +
-                "        group by \n" +
-                "          setting_report_konsol_id, \n" +
+                "            where rd.flag = 'Y'\n" +
+                "            group by setting_report_konsol_id,\n" +
                 "          operator, \n" +
                 "          kode_rekening, \n" +
                 "          kode.nama_kode_rekening, \n" +
                 "          kode.rekening_id \n" +
-                "        order by \n" +
-                "          kode_rekening\n" +
-                "      ) a \n" +
+                "            order by kode_rekening) a\n" +
+                "\n" +
+                "\n" +
                 "      LEFT OUTER JOIN (\n" +
                 "        --UNIT 1\n" +
-                "        select \n" +
-                "          jurnal.*, \n" +
-                "          kr.rekening_id \n" +
-                "        from \n" +
-                "          (\n" +
-                "            select \n" +
-                "              kr.kode_rekening AS kode_rekening, \n" +
+                "                             select jurnal.*\n" +
+                "                             from (select kr.kode_rekening              AS kode_rekening,\n" +
                 "              sum(y.jumlah_debit * x.kurs) as jumlah_debit, \n" +
                 "              sum(y.jumlah_kredit * x.kurs) as jumlah_kredit \n" +
-                "            from \n" +
-                "              it_akun_jurnal x \n" +
+                "                                   from it_akun_jurnal x\n" +
                 "              inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal \n" +
-                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = y.rekening_id \n" +
-                "            where \n" +
-                "              to_char(x.tanggal_jurnal, 'MM-yyyy') = '"+periode+"' \n" +
+                "                                          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = y.nomor_rekening\n" +
+                "                                   where to_char(x.registered_date, 'MM-yyyy') = '"+periode+"'\n" +
                 "              and x.branch_id = '"+branchId1+"' \n" +
-                "            group by \n" +
-                "              kr.kode_rekening\n" +
-                "          ) jurnal \n" +
-                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
-                "      ) junit1 ON junit1.rekening_id = a.rekening_id \n" +
-                "      LEFT OUTER JOIN (\n" +
-                "        select \n" +
-                "          jurnal.*, \n" +
-                "          kr.rekening_id \n" +
-                "        from \n" +
-                "          (\n" +
-                "            select \n" +
-                "              kr.kode_rekening AS kode_rekening, \n" +
+                "                                   group by kr.kode_rekening) jurnal\n" +
+                "                                    INNER JOIN im_akun_kode_rekening kr\n" +
+                "                                      ON kr.kode_rekening = jurnal.kode_rekening) junit1\n" +
+                "               ON junit1.kode_rekening = a.kode_rekening\n" +
+                "             LEFT OUTER JOIN (select jurnal.*, kr.rekening_id\n" +
+                "                              from (select kr.kode_rekening     AS kode_rekening,\n" +
                 "              sum(x.jumlah_debit) as jumlah_debit, \n" +
                 "              sum(x.jumlah_kredit) as jumlah_kredit \n" +
-                "            from \n" +
-                "              it_akun_saldo_akhir x \n" +
-                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
-                "            where \n" +
-                "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '1 month' \n" +
+                "                                    from it_akun_saldo_akhir x\n" +
+                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.kode_rekening\n" +
+                "                                    where to_date(x.periode, 'MM-yyyy') =\n" +
+                "                                          to_date('"+periode+"', 'MM-yyyy') - Interval '1 month'\n" +
                 "              and x.branch_id = '"+branchId1+"' \n" +
-                "            group by \n" +
-                "              kr.kode_rekening\n" +
-                "          ) jurnal \n" +
-                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
-                "      ) sa1 ON sa1.rekening_id = a.rekening_id \n" +
-                "      -- UNIT 2\n" +
+                "                                    group by kr.kode_rekening) jurnal\n" +
+                "                                     INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening) sa1\n" +
+                "               ON sa1.kode_rekening = a.kode_rekening\n" +
                 "      LEFT OUTER JOIN (\n" +
-                "        select \n" +
-                "          jurnal.*, \n" +
-                "          kr.rekening_id \n" +
-                "        from \n" +
-                "          (\n" +
-                "            select \n" +
-                "              kr.kode_rekening AS kode_rekening, \n" +
+                "                             -- UNIT 2\n" +
+                "                             select jurnal.*\n" +
+                "                             from (select kr.kode_rekening              AS kode_rekening,\n" +
                 "              sum(y.jumlah_debit * x.kurs) as jumlah_debit, \n" +
                 "              sum(y.jumlah_kredit * x.kurs) as jumlah_kredit \n" +
-                "            from \n" +
-                "              it_akun_jurnal x \n" +
+                "                                   from it_akun_jurnal x\n" +
                 "              inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal \n" +
-                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = y.rekening_id \n" +
-                "            where \n" +
-                "              to_char(x.tanggal_jurnal, 'MM-yyyy') = '"+periode+"' \n" +
+                "                                          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = y.nomor_rekening\n" +
+                "                                   where to_char(x.registered_date, 'MM-yyyy') = '"+periode+"'\n" +
                 "              and x.branch_id = '"+branchId2+"' \n" +
-                "            group by \n" +
-                "              kr.kode_rekening\n" +
-                "          ) jurnal \n" +
-                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
-                "      ) junit2 ON junit2.rekening_id = a.rekening_id \n" +
-                "      LEFT OUTER JOIN (\n" +
-                "        select \n" +
-                "          jurnal.*, \n" +
-                "          kr.rekening_id \n" +
-                "        from \n" +
-                "          (\n" +
-                "            select \n" +
-                "              kr.kode_rekening AS kode_rekening, \n" +
+                "                                   group by kr.kode_rekening) jurnal\n" +
+                "                                    INNER JOIN im_akun_kode_rekening kr\n" +
+                "                                      ON kr.kode_rekening = jurnal.kode_rekening) junit2\n" +
+                "               ON junit2.kode_rekening = a.kode_rekening\n" +
+                "             LEFT OUTER JOIN (select jurnal.*, kr.rekening_id\n" +
+                "                              from (select kr.kode_rekening     AS kode_rekening,\n" +
                 "              sum(x.jumlah_debit) as jumlah_debit, \n" +
                 "              sum(x.jumlah_kredit) as jumlah_kredit \n" +
-                "            from \n" +
-                "              it_akun_saldo_akhir x \n" +
-                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
-                "            where \n" +
-                "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '1 month' \n" +
+                "                                    from it_akun_saldo_akhir x\n" +
+                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.kode_rekening\n" +
+                "                                    where to_date(x.periode, 'MM-yyyy') =\n" +
+                "                                          to_date('"+periode+"', 'MM-yyyy') - Interval '1 month'\n" +
                 "              and x.branch_id = '"+branchId2+"' \n" +
-                "            group by \n" +
-                "              kr.kode_rekening\n" +
-                "          ) jurnal \n" +
-                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
-                "      ) sa2 ON sa2.rekening_id = a.rekening_id \n" +
-                "      -- UNIT 3\n" +
+                "                                    group by kr.kode_rekening) jurnal\n" +
+                "                                     INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening) sa2\n" +
+                "               ON sa2.rekening_id = a.rekening_id\n" +
                 "      LEFT OUTER JOIN (\n" +
-                "        select \n" +
-                "          jurnal.*, \n" +
-                "          kr.rekening_id \n" +
-                "        from \n" +
-                "          (\n" +
-                "            select \n" +
-                "              kr.kode_rekening AS kode_rekening, \n" +
+                "                             -- UNIT 3\n" +
+                "                             select jurnal.*\n" +
+                "                             from (select kr.kode_rekening              AS kode_rekening,\n" +
                 "              sum(y.jumlah_debit * x.kurs) as jumlah_debit, \n" +
                 "              sum(y.jumlah_kredit * x.kurs) as jumlah_kredit \n" +
-                "            from \n" +
-                "              it_akun_jurnal x \n" +
+                "                                   from it_akun_jurnal x\n" +
                 "              inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal \n" +
-                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = y.rekening_id \n" +
-                "            where \n" +
-                "              to_char(x.tanggal_jurnal, 'MM-yyyy') = '"+periode+"' \n" +
+                "                                          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = y.nomor_rekening\n" +
+                "                                   where to_char(x.registered_date, 'MM-yyyy') = '"+periode+"'\n" +
                 "              and x.branch_id = '"+branchId3+"' \n" +
-                "            group by \n" +
-                "              kr.kode_rekening\n" +
-                "          ) jurnal \n" +
-                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
-                "      ) junit3 ON junit3.rekening_id = a.rekening_id \n" +
-                "      LEFT OUTER JOIN (\n" +
-                "        select \n" +
-                "          jurnal.*, \n" +
-                "          kr.rekening_id \n" +
-                "        from \n" +
-                "          (\n" +
-                "            select \n" +
-                "              kr.kode_rekening AS kode_rekening, \n" +
+                "                                   group by kr.kode_rekening) jurnal\n" +
+                "                                    INNER JOIN im_akun_kode_rekening kr\n" +
+                "                                      ON kr.kode_rekening = jurnal.kode_rekening) junit3\n" +
+                "               ON junit3.kode_rekening = a.kode_rekening\n" +
+                "\n" +
+                "             LEFT OUTER JOIN (select jurnal.*, kr.rekening_id\n" +
+                "                              from (select kr.kode_rekening     AS kode_rekening,\n" +
                 "              sum(x.jumlah_debit) as jumlah_debit, \n" +
                 "              sum(x.jumlah_kredit) as jumlah_kredit \n" +
-                "            from \n" +
-                "              it_akun_saldo_akhir x \n" +
-                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
-                "            where \n" +
-                "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '1 month' \n" +
+                "                                    from it_akun_saldo_akhir x\n" +
+                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.kode_rekening\n" +
+                "                                    where to_date(x.periode, 'MM-yyyy') =\n" +
+                "                                          to_date('"+periode+"', 'MM-yyyy') - Interval '1 month'\n" +
                 "              and x.branch_id = '"+branchId3+"' \n" +
-                "            group by \n" +
-                "              kr.kode_rekening\n" +
-                "          ) jurnal \n" +
-                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
-                "      ) sa3 ON sa3.rekening_id = a.rekening_id \n" +
-                "------------------------------------------ UNIT 4 ---------------------------------\n" +
+                "                                    group by kr.kode_rekening) jurnal\n" +
+                "                                     INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening) sa3\n" +
+                "               ON sa3.rekening_id = a.rekening_id\n" +
+                "\n" +
                 "      LEFT OUTER JOIN (\n" +
-                "        select \n" +
-                "          jurnal.*, \n" +
-                "          kr.rekening_id \n" +
-                "        from \n" +
-                "          (\n" +
-                "            select \n" +
-                "              kr.kode_rekening AS kode_rekening, \n" +
+                "                             ------------------------------------------ UNIT 4 ---------------------------------\n" +
+                "                             select jurnal.*\n" +
+                "                             from (select kr.kode_rekening              AS kode_rekening,\n" +
                 "              sum(y.jumlah_debit * x.kurs) as jumlah_debit, \n" +
                 "              sum(y.jumlah_kredit * x.kurs) as jumlah_kredit \n" +
-                "            from \n" +
-                "              it_akun_jurnal x \n" +
+                "                                   from it_akun_jurnal x\n" +
                 "              inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal \n" +
-                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = y.rekening_id \n" +
-                "            where \n" +
-                "              to_char(x.tanggal_jurnal, 'MM-yyyy') = '"+periode+"' \n" +
+                "                                          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = y.nomor_rekening\n" +
+                "                                   where to_char(x.registered_date, 'MM-yyyy') = '"+periode+"'\n" +
                 "              and x.branch_id = '"+branchId4+"' \n" +
-                "            group by \n" +
-                "              kr.kode_rekening\n" +
-                "          ) jurnal \n" +
-                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
-                "      ) junit4 ON junit4.rekening_id = a.rekening_id \n" +
-                "      LEFT OUTER JOIN (\n" +
-                "        select \n" +
-                "          jurnal.*, \n" +
-                "          kr.rekening_id \n" +
-                "        from \n" +
-                "          (\n" +
-                "            select \n" +
-                "              kr.kode_rekening AS kode_rekening, \n" +
+                "                                   group by kr.kode_rekening) jurnal\n" +
+                "                                    INNER JOIN im_akun_kode_rekening kr\n" +
+                "                                      ON kr.kode_rekening = jurnal.kode_rekening) junit4\n" +
+                "               ON junit4.kode_rekening = a.kode_rekening\n" +
+                "\n" +
+                "             LEFT OUTER JOIN (select jurnal.*, kr.rekening_id\n" +
+                "                              from (select kr.kode_rekening     AS kode_rekening,\n" +
                 "              sum(x.jumlah_debit) as jumlah_debit, \n" +
                 "              sum(x.jumlah_kredit) as jumlah_kredit \n" +
-                "            from \n" +
-                "              it_akun_saldo_akhir x \n" +
-                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
-                "            where \n" +
-                "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '1 month' \n" +
+                "                                    from it_akun_saldo_akhir x\n" +
+                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.kode_rekening\n" +
+                "                                    where to_date(x.periode, 'MM-yyyy') =\n" +
+                "                                          to_date('"+periode+"', 'MM-yyyy') - Interval '1 month'\n" +
                 "              and x.branch_id = '"+branchId4+"' \n" +
-                "            group by \n" +
-                "              kr.kode_rekening\n" +
-                "          ) jurnal \n" +
-                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
-                "      ) sa4 ON sa4.rekening_id = a.rekening_id \n" +
-                "--------------------------------------------------------------------------------------------------\n" +
-                "------------------------------------------ UNIT 5 ---------------------------------\n" +
+                "                                    group by kr.kode_rekening) jurnal\n" +
+                "                                     INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening) sa4\n" +
+                "               ON sa4.rekening_id = a.rekening_id\n" +
+                "\n" +
                 "      LEFT OUTER JOIN (\n" +
-                "        select \n" +
-                "          jurnal.*, \n" +
-                "          kr.rekening_id \n" +
-                "        from \n" +
-                "          (\n" +
-                "            select \n" +
-                "              kr.kode_rekening AS kode_rekening, \n" +
+                "                             ------------------------------------------ UNIT 5 ---------------------------------\n" +
+                "                             select jurnal.*\n" +
+                "                             from (select kr.kode_rekening              AS kode_rekening,\n" +
                 "              sum(y.jumlah_debit * x.kurs) as jumlah_debit, \n" +
                 "              sum(y.jumlah_kredit * x.kurs) as jumlah_kredit \n" +
-                "            from \n" +
-                "              it_akun_jurnal x \n" +
+                "                                   from it_akun_jurnal x\n" +
                 "              inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal \n" +
-                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = y.rekening_id \n" +
-                "            where \n" +
-                "              to_char(x.tanggal_jurnal, 'MM-yyyy') = '"+periode+"' \n" +
+                "                                          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = y.nomor_rekening\n" +
+                "                                   where to_char(x.registered_date, 'MM-yyyy') = '"+periode+"'\n" +
                 "              and x.branch_id = '"+branchId5+"' \n" +
-                "            group by \n" +
-                "              kr.kode_rekening\n" +
-                "          ) jurnal \n" +
-                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
-                "      ) junit5 ON junit5.rekening_id = a.rekening_id \n" +
-                "      LEFT OUTER JOIN (\n" +
-                "        select \n" +
-                "          jurnal.*, \n" +
-                "          kr.rekening_id \n" +
-                "        from \n" +
-                "          (\n" +
-                "            select \n" +
-                "              kr.kode_rekening AS kode_rekening, \n" +
+                "                                   group by kr.kode_rekening) jurnal\n" +
+                "                                    INNER JOIN im_akun_kode_rekening kr\n" +
+                "                                      ON kr.kode_rekening = jurnal.kode_rekening) junit5\n" +
+                "               ON junit5.kode_rekening = a.kode_rekening\n" +
+                "\n" +
+                "             LEFT OUTER JOIN (select jurnal.*, kr.rekening_id\n" +
+                "                              from (select kr.kode_rekening     AS kode_rekening,\n" +
                 "              sum(x.jumlah_debit) as jumlah_debit, \n" +
                 "              sum(x.jumlah_kredit) as jumlah_kredit \n" +
-                "            from \n" +
-                "              it_akun_saldo_akhir x \n" +
-                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
-                "            where \n" +
-                "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '1 month' \n" +
+                "                                    from it_akun_saldo_akhir x\n" +
+                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.kode_rekening\n" +
+                "                                    where to_date(x.periode, 'MM-yyyy') =\n" +
+                "                                          to_date('"+periode+"', 'MM-yyyy') - Interval '1 month'\n" +
                 "              and x.branch_id = '"+branchId5+"' \n" +
-                "            group by \n" +
-                "              kr.kode_rekening\n" +
-                "          ) jurnal \n" +
-                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
-                "      ) sa5 ON sa5.rekening_id = a.rekening_id \n" +
-                "--------------------------------------------------------------------------------------------------\n" +
-                "------------------------------------------ UNIT 6 ---------------------------------\n" +
+                "                                    group by kr.kode_rekening) jurnal\n" +
+                "                                     INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening) sa5\n" +
+                "               ON sa5.rekening_id = a.rekening_id\n" +
+                "\n" +
                 "      LEFT OUTER JOIN (\n" +
-                "        select \n" +
-                "          jurnal.*, \n" +
-                "          kr.rekening_id \n" +
-                "        from \n" +
-                "          (\n" +
-                "            select \n" +
-                "              kr.kode_rekening AS kode_rekening, \n" +
+                "                             ------------------------------------------ UNIT 6 ---------------------------------\n" +
+                "                             select jurnal.*\n" +
+                "                             from (select kr.kode_rekening              AS kode_rekening,\n" +
                 "              sum(y.jumlah_debit * x.kurs) as jumlah_debit, \n" +
                 "              sum(y.jumlah_kredit * x.kurs) as jumlah_kredit \n" +
-                "            from \n" +
-                "              it_akun_jurnal x \n" +
+                "                                   from it_akun_jurnal x\n" +
                 "              inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal \n" +
-                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = y.rekening_id \n" +
-                "            where \n" +
-                "              to_char(x.tanggal_jurnal, 'MM-yyyy') = '"+periode+"' \n" +
+                "                                          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = y.nomor_rekening\n" +
+                "                                   where to_char(x.registered_date, 'MM-yyyy') = '"+periode+"'\n" +
                 "              and x.branch_id = '"+branchId6+"' \n" +
-                "            group by \n" +
-                "              kr.kode_rekening\n" +
-                "          ) jurnal \n" +
-                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
-                "      ) junit6 ON junit6.rekening_id = a.rekening_id \n" +
-                "      LEFT OUTER JOIN (\n" +
-                "        select \n" +
-                "          jurnal.*, \n" +
-                "          kr.rekening_id \n" +
-                "        from \n" +
-                "          (\n" +
-                "            select \n" +
-                "              kr.kode_rekening AS kode_rekening, \n" +
+                "                                   group by kr.kode_rekening) jurnal\n" +
+                "                                    INNER JOIN im_akun_kode_rekening kr\n" +
+                "                                      ON kr.kode_rekening = jurnal.kode_rekening) junit6\n" +
+                "               ON junit6.kode_rekening = a.kode_rekening\n" +
+                "\n" +
+                "             LEFT OUTER JOIN (select jurnal.*, kr.rekening_id\n" +
+                "                              from (select kr.kode_rekening     AS kode_rekening,\n" +
                 "              sum(x.jumlah_debit) as jumlah_debit, \n" +
                 "              sum(x.jumlah_kredit) as jumlah_kredit \n" +
-                "            from \n" +
-                "              it_akun_saldo_akhir x \n" +
-                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
-                "            where \n" +
-                "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '1 month' \n" +
+                "                                    from it_akun_saldo_akhir x\n" +
+                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.kode_rekening\n" +
+                "                                    where to_date(x.periode, 'MM-yyyy') =\n" +
+                "                                          to_date('"+periode+"', 'MM-yyyy') - Interval '1 month'\n" +
                 "              and x.branch_id = '"+branchId6+"' \n" +
-                "            group by \n" +
-                "              kr.kode_rekening\n" +
-                "          ) jurnal \n" +
-                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
-                "      ) sa6 ON sa6.rekening_id = a.rekening_id \n" +
+                "                                    group by kr.kode_rekening) jurnal\n" +
+                "                                     INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening) sa6\n" +
+                "               ON sa6.rekening_id = a.rekening_id\n" +
                 "--------------------------------------------------------------------------------------------------\n" +
-                "------------------------------------------ UNIT 7 ---------------------------------\n" +
                 "      LEFT OUTER JOIN (\n" +
-                "        select \n" +
-                "          jurnal.*, \n" +
-                "          kr.rekening_id \n" +
-                "        from \n" +
-                "          (\n" +
-                "            select \n" +
-                "              kr.kode_rekening AS kode_rekening, \n" +
+                "                             ------------------------------------------ UNIT 7 ---------------------------------\n" +
+                "                             select jurnal.*\n" +
+                "                             from (select kr.kode_rekening              AS kode_rekening,\n" +
                 "              sum(y.jumlah_debit * x.kurs) as jumlah_debit, \n" +
                 "              sum(y.jumlah_kredit * x.kurs) as jumlah_kredit \n" +
-                "            from \n" +
-                "              it_akun_jurnal x \n" +
+                "                                   from it_akun_jurnal x\n" +
                 "              inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal \n" +
-                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = y.rekening_id \n" +
-                "            where \n" +
-                "              to_char(x.tanggal_jurnal, 'MM-yyyy') = '"+periode+"' \n" +
+                "                                          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = y.nomor_rekening\n" +
+                "                                   where to_char(x.registered_date, 'MM-yyyy') = '"+periode+"'\n" +
                 "              and x.branch_id = '"+branchId7+"' \n" +
-                "            group by \n" +
-                "              kr.kode_rekening\n" +
-                "          ) jurnal \n" +
-                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
-                "      ) junit7 ON junit7.rekening_id = a.rekening_id \n" +
-                "      LEFT OUTER JOIN (\n" +
-                "        select \n" +
-                "          jurnal.*, \n" +
-                "          kr.rekening_id \n" +
-                "        from \n" +
-                "          (\n" +
-                "            select \n" +
-                "              kr.kode_rekening AS kode_rekening, \n" +
+                "                                   group by kr.kode_rekening) jurnal\n" +
+                "                                    INNER JOIN im_akun_kode_rekening kr\n" +
+                "                                      ON kr.kode_rekening = jurnal.kode_rekening) junit7\n" +
+                "               ON junit7.kode_rekening = a.kode_rekening\n" +
+                "\n" +
+                "             LEFT OUTER JOIN (select jurnal.*, kr.rekening_id\n" +
+                "                              from (select kr.kode_rekening     AS kode_rekening,\n" +
                 "              sum(x.jumlah_debit) as jumlah_debit, \n" +
                 "              sum(x.jumlah_kredit) as jumlah_kredit \n" +
-                "            from \n" +
-                "              it_akun_saldo_akhir x \n" +
-                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
-                "            where \n" +
-                "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '1 month' \n" +
+                "                                    from it_akun_saldo_akhir x\n" +
+                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.kode_rekening\n" +
+                "                                    where to_date(x.periode, 'MM-yyyy') =\n" +
+                "                                          to_date('"+periode+"', 'MM-yyyy') - Interval '1 month'\n" +
                 "              and x.branch_id = '"+branchId7+"' \n" +
-                "            group by \n" +
-                "              kr.kode_rekening\n" +
-                "          ) jurnal \n" +
-                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
-                "      ) sa7 ON sa7.rekening_id = a.rekening_id \n" +
+                "                                    group by kr.kode_rekening) jurnal\n" +
+                "                                     INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening) sa7\n" +
+                "               ON sa7.rekening_id = a.rekening_id\n" +
                 "--------------------------------------------------------------------------------------------------\n" +
-                "\t  -- Total\n" +
-                "      LEFT OUTER JOIN (\n" +
-                "        select \n" +
-                "          jurnal.*, \n" +
-                "          kr.rekening_id \n" +
-                "        from \n" +
-                "          (\n" +
-                "            select \n" +
-                "              kr.kode_rekening AS kode_rekening, \n" +
+                "               -- Total\n" +
+                "             LEFT OUTER JOIN (select jurnal.*\n" +
+                "                              from (select kr.kode_rekening              AS kode_rekening,\n" +
                 "              sum(y.jumlah_debit * x.kurs) as jumlah_debit, \n" +
                 "              sum(y.jumlah_kredit * x.kurs) as jumlah_kredit \n" +
-                "            from \n" +
-                "              it_akun_jurnal x \n" +
+                "                                    from it_akun_jurnal x\n" +
                 "              inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal \n" +
-                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = y.rekening_id \n" +
-                "            where \n" +
-                "              to_char(x.tanggal_jurnal, 'MM-yyyy') = '"+periode+"' \n" +
+                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = y.nomor_rekening\n" +
+                "                                    where to_char(x.registered_date, 'MM-yyyy') = '"+periode+"'\n" +
                 "              and x.branch_id IN ("+branchIdAll+") \n" +
-                "            group by \n" +
-                "              kr.kode_rekening\n" +
-                "          ) jurnal \n" +
-                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
-                "      ) junitall ON junitall.rekening_id = a.rekening_id \n" +
-                "      LEFT OUTER JOIN (\n" +
-                "        select \n" +
-                "          jurnal.*, \n" +
-                "          kr.rekening_id \n" +
-                "        from \n" +
-                "          (\n" +
-                "            select \n" +
-                "              kr.kode_rekening AS kode_rekening, \n" +
+                "                                    group by kr.kode_rekening) jurnal\n" +
+                "                                     INNER JOIN im_akun_kode_rekening kr\n" +
+                "                                       ON kr.kode_rekening = jurnal.kode_rekening) junitall\n" +
+                "               ON junitall.kode_rekening = a.kode_rekening\n" +
+                "             LEFT OUTER JOIN (select jurnal.*, kr.rekening_id\n" +
+                "                              from (select kr.kode_rekening     AS kode_rekening,\n" +
                 "              sum(x.jumlah_debit) as jumlah_debit, \n" +
                 "              sum(x.jumlah_kredit) as jumlah_kredit \n" +
-                "            from \n" +
-                "              it_akun_saldo_akhir x \n" +
+                "                                    from it_akun_saldo_akhir x\n" +
                 "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
-                "            where \n" +
-                "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '1 month' \n" +
+                "                                    where to_date(x.periode, 'MM-yyyy') =\n" +
+                "                                          to_date('"+periode+"', 'MM-yyyy') - Interval '1 month'\n" +
                 "              and x.branch_id IN ("+branchIdAll+") \n" +
-                "            group by \n" +
-                "              kr.kode_rekening\n" +
-                "          ) jurnal \n" +
-                "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
-                "      ) saall ON saall.rekening_id = a.rekening_id \n" +
-                "    order by \n" +
-                "      a.kode_rekening\n" +
-                "  ) a \n" +
-                "ORDER BY \n" +
-                "  a.koderekening\n\n";
+                "                                    group by kr.kode_rekening) jurnal\n" +
+                "                                     INNER JOIN im_akun_kode_rekening kr\n" +
+                "                                       ON kr.kode_rekening = jurnal.kode_rekening) saall\n" +
+                "               ON saall.rekening_id = a.rekening_id\n" +
+                "      order by a.kode_rekening) a\n" +
+                "ORDER BY a.koderekening";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
@@ -2035,9 +1969,9 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "            from \n" +
                 "              it_akun_jurnal x \n" +
                 "              inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal \n" +
-                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = y.rekening_id \n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = y.nomor_rekening \n" +
                 "            where \n" +
-                "              to_char(x.tanggal_jurnal, 'MM-yyyy') = '"+periode+"' \n" +
+                "              to_char(x.registered_date, 'MM-yyyy') = '"+periode+"' \n" +
                 "              and x.branch_id = '"+branchId1+"' \n" +
                 "            group by \n" +
                 "              kr.kode_rekening\n" +
@@ -2166,7 +2100,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "          kode.nama_kode_rekening \n" +
                 "        from \n" +
                 "          im_akun_kode_rekening kode \n" +
-                "          INNER JOIN im_akun_setting_report_arus_kas_detail rd ON rd.rekening_id = kode.rekening_id \n" +
+                "          INNER JOIN im_akun_setting_report_arus_kas_detail rd ON rd.kode_rekening = kode.kode_rekening \n" +
                 "        where \n" +
                 "          rd.flag = 'Y' \n" +
                 "        group by \n" +
@@ -2191,19 +2125,19 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "            from \n" +
                 "              it_akun_jurnal x \n" +
                 "              inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal \n" +
-                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = y.rekening_id \n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = y.kode_rekening \n" +
                 "            where \n" +
-                "              to_char(x.tanggal_jurnal, 'MM-yyyy') = '"+periode+"' \n" +
+                "              to_char(x.registered_date, 'MM-yyyy') = '"+periode+"' \n" +
                 "              and x.branch_id = '"+unit+"' \n" +
                 "            group by \n" +
                 "              kr.kode_rekening\n" +
                 "          ) jurnal \n" +
                 "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
-                "      ) junit1 ON junit1.rekening_id = a.rekening_id \n" +
+                "      ) junit1 ON junit1.kode_rekening = a.kode_rekening \n" +
                 "\t  LEFT OUTER JOIN (\n" +
                 "        select \n" +
                 "          jurnal.*, \n" +
-                "          kr.rekening_id \n" +
+                "          kr.kode_rekening \n" +
                 "        from \n" +
                 "          (\n" +
                 "            select \n" +
@@ -2212,7 +2146,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "              sum(x.jumlah_kredit) as jumlah_kredit \n" +
                 "            from \n" +
                 "              it_akun_saldo_akhir x\n" +
-                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.kode_rekening \n" +
                 "            where \n" +
                 "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '1 month'\n" +
                 "              and x.branch_id = '"+unit+"' \n" +
@@ -2220,11 +2154,11 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "              kr.kode_rekening\n" +
                 "          ) jurnal \n" +
                 "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
-                "      ) sa1 ON sa1.rekening_id = a.rekening_id \n" +
+                "      ) sa1 ON sa1.kode_rekening = a.kode_rekening \n" +
                 "\t  LEFT OUTER JOIN (\n" +
                 "        select \n" +
                 "          jurnal.*, \n" +
-                "          kr.rekening_id \n" +
+                "          kr.kode_rekening \n" +
                 "        from \n" +
                 "          (\n" +
                 "            select \n" +
@@ -2232,7 +2166,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "              sum(x.jumlah_debit-x.jumlah_kredit) as jumlah_saldo\n" +
                 "            from \n" +
                 "              it_akun_saldo_akhir x\n" +
-                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.kode_rekening \n" +
                 "            where \n" +
                 "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '1 year'\n" +
                 "              and x.branch_id = '"+unit+"' \n" +
@@ -2240,11 +2174,11 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "              kr.kode_rekening\n" +
                 "          ) jurnal \n" +
                 "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
-                "      ) sst1 ON sst1.rekening_id = a.rekening_id \n" +
+                "      ) sst1 ON sst1.kode_rekening = a.kode_rekening \n" +
                 "\t  LEFT OUTER JOIN (\n" +
                 "        select \n" +
                 "          jurnal.*, \n" +
-                "          kr.rekening_id \n" +
+                "          kr.kode_rekening \n" +
                 "        from \n" +
                 "          (\n" +
                 "            select \n" +
@@ -2252,7 +2186,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "              sum(x.jumlah_debit-x.jumlah_kredit) as jumlah_saldo\n" +
                 "            from \n" +
                 "              it_akun_saldo_akhir x\n" +
-                "              INNER JOIN im_akun_kode_rekening kr ON kr.rekening_id = x.rekening_id \n" +
+                "              INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.kode_rekening \n" +
                 "            where \n" +
                 "              to_date(x.periode, 'MM-yyyy') = to_date('"+periode+"', 'MM-yyyy') - Interval '2 year'\n" +
                 "              and x.branch_id = '"+unit+"' \n" +
@@ -2260,7 +2194,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "              kr.kode_rekening\n" +
                 "          ) jurnal \n" +
                 "          INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = jurnal.kode_rekening\n" +
-                "      ) sdt1 ON sdt1.rekening_id = a.rekening_id\n" +
+                "      ) sdt1 ON sdt1.kode_rekening = a.kode_rekening\n" +
                 "    order by \n" +
                 "      a.kode_rekening\n" +
                 "  ) a \n" +
@@ -2705,7 +2639,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "FROM\n" +
                 "\tit_akun_jurnal j LEFT JOIN\n" +
                 "\tit_akun_jurnal_detail jd ON j.no_jurnal=jd.no_jurnal LEFT JOIN\n" +
-                "\tim_akun_kode_rekening kr ON jd.rekening_id=kr.rekening_id\n" +
+                "\tim_akun_kode_rekening kr ON jd.nomor_rekening=kr.kode_rekening\n" +
                 "WHERE\n" +
                 "\tkr.kode_rekening ilike '"+kodeRekening+"%'\n" +
                 "\tAND j.sumber_dana_id ilike '"+noBudgetting+"%' \n" +
@@ -2714,7 +2648,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "\tAND j.flag='Y'\n" +
                 "\tAND kr.flag='Y'\n" +
                 "\tAND j.branch_id='"+branchId+"'\n" +
-                "\tAND to_char(j.tanggal_jurnal, 'yyyy') = '"+tahun+"'";
+                "\tAND to_char(j.registered_date, 'yyyy') = '"+tahun+"'";
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
         if (results!=null){

@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.checkup.model;
 
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.transaksi.periksalab.model.UploadHasilPemeriksaan;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 
 import java.math.BigDecimal;
@@ -196,6 +197,267 @@ public class HeaderCheckup {
     private String jumlah;
 
     private String namaPaket;
+    private String formatTglMasuk;
+    private String namaPemeriksaan;
+    private String isPeriksaLuar;
+    private String idHeaderPemeriksaan;
+    private List<UploadHasilPemeriksaan> uploadHasil = new ArrayList<>();
+    private List<String> listPemeriksaan = new ArrayList<>();
+    private String umur;
+    private String namaDokter;
+    private String idUangMuka;
+    private String idKelasRuangan;
+    private String kategoriRuangan;
+    private String tipeRekanan;
+    private String catatanKlinis;
+    private String penunjangLab;
+    private String penunjangRadiologi;
+    private String ttdPasien;
+    private String ttdDokter;
+    private String indikasi;
+    private String penyakitDahulu;
+    private String terapi;
+    private String kondisiPulang;
+    private String keadaanPulang;
+    private String stTglKeluar;
+    private String tindakLanjut;
+    private String prognosis;
+    private String spo2;
+    private String filePendukung;
+    private String nyeri;
+    private String resikoJatuh;
+
+    public String getResikoJatuh() {
+        return resikoJatuh;
+    }
+
+    public void setResikoJatuh(String resikoJatuh) {
+        this.resikoJatuh = resikoJatuh;
+    }
+
+    public String getNyeri() {
+        return nyeri;
+    }
+
+    public void setNyeri(String nyeri) {
+        this.nyeri = nyeri;
+    }
+
+    public String getFilePendukung() {
+        return filePendukung;
+    }
+
+    public void setFilePendukung(String filePendukung) {
+        this.filePendukung = filePendukung;
+    }
+
+    public String getSpo2() {
+        return spo2;
+    }
+
+    public void setSpo2(String spo2) {
+        this.spo2 = spo2;
+    }
+
+    public String getPrognosis() {
+        return prognosis;
+    }
+
+    public void setPrognosis(String prognosis) {
+        this.prognosis = prognosis;
+    }
+
+    public String getTindakLanjut() {
+        return tindakLanjut;
+    }
+
+    public void setTindakLanjut(String tindakLanjut) {
+        this.tindakLanjut = tindakLanjut;
+    }
+
+    public String getStTglKeluar() {
+        return stTglKeluar;
+    }
+
+    public void setStTglKeluar(String stTglKeluar) {
+        this.stTglKeluar = stTglKeluar;
+    }
+
+    public String getPenyakitDahulu() {
+        return penyakitDahulu;
+    }
+
+    public void setPenyakitDahulu(String penyakitDahulu) {
+        this.penyakitDahulu = penyakitDahulu;
+    }
+
+    public String getTerapi() {
+        return terapi;
+    }
+
+    public void setTerapi(String terapi) {
+        this.terapi = terapi;
+    }
+
+    public String getKondisiPulang() {
+        return kondisiPulang;
+    }
+
+    public void setKondisiPulang(String kondisiPulang) {
+        this.kondisiPulang = kondisiPulang;
+    }
+
+    public String getKeadaanPulang() {
+        return keadaanPulang;
+    }
+
+    public void setKeadaanPulang(String keadaanPulang) {
+        this.keadaanPulang = keadaanPulang;
+    }
+
+    public String getIndikasi() {
+        return indikasi;
+    }
+
+    public void setIndikasi(String indikasi) {
+        this.indikasi = indikasi;
+    }
+
+    public String getTtdPasien() {
+        return ttdPasien;
+    }
+
+    public void setTtdPasien(String ttdPasien) {
+        this.ttdPasien = ttdPasien;
+    }
+
+    public String getTtdDokter() {
+        return ttdDokter;
+    }
+
+    public void setTtdDokter(String ttdDokter) {
+        this.ttdDokter = ttdDokter;
+    }
+
+    public String getPenunjangLab() {
+        return penunjangLab;
+    }
+
+    public void setPenunjangLab(String penunjangLab) {
+        this.penunjangLab = penunjangLab;
+    }
+
+    public String getPenunjangRadiologi() {
+        return penunjangRadiologi;
+    }
+
+    public void setPenunjangRadiologi(String penunjangRadiologi) {
+        this.penunjangRadiologi = penunjangRadiologi;
+    }
+
+    public String getCatatanKlinis() {
+        return catatanKlinis;
+    }
+
+    public void setCatatanKlinis(String catatanKlinis) {
+        this.catatanKlinis = catatanKlinis;
+    }
+
+    public String getTipeRekanan() {
+        return tipeRekanan;
+    }
+
+    public void setTipeRekanan(String tipeRekanan) {
+        this.tipeRekanan = tipeRekanan;
+    }
+
+    public String getKategoriRuangan() {
+        return kategoriRuangan;
+    }
+
+    public void setKategoriRuangan(String kategoriRuangan) {
+        this.kategoriRuangan = kategoriRuangan;
+    }
+
+    public String getIdKelasRuangan() {
+        return idKelasRuangan;
+    }
+
+    public void setIdKelasRuangan(String idKelasRuangan) {
+        this.idKelasRuangan = idKelasRuangan;
+    }
+
+    public String getIdUangMuka() {
+        return idUangMuka;
+    }
+
+    public void setIdUangMuka(String idUangMuka) {
+        this.idUangMuka = idUangMuka;
+    }
+
+    public String getNamaDokter() {
+        return namaDokter;
+    }
+
+    public void setNamaDokter(String namaDokter) {
+        this.namaDokter = namaDokter;
+    }
+
+    public String getUmur() {
+        return umur;
+    }
+
+    public void setUmur(String umur) {
+        this.umur = umur;
+    }
+
+    public List<String> getListPemeriksaan() {
+        return listPemeriksaan;
+    }
+
+    public void setListPemeriksaan(List<String> listPemeriksaan) {
+        this.listPemeriksaan = listPemeriksaan;
+    }
+
+    public List<UploadHasilPemeriksaan> getUploadHasil() {
+        return uploadHasil;
+    }
+
+    public void setUploadHasil(List<UploadHasilPemeriksaan> uploadHasil) {
+        this.uploadHasil = uploadHasil;
+    }
+
+    public String getIsPeriksaLuar() {
+        return isPeriksaLuar;
+    }
+
+    public void setIsPeriksaLuar(String isPeriksaLuar) {
+        this.isPeriksaLuar = isPeriksaLuar;
+    }
+
+    public String getIdHeaderPemeriksaan() {
+        return idHeaderPemeriksaan;
+    }
+
+    public void setIdHeaderPemeriksaan(String idHeaderPemeriksaan) {
+        this.idHeaderPemeriksaan = idHeaderPemeriksaan;
+    }
+
+    public String getNamaPemeriksaan() {
+        return namaPemeriksaan;
+    }
+
+    public void setNamaPemeriksaan(String namaPemeriksaan) {
+        this.namaPemeriksaan = namaPemeriksaan;
+    }
+
+    public String getFormatTglMasuk() {
+        return formatTglMasuk;
+    }
+
+    public void setFormatTglMasuk(String formatTglMasuk) {
+        this.formatTglMasuk = formatTglMasuk;
+    }
 
     public String getNamaPaket() {
         return namaPaket;

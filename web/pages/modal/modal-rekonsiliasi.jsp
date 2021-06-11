@@ -145,8 +145,9 @@
                                 <label style="margin-left: 8px">TTD Pasien/Keluarga</label>
                                 <canvas class="paint-canvas-ttd" id="reo_ttd1" width="220"
                                         onmouseover="paintTtd('reo_ttd1')"></canvas>
+                                <input style="margin-left: 10px" class="form-control" id="keluarga" placeholder="Nama Terang">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                        onclick="clearConvas('reo_ttd1')"><i
+                                        onclick="removePaint('reo_ttd1')"><i
                                         class="fa fa-trash"></i> Clear
                                 </button>
                             </div>
@@ -154,8 +155,10 @@
                                 <label style="margin-left: 8px">TTD Apoteker</label>
                                 <canvas class="paint-canvas-ttd" id="reo_ttd2" width="220"
                                         onmouseover="paintTtd('reo_ttd2')"></canvas>
+                                <input style="margin-left: 10px" class="form-control nama_dokter" id="apoteker" placeholder="Nama Terang">
+                                <input style="margin-left: 10px; margin-top: 3px" class="form-control sip_dokter" id="sip_apoteker" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                        onclick="clearConvas('reo_ttd2')"><i
+                                        onclick="removePaint('reo_ttd2')"><i
                                         class="fa fa-trash"></i> Clear
                                 </button>
                             </div>

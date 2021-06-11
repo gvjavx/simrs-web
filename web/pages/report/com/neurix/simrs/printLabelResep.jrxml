@@ -38,11 +38,17 @@ TO_CHAR(c.tgl_lahir, 'dd-mm-yyyy') as tanggal_lahir,
 b.id_obat,
 d.nama_obat,
 TO_CHAR(e.expired_date, 'dd-mm-yyyy') as expired_date,
-f.warna_label,
-f.warna_background,
-f.keterangan,
-g.bentuk,
-f.keterangan_lain
+CAST('N' AS VARCHAR) as is_racik,
+h.tipe_pelayanan,
+CASE WHEN h.tipe_pelayanan = 'rawat_inap' THEN
+    REPLACE(f.frekuensi,'|', ', ')
+ELSE
+    CONCAT(split_part(f.frekuensi,'#', 1),'. ', REPLACE(split_part(f.frekuensi,'#', 2), '|', ', '), '. ', split_part(f.frekuensi,'#', 3))
+END as frekuensi,
+i.warna_label,
+i.warna_background,
+i.keterangan,
+j.bentuk
 FROM mt_simrs_permintaan_resep a
 INNER JOIN (
 	SELECT
@@ -63,7 +69,16 @@ INNER JOIN (
 	FROM mt_simrs_transaksi_obat_detail_batch
 	GROUP BY id_transaksi_obat_detail, expired_date
 ) e ON b.id_transaksi_obat_detail = e.id_transaksi_obat_detail
+INNER JOIN mt_simrs_transaksi_obat_detail f ON d.id_obat = f.id_obat AND f.id_approval_obat = a.id_approval_obat AND f.id_racik IS NULL
+INNER JOIN it_simrs_header_detail_checkup g ON a.id_detail_checkup = g.id_detail_checkup
 INNER JOIN (
+  SELECT
+  a.id_pelayanan,
+  b.tipe_pelayanan
+  FROM im_simrs_pelayanan a
+  INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan
+) h ON g.id_pelayanan = h.id_pelayanan
+LEFT JOIN (
 	SELECT
 	a.keterangan,
 	a.warna_label,
@@ -73,8 +88,8 @@ INNER JOIN (
 	FROM im_simrs_keterangan_obat a
 	INNER JOIN it_simrs_keterangan_resep b ON a.id = b.id_keterangan_obat
 	WHERE b.id_permintaan_resep = $P{reportParams.id}
-) f ON b.id_obat = f.id_obat
-INNER JOIN im_simrs_bentuk_barang g ON d.id_bentuk = g.id_bentuk
+) i ON b.id_obat = i.id_obat
+LEFT JOIN im_simrs_bentuk_barang j ON d.id_bentuk = j.id_bentuk
 WHERE a.id_permintaan_resep = $P{reportParams.id}
 UNION ALL
 SELECT
@@ -83,29 +98,40 @@ a.id_detail_checkup,
 c.id_pasien,
 c.nama,
 TO_CHAR(c.tgl_lahir, 'dd-mm-yyyy') as tanggal_lahir,
-b.id_racik,
-b.nama_racik,
+d.id,
+d.nama as keterangan,
 CAST('' AS VARCHAR) as expired_date,
-CAST('default' AS VARCHAR) as warna_label,
-CAST('default' AS VARCHAR) as warna_background,
-CAST('Racik' AS VARCHAR) as keterangan,
-CAST('Racik' AS VARCHAR) as bentuk,
-b.keterangan as keterangan_lain
+CAST('Y' AS VARCHAR) as is_racik,
+h.tipe_pelayanan,
+CASE WHEN h.tipe_pelayanan = 'rawat_inap' THEN
+    REPLACE(d.frekuensi,'|', ', ')
+ELSE
+    CONCAT(split_part(d.frekuensi,'#', 1),'. ', REPLACE(split_part(d.frekuensi,'#', 2), '|', ', '), '. ', split_part(d.frekuensi,'#', 3))
+END as frekuensi,
+CAST('' AS VARCHAR) as warna_label,
+CAST('' AS VARCHAR) as  warna_background,
+CAST('Racik' AS VARCHAR) as  keterangan,
+d.kemasan as  bentuk
 FROM mt_simrs_permintaan_resep a
 INNER JOIN (
 	SELECT
 	id_approval_obat,
-	id_racik,
-	nama_racik,
-	keterangan
+	id_racik
 	FROM mt_simrs_transaksi_obat_detail
 	WHERE id_racik IS NOT NULL
 	GROUP BY id_approval_obat,
-	id_racik,
-	nama_racik,
-	keterangan
+	id_racik
 ) b ON a.id_approval_obat = b.id_approval_obat
 INNER JOIN im_simrs_pasien c ON a.id_pasien = c.id_pasien
+INNER JOIN it_simrs_obat_racik d ON b.id_racik = d.id
+INNER JOIN it_simrs_header_detail_checkup g ON a.id_detail_checkup = g.id_detail_checkup
+INNER JOIN (
+  SELECT
+  a.id_pelayanan,
+  b.tipe_pelayanan
+  FROM im_simrs_pelayanan a
+  INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan
+) h ON g.id_pelayanan = h.id_pelayanan
 WHERE a.id_permintaan_resep = $P{reportParams.id}]]>
 	</queryString>
 	<field name="id_approval_obat" class="java.lang.String"/>
@@ -116,11 +142,13 @@ WHERE a.id_permintaan_resep = $P{reportParams.id}]]>
 	<field name="id_obat" class="java.lang.String"/>
 	<field name="nama_obat" class="java.lang.String"/>
 	<field name="expired_date" class="java.lang.String"/>
+	<field name="is_racik" class="java.lang.String"/>
+	<field name="tipe_pelayanan" class="java.lang.String"/>
+	<field name="frekuensi" class="java.lang.String"/>
 	<field name="warna_label" class="java.lang.String"/>
 	<field name="warna_background" class="java.lang.String"/>
 	<field name="keterangan" class="java.lang.String"/>
 	<field name="bentuk" class="java.lang.String"/>
-	<field name="keterangan_lain" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -313,10 +341,10 @@ WHERE a.id_permintaan_resep = $P{reportParams.id}]]>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="78" y="113" width="148" height="24" uuid="44017646-0d65-4f79-8591-7823bc2858cd"/>
-					<textElement verticalAlignment="Middle">
+					<textElement verticalAlignment="Top">
 						<font size="8" isBold="false"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{keterangan_lain} == null ? "" : $F{keterangan_lain}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{frekuensi} == null ? "" : $F{frekuensi}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="71" y="113" width="6" height="12" uuid="765e5085-7bf0-4ffb-a56d-d309d4858d17"/>
