@@ -293,6 +293,7 @@ public class PayrollTunjanganStrategisBoImpl implements PayrollTunjanganStrategi
 
                 imPayrollTunjanganStrategisEntity.setTunjStrategisId(payrollTunjanganStrategis);
                 imPayrollTunjanganStrategisEntity.setPositionId(bean.getProfesiId());
+                imPayrollTunjanganStrategisEntity.setProfesiId(bean.getProfesiId());
                 if (bean.getNilai() != null){
                     imPayrollTunjanganStrategisEntity.setNilai(bean.getNilai());
                 }else {

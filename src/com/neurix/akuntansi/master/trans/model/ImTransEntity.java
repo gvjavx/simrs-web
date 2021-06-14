@@ -13,6 +13,8 @@ import java.util.Set;
  * Time: 14:05
  * To change this template use File | Settings | File Templates.
  */
+// tambahkan tipe_jurnal , is_otomatis*/
+
 public class ImTransEntity implements Serializable {
 
     private String transId;
@@ -43,12 +45,12 @@ public class ImTransEntity implements Serializable {
         this.imMappingJurnal = imMappingJurnal;
     }
 
-    public String getFlagSumberBaru() {
-        return flagSumberBaru;
+    public String getIsOtomatis() {
+        return isOtomatis;
     }
 
-    public void setFlagSumberBaru(String flagSumberBaru) {
-        this.flagSumberBaru = flagSumberBaru;
+    public void setIsOtomatis(String isOtomatis) {
+        this.isOtomatis = isOtomatis;
     }
 
     public String getFlagPengajuanBiaya() {
@@ -67,12 +69,12 @@ public class ImTransEntity implements Serializable {
         this.tipeJurnalId = tipeJurnalId;
     }
 
-    public String getIsOtomatis() {
-        return isOtomatis;
+    public String getFlagSumberBaru() {
+        return flagSumberBaru;
     }
 
-    public void setIsOtomatis(String isOtomatis) {
-        this.isOtomatis = isOtomatis;
+    public void setFlagSumberBaru(String flagSumberBaru) {
+        this.flagSumberBaru = flagSumberBaru;
     }
 
     public String getMaster() {

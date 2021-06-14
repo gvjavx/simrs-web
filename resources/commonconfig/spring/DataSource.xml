@@ -21,27 +21,18 @@
         <!--p:password="123456"/>-->
 
     <!-- ====== DEV ======= -->
-    <!--<bean id="dataSource"-->
-          <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
-          <!--p:driverClassName="org.postgresql.Driver"-->
-          <!--p:url="jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu_10062021"-->
-          <!--p:username="root"-->
-          <!--p:password="123456"/>-->
-
-    <!-- ====== HVA Chalif ======= -->
-    <!--<bean id="dataSource"-->
-          <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
-          <!--p:driverClassName="org.postgresql.Driver"-->
-          <!--p:url="jdbc:postgresql://10.18.254.238:5432/gomedsys"-->
-          <!--p:username="postgres"-->
-          <!--p:password="postgres"/>-->
-
-    <!-- ====== LOCALHOST ======= -->
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource"
           p:driverClassName="org.postgresql.Driver"
-          p:url="jdbc:postgresql://localhost:5432/gomed_test"
-          p:username="postgres"
+          p:url="jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu_10062021"
+          p:username="root"
           p:password="123456"/>
 
+    <!-- ====== LOCALHOST ======= -->
+    <!--<bean id="dataSource"-->
+          <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
+          <!--p:driverClassName="org.postgresql.Driver"-->
+          <!--p:url="jdbc:postgresql://localhost:5432/gomedsys_nmu_tunning"-->
+          <!--p:username="postgres"-->
+          <!--p:password="postgres"/>-->
 </beans>

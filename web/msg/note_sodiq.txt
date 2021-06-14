@@ -2857,4 +2857,7 @@ INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ('RMP000000305','RMM00000118','igd','19','Y','C','migrasi',now(),now(),'migrasi'),
 ('RMP000000306','RMM00000118','rawat_inap','19','Y','C','migrasi',now(),now(),'migrasi');
 
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000307','RMM00000100','radiologi','2','Y','C','migrasi',now(),now(),'migrasi');
+
 

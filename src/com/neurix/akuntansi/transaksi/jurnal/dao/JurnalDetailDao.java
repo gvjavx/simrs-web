@@ -34,23 +34,23 @@ public class JurnalDetailDao extends GenericDao<ItJurnalDetailEntity, String> {
 
     @Override
     public List<ItJurnalDetailEntity> getByCriteria(Map mapCriteria) {
-        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ItJurnalDetailEntity.class);
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItJurnalDetailEntity.class);
 
         // Get Collection and sorting
-        if (mapCriteria!=null) {
-            if (mapCriteria.get("rekening_id")!=null) {
+        if (mapCriteria != null) {
+            if (mapCriteria.get("rekening_id") != null) {
                 criteria.add(Restrictions.eq("rekeningId", (String) mapCriteria.get("rekening_id")));
             }
-            if (mapCriteria.get("no_nota")!=null) {
+            if (mapCriteria.get("no_nota") != null) {
                 criteria.add(Restrictions.eq("noNota", (String) mapCriteria.get("no_nota")));
             }
-            if (mapCriteria.get("master_id")!=null) {
+            if (mapCriteria.get("master_id") != null) {
                 criteria.add(Restrictions.eq("masterId", (String) mapCriteria.get("master_id")));
             }
-            if (mapCriteria.get("no_jurnal")!=null) {
+            if (mapCriteria.get("no_jurnal") != null) {
                 criteria.add(Restrictions.eq("noJurnal", (String) mapCriteria.get("no_jurnal")));
             }
-            if (mapCriteria.get("jurnal_detail_id")!=null) {
+            if (mapCriteria.get("jurnal_detail_id") != null) {
                 criteria.add(Restrictions.eq("jurnalDetailId", (String) mapCriteria.get("jurnal_detail_id")));
             }
         }
@@ -73,20 +73,26 @@ public class JurnalDetailDao extends GenericDao<ItJurnalDetailEntity, String> {
         DateFormat dfBulan = new SimpleDateFormat("MM");
         String tahun = dfTahun.format(date);
         String bulan = dfBulan.format(date);
-        Iterator<BigInteger> iter=query.list().iterator();
+        Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%05d", iter.next());
 
-        return "JD"+tahun+bulan+sId;
+        return "JD" + tahun + bulan + sId;
     }
 
-    public List<ItJurnalDetailEntity> getListJurnalDetailDuplicate(String rekeningId, String noNota, String masterId, BigDecimal jumlahDebit,BigDecimal jumlahKredit){
-        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ItJurnalDetailEntity.class);
-        criteria.add(Restrictions.eq("rekeningId", rekeningId));
-        criteria.add(Restrictions.eq("noNota", noNota));
-        criteria.add(Restrictions.eq("masterId", masterId));
-        criteria.add(Restrictions.eq("jumlahDebit", jumlahDebit));
-        criteria.add(Restrictions.eq("jumlahKredit", jumlahKredit));
-
+    public List<ItJurnalDetailEntity> getListJurnalDetailDuplicate(String rekeningId, String noNota, String masterId, BigDecimal jumlahDebit, BigDecimal jumlahKredit) {
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItJurnalDetailEntity.class);
+        //RAKA-27APR2021 ==> data ada yg null (entah boleh null atau tidak)
+        if (rekeningId != null)
+            criteria.add(Restrictions.eq("nomorRekening", rekeningId));
+        if (noNota != null)
+            criteria.add(Restrictions.eq("noNota", noNota));
+        if (masterId != null)
+            criteria.add(Restrictions.eq("masterId", masterId));
+        if (jumlahDebit != null)
+            criteria.add(Restrictions.eq("jumlahDebit", jumlahDebit));
+        if (jumlahKredit != null )
+            criteria.add(Restrictions.eq("jumlahKredit", jumlahKredit));
+        //RAKA-end
         criteria.add(Restrictions.eq("flag", "Y"));
 
         // Order by

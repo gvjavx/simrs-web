@@ -16,6 +16,7 @@
     <!--</list>-->
     <!--</property>-->
 
+
     <bean id="sessionFactory"
           class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"
           p:dataSource-ref="dataSource">
@@ -38,7 +39,14 @@
                 <!--<prop key="hibernate.connection.username">root</prop>-->
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
+
                 <!-- ===== DEV ====== -->
+                <prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu_10062021</prop>
+                <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
+                <prop key="hibernate.connection.username">root</prop>
+                <prop key="hibernate.connection.password">123456</prop>
+
+                <!-- ====== LOCALHOST ======= -->
                 <!--<prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu_10062021</prop>-->
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
                 <!--<prop key="hibernate.connection.username">root</prop>-->
@@ -49,12 +57,6 @@
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
                 <!--<prop key="hibernate.connection.username">postgres</prop>-->
                 <!--<prop key="hibernate.connection.password">postgres</prop>-->
-
-                <!-- ====== LOCALHOST ======= -->
-                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/gomed_test</prop>
-                <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
-                <prop key="hibernate.connection.username">postgres</prop>
-                <prop key="hibernate.connection.password">123456</prop>
 
 
             </props>
@@ -438,10 +440,29 @@
                 <value>sshconfig/com/neurix/akuntansi/master/tipeRekening/hibernate/ImTipeRekeningEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/trans/hibernate/ImTransEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/master/hibernate/ImMasterEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/akuntansi/transaksi/laporanAkuntansi/hibernate/ItLaporanAkuntansiEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/hibernate/ImPembayaranUtangPiutangEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/hibernate/ImPembayaranUtangPiutangDetailEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/hibernate/ItAkunLampiranEntity.hbm.xml</value>
+                <value>
+                    sshconfig/com/neurix/akuntansi/transaksi/laporanAkuntansi/hibernate/ItLaporanAkuntansiEntity.hbm.xml
+                </value>
+                <!--<value>-->
+                    <!--sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/hibernate/ImPembayaranUtangPiutangEntity.hbm.xml-->
+                <!--</value>-->
+                <!--<value>-->
+                    <!--sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/hibernate/ImPembayaranUtangPiutangDetailEntity.hbm.xml-->
+                <!--</value>-->
+                <!--<value>-->
+                    <!--sshconfig/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/hibernate/ItAkunLampiranEntity.hbm.xml-->
+                <!--</value>-->
+
+                <value>
+                    sshconfig/com/neurix/akuntansi/transaksi/kas/hibernate/ItAkunKasEntity.xml
+                </value>
+                <value>
+                    sshconfig/com/neurix/akuntansi/transaksi/kas/hibernate/ItAkunKasDetailEntity.xml
+                </value>
+                <value>
+                    sshconfig/com/neurix/akuntansi/transaksi/kas/hibernate/ItAkunLampiranEntity.hbm.xml
+                </value>
+
                 <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalPendingEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/jurnal/hibernate/ItJurnalDetailEntity.hbm.xml</value>

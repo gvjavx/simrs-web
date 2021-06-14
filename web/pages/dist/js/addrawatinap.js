@@ -293,6 +293,7 @@ function selectKeterangan(idKtg) {
         } else if (idKtg == "kontrol_ulang") {
             $('#form-tgl-kontrol').show();
             $('#form-catatan').show();
+            setPelayanan('close_pelayanan_0');
 
             $('#form-rs-rujukan').hide();
             $('#form-selesai').hide();
@@ -303,6 +304,14 @@ function selectKeterangan(idKtg) {
             $('#form-asesmen').hide();
             $('#form_order_pemeriksaan').hide();
             $('#body_order_pemeriksaan').html('');
+            $(function () {
+                $('.ptr-tgl').datepicker({
+                    dateFormat : 'dd-mm-yy'
+                });
+                $('.ptr-tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
+                $('[data-mask]').inputmask();
+            });
+
 
         } else if (idKtg == "rawat_intensif") {
             getKamar(null, 'rawat_intensif');
@@ -4245,7 +4254,6 @@ function savePemeriksaanPasien() {
     var keterangan = $('#ket_selesai option:selected').text();
     var ketRawatInap = $('#keterangan_rw').val();
     var rsRujukan = $('#rs_rujukan').val();
-    var tglKontrol = $('#tgl_kontrol').val().split("-").reverse().join("-");
     var isPemeriksaan = $('#pemeriksaan_lab').is(':checked');
     var kategoriLab = $('#ckp_kategori').val();
     var isStay = $('#is_stay').is(':checked');

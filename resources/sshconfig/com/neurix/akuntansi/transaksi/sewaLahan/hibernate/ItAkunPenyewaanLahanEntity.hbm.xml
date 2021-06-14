@@ -1,0 +1,90 @@
+<!--
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.akuntansi.transaksi.sewaLahan.model.ItAkunPenyewaanLahanEntity">
+        <table name="it_akun_penyewaan_lahan" schema="public"/>
+        <attributes>
+            <id name="penyewaanLahanId">
+                <column name="penyewaan_lahan_id"/>
+            </id>
+            <basic name="namaPenyewa">
+                <column name="nama_penyewa"/>
+            </basic>
+            <basic name="keterangan">
+                <column name="keterangan"/>
+            </basic>
+            <basic name="tanggalBayar">
+                <column name="tanggal_bayar"/>
+            </basic>
+            <basic name="nilai">
+                <column name="nilai"/>
+            </basic>
+            <basic name="nilaiPpn">
+                <column name="nilai_ppn"/>
+            </basic>
+            <basic name="nilaiPph">
+                <column name="nilai_pph"/>
+            </basic>
+            <basic name="nilaiNetto">
+                <column name="nilai_netto"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+            <basic name="branchId">
+                <column name="branch_id"/>
+            </basic>
+            <basic name="cancelFlag">
+                <column name="cancel_flag"/>
+            </basic>
+            <basic name="cancelDate">
+                <column name="cancel_date"/>
+            </basic>
+            <basic name="cancelWho">
+                <column name="cancel_who"/>
+            </basic>
+            <basic name="approvalFlag">
+                <column name="approval_flag"/>
+            </basic>
+            <basic name="approvalDate">
+                <column name="approval_date"/>
+            </basic>
+            <basic name="approvalWho">
+                <column name="approval_who"/>
+            </basic>
+            <basic name="metodeBayar">
+                <column name="metode_bayar"/>
+            </basic>
+            <basic name="bank">
+                <column name="bank"/>
+            </basic>
+            <basic name="noJurnal">
+                <column name="no_jurnal"/>
+            </basic>
+            <basic name="noFaktur">
+                <column name="no_faktur"/>
+            </basic>
+            <basic name="urlFakturImage">
+                <column name="url_faktur_image"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>
+-->

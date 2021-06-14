@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.akuntansi.transaksi.kas.model.ItAkunKasEntity">
+        <table name="it_akun_kas" schema="public" />
+        <attributes>
+            <id name="kasId">
+                <column name="kas_id"/>
+            </id>
+            <basic name="tipeTransaksi">
+                <column name="tipe_transaksi"/>
+            </basic>
+            <basic name="tanggal">
+                <column name="tanggal"/>
+            </basic>
+            <basic name="coaKas">
+                <column name="coa_kas"/>
+            </basic>
+            <basic name="currencyId">
+                <column name="currencyId"/>
+            </basic>
+            <basic name="bayar">
+                <column name="bayar"/>
+            </basic>
+            <basic name="keterangan">
+                <column name="keterangan"/>
+            </basic>
+            <basic name="noSlipBank">
+                <column name="no_slip_bank"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="branchId">
+                <column name="branch_id"/>
+            </basic>
+            <basic name="noJurnal">
+                <column name="no_jurnal"/>
+            </basic>
+            <basic name="metodePembayaran">
+                <column name="metode_pembayaran"/>
+            </basic>
+            <basic name="registeredFlag">
+                <column name="registered_flag"/>
+            </basic>
+            <basic name="registeredDate">
+                <column name="registered_date"/>
+            </basic>
+            <basic name="registeredWho">
+                <column name="registered_who"/>
+            </basic>
+            <basic name="tipeKas">
+                <column name="tipe_kas"/>
+            </basic>
+            <basic name="approvalKeuanganFlag">
+                <column name="approval_keuangan_flag"/>
+            </basic>
+            <basic name="approvalKeuanganId">
+                <column name="approval_keuangan_id"/>
+            </basic>
+            <basic name="approvalKeuanganName">
+                <column name="approval_keuangan_name"/>
+            </basic>
+            <basic name="approvalKeuanganDate">
+                <column name="approval_keuangan_date"/>
+            </basic>
+            <basic name="approvalKasubKeuanganFlag">
+                <column name="approval_kasub_keuangan_flag"/>
+            </basic>
+            <basic name="approvalKasubKeuanganId">
+                <column name="approval_kasub_keuangan_id"/>
+            </basic>
+            <basic name="approvalKasubKeuanganName">
+                <column name="approval_kasub_keuangan_name"/>
+            </basic>
+            <basic name="approvalKasubKeuanganDate">
+                <column name="approval_kasub_keuangan_date"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

@@ -30,6 +30,12 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="getByCriteria">readOnly</prop>
+                <prop key="getMappingJurnalInKodeRekening">readOnly</prop>
+                <prop key="getTipeJurnalByTransId">readOnly</prop>
+                <prop key="getTipeJurnalById">readOnly</prop>
+                <prop key="saveDelete">PROPAGATION_REQUIRED</prop>
+                <prop key="saveEdit">PROPAGATION_REQUIRED</prop>
+                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

@@ -34,14 +34,14 @@ public class TipeJurnalDao extends GenericDao<ImTipeJurnalEntity, String> {
         // Get Collection and sorting
         if (mapCriteria!=null) {
             if (mapCriteria.get("tipe_jurnal_id")!=null) {
-                criteria.add(Restrictions.eq("tipeJurnalId", (String) mapCriteria.get("tipe_jurnal_id")));
+                criteria.add(Restrictions.eq("tipeJurnalId",  mapCriteria.get("tipe_jurnal_id").toString() ));
             }
             if (mapCriteria.get("tipe_jurnal_name")!=null) {
-                criteria.add(Restrictions.ilike("tipeJurnalName", "%" + (String)mapCriteria.get("tipe_jurnal_name") + "%"));
+                criteria.add(Restrictions.ilike("tipeJurnalName", "%" + mapCriteria.get("tipe_jurnal_name").toString() + "%"));
             }
         }
 
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString() ));
 
         // Order by
         criteria.addOrder(Order.desc("tipeJurnalId"));

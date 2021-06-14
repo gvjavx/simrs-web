@@ -3,7 +3,9 @@ package com.neurix.akuntansi.transaksi.pengajuanBiaya.dao;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.ImPengajuanBiayaEntity;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiaya;
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -27,6 +29,8 @@ import java.util.Map;
  */
 public class PengajuanBiayaDao extends GenericDao<ImPengajuanBiayaEntity, String> {
 
+    protected static transient Logger logger = Logger.getLogger(PengajuanBiayaDao.class);
+
     @Override
     protected Class<ImPengajuanBiayaEntity> getEntityClass() {
         return ImPengajuanBiayaEntity.class;
@@ -34,27 +38,27 @@ public class PengajuanBiayaDao extends GenericDao<ImPengajuanBiayaEntity, String
 
     @Override
     public List<ImPengajuanBiayaEntity> getByCriteria(Map mapCriteria) {
+        List<ImPengajuanBiayaEntity> results = null;
         Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImPengajuanBiayaEntity.class);
-
         // Get Collection and sorting
         if (mapCriteria!=null) {
             if (mapCriteria.get("pengajuan_biaya_id")!=null) {
-                criteria.add(Restrictions.eq("pengajuanBiayaId", (String) mapCriteria.get("pengajuan_biaya_id")));
+                    criteria.add(Restrictions.eq("pengajuanBiayaId", mapCriteria.get("pengajuan_biaya_id").toString()));
             }
             if (mapCriteria.get("transaksi")!=null) {
-                criteria.add(Restrictions.eq("transaksi", (String) mapCriteria.get("transaksi")));
+                    criteria.add(Restrictions.eq("transaksi", mapCriteria.get("transaksi").toString()));
             }
             if (mapCriteria.get("branch_id")!=null) {
-                criteria.add(Restrictions.eq("branchId", (String) mapCriteria.get("branch_id")));
+                    criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
             }
             if (mapCriteria.get("divisi_id")!=null) {
-                criteria.add(Restrictions.eq("divisiId", (String) mapCriteria.get("divisi_id")));
+                    criteria.add(Restrictions.eq("divisiId", mapCriteria.get("divisi_id").toString()));
             }
             if (mapCriteria.get("no_jurnal")!=null) {
-                criteria.add(Restrictions.eq("noJurnal", (String) mapCriteria.get("no_jurnal")));
+                    criteria.add(Restrictions.eq("noJurnal", mapCriteria.get("no_jurnal").toString()));
             }
             if (mapCriteria.get("keterangan")!=null) {
-                criteria.add(Restrictions.ilike("keterangan", "%"+(String) mapCriteria.get("keterangan")+"%"));
+                    criteria.add(Restrictions.ilike("keterangan", "%" + mapCriteria.get("keterangan") + "%"));
             }
             if (mapCriteria.get("tanggal_dari")!=null && mapCriteria.get("tanggal_selesai")!=null) {
                 criteria.add(Restrictions.between("tanggal",mapCriteria.get("tanggal_dari"),mapCriteria.get("tanggal_selesai")));
@@ -68,12 +72,10 @@ public class PengajuanBiayaDao extends GenericDao<ImPengajuanBiayaEntity, String
                 }
             }
         }
-
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
-
         // Order by
         criteria.addOrder(Order.desc("pengajuanBiayaId"));
-        List<ImPengajuanBiayaEntity> results = criteria.list();
+            results = criteria.list();
 
         return results;
     }
@@ -86,10 +88,11 @@ public class PengajuanBiayaDao extends GenericDao<ImPengajuanBiayaEntity, String
 
         return "PB"+sId;
     }
+
     public List<PengajuanBiaya> getListPengajuanBiayaForApproval(Map mapCriteria) {
         List<PengajuanBiaya> listOfResult = new ArrayList<PengajuanBiaya>();
-        List<Object[]> results = new ArrayList<Object[]>();
-        String nip = null, pengajuanBiayaId = null,atasan=null;
+        List<Object[]> results;
+        String pengajuanBiayaId = null, atasan = null;
         String searchNip = "" ;
         String searchPengajuanBiayaId = "" ;
         String searchAtasan = "" ;
@@ -145,7 +148,7 @@ public class PengajuanBiayaDao extends GenericDao<ImPengajuanBiayaEntity, String
 
     public List<PengajuanBiaya> getListPengajuanBiayaRkForApproval(Map mapCriteria) {
         List<PengajuanBiaya> listOfResult = new ArrayList<PengajuanBiaya>();
-        List<Object[]> results = new ArrayList<Object[]>();
+        List<Object[]> results;
         String nip = null, pengajuanBiayaId = null,atasan=null;
         String searchNip = "" ;
         String searchPengajuanBiayaId = "" ;

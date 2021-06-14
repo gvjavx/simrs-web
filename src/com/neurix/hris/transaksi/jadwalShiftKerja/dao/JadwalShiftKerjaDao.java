@@ -320,7 +320,8 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "b.tipe_pelayanan,\n" +
                 "b.kategori_pelayanan,\n" +
                 "b.divisi_id,\n" +
-                "b.kode_vclaim\n" +
+                "b.kode_vclaim,\n" +
+                "b.flag\t\t\t\n" +
                 "FROM im_simrs_pelayanan a\n" +
                 "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) pl ON pl.id_pelayanan = dpl.id_pelayanan\n" +
                 "INNER JOIN im_hris_pegawai pg ON pg.nip=dk.id_dokter\n" +
@@ -383,26 +384,29 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
         return results;
     }
 
-    public List<JadwalShiftKerjaDetail> getJadwalShiftKerjaByUnitAndProfesiAndTanggal(String branchId, Date tglFrom, Date tglTo, String profesiId) {
+    public List<JadwalShiftKerjaDetail> getJadwalShiftKerjaByUnitAndProfesiAndTanggal(String branchId, Date tanggal, String tipeKasir) {
         List<JadwalShiftKerjaDetail> listOfResult = new ArrayList<JadwalShiftKerjaDetail>();
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "SELECT\n" +
-                "\tjd.nip,\n" +
-                "\tjd.nama_pegawai,\n" +
-                "\ts.shift_name\n" +
-                "FROM\n" +
-                "\tit_hris_jadwal_shift_kerja_detail jd INNER JOIN\n" +
-                "\tit_hris_jadwal_shift_kerja jk ON jd.jadwal_shift_kerja_id=jk.jadwal_shift_kerja_id INNER JOIN\n" +
-                "\tim_hris_shift s ON s.shift_id=jd.shift_id " +
-                "WHERE\n" +
-                "\tjd.flag='Y'\n" +
-                "\tAND jk.flag='Y'\n" +
-                "\tAND jd.profesi_id='" + profesiId + "'\n" +
-                "\tAND jk.branch_id='" + branchId + "'\n" +
-                "\tAND jk.tanggal >= '" + tglFrom + "' AND jk.tanggal <='" + tglTo + "'";
+        String sql = "SELECT jd.nip, \n" +
+                "       jd.nama_pegawai, \n" +
+                "       s.shift_name, \n" +
+                "       s.tipe_shift_kasir\n" +
+                "FROM it_hris_jadwal_shift_kerja_detail jd\n" +
+                "       INNER JOIN it_hris_jadwal_shift_kerja jk \n" +
+                "         ON jd.jadwal_shift_kerja_id=jk.jadwal_shift_kerja_id\n" +
+                "       INNER JOIN im_hris_shift s \n" +
+                "         ON s.shift_id=jd.shift_id\n" +
+                "WHERE jd.flag='Y' \n" +
+                "  AND jk.flag='Y'\n" +
+                "  AND jk.branch_id = :branchId\n" +
+                "  AND jk.tanggal = :tanggal\n" +
+                "  and tipe_shift_kasir ilike :tipeKasir ";
 
         results = this.sessionFactory.getCurrentSession()
-                .createSQLQuery(query)
+                .createSQLQuery(sql)
+                .setParameter("branchId", branchId)
+                .setParameter("tanggal", tanggal)
+                .setParameter("tipeKasir", tipeKasir)
                 .list();
 
         for (Object[] row : results) {
@@ -410,6 +414,7 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
             result.setNip((String) row[0]);
             result.setNamaPegawai((String) row[1]);
             result.setShiftName((String) row[2]);
+            result.setTipeShiftKasir((String) row[3]);
             listOfResult.add(result);
         }
         return listOfResult;

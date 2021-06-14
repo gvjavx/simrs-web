@@ -7,9 +7,33 @@
 <html>
 <head>
     <script type="text/javascript">
+        function cekAvailableTipeCoa(nilai){
+            var coa = nilai.value;
+            var length = nilai.length;
+            var tipeRekening = $('#tipeRekeningIdAdd').val();
+            var bol = false;
+            if (length!=0){
+                dwr.engine.setAsync(false);
+                KodeRekeningAction.cekAvailableTipeCoa(tipeRekening, function(listdata) {
+                    if (listdata.length!=0){
+                        for(var i = 0; i<listdata.length; i++){
+                            if(coa.startsWith(listdata[i])){
+                                bol = true;
+                                break;
+                            }
+                        }
+                        if(!bol){
+                            alert("Parent COA tidak sesuai");
+                            $('#kodeRekeningAdd').val("");
+                        }
+                    }
+                });
+            }
+        }
         function cekAvailableCoa(nilai){
             var coa = nilai.value;
             var length = nilai.length;
+            var tipeRekening = $('#tipeRekeningIdAdd').val();
             if (length!=0){
                 dwr.engine.setAsync(false);
                 KodeRekeningAction.cekAvailableCoa(coa, function(listdata) {
@@ -48,6 +72,7 @@
 
             if (namaRekening != '' && coa != '' && tipeRekening != '') {
                 if (confirm('Do you want to save this record?')) {
+                    $('#h_coa').val(coa);
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
 
@@ -118,13 +143,25 @@
                     </tr>
                     <tr>
                         <td>
+                            <label class="control-label"><small>Tipe Rekening :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="initComboTipeRekening" namespace="/tipeRekening" name="initComboTipeRekening_tipeRekening"/>
+                                <s:select list="#initComboTipeRekening.listOfComboTipeRekening" id="tipeRekeningIdAdd" name="kodeRekening.tipeCoa"
+                                          listKey="tipeRekeningId" listValue="tipeRekeningName"  headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <label class="control-label"><small>COA :</small></label>
                         </td>
                         <td>
                             <table>
                                 <s:textfield id="kodeRekeningAdd" name="kodeRekening.kodeRekening"
                                              onkeydown="formatKodeRekening(this)"
-                                             onkeyup="formatKodeRekening(this)" onchange="cekAvailableCoa(this),cekAvailableParent(this)" cssClass="form-control"
+                                             onkeyup="formatKodeRekening(this)" onchange="cekAvailableCoa(this),cekAvailableParent(this),cekAvailableTipeCoa(this)" cssClass="form-control"
                                              maxlength="12"
                                 />
                                 <script>
@@ -158,18 +195,6 @@
                                     });
                                 </script>
 
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Tipe Rekening :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:action id="initComboTipeRekening" namespace="/tipeRekening" name="initComboTipeRekening_tipeRekening"/>
-                                <s:select list="#initComboTipeRekening.listOfComboTipeRekening" id="tipeRekeningIdAdd" name="kodeRekening.tipeRekeningId"
-                                          listKey="tipeRekeningId" listValue="tipeRekeningName"  headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -207,14 +232,19 @@
                                                    height="200" width="400" autoOpen="false" title="Infomation Dialog"
                                                    buttons="{
                                                               'OK':function() {
-                                                                    //$(this).dialog('close');
-                                                                      callSearch();
-                                                                      link();
+                                                                    $('#view_dialog_menu').dialog('close');
+                                                                    $(this).dialog('close');
+                                                                      //callSearch();
+                                                                      $('#kodeRekening').val($('#h_coa').val());
+                                                                      $('.tree').html('');
+                                                                      f1();
+                                                                      //link();
                                                                    }
                                                             }"
                                         >
                                             <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
                                             Record has been saved successfully.
+                                            <s:hidden id="h_coa"></s:hidden>
                                         </sj:dialog>
 
                                         <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
