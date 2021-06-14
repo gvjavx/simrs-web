@@ -90,10 +90,9 @@ public class HargaObatPerKonsumenDao extends GenericDao<MtSimrsHargaObatPerKonsu
                 "WHEN hopk.jenis_konsumen = 'umum' THEN ht.harga_terakhir\n" +
                 "ELSE 0 END as harga_terakhir\n" +
                 "FROM (SELECT * FROM mt_simrs_harga_obat_per_konsumen WHERE jenis_konsumen IN ('umum','bpjs')) hopk \n" +
-                "INNER JOIN mt_simrs_harga_obat ho ON ho.id_harga_obat = hopk.id_harga_obat\n" +
-                "INNER JOIN mt_simrs_harga_terakhir ht ON ht.id_obat = ho.id_obat AND ht.branch_id = ho.branch_id\n" +
-                "WHERE ho.branch_id = '"+branchId+"' \n" +
-                "AND ho.id_obat = '"+idObat+"'\n" +
+                "INNER JOIN mt_simrs_harga_terakhir ht ON ht.id = hopk.id_harga_obat \n" +
+                "WHERE ht.branch_id = '"+branchId+"' \n" +
+                "AND ht.id_obat = '"+idObat+"'\n" +
                 "ORDER BY jenis_konsumen DESC";
 
         String SQLREKANAN = "SELECT\n" +
@@ -114,7 +113,7 @@ public class HargaObatPerKonsumenDao extends GenericDao<MtSimrsHargaObatPerKonsu
                 "FROM (SELECT * FROM im_simrs_detail_rekanan_ops WHERE flag_parent = 'Y' AND flag = 'Y') dro\n" +
                 "INNER JOIN im_simrs_rekanan_ops ro ON ro.id_rekanan_ops = dro.id_rekanan_ops\n" +
                 "LEFT JOIN mt_simrs_harga_obat_per_konsumen hopk ON hopk.id_rekanan = dro.id_detail_rekanan_ops\n" +
-                "LEFT JOIN mt_simrs_harga_terakhir ht ON ht.branch_id = dro.branch_id\n" +
+                "LEFT JOIN mt_simrs_harga_terakhir ht ON ht.id = hopk.id_harga_obat \n" +
                 "WHERE dro.branch_id = '"+branchId+"'\n" +
                 "AND ht.id_obat = '"+idObat+"'\n" +
                 "ORDER BY ro.nama_rekanan";
