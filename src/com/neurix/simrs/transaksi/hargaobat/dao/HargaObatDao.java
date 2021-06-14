@@ -222,8 +222,8 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
 
     public String getIdHargaObatByIdObatAndBranch(String idObat, String branchId){
 
-        String SQL = "SELECT id_harga_obat FROM mt_simrs_harga_obat " +
-                "WHERE id_obat = '"+idObat+"'" +
+        String SQL = "SELECT id FROM mt_simrs_harga_terakhir \n" +
+                "WHERE id_obat = '"+idObat+"' \n" +
                 "AND branch_id = '"+branchId+"'";
 
         List<Object> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();

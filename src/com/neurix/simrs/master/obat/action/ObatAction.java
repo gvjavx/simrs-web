@@ -1581,7 +1581,12 @@ public class ObatAction extends BaseMasterAction {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             HargaObatPerKonsumen obatPerKonsumen = new HargaObatPerKonsumen();
             obatPerKonsumen.setJenisKonsumen(jsonObject.getString("jenis_konsumen"));
-            obatPerKonsumen.setIdRekanan(jsonObject.getString("id_rekanan"));
+            obatPerKonsumen.setIdRekanan(
+                    jsonObject.getString("id_rekanan") == null ||
+                    "null".equalsIgnoreCase(jsonObject.getString("id_rekanan")) ||
+                    "".equalsIgnoreCase(jsonObject.getString("id_rekanan")) ? null
+                            : jsonObject.getString("id_rekanan")
+            );
             obatPerKonsumen.setHargaBruto(stToBigDecimal(jsonObject.getString("harga_bruto")));
             obatPerKonsumen.setMargin(stToBigDecimal(jsonObject.getString("margin_obat")));
             obatPerKonsumen.setHargaJual(stToBigDecimal(jsonObject.getString("harga_jual")));
