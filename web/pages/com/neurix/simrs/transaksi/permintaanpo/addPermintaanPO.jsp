@@ -1091,8 +1091,8 @@
                             "<td>"+obat.nama+"</td>" +
                             "<td>Satuan Terkecil (Per Item)</td>" +
                             "<td align='right'><input type='number' id='qty-"+obat.idobat+"' class='form-control' oninput=\"updateValueList(\'"+obat.idobat+"\')\" /></td>" +
-                            "<td align='right'><input type='number' id='harga-item-"+obat.idobat+"' class='form-control' oninput=\"updateValueList(\'"+obat.idobat+"\')\" /></td>" +
-                            "<td align='right'><input type='number' id='harga-total-"+obat.idobat+"' class='form-control' readonly/></td>" +
+                            "<td align='right'><input id='harga-item-"+obat.idobat+"' class='form-control' oninput=\"updateValueList(\'"+obat.idobat+"\')\" /></td>" +
+                            "<td align='right'><input id='harga-total-"+obat.idobat+"' class='form-control' readonly/></td>" +
                             "</tr>";
 
                         $("#body_po").append(str);
@@ -1146,7 +1146,6 @@
             });
         }
 
-        console.log(arrListRequest);
         getValueFromArrRequest(idobat);
     }
 
@@ -1180,27 +1179,38 @@
     function updateValueList(idobat){
         var qty     = $("#qty-"+idobat).val();
         var harga   = parseRibuan($("#harga-item-"+idobat).val());
+        var numbers = /^[0-9]+$/;
 
-        if (qty == null || qty == '')
-            qty = 0;
+        if(harga != undefined){
+            if(harga.match(numbers)){
+                if (qty == null || qty == '')
+                    qty = 0;
 
-        if (harga == null || harga == '')
-            harga = 0;
+                if (harga == null || harga == '')
+                    harga = 0;
 
-        var total = parseInt(harga) * parseInt(qty);
+                var total = parseInt(harga) * parseInt(qty);
 
-        $.each(arrListRequest, function (i, item) {
-            if (item.idobat == idobat){
-                item.qty        = qty;
-                item.hargaitem  = harga;
-                item.hargatotal = total.toString();
+                $.each(arrListRequest, function (i, item) {
+                    if (item.idobat == idobat){
+                        item.qty        = qty;
+                        item.hargaitem  = harga;
+                        item.hargatotal = total.toString();
+                    }
+                });
+
+                $("#harga-item-"+idobat).val(formatRupiah2(harga));
+                $("#harga-total-"+idobat).val(formatRupiah(total));
+
+                hitungTotal();
+            }else{
+                $("#harga-item-"+idobat).val('');
+                $("#harga-total-"+idobat).val('');
             }
-        });
-
-        $("#harga-item-"+idobat).val(formatRupiah(harga));
-        $("#harga-total-"+idobat).val(formatRupiah(total));
-
-        hitungTotal();
+        }else{
+            $("#harga-item-"+idobat).val('');
+            $("#harga-total-"+idobat).val('');
+        }
     }
 
     function parseRibuan(angka){
@@ -1217,16 +1227,11 @@
     }
 
     function hitungTotal(){
-
         var total = 0;
         $.each(arrListRequest, function(i, item){
             total = parseInt(total) + parseInt(item.hargatotal);
         });
-
-        console.log(total);
-
         $("#total-request").html(formatRupiah(total));
-
     }
 
 </script>
