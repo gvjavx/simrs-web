@@ -2657,6 +2657,22 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         return headerObatEntity;
     }
 
+    @Override
+    public List<Obat> getListObatByIdVendor(String branchId, String idVendor) throws GeneralBOException {
+        logger.info("[PermintaanVendorBoImpl.getListObatByIdVendor] START >>>");
+
+        List<Obat> listObat = new ArrayList<>();
+        try {
+            listObat = permintaanVendorDao.getListObatByVendor(branchId, idVendor);
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorBoImpl.getListObatByIdVendor] ERROR. " + e.getMessage());
+            throw new GeneralBOException("[PermintaanVendorBoImpl.getListObatByIdVendor] ERROR. " + e.getMessage());
+        }
+
+        logger.info("[PermintaanVendorBoImpl.getListObatByIdVendor] END <<<");
+        return listObat;
+    }
+
     // for get sequence id
 
     private String nextIdPermintanVendor() {

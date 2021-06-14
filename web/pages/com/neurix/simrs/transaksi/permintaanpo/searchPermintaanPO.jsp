@@ -253,10 +253,14 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Purchase Order Obat <span id="detail_batch"></span>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Purchase Order Obat</span>
                 </h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-success alert-dismissible" style="display: none;" id="success_bat">
+                    <h4><i class="icon fa fa-info"></i> Success!</h4>
+                    <p id="msg_success"></p>
+                </div>
                 <div class="alert alert-danger alert-dismissible" style="display: none;" id="warning_bat">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_bat"></p>
@@ -408,28 +412,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-confirm-dialog">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
-                </h4>
-            </div>
-            <div class="modal-body">
-                <h4>Do you want save this record?</h4>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
-                </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <div class="modal fade" id="modal-upload">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -441,11 +423,10 @@
                 <input type="hidden" id="no_po"/>
             </div>
             <div class="modal-body" id="back_top">
-                <div class="alert alert-danger alert-dismissible" style="display: none;" id="warning_app">
+                <div class="alert alert-danger alert-dismissible" style="display: none;" id="warning_upload">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_app"></p>
+                    <p id="msg_upload"></p>
                 </div>
-                <%--<div class="box-header with-border"></div>--%>
                 <div class="box-body">
                     <hr>
                     <span style="font-weight: bold">Faktur Pajak</span>
@@ -486,6 +467,7 @@
                                 <div class="input-group">
                                     <input type="file" class="form-control" name="uploadFaktur" id="upload-faktur-0"
                                            onchange="uploadDoc('faktur', '0')"/>
+                                    <span id="warning-faktur-0" style="font-size: 12px; color: red; display: none"><i class="fa fa-warning"></i> File harus .jpg, .png .pdf</span>
                                     <div class="input-group-btn">
                                         <a class="btn btn-warning" style="padding: 9px" onclick="addUpload('faktur')"><i
                                                 class="fa fa-plus"></i></a>
@@ -533,6 +515,7 @@
                             <div class="input-group">
                                 <input type="file" class="form-control" name="uploadInvoice" id="upload-invoice-0"
                                        onchange="uploadDoc('invoice', '0')"/>
+                                <span id="warning-invoice-0" style="font-size: 12px; color: red; display: none"><i class="fa fa-warning"></i> File harus .jpg, .png .pdf</span>
                                 <div class="input-group-btn">
                                     <a class="btn btn-warning" style="padding: 9px" onclick="addUpload('invoice')"><i
                                             class="fa fa-plus"></i></a>
@@ -578,6 +561,7 @@
                             <div class="input-group">
                                 <input type="file" class="form-control" name="uploadDo" id="upload-do-0"
                                        onchange="uploadDoc('do', '0')"/>
+                                <span id="warning-do-0" style="font-size: 12px; color: red; display: none"><i class="fa fa-warning"></i> File harus .jpg, .png .pdf</span>
                                 <div class="input-group-btn">
                                     <a class="btn btn-warning" style="padding: 9px" onclick="addUpload('do')"><i
                                             class="fa fa-plus"></i></a>
@@ -605,7 +589,26 @@
     </div>
 </div>
 
-
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4>Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
@@ -678,6 +681,7 @@
         var set = '<div id="' + remove + '">' +
             '<div class="input-group" style="margin-top: 7px">\n' +
             '<input type="file" class="form-control" id="upload-' + tipe + '-' + cekTipe + '" onchange="uploadDoc(\'' + tipe + '\', \'' + cekTipe + '\')"/>\n' +
+            '<span id="warning-'+tipe+'-'+cekTipe+'" style="font-size: 12px; color: red; display: none"><i class="fa fa-warning"></i> File harus .jpg, .png .pdf</span>'+
             '<div class="input-group-btn">\n' +
             '    <a class="btn btn-danger" style="padding: 9px" onclick="delUpload(\'' + remove + '\')"><i class="fa fa-trash"></i></a>\n' +
             '</div>\n' +
@@ -740,6 +744,7 @@
     }
 
     function saveUploadDoc() {
+        removeLocalStorageAtas("img_list");
         var idPermintaan    = $("#no_po").val();
         var noBatch         = $("#mod_batch").text();
 
@@ -760,70 +765,133 @@
         var tgl         = $('#app_tgl_faktur').val();
         var tglInvoice  = $('#tgl-invoice').val();
         var tglDo       = $('#tgl-do').val();
+
         var listOfimg   = [];
 
-        var data = {
-            'no_faktur': noFaktur,
-            'no_invoice': noInvoice,
-            'no_do': noDo,
-            'tgl_faktur': tgl,
-            'tgl_invoice': tglInvoice,
-            'tgl_do': tglDo
-        };
+        if (noFaktur != '' && noInvoice != '' && noDo != '') {
+            var data = {
+                'no_faktur': noFaktur,
+                'no_invoice': noInvoice,
+                'no_do': noDo,
+                'tgl_faktur': tgl,
+                'tgl_invoice': tglInvoice,
+                'tgl_do': tglDo
+            };
 
-        var cekFaktur = $('.faktur');
-        var cekInvoice = $('.invoice');
-        var cekDo = $('.do');
+            var cekFaktur = $('.faktur');
+            var cekInvoice = $('.invoice');
+            var cekDo = $('.do');
 
-        if (cekFaktur.length > 0) {
-            $.each(cekFaktur, function (i, item) {
-                if (!cekFile('upload-faktur-' + i)) {
-                    var canvas = document.getElementById('canvas-faktur-' + i);
-                    listOfimg.push({
-                        "jenisnomor": "faktur",
-                        "batch": noBatch,
-                        "iditem": noFaktur,
-                        "img": convertToDataURLAtas(canvas)
-                    });
+            if (cekFaktur.length > 0) {
+                $.each(cekFaktur, function (i, item) {
+                    var files = document.getElementById('upload-faktur-' + i).files;
+                    if (files.length > 0) {
+                        var fileToLoad = files[0];
+                        var fileReader = new FileReader();
+                        var base64File = "";
+                        fileReader.onload = function(event) {
+                            base64File = event.target.result;
+                            var eks = cekEks(base64File);
+                            var place = replaceFile(base64File);
+                            if(eks != ""){
+                                listOfimg.push({
+                                    "jenisnomor": "faktur",
+                                    "batch": noBatch,
+                                    "iditem": noFaktur,
+                                    "img": place,
+                                    "eks": eks
+                                });
+                                setLocalStoregeAtas('img_list', JSON.stringify(listOfimg));
+                            }
+                        }
+                        fileReader.readAsDataURL(fileToLoad);
+                    }
+                });
+            }
+
+            if (cekInvoice.length > 0) {
+                $.each(cekInvoice, function (i, item) {
+                    var files = document.getElementById('upload-invoice-' + i).files;
+                    if (files.length > 0) {
+                        var fileToLoad = files[0];
+                        var fileReader = new FileReader();
+                        var base64File;
+                        fileReader.onload = function(event) {
+                            base64File = event.target.result;
+                            var eks = cekEks(base64File);
+                            var place = replaceFile(base64File);
+                            if(eks != ""){
+                                listOfimg.push({
+                                    "jenisnomor": "invoice",
+                                    "batch": noBatch,
+                                    "iditem": noInvoice,
+                                    "img": place,
+                                    "eks": eks
+                                });
+                                setLocalStoregeAtas('img_list', JSON.stringify(listOfimg));
+                            }
+                        };
+                        fileReader.readAsDataURL(fileToLoad);
+                    }
+                })
+            }
+
+            if (cekDo.length > 0) {
+                $.each(cekDo, function (i, item) {
+                    var files = document.getElementById('upload-do-' + i).files;
+                    if (files.length > 0) {
+                        var fileToLoad = files[0];
+                        var fileReader = new FileReader();
+                        var base64File;
+                        fileReader.onload = function(event) {
+                            base64File = event.target.result;
+                            var eks = cekEks(base64File);
+                            var place = replaceFile(base64File);
+                            if(eks != ""){
+                                listOfimg.push({
+                                    "jenisnomor": "do",
+                                    "batch": noBatch,
+                                    "iditem": noDo,
+                                    "img": place,
+                                    "eks": eks
+                                });
+                                setLocalStoregeAtas('img_list', JSON.stringify(listOfimg));
+                            }
+                        }
+                        fileReader.readAsDataURL(fileToLoad);
+                    }
+                });
+            }
+            var stData  = JSON.stringify(data);
+            $('#modal-confirm-dialog').modal('show');
+            $('#save_con').attr('onclick', 'saveUploaded(\''+idPermintaan+'\', \''+noBatch+'\', \'' + stData + '\')');
+        }else{
+            $('#warning_upload').show().fadeOut(5000);
+            $('#msg_upload').text("Silahkan cek kembali inputan anda...!");
+            $("#modal-upload").scrollTop(0);
+        }
+    }
+
+    function saveUploaded(idPermintaan, noBatch, stData){
+        $('#modal-confirm-dialog').modal('hide');
+        var listimg = getLocalStorageAtas("img_list");
+        $('#save_approve').hide();
+        $('#load_approve').show();
+        dwr.engine.setAsync(true);
+        PermintaanVendorAction.saveDocPo(idPermintaan, noBatch, listimg, stData, {
+            callback:function (res) {
+                if (res.status == "success"){
+                    $("#modal-upload").modal('hide');
+                    $('#success_bat').show().fadeOut(5000);
+                    $('#msg_success').text("Berhasil meyimpan data...!");
+                    $('#save_approve').show();
+                    $('#load_approve').hide();
+                }else{
+                    $('#warning_upload').show().fadeOut(5000);
+                    $('#msg_upload').text(res.message);
+                    $('#save_approve').show();
+                    $('#load_approve').hide();
                 }
-            });
-        };
-
-        if (cekInvoice.length > 0) {
-            $.each(cekInvoice, function (i, item) {
-                if (!cekFile('upload-invoice-' + i)) {
-                    var canvas = document.getElementById('canvas-invoice-' + i);
-                    listOfimg.push({
-                        "jenisnomor": "invoice",
-                        "batch": noBatch,
-                        "iditem": noInvoice,
-                        "img": convertToDataURLAtas(canvas)
-                    });
-                }
-            });
-        };
-
-        if (cekDo.length > 0) {
-            $.each(cekDo, function (i, item) {
-                if (!cekFile('upload-do-' + i)) {
-                    var canvas = document.getElementById('canvas-do-' + i);
-                    listOfimg.push({
-                        "jenisnomor": "do",
-                        "batch": noBatch,
-                        "iditem": noDo,
-                        "img": convertToDataURLAtas(canvas)
-                    });
-                }
-            });
-        };
-
-        var listimg = JSON.stringify(listOfimg);
-        var stData  = JSON.stringify(data);
-
-        PermintaanVendorAction.saveDocPo(idPermintaan, noBatch, listimg, stData, function (res) {
-            alert(res.msg);
-            if (res.status == "success"){
-                $("#modal-upload").modal('hide');
             }
         });
     }
@@ -978,11 +1046,18 @@
                     aktive = 'active';
                     liAcktive = 'class="active"';
                 }
-                str += '<div class="item '+aktive+'">\n' +
-                    '<img style="height: 300px; width: 100%" src="'+contextPathHeader+'/images/upload/surat_po/'+img.urlImg+'" alt="Slide'+img.urlImg+'">\n' +
-                    '<div class="carousel-caption">\n' +img.urlImg +
-                    '</div>\n' +
-                    '</div>';
+
+                if(img.tipe == "PDF"){
+                    str += '<div class="item ' + aktive + '">\n' +
+                        '<embed src="'+contextPathHeader + '/images/upload/surat_po/'+img.urlImg+'" style="width: 100%; height: 400px"/>'+
+                        '</div>';
+                }else{
+                    str += '<div class="item '+aktive+'">\n' +
+                        '<img style="height: 300px; width: 100%" src="'+contextPathHeader+'/images/upload/surat_po/'+img.urlImg+'" alt="Slide'+img.urlImg+'">\n' +
+                        '<div class="carousel-caption">\n' +img.urlImg +
+                        '</div>\n' +
+                        '</div>';
+                }
                 li += '<li data-target="#carousel-example-generic_'+idItem+'" data-slide-to="'+n+'" '+liAcktive+'></li>';
             });
             $("#item_"+idItem+jenis).html(str);
@@ -991,24 +1066,47 @@
     }
 
     function uploadDoc(tipe, ind) {
-        var canvas = document.getElementById("canvas-" + tipe + "-" + ind);
-        var ctx = canvas.getContext('2d');
-        var reader = new FileReader();
-        reader.onload = function (event) {
-            var img = new Image();
-            img.onload = function () {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(img, 0, 0);
-            }
-            img.src = event.target.result;
+        var files = document.getElementById('upload-' + tipe + '-' + ind).files;
+        if (files.length > 0) {
+            var fileToLoad = files[0];
+            var fileReader = new FileReader();
+            var base64File;
+            fileReader.onload = function(event) {
+                base64File = event.target.result;
+                var eks = cekEks(base64File);
+                if(eks == ""){
+                    $('#upload-' + tipe + '-' + ind).css('border-bottom','solid 5px #c9302c');
+                    $('#warning-'+tipe+'-'+ind).show();
+                }else{
+                    $('#upload-' + tipe + '-' + ind).css('border-bottom','solid 5px #5cb85c');
+                    $('#warning-'+tipe+'-'+ind).hide();
+                }
+            };
+            fileReader.readAsDataURL(fileToLoad);
         }
-        reader.readAsDataURL(event.target.files[0]);
     }
 
     function cekFile(id) {
         return $('#' + id).get(0).files.length === 0;
+    }
+
+    function replaceFile(byte){
+        var conditon = byte.split(",")[0]+',';
+        var res = byte.replace(conditon, "");
+        return res;
+    }
+
+    function cekEks(byte) {
+        var res = "";
+        var conditon = byte.split(",")[0];
+        if (conditon == "data:image/jpeg;base64") {
+            res = "jpg";
+        } else if (conditon == "data:image/png;base64") {
+            res = "png";
+        } else if (conditon == "data:application/pdf;base64") {
+            res = "pdf";
+        }
+        return res;
     }
 
 </script>

@@ -416,7 +416,7 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                 condition +="AND c.id_pelayanan = '"+bean.getIdPelayanan()+"' \n";
             }
             if(bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
-                branchId = bean.getBranchId();
+                condition += "AND c.branch_id = '"+bean.getBranchId()+"' \n";
             }
 
             String SQL = "SELECT\n" +

@@ -324,7 +324,7 @@
                                     </tr>
                                 </table>
                             </div>
-                            <s:hidden value="headerDetailCheckup.jenisPeriksaPasien" id="jenis_periksa"></s:hidden>
+                            <s:hidden name="headerDetailCheckup.jenisPeriksaPasien" id="jenis_periksa"></s:hidden>
 
                             <div class="col-md-6">
                                 <script>
@@ -976,16 +976,20 @@
                                 </div>
                                 <div class="row" id="form-tgl-kontrol" style="display: none">
                                     <div class="form-group">
-                                        <label class="col-md-4 jarak">Tanggal Kontrol Ulang</label>
-                                        <div class="col-md-8">
-                                            <div class="input-group jarak">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
-                                                </div>
-                                                <s:textfield cssStyle="cursor: pointer;" placeholder="mm-dd-yyyy" cssClass="form-control datepicker2 datemask2" id="tgl_kontrol" readonly="true"></s:textfield>
-                                            </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control ptr-tgl close_tanggal_kontrol" placeholder="Tanggal" style="margin-top: 7px" id="close_tgl_kontrol_0">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <select class="form-control select2 close_pelayanan_kontrol" id="close_pelayanan_0" onchange="setIntDokter(this.value, 'close_dokter_0')"></select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <select class="form-control select2 close_dokter_kontrol" id="close_dokter_0"></select>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button onclick="addKontrolUlang('close')" style="margin-left: -20px; margin-top: 7px" class="btn btn-success"><i class="fa fa-plus"></i></button>
                                         </div>
                                     </div>
+                                    <div id="set_kontrol_close"></div>
                                     <div class="form-group">
                                         <div class="col-md-offset-4 col-md-8">
                                             <div class="form-check jarak">

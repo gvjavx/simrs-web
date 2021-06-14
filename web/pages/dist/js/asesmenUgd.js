@@ -17,21 +17,111 @@ function showKetUgd2(val, id){
 function showKetIntruksi(val){
     if(val == "rawat_inap" || val == "rawat_isolasi" || val == "rawat_intensif"){
         $('#int-ket1').show();
-        // $('#int-ket2').hide();
+        $('#int-ket2').hide();
         $('#int-ket3').hide();
+        $('#int-ket4').hide();
+        $('#set_kontrol').html('');
     }else if ("selesai" == val) {
         $('#int-ket1').hide();
-        // $('#int-ket2').show();
+        $('#int-ket2').hide();
         $('#int-ket3').hide();
+        $('#int-ket4').show();
+        $('#set_kontrol').html('');
+        listKeteranganKeluar('int_ket_selesai');
     }else if ("rujuk_rs_lain" == val) {
         $('#int-ket1').hide();
-        // $('#int-ket2').hide();
+        $('#int-ket2').hide();
         $('#int-ket3').show();
+        $('#int-ket4').hide();
+        $('#set_kontrol').html('');
+    }else if ("kontrol_ulang" == val) {
+        $('#int-ket1').hide();
+        $('#int-ket2').show();
+        $('#int-ket3').hide();
+        $('#int-ket4').hide();
+        setPelayanan('int_pelayanan_0');
+        $('#set_kontrol').html('');
     }else{
         $('#int-ket1').hide();
         $('#int-ket2').hide();
         $('#int-ket3').hide();
+        $('#int-ket4').hide();
     }
+}
+
+function addKontrolUlang(tipe){
+    var count = $('.'+tipe+'_tanggal_kontrol').length;
+    var idRow = tipe+'_kon_'+count;
+    var atas = '<div class="row jarak" id="'+idRow+'">\n';
+    var bawah = '</div>\n';
+    if('close' == tipe){
+        atas = '<div class="form-group" id="'+idRow+'">\n';
+        bawah = '<\div>';
+    }
+    var set = atas +
+        '<div class="col-md-3">\n' +
+        '    <input class="form-control ptr-tgl '+tipe+'_tanggal_kontrol" placeholder="Tanggal" style="margin-top: 7px" id="'+tipe+'_tgl_kontrol_'+count+'">\n' +
+        '</div>\n' +
+        '<div class="col-md-4">\n' +
+        '    <select class="form-control select2 '+tipe+'_pelayanan_kontrol" id="'+tipe+'_pelayanan_'+count+'" onchange="setIntDokter(this.value, \''+tipe+'_dokter_'+count+'\')"></select>\n' +
+        '</div>\n' +
+        '<div class="col-md-4">\n' +
+        '    <select class="form-control select2 '+tipe+'_dokter_kontrol" id="'+tipe+'_dokter_'+count+'"></select>\n' +
+        '</div>\n' +
+        '<div class="col-md-1">\n' +
+        '    <button onclick="removeKontrol(\''+idRow+'\')" style="margin-left: -20px; margin-top: 7px" class="btn btn-danger"><i class="fa fa-trash"></i></button>\n' +
+        '</div>\n' +bawah;
+
+    $('#set_kontrol_'+tipe).append(set);
+    setPelayanan(tipe+'_pelayanan_'+count);
+    $(function () {
+        $('.select2').select2({});
+        $('.ptr-tgl').datepicker({
+            dateFormat : 'dd-mm-yy'
+        });
+        $('.ptr-tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
+        $('[data-mask]').inputmask();
+    });
+}
+
+function removeKontrol(id){
+    $('#'+id).remove();
+}
+
+function listKeteranganKeluar(id){
+    var option = '';
+    CheckupDetailAction.listOfKeteranganKeluar(function (res) {
+        if(res.length > 0){
+            $.each(res, function (i, item) {
+                option += '<option value="'+item.idKeterangan+'">'+item.keterangan+'</option>';
+            });
+        }
+        $('#'+id).html(option);
+    });
+}
+
+function setPelayanan(id) {
+    var option = '<option value=""> - </option>';
+    CheckupAction.getComboPelayananWithLabCtx("", function (res) {
+        if (res.length > 0) {
+            $.each(res, function (i, item) {
+                option += '<option value="' + item.idPelayanan + '">' + item.namaPelayanan + '</option>';
+            });
+            $('#'+id).html(option);
+        }
+    });
+}
+
+function setIntDokter(value, id){
+    var option = '<option value=""> - </option>';
+    CheckupAction.getListDokterByPelayanan(value, function (res) {
+        if (res.length > 0) {
+            $.each(res, function (i, item) {
+                option += '<option value="' + item.idDokter + '">' + item.namaDokter + '</option>';
+            });
+        }
+        $('#'+id).html(option);
+    });
 }
 
 function showAsesmenUgd(jenis, idRM, isSetIdRM) {
@@ -1190,19 +1280,21 @@ function saveAsesmenUgd(jenis, keterangan) {
             var v9Text = $('#ki9 option:selected').text();
             if(v9 != "") {
                 var ket1 = $('#ket_ki91').val();
-                var ket3 = $('#ket_ki93').val();
+                var ket3 = $('#int_ket_rs_lain').val();
+                var ketSelesai = $('#int_ket_selesai option:selected').text();
 
                 if ("rawat_inap" == v9 || "rawat_isolasi" == v9 || "rawat_intensif" == v9) {
                     va9 = v9Text + ', ' + ket1;
                 } else if ("selesai" == v9) {
-                    va9 = v9;
+                    va9 = ketSelesai;
                 } else if ("rujuk_rs_lain" == v9){
-                    va9 = v9 + ','+ ket3;
+                    va9 = v9Text + ','+ ket3;
                 } else {
-                    va9 = v9;
+                    va9 = v9Text;
                 }
 
                 sendTppri = {
+                    'id_detail_checkup': idDetailCheckup,
                     'tindak_lanjut': v9,
                     'indikasi': ket1,
                     'keterangan': va9,
@@ -1716,7 +1808,7 @@ function saveAsesmenUgd(jenis, keterangan) {
                         if(res.status == "success"){
                             if("keluar_igd" == jenis){
                                 dwr.engine.setAsync(true);
-                                CheckupDetailAction.sendToTppti(idDetailCheckup, sendTppri.tindak_lanjut, sendTppri.indikasi, sendTppri.keterangan, {
+                                CheckupDetailAction.sendToTppti(JSON.stringify(sendTppri), {
                                     callback:function (res) {
                                         if(res.status == "success"){
                                             $('#save_aud_'+jenis).show();
@@ -1728,15 +1820,7 @@ function saveAsesmenUgd(jenis, keterangan) {
                                             delRowAud(jenis);
                                             detailAud(jenis);
                                             kesimpulanAsesmen();
-                                            $('#keterangan').val(sendTppri.tindak_lanjut).trigger('change');
-                                            $('#keterangan').attr('disabled', true);
-                                            if(sendTppri.tindak_lanjut == 'rawat_inap' || sendTppri.tindak_lanjut == 'rawat_isolasi' || sendTppri.tindak_lanjut == 'rawat_intensif'){
-                                                $('#keterangan_rw').val(sendTppri.indikasi).trigger('change');
-                                                $('#keterangan_rw').attr('disabled', true);
-                                            }else if(sendTppri.tindak_lanjut == 'rujuk_rs_lain'){
-                                                $('#rs_rujukan').val(sendTppri.rujuk_rs);
-                                                $('#rs_rujukan').attr('disabled', true);
-                                            }
+                                            setTindakLanjut();
                                         }else{
                                             $('#save_aud_'+jenis).show();
                                             $('#load_aud_'+jenis).hide();

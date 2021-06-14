@@ -2406,8 +2406,8 @@
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-3">Jenis Kasus</label>
-                            <div class="col-md-9">
+                            <label class="col-md-4">Jenis Kasus</label>
+                            <div class="col-md-8">
                                 <select class="form-control select2" id="kasus" style="width: 100%">
                                     <option value="">-</option>
                                     <option value="BEDAH">BEDAH</option>
@@ -2430,7 +2430,7 @@
                     </div>
                     <div class="row jarak" style="display: none" id="int-ket1">
                         <div class="form-group">
-                            <div class="col-md-offset-3 col-md-9">
+                            <div class="col-md-offset-4 col-md-8">
                                 <select class="form-control select2" id="ket_ki91" style="width: 100%">
                                     <option value="Preventif">Preventif</option>
                                     <option value="Paliatif">Paliatif</option>
@@ -2440,20 +2440,32 @@
                             </div>
                         </div>
                     </div>
-                    <%--<div class="row jarak" style="display: none" id="int-ket2">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<div class="col-md-offset-3 col-md-9">--%>
-                                <%--<input class="form-control" id="ket_ki92" placeholder="Keterangan">--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
+                    <div class="row jarak" style="display: none" id="int-ket2">
+                        <div class="col-md-3">
+                            <input class="form-control ptr-tgl int_tanggal_kontrol" placeholder="Tanggal" style="margin-top: 7px" id="int_tgl_kontrol_0">
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control select2 int_pelayanan_kontrol" id="int_pelayanan_0" onchange="setIntDokter(this.value, 'int_dokter_0')"></select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control select2 int_dokter_kontrol" id="int_dokter_0"></select>
+                        </div>
+                        <div class="col-md-1">
+                            <button onclick="addKontrolUlang('int')" style="margin-left: -20px; margin-top: 7px" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div id="set_kontrol_int"></div>
                     <div class="row jarak" style="display: none" id="int-ket3">
                         <div class="form-group">
-                            <div class="col-md-offset-3 col-md-4">
-                                <input class="form-control select2" id="ket_ki93" placeholder="Kontrol Tgl">
+                            <div class="col-md-offset-4 col-md-8">
+                                <input class="form-control" id="int_ket_rs_lain" placeholder="Rumah Sakit">
                             </div>
-                            <div class="col-md-4">
-                                <input class="form-control" id="ket_ki94" placeholder="Tempat">
+                        </div>
+                    </div>
+                    <div class="row" style="display: none" id="int-ket4">
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-8">
+                                <select class="form-control select2" id="int_ket_selesai"></select>
                             </div>
                         </div>
                     </div>

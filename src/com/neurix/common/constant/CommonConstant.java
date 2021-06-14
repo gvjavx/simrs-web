@@ -106,11 +106,13 @@ public class CommonConstant {
     public final static String REPORT_PAYROLL_CUTI_PANJANG = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollCutiPanjangBranch3.jrxml";
     public final static String REPORT_PAYROLL_CUTI_TAHUNAN = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollCutiTahunanBranch3.jrxml";
 
-    //ptpnx e-farming
+    //role name
     public final static String ROLE_ADMIN_POLI = "ADMIN POLI";
     public final static String ROLE_ADMIN_RS = "ADMIN RS";
     public final static String ROLE_ADMIN_IGD = "ADMIN IGD";
     public final static String ROLE_ADMIN_APOTEK = "ADMIN APOTEK";
+    public final static String ROLE_DOKTER_UMUM = "Dokter Umum";
+    public final static String ROLE_DOKTER_SPESIALIS = "Dokter Spesialis";
 
 
     //JENIS PEGAWAI

@@ -69,7 +69,7 @@ INNER JOIN (
 	FROM mt_simrs_transaksi_obat_detail_batch
 	GROUP BY id_transaksi_obat_detail, expired_date
 ) e ON b.id_transaksi_obat_detail = e.id_transaksi_obat_detail
-INNER JOIN mt_simrs_transaksi_obat_detail f ON d.id_obat = f.id_obat AND f.id_approval_obat = a.id_approval_obat
+INNER JOIN mt_simrs_transaksi_obat_detail f ON d.id_obat = f.id_obat AND f.id_approval_obat = a.id_approval_obat AND f.id_racik IS NULL
 INNER JOIN it_simrs_header_detail_checkup g ON a.id_detail_checkup = g.id_detail_checkup
 INNER JOIN (
   SELECT
@@ -116,15 +116,11 @@ FROM mt_simrs_permintaan_resep a
 INNER JOIN (
 	SELECT
 	id_approval_obat,
-	id_racik,
-	nama_racik,
-	keterangan
+	id_racik
 	FROM mt_simrs_transaksi_obat_detail
 	WHERE id_racik IS NOT NULL
 	GROUP BY id_approval_obat,
-	id_racik,
-	nama_racik,
-	keterangan
+	id_racik
 ) b ON a.id_approval_obat = b.id_approval_obat
 INNER JOIN im_simrs_pasien c ON a.id_pasien = c.id_pasien
 INNER JOIN it_simrs_obat_racik d ON b.id_racik = d.id

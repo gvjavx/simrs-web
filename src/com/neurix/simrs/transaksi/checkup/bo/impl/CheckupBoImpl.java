@@ -574,7 +574,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     diagnosaRawat.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
                     diagnosaRawat.setIdDiagnosa(bean.getDiagnosa());
                     diagnosaRawat.setKeteranganDiagnosa(bean.getNamaDiagnosa());
-                    diagnosaRawat.setJenisDiagnosa("1");
+                    diagnosaRawat.setJenisDiagnosa("diagnosa_primer");
                     saveDiagnosa(diagnosaRawat);
                 }
 

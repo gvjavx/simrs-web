@@ -2620,6 +2620,7 @@
         dwr.engine.setAsync(true);
         CheckupAction.checkStatusBpjs(noBpjs, jenisRujukan, {
             callback: function (response) {
+                console.log(response);
                 var warnClass = "";
                 var title = "";
                 var msg = "";
@@ -2633,15 +2634,13 @@
                     msg = response.message;
                 }else{
                     if (response.keteranganStatusPeserta == "AKTIF") {
-                        $('#kelas_pasien').val(response.kodeKelas);
+                        $('#kelas_pasien').val(response.kodeHakKelas);
                         $('#no_mr').val(response.noMr);
                         val = "aktif";
                         icon = "fa-info";
                         title = "Info!";
                         warnClass = "alert-success";
                         msg = "No BPJS berhasil diverifikasi dengan status AKTIF!";
-                        $('#no_rujukan').val(response.noKunjungan).trigger('input');
-                        cekNoRujukan();
                     } else if (response.keteranganStatusPeserta == "TIDAK AKTIF") {
                         val = "tidak aktif";
                         icon = "fa-warning";

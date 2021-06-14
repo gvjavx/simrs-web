@@ -829,7 +829,7 @@
             callback: function (response) {
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
-                        option += "<option value='" + item.idRuangan + "'>" + item.namaRuangan + "</option>";
+                        option += "<option value='" + item.idRuangan + "'>" + '['+item.noRuangan+'] '+item.namaRuangan + "</option>";
                     });
                     if(add == "Y"){
                         option = option + "<option value='new'>Ruangan Baru</option>";

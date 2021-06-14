@@ -2631,7 +2631,7 @@
                     msg = response.message;
                 }else{
                     if (response.keteranganStatusPeserta == "AKTIF") {
-                        $('#kelas_pasien').val(response.kodeKelas);
+                        $('#kelas_pasien').val(response.kodeHakKelas);
                         $('#no_mr').val(response.noMr);
                         val = "aktif";
                         icon = "fa-info";
