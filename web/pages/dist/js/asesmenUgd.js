@@ -205,7 +205,7 @@ function saveAsesmenUgd(jenis, keterangan) {
                 });
                 data.push({
                     'parameter': 'Suhu',
-                    'jawaban': suhu + ' C',
+                    'jawaban': suhu + ' ˚C',
                     'keterangan': jenis,
                     'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
@@ -412,7 +412,7 @@ function saveAsesmenUgd(jenis, keterangan) {
                 });
                 data.push({
                     'parameter': 'Suhu',
-                    'jawaban': suhu + ' C',
+                    'jawaban': suhu + ' ˚C',
                     'keterangan': jenis,
                     'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
@@ -1142,11 +1142,10 @@ function saveAsesmenUgd(jenis, keterangan) {
             }
 
             var va2 = $('#ra2').val();
-            var va3 = $('#ra3').val();
             var va4 = $('#ra4').val();
             var va5 = $('#ra5').val();
 
-            if (va1 && va2 && va3 && va4 && va5 != '') {
+            if (va1 && va2 && va4 && va5 != '') {
                 data.push({
                     'parameter': 'Hasil Skrining',
                     'jawaban': va1,
@@ -1210,8 +1209,6 @@ function saveAsesmenUgd(jenis, keterangan) {
                     'rujuk_rs': ket3
                 }
             }
-
-            console.log(va9);
 
             var ttd1 = document.getElementById("ki10");
             var ttd2 = document.getElementById("ki11");
@@ -1638,7 +1635,7 @@ function saveAsesmenUgd(jenis, keterangan) {
                 });
                 data.push({
                     'parameter': 'Vital Sign',
-                    'jawaban': 'Tensi '+va3+' mmHg, Nadi '+va4+' x/menit, Suhu '+va5+' C, RR '+va6+' x/menit',
+                    'jawaban': 'Tensi '+va3+' mmHg, Nadi '+va4+' x/menit, Suhu '+va5+' ˚C, RR '+va6+' x/menit',
                     'keterangan': jenis,
                     'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup

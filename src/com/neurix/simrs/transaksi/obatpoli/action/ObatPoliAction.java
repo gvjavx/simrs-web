@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.obatpoli.action;
 
 import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.billingSystem.model.MappingDetail;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.company.model.ImBranches;
@@ -305,7 +306,7 @@ public class ObatPoliAction extends BaseMasterAction {
         return response;
     }
 
-    public CheckResponse saveKonfirmasiDiterima(String idApproval, String idPermintaan, String request) {
+    public CheckResponse saveKonfirmasiDiterima(String idApproval, String idPermintaan, String request, String tipeApprove) {
         logger.info("[ObatPoliAction.saveKonfirmasiDiterima] START process >>>");
         CheckResponse response = new CheckResponse();
         try {
@@ -323,10 +324,10 @@ public class ObatPoliAction extends BaseMasterAction {
             obatPoli.setIdApprovalObat(idApproval);
             obatPoli.setIdPermintaanObatPoli(idPermintaan);
             obatPoli.setBranchId(branchId);
-//            obatPoli.setIdPelayanan(idPelayanan);
             obatPoli.setLastUpdate(updateTime);
             obatPoli.setLastUpdateWho(userLogin);
             obatPoli.setAction("U");
+            obatPoli.setTipeApprove(tipeApprove);
 
             String pelayananAsal = "";
             String pelayananTujuan = "";
@@ -345,7 +346,7 @@ public class ObatPoliAction extends BaseMasterAction {
                 }
             }
 
-            List<Map> listOfObat = new ArrayList<>();
+            List<MappingDetail> listOfObat = new ArrayList<>();
             try {
                 List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
                 if (request != null && !"".equalsIgnoreCase(request)) {
@@ -373,9 +374,9 @@ public class ObatPoliAction extends BaseMasterAction {
                             if ("biji".equalsIgnoreCase(detail.getJenisSatuan()))
                                 hargaRata = obatEntity.getAverageHargaBiji();
 
-                            Map mapPersedianGudang = new HashMap();
-                            mapPersedianGudang.put("kd_barang", detail.getIdBarang());
-                            mapPersedianGudang.put("nilai", hargaRata.multiply(new BigDecimal(detail.getQtyApprove())));
+                            MappingDetail mapPersedianGudang = new MappingDetail();
+                            mapPersedianGudang.setKodeBarang(detail.getIdBarang());
+                            mapPersedianGudang.setNilai(hargaRata.multiply(new BigDecimal(detail.getQtyApprove())));
                             listOfObat.add(mapPersedianGudang);
                         }
 
@@ -595,7 +596,7 @@ public class ObatPoliAction extends BaseMasterAction {
         return obatPoli;
     }
 
-    public List<ObatPoli> getSelectOptionObatByPoli(String idPelayanan, String flagBpjs, String jenis, String idDetailCheckup) {
+    public List<ObatPoli> getSelectOptionObatByPoli(String idPelayanan, String jenisPasien, String jenis, String idDetailCheckup) {
 
         logger.info("[ObatPoliAction.getSelectOptionObatByPoli] start process >>>");
         List<ObatPoli> obatPoliList = new ArrayList<>();
@@ -604,7 +605,7 @@ public class ObatPoliAction extends BaseMasterAction {
         ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
 
         try {
-            obatPoliList = obatPoliBo.getListObatGroupPoli(idPelayanan, branchId, flagBpjs, jenis, idDetailCheckup);
+            obatPoliList = obatPoliBo.getListObatGroupPoli(idPelayanan, branchId, jenisPasien, jenis, idDetailCheckup);
         } catch (GeneralBOException e) {
             logger.error("[ObatPoliAction.getSelectOptionObatByPoli] Error when get data obat poli ," + "Found problem when searching data, please inform to your admin.", e);
         }

@@ -432,7 +432,7 @@
                                                                 </s:if>
                                                             </display:column>
                                                             <display:column media="html" title="Rekap Payroll">
-                                                                <s:if test="#attr.row.flagSlip">
+                                                                <%--<s:if test="#attr.row.flagSlip">--%>
                                                                     <s:if test='#attr.row.tipePayroll == "PY"'>
                                                                         <a href="javascript:;"
                                                                            draftId="<s:property value="%{#attr.row.payrollHeaderId}"/>"
@@ -445,7 +445,7 @@
                                                                             <img border="0" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" name="icon_slip">
                                                                         </a>
                                                                     </s:if>
-                                                                </s:if>
+                                                                <%--</s:if>--%>
                                                             </display:column>
                                                             <%--<display:column property="payrollHeaderId" title="Id"  />--%>
                                                             <display:column property="branchName" title="Unit"  />
@@ -868,7 +868,7 @@
                         alert('Payroll Berhasil Tidak Di Approve');
                         $('#modal-approve-keu').modal('hide');
                         showDialogPy("success");
-                        $('#myForm')[0].reset();
+                        // $('#myForm')[0].reset();
                         window.location.href="<s:url action='initForm_payroll.action'/>";
                     } else {
                         showDialogPy("error");
@@ -1120,7 +1120,7 @@
             var tipePayroll = $(this).attr('draftTipe');
 
             if (confirm('Apakah Anda ingin mencetak detail rekap payroll?')) {
-                window.location.href = 'payrollRekapReportExcel_payroll?branchId='+branchId+'&tahun='+tahun+'&bulan='+bulan;
+                window.location.href = 'payrollRekapReportExcel_payroll?branchId='+branchId+'&tahun='+tahun+'&bulan='+bulan+'&idPayrollHeader='+idPayrollHeader;
             }
         });
 

@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.ringkasanpasien.bo.impl;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.CrudResponse;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.ringkasanpasien.bo.RingkasanPasienBo;
 import com.neurix.simrs.transaksi.ringkasanpasien.dao.RingkasanPasienDao;
 import com.neurix.simrs.transaksi.ringkasanpasien.model.ItSimrsRingkasanPasienEntity;
@@ -163,6 +164,125 @@ public class RingkasanPasienBoImpl implements RingkasanPasienBo {
             response.setMsg("Found Error, Data yang dicari tidak ditemukan...!");
         }
         return response;
+    }
+
+    @Override
+    public HeaderCheckup getResumeMedis(String id) throws GeneralBOException {
+        HeaderCheckup checkup = new HeaderCheckup();
+        if(id != null) {
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("id_detail_checkup", id);
+            hsCriteria.put("keterangan", "ringkasan_pulang_pasien");
+            hsCriteria.put("jenis", "ringkasan_pulang");
+            List<ItSimrsRingkasanPasienEntity> entityList = new ArrayList<>();
+            try {
+                entityList = ringkasanPasienDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e) {
+                logger.error(e.getMessage());
+            }
+
+            if (entityList.size() > 0) {
+                String kondisiPulang = "";
+                for (ItSimrsRingkasanPasienEntity entity: entityList){
+                    if(entity.getTipe() != null){
+                        if("tgl_keluar".equalsIgnoreCase(entity.getTipe())){
+                            checkup.setStTglKeluar(entity.getJawaban());
+                        }
+                        if("riwayat_penyakit".equalsIgnoreCase(entity.getTipe())){
+                            checkup.setPenyakitDahulu(entity.getJawaban());
+                        }
+                        if("pemeriksaan_lab".equalsIgnoreCase(entity.getTipe())){
+                            checkup.setPenunjangLab(entity.getJawaban());
+                        }
+                        if("pemeriksaan_radiologi".equalsIgnoreCase(entity.getTipe())){
+                            checkup.setPenunjangRadiologi(entity.getJawaban());
+                        }
+                        if("suhu".equalsIgnoreCase(entity.getTipe()) ||
+                                "nadi".equalsIgnoreCase(entity.getTipe()) ||
+                                "tenis".equalsIgnoreCase(entity.getTipe()) ||
+                                "rr".equalsIgnoreCase(entity.getTipe()) ||
+                                "gcs".equalsIgnoreCase(entity.getTipe()) ||
+                                "spo2".equalsIgnoreCase(entity.getTipe())){
+                            if("".equalsIgnoreCase(kondisiPulang)){
+                                kondisiPulang = entity.getParameter()+": "+entity.getJawaban();
+                            }else{
+                                kondisiPulang = kondisiPulang+". "+ entity.getParameter()+": "+entity.getJawaban();
+                            }
+                        }
+
+                        if("keadaan_pulang".equalsIgnoreCase(entity.getTipe())){
+                            checkup.setKeadaanPulang(entity.getJawaban());
+                        }
+                        if("instruksi_lanjut".equalsIgnoreCase(entity.getTipe())){
+                            if(!"".equalsIgnoreCase(entity.getJawaban())){
+                                String[] tindak = entity.getJawaban().split("\\|");
+                                String tindakLanjut = "";
+                                int i = 0;
+                                if(tindak.length > 0){
+                                    for (String lanjut: tindak){
+                                        if("Kontrol Ulang".equalsIgnoreCase(lanjut)){
+                                            if(i == 0){
+                                                tindakLanjut += "<li>"+lanjut+"</li>";
+                                            }
+                                        }else{
+                                            tindakLanjut += "<li>"+ i +"."+lanjut+"</li>";
+                                        }
+                                        i++;
+                                    }
+                                    if(i > 0){
+                                        tindakLanjut += "<li>" + i +". Bila ada keluhan sebelum kontrol. pasien dapat berobat ke fasilitas kesehatan tingkat I terdekat. Kontrol membawa : FC kartu BPJS/Asuransi, FC KTP/KK, Resume Medis/Surat Kontrol"+"</li>";
+                                        if("catatan_khusus".equalsIgnoreCase(entity.getTipe())){
+                                            tindakLanjut += "<li>" + i +"."+entity.getJawaban()+"</li>" ;
+                                        }
+                                    }
+                                }
+                                checkup.setTindakLanjut("<ul>"+tindakLanjut+"</ul>");
+                            }
+                        }
+                        if("prognosis".equalsIgnoreCase(entity.getTipe())){
+                            checkup.setPrognosis(entity.getJawaban());
+                        }
+                        if("TTD Keluarga".equalsIgnoreCase(entity.getParameter())){
+                            checkup.setTtdPasien(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getJawaban());
+                        }
+                        if("TTD DPJP".equalsIgnoreCase(entity.getParameter())){
+                            checkup.setTtdDokter(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getJawaban());
+                        }
+
+                        if("terapi_pulang".equalsIgnoreCase(entity.getTipe())){
+                            if(entity.getJawaban() != null){
+                                String[] row = entity.getJawaban().split("\\=");
+                                if (row.length > 0){
+                                    String tempA = "";
+                                    for (String a: row){
+                                        String[] column = a.split("\\|");
+                                        String tempB = "";
+                                        for (String b: column){
+                                            if("".equalsIgnoreCase(tempB)){
+                                                tempB = b;
+                                            }else{
+                                                tempB = tempB+", "+b;
+                                            }
+                                        }
+
+                                        if("".equalsIgnoreCase(tempA)){
+                                            tempA = "<li>"+tempB+"</li>";
+                                        }else{
+                                            tempA = tempA+"<li>"+tempB+"</li>";
+                                        }
+                                    }
+                                    if(!"".equalsIgnoreCase(tempA)){
+                                        checkup.setTerapi("<ul>"+tempA+"</ul>");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                checkup.setKondisiPulang(kondisiPulang);
+            }
+        }
+        return checkup;
     }
 
     public static Logger getLogger() {

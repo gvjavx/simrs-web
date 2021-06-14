@@ -146,7 +146,7 @@ public class TempatTidurAction extends BaseTransactionAction {
                 response.setStatus("error");
                 response.setMsg("Mohon maaf tidak dapat menukan data...!");
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             response.setStatus("error");
             response.setMsg("Mohon maaf data json yang dikirim bermasalah...!" + e.getMessage());
         }
@@ -174,7 +174,7 @@ public class TempatTidurAction extends BaseTransactionAction {
                 response.setStatus("error");
                 response.setMsg("Data json yang dikirim tidak dapat ditemukan...!");
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             response.setStatus("error");
             response.setMsg("Data json yang dikirim bermasalaah...!" + e.getMessage());
         }
@@ -216,7 +216,7 @@ public class TempatTidurAction extends BaseTransactionAction {
         ruangan.setFlag("Y");
         try {
             ruanganList = tempatTidurBo.getComboRuangan(ruangan);
-        } catch (GeneralBOException e) {
+        } catch (Exception e) {
             logger.error(e.getMessage());
         }
         return ruanganList;

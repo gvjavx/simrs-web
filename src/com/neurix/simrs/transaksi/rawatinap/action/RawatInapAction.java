@@ -2004,6 +2004,7 @@ public class RawatInapAction extends BaseMasterAction {
                                 headerDetailCheckup.setIdDokter(idDokterDpjp);
                                 headerDetailCheckup.setTindakLanjut(tindakLanjut);
                                 headerDetailCheckup.setIdKelas(detailCheckup.getIdKelas());
+                                headerDetailCheckup.setIndikasi(detailCheckup.getIndikasi());
 
                                 if ("umum".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
                                     if (uangMuka != null && !"".equalsIgnoreCase(uangMuka)) {
@@ -2115,6 +2116,7 @@ public class RawatInapAction extends BaseMasterAction {
                 String idRuanganLama = null;
                 String isMeninggal = "";
                 String listPemeriksaan = null;
+                String indikasi = null;
 
                 if (object.has("id_ruangan")) {
                     idRuangan = object.getString("id_ruangan");
@@ -2142,6 +2144,9 @@ public class RawatInapAction extends BaseMasterAction {
                 }
                 if (object.has("is_meninggal")) {
                     isMeninggal = object.getString("is_meninggal");
+                }
+                if (object.has("indikasi")) {
+                    indikasi = object.getString("indikasi");
                 }
 
                 if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup) && idRawatInap != null && !"".equalsIgnoreCase(idRawatInap)) {
@@ -2214,6 +2219,7 @@ public class RawatInapAction extends BaseMasterAction {
                     rawatInap.setIdRuangLama(idRuanganLama);
                     rawatInap.setIdJenisPeriksa(jenisPasien);
                     rawatInap.setIsMeninggal(isMeninggal);
+                    rawatInap.setIndikasi(indikasi);
 
                     saveApproveAllTindakan(idDetailCheckup, jenisPasien);
                     response = rawatInapBo.saveAdd(rawatInap);
@@ -2229,7 +2235,7 @@ public class RawatInapAction extends BaseMasterAction {
                 response.setStatus("error");
                 response.setMsg("Data object di JSON tidak ada...!");
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             response.setStatus("error");
             response.setMsg("Errror when JSON Parse " + e.getMessage());
         }
@@ -2883,6 +2889,30 @@ public class RawatInapAction extends BaseMasterAction {
         session.setAttribute("listOfResult", listOfRawatInap);
 
         logger.info("[RawatInapAction.searchBersalin] end process <<<");
+        return "search";
+    }
+
+    public String searchHemodialisa() {
+
+        logger.info("[RawatInapAction.searchHemodialisa] start process >>>");
+
+        RawatInap rawatInap = getRawatInap();
+        List<RawatInap> listOfRawatInap = new ArrayList();
+        rawatInap.setBranchId(CommonUtil.userBranchLogin());
+        rawatInap.setTindakLanjut("hemodialisa");
+
+        try {
+            listOfRawatInap = rawatInapBoProxy.getSearchRawatInap(rawatInap);
+        } catch (GeneralBOException e) {
+            logger.error("[RawatInapAction.searchHemodialisa] Error when searching rawat inap by criteria, Found problem when searching data by criteria, please inform to your admin." + e.getMessage());
+            throw new GeneralBOException("Error when search pasien intensif", e);
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", listOfRawatInap);
+
+        logger.info("[RawatInapAction.searchHemodialisa] end process <<<");
         return "search";
     }
 

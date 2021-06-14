@@ -96,7 +96,8 @@ public class CommonConstant {
     public final static String IMAGE_LOGO_KP = "KP.png";
     public final static String RESOURCE_DOCUMENT_PAYROLL = CommonUtil.getPropertyParams("upload.folder")+CommonConstant.RESOURCE_PATH_PAYROLL;
 
-    public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayroll3.jrxml";
+//    public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayroll3.jrxml";
+    public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollPeg_update.jrxml";
     public final static String REPORT_PAYROLL_THR = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollThrBranch3.jrxml";
     public final static String REPORT_PAYROLL_JASPROD = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollJasoprBranch3jrxml";
     public final static String REPORT_PAYROLL_PENSIUN = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollPensiun3.jrxml";
@@ -110,6 +111,14 @@ public class CommonConstant {
     public final static String ROLE_ADMIN_RS = "ADMIN RS";
     public final static String ROLE_ADMIN_IGD = "ADMIN IGD";
     public final static String ROLE_ADMIN_APOTEK = "ADMIN APOTEK";
+
+
+    //JENIS PEGAWAI
+    public final static String JP_NORMAL = CommonUtil.getPropertyParams("jenis.pegawai.normal");
+    public final static String JP_PLT = CommonUtil.getPropertyParams("jenis.pegawai.plt");
+    public final static String JP_PJS = CommonUtil.getPropertyParams("jenis.pegawai.pjs");
+    public final static String JP_PERCOBAAN = CommonUtil.getPropertyParams("jenis.pegawai.percobaan");
+
 
     //BPJS
     public final static String APP_NAME = ServletActionContext.getRequest().getContextPath();
@@ -263,6 +272,11 @@ public class CommonConstant {
     public final static String TRANSAKSI_ID_TERIMA_PENGAJUAN_PEMBAYARAN_DO = CommonUtil.getPropertyParams("transaksi.id.terima.pengajuan.pembayaran.do");
     public final static String TRANSAKSI_ID_PEMBAYARAN_DO = CommonUtil.getPropertyParams("transaksi.id.pembayaran.do");
     public final static String TRANSAKSI_ID_KOREKSI_PENGAJUAN_BIAYA = CommonUtil.getPropertyParams("transaksi.id.koreksi.pengajuan.biaya");
+
+    //untuk sewa lahan - aji noor
+    public final static String REKENING_KODE_PPN_KELUARAN = CommonUtil.getPropertyParams("rekening.kode.ppn.keluaran");
+    public final static String REKENING_KODE_PPH_PASAL4_AYAT2 = CommonUtil.getPropertyParams("rekening.kode.pph.pasal4.ayat2");
+    public final static String REKENING_KODE_PENDAPATAN_DILUAR_USAHA = CommonUtil.getPropertyParams("rekening.kode.pendapatan.diluar.usaha");
 
     public final static String REKENING_ID_PPN_MASUKAN = CommonUtil.getPropertyParams("rekening.id.ppn.masukan");
     public final static String REKENING_ID_PPN_KELUARAN = CommonUtil.getPropertyParams("rekening.id.ppn.keluaran");

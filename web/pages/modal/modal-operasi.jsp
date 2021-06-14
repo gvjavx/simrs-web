@@ -323,7 +323,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Persiapan Prosuk Darah</td>
+                            <td>Persiapan Produk Darah</td>
                             <td>
                                 <div class="form-check" style="margin-top: 7px;">
                                     <input type="checkbox" name="cek_list13" id="cek_list131" value="Ya">
@@ -576,20 +576,10 @@
                            <div class="form-group">
                                <label class="col-md-4" style="margin-top: 7px">Skala Nyeri</label>
                                <div class="col-md-4">
-                                   <div class="input-group" style="margin-top: 7px">
-                                       <input oninput="setSideValue('cek_list242', this.value)" class="form-control" type="number" id="cek_list241">
-                                       <div class="input-group-addon">
-                                           x/menit
-                                       </div>
-                                   </div>
+                                   <input oninput="setSideValue('cek_list242', this.value)" class="form-control" type="number" id="cek_list241">
                                </div>
                                <div class="col-md-4">
-                                   <div class="input-group" style="margin-top: 7px">
-                                       <input class="form-control" type="number" id="cek_list242">
-                                       <div class="input-group-addon">
-                                           x/menit
-                                       </div>
-                                   </div>
+                                   <input class="form-control" type="number" id="cek_list242">
                                </div>
                            </div>
                        </div>
@@ -695,7 +685,7 @@
                 </div>
                 <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
                     <div class="col-md-1">
-                        <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker-op  color-picker pull-left" value="#ff0000">
+                        <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker-op color-picker pull-left" value="#ff0000">
                     </div>
                     <div style="display: none">
                         <div class="col-md-9">
@@ -1207,7 +1197,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Skala Malampahty</label>
+                            <label class="col-md-4" style="margin-top: 7px">Skala Malapaty</label>
                             <div class="col-md-6">
                                 <%--<input class="form-control" id="cek_pf166" style="margin-top: 7px">--%>
                                 <select class="form-control" id="cek_pf166" style="margin-top: 7px">
@@ -1441,27 +1431,38 @@
                 <div class="box-body">
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Makan minum terakhir</label>
-                            <div class="col-md-7">
-                                <textarea class="form-control" id="pa1" style="margin-top: 7px"></textarea>
+                            <label class="col-md-5" style="margin-top: 7px">Makan minum terakhir jam</label>
+                            <div class="col-md-6">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control jam" id="pa1">
+                                </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Infus</label>
                             <div class="col-md-7">
                                 <textarea class="form-control" id="pa2" style="margin-top: 7px"></textarea>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Obat pre medikasi</label>
                             <div class="col-md-7">
                                 <textarea class="form-control" id="pa3" style="margin-top: 7px"></textarea>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Pesanan Pra Anestesi</label>
                             <div class="col-md-7">
-                                <textarea class="form-control" id="pa4" style="margin-top: 7px"></textarea>
+                                <textarea rows="5" class="form-control" id="pa4" style="margin-top: 7px"></textarea>
                             </div>
                         </div>
                     </div>

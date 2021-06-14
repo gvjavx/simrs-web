@@ -4,6 +4,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
 import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatEntity;
+import com.neurix.simrs.transaksi.obatracik.model.ObatRacik;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
@@ -49,4 +50,7 @@ public interface TransaksiObatBo {
     public void saveUpdateRetureObat(List<TransaksiObatDetail> listReture, TransaksiObatDetail bean) throws GeneralBOException;
     public void saveUpdateHargaRataBarangMasukKarnaReture(TransaksiObatDetail bean) throws GeneralBOException;
     public List<TransaksiObatDetail> getListTransaksiObatDetailBatchByIdResepAndIdBarang(String idResep, String idBarang) throws GeneralBOException;
+    public String getFlagIsRacikInTransaksiObatDetail(String idPermintaan) throws GeneralBOException;
+    public List<ObatRacik> getListNamaRacik(String idRacik) throws GeneralBOException;
+
 }

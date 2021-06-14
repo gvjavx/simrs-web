@@ -35,6 +35,70 @@ public class ImSimrsPermintaanResepEntity implements Serializable {
 
     private String isRead;
     private String idTransaksiOnline;
+    private String namaRacik;
+    private String signaRacik;
+    private String kemasanRacik;
+    private Integer qtyKemasanRacik;
+
+    private String kajianAdministrasi;
+    private String kajianFermasetis;
+    private String kajianKritis;
+
+    public String getKajianAdministrasi() {
+        return kajianAdministrasi;
+    }
+
+    public void setKajianAdministrasi(String kajianAdministrasi) {
+        this.kajianAdministrasi = kajianAdministrasi;
+    }
+
+    public String getKajianFermasetis() {
+        return kajianFermasetis;
+    }
+
+    public void setKajianFermasetis(String kajianFermasetis) {
+        this.kajianFermasetis = kajianFermasetis;
+    }
+
+    public String getKajianKritis() {
+        return kajianKritis;
+    }
+
+    public void setKajianKritis(String kajianKritis) {
+        this.kajianKritis = kajianKritis;
+    }
+
+    public String getNamaRacik() {
+        return namaRacik;
+    }
+
+    public void setNamaRacik(String namaRacik) {
+        this.namaRacik = namaRacik;
+    }
+
+    public String getSignaRacik() {
+        return signaRacik;
+    }
+
+    public void setSignaRacik(String signaRacik) {
+        this.signaRacik = signaRacik;
+    }
+
+    public String getKemasanRacik() {
+        return kemasanRacik;
+    }
+
+    public void setKemasanRacik(String kemasanRacik) {
+        this.kemasanRacik = kemasanRacik;
+    }
+
+    public Integer getQtyKemasanRacik() {
+        return qtyKemasanRacik;
+    }
+
+    public void setQtyKemasanRacik(Integer qtyKemasanRacik) {
+        this.qtyKemasanRacik = qtyKemasanRacik;
+    }
 
     public String getIsRead() {
         return isRead;

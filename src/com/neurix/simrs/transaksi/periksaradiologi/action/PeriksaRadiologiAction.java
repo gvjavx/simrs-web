@@ -178,7 +178,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                     if ("P".equalsIgnoreCase(checkup.getJenisKelamin())) {
                         jk = "Perempuan";
                     } else {
-                        jk = "laki-Laki";
+                        jk = "Laki-Laki";
                     }
                 }
                 periksaLab.setJenisKelamin(jk);
@@ -215,12 +215,15 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 periksaLab.setKeterangan(labData.getIsJustLab());
                 periksaLab.setIsJustLab(labData.getIsJustLab());
                 periksaLab.setNamaDokterPengirim(labData.getNamaDokterPengirim());
+                periksaLab.setIsCito(labData.getIsCito());
                 String hetero = "";
                 String auto = "";
                 String nadi = "";
                 String suhu = "";
                 String tensi = "";
                 String rr = "";
+                String klinis= "";
+
                 if(checkup.getHeteroanamnesis() != null && !"".equalsIgnoreCase(checkup.getHeteroanamnesis())){
                     hetero = "Heteroanamnesis: "+checkup.getHeteroanamnesis();
                 }
@@ -239,7 +242,11 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 if(checkup.getPernafasan() != null && !"".equalsIgnoreCase(checkup.getPernafasan())){
                     rr = ", RR: "+checkup.getPernafasan();
                 }
-                periksaLab.setCatatanKlinis(hetero+auto+nadi+suhu+tensi+rr);
+                if(checkup.getCatatanKlinis() != null && !"".equalsIgnoreCase(checkup.getCatatanKlinis())){
+                    klinis = ", Catatan Klinis: "+checkup.getCatatanKlinis();
+                }
+
+                periksaLab.setCatatanKlinis(hetero+auto+nadi+suhu+tensi+rr+klinis);
                 setPeriksaLab(periksaLab);
 
                 PeriksaLab periksa = new PeriksaLab();

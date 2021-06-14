@@ -92,6 +92,12 @@
             <basic name="jenisPasien">
                 <column name="jenis_pasien"/>
             </basic>
+            <basic name="isCito">
+                <column name="is_cito"/>
+            </basic>
+            <basic name="isReadHasil">
+                <column name="is_read_hasil"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

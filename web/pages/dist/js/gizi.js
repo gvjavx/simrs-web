@@ -358,13 +358,9 @@ function saveGizi(jenis, ket) {
 
         tempPersonel = 'Riwayat penyakit dahulu : ' + temp19 + '|Riwayat penyakit sekarang : ' + va20;
 
-        var ttd1 = document.getElementById("gizi20");
         var ttd2 = document.getElementById("gizi21");
-
-        var cekTtd1 = isCanvasBlank(ttd1);
         var cekTtd2 = isCanvasBlank(ttd2);
 
-        var nama1 = $('#nama_gizi20').val();
         var nama2 = $('#nama_gizi21').val();
         var sip2 = $('#sip_dokter').val();
 
@@ -429,7 +425,7 @@ function saveGizi(jenis, ket) {
             }
         }
 
-        if (va1 && tempVa15 && nama1 && nama2 && sip2 != '' && va12 && va13 != undefined && !cekTtd1 && !cekTtd2) {
+        if (va1 && tempVa15 && nama2 && sip2 != '' && va12 && va13 != undefined && !cekTtd2) {
             data.push({
                 'parameter': 'A. Antropmentri',
                 'jawaban': temp,
@@ -473,19 +469,6 @@ function saveGizi(jenis, ket) {
                 'no_checkup': noCheckup,
                 'id_detail_checkup': idDetailCheckup
             });
-
-            var canv1 = convertToDataURL(ttd1);
-            data.push({
-                'parameter': 'TTD Pasien/Keluarga',
-                'jawaban': canv1,
-                'keterangan': jenis,
-                'jenis': ket,
-                'tipe': 'ttd',
-                'nama_terang': nama1,
-                'no_checkup': noCheckup,
-                'id_detail_checkup': idDetailCheckup
-            });
-
             var canv2 = convertToDataURL(ttd2);
             data.push({
                 'parameter': 'TTD Ahli Gizi',
@@ -544,27 +527,21 @@ function saveGizi(jenis, ket) {
             }
         });
 
-        var ttd1 = document.getElementById("gizi_keluarga");
         var ttd2 = document.getElementById("gizi_dokter");
-
-        var cekTtd1 = isCanvasBlank(ttd1);
         var cekTtd2 = isCanvasBlank(ttd2);
 
-        var nama1 = $('#nama_gizi20').val();
         var nama2 = $('#nama_gizi21').val();
         var sip2 = $('#sip_dokter').val();
 
-        if (temp1 && va2 && va3 && va4 && va5 && va6 && va7 && temp8 && temp9 && nama1 && nama2 && sip2 != '' && !cekTtd1 && !cekTtd2) {
+        if (temp1 && va2 && va3 && va4 && va5 && va6 && va7 && temp8 && temp9 && nama2 && sip2 != '' && !cekTtd2) {
             dataTemp = {
                 'asesmen': temp1,
                 'diagnosa': va2,
                 'intervensi': 'Diberikan diet ' + va3 + ', Energi : ' + va4 + ' kkal' + ', Protein : ' + va5 + ' gram, Lemak : ' + va6 + ' gram, KH : ' + va7 + ' gram',
                 'rencana': temp8,
                 'edukasi': temp9,
-                'nama_pasien': nama1,
                 'nama_dokter': nama2,
                 'sip_dokter': sip2,
-                'ttd_pasien': convertToDataURL(ttd1),
                 'ttd_dokter': convertToDataURL(ttd2),
                 'no_checkup': noCheckup,
                 'id_detail_checkup': idDetailCheckup
@@ -582,16 +559,11 @@ function saveGizi(jenis, ket) {
         var va6 = $('#gizi6').val();
         var va7 = $('#gizi7').val();
         var va8 = $('#gizi8').val();
-        var ttd1 = document.getElementById("gizi_keluarga");
         var ttd2 = document.getElementById("gizi_dokter");
-
-        var cekTtd1 = isCanvasBlank(ttd1);
         var cekTtd2 = isCanvasBlank(ttd2);
-
-        var nama1 = $('#nama_gizi20').val();
         var nama2 = $('#nama_gizi21').val();
         var sip2 = $('#sip_dokter').val();
-        if(!cekTtd1 && !cekTtd2 && va1 && nama1 && nama2 && sip2 != ''){
+        if(!cekTtd2 && va1 && nama2 && sip2 != ''){
             dataTemp = {
                 'tanggal': va1,
                 'berat_badan': va2,
@@ -601,10 +573,8 @@ function saveGizi(jenis, ket) {
                 'biokimia': va6,
                 'intervensi': va7,
                 'lain_lain': va8,
-                'nama_pasien': nama1,
                 'nama_dokter': nama2,
                 'sip_dokter': sip2,
-                'ttd_pasien': convertToDataURL(ttd1),
                 'ttd_dokter': convertToDataURL(ttd2),
                 'no_checkup': noCheckup,
                 'id_detail_checkup': idDetailCheckup
@@ -1338,11 +1308,11 @@ function setPengkajianGizi(umur) {
     var res = '<div class="row jarak">\n' +
         '    <div class="col-md-3">\n' +
         '        <span>BB<small><b>(Kg)</b></small></span>\n' +
-        '        <input class="form-control" id="gizi1" type="number">\n' +
+        '        <input class="form-control berat-pasien" id="gizi1" type="number">\n' +
         '    </div>\n' +
         '    <div class="col-md-3">\n' +
         '        <span>TB<small><b>(Cm)</b></small></span>\n' +
-        '        <input class="form-control" id="gizi2" type="number">\n' +
+        '        <input class="form-control tinggi-pasien" id="gizi2" type="number">\n' +
         '    </div>\n' +
         '    <div class="col-md-3">\n' +
         '        <span>LLA<small><b>(Cm)</b></small></span>\n' +
@@ -1381,11 +1351,11 @@ function setPengkajianGizi(umur) {
         res = '<div class="row jarak">\n' +
             '    <div class="col-md-3">\n' +
             '        <span>BB<small><b>(Kg)</b></small></span>\n' +
-            '        <input class="form-control" id="gizi1" type="number">\n' +
+            '        <input class="form-control berat-pasien" id="gizi1" type="number">\n' +
             '    </div>\n' +
             '    <div class="col-md-3">\n' +
             '        <span>TB<small><b>(Cm)</b></small></span>\n' +
-            '        <input class="form-control" id="gizi2" type="number">\n' +
+            '        <input class="form-control tinggi-pasien" id="gizi2" type="number">\n' +
             '    </div>\n' +
             '    <div class="col-md-3">\n' +
             '        <span>BBI<small><b>(Kg)</b></small></span>\n' +
@@ -1416,6 +1386,28 @@ function setPengkajianGizi(umur) {
             '</div>';
     }
     $('#set_pengakajian').html(res);
+    CheckupAction.getDataPemeriksaanFisik(noCheckup, {
+        callback: function (res) {
+            if (res != '') {
+                if (res.berat != '' && res.tinggi != '') {
+                    var tom = (parseInt(tinggi) * 0.01);
+                    var bmi = (parseInt(berat) / (tom * tom)).toFixed(2);
+                    var keterangan = "";
+                    if (parseInt(bmi) < 18.5) {
+                        keterangan = 'Kurang';
+                    } else if (parseInt(bmi) >= 18.5 && parseInt(bmi) <= 22.9) {
+                        keterangan = 'Normal';
+                    } else if (parseInt(bmi) >= 23 && parseInt(bmi) <= 29.9) {
+                        keterangan = 'Lebih';
+                    } else if (parseInt(bmi) > 30) {
+                        keterangan = 'Obesitas';
+                    }
+                    $('[name=gizi9]').filter('[value='+keterangan+']').attr('checked', true);
+                }
+            }
+        }
+    });
+    setDataPasien();
 }
 
 

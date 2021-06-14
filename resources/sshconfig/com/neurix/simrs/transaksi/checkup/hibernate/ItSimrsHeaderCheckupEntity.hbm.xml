@@ -126,6 +126,14 @@
         <property name="catatanKlinis">
             <column name="catatan_klinis" />
         </property>
-
+        <property name="spo2">
+            <column name="spo2" />
+        </property>
+        <property name="nyeri">
+            <column name="nyeri" />
+        </property>
+        <property name="resikoJatuh">
+            <column name="resiko_jatuh" />
+        </property>
     </class>
 </hibernate-mapping>

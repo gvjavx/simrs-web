@@ -105,7 +105,7 @@
                             <div class="form-group">
                                 <label class="col-md-3" style="margin-top: 7px">PPA</label>
                                 <div class="col-md-8">
-                                    <select class="form-control" id="cppt3" style="margin-top: 7px">
+                                    <select class="form-control" id="cppt3" style="margin-top: 7px" onchange="changePPA(this.value)">
 
                                     </select>
                                 </div>
@@ -149,7 +149,7 @@
                         <hr class="garis">
                         <div class="row">
                             <div class="form-group">
-                                <div class="col-md-6 text-center">
+                                <div class="col-md-6 text-center" id="form_ttd_petugas">
                                     <label>TTD Petugas</label>
                                     <canvas class="paint-canvas-ttd del-canvas" id="cppt9" width="220"
                                             onmouseover="paintTtd('cppt9')"></canvas>

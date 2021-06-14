@@ -672,6 +672,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             detailCheckup.setPerujuk(entity.getRujuk());
             detailCheckup.setSuratRujukan(entity.getUrlDocRujuk());
             detailCheckup.setDibayarPasien(entity.getDibayarPasien() != null ? CommonUtil.numbericFormat(entity.getDibayarPasien(), "###,###") : "0");
+            detailCheckup.setIndikasi(entity.getIndikasi());
 
             if (detailCheckup.getStatusPeriksa() != null && !"".equalsIgnoreCase(detailCheckup.getStatusPeriksa())) {
                 StatusPasien statusPasien = new StatusPasien();
@@ -754,6 +755,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 entity.setUrlDocRujuk(bean.getSuratRujukan());
             }
             entity.setRsRujukan(bean.getRsRujukan());
+            entity.setIndikasi(bean.getIndikasi());
 
             try {
                 checkupDetailDao.updateAndSave(entity);
@@ -953,6 +955,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setFlagKunjungan(bean.getFlagKunjungan());
         detailCheckupEntity.setIsEksekutif(bean.getIsEksekutif());
         detailCheckupEntity.setIsVaksin(bean.getIsVaksin());
+        detailCheckupEntity.setIndikasi(bean.getIndikasi());
 
         if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
             detailCheckupEntity.setMetodePembayaran("non_tunai");

@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Ikhtisar" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" uuid="484ade16-81ff-4a97-a94d-babf2d10efc3">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0000000000000009"/>
+	<property name="ireport.zoom" value="1.210000000000001"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="23"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -30,152 +30,68 @@
 	<parameter name="reportParams.areaId" class="java.lang.String"/>
 	<parameter name="reportParams.tipeLaporan" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT
-  a.kode_rekening as koderekening,
-  a.nama_kode_rekening as namarekening,
-  b.pasien_id as nomorMaster,
-  b.nama as namaMaster,
-  c.jumlah_debit as lastdebit,
-  c.jumlah_kredit as lastkredit,
-  c.saldo as lastsaldo,
-  c.posisi as lastposisi,
-  b.jumlah_debit as jumlahdebit,
-  b.jumlah_kredit as jumlahkredit,
-  (
-    (
-      CASE WHEN c.jumlah_debit IS NULL THEN 0 ELSE c.jumlah_debit END
-    ) + (
-      CASE WHEN b.jumlah_debit IS NULL THEN 0 ELSE b.jumlah_debit END
-    )
-  ) as currdebit,
-  (
-    (
-      CASE WHEN c.jumlah_kredit IS NULL THEN 0 ELSE c.jumlah_kredit END
-    ) + (
-      CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END
-    )
-  ) as currkredit,
-  (
-    CASE WHEN c.posisi = 'K' THEN abs(
-      (
-        (
-          CASE WHEN c.saldo IS NULL THEN 0 ELSE c.saldo END
-        ) + (
-          CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END
-        )
-      ) - (
-        CASE WHEN b.jumlah_debit IS NULL THEN 0 ELSE b.jumlah_debit END
-      )
-    ) ELSE abs(
-      (
-        (
-          CASE WHEN c.saldo IS NULL THEN 0 ELSE c.saldo END
-        ) + (
-          CASE WHEN b.jumlah_debit IS NULL THEN 0 ELSE b.jumlah_debit END
-        )
-      ) - (
-        CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END
-      )
-    ) END
-  ) as currsaldo,
-  (
-    CASE WHEN c.posisi = 'K' THEN CASE WHEN (
-      (
-        CASE WHEN c.saldo IS NULL THEN 0 ELSE c.saldo END
-      ) + (
-        CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END
-      )
-    ) - (
-      CASE WHEN b.jumlah_debit IS NULL THEN 0 ELSE b.jumlah_debit END
-    ) > 0 THEN 'K' WHEN (
-      (
-        CASE WHEN c.saldo IS NULL THEN 0 ELSE c.saldo END
-      ) + (
-        CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END
-      )
-    ) - (
-      CASE WHEN b.jumlah_debit IS NULL THEN 0 ELSE b.jumlah_debit END
-    ) < 0 THEN 'D' ELSE NULL END ELSE CASE WHEN (
-      (
-        CASE WHEN c.saldo IS NULL THEN 0 ELSE c.saldo END
-      ) + (
-        CASE WHEN b.jumlah_debit IS NULL THEN 0 ELSE b.jumlah_debit END
-      )
-    ) - (
-      CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END
-    ) < 0 THEN 'K' WHEN (
-      (
-        CASE WHEN c.saldo IS NULL THEN 0 ELSE c.saldo END
-      ) + (
-        CASE WHEN b.jumlah_debit IS NULL THEN 0 ELSE b.jumlah_debit END
-      )
-    ) - (
-      CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END
-    ) > 0 THEN 'D' ELSE NULL END END
-  ) as currposisi,
-  $P{reportParams.periode} as periode
-FROM
-  (
-    select
-      rekening_id,
-      kode_rekening,
-      nama_kode_rekening
-    from
-      im_akun_kode_rekening
-    where
-      rekening_id IN (
-        SELECT
-          rekening_id
-        FROM
-          im_akun_report_detail
-        WHERE
-          report_id = $P{reportParams.reportId}
-	and tipe_laporan = $P{reportParams.tipeLaporan}
-	and flag='Y'
-      )
-    group by
-      rekening_id,
-      kode_rekening,
-      nama_kode_rekening
-    order by
-      kode_rekening
-  ) a
-  INNER JOIN (
-    select
-      y.rekening_id as rekening_id,
-      y.pasien_id as pasien_id,
-      z.nama as nama,
-      sum(y.jumlah_debit * x.kurs) as jumlah_debit,
-      sum(y.jumlah_kredit * x.kurs) as jumlah_kredit
-    from
-      it_akun_jurnal x
-      inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
-      inner join im_simrs_pasien z on y.pasien_id = z.id_pasien
-    where
-      to_char(x.created_date, 'MM-yyyy') = $P{reportParams.periode}
-      and x.branch_id IN ($P!{reportParams.branchId})
-    group by
-      y.rekening_id,
-      y.pasien_id,
-      z.nama
-  ) b ON b.rekening_id = a.rekening_id
-  LEFT OUTER JOIN (
-    select
-      rekening_id,
-      pasien_id,
-      jumlah_debit,
-      jumlah_kredit,
-      saldo,
-      posisi
-    from
-      it_akun_saldo_akhir
-    where
-      to_date(periode, 'MM-yyyy') = to_date($P{reportParams.periode}, 'MM-yyyy') - Interval '1 month'
-      and branch_id IN ($P!{reportParams.branchId})
-  ) c ON a.rekening_id = c.rekening_id
-  and c.pasien_id = b.pasien_id
-ORDER BY
-  koderekening]]>
+		<![CDATA[SELECT koderekening.kode_rekening                                             as koderekening,
+       koderekening.nama_kode_rekening                                        as namarekening,
+       jurnal.pasien_id                                                       as nomorMaster,
+       jurnal.nama                                                            as namaMaster,
+       saldo.jumlah_debit                                                     as lastdebit,
+       saldo.jumlah_kredit                                                    as lastkredit,
+       saldo.saldo                                                            as lastsaldo,
+       saldo.posisi                                                           as lastposisi,
+       jurnal.jumlah_debit                                                    as jumlahdebit,
+       jurnal.jumlah_kredit                                                   as jumlahkredit,
+       (coalesce(saldo.jumlah_debit, 0) + coalesce(jurnal.jumlah_debit, 0))   as currdebit,
+       (coalesce(saldo.jumlah_kredit, 0) + coalesce(jurnal.jumlah_kredit, 0)) as currkredit,
+       CASE
+         WHEN saldo.posisi = 'K' THEN abs(coalesce(saldo.saldo, 0) + coalesce(jurnal.jumlah_kredit, 0) -
+                                          coalesce(jurnal.jumlah_debit, 0))
+         ELSE abs(coalesce(saldo.saldo, 0) + coalesce(jurnal.jumlah_debit, 0) - coalesce(jurnal.jumlah_kredit, 0)) END
+                                                                              as currsaldo,
+       CASE
+         WHEN saldo.posisi = 'K' THEN CASE
+                                        WHEN
+           coalesce(saldo.saldo, 0) + coalesce(jurnal.jumlah_kredit, 0) - coalesce(jurnal.jumlah_debit, 0) > 0 THEN 'K'
+                                        WHEN
+           coalesce(saldo.saldo, 0) + coalesce(jurnal.jumlah_kredit, 0) - coalesce(jurnal.jumlah_debit, 0) < 0 THEN 'D'
+                                        ELSE NULL END
+         ELSE CASE
+                WHEN coalesce(saldo.saldo, 0) + coalesce(jurnal.jumlah_debit, 0) - coalesce(jurnal.jumlah_kredit, 0) < 0
+                        THEN 'K'
+                WHEN coalesce(saldo.saldo, 0) + coalesce(jurnal.jumlah_debit, 0) - coalesce(jurnal.jumlah_kredit, 0) > 0
+                        THEN 'D'
+                ELSE NULL END END
+                                                                              as currposisi,
+       $P{reportParams.periode}                                                              as periode
+FROM ( select rekening_id, kode_rekening, nama_kode_rekening
+      from im_akun_kode_rekening
+      where rekening_id IN (SELECT rekening_id
+                            FROM im_akun_report_detail
+                            WHERE report_id = $P{reportParams.reportId}
+                              and tipe_laporan = $P{reportParams.tipeLaporan}
+                              and flag = 'Y')
+      group by rekening_id,
+               kode_rekening,
+               nama_kode_rekening
+      order by kode_rekening ) koderekening
+       INNER JOIN ( select y.nomor_rekening              as rekening_id,
+                          y.pasien_id                   as pasien_id,
+                          z.nama                        as nama,
+                          sum(y.jumlah_debit * x.kurs)  as jumlah_debit,
+                          sum(y.jumlah_kredit * x.kurs) as jumlah_kredit
+                   from it_akun_jurnal x
+                          inner join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
+                          inner join im_simrs_pasien z on y.pasien_id = z.id_pasien
+                   where to_char(x.created_date, 'MM-yyyy') = $P{reportParams.periode}
+                     and x.branch_id IN ($P!{reportParams.branchId})
+                   group by y.nomor_rekening,
+                            y.pasien_id,
+                            z.nama ) jurnal ON jurnal.rekening_id = koderekening.kode_rekening
+       LEFT OUTER JOIN ( select kode_rekening, pasien_id, jumlah_debit, jumlah_kredit, saldo, posisi
+                        from it_akun_saldo_akhir_detail
+                        where to_date(periode, 'MM-yyyy') = to_date($P{reportParams.periode}, 'MM-yyyy') - Interval '1 month'
+                          and branch_id IN ($P!{reportParams.branchId}) ) saldo ON koderekening.kode_rekening = saldo.kode_rekening
+                                                              and saldo.pasien_id = jurnal.pasien_id
+ORDER BY koderekening]]>
 	</queryString>
 	<field name="koderekening" class="java.lang.String"/>
 	<field name="namarekening" class="java.lang.String"/>
@@ -192,7 +108,8 @@ ORDER BY
 	<field name="currsaldo" class="java.math.BigDecimal"/>
 	<field name="currposisi" class="java.lang.String"/>
 	<field name="periode" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[
+]]></fieldDescription>
 	</field>
 	<variable name="SUM_last_saldo_1" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{lastsaldo}]]></variableExpression>

@@ -6,6 +6,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.obatracik.model.ObatRacik;
 import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.permintaanresep.model.ResepObat;
@@ -111,6 +112,40 @@ public class PermintaanResepAction extends BaseMasterAction{
                                 permintaanResep.setTtdDokter(fileName);
                             }
                         }
+
+                        List<ObatRacik> listNamaRacik = new ArrayList<>();
+                        if (!"".equalsIgnoreCase(obj.getString("arr_nama_racik"))){
+                            JSONArray arrNamaRacik = new JSONArray(obj.getString("arr_nama_racik"));
+                            for (int i=0; i < arrNamaRacik.length(); i++){
+                                JSONObject objNamaRacik = arrNamaRacik.getJSONObject(i);
+                                ObatRacik obatRacik = new ObatRacik();
+                                obatRacik.setId(objNamaRacik.getString("idracik"));
+                                obatRacik.setNama(objNamaRacik.getString("racik"));
+                                obatRacik.setSigna(objNamaRacik.getString("signa"));
+                                obatRacik.setQty(new Integer(objNamaRacik.getString("qty")));
+                                obatRacik.setKemasan(objNamaRacik.getString("kemasan"));
+                                obatRacik.setWarna(objNamaRacik.getString("warna"));
+                                listNamaRacik.add(obatRacik);
+                            }
+                        }
+
+                        List<TransaksiObatDetail> listDetailObatRacik = new ArrayList<>();
+                        if (!"".equalsIgnoreCase(obj.getString("arr_detail_racik"))){
+                            JSONArray arrNamaRacik = new JSONArray(obj.getString("arr_detail_racik"));
+                            for (int i=0; i < arrNamaRacik.length(); i++){
+                                JSONObject objNamaRacik = arrNamaRacik.getJSONObject(i);
+                                TransaksiObatDetail obatRacik = new TransaksiObatDetail();
+                                obatRacik.setIdObat(objNamaRacik.getString("idobat"));
+                                obatRacik.setNamaObat(objNamaRacik.getString("namaobat"));
+                                obatRacik.setKeterangan(objNamaRacik.getString("dosis"));
+                                obatRacik.setQty(new BigInteger(String.valueOf(0)));
+                                obatRacik.setIdRacik(objNamaRacik.getString("idracik"));
+                                listDetailObatRacik.add(obatRacik);
+                            }
+                        }
+
+                        permintaanResep.setListNamaObatRacik(listNamaRacik);
+                        permintaanResep.setListDetailObatRacik(listDetailObatRacik);
 
                         List<TransaksiObatDetail> detailList = new ArrayList<>();
                         if(obj.getString("data_obat") != null && !"".equalsIgnoreCase(obj.getString("data_obat"))){
@@ -329,6 +364,41 @@ public class PermintaanResepAction extends BaseMasterAction{
 
         }
         logger.info("[PermintaanResepAction.getListRespPasien] END process >>>");
+        return permintaanResepList;
+    }
+
+    public List<PermintaanResep> getListResepTerakhir(String idPasien, String idPelayanan){
+        logger.info("[PermintaanResepAction.getListResepTerakhir] start process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
+
+        List<PermintaanResep> permintaanResepList = new ArrayList<>();
+        try {
+            permintaanResepList = permintaanResepBo.getListResepTerakhirByIdPelayanan(idPasien, idPelayanan);
+        } catch (GeneralBOException e){
+            logger.error("[PermintaanResepAction.getListResepTerakhir] Error.", e);
+
+        }
+
+        logger.info("[PermintaanResepAction.getListResepTerakhir] END process >>>");
+        return permintaanResepList;
+    }
+
+    public List<PermintaanResep> getListResepTerakhirByIdApproval(String idApproval){
+        logger.info("[PermintaanResepAction.getListResepTerakhirByIdApproval] start process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
+
+        List<PermintaanResep> permintaanResepList = new ArrayList<>();
+        try {
+            permintaanResepList = permintaanResepBo.getListResepTerakhirByIdApproval(idApproval);
+        } catch (GeneralBOException e){
+            logger.error("[PermintaanResepAction.getListResepTerakhirByIdApproval] Error.", e);
+        }
+
+        logger.info("[PermintaanResepAction.getListResepTerakhirByIdApproval] END process >>>");
         return permintaanResepList;
     }
 

@@ -35,6 +35,7 @@
           p:riwayatTindakanDao-ref="riwayatTindakanDao"
           p:catatanPemberianObatDao-ref="catatanPemberianObatDao"
           p:headerObatDao-ref="headerObatDao"
+          p:obatRacikDao-ref="obatRacikDao"
     />
 
     <bean id="transaksiObatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

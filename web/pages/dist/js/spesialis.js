@@ -42,11 +42,6 @@ function showModalSPS(jenis, idRM, isSetIdRM) {
         loadImgToCanvas(url, 'area_gigi1');
     }
 
-    // if ("rencana_gigi_pasien" == jenis) {
-    //     var url = contextPath + '/pages/images/scala-gigi-new.png';
-    //     loadImgToCanvas(url, 'area_gigi2');
-    // }
-
     if("pemeriksaan_kk" == jenis){
         var url = "";
         if(jenisKelamin == "Perempuan"){
@@ -65,6 +60,8 @@ function showModalSPS(jenis, idRM, isSetIdRM) {
         setSph("sph-val");
     }
 
+    setKeteranganPeriksa('intruksi_'+jenis);
+
     $('#modal-sps-' + jenis).modal({show: true, backdrop: 'static'});
     setDataPasien();
 }
@@ -72,14 +69,15 @@ function showModalSPS(jenis, idRM, isSetIdRM) {
 function saveSPS(jenis, ket) {
     var data = [];
     var cek = false;
-    var dataPasien = "";
-
-    dataPasien = {
+    var dataPasien = {
         'no_checkup': noCheckup,
         'id_detail_checkup': idDetailCheckup,
         'id_pasien': idPasien,
         'id_rm': tempidRm
     }
+
+    var sendTppri = [];
+    var tindakLanjut = false;
 
     if ("keadaan_umum_tht" == jenis) {
         var va1 = $('#kut1').val();
@@ -211,7 +209,7 @@ function saveSPS(jenis, ket) {
         var va6 = $('#pt6').val();
         var va7 = $('#pt7').val();
         var va8 = $('#pt8').val();
-        var va9 = $('#pt9').val();
+        var va9 = $('#intruksi_'+jenis+' option:selected').text();
 
         if (va1 && va3 && va4 && va5 && va6 && va7 != '') {
             data.push({
@@ -278,6 +276,7 @@ function saveSPS(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
+            tindakLanjut = true;
         }
     }
 
@@ -459,7 +458,7 @@ function saveSPS(jenis, ket) {
         var va9 = $('#pt9').val();
         var va10 = $('#pt10').val();
         var va11 = $('#pt11').val();
-        var va12 = $('#pt12').val();
+        var va12 = $('#intruksi_'+jenis+' option:selected').text();
 
         if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 != '') {
             data.push({
@@ -584,6 +583,7 @@ function saveSPS(jenis, ket) {
             }else{
                 cek = true;
             }
+            tindakLanjut = true;
         }
     }
 
@@ -642,8 +642,9 @@ function saveSPS(jenis, ket) {
         var va5 = $('#pt5').val();
         var va6 = $('#pt6').val();
         var va7 = $('#pt7').val();
-        var va8 = $('#pt8').val();
+        var va8 = $('#intruksi_'+jenis+' option:selected').text();
         var operesi = "Y";
+        var keteranganGambar = $('#keterangan_gambar').val();
 
         var canvasArea = document.getElementById('area_canvas');
         var canvasCek = document.getElementById('area_cek');
@@ -661,6 +662,13 @@ function saveSPS(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'gambar',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Keterangan Gambar',
+                'jawaban': keteranganGambar,
+                'keterangan': jenis,
+                'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -713,6 +721,7 @@ function saveSPS(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
+            tindakLanjut = true;
         }
     }
 
@@ -724,7 +733,8 @@ function saveSPS(jenis, ket) {
         var va5 = $('#pt5').val();
         var va6 = $('#pt6').val();
         var va7 = $('#pt7').val();
-        var va8 = $('#pt8').val();
+        var va8 = $('#intruksi_'+jenis+' option:selected').text();
+        var keteranganGambar = $('#keterangan_gambar').val();
         var paru = "Y";
 
         var canvasArea = document.getElementById('area_paru');
@@ -756,6 +766,13 @@ function saveSPS(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
+                'parameter': 'Keterangan Gambar',
+                'jawaban': keteranganGambar,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
                 'parameter': 'Pemeriksaan Penunjang',
                 'jawaban': va2,
                 'keterangan': jenis,
@@ -805,6 +822,7 @@ function saveSPS(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
+            tindakLanjut = true;
         }
     }
 
@@ -966,7 +984,7 @@ function saveSPS(jenis, ket) {
         var va10 = $('#pt10').val();
         var va11 = $('#pt11').val();
         var va12 = $('#pt12').val();
-        var va13 = $('#pt13').val();
+        var va13 = $('#intruksi_'+jenis+' option:selected').text();
 
         if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 && va11 != '') {
 
@@ -1048,6 +1066,7 @@ function saveSPS(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
+            tindakLanjut = true;
         }
     }
 
@@ -1144,7 +1163,7 @@ function saveSPS(jenis, ket) {
         var va8 = $('#pt8').val();
         var va9 = $('#pt9').val();
         var va10 = $('#pt10').val();
-        var va11 = $('#pt11').val();
+        var va11 = $('#intruksi_'+jenis+' option:selected').text();
 
         if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 != '') {
 
@@ -1212,6 +1231,7 @@ function saveSPS(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
+            tindakLanjut = true;
         }
     }
 
@@ -1272,7 +1292,8 @@ function saveSPS(jenis, ket) {
         var va15 = $('#pt15').val();
         var va16 = $('#pt16').val();
         var va17 = $('#pt17').val();
-        var va18 = $('#pt18').val();
+        var va18 = $('#intruksi_'+jenis+' option:selected').text();
+        var keteranganGambar = $('#keterangan_gambar').val();
 
         var cekCanvas = "Y";
 
@@ -1370,6 +1391,13 @@ function saveSPS(jenis, ket) {
             data.push({
                 'parameter': 'Status lokalis',
                 'jawaban': va11,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Keterangan Gambar',
+                'jawaban': keteranganGambar,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -1535,11 +1563,12 @@ function saveSPS(jenis, ket) {
         var va6 = $('#pt6').val();
         var va7 = $('#pt7').val();
         var va8 = $('#pt8').val();
-        var va9 = $('#pt9').val();
+        var va9 = $('#intruksi_'+jenis+' option:selected').text();
         var jantung = "Y";
 
         var canvasArea = document.getElementById('area_jantung');
         var canvasCek = document.getElementById('area_cek');
+        var keteranganGambar = $('#keterangan_gambar').val();
 
         if (canvasArea.toDataURL() == canvasCek.toDataURL()) {
             jantung = "N";
@@ -1563,6 +1592,13 @@ function saveSPS(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'gambar',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Keterangan Gambar',
+                'jawaban': keteranganGambar,
+                'keterangan': jenis,
+                'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -1622,6 +1658,7 @@ function saveSPS(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
+            tindakLanjut = true;
         }
     }
 
@@ -2049,6 +2086,7 @@ function saveSPS(jenis, ket) {
     }
 
     if ("asesmen_gigi" == jenis) {
+
         var va1 = $('[name=ag1]:checked').val();
         var va2 = $('[name=ag2]:checked').val();
         var va3 = $('[name=ag3]:checked').val();
@@ -2069,6 +2107,7 @@ function saveSPS(jenis, ket) {
         var cekTtd = isBlank(ttd);
         var nama = $('#ttd_nama_terang_petugas').val();
         var nip = $('#ttd_sip_petugas').val();
+        var keteranganGambar = $('#keterangan_gambar').val();
 
         var gigi = "Y";
         if (gigiImg.toDataURL() == canvasCek.toDataURL()) {
@@ -2076,6 +2115,26 @@ function saveSPS(jenis, ket) {
         }
 
         if (va1 && va2 && va3 != undefined && !cekTtd) {
+
+            var label = $('.label_gigi');
+            $.each(label, function (i, item) {
+                var index = i+1;
+                var labelKiri = $('#label_kiri_'+index).text();
+                var inputKiri = $('#input_kiri_'+index).val();
+                var inputKanan = $('#input_kanan_'+index).val();
+                var labelKanan = $('#label_kanan_'+index).text();
+                if(index <= 8){
+                    data.push({
+                        'parameter': 'Label Gigi',
+                        'jawaban': labelKiri+'|'+inputKiri+'|'+inputKanan+'|'+labelKanan,
+                        'tipe': 'tabel',
+                        'keterangan': jenis,
+                        'jenis': ket,
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                }
+            });
+
             var img = gigiImg.toDataURL("image/png"),
                 img = img.replace(/^data:image\/(png|jpg);base64,/, "");
 
@@ -2088,7 +2147,33 @@ function saveSPS(jenis, ket) {
                     'jenis': ket,
                     'id_detail_checkup': idDetailCheckup
                 });
+                data.push({
+                    'parameter': 'Keterangan Gambar',
+                    'jawaban': keteranganGambar,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
             }
+
+            $.each(label, function (i, item) {
+                var index = i+1;
+                var labelKiri = $('#label_kiri_'+index).text();
+                var inputKiri = $('#input_kiri_'+index).val();
+                var inputKanan = $('#input_kanan_'+index).val();
+                var labelKanan = $('#label_kanan_'+index).text();
+                if(index > 8){
+                    data.push({
+                        'parameter': 'Label Gigi',
+                        'jawaban': labelKiri+'|'+inputKiri+'|'+inputKanan+'|'+labelKanan,
+                        'tipe': 'tabel',
+                        'keterangan': jenis,
+                        'jenis': ket,
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                }
+            });
+
             data.push({
                 'parameter': 'Occlusi',
                 'jawaban': va1,
@@ -2181,7 +2266,7 @@ function saveSPS(jenis, ket) {
         var va5 = $('#ag5').val();
         var va6 = $('#ag6').val();
         var va7 = $('#ag7').val();
-        var va8 = $('#ag8').val();
+        var va8 = $('#intruksi_'+jenis+' option:selected').text();
 
         var ttd = document.getElementById("ag9");
         var gigiImg = document.getElementById("area_gigi1");
@@ -2248,6 +2333,7 @@ function saveSPS(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
+            tindakLanjut = true;
         }
     }
 
@@ -2769,6 +2855,51 @@ function saveSPS(jenis, ket) {
             AsesmenSpesialisAction.save(result, pasienData, {
                 callback: function (res) {
                     if (res.status == "success") {
+                        if(tindakLanjut){
+                            var va9 = "";
+                            var v9 = $('#intruksi_'+jenis).val();
+                            var v9Text = $('#intruksi_'+jenis+' option:selected').text();
+
+                            if(v9 != '' && v9Text != ' - ') {
+                                var ket1 = $('#ket_'+jenis).val();
+                                var ket3 = $('#ket_ki93').val();
+
+                                if ("rawat_inap" == v9 || "rawat_isolasi" == v9 || "rawat_intensif" == v9) {
+                                    va9 = v9Text + ', ' + ket1;
+                                } else if ("selesai" == v9) {
+                                    va9 = v9;
+                                } else if ("rujuk_rs_lain" == v9){
+                                    va9 = v9 + ','+ ket3;
+                                } else {
+                                    va9 = v9;
+                                }
+
+                                sendTppri = {
+                                    'tindak_lanjut': v9,
+                                    'indikasi': ket1,
+                                    'keterangan': va9,
+                                    'rujuk_rs': ket3
+                                }
+                                if(sendTppri != null){
+                                    dwr.engine.setAsync(true);
+                                    CheckupDetailAction.sendToTppti(idDetailCheckup, sendTppri.tindak_lanjut, sendTppri.indikasi, sendTppri.keterangan, {
+                                        callback:function (res) {
+                                            if(res.status == "success"){
+                                                $('#keterangan').val(sendTppri.tindak_lanjut).trigger('change');
+                                                $('#keterangan').attr('disabled', true);
+                                                if(sendTppri.tindak_lanjut == 'rawat_inap' || sendTppri.tindak_lanjut == 'rawat_isolasi' || sendTppri.tindak_lanjut == 'rawat_intensif'){
+                                                    $('#keterangan_rw').val(sendTppri.indikasi).trigger('change');
+                                                    $('#keterangan_rw').attr('disabled', true);
+                                                }else if(sendTppri.tindak_lanjut == 'rujuk_rs_lain'){
+                                                    $('#rs_rujukan').val(sendTppri.rujuk_rs);
+                                                    $('#rs_rujukan').attr('disabled', true);
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }
                         $('#save_sps_' + jenis).show();
                         $('#load_sps_' + jenis).hide();
                         $('#modal-sps-' + jenis).modal('hide');
@@ -2785,7 +2916,7 @@ function saveSPS(jenis, ket) {
                         $('#modal-sps-' + jenis).scrollTop(0);
                     }
                 }
-            })
+            });
         }
     } else {
         $('#warning_sps_' + jenis).show().fadeOut(5000);
@@ -2810,7 +2941,33 @@ function detailSPS(jenis) {
                     if (item.jawaban != null) {
                         jwb = item.jawaban;
                     }
-                    if ("ttd" == item.tipe) {
+                    if("asesmen_gigi" == item.keterangan){
+                        if("tabel" == item.tipe){
+                            body += '<tr>' +
+                                '<td align="center" width="25%">' + item.jawaban.split("|")[0] + '</td>' +
+                                '<td align="center" width="25%">' + item.jawaban.split("|")[1] + '</td>' +
+                                '<td align="center" width="25%">' + item.jawaban.split("|")[2] + '</td>' +
+                                '<td align="center" width="25%">' + item.jawaban.split("|")[3] + '</td>' +
+                                '</tr>';
+                        }else if ("ttd" == item.tipe){
+                            body += '<tr>' +
+                                '<td colspan="2">' + item.parameter + '</td>' +
+                                '<td colspan="2">' + '<img src="' + jwb + '" style="width: 100px">' +
+                                '<p style="margin-top: -3px">' + cekItemIsNull(item.namaTerang) + '</p>' +
+                                '<p style="margin-top: -7px">' + cekItemIsNull(item.sip) + '</p>' +
+                                '</td>' +
+                                '</tr>';
+                        }else if ("gambar" == item.tipe) {
+                            body += '<tr align="center">' +
+                                '<td colspan="4">' + '<img src="' + jwb + '" style="width: 60%">' + '</td>' +
+                                '</tr>';
+                        }else{
+                            body += '<tr>' +
+                                '<td colspan="2">' + item.parameter + '</td>' +
+                                '<td colspan="2">' + jwb + '</td>' +
+                                '</tr>';
+                        }
+                    } else if ("ttd" == item.tipe) {
                         if("ophtal" == item.keterangan){
                             body += '<tr>' +
                                 '<td width="60%">' + item.parameter + '</td>' +
@@ -2919,7 +3076,7 @@ function detailSPS(jenis) {
                         body += '<tr>' +
                             '<td colspan="2">' + item.parameter + '</td>' +
                             '</tr>';
-                    } else {
+                    }else {
                         body += '<tr>' +
                             '<td width="40%">' + item.parameter + '</td>' +
                             '<td>' + jwb + '</td>' +

@@ -216,4 +216,59 @@ function showHasil(id, nama) {
     }
 }
 
+function showModalPJ(jenis, idRM, isSetIdRM) {
+    if (jenis != '') {
+        $('#modal-'+ jenis).modal({show: true, backdrop: 'static'});
+        setDataPasien();
+    }
+}
+
+function savePJ(jenis){
+    var cek = false;
+    var data = [];
+    if("add_asesmen_radiologi" == jenis){
+        var r1 = $('#r1').val();
+        var r2 = $('#r2').val();
+        var r3 = $('#r3').val();
+
+        if(r1 && r2 && r3 != ''){
+            data.push({
+                'id_detail_checkup': idDetailCheckup,
+                'parameter': $('#label_r1').text(),
+                'jawaban': r1,
+                'keterangan': 'asesmen_radiologi'
+            });
+            data.push({
+                'id_detail_checkup': idDetailCheckup,
+                'parameter': $('#label_r2').text(),
+                'jawaban': r2,
+                'keterangan': 'asesmen_radiologi'
+            });
+            data.push({
+                'id_detail_checkup': idDetailCheckup,
+                'parameter': $('#label_r3').text(),
+                'jawaban': r3,
+                'keterangan': 'asesmen_radiologi'
+            });
+            var result = JSON.stringify(data);
+            PeriksaLabAction.savePJ(result, function (res) {
+                if(res.status == "success"){
+
+                }else{
+
+                }
+            });
+        }else{
+            $('#warning_'+jenis).show().fadeOut(5000);
+            $('#msg_'+jenis).text("Silahkan cek kembali inputan anda...!");
+        }
+
+        console.log(label);
+    }
+}
+
+function detailPJ(){
+
+}
+
 

@@ -709,7 +709,7 @@
                                 <div class="input-group">
                                     <input oninput="$(this).css('border','')" class="form-control" id="add_password" type="password">
                                     <div onclick="seePassw()" class="input-group-addon" style="cursor: pointer">
-                                        <i id="icon-password" class="fa fa-eye"></i>
+                                        <i id="icon-password" class="fa fa-eye-slash"></i>
                                     </div>
                                 </div>
                             </div>
@@ -1390,11 +1390,11 @@
         if (type == 'password') {
             $('#add_password').removeAttr('type');
             $('#add_password').attr('type', 'text');
-            $('#icon-password').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+            $('#icon-password').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
         } else {
             $('#add_password').removeAttr('type');
             $('#add_password').attr('type', 'password');
-            $('#icon-password').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+            $('#icon-password').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
         }
     }
 

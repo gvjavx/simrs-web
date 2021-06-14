@@ -10,6 +10,7 @@
 
     <bean id="asesmenUgdBo" class="com.neurix.simrs.transaksi.asesmenugd.bo.impl.AsesmenUgdBoImpl"
           p:asesmenUgdDao-ref="asesmenUgdDao"
+          p:headerCheckupDao-ref="headerCheckupDao"
     />
 
     <bean id="asesmenUgdBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

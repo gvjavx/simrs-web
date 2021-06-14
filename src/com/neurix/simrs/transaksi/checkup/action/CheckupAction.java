@@ -1338,7 +1338,6 @@ public class CheckupAction extends BaseMasterAction {
             lisJenisPeriksa = jenisPriksaPasienBo.getListAllJenisPeriksa(jenisPriksaPasien);
         } catch (HibernateException e) {
             logger.error("[CheckupAction.getComboJenisPeriksaPasienNotBpjs] Error when get data for combo listOfJenisPriksaPasien", e);
-            addActionError(" Error when get data for combo listOfJenisPriksaPasien" + e.getMessage());
         }
 
         return lisJenisPeriksa;
@@ -1354,14 +1353,12 @@ public class CheckupAction extends BaseMasterAction {
             lisJenisPeriksa = jenisPriksaPasienBo.getListJenisPeriksaByIdDetailCheckup(jenis, idDetail);
         } catch (HibernateException e) {
             logger.error("[CheckupAction.getComboJenisPeriksaPasienNotBpjs] Error when get data for combo listOfJenisPriksaPasien", e);
-            addActionError(" Error when get data for combo listOfJenisPriksaPasien" + e.getMessage());
         }
 
         return lisJenisPeriksa;
     }
 
     public String getComboPelayanan() {
-
         List<Pelayanan> pelayananList = new ArrayList<>();
         Pelayanan pelayanan = new Pelayanan();
         pelayanan.setTipePelayanan("rawat_jalan");
@@ -1371,11 +1368,34 @@ public class CheckupAction extends BaseMasterAction {
             pelayananList = pelayananBoProxy.getByCriteria(pelayanan);
         } catch (HibernateException e) {
             logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
-            addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
         }
 
         listOfPelayanan.addAll(pelayananList);
         return "init_add";
+    }
+
+    public List<DokterTeam> getComboDokterPelayanan(String idPelayanan) {
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TeamDokterBo teamDokterBo = (TeamDokterBo) ctx.getBean("teamDokterBoProxy");
+        List<DokterTeam> dokterTeamList = new ArrayList<>();
+        try {
+            dokterTeamList = teamDokterBo.getListDokterToday(idPelayanan);
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+        }
+        return dokterTeamList;
+    }
+
+    public List<DokterTeam> getComboNamaDokterPelayanan(String nama) {
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TeamDokterBo teamDokterBo = (TeamDokterBo) ctx.getBean("teamDokterBoProxy");
+        List<DokterTeam> dokterTeamList = new ArrayList<>();
+        try {
+            dokterTeamList = teamDokterBo.getTtdNamaDokter(CommonUtil.userBranchLogin(), nama);
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+        }
+        return dokterTeamList;
     }
 
     public List<Pelayanan> getComboPelayananCtx() {
@@ -1536,6 +1556,21 @@ public class CheckupAction extends BaseMasterAction {
 
         try {
             pelayananList = pelayananBo.getListApotek(CommonUtil.userBranchLogin(), "apotek");
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+            addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
+        }
+        return pelayananList;
+    }
+
+    public List<Pelayanan> getComboApotekRawatInapList() {
+        List<Pelayanan> pelayananList = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+
+        try {
+            pelayananList = pelayananBo.getListApotek(CommonUtil.userBranchLogin(), "apotek_ri");
         } catch (HibernateException e) {
             logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
             addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
@@ -1867,20 +1902,16 @@ public class CheckupAction extends BaseMasterAction {
         return "success";
     }
 
-    public List<ItSImrsCheckupAlergiEntity> getListAlergi(String noCheckup) {
+    public List<ItSImrsCheckupAlergiEntity> getListAlergi(String idPasien) {
         logger.info("[CheckupAction.getListAlergi] start process >>>");
-
         List<ItSImrsCheckupAlergiEntity> listAlergi = new ArrayList<>();
-
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
-
         try {
-            listAlergi = checkupBo.getListAlergi(noCheckup);
+            listAlergi = checkupBo.getListAlergi(idPasien);
         } catch (GeneralBOException e) {
             logger.error("[CheckupAction.getListAlergi] ERROR " + e.getMessage());
         }
-
         logger.info("[CheckupAction.getListAlergi] end process <<<");
         return listAlergi;
     }
@@ -2024,9 +2055,10 @@ public class CheckupAction extends BaseMasterAction {
 
         try {
             response = bpjsBo.caraRujukanBerdasarNomorkartuBpjs(noBpjs, jenisCari, unitId);
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             logger.error("[CheckupAction.checkStatusBpjs] ERROR " + e.getMessage());
-            addActionError("[CheckupAction.checkStatusBpjs] ERROR " + e.getMessage());
+            response.setStatus("error");
+            response.setMessage(e.getMessage());
         }
 
         logger.info("[CheckupAction.checkStatusBpjs] END process <<<");
@@ -3503,33 +3535,92 @@ public class CheckupAction extends BaseMasterAction {
         return checkupList;
     }
 
-    public CrudResponse saveAnamnese(String auto, String hetero, String noCheckup, String idDetailCheckup, String tensi, String suhu, String nadi, String rr, String klinis) {
+    public CrudResponse saveAnamnese(String data) {
         logger.info("[CheckupAction.savePenunjangPasien] start process >>>");
-        CrudResponse response = new CrudResponse();
-        HeaderCheckup headerCheckup = new HeaderCheckup();
-        headerCheckup.setNoCheckup(noCheckup);
-        headerCheckup.setAutoanamnesis(auto);
-        headerCheckup.setHeteroanamnesis(hetero);
-        headerCheckup.setTensi(tensi);
-        headerCheckup.setSuhu(suhu);
-        headerCheckup.setNadi(nadi);
-        headerCheckup.setPernafasan(rr);
-        headerCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-        headerCheckup.setLastUpdateWho(CommonUtil.userLogin());
-        headerCheckup.setCatatanKlinis(klinis);
-
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        CrudResponse response = new CrudResponse();
+
+        String auto = null;
+        String hetero = null;
+        String noCheckup = null;
+        String tensi = null;
+        String suhu = null;
+        String nadi = null;
+        String rr = null;
+        String klinis = null;
+        String berat = null;
+        String tinggi = null;
+        String spo2 = null;
+        String idDetailCheckup = null;
 
         try {
-            response = checkupBo.updateAnamnese(headerCheckup);
-        } catch (GeneralBOException e) {
+            JSONObject object = new JSONObject(data);
+            if(object != null){
+                noCheckup = object.getString("no_checkup");
+                idDetailCheckup = object.getString("id_detail_checkup");
+                if(object.has("auto")){
+                   auto = object.getString("auto");
+                }
+                if(object.has("hetero")){
+                    hetero = object.getString("hetero");
+                }
+                if(object.has("tensi")){
+                    tensi = object.getString("tensi");
+                }
+                if(object.has("suhu")){
+                    suhu = object.getString("suhu");
+                }
+                if(object.has("nadi")){
+                    nadi = object.getString("nadi");
+                }
+                if(object.has("rr")){
+                    rr = object.getString("rr");
+                }
+                if(object.has("klinis")){
+                    klinis = object.getString("klinis");
+                }
+                if(object.has("tinggi")){
+                    tinggi = object.getString("tinggi");
+                }
+                if(object.has("berat")){
+                    berat = object.getString("berat");
+                }
+                if(object.has("spo2")){
+                    spo2 = object.getString("spo2");
+                }
+                HeaderCheckup headerCheckup = new HeaderCheckup();
+                headerCheckup.setNoCheckup(noCheckup);
+                headerCheckup.setAutoanamnesis(auto);
+                headerCheckup.setHeteroanamnesis(hetero);
+                headerCheckup.setTensi(tensi);
+                headerCheckup.setSuhu(suhu);
+                headerCheckup.setNadi(nadi);
+                headerCheckup.setPernafasan(rr);
+                headerCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                headerCheckup.setLastUpdateWho(CommonUtil.userLogin());
+                headerCheckup.setCatatanKlinis(klinis);
+                headerCheckup.setTinggi(tinggi);
+                headerCheckup.setBerat(berat);
+                headerCheckup.setSpo2(spo2);
+
+                try {
+                    response = checkupBo.updateAnamnese(headerCheckup);
+                } catch (GeneralBOException e) {
+                    response.setStatus("error");
+                    response.setMsg("Error when update data " + e.getMessage());
+                }
+
+                if ("success".equalsIgnoreCase(response.getStatus())) {
+                    insertProfilRJ(idDetailCheckup, "Autoanamnesis : " + auto + ", Heteroanamnesis : " + hetero);
+                }
+            }else{
+                response.setStatus("error");
+                response.setMsg("Data not Found");
+            }
+        }catch (Exception e){
             response.setStatus("error");
             response.setMsg("Error when update data " + e.getMessage());
-        }
-
-        if ("success".equalsIgnoreCase(response.getStatus())) {
-            insertProfilRJ(idDetailCheckup, "Autoanamnesis : " + auto + ", Heteroanamnesis : " + hetero);
         }
 
         logger.info("[CheckupAction.savePenunjangPasien] end process <<<");
@@ -3607,6 +3698,9 @@ public class CheckupAction extends BaseMasterAction {
             }
             if ("tindakan".equalsIgnoreCase(key)) {
                 response = checkupBo.getTindakanRawat(id);
+            }
+            if("tujuan_ruangan".equalsIgnoreCase(key)){
+                response = checkupBo.getTujuanRuangan(id);
             }
         }
         return response;

@@ -40,6 +40,11 @@ public class KeperawatanRawatJalanAction {
 
         try {
             JSONArray json = new JSONArray(data);
+            JSONObject dtObj = new JSONObject(dataPasien);
+            String noCheckup = null;
+            if(dtObj.has("no_checkup")){
+                noCheckup = dtObj.getString("no_checkup");
+            }
             List<KeperawatanRawatJalan> keperawatanRawatJalanList = new ArrayList<>();
             for (int i = 0; i < json.length(); i++) {
 
@@ -108,6 +113,7 @@ public class KeperawatanRawatJalanAction {
                 keperawatanRawatJalan.setCreatedDate(time);
                 keperawatanRawatJalan.setLastUpdateWho(userLogin);
                 keperawatanRawatJalan.setLastUpdate(time);
+                keperawatanRawatJalan.setNoCheckup(noCheckup);
                 keperawatanRawatJalanList.add(keperawatanRawatJalan);
             }
 
@@ -137,7 +143,7 @@ public class KeperawatanRawatJalanAction {
                 response.setMsg("Found Error " + e.getMessage());
                 return response;
             }
-        }catch (JSONException e){
+        }catch (Exception e){
             response.setStatus("error");
             response.setMsg("Found Error when pasrse json, "+e.getMessage());
         }
@@ -199,6 +205,79 @@ public class KeperawatanRawatJalanAction {
         }
         return response;
     }
+
+    public CrudResponse saveTtdResumenMeis(String data){
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KeperawatanRawatJalanBo keperawatanRawatJalanBo = (KeperawatanRawatJalanBo) ctx.getBean("keperawatanRawatJalanBoProxy");
+        try {
+            JSONArray json = new JSONArray(data);
+            List<KeperawatanRawatJalan> keperawatanRawatJalanList = new ArrayList<>();
+            for (int i = 0; i < json.length(); i++) {
+                JSONObject obj = json.getJSONObject(i);
+                KeperawatanRawatJalan keperawatanRawatJalan = new KeperawatanRawatJalan();
+                keperawatanRawatJalan.setParameter(obj.getString("parameter"));
+                keperawatanRawatJalan.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                keperawatanRawatJalan.setKeterangan(obj.getString("keterangan"));
+                if(obj.has("jawaban")){
+                    if(obj.has("tipe")){
+                        if("ttd".equalsIgnoreCase(obj.getString("tipe"))){
+                            try {
+                                BASE64Decoder decoder = new BASE64Decoder();
+                                byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban"));
+                                String wkt = time.toString();
+                                String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                                String fileName = obj.getString("id_detail_checkup") + "-" + obj.getString("jenis")+i+ "-" + patten + ".png";
+                                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+                                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+                                if (image == null) {
+                                    response.setStatus("error");
+                                    response.setMsg("Buffered Image is null");
+                                } else {
+                                    File f = new File(uploadFile);
+                                    ImageIO.write(image, "png", f);
+                                    keperawatanRawatJalan.setJawaban(fileName);
+                                }
+                            }catch (IOException e){
+                                response.setStatus("error");
+                                response.setMsg("Found Error when pasrse object to images, "+e.getMessage());
+                            }
+                        }else{
+                            keperawatanRawatJalan.setJawaban(obj.getString("jawaban"));
+                        }
+                        keperawatanRawatJalan.setTipe(obj.getString("tipe"));
+                    }else{
+                        keperawatanRawatJalan.setJawaban(obj.getString("jawaban"));
+                    }
+                }
+
+                if(obj.has("jenis")){
+                    keperawatanRawatJalan.setJenis(obj.getString("jenis"));
+                }
+
+                keperawatanRawatJalan.setAction("C");
+                keperawatanRawatJalan.setFlag("Y");
+                keperawatanRawatJalan.setCreatedWho(userLogin);
+                keperawatanRawatJalan.setCreatedDate(time);
+                keperawatanRawatJalan.setLastUpdateWho(userLogin);
+                keperawatanRawatJalan.setLastUpdate(time);
+                keperawatanRawatJalanList.add(keperawatanRawatJalan);
+            }
+
+            try {
+                response = keperawatanRawatJalanBo.saveAdd(keperawatanRawatJalanList);
+            } catch (GeneralBOException e) {
+                response.setStatus("Error");
+                response.setMsg("Found Error " + e.getMessage());
+                return response;
+            }
+        }catch (Exception e){
+            response.setStatus("error");
+            response.setMsg("Found Error when pasrse json, "+e.getMessage());
+        }
+        return response;
+    }
+
 
     public static Logger getLogger() {
         return logger;

@@ -20,11 +20,12 @@
             margin: 1rem 1rem 0 1rem;
         }
     </style>
+    <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/radio_checkbox.css"/>">
+
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatPoliAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TransaksiObatAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -80,23 +81,11 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <%--<h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Resep Poli</h3>--%>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Resep Poli</h3>
-                                </div>
-                                <%--<div class="col-md-3 pull-right">--%>
-                                    <%--<div class="input-group date">--%>
-                                        <%--<input class="form-control" id="add_resep" placeholder="Antrian" onchange="saveAntrian()">--%>
-                                        <%--<div class="input-group-addon btn btn-success" onclick="saveAntrian()" id="save_resep">--%>
-                                            <%--<i class="fa fa-arrow-right" style="cursor: pointer"></i> Save--%>
-                                        <%--</div>--%>
-                                        <%--<div class="input-group-addon btn btn-success" id="load_resep" style="display: none">--%>
-                                            <%--<i class="fa fa-spinner fa-spin" style="cursor: no-drop"></i> Sedang menyimpan...--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Resep Poli</h3>
                             </div>
+                        </div>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
@@ -267,9 +256,9 @@
                                                 <s:param name="idPermintaan"><s:property value="idPermintaanResep"/></s:param>
                                                 <s:param name="idApprove"><s:property value="idApprovalObat"/></s:param>
                                             </s:url>
-                                            <s:a href="%{reture}" target="_blank">
-                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-transaction-25.png"/>" style="cursor: pointer;">
-                                            </s:a>
+                                            <%--<s:a href="%{reture}" target="_blank">--%>
+                                                <%--<img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-transaction-25.png"/>" style="cursor: pointer;">--%>
+                                            <%--</s:a>--%>
                                         </s:if>
                                         <s:else>
                                             <s:url var="add_proses" namespace="/reseppoli" action="searchResep_reseppoli" escapeAmp="false">
@@ -280,9 +269,26 @@
                                                 <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                             </s:a>
                                         </s:else>
-                                        <%--<a target="_blank" href="printResepPasien_reseppoli.action?id=<s:property value="idDetailCheckup"/>&idResep=<s:property value="idPermintaanResep"/>">--%>
-                                            <%--<img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25-yellow.png"/>" style="cursor: pointer;">--%>
-                                        <%--</a>--%>
+                                        <s:if test='#row.kategoriPelayanan == "rawat_inap"'>
+                                            <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
+                                                 src="<s:url value="/pages/images/icons8-search-25.png"/>"
+                                                 style="cursor: pointer;"
+                                                 onclick="viewDetail(
+                                                         '<s:property value="noCheckup"/>',
+                                                         '<s:property value="idDetailCheckup"/>',
+                                                         '<s:property value="idPasien"/>',
+                                                         '<s:property value="namaPasien"/>',
+                                                         '<s:property value="namaPelayanan"/>',
+                                                         '<s:property value="jenisKelamin"/>',
+                                                         '<s:property value="umur"/>',
+                                                         '<s:property value="tglLahir"/>'
+                                                         )">
+                                        </s:if>
+                                        <s:if test='#row.status == "Selesai"'>
+                                            <a target="_blank" href="printLabelResepPasien_reseppoli.action?idResep=<s:property value="idPermintaanResep"/>">
+                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25-yellow.png"/>" style="cursor: pointer;">
+                                            </a>
+                                        </s:if>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -293,7 +299,6 @@
             </div>
         </div>
     </section>
-    <!-- /.content -->
 </div>
 
 <div class="modal fade" id="modal-ttd">
@@ -354,6 +359,74 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-history">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> Asesmen Farmasi</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissable" style="display: none" id="warning_konsul">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_konsul"></p>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-striped" style="font-size: 12px">
+                                <tr>
+                                    <td width="30%">NO RM</td>
+                                    <td><span id="det_no_rm"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Nama</td>
+                                    <td><span id="det_nama"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Jenis Kelamin</td>
+                                    <td><span id="det_jk"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Umur</td>
+                                    <td><span id="det_umur"></span> Tahun</td>
+                                </tr>
+                                <tr>
+                                    <td>Pelayanan</td>
+                                    <td><span id="det_ruangan"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="btn-group dropdown" style="margin-top: -20px">
+                                <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen Farmasi
+                                </button>
+                                <button id="btn_ases" type="button" class="btn btn-primary dropdown-toggle" onclick="getListRekamMedis()"
+                                        data-toggle="dropdown" style="height: 34px">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu" id="asesmen_rj">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button id="close_periksa" type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-temp"></div>
+
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -375,7 +448,23 @@
     </div>
 </div>
 
+<script type='text/javascript' src='<s:url value="/dwr/interface/RekonsiliasiObatAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/CatatanPemberianObatAction.js"/>'></script>
+
+<script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatinap.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
+
 <script type='text/javascript'>
+
+    var idDetailCheckup = "";
+    var noCheckup = "";
+    var umur = "";
+    var idPasien = "";
+    var tglLahir = "";
+    var contextPath = '<%= request.getContextPath() %>';
+    var isReadRM = false;
+    var jenisCPO = "apoteker";
 
     function saveAntrian(){
         var idResep = $('#add_resep').val();
@@ -441,9 +530,105 @@
             $('#ref').val(1);
             $('#modal-ttd').modal('hide');
             $('body').scrollTop(0);
-            // $('#warning_ttd').show().fadeOut(5000);
-            // $('#msg_ttd').text("Silahkan lakukan ttd pada canvas berikut...!");
         }
+    }
+
+    function viewDetail(nocheckup, iddetail, idPas, nama, namaPelayanan, jenisKelamin, um, tglLahir, lahir) {
+        if(!cekSession()){
+            idDetailCheckup = iddetail;
+            noCheckup = nocheckup;
+            umur = um;
+            idPasien = idPas;
+            tglLahir = lahir;
+            $('#det_no_rm').html(idPas);
+            $('#det_nama').html(nama);
+            $('#det_jk').html(jenisKelamin);
+            $('#det_umur').html(um);
+            $('#det_ruangan').html(namaPelayanan);
+            $('#modal-history').modal({show: true, backdrop: 'static', keyboard: false});
+        }
+    }
+
+    function cekDataNull(item) {
+        var data = "";
+        if (item != null && item != '') {
+            data = item;
+        }
+        return data;
+    }
+
+    function loadModalRM(jenis, method, parameter, idRM, flag) {
+        var context = contextPath + '/pages/modal/modal-default.jsp';
+        if (jenis != "") {
+            context = contextPath + '/pages/modal/modal-'+jenis+'.jsp';
+        }
+        $('#modal-temp').load(context, function (res, status, xhr) {
+            if(status == "success"){
+                var func = new Function(method+'(\''+parameter+'\', \''+idRM+'\', \''+flag+'\')');
+                func();
+            }
+        });
+    }
+
+    function getListRekamMedis() {
+        var li = "";
+        CheckupAction.getListRekammedisPasien("farmasi", "", idDetailCheckup, function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    var cek = "";
+                    var tgl = "";
+                    var icons = '<i class="fa fa-file-o"></i>';
+                    var icons2 = '<i class="fa fa-print"></i>';
+                    var tol = "";
+                    var tolText = "";
+                    var labelTerisi = "";
+                    var constan = 0;
+                    var terIsi = 0;
+                    var labelPrint = "";
+                    var terIsiPrint = "";
+                    var enter = '';
+
+                    if (item.jumlahKategori != null) {
+                        constan = item.jumlahKategori;
+                    }
+                    if (item.terisi != null && item.terisi != '') {
+                        terIsi = item.terisi;
+                        terIsiPrint = item.terisi;
+                    }
+
+                    if (constan == terIsi || parseInt(terIsi) > parseInt(constan)) {
+                        var conver = "";
+                        if (item.createdDate != null) {
+                            conver = converterDate(new Date(item.createdDate));
+                            tgl = '<label class="label label-success">' + conver + '</label>';
+                            tol = 'class="box-rm"';
+                            tolText = '<span class="box-rmtext">Tanggal mengisi ' + conver + '</span>';
+                        }
+                        icons = '<i class="fa fa-check" style="color: #449d44"></i>';
+                        icons2 = '<i class="fa fa-check" style="color: #449d44"></i>';
+                        enter = '<br>';
+                    }
+
+                    labelTerisi = '<span style="color: #367fa9; font-weight: bold">' + terIsi + '/' + constan + '</span>';
+                    labelPrint = '<span style="color: #367fa9; font-weight: bold">' + terIsiPrint + '</span>';
+
+                    if (item.jenis == 'ringkasan_rj') {
+                        li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-television"></i>' + item.namaRm + '</a></li>'
+                    } else {
+                        if (item.function == 'addMonitoringFisioterapi') {
+                            li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-television"></i>' + item.namaRm + '</a></li>'
+                        } else {
+                            if (item.keterangan == 'form') {
+                                li += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'+enter;
+                            } else if (item.keterangan == "surat") {
+                                li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>'+enter;
+                            }
+                        }
+                    }
+                });
+                $('#asesmen_rj').html(li);
+            }
+        });
     }
 </script>
 

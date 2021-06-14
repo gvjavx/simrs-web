@@ -132,10 +132,8 @@ public class DiagnosaRawatAction extends BaseMasterAction {
         try {
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
-            DiagnosaBo diagnosaBo = (DiagnosaBo) ctx.getBean("diagnosaBoProxy");
 
             DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
             diagnosaRawat.setIdDetailCheckup(idDetailCheckup);
@@ -149,7 +147,7 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             diagnosaRawat.setAction("C");
             diagnosaRawat.setFlag("Y");
 
-            if("diagnosa_utama".equalsIgnoreCase(jenisDiagnosa) || "diagnosa_awal".equalsIgnoreCase(jenisDiagnosa)){
+            if("diagnosa_utama".equalsIgnoreCase(jenisDiagnosa) || "diagnosa_awal".equalsIgnoreCase(jenisDiagnosa)|| "diagnosa_primer".equalsIgnoreCase(jenisDiagnosa)){
                 DiagnosaRawat dr = new DiagnosaRawat();
                 dr.setIdDetailCheckup(idDetailCheckup);
                 dr.setJenisDiagnosa(jenisDiagnosa);
@@ -257,6 +255,18 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             diagnosaRawat.setLastUpdate(updateTime);
             diagnosaRawat.setLastUpdateWho(userLogin);
             diagnosaRawat.setAction("U");
+
+            if("diagnosa_utama".equalsIgnoreCase(jenisDiagnosa) || "diagnosa_awal".equalsIgnoreCase(jenisDiagnosa)|| "diagnosa_primer".equalsIgnoreCase(jenisDiagnosa)) {
+                DiagnosaRawat dr = new DiagnosaRawat();
+                dr.setIdDetailCheckup(idDetailCheckup);
+                dr.setJenisDiagnosa(jenisDiagnosa);
+                Boolean cek = diagnosaRawatBo.cekDiagnosa(dr);
+                if (cek) {
+                    response.setStatus("error");
+                    response.setMsg("Data " + jenisDiagnosa.replace("_", " ").toUpperCase() + " sudah ada ...!");
+                    return response;
+                }
+            }
 
             if ("bpjs".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
                 response = updateCoverBpjs(idDetailCheckup, idDiagnosa);
