@@ -4765,6 +4765,8 @@
             });
         }
 
+        setTindakLanjut();
+
     });
 
     function loadModalRM(jenis, method, parameter, idRM, flag, flagHide, flagCheck) {

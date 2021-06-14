@@ -154,10 +154,11 @@ public class PeriksaLabAction extends BaseTransactionAction {
                     rr = ", RR: "+checkup.getPernafasan();
                 }
                 if(checkup.getCatatanKlinis() != null && !"".equalsIgnoreCase(checkup.getCatatanKlinis())){
-                    klinis = ", Catatan Klinis: "+checkup.getCatatanKlinis();
+                    klinis = ", Catatan : "+checkup.getCatatanKlinis();
                 }
 
                 periksaLab.setCatatanKlinis(hetero+auto+nadi+suhu+tensi+rr+klinis);
+                periksaLab.setPenyakitDahulu(checkup.getPenyakitDahulu());
                 setPeriksaLab(periksaLab);
 
                 PeriksaLab periksa = new PeriksaLab();

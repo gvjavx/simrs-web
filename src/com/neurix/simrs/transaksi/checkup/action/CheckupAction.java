@@ -3697,6 +3697,7 @@ public class CheckupAction extends BaseMasterAction {
         if (id != null && !"".equalsIgnoreCase(id)) {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+            CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
             if ("alergi".equalsIgnoreCase(key)) {
                 response = checkupBo.getAlergi(id);
@@ -3724,6 +3725,12 @@ public class CheckupAction extends BaseMasterAction {
             }
             if("tujuan_ruangan".equalsIgnoreCase(key)){
                 response = checkupBo.getTujuanRuangan(id);
+            }
+            if("indikasi".equalsIgnoreCase(key)){
+                HeaderDetailCheckup detailCheckup = checkupDetailBo.getEntityById(id);
+                if(detailCheckup != null){
+                    response = detailCheckup.getIndikasi();
+                }
             }
         }
         return response;

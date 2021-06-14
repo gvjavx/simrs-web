@@ -6426,3 +6426,71 @@ function getApotekRawatJalan() {
    })
 }
 
+function setTindakLanjut(){
+    dwr.engine.setAsync(true);
+    CheckupDetailAction.getDetailCheckup(idDetailCheckup, function (res) {
+        if(res.tindakLanjut == 'kontrol_ulang'){
+            $('#keterangan').val(res.tindakLanjut).trigger('change');
+            $('#keterangan').attr('disabled', true);
+            var tipe = 'close';
+            $('#set_kontrol_close').html('');
+            var result = res.kontrolUlangEntityList;
+            var setKontrol = $('.close_tanggal_kontrol');
+            var setPel = $('.close_pelayanan_kontrol');
+            var setDokter = $('.close_dokter_kontrol');
+            if(result.length > 0){
+                $.each(result, function (idx, itemx) {
+                    var idRow = tipe+'_kon_'+idx;
+                    var atas = '<div class="form-group" id="'+idRow+'">\n';
+                    var bawah = '<\div>';
+                    var tanggal = converterDate(itemx.tglKontrol);
+
+                    if(idx == 0){
+                        $.each(setKontrol, function (is, items) {
+                            if(is == 0){
+                                $('#'+items.id).val(tanggal);
+                                setTimeout(function () {
+                                    $('#'+setPel[is].id).val(itemx.idPelayanan).trigger('change');
+                                    setTimeout(function () {
+                                        $('#'+setDokter[is].id).val(itemx.idDokter).trigger('change');
+                                    },1000);
+                                },1000);
+                            }
+                        });
+                    }else{
+                        var set = atas +
+                            '<div class="col-md-3">\n' +
+                            '    <input class="form-control ptr-tgl '+tipe+'_tanggal_kontrol" placeholder="Tanggal" style="margin-top: 7px" id="'+tipe+'_tgl_kontrol_'+idx+'">\n' +
+                            '</div>\n' +
+                            '<div class="col-md-4">\n' +
+                            '    <select class="form-control select2 '+tipe+'_pelayanan_kontrol" id="'+tipe+'_pelayanan_'+idx+'" onchange="setIntDokter(this.value, \''+tipe+'_dokter_'+idx+'\')"></select>\n' +
+                            '</div>\n' +
+                            '<div class="col-md-4">\n' +
+                            '    <select class="form-control select2 '+tipe+'_dokter_kontrol" id="'+tipe+'_dokter_'+idx+'"></select>\n' +
+                            '</div>\n' +
+                            '<div class="col-md-1">\n' +
+                            '    <button onclick="removeKontrol(\''+idRow+'\')" style="margin-left: -20px; margin-top: 7px" class="btn btn-danger"><i class="fa fa-trash"></i></button>\n' +
+                            '</div>\n' +bawah;
+                        $('#set_kontrol_close').append(set);
+                        setPelayanan(tipe+'_pelayanan_'+idx);
+                        $(function () {
+                            $('.select2').select2({});
+                            $('.ptr-tgl').datepicker({
+                                dateFormat : 'dd-mm-yy'
+                            });
+                            $('.ptr-tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
+                            $('[data-mask]').inputmask();
+                        });
+                        $('#'+tipe+'_tgl_kontrol_'+idx).val(tanggal);
+                        setTimeout(function () {
+                            $('#'+tipe+'_pelayanan_'+idx).val(itemx.idPelayanan).trigger('change');
+                            setTimeout(function () {
+                                $('#'+tipe+'_dokter_'+idx).val(itemx.idDokter).trigger('change');
+                            },1000);
+                        }, 1000);
+                    }
+                });
+            }
+        }
+    });
+}
