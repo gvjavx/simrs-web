@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.1435888100000042"/>
-	<property name="ireport.x" value="302"/>
-	<property name="ireport.y" value="173"/>
+	<property name="ireport.x" value="254"/>
+	<property name="ireport.y" value="4"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -58,7 +58,7 @@ from (select left(kodering.kode_rekening, 9) a9, kodering.nama_kode_rekening nam
                                                                       on kodering.rekening_id = reportSetting.rekening_id
                                                              where reportSetting.report_id = $P{reportId}
                                                                and reportSetting.flag = 'Y') rekening
-                                                   on saldo.kode_rekening ilike concat(rekening.kode_rekening, '%')
+                                                   on saldo.rekening_id ilike concat(rekening.kode_rekening, '%')
                                           where saldo.periode = $P{periodeLalu}
                                             and saldo.branch_id in ($P!{branchId})
                                           group by rekening.kode_rekening

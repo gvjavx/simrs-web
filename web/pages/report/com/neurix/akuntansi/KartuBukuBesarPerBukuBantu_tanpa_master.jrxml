@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="144"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -86,7 +86,7 @@ from (select y.master_id,
              ''                           keterangan,
              null                           no_jurnal,
              ''                           no_nota,
-             a.kode_rekening,
+             a.rekening_id,
              coalesce(null, 0)            debitnow,
              coalesce(null, 0)            kreditnow,
              coalesce(d.jumlah_debit, 0)  pastdebit,
@@ -97,7 +97,7 @@ from (select y.master_id,
              join it_akun_saldo_akhir_detail d on a.saldo_akhir_id = d.saldo_akhir_id
              left join im_akun_master m on m.nomor_master = d.master_id
       where to_date(a.periode,'MM-yyyy') = to_date($P{periode}, 'MM-yyyy') - Interval '1 month'
-     and a.branch_id in ($P!{reportParams.branchId}) and a.kode_rekening = $P{kode_rekening}
+     and a.branch_id in ($P!{reportParams.branchId}) and a.rekening_id = $P{kode_rekening}
 )  u
 where (kd_barang ilike '%' or master_id ilike '%' or (kd_barang isnull or master_id isnull))
 order by u.no_jurnal]]>
