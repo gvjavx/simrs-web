@@ -2445,6 +2445,7 @@
                         <div class="form-group">
                             <div class="col-md-offset-4 col-md-8">
                                 <select class="form-control select2" id="ket_ki91" style="width: 100%">
+                                    <option value="">-</option>
                                     <option value="Preventif">Preventif</option>
                                     <option value="Paliatif">Paliatif</option>
                                     <option value="Kuratif">Kuratif</option>

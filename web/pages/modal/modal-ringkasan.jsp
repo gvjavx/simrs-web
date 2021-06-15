@@ -92,7 +92,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Alasan Masuk RS</label>
                             <div class="col-md-8">
-                                <textarea style="margin-top: 7px" class="form-control" rows="3" id="rps3"></textarea>
+                                <textarea style="margin-top: 7px" class="form-control indikasi-pasien" rows="3" id="rps3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -351,8 +351,8 @@
                             <div class="col-md-7">
                                 <select class="form-control" id="rps23" style="margin-top: 7px" onchange="setKontrol('show', this.value)">
                                     <option value="">-</option>
-                                    <option value="Kembali ke FKTP">Kembali ke FKTP</option>
-                                    <option value="Kontrol Ulang">Kontrol Ulang</option>
+                                    <option value="kembali_ke_fktp">Kembali ke FKTP</option>
+                                    <option value="kontrol_ulang">Kontrol Ulang</option>
                                 </select>
                             </div>
                         </div>
@@ -360,21 +360,33 @@
                     <div style="display: none" id="form_kontrol_ringkasan">
                         <div class="row" style="margin-top: 7px">
                             <div class="form-group">
-                                <div class="col-md-3">
-                                    <input style="cursor: pointer" class="form-control ptr-tgl tanggal_kontrol" id="tgl1" placeholder="Tanggal" readonly>
-                                </div>
-                                <div class="col-md-4">
-                                    <input class="form-control poli_kontrol" id="poli1" placeholder="Poli">
-                                </div>
-                                <div class="col-md-4">
-                                    <input class="form-control dokter_kontrol" id="dokter1" placeholder="Dokter">
-                                </div>
-                                <div class="col-md-1">
-                                    <button onclick="setKontrol('add')" class="btn btn-success" style="margin-left: -20px; margin-top: 0px"><i class="fa fa-plus"></i></button>
-                                </div>
+                                <%--<div class="col-md-3">--%>
+                                    <%--<input style="cursor: pointer" class="form-control ptr-tgl tanggal_kontrol" id="tgl1" placeholder="Tanggal" readonly>--%>
+                                <%--</div>--%>
+                                <%--<div class="col-md-4">--%>
+                                    <%--<input class="form-control poli_kontrol" id="poli1" placeholder="Poli">--%>
+                                <%--</div>--%>
+                                <%--<div class="col-md-4">--%>
+                                    <%--<input class="form-control dokter_kontrol" id="dokter1" placeholder="Dokter">--%>
+                                <%--</div>--%>
+                                <%--<div class="col-md-1">--%>
+                                    <%--<button onclick="setKontrol('add')" class="btn btn-success" style="margin-left: -20px; margin-top: 0px"><i class="fa fa-plus"></i></button>--%>
+                                <%--</div>--%>
+                                    <div class="col-md-3">
+                                        <input class="form-control ptr-tgl int_tanggal_kontrol" placeholder="Tanggal" style="margin-top: 7px" id="int_tgl_kontrol_0">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select class="form-control select2 int_pelayanan_kontrol" id="int_pelayanan_0" onchange="setIntDokter(this.value, 'int_dokter_0')"></select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select class="form-control select2 int_dokter_kontrol" id="int_dokter_0"></select>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button onclick="addKontrolUlang('int')" style="margin-left: -20px; margin-top: 7px" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                                    </div>
                             </div>
                         </div>
-                        <div id="set_kontrol"></div>
+                        <div id="set_kontrol_int"></div>
                     </div>
                     <div class="row">
                         <div class="form-group">

@@ -2962,7 +2962,8 @@ function saveAsesmenRawatInap(jenis, ket) {
                 'jawaban': va2,
                 'keterangan': jenis,
                 'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
+                'id_detail_checkup': idDetailCheckup,
+                'tipe': 'penyakit_dahulu'
             });
             data.push({
                 'parameter': 'Riwayat Penyakit Keluarga',
@@ -5145,11 +5146,9 @@ function radioEdukasiPasien(jenis) {
         edukasi.push({'edukasi': 'Pasien di bawa pulang'});
     }
     if ("ept_radiografer" == jenis) {
-        edukasi.push({'edukasi': 'Pemeriksaan Radiologi'});
-        edukasi.push({'edukasi': ''});
-        edukasi.push({'edukasi': 'Penerimaan dosis radiasi'});
-        edukasi.push({'edukasi': ''});
-        edukasi.push({'edukasi': 'Manfaat dan resiko'});
+        edukasi.push({'edukasi': 'plc|Pemeriksaan Radiologi'});
+        edukasi.push({'edukasi': 'plc|Penerimaan dosis radiasi'});
+        edukasi.push({'edukasi': 'plc|Manfaat dan resiko'});
     }
     if ("ept_ppa" == jenis) {
         edukasi.push({'edukasi': ''});

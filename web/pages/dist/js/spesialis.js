@@ -208,7 +208,6 @@ function saveSPS(jenis, ket) {
         var va5 = $('#pt5').val();
         var va6 = $('#pt6').val();
         var va7 = $('#pt7').val();
-        var va8 = $('#pt8').val();
         var va9 = $('#intruksi_'+jenis+' option:selected').text();
 
         if (va1 && va3 && va4 && va5 && va6 && va7 != '') {
@@ -262,14 +261,7 @@ function saveSPS(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Kontrol Kembali',
-                'jawaban': va8,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Indikasi Rawat Inap',
+                'parameter': 'Intruksi Tindak Lanjut',
                 'jawaban': va9,
                 'keterangan': jenis,
                 'jenis': ket,
@@ -457,7 +449,6 @@ function saveSPS(jenis, ket) {
         var va8 = $('#pt8').val();
         var va9 = $('#pt9').val();
         var va10 = $('#pt10').val();
-        var va11 = $('#pt11').val();
         var va12 = $('#intruksi_'+jenis+' option:selected').text();
 
         if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 != '') {
@@ -562,14 +553,7 @@ function saveSPS(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Kontrol Kembali',
-                'jawaban': va11,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Indikasi Rawat Inap',
+                'parameter': 'Intruksi Tindak Lanjut',
                 'jawaban': va12,
                 'keterangan': jenis,
                 'jenis': ket,
@@ -724,7 +708,6 @@ function saveSPS(jenis, ket) {
         var va4 = $('#pt4').val();
         var va5 = $('#pt5').val();
         var va6 = $('#pt6').val();
-        var va7 = $('#pt7').val();
         var va8 = $('#intruksi_'+jenis+' option:selected').text();
         var keteranganGambar = $('#keterangan_gambar').val();
         var paru = "Y";
@@ -800,14 +783,7 @@ function saveSPS(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Anjuran Kontrol Kembali',
-                'jawaban': va7,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Indikasi Rawat Inap',
+                'parameter': 'Intruksi Tindak Lanjut',
                 'jawaban': va8,
                 'keterangan': jenis,
                 'jenis': ket,
@@ -975,7 +951,6 @@ function saveSPS(jenis, ket) {
         var va9 = $('#pt9').val();
         var va10 = $('#pt10').val();
         var va11 = $('#pt11').val();
-        var va12 = $('#pt12').val();
         var va13 = $('#intruksi_'+jenis+' option:selected').text();
 
         if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 && va11 != '') {
@@ -1044,14 +1019,7 @@ function saveSPS(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Anjuran Kontrol Kembali',
-                'jawaban': va12,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Indikasi Rawat Inap',
+                'parameter': 'Intruksi Tindak Lanjut',
                 'jawaban': va13,
                 'keterangan': jenis,
                 'jenis': ket,
@@ -1154,7 +1122,6 @@ function saveSPS(jenis, ket) {
         var va7 = $('#pt7').val();
         var va8 = $('#pt8').val();
         var va9 = $('#pt9').val();
-        var va10 = $('#pt10').val();
         var va11 = $('#intruksi_'+jenis+' option:selected').text();
 
         if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 != '') {
@@ -1209,14 +1176,7 @@ function saveSPS(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Anjuran Kontrol Kembali',
-                'jawaban': va10,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Indikasi Rawat Inap',
+                'parameter': 'Intruksi Tindak Lanjut',
                 'jawaban': va11,
                 'keterangan': jenis,
                 'jenis': ket,
@@ -1283,7 +1243,6 @@ function saveSPS(jenis, ket) {
         var va14 = $('#pt14').val();
         var va15 = $('#pt15').val();
         var va16 = $('#pt16').val();
-        var va17 = $('#pt17').val();
         var va18 = $('#intruksi_'+jenis+' option:selected').text();
         var keteranganGambar = $('#keterangan_gambar').val();
 
@@ -1430,20 +1389,14 @@ function saveSPS(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Anjuran Kontrol Kembali',
-                'jawaban': va17,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Indikasi Rawat Inap',
+                'parameter': 'Intruksi Tindak Lanjut',
                 'jawaban': va18,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
+            tindakLanjut = true;
         }
     }
 
@@ -1455,8 +1408,7 @@ function saveSPS(jenis, ket) {
         var va5 = $('#pt5').val();
         var va6 = $('#pt6').val();
         var va7 = $('#pt7').val();
-        var va8 = $('#pt8').val();
-        var va9 = $('#pt9').val();
+        var va9 = $('#intruksi_'+jenis+' option:selected').text();
         var ginjal = "Y";
 
         var canvasArea = document.getElementById('area_ginjal');
@@ -1529,20 +1481,14 @@ function saveSPS(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Anjuran Kontrol Kembali',
-                'jawaban': va8,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Indikasi Rawat Inap',
+                'parameter': 'Intruksi Tindak Lanjut',
                 'jawaban': va9,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
+            tindakLanjut = true;
         }
     }
 
@@ -1554,7 +1500,6 @@ function saveSPS(jenis, ket) {
         var va5 = $('#pt5').val();
         var va6 = $('#pt6').val();
         var va7 = $('#pt7').val();
-        var va8 = $('#pt8').val();
         var va9 = $('#intruksi_'+jenis+' option:selected').text();
         var jantung = "Y";
 
@@ -1636,14 +1581,7 @@ function saveSPS(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Anjuran Kontrol Kembali',
-                'jawaban': va8,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Indikasi Rawat Inap',
+                'parameter': 'Intruksi Tindak Lanjut',
                 'jawaban': va9,
                 'keterangan': jenis,
                 'jenis': ket,
@@ -1736,8 +1674,7 @@ function saveSPS(jenis, ket) {
         var va3 = $('#pt3').val();
         var va4 = $('#pt4').val();
         var va5 = $('#pt5').val();
-        var va6 = $('#pt6').val();
-        var va7 = $('#pt7').val();
+        var va7 = $('#intruksi_'+jenis+' option:selected').text();
 
         if (va1 && va2 && va3 && va4 && va5 != '') {
             data.push({
@@ -1776,20 +1713,14 @@ function saveSPS(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Anjuran Kontrol Kembali',
-                'jawaban': va6,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Indikasi Rawat Inap',
+                'parameter': 'Intruksi Tindak Lanjut',
                 'jawaban': va7,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
+            tindakLanjut = true;
         }
     }
 
