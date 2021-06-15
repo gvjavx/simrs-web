@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.obatpoli.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.master.hargaterakhir.model.MtSimrsHargaTerakhirEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
@@ -391,8 +392,7 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                 "id_jenis_periksa_pasien\n" +
                 "FROM \n" +
                 "it_simrs_header_detail_checkup\n" +
-                "WHERE id_asuransi is not null\n" +
-                "AND id_detail_checkup = '"+idHeaderCheckup+"'";
+                "WHERE id_detail_checkup = '"+idHeaderCheckup+"'";
 
         List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
 
@@ -400,7 +400,7 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
             Object[] obj = list.get(0);
             HeaderCheckup headerCheckup = new HeaderCheckup();
             headerCheckup.setIdDetailCheckup(obj[0].toString());
-            headerCheckup.setIdAsuransi(obj[1].toString());
+            headerCheckup.setIdAsuransi(obj[1] != null ? obj[1].toString() : null);
             headerCheckup.setIdJenisPeriksaPasien(obj[2].toString());
             return headerCheckup;
         }
@@ -408,7 +408,61 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
         return null;
     }
 
-    private HargaObatPerKonsumen getDataHargaPerKonsumen(String idObat, String branchId, String jenisKonsumen, String idRekanan){
+    public HeaderCheckup getHeaderCheckupDataByApprovalResep(String idApproval){
+
+        String SQL = "SELECT \n" +
+                "hdc.id_detail_checkup, \n" +
+                "hdc.id_asuransi,\n" +
+                "hdc.id_jenis_periksa_pasien, \n" +
+                "pr.branch_id \n" +
+                "FROM \n" +
+                "it_simrs_header_detail_checkup hdc \n" +
+                "INNER JOIN mt_simrs_permintaan_resep pr ON pr.id_detail_checkup = hdc.id_detail_checkup \n" +
+                "WHERE pr.id_approval_obat = '"+idApproval+"'";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+            Object[] obj = list.get(0);
+            HeaderCheckup headerCheckup = new HeaderCheckup();
+            headerCheckup.setIdDetailCheckup(obj[0].toString());
+            headerCheckup.setIdAsuransi(obj[1] != null ? obj[1].toString() : null);
+            headerCheckup.setIdJenisPeriksaPasien(obj[2].toString());
+            headerCheckup.setBranchId(obj[3] != null ? obj[3].toString() : null);
+            return headerCheckup;
+        }
+
+        return null;
+    }
+
+    public HeaderCheckup getHeaderCheckupDataByPermintaanResep(String idPermintaanResep){
+
+        String SQL = "SELECT \n" +
+                "hdc.id_detail_checkup, \n" +
+                "hdc.id_asuransi,\n" +
+                "hdc.id_jenis_periksa_pasien, \n" +
+                "pr.branch_id \n" +
+                "FROM \n" +
+                "it_simrs_header_detail_checkup hdc \n" +
+                "INNER JOIN mt_simrs_permintaan_resep pr ON pr.id_detail_checkup = hdc.id_detail_checkup \n" +
+                "WHERE pr.id_permintaan_resep = '"+idPermintaanResep+"'";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+            Object[] obj = list.get(0);
+            HeaderCheckup headerCheckup = new HeaderCheckup();
+            headerCheckup.setIdDetailCheckup(obj[0].toString());
+            headerCheckup.setIdAsuransi(obj[1] != null ? obj[1].toString() : null);
+            headerCheckup.setIdJenisPeriksaPasien(obj[2].toString());
+            headerCheckup.setBranchId(obj[3] != null ? obj[3].toString() : null);
+            return headerCheckup;
+        }
+
+        return null;
+    }
+
+    public HargaObatPerKonsumen getDataHargaPerKonsumen(String idObat, String branchId, String jenisKonsumen, String idRekanan){
 
         String sqlRekanan = "";
         if (idRekanan != null && !"".equalsIgnoreCase(idRekanan)){
@@ -417,12 +471,16 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
 
         String SQL = "SELECT \n" +
                 "hopk.id_harga_obat, \n" +
-                "ho.branch_id, \n" +
-                "hopk.harga_jual \n" +
+                "ht.branch_id, \n" +
+                "hopk.harga_jual, \n" +
+                "ht.harga_terakhir, \n" +
+                "ht.harga_rata_umum, \n" +
+                "ht.harga_terakhir_bpjs, \n" +
+                "ht.harga_rata_bpjs \n" +
                 "FROM (SELECT * FROM mt_simrs_harga_obat_per_konsumen WHERE flag ='Y') hopk\n" +
-                "INNER JOIN mt_simrs_harga_obat ho ON ho.id_harga_obat = hopk.id_harga_obat \n" +
-                "WHERE ho.id_obat = '"+idObat+"'\n" +
-                "AND ho.branch_id = '"+branchId+"'\n" +
+                "INNER JOIN mt_simrs_harga_terakhir ht ON ht.id = hopk.id_harga_obat \n" +
+                "WHERE ht.id_obat = '"+idObat+"'\n" +
+                "AND ht.branch_id = '"+branchId+"'\n" +
                 "AND hopk.jenis_konsumen = '"+jenisKonsumen+"'\n" + sqlRekanan;
 
         List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
@@ -433,6 +491,21 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
             perKonsumen.setIdHargaObat(obj[0].toString());
             perKonsumen.setBranchId(obj[1].toString());
             perKonsumen.setHargaJual(objToBigDecimal(obj[2]));
+
+            BigDecimal hargaTerakhirNonBpjs = objToBigDecimal(obj[3]);
+            BigDecimal hargaRataNonBpjs     = objToBigDecimal(obj[4]);
+            BigDecimal hargaTerakhirBpjs    = objToBigDecimal(obj[5]);
+            BigDecimal hargaRataBpjs        = objToBigDecimal(obj[6]);
+
+            if ("bpjs".equalsIgnoreCase(jenisKonsumen)){
+                perKonsumen.setHargaTerakhir(hargaTerakhirBpjs);
+            } else if ("bpjs_rekanan".equalsIgnoreCase(jenisKonsumen)){
+                perKonsumen.setHargaTerakhir(hargaRataBpjs);
+            } else if ("rekanan".equalsIgnoreCase(jenisKonsumen)) {
+                perKonsumen.setHargaTerakhir(hargaRataNonBpjs);
+            } else {
+                perKonsumen.setHargaTerakhir(hargaTerakhirNonBpjs);
+            }
 
             return perKonsumen;
         }

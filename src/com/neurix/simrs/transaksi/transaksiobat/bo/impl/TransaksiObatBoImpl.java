@@ -16,8 +16,10 @@ import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.vendor.dao.VendorDao;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.hargaobat.dao.HargaObatDao;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
+import com.neurix.simrs.transaksi.hargaobat.model.HargaObatPerKonsumen;
 import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatEntity;
 import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
 import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsObatPoliEntity;
@@ -90,6 +92,8 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
         List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities = getListEntityTransObatDetail(bean);
 
+        HeaderCheckup headerCheckup = obatPoliDao.getHeaderCheckupDataByPermintaanResep(bean.getIdPermintaanResep());
+
         if (obatDetailEntities.size() > 0) {
             TransaksiObatDetail transaksiObatDetail;
             for (ImtSimrsTransaksiObatDetailEntity obatDetailEntity : obatDetailEntities) {
@@ -115,31 +119,16 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
                 ImSimrsObatEntity obatEntity = getObatById(obatDetailEntity.getIdObat());
                 if (obatEntity != null) {
-                    Boolean isKhusus = transaksiObatDetailDao.checkRekananKhusus(obatDetailEntity.getIdApprovalObat());
+                    //Boolean isKhusus = transaksiObatDetailDao.checkRekananKhusus(obatDetailEntity.getIdApprovalObat());
                     BigInteger cons = obatEntity.getLembarPerBox().multiply(obatEntity.getBijiPerLembar());
                     transaksiObatDetail.setNamaObat(obatEntity.getNamaObat());
                     transaksiObatDetail.setHarga(obatEntity.getHarga());
                     transaksiObatDetail.setIdPabrik(obatEntity.getIdPabrik());
 
-                    HargaObat hargaObat = new HargaObat();
-                    hargaObat.setIdObat(obatDetailEntity.getIdObat());
-                    List<MtSimrsHargaObatEntity> hargaObatEntities = getListEntityHargaObat(hargaObat);
-                    if (hargaObatEntities.size() > 0) {
-                        MtSimrsHargaObatEntity hargaObatEntity = hargaObatEntities.get(0);
-                        BigDecimal tempHarga = new BigDecimal(0);
-                        if(isKhusus){
-                            if ("bpjs".equalsIgnoreCase(bean.getJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getJenisPeriksaPasien())){
-                                tempHarga = hargaObatEntity.getHargaJualKhususBpjs() == null ? new BigDecimal(0) : hargaObatEntity.getHargaJualKhususBpjs();
-                            } else {
-                                tempHarga = hargaObatEntity.getHargaJual() == null ? new BigDecimal(0) : hargaObatEntity.getHargaJual();
-                            }
-                        }else{
-                            if ("bpjs".equalsIgnoreCase(bean.getJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getJenisPeriksaPasien())){
-                                tempHarga = hargaObatEntity.getHargaJualUmumBpjs() == null ? new BigDecimal(0) : hargaObatEntity.getHargaJualUmumBpjs();
-                            } else {
-                                tempHarga = hargaObatEntity.getHargaJualUmum() == null ? new BigDecimal(0) : hargaObatEntity.getHargaJualUmum();
-                            }
-                        }
+                    HargaObatPerKonsumen hargaObatPerKonsumen = obatPoliDao.getDataHargaPerKonsumen(obatDetailEntity.getIdObat(), headerCheckup.getBranchId(), headerCheckup.getIdJenisPeriksaPasien(), headerCheckup.getIdAsuransi());
+
+                    if (hargaObatPerKonsumen != null) {
+                        BigDecimal tempHarga = hargaObatPerKonsumen.getHargaJual();
 
                         if ("box".equalsIgnoreCase(transaksiObatDetail.getJenisSatuan())) {
                             transaksiObatDetail.setHarga(tempHarga.multiply(new BigDecimal(cons)).toBigInteger());
@@ -152,7 +141,6 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                         if ("biji".equalsIgnoreCase(transaksiObatDetail.getJenisSatuan())) {
                             transaksiObatDetail.setHarga(tempHarga.toBigInteger());
                         }
-
                     }
 
                     // harga*qty
@@ -1242,6 +1230,39 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         return batchEntities;
     }
 
+    private HargaObatPerKonsumen getHargaObatPerKonsumen(String idObat, String branchId, String jenisPasien, String idRekanan){
+        logger.info("[TransaksiObatBoImpl.getHargaObatPerKonsumen] Start >>>>>>>");
+
+        HargaObatPerKonsumen hargaObatPerKonsumen = new HargaObatPerKonsumen();
+
+        try {
+            hargaObatPerKonsumen = transaksiObatDetailDao.getDataHargaPerKonsumen(idObat, branchId, jenisPasien, idRekanan);
+        } catch (HibernateException e){
+            logger.error("[TransaksiObatBoImpl.getHargaObatPerKonsumen] ERROR when get by criteria. ", e);
+            throw new GeneralBOException("[TransaksiObatBoImpl.getHargaObatPerKonsumen] ERROR when get by criteria. ", e);
+        }
+
+        logger.info("[TransaksiObatBoImpl.getHargaObatPerKonsumen] End <<<<<<<");
+        return hargaObatPerKonsumen;
+    }
+
+    @Override
+    public HeaderCheckup getDataTransByIdApprovalResep(String idApproval){
+        logger.info("[TransaksiObatBoImpl.getDataTransByIdApprovalResep] Start >>>>>>>");
+
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+
+        try {
+            headerCheckup = obatPoliDao.getHeaderCheckupDataByApprovalResep(idApproval);
+        } catch (HibernateException e){
+            logger.error("[TransaksiObatBoImpl.getDataTransByIdApprovalResep] ERROR when get by criteria. ", e);
+            throw new GeneralBOException("[TransaksiObatBoImpl.getDataTransByIdApprovalResep] ERROR when get by criteria. ", e);
+        }
+
+        logger.info("[TransaksiObatBoImpl.getDataTransByIdApprovalResep] End <<<<<<<");
+        return headerCheckup;
+    }
+
     @Override
     public CheckObatResponse saveApproveResepPoli(TransaksiObatDetail bean) throws GeneralBOException {
         logger.info("[TransaksiObatBoImpl.saveApproveResepPoli] START >>>>>>>>>>");
@@ -1305,10 +1326,12 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                 if (obatDetailEntities.size() > 0) {
                     for (ImtSimrsTransaksiObatDetailEntity obatDetailEntity : obatDetailEntities) {
 
+                        HargaObatPerKonsumen hargaObatPerKonsumen = getHargaObatPerKonsumen(obatDetailEntity.getIdObat(), bean.getBranchId(), bean.getJenisPeriksaPasien(), bean.getRekanan());
+
                         TransaksiObatBatch batch = new TransaksiObatBatch();
                         batch.setIdTransaksiObatDetail(obatDetailEntity.getIdTransaksiObatDetail());
 
-                        Obat lastHargaObat = obatDao.getLastEveragePricePerBiji(obatDetailEntity.getIdObat(), bean.getBranchId());
+                        //Obat lastHargaObat = obatDao.getLastEveragePricePerBiji(obatDetailEntity.getIdObat(), bean.getBranchId());
 
                         List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = getListEntityBatchByCriteria(batch);
 
@@ -1320,8 +1343,8 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                                 batchEntity.setAction("U");
                                 batchEntity.setLastUpdate(bean.getLastUpdate());
                                 batchEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                                batchEntity.setHargaRata(lastHargaObat.getAverageHargaBiji() != null ? lastHargaObat.getAverageHargaBiji() : null);
-                                batchEntity.setHargaJual(lastHargaObat.getHargaJual() != null ? lastHargaObat.getHargaJual() : null);
+                                batchEntity.setHargaRata(hargaObatPerKonsumen.getHargaTerakhir());
+                                batchEntity.setHargaJual(hargaObatPerKonsumen.getHargaJual());
 
                                 if ("Y".equalsIgnoreCase(batchEntity.getStatus())) {
 

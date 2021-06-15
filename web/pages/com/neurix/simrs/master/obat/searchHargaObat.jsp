@@ -174,10 +174,10 @@
                                 <td>ID Obat</td>
                                 <td>Nama Obat</td>
                                 <td>Standar Margin</td>
-                                <td>Harga Jual Non BPJS(Normal)</td>
-                                <td>Harga Jual Non BPJS(Khusus)</td>
-                                <td>Harga Jual BPJS(Normal)</td>
-                                <td>Harga Jual BPJS(Khusus)</td>
+                                <td>Harga Terakhir Non BPJS(Normal)</td>
+                                <td>Harga Terakhir Non BPJS(Khusus)</td>
+                                <td>Harga Terakhir BPJS(Normal)</td>
+                                <td>Harga Terakhir BPJS(Khusus)</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -196,10 +196,10 @@
                                     <td><s:property value="idObat"/></td>
                                     <td><s:property value="namaObat"/></td>
                                     <td><s:property value="standarMargin"/></td>
-                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaJualUmumNonBpjs"/>'))</script></td>
-                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaJualKhususNonBpjs"/>'))</script></td>
-                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaJualUmumBpjs"/>'))</script></td>
-                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaJualKhususBpjs"/>'))</script></td>
+                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaTerakhirUmumNonBpjs"/>'))</script></td>
+                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaTerakhirKhusuNonBpjs"/>'))</script></td>
+                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaTerakhirUmumBpjs"/>'))</script></td>
+                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaTerakhirKhususBpjs"/>'))</script></td>
                                     <td align="center">
                                         <img onclick="editObat('<s:property value="idObat"/>','<s:property value="idBarang"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                     </td>

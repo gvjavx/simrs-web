@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.transaksiobat.bo;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
 import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatEntity;
 import com.neurix.simrs.transaksi.obatracik.model.ObatRacik;
@@ -53,5 +54,6 @@ public interface TransaksiObatBo {
     public List<TransaksiObatDetail> getListTransaksiObatDetailBatchByIdResepAndIdBarang(String idResep, String idBarang) throws GeneralBOException;
     public String getFlagIsRacikInTransaksiObatDetail(String idPermintaan) throws GeneralBOException;
     public List<ObatRacik> getListNamaRacik(String idRacik) throws GeneralBOException;
+    public HeaderCheckup getDataTransByIdApprovalResep(String idPermintaanResep);
 
 }
