@@ -1910,17 +1910,26 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
                     notifikasiList.add(notifSelf);
 
                     Notifikasi notifAtasan = new Notifikasi();
-                    if (bean.isMobile())
-//                        notifAtasan.setNip(bean.getNip());
-                        notifAtasan.setNip(bean.getNipUserLogin());
-                    else
-                        notifAtasan.setNip(CommonUtil.userIdLogin());
 
+                    String nipForNotif;
+                    if (bean.isMobile())
+                        nipForNotif = bean.getNipUserLogin();
+                    else
+                        nipForNotif = CommonUtil.userIdLogin();
+                    ImBiodataEntity biodataEntity;
+                    try {
+                        biodataEntity = biodataDao.getById("nip", nipForNotif);
+                    }catch (HibernateException e){
+                        logger.error("[CutiPegawaiBoImpl.saveApprove] Error, " + e.getMessage());
+                        throw new GeneralBOException("Problem when retrieving Biodata by ID, " + e.getMessage());
+                    }
+
+                    notifAtasan.setNip(nipForNotif);
                     notifAtasan.setNoRequest(bean.getIjinKeluarId());
                     notifAtasan.setTipeNotifId("umum");
 //                    notifAtasan.setTipeNotifName(("Ijin Keluar Pegawai"));
                     notifAtasan.setTipeNotifName(("Pemberitahuan"));
-                    notifAtasan.setNote(imBiodataEntity.getNamaPegawai() + " mengajukan dispensasi pada tanggal " +CommonUtil.convertDateToString(itIjinKeluarEntity.getTanggalAwal()) + " sampai dengan tanggal " + CommonUtil.convertDateToString(itIjinKeluarEntity.getTanggalAkhir()));
+                    notifAtasan.setNote(imBiodataEntity.getNamaPegawai() + " mengajukan dispensasi pada tanggal " +CommonUtil.convertDateToString(itIjinKeluarEntity.getTanggalAwal()) + " sampai dengan tanggal " + CommonUtil.convertDateToString(itIjinKeluarEntity.getTanggalAkhir())+ ", telah disetujui oleh " + biodataEntity.getNamaPegawai());
                     if (bean.isMobile())
 //                        notifAtasan.setNip(bean.getNip());
                         notifAtasan.setNip(bean.getNipUserLogin());
