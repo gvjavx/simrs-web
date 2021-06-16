@@ -1931,10 +1931,10 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
                     notifAtasan.setTipeNotifName(("Pemberitahuan"));
                     notifAtasan.setNote(imBiodataEntity.getNamaPegawai() + " mengajukan dispensasi pada tanggal " +CommonUtil.convertDateToString(itIjinKeluarEntity.getTanggalAwal()) + " sampai dengan tanggal " + CommonUtil.convertDateToString(itIjinKeluarEntity.getTanggalAkhir())+ ", telah disetujui oleh " + biodataEntity.getNamaPegawai());
                     if (bean.isMobile())
-//                        notifAtasan.setNip(bean.getNip());
-                        notifAtasan.setNip(bean.getNipUserLogin());
+//                        notifAtasan.setNip(bean.getNipUserLogin());
+                        notifAtasan.setCreatedWho(bean.getNipUserLogin());
                     else
-                        notifAtasan.setNip(CommonUtil.userIdLogin());
+                        notifAtasan.setCreatedWho(CommonUtil.userIdLogin());
 
                     notifAtasan.setTo("atasan");
 
