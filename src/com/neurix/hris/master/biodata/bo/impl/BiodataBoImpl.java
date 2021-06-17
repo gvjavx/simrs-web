@@ -1996,7 +1996,9 @@ public class BiodataBoImpl implements BiodataBo {
                     if (listKeluarga != null) {
                         for (Keluarga keluarga : listKeluarga) {
                             if (!"I".equalsIgnoreCase(keluarga.getStatusKeluargaId()) && !"S".equalsIgnoreCase(keluarga.getStatusKeluargaId())) {
-                                jumlahAnak += 1;
+                                if("Y".equalsIgnoreCase(keluarga.getTanggunganPtkp())) {
+                                    jumlahAnak += 1;
+                                }
                             }
                         }
                     }
@@ -2232,6 +2234,7 @@ public class BiodataBoImpl implements BiodataBo {
                                     imKeluargaEntity.setStatusKeluarga(keluarga1.getStatusKeluargaId());
                                     imKeluargaEntity.setGender(keluarga1.getGender());
                                     imKeluargaEntity.setTanggalLahir(keluarga1.getTanggalLahir());
+                                    imKeluargaEntity.setTanggunganPtkp(keluarga1.getTanggunganPtkp());
 
                                     imKeluargaEntity.setFlag(bean.getFlag());
                                     imKeluargaEntity.setAction(bean.getAction());
@@ -6233,7 +6236,8 @@ public class BiodataBoImpl implements BiodataBo {
 
         if (imKeluargaEntity != null) {
             for (ImKeluargaEntity entity : imKeluargaEntity) {
-                if (!"I".equalsIgnoreCase(entity.getStatusKeluarga()) && !"S".equalsIgnoreCase(entity.getStatusKeluarga())) {
+//                if (!"I".equalsIgnoreCase(entity.getStatusKeluarga()) && !"S".equalsIgnoreCase(entity.getStatusKeluarga())) {
+                if("Y".equalsIgnoreCase(entity.getTanggunganPtkp())){
                     jumlahAnak += 1;
                 }
             }

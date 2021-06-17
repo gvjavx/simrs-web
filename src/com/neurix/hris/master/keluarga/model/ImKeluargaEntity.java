@@ -20,6 +20,7 @@ public class ImKeluargaEntity implements Serializable {
     private String nip;
     private String gender;
     private Date tanggalLahir;
+    private String tanggunganPtkp;
 
     private String flag;
     private String action;
@@ -27,6 +28,15 @@ public class ImKeluargaEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+
+    public String getTanggunganPtkp() {
+        return tanggunganPtkp;
+    }
+
+    public void setTanggunganPtkp(String tanggunganPtkp) {
+        this.tanggunganPtkp = tanggunganPtkp;
+    }
 
     public String getGender() {
         return gender;
