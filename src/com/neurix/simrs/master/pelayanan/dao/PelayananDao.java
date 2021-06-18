@@ -222,7 +222,7 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
     }
 
     public List<Pelayanan> getJutsPelayananByBranch(String branchId) throws HibernateException {
-        String notLike = "('radiologi','lab','gudang_obat','gizi')";
+        String notLike = "('lab','gudang_obat','gizi')";
         return getListPelayanan(branchId, notLike, null);
     }
 

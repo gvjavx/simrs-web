@@ -1203,6 +1203,7 @@
         if (idObatVal != "") {
             TransaksiObatAction.listObatPoliEntity(idObatVal, jenisObat, {
                 callback: function (response) {
+                    console.log(response);
                     if (response.length > 0 && idObat == idObatVal) {
                         $('#loading_data').show();
                         $('#modal-approve').modal({show: true, backdrop: 'static'});

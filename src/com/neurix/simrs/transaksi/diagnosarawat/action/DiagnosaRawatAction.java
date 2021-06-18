@@ -17,6 +17,7 @@ import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
+import com.neurix.simrs.transaksi.diagnosarawat.model.ItSimrsDiagnosaRawatEntity;
 import com.neurix.simrs.transaksi.profilrekammedisrj.bo.RekamMedisRawatJalanBo;
 import com.neurix.simrs.transaksi.profilrekammedisrj.model.RekamMedisRawatJalan;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
@@ -30,6 +31,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -157,12 +159,13 @@ public class DiagnosaRawatAction extends BaseMasterAction {
                     response.setMsg("Data "+jenisDiagnosa.replace("_", " ").toUpperCase()+" sudah ada ...!");
                 }else{
                     if ("bpjs".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
-                        response = updateCoverBpjs(idDetailCheckup, idDiagnosa);
+                        response = diagnosaRawatBo.saveAdd(diagnosaRawat);
                         if ("success".equalsIgnoreCase(response.getStatus())) {
-                            response = diagnosaRawatBo.saveAdd(diagnosaRawat);
+                            response = updateCoverBpjs(idDetailCheckup);
                         }else{
                             response.setStatus("error");
                             response.setMsg("Found Error When "+response.getMsg());
+                            return response;
                         }
                     } else {
                         response = diagnosaRawatBo.saveAdd(diagnosaRawat);
@@ -170,9 +173,9 @@ public class DiagnosaRawatAction extends BaseMasterAction {
                 }
             }else{
                 if ("bpjs".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
-                    response = updateCoverBpjs(idDetailCheckup, idDiagnosa);
+                    response = diagnosaRawatBo.saveAdd(diagnosaRawat);
                     if ("success".equalsIgnoreCase(response.getStatus())) {
-                        response = diagnosaRawatBo.saveAdd(diagnosaRawat);
+                        response = updateCoverBpjs(idDetailCheckup);
                     }else{
                         response.setStatus("error");
                         response.setMsg("Found Error When "+response.getMsg());
@@ -256,22 +259,27 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             diagnosaRawat.setLastUpdateWho(userLogin);
             diagnosaRawat.setAction("U");
 
-            if("diagnosa_utama".equalsIgnoreCase(jenisDiagnosa) || "diagnosa_awal".equalsIgnoreCase(jenisDiagnosa)|| "diagnosa_primer".equalsIgnoreCase(jenisDiagnosa)) {
-                DiagnosaRawat dr = new DiagnosaRawat();
-                dr.setIdDetailCheckup(idDetailCheckup);
-                dr.setJenisDiagnosa(jenisDiagnosa);
-                Boolean cek = diagnosaRawatBo.cekDiagnosa(dr);
-                if (cek) {
-                    response.setStatus("error");
-                    response.setMsg("Data " + jenisDiagnosa.replace("_", " ").toUpperCase() + " sudah ada ...!");
-                    return response;
+            ItSimrsDiagnosaRawatEntity entity = diagnosaRawatBo.getById(idRawatDiagnosa);
+            if(entity != null){
+                if(!"diagnosa_utama".equalsIgnoreCase(entity.getJenisDiagnosa()) && !"diagnosa_awal".equalsIgnoreCase(entity.getJenisDiagnosa()) && !"diagnosa_primer".equalsIgnoreCase(entity.getJenisDiagnosa())){
+                    if("diagnosa_utama".equalsIgnoreCase(jenisDiagnosa) || "diagnosa_awal".equalsIgnoreCase(jenisDiagnosa)|| "diagnosa_primer".equalsIgnoreCase(jenisDiagnosa)) {
+                        DiagnosaRawat dr = new DiagnosaRawat();
+                        dr.setIdDetailCheckup(idDetailCheckup);
+                        dr.setJenisDiagnosa(jenisDiagnosa);
+                        Boolean cek = diagnosaRawatBo.cekDiagnosa(dr);
+                        if (cek) {
+                            response.setStatus("error");
+                            response.setMsg("Data " + jenisDiagnosa.replace("_", " ").toUpperCase() + " sudah ada ...!");
+                            return response;
+                        }
+                    }
                 }
             }
 
             if ("bpjs".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
-                response = updateCoverBpjs(idDetailCheckup, idDiagnosa);
+                response = diagnosaRawatBo.saveEdit(diagnosaRawat);
                 if ("success".equalsIgnoreCase(response.getStatus())) {
-                    response = diagnosaRawatBo.saveEdit(diagnosaRawat);
+                    response = updateCoverBpjs(idDetailCheckup);
                 }else{
                     response.setStatus("error");
                     response.setMsg("Error when "+response.getMsg());
@@ -289,7 +297,7 @@ public class DiagnosaRawatAction extends BaseMasterAction {
         return response;
     }
 
-    public CrudResponse updateCoverBpjs(String idDetailCheckup, String idDiagnosa) {
+    public CrudResponse updateCoverBpjs(String idDetailCheckup) {
         CrudResponse response = new CrudResponse();
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -300,6 +308,7 @@ public class DiagnosaRawatAction extends BaseMasterAction {
         EklaimBo eklaimBo = (EklaimBo) ctx.getBean("eklaimBoProxy");
         DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        String tempDiagnosa = "";
 
         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
         detailCheckup.setIdDetailCheckup(idDetailCheckup);
@@ -382,9 +391,24 @@ public class DiagnosaRawatAction extends BaseMasterAction {
                                     klaimDetailRequest.setAddPaymentPct(klaimResponse.getAddPaymenPct());
                                     klaimDetailRequest.setBirthWeight(klaimResponse.getBeratLahir());
                                     klaimDetailRequest.setDischargeStatus(klaimResponse.getDischargeStatus().toString());
-                                    klaimDetailRequest.setDiagnosa(idDiagnosa);
-                                    klaimDetailRequest.setProcedure(klaimResponse.getProcedure());
 
+                                    //set diagnosa to eklam
+                                    DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
+                                    diagnosaRawat.setIdDetailCheckup(idDetailCheckup);
+                                    diagnosaRawat.setOrderJenisDiagnosa("Y");
+                                    List<DiagnosaRawat> diagnosaRawats = diagnosaRawatBo.getByCriteria(diagnosaRawat);
+                                    if(diagnosaRawats.size() > 0){
+                                        for (DiagnosaRawat dr: diagnosaRawats){
+                                            if(!"".equalsIgnoreCase(tempDiagnosa)){
+                                                tempDiagnosa = tempDiagnosa+"#"+dr.getIdDiagnosa();
+                                            }else{
+                                                tempDiagnosa = dr.getIdDiagnosa();
+                                            }
+                                        }
+                                    }
+                                    klaimDetailRequest.setDiagnosa(tempDiagnosa);
+
+                                    klaimDetailRequest.setProcedure(klaimResponse.getProcedure());
                                     klaimDetailRequest.setTarifRsNonBedah(klaimResponse.getTarifRsProsedurNonBedah().toString());
                                     klaimDetailRequest.setTarifRsProsedurBedah(klaimResponse.getTarifRsProsedurBedah().toString());
                                     klaimDetailRequest.setTarifRsKonsultasi(klaimResponse.getTarifRsKonsultasi().toString());

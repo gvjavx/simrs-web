@@ -5124,7 +5124,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 reportParams.put("diagnosaMasuk", diagnosaMasuk);
                 reportParams.put("indikasi", checkup.getIndikasi());
 
-                if("SP15".equalsIgnoreCase(tipe)){
+                if("SP15".equalsIgnoreCase(tipe) || "SP21".equalsIgnoreCase(tipe)){
                     KeperawatanRawatJalanBo keperawatanRawatJalanBo = (KeperawatanRawatJalanBo) ctx.getBean("keperawatanRawatJalanBoProxy");
                     KeperawatanRawatJalan keperawatanRawatJalan = new KeperawatanRawatJalan();
                     keperawatanRawatJalan.setIdDetailCheckup(checkup.getIdDetailCheckup());

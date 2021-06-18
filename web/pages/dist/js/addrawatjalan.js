@@ -3560,6 +3560,7 @@ function saveAnamnese() {
         var result = JSON.stringify(data);
         $('#save_fisik').hide();
         $('#load_fisik').show();
+        dwr.engine.setAsync(true);
         CheckupAction.saveAnamnese(result, {
             callback: function (response) {
                 if (response.status == "success") {
