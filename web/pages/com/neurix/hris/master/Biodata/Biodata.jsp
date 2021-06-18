@@ -3747,15 +3747,15 @@
 //            document.getElementById("plt").checked = false;
 //        }
 
-        var flagManualPtkp = document.getElementById("flagManualPtkp").value;
-        if (flagManualPtkp == "Y") {
-            document.getElementById("manualPtkp").checked = true;
-            $("#jumlahAnak").prop("disabled",false);
-        } else {
-            document.getElementById("manualPtkp").checked = false;
-            $("#jumlahAnak").prop("disabled",true);
-
-        }
+        // var flagManualPtkp = document.getElementById("flagManualPtkp").value;
+        // if (flagManualPtkp == "Y") {
+        //     document.getElementById("manualPtkp").checked = true;
+        //     $("#jumlahAnak").prop("disabled",false);
+        // } else {
+        //     document.getElementById("manualPtkp").checked = false;
+        //     $("#jumlahAnak").prop("disabled",true);
+        //
+        // }
 
         var flagFingerMobile = document.getElementById("flagFingerMobile").value;
         if (flagFingerMobile == "Y") {
@@ -6371,15 +6371,15 @@
     //        }
     //    }
 
-    window.cekManualPtkp = function () {
-        if (document.getElementById("manualPtkp").checked == true) {
-            $("#flagManualPtkp").val("Y");
-            $("#jumlahAnak").prop("disabled",false);
-        } else {
-            $("#flagManualPtkp").val("N");
-            $("#jumlahAnak").prop("disabled",true);
-        }
-    }
+    // window.cekManualPtkp = function () {
+    //     if (document.getElementById("manualPtkp").checked == true) {
+    //         $("#flagManualPtkp").val("Y");
+    //         $("#jumlahAnak").prop("disabled",false);
+    //     } else {
+    //         $("#flagManualPtkp").val("N");
+    //         $("#jumlahAnak").prop("disabled",true);
+    //     }
+    // }
 
     window.cekAktif = function () {
         if ($('#aktif').is(":checked")) {
