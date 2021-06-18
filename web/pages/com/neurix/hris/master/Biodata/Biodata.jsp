@@ -464,52 +464,52 @@
                                                 </td>
                                             </tr>
 
-                                            <s:if test="isDelete()">
-                                                <tr>
-                                                    <td>
-                                                        <label><small>Jumlah Anak :</small></label>
-                                                    </td>
-                                                    <td>
-                                                        <div class="row">
-                                                            <div class="col-md-4">
-                                                            <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" disabled="false" cssClass="form-control"/>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <input type="checkbox" id="manualPtkp" class="checkZakat" disabled onchange="cekManualPtkp()" />
-                                                                <s:hidden id="flagManualPtkp" name="biodata.flagManualPtkp" />
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </s:if>
-                                            <%--<s:if test="isEdit()">--%>
-                                            <s:else>
-                                                <tr>
-                                                    <td>
-                                                        <label><small>Jumlah Anak :</small></label>
-                                                    </td>
-                                                    <td>
-                                                        <div class="row">
-                                                            <div class="col-md-4">
-                                                                <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="false" disabled="false" cssClass="form-control"/>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                        <table>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <input type="checkbox" id="manualPtkp" class="checkZakat" onchange="cekManualPtkp()" />
-                                                                            <s:hidden id="flagManualPtkp" name="biodata.flagManualPtkp" />
-                                                                        </td>
-                                                                        <td>
-                                                                            <small>(set manual)</small>
-                                                                        </td>
-                                                                    </tr>
-                                                        </table>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </s:else>
+                                            <%--<s:if test="isDelete()">--%>
+                                                <%--<tr>--%>
+                                                    <%--<td>--%>
+                                                        <%--<label><small>Jumlah Anak :</small></label>--%>
+                                                    <%--</td>--%>
+                                                    <%--<td>--%>
+                                                        <%--<div class="row">--%>
+                                                            <%--<div class="col-md-4">--%>
+                                                            <%--<s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" disabled="false" cssClass="form-control"/>--%>
+                                                            <%--</div>--%>
+                                                            <%--<div class="col-md-4">--%>
+                                                                <%--<input type="checkbox" id="manualPtkp" class="checkZakat" disabled onchange="cekManualPtkp()" />--%>
+                                                                <%--<s:hidden id="flagManualPtkp" name="biodata.flagManualPtkp" />--%>
+                                                            <%--</div>--%>
+                                                        <%--</div>--%>
+                                                    <%--</td>--%>
+                                                <%--</tr>--%>
+                                            <%--</s:if>--%>
+                                            <%--&lt;%&ndash;<s:if test="isEdit()">&ndash;%&gt;--%>
+                                            <%--<s:else>--%>
+                                                <%--<tr>--%>
+                                                    <%--<td>--%>
+                                                        <%--<label><small>Jumlah Anak :</small></label>--%>
+                                                    <%--</td>--%>
+                                                    <%--<td>--%>
+                                                        <%--<div class="row">--%>
+                                                            <%--<div class="col-md-4">--%>
+                                                                <%--<s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="false" disabled="false" cssClass="form-control"/>--%>
+                                                            <%--</div>--%>
+                                                            <%--<div class="col-md-4">--%>
+                                                        <%--<table>--%>
+                                                                    <%--<tr>--%>
+                                                                        <%--<td>--%>
+                                                                            <%--<input type="checkbox" id="manualPtkp" class="checkZakat" onchange="cekManualPtkp()" />--%>
+                                                                            <%--<s:hidden id="flagManualPtkp" name="biodata.flagManualPtkp" />--%>
+                                                                        <%--</td>--%>
+                                                                        <%--<td>--%>
+                                                                            <%--<small>(set manual)</small>--%>
+                                                                        <%--</td>--%>
+                                                                    <%--</tr>--%>
+                                                        <%--</table>--%>
+                                                            <%--</div>--%>
+                                                        <%--</div>--%>
+                                                    <%--</td>--%>
+                                                <%--</tr>--%>
+                                            <%--</s:else>--%>
                                             <%--</s:if>--%>
                                             <tr>
                                                 <td>
@@ -4648,9 +4648,9 @@
                     }
 
                     if(item.tanggunganPtkp == 'Y'){
-                        tmp_table += '<td > <input type="checkbox" class="checkZakat"  checked="checked" disabled="true"/> </td>';
+                        tmp_table += '<td align="center"> <input type="checkbox" class="checkZakat"  checked="checked" disabled="true"/> </td>';
                     }else{
-                        tmp_table += '<td > <input type="checkbox" class="checkZakat" disabled="true"/> </td>';
+                        tmp_table += '<td align="center"> <input type="checkbox" class="checkZakat" disabled="true"/> </td>';
                     }
                         /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/
                     tmp_table += '<td align="center">' +
@@ -4717,9 +4717,9 @@
                         '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>';
                         /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/
                     if(item.tanggunganPtkp == 'Y'){
-                        tmp_table += '<td > <input type="checkbox" class="checkZakat"  checked="checked" disabled="true"/> </td>';
+                        tmp_table += '<td align="center"> <input type="checkbox" class="checkZakat"  checked="checked" disabled="true"/> </td>';
                     }else{
-                        tmp_table += '<td > <input type="checkbox" class="checkZakat" disabled="true"/> </td>';
+                        tmp_table += '<td align="center"> <input type="checkbox" class="checkZakat" disabled="true"/> </td>';
                     }
 
                     tmp_table += '<td align="center">' +
