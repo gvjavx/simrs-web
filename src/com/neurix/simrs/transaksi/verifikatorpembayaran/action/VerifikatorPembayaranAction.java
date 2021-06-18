@@ -1554,7 +1554,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                 listMapKas.add(mapkas);
                 //mapkas.put("nomor_rekening", noRekening);
 
-                mapJurnal.put("pendapatan_rawat_jalan_umum", listOfTindakan);
+                mapJurnal.put("pendapatan_rawat_jalan_telemedicine", listOfTindakan);
                 mapJurnal.put("pendapatan_lain", listMapPendapatanLain);
                 mapJurnal.put("kas", listMapKas);
                 transId = "90";
