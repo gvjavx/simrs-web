@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.6528925619834736"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="44"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -65,7 +65,7 @@ FROM (
                                      sum(x.jumlah_debit)  as jumlah_debit,
                                      sum(x.jumlah_kredit) as jumlah_kredit
                               from it_akun_saldo_akhir_detail x
-                                     join im_akun_kode_rekening kodering on kodering.kode_rekening = x.kode_rekening
+                                     join im_akun_kode_rekening kodering on kodering.kode_rekening = x.rekening_id
                               where x.periode = $P{periodeLalu}
                                 and x.branch_id IN ($P!{branchId})
                                 AND kodering.rekening_id IN
@@ -94,7 +94,8 @@ where x.flag = 'Y' ) aa
 	<field name="position_name" class="java.lang.String"/>
 	<field name="bag_id" class="java.lang.String"/>
 	<field name="periode" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[
+]]></fieldDescription>
 	</field>
 	<field name="divisi_name" class="java.lang.String"/>
 	<field name="debit" class="java.math.BigDecimal"/>

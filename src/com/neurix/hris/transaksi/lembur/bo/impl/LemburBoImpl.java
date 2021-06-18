@@ -1077,23 +1077,32 @@ public class LemburBoImpl implements LemburBo {
 
                     Notifikasi notifAtasan = new Notifikasi();
 
+                    String nipForNotif;
                     if (bean.getMobile())
-//                        notifAtasan.setNip(bean.getNip());
-                        notifAtasan.setNip(bean.getNipUserLogin());
+                        nipForNotif = bean.getNipUserLogin();
                     else
-                        notifAtasan.setNip(CommonUtil.userIdLogin());
+                        nipForNotif = CommonUtil.userIdLogin();
 
+                    ImBiodataEntity biodataEntity;
+                    try {
+                        biodataEntity = biodataDao.getById("nip", nipForNotif);
+                    }catch (HibernateException e){
+                        logger.error("[CutiPegawaiBoImpl.saveApprove] Error, " + e.getMessage());
+                        throw new GeneralBOException("Problem when retrieving Biodata by ID, " + e.getMessage());
+                    }
+
+                    notifAtasan.setNip(nipForNotif);
                     notifAtasan.setNoRequest(bean.getLemburId());
                     notifAtasan.setTipeNotifId("umum");
 //                    notifAtasan.setTipeNotifName(("Lembur Pegawai"));
                     notifAtasan.setTipeNotifName(("Pemberitahuan"));
-                    notifAtasan.setNote(imBiodataEntity.getNamaPegawai() + " mengajukan lembur pada tanggal " +CommonUtil.convertDateToString(itLemburEntity.getTanggalAwal()) + " sampai dengan tanggal " + CommonUtil.convertDateToString(itLemburEntity.getTanggalAkhir()));
+                    notifAtasan.setNote(imBiodataEntity.getNamaPegawai() + " mengajukan lembur pada tanggal " +CommonUtil.convertDateToString(itLemburEntity.getTanggalAwal()) + " sampai dengan tanggal " + CommonUtil.convertDateToString(itLemburEntity.getTanggalAkhir())+ ", telah disetujui oleh " + biodataEntity.getNamaPegawai());
 
                     if (bean.getMobile())
-//                        notifAtasan.setNip(bean.getNip());
-                        notifAtasan.setNip(bean.getNipUserLogin());
+//                        notifAtasan.setNip(bean.getNipUserLogin());
+                        notifAtasan.setCreatedWho(bean.getNipUserLogin());
                     else
-                        notifAtasan.setNip(CommonUtil.userIdLogin());
+                        notifAtasan.setCreatedWho(CommonUtil.userIdLogin());
 
                     notifAtasan.setTo("atasan");
 

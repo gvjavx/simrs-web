@@ -90,8 +90,14 @@
                                                 <td>
                                                     <table>
                                                         <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                                        <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid" name="lembur.unitId" required="true"
-                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
+                                                        <s:if test="isAdmin()">
+                                                            <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid" name="lembur.unitId" required="true"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid" name="lembur.unitId" required="true"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="" disabled="true"/>
+                                                        </s:else>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -101,7 +107,12 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="nip" name="lembur.nip" required="true" disabled="false" cssClass="form-control"/>
+                                                        <s:if test="isAdmin()">
+                                                            <s:textfield id="nip" name="lembur.nip" required="true" disabled="false" cssClass="form-control"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:textfield id="nip" name="lembur.nip" required="true" disabled="true" cssClass="form-control"/>
+                                                        </s:else>
                                                     </table>
                                                 </td>
                                             </tr>

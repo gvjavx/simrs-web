@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.6105100000000017"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="66"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -79,11 +79,11 @@ FROM (
                             akunMaster.nama
                   ) jurnal ON jurnal.rekening_id = kodering.kode_rekening
        LEFT OUTER JOIN (
-                       select kode_rekening, master_id, jumlah_debit, jumlah_kredit, saldo, posisi
+                       select rekening_id, master_id, jumlah_debit, jumlah_kredit, saldo, posisi
                         from it_akun_saldo_akhir_detail
                         where to_date(periode, 'MM-yyyy') = to_date($P{reportParams.periode}, 'MM-yyyy') - Interval '1 month'
                           and branch_id IN ($P!{reportParams.branchId})
-                       ) saldo ON kodering.kode_rekening = saldo.kode_rekening
+                       ) saldo ON kodering.kode_rekening = saldo.rekening_id
                                                                and saldo.master_id = jurnal.nomor_master
 ORDER BY koderekening]]>
 	</queryString>

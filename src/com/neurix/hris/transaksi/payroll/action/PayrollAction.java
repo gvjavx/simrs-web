@@ -834,7 +834,7 @@ public class PayrollAction extends BaseTransactionAction {
         PayrollHeader editPayrollHeader = new PayrollHeader();
         String userLogin = CommonUtil.userLogin();
 
-        if (!editSearch) {
+//        if (!editSearch) {
             //get dari url
             String payrollHeaderId = getId();
             String branchId = getBranchId();
@@ -897,26 +897,45 @@ public class PayrollAction extends BaseTransactionAction {
             session.removeAttribute("listDataPayroll");
             session.setAttribute("listDataPayroll", listOfPegawaiPayrollEdit);
 
+            if(editSearch){
+                PayrollHeader editedPayrollHeaderSearch = getPayrollHeader();
+                String nip = editedPayrollHeaderSearch.getNip();
+                if(nip!=null) {
+                    List<PegawaiPayroll> sessionListPegawaiPayroll = (List<PegawaiPayroll>) session.getAttribute("listDataPayroll");
+
+                    if (sessionListPegawaiPayroll != null) {
+
+                        listOfPegawaiPayrollEdit = sessionListPegawaiPayroll.stream().filter(
+                                p -> p.getNip().equalsIgnoreCase(nip)
+                        ).collect(Collectors.toList());
+
+                        session.removeAttribute("listDataPayroll");
+                        session.setAttribute("listDataPayroll", listOfPegawaiPayrollEdit);
+
+                    }
+                }
+            }
+
             setPayrollHeader(editPayrollHeader);
 
-        } else {
-
-            PayrollHeader editedPayrollHeader = getPayrollHeader();
-            String nip = editedPayrollHeader.getNip();
-            HttpSession session = ServletActionContext.getRequest().getSession();
-            List<PegawaiPayroll> sessionListPegawaiPayroll= (List<PegawaiPayroll>) session.getAttribute("listDataPayroll");
-
-            if (sessionListPegawaiPayroll!=null) {
-
-                List<PegawaiPayroll> listOfPegawaiPayrollEdit = sessionListPegawaiPayroll.stream().filter(
-                        p -> p.getNip().equalsIgnoreCase(nip)
-                ).collect(Collectors.toList());
-
-                session.removeAttribute("listDataPayroll");
-                session.setAttribute("listDataPayroll", listOfPegawaiPayrollEdit);
-
-            }
-        }
+//        } else {
+//
+//            PayrollHeader editedPayrollHeader = getPayrollHeader();
+//            String nip = editedPayrollHeader.getNip();
+//            HttpSession session = ServletActionContext.getRequest().getSession();
+//            List<PegawaiPayroll> sessionListPegawaiPayroll= (List<PegawaiPayroll>) session.getAttribute("listDataPayroll");
+//
+//            if (sessionListPegawaiPayroll!=null) {
+//
+//                List<PegawaiPayroll> listOfPegawaiPayrollEdit = sessionListPegawaiPayroll.stream().filter(
+//                        p -> p.getNip().equalsIgnoreCase(nip)
+//                ).collect(Collectors.toList());
+//
+//                session.removeAttribute("listDataPayroll");
+//                session.setAttribute("listDataPayroll", listOfPegawaiPayrollEdit);
+//
+//            }
+//        }
 
         logger.info("[payrollAction.edit] end process <<<");
 
