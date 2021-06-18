@@ -172,22 +172,22 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
 //                    obat.setMarginKhususBpjs(intMarginKhususBpjs);
                     // END
 
-                    if (obat.getStandarMargin() != null){
-                        if (Integer.compare(obat.getStandarMargin(), obat.getMarginKhususNonBpjs()) == 1){
-                            obat.setFlagKurangMargin("Y");
-                        }
-                        if (Integer.compare(obat.getStandarMargin(), obat.getMarginUmumNonBpjs()) == 1){
-                            obat.setFlagKurangMargin("Y");
-                        }
-                        if (Integer.compare(obat.getStandarMargin(), obat.getMarginKhususBpjs()) == 1){
-                            obat.setFlagKurangMargin("Y");
-                        }
-                        if (Integer.compare(obat.getStandarMargin(), obat.getMarginUmumBpjs()) == 1){
-                            obat.setFlagKurangMargin("Y");
-                        }
-                    } else {
-                        obat.setFlagKurangMargin("R");
-                    }
+//                    if (obat.getStandarMargin() != null){
+//                        if (Integer.compare(obat.getStandarMargin(), obat.getMarginKhususNonBpjs()) == 1){
+//                            obat.setFlagKurangMargin("Y");
+//                        }
+//                        if (Integer.compare(obat.getStandarMargin(), obat.getMarginUmumNonBpjs()) == 1){
+//                            obat.setFlagKurangMargin("Y");
+//                        }
+//                        if (Integer.compare(obat.getStandarMargin(), obat.getMarginKhususBpjs()) == 1){
+//                            obat.setFlagKurangMargin("Y");
+//                        }
+//                        if (Integer.compare(obat.getStandarMargin(), obat.getMarginUmumBpjs()) == 1){
+//                            obat.setFlagKurangMargin("Y");
+//                        }
+//                    } else {
+//                        obat.setFlagKurangMargin("R");
+//                    }
                     obats.add(obat);
                 }
             }

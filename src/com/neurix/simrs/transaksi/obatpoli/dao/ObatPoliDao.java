@@ -352,19 +352,20 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     obatPoli.setLembarPerBox(obj[6] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[6].toString()));
                     obatPoli.setBijiPerLembar(obj[7] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[7].toString()));
                     obatPoli.setFlagKronis(obj[8] == null ? "" : obj[8].toString());
-                    if(cekKhusus){
-                        if ("bpjs".equalsIgnoreCase(bean.getJenisPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getJenisPasien())){
-                            obatPoli.setHarga(obj[11] == null ? "" : obj[11].toString());
-                        } else {
-                            obatPoli.setHarga(obj[9] == null ? "" : obj[9].toString());
-                        }
-                    }else{
-                        if ("bpjs".equalsIgnoreCase(bean.getJenisPasien())){
-                            obatPoli.setHarga(obj[12] == null ? "" : obj[12].toString());
-                        } else {
-                            obatPoli.setHarga(obj[10] == null ? "" : obj[10].toString());
-                        }
-                    }
+
+//                    if(cekKhusus){
+//                        if ("bpjs".equalsIgnoreCase(bean.getJenisPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getJenisPasien())){
+//                            obatPoli.setHarga(obj[11] == null ? "" : obj[11].toString());
+//                        } else {
+//                            obatPoli.setHarga(obj[9] == null ? "" : obj[9].toString());
+//                        }
+//                    }else{
+//                        if ("bpjs".equalsIgnoreCase(bean.getJenisPasien())){
+//                            obatPoli.setHarga(obj[12] == null ? "" : obj[12].toString());
+//                        } else {
+//                            obatPoli.setHarga(obj[10] == null ? "" : obj[10].toString());
+//                        }
+//                    }
 
                     // Sigit, 2021-04-29. penambahan untuk mencari data per konsumen pada resep;
                     HeaderCheckup headerDetailCheckup = getHeaderCheckupData(bean.getIdDetailCheckup());
