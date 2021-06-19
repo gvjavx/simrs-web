@@ -47,6 +47,7 @@
           p:tempatTidurDao-ref="tempatTidurDao"
           p:uangMukaDao-ref="uangMukaDao"
           p:pasienDao-ref="pasienDao"
+          p:kontrolUlangDao-ref="kontrolUlangDao"
     />
 
     <bean id="rawatInapBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

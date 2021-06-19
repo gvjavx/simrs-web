@@ -5,10 +5,13 @@ import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -32,18 +35,28 @@ public class TransDao extends GenericDao<ImTransEntity, String> {
         Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImTransEntity.class);
 
         // Get Collection and sorting
-        if (mapCriteria!=null) {
-            if (mapCriteria.get("trans_id")!=null) {
+        if (mapCriteria != null) {
+            if (mapCriteria.get("flag") != null) {
+                criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
+            }
+            if (mapCriteria.get("trans_id") != null) {
                 criteria.add(Restrictions.eq("transId", (String) mapCriteria.get("trans_id")));
             }
             if (mapCriteria.get("trans_name")!=null) {
                 criteria.add(Restrictions.ilike("transName", "%" + (String)mapCriteria.get("trans_name") + "%"));
             }
-            if (mapCriteria.get("tipe_pembayaran")!=null) {
-                criteria.add(Restrictions.eq("tipePembayaran", (String) mapCriteria.get("tipe_pembayaran")));
+//            if (mapCriteria.get("tipe_pembayaran")!=null) {
+//                criteria.add(Restrictions.eq("tipePembayaran", (String) mapCriteria.get("tipe_pembayaran")));
+//            }
+//            if (mapCriteria.get("flag_menu")!=null) {
+//                criteria.add(Restrictions.eq("flagMenu", (String) mapCriteria.get("flag_menu")));
+//            }
+            //Aji Noor
+            if (mapCriteria.get("tipe_jurnal_id") != null) {
+                criteria.add(Restrictions.eq("tipeJurnalId", (String) mapCriteria.get("tipe_jurnal_id")));
             }
-            if (mapCriteria.get("flag_menu")!=null) {
-                criteria.add(Restrictions.eq("flagMenu", (String) mapCriteria.get("flag_menu")));
+            if (mapCriteria.get("is_otomatis") != null) {
+                criteria.add(Restrictions.eq("isOtomatis", (String) mapCriteria.get("is_otomatis")));
             }
         }
 
@@ -67,7 +80,9 @@ public class TransDao extends GenericDao<ImTransEntity, String> {
 
     public String getTipeBayarByTransId(String transId){
         String result="";
-        String query = "  select tipe_pembayaran from im_akun_trans where trans_id='"+transId+"' and flag='Y'";
+//        String query = "  select tipe_pembayaran from im_akun_trans where trans_id='"+transId+"' and flag='Y'";
+        //Aji Noor
+        String query = "  select tipe_jurnal_id from im_akun_trans where trans_id='" + transId + "' and flag='Y'";
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
         if (results!=null){

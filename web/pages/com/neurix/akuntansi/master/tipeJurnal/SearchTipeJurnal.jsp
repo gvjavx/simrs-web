@@ -36,6 +36,9 @@
         }
     </style>
     <script type='text/javascript'>
+        function link() {
+            window.location.href = "<s:url action='initForm_mappingJurnal'/>";
+        }
         function cekAvailableCoa(nilai){
             var coa = nilai.value;
             var length = nilai.length;
@@ -58,9 +61,7 @@
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini" >
-
 <%@ include file="/pages/common/headerNav.jsp" %>
-
 <ivelincloud:mainMenu/>
 
 <!-- Content Wrapper. Contains page content -->
@@ -198,6 +199,7 @@
                                                             </display:column>
                                                             <display:column property="tipeJurnalId" sortable="true" title="Tipe Jurnal ID" />
                                                             <display:column property="tipeJurnalName" sortable="true" title="Nama Tipe Jurnal"  />
+                                                            <display:column property="isOperasional" sortable="true" title="Operasional"  />
                                                             <display:column property="flag" sortable="true" title="Flag" />
                                                             <display:column property="createdWho" sortable="true" title="Created Who"/>
                                                             <display:column property="lastUpdate" sortable="true" title="Last Update"/>

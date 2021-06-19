@@ -982,6 +982,8 @@
         var tanggalKeluar   = $("#tanggalKeluar").val();
         var url             = $('#myForm').attr('action');
         var jenisJabLama    = $("#jenisPegawaiLamaId option:selected").val();
+
+        var positionBaruId  = $("#positionBaruId1").val();
         checkPositionAktif();
         if (url == "addPerson"){
             MutasiAction.checkIsAvailInSession(nip, function(res){
@@ -1022,6 +1024,8 @@
                         // }else{
                             if (noSk == null || noSk == ""){
                                 alert("No.SK harus diisi");
+                            } else if(positionBaruId == null || positionBaruId == ""){
+                                alert("Posisi Baru Harus Diisi");
                             } else {
                                 save();
                             }
@@ -1191,11 +1195,16 @@
         console.log("checkPositionAktif");
         var branch      = $("#branchBaruId1 option:selected").val();
         var positionId  = $("#positionBaruId1 option:selected").val();
+        var nip         = $("#nip1").val();
         setPanelAlert("");
-        PositionAction.checkAndGetPositionAktif(positionId, branch, function (res) {
+        PositionAction.checkAndGetPositionAktif(positionId, branch, nip, function (res) {
             var str = "";
             if (res.status == "error"){
                 str += "<div class='alert alert-danger'>"+res.msg+"</div>";
+                $("#flag-person-aktif").val("Y");
+                setPanelAlert(str);
+            } else if (positionId == null || positionId == ""){
+                str += "<div class='alert alert-danger' style='text-align: center'>Posisi Baru Belum Dipilih <i class='fa fa-times'></i></div>";
                 $("#flag-person-aktif").val("Y");
                 setPanelAlert(str);
             } else {

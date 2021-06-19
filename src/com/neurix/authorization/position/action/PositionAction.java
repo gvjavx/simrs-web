@@ -645,7 +645,7 @@ public class PositionAction extends BaseMasterAction {
         return positionBo.getPositionByString(query);
     }
 
-    public CrudResponse checkAndGetPositionAktif(String positionId, String branchId){
+    public CrudResponse checkAndGetPositionAktif(String positionId, String branchId, String nip){
         logger.info("[PositionAction.typeHeadPosition] START process >>>");
 
         CrudResponse response = new CrudResponse();
@@ -654,7 +654,7 @@ public class PositionAction extends BaseMasterAction {
         PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
 
         try {
-            PersonilPosition personilPosition = positionBo.getAndCheckJabatanTerpakai(positionId, branchId);
+            PersonilPosition personilPosition = positionBo.getAndCheckJabatanTerpakai(positionId, branchId, nip);
             if (personilPosition != null){
                 response.setStatus("error");
                 response.setMsg("ditemukan pegawai aktif pada jabatan tersebut : "+personilPosition.getPersonName());

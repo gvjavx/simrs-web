@@ -1032,7 +1032,7 @@ public class PositionBoImpl implements PositionBo {
     }
 
     @Override
-    public PersonilPosition getAndCheckJabatanTerpakai(String positionId, String branchId) throws GeneralBOException {
+    public PersonilPosition getAndCheckJabatanTerpakai(String positionId, String branchId, String nip) throws GeneralBOException {
         logger.info("[PositionBoImpl.getAndCheckJabatanTerpakai]  START >>>");
 
         PersonilPosition personilPosition = new PersonilPosition();
@@ -1048,7 +1048,7 @@ public class PositionBoImpl implements PositionBo {
 
         if (!isMultiple){
             try {
-                personilPosition = positionDao.getPersonilPositionAktif(branchId, positionId);
+                personilPosition = positionDao.getPersonilPositionAktif(branchId, positionId, nip);
             } catch (HibernateException e){
                 logger.error("[PositionBoImpl.getAndCheckJabatanTerpakai] ERROR getPersonilPositionAktif, " + e.getMessage());
                 throw new GeneralBOException("[PositionBoImpl.getAndCheckJabatanTerpakai] Found problem when searc position aktif ." + e.getMessage());

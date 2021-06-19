@@ -28,7 +28,7 @@ public interface BillingSystemBo {
 //    //tutup period, Sigit
     public void saveTutupPeriod(List<TutupPeriod> listTransitoris, TutupPeriod tutupPeriod) throws GeneralBOException;
 //
-//    List<ItJurnalEntity> getJurnalByPengajuanId(String pengajuanId) throws GeneralBOException;
+    List<ItJurnalEntity> getJurnalByPengajuanId(String pengajuanId) throws GeneralBOException;
 
     //RAKA-30APR2021==> mencoba membantu
     public void saveUpdateNoJuran(HeaderDetailCheckup bean) throws GeneralBOException;

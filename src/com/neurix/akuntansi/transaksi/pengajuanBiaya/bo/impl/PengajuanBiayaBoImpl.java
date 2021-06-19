@@ -188,9 +188,9 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
 
     @Override
     public void saveDelete(PengajuanBiaya bean) throws GeneralBOException {
-        logger.info("[saveDelete.saveDelete] start process >>>");
-        if (bean!=null) {
-            ImPengajuanBiayaEntity imPengajuanBiayaEntity = new ImPengajuanBiayaEntity();
+        logger.info("[PengajuanBiayaBoImpl.saveDelete] start process >>>");
+        if (bean != null) {
+            ImPengajuanBiayaEntity imPengajuanBiayaEntity;
             try {
                 // Get data from database by ID
                 imPengajuanBiayaEntity = pengajuanBiayaDao.getById("pengajuanBiayaId", bean.getPengajuanBiayaId());
@@ -211,12 +211,12 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                     pengajuanBiayaDao.updateAndSave(imPengajuanBiayaEntity);
                 } catch (HibernateException e) {
                     logger.error("[PengajuanBiayaBoImpl.saveDelete] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data PengajuanBiaya, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving update data Pengajuan Biaya, please info to your admin..." + e.getMessage());
                 }
 
             } else {
-                logger.error("[PengajuanBiayaBoImpl.saveDelete] Error, not found data PengajuanBiaya with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data PengajuanBiaya with request id, please check again your data ...");
+                logger.error("[PengajuanBiayaBoImpl.saveDelete] Error, not found data Pengajuan Biaya with request id, please check again your data ...");
+                throw new GeneralBOException("Error, not found data Pengajuan Biaya with request id, please check again your data ...");
 
             }
         }
@@ -227,10 +227,8 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
     public void saveEdit(PengajuanBiaya bean) throws GeneralBOException {
         logger.info("[PengajuanBiayaBoImpl.saveEdit] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
-        List<KodeRekening> kodeRekeningList = (List<KodeRekening>) session.getAttribute("listOfResultKodeRekening");
-
-        if (bean!=null) {
-            ImPengajuanBiayaEntity imPengajuanBiayaEntity = null;
+        if (bean != null) {
+            ImPengajuanBiayaEntity imPengajuanBiayaEntity;
             try {
                 // Get data from database by ID
                 imPengajuanBiayaEntity = pengajuanBiayaDao.getById("pengajuanBiayaId", bean.getPengajuanBiayaId());
@@ -261,9 +259,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
     @Override
     public void postingJurnal(PengajuanBiaya bean) throws GeneralBOException {
         logger.info("[PengajuanBiayaBoImpl.saveEdit] start process >>>");
-        HttpSession session = ServletActionContext.getRequest().getSession();
-
-        if (bean!=null) {
+        if (bean != null) {
             ImPengajuanBiayaEntity imPengajuanBiayaEntity = null;
             try {
                 // Get data from database by ID
@@ -298,10 +294,10 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
     }
 
     @Override
-    public  List<Notifikasi> saveAddPengajuanBiaya(PengajuanBiaya bean) throws GeneralBOException {
+    public List<Notifikasi> saveAddPengajuanBiaya(PengajuanBiaya bean) throws GeneralBOException {
         logger.info("[PengajuanBiayaBoImpl.saveAddPengajuanBiaya] start process >>>");
         List<Notifikasi> notifikasiList = new ArrayList<>();
-        if (bean!=null) {
+        if (bean != null) {
             String id = pengajuanBiayaDao.getNextPengajuanBiayaId();
             ImPengajuanBiayaEntity pengajuanBiayaEntity = new ImPengajuanBiayaEntity();
             pengajuanBiayaEntity.setPengajuanBiayaId(id);
@@ -315,7 +311,6 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             pengajuanBiayaEntity.setBranchId(bean.getBranchId());
             pengajuanBiayaEntity.setTransaksi(bean.getTransaksi());
             pengajuanBiayaEntity.setBudgetTerpakai(bean.getBudgetTerpakai());
-
             pengajuanBiayaEntity.setCreatedDate(bean.getCreatedDate());
             pengajuanBiayaEntity.setLastUpdate(bean.getLastUpdate());
             pengajuanBiayaEntity.setCreatedWho(bean.getCreatedWho());
@@ -337,10 +332,10 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
 
     @Override
     public List<Notifikasi> sendNotifikasiKeAdminAks(String branchId, String id, String keterangan, String createdWho){
-        List<User> userList = new ArrayList<>();
         List<Notifikasi> notifikasiList = new ArrayList<>();
 
-        userList=userDao.getUserByBranchAndRole(branchId,CommonConstant.ROLE_ID_ADMIN_AKS);
+        List<User> userList = userDao.getUserByBranchAndRole(branchId, CommonConstant.ROLE_ID_ADMIN_AKS);
+        if (userList != null && userList.size() > 0) {
         for (User user : userList){
             //Send notif ke nip tertentu
             Notifikasi notif= new Notifikasi();
@@ -351,14 +346,14 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             notif.setNote(keterangan);
             notif.setCreatedWho(createdWho);
             notif.setTo("ditentukan");
-
             notifikasiList.add(notif);
+        }
         }
         return notifikasiList;
     }
 
     @Override
-    public  List<Notifikasi> saveAddPengajuan(PengajuanBiaya bean, List<PengajuanBiayaDetail> pengajuanBiayaDetailList) throws GeneralBOException {
+    public List<Notifikasi> saveAddPengajuan(PengajuanBiaya bean, List<PengajuanBiayaDetail> pengajuanBiayaDetailList) throws GeneralBOException {
         logger.info("[PengajuanBiayaBoImpl.saveAddPengajuan] start process >>>");
         List<Notifikasi> notifikasiList = new ArrayList<>();
         List<ItPengajuanBiayaDetailEntity> pengajuanBiayaDetailEntityList = new ArrayList<>();
@@ -368,10 +363,14 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
         c.add(Calendar.DATE, -1);
         tanggalSekarang = new Date(c.getTimeInMillis());
 
-        // mengecek dahulu apakah masih mengajukan biaya
-        List<ItPengajuanBiayaDetailEntity> validasiMasihMengajukan = pengajuanBiayaDetailDao.getListMasihMengajukan(bean.getBranchId(),bean.getDivisiId());
+        // mengecek dahulu apakah masih mengajukan biaya -edited by aji 060-3-2021
+        List<ItPengajuanBiayaDetailEntity> validasiMasihMengajukan = new ArrayList<>();
+        for(PengajuanBiayaDetail pengajuanBiayaDetail : pengajuanBiayaDetailList){
+            validasiMasihMengajukan.addAll(pengajuanBiayaDetailDao.getListMasihMengajukan(bean.getBranchId(), bean.getDivisiId(),pengajuanBiayaDetail.getNoBudgeting()));
+        }
+//        List<ItPengajuanBiayaDetailEntity> validasiMasihMengajukan = pengajuanBiayaDetailDao.getListMasihMengajukan(bean.getBranchId(), bean.getDivisiId());
 
-        if (validasiMasihMengajukan.size()>0){
+        if (validasiMasihMengajukan != null && validasiMasihMengajukan.size() > 0) {
             String status = "[PengajuanBiayaBoImpl.saveAddPengajuan] ERROR : masih ada pengajuan biaya yang belum di approve";
             logger.error(status);
             throw new GeneralBOException(status);
@@ -409,7 +408,6 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                 }
 
                 detailEntity.setKeterangan(pengajuanBiayaDetail.getKeterangan());
-
                 detailEntity.setCreatedDate(bean.getCreatedDate());
                 detailEntity.setLastUpdate(bean.getLastUpdate());
                 detailEntity.setCreatedWho(bean.getCreatedWho());
@@ -423,7 +421,6 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                     logger.error("[PengajuanBiayaBoImpl.saveAddPengajuan] Error, " + status);
                     throw new GeneralBOException(status);
                 }
-
                 pengajuanBiayaDetailEntityList.add(detailEntity);
             }
 
@@ -455,11 +452,10 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             List<User> userList = new ArrayList<>();
             List<ImPosition> positionList ;
 
-            ImPosition position = positionDao.getById("positionId",bean.getDivisiId());
-            String[] koderingPosisi = position.getKodering().split("\\.");
-
+            ImPosition position = positionDao.getById("positionId", bean.getDivisiId());
             try {
-                positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"."+koderingPosisi[1]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_MUDA);
+                String[] koderingPosisi = position.getKodering().split("\\.");
+                positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0] + "." + koderingPosisi[1] + "%", CommonConstant.KELOMPOK_ID_PEJABAT_MUDA);
 
                 for (ImPosition imPosition : positionList ){
                     userList.addAll(userDao.getUserPegawaiByBranchAndPositionAndRole(bean.getBranchId(),imPosition.getPositionId()));
@@ -542,20 +538,17 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             }
 
         }
-        logger.info("[PengajuanBiayaBoImpl.saveAddPengajuanBiaya] end process <<<");
+        logger.info("[PengajuanBiayaBoImpl.saveAddPengajuan] end process <<<");
         return notifikasiList;
     }
 
     @Override
     public List<PengajuanBiaya> getByCriteria(PengajuanBiaya searchBean) throws GeneralBOException {
         logger.info("[PengajuanBiayaBoImpl.getByCriteria] start process >>>");
-
         // Mapping with collection and put
         List<PengajuanBiaya> listOfResult = new ArrayList();
-
         if (searchBean != null) {
             Map hsCriteria = new HashMap();
-
             if (searchBean.getPengajuanBiayaId() != null && !"".equalsIgnoreCase(searchBean.getPengajuanBiayaId())) {
                 hsCriteria.put("pengajuan_biaya_id", searchBean.getPengajuanBiayaId());
             }
@@ -591,15 +584,13 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             } else {
                 hsCriteria.put("flag", "Y");
             }
-
             List<ImPengajuanBiayaEntity> imPengajuanBiayaEntity = null;
             try {
                 imPengajuanBiayaEntity = pengajuanBiayaDao.getByCriteria(hsCriteria);
             } catch (HibernateException e) {
-                logger.error("[PengajuanBiayaBoImpl.getSearchPengajuanBiayaByCriteria] Error, " + e.getMessage());
+                logger.error("[PengajuanBiayaBoImpl.getByCriteria] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
             }
-
             if(imPengajuanBiayaEntity != null){
                 PengajuanBiaya returnPengajuanBiaya;
                 // Looping from dao to object and save in collection
@@ -766,7 +757,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
         try {
             itPengajuanBiayaDetailEntityList = pengajuanBiayaDetailDao.getByCriteria(hsCriteria);
         } catch (HibernateException e) {
-            logger.error("[PengajuanBiayaBoImpl.getSearchPengajuanBiayaByCriteria] Error, " + e.getMessage());
+            logger.error("[PengajuanBiayaBoImpl.searchPengajuanDetail] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
 
@@ -841,7 +832,6 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                 }else if ("N".equalsIgnoreCase(pengajuanBiayaDetailEntity.getApprovalKasubdivFlag())){
                     returnPengajuanBiayaDetail.setStatusApproval("NKS");
                 }
-
 
                 String positionId = CommonUtil.userPosisiId();
                 String kelompokId="";
@@ -937,7 +927,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
         hashMap.put("rk_id",rkId);
         // Mapping with collection and put
         List<PengajuanBiayaDetail> listOfResult = new ArrayList();
-        List<ItPengajuanBiayaDetailEntity> itPengajuanBiayaDetailEntityList = null;
+        List<ItPengajuanBiayaDetailEntity> itPengajuanBiayaDetailEntityList;
         try {
             itPengajuanBiayaDetailEntityList = pengajuanBiayaDetailDao.getByCriteria(hashMap);
         } catch (HibernateException e) {
@@ -975,7 +965,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             // Looping from dao to object and save in collection
             for(ItPengajuanBiayaDetailEntity pengajuanBiayaDetailEntity : itPengajuanBiayaDetailEntityList){
                 List<ItJurnalEntity> jurnalEntityList = jurnalDao.getListJurnalByPengajuanId(pengajuanBiayaDetailEntity.getPengajuanBiayaDetailId());
-                if (jurnalEntityList.size()==0){
+                if (jurnalEntityList.size() > 0) {
                     List<ItJurnalDetailEntity> jurnalDetailEntityList = jurnalDetailDao.getListJurnalDetailByNoNota(pengajuanBiayaDetailEntity.getPengajuanBiayaDetailId());
                     //cek sudah pernah dibayar uang mukanya
                     if (jurnalDetailEntityList.size()>0){
@@ -1000,9 +990,9 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
 
     @Override
     public List<Notifikasi> saveApproveAtasanPengajuan(PengajuanBiayaDetail bean) throws GeneralBOException {
-        logger.info("[PengajuanBiayaBoImpl.saveApprove] start process >>>");
+        logger.info("[PengajuanBiayaBoImpl.saveApproveAtasanPengajuan] start process >>>");
         List<Notifikasi> notifikasiList = new ArrayList<>();
-        ItPengajuanBiayaDetailEntity pengajuanBiayaDetailEntity = null;
+        ItPengajuanBiayaDetailEntity pengajuanBiayaDetailEntity;
         List<User> userList = new ArrayList<>();
 
         try {
@@ -1010,7 +1000,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             pengajuanBiayaDetailEntity = pengajuanBiayaDetailDao.getById("pengajuanBiayaDetailId", bean.getPengajuanBiayaDetailId(),"Y");
         } catch (HibernateException e) {
             logger.error("[PengajuanBiayaBoImpl.saveApproveAtasanPengajuan] Error, " + e.getMessage());
-            throw new GeneralBOException("Found problem when searching data PengajuanBiaya by Kode PengajuanBiaya, please inform to your admin...," + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data PengajuanBiaya , please inform to your admin...," + e.getMessage());
         }
 
         if (pengajuanBiayaDetailEntity != null) {
@@ -1030,7 +1020,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                     String[] koderingPosisi = position.getKodering().split("\\.");
                     List<ImPosition> positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_MADYA);
 
-                    for (ImPosition imPosition : positionList ){
+                    for (ImPosition imPosition : positionList) {//perlu dicek
                         userList=userDao.getUserPegawaiByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),imPosition.getPositionId());
                     }
 
@@ -1042,7 +1032,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
 
                         positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_UTAMA);
 
-                        for (ImPosition imPosition : positionList ){
+                        for (ImPosition imPosition : positionList) {//perlu dicek
                             userList=userDao.getUserPegawaiByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),imPosition.getPositionId());
                         }
 
@@ -1176,10 +1166,11 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             // Get data from database by ID
             pengajuanBiayaDetailEntity = pengajuanBiayaDetailDao.getById("pengajuanBiayaDetailId", bean.getPengajuanBiayaDetailId(),"Y");
         } catch (HibernateException e) {
-            logger.error("[PengajuanBiayaBoImpl.saveApproveKeuanganPengajuan] Error, " + e.getMessage());
-            throw new GeneralBOException("Found problem when searching data PengajuanBiaya by Kode PengajuanBiaya, please inform to your admin...," + e.getMessage());
+            String message = "[PengajuanBiayaBoImpl.saveApproveKeuanganPengajuan] Error, " + e.getMessage();
+            logger.error(message);
+            throw new GeneralBOException(message);
         }
-
+        try {
         if (pengajuanBiayaDetailEntity != null) {
             //Approve
             switch (bean.getStatusApproval()){
@@ -1290,13 +1281,18 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                 }
             }
         }
+        } catch (Exception e) {
+            String message = "[PengajuanBiayaBoImpl.saveApproveKeuanganPengajuan] Error, " + e.getMessage();
+            logger.error(message);
+            throw new GeneralBOException(message);
+        }
         logger.info("[PengajuanBiayaBoImpl.saveApproveKeuanganPengajuan] end process <<<");
         return notifikasiList;
     }
 
     @Override
     public List<PengajuanBiayaDetail> getDetailPembayaran(String pengajuanBiayaId) throws GeneralBOException {
-        logger.info("[PengajuanBiayaBoImpl.getDetailPembayaran] start process >>>");
+        logger.info("[PengajuanBiayaBoImpl.getKasDetail] start process >>>");
         List<PengajuanBiayaDetail> listOfResult = new ArrayList<>();
         ImPengajuanBiayaEntity pengajuanBiayaEntity = new ImPengajuanBiayaEntity();
         List<ItPengajuanBiayaDetailEntity> pengajuanBiayaDetailEntityList ;
@@ -1304,8 +1300,9 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             pengajuanBiayaDetailEntityList = pengajuanBiayaDetailDao.getByPengajuanBiayaId(pengajuanBiayaId);
             pengajuanBiayaEntity=pengajuanBiayaDao.getById("pengajuanBiayaId",pengajuanBiayaId);
         } catch (HibernateException e) {
-            logger.error("[PengajuanBiayaBoImpl.getDetailPembayaran] Error, " + e.getMessage());
-            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+            String message = "[PengajuanBiayaBoImpl.getKasDetail] Error, " + e.getMessage();
+            logger.error(message);
+            throw new GeneralBOException("Found problem when searching data by id, please info to your admin..." + e.getMessage());
         }
         if(pengajuanBiayaDetailEntityList != null){
             PengajuanBiayaDetail returnData;
@@ -1322,7 +1319,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                 listOfResult.add(returnData);
             }
         }
-        logger.info("[PengajuanBiayaBoImpl.getDetailPembayaran] end process <<<");
+        logger.info("[PengajuanBiayaBoImpl.getKasDetail] end process <<<");
 
         return listOfResult;
     }
@@ -1341,14 +1338,15 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
         returnData.setRkId(data.getRkId());
         returnData.setCoaTarget(data.getCoaTarget());
         ImPosition position = positionDao.getById("positionId",data.getDivisiId());
-        returnData.setDivisiName(position.getPositionName());
-        returnData.setCoaDivisi(position.getKodering());
+        returnData.setDivisiName(position == null ? null : position.getPositionName());
+        returnData.setCoaDivisi(position == null ? null : position.getKodering());
 
         List<ImBranches> branchesList = branchDao.getListBranchById(data.getBranchId());
+        if(branchesList.size() > 0){
         for (ImBranches branches : branchesList){
             returnData.setBranchName(branches.getBranchName());
         }
-
+        }
         switch (data.getTransaksi()){
             case "I":
                 returnData.setTransaksiName("Investasi");
@@ -1536,6 +1534,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             throw new GeneralBOException("Found problem when searching data PengajuanBiaya by Kode PengajuanBiaya, please inform to your admin...," + e.getMessage());
         }
 
+        try {
         if (pengajuanBiayaDetailEntity != null) {
             pengajuanBiayaDetailEntity.setNotApprovalNote(bean.getNotApprovalNote());
             pengajuanBiayaDetailEntity.setClosed("Y");
@@ -1696,7 +1695,12 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                 }
             }
         }
-
+        }
+        catch (Exception e){
+            String message = "[PengajuanBiayaBoImpl.saveNotApprovePengajuanBiaya] Error, " + e.getMessage();
+            logger.error(message);
+            throw new GeneralBOException(message);
+        }
         logger.info("[PengajuanBiayaBoImpl.saveNotApprovePengajuanBiaya] end process <<<");
         return notifikasiList;
     }
@@ -1724,8 +1728,8 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                 // Update into database
                 pengajuanBiayaDao.updateAndSave(pengajuanBiayaEntity);
             } catch (HibernateException e) {
-                logger.error("[PengajuanBiayaBoImpl.saveNotApprovePengajuanBiaya] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving update data PengajuanBiaya, please info to your admin..." + e.getMessage());
+                logger.error("[PengajuanBiayaBoImpl.cekApakahBisaDiClose] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem , please info to your admin..." + e.getMessage());
             }
         }
 
@@ -1749,7 +1753,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             }
         } catch (HibernateException e) {
             logger.error("[PengajuanBiayaBoImpl.setRkSudahDikirim] Error, " + e.getMessage());
-            throw new GeneralBOException("Found problem when saving update data PengajuanBiaya, please info to your admin..." + e.getMessage());
+            throw new GeneralBOException("Found problem , please info to your admin..." + e.getMessage());
         }
 
         logger.info("[PengajuanBiayaBoImpl.setRkSudahDikirim] end process <<<");
@@ -1757,11 +1761,11 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
 
     @Override
     public PengajuanBiaya cekApakahBolehRk(String pengajuanId) throws GeneralBOException {
-        logger.info("[PengajuanBiayaBoImpl.setRkSudahDikirim] start process >>>");
+        logger.info("[PengajuanBiayaBoImpl.cekApakahBolehRk] start process >>>");
         PengajuanBiaya pengajuanBiaya = new PengajuanBiaya();
         ImPengajuanBiayaEntity pengajuanBiayaEntity = pengajuanBiayaDao.getById("pengajuanBiayaId",pengajuanId);
 
-        if (!CommonConstant.BRANCH_KP.equalsIgnoreCase(CommonUtil.userBranchLogin())){
+        if (pengajuanBiayaEntity != null && !CommonConstant.BRANCH_KP.equalsIgnoreCase(CommonUtil.userBranchLogin())) {
             if ("Y".equalsIgnoreCase(pengajuanBiayaEntity.getRkDikirim())){
                 pengajuanBiaya.setShowTerimaRk(true);
             }
@@ -1820,7 +1824,14 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
 
                 for (ItPengajuanBiayaDetailEntity pengajuanBiayaDetailEntity : pengajuanBiayaDetailEntityList){
                     pengajuanBiayaDetailEntity.setClosed("Y");
+
+                    try {
+                        // Update detail into database
                     pengajuanBiayaDetailDao.updateAndSave(pengajuanBiayaDetailEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[PengajuanBiayaBoImpl.batalkanPengajuanBiaya] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data detail PengajuanBiaya, please info to your admin..." + e.getMessage());
+                    }
                 }
 
                 List<ImNotifikasiEntity> notifikasiEntityList = notifikasiDao.getDataByNoRequest(bean.getPengajuanBiayaId());
@@ -1852,6 +1863,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
         String status="Y";
         ItPengajuanBiayaDetailEntity pengajuanBiayaDetailEntity = pengajuanBiayaDetailDao.getById("pengajuanBiayaDetailId",pengajuanDetailId);
 
+        if(pengajuanBiayaDetailEntity != null) {
         List<ItPengajuanBiayaDetailEntity> pengajuanBiayaDetailEntityList = pengajuanBiayaDetailDao.getByPengajuanBiayaId(pengajuanBiayaDetailEntity.getPengajuanBiayaId());
         for(ItPengajuanBiayaDetailEntity data : pengajuanBiayaDetailEntityList){
             if (data.getClosed()==null){
@@ -1859,7 +1871,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                 break;
             }
         }
-
+        }
         logger.info("[PengajuanBiayaBoImpl.setRkSudahDikirim] end process <<<");
         return status;
     }
@@ -1874,9 +1886,10 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             logger.error("[PengajuanBiayaBoImpl.getDetailPembayaranForReport] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
-        logger.info("[PengajuanBiayaBoImpl.getDetailPembayaran] end process <<<");
+        logger.info("[PengajuanBiayaBoImpl.getDetailPembayaranForReport] end process <<<");
 
-        return convertPengajuanBiayaDetail(pengajuanBiayaDetailEntity);
+        PengajuanBiayaDetail detail = convertPengajuanBiayaDetail(pengajuanBiayaDetailEntity);
+        return detail;
     }
 
     @Override
@@ -1887,8 +1900,8 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
         try {
             pengajuanBiayaDetailEntity = pengajuanBiayaDetailDao.getById("pengajuanBiayaDetailId",id);
         } catch (HibernateException e) {
-            logger.error("[PengajuanBiayaBoImpl.getDetailPembayaranForReport] Error, " + e.getMessage());
-            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+            logger.error("[PengajuanBiayaBoImpl.cekApakahPengajuanBisaDiubah] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by id, please info to your admin..." + e.getMessage());
         }
         if (jumlah.compareTo(pengajuanBiayaDetailEntity.getJumlah())>0){
             result = false;
@@ -1899,13 +1912,16 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
 
     @Override
     public PengajuanBiayaDetail getDetailById(String id){
-        PengajuanBiayaDetail data = new PengajuanBiayaDetail();
+        logger.info("[PengajuanBiayaBoImpl.getDetailById] start process >>>");
+        PengajuanBiayaDetail data;
         try {
-            ItPengajuanBiayaDetailEntity entity = new ItPengajuanBiayaDetailEntity();
-            entity = pengajuanBiayaDetailDao.getById("pengajuanBiayaDetailId",id);
+            ItPengajuanBiayaDetailEntity entity = pengajuanBiayaDetailDao.getById("pengajuanBiayaDetailId", id);
             data = convertPengajuanBiayaDetail(entity);
         }catch (Exception e){
+            logger.error("[PengajuanBiayaBoImpl.getDetailById] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by id, please info to your admin..." + e.getMessage());
         }
+        logger.info("[PengajuanBiayaBoImpl.getDetailById] end process <<<");
         return data;
     }
 
@@ -2013,7 +2029,8 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
 
     @Override
     public PengajuanBiayaDetail modalPopUpDetail(String id){
-        return convertPengajuanBiayaDetail(pengajuanBiayaDetailDao.getById("pengajuanBiayaDetailId",id));
+        PengajuanBiayaDetail result = convertPengajuanBiayaDetail(pengajuanBiayaDetailDao.getById("pengajuanBiayaDetailId", id));
+        return result;
     }
 
     @Override
@@ -2028,7 +2045,13 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             data.setDiterimaFlag("Y");
             data.setDiterimaDate(new Timestamp(new java.util.Date().getTime()));
             data.setDiterimaId(CommonUtil.userIdLogin());
+            try {
             pengajuanBiayaDetailDao.updateAndSave(data);
+            }catch (Exception e){
+                String message = "[PengajuanBiayaBoImpl.setRkDiterima] Error, " + e.getMessage();
+                logger.error(message);
+                throw new GeneralBOException(message);
+            }
         }
         logger.info("[PengajuanBiayaBoImpl.setRkDiterima] end process <<<");
     }
@@ -2128,7 +2151,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
 
     @Override
     public List<PengajuanBiayaRk> getDaftarPembayaranDo(PengajuanBiayaRk bean) throws GeneralBOException {
-        logger.info("[PengajuanBiayaBoImpl.getPengajuanBiayaForRk] start process >>>");
+        logger.info("[PengajuanBiayaBoImpl.getDaftarPembayaranDo] start process >>>");
         List<ItAkunPengajuanBiayaRkEntity> pengajuanBiayaRkEntityList = new ArrayList<>();
         List<PengajuanBiayaRk> pengajuanBiayaRkList = new ArrayList<>();
         if (bean != null) {
@@ -2214,7 +2237,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                 }
             }
         }
-        logger.info("[PengajuanBiayaBoImpl.getPengajuanBiayaForRk] end process <<<");
+        logger.info("[PengajuanBiayaBoImpl.getDaftarPembayaranDo] end process <<<");
         return pengajuanBiayaRkList;
     }
 
@@ -2362,11 +2385,9 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
     public  void savePembayaranPengajuanDoFinal(List<PengajuanBiayaRk> beanList,String noJurnal,String metodeBayar) throws GeneralBOException {
         logger.info("[PengajuanBiayaBoImpl.savePembayaranPengajuanDoFinal] start process >>>");
         if (beanList!=null) {
-            String rkId = pengajuanBiayaDetailDao.getNextRkId();
             for (PengajuanBiayaRk bean : beanList){
                 if (bean.isSave()){
                     ItAkunPengajuanBiayaRkEntity entity = pengajuanBiayaRkDao.getById("pengajuanBiayaRkId",bean.getPengajuanBiayaRkId());
-
                     entity.setNoJurnal(noJurnal);
                     entity.setMetodeBayar(metodeBayar);
                     entity.setStatus(bean.getStatus());

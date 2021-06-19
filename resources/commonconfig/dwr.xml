@@ -552,16 +552,28 @@
             <param name="class" value="com.neurix.akuntansi.master.master.action.MasterAction"/>
         </create>
         <convert converter="bean" match="com.neurix.akuntansi.master.master.model.Master"/>
+        <!--<create creator="new">-->
+            <!--<param name="class"-->
+                   <!--value="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.action.PembayaranUtangPiutangAction"/>-->
+        <!--</create>-->
+        <!--<convert converter="bean"-->
+                 <!--match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutangDetail"/>-->
+        <!--<convert converter="bean"-->
+                 <!--match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutang"/>-->
+        <!--<convert converter="bean" match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.EfakturDTO"/>-->
+        <!--<convert converter="bean" match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.Lampiran"/>-->
+        <!--<convert converter="bean" match="com.neurix.akuntansi.master.trans.model.Trans"/>-->
+
         <create creator="new">
             <param name="class"
-                   value="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.action.PembayaranUtangPiutangAction"/>
+                   value="com.neurix.akuntansi.transaksi.kas.action.KasAction"/>
         </create>
         <convert converter="bean"
-                 match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutangDetail"/>
+                 match="com.neurix.akuntansi.transaksi.kas.model.KasDetail"/>
         <convert converter="bean"
-                 match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutang"/>
-        <convert converter="bean" match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.EfakturDTO"/>
-        <convert converter="bean" match="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.Lampiran"/>
+                 match="com.neurix.akuntansi.transaksi.kas.model.Kas"/>
+        <convert converter="bean" match="com.neurix.akuntansi.transaksi.kas.model.EfakturDTO"/>
+        <convert converter="bean" match="com.neurix.akuntansi.transaksi.kas.model.Lampiran"/>
         <convert converter="bean" match="com.neurix.akuntansi.master.trans.model.Trans"/>
 
         <create creator="new">
@@ -584,6 +596,13 @@
         <convert converter="bean"
                  match="com.neurix.simrs.master.kategoritindakanina.model.ImSimrsKategoriTindakanInaEntity"/>
 
+        <create creator="new">
+            <param name="class" value="com.neurix.akuntansi.master.tipeJurnal.action.TipeJurnalAction"/>
+        </create>
+        <convert converter="bean"
+                 match="com.neurix.akuntansi.master.tipeJurnal.model.ImTipeJurnalEntity"/>
+        <convert converter="bean"
+                 match="com.neurix.akuntansi.master.tipeJurnal.model.TipeJurnal"/>
 
         <create creator="new">
             <param name="class"
@@ -616,6 +635,12 @@
                  match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.PerhitunganBudgeting"/>
         <convert converter="bean" match="com.neurix.akuntansi.master.parameterbudgeting.model.ParameterBudgeting"/>
         <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.KategoriParameter"/>
+
+        <create creator="new">
+            <param name="class" value="com.neurix.akuntansi.transaksi.koreksi.action.KoreksiAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.akuntansi.transaksi.koreksi.model.Koreksi"/>
+        <convert converter="bean" match="com.neurix.akuntansi.transaksi.koreksi.model.KoreksiDetail"/>
 
         <!--Master Hcm-->
         <create creator="new">
@@ -868,10 +893,15 @@
         <convert converter="bean" match="com.neurix.simrs.transaksi.kandungan.model.Kandungan"/>
         <convert converter="bean" match="com.neurix.simrs.transaksi.kandungan.model.Partograf"/>
 
+        <!--<create creator="new">-->
+            <!--<param name="class" value="com.neurix.akuntansi.transaksi.penyewaanLahan.action.PenyewaanLahanAction"/>-->
+        <!--</create>-->
+        <!--<convert converter="bean" match="com.neurix.akuntansi.transaksi.penyewaanLahan.model.PenyewaanLahan"/>-->
+
         <create creator="new">
-            <param name="class" value="com.neurix.akuntansi.transaksi.penyewaanLahan.action.PenyewaanLahanAction"/>
+            <param name="class" value="com.neurix.akuntansi.transaksi.sewaLahan.action.SewaLahanAction"/>
         </create>
-        <convert converter="bean" match="com.neurix.akuntansi.transaksi.penyewaanLahan.model.PenyewaanLahan"/>
+        <convert converter="bean" match="com.neurix.akuntansi.transaksi.sewaLahan.model.SewaLahan"/>
 
         <create creator="new">
             <param name="class" value="com.neurix.simrs.master.pelayanan.action.PelayananAction"/>
@@ -1023,6 +1053,20 @@
         <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity"/>
         <convert converter="bean" match="com.neurix.simrs.transaksi.asesmenicu.model.KeseimbanganIcu"/>
         <convert converter="bean" match="com.neurix.simrs.transaksi.obatracik.model.ObatRacik"/>
+        <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsKontrolUlangEntity"/>
+
+        <!--Aji Noor-->
+        <create creator="new">
+            <param name="class" value="com.neurix.akuntansi.master.akunMataUang.action.AkunMataUangAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.akuntansi.master.akunMataUang.model.ImAkunMataUangEntity"/>
+        <convert converter="bean" match="com.neurix.akuntansi.master.akunMataUang.model.AkunMataUang"/>
+        <convert converter="bean" match="com.neurix.akuntansi.master.trans.model.ImTransEntity"/>
+
+        <!--Common Util-->
+        <create creator="new">
+            <param name="class" value="com.neurix.common.util.CommonUtil"/>
+        </create>
 
     </allow>
 </dwr>

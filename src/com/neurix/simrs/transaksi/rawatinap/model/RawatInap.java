@@ -1,9 +1,13 @@
 package com.neurix.simrs.transaksi.rawatinap.model;
 
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsKontrolUlangEntity;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Toshiba on 08/11/2019.
@@ -137,6 +141,16 @@ public class RawatInap {
     private String flagBatal;
     private String idBentukGizi;
     private String indikasi;
+
+    private List<ItSimrsKontrolUlangEntity> kontrolUlangEntityList = new ArrayList<>();
+
+    public List<ItSimrsKontrolUlangEntity> getKontrolUlangEntityList() {
+        return kontrolUlangEntityList;
+    }
+
+    public void setKontrolUlangEntityList(List<ItSimrsKontrolUlangEntity> kontrolUlangEntityList) {
+        this.kontrolUlangEntityList = kontrolUlangEntityList;
+    }
 
     public String getIndikasi() {
         return indikasi;

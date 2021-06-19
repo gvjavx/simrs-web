@@ -709,11 +709,11 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
         return dataFinal;
     }
     @Override
-    public List<JadwalShiftKerjaDetail> getJadwalShiftKerjaByUnitAndProfesiAndTanggal(String branchId, Date tglFrom,Date tglTo,String profesiId) throws GeneralBOException {
+    public List<JadwalShiftKerjaDetail> getJadwalShiftKerjaByUnitAndProfesiAndTanggal(String branchId, Date tgl,Date tglTo,String profesiId) throws GeneralBOException {
         logger.info("[JadwalShiftKerjaBoImpl.getJadwalShiftKerjaByUnitAndTanggal] start process >>>");
         List<JadwalShiftKerjaDetail> dataFinal = new ArrayList<>();
         try {
-            dataFinal = jadwalShiftKerjaDao.getJadwalShiftKerjaByUnitAndProfesiAndTanggal(branchId,tglFrom,tglTo,profesiId);
+            dataFinal = jadwalShiftKerjaDao.getJadwalShiftKerjaByUnitAndProfesiAndTanggal(branchId,tgl,profesiId);
         } catch (HibernateException e) {
             logger.error("[JadwalShiftKerjaBoImpl.getJadwalShiftKerjaByUnitAndTanggal] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

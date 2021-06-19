@@ -2824,4 +2824,40 @@ ADD COLUMN resiko_jatuh VARCHAR(50);
 ALTER TABLE it_simrs_obat_racik
 ADD COLUMN frekuensi TEXT;
 
+CREATE TABLE public.it_simrs_kontrol_ulang
+(
+  id_kontrol_ulang character varying(50) NOT NULL,
+  no_checkup character varying(50),
+  id_detail_checkup character varying(50),
+  tgl_kontrol date,
+  id_pelayanan character varying(50),
+  id_dokter character varying(50),
+  status_kontrol character varying(1),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_kontrol_ulang PRIMARY KEY (id_kontrol_ulang)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_kontrol_ulang
+  OWNER TO postgres;
+
+ CREATE SEQUENCE seq_kontrol_ulang;
+
+INSERT INTO im_simrs_rekam_medis_pasien VALUES
+('RMM00000118','SK 001','Surat Kontrol','surat','SP21','SP21','printPernyataan','Y','C','migrasi',now(),now(),'migrasi','1');
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000304','RMM00000118','rawat_jalan','19','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000305','RMM00000118','igd','19','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000306','RMM00000118','rawat_inap','19','Y','C','migrasi',now(),now(),'migrasi');
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000307','RMM00000100','radiologi','2','Y','C','migrasi',now(),now(),'migrasi');
+
 

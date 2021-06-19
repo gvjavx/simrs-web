@@ -36,7 +36,7 @@ public interface PositionBo extends BaseMasterBo<Position> {
     List<Position> typeAheadPosition(String key) throws GeneralBOException;
 
     List<Position> getComboBodBoc() throws GeneralBOException;
-    public PersonilPosition getAndCheckJabatanTerpakai(String positionId, String branchId) throws GeneralBOException;
+    public PersonilPosition getAndCheckJabatanTerpakai(String positionId, String branchId, String nip) throws GeneralBOException;
 
     public List<Position> getComboPositionWithCriteria(String query);
 

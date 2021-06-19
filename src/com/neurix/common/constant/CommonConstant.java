@@ -106,11 +106,13 @@ public class CommonConstant {
     public final static String REPORT_PAYROLL_CUTI_PANJANG = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollCutiPanjangBranch3.jrxml";
     public final static String REPORT_PAYROLL_CUTI_TAHUNAN = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollCutiTahunanBranch3.jrxml";
 
-    //ptpnx e-farming
+    //role name
     public final static String ROLE_ADMIN_POLI = "ADMIN POLI";
     public final static String ROLE_ADMIN_RS = "ADMIN RS";
     public final static String ROLE_ADMIN_IGD = "ADMIN IGD";
     public final static String ROLE_ADMIN_APOTEK = "ADMIN APOTEK";
+    public final static String ROLE_DOKTER_UMUM = "Dokter Umum";
+    public final static String ROLE_DOKTER_SPESIALIS = "Dokter Spesialis";
 
 
     //JENIS PEGAWAI
@@ -184,6 +186,9 @@ public class CommonConstant {
     public final static String COA_PAYROLL = CommonUtil.getPropertyParams("coa.bank.payroll");
     public final static String KELOMPOK_ID_PEJABAT_MUDA = CommonUtil.getPropertyParams("kelompok.id.pejabat.muda");
     public final static String KELOMPOK_ID_PEJABAT_MADYA = CommonUtil.getPropertyParams("kelompok.id.pejabat.madya");
+    //RAKA-09JUN2021 ===> kelompok khusus manager procurement, dibuat untuk handle tunj.Jab & Struk yg berbeda (antara Madya dan Utama)
+    public final static String KELOMPOK_ID_MAN_PROCUREMENT = CommonUtil.getPropertyParams("kelompok.id.pejabat.man_procurement");
+    //RAKA-end
     public final static String KELOMPOK_ID_PEJABAT_UTAMA = CommonUtil.getPropertyParams("kelompok.id.pejabat.utama");
     public final static String KELOMPOK_ID_STAFF = CommonUtil.getPropertyParams("kelompok.id.pelaksana");
     public final static String BAGIAN_ID_BOD =CommonUtil.getPropertyParams("bagian.bod");

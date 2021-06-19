@@ -78,11 +78,11 @@
             </result>
         </action>
 
-        <action name="paging_displaytag_pembayaranUtangPiutang"
-                class="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.action.PembayaranUtangPiutangAction" method="paging">
-            <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/SearchPembayaranUtangPiutang.jsp</result>
-        </action>
+        <!--<action name="paging_displaytag_pembayaranUtangPiutang"-->
+                <!--class="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.action.PembayaranUtangPiutangAction" method="paging">-->
+            <!--<interceptor-ref name="defaultStack"/>-->
+            <!--<result name="success">/pages/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/SearchPembayaranUtangPiutang.jsp</result>-->
+        <!--</action>-->
 
     </package>
 </struts>

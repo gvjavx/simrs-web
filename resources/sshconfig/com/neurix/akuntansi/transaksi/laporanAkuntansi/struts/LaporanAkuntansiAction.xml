@@ -107,20 +107,23 @@
             <!-- HASIL LAPORAN -->
             <result name="print_report_akuntansi_neraca_saldo" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/NeracaSaldo.jasper</param>
+                <param name="connection">connection</param>
                 <param name="format">PDF</param>
-                <param name="dataSource">listNeracaSaldo</param>
+                <!--<param name="dataSource">listNeracaSaldo</param>-->
                 <param name="reportParameters">reportParams</param>
             </result>
             <result name="print_report_akuntansi_neraca_mutasi" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/NeracaMutasi.jasper</param>
+                <param name="connection">connection</param>
                 <param name="format">PDF</param>
-                <param name="dataSource">listNeracaSaldo</param>
+                <!--<param name="dataSource">listNeracaSaldo</param>-->
                 <param name="reportParameters">reportParams</param>
             </result>
             <result name="print_report_akuntansi_ikhitisar_buku_besar" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/IkhtisarBukuBesarPerBukuBantu.jasper</param>
+                <param name="connection">connection</param>
                 <param name="format">PDF</param>
-                <param name="dataSource">listIkhtisarBukuBesar</param>
+                <!--<param name="dataSource">listIkhtisarBukuBesar</param>-->
                 <param name="reportParameters">reportParams</param>
             </result>
 
@@ -155,7 +158,13 @@
                 <param name="reportParameters">reportParams</param>
             </result>
             <result name="print_report_closing_kasir" type="jasper">
-                <param name="location">/pages/report/com/neurix/akuntansi/ClosingKasir.jasper</param>
+                <param name="location">/pages/report/com/neurix/akuntansi/ClosedKasir.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="print_report_rekap_closing_kasir" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/RekapClosedKasir.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
@@ -176,13 +185,15 @@
             </result>
             <result name="print_report_akuntansi_ikhitisar_pendapatan_dokter" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/LaporanPendapatanPerDokterPerActivity.jasper</param>
-                <param name="dataSource">listPendapatanDokter</param>
+                <!--<param name="dataSource">listPendapatanDokter</param>-->
+                <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>
             <result name="print_report_akuntansi_ikhitisar_pendapatan_activity" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/LaporanPendapatanPerActivityPerDokter.jasper</param>
-                <param name="dataSource">listPendapatanDokter</param>
+                <!--<param name="dataSource">listPendapatanDokter</param>-->
+                <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>
@@ -212,7 +223,14 @@
             <!-- ARUS KAS -->
             <result name="print_report_arus_kas" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/LaporanArusKas.jasper</param>
-                <param name="dataSource">listArusKas</param>
+                <param name="connection">connection</param>
+                <!--<param name="dataSource">listArusKas</param>-->
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="print_report_arus_kas_detail" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/LaporanArusKasDetail.jasper</param>
+                <param name="dataSource">arusKasDTOList</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>
@@ -233,7 +251,8 @@
             </result>
             <result name="print_report_kompilasi" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/LaporanKompilasiUnit.jasper</param>
-                <param name="dataSource">listKonsol</param>
+                <param name="connection">connection</param>
+                <!--<param name="dataSource">listKonsol</param>-->
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>
@@ -241,25 +260,26 @@
 
             <!-- Kartu Buku Besar Per Buku Bantu -->
             <result name="print_report_akuntansi_kartu_buku_besar" type="jasper">
-                <param name="location">/pages/report/com/neurix/akuntansi/KartuBukuBesarPerBukuBantu.jasper</param>
-                <param name="dataSource">listBukuBesar</param>
+                <param name="location">/pages/report/com/neurix/akuntansi/KartuBukuBesarPerBukuBantu_dengan_master.jasper</param>
+                <!--<param name="dataSource">listBukuBesar</param>-->
+                <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>
             <result name="print_report_akuntansi_kartu_buku_besar_tanpa_master" type="jasper">
-                <param name="location">/pages/report/com/neurix/akuntansi/KartuBukuBesarPerBukuBantuTanpaMaster.jasper</param>
+                <param name="location">/pages/report/com/neurix/akuntansi/KartuBukuBesarPerBukuBantu_tanpa_master.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>
             <result name="print_report_akuntansi_kartu_buku_besar_tanggal" type="jasper">
-                <param name="location">/pages/report/com/neurix/akuntansi/KartuBukuBesarPerBukuBantuTanggal.jasper</param>
+                <param name="location">/pages/report/com/neurix/akuntansi/KartuBukuBesarPerBukuBantu_tanggal_dengan_master.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>
             <result name="print_report_akuntansi_kartu_buku_besar_tanggal_tanpa_master" type="jasper">
-                <param name="location">/pages/report/com/neurix/akuntansi/KartuBukuBesarPerBukuBantuTanggalTanpaMaster.jasper</param>
+                <param name="location">/pages/report/com/neurix/akuntansi/KartuBukuBesarPerBukuBantu_tanggal_tanpa_master.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>

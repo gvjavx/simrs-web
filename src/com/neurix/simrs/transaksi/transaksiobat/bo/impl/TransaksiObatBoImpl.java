@@ -87,13 +87,11 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     @Override
     public List<TransaksiObatDetail> getSearchObatTransaksiByCriteria(TransaksiObatDetail bean) throws GeneralBOException {
         logger.info("[TransaksiObatBoImpl.getSearchObatTransaksiByCriteria] START >>>>>>");
-
         List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
         List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities = getListEntityTransObatDetail(bean);
 
         if (obatDetailEntities.size() > 0) {
             TransaksiObatDetail transaksiObatDetail;
-            String idRacik = "";
             for (ImtSimrsTransaksiObatDetailEntity obatDetailEntity : obatDetailEntities) {
                 transaksiObatDetail = new TransaksiObatDetail();
                 transaksiObatDetail.setIdTransaksiObatDetail(obatDetailEntity.getIdTransaksiObatDetail());
@@ -117,11 +115,8 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
                 ImSimrsObatEntity obatEntity = getObatById(obatDetailEntity.getIdObat());
                 if (obatEntity != null) {
-
                     Boolean isKhusus = transaksiObatDetailDao.checkRekananKhusus(obatDetailEntity.getIdApprovalObat());
-
                     BigInteger cons = obatEntity.getLembarPerBox().multiply(obatEntity.getBijiPerLembar());
-
                     transaksiObatDetail.setNamaObat(obatEntity.getNamaObat());
                     transaksiObatDetail.setHarga(obatEntity.getHarga());
                     transaksiObatDetail.setIdPabrik(obatEntity.getIdPabrik());
@@ -161,8 +156,10 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                     }
 
                     // harga*qty
-                    BigInteger total = transaksiObatDetail.getHarga().multiply(transaksiObatDetail.getQty());
-                    transaksiObatDetail.setTotalHarga(total);
+                    if(transaksiObatDetail.getQtyApprove() != null && transaksiObatDetail.getQtyApprove().intValue() > 0){
+                        BigInteger total = transaksiObatDetail.getHarga().multiply(transaksiObatDetail.getQtyApprove());
+                        transaksiObatDetail.setTotalHarga(total);
+                    }
                 }
 
                 PermintaanResep permintaanResep = new PermintaanResep();
@@ -177,11 +174,9 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                         transaksiObatDetail.setNamaPasien(pasienEntity.getNama());
                     }
                 }
-
                 obatDetailList.add(transaksiObatDetail);
             }
         }
-
         logger.info("[TransaksiObatBoImpl.getSearchObatTransaksiByCriteria] END <<<<<");
         return obatDetailList;
     }
@@ -883,7 +878,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     }
 
     @Override
-    public void saveVerifikasiObat(List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities) throws GeneralBOException {
+    public void saveVerifikasiObat(List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities, BigInteger qtyApprove) throws GeneralBOException {
         logger.info("[TransaksiObatBoImpl.saveVerifikasiObat] START >>>>>>>>>>");
 
         if (batchEntities.size() > 0) {
@@ -930,17 +925,16 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
             }
 
             MtSimrsTransaksiObatDetailBatchEntity entity = new MtSimrsTransaksiObatDetailBatchEntity();
-            entity = batchEntities.get(0);
-
-            if (entity != null) {
-
+            if(entity != null){
+                entity = batchEntities.get(0);
                 ImtSimrsTransaksiObatDetailEntity entities = new ImtSimrsTransaksiObatDetailEntity();
-
                 try {
                     entities = transaksiObatDetailDao.getById("idTransaksiObatDetail", entity.getIdTransaksiObatDetail());
-
                     if (entities != null) {
 
+                        if(qtyApprove != null){
+                            entities.setQtyApprove(qtyApprove);
+                        }
                         entities.setFlagVerifikasi("Y");
                         entities.setLastUpdate(entity.getLastUpdate());
                         entities.setLastUpdateWho(entity.getLastUpdateWho());
@@ -958,7 +952,6 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                 }
             }
         }
-
         logger.info("[TransaksiObatBoImpl.saveVerifikasiObat] END <<<<<<<<<<");
     }
 

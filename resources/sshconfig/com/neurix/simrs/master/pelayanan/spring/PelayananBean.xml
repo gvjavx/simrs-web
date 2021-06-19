@@ -23,6 +23,7 @@
           p:jadwalShiftKerjaBoProxy-ref="jadwalShiftKerjaBoProxy"
           p:paketPeriksaBoProxy-ref="paketPeriksaBoProxy"
           p:biodataBoProxy-ref="biodataBoProxy"
+          p:obatPoliBoProxy-ref="obatPoliBoProxy"
     />
 
     <!--setting untuk action-->

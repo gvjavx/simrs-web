@@ -8,6 +8,7 @@ public class Aging implements Serializable {
     private String kodeRekening;
     private String namaRekening;
     private String noNota;
+    private String noJurnal;
     private Date tglJurnal;
     private String mataUang;
     private BigDecimal total;
@@ -296,4 +297,13 @@ public class Aging implements Serializable {
     public void setGrup(String grup) {
         this.grup = grup;
     }
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
+
 }

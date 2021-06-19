@@ -71,7 +71,7 @@ public interface CheckupDetailBo {
     public CrudResponse saveUploadPemeriksaan(ItSimrsUploadPendukungPemeriksaanEntity bean) throws GeneralBOException;
     public void deleteUploadPemeriksaan(String id) throws GeneralBOException;
     public List<UploadPendukungPemeriksaan> getListUploadPemeriksaan(UploadPendukungPemeriksaan bean) throws GeneralBOException;
-    public ItSimrsHeaderDetailCheckupEntity getEntityById(String id) throws GeneralBOException;
+    public HeaderDetailCheckup getEntityById(String id) throws GeneralBOException;
     public void sendToTppti(HeaderDetailCheckup bean) throws GeneralBOException;
     public void updateStatusPeriksa(HeaderDetailCheckup bean) throws GeneralBOException;
 }
