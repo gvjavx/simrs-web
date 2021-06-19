@@ -28,6 +28,13 @@
           p:username="postgres"
           p:password="postgres"/>
 
+    <!--<bean id="dataSource"-->
+          <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
+          <!--p:driverClassName="org.postgresql.Driver"-->
+          <!--p:url="jdbc:postgresql://207.148.122.42:5432/gomedsys"-->
+          <!--p:username="postgres"-->
+          <!--p:password="MGi-2299@@11!!"/>-->
+
     <!-- ====== DEV ======= -->
     <!--<bean id="dataSource"-->
     <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->

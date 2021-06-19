@@ -80,6 +80,15 @@ public class PermintaanResep{
     private String stTglAntrian;
     private String tipePelayanan;
     private String idObat;
+    private String idAsuransi;
+
+    public String getIdAsuransi() {
+        return idAsuransi;
+    }
+
+    public void setIdAsuransi(String idAsuransi) {
+        this.idAsuransi = idAsuransi;
+    }
 
     public String getIdObat() {
         return idObat;

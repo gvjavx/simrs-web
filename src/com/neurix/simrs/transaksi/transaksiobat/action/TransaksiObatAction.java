@@ -1055,6 +1055,22 @@ public class TransaksiObatAction extends BaseMasterAction {
                     obatDetail.setTipePelayanan(object.getString("tipe_pelayanan"));
                 }
 
+                HeaderCheckup headerCheckup = new HeaderCheckup();
+
+                try {
+                    headerCheckup = transaksiObatBo.getDataTransByIdApprovalResep(idApproval);
+                } catch (GeneralBOException e){
+                    logger.error("[TransakiObatAction.saveApproveResepObatPoli] Error. ", e);
+                    response.setStatus("error");
+                    response.setMessage("[TransakiObatAction.saveApproveResepObatPoli] Error. " + e.getCause());
+                    return response;
+                }
+
+                if (headerCheckup != null){
+                    obatDetail.setJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
+                    obatDetail.setRekanan(headerCheckup.getIdAsuransi());
+                }
+
                 try {
                     if(object.getString("keterangan") != null && !"".equalsIgnoreCase(object.getString("keterangan"))){
                         JSONArray json = new JSONArray(object.getString("keterangan"));

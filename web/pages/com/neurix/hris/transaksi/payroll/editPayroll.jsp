@@ -53,7 +53,7 @@
                     $('#waiting_dialog_search').dialog('open'); //show dialog loading
 
                     document.getElementById('nip').value = '';
-                    document.getElementById('pegawaiName').value = '';
+                    document.getElementById('pegawaiNameES').value = '';
 
                     document.getElementById('editSearch').value = false;
                     document.getElementById('reloadData').value = true;
@@ -73,7 +73,7 @@
             } else if ('reset' == tipe) {
 
                 document.getElementById('nip').value = '';
-                document.getElementById('pegawaiName').value = '';
+                document.getElementById('pegawaiNameES').value = '';
                 document.getElementById('editSearch').value = false;
                 document.getElementById('reloadData').value = false;
                 document.editPayrollForm.submit();
@@ -211,8 +211,8 @@
                                                             <%--<s:textfield cssStyle="display: none" id="txtBulanPayroll" name="payroll.bulan" required="false" readonly="false" cssClass="form-control"/>--%>
                                                             <%--<s:textfield cssStyle="display: none" id="txtTahunPayroll" name="payroll.tahun" required="false" readonly="false" cssClass="form-control"/>--%>
                                                             <%--<s:textfield cssStyle="display: none" id="personName1" name="payroll.nip" required="false" readonly="false" cssClass="form-control"/>--%>
-                                                        <s:hidden id="pegawaiId" name="payrollHeader.nip" />
-                                                        <s:textfield id="pegawaiName" name="payrollHeader.pegawaiName" cssClass="form-control"/>
+                                                        <s:hidden id="pegawaiIdES" name="payrollHeader.nip" />
+                                                        <s:textfield id="pegawaiNameES" name="payrollHeader.pegawaiName" cssClass="form-control"/>
                                                             <%--<s:textfield cssStyle="display: none" id="personName" name="payroll.name" required="false" readonly="false" cssClass="form-control"/>--%>
                                                     </table>
                                                 </td>
@@ -221,7 +221,7 @@
                                                     var functions, mapped;
                                                     // var prov = document.getElementById("provinsi1").value;
                                                     // var branchId = document.getElementById("branchId").value;
-                                                    $('#pegawaiName').typeahead({
+                                                    $('#pegawaiNameES').typeahead({
                                                         minLength: 2,
                                                         source: function (query, process) {
                                                             functions = [];
@@ -248,8 +248,8 @@
                                                         updater: function (item) {
                                                             var selectedObj = mapped[item];
                                                             var itemLabel = selectedObj.label;
-                                                            document.getElementById("pegawaiId").value = selectedObj.pegawaiId;
-                                                            document.getElementById("pegawaiName").value = selectedObj.pegawaiName;
+                                                            document.getElementById("pegawaiIdES").value = selectedObj.pegawaiId;
+                                                            document.getElementById("pegawaiNameES").value = selectedObj.pegawaiName;
 
                                                             return itemLabel;
                                                         }

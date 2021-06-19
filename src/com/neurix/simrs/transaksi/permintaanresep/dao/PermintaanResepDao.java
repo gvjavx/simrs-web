@@ -170,10 +170,11 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
                 "pr.tgl_antrian,\n" +
                 "pr.tujuan_pelayanan,\n" +
                 "pr.branch_id,\n" +
-                "dc.id_jenis_periksa_pasien \n" +
+                "dc.id_jenis_periksa_pasien \n, " +
+                "dc.id_asuransi \n " +
                 "FROM mt_simrs_permintaan_resep pr\n" +
                 "INNER JOIN (\n" +
-                "\tSELECT id_detail_checkup, status_periksa, id_jenis_periksa_pasien FROM it_simrs_header_detail_checkup \n" +
+                "\tSELECT id_detail_checkup, status_periksa, id_jenis_periksa_pasien, id_asuransi FROM it_simrs_header_detail_checkup \n" +
                 "\tWHERE id_pelayanan = '"+idPelayanan+"'\n" +
                 "\tAND status_periksa = '3'\n" +
                 "\tORDER BY last_update DESC \n" +
@@ -195,6 +196,7 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
                 obatDetail.setTujuanPelayanan(obj[5].toString());
                 obatDetail.setBranchId(obj[6].toString());
                 obatDetail.setIdJenisPeriksa(obj[7].toString());
+                obatDetail.setIdAsuransi(obj[8] == null ? null : obj[8].toString());
                 obatDetail.setStTglAntrian(obatDetail.getTglAntrian().toString());
                 obatDetailList.add(obatDetail);
             }
@@ -212,10 +214,11 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
                 "pr.tgl_antrian,\n" +
                 "pr.tujuan_pelayanan,\n" +
                 "pr.branch_id,\n" +
-                "dc.id_jenis_periksa_pasien \n" +
+                "dc.id_jenis_periksa_pasien \n," +
+                "dc.id_asuransi \n" +
                 "FROM mt_simrs_permintaan_resep pr\n" +
                 "INNER JOIN (" +
-                "SELECT id_detail_checkup, id_jenis_periksa_pasien FROM it_simrs_header_detail_checkup" +
+                "SELECT id_detail_checkup, id_jenis_periksa_pasien, id_asuransi FROM it_simrs_header_detail_checkup" +
                 ") dc ON dc.id_detail_checkup = pr.id_detail_checkup\n" +
                 "WHERE pr.id_approval_obat = '"+idApproval+"'\n" +
                 "ORDER BY pr.tgl_antrian DESC LIMIT 1";
@@ -233,6 +236,7 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
                 obatDetail.setTujuanPelayanan(obj[5].toString());
                 obatDetail.setBranchId(obj[6].toString());
                 obatDetail.setIdJenisPeriksa(obj[7].toString());
+                obatDetail.setIdAsuransi(obj[8] == null ? null : obj[8].toString());
                 obatDetail.setStTglAntrian(obatDetail.getTglAntrian().toString());
                 obatDetailList.add(obatDetail);
             }
@@ -289,10 +293,9 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
                 obatDetail.setWarna(obj[9] == null ? "" : obj[9].toString());
 
                 if (!"".equalsIgnoreCase(obatDetail.getIdObat())){
-                    obatPoli.setIdObat(obatDetail.getIdObat());
-                    List<ObatPoli> listHargaObat = getIdObatGroupPoli(obatPoli);
-                    if (listHargaObat.size() > 0){
-                        obatDetail.setHarga(new BigInteger(listHargaObat.get(0).getHarga()));
+                    HargaObatPerKonsumen hargaObatPerKonsumen = getDataHargaPerKonsumen(obatDetail.getIdObat(), bean.getBranchId(), bean.getIdJenisPeriksa(), bean.getIdAsuransi());
+                    if (hargaObatPerKonsumen != null && hargaObatPerKonsumen.getHargaJual() != null){
+                        obatDetail.setHarga(new BigInteger(hargaObatPerKonsumen.getHargaJual().toString()));
                     }
                 }
                 obatDetails.add(obatDetail);
@@ -434,20 +437,7 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
                     obatPoli.setLembarPerBox(obj[6] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[6].toString()));
                     obatPoli.setBijiPerLembar(obj[7] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[7].toString()));
                     obatPoli.setFlagKronis(obj[8] == null ? "" : obj[8].toString());
-                    if(cekKhusus){
-                        if ("bpjs".equalsIgnoreCase(bean.getJenisPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getJenisPasien())){
-                            obatPoli.setHarga(obj[11] == null ? "" : obj[11].toString());
-                        } else {
-                            obatPoli.setHarga(obj[9] == null ? "" : obj[9].toString());
-                        }
-                    }else{
-                        if ("bpjs".equalsIgnoreCase(bean.getJenisPasien())){
-                            obatPoli.setHarga(obj[12] == null ? "" : obj[12].toString());
-                        } else {
-                            obatPoli.setHarga(obj[10] == null ? "" : obj[10].toString());
-                        }
-                    }
-
+//
                     // Sigit, 2021-04-29. penambahan untuk mencari data per konsumen pada resep;
                     HeaderCheckup headerDetailCheckup = getHeaderCheckupData(bean.getIdDetailCheckup());
                     if (headerDetailCheckup != null){
@@ -465,6 +455,7 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
         }
         return obatPoliList;
     }
+
 
     private Boolean cekIsKhusus(String idDetailCheckup){
         Boolean res = false;
@@ -518,12 +509,16 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
 
         String SQL = "SELECT \n" +
                 "hopk.id_harga_obat, \n" +
-                "ho.branch_id, \n" +
-                "hopk.harga_jual \n" +
+                "ht.branch_id, \n" +
+                "hopk.harga_jual, \n" +
+                "ht.harga_terakhir, \n" +
+                "ht.harga_rata_umum, \n" +
+                "ht.harga_terakhir_bpjs, \n" +
+                "ht.harga_rata_bpjs \n" +
                 "FROM (SELECT * FROM mt_simrs_harga_obat_per_konsumen WHERE flag ='Y') hopk\n" +
-                "INNER JOIN mt_simrs_harga_obat ho ON ho.id_harga_obat = hopk.id_harga_obat \n" +
-                "WHERE ho.id_obat = '"+idObat+"'\n" +
-                "AND ho.branch_id = '"+branchId+"'\n" +
+                "INNER JOIN mt_simrs_harga_terakhir ht ON ht.id = hopk.id_harga_obat \n" +
+                "WHERE ht.id_obat = '"+idObat+"'\n" +
+                "AND ht.branch_id = '"+branchId+"'\n" +
                 "AND hopk.jenis_konsumen = '"+jenisKonsumen+"'\n" + sqlRekanan;
 
         List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
@@ -534,6 +529,21 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
             perKonsumen.setIdHargaObat(obj[0].toString());
             perKonsumen.setBranchId(obj[1].toString());
             perKonsumen.setHargaJual(objToBigDecimal(obj[2]));
+
+            BigDecimal hargaTerakhirNonBpjs = objToBigDecimal(obj[3]);
+            BigDecimal hargaRataNonBpjs     = objToBigDecimal(obj[4]);
+            BigDecimal hargaTerakhirBpjs    = objToBigDecimal(obj[5]);
+            BigDecimal hargaRataBpjs        = objToBigDecimal(obj[6]);
+
+            if ("bpjs".equalsIgnoreCase(jenisKonsumen)){
+                perKonsumen.setHargaTerakhir(hargaTerakhirBpjs);
+            } else if ("bpjs_rekanan".equalsIgnoreCase(jenisKonsumen)){
+                perKonsumen.setHargaTerakhir(hargaRataBpjs);
+            } else if ("rekanan".equalsIgnoreCase(jenisKonsumen)) {
+                perKonsumen.setHargaTerakhir(hargaRataNonBpjs);
+            } else {
+                perKonsumen.setHargaTerakhir(hargaTerakhirNonBpjs);
+            }
 
             return perKonsumen;
         }
