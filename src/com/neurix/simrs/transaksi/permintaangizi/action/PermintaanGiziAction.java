@@ -40,6 +40,7 @@ public class PermintaanGiziAction extends BaseTransactionAction {
     @Override
     public String search() {
         logger.info("[PermintaanGiziAction.search] start process >>>");
+        // getting data from UI
         RawatInap rawatInap = getRawatInap();
         rawatInap.setBranchId(CommonUtil.userBranchLogin());
         List<RawatInap> listOfRawatInap = new ArrayList();
@@ -50,11 +51,15 @@ public class PermintaanGiziAction extends BaseTransactionAction {
             logger.error("[PermintaanGiziAction.save] Error when searching rawat inap by criteria," + "Found problem when searching data by criteria, please inform to your admin.", e);
         }
 
+        // create session for handling data
         HttpSession session = ServletActionContext.getRequest().getSession();
+        // renew session with parameter, or replacing value
         session.removeAttribute("listOfResult");
+        // place value
         session.setAttribute("listOfResult", listOfRawatInap);
         setRawatInap(rawatInap);
         logger.info("[PermintaanGiziAction.search] end process <<<");
+        // return on PermintaanGiziAction.xml
         return "search";
     }
 

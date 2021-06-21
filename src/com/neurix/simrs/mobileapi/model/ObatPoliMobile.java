@@ -37,6 +37,16 @@ public class ObatPoliMobile {
     private String namaObat;
     private String idJenisObat;
 
+    private String message;
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
     public String getIdJenisObat() {
         return idJenisObat;
     }

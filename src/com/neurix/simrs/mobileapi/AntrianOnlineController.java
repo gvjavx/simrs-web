@@ -78,7 +78,7 @@ class CreatChannelRunnable implements Runnable {
         return isLeave;
     }
 }
-
+/** this class for handling Antrian Online request */
 public class AntrianOnlineController implements ModelDriven<Object> {
 
     private static final transient Logger logger = Logger.getLogger(AntrianOnlineController.class);
@@ -338,7 +338,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
     public AntrianOnlineBo getAntrianOnlineBoProxy() {
         return antrianOnlineBoProxy;
     }
-
+    /** this set from spring/AntrianTelemediBean automatically  */
     public void setAntrianOnlineBoProxy(AntrianOnlineBo antrianOnlineBoProxy) {
         this.antrianOnlineBoProxy = antrianOnlineBoProxy;
     }
@@ -360,7 +360,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
     }
 
     @Override
-    public Object getModel() {
+    public Object getModel() { // this will call as return,
         switch (action){
             case "show":
                 return listOfAntrianOnline;
@@ -372,6 +372,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
         }
     }
 
+    /** default request post with call method create setting by struts2 */
     public HttpHeaders create() {
         logger.info("[AntrianOnlineController.create] start process POST / <<<");
 
@@ -395,8 +396,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                 throw new GeneralBOException("[AntrianOnlineController.tambah] Error save add antrian online");
             }
         }
-
-        if (action.equalsIgnoreCase("show")) {
+        else if (action.equalsIgnoreCase("show")) {
             List<AntianOnline> result = new ArrayList<>();
             try {
                 result = antrianOnlineBoProxy.getAntrianByCriteria(idPelayanan, idDokter, noCheckupOnline, CommonUtil.convertStringToDate(tglCheckup), jamAwal, jamAkhir, branchId, idPasien);
@@ -447,8 +447,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
             }
 
         }
-
-        if (action.equalsIgnoreCase("antrianAll")){
+        else if (action.equalsIgnoreCase("antrianAll")){
             List<HeaderCheckup> result = new ArrayList<>();
 
             try {
@@ -476,8 +475,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                 }
             }
         }
-
-        if (action.equalsIgnoreCase("getByCriteria")) {
+        else if (action.equalsIgnoreCase("getByCriteria")) {
 
             List<AntianOnline> result = new ArrayList<>();
 
@@ -511,8 +509,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                 }
             }
         }
-
-        if  (action.equalsIgnoreCase("startRecord")){
+        else if  (action.equalsIgnoreCase("startRecord")){
             initRecordingAgora();
             RecordingSDKInstance.registerOberserver(recordingEventHandler);
 
@@ -530,20 +527,17 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                model.setMessage("Success");
            }
         }
-
-        if (action.equalsIgnoreCase("startRecordHandler")) {
+        else if (action.equalsIgnoreCase("startRecordHandler")) {
             String jsonString = "channelId="+channelId+"&idAntrianTelemedic="+idAntrianTelemedic+"&idDetailCheckup="+idDetailCheckup;
             model.setMessage(CommonUtil.sendPostRequest(CommonConstant.URL_RECORDING+"record/start", jsonString));
         }
-
-        if (action.equalsIgnoreCase("cekRestApi")) {
+        else if (action.equalsIgnoreCase("cekRestApi")) {
             model.setMessage(CommonUtil.sendGetRequest("http://localhost:9090/api/video/search/id_detail_checkup/90709"));
         }
-
-        if (action.equalsIgnoreCase("pauseRecord")) {
+        else if (action.equalsIgnoreCase("pauseRecord")) {
             RecordingSDKInstance.stopService();
         }
-        if(action.equalsIgnoreCase("stopRecord")){
+        else if(action.equalsIgnoreCase("stopRecord")){
             videoFileName = getVideoFileName(new File(storageDir));
             audioFileName = getAudioFileName(new File(storageDir));
             logger.info("File name : " + videoFileName + " "+ audioFileName + " UID:" + uid);
@@ -565,6 +559,9 @@ public class AntrianOnlineController implements ModelDriven<Object> {
         }
 
         logger.info("[AntrianOnlineController.create] end process POST / <<<");
+        // return of this method must be like this,
+        // result must be String success cause this method name is create
+        // this is default from struts2
         return new DefaultHttpHeaders("index").disableCaching();
     }
 

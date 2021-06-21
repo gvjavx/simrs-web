@@ -236,9 +236,11 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
             return response;
         }
 
+        String idRacik = "";
         if (bean.getListNamaObatRacik().size() > 0){
             for (ObatRacik obatRacik : bean.getListNamaObatRacik()){
                 ItSimrsObatRacikEntity obatRacikEntity = new ItSimrsObatRacikEntity();
+                idRacik = getNextObatRacikId();
                 obatRacikEntity.setId(getNextObatRacikId());
                 obatRacikEntity.setNama(obatRacik.getNama());
                 obatRacikEntity.setSigna(obatRacik.getSigna());
@@ -251,75 +253,6 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
                 obatRacikEntity.setCreatedWho(bean.getCreatedWho());
                 obatRacikEntity.setLastUpdateWho(bean.getCreatedWho());
                 obatRacikEntity.setWarna(obatRacik.getWarna());
-
-                try {
-                    obatRacikDao.addAndSave(obatRacikEntity);
-                } catch (HibernateException e){
-                    logger.error("[PermintaanResepBoImpl.saveAdd]  ERROR. ", e);
-                    response.hasError("[PermintaanResepBoImpl.saveAdd]  ERROR. "+e.getMessage());
-                    return response;
-                }
-            }
-        }
-
-        if (detailList.size() > 0) {
-            for (TransaksiObatDetail detailObat : detailList) {
-                TransaksiObatDetail detail = new TransaksiObatDetail();
-                detail.setIdApprovalObat(approvalEntity.getIdApprovalObat());
-                detail.setIdObat(detailObat.getIdObat());
-                detail.setQty(detailObat.getQty());
-                detail.setJenisResep(detailObat.getJenisResep());
-                detail.setQtyApprove(detailObat.getQty());
-                detail.setJenisSatuan(detailObat.getJenisSatuan());
-                detail.setKeterangan(detailObat.getKeterangan());
-                detail.setCreatedDate(bean.getCreatedDate());
-                detail.setCreatedWho(bean.getCreatedWho());
-                detail.setLastUpdate(bean.getCreatedDate());
-                detail.setLastUpdateWho(bean.getCreatedWho());
-                detail.setFrekuensi(detailObat.getFrekuensi());
-
-                if(detailObat.getFlagRacik() != null && !"".equalsIgnoreCase(detailObat.getFlagRacik())){
-                    detail.setFlagRacik(detailObat.getFlagRacik());
-                    detail.setNamaRacik(detailObat.getNamaRacik());
-                    detail.setIdRacik(detailObat.getIdRacik());
-                }
-                if (detailObat.getHariKronis() != null && !"".equalsIgnoreCase(detailObat.getHariKronis().toString())){
-                    detail.setHariKronis(detailObat.getHariKronis());
-                }
-                if(detailObat.getKeteranganResepEntityList().size() > 0){
-                    for (ItSimrsKeteranganResepEntity keteranganResepEntity: detailObat.getKeteranganResepEntityList()){
-                        keteranganResepEntity.setId(transKeteranganObatDao.getNextSeq());
-                        keteranganResepEntity.setIdObat(detailObat.getIdObat());
-                        keteranganResepEntity.setIdPermintaanResep(permintaanEntity.getIdPermintaanResep());
-                        try{
-                            transKeteranganObatDao.addAndSave(keteranganResepEntity);
-                        }catch (HibernateException e){
-                            logger.error(e.getMessage());
-                            response.setStatus("error");
-                            response.setMsg("Error insert keterangan resep, "+e.getMessage());
-                            return response;
-                        }
-                    }
-                }
-                saveObatResep(detail);
-            }
-        }
-
-        if (bean.getListNamaObatRacik().size() > 0){
-
-            for (ObatRacik obatRacik : bean.getListNamaObatRacik()){
-                ItSimrsObatRacikEntity obatRacikEntity = new ItSimrsObatRacikEntity();
-                obatRacikEntity.setId(getNextObatRacikId());
-                obatRacikEntity.setNama(obatRacik.getNama());
-                obatRacikEntity.setSigna(obatRacik.getSigna());
-                obatRacikEntity.setQty(obatRacik.getQty());
-                obatRacikEntity.setKemasan(obatRacik.getKemasan());
-                obatRacikEntity.setFlag("Y");
-                obatRacikEntity.setAction("C");
-                obatRacikEntity.setCreatedDate(bean.getCreatedDate());
-                obatRacikEntity.setLastUpdate(bean.getCreatedDate());
-                obatRacikEntity.setCreatedWho(bean.getCreatedWho());
-                obatRacikEntity.setLastUpdateWho(bean.getCreatedWho());
 
                 try {
                     obatRacikDao.addAndSave(obatRacikEntity);
@@ -376,6 +309,50 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
                 }
             }
         }
+
+        if (detailList.size() > 0) {
+            for (TransaksiObatDetail detailObat : detailList) {
+                TransaksiObatDetail detail = new TransaksiObatDetail();
+                detail.setIdApprovalObat(approvalEntity.getIdApprovalObat());
+                detail.setIdObat(detailObat.getIdObat());
+                detail.setQty(detailObat.getQty());
+                detail.setJenisResep(detailObat.getJenisResep());
+                detail.setQtyApprove(detailObat.getQty());
+                detail.setJenisSatuan(detailObat.getJenisSatuan());
+                detail.setKeterangan(detailObat.getKeterangan());
+                detail.setCreatedDate(bean.getCreatedDate());
+                detail.setCreatedWho(bean.getCreatedWho());
+                detail.setLastUpdate(bean.getCreatedDate());
+                detail.setLastUpdateWho(bean.getCreatedWho());
+                detail.setFrekuensi(detailObat.getFrekuensi());
+
+                if(detailObat.getFlagRacik() != null && !"".equalsIgnoreCase(detailObat.getFlagRacik())){
+                    detail.setFlagRacik(detailObat.getFlagRacik());
+                    detail.setNamaRacik(detailObat.getNamaRacik());
+                    detail.setIdRacik(idRacik);
+                }
+                if (detailObat.getHariKronis() != null && !"".equalsIgnoreCase(detailObat.getHariKronis().toString())){
+                    detail.setHariKronis(detailObat.getHariKronis());
+                }
+                if(detailObat.getKeteranganResepEntityList().size() > 0){
+                    for (ItSimrsKeteranganResepEntity keteranganResepEntity: detailObat.getKeteranganResepEntityList()){
+                        keteranganResepEntity.setId(transKeteranganObatDao.getNextSeq());
+                        keteranganResepEntity.setIdObat(detailObat.getIdObat());
+                        keteranganResepEntity.setIdPermintaanResep(permintaanEntity.getIdPermintaanResep());
+                        try{
+                            transKeteranganObatDao.addAndSave(keteranganResepEntity);
+                        }catch (HibernateException e){
+                            logger.error(e.getMessage());
+                            response.setStatus("error");
+                            response.setMsg("Error insert keterangan resep, "+e.getMessage());
+                            return response;
+                        }
+                    }
+                }
+                saveObatResep(detail);
+            }
+        }
+
         logger.info("[PermintaanResepBoImpl.saveAdd] END <<<<<<<");
         return response;
     }

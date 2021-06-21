@@ -533,7 +533,7 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("id", idDetailCheckup)
                 .list();
-        if(results.size() > 0){
+        if(null!= results && results.size() > 0){
             res = true;
         }
         return res;

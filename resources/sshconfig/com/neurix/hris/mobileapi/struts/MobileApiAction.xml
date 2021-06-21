@@ -127,7 +127,7 @@
         <action name="registrasi/*" class="com.neurix.simrs.mobileapi.RegistrasiOnlineController">
             <interceptor-ref name="mobileStack"/>
         </action>
-
+        <!-- this is for handling request with action antrian, and will call method AntrianOnlineController -->
         <action name="antrian/*" class="com.neurix.simrs.mobileapi.AntrianOnlineController">
             <interceptor-ref name="mobileStack"/>
         </action>

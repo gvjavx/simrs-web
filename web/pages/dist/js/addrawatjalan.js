@@ -2552,6 +2552,7 @@ function listSelectObat(select) {
     var idx = select.selectedIndex;
     var idJenis = select.options[idx].value;
     var option = "<option value=''> - </option>";
+
     if (idJenis != '') {
         ObatAction.listObat(idJenis, function (response) {
             if (response.length > 0) {
@@ -6159,7 +6160,7 @@ function showListRiwayatResep(){
                         "<tr/>"+
                         "</thead>"+
                         "</tbody>";
-                    
+
                     var strracik = "";
                     var arrIdRacik = [];
 
@@ -6282,7 +6283,7 @@ function copyResep() {
 
                         var warnaGenap = "#ffe4b5";
                         var warnaGanjil = "silver";
-                        
+
                         if (parseInt(i_racik) % 2 == 0){
                             warnaRacik = warnaGenap;
                         } else {
@@ -6347,11 +6348,11 @@ function copyResep() {
                             $("#body-detail-racik-obat-"+sisipkanStrip(detailracik.namaRacik)).append(detail);
                             arrListDetailRacik.push({ "idobat":detailracik.idObat, "namaobat":detailracik.namaObat, "racik":detailracik.namaRacik, "idracik":sisipkanStrip(detailracik.namaRacik)});
                         });
-                    
+
                     });
-                    
+
                 }
-            
+
             });
 
             // total harga
