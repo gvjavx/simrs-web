@@ -5,6 +5,8 @@ import com.neurix.simrs.master.pasien.dao.PasienDao;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObatPerKonsumen;
+import com.neurix.simrs.transaksi.obatpoli.dao.ObatPoliDao;
+import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatracik.dao.ObatRacikDao;
 import com.neurix.simrs.transaksi.obatracik.model.ItSimrsObatRacikEntity;
 import com.neurix.simrs.transaksi.obatracik.model.ObatRacik;
@@ -40,6 +42,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
     private TransaksiObatDetailDao transaksiObatDetailDao;
     private TransKeteranganObatDao transKeteranganObatDao;
     private ObatRacikDao obatRacikDao;
+    private ObatPoliDao obatPoliDao;
 
     @Override
     public List<PermintaanResep> getByCriteria(PermintaanResep bean) throws GeneralBOException {
@@ -460,6 +463,17 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
 
                 if (listObat.size() > 0){
 
+//                    for (TransaksiObatDetail obatDetail : listObat){
+//
+//                        ObatPoli bean new Oba
+//
+//                        try {
+//                            obatPoliDao.getIdObatGroupPoli()
+//                        } catch (HibernateException e){
+//
+//                        }
+//                    }
+
                     List<TransaksiObatDetail> listObatNonRacik = listObat.stream().filter(
                             p->p.getIdRacik() == null
                     ).collect(Collectors.toList());
@@ -677,5 +691,9 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
 
     public void setObatRacikDao(ObatRacikDao obatRacikDao) {
         this.obatRacikDao = obatRacikDao;
+    }
+
+    public void setObatPoliDao(ObatPoliDao obatPoliDao) {
+        this.obatPoliDao = obatPoliDao;
     }
 }
