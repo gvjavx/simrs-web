@@ -8,49 +8,74 @@ function showModalSPS(jenis, idRM, isSetIdRM) {
         $('.btn-hide').show();
     }
 
-    if ("pemeriksaan_bedah" == jenis || "pemeriksaan_onkologi" == jenis) {
+    if ("spesialis_bedah" == tipePelayanan || "spesialis_onkologi" == tipePelayanan) {
         var url = "";
         if ("Laki-Laki" == jenisKelamin) {
             url = contextPath + '/pages/images/penanda-laki-laki.jpg';
         } else {
             url = contextPath + '/pages/images/penanda-perempuan.jpg';
         }
+        $('.canvas-cek').attr('id', 'area_canvas');
+        $('.canvas-cek').attr('onmouseover', 'paintTtd(\'area_canvas\', true)');
+        $('.canvas-btn').attr('onclick', 'removePaint(\'area_canvas\')');
+        $('#form-gambar').show();
         loadImgToCanvas(url, 'area_canvas');
     }
 
-    if ("anamnesa_pemeriksaan_paru" == jenis) {
+    if ("spesialis_paru" == jenis) {
         var url = contextPath + '/pages/images/paru-1.png';
+        $('.canvas-cek').attr('id', 'area_paru');
+        $('.canvas-cek').attr('onmouseover', 'paintTtd(\'area_paru\', true)');
+        $('.canvas-btn').attr('onclick', 'removePaint(\'area_paru\')');
+        $('#form-gambar').show();
         loadImgToCanvas(url, 'area_paru');
     }
 
-    if ("pemeriksaan_ortopedi" == jenis) {
+    if ("spesialis_ortopedi" == jenis) {
         var url = contextPath + '/pages/images/ortopedi.png';
+        $('.canvas-cek').attr('id', 'area_ortopedi');
+        $('.canvas-cek').attr('onmouseover', 'paintTtd(\'area_ortopedi\', true)');
+        $('.canvas-btn').attr('onclick', 'removePaint(\'area_ortopedi\')');
+        $('#form-gambar').show();
         loadImgToCanvas(url, 'area_ortopedi');
     }
 
     if ("anamnesa_pemeriksaan_ginjal" == jenis) {
         var url = contextPath + '/pages/images/ginjal-1.png';
+        $('.canvas-cek').attr('id', 'area_paru');
+        $('.canvas-cek').attr('onmouseover', 'paintTtd(\'area_ginjal\', true)');
+        $('.canvas-btn').attr('onclick', 'removePaint(\'area_ginjal\')');
+        $('#form-gambar').show();
         loadImgToCanvas(url, 'area_ginjal');
     }
 
-    if ("anamnesa_pemeriksaan_jantung" == jenis) {
+    if ("spesialis_ortopedi" == jenis) {
         var url = contextPath + '/pages/images/jantung.png';
+        $('.canvas-cek').attr('id', 'area_jantung');
+        $('.canvas-cek').attr('onmouseover', 'paintTtd(\'area_jantung\', true)');
+        $('.canvas-btn').attr('onclick', 'removePaint(\'area_jantung\')');
+        $('#form-gambar').show();
         loadImgToCanvas(url, 'area_jantung');
     }
-    if ("asesmen_gigi" == jenis) {
+    if ("spesialis_gigi" == jenis) {
         var url = contextPath + '/pages/images/scala-gigi-new.png';
         loadImgToCanvas(url, 'area_gigi1');
     }
 
-    if("pemeriksaan_kk" == jenis){
+    if("spesialis_kulit_kelamin" == jenis){
         var url = "";
         if(jenisKelamin == "Perempuan"){
             url = contextPath + '/pages/images/kk_girl.png';
         }else{
             url = contextPath + '/pages/images/kk_man.png';
         }
+        $('.canvas-cek').attr('id', 'area_kulit_kelamin');
+        $('.canvas-cek').attr('onmouseover', 'paintTtd(\'area_kulit_kelamin\', true)');
+        $('.canvas-btn').attr('onclick', 'removePaint(\'area_kulit_kelamin\')');
+        $('#form-gambar').show();
         loadImgToCanvas(url, 'area_kulit_kelamin');
     }
+
     if("ophtal" == jenis){
         var url = contextPath + '/pages/images/mata.png';
         loadImgToCanvas(url, 'area_mata');
@@ -61,9 +86,16 @@ function showModalSPS(jenis, idRM, isSetIdRM) {
     }
 
     setKeteranganPeriksa('intruksi_'+jenis);
+    if("spesialis_anak" != jenis ||
+        "spesialis_mata" != jenis ||
+        "rehab_medik" != jenis ||
+        "spesialis_tht" != jenis ||
+        "spesialis_obstetri" != jenis){
+        $('#judul_asesmen').text("Asesmen "+namaPelayanan);
+    }
 
-    $('#modal-sps-' + jenis).modal({show: true, backdrop: 'static'});
     setDataPasien();
+    $('#modal-sps-' + jenis).modal({show: true, backdrop: 'static'});
 }
 
 function saveSPS(jenis, ket) {
@@ -276,7 +308,7 @@ function saveSPS(jenis, ket) {
         "edukasi_paru" == jenis || "edukasi_anak" == jenis || "edukasi_neurologi" == jenis ||
         "edukasi_obstetri" == jenis || "edukasi_ortopedi" == jenis || "edukasi_ginjal" == jenis ||
         "edukasi_ginjal" == jenis || "edukasi_jantung" == jenis || "edukasi_umum" == jenis ||
-        "edukasi_onkologi" == jenis || "edukasi_ginekologi" == jenis || "edukasi_kk" == jenis) {
+        "edukasi_onkologi" == jenis || "edukasi_ginekologi" == jenis || "edukasi_kk" == jenis || "edukasi_spesialis" == jenis) {
 
         var va1 = $('[name=et]:checked').val();
         var va2 = $('#ket_nama').val();
@@ -2764,6 +2796,192 @@ function saveSPS(jenis, ket) {
 
         if (c1 && c2 == "Y") {
             cek = true;
+        }
+    }
+
+    if("anamnesis_pemeriksaan" == jenis){
+        var va1 = $('#ps1').val();
+        var va2 = $('#ps2').val();
+        var va3 = $('#ps3').val();
+        var va4 = $('#ps4').val();
+        var va5 = $('#ps5').val();
+        var va6 = $('#ps6').val();
+        var va7 = $('#ps7').val();
+        var va8 = $('#ps8').val();
+        var va9 = $('#ps9').val();
+        var va10 = $('#ps10').val();
+        var va11 = $('#ps11').val();
+        var va12 = $('#ps12').val();
+        var va13 = $('#ps13').val();
+        var va14 = $('#ps14').val();
+        var intruksi = $('#intruksi_'+jenis+' option:selected').text();
+
+        var cekCanvas = "Y";
+        var canvasId = ('.canvas-cek')[0].id;
+        if(canvasId != undefined){
+            var canvasArea = document.getElementById(canvasId);
+            var canvasCek = document.getElementById('area_cek');
+            if (canvasArea.toDataURL() == canvasCek.toDataURL()) {
+                cekCanvas = "N";
+            }
+        }else {
+            cekCanvas = "N";
+        }
+
+        var ttdDpjp = document.getElementById('dpjp');
+        var nama = $('#nama_terang_dpjp').val();
+        var sip = $('#sip_dpjp').val();
+        var cekDpjp = isCanvasBlank(ttdDpjp);
+
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 &&
+            va10 && va11 && va12 && va13 && va14 && sip && nama != '' && !cekDpjp) {
+            data.push({
+                'parameter': 'Tanggal Kunjungan',
+                'jawaban': va1,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Anamnesis',
+                'jawaban': "",
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe': 'colspan',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Keluhan Utama',
+                'jawaban': va2,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Riwayat Penyakit Dahulu',
+                'jawaban': va3,
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe': 'penyakit_dahulu',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Riwayat Penyakit Keluarga',
+                'jawaban': va4,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Pemeriksaan',
+                'jawaban': "",
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe': 'colspan',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Kondisi Umum',
+                'jawaban': va5,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Kepala Leher',
+                'jawaban': va6,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Thorax',
+                'jawaban': va7,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Abdomen',
+                'jawaban': va8,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Ekstremitas',
+                'jawaban': va9,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            if(cekCanvas == "Y"){
+                var canv = canvasArea.toDataURL("image/png"),
+                    canv = canv.replace(/^data:image\/(png|jpg);base64,/, "");
+                data.push({
+                    'parameter': 'Gambar Pemeriksaan',
+                    'jawaban': canv,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'tipe': 'gambar',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
+            data.push({
+                'parameter': 'Pemeriksaan Penunjang',
+                'jawaban': va10,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Diagnosa Kerja',
+                'jawaban': va11,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Diagnosa Banding',
+                'jawaban': va12,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Terapi',
+                'jawaban': va13,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Tindakan / Rencana Tindakan',
+                'jawaban': va14,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Intruksi Tindak Lanjut',
+                'jawaban': intruksi,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            var tad = convertToDataURL(ttdDpjp);
+            data.push({
+                'parameter': 'TTD Spesialis Mata',
+                'jawaban': tad,
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe':'ttd',
+                'sip':sip,
+                'nama_terang': nama,
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+            tindakLanjut = true;
         }
     }
 

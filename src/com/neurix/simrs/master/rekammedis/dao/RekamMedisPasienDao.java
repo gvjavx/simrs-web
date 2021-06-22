@@ -57,6 +57,15 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
             List<Object[]> results = new ArrayList<>();
             if ("rawat_jalan".equalsIgnoreCase(bean.getTipePelayanan())) {
                 if (bean.getJenis() != null) {
+                    String jenis = "poli_spesialis";
+                    if("spesialis_anak".equalsIgnoreCase(bean.getJenis()) ||
+                       "spesialis_mata".equalsIgnoreCase(bean.getJenis()) ||
+                       "rehab_medik".equalsIgnoreCase(bean.getJenis()) ||
+                       "spesialis_tht".equalsIgnoreCase(bean.getJenis()) ||
+                       "spesialis_obstetri".equalsIgnoreCase(bean.getJenis())){
+                        jenis = bean.getJenis();
+                    }
+
                     SQL = "SELECT \n" +
                             "a.*,  \n" +
                             "b.jumlah_kategori as terisi,\n" +
@@ -151,7 +160,7 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
 
                     results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                             .setParameter("tipePelayanan", bean.getTipePelayanan())
-                            .setParameter("jenis", bean.getJenis())
+                            .setParameter("jenis", jenis)
                             .list();
                 }
             } else if ("igd".equalsIgnoreCase(bean.getTipePelayanan())) {

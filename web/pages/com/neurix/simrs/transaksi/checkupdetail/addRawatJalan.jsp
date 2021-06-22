@@ -3107,6 +3107,7 @@
     var tempSpo2 = "";
     var tempNyeri = "";
     var tempJatuh = "";
+    var namaPelayanan = '<s:property value="headerDetailCheckup.namaPelayanan"/>';
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');
