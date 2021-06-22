@@ -248,6 +248,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
 
                 periksaLab.setCatatanKlinis(hetero+auto+nadi+suhu+tensi+rr+klinis);
                 periksaLab.setPenyakitDahulu(checkup.getPenyakitDahulu());
+                periksaLab.setIdRuangan(checkup.getIdRuangan());
 
                 setPeriksaLab(periksaLab);
 

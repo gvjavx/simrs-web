@@ -131,7 +131,7 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
                     "\tnetto\n" +
                     ") c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
                     "INNER JOIN (\n" +
-                    "\tSELECT id_obat, nama_obat FROM im_simrs_obat GROUP BY id_obat, nama_obat\n" +
+                    "\tSELECT id_obat, nama_obat FROM im_simrs_header_obat GROUP BY id_obat, nama_obat\n" +
                     ") d ON b.id_obat = d.id_obat\n" +
                     "WHERE a.id_permintaan_obat_vendor = :id\n" +
                     "AND c.no_batch = :noBatch";

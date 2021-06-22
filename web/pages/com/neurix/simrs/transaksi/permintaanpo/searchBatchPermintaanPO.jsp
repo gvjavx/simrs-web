@@ -86,14 +86,14 @@
                                     <table><s:label name="vendor.alamat"></s:label></table>
                                 </td>
                             </tr>
-                            <tr>
-                                <td><b>Scan DO</b></td>
-                                <td>
-                                    <table><input type="text" onchange="searchDo(this.value)"
-                                                  placeholder="Scan No. DO Here !" class="form-control"
-                                                  style="width: 30%;"/></table>
-                                </td>
-                            </tr>
+                            <%--<tr>--%>
+                                <%--<td><b>Scan DO</b></td>--%>
+                                <%--<td>--%>
+                                    <%--<table><input type="text" onchange="searchDo(this.value)"--%>
+                                                  <%--placeholder="Scan No. DO Here !" class="form-control"--%>
+                                                  <%--style="width: 30%;"/></table>--%>
+                                <%--</td>--%>
+                            <%--</tr>--%>
                         </table>
                     </div>
                     <div class="box-header with-border"></div>
@@ -987,110 +987,112 @@
 
         var data = "";
         var listOfimg = [];
-        if (noFaktur != '' && tglFaktur != '' && noInvoice != '' && noDo != '') {
-            data = {
-                'no_batch': noBatch,
-                'no_faktur': noFaktur,
-                'tgl_faktur': tgl,
-                'no_invoice': noInvoice,
-                'no_do': noDo,
-                'img_url': "",
-                'tgl_invoice': tglInvoice,
-                'tgl_do': tglDo
-            }
-
-            var cekFaktur = $('.faktur');
-            var cekInvoice = $('.invoice');
-            var cekDo = $('.do');
-
-            if (cekFaktur.length > 0) {
-                $.each(cekFaktur, function (i, item) {
-                    var files = document.getElementById('upload-faktur-' + i).files;
-                    if (files.length > 0) {
-                        var fileToLoad = files[0];
-                        var fileReader = new FileReader();
-                        var base64File = "";
-                        fileReader.onload = function(event) {
-                            base64File = event.target.result;
-                            var eks = cekEks(base64File);
-                            var place = replaceFile(base64File);
-                            if(eks != ""){
-                                listOfimg.push({
-                                    "jenisnomor": "faktur",
-                                    "batch": noBatch,
-                                    "iditem": noFaktur,
-                                    "img": place,
-                                    "eks": eks
-                                });
-                                setLocalStoregeAtas('img_list', JSON.stringify(listOfimg));
-                            }
-                        };
-                        fileReader.readAsDataURL(fileToLoad);
-                    }
-                });
-            }
-
-            if (cekInvoice.length > 0) {
-                $.each(cekInvoice, function (i, item) {
-                    var files = document.getElementById('upload-invoice-' + i).files;
-                    if (files.length > 0) {
-                        var fileToLoad = files[0];
-                        var fileReader = new FileReader();
-                        var base64File;
-                        fileReader.onload = function(event) {
-                            base64File = event.target.result;
-                            var eks = cekEks(base64File);
-                            var place = replaceFile(base64File);
-                            if(eks != ""){
-                                listOfimg.push({
-                                    "jenisnomor": "invoice",
-                                    "batch": noBatch,
-                                    "iditem": noInvoice,
-                                    "img": place,
-                                    "eks": eks
-                                });
-                                setLocalStoregeAtas('img_list', JSON.stringify(listOfimg));
-                            }
-                        };
-                        fileReader.readAsDataURL(fileToLoad);
-                    }
-                });
-            }
-
-            if (cekDo.length > 0) {
-                $.each(cekDo, function (i, item) {
-                    var files = document.getElementById('upload-do-' + i).files;
-                    if (files.length > 0) {
-                        var fileToLoad = files[0];
-                        var fileReader = new FileReader();
-                        var base64File;
-                        fileReader.onload = function(event) {
-                            base64File = event.target.result;
-                            var eks = cekEks(base64File);
-                            var place = replaceFile(base64File);
-                            if(eks != ""){
-                                listOfimg.push({
-                                    "jenisnomor": "do",
-                                    "batch": noBatch,
-                                    "iditem": noDo,
-                                    "img": place,
-                                    "eks": eks
-                                });
-                                setLocalStoregeAtas('img_list', JSON.stringify(listOfimg));
-                            }
-                        };
-                        fileReader.readAsDataURL(fileToLoad);
-                    }
-                });
-            }
-
-            var result = JSON.stringify(data);
-            $('#modal-confirm-dialog').modal('show');
-            $('#save_con').attr('onclick', 'approveBatch(\'' + result + '\')');
-        } else {
-            $('#warning_app').show().fadeOut(5000);
-            $('#msg_app').text("Silahkan cek kembali data inputan anda...!");
+        data = {
+            'no_batch': noBatch,
+            'no_faktur': noFaktur,
+            'tgl_faktur': tgl,
+            'no_invoice': noInvoice,
+            'no_do': noDo,
+            'img_url': "",
+            'tgl_invoice': tglInvoice,
+            'tgl_do': tglDo
         }
+
+        var cekFaktur = $('.faktur');
+        var cekInvoice = $('.invoice');
+        var cekDo = $('.do');
+
+        if (cekFaktur.length > 0) {
+            $.each(cekFaktur, function (i, item) {
+                var files = document.getElementById('upload-faktur-' + i).files;
+                if (files.length > 0) {
+                    var fileToLoad = files[0];
+                    var fileReader = new FileReader();
+                    var base64File = "";
+                    fileReader.onload = function(event) {
+                        base64File = event.target.result;
+                        var eks = cekEks(base64File);
+                        var place = replaceFile(base64File);
+                        if(eks != ""){
+                            listOfimg.push({
+                                "jenisnomor": "faktur",
+                                "batch": noBatch,
+                                "iditem": noFaktur,
+                                "img": place,
+                                "eks": eks
+                            });
+                            setLocalStoregeAtas('img_list', JSON.stringify(listOfimg));
+                        }
+                    };
+                    fileReader.readAsDataURL(fileToLoad);
+                }
+            });
+        }
+
+        if (cekInvoice.length > 0) {
+            $.each(cekInvoice, function (i, item) {
+                var files = document.getElementById('upload-invoice-' + i).files;
+                if (files.length > 0) {
+                    var fileToLoad = files[0];
+                    var fileReader = new FileReader();
+                    var base64File;
+                    fileReader.onload = function(event) {
+                        base64File = event.target.result;
+                        var eks = cekEks(base64File);
+                        var place = replaceFile(base64File);
+                        if(eks != ""){
+                            listOfimg.push({
+                                "jenisnomor": "invoice",
+                                "batch": noBatch,
+                                "iditem": noInvoice,
+                                "img": place,
+                                "eks": eks
+                            });
+                            setLocalStoregeAtas('img_list', JSON.stringify(listOfimg));
+                        }
+                    };
+                    fileReader.readAsDataURL(fileToLoad);
+                }
+            });
+        }
+
+        if (cekDo.length > 0) {
+            $.each(cekDo, function (i, item) {
+                var files = document.getElementById('upload-do-' + i).files;
+                if (files.length > 0) {
+                    var fileToLoad = files[0];
+                    var fileReader = new FileReader();
+                    var base64File;
+                    fileReader.onload = function(event) {
+                        base64File = event.target.result;
+                        var eks = cekEks(base64File);
+                        var place = replaceFile(base64File);
+                        if(eks != ""){
+                            listOfimg.push({
+                                "jenisnomor": "do",
+                                "batch": noBatch,
+                                "iditem": noDo,
+                                "img": place,
+                                "eks": eks
+                            });
+                            setLocalStoregeAtas('img_list', JSON.stringify(listOfimg));
+                        }
+                    };
+                    fileReader.readAsDataURL(fileToLoad);
+                }
+            });
+        }
+
+        var result = JSON.stringify(data);
+        $('#modal-confirm-dialog').modal('show');
+        $('#save_con').attr('onclick', 'approveBatch(\'' + result + '\')');
+
+//        if (noFaktur != '' && tglFaktur != '' && noInvoice != '' && noDo != '') {
+//
+//        } else {
+//            $('#warning_app').show().fadeOut(5000);
+//            $('#msg_app').text("Silahkan cek kembali data inputan anda...!");
+//        }
     }
 
     function cekFile(id) {

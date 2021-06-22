@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.transaksiobat.dao;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.transaksi.hargaobat.model.HargaObatPerKonsumen;
 import com.neurix.simrs.transaksi.obatracik.model.ObatRacik;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
@@ -1122,5 +1123,63 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         }
 
         return obatRacikList;
+    }
+
+    public HargaObatPerKonsumen getDataHargaPerKonsumen(String idObat, String branchId, String jenisKonsumen, String idRekanan){
+
+        String sqlRekanan = "";
+        if (idRekanan != null && !"".equalsIgnoreCase(idRekanan)){
+            sqlRekanan = "AND hopk.id_rekanan = '"+idRekanan+"' \n";
+        }
+
+        String SQL = "SELECT \n" +
+                "hopk.id_harga_obat, \n" +
+                "ht.branch_id, \n" +
+                "hopk.harga_jual, \n" +
+                "ht.harga_terakhir, \n" +
+                "ht.harga_rata_umum, \n" +
+                "ht.harga_terakhir_bpjs, \n" +
+                "ht.harga_rata_bpjs \n" +
+                "FROM (SELECT * FROM mt_simrs_harga_obat_per_konsumen WHERE flag ='Y') hopk\n" +
+                "INNER JOIN mt_simrs_harga_terakhir ht ON ht.id = hopk.id_harga_obat \n" +
+                "WHERE ht.id_obat = '"+idObat+"'\n" +
+                "AND ht.branch_id = '"+branchId+"'\n" +
+                "AND hopk.jenis_konsumen = '"+jenisKonsumen+"'\n" + sqlRekanan;
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+            Object[] obj = list.get(0);
+            HargaObatPerKonsumen perKonsumen = new HargaObatPerKonsumen();
+            perKonsumen.setIdHargaObat(obj[0].toString());
+            perKonsumen.setBranchId(obj[1].toString());
+            perKonsumen.setHargaJual(objToBigDecimal(obj[2]));
+
+            BigDecimal hargaTerakhirNonBpjs = objToBigDecimal(obj[3]);
+            BigDecimal hargaRataNonBpjs     = objToBigDecimal(obj[4]);
+            BigDecimal hargaTerakhirBpjs    = objToBigDecimal(obj[5]);
+            BigDecimal hargaRataBpjs        = objToBigDecimal(obj[6]);
+
+            if ("bpjs".equalsIgnoreCase(jenisKonsumen)){
+                perKonsumen.setHargaTerakhir(hargaTerakhirBpjs);
+            } else if ("bpjs_rekanan".equalsIgnoreCase(jenisKonsumen)){
+                perKonsumen.setHargaTerakhir(hargaRataBpjs);
+            } else if ("rekanan".equalsIgnoreCase(jenisKonsumen)) {
+                perKonsumen.setHargaTerakhir(hargaRataNonBpjs);
+            } else {
+                perKonsumen.setHargaTerakhir(hargaTerakhirNonBpjs);
+            }
+
+            return perKonsumen;
+        }
+
+        return null;
+    }
+
+    private BigDecimal objToBigDecimal(Object obj){
+        if (obj == null)
+            return new BigDecimal(0);
+        else
+            return new BigDecimal(obj.toString());
     }
 }

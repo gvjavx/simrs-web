@@ -20,6 +20,15 @@ public class DiagnosaRawat extends BaseModel{
     private String lastUpdateWho;
     private String orderLastUpdate;
     private String orderCreated;
+    private String orderJenisDiagnosa;
+
+    public String getOrderJenisDiagnosa() {
+        return orderJenisDiagnosa;
+    }
+
+    public void setOrderJenisDiagnosa(String orderJenisDiagnosa) {
+        this.orderJenisDiagnosa = orderJenisDiagnosa;
+    }
 
     public String getOrderCreated() {
         return orderCreated;

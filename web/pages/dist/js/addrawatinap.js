@@ -6307,6 +6307,7 @@ function repeatOrderObat(idApprovalObat){
                             '</div>' +
                             '</td>'+
                             '<td align="right">' + formatRupiah(harga) + '</td>';
+                            // '<td align="right">' + harga + '</td>';
 
                         strnonracik +=
                             '<td align="center"><img border="0" onclick="delRowObat(\'' + nonracik.idObat + '\',\'' + harga + '\')" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
@@ -6407,6 +6408,7 @@ function repeatOrderObat(idApprovalObat){
             // total harga
             //alert(totalHarga);
             $("#total_harga_obat").val(formatRupiah(totalHarga));
+            // $("#total_harga_obat").val(totalHarga);
         }
     });
 }

@@ -174,31 +174,32 @@
                                 <td>ID Obat</td>
                                 <td>Nama Obat</td>
                                 <td>Standar Margin</td>
-                                <td>Harga Jual Non BPJS(Normal)</td>
-                                <td>Harga Jual Non BPJS(Khusus)</td>
-                                <td>Harga Jual BPJS(Normal)</td>
-                                <td>Harga Jual BPJS(Khusus)</td>
+                                <td>Harga Terakhir Non BPJS(Normal)</td>
+                                <td>Harga Terakhir Non BPJS(Khusus)</td>
+                                <td>Harga Terakhir BPJS(Normal)</td>
+                                <td>Harga Terakhir BPJS(Khusus)</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
                             <s:iterator value="#session.listOfResult" var="row">
-                                <s:if test='#row.flagKurangMargin == "Y"'>
-                                    <tr style="background-color: #d9534f; color: #ffffff">
-                                </s:if>
-                                <s:elseif test='#row.flagKurangMargin == "R"'>
-                                    <tr style="background-color: #EBEADF; color: black">
-                                </s:elseif>
-                                <s:else>
+                                <%--<s:if test='#row.flagKurangMargin == "Y"'>--%>
+                                    <%--<tr style="background-color: #d9534f; color: #ffffff">--%>
+                                <%--</s:if>--%>
+                                <%--<s:elseif test='#row.flagKurangMargin == "R"'>--%>
+                                    <%--<tr style="background-color: #EBEADF; color: black">--%>
+                                <%--</s:elseif>--%>
+                                <%--<s:else>--%>
+                                    <%--<tr>--%>
+                                <%--</s:else>--%>
                                     <tr>
-                                </s:else>
                                     <td><s:property value="idObat"/></td>
                                     <td><s:property value="namaObat"/></td>
                                     <td><s:property value="standarMargin"/></td>
-                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaJualUmumNonBpjs"/>'))</script></td>
-                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaJualKhususNonBpjs"/>'))</script></td>
-                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaJualUmumBpjs"/>'))</script></td>
-                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaJualKhususBpjs"/>'))</script></td>
+                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaTerakhirUmumNonBpjs"/>'))</script></td>
+                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaTerakhirKhusuNonBpjs"/>'))</script></td>
+                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaTerakhirUmumBpjs"/>'))</script></td>
+                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaTerakhirKhususBpjs"/>'))</script></td>
                                     <td align="center">
                                         <img onclick="editObat('<s:property value="idObat"/>','<s:property value="idBarang"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                     </td>
@@ -329,20 +330,24 @@
 
         var idObat      = $("#mod-id-obat").val();
         var listHarga   = [];
-        for (var i = 0 ; i < jumlahList.length; i ++){
-            var hargaBruto  = $("#bruto-"+i).val();
+
+        console.log(jumlahList);
+
+        for(var i = 0 ; i < jumlahList ; i++){
+            var hargaBruto  = parseRibuan($("#bruto-"+i).val());
             var margin      = $("#margin-"+i).val();
-            var hargaJual   = $("#harga-jual-"+i).val();
+            var hargaJual   = parseRibuan($("#harga-jual-"+i).val());
             var idRekanan   = $("#id-rekanan-"+i).val();
             var jenis       = $("#jenis-konsumen-"+i).val();
             listHarga.push(
                 {"harga_bruto":hargaBruto, "margin_obat":margin, "harga_jual":hargaJual, "jenis_konsumen":jenis, "id_rekanan":idRekanan}
             );
-        }
+        };
 
+        console.log(listHarga);
         var stJson = JSON.stringify(listHarga);
-        ObatAction.saveListHargaRekananObat(idObat, stJson, function (res) {
-            if (response.status == "success"){
+        ObatAction.saveListHargaRekananObat(stJson, idObat, function (res) {
+            if (res.status == "success"){
                 $("#success_obat").show();
                 $("#ok_obat").show();
                 $("#ok_obat").attr("onclick", "searchForm('"+id+"')");
@@ -350,7 +355,7 @@
                 $("#close_obat").hide();
             } else {
                 $("#warning_obat").show();
-                $("#obat_error").text(response.msg);
+                $("#obat_error").text(res.msg);
             }
         });
 
@@ -537,8 +542,8 @@
                        "<input type='hidden' id='jenis-konsumen-"+n+"' value='"+item.jenisKonsumen+"'/>" +
                        "</td>"+
                        "<td><input type='hidden' value='"+item.hargaTerakhir+"' id='bruto-"+n+"'/><input type='text' style='text-align: right; font-size: 13px;' class='form-control' value='"+formatRupiah(item.hargaTerakhir)+"' readonly/></td>"+
-                       "<td><input type='number' style='text-align: right; font-size: 13px; width: 100px' class='form-control' id='margin-"+n+"' value='"+formatRupiah(item.margin)+"' onchange='hitungHargaJual(this.id)'/></td>"+
-                       "<td><input type='number' style='text-align: right; font-size: 13px;' class='form-control' id='harga-jual-"+n+"' value='"+formatRupiah(item.hargaJual)+"' onchange='hitungMargin(this.id)' readonly/></td>"+
+                       "<td><input type='number' style='text-align: right; font-size: 13px; width: 100px' class='form-control' id='margin-"+n+"' value='"+formatRupiah(item.margin)+"' oninput='hitungHargaJual(this.id)'/></td>"+
+                       "<td><input type='number' style='text-align: right; font-size: 13px;' class='form-control' id='harga-jual-"+n+"' value='"+formatRupiah(item.hargaJual)+"' oninput='hitungMargin(this.id)' readonly/></td>"+
                    "</tr>";
                n = n + 1;
             });
@@ -546,6 +551,19 @@
             jumlahList = n;
             $("#list-body-konsumen").html(str);
         });
+    }
+
+    function parseRibuan(angka){
+        if (angka != ''){
+
+            var spangka = angka.split('.');
+            var stTotal = "";
+            $.each(spangka, function (i, item) {
+                stTotal = stTotal + item;
+            });
+
+            return stTotal;
+        }
     }
 
 </script>
