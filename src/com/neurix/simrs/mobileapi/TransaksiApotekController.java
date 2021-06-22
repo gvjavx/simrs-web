@@ -8,6 +8,7 @@ import com.neurix.simrs.mobileapi.model.ObatMobile;
 import com.neurix.simrs.mobileapi.model.PermintaanObatMobile;
 import com.neurix.simrs.mobileapi.model.PermintaanResepMobile;
 import com.neurix.simrs.mobileapi.model.TransaksiObatMobile;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
@@ -445,12 +446,24 @@ public class TransaksiApotekController implements ModelDriven<Object> {
 //            beanTransaksi.setFlag("Y");
             beanTransaksi.setIdPelayanan(idPelayanan);
 
-            try {
-                resultTransaksi = transaksiObatBoProxy.getSearchObatTransaksiByCriteria(beanTransaksi);
+            HeaderCheckup dataPasien = new HeaderCheckup();
 
+            try {
+                dataPasien = transaksiObatBoProxy.getDataTransByIdApprovalResep(idApprovalObat);
             } catch (GeneralBOException e){
                 logger.error("[TransaksiApotekController.create] Error, get search transaksi " + e.getMessage());
             }
+
+            beanTransaksi.setIdDetailCheckup(dataPasien.getIdDetailCheckup());
+            beanTransaksi.setJenisPeriksaPasien(dataPasien.getIdJenisPeriksaPasien());
+            beanTransaksi.setIdAsuransi(dataPasien.getIdAsuransi());
+
+            try {
+                resultTransaksi = transaksiObatBoProxy.getSearchObatTransaksiByCriteria(beanTransaksi);
+            } catch (GeneralBOException e){
+                logger.error("[TransaksiApotekController.create] Error, get search transaksi " + e.getMessage());
+            }
+
             for (TransaksiObatDetail item : resultTransaksi){
                 TransaksiObatMobile transaksiObatMobile = new TransaksiObatMobile();
                 transaksiObatMobile.setIdTransaksiObatDetail(item.getIdTransaksiObatDetail());
@@ -601,8 +614,19 @@ public class TransaksiApotekController implements ModelDriven<Object> {
 
             beanTransaksiObat.setIdTransaksiObatDetail(idTransaksiObatDetail);
             beanTransaksiObat.setIdApprovalObat(idApprovalObat);
-
             beanTransaksiObat.setBranchId(branchId);
+
+            HeaderCheckup dataPasien = new HeaderCheckup();
+
+            try {
+                dataPasien = transaksiObatBoProxy.getDataTransByIdApprovalResep(idApprovalObat);
+            } catch (GeneralBOException e){
+                logger.error("[TransaksiApotekController.create] Error, get search transaksi " + e.getMessage());
+            }
+
+            beanTransaksiObat.setIdDetailCheckup(dataPasien.getIdDetailCheckup());
+            beanTransaksiObat.setIdAsuransi(dataPasien.getIdAsuransi());
+            beanTransaksiObat.setJenisPeriksaPasien(dataPasien.getIdJenisPeriksaPasien());
 
             try{
                 resultTransaksi = transaksiObatBoProxy.getSearchObatTransaksiByCriteria(beanTransaksiObat);

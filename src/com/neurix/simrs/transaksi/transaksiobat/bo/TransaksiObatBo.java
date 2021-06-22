@@ -54,6 +54,6 @@ public interface TransaksiObatBo {
     public List<TransaksiObatDetail> getListTransaksiObatDetailBatchByIdResepAndIdBarang(String idResep, String idBarang) throws GeneralBOException;
     public String getFlagIsRacikInTransaksiObatDetail(String idPermintaan) throws GeneralBOException;
     public List<ObatRacik> getListNamaRacik(String idRacik) throws GeneralBOException;
-    public HeaderCheckup getDataTransByIdApprovalResep(String idPermintaanResep);
+    public HeaderCheckup getDataTransByIdApprovalResep(String idApprovalResep);
 
 }

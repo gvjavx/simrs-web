@@ -996,6 +996,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             try {
                 obatPoliDao.addAndSave(newObatPoli);
             } catch (HibernateException e) {
+                logger.error(e.getMessage());
                 logger.error("[ObatPoliBoImpl.updateAddStockPoli] ERROR when insert master obat poli. ", e);
                 throw new GeneralBOException("[ObatPoliBoImpl.updateAddStockPoli] ERROR when insert master obat poli. ", e);
             }

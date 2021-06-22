@@ -117,6 +117,15 @@ public class TransaksiObatDetail extends BaseModel {
     private String warna;
     private String tipePelayanan;
     private String isRacik;
+    private String idAsuransi;
+
+    public String getIdAsuransi() {
+        return idAsuransi;
+    }
+
+    public void setIdAsuransi(String idAsuransi) {
+        this.idAsuransi = idAsuransi;
+    }
 
     public String getIsRacik() {
         return isRacik;
