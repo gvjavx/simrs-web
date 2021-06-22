@@ -313,12 +313,26 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         transaksiObatDetail.setIdPermintaanResep(idResep);
         List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
 
+        HeaderCheckup dataPasien = new HeaderCheckup();
+
+        try {
+            dataPasien = transaksiObatBo.getHeaderCheckupDataByPermintaanResep(idResep);
+        } catch (HibernateException e){
+            logger.error("[TransaksiObatAction.getListDetailResep] ERROR error when get searh resep. ", e);
+            addActionError("[TransaksiObatAction.getListDetailResep] ERROR error when get searh resep. " + e.getMessage());
+        }
+
+        transaksiObatDetail.setIdAsuransi(dataPasien.getIdAsuransi());
+        transaksiObatDetail.setBranchId(dataPasien.getBranchId());
+        transaksiObatDetail.setJenisPeriksaPasien(dataPasien.getIdJenisPeriksaPasien());
+        transaksiObatDetail.setIdDetailCheckup(dataPasien.getIdDetailCheckup());
+
         if (idResep != null && !"".equalsIgnoreCase(idResep)) {
             try {
                 obatDetailList = transaksiObatBo.getSearchObatTransaksiByCriteria(transaksiObatDetail);
             } catch (GeneralBOException e) {
-                logger.error("[TransaksiObatAction.searchResep] ERROR error when get searh resep. ", e);
-                addActionError("[TransaksiObatAction.searchResep] ERROR error when get searh resep. " + e.getMessage());
+                logger.error("[TransaksiObatAction.getListDetailResep] ERROR error when get searh resep. ", e);
+                addActionError("[TransaksiObatAction.getListDetailResep] ERROR error when get searh resep. " + e.getMessage());
             }
         }
 

@@ -1272,6 +1272,23 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     }
 
     @Override
+    public HeaderCheckup getHeaderCheckupDataByPermintaanResep(String idPermintaanResep) {
+        logger.info("[TransaksiObatBoImpl.getHeaderCheckupDataByPermintaanResep] Start >>>>>>>");
+
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+
+        try {
+            headerCheckup = obatPoliDao.getHeaderCheckupDataByPermintaanResep(idPermintaanResep);
+        } catch (HibernateException e){
+            logger.error("[TransaksiObatBoImpl.getHeaderCheckupDataByPermintaanResep] ERROR when get by criteria. ", e);
+            throw new GeneralBOException("[TransaksiObatBoImpl.getHeaderCheckupDataByPermintaanResep] ERROR when get by criteria. ", e);
+        }
+
+        logger.info("[TransaksiObatBoImpl.getHeaderCheckupDataByPermintaanResep] End <<<<<<<");
+        return headerCheckup;
+    }
+
+    @Override
     public CheckObatResponse saveApproveResepPoli(TransaksiObatDetail bean) throws GeneralBOException {
         logger.info("[TransaksiObatBoImpl.saveApproveResepPoli] START >>>>>>>>>>");
         CheckObatResponse response = new CheckObatResponse();
