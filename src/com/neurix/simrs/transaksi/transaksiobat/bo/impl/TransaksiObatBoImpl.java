@@ -119,11 +119,12 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                 transaksiObatDetail.setLastUpdateWho(obatDetailEntity.getLastUpdateWho());
                 transaksiObatDetail.setJenisSatuan(obatDetailEntity.getJenisSatuan());
                 transaksiObatDetail.setFlagVerifikasi(obatDetailEntity.getFlagVerifikasi());
+                transaksiObatDetail.setFlagRacik(obatDetailEntity.getFlagRacik());
                 transaksiObatDetail.setIdRacik(obatDetailEntity.getIdRacik());
                 transaksiObatDetail.setNamaRacik(obatDetailEntity.getNamaRacik());
                 transaksiObatDetail.setHariKronis(obatDetailEntity.getHariKronis());
                 transaksiObatDetail.setKeterangan(obatDetailEntity.getKeterangan());
-                transaksiObatDetail.setFlagRacik(obatDetailEntity.getFlagRacik());
+//                transaksiObatDetail.setDosis(obatDetailEntity.getd);
 
                 ImSimrsObatEntity obatEntity = getObatById(obatDetailEntity.getIdObat());
                 if (obatEntity != null) {

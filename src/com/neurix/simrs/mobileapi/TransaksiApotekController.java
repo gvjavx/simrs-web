@@ -11,6 +11,7 @@ import com.neurix.simrs.mobileapi.model.TransaksiObatMobile;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
+import com.neurix.simrs.transaksi.obatracik.model.ObatRacik;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
@@ -477,6 +478,13 @@ public class TransaksiApotekController implements ModelDriven<Object> {
                 transaksiObatMobile.setFlagDiterima(item.getFlagDiterima());
                 transaksiObatMobile.setFlagVerifikasi(item.getFlagVerifikasi());
                 transaksiObatMobile.setQtyApprove(item.getQtyApprove() != null ? item.getQtyApprove().toString() : "0");
+                transaksiObatMobile.setIsRacik(item.getFlagRacik());
+                transaksiObatMobile.setIdRacik(item.getIdRacik());
+                if (item.getFlagRacik().equalsIgnoreCase("Y")){
+                    List<ObatRacik> listRacik = transaksiObatBoProxy.getListNamaRacik(item.getIdRacik());
+                    transaksiObatMobile.setNamaRacik(listRacik.get(0).getNama());
+                    transaksiObatMobile.setDosis(item.getKeterangan());
+                }
 
                 listOfTransaksiObat.add(transaksiObatMobile);
             }
@@ -491,6 +499,7 @@ public class TransaksiApotekController implements ModelDriven<Object> {
             beanObatPoli.setIdPelayanan(idPelayanan);
             beanObatPoli.setBranchId(branchId);
             beanObatPoli.setExp("exp");
+            beanObatPoli.setIdObat(idObat);
 
             try {
                result = obatPoliBoProxy.getObatPoliByCriteria(beanObatPoli);
@@ -512,8 +521,14 @@ public class TransaksiApotekController implements ModelDriven<Object> {
                 obat.setExpiredDate(item.getExpiredDate().toString());
                 obat.setIdPabrik(item.getIdPabrik());
                 obat.setNamaObat(item.getNamaObat());
+                if (item.getLembarPerBox()!=null){
                 obat.setLembarPerBox(item.getLembarPerBox().toString());
+
+                }
+                if (item.getBijiPerLembar()!=null){
                 obat.setBijiPerLembar(item.getBijiPerLembar().toString());
+
+                }
 
                 listOfObat.add(obat);
             }
