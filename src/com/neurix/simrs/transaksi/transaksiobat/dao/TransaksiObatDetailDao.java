@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.transaksiobat.dao;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObatPerKonsumen;
 import com.neurix.simrs.transaksi.obatracik.model.ObatRacik;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
@@ -772,51 +773,65 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         return transaksiObatDetail;
     }
 
-    public TransaksiObatDetail getTotalHargaResepApproveUmum(String idPermintaan){
+    public TransaksiObatDetail getTotalHargaResepApproved(String idPermintaan){
 
         TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
 
         if (!"".equalsIgnoreCase(idPermintaan) && idPermintaan != null){
 
+//            String SQL = "SELECT \n" +
+//                    "a.id_permintaan_resep, \n" +
+//                    "a.id_detail_checkup, \n" +
+//                    "SUM(a.qty) as total_qty, \n" +
+//                    "a.id_pelayanan, \n" +
+//                    "a.id_pasien, \n" +
+//                    "a.id_jenis_periksa_pasien,\n" +
+//                    "a.no_checkup,\n" +
+//                    "a.jenis_resep\n" +
+//                    "FROM(\n" +
+//                    "\tSELECT \n" +
+//                    "\ta.id_permintaan_resep, \n" +
+//                    "\ta.id_detail_checkup,\n" +
+//                    "\tb.id_transaksi_obat_detail,\n" +
+//                    "\tb.id_obat,\n" +
+//                    "\tb.jenis_satuan,\n" +
+//                    "\tc.qty,\n" +
+//                    "\te.id_pelayanan,\n" +
+//                    "\tf.no_checkup,\n" +
+//                    "\tf.id_pasien,\n" +
+//                    "\te.id_jenis_periksa_pasien,\n" +
+//                    "\tb.jenis_resep\n" +
+//                    "\tFROM mt_simrs_permintaan_resep a\n" +
+//                    "\tINNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
+//                    "\tINNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch WHERE approve_flag = 'Y'  GROUP BY id_transaksi_obat_detail)c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
+//                    "\tINNER JOIN it_simrs_header_detail_checkup e ON a.id_detail_checkup = e.id_detail_checkup\n" +
+//                    "\tINNER JOIN it_simrs_header_checkup f ON e.no_checkup = f.no_checkup\n" +
+//                    "\tWHERE a.id_permintaan_resep = :idPermin \n" +
+//                    ")a\n" +
+//                    "GROUP BY a.id_detail_checkup,\n" +
+//                    "a.id_permintaan_resep, \n" +
+//                    "a.id_pelayanan, \n" +
+//                    "a.id_pasien, \n" +
+//                    "a.id_jenis_periksa_pasien,\n" +
+//                    "a.no_checkup,\n" +
+//                    "a.jenis_resep";
+
             String SQL = "SELECT \n" +
-                    "a.id_permintaan_resep, \n" +
-                    "a.id_detail_checkup, \n" +
-                    "SUM(a.total) as tarif, \n" +
-                    "a.id_pelayanan, \n" +
-                    "a.id_pasien, \n" +
-                    "a.id_jenis_periksa_pasien,\n" +
-                    "a.no_checkup,\n" +
-                    "a.jenis_resep\n" +
-                    "FROM(\n" +
-                    "\tSELECT \n" +
                     "\ta.id_permintaan_resep, \n" +
                     "\ta.id_detail_checkup,\n" +
-                    "\tb.id_transaksi_obat_detail,\n" +
-                    "\tb.id_obat,\n" +
-                    "\tb.jenis_satuan,\n" +
                     "\tc.qty,\n" +
-                    "\td.harga_jual,\n" +
-                    "\t(d.harga_jual_umum * c.qty) as total,\n" +
                     "\te.id_pelayanan,\n" +
-                    "\tf.no_checkup,\n" +
                     "\tf.id_pasien,\n" +
                     "\te.id_jenis_periksa_pasien,\n" +
-                    "\tb.jenis_resep\n" +
+                    "\tf.no_checkup,\n" +
+                    "\tb.jenis_resep,\n" +
+                    "\tb.id_obat\n" +
                     "\tFROM mt_simrs_permintaan_resep a\n" +
                     "\tINNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
-                    "\tINNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch WHERE approve_flag = 'Y'  GROUP BY id_transaksi_obat_detail)c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
-                    "\tINNER JOIN mt_simrs_harga_obat d ON b.id_obat = d.id_obat\n" +
+                    "\tINNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch WHERE approve_flag = 'Y'  GROUP BY id_transaksi_obat_detail) c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
                     "\tINNER JOIN it_simrs_header_detail_checkup e ON a.id_detail_checkup = e.id_detail_checkup\n" +
                     "\tINNER JOIN it_simrs_header_checkup f ON e.no_checkup = f.no_checkup\n" +
-                    "\tWHERE a.id_permintaan_resep = :idPermin\n" +
-                    "\t)a\n" +
-                    "GROUP BY a.id_detail_checkup,\n" +
-                    "a.id_permintaan_resep, \n" +
-                    "a.id_pelayanan, \n" +
-                    "a.id_pasien, \n" +
-                    "a.id_jenis_periksa_pasien,\n" +
-                    "a.no_checkup,\n" +
-                    "a.jenis_resep";
+                    "\tWHERE a.id_permintaan_resep = :idPermin ";
 
             List<Object[]> results = new ArrayList<>();
             results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -825,20 +840,72 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
 
             if (results.size() > 0){
 
-                Object[] objects = results.get(0);
-                transaksiObatDetail.setIdPermintaanResep(objects[0] == null ? "" : objects[0].toString());
-                transaksiObatDetail.setIdDetailCheckup(objects[1] == null ? "" : objects[1].toString());
-                transaksiObatDetail.setTotalHarga(objects[2] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(objects[2].toString()));
-                transaksiObatDetail.setIdPelayanan(objects[3] == null ? "" : objects[3].toString());
-                transaksiObatDetail.setIdPasien(objects[4] == null ? "" : objects[4].toString());
-                transaksiObatDetail.setJenisPeriksaPasien(objects[5] == null ? "" : objects[5].toString());
-                transaksiObatDetail.setNoCheckup(objects[6] == null ? "" : objects[6].toString());
-                transaksiObatDetail.setJenisResep(objects[7] == null ? "" : objects[7].toString());
+                BigInteger totalHarga = new BigInteger(String.valueOf(0));
 
+                for (Object[] objects : results){
+
+                    transaksiObatDetail.setIdPermintaanResep(objects[0] == null ? "" : objects[0].toString());
+                    transaksiObatDetail.setIdDetailCheckup(objects[1] == null ? "" : objects[1].toString());
+
+                    BigInteger qty  = objects[2] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(objects[2].toString());
+
+                    transaksiObatDetail.setIdPelayanan(objects[3] == null ? "" : objects[3].toString());
+                    transaksiObatDetail.setIdPasien(objects[4] == null ? "" : objects[4].toString());
+                    transaksiObatDetail.setJenisPeriksaPasien(objects[5] == null ? "" : objects[5].toString());
+                    transaksiObatDetail.setNoCheckup(objects[6] == null ? "" : objects[6].toString());
+                    transaksiObatDetail.setJenisResep(objects[7] == null ? "" : objects[7].toString());
+
+                    String idObat   = objects[8] == null ? "" : objects[8].toString();
+
+                    HeaderCheckup dataPasien = getHeaderCheckupDataByPermintaanResep(idPermintaan);
+
+                    if (dataPasien != null && !"".equalsIgnoreCase(idObat) && qty.intValue() > 0){
+
+                        HargaObatPerKonsumen hargaObatPerKonsumen = getDataHargaPerKonsumen(idObat, dataPasien.getBranchId(), dataPasien.getIdJenisPeriksaPasien(), dataPasien.getIdAsuransi());
+
+                        BigInteger hargaObat = new BigInteger(String.valueOf(0));
+
+                        if (hargaObatPerKonsumen != null){
+                            hargaObat = new BigInteger(hargaObatPerKonsumen.getHargaJual().toString());
+                        }
+
+                        totalHarga = totalHarga.add(qty.multiply(hargaObat));
+                    }
+                }
+
+                //total harga obat
+                transaksiObatDetail.setTotalHarga(totalHarga);
             }
         }
 
         return transaksiObatDetail;
+    }
+
+    private HeaderCheckup getHeaderCheckupDataByPermintaanResep(String idPermintaanResep){
+
+        String SQL = "SELECT \n" +
+                "hdc.id_detail_checkup, \n" +
+                "hdc.id_asuransi,\n" +
+                "hdc.id_jenis_periksa_pasien, \n" +
+                "pr.branch_id \n" +
+                "FROM \n" +
+                "it_simrs_header_detail_checkup hdc \n" +
+                "INNER JOIN mt_simrs_permintaan_resep pr ON pr.id_detail_checkup = hdc.id_detail_checkup \n" +
+                "WHERE pr.id_permintaan_resep = '"+idPermintaanResep+"'";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+            Object[] obj = list.get(0);
+            HeaderCheckup headerCheckup = new HeaderCheckup();
+            headerCheckup.setIdDetailCheckup(obj[0].toString());
+            headerCheckup.setIdAsuransi(obj[1] != null ? obj[1].toString() : null);
+            headerCheckup.setIdJenisPeriksaPasien(obj[2].toString());
+            headerCheckup.setBranchId(obj[3] != null ? obj[3].toString() : null);
+            return headerCheckup;
+        }
+
+        return null;
     }
 
     public TransaksiObatDetail getTotalHargaResepApprove(String idPermintaan){
@@ -1179,7 +1246,17 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
     private BigDecimal objToBigDecimal(Object obj){
         if (obj == null)
             return new BigDecimal(0);
-        else
-            return new BigDecimal(obj.toString());
+        else {
+
+            String[] splitNilai = obj.toString().split("\\.");
+
+            if (splitNilai.length > 0){
+
+                String stNilai = splitNilai[0];
+                return new BigDecimal(stNilai);
+            } else {
+                return new BigDecimal(obj.toString());
+            }
+        }
     }
 }
