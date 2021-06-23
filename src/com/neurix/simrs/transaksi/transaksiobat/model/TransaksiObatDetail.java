@@ -118,6 +118,7 @@ public class TransaksiObatDetail extends BaseModel {
     private String tipePelayanan;
     private String isRacik;
     private String idAsuransi;
+    private String dosis;
 
     public String getIdAsuransi() {
         return idAsuransi;
@@ -859,5 +860,13 @@ public class TransaksiObatDetail extends BaseModel {
 
     public void setIdDetailCheckup(String idDetailCheckup) {
         this.idDetailCheckup = idDetailCheckup;
+    }
+
+    public String getDosis() {
+        return dosis;
+    }
+
+    public void setDosis(String dosis) {
+        this.dosis = dosis;
     }
 }
