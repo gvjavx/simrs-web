@@ -861,6 +861,10 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
 
                     if (dataPasien != null && !"".equalsIgnoreCase(idObat) && qty.intValue() > 0){
 
+                        if ("".equalsIgnoreCase(transaksiObatDetail.getJenisPeriksaPasien())){
+                            transaksiObatDetail.setJenisResep(dataPasien.getIdJenisPeriksaPasien());
+                        }
+
                         HargaObatPerKonsumen hargaObatPerKonsumen = getDataHargaPerKonsumen(idObat, dataPasien.getBranchId(), dataPasien.getIdJenisPeriksaPasien(), dataPasien.getIdAsuransi());
 
                         BigInteger hargaObat = new BigInteger(String.valueOf(0));
