@@ -159,6 +159,11 @@
                     <div id="form-gambar" style="display: none">
                         <hr>
                         <div class="row">
+                            <div class="col-md-1">
+                                <input type="color" class="js-color-picker-op color-picker pull-left" value="#ff0000">
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-12">
                                 <div class="text-center">
                                     <canvas class="paint-canvas canvas-cek" style="cursor: pointer"></canvas>

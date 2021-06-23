@@ -27,9 +27,9 @@
                         </button>
                         <ul class="dropdown-menu" role="menu">
                             <li><a onclick="showModalSPS('anamnesa_rehab_medik')" style="cursor: pointer"><i
-                                    class="fa fa-plus"></i> Anamnesa</a></li>
+                                    class="fa fa-plus"></i> Anamnesis</a></li>
                             <li><a onclick="showModalSPS('pemeriksaan_rehab_medik')" style="cursor: pointer"><i
-                                    class="fa fa-plus"></i> Pemeriksaan</a></li>
+                                    class="fa fa-plus"></i> Daftar Masalah Kedokteran Fisik dan Rehabilitas</a></li>
                         </ul>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                     <table class="table">
                         <tbody>
                         <tr id="row_sps_anamnesa_rehab_medik">
-                            <td>Anamnesa</td>
+                            <td>Anamnesis</td>
                             <td width="20%" align="center"><img id="btn_sps_anamnesa_rehab_medik" class="hvr-grow"
                                                                 onclick="detailSPS('anamnesa_rehab_medik')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
@@ -45,7 +45,7 @@
                             </td>
                         </tr>
                         <tr id="row_sps_pemeriksaan_rehab_medik">
-                            <td>Pemeriksaan</td>
+                            <td>Daftar Masalah Kedokteran Fisik dan Rehabilitas</td>
                             <td width="20%" align="center"><img id="btn_sps_pemeriksaan_rehab_medik" class="hvr-grow"
                                                                 onclick="detailSPS('pemeriksaan_rehab_medik')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
@@ -70,7 +70,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-stethoscope"></i> Anamnesa
+                <h4 class="modal-title"><i class="fa fa-stethoscope"></i> Anamnesis
                 </h4>
             </div>
             <div class="modal-body">
@@ -81,8 +81,8 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3">Tanggal Kunjungan</label>
-                            <div class="col-md-9">
+                            <label class="col-md-4">Tanggal Kunjungan</label>
+                            <div class="col-md-8">
                                 <div class="input-group">
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
@@ -94,101 +94,54 @@
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-3">Riwayat Alergi</label>
-                            <div class="col-md-9">
-                                <textarea rows="3" class="form-control alergi-pasien" id="kut2"></textarea>
-                            </div>
+                            <label class="col-md-12">Anamnesis</label>
                         </div>
                     </div>
-                    <hr class="garis">
                     <div class="row jarak">
                         <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Tensi</label>
-                                <input class="form-control tensi-pasien" placeholder="mmHg" id="kut3">
-                            </div>
-                            <div class="col-md-3">
-                                <label>Nadi</label>
-                                <input class="form-control nadi-pasien" placeholder="x/menit" type="number" id="kut4">
-                            </div>
-                            <div class="col-md-3">
-                                <label>Suhu </label>
-                                <input class="form-control suhu-pasien" placeholder="&#8451" type="number" id="kut5">
-                            </div>
-                            <div class="col-md-3">
-                                <label>RR </label>
-                                <input class="form-control rr-pasien" placeholder="x/menit" type="number" id="kut6">
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <div class="col-md-4">
-                            <label>Berat Badan</label>
-                                <input class="form-control berat-pasien" id="kut7" placeholder="Kg" type="number">
-                            </div>
-                            <div class="col-md-4">
-                                <label>Tinggi Badan</label>
-                                <input class="form-control tinggi-pasien" id="kut8" placeholder="cm" type="number">
-                            </div>
-                            <div class="col-md-4">
-                                <label>Skala Nyeri</label>
-                                <input class="form-control alergi" id="kut9" type="number">
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3">Kondisi nutrisi</label>
-                            <div class="col-md-9">
-                                <select class="form-control" id="kut10">
-                                    <option value="Obesitas">Obesitas</option>
-                                    <option value="Overweigh">Overweigh</option>
-                                    <option value="Normoweight">Normoweight</option>
-                                    <option value="Underweight">Underweight</option>
-                                </select>
+                            <label class="col-md-4">Keluhan Utama</label>
+                            <div class="col-md-8">
+                                <textarea rows="3" class="form-control" id="kut2"></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-3">Anamnesis</label>
-                            <div class="col-md-9">
-                                <textarea rows="3" class="form-control anamnese" id="kut11"></textarea>
+                            <label class="col-md-4">Riwayat Penyakit Sekarang</label>
+                            <div class="col-md-8">
+                                <textarea rows="3" class="form-control" id="kut3"></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-3">Keluhan Utama</label>
-                            <div class="col-md-9">
-                                <textarea rows="3" class="form-control" id="kut12"></textarea>
+                            <label class="col-md-4">Riwayat Penyakit Dahulu</label>
+                            <div class="col-md-8">
+                                <textarea rows="3" class="form-control" id="kut4"></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-3">Riwayat Penyakit Sekarang</label>
-                            <div class="col-md-9">
-                                <textarea rows="3" class="form-control" id="kut13"></textarea>
+                            <label class="col-md-4">Riwayat Penyakit Keluarga</label>
+                            <div class="col-md-8">
+                                <textarea rows="3" class="form-control" id="kut5"></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-3">Riwayat Penyakit Dahulu</label>
-                            <div class="col-md-9">
-                                <textarea rows="3" class="form-control" id="kut14"></textarea>
+                            <label class="col-md-4">Diagnosa Klinis</label>
+                            <div class="col-md-8">
+                                <textarea rows="3" class="form-control" id="kut6"></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-3">Obat obat yang sedang dikonsumsi</label>
-                            <div class="col-md-9">
-                                <textarea rows="3" class="form-control" id="kut15"></textarea>
+                            <label class="col-md-4">Diagnosa Fungsional</label>
+                            <div class="col-md-8">
+                                <textarea rows="3" class="form-control" id="kut7"></textarea>
                             </div>
                         </div>
                     </div>
@@ -213,8 +166,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-stethoscope"></i> Pemeriksaan
-                </h4>
+                <h4 class="modal-title"><i class="fa fa-stethoscope"></i> Daftar Masalah Kedokteran Fisik dan Rehabilitas</h4>
             </div>
             <div class="modal-body">
                 <div class="box-body">
