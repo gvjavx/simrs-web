@@ -1782,6 +1782,7 @@ function saveSPS(jenis, ket) {
                 'jawaban': "",
                 'keterangan': jenis,
                 'jenis': ket,
+                'tipe': 'colspan',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -2115,192 +2116,581 @@ function saveSPS(jenis, ket) {
     }
 
     if ("pemeriksaan_rehab_medik" == jenis) {
-        var va1 = $('[name=pt1]:checked').val();
-        var va2 = $('#pt2').val();
-        var va3 = $('[name=pt3]:checked').val();
-        var va4 = $('[name=pt4]:checked').val();
-        var va5 = $('[name=pt5]:checked').val();
-        var va6 = $('[name=pt6]:checked').val();
-        var va7 = $('#pt7').val();//lainnya
-        var va8 = $('#pt8').val();
-        var va9 = "";
-        var v9 = $('[name=pt9]:checked').val();
-        if (v9 != undefined) {
-            var ket = $('#ket_pt9').val();
-            if ("Kelainan" == v9) {
-                va9 = v9 + " : " + ket;
-            } else {
-                va9 = v9;
+        var va1 = $('#rm1').val();
+        var va2 = $('#rm2').val();
+        var va3 = $('#rm3').val();
+        var va4 = $('#rm4').val();
+        var va5 = $('#rm5').val();
+        var va6 = $('#rm6').val();
+        var va7 = $('#rm7').val();
+
+        var pj = $('[name=pp]');
+        var tempPj = "";
+        $.each(pj, function (i, item) {
+            if(item.checked){
+                if(tempPj != ''){
+                    tempPj = tempPj+', '+item.value;
+                }else{
+                    tempPj = item.value;
+                }
             }
-        }
+        });
+        var table = '<table class="table table-striped table-responsive table-bordered" style="font-size: 12px" id="tb_rehab_medik">\n' +
+            '                                <tbody>\n' +
+            '                                <tr>\n' +
+            '                                    <td rowspan="2">Regio</td>\n' +
+            '                                    <td colspan="6">Pergerakan Sendi</td>\n' +
+            '                                    <td colspan="6">Kekuatan Otot</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Gerakan</td>\n' +
+            '                                    <td colspan="5">ROM(aktif/pasif)</td>\n' +
+            '                                    <td>Otot</td>\n' +
+            '                                    <td colspan="5">MMT</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td rowspan="4">Siku</td>\n' +
+            '                                    <td>Fleksi</td>\n' +
+            '                                    <td colspan="5">'+$('#td11').val()+'</td>\n' +
+            '                                    <td>Fleksor</td>\n' +
+            '                                    <td colspan="5">'+$('#td12').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Ektensi</td>\n' +
+            '                                    <td colspan="5">'+$('#td21').val()+'</td>\n' +
+            '                                    <td>Ekstensor</td>\n' +
+            '                                   <td colspan="5">'+$('#td22').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Pronasi</td>\n' +
+            '                                    <td colspan="5">'+$('#td31').val()+'</td>\n' +
+            '                                    <td>Pronator</td>\n' +
+            '                                    <td colspan="5">'+$('#td32').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Supinasi</td>\n' +
+            '                                    <td colspan="5">'+$('#td41').val()+'</td>\n' +
+            '                                    <td>Supinator</td>\n' +
+            '                                    <td colspan="5">'+$('#td42').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td></td>\n' +
+            '                                    <td></td>\n' +
+            '                                    <td>1</td>\n' +
+            '                                    <td>2</td>\n' +
+            '                                    <td>3</td>\n' +
+            '                                    <td>4</td>\n' +
+            '                                    <td>5</td>\n' +
+            '                                    <td></td>\n' +
+            '                                    <td>1</td>\n' +
+            '                                    <td>2</td>\n' +
+            '                                    <td>3</td>\n' +
+            '                                    <td>4</td>\n' +
+            '                                    <td>5</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td rowspan="4">Jari Tangan: MCP</td>\n' +
+            '                                    <td>Fleksi</td>\n' +
+            '                                    <td>'+$('#td51').val()+'</td>\n' +
+            '                                    <td>'+$('#td52').val()+'</td>\n' +
+            '                                    <td>'+$('#td53').val()+'</td>\n' +
+            '                                    <td>'+$('#td54').val()+'</td>\n' +
+            '                                    <td>'+$('#td55').val()+'</td>\n' +
+            '                                    <td>Fleksor</td>\n' +
+            '                                    <td>'+$('#td56').val()+'</td>\n' +
+            '                                    <td>'+$('#td57').val()+'</td>\n' +
+            '                                    <td>'+$('#td58').val()+'</td>\n' +
+            '                                    <td>'+$('#td59').val()+'</td>\n' +
+            '                                    <td>'+$('#td510').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Ekstensi</td>\n' +
+'                                    <td>'+$('#td61').val()+'</td>\n' +
+            '                                    <td>'+$('#td62').val()+'</td>\n' +
+            '                                    <td>'+$('#td63').val()+'</td>\n' +
+            '                                    <td>'+$('#td64').val()+'</td>\n' +
+            '                                    <td>'+$('#td65').val()+'</td>\n' +
+            '                                    <td>Ekstensor</td>\n' +
+'                                    <td>'+$('#td66').val()+'</td>\n' +
+            '                                    <td>'+$('#td67').val()+'</td>\n' +
+            '                                    <td>'+$('#td68').val()+'</td>\n' +
+            '                                    <td>'+$('#td69').val()+'</td>\n' +
+            '                                    <td>'+$('#td610').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Abduksi</td>\n' +
+'                                    <td>'+$('#td71').val()+'</td>\n' +
+            '                                    <td>'+$('#td72').val()+'</td>\n' +
+            '                                    <td>'+$('#td73').val()+'</td>\n' +
+            '                                    <td>'+$('#td74').val()+'</td>\n' +
+            '                                    <td>'+$('#td75').val()+'</td>\n' +
+            '                                    <td>Abductor</td>\n' +
+'                                    <td>'+$('#td76').val()+'</td>\n' +
+            '                                    <td>'+$('#td77').val()+'</td>\n' +
+            '                                    <td>'+$('#td78').val()+'</td>\n' +
+            '                                    <td>'+$('#td79').val()+'</td>\n' +
+            '                                    <td>'+$('#td710').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Aduksi</td>\n' +
+'                                    <td>'+$('#td81').val()+'</td>\n' +
+            '                                    <td>'+$('#td82').val()+'</td>\n' +
+            '                                    <td>'+$('#td83').val()+'</td>\n' +
+            '                                    <td>'+$('#td84').val()+'</td>\n' +
+            '                                    <td>'+$('#td85').val()+'</td>\n' +
+            '                                    <td>Aduktor</td>\n' +
+'                                    <td>'+$('#td86').val()+'</td>\n' +
+            '                                    <td>'+$('#td87').val()+'</td>\n' +
+            '                                    <td>'+$('#td88').val()+'</td>\n' +
+            '                                    <td>'+$('#td89').val()+'</td>\n' +
+            '                                    <td>'+$('#td810').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td rowspan="2">PIP</td>\n' +
+            '                                    <td>Fleksi</td>\n' +
+'                                    <td>'+$('#td91').val()+'</td>\n' +
+            '                                    <td>'+$('#td92').val()+'</td>\n' +
+            '                                    <td>'+$('#td93').val()+'</td>\n' +
+            '                                    <td>'+$('#td94').val()+'</td>\n' +
+            '                                    <td>'+$('#td95').val()+'</td>\n' +
+            '                                    <td>Fleksor</td>\n' +
+'                                    <td>'+$('#td96').val()+'</td>\n' +
+            '                                    <td>'+$('#td97').val()+'</td>\n' +
+            '                                    <td>'+$('#td98').val()+'</td>\n' +
+            '                                    <td>'+$('#td99').val()+'</td>\n' +
+            '                                    <td>'+$('#td910').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Ekstensi</td>\n' +
+'                                    <td>'+$('#td101').val()+'</td>\n' +
+            '                                    <td>'+$('#td102').val()+'</td>\n' +
+            '                                    <td>'+$('#td103').val()+'</td>\n' +
+            '                                    <td>'+$('#td104').val()+'</td>\n' +
+            '                                    <td>'+$('#td105').val()+'</td>\n' +
+            '                                    <td>Ekstensor</td>\n' +
+'                                    <td>'+$('#td106').val()+'</td>\n' +
+            '                                    <td>'+$('#td107').val()+'</td>\n' +
+            '                                    <td>'+$('#td108').val()+'</td>\n' +
+            '                                    <td>'+$('#td109').val()+'</td>\n' +
+            '                                    <td>'+$('#td1010').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td rowspan="2">DIP</td>\n' +
+            '                                    <td>Fleksi</td>\n' +
+'                                    <td>'+$('#td111').val()+'</td>\n' +
+            '                                    <td>'+$('#td112').val()+'</td>\n' +
+            '                                    <td>'+$('#td113').val()+'</td>\n' +
+            '                                    <td>'+$('#td114').val()+'</td>\n' +
+            '                                    <td>'+$('#td115').val()+'</td>\n' +
+            '                                    <td>Fleksor</td>\n' +
+'                                    <td>'+$('#td116').val()+'</td>\n' +
+            '                                    <td>'+$('#td117').val()+'</td>\n' +
+            '                                    <td>'+$('#td118').val()+'</td>\n' +
+            '                                    <td>'+$('#td119').val()+'</td>\n' +
+            '                                    <td>'+$('#td1110').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Ekstensi</td>\n' +
+'                                    <td>'+$('#td121').val()+'</td>\n' +
+            '                                    <td>'+$('#td122').val()+'</td>\n' +
+            '                                    <td>'+$('#td123').val()+'</td>\n' +
+            '                                    <td>'+$('#td124').val()+'</td>\n' +
+            '                                    <td>'+$('#td125').val()+'</td>\n' +
+            '                                    <td>Ekstensor</td>\n' +
+'                                    <td>'+$('#td126').val()+'</td>\n' +
+            '                                    <td>'+$('#td127').val()+'</td>\n' +
+            '                                    <td>'+$('#td128').val()+'</td>\n' +
+            '                                    <td>'+$('#td129').val()+'</td>\n' +
+            '                                    <td>'+$('#td1210').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td rowspan="6">Paha</td>\n' +
+            '                                    <td>Fleksi</td>\n' +
+            '                                    <td colspan="5">'+$('#td131').val()+'</td>\n' +
+            '                                    <td>Fleksor</td>\n' +
+            '                                    <td colspan="5">'+$('#td132').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Ektensi</td>\n' +
+            '                                    <td colspan="5">'+$('#td141').val()+'</td>\n' +
+            '                                    <td>Ekstensor</td>\n' +
+            '                                    <td colspan="5">'+$('#td142').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Abduksi</td>\n' +
+            '                                    <td colspan="5">'+$('#td151').val()+'</td>\n' +
+            '                                    <td>Abductor</td>\n' +
+            '                                    <td colspan="5">'+$('#td152').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Aduksi</td>\n' +
+            '                                    <td colspan="5">'+$('#td161').val()+'</td>\n' +
+            '                                    <td>Aduktor</td>\n' +
+            '                                    <td colspan="5">'+$('#td162').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Rotasi-internal</td>\n' +
+            '                                    <td colspan="5">'+$('#td171').val()+'</td>\n' +
+            '                                    <td>Rotator-internal</td>\n' +
+            '                                    <td colspan="5">'+$('#td172').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Rotasi-eksternal</td>\n' +
+            '                                    <td colspan="5">'+$('#td181').val()+'</td>\n' +
+            '                                    <td>Rotaror-eksternal</td>\n' +
+            '                                    <td colspan="5">'+$('#td182').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td rowspan="2">Lutut</td>\n' +
+            '                                    <td>Fleksi</td>\n' +
+            '                                    <td colspan="5">'+$('#td191').val()+'</td>\n' +
+            '                                    <td>Fleksor</td>\n' +
+            '                                    <td colspan="5">'+$('#td192').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Ektensi</td>\n' +
+            '                                    <td colspan="5">'+$('#td201').val()+'</td>\n' +
+            '                                    <td>Ekstensor</td>\n' +
+            '                                    <td colspan="5">'+$('#td202').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td rowspan="4">Pergelangan kaki</td>\n' +
+            '                                    <td>Inversi</td>\n' +
+            '                                    <td colspan="5">'+$('#td211').val()+'</td>\n' +
+            '                                    <td>Invertor</td>\n' +
+            '                                    <td colspan="5">'+$('#td212').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Eversi</td>\n' +
+            '                                    <td colspan="5">'+$('#td221').val()+'</td>\n' +
+            '                                    <td>Evertor</td>\n' +
+            '                                    <td colspan="5">'+$('#td222').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Fleksi dorsalis</td>\n' +
+            '                                    <td colspan="5">'+$('#td231').val()+'</td>\n' +
+            '                                    <td>Fleksor dorsalis</td>\n' +
+            '                                    <td colspan="5">'+$('#td232').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Fleksi plantaris</td>\n' +
+            '                                    <td colspan="5">'+$('#td241').val()+'</td>\n' +
+            '                                    <td>Fleksor plantaris</td>\n' +
+            '                                    <td colspan="5">'+$('#td242').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td></td>\n' +
+            '                                    <td></td>\n' +
+            '                                    <td>1</td>\n' +
+            '                                    <td>2</td>\n' +
+            '                                    <td>3</td>\n' +
+            '                                    <td>4</td>\n' +
+            '                                    <td>5</td>\n' +
+            '                                    <td></td>\n' +
+            '                                    <td>1</td>\n' +
+            '                                    <td>2</td>\n' +
+            '                                    <td>3</td>\n' +
+            '                                    <td>4</td>\n' +
+            '                                    <td>5</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td rowspan="2">Jari Kaki: MCP</td>\n' +
+            '                                    <td>Fleksi</td>\n' +
+'                                    <td>'+$('#td251').val()+'</td>\n' +
+            '                                    <td>'+$('#td252').val()+'</td>\n' +
+            '                                    <td>'+$('#td253').val()+'</td>\n' +
+            '                                    <td>'+$('#td254').val()+'</td>\n' +
+            '                                    <td>'+$('#td255').val()+'</td>\n' +
+            '                                    <td>Fleksor</td>\n' +
+'                                    <td>'+$('#td256').val()+'</td>\n' +
+            '                                    <td>'+$('#td257').val()+'</td>\n' +
+            '                                    <td>'+$('#td258').val()+'</td>\n' +
+            '                                    <td>'+$('#td259').val()+'</td>\n' +
+            '                                    <td>'+$('#td2510').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Ekstensi</td>\n' +
+'                                    <td>'+$('#td261').val()+'</td>\n' +
+            '                                    <td>'+$('#td262').val()+'</td>\n' +
+            '                                    <td>'+$('#td263').val()+'</td>\n' +
+            '                                    <td>'+$('#td264').val()+'</td>\n' +
+            '                                    <td>'+$('#td265').val()+'</td>\n' +
+            '                                    <td>Ekstensor</td>\n' +
+'                                    <td>'+$('#td266').val()+'</td>\n' +
+            '                                    <td>'+$('#td267').val()+'</td>\n' +
+            '                                    <td>'+$('#td268').val()+'</td>\n' +
+            '                                    <td>'+$('#td269').val()+'</td>\n' +
+            '                                    <td>'+$('#td2610').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td rowspan="2">PIP</td>\n' +
+            '                                    <td>Fleksi</td>\n' +
+'                                    <td>'+$('#td271').val()+'</td>\n' +
+            '                                    <td>'+$('#td272').val()+'</td>\n' +
+            '                                    <td>'+$('#td273').val()+'</td>\n' +
+            '                                    <td>'+$('#td274').val()+'</td>\n' +
+            '                                    <td>'+$('#td275').val()+'</td>\n' +
+            '                                    <td>Fleksor</td>\n' +
+'                                    <td>'+$('#td276').val()+'</td>\n' +
+            '                                    <td>'+$('#td277').val()+'</td>\n' +
+            '                                    <td>'+$('#td278').val()+'</td>\n' +
+            '                                    <td>'+$('#td279').val()+'</td>\n' +
+            '                                    <td>'+$('#td2710').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Ekstensi</td>\n' +
+'                                    <td>'+$('#td281').val()+'</td>\n' +
+            '                                    <td>'+$('#td282').val()+'</td>\n' +
+            '                                    <td>'+$('#td283').val()+'</td>\n' +
+            '                                    <td>'+$('#td284').val()+'</td>\n' +
+            '                                    <td>'+$('#td285').val()+'</td>\n' +
+            '                                    <td>Ekstensor</td>\n' +
+'                                    <td>'+$('#td286').val()+'</td>\n' +
+            '                                    <td>'+$('#td287').val()+'</td>\n' +
+            '                                    <td>'+$('#td288').val()+'</td>\n' +
+            '                                    <td>'+$('#td289').val()+'</td>\n' +
+            '                                    <td>'+$('#td2810').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td rowspan="2">DIP</td>\n' +
+            '                                    <td>Fleksi</td>\n' +
+'                                    <td>'+$('#td291').val()+'</td>\n' +
+            '                                    <td>'+$('#td292').val()+'</td>\n' +
+            '                                    <td>'+$('#td293').val()+'</td>\n' +
+            '                                    <td>'+$('#td294').val()+'</td>\n' +
+            '                                    <td>'+$('#td295').val()+'</td>\n' +
+            '                                    <td>Fleksor</td>\n' +
+'                                    <td>'+$('#td296').val()+'</td>\n' +
+            '                                    <td>'+$('#td297').val()+'</td>\n' +
+            '                                    <td>'+$('#td298').val()+'</td>\n' +
+            '                                    <td>'+$('#td299').val()+'</td>\n' +
+            '                                    <td>'+$('#td2910').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Ekstensi</td>\n' +
+'                                    <td>'+$('#td301').val()+'</td>\n' +
+            '                                    <td>'+$('#td302').val()+'</td>\n' +
+            '                                    <td>'+$('#td303').val()+'</td>\n' +
+            '                                    <td>'+$('#td304').val()+'</td>\n' +
+            '                                    <td>'+$('#td305').val()+'</td>\n' +
+            '                                    <td>Ekstensor</td>\n' +
+'                                    <td>'+$('#td306').val()+'</td>\n' +
+            '                                    <td>'+$('#td307').val()+'</td>\n' +
+            '                                    <td>'+$('#td308').val()+'</td>\n' +
+            '                                    <td>'+$('#td309').val()+'</td>\n' +
+            '                                    <td>'+$('#td3010').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Status Lokalis</td>\n' +
+            '                                    <td colspan="12">'+$('#td311').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td colspan="13">Pemeriksaan Penunjang</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td colspan="13">\n' + tempPj +
+            '                                    </td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td colspan="13">Perencanaan</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Medik</td>\n' +
+            '                                    <td colspan="12">'+$('#td321').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>Bedah</td>\n' +
+            '                                    <td colspan="12">'+$('#td331').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td colspan="13">Kedokteran Fisik dan Rehabilitasi PDx:</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>PTx</td>\n' +
+            '                                    <td colspan="3">Dokter KFR</td>\n' +
+            '                                    <td colspan="2">FT</td>\n' +
+            '                                    <td colspan="2">OT</td>\n' +
+            '                                    <td colspan="2">ST</td>\n' +
+            '                                    <td colspan="1">OP</td>\n' +
+            '                                    <td colspan="1">PSM</td>\n' +
+            '                                    <td colspan="1">Psi</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>R1</td>\n' +
+            '                                    <td colspan="3">'+$('#td341').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td342').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td343').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td344').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td345').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td346').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td347').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>R2</td>\n' +
+            '                                    <td colspan="3">'+$('#td351').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td352').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td353').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td354').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td355').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td356').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td357').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>R3</td>\n' +
+            '                                    <td colspan="3">'+$('#td361').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td362').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td363').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td364').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td365').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td366').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td367').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>R4</td>\n' +
+            '                                    <td colspan="3">'+$('#td371').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td372').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td373').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td374').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td375').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td376').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td377').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>R5</td>\n' +
+            '                                    <td colspan="3">'+$('#td381').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td382').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td383').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td384').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td385').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td386').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td387').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>R6</td>\n' +
+            '                                    <td colspan="3">'+$('#td391').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td392').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td393').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td394').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td395').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td396').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td397').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>R7</td>\n' +
+            '                                    <td colspan="3">'+$('#td401').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td402').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td403').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td404').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td405').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td406').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td407').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>PMx</td>\n' +
+            '                                    <td colspan="3">'+$('#td411').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td412').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td413').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td414').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td415').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td416').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td417').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td>PEx</td>\n' +
+            '                                    <td colspan="3">'+$('#td421').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td422').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td423').val()+'</td>\n' +
+            '                                    <td colspan="2">'+$('#td424').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td425').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td426').val()+'</td>\n' +
+            '                                    <td colspan="1">'+$('#td427').val()+'</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td colspan="13">TINDAK LANJUT PROGRAM KEDOKTERAN FISIk &amp; REHABILITAS</td>\n' +
+            '                                </tr>\n' +
+            '                                <tr>\n' +
+            '                                    <td colspan="13">\n' + $('#td431').val() +
+            '                                    </td>\n' +
+            '                                </tr>\n' +
+            '                                </tbody>\n' +
+            '                            </table>';
 
-        var va10 = "";
-        var v10 = $('#pt10').val();
-        if (v10 != '') {
-            var ket = $('#sps-pt10').val();
-            if ("Retraksi" == v10) {
-                va10 = v10 + " : " + ket;
-            } else {
-                va10 = v10;
-            }
-        }
+        var ttd1 = document.getElementById("asuhan_dpjp");
+        var cekTtd1 = isCanvasBlank(ttd1);
+        var sip1 = $('#sip_asuhan_dpjp').val();
+        var nama1 = $('#nama_asuhan_dpjp').val();
 
-        var va11 = $('#pt011').val();
-
-        var va12 = "";
-        var v12 = $('#pt012').val();
-        if (v12 != '') {
-            var ket = $('#sps-pt012').val();
-            if ("Lainnya" == v12) {
-                va12 = v12 + " : " + ket;
-            } else {
-                va12 = v12;
-            }
-        }
-
-        var va13 = $('#pt013').val();
-        var v13 = $('#pt013').val();
-        if (v13 != '') {
-            var ket = $('#sps-pt013').val();
-            if ("Lainnya" == v13) {
-                va13 = v13 + " : " + ket;
-            } else {
-                va13 = v13;
-            }
-        }
-
-        var va14 = $('#pt014').val();
-        var va15 = $('#pt015').val();
-
-        var va16 = $('#pt016').val();
-
-        var va17 = $('#pt017').val();
-        var va18 = $('#pt018').val();
-
-        var va19 = "";
-        var v19 = $('#pt019').val();
-        if (v19 != '') {
-            var ket = $('#sps-pt019').val();
-            if ("Teraba" == v19) {
-                va19 = v19 + " : " + ket;
-            } else {
-                va19 = v19;
-            }
-        }
-
-        var va20 = "";
-        var v20 = $('#pt020').val();
-        if (v20 != '') {
-            var ket = $('#sps-pt020').val();
-            if ("Teraba" == v20) {
-                va20 = v20 + " : " + ket;
-            } else {
-                va20 = v20;
-            }
-        }
-
-        var va21 = $('#pt021').val();
-        var va22 = $('#pt022').val();
-
-        var va23 = $('[name=pt023]:checked').val();
-        var va24 = $('[name=pt024]:checked').val();
-
-        var va25 = $('#pt025').val();
-        var va26 = $('#pt026').val();
-        var va27 = $('#pt027').val();
-        var va28 = $('#pt028').val();
-
-        var va29 = $('#pt029').val();
-        var va30 = $('#pt030').val();
-        var va31 = $('#pt031').val();
-        var va32 = $('#pt032').val();
-
-        var va33 = $('#pt033').val();
-        var va34 = $('#pt034').val();
-        var va35 = $('#pt035').val();
-        var va36 = $('#pt036').val();
-
-        if (va1 && va3 && va4 && va5 && va6 != undefined && va2 && va8 && va9 && va10 &&
-            va11 && va12 && va13 && va14 && va15 && va16 && va17 && va18 && va19 && va20 &&
-            va21 && va23 && va24 && va25 && va26 && va27 && va28 != '') {
-
+        if (va1 && va3 && va4 && va5 && va6 && va7 && sip1 && nama1 != '' && !cekTtd1) {
+            var ttdA = ttd1.toDataURL("image/png"),
+                ttdA = ttdA.replace(/^data:image\/(png|jpg);base64,/, "");
             data.push({
-                'parameter': 'Kondisi Umum',
-                'jawaban': va1 + ', GCS ' + va2,
+                'parameter': 'R1 (Mobilisasi)',
+                'jawaban': va1,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
-            var lain = "";
-            if (va7 != '') {
-                lain = ', Lainnya : ' + va7;
-            }
             data.push({
-                'parameter': 'Kepala',
-                'jawaban': 'Kunjungtivita : ' + va3 + ', Sklera : ' + va4 + ', Sianosis : ' + va5 + ', JVS : ' + va6 + lain,
+                'parameter': 'R2 (ADL)',
+                'jawaban': va2,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'KGB',
-                'jawaban': va8,
+                'parameter': 'R3 (Komunikasi)',
+                'jawaban': va3,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Thorak',
-                'jawaban':
-                    'Jantung : ' + va9 + '. ' +
-                    'Paru : Inspetik : ' + va10 + ', Palpasi : ' + va11 + ', ' +
-                    'Perkusi : ' + va12 + ', Auskultasi : ' + va13 + ', ' +
-                    'Ronchi : ' + va14 + ', Wheezing : ' + va15,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            var lainnya2 = "";
-            if (va22 != "") {
-                lainnya2 = ", Lainnya : " + va22;
-            }
-            data.push({
-                'parameter': 'Abdomen',
-                'jawaban':
-                    va16 + ', Nyeri telan : ' + va17 + ', Bising usus : ' + va18 + ', ' +
-                    'Heper : ' + va19 + ', Lien : ' + va20 + ', Massa : ' + va21 + lainnya2,
+                'parameter': 'R4 (Psikologis)',
+                'jawaban': va4,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Ekstremitas Atas',
-                'jawaban': 'Edema : ' + va23 + ', Akral : ' + va24,
+                'parameter': 'R5 (Sosio Ekonomi)',
+                'jawaban': va5,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'FVC',
-                'jawaban': 'Fred : ' + va25 + ', Actl : ' + va26 + ', % Fred : ' + va27 + ', Keterangan : ' + va28,
+                'parameter': 'R6 (Vokasional)',
+                'jawaban': va6,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'FEV 1/FVC',
-                'jawaban': 'Fred : ' + va29 + ', Actl : ' + va30 + ', % Fred : ' + va31 + ', Keterangan : ' + va32,
+                'parameter': 'R7 (Lain-Lain)',
+                'jawaban': va7,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'FVC',
-                'jawaban': 'Fred : ' + va33 + ', Actl : ' + va34 + ', % Fred : ' + va35 + ', Keterangan : ' + va36,
+                'parameter': '',
+                'jawaban': table,
                 'keterangan': jenis,
                 'jenis': ket,
+                'tipe': 'table',
                 'id_detail_checkup': idDetailCheckup
             });
+            data.push({
+                'parameter': 'TTD Dokter',
+                'jawaban': ttdA,
+                'tipe': 'ttd',
+                'keterangan': jenis,
+                'jenis': ket,
+                'nama_terang': nama1,
+                'sip':sip1,
+                'id_detail_checkup': idDetailCheckup
+            });
+
             cek = true;
         }
     }
@@ -3498,7 +3888,11 @@ function detailSPS(jenis) {
                         body += '<tr>' +
                             '<td colspan="2"><b>' + item.parameter + '</b></td>' +
                             '</tr>';
-                    }else {
+                    }else if("table" == item.tipe){
+                        body += '<tr>' +
+                            '<td colspan="2"><b>' + item.jawaban + '</b></td>' +
+                            '</tr>';
+                    } else {
                         body += '<tr>' +
                             '<td width="40%">' + item.parameter + '</td>' +
                             '<td>' + jwb + '</td>' +
