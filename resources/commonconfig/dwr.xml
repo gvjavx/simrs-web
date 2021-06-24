@@ -314,7 +314,15 @@
         <convert converter="bean" match="com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity"/>
         <convert converter="bean" match="com.neurix.simrs.master.tindakanicd9.model.TindakanICD9"/>
 
-        <!--Tindaakan Rawat-->
+        <!--Tindakan Medis-->
+        <create creator="new">
+          <param name="class" value="com.neurix.simrs.master.tindakanmedis.action.TindakanMedisAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.simrs.master.tindakanmedis.model.TindakanMedis"/>
+        <convert converter="bean" match="com.neurix.simrs.master.tindakanmedis.model.TindakanMedisDetail"/>
+
+
+      <!--Tindaakan Rawat-->
         <create creator="new">
             <param name="class" value="com.neurix.simrs.transaksi.tindakanrawat.action.TindakanRawatAction"/>
         </create>

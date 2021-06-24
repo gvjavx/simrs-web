@@ -39,7 +39,7 @@
             var master = document.getElementById("masterId").value;
             var reportId = document.getElementById("reportId").value;
 
-            if ( unit != '' && periodeTahun != ''&& periodeBulan != ''&&tipeLaporan!=''&&reportId!='') {
+            if ( unit != '' && periodeTahun != ''&& periodeBulan != ''&&tipeLaporan!=''&&reportId!='' && master!='') {
                 event.originalEvent.options.submit = false;
                 var url = "printReportAging_laporanAkuntansi.action?laporanAkuntansi.tipeLaporan="+tipeLaporan+"&laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.masterId="+master+"&laporanAkuntansi.reportId="+reportId;
                 window.open(url,'_blank');
@@ -57,6 +57,9 @@
                 }
                 if ( tipeLaporan == '') {
                     msg += 'Field <strong>Tipe Laporan </strong> masih belum dipilih' + '<br/>';
+                }
+                if ( master == '') {
+                    msg += 'Field <strong>Vendor </strong> masih belum dipilih' + '<br/>';
                 }
                 if ( reportId == '') {
                     msg += 'Field <strong>Error </strong> hubungi admin' + '<br/>';

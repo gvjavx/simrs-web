@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="76"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -56,7 +56,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select u.kode_rekening,
+		<![CDATA[select u.rekening_id as kode_rekening,
        u.nama    as            group,
        periode,
        kd_barang,
@@ -77,7 +77,7 @@ from (select a.master_id,
        null                           keterangan,
        null                           no_jurnal,
        null                           no_nota,
-       a.kode_rekening,
+       a.rekening_id,
        coalesce(d.jumlah_debit, 0)  pastdebit,
        coalesce(d.jumlah_kredit, 0) pastkredit,
        coalesce(null, 0)            debitnow,
@@ -89,7 +89,7 @@ from it_akun_saldo_akhir a
        left join im_akun_master m on m.nomor_master = d.master_id
 where d.branch_id in ($P!{reportParams.branchId})
   and to_date(a.periode, 'MM-yyyy') = to_date($P{periode}, 'MM-yyyy') - Interval '1 month'
-and a.kode_rekening = $P{kode_rekening}
+and a.rekening_id = $P{kode_rekening}
 union all
 select y.master_id,
        kd_barang,

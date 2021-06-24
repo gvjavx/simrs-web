@@ -52,20 +52,20 @@
                                                             where reportSetting.report_id = $P{reportId}
                                                             and reportSetting.flag = 'Y') rekening
                                                             on detail.nomor_rekening ilike concat(rekening.kode_rekening, '%')
-                                                            left outer join (select left(kode_rekening, 3)                 kode_rekening,
+                                                            left outer join (select left(rekening_id, 3)                 kode_rekening,
                                                             sum(jumlah_debit)                      debit,
                                                             sum(jumlah_kredit)                     kredit,
                                                             sum(jumlah_debit) - sum(jumlah_kredit) saldo
                                                             from it_akun_saldo_akhir
                                                             where periode = $P{periodeLalu}
                                                             and branch_id in ($P!{branchId})
-                                                            and kode_rekening in (select rekening.kode_rekening
+                                                            and rekening_id in (select rekening.kode_rekening
                                                             from im_akun_report_detail reportDetail
                                                             join im_akun_kode_rekening rekening
                                                             on rekening.rekening_id = reportDetail.rekening_id
                                                             where report_id = $P{reportId}
                                                             and reportDetail.flag = 'Y')
-                                                            group by left(kode_rekening, 3)) saldo on saldo.kode_rekening = rekening.kode_rekening
+                                                            group by left(rekening_id, 3)) saldo on saldo.kode_rekening = rekening.kode_rekening
                                                             group by rekening.kode_rekening, rekening.nama_kode_rekening, saldo.debit, saldo.kredit) mainValue
                                                           join im_akun_kode_rekening grup on grup.kode_rekening = left(mainValue.kode_rekening,1)
 order by mainValue.kode_rekening]]>

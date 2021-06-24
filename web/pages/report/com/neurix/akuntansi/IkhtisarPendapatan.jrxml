@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="3.215383215000004"/>
-	<property name="ireport.x" value="961"/>
+	<property name="ireport.x" value="866"/>
 	<property name="ireport.y" value="273"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -61,7 +61,7 @@ from (select left(kodering.kode_rekening, 3) a3, kodering.nama_kode_rekening nam
                 on kodering.rekening_id = reportSetting.rekening_id
                 where reportSetting.report_id = $P{reportId}
                 and reportSetting.flag = 'Y') rekening
-                on saldo.kode_rekening ilike concat(rekening.kode_rekening, '%')
+                on saldo.rekening_id ilike concat(rekening.kode_rekening, '%')
                 where saldo.periode = $P{periodeLalu}
                 and saldo.branch_id in ($P!{branchId})
                 group by rekening.kode_rekening
@@ -84,7 +84,8 @@ order by kode_rekening) g3;]]>
 	<field name="saldo_lalu" class="java.math.BigDecimal"/>
 	<field name="kode_rekening" class="java.lang.String"/>
 	<field name="periode" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[
+]]></fieldDescription>
 	</field>
 	<field name="nama_kode_rekening" class="java.lang.String"/>
 	<field name="saldosekarang" class="java.math.BigDecimal"/>

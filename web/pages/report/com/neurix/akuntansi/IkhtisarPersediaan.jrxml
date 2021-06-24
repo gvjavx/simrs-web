@@ -58,7 +58,7 @@ from (select left(kodering.kode_rekening, 9) a9, kodering.nama_kode_rekening nam
                                                                 on kodering.rekening_id = reportSetting.rekening_id
                                                        where reportSetting.report_id = $P{reportId}
                                                          and reportSetting.flag = 'Y') rekening
-                                             on saldo.kode_rekening = rekening.kode_rekening
+                                             on saldo.rekening_id = rekening.kode_rekening
                                     where saldo.periode = $P{periodeLalu}
                                       and saldo.branch_id in ($P!{branchId})
                                     group by rekening.kode_rekening

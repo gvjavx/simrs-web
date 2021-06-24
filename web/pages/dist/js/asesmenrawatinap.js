@@ -1,4 +1,5 @@
 function showModalAsesmenRawatInap(jenis, idRM, isSetIdRM, flagHide, flagCheck) {
+
     if (isSetIdRM == "Y") {
         tempidRm = idRM;
     }
@@ -2962,7 +2963,8 @@ function saveAsesmenRawatInap(jenis, ket) {
                 'jawaban': va2,
                 'keterangan': jenis,
                 'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
+                'id_detail_checkup': idDetailCheckup,
+                'tipe': 'penyakit_dahulu'
             });
             data.push({
                 'parameter': 'Riwayat Penyakit Keluarga',

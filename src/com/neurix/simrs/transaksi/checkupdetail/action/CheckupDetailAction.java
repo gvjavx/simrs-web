@@ -5048,6 +5048,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 String tglMasuk = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getCreatedDate());
                 reportParams.put("tglMasuk", tglMasuk);
             }
+            reportParams.put("ketCheckup", checkup.getKeterangan());
 
             String content1 = "I.\tPersetujuan Untuk Perawatan dan Pengobatan\n" +
                     "a. Saya mengetahui bahwa Saya memiliki kondisi yang membutuhkan perawatan medis, Saya memberi izin kepada dokter dan profesi kesehatan lainnya untuk melakukan prosedur diagnostik dan untuk memberi pengobatan medis seperti yang diperlukan untuk penilaian secara profesional. Prosedur diagnostik dan perawatan medis termasuk tetapi tidak terbatas pada ECG, X Ray, Tes Darah, terapi fisik dan pemberiaan obat.\n" +
@@ -5099,7 +5100,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             reportParams.put("data1", content1);
             reportParams.put("data2", content2);
 
-            if ("SP15".equalsIgnoreCase(tipe) || "SP16".equalsIgnoreCase(tipe) || "SP17".equalsIgnoreCase(tipe) || "SP19".equalsIgnoreCase(tipe)) {
+            if ("SP15".equalsIgnoreCase(tipe) || "SP16".equalsIgnoreCase(tipe) || "SP17".equalsIgnoreCase(tipe) || "SP19".equalsIgnoreCase(tipe) || "SP21".equalsIgnoreCase(tipe)) {
                 String penunjang = checkupBoProxy.getPenunjangMedis(checkup.getIdDetailCheckup(), null);
                 String terapi = checkupBoProxy.getResepPasien(checkup.getIdDetailCheckup());
                 String diagnosaMasuk = checkupBoProxy.getDiagnosaMasuk(checkup.getIdDetailCheckup());
@@ -5119,12 +5120,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                 reportParams.put("keterangan", checkup.getCatatan());
                 DokterTeam dokterTeam = teamDokterBoProxy.getNamaDokter(checkup.getIdDetailCheckup(), false);
                 reportParams.put("dokter", dokterTeam.getNamaDokter());
-                reportParams.put("sip", dokterTeam.getSip());
+                reportParams.put("sip", dokterTeam.getIdDokter());
                 reportParams.put("diagnosaMasuk", diagnosaMasuk);
                 reportParams.put("indikasi", checkup.getIndikasi());
-                reportParams.put("ketCheckup", checkup.getKeterangan());
 
-                if("SP15".equalsIgnoreCase(tipe)){
+                if("SP15".equalsIgnoreCase(tipe) || "SP21".equalsIgnoreCase(tipe)){
                     KeperawatanRawatJalanBo keperawatanRawatJalanBo = (KeperawatanRawatJalanBo) ctx.getBean("keperawatanRawatJalanBoProxy");
                     KeperawatanRawatJalan keperawatanRawatJalan = new KeperawatanRawatJalan();
                     keperawatanRawatJalan.setIdDetailCheckup(checkup.getIdDetailCheckup());
@@ -5138,7 +5138,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                     }
                 }
 
-                if("SP16".equalsIgnoreCase(tipe)){
+                if("SP16".equalsIgnoreCase(tipe) || "SP21".equalsIgnoreCase(tipe)){
                     RingkasanPasienBo ringkasanPasienBo = (RingkasanPasienBo) ctx.getBean("ringkasanPasienBoProxy");
                     HeaderCheckup headerCheckup = ringkasanPasienBo.getResumeMedis(checkup.getIdDetailCheckup());
                     if(headerCheckup != null){
@@ -6159,25 +6159,27 @@ public class CheckupDetailAction extends BaseMasterAction {
                 }
                 detailCheckup.setKeteranganSelesai(object.getString("keterangan"));
                 if(object.has("data_kontrol")){
-                    JSONArray json = new JSONArray(object.getString("data_kontrol"));
-                    if(json != null){
-                        List<ItSimrsKontrolUlangEntity> kontrolUlangEntityList = new ArrayList<>();
-                        for (int i = 0; i < json.length(); i++){
-                            JSONObject obj = json.getJSONObject(i);
-                            ItSimrsKontrolUlangEntity kontrolUlangEntity = new ItSimrsKontrolUlangEntity();
-                            kontrolUlangEntity.setTglKontrol(java.sql.Date.valueOf(obj.getString("tgl_kontrol")));
-                            kontrolUlangEntity.setIdPelayanan(obj.getString("pelayanan"));
-                            kontrolUlangEntity.setIdDokter(obj.getString("dokter"));
-                            kontrolUlangEntity.setStatusKontrol("N");
-                            kontrolUlangEntity.setFlag("Y");
-                            kontrolUlangEntity.setAction("C");
-                            kontrolUlangEntity.setCreatedDate(updateTime);
-                            kontrolUlangEntity.setCreatedWho(userLogin);
-                            kontrolUlangEntity.setLastUpdate(updateTime);
-                            kontrolUlangEntity.setLastUpdateWho(userLogin);
-                            kontrolUlangEntityList.add(kontrolUlangEntity);
+                    if(object.getString("data_kontrol") != null && !"".equalsIgnoreCase(object.getString("data_kontrol"))){
+                        JSONArray json = new JSONArray(object.getString("data_kontrol"));
+                        if(json != null){
+                            List<ItSimrsKontrolUlangEntity> kontrolUlangEntityList = new ArrayList<>();
+                            for (int i = 0; i < json.length(); i++){
+                                JSONObject obj = json.getJSONObject(i);
+                                ItSimrsKontrolUlangEntity kontrolUlangEntity = new ItSimrsKontrolUlangEntity();
+                                kontrolUlangEntity.setTglKontrol(java.sql.Date.valueOf(obj.getString("tgl_kontrol")));
+                                kontrolUlangEntity.setIdPelayanan(obj.getString("pelayanan"));
+                                kontrolUlangEntity.setIdDokter(obj.getString("dokter"));
+                                kontrolUlangEntity.setStatusKontrol("N");
+                                kontrolUlangEntity.setFlag("Y");
+                                kontrolUlangEntity.setAction("C");
+                                kontrolUlangEntity.setCreatedDate(updateTime);
+                                kontrolUlangEntity.setCreatedWho(userLogin);
+                                kontrolUlangEntity.setLastUpdate(updateTime);
+                                kontrolUlangEntity.setLastUpdateWho(userLogin);
+                                kontrolUlangEntityList.add(kontrolUlangEntity);
+                            }
+                            detailCheckup.setKontrolUlangEntityList(kontrolUlangEntityList);
                         }
-                        detailCheckup.setKontrolUlangEntityList(kontrolUlangEntityList);
                     }
                 }
                 detailCheckup.setLastUpdateWho(userLogin);

@@ -589,7 +589,8 @@ function saveAsesmenUgd(jenis, keterangan) {
                     'jawaban': dahulu,
                     'keterangan': jenis,
                     'jenis': 'riwayat_kesehatan_pasien',
-                    'id_detail_checkup': idDetailCheckup
+                    'id_detail_checkup': idDetailCheckup,
+                    'tipe': 'penyakit_dahulu'
                 });
                 data.push({
                     'parameter': 'Riwayat Penyakit keluarga',

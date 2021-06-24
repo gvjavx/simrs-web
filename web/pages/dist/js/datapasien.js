@@ -56,6 +56,7 @@ function setDataPasien() {
 
         var nyeriPasien = $('.nyeri-pasien').length;
         var jatuhPasien = $('.jatuh-pasien').length;
+        var indikasiPasien = $('.indikasi-pasien').length;
 
         if (tensi > 0 || gejala > 0 || bb > 0 || tb > 0 || spo2Pasien > 0 || nyeriPasien > 0 || jenisPasien) {
             dwr.engine.setAsync(true);
@@ -484,6 +485,15 @@ function setDataPasien() {
         CheckupAction.getDataByKey(noCheckup, "tujuan_ruangan", function (res) {
             if(res != null){
                 $('.tujuan-ruangan').val(res);
+            }
+        });
+    }
+
+    if(indikasiPasien > 0){
+        dwr.engine.setAsync(true);
+        CheckupAction.getDataByKey(idDetailCheckup, "indikasi", function (res) {
+            if(res != null){
+                $('.indikasi-pasien').val(res);
             }
         });
     }

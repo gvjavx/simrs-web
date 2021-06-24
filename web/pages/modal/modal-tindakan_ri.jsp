@@ -60,7 +60,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 10px">Pilih Tindakan Medis</label>
                             <div class="col-md-9">
-                                <select class="form-control select2" id="tindakan_ina" style="width: 100%" onchange="pilihTindakanMedis(this.value, 'tindakan_ina'); setTindakanMedisValue(this.value, 'ina', 'nama_tindakan_medis')">
+                                <select class="form-control select2" id="tindakan_ina" style="width: 100%" onchange="pilihTindakanMedis(this.value,$(this).find(':selected').text(), 'tindakan_ina'); setTindakanMedisValue(this.value, 'ina', 'nama_tindakan_medis')">
                                 </select>
                             </div>
                         </div>

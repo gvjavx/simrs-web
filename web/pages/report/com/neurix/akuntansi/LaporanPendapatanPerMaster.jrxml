@@ -73,7 +73,7 @@ from (select master.nomor_master as nomor_master, master.grup as grup, $P{period
     sum(x.jumlah_debit)  as jumlah_debit,
     sum(x.jumlah_kredit) as jumlah_kredit
     from it_akun_saldo_akhir_detail x
-    join im_akun_kode_rekening kodering on x.kode_rekening = kodering.kode_rekening
+    join im_akun_kode_rekening kodering on x.rekening_id = kodering.kode_rekening
     where to_date(x.periode, 'MM-yyyy') = to_date($P{periode}, 'MM-yyyy') - Interval '1 month'
     and x.branch_id IN ($P!{branchId})
     AND kodering.rekening_id IN

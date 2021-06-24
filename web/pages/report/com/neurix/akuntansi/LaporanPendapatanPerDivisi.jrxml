@@ -65,7 +65,7 @@
     sum(saldoDetail.jumlah_debit)  as jumlah_debit,
     sum(saldoDetail.jumlah_kredit) as jumlah_kredit
     from it_akun_saldo_akhir_detail saldoDetail
-    join im_akun_kode_rekening kodering on kodering.kode_rekening = saldoDetail.kode_rekening
+    join im_akun_kode_rekening kodering on kodering.kode_rekening = saldoDetail.rekening_id
     where saldoDetail.periode = $P{periodeLalu}
     and saldoDetail.branch_id IN ($P!{branchId})
     AND kodering.rekening_id IN
