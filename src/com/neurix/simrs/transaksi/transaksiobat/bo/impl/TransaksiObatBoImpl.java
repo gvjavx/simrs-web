@@ -1273,6 +1273,23 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     }
 
     @Override
+    public HeaderCheckup getHeaderCheckupDataByPermintaanResep(String idPermintaanResep) {
+        logger.info("[TransaksiObatBoImpl.getHeaderCheckupDataByPermintaanResep] Start >>>>>>>");
+
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+
+        try {
+            headerCheckup = obatPoliDao.getHeaderCheckupDataByPermintaanResep(idPermintaanResep);
+        } catch (HibernateException e){
+            logger.error("[TransaksiObatBoImpl.getHeaderCheckupDataByPermintaanResep] ERROR when get by criteria. ", e);
+            throw new GeneralBOException("[TransaksiObatBoImpl.getHeaderCheckupDataByPermintaanResep] ERROR when get by criteria. ", e);
+        }
+
+        logger.info("[TransaksiObatBoImpl.getHeaderCheckupDataByPermintaanResep] End <<<<<<<");
+        return headerCheckup;
+    }
+
+    @Override
     public CheckObatResponse saveApproveResepPoli(TransaksiObatDetail bean) throws GeneralBOException {
         logger.info("[TransaksiObatBoImpl.saveApproveResepPoli] START >>>>>>>>>>");
         CheckObatResponse response = new CheckObatResponse();
@@ -2563,26 +2580,33 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
         if (idPermintaan != null && !"".equalsIgnoreCase(idPermintaan)) {
 
+            //HeaderCheckup dataPasien = getHeaderCheckupDataByPermintaanResep(idPermintaan);
+
             // Sigit 2020-12-10, check jika tipe rekanan adalah rekanan ptpn / khusus, START
-            boolean isKhusus = transaksiObatDetailDao.checkIfRekananKhususByIdResep(idPermintaan);
+//            boolean isKhusus = transaksiObatDetailDao.checkIfRekananKhususByIdResep(idPermintaan);
+//
+//            // jika khusus maka menggunakan tarif khusus yng dihitung dari harga rata-rata pada master harga obat
+//            if (isKhusus){
+//                try {
+//                    response = transaksiObatDetailDao.getTotalHargaResepApprove(idPermintaan);
+//                } catch (HibernateException e) {
+//                    logger.error("Found Error when cek obat kronis");
+//                }
+//            } else {
+//                // jika umum maka menggunakan tarif umum yng dihitung dari harga beli pada master harga obat
+//                try {
+//                    response = transaksiObatDetailDao.getTotalHargaResepApproved(idPermintaan);
+//                } catch (HibernateException e) {
+//                    logger.error("Found Error when cek obat kronis");
+//                }
+//            } //END
 
-            // jika khusus maka menggunakan tarif khusus yng dihitung dari harga rata-rata pada master harga obat
-            if (isKhusus){
-                try {
-                    response = transaksiObatDetailDao.getTotalHargaResepApprove(idPermintaan);
-                } catch (HibernateException e) {
-                    logger.error("Found Error when cek obat kronis");
-                }
-            } else {
-                // jika umum maka menggunakan tarif umum yng dihitung dari harga beli pada master harga obat
-                try {
-                    response = transaksiObatDetailDao.getTotalHargaResepApproveUmum(idPermintaan);
-                } catch (HibernateException e) {
-                    logger.error("Found Error when cek obat kronis");
-                }
-            } //END
 
-
+            try {
+                response = transaksiObatDetailDao.getTotalHargaResepApproved(idPermintaan);
+            } catch (HibernateException e) {
+                logger.error("Found Error when cek obat kronis");
+            }
         }
 
         return response;

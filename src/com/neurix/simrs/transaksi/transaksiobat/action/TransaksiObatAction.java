@@ -424,6 +424,20 @@ public class TransaksiObatAction extends BaseMasterAction {
         transaksiObatDetail.setJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
         List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
 
+        HeaderCheckup dataPasien = new HeaderCheckup();
+
+        try {
+            dataPasien = transaksiObatBoProxy.getHeaderCheckupDataByPermintaanResep(transaksiObatDetail.getIdPermintaanResep());
+        } catch (HibernateException e){
+            logger.error("[TransaksiObatAction.searchResep] ERROR error when get searh resep. ", e);
+            addActionError("[TransaksiObatAction.searchResep] ERROR error when get searh resep. " + e.getMessage());
+        }
+
+        transaksiObatDetail.setIdAsuransi(dataPasien.getIdAsuransi());
+        transaksiObatDetail.setBranchId(dataPasien.getBranchId());
+        transaksiObatDetail.setJenisPeriksaPasien(dataPasien.getIdJenisPeriksaPasien());
+        transaksiObatDetail.setIdDetailCheckup(dataPasien.getIdDetailCheckup());
+
         if (transaksiObatDetail != null) {
             if (transaksiObatDetail.getIdPermintaanResep() != null && !"".equalsIgnoreCase(transaksiObatDetail.getIdPermintaanResep())) {
                 try {
@@ -681,6 +695,20 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
         transaksiObatDetail.setIdPermintaanResep(noResep);
+
+        HeaderCheckup dataPasien = new HeaderCheckup();
+
+        try {
+            dataPasien = transaksiObatBo.getHeaderCheckupDataByPermintaanResep(noResep);
+        } catch (HibernateException e){
+            logger.error("[TransaksiObatAction.getListDetailResep] ERROR error when get searh resep. ", e);
+            addActionError("[TransaksiObatAction.getListDetailResep] ERROR error when get searh resep. " + e.getMessage());
+        }
+
+        transaksiObatDetail.setIdAsuransi(dataPasien.getIdAsuransi());
+        transaksiObatDetail.setBranchId(dataPasien.getBranchId());
+        transaksiObatDetail.setJenisPeriksaPasien(dataPasien.getIdJenisPeriksaPasien());
+        transaksiObatDetail.setIdDetailCheckup(dataPasien.getIdDetailCheckup());
 
         if (transaksiObatDetail != null) {
 
