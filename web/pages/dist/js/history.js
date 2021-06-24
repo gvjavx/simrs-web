@@ -59,7 +59,11 @@ function viewAllRekamMedis() {
                         labelPrint = '<span style="color: #367fa9; font-weight: bold">' + terIsiPrint + '</span>';
 
                         if ("spesialis" == item.tipeRM) {
-                            sps += '<li ' + tol + ' style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')"><span class="hvr-grow "><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>'+enter;
+                            if("ringkasan_rj" == item.jenis){
+                                sps += '<li ' + tol + ' style="cursor: pointer" onclick="showModalRJ(\'' + item.jenis + '\', \''+item.idRekamMedisPasien +'\')"><span class="hvr-grow "><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>'+enter;
+                            }else{
+                                sps += '<li ' + tol + ' style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')"><span class="hvr-grow "><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>'+enter;
+                            }
                         }
                         if ("fisioterapi" == item.tipeRM) {
                             fs += '<li ' + tol + ' style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>'+enter;

@@ -303,7 +303,15 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
         String spesialis = "";
         if ("rawat_jalan".equalsIgnoreCase(tipePelayanan)) {
             if (jenis != null && !"".equalsIgnoreCase(jenis) && !"hemodialisa".equalsIgnoreCase(jenis) && !"fisioterapi".equalsIgnoreCase(jenis)) {
-                spesialis = "('" + jenis + "', 'keperawatan_rawat_jalan', 'ringkasan_rj')";
+                String tempJenis = "poli_spesialis";
+                if("spesialis_anak".equalsIgnoreCase(jenis) ||
+                        "spesialis_mata".equalsIgnoreCase(jenis) ||
+                        "rehab_medik".equalsIgnoreCase(jenis) ||
+                        "spesialis_tht".equalsIgnoreCase(jenis) ||
+                        "spesialis_obstetri".equalsIgnoreCase(jenis)){
+                    tempJenis = jenis;
+                }
+                spesialis = "('" + tempJenis + "', 'keperawatan_rawat_jalan', 'ringkasan_rj')";
             } else {
                 spesialis = "('keperawatan_rawat_jalan', 'ringkasan_rj')";
             }

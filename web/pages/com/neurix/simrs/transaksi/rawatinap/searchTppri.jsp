@@ -217,7 +217,7 @@
                                 <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien TPPRI</h3>
                             </div>
                             <div class="box-body">
-                                <table id="myTable" class="table table-bordered table-striped" style="font-size: 13px">
+                                <table id="myTable" class="table table-bordered table-striped" style="font-size: 13px; width: 100%">
                                     <thead>
                                     <tr bgcolor="#30d196">
                                         <td>No Checkup</td>

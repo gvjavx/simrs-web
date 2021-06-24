@@ -1080,6 +1080,7 @@
     var idDetailCheckup = $('#no_detail_checkup').val();
     var contextPath = '<%= request.getContextPath() %>';
     var idPasien = $('#id_pasien').val();
+    var jenisPeriksaPasien = $('#jenis_pasien').val();
 
     var tglLhr = $('#h_tgl_lahir').val();
     var tglLahir = tglLhr.split("-").reverse().join("-");
