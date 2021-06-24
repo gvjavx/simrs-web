@@ -92,7 +92,15 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
         List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities = getListEntityTransObatDetail(bean);
 
-        HeaderCheckup headerCheckup = obatPoliDao.getHeaderCheckupDataByPermintaanResep(bean.getIdPermintaanResep());
+        if (bean.getIdDetailCheckup() == null || "".equalsIgnoreCase(bean.getIdDetailCheckup())){
+            HeaderCheckup headerCheckup = obatPoliDao.getHeaderCheckupDataByPermintaanResep(bean.getIdPermintaanResep());
+            if (headerCheckup != null){
+                bean.setIdAsuransi(headerCheckup.getIdAsuransi());
+                bean.setIdDetailCheckup(headerCheckup.getIdDetailCheckup());
+                bean.setJenisPeriksaPasien(headerCheckup.getIdJenisPeriksaPasien());
+            }
+        }
+
 
         if (obatDetailEntities.size() > 0) {
             TransaksiObatDetail transaksiObatDetail;
@@ -111,11 +119,12 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                 transaksiObatDetail.setLastUpdateWho(obatDetailEntity.getLastUpdateWho());
                 transaksiObatDetail.setJenisSatuan(obatDetailEntity.getJenisSatuan());
                 transaksiObatDetail.setFlagVerifikasi(obatDetailEntity.getFlagVerifikasi());
+                transaksiObatDetail.setFlagRacik(obatDetailEntity.getFlagRacik());
                 transaksiObatDetail.setIdRacik(obatDetailEntity.getIdRacik());
                 transaksiObatDetail.setNamaRacik(obatDetailEntity.getNamaRacik());
                 transaksiObatDetail.setHariKronis(obatDetailEntity.getHariKronis());
                 transaksiObatDetail.setKeterangan(obatDetailEntity.getKeterangan());
-                transaksiObatDetail.setFlagRacik(obatDetailEntity.getFlagRacik());
+//                transaksiObatDetail.setDosis(obatDetailEntity.getd);
 
                 ImSimrsObatEntity obatEntity = getObatById(obatDetailEntity.getIdObat());
                 if (obatEntity != null) {
@@ -125,7 +134,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                     transaksiObatDetail.setHarga(obatEntity.getHarga());
                     transaksiObatDetail.setIdPabrik(obatEntity.getIdPabrik());
 
-                    HargaObatPerKonsumen hargaObatPerKonsumen = obatPoliDao.getDataHargaPerKonsumen(obatDetailEntity.getIdObat(), headerCheckup.getBranchId(), headerCheckup.getIdJenisPeriksaPasien(), headerCheckup.getIdAsuransi());
+                    HargaObatPerKonsumen hargaObatPerKonsumen = obatPoliDao.getDataHargaPerKonsumen(obatDetailEntity.getIdObat(), bean.getBranchId(), bean.getJenisPeriksaPasien(), bean.getIdAsuransi());
 
                     if (hargaObatPerKonsumen != null) {
                         BigDecimal tempHarga = hargaObatPerKonsumen.getHargaJual();
@@ -1247,13 +1256,13 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     }
 
     @Override
-    public HeaderCheckup getDataTransByIdApprovalResep(String idApproval){
+    public HeaderCheckup getDataTransByIdApprovalResep(String idApprovalResep){
         logger.info("[TransaksiObatBoImpl.getDataTransByIdApprovalResep] Start >>>>>>>");
 
         HeaderCheckup headerCheckup = new HeaderCheckup();
 
         try {
-            headerCheckup = obatPoliDao.getHeaderCheckupDataByApprovalResep(idApproval);
+            headerCheckup = obatPoliDao.getHeaderCheckupDataByApprovalResep(idApprovalResep);
         } catch (HibernateException e){
             logger.error("[TransaksiObatBoImpl.getDataTransByIdApprovalResep] ERROR when get by criteria. ", e);
             throw new GeneralBOException("[TransaksiObatBoImpl.getDataTransByIdApprovalResep] ERROR when get by criteria. ", e);
