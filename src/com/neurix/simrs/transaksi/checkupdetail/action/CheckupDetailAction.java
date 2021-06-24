@@ -832,8 +832,9 @@ public class CheckupDetailAction extends BaseMasterAction {
             setEnabledPoli(true);
         }
 
-        if (CommonConstant.ROLE_ADMIN_POLI.equalsIgnoreCase(userRoleLogin) || CommonConstant.ROLE_DOKTER_UMUM.equalsIgnoreCase(userRoleLogin)
-                || CommonConstant.ROLE_DOKTER_SPESIALIS.equalsIgnoreCase(userRoleLogin)) {
+        if (CommonConstant.ROLE_ADMIN_POLI.equalsIgnoreCase(userRoleLogin) ||
+            CommonConstant.ROLE_DOKTER_SPESIALIS.equalsIgnoreCase(userRoleLogin) ||
+            CommonConstant.ROLE_DOKTER_UMUM.equalsIgnoreCase(userRoleLogin)) {
             checkupdetail.setIdPelayanan(idPelayanan);
         }
 
