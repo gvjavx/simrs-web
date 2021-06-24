@@ -256,9 +256,9 @@
                                                 <s:param name="idPermintaan"><s:property value="idPermintaanResep"/></s:param>
                                                 <s:param name="idApprove"><s:property value="idApprovalObat"/></s:param>
                                             </s:url>
-                                            <s:a href="%{reture}" target="_blank">
-                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-transaction-25.png"/>" style="cursor: pointer;">
-                                            </s:a>
+                                            <%--<s:a href="%{reture}" target="_blank">--%>
+                                                <%--<img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-transaction-25.png"/>" style="cursor: pointer;">--%>
+                                            <%--</s:a>--%>
                                         </s:if>
                                         <s:else>
                                             <s:url var="add_proses" namespace="/reseppoli" action="searchResep_reseppoli" escapeAmp="false">

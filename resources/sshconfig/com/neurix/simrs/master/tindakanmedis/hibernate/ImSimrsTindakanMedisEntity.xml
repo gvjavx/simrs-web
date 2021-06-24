@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 version="2.0">
+
+  <entity class="com.neurix.simrs.master.tindakanmedis.model.ImSimrsTindakanMedisEntity">
+    <table name="im_simrs_tindakan_medis" schema="public" catalog="gomedsys"/>
+    <attributes>
+      <id name="id">
+        <column name="id"/>
+      </id>
+      <basic name="name">
+        <column name="name" nullable="false"/>
+      </basic>
+      <basic name="type">
+        <column name="type" nullable="false"/>
+      </basic>
+      <basic name="action">
+        <column name="action" nullable="false"/>
+      </basic>
+      <basic name="flag">
+        <column name="flag" nullable="false"/>
+      </basic>
+      <basic name="createdDate">
+        <column name="created_date" nullable="false" precision="-1"/>
+      </basic>
+      <basic name="createdWho">
+        <column name="created_who" nullable="false"/>
+      </basic>
+      <basic name="lastUpdate">
+        <column name="last_update" nullable="false"/>
+      </basic>
+      <basic name="lastUpdateWho">
+        <column name="last_update_who" nullable="false"/>
+      </basic>
+    </attributes>
+  </entity>
+</entity-mappings>

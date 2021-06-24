@@ -57,6 +57,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatICD9Action.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PendampingMakananAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanMedisAction.js"/>'></script>
 
     <script type='text/javascript'>
 

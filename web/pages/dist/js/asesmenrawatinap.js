@@ -1,4 +1,5 @@
 function showModalAsesmenRawatInap(jenis, idRM, isSetIdRM, flagHide, flagCheck) {
+
     if (isSetIdRM == "Y") {
         tempidRm = idRM;
     }

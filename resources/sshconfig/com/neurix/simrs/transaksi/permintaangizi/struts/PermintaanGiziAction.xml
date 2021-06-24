@@ -69,10 +69,11 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
+        <!-- this for handling action _ordergizi, and method * and will call class PermintaanGiziAction -->
         <action name="*_ordergizi"
                 class="com.neurix.simrs.transaksi.permintaangizi.action.PermintaanGiziAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
-
+            <!-- this for handlling return from class above -->
             <result name="search">/pages/com/neurix/simrs/transaksi/permintaangizi/searchPermintaanGizi.jsp</result>
 
             <result name="print_barcode_gizi" type="jasper">

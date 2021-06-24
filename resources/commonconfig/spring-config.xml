@@ -157,6 +157,8 @@
     <import resource="sshconfig/com/neurix/simrs/master/pasien/spring/PasienBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/statuspasien/spring/StatusPasienBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/tindakan/spring/TindakanBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/tindakanmedis/spring/TindakanMedisBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/tindakanmedis/spring/TindakanMedisDetailBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/kategoritindakan/spring/KategoriTindakanBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/kategoritindakanina/spring/KategoriTindakanInaBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/operatorlab/spring/OperatorLabBean.xml"/>

@@ -1,78 +1,84 @@
-function pilihTindakanMedis(val, id) {
+function pilihTindakanMedis(val, name, id) {
     var namaTindakan = "";
     if (val != '') {
-        $.each(kategoriTindakanMedis(''), function (idx, itemx) {
-            if (itemx.id_tindakan == val) {
-                namaTindakan = itemx.nama_tindakan;
-            }
-        });
+
+        console.log("===========2===========>> Tindakan Medis|"+name);
         $('#form-' + id).show();
-        $('#tindakan_medis_' + id).val(namaTindakan);
+        $('#tindakan_medis_' + id).val(name);
+
         var body = "";
-        $.each(tindakanMedis(val), function (i, item) {
+        TindakanMedisAction.getTindakanMedisDetail(val, function(detail)
+        {
+            console.log("===========2=1==========>> Tindakan Medis|"+JSON.stringify(detail));
+            $.each(detail, function (i, item) {
+                var params = "";
+                var informasi = "";
 
-            var params = "";
-            var informasi = "";
+                if ("i" == item.infoType) {
+                    var info = item.infoValue.split("|");
+                    $.each(info, function (idx, itemx) {
+                        if (itemx != '') {
+                            informasi += '<input class="form-control" name="informasi' + i + '" id="info' + i+idx + '" placeholder="' + itemx + '" onchange="$(\'#info' +i+ idx + '\').val(\'' + itemx + ' ' + '\'+this.value);">';
+                        } else {
+                            informasi += '<input class="form-control" name="informasi' + i + '" id="info' + i+idx + '" placeholder="' + itemx + '">';
+                        }
+                    });
+                }
 
-            if ("i" == item.keterangan) {
-                var info = item.informasi.split("|");
-                $.each(info, function (idx, itemx) {
-                    if (itemx != '') {
-                        informasi += '<input class="form-control" name="informasi' + i + '" id="info' + i+idx + '" placeholder="' + itemx + '" onchange="$(\'#info' +i+ idx + '\').val(\'' + itemx + ' ' + '\'+this.value);">';
-                    } else {
-                        informasi += '<input class="form-control" name="informasi' + i + '" id="info' + i+idx + '" placeholder="' + itemx + '">';
-                    }
-                });
-            }
-            if ("r" == item.keterangan) {
-                var info = item.informasi.split("|");
-                $.each(info, function (idx, itemx) {
-                    informasi += '<div class="row">' +
-                        '<div class="custom02" style="margin-left: 15px">\n' +
-                        '<input type="radio" value="' + itemx + '" id="informasi' + i + idx + '" name="informasi' + i + '"/><label for="informasi' + i + idx + '">' + itemx + '</label>\n' +
-                        '</div>' +
-                        '</div>';
-                });
-            }
-            if ("c" == item.keterangan) {
-                var info = item.informasi.split("|");
-                $.each(info, function (idx, itemx) {
-                    informasi += '<div class="row">' +
-                        '<div class="form-check02">\n' +
-                        '<input type="checkbox" name="informasi' + i + '" id="informasi' + i + idx + '" value="' + itemx + '">\n' +
-                        '<label for="informasi' + i + idx + '"></label> ' + itemx + '\n' +
-                        '</div>' +
-                        '</div>';
-                });
-            }
-            if ("l" == item.keterangan) {
-                informasi += item.informasi + '<input type="hidden" value="' + item.informasi + '" name="informasi' + i + '">';
-            }
+                if ("r" == item.infoType) {
+                    var info = item.infoValue.split("|");
+                    $.each(info, function (idx, itemx) {
+                        informasi += '<div class="row">' +
+                            '<div class="custom02" style="margin-left: 15px">\n' +
+                            '<input type="radio" value="' + itemx + '" id="informasi' + i + idx + '" name="informasi' + i + '"/><label for="informasi' + i + idx + '">' + itemx + '</label>\n' +
+                            '</div>' +
+                            '</div>';
+                    });
+                }
 
-            var cekList = '<div class="row">' +
-                '<div class="form-check02">\n' +
-                '<input type="checkbox" name="tanda" id="tanda' + i + '" value="Ya">\n' +
-                '<label for="tanda' + i + '"></label>' +
-                '</div>' +
-                '</div>'
+                if ("c" == item.infoType) {
+                    var info = item.infoValue.split("|");
+                    $.each(info, function (idx, itemx) {
+                        informasi += '<div class="row">' +
+                            '<div class="form-check02">\n' +
+                            '<input type="checkbox" name="informasi' + i + '" id="informasi' + i + idx + '" value="' + itemx + '">\n' +
+                            '<label for="informasi' + i + idx + '"></label> ' + itemx + '\n' +
+                            '</div>' +
+                            '</div>';
+                    });
+                }
 
-            body += '<tr>' +
-                '<td width="25%">' + item.parameter + '<input name="parameter" type="hidden" value="' + item.parameter + '"></td>' +
-                '<td>' + informasi + '</td>' +
-                '<td align="center" width="15%">' + cekList + '</td>' +
-                '</tr>';
+                if ("l" == item.infoType) {
+                    informasi += item.infoValue + '<input type="hidden" value="' + item.infoValue + '" name="informasi' + i + '">';
+                }
 
-            if(informasi == "Biaya*"){
-                $('#h_is_biaya').val("Y");
-                $('#form_biaya').show();
-            }else{
-                $('#h_is_biaya').val("N");
-                $('#form_biaya').hide();
-            }
+                var cekList = '<div class="row">' +
+                    '<div class="form-check02">\n' +
+                    '<input type="checkbox" name="tanda" id="tanda' + i + '" value="Ya">\n' +
+                    '<label for="tanda' + i + '"></label>' +
+                    '</div>' +
+                    '</div>'
 
+                body += '<tr>' +
+                    '<td width="25%">' + item.infoName + '<input name="parameter" type="hidden" value="' + item.infoName + '"></td>' +
+                    '<td>' + informasi + '</td>' +
+                    '<td align="center" width="15%">' + cekList + '</td>' +
+                    '</tr>';
+
+                if(informasi == "Biaya*"){
+                    $('#h_is_biaya').val("Y");
+                    $('#form_biaya').show();
+                }else{
+                    $('#h_is_biaya').val("N");
+                    $('#form_biaya').hide();
+                }
+
+            });
+
+            $('#body_' + id).html(body);
         });
 
-        $('#body_' + id).html(body);
+
 
     } else {
         $('#form-' + id).hide();
@@ -961,10 +967,17 @@ function kategoriTindakanMedis(tipe) {
 
 function selectOptionTM(tipe, id) {
     var option = '<option value="">[Select One]</option>';
-    $.each(kategoriTindakanMedis(tipe), function (i, item) {
-        option += '<option value="' + item.id_tindakan + '">' + item.nama_tindakan + '</option>';
+
+    console.log("===========1===========>> Tindakan Medis|");
+    TindakanMedisAction.getListTindakanMedis(tipe,function(listData){
+        console.log("===========1=1==========>> Tindakan Medis|"+JSON.stringify(listData));
+        $.each(listData, function (i, item) {
+            option += '<option value="' + item.id + '">' + item.name + '</option>';
+        });
+        $('#' + id).html(option);
     });
-    $('#' + id).html(option);
+
+
 }
 
 function setTindakanMedisValue(id, tipe, idHidden){
