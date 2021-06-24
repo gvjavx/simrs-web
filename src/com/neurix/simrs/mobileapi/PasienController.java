@@ -198,7 +198,7 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
         if (action.equalsIgnoreCase("login")){
 
             //check apakah yang login adalah pasien sementara
-            List<PasienSementara> pasienSementaraList = new ArrayList<>();
+            List<PasienSementara> pasienSementaraList;
             PasienSementara bean = new PasienSementara();
             bean.setId(idPasien);
             bean.setFlag("Y");
@@ -210,13 +210,27 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
                 throw new GeneralBOException(e);
             }
 
-            if (pasienSementaraList.size() != 0) {
+            // jika tidak bisa dapat dari pasien id sementara, coba dengan email
+            if (null==pasienSementaraList || pasienSementaraList.size() == 0)
+            {
+                try {
+                    bean.setEmail(bean.getId());
+                    bean.setId(null);
+                    pasienSementaraList = pasienBoProxy.getPasienSementaraByCriteria(bean);
+                } catch (GeneralBOException e) {
+                    logger.error("[PasienController.isUserPasienById] Error when searching / inquiring data by criteria," + "[" + e.getMessage() + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                    throw new GeneralBOException(e);
+                }
+            }
+
+                if (pasienSementaraList.size() != 0) {
                 PasienSementara pasienSementara = pasienSementaraList.get(0);
                 if (password.equalsIgnoreCase(pasienSementara.getPassword())) {
                     if (!"Y".equalsIgnoreCase(pasienSementara.getFlagLogin())) {
 
                         model.setIdPasien(pasienSementara.getId());
                         model.setNama(pasienSementara.getNama());
+                        model.setEmail(pasienSementara.getEmail());
                         model.setJenisKelamin(pasienSementara.getJenisKelamin());
                         model.setNoKtp(pasienSementara.getNoKtp());
                         model.setTempatLahir(pasienSementara.getTempatLahir());
@@ -307,6 +321,7 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
                             model.setProfesi(pasienData.getProfesi());
                             model.setNoTelp(pasienData.getNoTelp());
                             model.setUrlKtp(pasienData.getUrlKtp());
+                            model.setEmail(pasienData.getEmail());
                             model.setFlag(pasienData.getFlag());
                             model.setAction(pasienData.getAction());
                             model.setCreatedDate(pasienData.getCreatedDate());
@@ -481,8 +496,60 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
         }
 
         if (action.equalsIgnoreCase("saveAddPasienSementara")) {
+
             PasienSementara bean = new PasienSementara();
-            PasienSementara result = new PasienSementara();
+            com.neurix.simrs.master.pasien.model.Pasien psBean;
+            List<com.neurix.simrs.master.pasien.model.Pasien> listPSBean;
+            List<PasienSementara> listResult = null;
+            PasienSementara result;
+
+            // validation email, saat pendaftaran tidak boleh ada email yang sama / sudah terdaftar di pasien sementara
+            try {
+                bean.setEmail(email);
+                listResult = pasienBoProxy.getPasienSementaraByCriteria(bean);
+            } catch (GeneralBOException e) {
+                logger.error("[PasienController.saveAddPasienSementara] Error when searching / inquiring data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
+                throw new GeneralBOException(e);
+            }
+
+            // jika list result lebih dari 0, maka sudah dipastikan ada email yang sudah terdaftar
+            if (null!=listResult && listResult.size() > 0)
+            {
+                listOfPasien = new ArrayList<>();
+                Pasien bn = new Pasien();
+                bn.setErrorMsg("Error: Email sudah terdaftar, mohon gunakan email lain, atau login dengan email tersebut.");
+                listOfPasien.add(bn);
+                logger.error("[PasienController.create] Error karena email sudah terdaftar <<<");
+                return new DefaultHttpHeaders("success")
+                        .disableCaching();
+            }
+            else
+            {
+
+                // dan juga check di pasien tetap
+                try {
+                    psBean = new com.neurix.simrs.master.pasien.model.Pasien();
+                    psBean.setEmail(email);
+                    listPSBean = pasienBoProxy.getByCriteria(psBean);
+                } catch (GeneralBOException e) {
+                    logger.error("[PasienController.saveAddPasienSementara] Error when searching / inquiring data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
+                    throw new GeneralBOException(e);
+                }
+
+                // jika list result lebih dari 0, maka sudah dipastikan ada email yang sudah terdaftar
+                if (null!=listPSBean && listPSBean.size() > 0)
+                {
+                    listOfPasien = new ArrayList<>();
+                    Pasien bn = new Pasien();
+                    bn.setErrorMsg("Error: Email sudah terdaftar, mohon gunakan email lain, atau login dengan email tersebut.");
+                    listOfPasien.add(bn);
+                    logger.error("[PasienController.create] Error karena email sudah terdaftar <<<");
+                    return new DefaultHttpHeaders("success")
+                            .disableCaching();
+                }
+            }
+
+            bean = new PasienSementara();
             bean.setNama(nama);
             bean.setJenisKelamin(jenisKelamin);
             bean.setNoKtp(noKtp);

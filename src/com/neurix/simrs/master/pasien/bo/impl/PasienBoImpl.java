@@ -1141,14 +1141,14 @@ public class PasienBoImpl implements PasienBo {
         email.setSubject("[GO-MEDSYS MOBILE] User ID untuk login ke aplikasi");
         email.setMsg("<h2>GO-MEDSYS MOBILE</h2>\n" +
                 "=========================================\n" +
-                "<h3>Gunakan User ID berikut beserta password yang telah ada inputkan ketika registrasi untuk login ke aplikasi GO-MEDSYS</h3>\n" +
+                "<h3>Gunakan Email anda beserta password yang telah ada inputkan ketika registrasi untuk login ke aplikasi GO-MEDSYS</h3>\n" +
                 "<br> \n" +
-                "<h3>User ID berikut bersifat sementara, anda akan mendapatkan User ID baru setelah melakukan verifikasi pendaftaran online di Rumah Sakit yang anda tuju<h3>\n" +
+                "<h3>login menggunakan email bersifat sementara, anda akan mendapatkan User ID baru setelah melakukan verifikasi pendaftaran online di Rumah Sakit yang anda tuju<h3>\n" +
                 "<br> \n" +
                 "<table width=\"100%\">\n" +
                 "<tr>\n" +
-                "<td width=\"20%\">User ID</td>\n" +
-                "<td>: " + entity.getId() + "</td>\n" +
+                "<td width=\"20%\">Email</td>\n" +
+                "<td>: " + entity.getEmail() + "</td>\n" +
                 "</tr>\n" +
                 "<tr>\n" +
                 "<td>Nama</td>\n" +
