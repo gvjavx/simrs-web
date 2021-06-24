@@ -861,7 +861,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
 
                     if (dataPasien != null && !"".equalsIgnoreCase(idObat) && qty.intValue() > 0){
 
-                        if ("".equalsIgnoreCase(transaksiObatDetail.getJenisPeriksaPasien())){
+                        if ("".equalsIgnoreCase(transaksiObatDetail.getJenisResep())){
                             transaksiObatDetail.setJenisResep(dataPasien.getIdJenisPeriksaPasien());
                         }
 
