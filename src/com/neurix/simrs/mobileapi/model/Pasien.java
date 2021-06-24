@@ -43,6 +43,7 @@ public class Pasien implements Serializable, Comparable<Pasien> {
     private String email;
 
     private String actionError;
+    private String errorMsg;
 
     private String flagMeninggal;
     private String tanggalMeninggal;
@@ -69,6 +70,14 @@ public class Pasien implements Serializable, Comparable<Pasien> {
 
     public void setActionError(String actionError) {
         this.actionError = actionError;
+    }
+
+    public void setErrorMsg(String val) {
+        errorMsg = val;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
     }
 
     public String getEmail() {
