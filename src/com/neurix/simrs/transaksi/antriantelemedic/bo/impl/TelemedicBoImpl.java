@@ -30,7 +30,9 @@ import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
 import com.neurix.simrs.master.kurir.dao.KurirDao;
 import com.neurix.simrs.master.kurir.model.ImSimrsKurirEntity;
 import com.neurix.simrs.master.pasien.dao.PasienDao;
+import com.neurix.simrs.master.pasien.dao.PasienSementaraDao;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienSementaraEntity;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
@@ -98,6 +100,7 @@ public class TelemedicBoImpl implements TelemedicBo {
     private PelayananDao pelayananDao;
     private DokterDao dokterDao;
     private PasienDao pasienDao;
+    private PasienSementaraDao pasienSementaraDao;
     private TelemedicDao telemedicDao;
     private VerifikatorPembayaranDao verifikatorPembayaranDao;
     private TindakanDao tindakanDao;
@@ -209,6 +212,14 @@ public class TelemedicBoImpl implements TelemedicBo {
         this.pasienDao = pasienDao;
     }
 
+    public PasienSementaraDao getPasienSementaraDao() {
+        return pasienSementaraDao;
+    }
+
+    public void setPasienSementaraDao(PasienSementaraDao pasienSementaraDao) {
+        this.pasienSementaraDao = pasienSementaraDao;
+    }
+
     public TelemedicDao getTelemedicDao() {
         return telemedicDao;
     }
@@ -220,6 +231,10 @@ public class TelemedicBoImpl implements TelemedicBo {
     @Override
     public List<AntrianTelemedic> getSearchByCriteria(AntrianTelemedic bean) throws GeneralBOException {
         logger.info("[TelemedicBoImpl.getSearchByCriteria] START >>>");
+
+        // Temp object
+        ImSimrsPasienEntity pasien = null;
+        ImSimrsPasienSementaraEntity pasienSementara = null;
 
         List<AntrianTelemedic> results = new ArrayList<>();
         List<AntrianTelemedic> antrianTelemedics = new ArrayList<>();
@@ -237,7 +252,22 @@ public class TelemedicBoImpl implements TelemedicBo {
                 antritanTelemedicData.setNamaPelayanan(getPelayananById(antritanTelemedicData.getIdPelayanan()).getNamaPelayanan());
             }
             if (antritanTelemedicData.getIdPasien() != null && !"".equalsIgnoreCase(antritanTelemedicData.getIdPasien())) {
-                antritanTelemedicData.setNamaPasien(getPasienById(antritanTelemedicData.getIdPasien()).getNama());
+
+                pasien = getPasienById(antritanTelemedicData.getIdPasien());
+                if(null!=pasien)
+                {
+                    antritanTelemedicData.setNamaPasien(pasien.getNama());
+                }
+                else
+                {
+                    pasienSementara = getPasienSementaraById(antritanTelemedicData.getIdPasien());
+                    if(null!=pasienSementara)
+                    {
+                        antritanTelemedicData.setNamaPasien(pasienSementara.getNama());
+                    }
+                }
+
+
             }
             if (antritanTelemedicData.getIdDokter() != null && !"".equalsIgnoreCase(antritanTelemedicData.getIdDokter())) {
                 antritanTelemedicData.setNamaDokter(getDokterById(antritanTelemedicData.getIdDokter()).getNamaDokter());
@@ -556,6 +586,10 @@ public class TelemedicBoImpl implements TelemedicBo {
 
     private ImSimrsPasienEntity getPasienById(String idPasien) throws GeneralBOException{
         return pasienDao.getById("idPasien", idPasien);
+    }
+
+    private ImSimrsPasienSementaraEntity getPasienSementaraById(String idPasien) throws GeneralBOException{
+        return pasienSementaraDao.getById("id", idPasien);
     }
 
     private ImSimrsAsuransiEntity getAsuransiById(String idAsuransi) throws GeneralBOException{

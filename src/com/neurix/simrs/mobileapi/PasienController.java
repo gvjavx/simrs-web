@@ -448,6 +448,32 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
                     model.setActionError("Gagal Logout");
                 }
             }
+            else // log out for pasien sementara
+            {
+                PasienSementara bean = new PasienSementara();
+                bean.setId(idPasien);
+
+                List<PasienSementara> list = new ArrayList<>();
+
+                try {
+                    list = pasienBoProxy.getPasienSementaraByCriteria(bean);
+                } catch (GeneralBOException e){
+                    logger.error("Error get user data", e);
+                }
+
+                if (list.size() == 1){
+                    bean = list.get(0);
+
+                    bean.setFlagLogin("N");
+                    bean.setUrlKtp(null);
+                    try {
+                        pasienBoProxy.saveEditPasienSementara(bean);
+                    } catch (GeneralBOException e){
+                        logger.error("Gagal logout", e);
+                        model.setActionError("Gagal Logout");
+                    }
+                }
+            }
         }
 
         if (action.equalsIgnoreCase("getPasien")) {
@@ -606,7 +632,7 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
             model.setProfesi(result.getProfesi());
         }
 
-        if (action.equalsIgnoreCase("getPasienSementaraByCriteria")) {
+            if (action.equalsIgnoreCase("getPasienSementaraByCriteria")) {
 
             listOfPasien = new ArrayList<>();
             List<PasienSementara> result = new ArrayList<>();
