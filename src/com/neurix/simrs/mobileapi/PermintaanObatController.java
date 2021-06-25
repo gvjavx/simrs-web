@@ -503,6 +503,9 @@ public class PermintaanObatController implements ModelDriven<Object> {
             entityObat.setIdObat(idObat);
             entityObat.setNamaObat(namaObat);
 
+            //SYAMS 25JUN21 tambah branchid
+            entityObat.setBranchId(branchId);
+
             try {
                 resultEntityObat = obatBoProxy.getEntityObatByCriteria(entityObat);
             } catch (GeneralBOException e) {
