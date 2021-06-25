@@ -1299,7 +1299,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     List<MtSimrsHargaObatPerKonsumenEntity> hargaObatPerKonsumenEntities = getListHargaObatPerKonsumenEntity(hargaData);
                     if (hargaObatPerKonsumenEntities.size() > 0){
                         MtSimrsHargaObatPerKonsumenEntity perKonsumenEntity = hargaObatPerKonsumenEntities.get(0);
-                        perKonsumenEntity.setHargaBruto(perKonsumen.getHargaTerakhir());
+                        perKonsumenEntity.setHargaBruto(perKonsumen.getHargaTerakhir().setScale(0, BigDecimal.ROUND_HALF_UP));
                         perKonsumenEntity.setHargaJual(hitungHargaJualDenganMargin(perKonsumenEntity.getHargaBruto(), perKonsumenEntity.getMargin()));
                         perKonsumenEntity.setAction("U");
                         perKonsumenEntity.setLastUpdate(lastUpdate);
@@ -1331,6 +1331,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
         BigDecimal selisih  = hargaTerakhir.multiply(margin.divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP, 2));
         hargaJual           = hargaTerakhir.add(selisih);
+        hargaJual           = hargaJual.setScale(0, BigDecimal.ROUND_HALF_UP);
 
         logger.info("[PermintaanVendorBoImpl.hitungHargaJualDenganMargin] END <<<");
         return hargaJual;
