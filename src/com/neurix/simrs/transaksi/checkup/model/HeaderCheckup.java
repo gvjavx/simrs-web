@@ -226,6 +226,15 @@ public class HeaderCheckup {
     private String filePendukung;
     private String nyeri;
     private String resikoJatuh;
+    private String isPasienSementara;
+
+    public String getIsPasienSementara() {
+        return isPasienSementara;
+    }
+
+    public void setIsPasienSementara(String isPasienSementara) {
+        this.isPasienSementara = isPasienSementara;
+    }
 
     public String getResikoJatuh() {
         return resikoJatuh;
