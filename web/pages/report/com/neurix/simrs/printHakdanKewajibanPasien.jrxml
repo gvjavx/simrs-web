@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printHakdanKewajibanPasien" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.1269722013523695"/>
+	<property name="ireport.zoom" value="1.1269722013523777"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="577"/>
+	<property name="ireport.y" value="683"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -68,81 +68,81 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="169" splitType="Stretch">
+		<band height="165" splitType="Stretch">
 			<line>
-				<reportElement x="0" y="60" width="555" height="1" uuid="2c08112b-c50d-4893-862a-474998eb7574"/>
+				<reportElement x="0" y="63" width="555" height="1" uuid="2c08112b-c50d-4893-862a-474998eb7574"/>
 			</line>
 			<staticText>
-				<reportElement x="2" y="121" width="94" height="20" uuid="6c44ef7d-db93-4127-8056-c6e5dc48fb34"/>
+				<reportElement x="2" y="120" width="94" height="16" uuid="6c44ef7d-db93-4127-8056-c6e5dc48fb34"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="11"/>
 				</textElement>
 				<text><![CDATA[Tanggal Lahir]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2" y="141" width="94" height="20" uuid="a5b9a80e-195a-4a19-a403-96703a2a8764"/>
+				<reportElement x="2" y="138" width="94" height="16" uuid="a5b9a80e-195a-4a19-a403-96703a2a8764"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="11"/>
 				</textElement>
 				<text><![CDATA[Nomor RM]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2" y="101" width="94" height="20" uuid="3ec64ed1-e2b1-43c7-990e-b5ef6bdabd53"/>
+				<reportElement x="2" y="102" width="94" height="16" uuid="3ec64ed1-e2b1-43c7-990e-b5ef6bdabd53"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="11"/>
 				</textElement>
 				<text><![CDATA[Nama]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="93" y="101" width="5" height="20" uuid="27bb378b-d5ad-4e5d-84d1-73a09bac82ed"/>
+				<reportElement x="93" y="102" width="5" height="16" uuid="27bb378b-d5ad-4e5d-84d1-73a09bac82ed"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="11"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="93" y="121" width="5" height="20" uuid="c68a50c7-f5e0-4775-aaff-1bfefa19e52d"/>
+				<reportElement x="93" y="120" width="5" height="16" uuid="c68a50c7-f5e0-4775-aaff-1bfefa19e52d"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="11"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="93" y="141" width="5" height="20" uuid="3f134a74-d8ce-4e88-8153-5afc04245054"/>
+				<reportElement x="93" y="138" width="5" height="16" uuid="3f134a74-d8ce-4e88-8153-5afc04245054"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="11"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="98" y="101" width="457" height="20" uuid="ba387fca-a220-41d7-86a0-f7bdbc0958e7"/>
+				<reportElement x="98" y="102" width="457" height="16" uuid="ba387fca-a220-41d7-86a0-f7bdbc0958e7"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="98" y="121" width="457" height="20" uuid="85597b11-0127-46c5-9839-b72b43d88ddd"/>
+				<reportElement x="98" y="120" width="457" height="16" uuid="85597b11-0127-46c5-9839-b72b43d88ddd"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.tglLahir} == null ? "" : $P{reportParams.tglLahir}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="98" y="141" width="457" height="20" uuid="6ea987d3-b994-439c-849a-28abc91b7a06"/>
+				<reportElement x="98" y="138" width="457" height="16" uuid="6ea987d3-b994-439c-849a-28abc91b7a06"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.idPasien} == null ? "" : $P{reportParams.idPasien}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="31" width="173" height="20" uuid="7c5f8646-c682-47f4-96ff-a3c3cc2dd1d9"/>
+				<reportElement x="0" y="29" width="173" height="20" uuid="7c5f8646-c682-47f4-96ff-a3c3cc2dd1d9"/>
 				<box leftPadding="0"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
+					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.area} == null ? "" : $P{reportParams.area}]]></textFieldExpression>
 			</textField>
@@ -155,21 +155,21 @@
 			<staticText>
 				<reportElement x="421" y="30" width="59" height="19" uuid="711bd471-61c7-4e26-a5f7-23f47f6c6eb4"/>
 				<textElement>
-					<font fontName="SansSerif" size="8"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<text><![CDATA[Printed date : ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="143" y="8" width="268" height="20" uuid="89ca5627-7e73-4cd1-918e-9a81c49ef79d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" isBold="true"/>
+					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Hak dan Kewajiban Pasien]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy HH.mm.ss">
 				<reportElement x="480" y="30" width="75" height="19" uuid="c74fa1f1-4199-4fb4-8162-4173796d277f"/>
 				<textElement>
-					<font fontName="SansSerif" size="8"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -178,87 +178,494 @@
 				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="0" y="43" width="173" height="20" uuid="6f411b53-a957-4ce8-9bf4-3f379b53b1d2"/>
+				<reportElement x="0" y="42" width="173" height="20" uuid="6f411b53-a957-4ce8-9bf4-3f379b53b1d2"/>
 				<box leftPadding="0"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
+					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="2" y="65" width="553" height="16" uuid="0581b470-c6f3-401b-9b17-175a12d9f280"/>
+				<reportElement x="2" y="68" width="553" height="16" uuid="0581b470-c6f3-401b-9b17-175a12d9f280"/>
 				<textElement verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="11"/>
 				</textElement>
 				<text><![CDATA[Pasien dan atau wali diminta membaca, memahami, dan mengerti format berikutnya]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2" y="85" width="553" height="16" uuid="970857d7-892c-462e-997b-07ad9c198084"/>
+				<reportElement x="2" y="84" width="553" height="16" uuid="970857d7-892c-462e-997b-07ad9c198084"/>
 				<textElement verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="11"/>
 				</textElement>
 				<text><![CDATA[Yang bertanda tangan di bawah ini:]]></text>
 			</staticText>
+			<line>
+				<reportElement x="0" y="160" width="555" height="1" uuid="fbfff07a-585a-48db-a470-1218f56201f1"/>
+			</line>
 		</band>
 	</title>
 	<detail>
-		<band height="492">
-			<textField>
-				<reportElement x="0" y="0" width="553" height="492" uuid="59b446a0-c891-4be4-8fe4-5b18f75e5bb9"/>
-				<box leftPadding="1"/>
-				<textElement textAlignment="Justified" verticalAlignment="Top">
-					<font size="8"/>
+		<band height="430">
+			<staticText>
+				<reportElement x="0" y="4" width="18" height="16" uuid="264c61ea-48ef-4477-94a9-18a4efa9004c"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.data2} == null ? "" : $P{reportParams.data2}]]></textFieldExpression>
+				<text><![CDATA[III.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="4" width="533" height="16" uuid="22796ed7-add9-4c1d-a82e-ca71b1ba1660"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Hak Pasien]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="20" width="533" height="16" uuid="ac6451b3-2de2-4cdb-84c8-9a3bb297989f"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[(Sesuai Permenkes No 4 Tahun 2018)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="36" width="18" height="16" uuid="e27c15ed-cab1-4d80-9885-55dacb587b6c"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[1.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="36" width="510" height="16" uuid="09afa331-53e8-45ba-ab11-084cebb4a48c"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Memperoleh informasi mengenai tata tertib dan peraturan yang berlaku di rumah sakit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="52" width="18" height="16" uuid="5d509c26-ced5-418a-8ab4-17337040e855"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[2.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="52" width="510" height="16" uuid="a85ed53a-adb1-459b-8f92-85a12c9a2970"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Memperoleh informasi tentang hak dan kewajiban pasien]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="68" width="510" height="16" uuid="faeddcc9-d2ac-4f1e-a5da-99c762eaba17"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Memperoleh pelayanan yang manusiawi, adil, jujur, dan tanpa diskriminasi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="68" width="18" height="16" uuid="a88b41e8-0010-46f3-b5ca-fb92f6e32af3"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[3.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="84" width="510" height="30" uuid="311eb96e-1bd0-4af3-8027-ed24de9fa0ac"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Memperoleh layanan kesehatan yang bermutu sesuai dengan standar profesi dan prosedur operasional (SPO)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="84" width="18" height="16" uuid="7d9051c7-6c93-491b-b080-274fd8753cc1"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[4.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="114" width="510" height="16" uuid="a7ace9bd-80ac-43ed-ac43-0e1ef28ad13b"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Memperoleh layanan yang efektif dan efisien sehingga pasien terhindar dari kerugian fisik]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="114" width="18" height="16" uuid="42d1e919-42c9-40cf-9307-aed9c3b7ed6d"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[5.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="130" width="18" height="16" uuid="34c3e5d4-37a5-4465-9ae2-64b1a6f4a3d8"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[6.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="130" width="510" height="16" uuid="2f0a4514-c82a-4e86-87e2-7fa30c8a467d"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Mengajukan pengaduan atas kualitas pelayanan yang didapatkan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="146" width="523" height="16" uuid="d3ba980b-a3d0-471a-b55c-bfd5b7d82fc4"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Memilih dokter dan kelas perawatan sesuai dengan keinginan dan peraturan yang berlaku di Rumah Sakit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="146" width="18" height="16" uuid="02a00051-6757-4e79-b1b8-04eb957d35e4"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[7.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="163" width="510" height="31" uuid="6fad453d-c8d4-4ab1-9985-684d72aa322c"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Meminta konsultasi tentang penyakit yang dideritanya kepada dokter lain yang mempunyai surat izin praktek (SIP) baik didalam maupun diluar rumah sakit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="163" width="18" height="16" uuid="a79805aa-f178-4068-9042-e3a0d8d61749"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[8.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="194" width="510" height="16" uuid="cbfc6bd6-1b95-4e74-b3f5-ce30b8c4ace4"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Mendapatkan privasi dan kerahasiaan penyakit yang diderita termasuk data-data medisnya]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="194" width="18" height="16" uuid="0b2b3c10-ed6c-480f-a205-9275ef66f582"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[9.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="210" width="18" height="16" uuid="aed289d1-556f-4986-9b32-ba9613465149"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[10.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="253" width="510" height="31" uuid="be3d0d0b-074f-4cf5-9bcf-692c757918c5"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Memberikan persetujuan atau menolak atas tindakan yang akan dilakukan oleh tenaga kesehatan terhadap penyakit yang dideritanya]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="253" width="18" height="16" uuid="544142ed-1524-4e4a-b004-004b0d6343bb"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[11.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="210" width="510" height="43" uuid="804e99ff-ae67-477f-b1ab-ea3c5e3f5ed8"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Mendapatkan informasi yang meliputi diagnosis dan tata cara tindakan medis, tujuan tindakan medis, alternatif tindakan, resiko dan komplikasi yang mungkin terjadi, dan prognosis terhadap tindakan yang dilakukan serta perkiraan biaya pengobatan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="284" width="18" height="16" uuid="5fbf9a83-c84d-4a14-b1ad-983d0231802d"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[12.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="284" width="510" height="16" uuid="554ac9d0-055f-4481-a5bc-8483ce47d16d"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Didampingi keluarga dalam keadaan kritis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="300" width="18" height="16" uuid="41df5ea6-a0d1-4882-a5f5-562ff5becf4d"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[13.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="300" width="510" height="29" uuid="aa9f6ca5-b9e9-4df3-bb4e-59fdde7e756e"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Menjalankan ibadah sesuai agama atau kepercayaan yang dianutnya selama itu tidak mengganggu pasien lainnya]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="329" width="18" height="16" uuid="aa68e31e-c3db-4985-bd65-df6db627d441"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[14.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="329" width="510" height="16" uuid="aa7c3df6-ed90-4e79-bdc7-16fd8915f876"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Memperoleh keamanan dan keselamatan dirinya selama dalam perawatan di rumah sakit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="345" width="18" height="16" uuid="61dfcd10-d306-43be-9f72-819ad74c8c9e"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[15.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="345" width="510" height="16" uuid="df0dffb1-53c2-4476-aa6a-93f565bafebf"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Mengajukan usul, saran perbaikan atas perlakukan rumah sakit terhadap dirinya]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="361" width="18" height="16" uuid="6d798783-0a1d-428b-8d9d-464223b48124"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[16.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="361" width="510" height="16" uuid="9b6ea70c-b420-45ee-9856-5a4d377808c0"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Menolak bimbingan rohani yang tidak sesuai dengan agama dan kepercayaan yang dianutnya]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="377" width="18" height="16" uuid="e625cce9-4dd9-443f-8645-2253a4eaeebb"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[17.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="377" width="510" height="33" uuid="d94989a7-0435-429a-aa30-ca94450dfa96"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Menggugat atau menuntut rumah sakit apabila rumah sakit diduga memberikan pelayanan yang tidak sesuai dengan standart baik secara perdata maupun pidana]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="411" width="18" height="16" uuid="1897a5bc-3756-4e6c-b005-b589ed4545b3"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[18.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="411" width="510" height="16" uuid="879da103-4809-4aa1-8a52-f0a7e93f2567"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Mengeluhkan pelayanan rumah sakit yang tidak sesuai dengan stardar pelayanan melalui media]]></text>
+			</staticText>
+		</band>
+		<band height="192">
+			<staticText>
+				<reportElement x="0" y="13" width="18" height="16" uuid="c54bf39c-b6c6-4d34-962d-f778885a576c"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[IV.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="13" width="533" height="16" uuid="06785eaf-5f22-4e6e-ad43-f066107f9416"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Kewajiban Pasien dan Keluarga Pasien]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="29" width="18" height="16" uuid="78087069-79a6-4405-9277-52dec08ae7af"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[1.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="45" y="29" width="492" height="16" uuid="eb01f213-adcf-46d1-9d69-3fee4b124c1d"/>
+				<box leftPadding="0"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Mematuhi peraturan yang berlaku di " + $P{reportParams.unit}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="22" y="45" width="18" height="16" uuid="3d02d0e4-f0f1-4504-9894-cf20a147f846"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[2.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="45" y="45" width="492" height="16" uuid="28b7b674-6678-4ddb-9b05-d38ea2620831"/>
+				<box leftPadding="0"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Menggunakan fasilitas " + $P{reportParams.unit} + " secara bertanggung jawab"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="22" y="61" width="18" height="16" uuid="e0b791dd-65fe-4c39-9bc4-24ad6f9401d9"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[3.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="61" width="510" height="29" uuid="9a9dc723-75f8-490e-a8f4-5410ffb56a23"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Menghormati hask pasien lain, pengunjung dan hak tenaga kesehatan serta petugas lainnya yang bekerja di rumah sakit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="90" width="18" height="16" uuid="3ac7b5a9-c53e-4619-90c8-ec77bf91d8bf"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[4.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="90" width="510" height="29" uuid="72cf300e-bd48-4fa0-9dc0-1d8f8941bc23"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Memberikan informasi yang jujur, lengkap dan akurat sesuai dengan kemampuan tetang masalah kesehatan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="119" width="18" height="16" uuid="5da14415-a8ac-4571-9777-dd9a39045db4"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[5.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="119" width="510" height="16" uuid="7675ba63-0f36-44c4-9876-fbed66cef8b0"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Memberikan informasi tentang kemampuan finansial dan jaminan kesehatan yang dimiliki]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="135" width="18" height="16" uuid="adb003cf-b947-4272-9bff-83f012ce78fd"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[6.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="135" width="510" height="43" uuid="a413207b-9dde-4961-93a0-f78461658919"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Mematuhi rencana terapi yang direkomendasikan oelh tenaga kesehatanan di rumah sakit dan di setujui oleh pasien yang bersangkutan setelah mendapatkan penjelasan sesuai dengan ketentuan peraturan perundang udangan]]></text>
+			</staticText>
+		</band>
+		<band height="138">
+			<staticText>
+				<reportElement x="20" y="0" width="18" height="16" uuid="21802ea8-031f-42b4-866b-77adaf95f7c5"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[7.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="43" y="0" width="510" height="44" uuid="9e0754d8-9684-4d8a-89f8-7e0f5325b3c1"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Menerima segala kesalahan atas keputusan pribadinya untuk menolak rencana terapi yang di rekomendasikan oleh tenaga kesehatan dan/tidak mematuhi petunjuk yang diberikan oleh tenaga kesehatan untuk penyembuhan penyakit atau masalah kesehatannya]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="44" width="18" height="16" uuid="ad9531a8-e9a9-4f33-a808-b7327b7d6a12"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[8.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="43" y="44" width="510" height="16" uuid="e2aaa33f-dce9-4433-97a4-902bfa91f7b8"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Memberikan imbalan jasa atas pelayanan yang diterima]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-2" y="75" width="555" height="28" uuid="51d98a64-b01a-4e40-88dc-af92cab36931"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Saya telah membaca dan sepenuhnya setuju dengan setiap pernyataan yang tersebut diatas dan menandatangani tanpa paksaan dan dengan kesadaran penuh]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<lastPageFooter>
-		<band height="107">
-			<staticText>
-				<reportElement x="373" y="0" width="180" height="20" uuid="d3e125c9-26ad-42f4-ad47-ad847b93236d"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
-				</textElement>
-				<text><![CDATA[Pemberi Informasi]]></text>
-			</staticText>
+		<band height="119">
 			<textField>
 				<reportElement x="375" y="84" width="180" height="20" uuid="e01ac0fe-3c84-4a49-bbb1-cb3f78374680"/>
 				<box leftPadding="1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" isUnderline="false"/>
+					<font size="11" isUnderline="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{namaPemberi} == null ? "" : $P{namaPemberi}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="0" width="180" height="20" uuid="03281768-8cff-4668-b3dc-4fc8aee84189"/>
+				<reportElement x="0" y="2" width="180" height="20" uuid="03281768-8cff-4668-b3dc-4fc8aee84189"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
+					<font size="11"/>
 				</textElement>
 				<text><![CDATA[Pasien/Keluarga/Penanggung Jawab]]></text>
 			</staticText>
 			<line>
-				<reportElement x="2" y="103" width="180" height="1" uuid="b6420050-f477-4750-b89a-6e3f11d187a3"/>
+				<reportElement x="2" y="104" width="180" height="1" uuid="b6420050-f477-4750-b89a-6e3f11d187a3"/>
 			</line>
 			<line>
 				<reportElement x="375" y="104" width="180" height="1" uuid="0a9403e5-a35e-44d8-a5e7-9fd44b93efaf"/>
 			</line>
 			<textField>
-				<reportElement x="2" y="83" width="180" height="20" uuid="ddc3a51b-9187-46e7-addd-d88be88b7a0b"/>
+				<reportElement x="2" y="84" width="180" height="20" uuid="ddc3a51b-9187-46e7-addd-d88be88b7a0b"/>
 				<box leftPadding="1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9" isUnderline="false"/>
+					<font size="11" isUnderline="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{namaPasien} == null ? "" : $P{namaPasien}]]></textFieldExpression>
 			</textField>
 			<image onErrorType="Blank">
-				<reportElement x="20" y="21" width="140" height="61" uuid="26e63668-5422-4b18-a652-eda6384f9c81"/>
+				<reportElement x="20" y="23" width="140" height="61" uuid="26e63668-5422-4b18-a652-eda6384f9c81"/>
 				<imageExpression><![CDATA[$P{pasien}]]></imageExpression>
 			</image>
 			<image onErrorType="Blank">
-				<reportElement x="396" y="21" width="140" height="61" uuid="c50c1abb-4739-4bec-91b2-f61569aa0f9c"/>
+				<reportElement x="397" y="22" width="140" height="62" uuid="c50c1abb-4739-4bec-91b2-f61569aa0f9c"/>
 				<imageExpression><![CDATA[$P{reportParams.petugas}]]></imageExpression>
 			</image>
+			<staticText>
+				<reportElement x="373" y="2" width="180" height="20" uuid="c766fe27-11d1-4f1f-958f-af8d242dbf7f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Pemberi Informasi]]></text>
+			</staticText>
 		</band>
 	</lastPageFooter>
 </jasperReport>

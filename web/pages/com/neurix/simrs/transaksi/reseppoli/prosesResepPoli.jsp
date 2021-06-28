@@ -23,6 +23,16 @@
         .color-picker {
             margin: 1rem 1rem 0 1rem;
         }
+
+        .k-admin:hover{
+            cursor: pointer;
+        }
+        .k-farma:hover{
+            cursor: pointer;
+        }
+        .k-kritis:hover{
+            cursor: pointer;
+        }
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatPoliAction.js"/>'></script>
@@ -746,25 +756,90 @@
                                     <thead style="font-weight: bold">
                                     <tr>
                                         <td>PENGKAJIAN RESEP</td>
-                                        <td>Ya</td>
-                                        <td>Tidak</td>
+                                        <td width="20%" align="center">Ya</td>
+                                        <td width="20%" align="center">Tidak</td>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>Aspek Administratif</td>
-                                        <td><input type="radio" name="k-admin" value="Y"/></td>
-                                        <td><input type="radio" name="k-admin" value="N"/></td>
+                                    <tr bgcolor="#ffe4b5">
+                                        <td><b><span class="span-k-admin">Aspek Administratif</span></b></td>
+                                        <td width="20%" align="center"><input onclick="setRadio('k-admin', this.value)" type="radio" class="k-admin" name="k-admin1" value="Y"/></td>
+                                        <td width="20%" align="center"><input onclick="setRadio('k-admin', this.value)" type="radio" class="k-admin" name="k-admin1" value="N"/></td>
                                     </tr>
                                     <tr>
-                                        <td>Aspek Farmasetis</td>
-                                        <td><input type="radio" name="k-farma" value="Y"/></td>
-                                        <td><input type="radio" name="k-farma" value="N"/></td>
+                                        <td><span style="margin-left: 10px" class="span-k-admin">Nama, Tanggal Lahir</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-admin" name="k-admin2" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-admin" name="k-admin2" value="N"/></td>
                                     </tr>
                                     <tr>
-                                        <td>Aspek Klinis</td>
-                                        <td><input type="radio" name="k-kritis" value="Y"/></td>
-                                        <td><input type="radio" name="k-kritis" value="N"/></td>
+                                        <td><span style="margin-left: 10px" class="span-k-admin">BB Pasien</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-admin" name="k-admin3" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-admin" name="k-admin3" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-admin">Nama, Paraf Dokter</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-admin" name="k-admin4" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-admin" name="k-admin4" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-admin">Tanggal Resep</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-admin" name="k-admin5" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-admin" name="k-admin5" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-admin">Ruangan/Unit asal Resep</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-admin" name="k-admin6" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-admin" name="k-admin6" value="N"/></td>
+                                    </tr>
+                                    <tr bgcolor="#ffe4b5">
+                                        <td><b><span class="span-k-farma">Aspek Farmasetis</span></b></td>
+                                        <td width="20%" align="center"><input onclick="setRadio('k-farma', this.value)" type="radio" class="k-farma" name="k-farma1" value="Y"/></td>
+                                        <td width="20%" align="center"><input onclick="setRadio('k-farma', this.value)" type="radio" class="k-farma" name="k-farma1" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-farma">Nama, Bentuk, Kekuatan Obat</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-farma" name="k-farma2" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-farma" name="k-farma2" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-farma">Dosis dan Jumlah Obat</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-farma" name="k-farma3" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-farma" name="k-farma3" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-farma">Aturan dan Cara Penggunaan</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-farma" name="k-farma4" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-farma" name="k-farma4" value="N"/></td>
+                                    </tr>
+                                    <tr bgcolor="#ffe4b5">
+                                        <td><b><span class="span-k-kritis">Aspek Klinis</span></b></td>
+                                        <td width="20%" align="center"><input onclick="setRadio('k-kritis', this.value)" type="radio" class="k-kritis" name="k-kritis1" value="Y"/></td>
+                                        <td width="20%" align="center"><input onclick="setRadio('k-kritis', this.value)" type="radio" class="k-kritis" name="k-kritis1" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-kritis">Ketepatan Indikasi</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-kritis" name="k-kritis2" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-kritis" name="k-kritis2" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-kritis">Duplikasi Pengobatan</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-kritis" name="k-kritis3" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-kritis" name="k-kritis3" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-kritis">Alergi dan ROTD</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-kritis" name="k-kritis4" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-kritis" name="k-kritis4" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-kritis">Kontraindikasi</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-kritis" name="k-kritis5" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-kritis" name="k-kritis5" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-kritis">Interaksi Obat</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-kritis" name="k-kritis6" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-kritis" name="k-kritis6" value="N"/></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -1609,17 +1684,82 @@
             waktuCPO = JSON.stringify(dataWaktuResep);
         }
 
-        var k1 = $('[name=k-admin]:checked').val();
-        var k2 = $('[name=k-farma]:checked').val();
-        var k3 = $('[name=k-kritis]:checked').val();
+        var admin = $('.span-k-admin');
+        var farma = $('.span-k-farma');
+        var kritis = $('.span-k-kritis');
 
-        var objPengkajian = {
-            'admin': k1 != undefined ? k1 : "",
-            'farma': k2 != undefined ? k2 : "",
-            'kritis': k3 != undefined ? k3 : ""
-        }
+        var dataPengkajian = [];
+        $.each(admin, function (i, item) {
+            i = i+1;
+            var jawaban = $('[name=k-admin'+i+']:checked').val();
+            if(jawaban != undefined){
+                if(jawaban == "Y"){
+                    jawaban = "Ya";
+                }else{
+                    jawaban = "Tidak";
+                }
+            }
 
-        var stringPengkajian = JSON.stringify(objPengkajian);
+            var tipe = "";
+            if("Aspek Administratif" == item.innerHTML){
+                tipe = "head";
+            }
+            dataPengkajian.push({
+                'parameter': item.innerHTML,
+                'jawaban': jawaban != undefined ? jawaban : '',
+                'jenis': 'pengakjian_resep',
+                'keterangan': 'pengakjian_resep',
+                'tipe': tipe
+            })
+        });
+        $.each(farma, function (i, item) {
+            i = i+1;
+            var jawaban = $('[name=k-farma'+i+']:checked').val();
+            if(jawaban != undefined){
+                if(jawaban == "Y"){
+                    jawaban = "Ya";
+                }else{
+                    jawaban = "Tidak";
+                }
+            }
+
+            var tipe = "";
+            if("Aspek Farmasetis" == item.innerHTML){
+                tipe = "head";
+            }
+            dataPengkajian.push({
+                'parameter': item.innerHTML,
+                'jawaban': jawaban != undefined ? jawaban : '',
+                'jenis': 'pengakjian_resep',
+                'keterangan': 'pengakjian_resep',
+                'tipe': tipe
+            })
+        });
+        $.each(kritis, function (i, item) {
+            i = i+1;
+            var jawaban = $('[name=k-kritis'+i+']:checked').val();
+            if(jawaban != undefined){
+                if(jawaban == "Y"){
+                    jawaban = "Ya";
+                }else{
+                    jawaban = "Tidak";
+                }
+            }
+
+            var tipe = "";
+            if("Aspek Klinis" == item.innerHTML){
+                tipe = "head";
+            }
+            dataPengkajian.push({
+                'parameter': item.innerHTML,
+                'jawaban': jawaban != undefined ? jawaban : '',
+                'jenis': 'pengakjian_resep',
+                'keterangan': 'pengakjian_resep',
+                'tipe': tipe
+            })
+        });
+
+        var stringPengkajian = JSON.stringify(dataPengkajian);
 
         var obj = {
             'id_approve': id_approve,
@@ -1831,6 +1971,23 @@
             var iid = id - 1;
             $('#biaya_'+iid).val(total).trigger('input');
         }
+    }
+
+    function setRadio(tipe, value){
+        var radio = $('.'+tipe);
+        $.each(radio, function (i, item) {
+            var urut = i+1;
+            var ready = $('[name='+tipe+urut+']').length;
+            if(ready > 0){
+                if("Y" == value){
+                    $('[name='+tipe+urut+']').filter('[value=N]').prop('checked', false);
+                    $('[name='+tipe+urut+']').filter('[value='+value+']').prop('checked', true);
+                }else{
+                    $('[name='+tipe+urut+']').filter('[value=Y]').prop('checked', false);
+                    $('[name='+tipe+urut+']').filter('[value='+value+']').prop('checked', true);
+                }
+            }
+        });
     }
 
 </script>

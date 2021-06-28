@@ -15,6 +15,8 @@ import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.vendor.dao.VendorDao;
+import com.neurix.simrs.transaksi.asesmenrawatjalan.dao.KeperawatanRawatJalanDao;
+import com.neurix.simrs.transaksi.asesmenrawatjalan.model.ItSimrsAsesmenKeperawatanRawatJalanEntity;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.hargaobat.dao.HargaObatDao;
@@ -85,6 +87,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     private CatatanPemberianObatDao catatanPemberianObatDao;
     private HeaderObatDao headerObatDao;
     private ObatRacikDao obatRacikDao;
+    private KeperawatanRawatJalanDao keperawatanRawatJalanDao;
 
     @Override
     public List<TransaksiObatDetail> getSearchObatTransaksiByCriteria(TransaksiObatDetail bean) throws GeneralBOException {
@@ -1547,6 +1550,23 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                                     }
                                 }
                             }
+                        }
+                    }
+                }
+
+                if(bean.getRawatJalanEntityList().size() > 0){
+                    for (ItSimrsAsesmenKeperawatanRawatJalanEntity entity: bean.getRawatJalanEntityList()){
+                        entity.setIdKeperawatanRawatJalan("KRJ"+keperawatanRawatJalanDao.getNextSeq());
+                        entity.setCreatedDate(bean.getLastUpdate());
+                        entity.setCreatedWho(bean.getLastUpdateWho());
+                        entity.setLastUpdate(bean.getLastUpdate());
+                        entity.setLastUpdateWho(bean.getLastUpdateWho());
+                        entity.setAction("C");
+                        entity.setFlag("Y");
+                        try {
+                            keperawatanRawatJalanDao.addAndSave(entity);
+                        }catch (HibernateException e){
+                            logger.error(e.getMessage());
                         }
                     }
                 }
@@ -3157,5 +3177,9 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
     public void setObatRacikDao(ObatRacikDao obatRacikDao) {
         this.obatRacikDao = obatRacikDao;
+    }
+
+    public void setKeperawatanRawatJalanDao(KeperawatanRawatJalanDao keperawatanRawatJalanDao) {
+        this.keperawatanRawatJalanDao = keperawatanRawatJalanDao;
     }
 }
