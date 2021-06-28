@@ -51,8 +51,6 @@ public class TindakanMedisDetailDao extends GenericDao<ImSimrsTindakanMedisDetai
 
             if (mapCriteria.get("flag") != null){
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
-            }else{
-                criteria.add(Restrictions.eq("flag", "Y"));
             }
         }
 
