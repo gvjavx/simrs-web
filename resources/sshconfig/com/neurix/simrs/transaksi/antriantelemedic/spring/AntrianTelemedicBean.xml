@@ -9,6 +9,7 @@
           p:pelayananDao-ref="pelayananDao"
           p:dokterDao-ref="dokterDao"
           p:pasienDao-ref="pasienDao"
+          p:pasienSementaraDao-ref="pasienSementaraDao"
           p:telemedicDao-ref="telemedicDao"
           p:tindakanDao-ref="tindakanDao"
           p:verifikatorPembayaranDao-ref="verifikatorPembayaranDao"
