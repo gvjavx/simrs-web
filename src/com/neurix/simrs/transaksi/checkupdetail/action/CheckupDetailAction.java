@@ -917,16 +917,19 @@ public class CheckupDetailAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public List<Tindakan> getListComboTindakan(String idKategoriTindakan, String idKelasRuangan, String vaksin) {
+    public List<Tindakan> getListComboTindakan(String idKategoriTindakan, String idKelasRuangan, String vaksin, String idPelayanan) {
         logger.info("[CheckupDetailAction.listOfDokter] start process >>>");
         List<Tindakan> tindakanList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
+
         Tindakan tindakan = new Tindakan();
         tindakan.setIdKategoriTindakan(idKategoriTindakan);
         tindakan.setIdKelasRuangan(idKelasRuangan);
         tindakan.setIsVaksin(vaksin);
         tindakan.setBranchId(CommonUtil.userBranchLogin());
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
+        tindakan.setIdPelayanan(idPelayanan);
+
         try {
             tindakanList = tindakanBo.getComboBoxTindakan(tindakan);
         } catch (GeneralBOException e) {

@@ -659,7 +659,7 @@ function listSelectTindakan(idKtg) {
     var option = "<option value=''>-</option>";
     if (idKtg != '') {
         dwr.engine.setAsync(true);
-        CheckupDetailAction.getListComboTindakan(idKtg, idKelasRuangan, null, {
+        CheckupDetailAction.getListComboTindakan(idKtg, idKelasRuangan, null, null, {
             callback:function (response) {
                 if (response.length > 0) {
                     $.each(response, function (i, item) {

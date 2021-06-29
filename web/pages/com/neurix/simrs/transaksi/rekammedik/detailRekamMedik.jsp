@@ -1047,6 +1047,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/IcuAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/KandunganAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/KeperawatanRawatJalanAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/fisioterapi.js"/>'></script>

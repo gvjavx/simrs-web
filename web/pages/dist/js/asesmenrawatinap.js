@@ -5404,7 +5404,6 @@ function searchDiagnosaAskep(id, tipe) {
                         '            <label style="margin-left: 7px"><b>' + labelTtd + '</b></label>\n' +
                         '            <canvas style="margin-left: 7px; margin-top: -7px" width="150" onmouseover="paintTtd(\'ttd_perawat\')" class="paint-canvas-ttd" id="ttd_perawat"></canvas>' +
                         '            <input class="form-control" id="nama_terang_perawat" placeholder="Nama Terang">' +
-                        '            <input autocomplete="off" class="form-control" id="nip_perawat" placeholder="NIP">' +
                         '            <button style="margin-left: 7px" type="button" class="btn btn-danger" onclick="removePaint(\'ttd_perawat\')"><i class="fa fa-trash"></i> Clear\n' +
                         '            </button>\n' +
                         '        </div>\n' +

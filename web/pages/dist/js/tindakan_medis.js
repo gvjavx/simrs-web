@@ -55,7 +55,7 @@ function pilihTindakanMedis(val, name, id) {
                     $.each(info, function (idx, itemx) {
                         temp += '<li>'+itemx+'</li>';
                     });
-                    informasi += '<ul>'+temp+'</ul>' + '<input type="hidden" value="' + item.infoValue + '" name="informasi' + i + '">';
+                    informasi += '<ul style="margin-left: 20px">'+temp+'</ul>' + '<input type="hidden" value="' + item.infoValue + '" name="informasi' + i + '">';
                 }
 
                 var cekList = '<div class="row">' +

@@ -3062,7 +3062,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-4">
-                            <label style="margin-top: 7px">Jumlah (dalam botol)</label>
+                            <label style="margin-top: 7px">Jumlah (cc)</label>
                         </div>
                         <div class="col-md-4">
                             <input type="number" style="margin-top: 7px" name="" value="" class="form-control" id="mcr_jumlah">
@@ -3112,7 +3112,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-4">
-                            <label style="margin-top: 7px">Sisa</label>
+                            <label style="margin-top: 7px">Sisa (cc)</label>
                         </div>
                         <div class="col-md-4">
                             <input style="margin-top: 7px" type="number" name="" value="" class="form-control" id="mcr_sisa">

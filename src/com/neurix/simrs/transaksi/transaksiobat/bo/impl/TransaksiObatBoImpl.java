@@ -883,44 +883,30 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
         if (batchEntities.size() > 0) {
             for (MtSimrsTransaksiObatDetailBatchEntity batchEntity : batchEntities) {
-
                 TransaksiObatBatch obatBatch = new TransaksiObatBatch();
-                obatBatch.setIdBarang(batchEntity.getIdBarang());
                 obatBatch.setIdTransaksiObatDetail(batchEntity.getIdTransaksiObatDetail());
-
                 List<MtSimrsTransaksiObatDetailBatchEntity> newBatchEntities = getListEntityBatchByCriteria(obatBatch);
-                MtSimrsTransaksiObatDetailBatchEntity newBatchEntity = new MtSimrsTransaksiObatDetailBatchEntity();
 
-                if (newBatchEntities.size() > 0) {
-                    newBatchEntity = newBatchEntities.get(0);
+                if(newBatchEntities.size() > 0){
+                    for (MtSimrsTransaksiObatDetailBatchEntity detailBatchEntity: newBatchEntities){
+                        try {
+                            batchDao.deleteAndSave(detailBatchEntity);
+                        } catch (HibernateException e) {
+                            logger.error("[TransaksiObatBoImpl.saveVerifikasiObat] ERROR when update data batch. ", e);
+                            throw new GeneralBOException("[TransaksiObatBoImpl.getEntityPasienById] ERROR when update data batch. ", e);
+                        }
+                    }
                 }
 
-                if (newBatchEntity.getId() != null) {
-
-                    newBatchEntity.setAction("U");
-                    newBatchEntity.setLastUpdate(batchEntity.getLastUpdate());
-                    newBatchEntity.setLastUpdateWho(batchEntity.getLastUpdateWho());
-
-                    try {
-                        batchDao.updateAndSave(newBatchEntity);
-                    } catch (HibernateException e) {
-                        logger.error("[TransaksiObatBoImpl.saveVerifikasiObat] ERROR when insert data batch. ", e);
-                        throw new GeneralBOException("[TransaksiObatBoImpl.getEntityPasienById] ERROR when insert data batch. ", e);
-                    }
-
-                } else {
-
-                    String seqBatch = batchDao.getNextId();
-                    batchEntity.setId("TBA"+seqBatch);
-                    batchEntity.setStatus("Y");
-                    batchEntity.setNoBatch(1);
-
-                    try {
-                        batchDao.addAndSave(batchEntity);
-                    } catch (HibernateException e) {
-                        logger.error("[TransaksiObatBoImpl.saveVerifikasiObat] ERROR when update data batch. ", e);
-                        throw new GeneralBOException("[TransaksiObatBoImpl.getEntityPasienById] ERROR when update data batch. ", e);
-                    }
+                String seqBatch = batchDao.getNextId();
+                batchEntity.setId("TBA"+seqBatch);
+                batchEntity.setStatus("Y");
+                batchEntity.setNoBatch(1);
+                try {
+                    batchDao.addAndSave(batchEntity);
+                } catch (HibernateException e) {
+                    logger.error("[TransaksiObatBoImpl.saveVerifikasiObat] ERROR when update data batch. ", e);
+                    throw new GeneralBOException("[TransaksiObatBoImpl.getEntityPasienById] ERROR when update data batch. ", e);
                 }
             }
 

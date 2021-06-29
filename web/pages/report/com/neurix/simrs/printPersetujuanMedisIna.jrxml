@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printPersetujuanMedisIna" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="0.8689931392100639"/>
+	<property name="ireport.zoom" value="1.1566298682885954"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="103"/>
+	<property name="ireport.y" value="52"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -220,74 +220,7 @@
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="227">
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="17" width="442" height="20" isPrintWhenDetailOverflows="true" uuid="0af3bf53-8f4a-4d07-8130-1fd9fdacdd33"/>
-				<textElement textAlignment="Justified">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{pernyataan1} == null ? "" : $P{pernyataan1}]]></textFieldExpression>
-			</textField>
-			<image onErrorType="Blank">
-				<reportElement x="442" y="2" width="113" height="35" uuid="b540a974-ba0c-445a-9877-1fd6b8cb9b0d"/>
-				<imageExpression><![CDATA[$P{ttdPernyataan1}]]></imageExpression>
-			</image>
-			<textField>
-				<reportElement x="442" y="37" width="113" height="15" uuid="e6625e02-15d5-44f1-b96f-e684944e9f83"/>
-				<box leftPadding="1"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{namaPernyataan1} == null ? "" : $P{namaPernyataan1}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="442" y="53" width="113" height="15" uuid="850d310b-01bf-458e-9221-4935fbf01700"/>
-				<box leftPadding="1"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{sipPernyataan1} == null ? "" : $P{sipPernyataan1}]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement x="442" y="52" width="113" height="1" uuid="f010ec64-9eaf-47ee-a5b5-837724612c19"/>
-			</line>
-			<textField>
-				<reportElement x="442" y="106" width="113" height="15" uuid="594839f4-867e-496f-b869-2004d6b43c62"/>
-				<box leftPadding="1"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{namaPernyataan2} == null ? "" : $P{namaPernyataan2}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="74" width="442" height="20" isPrintWhenDetailOverflows="true" uuid="ac6a4228-5df0-4366-a31a-4fd34e94dc4a"/>
-				<textElement textAlignment="Justified">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{pernyataan2} == null ? "" : $P{pernyataan2}]]></textFieldExpression>
-			</textField>
-			<image onErrorType="Blank">
-				<reportElement x="442" y="71" width="113" height="35" uuid="1fc16b4d-5dd4-41ea-ad15-4d31c88e0276"/>
-				<imageExpression><![CDATA[$P{ttdPernyataan2}]]></imageExpression>
-			</image>
-			<line>
-				<reportElement x="442" y="105" width="113" height="1" uuid="d73be8ee-07f4-4064-b380-f526213fa787"/>
-			</line>
-			<textField>
-				<reportElement x="0" y="135" width="555" height="66" uuid="62378df1-eccc-4e09-86eb-be2398efc93d"/>
-				<textElement>
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{pernyataan3} == null ? "" : $P{pernyataan3} ]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="115" width="270" height="20" uuid="2b55f441-7209-4251-9983-53be72b4e6e6"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
-				</textElement>
-				<text><![CDATA[Persetujuan Tindakan Medis ]]></text>
-			</staticText>
-		</band>
+		<band height="227"/>
 	</columnFooter>
 	<lastPageFooter>
 		<band height="147">
