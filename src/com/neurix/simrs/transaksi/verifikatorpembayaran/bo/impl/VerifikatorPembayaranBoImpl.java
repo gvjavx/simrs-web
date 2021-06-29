@@ -741,8 +741,8 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
             entity.setAction("U");
             entity.setCreatedDate(new Timestamp(System.currentTimeMillis()));
             entity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-            entity.setCreatedWho(!bean.getCreatedWho().equalsIgnoreCase("") ? bean.getCreatedWho() : CommonUtil.userLogin());
-            entity.setLastUpdateWho(!bean.getCreatedWho().equalsIgnoreCase("") ? bean.getCreatedWho() : CommonUtil.userLogin());
+            entity.setCreatedWho(!"".equalsIgnoreCase(bean.getCreatedWho()) ? bean.getCreatedWho() : CommonUtil.userLogin());
+            entity.setLastUpdateWho(!"".equalsIgnoreCase(bean.getCreatedWho()) ? bean.getCreatedWho() : CommonUtil.userLogin());
 
             try {
                 diagnosaRawatDao.addAndSave(entity);
@@ -801,9 +801,9 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
         entity.setFlag("Y");
         entity.setAction("C");
         entity.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-        entity.setCreatedWho(!bean.getCreatedWho().equalsIgnoreCase("") ? bean.getCreatedWho() : CommonUtil.userLogin());
+        entity.setCreatedWho(!"".equalsIgnoreCase(bean.getCreatedWho()) ? bean.getCreatedWho() : CommonUtil.userLogin());
         entity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-        entity.setLastUpdateWho(!bean.getCreatedWho().equalsIgnoreCase("") ? bean.getCreatedWho() : CommonUtil.userLogin());
+        entity.setLastUpdateWho(!"".equalsIgnoreCase(bean.getCreatedWho()) ? bean.getCreatedWho() : CommonUtil.userLogin());
 
         try {
             dokterTeamDao.addAndSave(entity);
