@@ -776,7 +776,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                     if (pasienEntity == null)
                         pasienSementaraEntity = telemedicBo.getPasienSementaraById(antrianTelemedicEntity.getIdPasien());
 
-                    if (pasienEntity != null){
+                    if (pasienEntity != null || pasienSementaraEntity != null){
 
                         headerCheckup.setNama(pasienEntity == null ? pasienSementaraEntity.getNama() : pasienEntity.getNama());
                         headerCheckup.setJenisKelamin(pasienEntity == null ? pasienSementaraEntity.getJenisKelamin() : pasienEntity.getJenisKelamin());
