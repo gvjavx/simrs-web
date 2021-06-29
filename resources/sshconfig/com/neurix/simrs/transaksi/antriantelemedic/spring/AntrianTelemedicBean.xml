@@ -28,7 +28,6 @@
           p:videoRmDao-ref="videoRmDao"
           p:headerTindakanDao-ref="headerTindakanDao"
           p:paymentGatewayInvoiceDao-ref="paymentGatewayInvoiceDao"
-          p:pasienSementaraDao-ref="pasienSementaraDao"
     />
 
     <bean id="telemedicineController" class="com.neurix.simrs.mobileapi.TelemedicineController"
