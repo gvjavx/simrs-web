@@ -68,6 +68,8 @@ public class PelayananController implements ModelDriven<Object> {
 
     private String idPaket;
 
+    private Map<String,Object> response = new HashMap<>();
+
     public String getIdPaket() {
         return idPaket;
     }
