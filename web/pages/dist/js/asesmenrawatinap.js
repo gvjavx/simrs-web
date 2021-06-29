@@ -2399,7 +2399,7 @@ function saveAsesmenRawatInap(jenis, ket) {
         var va10 = $('#op10').val();
         var va11 = $('#op11').val();
 
-        var persetujuan = $('#nama_tindakan_medis').val();
+        var persetujuan = $('#tindakan_medis_tindakan_ina').val();
         var parameter = $('[name=parameter]');
         var tanda = $('[name=tanda]');
 

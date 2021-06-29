@@ -1221,6 +1221,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup \n" +
                 "WHERE a.tipe = 'penyakit_dahulu'\n" +
                 "AND c.id_pasien = :id\n" +
+                "AND a.flag = 'Y'\n" +
                 "UNION ALL\n" +
                 "SELECT \n" +
                 "c.id_pasien,\n" +
@@ -1229,7 +1230,18 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup \n" +
                 "WHERE a.tipe = 'penyakit_dahulu'\n" +
-                "AND c.id_pasien = :id";
+                "AND c.id_pasien = :id\n" +
+                "AND a.flag = 'Y'\n" +
+                "UNION ALL\n" +
+                "SELECT \n" +
+                "c.id_pasien,\n" +
+                "a.jawaban\n" +
+                "FROM it_simrs_asesmen_poli_spesialis a\n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
+                "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup \n" +
+                "WHERE a.tipe = 'penyakit_dahulu'\n" +
+                "AND c.id_pasien = :id\n" +
+                "AND a.flag = 'Y'";
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("id", idPasien)

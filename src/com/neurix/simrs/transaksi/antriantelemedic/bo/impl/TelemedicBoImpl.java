@@ -54,6 +54,7 @@ import com.neurix.simrs.transaksi.bataltelemedic.model.BatalTelemedic;
 import com.neurix.simrs.transaksi.bataltelemedic.model.ItSimrsBatalTelemedicEntity;
 import com.neurix.simrs.transaksi.bataltelemedic.model.ItSimrsDokterBatalTelemedicEntity;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderDetailCheckupLogEntity;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
@@ -86,7 +87,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.*;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
@@ -119,6 +122,10 @@ public class TelemedicBoImpl implements TelemedicBo {
     private VideoRmDao videoRmDao;
     private HeaderTindakanDao headerTindakanDao;
     private PaymentGatewayInvoiceDao paymentGatewayInvoiceDao;
+
+    public void setPasienSementaraDao(PasienSementaraDao pasienSementaraDao) {
+        this.pasienSementaraDao = pasienSementaraDao;
+    }
 
     public void setPaymentGatewayInvoiceDao(PaymentGatewayInvoiceDao paymentGatewayInvoiceDao) {
         this.paymentGatewayInvoiceDao = paymentGatewayInvoiceDao;
@@ -216,10 +223,6 @@ public class TelemedicBoImpl implements TelemedicBo {
         return pasienSementaraDao;
     }
 
-    public void setPasienSementaraDao(PasienSementaraDao pasienSementaraDao) {
-        this.pasienSementaraDao = pasienSementaraDao;
-    }
-
     public TelemedicDao getTelemedicDao() {
         return telemedicDao;
     }
@@ -231,10 +234,6 @@ public class TelemedicBoImpl implements TelemedicBo {
     @Override
     public List<AntrianTelemedic> getSearchByCriteria(AntrianTelemedic bean) throws GeneralBOException {
         logger.info("[TelemedicBoImpl.getSearchByCriteria] START >>>");
-
-        // Temp object
-        ImSimrsPasienEntity pasien = null;
-        ImSimrsPasienSementaraEntity pasienSementara = null;
 
         List<AntrianTelemedic> results = new ArrayList<>();
         List<AntrianTelemedic> antrianTelemedics = new ArrayList<>();
@@ -252,23 +251,19 @@ public class TelemedicBoImpl implements TelemedicBo {
                 antritanTelemedicData.setNamaPelayanan(getPelayananById(antritanTelemedicData.getIdPelayanan()).getNamaPelayanan());
             }
             if (antritanTelemedicData.getIdPasien() != null && !"".equalsIgnoreCase(antritanTelemedicData.getIdPasien())) {
+                ImSimrsPasienEntity pasienEntity = getPasienById(antritanTelemedicData.getIdPasien());
+                if (pasienEntity == null){
 
-                pasien = getPasienById(antritanTelemedicData.getIdPasien());
-                if(null!=pasien)
-                {
-                    antritanTelemedicData.setNamaPasien(pasien.getNama());
+                    ImSimrsPasienSementaraEntity pasienSementaraEntity = getPasienSementaraById(antritanTelemedicData.getIdPasien());
+
+                    if (pasienSementaraEntity != null)
+                        antritanTelemedicData.setNamaPasien(pasienSementaraEntity.getNama());
+
+                } else {
+                    antritanTelemedicData.setNamaPasien(pasienEntity.getNama());
                 }
-                else
-                {
-                    pasienSementara = getPasienSementaraById(antritanTelemedicData.getIdPasien());
-                    if(null!=pasienSementara)
-                    {
-                        antritanTelemedicData.setNamaPasien(pasienSementara.getNama());
-                    }
-                }
-
-
             }
+
             if (antritanTelemedicData.getIdDokter() != null && !"".equalsIgnoreCase(antritanTelemedicData.getIdDokter())) {
                 antritanTelemedicData.setNamaDokter(getDokterById(antritanTelemedicData.getIdDokter()).getNamaDokter());
             }
@@ -588,12 +583,13 @@ public class TelemedicBoImpl implements TelemedicBo {
         return pasienDao.getById("idPasien", idPasien);
     }
 
-    private ImSimrsPasienSementaraEntity getPasienSementaraById(String idPasien) throws GeneralBOException{
-        return pasienSementaraDao.getById("id", idPasien);
-    }
-
     private ImSimrsAsuransiEntity getAsuransiById(String idAsuransi) throws GeneralBOException{
         return asuransiDao.getById("idAsuransi", idAsuransi);
+    }
+
+    @Override
+    public ImSimrsPasienSementaraEntity getPasienSementaraById(String idPasien) throws GeneralBOException{
+        return pasienSementaraDao.getById("id", idPasien);
     }
 
     @Override
@@ -791,6 +787,23 @@ public class TelemedicBoImpl implements TelemedicBo {
                     telemedicEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 }
 
+                // jika selesai konsultasi
+                if ("SK".equalsIgnoreCase(telemedicEntity.getStatus())){
+
+                    // jika no pasien baru / dari pasien sementara
+                    String noRMBaru = createNoRmAndChangeToMasterPasien(telemedicEntity.getIdPasien(), telemedicEntity.getBranchId(), bean.getLastUpdateWho());
+
+                    if (noRMBaru != null){
+
+                        // set ke idpasien pada telemedic;
+                        telemedicEntity.setIdPasien(noRMBaru);
+
+                        // update idPasien pada headercheckup
+                        updateIdPasienHeaderDetailCheckup(bean, noRMBaru);
+
+                    }
+                }
+
                 try {
                     telemedicDao.updateAndSave(telemedicEntity);
                 } catch (HibernateException e){
@@ -808,6 +821,128 @@ public class TelemedicBoImpl implements TelemedicBo {
             }
         }
     }
+
+    /**
+     * 2021-06-28, Sigit
+     * untuk update id pasien sementara pada header detail checkup menjadi no RM baru
+     * @param bean
+     * @param noRMBaru
+     */
+    private void updateIdPasienHeaderDetailCheckup(AntrianTelemedic bean, String noRMBaru) {
+        logger.info("[TelemedicBoImpl.updateIdPasienHeaderDetailCheckup] Start >>>");
+
+        ItSimrsHeaderChekupEntity headerChekupEntity = new ItSimrsHeaderChekupEntity();
+
+        try {
+            headerChekupEntity = headerCheckupDao.getById("idAntrianOnline", bean.getId());
+        } catch (HibernateException e){
+            logger.error("[TelemedicBoImpl.updateIdPasienHeaderDetailCheckup] ERROR. ", e);
+            throw new GeneralBOException("[TelemedicBoImpl.updateIdPasienHeaderDetailCheckup] ERROR. ", e);
+        }
+
+        if (headerChekupEntity != null){
+
+            headerChekupEntity.setIdPasien(noRMBaru);
+            headerChekupEntity.setAction("U");
+            headerChekupEntity.setLastUpdate(bean.getLastUpdate());
+            headerChekupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                headerCheckupDao.updateAndSave(headerChekupEntity);
+            } catch (HibernateException e){
+                logger.error("[TelemedicBoImpl.updateIdPasienHeaderDetailCheckup] ERROR. ", e);
+                throw new GeneralBOException("[TelemedicBoImpl.updateIdPasienHeaderDetailCheckup] ERROR. ", e);
+            }
+        }
+
+        logger.info("[TelemedicBoImpl.updateIdPasienHeaderDetailCheckup] End <<<");
+    }
+
+    /**
+     * 2021-06-28, Sigit
+     * Pindahkan data dari pasien sementara ke master pasien (No. RM)
+     * @param idPasienSementara
+     * @param branchId
+     * @param createWho
+     * @return
+     */
+    private String createNoRmAndChangeToMasterPasien(String idPasienSementara, String branchId, String createWho){
+        logger.info("[VerifikatorPembayaranBoImpl.createNoRmAndChangeToMasterPasien] Start >>>");
+
+        ImSimrsPasienSementaraEntity pasienSementaraEntity = getPasienSementaraById(idPasienSementara);
+
+        String noRM = null;
+        if (pasienSementaraEntity != null){
+            noRM = branchId + dateFormater("yy") + getIdPasien();
+            ImSimrsPasienEntity pasienEntity = new ImSimrsPasienEntity();
+            pasienEntity.setIdPasien(noRM);
+            pasienEntity.setNama(pasienSementaraEntity.getNama());
+            pasienEntity.setJenisKelamin(pasienSementaraEntity.getJenisKelamin());
+            pasienEntity.setNoKtp(pasienSementaraEntity.getNoKtp());
+            pasienEntity.setTempatLahir(pasienSementaraEntity.getTempatLahir());
+            pasienEntity.setTglLahir(pasienSementaraEntity.getTglLahir());
+            pasienEntity.setDesaId(new BigInteger(pasienSementaraEntity.getDesaId().toString()));
+            pasienEntity.setJalan(pasienSementaraEntity.getJalan());
+            pasienEntity.setSuku(pasienSementaraEntity.getSuku());
+            pasienEntity.setAgama(pasienSementaraEntity.getAgama());
+            pasienEntity.setProfesi(pasienSementaraEntity.getProfesi());
+            pasienEntity.setNoTelp(pasienSementaraEntity.getNoTelp());
+            pasienEntity.setUrlKtp(pasienSementaraEntity.getUrlKtp());
+            pasienEntity.setEmail(pasienSementaraEntity.getEmail());
+            pasienEntity.setPassword(pasienSementaraEntity.getPassword());
+            pasienEntity.setFlag("Y");
+            pasienEntity.setAction("C");
+            pasienEntity.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+            pasienEntity.setCreatedWho(createWho);
+            pasienEntity.setLastUpdate(pasienEntity.getCreatedDate());
+            pasienEntity.setLastUpdateWho(createWho);
+            pasienEntity.setFlagLogin(pasienSementaraEntity.getFlagLogin());
+
+            try {
+                pasienDao.addAndSave(pasienEntity);
+            } catch (HibernateException e){
+                logger.error("[VerifikatorPembayaranBoImpl.createNoRmAndChangeToMasterPasien] ERROR. when insert into pasien. ", e);
+                throw new GeneralBOException("[VerifikatorPembayaranBoImpl.createNoRmAndChangeToMasterPasien] ERROR. when insert into pasien." + e.getMessage());
+            }
+
+            pasienSementaraEntity.setNoRM(noRM);
+            pasienSementaraEntity.setAction("U");
+            pasienSementaraEntity.setLastUpdate(pasienEntity.getCreatedDate());
+            pasienSementaraEntity.setLastUpdateWho(pasienEntity.getLastUpdateWho());
+
+            try {
+                pasienSementaraDao.updateAndSave(pasienSementaraEntity);
+            } catch (HibernateException e){
+                logger.error("[VerifikatorPembayaranBoImpl.createNoRmAndChangeToMasterPasien] ERROR. when update pasien sementara ", e);
+                throw new GeneralBOException("[VerifikatorPembayaranBoImpl.createNoRmAndChangeToMasterPasien] ERROR. when update pasien sementara " + e.getMessage());
+            }
+
+        }
+
+        logger.info("[VerifikatorPembayaranBoImpl.createNoRmAndChangeToMasterPasien] End <<<");
+        return noRM;
+    }
+
+    public String getIdPasien() {
+        logger.info("[VerifikatorPembayaranBoImpl.getIdPasien] Start >>>>>>>");
+        String id = "";
+
+        try {
+            id = pasienDao.getNextIdPasien();
+        } catch (HibernateException e) {
+            logger.error("[VerifikatorPembayaranBoImpl.getIdPasien] Error when get next id pasien");
+        }
+
+        logger.info("[VerifikatorPembayaranBoImpl.getIdPasien] End <<<<<<<");
+        return id;
+    }
+
+    private String dateFormater(String type) {
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
+    }
+
 
     @Override
     public void generateListPembayaran(ItSimrsAntrianTelemedicEntity bean, String branchId, String tipe, String kodeBank, String jenisPeriksa, String jenisPembayaran) throws GeneralBOException{

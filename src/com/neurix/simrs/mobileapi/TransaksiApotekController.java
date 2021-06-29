@@ -8,8 +8,10 @@ import com.neurix.simrs.mobileapi.model.ObatMobile;
 import com.neurix.simrs.mobileapi.model.PermintaanObatMobile;
 import com.neurix.simrs.mobileapi.model.PermintaanResepMobile;
 import com.neurix.simrs.mobileapi.model.TransaksiObatMobile;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
+import com.neurix.simrs.transaksi.obatracik.model.ObatRacik;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
@@ -445,12 +447,24 @@ public class TransaksiApotekController implements ModelDriven<Object> {
 //            beanTransaksi.setFlag("Y");
             beanTransaksi.setIdPelayanan(idPelayanan);
 
-            try {
-                resultTransaksi = transaksiObatBoProxy.getSearchObatTransaksiByCriteria(beanTransaksi);
+            HeaderCheckup dataPasien = new HeaderCheckup();
 
+            try {
+                dataPasien = transaksiObatBoProxy.getDataTransByIdApprovalResep(idApprovalObat);
             } catch (GeneralBOException e){
                 logger.error("[TransaksiApotekController.create] Error, get search transaksi " + e.getMessage());
             }
+
+            beanTransaksi.setIdDetailCheckup(dataPasien.getIdDetailCheckup());
+            beanTransaksi.setJenisPeriksaPasien(dataPasien.getIdJenisPeriksaPasien());
+            beanTransaksi.setIdAsuransi(dataPasien.getIdAsuransi());
+
+            try {
+                resultTransaksi = transaksiObatBoProxy.getSearchObatTransaksiByCriteria(beanTransaksi);
+            } catch (GeneralBOException e){
+                logger.error("[TransaksiApotekController.create] Error, get search transaksi " + e.getMessage());
+            }
+
             for (TransaksiObatDetail item : resultTransaksi){
                 TransaksiObatMobile transaksiObatMobile = new TransaksiObatMobile();
                 transaksiObatMobile.setIdTransaksiObatDetail(item.getIdTransaksiObatDetail());
@@ -464,6 +478,13 @@ public class TransaksiApotekController implements ModelDriven<Object> {
                 transaksiObatMobile.setFlagDiterima(item.getFlagDiterima());
                 transaksiObatMobile.setFlagVerifikasi(item.getFlagVerifikasi());
                 transaksiObatMobile.setQtyApprove(item.getQtyApprove() != null ? item.getQtyApprove().toString() : "0");
+                transaksiObatMobile.setIsRacik(item.getFlagRacik());
+                transaksiObatMobile.setIdRacik(item.getIdRacik());
+                if (item.getFlagRacik().equalsIgnoreCase("Y")){
+                    List<ObatRacik> listRacik = transaksiObatBoProxy.getListNamaRacik(item.getIdRacik());
+                    transaksiObatMobile.setNamaRacik(listRacik.get(0).getNama());
+                    transaksiObatMobile.setDosis(item.getKeterangan());
+                }
 
                 listOfTransaksiObat.add(transaksiObatMobile);
             }
@@ -478,6 +499,7 @@ public class TransaksiApotekController implements ModelDriven<Object> {
             beanObatPoli.setIdPelayanan(idPelayanan);
             beanObatPoli.setBranchId(branchId);
             beanObatPoli.setExp("exp");
+            beanObatPoli.setIdObat(idObat);
 
             try {
                result = obatPoliBoProxy.getObatPoliByCriteria(beanObatPoli);
@@ -499,8 +521,14 @@ public class TransaksiApotekController implements ModelDriven<Object> {
                 obat.setExpiredDate(item.getExpiredDate().toString());
                 obat.setIdPabrik(item.getIdPabrik());
                 obat.setNamaObat(item.getNamaObat());
+                if (item.getLembarPerBox()!=null){
                 obat.setLembarPerBox(item.getLembarPerBox().toString());
+
+                }
+                if (item.getBijiPerLembar()!=null){
                 obat.setBijiPerLembar(item.getBijiPerLembar().toString());
+
+                }
 
                 listOfObat.add(obat);
             }
@@ -601,8 +629,19 @@ public class TransaksiApotekController implements ModelDriven<Object> {
 
             beanTransaksiObat.setIdTransaksiObatDetail(idTransaksiObatDetail);
             beanTransaksiObat.setIdApprovalObat(idApprovalObat);
-
             beanTransaksiObat.setBranchId(branchId);
+
+            HeaderCheckup dataPasien = new HeaderCheckup();
+
+            try {
+                dataPasien = transaksiObatBoProxy.getDataTransByIdApprovalResep(idApprovalObat);
+            } catch (GeneralBOException e){
+                logger.error("[TransaksiApotekController.create] Error, get search transaksi " + e.getMessage());
+            }
+
+            beanTransaksiObat.setIdDetailCheckup(dataPasien.getIdDetailCheckup());
+            beanTransaksiObat.setIdAsuransi(dataPasien.getIdAsuransi());
+            beanTransaksiObat.setJenisPeriksaPasien(dataPasien.getIdJenisPeriksaPasien());
 
             try{
                 resultTransaksi = transaksiObatBoProxy.getSearchObatTransaksiByCriteria(beanTransaksiObat);

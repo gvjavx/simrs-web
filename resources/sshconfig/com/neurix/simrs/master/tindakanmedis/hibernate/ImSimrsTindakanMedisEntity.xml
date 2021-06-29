@@ -3,7 +3,7 @@
                  version="2.0">
 
   <entity class="com.neurix.simrs.master.tindakanmedis.model.ImSimrsTindakanMedisEntity">
-    <table name="im_simrs_tindakan_medis" schema="public" catalog="gomedsys"/>
+    <table name="im_simrs_tindakan_medis" schema="public"/>
     <attributes>
       <id name="id">
         <column name="id"/>

@@ -8,6 +8,10 @@ import com.neurix.hris.transaksi.jadwalShiftKerja.dao.JadwalShiftKerjaDetailDao;
 import com.neurix.simrs.master.diagnosa.dao.DiagnosaDao;
 import com.neurix.simrs.master.jenisperiksapasien.dao.AsuransiDao;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
+import com.neurix.simrs.master.pasien.dao.PasienDao;
+import com.neurix.simrs.master.pasien.dao.PasienSementaraDao;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienSementaraEntity;
 import com.neurix.simrs.master.tindakan.dao.HeaderTindakanDao;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsHeaderTindakanEntity;
@@ -65,6 +69,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -92,6 +98,16 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
     private StrukAsuransiDao strukAsuransiDao;
     private HeaderTindakanDao headerTindakanDao;
     private JadwalShiftKerjaDetailDao jadwalShiftKerjaDetailDao;
+    private PasienSementaraDao pasienSementaraDao;
+    private PasienDao pasienDao;
+
+    public void setPasienDao(PasienDao pasienDao) {
+        this.pasienDao = pasienDao;
+    }
+
+    public void setPasienSementaraDao(PasienSementaraDao pasienSementaraDao) {
+        this.pasienSementaraDao = pasienSementaraDao;
+    }
 
     public void setJadwalShiftKerjaDetailDao(JadwalShiftKerjaDetailDao jadwalShiftKerjaDetailDao) {
         this.jadwalShiftKerjaDetailDao = jadwalShiftKerjaDetailDao;
@@ -407,6 +423,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
             }
 
             if (isAddCheckup){
+
                 //id = getNextHeaderId();
                 ItSimrsHeaderChekupEntity headerEntity = new ItSimrsHeaderChekupEntity();
                 headerEntity.setNoCheckup(noCheckup);
@@ -444,7 +461,6 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                     logger.error("[VerifikatorPembayaranBoImpl.approveTransaksi] Error When Saving data header checkup" + e.getMessage());
                     throw new GeneralBOException("[VerifikatorPembayaranBoImpl.approveTransaksi] Error When Saving data header checkup");
                 }
-
             }
 
             // saving detail checkup
@@ -631,6 +647,81 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
         }
         logger.info("[VerifikatorPembayaranBoImpl.approveTransaksi] End <<<<<<<");
         return idDetailCheckup;
+    }
+
+    /**
+     * 2021-06-28, Sigit
+     * Pindahkan data dari pasien sementara ke master pasien (No. RM)
+     * @param idPasienSementara
+     * @param branchId
+     * @param createWho
+     * @return
+     */
+    private String createNoRmAndChangeToMasterPasien(String idPasienSementara, String branchId, String createWho){
+        logger.info("[VerifikatorPembayaranBoImpl.createNoRmAndChangeToMasterPasien] Start >>>");
+
+        ImSimrsPasienSementaraEntity pasienSementaraEntity = getPasienSementaraById(idPasienSementara);
+        String noRM = null;
+        if (pasienSementaraEntity != null){
+            noRM = branchId + dateFormater("yy") + getIdPasien();
+            ImSimrsPasienEntity pasienEntity = new ImSimrsPasienEntity();
+            pasienEntity.setIdPasien(noRM);
+            pasienEntity.setNama(pasienSementaraEntity.getNama());
+            pasienEntity.setJenisKelamin(pasienSementaraEntity.getJenisKelamin());
+            pasienEntity.setNoKtp(pasienSementaraEntity.getNoKtp());
+            pasienEntity.setTempatLahir(pasienSementaraEntity.getTempatLahir());
+            pasienEntity.setTglLahir(pasienSementaraEntity.getTglLahir());
+            pasienEntity.setDesaId(new BigInteger(pasienSementaraEntity.getDesaId().toString()));
+            pasienEntity.setJalan(pasienSementaraEntity.getJalan());
+            pasienEntity.setSuku(pasienSementaraEntity.getSuku());
+            pasienEntity.setAgama(pasienSementaraEntity.getAgama());
+            pasienEntity.setProfesi(pasienSementaraEntity.getProfesi());
+            pasienEntity.setNoTelp(pasienSementaraEntity.getNoTelp());
+            pasienEntity.setUrlKtp(pasienSementaraEntity.getUrlKtp());
+            pasienEntity.setEmail(pasienSementaraEntity.getEmail());
+            pasienEntity.setPassword(pasienSementaraEntity.getPassword());
+            pasienEntity.setFlag("Y");
+            pasienEntity.setAction("C");
+            pasienEntity.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+            pasienEntity.setCreatedWho(createWho);
+            pasienEntity.setLastUpdate(pasienEntity.getCreatedDate());
+            pasienEntity.setLastUpdateWho(createWho);
+            pasienEntity.setFlagLogin(pasienSementaraEntity.getFlagLogin());
+
+            try {
+                pasienDao.addAndSave(pasienEntity);
+            } catch (HibernateException e){
+                logger.error("[VerifikatorPembayaranBoImpl.createNoRmAndChangeToMasterPasien] ERROR. ", e);
+                throw new GeneralBOException("[VerifikatorPembayaranBoImpl.createNoRmAndChangeToMasterPasien] ERROR. " + e.getMessage());
+            }
+        }
+
+        logger.info("[VerifikatorPembayaranBoImpl.createNoRmAndChangeToMasterPasien] End <<<");
+        return noRM;
+    }
+
+    public String getIdPasien() {
+        logger.info("[VerifikatorPembayaranBoImpl.getIdPasien] Start >>>>>>>");
+        String id = "";
+
+        try {
+            id = pasienDao.getNextIdPasien();
+        } catch (HibernateException e) {
+            logger.error("[VerifikatorPembayaranBoImpl.getIdPasien] Error when get next id pasien");
+        }
+
+        logger.info("[VerifikatorPembayaranBoImpl.getIdPasien] End <<<<<<<");
+        return id;
+    }
+
+    public ImSimrsPasienSementaraEntity getPasienSementaraById(String idPasien) throws GeneralBOException{
+        return pasienSementaraDao.getById("id", idPasien);
+    }
+
+    private String dateFormater(String type) {
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
     }
 
     public void saveDiagnosa(DiagnosaRawat bean) throws GeneralBOException {

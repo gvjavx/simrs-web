@@ -24,6 +24,22 @@ public class TransaksiObatMobile implements Serializable {
     @Expose
     private String idObat;
 
+    @SerializedName("dosis")
+    @Expose
+    private String dosis;
+
+    @SerializedName("idRacik")
+    @Expose
+    private String idRacik;
+
+    @SerializedName("isRacik")
+    @Expose
+    private String isRacik;
+
+    @SerializedName("namaRacik")
+    @Expose
+    private String namaRacik;
+
     @SerializedName("qty")
     @Expose
     private String qty;
@@ -184,6 +200,37 @@ public class TransaksiObatMobile implements Serializable {
     @Expose
     private String flagVerifikasi;
 
+    public String getDosis() {
+        return dosis;
+    }
+
+    public void setDosis(String dosis) {
+        this.dosis = dosis;
+    }
+
+    public String getIsRacik() {
+        return isRacik;
+    }
+
+    public void setIsRacik(String isRacik) {
+        this.isRacik = isRacik;
+    }
+
+    public String getNamaRacik() {
+        return namaRacik;
+    }
+
+    public void setNamaRacik(String namaRacik) {
+        this.namaRacik = namaRacik;
+    }
+
+    public String getIdRacik() {
+        return idRacik;
+    }
+
+    public void setIdRacik(String idRacik) {
+        this.idRacik = idRacik;
+    }
     public String getFlagVerifikasi() {
         return flagVerifikasi;
     }
