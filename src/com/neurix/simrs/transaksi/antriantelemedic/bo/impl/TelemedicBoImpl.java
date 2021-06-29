@@ -586,7 +586,7 @@ public class TelemedicBoImpl implements TelemedicBo {
 
     @Override
     public ImSimrsPasienSementaraEntity getPasienSementaraById(String idPasien) throws GeneralBOException{
-        return pasienSementaraDao.getById("id", idPasien);
+        return pasienSementaraDao.getById("id", idPasien, "Y");
     }
 
     @Override
@@ -903,6 +903,7 @@ public class TelemedicBoImpl implements TelemedicBo {
             }
 
             pasienSementaraEntity.setNoRM(noRM);
+            pasienSementaraEntity.setFlag("N");
             pasienSementaraEntity.setAction("U");
             pasienSementaraEntity.setLastUpdate(pasienEntity.getCreatedDate());
             pasienSementaraEntity.setLastUpdateWho(pasienEntity.getLastUpdateWho());
