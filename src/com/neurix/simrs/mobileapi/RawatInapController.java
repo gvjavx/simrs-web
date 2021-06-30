@@ -716,6 +716,9 @@ public class RawatInapController implements ModelDriven<Object> {
             rawatInap.setIdRuangan(idRuangan);
             rawatInap.setIdDetailCheckup(idDetailCheckup);
             rawatInap.setStatus("1");
+            //SYAMS 28JUN21 => TAMBAH BRANCH DAN TINDAK LANJUT
+            rawatInap.setBranchId(branchId);
+            rawatInap.setTindakLanjut("rawat_inap");
 
             try {
                 result = rawatInapBoProxy.getSearchRawatInap(rawatInap);

@@ -33,9 +33,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author gondok
@@ -78,6 +76,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
     private String jsonObatVerifikasi;
     private String jsonTransaksiObatDetail;
     private String jsonPermintaanObat;
+    private Map<String, Object> response = new HashMap<>();
 
     public String getIdParam() {
         return idParam;
@@ -283,13 +282,15 @@ public class PermintaanObatController implements ModelDriven<Object> {
     public Object getModel() {
         switch (action) {
             case "getPermintaan":
-                return listOfPermintaanObat;
+                response.put("data",listOfPermintaanObat);
+                return response;
             case "getRequestObat":
                 return listOfPermintaanObat;
             case "getListObatTelahDiterima":
                 return listOfTransaksiObatDetail;
             case "getListObat":
-                return listOfTransaksiObatDetail;
+                response.put("data",listOfTransaksiObatDetail);
+                return response;
             case "getEntityObat":
                 return listOfObat;
             case "getComboParameterWaktu":
@@ -412,6 +413,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
         try{
             result = obatPoliBoProxy.getSearchPermintaanObatPoli(bean, isPoli);
         } catch (GeneralBOException e){
+            response.put("actionError",e.toString());
             logger.error("[PermintaanObatController.create] Error, get search poli " + e.getMessage());
         }
 
@@ -464,6 +466,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
             try{
                 resultObat = obatPoliBoProxy.getListTransObatDetail(beanObat);
             }catch (GeneralBOException e){
+                response.put("actionError", e.toString());
                 logger.error("[PermintaanObatController.create] Error, get obat " + e.getMessage());
             }
 
@@ -502,6 +505,9 @@ public class PermintaanObatController implements ModelDriven<Object> {
             Obat entityObat = new Obat();
             entityObat.setIdObat(idObat);
             entityObat.setNamaObat(namaObat);
+
+            //SYAMS 25JUN21 tambah branchid
+            entityObat.setBranchId(branchId);
 
             try {
                 resultEntityObat = obatBoProxy.getEntityObatByCriteria(entityObat);
