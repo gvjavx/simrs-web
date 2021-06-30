@@ -294,13 +294,17 @@ public class PermintaanObatController implements ModelDriven<Object> {
             case "getEntityObat":
                 response.put("data",listOfObat);
                 return response;
+            case "saveVerifikasi":
+                return response;
             case "getComboParameterWaktu":
                 return listOfPermintaanObat;
             case "getComboParameterObat":
                 return listOfPermintaanObat;
             case "getComboKeteranganObat":
                 return listOfPermintaanObat;
-            default: return model;
+            default:
+                response.put("actionError","method tidak ditemukan");
+                return response;
         }
     }
 
@@ -633,8 +637,9 @@ public class PermintaanObatController implements ModelDriven<Object> {
             if (jsonObat.size() > 0) {
                 try {
                     obatPoliBoProxy.saveVerifikasiObat(jsonObat);
-                    model.setMessage("Success");
+                    response.put("actionSuccess","Sukses");
                 } catch (GeneralBOException e){
+                    response.put("actionError",e.toString());
                     logger.error("[PermintaanObatController.create] Error, save verifikasi " + e.getMessage());
                 }
             }
