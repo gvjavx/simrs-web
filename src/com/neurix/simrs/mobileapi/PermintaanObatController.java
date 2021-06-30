@@ -289,7 +289,8 @@ public class PermintaanObatController implements ModelDriven<Object> {
             case "getListObatTelahDiterima":
                 return listOfTransaksiObatDetail;
             case "getListObat":
-                return listOfTransaksiObatDetail;
+                response.put("data",listOfTransaksiObatDetail);
+                return response;
             case "getEntityObat":
                 return listOfObat;
             case "getComboParameterWaktu":
@@ -465,6 +466,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
             try{
                 resultObat = obatPoliBoProxy.getListTransObatDetail(beanObat);
             }catch (GeneralBOException e){
+                response.put("actionError", e.toString());
                 logger.error("[PermintaanObatController.create] Error, get obat " + e.getMessage());
             }
 
