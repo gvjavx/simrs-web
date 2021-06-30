@@ -414,6 +414,8 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
             where += "AND ps.no_ktp = '"+param.getNoKtp()+"' \n";
         if (param.getNoBpjs() != null && !"".equalsIgnoreCase(param.getNoBpjs()))
             where += "AND ps.no_bpjs = '"+param.getNoBpjs()+"' \n";
+        if (param.getEmail() != null && !"".equalsIgnoreCase(param.getEmail()))
+            where += "AND ps.email = '"+param.getEmail()+"' \n";
 
         //ada penambahan atuh
         String SQL = "SELECT\n" +
