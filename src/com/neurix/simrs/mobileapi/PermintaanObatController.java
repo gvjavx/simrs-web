@@ -280,6 +280,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
 
     @Override
     public Object getModel() {
+        //SYAMS 30JUN21 => ganti response jadi map
         switch (action) {
             case "getPermintaan":
                 response.put("data",listOfPermintaanObat);
@@ -298,6 +299,8 @@ public class PermintaanObatController implements ModelDriven<Object> {
             case "saveVerifikasi":
                 return response;
             case "updateDiterimaFlag":
+                return response;
+            case "saveApprove":
                 return response;
             case "saveApproveDiterima":
                 return response;
@@ -659,7 +662,9 @@ public class PermintaanObatController implements ModelDriven<Object> {
 
             try{
                 result = obatPoliBoProxy.getSearchPermintaanObatPoli(bean, isPoli);
+                response.put("actionSuccess","Sukses");
             } catch (GeneralBOException e){
+                response.put("actionError",e.toString());
                 logger.error("[PermintaanObatController.create] Error, get search poli " + e.getMessage());
             }
 
