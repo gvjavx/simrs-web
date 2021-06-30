@@ -49,7 +49,12 @@
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
                 <s:textfield  id="lemburId" name="lembur.lemburId" required="false" readonly="true" cssClass="form-control" cssStyle="display: none"/>
-                <legend align="left">Delete Lembur</legend>
+                <s:if test="isAddOrEdit()">
+                    <legend align="left">View Lembur</legend>
+                </s:if>
+                <s:else>
+                    <legend align="left">Delete Lembur</legend>
+                </s:else>
                 <table>
                     <tr>
                         <td width="10%" align="center">
@@ -237,12 +242,14 @@
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-danger" formIds="addFormLembur" id="save" name="save"
-                                   onBeforeTopics="beforeProcessDeleteLembur" onCompleteTopics="closeDialog,successDialogLembur"
-                                   onSuccessTopics="successDialogLembur" onErrorTopics="errorDialogLembur" >
-                            <i class="fa fa-check"></i>
-                            Delete
-                        </sj:submit>
+                        <s:if test="isDelete()">
+                            <sj:submit targets="crud" type="button" cssClass="btn btn-danger" formIds="addFormLembur" id="save" name="save"
+                                       onBeforeTopics="beforeProcessDeleteLembur" onCompleteTopics="closeDialog,successDialogLembur"
+                                       onSuccessTopics="successDialogLembur" onErrorTopics="errorDialogLembur" >
+                                <i class="fa fa-check"></i>
+                                Delete
+                            </sj:submit>
+                        </s:if>
                         <button type="button" id="cancel" class="btn btn-default" style="font-family: Arial, Helvetica, sans-serif;font-size: 12px;font-weight: bold;" onclick="cancelBtn();">
                             <i class="fa fa-refresh"/> Cancel
                         </button>

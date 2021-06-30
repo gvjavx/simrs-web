@@ -28,6 +28,15 @@ public class ImSimrsPasienSementaraEntity {
     private String email;
     private String password;
     private String profesi;
+    private String noRM;
+
+    public String getNoRM() {
+        return noRM;
+    }
+
+    public void setNoRM(String noRM) {
+        this.noRM = noRM;
+    }
 
     public String getProfesi() {
         return profesi;

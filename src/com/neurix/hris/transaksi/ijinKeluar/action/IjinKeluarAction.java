@@ -725,7 +725,7 @@ public class IjinKeluarAction extends BaseMasterAction {
         if ("ADMIN".equalsIgnoreCase(role)){
             setAdmin(true);
         }else if ("Admin bagian".equalsIgnoreCase(role)){
-
+            setAdmin(true);
         } else{
             searchAlat.setNip(CommonUtil.userIdLogin());
         }
@@ -843,7 +843,6 @@ public class IjinKeluarAction extends BaseMasterAction {
     public String initForm() {
         logger.info("[IjinKeluar.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
-
 
         if (("ADMIN").equalsIgnoreCase(CommonUtil.roleAsLogin())){
             setAdmin(true);

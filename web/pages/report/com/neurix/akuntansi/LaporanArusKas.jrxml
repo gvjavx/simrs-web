@@ -33,8 +33,8 @@ from (select case
                else lalu.grup
                  end as kode_grup,
              case
-               when lalu.kode_rekening is null then sekarang.nomor_rekening
-               else lalu.kode_rekening
+               when lalu.rekening_id is null then sekarang.nomor_rekening
+               else lalu.rekening_id
                  end as kodeRekening,
              case
                when lalu.nama_kode_rekening is null then sekarang.nama_kode_rekening
@@ -46,8 +46,8 @@ from (select case
              coalesce(lalu.penerimaan,0 ) - coalesce(lalu.pengeluaran, 0) +
              coalesce(sekarang.penerimaan, 0) - coalesce(sekarang.pengeluaran, 0) as saldoSekarang
       from (
-           select substr(saldoDetail.kode_rekening, 1, 9)    grup,
-                  saldoDetail.kode_rekening,
+           select substr(saldoDetail.rekening_id, 1, 9)    grup,
+                  saldoDetail.rekening_id,
                   rekening.nama_kode_rekening,
                   sum(coalesce(saldoDetail.jumlah_debit, 0))  penerimaan,
                   sum(coalesce(saldoDetail.jumlah_kredit, 0)) pengeluaran
@@ -60,8 +60,8 @@ from (select case
                                join im_akun_kode_rekening kodering on kodering.rekening_id = reportSetting.rekening_id
                         where reportSetting.report_id = $P{reportId}
                           and reportSetting.flag = 'Y') rekening
-                    on rekening.kode_rekening = saldoDetail.kode_rekening
-           group by saldoDetail.kode_rekening, rekening.nama_kode_rekening
+                    on rekening.kode_rekening = saldoDetail.rekening_id
+           group by saldoDetail.rekening_id, rekening.nama_kode_rekening
            ) lalu full
              outer join (
                         select substr(jurnalDetail.nomor_rekening, 1, 9)    grup,
@@ -81,7 +81,7 @@ from (select case
           and reportSetting.flag = 'Y') rekening
           on rekening.kode_rekening = jurnalDetail.nomor_rekening
           group by jurnalDetail.nomor_rekening, rekening.nama_kode_rekening) sekarang
-               on lalu.kode_rekening = sekarang.nomor_rekening) result
+               on lalu.rekening_id = sekarang.nomor_rekening) result
        join im_akun_kode_rekening koderekening on result.kode_grup = koderekening.kode_rekening]]>
 	</queryString>
 	<field name="grup" class="java.lang.String"/>

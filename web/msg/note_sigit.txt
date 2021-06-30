@@ -1881,3 +1881,10 @@ ADD COLUMN parent_id VARCHAR(30);
     ADD COLUMN warna VARCHAR(10);
 
 --
+
+-- 2021-06-28
+
+    ALTER TABLE im_simrs_pasien_sementara
+    ADD COLUMN no_rm VARCHAR(50);
+
+--

@@ -341,6 +341,29 @@
                         </div>
                     </div>
                 </div>
+                <div class="box-header with-border" id="pos_nosa"></div>
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-stethoscope"></i> Diagnosa</h3>
+                </div>
+                <div class="box-body">
+                    <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
+                            onclick="showDiagnosa()"><i class="fa fa-plus"></i> Tambah Diagnosa
+                    </button>
+                    <table class="table table-bordered table-striped table-hover" id="tabel_diagnosa">
+                        <thead>
+                        <tr bgcolor="#90ee90">
+                            <td width="14%">Waktu</td>
+                            <td>Kode ICD10</td>
+                            <td>Keterangan</td>
+                            <td>Jenis Diagnosa</td>
+                            <td align="center">Action</td>
+                        </tr>
+                        </thead>
+                        <tbody id="body_diagnosa">
+
+                        </tbody>
+                    </table>
+                </div>
                 <div class="box-header with-border"></div>
                 <div class="box-header with-border">
                     <h3 class="box-title"><i class="fa fa-medkit"></i> Daftar Tindakan Rawat</h3>
@@ -419,6 +442,82 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-diagnosa">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-stethoscope"></i> <span id="t_diagnosa"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_diagnosa">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    Silahkan cek kembali data inputan!
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3">Diagnosa</label>
+                        <div class="col-md-7">
+                            <s:textfield id="nosa_id_diagnosa" style="margin-top: 7px"
+                                         name="headerCheckup.diagnosa" autocomplete="off"
+                                         onkeypress="var warn =$('#war_diagnosa_bpjs').is(':visible'); if (warn){$('#cor_diagnosa_bpjs').show().fadeOut(3000);$('#war_diagnosa_bpjs').hide()}; searchDiagnosa(this.id)"
+                                         cssClass="form-control" required="false"/>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_diagnosa_bpjs"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_diagnosa_bpjs"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <input type="hidden" id="val_jenis_diagnosa">
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-7">
+                            <s:textarea rows="4" id="nosa_ket_diagnosa"
+                                        cssStyle="margin-top: 7px" readonly="true"
+                                        name="headerCheckup.namaDiagnosa"
+                                        cssClass="form-control"></s:textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3">Jenis Diagnosa</label>
+                        <div class="col-md-7">
+                            <select class="form-control select2" style="margin-top: 7px; width: 100%"
+                                    id="nosa_jenis_diagnosa"
+                                    onchange="var warn =$('#war_jenis_diagnosa').is(':visible'); if (warn){$('#cor_jenis_diagnosa').show().fadeOut(3000);$('#war_jenis_diagnosa').hide()}">
+                                <option value=""> - </option>
+                                <option value="diagnosa_primer">Diagnosa Primer</option>
+                                <option value="diagnosa_sekunder">Diagnosa Sekunder</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_jenis_diagnosa"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_jenis_diagnosa"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_diagnosa"><i
+                        class="fa fa-check"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_diagnosa">
+                    <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -455,6 +554,9 @@
 </div>
 
 <script type='text/javascript'>
+
+    var idDetailCheckup = '';
+    var jenisPeriksaPasien = '';
 
     function formatRupiah(angka) {
         if(angka != "" && angka > 0){
@@ -515,8 +617,9 @@
         });
     }
 
-    function detailTindakan(idCheckup, idDetailCheckup) {
+    function detailTindakan(idCheckup, iddetail) {
         if(!cekSession()){
+            idDetailCheckup = iddetail;
             $('#sts_cover_biaya').html('');
             $('#b_bpjs').html('');
             $('#sts_biaya_tindakan').html('');
@@ -570,13 +673,15 @@
                         setLabelJenisPasien('det_jenis_pasien', response.idJenisPeriksaPasien);
                         $('#det_jenis_pasien').html(response.statusPeriksaName);
                         $('#h_no_checkup').val(response.noCheckup);
-                        $('#h_jenis_pasien').val(response.idDetailCheckup);
+                        $('#h_jenis_pasien').val(response.idJenisPeriksaPasien);
                         $('#h_id_pasien').val(response.idPasien);
+                        jenisPeriksaPasien = response.idJenisPeriksaPasien;
                         listTindakan(idCheckup, idDetailCheckup, response.idJenisPeriksaPasien, response.idPasien, response.noSep);
                         $('#modal-detail-pasien').modal({show: true, backdrop: 'static'});
                     }
                 }
             });
+            listDiagnosa(idDetailCheckup);
         }
     }
 
@@ -908,6 +1013,161 @@
         }else{
             return "";
         }
+    }
+
+    function showDiagnosa(){
+        var id = "";
+        $('#t_diagnosa').text("Tambah Diagnosa");
+        $('#nosa_id_diagnosa, #nosa_ket_diagnosa').val('');
+        $('#nosa_jenis_diagnosa').val('').trigger('change');
+        $('#load_diagnosa, #warning_diagnosa, #war_diagnosa, #war_jenis_diagnosa').hide();
+        $('#save_diagnosa').attr('onclick', 'saveDiagnosa(\'' + id + '\')').show();
+        $('#modal-diagnosa').modal({show: true, backdrop: 'static'});
+    }
+
+    function editDiagnosa(id, idDiagnosa, jenis, ket) {
+        $('#t_diagnosa').text("Edit Diagnosa");
+        $('#load_diagnosa, #warning_diagnosa, #war_diagnosa, #war_jenis_diagnosa').hide();
+        $('#nosa_id_diagnosa').val(idDiagnosa);
+        $('#nosa_ket_diagnosa').val(ket);
+        $('#nosa_jenis_diagnosa').val(jenis).trigger('change');
+        $('#save_diagnosa').attr('onclick', 'saveDiagnosa(\'' + id + '\')').show();
+        $('#modal-diagnosa').modal({show: true, backdrop: 'static'});
+    }
+
+    function listDiagnosa(idDetailCheckup) {
+        var table = "";
+        var data = [];
+        DiagnosaRawatAction.listDiagnosa(idDetailCheckup, function (response) {
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    var id = "-";
+                    var ket = "-";
+                    var jen = "-";
+                    var tanggal = item.createdDate;
+                    var dateFormat = converterDateTime(new Date(tanggal));
+
+                    if (item.idDiagnosa != null) {
+                        id = item.idDiagnosa;
+                    }
+
+                    var blink = "";
+                    if("B20" == id){
+                        blink = 'class="blink_me_atas" style="color: red"';
+                    }
+
+                    if (item.keteranganDiagnosa != null) {
+                        ket = item.keteranganDiagnosa;
+                    }
+                    if (item.jenisDiagnosa != null) {
+                        jen = item.jenisDiagnosa.replace("_"," ");
+                        jen = convertSentenceCaseUp(jen);
+                    }
+                    table += '<tr '+blink+'>' +
+                        "<td>" + dateFormat + "</td>" +
+                        "<td>" + id + "</td>" +
+                        "<td>" + ket + "</td>" +
+                        "<td>" + jen + "</td>" +
+                        "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editDiagnosa(\'' + item.idDiagnosaRawat + '\',\'' + item.idDiagnosa + '\',\'' + item.jenisDiagnosa + '\', \'' + item.keteranganDiagnosa + '\')" src="' + contextPathHeader + '/pages/images/icons8-create-25.png" style="cursor: pointer;">' + "</td>" +
+                        "</tr>"
+                });
+            }
+            $('#body_diagnosa').html(table);
+        });
+    }
+
+    function saveDiagnosa(id) {
+        var idDiag = $('#nosa_id_diagnosa').val();
+        var ketDiagnosa = $('#nosa_ket_diagnosa').val();
+        var jenisDiagnosa = $('#nosa_jenis_diagnosa').val();
+
+        if (idDetailCheckup != '' && idDiag != '' && jenisDiagnosa != '' && ketDiagnosa != '') {
+            if (!cekSession()) {
+                $('#save_diagnosa').hide();
+                $('#load_diagnosa').show();
+                if (id != '') {
+                    dwr.engine.setAsync(true);
+                    DiagnosaRawatAction.editDiagnosa(id, idDiag, jenisDiagnosa, ketDiagnosa, jenisPeriksaPasien, idDetailCheckup, {
+                        callback: function (response) {
+                            console.log(response);
+                            if (response.status == "success") {
+                                dwr.engine.setAsync(false);
+                                listDiagnosa(idDetailCheckup);
+                                hitungStatusBiaya(idDetailCheckup);
+                                $('#modal-diagnosa').modal('hide');
+                            } else {
+                                $('#warning_diagnosa').show().fadeOut(5000);
+                                $('#msg_diagnosa').text(response.msg);
+                                $('#save_diagnosa').show();
+                                $('#load_diagnosa').hide();
+                            }
+                        }
+                    })
+                } else {
+                    dwr.engine.setAsync(true);
+                    DiagnosaRawatAction.saveDiagnosa(idDetailCheckup, idDiag, jenisDiagnosa, ketDiagnosa, jenisPeriksaPasien, {
+                        callback: function (response) {
+                            console.log(response.list);
+                            if (response.status == "success") {
+                                dwr.engine.setAsync(false);
+                                listDiagnosa(idDetailCheckup);
+                                hitungStatusBiaya(idDetailCheckup);
+                                $('#modal-diagnosa').modal('hide');
+                            } else {
+                                $('#warning_diagnosa').show().fadeOut(5000);
+                                $('#msg_diagnosa').text(response.msg);
+                                $('#save_diagnosa').show();
+                                $('#load_diagnosa').hide();
+                            }
+                        }
+                    });
+                }
+            }
+        } else {
+            $('#warning_diagnosa').show().fadeOut(5000);
+            $('#msg_diagnosa').text('Silahkan cek kembali data inputan...!');
+            if (idDiag == '') {
+                $('#war_diagnosa_bpjs').show();
+            }
+            if (jenisDiagnosa == '') {
+                $('#war_jenis_diagnosa').show();
+            }
+        }
+    }
+
+    function searchDiagnosa(id) {
+        var menus, mapped;
+        $('#' + id).typeahead({
+            minLength: 3,
+            source: function (query, process) {
+                menus = [];
+                mapped = {};
+
+                var data = [];
+                dwr.engine.setAsync(false);
+                CheckupAction.getICD10(query, function (listdata) {
+                    data = listdata;
+                });
+
+                $.each(data, function (i, item) {
+                    var labelItem = item.idDiagnosa + '-' + item.descOfDiagnosa;
+                    mapped[labelItem] = {
+                        id: item.idDiagnosa,
+                        label: labelItem,
+                        name: item.descOfDiagnosa
+                    };
+                    menus.push(labelItem);
+                });
+
+                process(menus);
+            },
+            updater: function (item) {
+                var selectedObj = mapped[item];
+                // insert to textarea diagnosa_ket
+                $("#nosa_ket_diagnosa").val(selectedObj.name);
+                return selectedObj.id;
+            }
+        });
     }
 
 </script>

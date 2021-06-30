@@ -130,6 +130,7 @@ public class KeluargaBoImpl implements KeluargaBo {
                 imKeluargaEntity.setTanggalLahir(bean.getTanggalLahir());
                 imKeluargaEntity.setStatusKeluarga(bean.getStatusKeluargaId());
                 imKeluargaEntity.setGender(bean.getGender());
+                imKeluargaEntity.setTanggunganPtkp(bean.getTanggunganPtkp());
 
                 imKeluargaEntity.setAction(bean.getAction());
                 imKeluargaEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -178,6 +179,7 @@ public class KeluargaBoImpl implements KeluargaBo {
             imKeluargaEntity.setTanggalLahir(bean.getTanggalLahir());
             imKeluargaEntity.setStTanggalLahir(bean.getStTanggalLahir());
             imKeluargaEntity.setStatusKeluarga(bean.getStatusKeluargaId());
+            imKeluargaEntity.setTanggunganPtkp(bean.getTanggunganPtkp());
 
             imKeluargaEntity.setFlag(bean.getFlag());
             imKeluargaEntity.setAction(bean.getAction());
@@ -261,6 +263,12 @@ public class KeluargaBoImpl implements KeluargaBo {
                         returnKeluarga.setGender(keluargaEntity.getGender());
                     }else{
                         returnKeluarga.setGender("-");
+                    }
+
+                    if(keluargaEntity.getTanggunganPtkp()!=null) {
+                        returnKeluarga.setTanggunganPtkp(keluargaEntity.getTanggunganPtkp());
+                    }else{
+                        returnKeluarga.setTanggunganPtkp("N");
                     }
 
                     returnKeluarga.setTanggalLahir(keluargaEntity.getTanggalLahir());

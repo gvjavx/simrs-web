@@ -943,6 +943,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setSpo2(hdr.getSpo2());
                     checkup.setIdKelasRuangan(getDataRuangan(checkup.getIdRuangan()).getIdKelasRuangan());
                     checkup.setKategoriRuangan(getDataRuangan(checkup.getIdRuangan()).getKategori());
+                    checkup.setPenyakitDahulu(getRiwayatPenyakit(checkup.getIdPasien()));
                 }
             }
         }
@@ -1195,6 +1196,55 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("id", idDetailCheckup)
+                .list();
+        if (result.size() > 0){
+            for (Object[] obj: result){
+                if(obj[1] != null){
+                    if("".equalsIgnoreCase(res)){
+                        res = obj[1].toString();
+                    }else{
+                        res = res +", "+obj[1].toString();
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    public String getRiwayatPenyakit(String idPasien){
+        String res = "";
+        String SQL = "SELECT\n" +
+                "c.id_pasien,\n" +
+                "a.jawaban\n" +
+                "FROM it_simrs_asesmen_ugd a\n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
+                "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup \n" +
+                "WHERE a.tipe = 'penyakit_dahulu'\n" +
+                "AND c.id_pasien = :id\n" +
+                "AND a.flag = 'Y'\n" +
+                "UNION ALL\n" +
+                "SELECT \n" +
+                "c.id_pasien,\n" +
+                "a.jawaban\n" +
+                "FROM it_simrs_asesmen_keperawatan_rawat_inap a\n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
+                "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup \n" +
+                "WHERE a.tipe = 'penyakit_dahulu'\n" +
+                "AND c.id_pasien = :id\n" +
+                "AND a.flag = 'Y'\n" +
+                "UNION ALL\n" +
+                "SELECT \n" +
+                "c.id_pasien,\n" +
+                "a.jawaban\n" +
+                "FROM it_simrs_asesmen_poli_spesialis a\n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
+                "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup \n" +
+                "WHERE a.tipe = 'penyakit_dahulu'\n" +
+                "AND c.id_pasien = :id\n" +
+                "AND a.flag = 'Y'";
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idPasien)
                 .list();
         if (result.size() > 0){
             for (Object[] obj: result){

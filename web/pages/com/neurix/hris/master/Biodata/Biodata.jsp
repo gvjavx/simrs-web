@@ -464,52 +464,52 @@
                                                 </td>
                                             </tr>
 
-                                            <s:if test="isDelete()">
-                                                <tr>
-                                                    <td>
-                                                        <label><small>Jumlah Anak :</small></label>
-                                                    </td>
-                                                    <td>
-                                                        <div class="row">
-                                                            <div class="col-md-4">
-                                                            <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" disabled="false" cssClass="form-control"/>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <input type="checkbox" id="manualPtkp" class="checkZakat" disabled onchange="cekManualPtkp()" />
-                                                                <s:hidden id="flagManualPtkp" name="biodata.flagManualPtkp" />
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </s:if>
-                                            <%--<s:if test="isEdit()">--%>
-                                            <s:else>
-                                                <tr>
-                                                    <td>
-                                                        <label><small>Jumlah Anak :</small></label>
-                                                    </td>
-                                                    <td>
-                                                        <div class="row">
-                                                            <div class="col-md-4">
-                                                                <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="false" disabled="false" cssClass="form-control"/>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                        <table>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <input type="checkbox" id="manualPtkp" class="checkZakat" onchange="cekManualPtkp()" />
-                                                                            <s:hidden id="flagManualPtkp" name="biodata.flagManualPtkp" />
-                                                                        </td>
-                                                                        <td>
-                                                                            <small>(set manual)</small>
-                                                                        </td>
-                                                                    </tr>
-                                                        </table>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </s:else>
+                                            <%--<s:if test="isDelete()">--%>
+                                                <%--<tr>--%>
+                                                    <%--<td>--%>
+                                                        <%--<label><small>Jumlah Anak :</small></label>--%>
+                                                    <%--</td>--%>
+                                                    <%--<td>--%>
+                                                        <%--<div class="row">--%>
+                                                            <%--<div class="col-md-4">--%>
+                                                            <%--<s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" disabled="false" cssClass="form-control"/>--%>
+                                                            <%--</div>--%>
+                                                            <%--<div class="col-md-4">--%>
+                                                                <%--<input type="checkbox" id="manualPtkp" class="checkZakat" disabled onchange="cekManualPtkp()" />--%>
+                                                                <%--<s:hidden id="flagManualPtkp" name="biodata.flagManualPtkp" />--%>
+                                                            <%--</div>--%>
+                                                        <%--</div>--%>
+                                                    <%--</td>--%>
+                                                <%--</tr>--%>
+                                            <%--</s:if>--%>
+                                            <%--&lt;%&ndash;<s:if test="isEdit()">&ndash;%&gt;--%>
+                                            <%--<s:else>--%>
+                                                <%--<tr>--%>
+                                                    <%--<td>--%>
+                                                        <%--<label><small>Jumlah Anak :</small></label>--%>
+                                                    <%--</td>--%>
+                                                    <%--<td>--%>
+                                                        <%--<div class="row">--%>
+                                                            <%--<div class="col-md-4">--%>
+                                                                <%--<s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="false" disabled="false" cssClass="form-control"/>--%>
+                                                            <%--</div>--%>
+                                                            <%--<div class="col-md-4">--%>
+                                                        <%--<table>--%>
+                                                                    <%--<tr>--%>
+                                                                        <%--<td>--%>
+                                                                            <%--<input type="checkbox" id="manualPtkp" class="checkZakat" onchange="cekManualPtkp()" />--%>
+                                                                            <%--<s:hidden id="flagManualPtkp" name="biodata.flagManualPtkp" />--%>
+                                                                        <%--</td>--%>
+                                                                        <%--<td>--%>
+                                                                            <%--<small>(set manual)</small>--%>
+                                                                        <%--</td>--%>
+                                                                    <%--</tr>--%>
+                                                        <%--</table>--%>
+                                                            <%--</div>--%>
+                                                        <%--</div>--%>
+                                                    <%--</td>--%>
+                                                <%--</tr>--%>
+                                            <%--</s:else>--%>
                                             <%--</s:if>--%>
                                             <tr>
                                                 <td>
@@ -3138,6 +3138,13 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Tanggungan : </label>
+                        <div class="col-sm-8">
+                            <input type="checkbox" class="checkZakat"  id="tanggunganPTKP"/>
+                        </div>
+                    </div>
+
                 </form>
             </div>
             <div class="modal-footer">
@@ -3740,15 +3747,15 @@
 //            document.getElementById("plt").checked = false;
 //        }
 
-        var flagManualPtkp = document.getElementById("flagManualPtkp").value;
-        if (flagManualPtkp == "Y") {
-            document.getElementById("manualPtkp").checked = true;
-            $("#jumlahAnak").prop("disabled",false);
-        } else {
-            document.getElementById("manualPtkp").checked = false;
-            $("#jumlahAnak").prop("disabled",true);
-
-        }
+        // var flagManualPtkp = document.getElementById("flagManualPtkp").value;
+        // if (flagManualPtkp == "Y") {
+        //     document.getElementById("manualPtkp").checked = true;
+        //     $("#jumlahAnak").prop("disabled",false);
+        // } else {
+        //     document.getElementById("manualPtkp").checked = false;
+        //     $("#jumlahAnak").prop("disabled",true);
+        //
+        // }
 
         var flagFingerMobile = document.getElementById("flagFingerMobile").value;
         if (flagFingerMobile == "Y") {
@@ -4609,6 +4616,7 @@
                     "<th style='text-align: center; background-color:  #3c8dbc''>Status Keluarga</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc''>Gender</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Lahir</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggungan PTKP</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
                     "</tr></thead>";
@@ -4620,6 +4628,8 @@
                     "<th style='text-align: center; background-color:  #3c8dbc''>Status Keluarga</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc''>Gender</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Lahir</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggungan PTKP</th>" +
+
                     "</tr></thead>";
                 </s:else>
 
@@ -4635,6 +4645,12 @@
                         tmp_table += '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>';
                     }else{
                         tmp_table += '<td align="center">' + ' - ' + '</td>';
+                    }
+
+                    if(item.tanggunganPtkp == 'Y'){
+                        tmp_table += '<td align="center"> <input type="checkbox" class="checkZakat"  checked="checked" disabled="true"/> </td>';
+                    }else{
+                        tmp_table += '<td align="center"> <input type="checkbox" class="checkZakat" disabled="true"/> </td>';
                     }
                         /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/
                     tmp_table += '<td align="center">' +
@@ -4655,11 +4671,17 @@
                         '<td >' + item.name + '</td>' +
                         '<td align="center">' + item.statusKeluargaName + '</td>' +
                         '<td align="center">' + item.gender + '</td>';
-                            if(item.tanggalLahir != null) {
-                                tmp_table += '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>';
-                            }else{
-                                tmp_table += '<td align="center">' + ' - ' + '</td>';
-                            }
+                    if(item.tanggalLahir != null) {
+                        tmp_table += '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>';
+                    }else{
+                        tmp_table += '<td align="center">' + ' - ' + '</td>';
+                    }
+
+                    if(item.tanggunganPtkp == 'Y'){
+                        tmp_table += '<td > <input type="checkbox" class="checkZakat"  checked="checked" disabled="true"/> </td>';
+                    }else{
+                        tmp_table += '<td > <input type="checkbox" class="checkZakat" disabled="true"/> </td>';
+                    }
                         /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/
                         "</tr>";
                     </s:else>
@@ -4681,6 +4703,7 @@
                     "<th style='text-align: center; background-color:  #3c8dbc'>Name</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc''>Status Keluarga</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Lahir</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggungan PTKP</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
                     "</tr></thead>";
@@ -4691,9 +4714,15 @@
                         '<td >' + (i + 1) + '</td>' +
                         '<td >' + item.name + '</td>' +
                         '<td align="center">' + item.statusKeluargaName + '</td>' +
-                        '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>' +
+                        '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>';
                         /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/
-                        '<td align="center">' +
+                    if(item.tanggunganPtkp == 'Y'){
+                        tmp_table += '<td align="center"> <input type="checkbox" class="checkZakat"  checked="checked" disabled="true"/> </td>';
+                    }else{
+                        tmp_table += '<td align="center"> <input type="checkbox" class="checkZakat" disabled="true"/> </td>';
+                    }
+
+                    tmp_table += '<td align="center">' +
                         "<a href='javascript:;' class ='item-edit' data ='" + item.statusKeluargaId + "' >" +
                         "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
                         '</a>' +
@@ -5462,6 +5491,12 @@
             var statusKeluarga = document.getElementById("statusKeluarga").value;
             var statusKeluargaName = $('select[name=statusKeluarga] option:selected').text();
             var tanggalLahir = document.getElementById("tanggalLahirkeluarga").value;
+            var tangunganPTKP = "";
+            if($('#tanggunganPTKP').is(':checked')){
+                tangunganPTKP = 'Y';
+            }else{
+                tangunganPTKP = 'N';
+            }
 
             var result = '';
 
@@ -5472,7 +5507,7 @@
                 } else {
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
-                        KeluargaAction.saveAdd(keluargaName, statusKeluarga, statusKeluargaName, tanggalLahir, genderKeluarga,function (listdata) {
+                        KeluargaAction.saveAdd(keluargaName, statusKeluarga, statusKeluargaName, tanggalLahir, genderKeluarga, tangunganPTKP,function (listdata) {
                             alert('Data Successfully Added');
                             $('#modal-editKeluarga').modal('hide');
                             $('#myFormKeluarga')[0].reset();
@@ -5486,7 +5521,7 @@
                 } else {
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
-                        KeluargaAction.initEdit(keluargaId, keluargaName, statusKeluarga, statusKeluargaName, tanggalLahir, genderKeluarga, function (listdata) {
+                        KeluargaAction.initEdit(keluargaId, keluargaName, statusKeluarga, statusKeluargaName, tanggalLahir, genderKeluarga, tangunganPTKP, function (listdata) {
                             alert('Data Successfully Updated');
                             $('#modal-editKeluarga').modal('hide');
                             $('#myFormKeluarga')[0].reset();
@@ -5503,7 +5538,7 @@
                 } else {
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
-                        KeluargaAction.saveAddData(nip, keluargaName, statusKeluarga, genderKeluarga, tanggalLahir, function (listdata) {
+                        KeluargaAction.saveAddData(nip, keluargaName, statusKeluarga, genderKeluarga, tanggalLahir, tangunganPTKP, function (listdata) {
                             alert('Data Successfully Added');
                             $('#modal-editKeluarga').modal('hide');
                             $('#myFormKeluarga')[0].reset();
@@ -5517,7 +5552,7 @@
                 } else {
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
-                        KeluargaAction.saveEdit(keluargaId, keluargaName, statusKeluarga, genderKeluarga, tanggalLahir, function (listdata) {
+                        KeluargaAction.saveEdit(keluargaId, keluargaName, statusKeluarga, genderKeluarga, tanggalLahir, tangunganPTKP, function (listdata) {
                             alert('Data Successfully Updated');
                             $('#modal-editKeluarga').modal('hide');
                             $('#myFormKeluarga')[0].reset();
@@ -5765,6 +5800,11 @@
                 }
                 $('#keluargaId').val(listdata.keluargaId);
                 $('#genderKeluarga').val(listdata.gender);
+                if(listdata.tanggunganPtkp === 'Y'){
+                    document.getElementById("tanggunganPTKP").checked = true;
+                }else{
+                    document.getElementById("tanggunganPTKP").checked = false;
+                }
             });
             </s:if>
             <s:else>
@@ -5778,6 +5818,11 @@
                         $('#tanggalLahirkeluarga').val((myDate.getDate()) + '-' + ("0" + (myDate.getMonth() + 1)).slice(-2) + '-' + myDate.getFullYear());
                     }
                     $('#keluargaId').val(item.keluargaId);
+                    if(item.tanggunganPtkp == 'Y'){
+                        document.getElementById("tanggunganPTKP").checked = true;
+                    }else{
+                        document.getElementById("tanggunganPTKP").checked = false;
+                    }
                 });
             });
             </s:else>
@@ -6326,15 +6371,15 @@
     //        }
     //    }
 
-    window.cekManualPtkp = function () {
-        if (document.getElementById("manualPtkp").checked == true) {
-            $("#flagManualPtkp").val("Y");
-            $("#jumlahAnak").prop("disabled",false);
-        } else {
-            $("#flagManualPtkp").val("N");
-            $("#jumlahAnak").prop("disabled",true);
-        }
-    }
+    // window.cekManualPtkp = function () {
+    //     if (document.getElementById("manualPtkp").checked == true) {
+    //         $("#flagManualPtkp").val("Y");
+    //         $("#jumlahAnak").prop("disabled",false);
+    //     } else {
+    //         $("#flagManualPtkp").val("N");
+    //         $("#jumlahAnak").prop("disabled",true);
+    //     }
+    // }
 
     window.cekAktif = function () {
         if ($('#aktif').is(":checked")) {

@@ -22,34 +22,19 @@
 
     <!-- ====== DEV ======= -->
     <!--<bean id="dataSource"-->
-          <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
-          <!--p:driverClassName="org.postgresql.Driver"-->
-          <!--p:url="jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu_10062021"-->
-          <!--p:username="root"-->
-          <!--p:password="123456"/>-->
+    <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
+    <!--p:driverClassName="org.postgresql.Driver"-->
+    <!--p:url="jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu_10062021"-->
+    <!--p:username="root"-->
+    <!--p:password="123456"/>-->
 
-    <!-- ====== LOCALHOST ======= -->
+    <!-- ====== LOCAL ======= -->
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource"
           p:driverClassName="org.postgresql.Driver"
-          p:url="jdbc:postgresql://localhost:5432/gomed"
+          p:url="jdbc:postgresql://localhost:5432/gomedsys_nmu_prod_hva_3"
           p:username="postgres"
-          p:password="123456"/>
-
-    <!--<bean id="dataSource"-->
-          <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
-          <!--p:driverClassName="org.postgresql.Driver"-->
-          <!--p:url="jdbc:postgresql://207.148.122.42:5432/gomedsys"-->
-          <!--p:username="postgres"-->
-          <!--p:password="MGi-2299@@11!!"/>-->
-
-    <!-- ====== DEV ======= -->
-    <!--<bean id="dataSource"-->
-    <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
-    <!--p:driverClassName="org.postgresql.Driver"-->
-    <!--p:url="jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu"-->
-    <!--p:username="root"-->
-    <!--p:password="123456"/>-->
+          p:password="postgres"/>
 
 </beans>
 

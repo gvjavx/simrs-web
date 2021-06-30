@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IkhtisarBukuBesarPerBukuBantu" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" uuid="eab8d28e-a176-4781-8e02-a8baf71eee9d">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="4.177248169415675"/>
-	<property name="ireport.x" value="216"/>
-	<property name="ireport.y" value="650"/>
+	<property name="ireport.zoom" value="1.77156100000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="70"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -64,7 +64,7 @@ from (select mainValue.*, grup2.kode_rekening kodering2, grup2.nama_kode_rekenin
                                                                 on kodering.rekening_id = reportSetting.rekening_id
                                                        where reportSetting.report_id = $P{reportId}
                                                          and reportSetting.flag = 'Y') rekening
-                                             on saldo.kode_rekening = rekening.kode_rekening
+                                             on saldo.rekening_id = rekening.kode_rekening
                                     where saldo.periode = $P{periodeLalu}
                                       and saldo.branch_id in ($P!{branchId})
                                     group by rekening.kode_rekening, rekening.nama_kode_rekening) saldo

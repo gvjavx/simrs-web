@@ -22,6 +22,16 @@ public class Keluarga extends BaseModel {
     private String stTanggalLahir;
     private Date tanggalLahir;
 
+    private String tanggunganPtkp;
+
+    public String getTanggunganPtkp() {
+        return tanggunganPtkp;
+    }
+
+    public void setTanggunganPtkp(String tanggunganPtkp) {
+        this.tanggunganPtkp = tanggunganPtkp;
+    }
+
     public String getGender() {
         return gender;
     }

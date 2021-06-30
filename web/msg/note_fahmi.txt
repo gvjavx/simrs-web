@@ -1,0 +1,50 @@
+-- 2021-06-23
+
+    CREATE TABLE im_simrs_tindakan_medis(
+        id CHARACTER VARYING NOT NULL ,
+        name CHARACTER VARYING,
+        type CHARACTER VARYING,
+        action CHARACTER VARYING,
+        flag CHARACTER VARYING,
+        created_date TIMESTAMP WITHOUT TIME ZONE,
+        created_who CHARACTER VARYING,
+        last_update CHARACTER VARYING,
+        last_update_who CHARACTER VARYING,
+
+        PRIMARY KEY (id)
+    );
+
+    CREATE TABLE im_simrs_tindakan_medis_detail(
+        parentid CHARACTER VARYING NOT NULL ,
+        id_detail CHARACTER VARYING NOT NULL ,
+        info_name CHARACTER VARYING NOT NULL,
+        info_type CHARACTER VARYING NOT NULL,
+        info_value CHARACTER VARYING,
+        action CHARACTER VARYING,
+        flag CHARACTER VARYING,
+        created_date TIMESTAMP WITHOUT TIME ZONE,
+        created_who CHARACTER VARYING,
+        last_update CHARACTER VARYING,
+        last_update_who CHARACTER VARYING,
+
+        PRIMARY KEY (id_detail)
+    );
+
+    INSERT INTO im_simrs_tindakan_medis VALUES('TM_ABK','AMPUTASI BELLOW KNEE', 'ina', 'C', 'Y', '2021-06-23 00:00:00.000000', 'ADMIN','2021-06-23 00:00:00.000000', 'ADMIN');
+
+    INSERT INTO im_simrs_tindakan_medis_detail VALUES('TM_ABK','TM_ABK01','Diagnosis','i','', 'C', 'Y', '2021-06-23 00:00:00.000000', 'ADMIN','2021-06-23 00:00:00.000000', 'ADMIN'),
+                                                     ('TM_ABK','TM_ABK02','Dasar Diagnosis','c','Anamnesa|Pemeriksaan Fisik| Pemeriksaan Penunjang', 'C', 'Y', '2021-06-23 00:00:00.000000', 'ADMIN','2021-06-23 00:00:00.000000', 'ADMIN'),
+                                                     ('TM_ABK','TM_ABK03','Tindakan Kedokteran','l','Amputasi bellow knee', 'C', 'Y', '2021-06-23 00:00:00.000000', 'ADMIN','2021-06-23 00:00:00.000000', 'ADMIN'),
+                                                     ('TM_ABK','TM_ABK04','Indikasi Tindakan','i','', 'C', 'Y', '2021-06-23 00:00:00.000000', 'ADMIN','2021-06-23 00:00:00.000000', 'ADMIN'),
+                                                     ('TM_ABK','TM_ABK05','Tata Cara','i','', 'C', 'Y', '2021-06-23 00:00:00.000000', 'ADMIN','2021-06-23 00:00:00.000000', 'ADMIN'),
+                                                     ('TM_ABK','TM_ABK06','Tujuan','l','Mengurangi atau menghilangkan infeksi', 'C', 'Y', '2021-06-23 00:00:00.000000', 'ADMIN','2021-06-23 00:00:00.000000', 'ADMIN'),
+                                                     ('TM_ABK','TM_ABK07','Resiko','c','Nyeri|perdarahan|sepsis|kematian', 'C', 'Y', '2021-06-23 00:00:00.000000', 'ADMIN','2021-06-23 00:00:00.000000', 'ADMIN'),
+                                                     ('TM_ABK','TM_ABK08','Komplikasi','c','Perdarahan|sepsis|kematian', 'C', 'Y', '2021-06-23 00:00:00.000000', 'ADMIN','2021-06-23 00:00:00.000000', 'ADMIN'),
+                                                     ('TM_ABK','TM_ABK09','Prognosis','l','Tergantung pada berat-ringannya penyakit', 'C', 'Y', '2021-06-23 00:00:00.000000', 'ADMIN','2021-06-23 00:00:00.000000', 'ADMIN'),
+                                                     ('TM_ABK','TM_ABK10','Alternatif','l','KIE', 'C', 'Y', '2021-06-23 00:00:00.000000', 'ADMIN','2021-06-23 00:00:00.000000', 'ADMIN'),
+                                                     ('TM_ABK','TM_ABK11','Perkiraan biaya','i','', 'C', 'Y', '2021-06-23 00:00:00.000000', 'ADMIN','2021-06-23 00:00:00.000000', 'ADMIN');
+
+
+
+
+--

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printResepPasien" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.9487171000000014"/>
-	<property name="ireport.x" value="35"/>
-	<property name="ireport.y" value="170"/>
+	<property name="ireport.zoom" value="1.4641000000000013"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="243"/>
 	<parameter name="reportParams.tglCheckup" class="java.lang.String"/>
 	<parameter name="reportParams.logo" class="java.lang.String"/>
 	<parameter name="reportParams.nik" class="java.lang.String"/>
@@ -25,6 +25,9 @@
 	<parameter name="reportParams.idDetailCheckup" class="java.lang.String"/>
 	<parameter name="reportParams.diagnosa" class="java.lang.String"/>
 	<parameter name="umur" class="java.lang.String"/>
+	<parameter name="sip" class="java.lang.String"/>
+	<parameter name="ttdPasien" class="java.lang.String"/>
+	<parameter name="tglDibawah" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
 CAST('Penunjang Medis' AS VARCHAR) as nama_pemeriksaan,
@@ -390,41 +393,65 @@ WHERE a.id_detail_checkup = $P{reportParams.idDetailCheckup}]]>
 		</band>
 	</pageFooter>
 	<lastPageFooter>
-		<band height="71">
+		<band height="106">
 			<staticText>
-				<reportElement x="1" y="0" width="100" height="13" uuid="497fff24-2bee-47aa-9109-80ac2641288a"/>
+				<reportElement x="2" y="19" width="100" height="13" uuid="497fff24-2bee-47aa-9109-80ac2641288a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Pasien]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="263" y="0" width="100" height="13" uuid="6ca8ed04-f00f-4be1-a826-a556328c25b0"/>
+				<reportElement x="264" y="19" width="100" height="13" uuid="6ca8ed04-f00f-4be1-a826-a556328c25b0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Dokter]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="248" y="47" width="135" height="12" uuid="a2214fa4-47c0-45dc-a294-e25124a0c00d"/>
+				<reportElement x="247" y="82" width="135" height="12" uuid="a2214fa4-47c0-45dc-a294-e25124a0c00d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isUnderline="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.dokter} == null ? "" : $P{reportParams.dokter}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="1" y="47" width="100" height="12" uuid="ffda815e-c57d-4531-96c8-585f1bca7c43"/>
+				<reportElement x="2" y="82" width="100" height="12" uuid="ffda815e-c57d-4531-96c8-585f1bca7c43"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isUnderline="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="1" y="59" width="100" height="1" uuid="53262606-3029-4fb0-9977-1db05819266d"/>
+				<reportElement x="2" y="94" width="100" height="1" uuid="53262606-3029-4fb0-9977-1db05819266d"/>
 			</line>
 			<line>
-				<reportElement x="248" y="58" width="133" height="1" uuid="6ff3f7cd-8dcd-49f4-9149-16949d0ecfc6"/>
+				<reportElement x="246" y="93" width="133" height="1" uuid="6ff3f7cd-8dcd-49f4-9149-16949d0ecfc6"/>
 			</line>
+			<textField>
+				<reportElement x="264" y="94" width="115" height="12" uuid="ce1cf45e-6575-4ed2-999c-46afac7819c7"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sip} == null ? "" : $P{sip}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="264" y="32" width="100" height="50" uuid="35861d0c-7ea0-446a-a2c0-3a45c3ee185e"/>
+				<imageExpression><![CDATA[$P{reportParams.ttdDokter}]]></imageExpression>
+			</image>
+			<image onErrorType="Blank">
+				<reportElement x="1" y="32" width="100" height="50" uuid="f84a1034-de0b-4f55-b9b4-05121cd27b25"/>
+				<imageExpression><![CDATA[$P{ttdPasien}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="253" y="4" width="128" height="15" uuid="374f64b7-2966-41da-b8b7-35f50185d108"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tglDibawah}]]></textFieldExpression>
+			</textField>
 		</band>
 	</lastPageFooter>
 </jasperReport>

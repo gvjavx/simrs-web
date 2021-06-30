@@ -225,7 +225,17 @@ public class CheckupAction extends BaseMasterAction {
 
     private List<Pelayanan> listOfPelayananRJ = new ArrayList<>();
 
+    private List<Pelayanan> listOfPelayananIGD = new ArrayList<>();
+
     private List<Pelayanan> listOfPelayananWithLab = new ArrayList<>();
+
+    public List<Pelayanan> getListOfPelayananIGD() {
+        return listOfPelayananIGD;
+    }
+
+    public void setListOfPelayananIGD(List<Pelayanan> listOfPelayananIGD) {
+        this.listOfPelayananIGD = listOfPelayananIGD;
+    }
 
     public List<Pelayanan> getListOfPelayananRJ() {
         return listOfPelayananRJ;
@@ -1394,6 +1404,18 @@ public class CheckupAction extends BaseMasterAction {
         }
 
         listOfPelayananRJ.addAll(pelayananList);
+        return "init_add";
+    }
+
+    public String getComboPelayananIGD() {
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        try {
+            pelayananList = pelayananBoProxy.getListPelayananByTipe("igd", CommonUtil.userBranchLogin());
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+        }
+
+        listOfPelayananIGD.addAll(pelayananList);
         return "init_add";
     }
 
@@ -3697,6 +3719,7 @@ public class CheckupAction extends BaseMasterAction {
         if (id != null && !"".equalsIgnoreCase(id)) {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+            CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
             if ("alergi".equalsIgnoreCase(key)) {
                 response = checkupBo.getAlergi(id);
@@ -3724,6 +3747,12 @@ public class CheckupAction extends BaseMasterAction {
             }
             if("tujuan_ruangan".equalsIgnoreCase(key)){
                 response = checkupBo.getTujuanRuangan(id);
+            }
+            if("indikasi".equalsIgnoreCase(key)){
+                HeaderDetailCheckup detailCheckup = checkupDetailBo.getEntityById(id);
+                if(detailCheckup != null){
+                    response = detailCheckup.getIndikasi();
+                }
             }
         }
         return response;

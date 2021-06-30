@@ -1561,7 +1561,7 @@
                             <div id="form-uang-muka" style="display: none">
                                 <div class="box-header with-border"></div>
                                 <div class="box-header with-border">
-                                    <h3 class="box-title"><i class="fa fa-money"></i> <span id="text_centang">Uang Muka</span>
+                                    <h3 class="box-title"><i class="fa fa-money"></i> <span id="text_centang">Deposit</span>
                                         <div id="cek_cek" class="form-check" style="display: none">
                                             <input onclick="cekIsUangMuka(this.id)" type="checkbox" id="cek_is_uang_muka" value="yes">
                                             <label for="cek_is_uang_muka"></label>
@@ -1573,7 +1573,7 @@
                                         <div class="col-md-6">
                                             <div class="row" id="form-nominal_uang_muka">
                                                 <div class="form-group">
-                                                    <label class="col-md-4" style="margin-top: 10px">Uang Muka</label>
+                                                    <label class="col-md-4" style="margin-top: 10px">Deposit</label>
                                                     <div class="col-md-8">
                                                         <div class="input-group" style="margin-top: 7px">
                                                             <div class="input-group-addon">
@@ -2726,7 +2726,7 @@
                         $('#form-lab').hide();
                         $('#form_dokter_poli').show();
                         $('#is_daftar_pj').val("N");
-                        $('#text_centang').text(" Uang Muka");
+                        $('#text_centang').text(" Deposit");
                         $('#cek_cek').hide();
                         $('#cek_is_uang_muka').prop('checked', false);
                         $('#id_lab').val(null).trigger('change');

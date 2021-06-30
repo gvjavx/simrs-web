@@ -2377,18 +2377,29 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     notifikasiList.add(notifSelf);
 
                     Notifikasi notifAtasan = new Notifikasi();
+
+                    String nipForNotif;
                     if (bean.isForMobile())
-                        notifAtasan.setNip(bean.getNipUserLogin());
+                        nipForNotif = bean.getNipUserLogin();
                     else
-                        notifAtasan.setNip(CommonUtil.userIdLogin());
+                        nipForNotif = CommonUtil.userIdLogin();
+                    ImBiodataEntity biodataEntity;
+                    try {
+                        biodataEntity = biodataDao.getById("nip", nipForNotif);
+                    }catch (HibernateException e){
+                        logger.error("[CutiPegawaiBoImpl.saveApprove] Error, " + e.getMessage());
+                        throw new GeneralBOException("Problem when retrieving Biodata by ID, " + e.getMessage());
+                    }
+
+                    notifAtasan.setNip(nipForNotif);
                     notifAtasan.setNoRequest(bean.getCutiPegawaiId());
                     notifAtasan.setTipeNotifId("umum");
                     notifAtasan.setTipeNotifName(("Pemberitahuan"));
-                    notifAtasan.setNote(imBiodataEntity.getNamaPegawai() + " mengajukan cuti pada tanggal " + CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalDari()) + " sampai dengan tanggal " + CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalSelesai()));
+                    notifAtasan.setNote(imBiodataEntity.getNamaPegawai() + " mengajukan cuti pada tanggal " + CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalDari()) + " sampai dengan tanggal " + CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalSelesai()) + ", telah disetujui oleh " + biodataEntity.getNamaPegawai());
                     if (bean.isForMobile())
                         notifAtasan.setCreatedWho(bean.getNip());
                     else
-                        notifAtasan.setNip(CommonUtil.userIdLogin());
+                        notifAtasan.setCreatedWho(CommonUtil.userIdLogin());
                     notifAtasan.setTo("atasan");
 
                     notifikasiList.add(notifAtasan);

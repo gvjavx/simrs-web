@@ -1,3 +1,13 @@
+------ 2021-06-17 ===> ptkp keluarga
+    alter table im_hris_keluarga
+    add column tanggungan_ptkp varchar(5);
+
+-----------------------------------
+-------- SAMPAI INI SAJA  ---------
+-----------------------------------
+
+
+
 ------ 2021-05-22 ===> pelengkapan payroll
 -- untuk pengajuan payroll
 --     alter table it_hris_payroll_temp

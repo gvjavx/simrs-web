@@ -165,6 +165,7 @@ public class TindakanRawatAction extends BaseMasterAction {
                         if(obj != null){
                             TindakanRawat tindakanRawat = new TindakanRawat();
                             String idRuangan = null;
+                            String flagApprove = null;
                             BigInteger qty = new BigInteger("0");
                             String idDetailCheckup = obj.getString("id_detail_checkup");
                             String idTindakan = obj.getString("id_tindakan");
@@ -181,11 +182,19 @@ public class TindakanRawatAction extends BaseMasterAction {
                                     idRuangan = obj.getString("id_ruangan");
                                 }
                             }
+                            if(obj.has("approve_flag")){
+                                if(obj.getString("approve_flag") != null && !"".equalsIgnoreCase(obj.getString("approve_flag"))){
+                                    flagApprove = obj.getString("approve_flag");
+                                }
+                            }
 
                             tindakanRawat.setIdDetailCheckup(idDetailCheckup);
                             tindakanRawat.setIdTindakan(idTindakan);
                             if (!"".equalsIgnoreCase(idRuangan) && idRuangan != null) {
                                 tindakanRawat.setIdRuangan(idRuangan);
+                            }
+                            if (!"".equalsIgnoreCase(flagApprove) && flagApprove != null) {
+                                tindakanRawat.setApproveFlag(flagApprove);
                             }
 
                             List<Tindakan> tindakanList = new ArrayList<>();

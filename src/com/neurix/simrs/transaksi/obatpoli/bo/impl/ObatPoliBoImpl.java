@@ -3277,7 +3277,6 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
             try {
                 obatPoliList = obatPoliDao.getIdObatGroupPoli(obatPoli);
-                //obatPoliList = obatPoliDao.getIdObatGroupPoli(idPelayanan, branchId, flagBpjs, idJenisObat, idDetailCheckup);
             }catch (HibernateException e){
                 logger.error("found error when search obat poli "+e.getMessage());
             }

@@ -674,6 +674,8 @@ public class CutiPegawaiAction extends BaseMasterAction {
         searchAlat.setRoleId(CommonUtil.roleIdAsLogin());
         if (!"ADMIN".equalsIgnoreCase(role)&&!"Admin bagian".equalsIgnoreCase(role)) {
             searchAlat.setNip(CommonUtil.userIdLogin());
+        }else{
+            setAdmin(true);
         }
 
         if(!("Admin Bagian").equalsIgnoreCase(CommonUtil.roleAsLogin())){
@@ -735,6 +737,8 @@ public class CutiPegawaiAction extends BaseMasterAction {
         session.removeAttribute("listOfResultCutiPegawai");
         if ((CommonConstant.ROLE_ID_ADMIN).equalsIgnoreCase(CommonUtil.roleIdAsLogin())||(CommonConstant.ROLE_ID_ADMIN_SUPER).equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
             setAdmin(true);
+        }else{
+            setNip(CommonUtil.userIdLogin());
         }
         logger.info("[AlatAction.initForm] end process >>>");
 

@@ -282,18 +282,7 @@
                         </div>
                     </div>
                     <div class="row jarak">
-                        <label class="col-md-4">Kontrol Kembali</label>
-                        <div class="col-md-8">
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                <input class="form-control ptr-tgl" id="pt12">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <label class="col-md-4">Indikasi Rawat Inap</label>
+                        <label class="col-md-4">Intruksi Tindak Lanjut</label>
                         <div class="col-md-8">
                             <select class="form-control select2" id="intruksi_pemeriksaan_neurologi" style="width: 100%" onchange="showKetIntruksi(this.value)">
                             </select>
@@ -303,11 +292,41 @@
                         <div class="form-group">
                             <div class="col-md-offset-4 col-md-8">
                                 <select class="form-control select2" id="ket_pemeriksaan_neurologi" style="width: 100%">
+                                    <option value="">-</option>
                                     <option value="Preventif">Preventif</option>
                                     <option value="Paliatif">Paliatif</option>
                                     <option value="Kuratif">Kuratif</option>
                                     <option value="Rehabilitatif">Rehabilitatif</option>
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak" style="display: none" id="int-ket2">
+                        <div class="col-md-3">
+                            <input class="form-control ptr-tgl int_tanggal_kontrol" placeholder="Tanggal" style="margin-top: 7px" id="int_tgl_kontrol_0">
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control select2 int_pelayanan_kontrol" id="int_pelayanan_0" onchange="setIntDokter(this.value, 'int_dokter_0')"></select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control select2 int_dokter_kontrol" id="int_dokter_0"></select>
+                        </div>
+                        <div class="col-md-1">
+                            <button onclick="addKontrolUlang('int')" style="margin-left: -20px; margin-top: 7px" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div id="set_kontrol_int"></div>
+                    <div class="row jarak" style="display: none" id="int-ket3">
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-8">
+                                <input class="form-control" id="int_ket_rs_lain" placeholder="Rumah Sakit">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="display: none" id="int-ket4">
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-8">
+                                <select class="form-control select2" id="int_ket_selesai"></select>
                             </div>
                         </div>
                     </div>

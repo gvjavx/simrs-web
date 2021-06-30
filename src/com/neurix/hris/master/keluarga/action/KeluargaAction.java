@@ -137,7 +137,7 @@ public class KeluargaAction extends BaseMasterAction{
         session.setAttribute("listKeluarga", listKeluarga);
     }
 
-    public void initEdit(String idLama, String Name, String statusKeluarga, String statusKeluargaName, String tanggalLahir, String gender){
+    public void initEdit(String idLama, String Name, String statusKeluarga, String statusKeluargaName, String tanggalLahir, String gender, String tgPtkp){
         logger.info("[KeluargaAction.init] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<Keluarga> listKeluarga = new ArrayList<>();
@@ -152,6 +152,7 @@ public class KeluargaAction extends BaseMasterAction{
                         keluarga.setStatusKeluargaName(statusKeluargaName);
                         keluarga.setTanggalLahir(CommonUtil.convertToTimestamp(tanggalLahir));
                         keluarga.setGender(gender);
+                        keluarga.setTanggunganPtkp(tgPtkp);
 
                         listKeluarga.add(keluarga);
                     }else{
@@ -282,7 +283,7 @@ public class KeluargaAction extends BaseMasterAction{
         return null;
     }
 
-    public String saveEdit(String id, String name, String statusKeluarga, String gender, String tanggalLahir){
+    public String saveEdit(String id, String name, String statusKeluarga, String gender, String tanggalLahir, String tgPtkp){
         logger.info("[KeluargaAction.saveEdit] start process >>>");
         try {
 
@@ -293,6 +294,7 @@ public class KeluargaAction extends BaseMasterAction{
             editKeluarga.setGender(gender);
             editKeluarga.setStatusKeluargaId(statusKeluarga);
             editKeluarga.setStTanggalLahir(tanggalLahir);
+            editKeluarga.setTanggunganPtkp(tgPtkp);
 
             if (editKeluarga.getStTanggalLahir() != null && !"".equalsIgnoreCase(editKeluarga.getStTanggalLahir())) {
                 Date tanggal = CommonUtil.convertStringToDate(tanggalLahir);
@@ -364,7 +366,7 @@ public class KeluargaAction extends BaseMasterAction{
         return "success_save_delete";
     }
 
-    public String saveAdd(String name, String statusKeluarga, String statusKeluargaName, String tanggalLahir, String gender){
+    public String saveAdd(String name, String statusKeluarga, String statusKeluargaName, String tanggalLahir, String gender, String tgPtkp){
         logger.info("[KeluargaAction.saveAdd] start process >>>");
 
         try {
@@ -378,6 +380,7 @@ public class KeluargaAction extends BaseMasterAction{
             keluarga.setStatusKeluargaId(statusKeluarga);
             keluarga.setStatusKeluargaName(statusKeluargaName);
             keluarga.setGender(gender);
+            keluarga.setTanggunganPtkp(tgPtkp);
 
             keluarga.setCreatedWho(userLogin);
             keluarga.setLastUpdate(updateTime);
@@ -430,7 +433,7 @@ public class KeluargaAction extends BaseMasterAction{
         return "";
     }
 
-    public String saveAddData(String nip, String name, String statusKeluarga, String gender, String tanggalLahir){
+    public String saveAddData(String nip, String name, String statusKeluarga, String gender, String tanggalLahir, String tgPtkp){
         logger.info("[KeluargaAction.saveAdd] start process >>>");
 
         try {
@@ -444,6 +447,7 @@ public class KeluargaAction extends BaseMasterAction{
             keluarga.setStTanggalLahir(tanggalLahir);
             keluarga.setStatusKeluargaId(statusKeluarga);
             keluarga.setGender(gender);
+            keluarga.setTanggunganPtkp(tgPtkp);
 
             keluarga.setCreatedWho(userLogin);
             keluarga.setLastUpdate(updateTime);

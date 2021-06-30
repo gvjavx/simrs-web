@@ -1653,7 +1653,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "              sum(x.jumlah_debit) as jumlah_debit, \n" +
                 "              sum(x.jumlah_kredit) as jumlah_kredit \n" +
                 "                                    from it_akun_saldo_akhir x\n" +
-                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.kode_rekening\n" +
+                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.rekening_id\n" +
                 "                                    where to_date(x.periode, 'MM-yyyy') =\n" +
                 "                                          to_date('"+periode+"', 'MM-yyyy') - Interval '1 month'\n" +
                 "              and x.branch_id = '"+branchId1+"' \n" +
@@ -1680,7 +1680,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "              sum(x.jumlah_debit) as jumlah_debit, \n" +
                 "              sum(x.jumlah_kredit) as jumlah_kredit \n" +
                 "                                    from it_akun_saldo_akhir x\n" +
-                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.kode_rekening\n" +
+                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.rekening_id\n" +
                 "                                    where to_date(x.periode, 'MM-yyyy') =\n" +
                 "                                          to_date('"+periode+"', 'MM-yyyy') - Interval '1 month'\n" +
                 "              and x.branch_id = '"+branchId2+"' \n" +
@@ -1708,7 +1708,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "              sum(x.jumlah_debit) as jumlah_debit, \n" +
                 "              sum(x.jumlah_kredit) as jumlah_kredit \n" +
                 "                                    from it_akun_saldo_akhir x\n" +
-                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.kode_rekening\n" +
+                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.rekening_id\n" +
                 "                                    where to_date(x.periode, 'MM-yyyy') =\n" +
                 "                                          to_date('"+periode+"', 'MM-yyyy') - Interval '1 month'\n" +
                 "              and x.branch_id = '"+branchId3+"' \n" +
@@ -1737,7 +1737,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "              sum(x.jumlah_debit) as jumlah_debit, \n" +
                 "              sum(x.jumlah_kredit) as jumlah_kredit \n" +
                 "                                    from it_akun_saldo_akhir x\n" +
-                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.kode_rekening\n" +
+                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.rekening_id\n" +
                 "                                    where to_date(x.periode, 'MM-yyyy') =\n" +
                 "                                          to_date('"+periode+"', 'MM-yyyy') - Interval '1 month'\n" +
                 "              and x.branch_id = '"+branchId4+"' \n" +
@@ -1766,7 +1766,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "              sum(x.jumlah_debit) as jumlah_debit, \n" +
                 "              sum(x.jumlah_kredit) as jumlah_kredit \n" +
                 "                                    from it_akun_saldo_akhir x\n" +
-                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.kode_rekening\n" +
+                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.rekening_id\n" +
                 "                                    where to_date(x.periode, 'MM-yyyy') =\n" +
                 "                                          to_date('"+periode+"', 'MM-yyyy') - Interval '1 month'\n" +
                 "              and x.branch_id = '"+branchId5+"' \n" +
@@ -1795,7 +1795,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "              sum(x.jumlah_debit) as jumlah_debit, \n" +
                 "              sum(x.jumlah_kredit) as jumlah_kredit \n" +
                 "                                    from it_akun_saldo_akhir x\n" +
-                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.kode_rekening\n" +
+                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.rekening_id\n" +
                 "                                    where to_date(x.periode, 'MM-yyyy') =\n" +
                 "                                          to_date('"+periode+"', 'MM-yyyy') - Interval '1 month'\n" +
                 "              and x.branch_id = '"+branchId6+"' \n" +
@@ -1824,7 +1824,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "              sum(x.jumlah_debit) as jumlah_debit, \n" +
                 "              sum(x.jumlah_kredit) as jumlah_kredit \n" +
                 "                                    from it_akun_saldo_akhir x\n" +
-                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.kode_rekening\n" +
+                "                                           INNER JOIN im_akun_kode_rekening kr ON kr.kode_rekening = x.rekening_id\n" +
                 "                                    where to_date(x.periode, 'MM-yyyy') =\n" +
                 "                                          to_date('"+periode+"', 'MM-yyyy') - Interval '1 month'\n" +
                 "              and x.branch_id = '"+branchId7+"' \n" +

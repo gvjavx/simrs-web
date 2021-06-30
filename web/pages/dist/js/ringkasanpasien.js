@@ -33,6 +33,8 @@ function saveRingkasanPasien(jenis, ket) {
         'id_rm': tempidRm
     }
 
+    var tindakLanjut = false;
+
     if ("ringkasan_pulang_pasien" == jenis) {
         var pe1 = $('#rps1').val();
         var pe2 = $('#rps2').val();
@@ -57,6 +59,8 @@ function saveRingkasanPasien(jenis, ket) {
         var pe21 = $('[name=rps21]:checked').val();
         var pe22 = $('[name=rps22]:checked').val();
         var pe23 = $('#rps23').val();
+        var pe23Text = $('#rps23 option:selected').text();
+        console.log(pe23Text);
         var spo1 = $('#spo1').val();
         var spo2 = $('#spo2').val();
         var hasilRadiologi = $('#hasil_radiologi').val();
@@ -286,27 +290,30 @@ function saveRingkasanPasien(jenis, ket) {
             });
 
             var kontrol = "";
-            var tglKontorl = $('.tanggal_kontrol');
-            var poliKontorl = $('.poli_kontrol');
-            var dokterKontorl = $('.dokter_kontrol');
+            var tglKontorl = $('.int_tanggal_kontrol');
+            var poliKontorl = $('.int_pelayanan_kontrol');
+            var dokterKontorl = $('.int_dokter_kontrol');
             $.each(tglKontorl, function (i, item) {
                 if(item.value != '' && poliKontorl[i].value != '' && dokterKontorl[i].value != ''){
+                    var pel = $('#'+poliKontorl[i].id+' option:selected').text();
+                    var dok = $('#'+dokterKontorl[i].id+' option:selected').text();
                     if(kontrol != ''){
-                        kontrol = kontrol+'|'+'Tanggal '+item.value+', Poli '+poliKontorl[i].value+', Dokter '+dokterKontorl[i].value;
+                        kontrol = kontrol+'|'+'Tanggal '+item.value+', Poli '+pel+', Dokter '+dok;
                     }else{
-                        kontrol = 'Tanggal '+item.value+', Poli '+poliKontorl[i].value+', Dokter '+dokterKontorl[i].value;
+                        kontrol = 'Tanggal '+item.value+', Poli '+pel+', Dokter '+dok;
                     }
                 }
             });
 
             var kon = "";
-            if("Kontrol Ulang" == pe23){
+            if("kontrol_ulang" == pe23){
                 kon = '|'+kontrol;
+                tindakLanjut = true;
             }
 
             data.push({
                 'parameter': 'Instruksi tindak lanjut',
-                'jawaban': pe23+kon,
+                'jawaban': pe23Text+kon,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_pulang',
                 'tipe': 'instruksi_lanjut',
@@ -881,6 +888,44 @@ function saveRingkasanPasien(jenis, ket) {
                        $('#modal-ring-' + jenis).scrollTop(0);
                        delRowRingkasanPasien(jenis);
                        detailRingkasanPasien(jenis);
+                       if(tindakLanjut){
+                           var dataKontrol = "";
+                           var kontrol = [];
+                           var tgl = $('.int_tanggal_kontrol');
+                           var pelayanan = $('.int_pelayanan_kontrol');
+                           var dokter = $('.int_dokter_kontrol');
+                           $.each(tgl, function (i, item) {
+                               if(item.value != '' && pelayanan[i].value != '' && dokter[i].value != ''){
+                                   kontrol.push({
+                                       'tgl_kontrol': item.value.split("-").reverse().join("-"),
+                                       'pelayanan': pelayanan[i].value,
+                                       'dokter': dokter[i].value,
+                                   });
+                               }
+                           });
+                           if(kontrol.length > 0){
+                               dataKontrol = JSON.stringify(kontrol);
+                           }
+
+                           var sendTppri = {
+                               'id_detail_checkup': idDetailCheckup,
+                               'keterangan': "Kontrol Ulang",
+                               'indikasi': $('#rps3').val(),
+                               'tindak_lanjut': 'kontrol_ulang',
+                               'data_kontrol': dataKontrol
+                           }
+
+                           if(sendTppri != null){
+                               dwr.engine.setAsync(true);
+                               CheckupDetailAction.sendToTppti(JSON.stringify(sendTppri), {
+                                   callback:function (res) {
+                                       if(res.status == "success"){
+                                           setTindakLanjut();
+                                       }
+                                   }
+                               });
+                           }
+                       }
                    } else {
                        $('#save_ring_' + jenis).show();
                        $('#load_ring_' + jenis).hide();
@@ -1305,30 +1350,10 @@ function setKontrol(tipe, id) {
     if(tipe == 'dell'){
         $('#'+id).remove();
     }else if(tipe == 'add'){
-        var jumlah = $('#tanggal_kontrol').length;
-        var idRow = 'wor_'+jumlah;
-        var html = '<div class="row" style="margin-top: 7px" id="'+idRow+'">\n' +
-            '<div class="form-group">\n' +
-            '    <div class="col-md-3">\n' +
-            '        <input style="cursor: pointer" class="form-control tgl tanggal_kontrol" placeholder="Tanggal" readonly>\n' +
-            '    </div>\n' +
-            '    <div class="col-md-4">\n' +
-            '        <input class="form-control poli_kontrol" placeholder="Poli">\n' +
-            '    </div>\n' +
-            '    <div class="col-md-4">\n' +
-            '        <input class="form-control dokter_kontrol" placeholder="Dokter">\n' +
-            '    </div>\n' +
-            '    <div class="col-md-1">\n' +
-            '        <button onclick="setKontrol(\'dell\', \''+idRow+'\')" class="btn btn-danger" style="margin-left: -20px; margin-top: 0px"><i class="fa fa-trash"></i></button>\n' +
-            '    </div>\n' +
-            '</div>\n' +
-            '</div>';
-        $('#set_kontrol').append(html);
-        $('.tgl').datepicker({
-            dateFormat: 'dd-mm-yy'
-        });
+        addKontrolUlang('int');
     }else{
-        if(id == "Kontrol Ulang"){
+        if(id == "kontrol_ulang"){
+            setPelayanan('int_pelayanan_0');
             $('#form_kontrol_ringkasan').show();
         }else{
             $('#form_kontrol_ringkasan').hide();

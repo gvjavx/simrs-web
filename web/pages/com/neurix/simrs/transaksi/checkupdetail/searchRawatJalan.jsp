@@ -65,7 +65,7 @@
                                 </div>
                                 <s:if test="isEnabledPoli()">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">Poli</label>
+                                    <label class="control-label col-sm-4">Pelayanan</label>
                                     <div class="col-sm-4">
                                         <s:action id="initComboPoli" namespace="/checkup"
                                                   name="getComboPelayananRJ_checkup"/>
