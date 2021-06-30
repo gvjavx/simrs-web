@@ -29,6 +29,7 @@ import com.neurix.simrs.master.jenisperiksapasien.dao.AsuransiDao;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
 import com.neurix.simrs.master.kurir.dao.KurirDao;
 import com.neurix.simrs.master.kurir.model.ImSimrsKurirEntity;
+import com.neurix.simrs.master.license.model.Email;
 import com.neurix.simrs.master.pasien.dao.PasienDao;
 import com.neurix.simrs.master.pasien.dao.PasienSementaraDao;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
@@ -872,7 +873,7 @@ public class TelemedicBoImpl implements TelemedicBo {
         ImSimrsPasienSementaraEntity pasienSementaraEntity = getPasienSementaraById(idPasienSementara);
 
         String noRM = null;
-        if (pasienSementaraEntity != null){
+        if (pasienSementaraEntity != null && null==pasienSementaraEntity.getNoRM()){
             noRM = branchId + dateFormater("yy") + getIdPasien();
             ImSimrsPasienEntity pasienEntity = new ImSimrsPasienEntity();
             pasienEntity.setIdPasien(noRM);
@@ -907,6 +908,7 @@ public class TelemedicBoImpl implements TelemedicBo {
 
             pasienSementaraEntity.setNoRM(noRM);
             pasienSementaraEntity.setAction("U");
+            pasienSementaraEntity.setFlagLogin("N");
             pasienSementaraEntity.setLastUpdate(pasienEntity.getCreatedDate());
             pasienSementaraEntity.setLastUpdateWho(pasienEntity.getLastUpdateWho());
 
@@ -916,6 +918,35 @@ public class TelemedicBoImpl implements TelemedicBo {
                 logger.error("[VerifikatorPembayaranBoImpl.createNoRmAndChangeToMasterPasien] ERROR. when update pasien sementara ", e);
                 throw new GeneralBOException("[VerifikatorPembayaranBoImpl.createNoRmAndChangeToMasterPasien] ERROR. when update pasien sementara " + e.getMessage());
             }
+
+            Email email = new Email();
+            email.setFrom(CommonConstant.EMAIL_USERNAME);
+            email.setPassword(CommonConstant.EMAIL_PASSWORD);
+            email.setTo(pasienSementaraEntity.getEmail());
+            email.setSubject("[GO-MEDSYS MOBILE] User ID Baru untuk login ke aplikasi");
+            email.setMsg("<h2>GO-MEDSYS MOBILE</h2>\n" +
+                    "=========================================\n" +
+                    "<h3>Gunakan ID berikut beserta password anda untuk login ke aplikasi GO-MEDSYS</h3>\n" +
+                    "<br> \n" +
+                    "<table width=\"100%\">\n" +
+                    "<tr>\n" +
+                    "<td width=\"20%\">ID</td>\n" +
+                    "<td>: " + noRM + "</td>\n" +
+                    "</tr>\n" +
+                    "<tr>\n" +
+                    "<td>Nama</td>\n" +
+                    "<td>: " + pasienSementaraEntity.getNama() + "</td>\n" +
+                    "</tr>\n" +
+                    "<tr>\n" +
+                    "<td>No. KTP</td>\n" +
+                    "<td>: " + pasienSementaraEntity.getNoKtp() + "</td>\n" +
+                    "</tr>\n" +
+                    "<tr>\n" +
+                    "</table>\n" +
+                    "=========================================\n" +
+                    "<br> \n" +
+                    "<br>\n");
+            CommonUtil.sendEmail(email);
 
         }
 
