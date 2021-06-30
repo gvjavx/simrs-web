@@ -3473,8 +3473,7 @@ function saveSPS(jenis, ket) {
 
         var cekCanvas = "Y";
         var canvasId = $('.canvas-cek')[0].id;
-
-        if(canvasId != undefined){
+        if(canvasId != undefined && canvasId != ''){
             var canvasArea = document.getElementById(canvasId);
             var canvasCek = document.getElementById('area_cek');
             if (canvasArea.toDataURL() == canvasCek.toDataURL()) {

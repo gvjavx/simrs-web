@@ -15,6 +15,8 @@ import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.vendor.dao.VendorDao;
+import com.neurix.simrs.transaksi.asesmenrawatjalan.dao.KeperawatanRawatJalanDao;
+import com.neurix.simrs.transaksi.asesmenrawatjalan.model.ItSimrsAsesmenKeperawatanRawatJalanEntity;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.hargaobat.dao.HargaObatDao;
@@ -85,6 +87,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     private CatatanPemberianObatDao catatanPemberianObatDao;
     private HeaderObatDao headerObatDao;
     private ObatRacikDao obatRacikDao;
+    private KeperawatanRawatJalanDao keperawatanRawatJalanDao;
 
     @Override
     public List<TransaksiObatDetail> getSearchObatTransaksiByCriteria(TransaksiObatDetail bean) throws GeneralBOException {
@@ -880,44 +883,30 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
         if (batchEntities.size() > 0) {
             for (MtSimrsTransaksiObatDetailBatchEntity batchEntity : batchEntities) {
-
                 TransaksiObatBatch obatBatch = new TransaksiObatBatch();
-                obatBatch.setIdBarang(batchEntity.getIdBarang());
                 obatBatch.setIdTransaksiObatDetail(batchEntity.getIdTransaksiObatDetail());
-
                 List<MtSimrsTransaksiObatDetailBatchEntity> newBatchEntities = getListEntityBatchByCriteria(obatBatch);
-                MtSimrsTransaksiObatDetailBatchEntity newBatchEntity = new MtSimrsTransaksiObatDetailBatchEntity();
 
-                if (newBatchEntities.size() > 0) {
-                    newBatchEntity = newBatchEntities.get(0);
+                if(newBatchEntities.size() > 0){
+                    for (MtSimrsTransaksiObatDetailBatchEntity detailBatchEntity: newBatchEntities){
+                        try {
+                            batchDao.deleteAndSave(detailBatchEntity);
+                        } catch (HibernateException e) {
+                            logger.error("[TransaksiObatBoImpl.saveVerifikasiObat] ERROR when update data batch. ", e);
+                            throw new GeneralBOException("[TransaksiObatBoImpl.getEntityPasienById] ERROR when update data batch. ", e);
+                        }
+                    }
                 }
 
-                if (newBatchEntity.getId() != null) {
-
-                    newBatchEntity.setAction("U");
-                    newBatchEntity.setLastUpdate(batchEntity.getLastUpdate());
-                    newBatchEntity.setLastUpdateWho(batchEntity.getLastUpdateWho());
-
-                    try {
-                        batchDao.updateAndSave(newBatchEntity);
-                    } catch (HibernateException e) {
-                        logger.error("[TransaksiObatBoImpl.saveVerifikasiObat] ERROR when insert data batch. ", e);
-                        throw new GeneralBOException("[TransaksiObatBoImpl.getEntityPasienById] ERROR when insert data batch. ", e);
-                    }
-
-                } else {
-
-                    String seqBatch = batchDao.getNextId();
-                    batchEntity.setId("TBA"+seqBatch);
-                    batchEntity.setStatus("Y");
-                    batchEntity.setNoBatch(1);
-
-                    try {
-                        batchDao.addAndSave(batchEntity);
-                    } catch (HibernateException e) {
-                        logger.error("[TransaksiObatBoImpl.saveVerifikasiObat] ERROR when update data batch. ", e);
-                        throw new GeneralBOException("[TransaksiObatBoImpl.getEntityPasienById] ERROR when update data batch. ", e);
-                    }
+                String seqBatch = batchDao.getNextId();
+                batchEntity.setId("TBA"+seqBatch);
+                batchEntity.setStatus("Y");
+                batchEntity.setNoBatch(1);
+                try {
+                    batchDao.addAndSave(batchEntity);
+                } catch (HibernateException e) {
+                    logger.error("[TransaksiObatBoImpl.saveVerifikasiObat] ERROR when update data batch. ", e);
+                    throw new GeneralBOException("[TransaksiObatBoImpl.getEntityPasienById] ERROR when update data batch. ", e);
                 }
             }
 
@@ -1547,6 +1536,23 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                                     }
                                 }
                             }
+                        }
+                    }
+                }
+
+                if(bean.getRawatJalanEntityList().size() > 0){
+                    for (ItSimrsAsesmenKeperawatanRawatJalanEntity entity: bean.getRawatJalanEntityList()){
+                        entity.setIdKeperawatanRawatJalan("KRJ"+keperawatanRawatJalanDao.getNextSeq());
+                        entity.setCreatedDate(bean.getLastUpdate());
+                        entity.setCreatedWho(bean.getLastUpdateWho());
+                        entity.setLastUpdate(bean.getLastUpdate());
+                        entity.setLastUpdateWho(bean.getLastUpdateWho());
+                        entity.setAction("C");
+                        entity.setFlag("Y");
+                        try {
+                            keperawatanRawatJalanDao.addAndSave(entity);
+                        }catch (HibernateException e){
+                            logger.error(e.getMessage());
                         }
                     }
                 }
@@ -3157,5 +3163,9 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
     public void setObatRacikDao(ObatRacikDao obatRacikDao) {
         this.obatRacikDao = obatRacikDao;
+    }
+
+    public void setKeperawatanRawatJalanDao(KeperawatanRawatJalanDao keperawatanRawatJalanDao) {
+        this.keperawatanRawatJalanDao = keperawatanRawatJalanDao;
     }
 }

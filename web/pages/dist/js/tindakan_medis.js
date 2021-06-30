@@ -1,7 +1,6 @@
 function pilihTindakanMedis(val, name, id) {
     var namaTindakan = "";
     if (val != '') {
-
         $('#form-' + id).show();
         $('#tindakan_medis_' + id).val(name);
 
@@ -48,6 +47,15 @@ function pilihTindakanMedis(val, name, id) {
 
                 if ("l" == item.infoType) {
                     informasi += item.infoValue + '<input type="hidden" value="' + item.infoValue + '" name="informasi' + i + '">';
+                }
+
+                if ("n" == item.infoType) {
+                    var info = item.infoValue.split("|");
+                    var temp = "";
+                    $.each(info, function (idx, itemx) {
+                        temp += '<li>'+itemx+'</li>';
+                    });
+                    informasi += '<ul style="margin-left: 20px">'+temp+'</ul>' + '<input type="hidden" value="' + item.infoValue + '" name="informasi' + i + '">';
                 }
 
                 var cekList = '<div class="row">' +
@@ -965,8 +973,7 @@ function kategoriTindakanMedis(tipe) {
 
 function selectOptionTM(tipe, id) {
     var option = '<option value="">[Select One]</option>';
-
-    TindakanMedisAction.getListTindakanMedis(tipe,function(listData){
+    TindakanMedisAction.getListTindakanMedis("", function(listData){
         $.each(listData, function (i, item) {
             option += '<option value="' + item.id + '">' + item.name + '</option>';
         });
@@ -976,6 +983,10 @@ function selectOptionTM(tipe, id) {
 
 }
 
-function setTindakanMedisValue(id, tipe, name, idHidden){
-    $('#'+idHidden).val(name);
+function setTindakanMedisValue(id, tipe, idHidden){
+    $.each(kategoriTindakanMedis(tipe), function (i, item) {
+        if(id == item.id_tindakan){
+            $('#'+idHidden).val(item.nama_tindakan);
+        }
+    });
 }

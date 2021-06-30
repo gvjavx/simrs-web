@@ -4,6 +4,7 @@ import com.neurix.common.dao.GenericDao;
 
 import com.neurix.simrs.master.tindakanmedis.model.ImSimrsTindakanMedisEntity;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
@@ -39,6 +40,7 @@ public class TindakanMedisDao extends GenericDao<ImSimrsTindakanMedisEntity, Str
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
         }
 
+        criteria.addOrder(Order.asc("id"));
         return criteria.list();
     }
 }

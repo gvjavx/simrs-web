@@ -1047,6 +1047,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/IcuAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/KandunganAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/KeperawatanRawatJalanAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/fisioterapi.js"/>'></script>
@@ -1080,6 +1081,7 @@
     var idDetailCheckup = $('#no_detail_checkup').val();
     var contextPath = '<%= request.getContextPath() %>';
     var idPasien = $('#id_pasien').val();
+    var jenisPeriksaPasien = $('#jenis_pasien').val();
 
     var tglLhr = $('#h_tgl_lahir').val();
     var tglLahir = tglLhr.split("-").reverse().join("-");

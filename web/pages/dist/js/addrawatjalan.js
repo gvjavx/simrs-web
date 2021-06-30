@@ -833,7 +833,7 @@ function listSelectTindakan(idKategori) {
     var option = "<option value=''> - </option>";
     if (idKategori != '') {
         dwr.engine.setAsync(true);
-        CheckupDetailAction.getListComboTindakan(idKategori, idKelasRuangan, flagVaksin, {
+        CheckupDetailAction.getListComboTindakan(idKategori, idKelasRuangan, flagVaksin, idPoli, {
             callback:function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {

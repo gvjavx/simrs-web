@@ -1538,7 +1538,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="row">
-                                                <label class="col-md-5">Apakah Ada Uang Muka ?</label>
+                                                <label class="col-md-5">Apakah Ada Deposit ?</label>
                                                 <div class="col-md-7">
                                                     <div class="form-check">
                                                         <input onclick="isUangMuka(this.id)" type="checkbox" id="is_uang_muka" value="yes">
@@ -1592,14 +1592,14 @@
                             <div id="form-uang-muka" style="display: none">
                                 <div class="box-header with-border"></div>
                                 <div class="box-header with-border">
-                                    <h3 class="box-title"><i class="fa fa-money"></i> Uang Muka</h3>
+                                    <h3 class="box-title"><i class="fa fa-money"></i> Deposit</h3>
                                 </div>
                                 <div class="box-body">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="row">
                                                 <div class="form-group">
-                                                    <label class="col-md-4" style="margin-top: 10px">Uang Muka</label>
+                                                    <label class="col-md-4" style="margin-top: 10px">Deposit</label>
                                                     <div class="col-md-8">
                                                         <div class="input-group" style="margin-top: 7px">
                                                             <div class="input-group-addon">
