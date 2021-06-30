@@ -285,7 +285,8 @@ public class PermintaanObatController implements ModelDriven<Object> {
                 response.put("data",listOfPermintaanObat);
                 return response;
             case "getRequestObat":
-                return listOfPermintaanObat;
+                response.put("data",listOfPermintaanObat);
+                return response;
             case "getListObatTelahDiterima":
                 return listOfTransaksiObatDetail;
             case "getListObat":
@@ -295,6 +296,10 @@ public class PermintaanObatController implements ModelDriven<Object> {
                 response.put("data",listOfObat);
                 return response;
             case "saveVerifikasi":
+                return response;
+            case "updateDiterimaFlag":
+                return response;
+            case "saveApproveDiterima":
                 return response;
             case "getComboParameterWaktu":
                 return listOfPermintaanObat;
@@ -571,6 +576,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
             try {
                 result = obatPoliBoProxy.getListObatDetailRequest(bean);
             } catch (GeneralBOException e){
+                response.put("actionError",e.toString());
                 logger.error("[PermintaanObatController.create] Error, get Request Obat " + e.getMessage());
             }
 
@@ -623,8 +629,9 @@ public class PermintaanObatController implements ModelDriven<Object> {
 
             try{
                 obatPoliBoProxy.updateDiterimaFlagBatch(batch);
-                model.setMessage("Success");
+                response.put("actionSuccess","Sukses");
             } catch (GeneralBOException e){
+                response.put("actionError",e.toString());
                 logger.error("[PermintaanObatController.create] Error, update flag " + e.getMessage());
 
             }
@@ -673,12 +680,14 @@ public class PermintaanObatController implements ModelDriven<Object> {
                 result = obatPoliBoProxy.getSearchPermintaanObatPoli(bean, isPoli);
             } catch (GeneralBOException e){
                 logger.error("[PermintaanObatController.create] Error, get search poli " + e.getMessage());
+                response.put("actionError",e.toString());
             }
             try{
                 obatPoliBoProxy.saveApproveDiterima(result.get(0), jsonObatDetail);
-                model.setMessage("Success");
+                response.put("actionSuccess","sukses");
             } catch (GeneralBOException e){
                 logger.error("[PermintaanObatController.create] Error, update flag " + e.getMessage());
+                response.put("actionError",e.toString());
 
             }
         }
