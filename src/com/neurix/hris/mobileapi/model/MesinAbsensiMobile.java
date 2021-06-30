@@ -17,6 +17,10 @@ public class MesinAbsensiMobile {
     private String verifyMode;
     private String workCode;
 
+    /** for temporary handling data checkin and checkout for mobile */
+    private String absMasuk;
+    private String absKeluar;
+
     private String statusName;
     private String tanggal;
     private String jenisLembur;
@@ -144,6 +148,22 @@ public class MesinAbsensiMobile {
 
     public void setIjinName(String ijinName) {
         this.ijinName = ijinName;
+    }
+
+    public void setAbsMasuk(String absMasuk) {
+        this.absMasuk = absMasuk;
+    }
+
+    public String getAbsMasuk() {
+        return absMasuk;
+    }
+
+    public void setAbsKeluar(String absKeluar) {
+        this.absKeluar = absKeluar;
+    }
+
+    public String getAbsKeluar() {
+        return absKeluar;
     }
 
     public String getJamKeluarIjin() {
