@@ -674,6 +674,8 @@ public class CutiPegawaiAction extends BaseMasterAction {
         searchAlat.setRoleId(CommonUtil.roleIdAsLogin());
         if (!"ADMIN".equalsIgnoreCase(role)&&!"Admin bagian".equalsIgnoreCase(role)) {
             searchAlat.setNip(CommonUtil.userIdLogin());
+        }else{
+            setAdmin(true);
         }
 
         if(!("Admin Bagian").equalsIgnoreCase(CommonUtil.roleAsLogin())){
