@@ -220,10 +220,6 @@ public class TelemedicBoImpl implements TelemedicBo {
         this.pasienDao = pasienDao;
     }
 
-    public PasienSementaraDao getPasienSementaraDao() {
-        return pasienSementaraDao;
-    }
-
     public TelemedicDao getTelemedicDao() {
         return telemedicDao;
     }
@@ -252,6 +248,7 @@ public class TelemedicBoImpl implements TelemedicBo {
                 antritanTelemedicData.setNamaPelayanan(getPelayananById(antritanTelemedicData.getIdPelayanan()).getNamaPelayanan());
             }
             if (antritanTelemedicData.getIdPasien() != null && !"".equalsIgnoreCase(antritanTelemedicData.getIdPasien())) {
+
                 ImSimrsPasienEntity pasienEntity = getPasienById(antritanTelemedicData.getIdPasien());
                 if (pasienEntity == null){
 
@@ -590,7 +587,7 @@ public class TelemedicBoImpl implements TelemedicBo {
 
     @Override
     public ImSimrsPasienSementaraEntity getPasienSementaraById(String idPasien) throws GeneralBOException{
-        return pasienSementaraDao.getById("id", idPasien);
+        return pasienSementaraDao.getById("id", idPasien, "Y");
     }
 
     @Override
@@ -907,6 +904,7 @@ public class TelemedicBoImpl implements TelemedicBo {
             }
 
             pasienSementaraEntity.setNoRM(noRM);
+            pasienSementaraEntity.setFlag("N");
             pasienSementaraEntity.setAction("U");
             pasienSementaraEntity.setFlagLogin("N");
             pasienSementaraEntity.setLastUpdate(pasienEntity.getCreatedDate());
