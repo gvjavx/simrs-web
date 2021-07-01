@@ -28,9 +28,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author gondok
@@ -78,6 +76,8 @@ public class TransaksiApotekController implements ModelDriven<Object> {
     private String action;
 
     private String jenisPasien;
+
+    private Map<String,Object> response = new HashMap<>();
 
     public String getJenisPasien() {
         return jenisPasien;
@@ -301,7 +301,8 @@ public class TransaksiApotekController implements ModelDriven<Object> {
     public Object getModel() {
         switch (action){
             case "getListResep" :
-                return listOfPermintaanResep;
+                response.put("data",listOfPermintaanResep);
+                return response;
             case "getSearchTransaksiByCriteria" :
                 return listOfTransaksiObat;
             case "getObatPoliByCriteria" :
@@ -409,6 +410,8 @@ public class TransaksiApotekController implements ModelDriven<Object> {
         bean.setNoCheckup(noCheckupDetail);
         bean.setStatus(status);
         bean.setIsUmum(isUmum);
+        //SYAMS 1JUL21 => tambah filter idpelayanan
+        bean.setTujuanPelayanan(idPelayanan);
 
 
         if (action.equalsIgnoreCase("getListResep")){
@@ -418,6 +421,7 @@ public class TransaksiApotekController implements ModelDriven<Object> {
             try {
                result = transaksiObatBoProxy.getListResepPasien(bean);
             } catch (GeneralBOException e) {
+                response.put("actionError",e.toString());
                 logger.error("[TransaksiApotekController.create] Error, get List Resep " + e.getMessage());
             }
 
