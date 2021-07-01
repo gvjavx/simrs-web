@@ -3878,7 +3878,7 @@ function detailSPS(jenis) {
         var last = "";
         var tgl = "";
         var cekData = false;
-        AsesmenSpesialisAction.getListDetail(idDetailCheckup, jenis, function (res) {
+        AsesmenSpesialisAction.getListDetail(noCheckup, jenis, function (res) {
             if (res.length > 0) {
                 $.each(res, function (i, item) {
                     var jwb = "";

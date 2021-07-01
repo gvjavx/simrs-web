@@ -2881,6 +2881,19 @@ SET flag = 'Y',
     last_update = now(),
     last_update_who = 'admin';
 
+ALTER TABLE it_simrs_asesmen_poli_spesialis
+ADD COLUMN no_checkup VARCHAR(50);
+
+ALTER TABLE it_simrs_asesmen_keperawatan_rawat_jalan
+ADD COLUMN no_checkup VARCHAR(50);
+
+ALTER TABLE it_simrs_asesmen_ugd
+ADD COLUMN no_checkup VARCHAR(50);
+
+UPDATE im_simrs_rekam_medis_pasien
+SET jumlah_kategori = '2'
+WHERE id_rekam_medis_pasien = 'RMM00000001';
+
 /=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
 ---------------------------------N O T E - PERGOOGKAN -------------------------------------------------------
 ------------------------------------- 23 06 2021 ---------------------------------------------------------------

@@ -30,6 +30,9 @@ public class AsesmenSpesialisDao extends GenericDao<ItSimrsAsesmenSpesialisEntit
             if (mapCriteria.get("id_detail_checkup")!=null) {
                 criteria.add(Restrictions.eq("idDetailCheckup", (String) mapCriteria.get("id_detail_checkup")));
             }
+            if (mapCriteria.get("no_checkup")!=null) {
+                criteria.add(Restrictions.eq("noCheckup", (String) mapCriteria.get("no_checkup")));
+            }
             if (mapCriteria.get("keterangan")!=null) {
                 criteria.add(Restrictions.eq("keterangan", (String) mapCriteria.get("keterangan")));
             }

@@ -40,10 +40,10 @@ public class KeperawatanRawatJalanAction {
 
         try {
             JSONArray json = new JSONArray(data);
-            JSONObject dtObj = new JSONObject(dataPasien);
+            JSONObject pasienObject = new JSONObject(dataPasien);
             String noCheckup = null;
-            if(dtObj.has("no_checkup")){
-                noCheckup = dtObj.getString("no_checkup");
+            if(pasienObject.has("no_checkup")){
+                noCheckup = pasienObject.getString("no_checkup");
             }
             List<KeperawatanRawatJalan> keperawatanRawatJalanList = new ArrayList<>();
             for (int i = 0; i < json.length(); i++) {
@@ -121,13 +121,12 @@ public class KeperawatanRawatJalanAction {
                 response = keperawatanRawatJalanBo.saveAdd(keperawatanRawatJalanList);
                 if("success".equalsIgnoreCase(response.getStatus())){
                     RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
-                    JSONObject obj = new JSONObject(dataPasien);
-                    if(obj != null){
+                    if(pasienObject != null){
                         StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
-                        status.setNoCheckup(obj.getString("no_checkup"));
-                        status.setIdDetailCheckup(obj.getString("id_detail_checkup"));
-                        status.setIdPasien(obj.getString("id_pasien"));
-                        status.setIdRekamMedisPasien(obj.getString("id_rm"));
+                        status.setNoCheckup(pasienObject.getString("no_checkup"));
+                        status.setIdDetailCheckup(pasienObject.getString("id_detail_checkup"));
+                        status.setIdPasien(pasienObject.getString("id_pasien"));
+                        status.setIdRekamMedisPasien(pasienObject.getString("id_rm"));
                         status.setIsPengisian("Y");
                         status.setAction("C");
                         status.setFlag("Y");
@@ -151,14 +150,14 @@ public class KeperawatanRawatJalanAction {
         return response;
     }
 
-    public List<KeperawatanRawatJalan> getListAsesmenRawat(String idDetailCheckup, String keterangan) {
+    public List<KeperawatanRawatJalan> getListAsesmenRawat(String noCheckup, String keterangan) {
         List<KeperawatanRawatJalan> list = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         KeperawatanRawatJalanBo keperawatanRawatJalanBo = (KeperawatanRawatJalanBo) ctx.getBean("keperawatanRawatJalanBoProxy");
-        if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(keterangan)) {
+        if (!"".equalsIgnoreCase(noCheckup) && !"".equalsIgnoreCase(keterangan)) {
             try {
                 KeperawatanRawatJalan keperawatanRawatJalan = new KeperawatanRawatJalan();
-                keperawatanRawatJalan.setIdDetailCheckup(idDetailCheckup);
+                keperawatanRawatJalan.setNoCheckup(noCheckup);
                 keperawatanRawatJalan.setKeterangan(keterangan);
                 list = keperawatanRawatJalanBo.getByCriteria(keperawatanRawatJalan);
             } catch (GeneralBOException e) {
