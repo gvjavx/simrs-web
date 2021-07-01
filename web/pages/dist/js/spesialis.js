@@ -3587,10 +3587,10 @@ function saveSPS(jenis, ket) {
                 });
                 $.each(psk5, function (i, item) {
                     if(item.checked && item.value != ''){
-                        if(temp4 != ''){
-                            temp4 = temp4+', '+item.value;
+                        if(temp5 != ''){
+                            temp5 = temp5+', '+item.value;
                         }else{
-                            temp4 = item.value;
+                            temp5 = item.value;
                         }
                     }
                 });
@@ -3632,7 +3632,7 @@ function saveSPS(jenis, ket) {
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
-                    'parameter': 'Tingkat Kgonitif',
+                    'parameter': 'Tingkat Kognitif',
                     'jawaban': temp5,
                     'keterangan': jenis,
                     'jenis': ket,

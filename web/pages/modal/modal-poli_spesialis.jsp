@@ -286,7 +286,7 @@
                         </div>
                         <hr>
                         <div class="row">
-                            <label class="col-md-4">Tingkat Kgonitif</label>
+                            <label class="col-md-4">Tingkat Kognitif</label>
                             <div class="col-md-4">
                                 <div class="form-check">
                                     <input type="checkbox" name="psk5" id="psk51" value="Koheren">
