@@ -1526,6 +1526,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
             hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
         }
+        if (bean.getIsPelayanan() != null && !"".equalsIgnoreCase(bean.getIsPelayanan())) {
+            hsCriteria.put("is_pelayanan", bean.getIsPelayanan());
+        }
 
         hsCriteria.put("flag", "Y");
         try {

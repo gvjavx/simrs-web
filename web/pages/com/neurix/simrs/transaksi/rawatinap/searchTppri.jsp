@@ -1657,8 +1657,19 @@
 
     function printPernyataan(kode, idRm, flag, namaRm) {
         if(kode == "CK01"){
-            $('#save_ttd_concent').attr('onclick', 'saveResume(\'' + kode + '\', \'' + idRm + '\')');
-            $('#modal-ttd_concent').modal('show');
+            KeperawatanRawatJalanAction.getListAsesmenRawat(noCheckup, "general_concent", function (res) {
+                console.log(res);
+                console.log(noCheckup);
+                if(res.length > 0){
+                    $('#tanya').text("Apakah anda yakin print ?");
+                    $('#print_form').text(namaRm);
+                    $('#save_con_rm').attr('onclick', 'printPernyataanRM(\'' + kode + '\', \'' + idRm + '\')');
+                    $('#modal-confirm-rm').modal('show');
+                }else{
+                    $('#save_ttd_concent').attr('onclick', 'saveResume(\'' + kode + '\', \'' + idRm + '\')');
+                    $('#modal-ttd_concent').modal('show');
+                }
+            });
         }else{
             $('#tanya').text("Apakah anda yakin print ?");
             $('#print_form').text(namaRm);

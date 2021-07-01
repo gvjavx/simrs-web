@@ -1268,7 +1268,7 @@ function listTindakan() {
     var table = "";
     var data = [];
     var trfTtl = 0;
-    TindakanRawatAction.listTindakanRawat(idDetailCheckup, function (response) {
+    TindakanRawatAction.listTindakanRawat(idDetailCheckup, null, function (response) {
         data = response;
         if (data.length > 0) {
             $.each(data, function (i, item) {

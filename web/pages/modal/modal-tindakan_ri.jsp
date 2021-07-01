@@ -245,7 +245,7 @@
                                 <canvas class="paint-canvas-ttd" id="ttd5" width="220" height="100"
                                         onmouseover="paintTtd('ttd5')"></canvas>
                                 <input class="form-control" id="nama_terang_ttd5" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_ttd5" placeholder="SIP">
+                                <%--<input style="margin-top: 3px" class="form-control" id="sip_ttd5" placeholder="SIP">--%>
                             </div>
                             <div class="col-md-1">
                                 <button style="margin-left: -100px; margin-top: 10px" type="button" class="btn btn-danger"

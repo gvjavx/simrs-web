@@ -652,6 +652,7 @@ public class PeriksaLabAction extends BaseTransactionAction {
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+            CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
             if (data != null && !"".equalsIgnoreCase(data)) {
                 JSONObject obj = new JSONObject(data);

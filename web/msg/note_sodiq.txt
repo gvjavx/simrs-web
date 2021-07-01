@@ -2865,6 +2865,8 @@ INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ------------------------------------- 28 06 2021 ---------------------------------------------------------------
 /=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
 
+--import data txt dulu baru execute ini
+--start execute----------------------
 UPDATE im_simrs_tindakan_medis_detail
 SET flag = 'Y',
     action = 'C',
@@ -2880,6 +2882,7 @@ SET flag = 'Y',
     created_who = 'admin',
     last_update = now(),
     last_update_who = 'admin';
+--end execute-----------------------
 
 ALTER TABLE it_simrs_asesmen_poli_spesialis
 ADD COLUMN no_checkup VARCHAR(50);
@@ -2893,6 +2896,9 @@ ADD COLUMN no_checkup VARCHAR(50);
 UPDATE im_simrs_rekam_medis_pasien
 SET jumlah_kategori = '2'
 WHERE id_rekam_medis_pasien = 'RMM00000001';
+
+ALTER TABLE it_simrs_tindakan_rawat
+ADD COLUMN is_pelayanan VARCHAR(1);
 
 /=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
 ---------------------------------N O T E - PERGOOGKAN -------------------------------------------------------
