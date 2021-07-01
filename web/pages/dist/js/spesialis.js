@@ -73,6 +73,12 @@ function showModalSPS(jenis, idRM, isSetIdRM) {
             $('#form-gambar').show();
             loadImgToCanvas(url, 'area_kulit_kelamin');
         }
+
+        if("spesialis_psikiatri_narkoba" == tipePelayanan || "spesialis_psikiater_psikolog" == tipePelayanan){
+            $('#form_psikiatri').show();
+        }else{
+            $('#form_psikiatri').hide();
+        }
     }
 
     if ("spesialis_gigi" == jenis) {
@@ -3488,6 +3494,15 @@ function saveSPS(jenis, ket) {
         var sip = $('#sip_dpjp').val();
         var cekDpjp = isCanvasBlank(ttdDpjp);
 
+        var psk1 = $('[name=psk1]');
+        var psk2 = $('[name=psk2]');
+        var psk3 = $('[name=psk3]');
+        var psk4 = $('[name=psk4]');
+        var psk5 = $('[name=psk5]');
+        var psk6 = $('[name=psk6]:checked').val();
+        var psk7 = $('[name=psk7]:checked').val();
+        var psk8 = $('[name=psk8]:checked').val();
+
         if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 &&
             va10 && va11 && va12 && va13 && va14 && sip && nama != '' && !cekDpjp) {
             data.push({
@@ -3527,6 +3542,124 @@ function saveSPS(jenis, ket) {
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
+            if("spesialis_psikiatri_narkoba" == tipePelayanan || "spesialis_psikiater_psikolog" == tipePelayanan){
+                var temp1 = "";
+                var temp2 = "";
+                var temp3 = "";
+                var temp4 = "";
+                var temp5 = "";
+
+                $.each(psk1, function (i, item) {
+                    if(item.checked && item.value != ''){
+                        if(temp1 != ''){
+                            temp1 = temp1+', '+item.value;
+                        }else{
+                            temp1 = item.value;
+                        }
+                    }
+                });
+                $.each(psk2, function (i, item) {
+                    if(item.checked && item.value != ''){
+                        if(temp2 != ''){
+                            temp2 = temp2+', '+item.value;
+                        }else{
+                            temp2 = item.value;
+                        }
+                    }
+                });
+                $.each(psk3, function (i, item) {
+                    if(item.checked && item.value != ''){
+                        if(temp3 != ''){
+                            temp3 = temp3+', '+item.value;
+                        }else{
+                            temp3 = item.value;
+                        }
+                    }
+                });
+                $.each(psk4, function (i, item) {
+                    if(item.checked && item.value != ''){
+                        if(temp4 != ''){
+                            temp4 = temp4+', '+item.value;
+                        }else{
+                            temp4 = item.value;
+                        }
+                    }
+                });
+                $.each(psk5, function (i, item) {
+                    if(item.checked && item.value != ''){
+                        if(temp4 != ''){
+                            temp4 = temp4+', '+item.value;
+                        }else{
+                            temp4 = item.value;
+                        }
+                    }
+                });
+
+                data.push({
+                    'parameter': 'Khusus Psikiatri',
+                    'jawaban': "",
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'tipe': 'colspan',
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Persepsi (Halusinasi)',
+                    'jawaban': temp1,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Proses Pikir',
+                    'jawaban': temp2,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Isi Pikir',
+                    'jawaban': temp3,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Waham',
+                    'jawaban': temp4,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Tingkat Kgonitif',
+                    'jawaban': temp5,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Memori/daya ingat',
+                    'jawaban': psk6 != undefined ? psk6 : "",
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Tingkat konsentrasi dan berhitung',
+                    'jawaban': psk7 != undefined ? psk7 : "",
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Mengingkari penyakit yang diderita',
+                    'jawaban': psk8 != undefined ? psk8 : "",
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
             data.push({
                 'parameter': 'Pemeriksaan',
                 'jawaban': "",
