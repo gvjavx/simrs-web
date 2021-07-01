@@ -458,7 +458,8 @@ public class DokterController implements ModelDriven<Object> {
             }
 
         }
-        if (action.equalsIgnoreCase("getRequestDpjp")) {
+        // Update by fahmi, penambahan pengecheckkan saat pengambilan data, di dokterMobile.setTglLahir
+        else if (action.equalsIgnoreCase("getRequestDpjp")) {
 
             listOfDokter = new ArrayList<>();
             List<DokterTeam> listRequestDokter = new ArrayList<>();
@@ -519,7 +520,7 @@ public class DokterController implements ModelDriven<Object> {
                     dokterMobile.setTglLahir(detailPasien.getStTglLahir());
                     dokterMobile.setNoRuangan(detailPasien.getNoRuangan());
                     dokterMobile.setKelasRuangan(detailPasien.getNamaRuangan());
-                    dokterMobile.setTglLahir(CommonUtil.convertDateToString(detailPasien.getTglLahir()));
+                    dokterMobile.setTglLahir(null!=detailPasien.getTglLahir()?CommonUtil.convertDateToString(detailPasien.getTglLahir()):"");
                     dokterMobile.setUmur(CommonUtil.calculateAge(detailPasien.getTglLahir(),true));
                     dokterMobile.setJalan(detailPasien.getJalan());
                     dokterMobile.setJenisKelamin(detailPasien.getJenisKelamin());
