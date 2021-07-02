@@ -262,16 +262,33 @@
                                                         <s:set name="listOfLembur" value="#session.listOfResultLembur" scope="request" />
                                                         <display:table name="listOfLembur" class="tableLembur table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_lembur.action" export="true" id="row" pagesize="14" style="font-size:10">
-                                                            <display:column media="html" title="Delete">
+                                                            <display:column media="html" title="View / Delete">
                                                                 <s:if test="#attr.row.terRealisasi">
+                                                                    <s:url var="urlView" namespace="/lembur" action="delete_lembur" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.lemburId"/></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                        <s:param name="approve"><s:property value="#attr.row.lemburApprove"/></s:param>
+                                                                    </s:url>
+                                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlView}">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
+                                                                    </sj:a>
                                                                 </s:if>
                                                                 <s:else>
                                                                     <s:if test="#attr.row.lemburApprove">
+                                                                        <s:url var="urlView" namespace="/lembur" action="delete_lembur" escapeAmp="false">
+                                                                            <s:param name="id"><s:property value="#attr.row.lemburId"/></s:param>
+                                                                            <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                            <s:param name="approve"><s:property value="#attr.row.lemburApprove"/></s:param>
+                                                                        </s:url>
+                                                                        <sj:a onClickTopics="showDialogMenu" href="%{urlView}">
+                                                                            <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
+                                                                        </sj:a>
                                                                     </s:if>
                                                                     <s:else>
                                                                         <s:url var="urlEdit" namespace="/lembur" action="delete_lembur" escapeAmp="false">
                                                                             <s:param name="id"><s:property value="#attr.row.lemburId"/></s:param>
                                                                             <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                            <s:param name="approve"><s:property value="#attr.row.lemburApprove"/></s:param>
                                                                         </s:url>
                                                                         <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
                                                                             <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_edit">

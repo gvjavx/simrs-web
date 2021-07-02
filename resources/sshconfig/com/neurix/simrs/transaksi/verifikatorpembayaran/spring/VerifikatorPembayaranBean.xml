@@ -39,6 +39,8 @@
           p:strukAsuransiDao-ref="strukAsuransiDao"
           p:headerTindakanDao-ref="headerTindakanDao"
           p:jadwalShiftKerjaDetailDao-ref="jadwalShiftKerjaDetailDao"
+          p:pasienSementaraDao-ref="pasienSementaraDao"
+          p:pasienDao-ref="pasienDao"
     />
 
     <bean id="verifikatorPembayaranBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

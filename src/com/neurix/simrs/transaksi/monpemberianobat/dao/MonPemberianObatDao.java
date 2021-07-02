@@ -61,7 +61,7 @@ public class MonPemberianObatDao extends GenericDao<ItSimrsMonPemberianObatEntit
                 "FROM mt_simrs_permintaan_resep a\n" +
                 "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
                 "INNER JOIN im_simrs_header_obat c ON b.id_obat = c.id_obat\n" +
-                "INNER JOIN im_simrs_bentuk_barang d ON c.id_bentuk = d.id_bentuk\n" +
+                "LEFT JOIN im_simrs_bentuk_barang d ON c.id_bentuk = d.id_bentuk\n" +
                 "WHERE a.id_detail_checkup = '"+idDetailCheckup+"'\n" +
                 "AND a.status = '3'\n" +
                 "AND c.flag_parenteral = 'N' \n" +
@@ -91,7 +91,7 @@ public class MonPemberianObatDao extends GenericDao<ItSimrsMonPemberianObatEntit
                 "FROM mt_simrs_permintaan_resep a\n" +
                 "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
                 "INNER JOIN im_simrs_header_obat c ON b.id_obat = c.id_obat\n" +
-                "INNER JOIN im_simrs_bentuk_barang d ON c.id_bentuk = d.id_bentuk\n" +
+                "LEFT JOIN im_simrs_bentuk_barang d ON c.id_bentuk = d.id_bentuk\n" +
                 "WHERE a.id_detail_checkup = '"+idDetailCheckup+"'\n" +
                 "AND a.status = '3'\n" +
                 "AND c.flag_parenteral = 'Y' \n" +

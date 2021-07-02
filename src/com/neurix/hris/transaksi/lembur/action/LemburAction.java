@@ -1,6 +1,7 @@
 package com.neurix.hris.transaksi.lembur.action;
 
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
@@ -39,6 +40,24 @@ public class LemburAction extends BaseMasterAction {
     private Lembur lembur;
     private String nip;
     private String stTanggal;
+    private boolean admin=false;
+    private boolean approve;
+
+    public boolean isApprove() {
+        return approve;
+    }
+
+    public void setApprove(boolean approve) {
+        this.approve = approve;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
 
     public PositionBagianBo getPositionBagianBoProxy() {
         return positionBagianBoProxy;
@@ -219,6 +238,7 @@ public class LemburAction extends BaseMasterAction {
         logger.info("[LemburAction.delete] start process >>>");
         String itemId = getId();
         String itemFlag = getFlag();
+        boolean approve = isApprove();
         Lembur deleteLembur = new Lembur();
         if(itemFlag != null){
             try {
@@ -250,7 +270,13 @@ public class LemburAction extends BaseMasterAction {
             addActionError("Error, Unable to edit again with flag = N.");
             return "failure";
         }
-        setAddOrEdit(true);
+        if(isApprove()){
+            setAddOrEdit(true);
+            setDelete(false);
+        }else{
+            setAddOrEdit(false);
+            setDelete(true);
+        }
         logger.info("[LemburAction.delete] end process >>>");
         return "init_delete";
     }
@@ -275,10 +301,17 @@ public class LemburAction extends BaseMasterAction {
         List<Lembur> listOfSearchLemburFinal = new ArrayList();
         String role = CommonUtil.roleAsLogin();
         if ("ADMIN".equalsIgnoreCase(role)||"Admin bagian".equalsIgnoreCase(role)){
+            setAdmin(true);
         }
         else{
             searchLembur.setNip(CommonUtil.userIdLogin());
         }
+
+//        if ((CommonConstant.ROLE_ID_ADMIN).equalsIgnoreCase(CommonUtil.roleIdAsLogin())||(CommonConstant.ROLE_ID_ADMIN_SUPER).equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
+//            setAdmin(true);
+//        }else{
+//            setNip(CommonUtil.userIdLogin());
+//        }
 
         if(!("Admin Bagian").equalsIgnoreCase(CommonUtil.roleAsLogin())){
             listOfSearchLembur = lemburBoProxy.getByCriteria(searchLembur);
@@ -401,7 +434,11 @@ public class LemburAction extends BaseMasterAction {
     public String initForm() {
         logger.info("[lemburAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
-
+        if ((CommonConstant.ROLE_ID_ADMIN).equalsIgnoreCase(CommonUtil.roleIdAsLogin())||(CommonConstant.ROLE_ID_ADMIN_SUPER).equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
+            setAdmin(true);
+        }else{
+            setNip(CommonUtil.userIdLogin());
+        }
         session.removeAttribute("listOfResultLembur");
         logger.info("[lemburAction.initForm] end process >>>");
         return INPUT;
