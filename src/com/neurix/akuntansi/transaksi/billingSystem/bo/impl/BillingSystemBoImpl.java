@@ -187,9 +187,6 @@ public class BillingSystemBoImpl implements BillingSystemBo {
     private VerifikatorPembayaranDao verifikatorPembayaranDao;
     private TelemedicDao telemedicDao;
 
-    ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-    TutupPeriodBo tutupPeriodBo = (TutupPeriodBo) ctx.getBean("tutupPeriodBoProxy");
-
     public void setTelemedicDao(TelemedicDao telemedicDao) {
         this.telemedicDao = telemedicDao;
     }
@@ -4110,6 +4107,9 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
         logger.info("[BillingSystemBoImpl.saveTutupPeriod] START >>>");
 
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TutupPeriodBo tutupPeriodBo = (TutupPeriodBo) ctx.getBean("tutupPeriodBoProxy");
+
         // jika ada transitoris
         if (!"12a".equalsIgnoreCase(tutupPeriod.getTipePeriode()) && !"12b".equalsIgnoreCase(tutupPeriod.getTipePeriode())){
 
@@ -4247,6 +4247,9 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
     private void createJurnalBalikAkhirTahun(TutupPeriod tutupPeriod){
         logger.info("[BillingSystemBoImpl.createJurnalBalikAkhirTahun] START >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TutupPeriodBo tutupPeriodBo = (TutupPeriodBo) ctx.getBean("tutupPeriodBoProxy");
 
         ImBranchesPK primaryKey = new ImBranchesPK();
         primaryKey.setId(tutupPeriod.getUnit());
@@ -4432,6 +4435,9 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
     private void createSaldoAkhirTahun(TutupPeriod tutupPeriod){
         logger.info("[BillingSystemBoImpl.createSaldoAkhirTahun] START >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TutupPeriodBo tutupPeriodBo = (TutupPeriodBo) ctx.getBean("tutupPeriodBoProxy");
 
         try {
             tutupPeriodBo.saveUpdateSaldoAkhirTahun(tutupPeriod);
