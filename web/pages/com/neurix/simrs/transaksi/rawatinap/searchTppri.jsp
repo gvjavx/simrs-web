@@ -1658,8 +1658,6 @@
     function printPernyataan(kode, idRm, flag, namaRm) {
         if(kode == "CK01"){
             KeperawatanRawatJalanAction.getListAsesmenRawat(noCheckup, "general_concent", function (res) {
-                console.log(res);
-                console.log(noCheckup);
                 if(res.length > 0){
                     $('#tanya').text("Apakah anda yakin print ?");
                     $('#print_form').text(namaRm);
@@ -1701,14 +1699,16 @@
                 'jawaban': nama1,
                 'keterangan': 'general_concent',
                 'jenis': 'general_concent',
-                'id_detail_checkup': idDetailCheckup
+                'id_detail_checkup': idDetailCheckup,
+                'no_checkup': noCheckup
             });
             data.push({
                 'parameter': 'nama_dokter',
                 'jawaban': nama2,
                 'keterangan': 'general_concent',
                 'jenis': 'general_concent',
-                'id_detail_checkup': idDetailCheckup
+                'id_detail_checkup': idDetailCheckup,
+                'no_checkup': noCheckup
             });
             data.push({
                 'parameter': 'pasien',
@@ -1716,7 +1716,8 @@
                 'keterangan': 'general_concent',
                 'jenis': 'general_concent',
                 'tipe': 'ttd',
-                'id_detail_checkup': idDetailCheckup
+                'id_detail_checkup': idDetailCheckup,
+                'no_checkup': noCheckup
             });
             data.push({
                 'parameter': 'dokter',
@@ -1724,7 +1725,8 @@
                 'keterangan': 'general_concent',
                 'jenis': 'general_concent',
                 'tipe': 'ttd',
-                'id_detail_checkup': idDetailCheckup
+                'id_detail_checkup': idDetailCheckup,
+                'no_checkup': noCheckup
             });
             var result = JSON.stringify(data);
             $('#save_ttd_concent').hide();

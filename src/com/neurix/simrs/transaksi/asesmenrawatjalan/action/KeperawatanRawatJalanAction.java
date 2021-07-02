@@ -218,6 +218,7 @@ public class KeperawatanRawatJalanAction {
                 keperawatanRawatJalan.setParameter(obj.getString("parameter"));
                 keperawatanRawatJalan.setIdDetailCheckup(obj.getString("id_detail_checkup"));
                 keperawatanRawatJalan.setKeterangan(obj.getString("keterangan"));
+                keperawatanRawatJalan.setNoCheckup(obj.getString("no_checkup"));
                 if(obj.has("jawaban")){
                     if(obj.has("tipe")){
                         if("ttd".equalsIgnoreCase(obj.getString("tipe"))){
