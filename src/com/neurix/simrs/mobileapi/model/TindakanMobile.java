@@ -12,6 +12,7 @@ public class TindakanMobile {
     private String tindakan;
     private String idKategoriTindakan;
     private String tarif;
+    private String diskon;
     private String tarifBpjs;
     private String flag;
     private String action;
@@ -106,5 +107,13 @@ public class TindakanMobile {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getDiskon() {
+        return diskon;
+    }
+
+    public void setDiskon(String diskon) {
+        this.diskon = diskon;
     }
 }
