@@ -922,7 +922,7 @@ public class RawatInapController implements ModelDriven<Object> {
             List<KategoriTindakan> result = new ArrayList<>();
 
             try {
-                result = kategoriTindakanBoProxy.getListKategoriTindakan(idPelayanan, null, branchId);
+                result = kategoriTindakanBoProxy.getListKategoriTindakan(idPelayanan, "rawat_inap", branchId);
             } catch (GeneralBOException e){
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
@@ -982,6 +982,8 @@ public class RawatInapController implements ModelDriven<Object> {
                     dokterTeamMobile.setIdDokter(item.getIdDokter());
                     dokterTeamMobile.setNamaDokter(item.getNamaDokter());
                     dokterTeamMobile.setIdDetailCheckup(item.getIdDetailCheckup());
+                    //SYAMS 2JUL21 =>  tambah idPelayanan
+                    dokterTeamMobile.setIdPelayanan(item.getIdPelayanan());
 
                     listOfDokterTeam.add(dokterTeamMobile);
 
