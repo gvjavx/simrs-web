@@ -92,6 +92,7 @@ import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
 import com.neurix.simrs.transaksi.paketperiksa.model.ItemPaket;
 import com.neurix.simrs.transaksi.paketperiksa.model.MtSimrsItemPaketEntity;
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
+import com.neurix.simrs.transaksi.periksalab.dao.HeaderPemeriksaanDao;
 import com.neurix.simrs.transaksi.periksalab.model.ItSimrsPeriksaLabEntity;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
 import com.neurix.simrs.transaksi.periksaradiologi.bo.PeriksaRadiologiBo;
@@ -186,6 +187,11 @@ public class BillingSystemBoImpl implements BillingSystemBo {
     private LogTrxDao logTrxDao;
     private VerifikatorPembayaranDao verifikatorPembayaranDao;
     private TelemedicDao telemedicDao;
+    private HeaderPemeriksaanDao headerPemeriksaanDao;
+
+    public void setHeaderPemeriksaanDao(HeaderPemeriksaanDao headerPemeriksaanDao) {
+        this.headerPemeriksaanDao = headerPemeriksaanDao;
+    }
 
     public void setTelemedicDao(TelemedicDao telemedicDao) {
         this.telemedicDao = telemedicDao;
@@ -370,7 +376,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
             if (batasTutupPeriod != null) {
 
                 String flagTutup            = batasTutupPeriod.getFlagTutup();
-                java.sql.Date tanggalBatas  =  batasTutupPeriod.getTglBatas();
+                java.sql.Date tanggalBatas  = batasTutupPeriod.getTglBatas();
 
                 if (flagTutup != null) {
 
@@ -1117,7 +1123,8 @@ public class BillingSystemBoImpl implements BillingSystemBo {
     }
 
     private void updateAndNotifApprovedVaTele(ItSimrsPembayaranOnlineEntity pembayaranEntity, ItSimrsAntrianTelemedicEntity antrianTelemedicEntity){
-        logger.info("[BillingSystemBoImpl.settlementPGInvoice] Start process >>>");
+        logger.info("[BillingSystemBoImpl.updateAndNotifApprovedVaTele] Start process >>>");
+
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
         TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
@@ -1223,7 +1230,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                     try {
                         idPermintaanResep = verifikatorPembayaranBo.approveTransaksiResep(headerCheckup, pembayaranEntity.getId());
                     } catch (GeneralBOException e){
-                        logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
+                        logger.error("[VerifikatorPembayaranAction.updateAndNotifApprovedVaTele] ERROR. ",e);
                     }
 
                     if (!"".equalsIgnoreCase(idPermintaanResep)){
@@ -1270,13 +1277,12 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                             notifikasiFcm = notifikasiFcmBo.getByCriteria(bean);
                             FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Resep", "Pembayaran resep telah dikonfirmasi", "WL", notifikasiFcm.get(0).getOs(), null);
                         } catch (GeneralBOException e){
-                            logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
-                            throw new GeneralBOException("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
+                            logger.error("[VerifikatorPembayaranAction.updateAndNotifApprovedVaTele] ERROR. ",e);
+                            throw new GeneralBOException("[VerifikatorPembayaranAction.updateAndNotifApprovedVaTele] ERROR. ",e);
                         }
                     }
 
                 } else {
-
 
                     // set data headerCheckup;
                     headerCheckup.setNoCheckup(noCheckup);
@@ -1342,8 +1348,8 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                     try {
                         idDetailCheckup = verifikatorPembayaranBo.approveTransaksi(headerCheckup);
                     } catch (GeneralBOException e){
-                        logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
-                        throw new GeneralBOException("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
+                        logger.error("[VerifikatorPembayaranAction.updateAndNotifApprovedVaTele] ERROR. ",e);
+                        throw new GeneralBOException("[VerifikatorPembayaranAction.updateAndNotifApprovedVaTele] ERROR. ",e);
                     }
                 }
 
@@ -1386,7 +1392,6 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                         logger.error("[VerifikatorPembayaranBoImpl.getAntrianTelemedicFirstOrder] ERROR. ", e);
                         throw new GeneralBOException("[VerifikatorPembayaranBoImpl.getAntrianTelemedicFirstOrder] ERROR. ", e);
                     }
-
 
                     //AntrianTelemedic firstOrderAntrian = getAntrianTelemedicFirstOrder(antrianTelemedicEntity.getIdPelayanan(), antrianTelemedicEntity.getIdDokter(), "LL");
 
@@ -1479,6 +1484,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                             telemedicBo.saveEdit(antrianTelemedic, "", "");
                         } catch (GeneralBOException e){
                             logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
+                            throw new GeneralBOException("[VerifikatorPembayaranAction.approveTransaksi] ERROR. ",e);
                         }
                         // jika resep dan status SELESAI Konsutasi Maka Update Status FN / Finish
                     } else if ("Y".equalsIgnoreCase(flagResep) && "SK".equalsIgnoreCase(antrianTelemedicEntity.getStatus())){
@@ -1588,6 +1594,23 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         return response;
     }
 
+    @Override
+    public List<String> getListHeaderPemeriksaanPenunjangByIdDetailCheckup(String idDetailCheckup){
+        logger.info("[BillingSystemBoImpl.getListHeaderPemeriksaanPenunjangByIdDetailCheckup] Start >>>");
+
+        List<String> stringList = new ArrayList<>();
+
+        try {
+            stringList = headerPemeriksaanDao.getListIdHeaderPemeriksaanByIdDetailCheckup(idDetailCheckup);
+        } catch (HibernateException e) {
+            logger.error("[BillingSystemBoImpl.getListHeaderPemeriksaanPenunjangByIdDetailCheckup] ERROR. ", e);
+            throw new GeneralBOException("[BillingSystemBoImpl.getListHeaderPemeriksaanPenunjangByIdDetailCheckup] ERROR. ", e);
+        }
+
+        logger.info("[BillingSystemBoImpl.getListHeaderPemeriksaanPenunjangByIdDetailCheckup] END <<<");
+        return stringList;
+    }
+
     public void saveAddToRiwayatTindakan(String idDetail, String jenisPasien, String user) {
         logger.info("[VerifikatorPembayaranAction.saveAddToRiwayatTindakan] START process >>>");
         if (idDetail != null && !"".equalsIgnoreCase(idDetail)) {
@@ -1684,6 +1707,10 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                     }
                 }
             }
+
+            // Tindakan END
+
+            // Mencari Data Lab
 
             List<PeriksaLab> periksaLabList = new ArrayList<>();
             PeriksaLab periksaLab = new PeriksaLab();

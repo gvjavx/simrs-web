@@ -665,6 +665,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
             TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
             RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
             OrderGiziBo orderGiziBo = (OrderGiziBo) ctx.getBean("orderGiziBoProxy");
+            BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
 
             List<TindakanRawat> listTindakan = new ArrayList<>();
             TindakanRawat tindakanRawat = new TindakanRawat();
@@ -727,77 +728,86 @@ public class TutuPeriodAction extends BaseTransactionAction {
                 }
             }
 
-            List<PeriksaLab> periksaLabList = new ArrayList<>();
-            PeriksaLab periksaLab = new PeriksaLab();
-            periksaLab.setIdDetailCheckup(idDetail);
-            periksaLab.setApproveFlag("Y");
+            // tindakan END
 
-            try {
-                periksaLabList = periksaLabBo.getByCriteria(periksaLab);
-            } catch (GeneralBOException e) {
-                logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when insert riwayat tindakan :" + e.getMessage());
-                response.setStatus("error");
-                response.setMsg("[CheckupDetailAction.saveAddToRiwayatTindakan] ERROR :" + e.getMessage());
-                return response;
-            }
+            // pemeriksaan lab / radiologi, Start
 
-            if (periksaLabList.size() > 0) {
-                for (PeriksaLab entity : periksaLabList) {
+            List<String> listHeader = billingSystemBo.getListHeaderPemeriksaanPenunjangByIdDetailCheckup(idDetail);
 
-                    List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
-                    RiwayatTindakan tindakan = new RiwayatTindakan();
-                    tindakan.setIdTindakan(entity.getIdPeriksaLab());
+            if (listHeader.size() > 0){
+                List<PeriksaLab> periksaLabList = new ArrayList<>();
+                PeriksaLab periksaLab = new PeriksaLab();
+                periksaLab.setApproveFlag("Y");
 
-                    try {
-                        riwayatTindakanList = riwayatTindakanBo.getByCriteria(tindakan);
-                    } catch (HibernateException e) {
-                        logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search riwayat tindakan :" + e.getMessage());
-                        response.setStatus("error");
-                        response.setMsg("[CheckupDetailAction.saveAddToRiwayatTindakan] ERROR :" + e.getMessage());
-                        return response;
-                    }
+                try {
+                    periksaLabList = periksaLabBo.getByCriteria(periksaLab);
+                } catch (GeneralBOException e) {
+                    logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when insert riwayat tindakan :" + e.getMessage());
+                    response.setStatus("error");
+                    response.setMsg("[CheckupDetailAction.saveAddToRiwayatTindakan] ERROR :" + e.getMessage());
+                    return response;
+                }
 
-                    if (riwayatTindakanList.isEmpty()) {
-                        BigDecimal totalTarif = null;
+                if (periksaLabList.size() > 0) {
+                    for (PeriksaLab entity : periksaLabList) {
+
+                        List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
+                        RiwayatTindakan tindakan = new RiwayatTindakan();
+                        tindakan.setIdTindakan(entity.getIdPeriksaLab());
 
                         try {
-                            totalTarif = periksaLabBo.getTarifTotalPemeriksaan(entity.getIdPeriksaLab());
-                        }catch (HibernateException e){
-                            logger.error("Found Error "+e.getMessage());
+                            riwayatTindakanList = riwayatTindakanBo.getByCriteria(tindakan);
+                        } catch (HibernateException e) {
+                            logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search riwayat tindakan :" + e.getMessage());
                             response.setStatus("error");
                             response.setMsg("[CheckupDetailAction.saveAddToRiwayatTindakan] ERROR :" + e.getMessage());
                             return response;
                         }
 
-                        RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
-                        riwayatTindakan.setIdTindakan(entity.getIdPeriksaLab());
-                        riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
-                        riwayatTindakan.setNamaTindakan("Periksa "+entity.getKategoriLabName()+" " + entity.getLabName());
-                        riwayatTindakan.setTotalTarif(totalTarif);
-                        riwayatTindakan.setKeterangan(entity.getKategori());
-                        if ("rekanan".equalsIgnoreCase(jenisPasien)){
-                            jenisPasien = "bpjs";
-                        }
-                        riwayatTindakan.setJenisPasien(jenisPasien);
-                        riwayatTindakan.setAction("C");
-                        riwayatTindakan.setFlag("Y");
-                        riwayatTindakan.setCreatedWho(user);
-                        riwayatTindakan.setCreatedDate(updateTime);
-                        riwayatTindakan.setLastUpdate(updateTime);
-                        riwayatTindakan.setLastUpdateWho(user);
-                        riwayatTindakan.setTanggalTindakan(entity.getCreatedDate());
+                        if (riwayatTindakanList.isEmpty()) {
+                            BigDecimal totalTarif = null;
 
-                        try {
-                            riwayatTindakanBo.saveAdd(riwayatTindakan);
-                        } catch (GeneralBOException e) {
-                            logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when insert riwayat tindakan :" + e.getMessage());
-                            response.setStatus("error");
-                            response.setMsg("[CheckupDetailAction.saveAddToRiwayatTindakan] ERROR :" + e.getMessage());
-                            return response;
+                            try {
+                                totalTarif = periksaLabBo.getTarifTotalPemeriksaan(entity.getIdPeriksaLab());
+                            }catch (HibernateException e){
+                                logger.error("Found Error "+e.getMessage());
+                                response.setStatus("error");
+                                response.setMsg("[CheckupDetailAction.saveAddToRiwayatTindakan] ERROR :" + e.getMessage());
+                                return response;
+                            }
+
+                            RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
+                            riwayatTindakan.setIdTindakan(entity.getIdPeriksaLab());
+                            riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
+                            riwayatTindakan.setNamaTindakan("Periksa "+entity.getKategoriLabName()+" " + entity.getLabName());
+                            riwayatTindakan.setTotalTarif(totalTarif);
+                            riwayatTindakan.setKeterangan(entity.getKategori());
+                            if ("rekanan".equalsIgnoreCase(jenisPasien)){
+                                jenisPasien = "bpjs";
+                            }
+                            riwayatTindakan.setJenisPasien(jenisPasien);
+                            riwayatTindakan.setAction("C");
+                            riwayatTindakan.setFlag("Y");
+                            riwayatTindakan.setCreatedWho(user);
+                            riwayatTindakan.setCreatedDate(updateTime);
+                            riwayatTindakan.setLastUpdate(updateTime);
+                            riwayatTindakan.setLastUpdateWho(user);
+                            riwayatTindakan.setTanggalTindakan(entity.getCreatedDate());
+
+                            try {
+                                riwayatTindakanBo.saveAdd(riwayatTindakan);
+                            } catch (GeneralBOException e) {
+                                logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when insert riwayat tindakan :" + e.getMessage());
+                                response.setStatus("error");
+                                response.setMsg("[CheckupDetailAction.saveAddToRiwayatTindakan] ERROR :" + e.getMessage());
+                                return response;
+                            }
                         }
                     }
                 }
             }
+
+            // pemeriksaan lab / radiologi END
 
             List<PermintaanResep> resepList = new ArrayList<>();
             PermintaanResep resep = new PermintaanResep();
