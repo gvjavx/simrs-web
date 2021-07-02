@@ -331,14 +331,14 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         if (dataMappingJurnal!=null) {
 
             //get param from mapData
-            String userId = dataMappingJurnal.get("user_id")!=null ? (String) dataMappingJurnal.get("user_id") : "";
-            String userName = dataMappingJurnal.get("user_who")!=null ? (String) dataMappingJurnal.get("user_who") : "";
-            String sumberDanaId = dataMappingJurnal.get("sumber_dana")!=null ? (String) dataMappingJurnal.get("sumber_dana") : "";
-            String mataUang = dataMappingJurnal.get("mata_uang")!=null ? (String) dataMappingJurnal.get("mata_uang") : CommonConstant.MATA_UANG_RPH;
-            String pengajuanId = dataMappingJurnal.get("pengajuan_id")!=null ? (String) dataMappingJurnal.get("pengajuan_id") : "";
-            String keterangan = dataMappingJurnal.get("keterangan")!=null ? (String) dataMappingJurnal.get("keterangan") : "";
-            java.sql.Date tanggalJurnal = new java.sql.Date(Calendar.getInstance().getTimeInMillis()); // default tanggal jurnal = tanggal sekarang
-            java.sql.Date tanggalTransaksi = new java.sql.Date(Calendar.getInstance().getTimeInMillis()); // default tanggal transaksi = tanggal sekarang, digunakan di registered_date
+            String userId                   = dataMappingJurnal.get("user_id")!=null ? (String) dataMappingJurnal.get("user_id") : "";
+            String userName                 = dataMappingJurnal.get("user_who")!=null ? (String) dataMappingJurnal.get("user_who") : "";
+            String sumberDanaId             = dataMappingJurnal.get("sumber_dana")!=null ? (String) dataMappingJurnal.get("sumber_dana") : "";
+            String mataUang                 = dataMappingJurnal.get("mata_uang")!=null ? (String) dataMappingJurnal.get("mata_uang") : CommonConstant.MATA_UANG_RPH;
+            String pengajuanId              = dataMappingJurnal.get("pengajuan_id")!=null ? (String) dataMappingJurnal.get("pengajuan_id") : "";
+            String keterangan               = dataMappingJurnal.get("keterangan")!=null ? (String) dataMappingJurnal.get("keterangan") : "";
+            java.sql.Date tanggalJurnal     = new java.sql.Date(Calendar.getInstance().getTimeInMillis()); // default tanggal jurnal = tanggal sekarang
+            java.sql.Date tanggalTransaksi  = new java.sql.Date(Calendar.getInstance().getTimeInMillis()); // default tanggal transaksi = tanggal sekarang, digunakan di registered_date
 
             boolean isNormalPeriode = true;
 
@@ -346,12 +346,12 @@ public class BillingSystemBoImpl implements BillingSystemBo {
             // kondisi invalid periode : check periode sudah flag = Lock/tutup (dalam proses tutup periode )
             // - jika tgl transaksi sudah lewati tgl_batas periode dan belum di lock/tutup maka tgl jurnal = tgl batas, tp tgl registered = tgl transaksi
 
-            Calendar cal = Calendar.getInstance();
-            int iBulanNow  = cal.get(Calendar.MONTH) + 1;
-            String bulanNow = iBulanNow < 10 ? "0" + String.valueOf(iBulanNow) : String.valueOf(iBulanNow);
+            Calendar cal        = Calendar.getInstance();
+            int iBulanNow       = cal.get(Calendar.MONTH) + 1;
+            String bulanNow     = iBulanNow < 10 ? "0" + String.valueOf(iBulanNow) : String.valueOf(iBulanNow);
 
-            int iTahunNow = cal.get(Calendar.YEAR);
-            String tahunNow = String.valueOf(iTahunNow);
+            int iTahunNow       = cal.get(Calendar.YEAR);
+            String tahunNow     = String.valueOf(iTahunNow);
 
             //set tanggal 1 bulan berikutnya
             cal.add(Calendar.MONTH,1);
@@ -367,16 +367,16 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                 throw new GeneralBOException("Found problem when get batas tutup periode , please info to your admin..." + e.getMessage());
             }
 
-            if (batasTutupPeriod!=null) {
+            if (batasTutupPeriod != null) {
 
-                String flagTutup = batasTutupPeriod.getFlagTutup();
-                java.sql.Date tanggalBatas =  batasTutupPeriod.getTglBatas();
+                String flagTutup            = batasTutupPeriod.getFlagTutup();
+                java.sql.Date tanggalBatas  =  batasTutupPeriod.getTglBatas();
 
-                if (flagTutup!=null) {
+                if (flagTutup != null) {
 
                     if (CommonConstant.FLAG_LOCK_PERIODE.equalsIgnoreCase(flagTutup) || CommonConstant.FLAG_TUTUP_PERIODE.equalsIgnoreCase(flagTutup)) {
 
-                        tanggalJurnal = tanggalPeriodeBerikutnya;
+                        tanggalJurnal   = tanggalPeriodeBerikutnya;
                         isNormalPeriode = false;
 
                     } else if (tanggalBatas.before(tanggalTransaksi)) { // dicek apakah melewati tanggal batas, tanggal jurnal = tanggal batas
@@ -414,13 +414,13 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
             if (transEntity!=null) {
 
-                String flagSumberBaru = transEntity.getFlagSumberBaru()!=null ? transEntity.getFlagSumberBaru() : "N";
-                String flagPengajuanBiaya = transEntity.getFlagPengajuanBiaya()!=null ? transEntity.getFlagPengajuanBiaya() : "N";
-                String tipeJurnalId = transEntity.getTipeJurnalId();
-                boolean isOtomatis = transEntity.getTipeJurnalId()!=null && "Y".equalsIgnoreCase(transEntity.getIsOtomatis()) ? true : false;
-                String sumber = createInvoiceNumber(tipeJurnalId,branchId);
-                String noJurnal = "";
-                String metodeBayar = null;
+                String flagSumberBaru       = transEntity.getFlagSumberBaru()!=null ? transEntity.getFlagSumberBaru() : "N";
+                String flagPengajuanBiaya   = transEntity.getFlagPengajuanBiaya()!=null ? transEntity.getFlagPengajuanBiaya() : "N";
+                String tipeJurnalId         = transEntity.getTipeJurnalId();
+                boolean isOtomatis          = transEntity.getTipeJurnalId()!=null && "Y".equalsIgnoreCase(transEntity.getIsOtomatis()) ? true : false;
+                String sumber               = createInvoiceNumber(tipeJurnalId,branchId);
+                String noJurnal             = "";
+                String metodeBayar          = null;
 
                 if (tipeJurnalId!=null) {
 
@@ -475,8 +475,8 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
                         BigDecimal testPphNilai = new BigDecimal(0);
 
-                        BigDecimal totalDebit = new BigDecimal(0);
-                        BigDecimal totalKredit = new BigDecimal(0);
+                        BigDecimal totalDebit   = new BigDecimal(0);
+                        BigDecimal totalKredit  = new BigDecimal(0);
 
                         // Sigit, 2021-05-07 filter flag yg aktif
                         List<ImMappingJurnalEntity> lisOfActiveMapping = imMappingJurnalEntitySet.stream().filter(
@@ -485,13 +485,13 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
                         // Sigit, 2021-05-07 sebelumnya imMappingJurnalEntitySet => lisOfActiveMapping
                         for (ImMappingJurnalEntity imMappingJurnalEntity : lisOfActiveMapping) {
-                            String parameterCoa = imMappingJurnalEntity.getParameterCoa();
-                            String flagMasterId = imMappingJurnalEntity.getMasterId();
-                            String flagBukti = imMappingJurnalEntity.getBukti();
-                            String flagKodeBarang = imMappingJurnalEntity.getKodeBarang();
-                            String flagDivisiId = imMappingJurnalEntity.getDivisiId();
-                            String coa = imMappingJurnalEntity.getKodeRekening();
-                            String posisi = imMappingJurnalEntity.getPosisi();
+                            String parameterCoa     = imMappingJurnalEntity.getParameterCoa();
+                            String flagMasterId     = imMappingJurnalEntity.getMasterId();
+                            String flagBukti        = imMappingJurnalEntity.getBukti();
+                            String flagKodeBarang   = imMappingJurnalEntity.getKodeBarang();
+                            String flagDivisiId     = imMappingJurnalEntity.getDivisiId();
+                            String coa              = imMappingJurnalEntity.getKodeRekening();
+                            String posisi           = imMappingJurnalEntity.getPosisi();
 
                             //String rekeningId = getRekeningForMappingOtomatis(coa);
 
@@ -517,9 +517,9 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                         //untuk kas
                                         if ("kas".equalsIgnoreCase(parameterCoa)) {
 
-                                            coa = itemMappingDetail.getCoa();
+                                            coa         = itemMappingDetail.getCoa();
                                             metodeBayar = itemMappingDetail.getMetodeBayar();
-                                            nilai = itemMappingDetail.getNilai();
+                                            nilai       = itemMappingDetail.getNilai();
 
                                             if ("D".equalsIgnoreCase(posisi)) {
                                                 itemJurnalDetailEntity.setJumlahDebit(nilai);
@@ -568,7 +568,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
                                                     itemJurnalDetailEntity.setMasterId(masterId);
 
-                                                } else if (pasienId!=null && !"".equalsIgnoreCase(pasienId)) {
+                                                } else if (pasienId != null && !"".equalsIgnoreCase(pasienId)) {
 
                                                     itemJurnalDetailEntity.setPasienId(pasienId);
 
@@ -643,7 +643,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
                                             //get list activity and set to it_jurnal_detail_activity if found
                                             List<Activity> listOfActivity = itemMappingDetail.getListOfActivity();
-                                            if (listOfActivity!=null) {
+                                            if (listOfActivity != null) {
 
                                                 if (!listOfActivity.isEmpty()) {
 
@@ -652,7 +652,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                                     ItJurnalDetailActivityEntity itJurnalDetailActivity = null;
                                                     for (Activity itemActivity : listOfActivity) {
 
-                                                        BigDecimal itemActivityNilai = itemActivity.getNilai();
+                                                        BigDecimal itemActivityNilai  = itemActivity.getNilai();
                                                         String jurnalDetailActivityId = null;
                                                         try {
                                                             jurnalDetailActivityId = jurnalDetailActivityDao.getNextJurnalActivityId();
@@ -682,7 +682,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                                         listOfItJurnalDetailActivity.add(itJurnalDetailActivity);
                                                     }
 
-                                                    if (subTotalActivity.compareTo(nilai)==0) {
+                                                    if (subTotalActivity.compareTo(nilai) == 0) {
 
                                                         itemJurnalDetailEntity.setItJurnalDetailActivity(listOfItJurnalDetailActivity);
 
@@ -708,7 +708,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                         if ("kas".equalsIgnoreCase(parameterCoa)) {
 
                                             metodeBayar = itemMappingDetail.getMetodeBayar();
-                                            nilai = itemMappingDetail.getNilai();
+                                            nilai       = itemMappingDetail.getNilai();
 
                                             if ("D".equalsIgnoreCase(posisi)) {
                                                 itemJurnalDetailEntity.setJumlahDebit(nilai);
@@ -753,11 +753,11 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                                 String masterId = itemMappingDetail.getMasterId();
                                                 String pasienId = itemMappingDetail.getPasienId();
 
-                                                if (masterId!=null && !"".equalsIgnoreCase(masterId)) {
+                                                if (masterId != null && !"".equalsIgnoreCase(masterId)) {
 
                                                     itemJurnalDetailEntity.setMasterId(masterId);
 
-                                                } else if (pasienId!=null && !"".equalsIgnoreCase(pasienId)) {
+                                                } else if (pasienId != null && !"".equalsIgnoreCase(pasienId)) {
 
                                                     itemJurnalDetailEntity.setPasienId(pasienId);
 
@@ -773,7 +773,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
                                                 String divisiId = itemMappingDetail.getDivisiId();
 
-                                                if (divisiId!=null && !"".equalsIgnoreCase(divisiId)) {
+                                                if (divisiId != null && !"".equalsIgnoreCase(divisiId)) {
 
                                                     itemJurnalDetailEntity.setDivisiId(divisiId);
 
@@ -789,7 +789,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
                                                 String noNota = itemMappingDetail.getBukti();
 
-                                                if (noNota!=null && !"".equalsIgnoreCase(noNota)) {
+                                                if (noNota != null && !"".equalsIgnoreCase(noNota)) {
 
                                                     itemJurnalDetailEntity.setNoNota(noNota);
 
@@ -804,7 +804,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
                                                 String kodeBarang = itemMappingDetail.getKodeBarang();
 
-                                                if (kodeBarang!=null && !"".equalsIgnoreCase(kodeBarang)) {
+                                                if (kodeBarang != null && !"".equalsIgnoreCase(kodeBarang)) {
 
                                                     itemJurnalDetailEntity.setKdBarang(kodeBarang);
 
