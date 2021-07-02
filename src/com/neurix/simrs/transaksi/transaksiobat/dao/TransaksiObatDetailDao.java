@@ -1236,14 +1236,14 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
 
     public HargaObatPerKonsumen getDataHargaPerKonsumen(String idObat, String branchId, String jenisKonsumen, String idRekanan){
 
-        String sqlRekanan = "";
-        if (idRekanan != null && !"".equalsIgnoreCase(idRekanan)){
-            sqlRekanan = "AND hopk.id_rekanan = '"+idRekanan+"' \n";
-        }
-
         // 2021-07-01, Sigit
         // set jenis konsumen ke default umum / bpjs jika tidak ditemukan jenis konsumen tersebut pada harga per konsumen
         jenisKonsumen = changeToUmumOrBpjsIfNotAvailableYetInHargaObatPerkonsumen(idObat, branchId, jenisKonsumen, idRekanan);
+
+        String sqlRekanan = "";
+        if (idRekanan != null && !"".equalsIgnoreCase(idRekanan) && !"umum".equalsIgnoreCase(jenisKonsumen) && !"bpjs".equalsIgnoreCase(jenisKonsumen)){
+            sqlRekanan = "AND hopk.id_rekanan = '"+idRekanan+"' \n";
+        }
 
         String SQL = "SELECT \n" +
                 "hopk.id_harga_obat, \n" +

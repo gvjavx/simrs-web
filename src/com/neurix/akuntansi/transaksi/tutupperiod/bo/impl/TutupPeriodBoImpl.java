@@ -63,6 +63,8 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
     @Override
     public void saveSettingPeriod(List<ItSimrsBatasTutupPeriodEntity> batasList) throws GeneralBOException {
 
+        logger.info("[TutupPeriodBoImpl.saveSettingPeriod] Start >>>");
+
         for (ItSimrsBatasTutupPeriodEntity batasEntity : batasList){
 
             BatasTutupPeriod batasTutupPeriod = new BatasTutupPeriod();
@@ -97,10 +99,14 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                 }
             }
         }
+
+        logger.info("[TutupPeriodBoImpl.saveSettingPeriod] End <<<");
     }
 
     @Override
     public List<ItSimrsBatasTutupPeriodEntity> getListEntityBatasTutupPeriode(BatasTutupPeriod bean) throws GeneralBOException{
+
+        logger.info("[TutupPeriodBoImpl.getListEntityBatasTutupPeriode] Start >>>");
 
         Map hsCriteria = new HashMap();
         if (bean.getTahun() != null){
@@ -121,15 +127,20 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
             throw new GeneralBOException("[TutupPeriodBoImpl.getListEntityBatasTutupPeriode] ERROR. ",e);
         }
 
+        logger.info("[TutupPeriodBoImpl.getListEntityBatasTutupPeriode] End <<<");
+
         return tutupPeriodEntities;
     }
 
-    protected Integer getLowestLevelKodeRekening(){
+    @Override
+    public Integer getLowestLevelKodeRekening(){
         return tutupPeriodDao.getLowestLevelKodeRekening();
     }
 
     @Override
     public void saveUpdateTutupPeriod(TutupPeriod bean) throws GeneralBOException {
+
+        logger.info("[TutupPeriodBoImpl.saveUpdateTutupPeriod] Start >>>");
 
         if (bean != null){
 
@@ -366,9 +377,14 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                 }
             }
         }
+
+        logger.info("[TutupPeriodBoImpl.saveUpdateTutupPeriod] End <<<");
     }
 
-    protected void saveUpdateSaldoAkhirTahun(TutupPeriod bean) throws GeneralBOException {
+    @Override
+    public void saveUpdateSaldoAkhirTahun(TutupPeriod bean) throws GeneralBOException {
+
+        logger.info("[TutupPeriodBoImpl.saveUpdateSaldoAkhirTahun] Start >>>");
 
         if (bean != null){
 
@@ -498,6 +514,8 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                 }
             }
         }
+
+        logger.info("[TutupPeriodBoImpl.saveUpdateSaldoAkhirTahun] End <<<");
     }
 
     private BigDecimal nullEscape(BigDecimal nilai){
@@ -1664,15 +1682,18 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
         return kodeRekeningEntity;
     }
 
-    protected String checkIsJurnalTransitoris(String transId){
+    @Override
+    public String checkIsJurnalTransitoris(String transId){
         return tutupPeriodDao.checkIfJurnalTransitoris(transId);
     }
 
-    protected List<SaldoAkhir> getListSaldoAkhir(String branchId, String periode, String rekeningId, BigInteger level){
+    @Override
+    public List<SaldoAkhir> getListSaldoAkhir(String branchId, String periode, String rekeningId, BigInteger level){
         return tutupPeriodDao.getNilaiSaldoAkhir(periode, branchId, rekeningId, level);
     }
 
-    protected List<SaldoAkhir> getListSAldoAkhirDetailByIdSaldo(String idSaldo){
+    @Override
+    public List<SaldoAkhir> getListSAldoAkhirDetailByIdSaldo(String idSaldo){
         return tutupPeriodDao.getListSaldoAkhirDetailById(idSaldo);
     }
 
