@@ -172,7 +172,6 @@ public class AbsensiOnlineController implements ModelDriven<Object> {
             bean.setPin(pin);
             bean.setTanggalDari(CommonUtil.convertToDate(tanggal));
 
-
             try {
                 result = mesinAbsensiDetailBoProxy.getByCriteriaMobile(bean);
             } catch (GeneralBOException e) {
@@ -180,12 +179,33 @@ public class AbsensiOnlineController implements ModelDriven<Object> {
                 throw new GeneralBOException("Found problem when get data AbsensiOnlineController, please info to your admin..." + e.getMessage());
             }
 
-            //ambil jam absen yang terbaru
-            String[] temp = result.get(result.size()-1).getScanDate().toString().split(" ");
-            String[] temp2 = temp[1].split(":");
+            // prepare pengambilan data absen masuk dan keluar
+            // rule: absen masuk = absen paling awal, dan pulang = absen paling akhir.
+            if(result.size() > 0)
+            {
+                // jam masuk
+                String[] temp = result.get(0).getScanDate().toString().split(" ");
+                String[] temp2 = temp[1].split(":");
+                model.setAbsMasuk(temp2[0]+":"+temp2[1]);
+
+                // check if result more than 1
+                if(result.size() > 1)
+                {
+                    // jam pulang
+                    temp = result.get(result.size()-1).getScanDate().toString().split(" ");
+                    temp2 = temp[1].split(":");
+                    model.setAbsKeluar(temp2[0]+":"+temp2[1]);
+                }
+
+            }
+            else
+            {
+                model = null;
+            }
 
 
-            model.setScanDate(temp2[0]+":"+temp2[1]);
+
+
         }
 
         if  (action.equalsIgnoreCase("saveAddOnCall")) {
