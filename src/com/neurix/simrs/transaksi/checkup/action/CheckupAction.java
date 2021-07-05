@@ -32,6 +32,7 @@ import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienSementaraEntity;
 import com.neurix.simrs.master.pasien.model.Pasien;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
@@ -48,6 +49,7 @@ import com.neurix.simrs.transaksi.antrianonline.bo.AntrianOnlineBo;
 import com.neurix.simrs.transaksi.antrianonline.bo.RegistrasiOnlineBo;
 import com.neurix.simrs.transaksi.antrianonline.model.AntianOnline;
 import com.neurix.simrs.transaksi.antrianonline.model.RegistrasiOnline;
+import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.*;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
@@ -139,6 +141,11 @@ public class CheckupAction extends BaseMasterAction {
     private BillingSystemBo billingSystemBoProxy;
     private PermintaanResepBo permintaanResepBoProxy;
     private AsuransiBo asuransiBoProxy;
+    private TelemedicBo telemedicBoProxy;
+
+    public void setTelemedicBoProxy(TelemedicBo telemedicBoProxy) {
+        this.telemedicBoProxy = telemedicBoProxy;
+    }
 
     public void setAsuransiBoProxy(AsuransiBo asuransiBoProxy) {
         this.asuransiBoProxy = asuransiBoProxy;
@@ -811,8 +818,16 @@ public class CheckupAction extends BaseMasterAction {
                 }
 
                 if(pasienList.isEmpty()){
-                    logger.error("[CheckupAction.saveAdd] Error when search branch id");
-                    throw new GeneralBOException("Data pasien tidak ditemukan...!");
+
+                    String noRm = telemedicBoProxy.createNoRmAndChangeToMasterPasien(checkup.getIdPasien(), userArea, userLogin);
+
+                    if (noRm == null){
+                        logger.error("[CheckupAction.saveAdd] Data pasien tidak ditemukan...!");
+                        throw new GeneralBOException("Data pasien tidak ditemukan...!");
+                    } else {
+
+                        checkup.setIdPasien(noRm);
+                    }
                 }
 
                 //jika bpjs dan bpjs rekanan

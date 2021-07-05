@@ -866,7 +866,9 @@ public class TelemedicBoImpl implements TelemedicBo {
      * @param createWho
      * @return
      */
-    private String createNoRmAndChangeToMasterPasien(String idPasienSementara, String branchId, String createWho){
+
+    @Override
+    public String createNoRmAndChangeToMasterPasien(String idPasienSementara, String branchId, String createWho){
         logger.info("[VerifikatorPembayaranBoImpl.createNoRmAndChangeToMasterPasien] Start >>>");
 
         ImSimrsPasienSementaraEntity pasienSementaraEntity = getPasienSementaraById(idPasienSementara);

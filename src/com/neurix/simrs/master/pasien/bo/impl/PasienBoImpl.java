@@ -1253,6 +1253,11 @@ public class PasienBoImpl implements PasienBo {
         }
     }
 
+    @Override
+    public ImSimrsPasienSementaraEntity getPasienSementaraEntityById(String id) throws GeneralBOException {
+        logger.info("[PasienBoImpl.getPasienSementaraEntityById] >>>");
+        return pasienSementaraDao.getById("id", id);
+    }
 
     public void setPasienDao(PasienDao pasienDao) {
         this.pasienDao = pasienDao;

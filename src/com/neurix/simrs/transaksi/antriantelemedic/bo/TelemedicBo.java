@@ -60,4 +60,5 @@ public interface TelemedicBo {
 
     public CrudResponse updateFlagCall(String idAntrianTelemedic, String flagCall) throws GeneralBOException;
     public ImSimrsPasienSementaraEntity getPasienSementaraById(String idPasien) throws GeneralBOException;
+    public String createNoRmAndChangeToMasterPasien(String idPasienSementara, String branchId, String createWho);
 }
