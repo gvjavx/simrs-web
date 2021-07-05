@@ -9,6 +9,7 @@ import com.neurix.akuntansi.master.tipeJurnal.bo.TipeJurnalBo;
 import com.neurix.akuntansi.master.trans.model.ImTransEntity;
 import com.neurix.akuntansi.master.trans.model.Trans;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.billingSystem.model.MappingDetail;
 import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalEntity;
 import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.akuntansi.transaksi.kas.bo.KasBo;
@@ -490,11 +491,12 @@ public class KasAction extends BaseMasterAction {
 
                 //Jika pembayaran berhasil
                 //Membuat Billing
-                List<Map> dataMap = new ArrayList<>();
+                //List<Map> dataMap = new ArrayList<>();
+                List<MappingDetail> dataMap = new ArrayList<>();
                 String kasDetailId = "";
                 String sumberDana = "";
-                Map mapPph = new HashMap();
-                Map mapPpn = new HashMap();
+                MappingDetail mapPph = new MappingDetail();
+                MappingDetail mapPpn = new MappingDetail();
 
                 for (KasDetail kasDetail : kasDetailList) {
                     String rekeningId = kodeRekeningBoProxy.getRekeningIdByKodeRekening(kasDetail.getRekeningId());
@@ -503,26 +505,28 @@ public class KasAction extends BaseMasterAction {
                     BigDecimal pph = new BigDecimal(kasDetail.getStPph().replace(".", ""));
                     jumlahPembayaran = jumlahPembayaran.add(pph);
                     jumlahPembayaran = jumlahPembayaran.subtract(ppn);
-                    Map hs = new HashMap();
-                    hs.put("bukti", kasDetail.getNoNota());
-                    hs.put("nilai", jumlahPembayaran);
-                    hs.put("master_id", kasDetail.getMasterId());
-                    hs.put("divisi_id", kasDetail.getDivisiId());
-                    hs.put("rekening_id", rekeningId);
+                    MappingDetail hs = new MappingDetail();
+                    hs.setBukti(kasDetail.getNoNota());
+                    hs.setNilai(jumlahPembayaran);
+                    hs.setMasterId(kasDetail.getMasterId());
+                    hs.setDivisiId(kasDetail.getDivisiId());
+                    //hs.put("rekening_id", rekeningId);
+                    hs.setCoa(kasDetail.getRekeningId());
                     dataMap.add(hs);
                     kasDetailId = kasDetail.getPengajuanBiayaDetailId();
                     sumberDana = kasDetail.getNoBugetting();
 
-                    mapPph.put("master_id", kasDetail.getMasterId());
-                    mapPph.put("nilai", pph);
+                    mapPph.setMasterId(kasDetail.getMasterId());
+                    mapPph.setNilai(pph);
 
-                    mapPpn.put("master_id", kasDetail.getMasterId());
-                    mapPpn.put("nilai", ppn);
+                    mapPpn.setMasterId(kasDetail.getMasterId());
+                    mapPpn.setNilai(ppn);
                 }
 
-                Map kasMap = new HashMap();
-                kasMap.put("nilai", bayar);
-                kasMap.put("rekening_id", rekeningIdBayar);
+                MappingDetail kasMap = new MappingDetail();
+                kasMap.setNilai(bayar);
+                //kasMap.put("rekening_id", rekeningIdBayar);
+                kasMap.setCoa(kas.getCoaKas());
 
                 Map data = new HashMap();
                 data.put(parameter, dataMap);
@@ -577,29 +581,32 @@ public class KasAction extends BaseMasterAction {
                 String pengajuanBiayaDetailId = "";
                 //Jika pembayaran berhasil
                 //Membuat Billing
-                List<Map> dataMap = new ArrayList<>();
+                List<MappingDetail> dataMap = new ArrayList<>();
                 for (KasDetail kasDetail : kasDetailList) {
                     String rekeningId = kodeRekeningBoProxy.getRekeningIdByKodeRekening(kasDetail.getRekeningId());
 //                    String rekeningId = kasDetail.getRekeningId();
                     BigDecimal jumlahPembayaran = new BigDecimal(kasDetail.getStJumlahPembayaran().replace(".", ""));
                     pengajuanBiayaDetailId = kasDetail.getPengajuanBiayaDetailId();
-                    Map hs = new HashMap();
-                    hs.put("bukti", kasDetail.getNoNota());
-                    hs.put("nilai", jumlahPembayaran);
-                    hs.put("master_id", kasDetail.getMasterId());
-                    hs.put("divisi_id", kasDetail.getDivisiId());
-                    hs.put("rekening_id", rekeningId);
+                    MappingDetail hs = new MappingDetail();
+                    hs.setBukti(kasDetail.getNoNota());
+                    hs.setNilai(jumlahPembayaran);
+                    hs.setMasterId(kasDetail.getMasterId());
+                    hs.setDivisiId(kasDetail.getDivisiId());
+                    hs.setCoa(kasDetail.getRekeningId());
 
                     dataMap.add(hs);
                 }
 
-                Map kasMap = new HashMap();
-                kasMap.put("nilai", bayar);
-                kasMap.put("rekening_id", rekeningIdBayar);
+                List<MappingDetail> listMapKas = new ArrayList<>();
+
+                MappingDetail kasMap = new MappingDetail();
+                kasMap.setNilai(bayar);
+                kasMap.setCoa(kas.getCoaKas());
+                listMapKas.add(kasMap);
 
                 Map data = new HashMap();
                 data.put(parameter, dataMap);
-                data.put("metode_bayar", kasMap);
+                data.put("metode_bayar", listMapKas);
                 data.put("currency_id", kas.getCurrencyId());
                 data.put("pengajuan_id", pengajuanBiayaDetailId); //sementara karena di BoImpl diparsing cara ini
 

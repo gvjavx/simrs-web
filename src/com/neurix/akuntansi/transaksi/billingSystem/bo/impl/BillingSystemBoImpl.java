@@ -3919,37 +3919,37 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                         listOfMapTindakan.add(mapTindakan);
                     }
                 }
+
+                mapJurnal.put("piutang_transistoris_pasien_rawat_inap", mapPiutang);
+                mapJurnal.put("pendapatan_rawat_inap", listOfMapTindakan);
+
+                String catatan = "Transitoris Rawat Inap saat tutup periode "+jenisPasien;
+
+                try {
+
+                    returnJurnal = createJurnal(transId, mapJurnal, bean.getUnit(), catatan, "Y");
+
+                    HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+                    detailCheckup.setIdDetailCheckup(bean.getIdDetailCheckup());
+                    detailCheckup.setTransPeriode(bean.getBulan()+"-"+bean.getTahun());
+                    detailCheckup.setTransDate(bean.getCreatedDate());
+                    detailCheckup.setNoJurnalTrans(returnJurnal.getNoJurnal());
+                    detailCheckup.setInvoice(invoiceNumber);
+                    detailCheckup.setAction("U");
+                    detailCheckup.setLastUpdate(bean.getCreatedDate());
+                    detailCheckup.setLastUpdateWho(bean.getCreatedWho());
+
+                    // update invoice transitoris & no jurnal to detail ceckup
+                    saveUpdateNoJuran(detailCheckup);
+
+                } catch (GeneralBOException e){
+                    logger.error("[TutupPeriodAction.createJurnalTransitoris] ERROR. ", e);
+                    throw new GeneralBOException("[TutupPeriodAction.createJurnalTransitoris] ERROR. ", e);
+                }
+
+                logger.info("[TutuPeriodAction.createJurnalTransitoris] END <<<");
             }
-
-
-            mapJurnal.put("piutang_transistoris_pasien_rawat_inap", mapPiutang);
-            mapJurnal.put("pendapatan_rawat_inap", listOfMapTindakan);
         }
-        String catatan = "Transitoris Rawat Inap saat tutup periode "+jenisPasien;
-
-        try {
-
-            returnJurnal = createJurnal(transId, mapJurnal, bean.getUnit(), catatan, "Y");
-
-            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
-            detailCheckup.setIdDetailCheckup(bean.getIdDetailCheckup());
-            detailCheckup.setTransPeriode(bean.getBulan()+"-"+bean.getTahun());
-            detailCheckup.setTransDate(bean.getCreatedDate());
-            detailCheckup.setNoJurnalTrans(returnJurnal.getNoJurnal());
-            detailCheckup.setInvoice(invoiceNumber);
-            detailCheckup.setAction("U");
-            detailCheckup.setLastUpdate(bean.getCreatedDate());
-            detailCheckup.setLastUpdateWho(bean.getCreatedWho());
-
-            // update invoice transitoris & no jurnal to detail ceckup
-            saveUpdateNoJuran(detailCheckup);
-
-        } catch (GeneralBOException e){
-            logger.error("[TutupPeriodAction.createJurnalTransitoris] ERROR. ", e);
-            throw new GeneralBOException("[TutupPeriodAction.createJurnalTransitoris] ERROR. ", e);
-        }
-
-        logger.info("[TutuPeriodAction.createJurnalTransitoris] END <<<");
     }
 
     private List<Activity> getListAcitivity(String idDetailCheckup, String jenisPasien, String ket, String type, String idRuangan) {

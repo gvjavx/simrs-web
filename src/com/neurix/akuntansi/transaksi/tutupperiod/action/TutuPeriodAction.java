@@ -734,7 +734,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
 
             List<String> listHeader = billingSystemBo.getListHeaderPemeriksaanPenunjangByIdDetailCheckup(idDetail);
 
-            if (listHeader.size() > 0){
+            if (listHeader != null && listHeader.size() > 0){
                 List<PeriksaLab> periksaLabList = new ArrayList<>();
                 PeriksaLab periksaLab = new PeriksaLab();
                 periksaLab.setApproveFlag("Y");

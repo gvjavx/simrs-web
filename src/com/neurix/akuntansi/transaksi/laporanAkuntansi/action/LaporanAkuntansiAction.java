@@ -1734,6 +1734,10 @@ public class LaporanAkuntansiAction extends BaseMasterAction {
                     listAgingTempNewRecord.setTglJurnal(listAgingTempLast.getTglJurnal());
                     listAgingTempNewRecord.setKurs(objMod.getKurs());
                     listAgingTempNewRecord.setMataUang(listAgingTempLast.getMataUang());
+
+                    // 2021-07-05, Sigit Penambahan No Jurnal;
+                    listAgingTempNewRecord.setNoJurnal(listAgingTempLast.getNoJurnal());
+
                     //
                     listAgingTempNewRecord.setTotal(objMod.getTotal().add(listAgingTempLast.getTotal()));
                     listAgingTempNewRecord.setKodeRekening(objMod.getKodeRekening());
