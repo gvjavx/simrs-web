@@ -1480,7 +1480,7 @@ public class RawatInapController implements ModelDriven<Object> {
             bean.setIdTindakan(idTindakan);
 
             try {
-                result = tindakanBoProxy.getByCriteria(bean);
+                result = tindakanBoProxy.getDataTindakan(bean);
             } catch (GeneralBOException e) {
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
@@ -1490,7 +1490,7 @@ public class RawatInapController implements ModelDriven<Object> {
             TindakanRawat tindakanRawat = new TindakanRawat();
             tindakanRawat.setIdDetailCheckup(idDetailCheckup);
             tindakanRawat.setIdTindakan(idTindakan);
-            tindakanRawat.setNamaTindakan(namaTindakan);
+            tindakanRawat.setNamaTindakan(result.get(0).getTindakan());
             tindakanRawat.setIdDokter(idDokter);
             tindakanRawat.setIdPerawat(idPerawat);
             tindakanRawat.setQty(new BigInteger(qty));
@@ -1523,7 +1523,7 @@ public class RawatInapController implements ModelDriven<Object> {
             bean.setIdTindakan(idTindakan);
 
             try {
-                result = tindakanBoProxy.getByCriteria(bean);
+                result = tindakanBoProxy.getDataTindakan(bean);
             } catch (GeneralBOException e) {
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
@@ -1533,9 +1533,8 @@ public class RawatInapController implements ModelDriven<Object> {
             tindakanRawat.setIdTindakanRawat(idTindakanRawat);
             tindakanRawat.setIdDetailCheckup(idDetailCheckup);
             tindakanRawat.setIdTindakan(idTindakan);
-            tindakanRawat.setNamaTindakan(namaTindakan);
             tindakanRawat.setIdDokter(idDokter);
-            tindakanRawat.setIdPerawat(idPerawat);
+//            tindakanRawat.setIdPerawat(idPerawat);
             tindakanRawat.setQty(new BigInteger(qty));
             tindakanRawat.setAction("U");
             tindakanRawat.setFlag("Y");
@@ -1543,6 +1542,9 @@ public class RawatInapController implements ModelDriven<Object> {
             tindakanRawat.setCreatedWho(username);
             tindakanRawat.setLastUpdate(now);
             tindakanRawat.setLastUpdateWho(username);
+
+            tindakanRawat.setNamaTindakan(result.get(0).getTindakan());
+
 
             if (idJenisPeriksaPasien.equalsIgnoreCase("bpjs") || idJenisPeriksaPasien.equalsIgnoreCase("ptpn")){
                 tindakanRawat.setTarif(result.get(0).getTarifBpjs());
