@@ -52,14 +52,11 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
 
 //        BigDecimal dcBulan = new BigDecimal(bean.getBulan());
 //        BigDecimal dcTahun = new BigDecimal(bean.getTahun());
-        String rekenigId    = "%";
+        String kodeRekening    = "%";
         String tipeJurnalId = "%";
         String noJurnal     = "%";
         String bulan        = "%";
         String tahun        = "%";
-        if (bean.getRekeningId() != null && !"".equalsIgnoreCase(bean.getRekeningId())){
-            rekenigId = bean.getRekeningId();
-        }
         if (bean.getTipeJurnalId() != null && !"".equalsIgnoreCase(bean.getTipeJurnalId())){
             tipeJurnalId = bean.getTipeJurnalId();
         }
@@ -72,7 +69,9 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
         if (bean.getBulan() != null && !"".equalsIgnoreCase(bean.getBulan())){
             bulan = bean.getBulan();
         }
-
+        if (bean.getKodeRekening() != null && !"".equalsIgnoreCase(bean.getKodeRekening())){
+            kodeRekening = bean.getKodeRekening();
+        }
 
         String SQL = "SELECT \n" +
                 "dt.rekening_id,\n" +
@@ -88,7 +87,7 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
                 "AND CAST(EXTRACT(MONTH FROM h.tanggal_jurnal) AS VARCHAR) LIKE :bulan \n" +
                 "AND CAST(EXTRACT(YEAR FROM h.tanggal_jurnal) AS VARCHAR) LIKE :tahun  \n" +
                 "AND h.branch_id = :unit  \n" +
-                "AND dt.rekening_id LIKE :rekening \n" +
+                "AND dt.nomor_rekening LIKE :rekening \n" +
                 "AND h.tipe_jurnal_id LIKE :tipeJurnalId \n" +
                 "AND h.no_jurnal LIKE :nojurnal \n" +
                 "GROUP\n" +
@@ -103,7 +102,7 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
                 .setParameter("unit", bean.getUnit())
                 .setParameter("bulan", bulan)
                 .setParameter("tahun", tahun)
-                .setParameter("rekening", rekenigId)
+                .setParameter("rekening", kodeRekening)
                 .setParameter("tipeJurnalId", tipeJurnalId)
                 .setParameter("nojurnal", noJurnal)
                 .list();

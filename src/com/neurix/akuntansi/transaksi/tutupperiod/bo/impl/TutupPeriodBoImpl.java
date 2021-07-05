@@ -177,7 +177,8 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                             jurnalDetail.setBulan(bean.getBulan());
                             jurnalDetail.setTahun(bean.getTahun());
                             jurnalDetail.setUnit(bean.getUnit());
-                            jurnalDetail.setRekeningId(kodeRekeningEntity.getRekeningId());
+//                            jurnalDetail.setRekeningId(kodeRekeningEntity.getRekeningId());
+                            jurnalDetail.setKodeRekening(kodeRekeningEntity.getKodeRekening());
                             jurnalDetail.setParentId(kodeRekeningEntity.getParentId());
 
                             List<TutupPeriod> jurnalDatas = tutupPeriodDao.getListDetailJurnalByCriteria(jurnalDetail);
@@ -221,7 +222,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                                 // saldo bulan lalu dikurangi saldo tutup tahun
                                 String posisiJurnalAkhir = "";
                                 BigDecimal jurnalAkhirSaldo = new BigDecimal(0);
-                                if ("1".equalsIgnoreCase(bean.getBulan())){
+                                if ("01".equalsIgnoreCase(bean.getBulan())){
                                     String[] tipePeriode = {"12b", "12a", "12"};
                                     for (int i = 0 ; i < 3 ; i++){
                                         Integer intTahunLalu = Integer.valueOf(bean.getTahun()) - 1;
@@ -229,7 +230,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                                         jurnalAkhirTahun.setBulan("12");
                                         jurnalAkhirTahun.setTahun(intTahunLalu.toString());
                                         jurnalAkhirTahun.setUnit(bean.getUnit());
-                                        jurnalAkhirTahun.setRekeningId(kodeRekeningEntity.getRekeningId());
+                                        jurnalAkhirTahun.setRekeningId(kodeRekeningEntity.getKodeRekening());
                                         jurnalAkhirTahun.setTipePeriode(tipePeriode[i]);
 
                                         TutupPeriod noJurnalAkhir = tutupPeriodDao.getNoJurnalJurnalAkhirTahun(jurnalAkhirTahun);
@@ -1673,7 +1674,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
         ImKodeRekeningEntity kodeRekeningEntity = new ImKodeRekeningEntity();
 
         try {
-            kodeRekeningEntity = kodeRekeningDao.getById("rekeningId", id);
+            kodeRekeningEntity = kodeRekeningDao.getById("kodeRekening", id);
         } catch (HibernateException e){
             logger.error("[TutupPeriodBoImpl.getKodeRekeningById] ERROR. ", e);
             throw new GeneralBOException("[TutupPeriodBoImpl.getKodeRekeningById] ERROR. "+ e);
