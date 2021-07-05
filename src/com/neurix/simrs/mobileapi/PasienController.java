@@ -648,7 +648,23 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
                     bean.setUrlKtp(urlKtp);
                 }catch (IOException e){
                     e.printStackTrace();
+                    // perlu update
+                    model = new Pasien();
+                    model.setErrorMsg("Error: Email Mohon untuk upload foto KTP.");
+
+                    logger.error("[PasienController.create] Foto tidak ada <<<");
+                    return new DefaultHttpHeaders("success")
+                            .disableCaching();
                 }
+            }
+            else
+            {
+                model = new Pasien();
+                model.setErrorMsg("Error: Email Mohon untuk upload foto KTP.");
+
+                logger.error("[PasienController.create] Foto tidak ada <<<");
+                return new DefaultHttpHeaders("success")
+                        .disableCaching();
             }
 
             bean.setFlag("Y");
