@@ -167,6 +167,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
                     KodeRekening kodeRekening = new KodeRekening();
                     kodeRekening.setLevel(level.longValue());
+                    kodeRekening.setRekeningId("00008");
 
                     List<ImKodeRekeningEntity> kodeRekeningEntities = getListEntityKodeRekening(kodeRekening);
                     if (kodeRekeningEntities.size() > 0){
@@ -177,7 +178,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                             jurnalDetail.setBulan(bean.getBulan());
                             jurnalDetail.setTahun(bean.getTahun());
                             jurnalDetail.setUnit(bean.getUnit());
-//                            jurnalDetail.setRekeningId(kodeRekeningEntity.getRekeningId());
+                            //jurnalDetail.setRekeningId(kodeRekeningEntity.getRekeningId());
                             jurnalDetail.setKodeRekening(kodeRekeningEntity.getKodeRekening());
                             jurnalDetail.setParentId(kodeRekeningEntity.getParentId());
 
@@ -197,7 +198,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                             saldoAkhirEntity.setSaldoAkhirId(getNextSaldoAkhirId());
                             saldoAkhirEntity.setBranchId(jurnalDetail.getUnit());
                             saldoAkhirEntity.setPeriode(jurnalDetail.getBulan()+"-"+jurnalDetail.getTahun());
-                            saldoAkhirEntity.setRekeningId(jurnalDetail.getRekeningId());
+                            saldoAkhirEntity.setRekeningId(kodeRekeningEntity.getRekeningId());
                             saldoAkhirEntity.setJumlahDebit(jurnalDetail.getJumlahDebit());
                             saldoAkhirEntity.setJumlahKredit(jurnalDetail.getJumlahKredit());
                             saldoAkhirEntity.setFlag("Y");
@@ -230,7 +231,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                                         jurnalAkhirTahun.setBulan("12");
                                         jurnalAkhirTahun.setTahun(intTahunLalu.toString());
                                         jurnalAkhirTahun.setUnit(bean.getUnit());
-                                        jurnalAkhirTahun.setRekeningId(kodeRekeningEntity.getKodeRekening());
+                                        jurnalAkhirTahun.setRekeningId(kodeRekeningEntity.getRekeningId());
                                         jurnalAkhirTahun.setTipePeriode(tipePeriode[i]);
 
                                         TutupPeriod noJurnalAkhir = tutupPeriodDao.getNoJurnalJurnalAkhirTahun(jurnalAkhirTahun);

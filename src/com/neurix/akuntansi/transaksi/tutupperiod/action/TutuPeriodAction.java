@@ -263,7 +263,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
         } catch (GeneralBOException e){
             logger.error("[TutupPeriodAction.saveTutupPeriod] ERROR. ", e);
             response.setStatus("error");
-            response.setMsg("[TutupPeriodAction.saveTutupPeriod] ERROR. "+e);
+            response.setMsg("[TutupPeriodAction.saveTutupPeriod] ERROR. " +e.getCause());
             return response;
         }
 
