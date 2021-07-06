@@ -49,12 +49,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 /**
  * @author gondok
@@ -134,6 +137,7 @@ public class RawatInapController implements ModelDriven<Object> {
     private String idMonCairan;
     private String idMonVitalSign;
     private String idPembObat;
+    private String tipe;
 
     private String isMobile;
 
@@ -141,6 +145,16 @@ public class RawatInapController implements ModelDriven<Object> {
     private String tglMasuk;
 
     private File image;
+
+    private Map<String, Object> response = new HashMap<>();
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
 
     public File getImage() {
         return image;
@@ -677,6 +691,8 @@ public class RawatInapController implements ModelDriven<Object> {
                 return listOfMonVitalSign;
             case "getPlanKegiatanRawat":
                 return  listOfPlanKegiatanRawat;
+            case "deleteMon":
+                return response;
             default: return model;
         }
     }
@@ -1005,7 +1021,7 @@ public class RawatInapController implements ModelDriven<Object> {
 
             PlanKegiatanRawat planKegiatanRawat = new PlanKegiatanRawat();
             planKegiatanRawat.setIdDetailCheckup(idDetailCheckup);
-            planKegiatanRawat.setTglMulai(new Date(now.getTime()));
+            planKegiatanRawat.setTglMulai(new java.sql.Date(now.getTime()));
 
             try {
                 result = planKegiatanRawatBoProxy.getSearchByCritria(planKegiatanRawat);
@@ -1311,7 +1327,18 @@ public class RawatInapController implements ModelDriven<Object> {
 
             itSimrsMonPemberianObatEntity.setFlag("Y");
             itSimrsMonPemberianObatEntity.setAction("C");
-            itSimrsMonPemberianObatEntity.setCreatedDate(now);
+
+            DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+            java.util.Date date = null;
+            try {
+                date = df.parse(addMonPemberianObat.getCreatedDate());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            long time = date.getTime();
+
+            Timestamp ts = new Timestamp(time);
+            itSimrsMonPemberianObatEntity.setCreatedDate(ts);
             itSimrsMonPemberianObatEntity.setCreatedWho(addMonPemberianObat.getCreatedWho());
             itSimrsMonPemberianObatEntity.setLastUpdate(now);
             itSimrsMonPemberianObatEntity.setLastUpdateWho(addMonPemberianObat.getLastUpdateWho());
@@ -1559,16 +1586,19 @@ public class RawatInapController implements ModelDriven<Object> {
             }
         }
 
-        if (action.equalsIgnoreCase("cobaCompress")) {
-            try {
-                BufferedImage bufferedImage = ImageIO.read(image);
-                String imageType = CommonUtil.getImageFormat(image);
-                CrudResponse crudResponse = CommonUtil.compressImage(bufferedImage, imageType,CommonUtil.getPropertyParams("upload.external.dir")+"image.jpg");
-                model.setMessage(crudResponse.getMsg());
-            } catch (GeneralBOException e) {
-                logger.error("[RawatInapController.create] Error, " + e.getMessage());
-            } catch (IOException i) {
-                logger.error("[RawatInapController.create] Error, " + i.getMessage());
+        if (action.equalsIgnoreCase("deleteMon")) {
+            if (idPembObat != null && !"".equalsIgnoreCase(idPembObat)) {
+                try {
+                    MonCairan monCairan = new MonCairan();
+                    monCairan.setId(idPembObat);
+                    monCairan.setKeterangan(tipe);
+                    rawatInapBoProxy.deleteMon(monCairan);
+                    response.put("actionSuccess","Sukses");
+                } catch (Exception e) {
+                    response.put("actionError",e.toString());
+                }
+            } else {
+                response.put("actionError","Data Tidak ditemukan...!");
             }
 
         }
