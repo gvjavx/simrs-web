@@ -1403,8 +1403,14 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         String withResep = "N";
 
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
-        if (detailCheckupEntity != null){
-            idJenisPeriksaPasien = detailCheckupEntity.getIdJenisPeriksaPasien();
+        if (detailCheckupEntity != null && detailCheckupEntity.getIdJenisPeriksaPasien() != null){
+            idJenisPeriksaPasien = detailCheckupEntity.getIdJenisPeriksaPasien().toLowerCase();
+        } else {
+
+            logger.error("[VerifikatorPembayaranAction.closingJurnalNonTunaiTelemedic] Error tidak ditemukan jenis transaksi");
+            response.setStatus("error");
+            response.setMsg("[VerifikatorPembayaranAction.closingJurnalNonTunaiTelemedic]Error tidak ditemukan jenis transaksi");
+            return response;
         }
 
         ItSimrsHeaderChekupEntity checkupEntity = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup());
