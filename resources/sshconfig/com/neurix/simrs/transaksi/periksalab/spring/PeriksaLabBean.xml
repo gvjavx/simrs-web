@@ -24,6 +24,7 @@
           p:uploadHasilPeriksaDao-ref="uploadHasilPeriksaDao"
           p:headerPemeriksaanDao-ref="headerPemeriksaanDao"
           p:asesmenDao-ref="asesmenDao"
+          p:tindakanRawatDao-ref="tindakanRawatDao"
     />
 
     <bean id="periksaLabBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

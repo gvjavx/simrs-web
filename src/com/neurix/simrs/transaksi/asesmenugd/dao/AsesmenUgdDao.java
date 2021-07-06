@@ -27,6 +27,9 @@ public class AsesmenUgdDao extends GenericDao<ItSimrsAsesmenUgdEntity, String> {
             if (mapCriteria.get("id_asesmen_ugd")!=null) {
                 criteria.add(Restrictions.eq("idAsesmenUgd", (String) mapCriteria.get("id_asesmen_ugd")));
             }
+            if (mapCriteria.get("no_checkup")!=null) {
+                criteria.add(Restrictions.eq("noCheckup", (String) mapCriteria.get("no_checkup")));
+            }
             if (mapCriteria.get("id_detail_checkup")!=null) {
                 criteria.add(Restrictions.eq("idDetailCheckup", (String) mapCriteria.get("id_detail_checkup")));
             }

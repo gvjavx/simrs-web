@@ -37,6 +37,7 @@ public class AsesmenSpesialisAction {
         AsesmenSpesialisBo asesmenSpesialisBo = (AsesmenSpesialisBo) ctx.getBean("asesmenSpesialisBoProxy");
         try {
             JSONArray json = new JSONArray(data);
+            JSONObject objPasien = new JSONObject(dataPasien);
             List<AsesmenSpesialis> asesmenSpesialisList = new ArrayList<>();
             for (int i = 0; i < json.length(); i++) {
 
@@ -97,19 +98,21 @@ public class AsesmenSpesialisAction {
                 asesmenSpesialis.setCreatedDate(time);
                 asesmenSpesialis.setLastUpdateWho(userLogin);
                 asesmenSpesialis.setLastUpdate(time);
+                if(objPasien.has("no_checkup")){
+                    asesmenSpesialis.setNoCheckup(objPasien.getString("no_checkup"));
+                }
                 asesmenSpesialisList.add(asesmenSpesialis);
             }
             try {
                 response = asesmenSpesialisBo.saveAdd(asesmenSpesialisList);
                 if ("success".equalsIgnoreCase(response.getStatus())) {
-                    JSONObject obj = new JSONObject(dataPasien);
                     RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
-                    if (obj != null) {
+                    if (objPasien != null) {
                         StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
-                        status.setNoCheckup(obj.getString("no_checkup"));
-                        status.setIdDetailCheckup(obj.getString("id_detail_checkup"));
-                        status.setIdPasien(obj.getString("id_pasien"));
-                        status.setIdRekamMedisPasien(obj.getString("id_rm"));
+                        status.setNoCheckup(objPasien.getString("no_checkup"));
+                        status.setIdDetailCheckup(objPasien.getString("id_detail_checkup"));
+                        status.setIdPasien(objPasien.getString("id_pasien"));
+                        status.setIdRekamMedisPasien(objPasien.getString("id_rm"));
                         status.setIsPengisian("Y");
                         status.setAction("C");
                         status.setFlag("Y");
@@ -132,14 +135,14 @@ public class AsesmenSpesialisAction {
         return response;
     }
 
-    public List<AsesmenSpesialis> getListDetail(String idDetailCheckup, String keterangan) {
+    public List<AsesmenSpesialis> getListDetail(String noCheckup, String keterangan) {
         List<AsesmenSpesialis> list = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AsesmenSpesialisBo asesmenSpesialisBo = (AsesmenSpesialisBo) ctx.getBean("asesmenSpesialisBoProxy");
-        if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(keterangan)) {
+        if (!"".equalsIgnoreCase(noCheckup) && !"".equalsIgnoreCase(keterangan)) {
             try {
                 AsesmenSpesialis asesmenSpesialis = new AsesmenSpesialis();
-                asesmenSpesialis.setIdDetailCheckup(idDetailCheckup);
+                asesmenSpesialis.setNoCheckup(noCheckup);
                 asesmenSpesialis.setKeterangan(keterangan);
                 list = asesmenSpesialisBo.getByCriteria(asesmenSpesialis);
             } catch (GeneralBOException e) {

@@ -27,6 +27,9 @@ import com.neurix.simrs.transaksi.periksalab.dao.UploadHasilPeriksaDao;
 import com.neurix.simrs.transaksi.periksalab.model.*;
 import com.neurix.simrs.transaksi.periksaradiologi.dao.PeriksaRadiologiDao;
 import com.neurix.simrs.transaksi.periksaradiologi.model.ItSimrsPeriksaRadiologiEntity;
+import com.neurix.simrs.transaksi.tindakanrawat.dao.TindakanRawatDao;
+import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
+import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -50,6 +53,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
     private UploadHasilPeriksaDao uploadHasilPeriksaDao;
     private HeaderPemeriksaanDao headerPemeriksaanDao;
     private AsesmenDao asesmenDao;
+    private TindakanRawatDao tindakanRawatDao;
 
     @Override
     public List<PeriksaLab> getSearchLab(PeriksaLab bean) throws GeneralBOException {
@@ -489,6 +493,27 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                 logger.error("[PeriksaLabBoImpl.selesaiPemeriksaan] Error", e);
                 throw new GeneralBOException("Error" + e.getMessage());
             }
+
+            //update tindakan rawat flag approve Y
+            TindakanRawat tindakanRawat = new TindakanRawat();
+            tindakanRawat.setIdDetailCheckup(entity.getIdDetailCheckup());
+            tindakanRawat.setIsPelayanan("N");
+            List<ItSimrsTindakanRawatEntity> entityTindakanList = getListEntityTindakanRawat(tindakanRawat);
+
+            if (entityTindakanList.size() > 0) {
+                for (ItSimrsTindakanRawatEntity rawatEntity : entityTindakanList) {
+                    rawatEntity.setApproveFlag("Y");
+                    rawatEntity.setLastUpdate(bean.getLastUpdate());
+                    rawatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    try {
+                        tindakanRawatDao.updateAndSave(rawatEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[PeriksaLabBoImpl.selesaiPemeriksaan] Error when update approve flag ", e);
+                        throw new GeneralBOException("[PeriksaLabBoImpl.selesaiPemeriksaan] Error when update approve flag " + e.getMessage());
+                    }
+                }
+            }
+
         }else{
             throw new GeneralBOException("Tidak menukan data pemeriksaan");
         }
@@ -1307,6 +1332,33 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
             }
         }
         return asesmenList;
+    }
+
+    private List<ItSimrsTindakanRawatEntity> getListEntityTindakanRawat(TindakanRawat bean) throws GeneralBOException {
+        List<ItSimrsTindakanRawatEntity> results = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        if (bean.getIdTindakanRawat() != null && !"".equalsIgnoreCase(bean.getIdTindakanRawat())) {
+            hsCriteria.put("id_tindakan_rawat", bean.getIdTindakanRawat());
+        }
+        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
+            hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        }
+        if (bean.getIsPelayanan() != null && !"".equalsIgnoreCase(bean.getIsPelayanan())) {
+            hsCriteria.put("is_pelayanan", bean.getIsPelayanan());
+        }
+
+        hsCriteria.put("flag", "Y");
+        try {
+            results = tindakanRawatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e) {
+            logger.error("[PeriksaLabBoImpl.getListEntityTindakanRawat] Erro when searching tindakan rawat ", e);
+        }
+        return results;
+    }
+
+    public void setTindakanRawatDao(TindakanRawatDao tindakanRawatDao) {
+        this.tindakanRawatDao = tindakanRawatDao;
     }
 
     public void setAsesmenDao(AsesmenDao asesmenDao) {

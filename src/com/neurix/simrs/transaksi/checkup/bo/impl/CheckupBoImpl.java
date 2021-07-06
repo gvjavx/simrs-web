@@ -1773,7 +1773,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
         List<String> listAlergi = new ArrayList<>();
         if (alertPasien != null) {
-            List<ItSImrsCheckupAlergiEntity> alergiEntities = getListAlergi(alertPasien.getNoCheckup());
+            List<ItSImrsCheckupAlergiEntity> alergiEntities = getListAlergi(idPasien);
             if (alergiEntities != null && alergiEntities.size() > 0) {
                 for (ItSImrsCheckupAlergiEntity alergiEntity : alergiEntities) {
                     listAlergi.add(alergiEntity.getAlergi());

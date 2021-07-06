@@ -284,10 +284,10 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
                     persetujuanTindakanMedis.setTtdMenyatakan(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + jawaban);
                     persetujuanTindakanMedis.setNamaMenyatakan(list.getNamaTerang());
                     persetujuanTindakanMedis.setSipMenyatakan(list.getSip());
-                } else if ("Saksi I".equalsIgnoreCase(parameter)) {
+                } else if ("Saksi Keluarga".equalsIgnoreCase(parameter)) {
                     persetujuanTindakanMedis.setTtdPihak1(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + jawaban);
                     persetujuanTindakanMedis.setPihak1(list.getNamaTerang());
-                } else if ("Saksi II".equalsIgnoreCase(parameter)) {
+                } else if ("Perawat Pendamping".equalsIgnoreCase(parameter)) {
                     persetujuanTindakanMedis.setTtdPihak2(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + jawaban);
                     persetujuanTindakanMedis.setPihak2(list.getNamaTerang());
                 } else {

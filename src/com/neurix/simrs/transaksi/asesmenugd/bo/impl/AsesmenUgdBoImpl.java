@@ -32,6 +32,9 @@ public class AsesmenUgdBoImpl implements AsesmenUgdBo {
             if (bean.getIdAsesmenUgd() != null && !"".equalsIgnoreCase(bean.getIdAsesmenUgd())) {
                 hsCriteria.put("id_asesmen_ugd", bean.getIdAsesmenUgd());
             }
+            if (bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup())) {
+                hsCriteria.put("no_checkup", bean.getNoCheckup());
+            }
             if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
@@ -82,6 +85,7 @@ public class AsesmenUgdBoImpl implements AsesmenUgdBo {
                     asesmenUgd.setTipe(entity.getTipe());
                     asesmenUgd.setNamaTerang(entity.getNamaTerang());
                     asesmenUgd.setSip(entity.getSip());
+                    asesmenUgd.setNoCheckup(entity.getNoCheckup());
                     list.add(asesmenUgd);
                 }
             }
@@ -121,6 +125,7 @@ public class AsesmenUgdBoImpl implements AsesmenUgdBo {
                     asesmenUgdEntity.setTipe(bean.getTipe());
                     asesmenUgdEntity.setNamaTerang(bean.getNamaTerang());
                     asesmenUgdEntity.setSip(bean.getSip());
+                    asesmenUgdEntity.setNoCheckup(bean.getNoCheckup());
 
                     if("nyeri".equalsIgnoreCase(bean.getKeterangan())){
                         if("Skala".equalsIgnoreCase(bean.getParameter())){

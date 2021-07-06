@@ -1657,8 +1657,17 @@
 
     function printPernyataan(kode, idRm, flag, namaRm) {
         if(kode == "CK01"){
-            $('#save_ttd_concent').attr('onclick', 'saveResume(\'' + kode + '\', \'' + idRm + '\')');
-            $('#modal-ttd_concent').modal('show');
+            KeperawatanRawatJalanAction.getListAsesmenRawat(noCheckup, "general_concent", function (res) {
+                if(res.length > 0){
+                    $('#tanya').text("Apakah anda yakin print ?");
+                    $('#print_form').text(namaRm);
+                    $('#save_con_rm').attr('onclick', 'printPernyataanRM(\'' + kode + '\', \'' + idRm + '\')');
+                    $('#modal-confirm-rm').modal('show');
+                }else{
+                    $('#save_ttd_concent').attr('onclick', 'saveResume(\'' + kode + '\', \'' + idRm + '\')');
+                    $('#modal-ttd_concent').modal('show');
+                }
+            });
         }else{
             $('#tanya').text("Apakah anda yakin print ?");
             $('#print_form').text(namaRm);
@@ -1690,14 +1699,16 @@
                 'jawaban': nama1,
                 'keterangan': 'general_concent',
                 'jenis': 'general_concent',
-                'id_detail_checkup': idDetailCheckup
+                'id_detail_checkup': idDetailCheckup,
+                'no_checkup': noCheckup
             });
             data.push({
                 'parameter': 'nama_dokter',
                 'jawaban': nama2,
                 'keterangan': 'general_concent',
                 'jenis': 'general_concent',
-                'id_detail_checkup': idDetailCheckup
+                'id_detail_checkup': idDetailCheckup,
+                'no_checkup': noCheckup
             });
             data.push({
                 'parameter': 'pasien',
@@ -1705,7 +1716,8 @@
                 'keterangan': 'general_concent',
                 'jenis': 'general_concent',
                 'tipe': 'ttd',
-                'id_detail_checkup': idDetailCheckup
+                'id_detail_checkup': idDetailCheckup,
+                'no_checkup': noCheckup
             });
             data.push({
                 'parameter': 'dokter',
@@ -1713,7 +1725,8 @@
                 'keterangan': 'general_concent',
                 'jenis': 'general_concent',
                 'tipe': 'ttd',
-                'id_detail_checkup': idDetailCheckup
+                'id_detail_checkup': idDetailCheckup,
+                'no_checkup': noCheckup
             });
             var result = JSON.stringify(data);
             $('#save_ttd_concent').hide();

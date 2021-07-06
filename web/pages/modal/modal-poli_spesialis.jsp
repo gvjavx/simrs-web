@@ -121,6 +121,255 @@
                             </div>
                         </div>
                     </div>
+                    <div id="form_psikiatri" style="display: none">
+                        <hr>
+                        <div class="row">
+                            <label class="col-md-12"><b>Khusus Psikiatri</b></label>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <label class="col-md-4">Persepsi (Halusinasi)</label>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk1" id="psk11" value="Tidak">
+                                    <label for="psk11"></label> Tidak
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk1" id="psk12" value="Pendengaran">
+                                    <label for="psk12"></label> Pendengaran
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-4 col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk1" id="psk13" value="Penglihatan">
+                                    <label for="psk13"></label> Penglihatan
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk1" id="psk14" value="Perabaaan">
+                                    <label for="psk14"></label> Perabaaan
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-4 col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk1" id="psk15" value="Pengecapan">
+                                    <label for="psk15"></label> Pengecapan
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk1" id="psk16" value="Penciuman">
+                                    <label for="psk16"></label> Penciuman
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <label class="col-md-4">Proses Pikir</label>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk2" id="psk21" value="Sesuai">
+                                    <label for="psk21"></label> Sesuai
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk2" id="psk22" value="Blocking">
+                                    <label for="psk22"></label> Blocking
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-4 col-md-8">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk2" id="psk23" value="Pengeluaran Pembicaraan">
+                                    <label for="psk23"></label> Pengeluaran Pembicaraan
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-4 col-md-8">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk2" id="psk24" value="Berputar putar">
+                                    <label for="psk24"></label> Berputar putar
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <label class="col-md-4">Isi Pikir</label>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk3" id="psk31" value="Sesuai">
+                                    <label for="psk31"></label> Sesuai
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk3" id="psk32" value="Obsesi">
+                                    <label for="psk32"></label> Obsesi
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-4 col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk3" id="psk33" value="Fobia">
+                                    <label for="psk33"></label> Fobia
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk3" id="psk34" value="Pikiran Magis">
+                                    <label for="psk34"></label> Pikiran Magis
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-4 col-md-1">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk3" id="psk35">
+                                    <label for="psk35"></label>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <input style="margin-left: -10px" class="form-control" onchange="$('#psk35').val(''); $('#psk35').val(this.value)">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <label class="col-md-4">Waham</label>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk4" id="psk41" value="Tidak Ada">
+                                    <label for="psk41"></label> Tidak Ada
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk4" id="psk42" value="Agama">
+                                    <label for="psk42"></label> Agama
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-4 col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk4" id="psk43" value="Curiga">
+                                    <label for="psk43"></label> Curiga
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk4" id="psk44" value="Kebesaran">
+                                    <label for="psk44"></label> Kebesaran
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-4 col-md-1">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk4" id="psk45">
+                                    <label for="psk45"></label>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <input style="margin-left: -10px" class="form-control" onchange="$('#psk45').val(''); $('#psk45').val(this.value)">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <label class="col-md-4">Tingkat Kognitif</label>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk5" id="psk51" value="Koheren">
+                                    <label for="psk51"></label> Koheren
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk5" id="psk52" value="Bingung">
+                                    <label for="psk52"></label> Bingung
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-4 col-md-8">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk5" id="psk53" value="Stupor/mematung">
+                                    <label for="psk53"></label> Stupor/mematung
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-4 col-md-8">
+                                <div class="form-check">
+                                    <input type="checkbox" name="psk5" id="psk54" value="Disorientasi(waktu, tempat, orang)">
+                                    <label for="psk54"></label> Disorientasi(waktu, tempat, orang)
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <label class="col-md-6">Memori/daya ingat</label>
+                            <div class="col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" value="Baik" id="psk61" name="psk6" />
+                                    <label for="psk61">Baik</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="custom02">
+                                    <input type="radio" value="Tidak Baik" id="psk62" name="psk6" />
+                                    <label for="psk62">Tidak Baik</label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <label class="col-md-6">Tingkat konsentrasi dan berhitung</label>
+                            <div class="col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" value="Baik" id="psk71" name="psk7" />
+                                    <label for="psk71">Baik</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="custom02">
+                                    <input type="radio" value="Tidak Baik" id="psk72" name="psk7" />
+                                    <label for="psk72">Tidak Baik</label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <label class="col-md-6">Mengingkari penyakit yang diderita</label>
+                            <div class="col-md-6">
+                                <div class="custom02">
+                                    <input type="radio" value="Baik" id="psk81" name="psk8" />
+                                    <label for="psk81">Tidak</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-6 col-md-1">
+                                <div class="custom02">
+                                    <input type="radio" value="Tidak Baik" id="psk82" name="psk8" />
+                                    <label for="psk82">Ya</label>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <input class="form-control" onchange="$('#psk82').val(''); $('#psk82').val(this.value);">
+                            </div>
+                        </div>
+                    </div>
                     <hr>
                     <div class="row">
                         <label class="col-md-12"><b>Pemeriksaan</b></label>
