@@ -830,6 +830,13 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                         headerCheckup.setTindakanList(tindakans);
                     }
 
+                    if (headerCheckup == null || headerCheckup.getIdJenisPeriksaPasien() == null){
+                        logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. tidak ditemukan jenis transaksi / data transaksi.");
+                        response.setStatus("error");
+                        response.setMessage("[VerifikatorPembayaranAction.approveTransaksi] ERROR. tidak ditemukan jenis transaksi / data transaksi.");
+                        return response;
+                    }
+
                     try {
                         idDetailCheckup = verifikatorPembayaranBo.approveTransaksi(headerCheckup);
                     } catch (GeneralBOException e){
