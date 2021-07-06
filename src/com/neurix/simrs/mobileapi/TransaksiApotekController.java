@@ -308,9 +308,12 @@ public class TransaksiApotekController implements ModelDriven<Object> {
                 response.put("data",listOfTransaksiObat);
                 return response;
             case "getObatPoliByCriteria" :
-                return listOfObat;
+                response.put("data",listOfObat);
+                return response;
             case "getListObatPoliGroup":
                 return listOfObat;
+            case "saveVerifikasiObat":
+                return response;
             default:
                 return model;
         }
@@ -513,6 +516,7 @@ public class TransaksiApotekController implements ModelDriven<Object> {
                result = obatPoliBoProxy.getObatPoliByCriteria(beanObatPoli);
             } catch (GeneralBOException e) {
                 logger.error("[TransaksiApotekController.create] Error, get search transaksi " + e.getMessage());
+                response.put("actionError",e.toString());
             }
 
             for (ObatPoli item : result){
@@ -603,11 +607,13 @@ public class TransaksiApotekController implements ModelDriven<Object> {
                 }
             }
 
+            //SYAMS 6JUL21 => tambah actionError dan actionSuccess
             try {
                 transaksiObatBoProxy.saveVerifikasiObat(batchEntities, qtyApprove);
-                model.setMessage("Success");
+                response.put("actionSuccess","Sukses");
             } catch (GeneralBOException e){
                 logger.error("[TransaksiApotekController.create] Error, save verifikasi obat " + e.getMessage());
+                response.put("actionError",e.toString());
             }
         }
 
