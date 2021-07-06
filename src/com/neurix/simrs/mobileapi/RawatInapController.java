@@ -49,12 +49,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 /**
  * @author gondok
@@ -134,6 +137,7 @@ public class RawatInapController implements ModelDriven<Object> {
     private String idMonCairan;
     private String idMonVitalSign;
     private String idPembObat;
+    private String tipe;
 
     private String isMobile;
 
@@ -141,6 +145,16 @@ public class RawatInapController implements ModelDriven<Object> {
     private String tglMasuk;
 
     private File image;
+
+    private Map<String, Object> response = new HashMap<>();
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
 
     public File getImage() {
         return image;
@@ -677,6 +691,8 @@ public class RawatInapController implements ModelDriven<Object> {
                 return listOfMonVitalSign;
             case "getPlanKegiatanRawat":
                 return  listOfPlanKegiatanRawat;
+            case "deleteMon":
+                return response;
             default: return model;
         }
     }
@@ -922,7 +938,7 @@ public class RawatInapController implements ModelDriven<Object> {
             List<KategoriTindakan> result = new ArrayList<>();
 
             try {
-                result = kategoriTindakanBoProxy.getListKategoriTindakan(idPelayanan, null, branchId);
+                result = kategoriTindakanBoProxy.getListKategoriTindakan(idPelayanan, kategori, branchId);
             } catch (GeneralBOException e){
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
@@ -943,6 +959,8 @@ public class RawatInapController implements ModelDriven<Object> {
 
             Tindakan tindakan = new Tindakan();
             tindakan.setIdKategoriTindakan(idKategoriTindakan);
+            //SYAMS 2JUL21 => tambah idKelas
+            tindakan.setIdKelasRuangan(idKelas);
             tindakan.setBranchId(branchId);
 
             try {
@@ -957,7 +975,13 @@ public class RawatInapController implements ModelDriven<Object> {
                     tindakanMobile.setIdKategoriTindakan(item.getIdKategoriTindakan());
                     tindakanMobile.setIdTindakan(item.getIdTindakan());
                     tindakanMobile.setTindakan(item.getTindakan());
-                    tindakan.setTindakan(item.getTindakan());
+                    //SYAMS 2JUL21 => tambah tarif dan diskon
+                    tindakanMobile.setTarif(item.getTarif().toString());
+                    if (item.getDiskon()==null){
+                        tindakanMobile.setDiskon("0");
+                    } else {
+                        tindakanMobile.setDiskon(item.getDiskon().toString());
+                    }
 
                     listOfTindakan.add(tindakanMobile);
                 }
@@ -982,6 +1006,8 @@ public class RawatInapController implements ModelDriven<Object> {
                     dokterTeamMobile.setIdDokter(item.getIdDokter());
                     dokterTeamMobile.setNamaDokter(item.getNamaDokter());
                     dokterTeamMobile.setIdDetailCheckup(item.getIdDetailCheckup());
+                    //SYAMS 2JUL21 =>  tambah idPelayanan
+                    dokterTeamMobile.setIdPelayanan(item.getIdPelayanan());
 
                     listOfDokterTeam.add(dokterTeamMobile);
 
@@ -995,7 +1021,7 @@ public class RawatInapController implements ModelDriven<Object> {
 
             PlanKegiatanRawat planKegiatanRawat = new PlanKegiatanRawat();
             planKegiatanRawat.setIdDetailCheckup(idDetailCheckup);
-            planKegiatanRawat.setTglMulai(new Date(now.getTime()));
+            planKegiatanRawat.setTglMulai(new java.sql.Date(now.getTime()));
 
             try {
                 result = planKegiatanRawatBoProxy.getSearchByCritria(planKegiatanRawat);
@@ -1301,7 +1327,18 @@ public class RawatInapController implements ModelDriven<Object> {
 
             itSimrsMonPemberianObatEntity.setFlag("Y");
             itSimrsMonPemberianObatEntity.setAction("C");
-            itSimrsMonPemberianObatEntity.setCreatedDate(now);
+
+            DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+            java.util.Date date = null;
+            try {
+                date = df.parse(addMonPemberianObat.getCreatedDate());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            long time = date.getTime();
+
+            Timestamp ts = new Timestamp(time);
+            itSimrsMonPemberianObatEntity.setCreatedDate(ts);
             itSimrsMonPemberianObatEntity.setCreatedWho(addMonPemberianObat.getCreatedWho());
             itSimrsMonPemberianObatEntity.setLastUpdate(now);
             itSimrsMonPemberianObatEntity.setLastUpdateWho(addMonPemberianObat.getLastUpdateWho());
@@ -1470,7 +1507,7 @@ public class RawatInapController implements ModelDriven<Object> {
             bean.setIdTindakan(idTindakan);
 
             try {
-                result = tindakanBoProxy.getByCriteria(bean);
+                result = tindakanBoProxy.getDataTindakan(bean);
             } catch (GeneralBOException e) {
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
@@ -1480,7 +1517,7 @@ public class RawatInapController implements ModelDriven<Object> {
             TindakanRawat tindakanRawat = new TindakanRawat();
             tindakanRawat.setIdDetailCheckup(idDetailCheckup);
             tindakanRawat.setIdTindakan(idTindakan);
-            tindakanRawat.setNamaTindakan(namaTindakan);
+            tindakanRawat.setNamaTindakan(result.get(0).getTindakan());
             tindakanRawat.setIdDokter(idDokter);
             tindakanRawat.setIdPerawat(idPerawat);
             tindakanRawat.setQty(new BigInteger(qty));
@@ -1513,7 +1550,7 @@ public class RawatInapController implements ModelDriven<Object> {
             bean.setIdTindakan(idTindakan);
 
             try {
-                result = tindakanBoProxy.getByCriteria(bean);
+                result = tindakanBoProxy.getDataTindakan(bean);
             } catch (GeneralBOException e) {
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
@@ -1523,9 +1560,8 @@ public class RawatInapController implements ModelDriven<Object> {
             tindakanRawat.setIdTindakanRawat(idTindakanRawat);
             tindakanRawat.setIdDetailCheckup(idDetailCheckup);
             tindakanRawat.setIdTindakan(idTindakan);
-            tindakanRawat.setNamaTindakan(namaTindakan);
             tindakanRawat.setIdDokter(idDokter);
-            tindakanRawat.setIdPerawat(idPerawat);
+//            tindakanRawat.setIdPerawat(idPerawat);
             tindakanRawat.setQty(new BigInteger(qty));
             tindakanRawat.setAction("U");
             tindakanRawat.setFlag("Y");
@@ -1533,6 +1569,9 @@ public class RawatInapController implements ModelDriven<Object> {
             tindakanRawat.setCreatedWho(username);
             tindakanRawat.setLastUpdate(now);
             tindakanRawat.setLastUpdateWho(username);
+
+            tindakanRawat.setNamaTindakan(result.get(0).getTindakan());
+
 
             if (idJenisPeriksaPasien.equalsIgnoreCase("bpjs") || idJenisPeriksaPasien.equalsIgnoreCase("ptpn")){
                 tindakanRawat.setTarif(result.get(0).getTarifBpjs());
@@ -1547,16 +1586,19 @@ public class RawatInapController implements ModelDriven<Object> {
             }
         }
 
-        if (action.equalsIgnoreCase("cobaCompress")) {
-            try {
-                BufferedImage bufferedImage = ImageIO.read(image);
-                String imageType = CommonUtil.getImageFormat(image);
-                CrudResponse crudResponse = CommonUtil.compressImage(bufferedImage, imageType,CommonUtil.getPropertyParams("upload.external.dir")+"image.jpg");
-                model.setMessage(crudResponse.getMsg());
-            } catch (GeneralBOException e) {
-                logger.error("[RawatInapController.create] Error, " + e.getMessage());
-            } catch (IOException i) {
-                logger.error("[RawatInapController.create] Error, " + i.getMessage());
+        if (action.equalsIgnoreCase("deleteMon")) {
+            if (idPembObat != null && !"".equalsIgnoreCase(idPembObat)) {
+                try {
+                    MonCairan monCairan = new MonCairan();
+                    monCairan.setId(idPembObat);
+                    monCairan.setKeterangan(tipe);
+                    rawatInapBoProxy.deleteMon(monCairan);
+                    response.put("actionSuccess","Sukses");
+                } catch (Exception e) {
+                    response.put("actionError",e.toString());
+                }
+            } else {
+                response.put("actionError","Data Tidak ditemukan...!");
             }
 
         }

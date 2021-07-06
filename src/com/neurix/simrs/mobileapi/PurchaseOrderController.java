@@ -443,7 +443,7 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                 return response;
             default:
                 response.put("actionError","Method salah");
-                return response;
+                return model;
         }
 
     }
