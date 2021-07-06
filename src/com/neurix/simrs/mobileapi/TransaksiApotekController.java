@@ -303,8 +303,10 @@ public class TransaksiApotekController implements ModelDriven<Object> {
             case "getListResep" :
                 response.put("data",listOfPermintaanResep);
                 return response;
+                //SYAMS 6JUL21 => ganti return ke map
             case "getSearchTransaksiByCriteria" :
-                return listOfTransaksiObat;
+                response.put("data",listOfTransaksiObat);
+                return response;
             case "getObatPoliByCriteria" :
                 return listOfObat;
             case "getListObatPoliGroup":
@@ -457,6 +459,7 @@ public class TransaksiApotekController implements ModelDriven<Object> {
                 dataPasien = transaksiObatBoProxy.getDataTransByIdApprovalResep(idApprovalObat);
             } catch (GeneralBOException e){
                 logger.error("[TransaksiApotekController.create] Error, get search transaksi " + e.getMessage());
+                response.put("actionError",e.toString());
             }
 
             beanTransaksi.setIdDetailCheckup(dataPasien.getIdDetailCheckup());
@@ -467,6 +470,7 @@ public class TransaksiApotekController implements ModelDriven<Object> {
                 resultTransaksi = transaksiObatBoProxy.getSearchObatTransaksiByCriteria(beanTransaksi);
             } catch (GeneralBOException e){
                 logger.error("[TransaksiApotekController.create] Error, get search transaksi " + e.getMessage());
+                response.put("actionError",e.toString());
             }
 
             for (TransaksiObatDetail item : resultTransaksi){
