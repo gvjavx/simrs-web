@@ -4156,6 +4156,9 @@ public class CheckupDetailAction extends BaseMasterAction {
         String branch = CommonUtil.userBranchLogin();
         String logo = "";
         Branch branches = new Branch();
+        long millis = System.currentTimeMillis();
+        java.util.Date date = new java.util.Date(millis);
+        String tglToday = new SimpleDateFormat("dd-MM-yyyy").format(date);
 
         try {
             branches = branchBoProxy.getBranchById(branch, "Y");
@@ -4175,7 +4178,10 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         if (checkup != null) {
 
-            reportParams.put("dokter", "");
+            DokterTeam dokterTeam = teamDokterBoProxy.getNamaDokter(checkup.getIdDetailCheckup(), false);
+            reportParams.put("dokter", dokterTeam.getNamaDokter());
+            reportParams.put("sip", dokterTeam.getIdDokter());
+
             reportParams.put("area", CommonUtil.userAreaName());
             reportParams.put("unit", CommonUtil.userBranchNameLogin());
             reportParams.put("idPasien", checkup.getIdPasien());
@@ -4206,6 +4212,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             reportParams.put("idDetailCheckup", id);
             reportParams.put("diagnosa", checkup.getDiagnosa() + "-" + checkup.getNamaDiagnosa());
             reportParams.put("umur", CommonUtil.calculateAge(checkup.getTglLahir(), true) + " Tahun");
+            reportParams.put("tglDibawah", branches.getBranchAddress() + ", " + tglToday);
 
             try {
                 preDownload();
@@ -6170,6 +6177,24 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
         logger.info("[CheckupDetailAction.getDetailCheckup] end process >>>");
         return response;
+    }
+
+    public String searchKontrolUlang() {
+        logger.info("[CheckupDetailAction.searchKontrolUlang] start process >>>");
+        HeaderDetailCheckup detailCheckup = getHeaderDetailCheckup();
+        List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
+        try {
+            detailCheckupList = checkupDetailBoProxy.getListKontrolUlang(detailCheckup);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", detailCheckupList);
+        setHeaderDetailCheckup(detailCheckup);
+        logger.info("[CheckupDetailAction.searchKontrolUlang] end process >>>");
+        return "search";
     }
 
     public String getKeterangan() {

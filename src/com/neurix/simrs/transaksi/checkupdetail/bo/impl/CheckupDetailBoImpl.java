@@ -662,6 +662,17 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
+    public List<HeaderDetailCheckup> getListKontrolUlang(HeaderDetailCheckup bean) throws GeneralBOException {
+        List<HeaderDetailCheckup> headerDetailCheckupList = new ArrayList<>();
+        try {
+            headerDetailCheckupList = kontrolUlangDao.getKontrolUlang(bean);
+        }catch (HibernateException e){
+            logger.error("found Error " + e.getMessage());
+        }
+        return headerDetailCheckupList;
+    }
+
+    @Override
     public HeaderDetailCheckup getTotalBiayaTindakanBpjs(String idDetailCheckup) throws GeneralBOException {
         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
         try {
@@ -897,7 +908,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                         logger.error("Error"+e.getMessage());
                     }
                     if(entityList.size() > 0){
-                        for (ItSimrsKontrolUlangEntity kontrolUlangEntity: bean.getKontrolUlangEntityList()){
+                        for (ItSimrsKontrolUlangEntity kontrolUlangEntity: entityList){
                             try {
                                 kontrolUlangDao.deleteAndSave(kontrolUlangEntity);
                             }catch (HibernateException e){

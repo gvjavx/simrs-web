@@ -1074,6 +1074,7 @@ public class PasienBoImpl implements PasienBo {
                 //cek finger data
                 pasien.setDisabledFingerData(cekFingerData(pasien.getIdPasien()));
 
+                //set kontrol ulang
                 HeaderDetailCheckup detailCheckup = pasienDao.getLastCheckup(data.getIdPasien());
                 if (detailCheckup.getIdDetailCheckup() != null) {
                     if (detailCheckup.getTglCekup() != null) {
