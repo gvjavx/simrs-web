@@ -167,7 +167,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
                     KodeRekening kodeRekening = new KodeRekening();
                     kodeRekening.setLevel(level.longValue());
-                    kodeRekening.setRekeningId("00008");
+                    //kodeRekening.setRekeningId("00008");
 
                     List<ImKodeRekeningEntity> kodeRekeningEntities = getListEntityKodeRekening(kodeRekening);
                     if (kodeRekeningEntities.size() > 0){
