@@ -338,6 +338,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                                 saldoDetail.setCreatedWho(bean.getCreatedWho());
                                 saldoDetail.setLastUpdate(bean.getLastUpdate());
                                 saldoDetail.setLastUpdateWho(bean.getLastUpdateWho());
+                                saldoDetail.setKodeRekening(kodeRekeningEntity.getKodeRekening());
 
                                 // SAVE TO DETAIL
                                 saveSaldoAkhirDetail(saldoDetail, saldoAkhirEntity);
@@ -423,6 +424,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                             jurnalDetail.setUnit(bean.getUnit());
                             jurnalDetail.setRekeningId(kodeRekeningEntity.getRekeningId());
                             jurnalDetail.setParentId(kodeRekeningEntity.getParentId());
+                            jurnalDetail.setKodeRekening(kodeRekeningEntity.getKodeRekening());
 
                             List<TutupPeriod> jurnalDatas = tutupPeriodDao.getListDetailJurnalByCriteria(jurnalDetail);
                             if (jurnalDatas.size() > 0){
@@ -500,6 +502,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                                 saldoDetail.setCreatedWho(bean.getCreatedWho());
                                 saldoDetail.setLastUpdate(bean.getLastUpdate());
                                 saldoDetail.setLastUpdateWho(bean.getLastUpdateWho());
+                                saldoDetail.setKodeRekening(kodeRekeningEntity.getKodeRekening());
 
                                 // SAVE TO DETAIL
                                 saveSaldoAkhirDetailTutupTahun(saldoDetail, saldoAkhirEntity);
@@ -1675,7 +1678,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
         ImKodeRekeningEntity kodeRekeningEntity = new ImKodeRekeningEntity();
 
         try {
-            kodeRekeningEntity = kodeRekeningDao.getById("kodeRekening", id);
+            kodeRekeningEntity = kodeRekeningDao.getById("rekeningId", id);
         } catch (HibernateException e){
             logger.error("[TutupPeriodBoImpl.getKodeRekeningById] ERROR. ", e);
             throw new GeneralBOException("[TutupPeriodBoImpl.getKodeRekeningById] ERROR. "+ e);
