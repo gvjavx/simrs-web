@@ -2929,6 +2929,7 @@ INSERT INTO im_func_roles VALUES
 ------------------------------------- 07 07 2021 ---------------------------------------------------------------
 /=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
 
--
+- Perbaikan Daftar Pasien BPJS IGD Tidak perlu memasukkan diagnosa di awal
+- Create SEP di pemeriksaan IGD untuk pasien BPJS
 
 

@@ -18,4 +18,6 @@ public interface DiagnosaRawatBo {
     public Boolean cekDiagnosa(DiagnosaRawat bean) throws GeneralBOException;
     public ItSimrsDiagnosaRawatEntity getById(String id) throws GeneralBOException;
 
+    public void saveDelete(DiagnosaRawat bean) throws GeneralBOException;
+
 }

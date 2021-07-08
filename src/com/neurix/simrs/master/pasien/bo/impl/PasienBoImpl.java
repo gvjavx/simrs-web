@@ -74,18 +74,6 @@ public class PasienBoImpl implements PasienBo {
             throw new GeneralBOException("[PasienBoImpl.getByCriteria] Error when search pasien by criteria " + e);
         }
 
-
-//        List<Pasien> pasiens = new ArrayList<>();
-//        if (bean != null) {
-//
-//            List<ImSimrsPasienEntity> imSimrsPasienEntities = getEntityByCriteria(bean);
-//
-//            if (!imSimrsPasienEntities.isEmpty()) {
-//                pasiens = setTemplatePasien(imSimrsPasienEntities);
-//            }
-//
-//        }
-
         logger.info("[PasienBoImpl.getByCriteria] End <<<<<<<");
         return pasienList;
     }

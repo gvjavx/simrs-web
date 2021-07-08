@@ -218,14 +218,19 @@
                                     <s:hidden id="h_is_eksekutif" name="headerDetailCheckup.isEksekutif"/>
                                     <s:hidden id="h_flag_vaksin" name="headerDetailCheckup.isVaksin"/>
 
-                                    <s:if test='headerDetailCheckup.noSep != ""'>
+                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs" || headerDetailCheckup.idJenisPeriksaPasien == "bpjs_rekanan"'>
                                         <tr>
                                             <td width="45%"><b>No SEP</b></td>
                                             <td style="vertical-align: middle;">
                                                 <table>
-                                                    <span class="span-success">
-                                                    <s:property value="headerDetailCheckup.noSep"></s:property>
-                                                    </span>
+                                                    <s:if test='headerDetailCheckup.noSep != null && headerDetailCheckup.noSep != ""'>
+                                                        <span class="span-success">
+                                                            <s:property value="headerDetailCheckup.noSep"></s:property>
+                                                        </span>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <span>Belum Generate SEP</span>
+                                                    </s:else>
                                                 </table>
                                             </td>
                                         </tr>

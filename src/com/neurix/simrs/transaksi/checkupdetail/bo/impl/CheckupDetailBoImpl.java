@@ -673,6 +673,31 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
+    public void updateSEP(HeaderDetailCheckup bean) throws GeneralBOException {
+        if (bean != null) {
+            ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
+            try {
+                entity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
+            } catch (HibernateException e) {
+                logger.error(e.getMessage());
+            }
+            if (entity != null) {
+                entity.setNoSep(bean.getNoSep());
+                entity.setTarifBpjs(bean.getTarifBpjs());
+                entity.setKodeCbg(bean.getKodeCbg());
+                entity.setAction("U");
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setLastUpdate(bean.getLastUpdate());
+                try {
+                    checkupDetailDao.updateAndSave(entity);
+                } catch (HibernateException e) {
+                    logger.error(e.getMessage());
+                }
+            }
+        }
+    }
+
+    @Override
     public HeaderDetailCheckup getTotalBiayaTindakanBpjs(String idDetailCheckup) throws GeneralBOException {
         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
         try {
