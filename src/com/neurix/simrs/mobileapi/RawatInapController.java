@@ -42,6 +42,8 @@ import io.agora.recording.common.Common;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -147,6 +149,16 @@ public class RawatInapController implements ModelDriven<Object> {
     private File image;
 
     private Map<String, Object> response = new HashMap<>();
+
+    private String listTindakanRawatInap;
+
+    public String getListTindakanRawatInap() {
+        return listTindakanRawatInap;
+    }
+
+    public void setListTindakanRawatInap(String listTindakanRawatInap) {
+        this.listTindakanRawatInap = listTindakanRawatInap;
+    }
 
     public String getTipe() {
         return tipe;
@@ -880,7 +892,6 @@ public class RawatInapController implements ModelDriven<Object> {
                 listOfTindakanRawat.add(tindakanRawatMobile);
             }
         }
-
         if (action.equalsIgnoreCase("getDiagnosaRawat")){
             List<DiagnosaRawat> result = new ArrayList<>();
 
@@ -1382,20 +1393,30 @@ public class RawatInapController implements ModelDriven<Object> {
         }
 
         if (action.equalsIgnoreCase("saveAddMonCairan")){
+            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            Date date = null;
+            try {
+                date = dateFormat.parse(addMonCairan.getCreatedDate());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            long time = date.getTime();
+
             ItSimrsMonCairanEntity itSimrsMonCairanEntity = new ItSimrsMonCairanEntity();
-            itSimrsMonCairanEntity.setBalanceCairan(addMonCairan.getBalanceCairan());
-            itSimrsMonCairanEntity.setCekTambahanObat(addMonCairan.getCekTambahanObat());
             itSimrsMonCairanEntity.setIdDetailCheckup(addMonCairan.getIdDetailCheckup());
-            itSimrsMonCairanEntity.setJamMulai(addMonCairan.getJamMulai());
-            itSimrsMonCairanEntity.setJamSelesai(addMonCairan.getJamSelesai());
-            itSimrsMonCairanEntity.setJamUkurBuang(addMonCairan.getJamUkurBuang());
-            itSimrsMonCairanEntity.setJumlah(addMonCairan.getJumlah());
-            itSimrsMonCairanEntity.setDari(addMonCairan.getDari());
-            itSimrsMonCairanEntity.setKeterangan(addMonCairan.getKeterangan());
+            itSimrsMonCairanEntity.setCreatedDate(new Timestamp(time));
             itSimrsMonCairanEntity.setMacamCairan(addMonCairan.getMacamCairan());
             itSimrsMonCairanEntity.setMelalui(addMonCairan.getMelalui());
-            itSimrsMonCairanEntity.setNoCheckup(addMonCairan.getNoCheckup());
+            itSimrsMonCairanEntity.setJumlah(addMonCairan.getJumlah());
+            itSimrsMonCairanEntity.setJamMulai(addMonCairan.getJamMulai());
+            itSimrsMonCairanEntity.setJamSelesai(addMonCairan.getJamSelesai());
+            itSimrsMonCairanEntity.setCekTambahanObat(addMonCairan.getCekTambahanObat());
             itSimrsMonCairanEntity.setSisa(addMonCairan.getSisa());
+            itSimrsMonCairanEntity.setJamUkurBuang(addMonCairan.getJamUkurBuang());
+            itSimrsMonCairanEntity.setDari(addMonCairan.getDari());
+            itSimrsMonCairanEntity.setBalanceCairan(addMonCairan.getBalanceCairan());
+            itSimrsMonCairanEntity.setNoCheckup(addMonCairan.getNoCheckup());
+            itSimrsMonCairanEntity.setKeterangan(addMonCairan.getKeterangan());
 
             itSimrsMonCairanEntity.setAction("C");
             itSimrsMonCairanEntity.setFlag("Y");
@@ -1535,6 +1556,53 @@ public class RawatInapController implements ModelDriven<Object> {
             }
 
             tindakanRawatList.add(tindakanRawat);
+
+            try {
+                tindakanRawatBoProxy.saveAdd(tindakanRawatList);
+                model.setMessage("Success");
+            } catch (GeneralBOException e){
+                logger.error("[RawatInapController.create] Error, " + e.getMessage());
+            }
+        }
+        //SYAMS 9JUL21 => tambah method save dengan list
+        if (action.equalsIgnoreCase("saveAddTindakanRawatList")){
+
+            List<TindakanRawat> tindakanRawatList = new ArrayList<>();
+            try {
+                JSONArray jsonArray = new JSONArray(listTindakanRawatInap);
+
+                if (jsonArray.length()>0){
+                    for (int i = 0; i<jsonArray.length();i++){
+                        JSONObject obj = jsonArray.getJSONObject(i);
+
+                        TindakanRawat tindakanRawat = new TindakanRawat();
+                        tindakanRawat.setIdDetailCheckup(obj.getString("idDetailCheckup"));
+                        tindakanRawat.setIdTindakan(obj.getString("idTindakan"));
+                        tindakanRawat.setNamaTindakan(obj.getString("namaTindakan"));
+                        tindakanRawat.setIdDokter(obj.getString("idDokter"));
+                        tindakanRawat.setIdPerawat(obj.getString("idPerawat"));
+                        tindakanRawat.setQty(new BigInteger(obj.getString("qty")));
+                        tindakanRawat.setAction("C");
+                        tindakanRawat.setFlag("Y");
+                        tindakanRawat.setCreatedDate(now);
+                        tindakanRawat.setCreatedWho(obj.getString("createdWho"));
+                        tindakanRawat.setLastUpdate(now);
+                        tindakanRawat.setLastUpdateWho(obj.getString("lastUpdateWho"));
+                        tindakanRawat.setTarif(new BigInteger(obj.getString("tarif")));
+
+//                        if (idJenisPeriksaPasien.equalsIgnoreCase("bpjs") || idJenisPeriksaPasien.equalsIgnoreCase("ptpn")){
+//                            tindakanRawat.setTarif(result.get(0).getTarifBpjs());
+//                        } else {
+//                            tindakanRawat.setTarif(result.get(0).getTarif());
+//                        }
+
+                        tindakanRawatList.add(tindakanRawat);
+                    }
+                }
+            } catch (Exception e){
+                response.put("actionError",e.toString());
+            }
+
 
             try {
                 tindakanRawatBoProxy.saveAdd(tindakanRawatList);
