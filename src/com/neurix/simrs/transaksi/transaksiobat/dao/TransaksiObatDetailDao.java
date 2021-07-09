@@ -1293,16 +1293,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         if (obj == null)
             return new BigDecimal(0);
         else {
-
-            String[] splitNilai = obj.toString().split("\\.");
-
-            if (splitNilai.length > 0){
-
-                String stNilai = splitNilai[0];
-                return new BigDecimal(stNilai);
-            } else {
-                return new BigDecimal(obj.toString());
-            }
+            return new BigDecimal(obj.toString()).setScale(BigDecimal.ROUND_UP);
         }
     }
 }

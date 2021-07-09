@@ -292,12 +292,12 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
                 obatDetail.setIdObat(obj[8] == null ? "" : obj[8].toString());
                 obatDetail.setWarna(obj[9] == null ? "" : obj[9].toString());
 
-//                if (!"".equalsIgnoreCase(obatDetail.getIdObat())){
-//                    HargaObatPerKonsumen hargaObatPerKonsumen = getDataHargaPerKonsumen(obatDetail.getIdObat(), bean.getBranchId(), bean.getIdJenisPeriksa(), bean.getIdAsuransi());
-//                    if (hargaObatPerKonsumen != null && hargaObatPerKonsumen.getHargaJual() != null){
-//                        obatDetail.setHarga(new BigInteger(hargaObatPerKonsumen.getHargaJual().toString()));
-//                    }
-//                }
+                if (!"".equalsIgnoreCase(obatDetail.getIdObat())){
+                    HargaObatPerKonsumen hargaObatPerKonsumen = getDataHargaPerKonsumen(obatDetail.getIdObat(), bean.getBranchId(), bean.getIdJenisPeriksa(), bean.getIdAsuransi());
+                    if (hargaObatPerKonsumen != null && hargaObatPerKonsumen.getHargaJual() != null){
+                        obatDetail.setHarga(new BigInteger(hargaObatPerKonsumen.getHargaJual().toString()));
+                    }
+                }
                 obatDetails.add(obatDetail);
             }
         }
@@ -597,7 +597,7 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
         if (obj == null)
             return new BigDecimal(0);
         else
-            return new BigDecimal(obj.toString());
+            return new BigDecimal(obj.toString()).setScale(BigDecimal.ROUND_UP);
     }
 
 }
