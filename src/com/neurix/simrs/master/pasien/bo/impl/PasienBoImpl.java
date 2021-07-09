@@ -1152,7 +1152,7 @@ public class PasienBoImpl implements PasienBo {
                 "=========================================\n" +
                 "<br> \n" +
                 "<br>\n");
-        CommonUtil.sendEmail(email);
+//        CommonUtil.sendEmail(email);
 
         return bean;
     }
