@@ -171,6 +171,24 @@ public class HeaderDetailCheckup extends BaseModel{
     private String catatanKlinis;
     private String spo2;
     private List<ItSimrsKontrolUlangEntity> kontrolUlangEntityList = new ArrayList<>();
+    private String idKontrolUlang;
+    private String namaDokter;
+
+    public String getNamaDokter() {
+        return namaDokter;
+    }
+
+    public void setNamaDokter(String namaDokter) {
+        this.namaDokter = namaDokter;
+    }
+
+    public String getIdKontrolUlang() {
+        return idKontrolUlang;
+    }
+
+    public void setIdKontrolUlang(String idKontrolUlang) {
+        this.idKontrolUlang = idKontrolUlang;
+    }
 
     public List<ItSimrsKontrolUlangEntity> getKontrolUlangEntityList() {
         return kontrolUlangEntityList;

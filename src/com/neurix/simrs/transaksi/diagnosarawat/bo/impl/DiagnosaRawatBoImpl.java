@@ -189,6 +189,21 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
     }
 
     @Override
+    public void saveDelete(DiagnosaRawat bean) throws GeneralBOException {
+        List<ItSimrsDiagnosaRawatEntity> entityList = getListEntityDiagnosaRawat(bean);
+        if(entityList.size() > 0){
+            for (ItSimrsDiagnosaRawatEntity entity: entityList){
+                try {
+                    diagnosaRawatDao.deleteAndSave(entity);
+                }catch (HibernateException e){
+                    logger.error(e.getMessage());
+                    throw new GeneralBOException(e.getMessage());
+                }
+            }
+        }
+    }
+
+    @Override
     public List<ItSimrsDiagnosaRawatEntity> getListEntityDiagnosaRawat(DiagnosaRawat bean) throws GeneralBOException{
         logger.info("[DiagnosaRawatBoImpl.getListEntityDiagnosaRawat] Start >>>>>>>>>");
 
@@ -207,6 +222,9 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
         }
         if (bean.getOrderJenisDiagnosa() != null && !"".equalsIgnoreCase(bean.getOrderJenisDiagnosa())){
             hsCriteria.put("order_jenis_diagnosa", bean.getOrderJenisDiagnosa());
+        }
+        if (bean.getIdDiagnosa() != null && !"".equalsIgnoreCase(bean.getIdDiagnosa())){
+            hsCriteria.put("id_diagnosa", bean.getIdDiagnosa());
         }
 
         List<ItSimrsDiagnosaRawatEntity> entities = new ArrayList<>();

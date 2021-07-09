@@ -1432,7 +1432,11 @@ function saveDiagnosa(id) {
                             hitungStatusBiaya();
                             $('#modal-diagnosa').modal('hide');
                             $('#info_dialog').dialog('open');
-                            $('#close_pos').val(3);
+                            if(response.msg = "reload"){
+                                $('#close_pos').val(12);
+                            }else{
+                                $('#close_pos').val(3);
+                            }
                         } else {
                             $('#warning_diagnosa').show().fadeOut(5000);
                             $('#msg_diagnosa').text(response.msg);
