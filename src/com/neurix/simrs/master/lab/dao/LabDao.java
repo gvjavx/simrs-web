@@ -117,14 +117,16 @@ public class LabDao extends GenericDao<ImSimrsLabEntity, String> {
         String SQL = "SELECT\n" +
                 "b.id_lab,\n" +
                 "b.nama_lab\n" +
-                "FROM im_simrs_lab_detail a\n" +
+                "FROM (SELECT * FROM im_simrs_lab_detail WHERE flag = 'Y') a\n" +
                 "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
                 "INNER JOIN im_simrs_parameter_pemeriksaan c ON a.id_parameter_pemeriksaan = c.id_parameter_pemeriksaan\n" +
                 "INNER JOIN im_simrs_kategori_lab d ON c.id_kategori_lab = d.id_kategori_lab\n" +
                 "WHERE d.kategori LIKE :idKat OR d.id_kategori_lab = :idKat\n" +
                 "AND a.branch_id LIKE :branch \n" +
-                "GROUP BY b.id_lab, b.nama_lab ORDER BY b.order_index";
+                "GROUP BY b.id_lab, b.nama_lab ORDER BY b.order_index, b.id_lab";
+
         List<Object[]> result = new ArrayList<>();
+
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("idKat", idKat)
                 .setParameter("branch", branch)

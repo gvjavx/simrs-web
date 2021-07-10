@@ -2861,11 +2861,75 @@ INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ('RMP000000307','RMM00000100','radiologi','2','Y','C','migrasi',now(),now(),'migrasi');
 
 /=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
----------------------------------B E L U M - D I P R O D -------------------------------------------------------
-------------------------------------- 15 06 2021 ---------------------------------------------------------------
+---------------------------------SUDAH - D I P R O D -------------------------------------------------------
+------------------------------------- 28 06 2021 ---------------------------------------------------------------
 /=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
 
-ALTER TABLE im_simrs_parameter_pemeriksaan
-ADD COLUMN is_hr VARCHAR(1);
+--import data txt dulu baru execute ini
+--start execute----------------------
+UPDATE im_simrs_tindakan_medis_detail
+SET flag = 'Y',
+    action = 'C',
+    created_date = now(),
+    created_who = 'admin',
+    last_update = now(),
+    last_update_who = 'admin';
+
+UPDATE im_simrs_tindakan_medis
+SET flag = 'Y',
+    action = 'C',
+    created_date = now(),
+    created_who = 'admin',
+    last_update = now(),
+    last_update_who = 'admin';
+--end execute-----------------------
+
+ALTER TABLE it_simrs_asesmen_poli_spesialis
+ADD COLUMN no_checkup VARCHAR(50);
+
+ALTER TABLE it_simrs_asesmen_keperawatan_rawat_jalan
+ADD COLUMN no_checkup VARCHAR(50);
+
+ALTER TABLE it_simrs_asesmen_ugd
+ADD COLUMN no_checkup VARCHAR(50);
+
+UPDATE im_simrs_rekam_medis_pasien
+SET jumlah_kategori = '2'
+WHERE id_rekam_medis_pasien = 'RMM00000001';
+
+ALTER TABLE it_simrs_tindakan_rawat
+ADD COLUMN is_pelayanan VARCHAR(1);
+
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+--------------------------------- N O T E - P E R B A I K A N --------------------------------------------------
+------------------------------------- 23 06 2021 ---------------------------------------------------------------
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+
+- Perbaikan Asesmen Poli Spesialis
+- Perbaikan Asesmen Rehab Medik
+- Penambahan Persetujuan Tindakan Medis / General Concent
+
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+---------------------------------B E L U M - D I P R O D -------------------------------------------------------
+------------------------------------- 06 07 2021 ---------------------------------------------------------------
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+
+INSERT INTO im_functions VALUES
+(6932, 'Kontrol Ulang', '/kontrolulang/initForm_kontrolulang.action', 2400, 2, now(), 'admin', now(), 'admin', 'Y','C', 6932),
+(6933, 'init form', '/kontrolulang/initForm_kontrolulang.action', 6932, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6934, 'search', '/kontrolulang/searchKontrolUlang_kontrolulang.action', 6932, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6932, 32, 'Y', now(), now(), 'admin', 'admin'),
+(6933, 32, 'Y', now(), now(), 'admin', 'admin'),
+(6934, 32, 'Y', now(), now(), 'admin', 'admin');
+
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+--------------------------------- N O T E - P E R B A I K A N --------------------------------------------------
+------------------------------------- 07 07 2021 ---------------------------------------------------------------
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+
+- Perbaikan Daftar Pasien BPJS IGD Tidak perlu memasukkan diagnosa di awal
+- Create SEP di pemeriksaan IGD untuk pasien BPJS
 
 

@@ -40,6 +40,7 @@ import com.neurix.simrs.transaksi.JurnalResponse;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
+import com.neurix.simrs.transaksi.asesmenrawatjalan.model.ItSimrsAsesmenKeperawatanRawatJalanEntity;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
@@ -424,6 +425,20 @@ public class TransaksiObatAction extends BaseMasterAction {
         transaksiObatDetail.setJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
         List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
 
+        HeaderCheckup dataPasien = new HeaderCheckup();
+
+        try {
+            dataPasien = transaksiObatBoProxy.getHeaderCheckupDataByPermintaanResep(transaksiObatDetail.getIdPermintaanResep());
+        } catch (HibernateException e){
+            logger.error("[TransaksiObatAction.searchResep] ERROR error when get searh resep. ", e);
+            addActionError("[TransaksiObatAction.searchResep] ERROR error when get searh resep. " + e.getMessage());
+        }
+
+        transaksiObatDetail.setIdAsuransi(dataPasien.getIdAsuransi());
+        transaksiObatDetail.setBranchId(dataPasien.getBranchId());
+        transaksiObatDetail.setJenisPeriksaPasien(dataPasien.getIdJenisPeriksaPasien());
+        transaksiObatDetail.setIdDetailCheckup(dataPasien.getIdDetailCheckup());
+
         if (transaksiObatDetail != null) {
             if (transaksiObatDetail.getIdPermintaanResep() != null && !"".equalsIgnoreCase(transaksiObatDetail.getIdPermintaanResep())) {
                 try {
@@ -681,6 +696,20 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
         transaksiObatDetail.setIdPermintaanResep(noResep);
+
+        HeaderCheckup dataPasien = new HeaderCheckup();
+
+        try {
+            dataPasien = transaksiObatBo.getHeaderCheckupDataByPermintaanResep(noResep);
+        } catch (HibernateException e){
+            logger.error("[TransaksiObatAction.getListDetailResep] ERROR error when get searh resep. ", e);
+            addActionError("[TransaksiObatAction.getListDetailResep] ERROR error when get searh resep. " + e.getMessage());
+        }
+
+        transaksiObatDetail.setIdAsuransi(dataPasien.getIdAsuransi());
+        transaksiObatDetail.setBranchId(dataPasien.getBranchId());
+        transaksiObatDetail.setJenisPeriksaPasien(dataPasien.getIdJenisPeriksaPasien());
+        transaksiObatDetail.setIdDetailCheckup(dataPasien.getIdDetailCheckup());
 
         if (transaksiObatDetail != null) {
 
@@ -1155,15 +1184,21 @@ public class TransaksiObatAction extends BaseMasterAction {
 
                 try {
                     if(object.getString("kajian") != null && !"".equalsIgnoreCase(object.getString("kajian"))){
-                        JSONObject jsonObject = new JSONObject(object.getString("kajian"));
-                        if(jsonObject.has("admin")){
-                            obatDetail.setkAdmin(jsonObject.getString("admin"));
-                        }
-                        if(jsonObject.has("farma")){
-                            obatDetail.setkFarma(jsonObject.getString("farma"));
-                        }
-                        if(jsonObject.has("kritis")){
-                            obatDetail.setkKritis(jsonObject.getString("kritis"));
+                        JSONArray jsonArray = new JSONArray(object.getString("kajian"));
+                        if(jsonArray != null && jsonArray.length() > 0){
+                            List<ItSimrsAsesmenKeperawatanRawatJalanEntity> keperawatanRawatJalanEntityList = new ArrayList<>();
+                            for (int i=0; i<jsonArray.length(); i++){
+                                JSONObject object1 = jsonArray.getJSONObject(i);
+                                ItSimrsAsesmenKeperawatanRawatJalanEntity rawatJalanEntity = new ItSimrsAsesmenKeperawatanRawatJalanEntity();
+                                rawatJalanEntity.setParameter(object1.getString("parameter"));
+                                rawatJalanEntity.setJawaban(object1.getString("jawaban"));
+                                rawatJalanEntity.setJenis(object1.getString("jenis"));
+                                rawatJalanEntity.setKeterangan(object1.getString("keterangan"));
+                                if(object1.has("tipe")){
+                                    rawatJalanEntity.setTipe(object1.getString("tipe"));
+                                }
+                                keperawatanRawatJalanEntityList.add(rawatJalanEntity);
+                            }
                         }
                     }
                 }catch (Exception e){
@@ -1174,8 +1209,7 @@ public class TransaksiObatAction extends BaseMasterAction {
 
                 try {
                      //create jurnal Pengeluaran Obat Apotik
-                    //JurnalResponse jurnalResponse = createJurnalPengeluaranObatApotik(idApproval);
-                    JurnalResponse jurnalResponse = new JurnalResponse();
+                    JurnalResponse jurnalResponse = createJurnalPengeluaranObatApotik(idApproval);
                     jurnalResponse.setStatus("success");
                     if ("error".equalsIgnoreCase(jurnalResponse.getStatus())) {
                         response.setMessage(jurnalResponse.getMsg());

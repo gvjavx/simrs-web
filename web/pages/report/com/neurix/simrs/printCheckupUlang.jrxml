@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printResepPasien" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.4641000000000013"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="243"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="reportParams.tglCheckup" class="java.lang.String"/>
 	<parameter name="reportParams.logo" class="java.lang.String"/>
 	<parameter name="reportParams.nik" class="java.lang.String"/>
@@ -332,13 +332,6 @@ WHERE a.id_detail_checkup = $P{reportParams.idDetailCheckup}]]>
 			<line>
 				<reportElement x="1" y="165" width="380" height="1" uuid="a4cda924-c62f-4bc4-9fa9-0de2026935a2"/>
 			</line>
-			<textField>
-				<reportElement x="10" y="10" width="133" height="16" uuid="28a9c186-866c-4d4b-8dea-4725a5b0cd0a"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{nama_pemeriksaan}]]></textFieldExpression>
-			</textField>
 		</band>
 	</title>
 	<detail>

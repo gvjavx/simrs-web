@@ -4,6 +4,7 @@ import com.neurix.authorization.user.bo.UserBo;
 import com.neurix.authorization.user.model.User;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.transaksi.jadwalShiftKerja.bo.JadwalShiftKerjaBo;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalPelayananDTO;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
@@ -14,11 +15,11 @@ import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
-import com.neurix.simrs.mobileapi.model.JenisObatMobile;
-import com.neurix.simrs.mobileapi.model.JenisPeriksaMobile;
-import com.neurix.simrs.mobileapi.model.PelayananMobile;
+import com.neurix.simrs.mobileapi.model.*;
 import com.neurix.simrs.transaksi.antrianonline.bo.AntrianOnlineBo;
 import com.neurix.simrs.transaksi.antrianonline.model.AntianOnline;
+import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
+import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.paketperiksa.bo.PaketPeriksaBo;
 import com.neurix.simrs.transaksi.paketperiksa.model.PaketPasien;
 import com.neurix.simrs.transaksi.paketperiksa.model.PaketPeriksa;
@@ -43,13 +44,16 @@ public class PelayananController implements ModelDriven<Object> {
     private AntrianOnlineBo antrianOnlineBoProxy;
     private DokterBo dokterBoProxy;
     private JadwalShiftKerjaBo jadwalShiftKerjaBoProxy;
+    private ObatPoliBo  obatPoliBoProxy;
     private JenisObatBo jenisObatBoProxy;
+    private BiodataBo biodataBoProxy;
     private UserBo userBoProxy;
     private PaketPeriksaBo paketPeriksaBoProxy;
     private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
     private Collection<PelayananMobile> listOfPelayanan = new ArrayList<>();
     private Collection<JenisPeriksaMobile> listOfJenisPeriksa = new ArrayList<>();
     private Collection<JenisObatMobile> listOfJenisObat = new ArrayList<>();
+    private Collection<ObatPoliMobile> listOfObat = new ArrayList<>();
 
     private String tglCheckup;
     private String idPelayanan;
@@ -63,6 +67,8 @@ public class PelayananController implements ModelDriven<Object> {
     private String idPasien;
 
     private String idPaket;
+
+    private Map<String,Object> response = new HashMap<>();
 
     public String getIdPaket() {
         return idPaket;
@@ -119,6 +125,8 @@ public class PelayananController implements ModelDriven<Object> {
     public void setListOfJenisPerika(Collection<JenisPeriksaMobile> listOfJenisPerika) {
         this.listOfJenisPeriksa = listOfJenisPerika;
     }
+
+    public void setBiodataBoProxy(BiodataBo biodataBoProxy) { this.biodataBoProxy = biodataBoProxy;}
 
     public JenisPriksaPasienBo getJenisPriksaPasienBoProxy() {
         return jenisPriksaPasienBoProxy;
@@ -180,6 +188,8 @@ public class PelayananController implements ModelDriven<Object> {
     public void setPelayananBoProxy(PelayananBo pelayananBoProxy) {
         this.pelayananBoProxy = pelayananBoProxy;
     }
+
+    public void setObatPoliBoProxy(ObatPoliBo obatPoliBoProxy) {this.obatPoliBoProxy = obatPoliBoProxy; }
 
     public void setModel(PelayananMobile model) {
         this.model = model;
@@ -262,6 +272,8 @@ public class PelayananController implements ModelDriven<Object> {
                return listOfJenisPeriksa;
            case "getJenisObat" :
                return listOfJenisObat;
+           case "getListObat" :
+               return listOfObat;
            case "getListPelayananRJ" :
                return listOfPelayanan;
            case "getDetailPaket" :
@@ -297,9 +309,9 @@ public class PelayananController implements ModelDriven<Object> {
 
     }
 
+    /** edit by fahmi 08 Jun 2021, menambahkan informasi foto dokter saat pengambilan data shift*/
     public HttpHeaders create() {
         logger.info("[PelayananController.create] start process POST / <<<");
-
 
         List<Pelayanan> listPelayanan = new ArrayList<>();
         List<Dokter> listDokter = new ArrayList<>();
@@ -320,13 +332,14 @@ public class PelayananController implements ModelDriven<Object> {
             }
 
             int i = 0;
+
             for(JadwalPelayananDTO item : listJadwalPelayananDTO) {
                 PelayananMobile result = new PelayananMobile();
                 result.setIdPelayananApi(String.valueOf(i));
                 result.setIdDokter(item.getIdDokter());
                 result.setIdPelayanan(item.getIdPelayanan());
                 result.setIdSpesialis(item.getIdSpesialis());
-                result.setIdDokter(item.getIdDokter());
+                result.setFotoDokter(item.getUrlImg());
                 result.setNamaDokter(item.getNamaDokter());
                 result.setNamaPelayanan(item.getNamaPelayanan());
                 result.setNamaSpesialis(item.getNamaSpesialis());
@@ -354,7 +367,7 @@ public class PelayananController implements ModelDriven<Object> {
                 i++;
             }
         }
-        if (action.equalsIgnoreCase("detail")) {
+        else if (action.equalsIgnoreCase("detail")) {
             try {
                 listDokter = dokterBoProxy.getByIdPelayanan(idPelayanan, branchId);
             } catch (GeneralBOException e) {
@@ -366,8 +379,7 @@ public class PelayananController implements ModelDriven<Object> {
                 }
             }
         }
-
-        if  (action.equalsIgnoreCase("getListPelayanan")){
+        else if  (action.equalsIgnoreCase("getListPelayanan")){
             List<Pelayanan> result = new ArrayList<>();
 
 //            Pelayanan bean = new Pelayanan();
@@ -389,8 +401,7 @@ public class PelayananController implements ModelDriven<Object> {
                 listOfPelayanan.add(pelayananMobile);
             }
         }
-
-        if  (action.equalsIgnoreCase("getUsername")) {
+        else if  (action.equalsIgnoreCase("getUsername")) {
 
             User user = new User();
 
@@ -403,8 +414,7 @@ public class PelayananController implements ModelDriven<Object> {
             model.setUsername(user.getUsername());
             model.setUserId(user.getUserId());
         }
-
-        if  (action.equalsIgnoreCase("getListApotek")) {
+        else if  (action.equalsIgnoreCase("getListApotek")) {
 
             List<Pelayanan> result = new ArrayList<>();
 
@@ -423,8 +433,67 @@ public class PelayananController implements ModelDriven<Object> {
                 listOfPelayanan.add(pelayananMobile);
             }
         }
+        // Add by Fahmi, untuk ambil list obat.
+        else if (action.equalsIgnoreCase("getListObat"))
+        {
+            listOfObat = new ArrayList<>();
+            List<ObatPoli> obatPoli = null;
+            String msg = null;
+            try {
+                obatPoli = obatPoliBoProxy.getListObatGroupPoli(getIdPelayanan(), getBranchId(), null, null, idPasien);
+            }
+            catch (GeneralBOException e)
+            {
+                logger.error("[Pelayanan.getListObat] Error when get list obat");
+                msg = e.getMessage();
+            }
 
-        if (action.equalsIgnoreCase("getJenisObat")) {
+            // for handling message if error that just happen
+            if(null!=msg)
+            {
+                ObatPoliMobile temp = new ObatPoliMobile();
+                temp.setMessage(msg);
+                listOfObat.add(temp);
+            }
+            else if (null != obatPoli && obatPoli.size() > 0)
+            {
+                ObatPoliMobile temp;
+                for (ObatPoli a : obatPoli)
+                {
+                    temp = new ObatPoliMobile();
+
+                    temp.setIdObat(a.getIdObat());
+                    temp.setIdPelayanan(a.getIdPelayanan());
+                    temp.setQty(String.valueOf(a.getQty()));
+                    temp.setFlag(a.getFlag());
+                    temp.setAction(a.getAction());
+                    //temp.setCreatedWho(a.getCreatedWho());
+                    //temp.setCreatedDate(a.getCreatedDate().toString());
+                    //temp.setLastUpdateWho(a.getLastUpdateWho());
+                    //temp.setLastUpdate(a.getLastUpdate().toString());
+
+                    temp.setBranchId(a.getBranchId());
+
+                    temp.setNamaPelayanan(a.getNamaPelayanan());
+
+                    temp.setQtyBox(String.valueOf(a.getQtyBox()));
+                    temp.setQtyLembar(String.valueOf(a.getQtyLembar()));
+                    temp.setQtyBiji(String.valueOf(a.getQtyBiji()));
+                    temp.setBijiPerLembar(String.valueOf(a.getBijiPerLembar()));
+                    temp.setIdBarang(a.getIdBarang());
+                    temp.setExp(a.getExp());
+                    temp.setIdPabrik(a.getIdPabrik());
+                    temp.setExpiredDate(null!=a.getExpiredDate()?CommonUtil.convertDateToString(a.getExpiredDate()):"");
+                    temp.setFlagKronis(a.getFlagKronis());
+
+                    temp.setNamaObat(a.getNamaObat());
+                    temp.setIdJenisObat(a.getIdJenisObat());
+                    listOfObat.add(temp);
+                }
+            }
+
+        }
+        else if (action.equalsIgnoreCase("getJenisObat")) {
 
             List<JenisObat> result = new ArrayList<>();
             JenisObat bean = new JenisObat();
@@ -443,8 +512,7 @@ public class PelayananController implements ModelDriven<Object> {
                 listOfJenisObat.add(jenisObatMobile);
             }
         }
-
-        if  (action.equalsIgnoreCase("getJenisPeriksaPasien")) {
+        else if  (action.equalsIgnoreCase("getJenisPeriksaPasien")) {
             List<JenisPriksaPasien> result = new ArrayList<>();
             PaketPasien paketPasien = new PaketPasien();
 
@@ -479,8 +547,7 @@ public class PelayananController implements ModelDriven<Object> {
                 listOfJenisPeriksa.add(jenisPeriksaMobile);
             }
         }
-
-        if  (action.equalsIgnoreCase(("notif"))) {
+        else if  (action.equalsIgnoreCase(("notif"))) {
 
             List<String> somePushTokens = Arrays.asList("ExponentPushToken[a5ZnTeN_kK0DmkQT4ibUlP]");
             List<String> ticketId = new ArrayList<>();
@@ -582,8 +649,7 @@ public class PelayananController implements ModelDriven<Object> {
                 System.out.println(e.getMessage());
             }
         }
-
-        if (action.equalsIgnoreCase("getListPelayananRJ")) {
+        else if (action.equalsIgnoreCase("getListPelayananRJ")) {
             List<Pelayanan> result = new ArrayList<>();
 
 
@@ -601,8 +667,7 @@ public class PelayananController implements ModelDriven<Object> {
                 listOfPelayanan.add(pelayananMobile);
             }
         }
-
-        if (action.equalsIgnoreCase("checkPaketPasien")) {
+        else if (action.equalsIgnoreCase("checkPaketPasien")) {
             PaketPasien paketPasien;
             try {
                 paketPasien = paketPeriksaBoProxy.checkPaketPasien(idPasien);

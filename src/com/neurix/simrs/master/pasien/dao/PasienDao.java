@@ -174,18 +174,25 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
         if(idPasien != null){
             String SQL = "SELECT\n" +
-                    "b.id_detail_checkup,\n" +
-                    "a.id_pasien,\n" +
-                    "b.tgl_cekup,\n" +
-                    "b.no_checkup_ulang,\n" +
-                    "b.is_order_lab, \n" +
-                    "b.id_pelayanan\n" +
-                    "FROM it_simrs_header_checkup a \n" +
-                    "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
-                    "WHERE id_pasien = :idPasien\n" +
-                    "AND a.tgl_keluar IS NOT NULL\n" +
-                    "ORDER BY a.created_date DESC\n" +
-                    "LIMIT 1\n";
+                    "b.id_kontrol_ulang,\n" +
+                    "a.id_detail_checkup,\n" +
+                    "a.is_order_lab,\n" +
+                    "b.id_pelayanan,\n" +
+                    "b.tgl_kontrol,\n" +
+                    "b.id_dokter\n" +
+                    "FROM (\n" +
+                    "\tSELECT\n" +
+                    "\tb.id_detail_checkup,\n" +
+                    "\tb.is_order_lab\n" +
+                    "\tFROM it_simrs_header_checkup a \n" +
+                    "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "\tWHERE id_pasien = :idPasien\n" +
+                    "\tAND a.tgl_keluar IS NOT NULL\n" +
+                    "\tORDER BY a.created_date DESC\n" +
+                    "\tLIMIT 1\n" +
+                    ")a\n" +
+                    "INNER JOIN it_simrs_kontrol_ulang b ON a.id_detail_checkup = b.id_detail_checkup\n" +
+                    "WHERE b.status_kontrol = 'N' AND b.tgl_kontrol = CURRENT_DATE";
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("idPasien", idPasien)
@@ -193,12 +200,12 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
 
             if(result.size() > 0){
                 Object[] obj = result.get(0);
-                detailCheckup.setIdDetailCheckup(obj[0] != null ? obj[0].toString() : "");
-                detailCheckup.setIdPasien(obj[1] != null ? obj[1].toString() : "");
-                detailCheckup.setTglCekup(obj[2] != null ? Date.valueOf(obj[2].toString()) : null);
-                detailCheckup.setNoCheckupUlang(obj[3] != null ? obj[3].toString() : "");
-                detailCheckup.setIsOrderLab(obj[4] != null ? obj[4].toString() : "");
-                detailCheckup.setIdPelayanan(obj[5] != null ? obj[5].toString() : "");
+                detailCheckup.setNoCheckupUlang(obj[0] != null ? obj[0].toString() : "");
+                detailCheckup.setIdDetailCheckup(obj[1] != null ? obj[1].toString() : "");
+                detailCheckup.setIsOrderLab(obj[2] != null ? obj[2].toString() : "");
+                detailCheckup.setIdPelayanan(obj[3] != null ? obj[3].toString() : "");
+                detailCheckup.setTglCekup(obj[4] != null ? Date.valueOf(obj[4].toString()) : null);
+                detailCheckup.setIdDokter(obj[5] != null ? obj[5].toString() : null);
             }
         }
         return detailCheckup;
@@ -414,6 +421,8 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
             where += "AND ps.no_ktp = '"+param.getNoKtp()+"' \n";
         if (param.getNoBpjs() != null && !"".equalsIgnoreCase(param.getNoBpjs()))
             where += "AND ps.no_bpjs = '"+param.getNoBpjs()+"' \n";
+        if (param.getEmail() != null && !"".equalsIgnoreCase(param.getEmail()))
+            where += "AND ps.email = '"+param.getEmail()+"' \n";
 
         //ada penambahan atuh
         String SQL = "SELECT\n" +

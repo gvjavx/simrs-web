@@ -16,7 +16,6 @@ function saveRA(jenis, ket, tipe) {
     var tgl = $('.tgl').val();
     var jam = $('.jam').val();
     var namaTerang = $('#nama_terang_perawat').val();
-    var sip = $('#nip_perawat').val();
 
     var tempDiag = "";
     var tempHasil = "";
@@ -146,8 +145,7 @@ function saveRA(jenis, ket, tipe) {
             'evaluasi': tempEva,
             'keterangan': jenis,
             'nama_terang': namaTerang,
-            'ttd_perawat': ttd,
-            'sip': sip
+            'ttd_perawat': ttd
         }
 
         if(!cekSession()){

@@ -847,9 +847,8 @@
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <span style="font-weight: bold; color: #0F9E5E" class="text-center" id="id_loading"></span>
+                            <div style="font-weight: bold; color: #0F9E5E" class="text-center"><span id="id_loading"></span></div>
                             <div class="box box-solid">
-                                <!-- /.box-header -->
                                 <div class="box-body">
                                     <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                                         <ol class="carousel-indicators" id="button_ol">
@@ -1047,6 +1046,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/IcuAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/KandunganAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/KeperawatanRawatJalanAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/fisioterapi.js"/>'></script>
@@ -1080,6 +1080,7 @@
     var idDetailCheckup = $('#no_detail_checkup').val();
     var contextPath = '<%= request.getContextPath() %>';
     var idPasien = $('#id_pasien').val();
+    var jenisPeriksaPasien = $('#jenis_pasien').val();
 
     var tglLhr = $('#h_tgl_lahir').val();
     var tglLahir = tglLhr.split("-").reverse().join("-");
@@ -1113,6 +1114,7 @@
     var isEksekutif = "";
     var flagVaksin = "";
     var tanggalMasuk = new Date();
+    var namaPelayanan = '<s:property value="detailCheckup.namaPelayanan"/>';
 
     function loadModalRM(jenis, method, parameter, idRM, flag) {
         var context = contextPath + '/pages/modal/modal-default.jsp';

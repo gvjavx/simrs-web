@@ -59,7 +59,11 @@ function viewAllRekamMedis() {
                         labelPrint = '<span style="color: #367fa9; font-weight: bold">' + terIsiPrint + '</span>';
 
                         if ("spesialis" == item.tipeRM) {
-                            sps += '<li ' + tol + ' style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')"><span class="hvr-grow "><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>'+enter;
+                            if("ringkasan_rj" == item.jenis){
+                                sps += '<li ' + tol + ' style="cursor: pointer" onclick="showModalRJ(\'' + item.jenis + '\', \''+item.idRekamMedisPasien +'\')"><span class="hvr-grow "><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>'+enter;
+                            }else{
+                                sps += '<li ' + tol + ' style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')"><span class="hvr-grow "><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>'+enter;
+                            }
                         }
                         if ("fisioterapi" == item.tipeRM) {
                             fs += '<li ' + tol + ' style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>'+enter;
@@ -184,16 +188,21 @@ function viewHistory() {
                         json = JSON.stringify(item.uploadHasil);
                     }
 
+                    var detailBTN = '';
+                    if (item.idDetailCheckup != null && item.idDetailCheckup != '') {
+                        detailBTN = 'onmouseover="delOnclick(\'row_' + item.idRiwayatTindakan + '\')" onmouseout="setOnclick(\'row_' + item.idRiwayatTindakan + '\', \''+item.idDetailCheckup+'\')"';
+                    }
+
                     if ("resep" == keteranganTindakan || "laboratorium" == keteranganTindakan || "radiologi" == keteranganTindakan) {
                         if ("laboratorium" == keteranganTindakan || "radiologi" == keteranganTindakan) {
                             if ("Y" == item.isPeriksaLuar) {
-                                btn = '<img onclick="showHasil(\'' + item.idRiwayatTindakan + '\', \'' + item.namaTindakan + '\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
+                                btn = '<img '+detailBTN+' onclick="showHasil(\'' + item.idRiwayatTindakan + '\', \'' + item.namaTindakan + '\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
                             } else {
-                                btn = '<img class="hvr-grow" id="btn_' + item.idRiwayatTindakan + '" \n' +
+                                btn = '<img '+detailBTN+' class="hvr-grow" id="btn_' + item.idRiwayatTindakan + '" \n' +
                                     'onclick="detailTindakan(\'' + item.idRiwayatTindakan + '\',\'' + item.idTindakan + '\',\'' + keteranganTindakan + '\')"\n' +
                                     'src="' + contextPath + '/pages/images/icons8-plus-25.png">';
                                 if(json != ''){
-                                    btn2 = '<img onclick="showHasil(\'' + item.idRiwayatTindakan + '\', \'' + item.namaTindakan + '\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
+                                    btn2 = '<img '+detailBTN+' onclick="showHasil(\'' + item.idRiwayatTindakan + '\', \'' + item.namaTindakan + '\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
                                 }
                             }
                         } else {

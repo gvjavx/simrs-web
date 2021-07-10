@@ -216,6 +216,7 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
         return jadwalShiftKerjaList;
     }
 
+    /** Edited by fahmi, tambah foto_upload dari hris_pegawai saat select */
     public List<JadwalPelayananDTO> getJadwalPelayanan(String idPelayanan, String kelompokId, String branchId, String nip, Date tanggal) {
         String searchPelayanan = "";
         String searchKelompok = "";
@@ -302,6 +303,7 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "dk.nama_dokter,\n" +
                 "pl.id_pelayanan,\n" +
                 "pl.nama_pelayanan,\n" +
+                "pg.foto_upload,\n" +
                 "jd.tanggal,\n" +
                 "sh.jam_awal,\n" +
                 "sh.jam_akhir,\n" +
@@ -320,10 +322,9 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "b.tipe_pelayanan,\n" +
                 "b.kategori_pelayanan,\n" +
                 "b.divisi_id,\n" +
-                "b.kode_vclaim,\n" +
-                "b.flag\t\t\t\n" +
+                "b.kode_vclaim\t\t\t\n" +
                 "FROM im_simrs_pelayanan a\n" +
-                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) pl ON pl.id_pelayanan = dpl.id_pelayanan\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan AND b.flag = 'Y') pl ON pl.id_pelayanan = dpl.id_pelayanan\n" +
                 "INNER JOIN im_hris_pegawai pg ON pg.nip=dk.id_dokter\n" +
                 "INNER JOIN it_hris_jadwal_shift_kerja_detail jdd ON jdd.nip=pg.nip\n" +
                 "INNER JOIN it_hris_jadwal_shift_kerja jd ON jd.jadwal_shift_kerja_id=jdd.jadwal_shift_kerja_id\n" +
@@ -357,13 +358,14 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
             result.setNamaDokter((String) row[1]);
             result.setIdPelayanan((String) row[2]);
             result.setNamaPelayanan((String) row[3]);
-            result.setTanggal((Date) row[4]);
-            result.setJamAwal((String) row[5]);
-            result.setJamAkhir((String) row[6]);
-            result.setBranchId((String) row[7]);
-            result.setBranchName((String) row[8]);
-            result.setKuota((String) row[9]);
-            result.setFlagLibur((String) row[10]);
+            result.setUrlImg((String) row[4]);
+            result.setTanggal((Date) row[5]);
+            result.setJamAwal((String) row[6]);
+            result.setJamAkhir((String) row[7]);
+            result.setBranchId((String) row[8]);
+            result.setBranchName((String) row[9]);
+            result.setKuota((String) row[10]);
+            result.setFlagLibur((String) row[11]);
             listOfResult.add(result);
         }
         return listOfResult;

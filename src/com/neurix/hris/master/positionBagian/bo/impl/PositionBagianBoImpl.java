@@ -322,7 +322,6 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         return null;
     }
 
-
     @Override
     public List<PositionBagian> getComboKelompokWithCriteria(String query) throws GeneralBOException {
         logger.info("[UserBoImpl.getComboUserWithCriteria] start process >>>");

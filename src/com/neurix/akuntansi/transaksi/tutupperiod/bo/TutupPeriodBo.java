@@ -1,10 +1,12 @@
 package com.neurix.akuntansi.transaksi.tutupperiod.bo;
 
+import com.neurix.akuntansi.transaksi.saldoakhir.model.SaldoAkhir;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.BatasTutupPeriod;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.ItSimrsBatasTutupPeriodEntity;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.TutupPeriod;
 import com.neurix.common.exception.GeneralBOException;
 
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -19,5 +21,11 @@ public interface TutupPeriodBo {
     public void saveUpdateLockPeriodKoreksi(TutupPeriod bean) throws GeneralBOException;
     public BatasTutupPeriod getLastBulanBerjalanSaldoAkhir(String tahun, String branchId) throws GeneralBOException;
     public void updateSaldoAkhirBulanBerjalan(TutupPeriod bean) throws GeneralBOException;
+    public Integer getLowestLevelKodeRekening();
+    public String checkIsJurnalTransitoris(String transId);
+    public List<SaldoAkhir> getListSaldoAkhir(String branchId, String periode, String rekeningId, BigInteger level);
+    public List<SaldoAkhir> getListSAldoAkhirDetailByIdSaldo(String idSaldo);
+    public void saveUpdateSaldoAkhirTahun(TutupPeriod bean) throws GeneralBOException;
+
 
 }

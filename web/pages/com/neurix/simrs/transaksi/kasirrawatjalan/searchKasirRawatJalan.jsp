@@ -103,7 +103,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Jenis Pasien</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'asuransi':'SISA ASURANSI', 'bpjs':'SISA BPJS', 'paket_individu':'PAKET PROMO'}" cssStyle="margin-top: 7px"
+                                        <s:select list="#{'asuransi':'SISA ASURANSI', 'bpjs':'SISA BPJS','rekanan':'SISA REKANAN', 'paket_individu':'PAKET PROMO'}" cssStyle="margin-top: 7px"
                                                   headerKey="umum" headerValue="UMUM" name="headerDetailCheckup.idJenisPeriksaPasien"
                                                   cssClass="form-control"/>
                                     </div>
@@ -789,7 +789,7 @@
                     $.each(response, function (i, item) {
                         tbody += '<tr>' +
                             '<td>'+item.namaObat+'</td>' +
-                            '<td align="center">'+item.qty+'</td>' +
+                            '<td align="center">'+item.qtyApprove+'</td>' +
                             '<td>'+item.jenisSatuan+'</td>' +
                             '<td align="right" width="19%" style="padding-right: 19px"> '+formatRupiah(item.totalHarga)+'</td>' +
                             '</tr>';

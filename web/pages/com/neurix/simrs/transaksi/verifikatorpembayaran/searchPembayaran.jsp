@@ -196,7 +196,7 @@
                             <thead >
                                 <tr bgcolor="#90ee90">
                                     <td>Id Telemedic</td>
-                                    <td>No. RM</td>
+                                    <td>No. RM / ID</td>
                                     <td>Nama</td>
                                     <td>Jenis</td>
                                     <td>Status</td>

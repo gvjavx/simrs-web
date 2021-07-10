@@ -83,6 +83,8 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
                 tindakanRawatEntity.setApproveFlag(bean.getApproveFlag());
                 tindakanRawatEntity.setIdPelayanan(bean.getIdPelayanan());
                 tindakanRawatEntity.setIdRuangan(bean.getIdRuangan());
+                tindakanRawatEntity.setIsPelayanan(bean.getIsPelayanan());
+
                 try {
                     tindakanRawatDao.addAndSave(tindakanRawatEntity);
                     //sodiq, trigger menuju ke unit konsultasi gizi ketika flag gizi Y, 18,03,2021
@@ -316,6 +318,9 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
         }
         if (bean.getApproveFlag() != null && !"".equalsIgnoreCase(bean.getApproveFlag())){
             hsCriteria.put("approve_flag", bean.getApproveFlag());
+        }
+        if (bean.getIsPelayanan() != null && !"".equalsIgnoreCase(bean.getIsPelayanan())){
+            hsCriteria.put("is_pelayanan", bean.getIsPelayanan());
         }
 
         hsCriteria.put("flag","Y");

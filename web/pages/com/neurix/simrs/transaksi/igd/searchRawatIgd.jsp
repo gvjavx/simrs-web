@@ -70,38 +70,50 @@
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
-                                <s:if test="isEnabledPoli()">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">Poli</label>
+                                    <label class="control-label col-sm-4">Pelayanan</label>
                                     <div class="col-sm-4">
-                                        <s:action id="initComboPoli" namespace="/checkup"
-                                                  name="getComboPelayanan_checkup"/>
+                                        <s:action id="initComboIGD" namespace="/checkup"
+                                                  name="getComboPelayananIGD_checkup"/>
                                         <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                  list="#initComboPoli.listOfPelayanan"
-                                                  name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"
-                                                  listValue="namaPelayanan"
-                                                  headerKey="" headerValue="[Select one]"
+                                                  list="#initComboIGD.listOfPelayananIGD"
+                                                  name="headerDetailCheckup.idPelayanan"
+                                                  listKey="idPelayanan" listValue="namaPelayanan"
                                                   cssClass="form-control select2" theme="simple"/>
                                     </div>
                                 </div>
-                                </s:if>
-                                <s:else>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-4">Poli</label>
-                                        <div class="col-sm-4">
-                                            <s:action id="initComboPoli" namespace="/checkup"
-                                                      name="getComboPelayanan_checkup"/>
-                                            <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                      list="#initComboPoli.listOfPelayanan" id="poli"
-                                                      listKey="idPelayanan"
-                                                      name="headerDetailCheckup.idPelayanan"
-                                                      listValue="namaPelayanan"
-                                                      headerKey="007" headerValue="IGD"
-                                                      cssClass="form-control select2" theme="simple" disabled="true"/>
-                                        </div>
-                                        <s:hidden name="headerDetailCheckup.idPelayanan"></s:hidden>
-                                    </div>
-                                </s:else>
+                                <%--<s:if test="isEnabledPoli()">--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Poli</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:action id="initComboPoli" namespace="/checkup"--%>
+                                                  <%--name="getComboPelayanan_checkup"/>--%>
+                                        <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                                  <%--list="#initComboPoli.listOfPelayanan"--%>
+                                                  <%--name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"--%>
+                                                  <%--listValue="namaPelayanan"--%>
+                                                  <%--headerKey="" headerValue="[Select one]"--%>
+                                                  <%--cssClass="form-control select2" theme="simple"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <%--</s:if>--%>
+                                <%--<s:else>--%>
+                                    <%--<div class="form-group">--%>
+                                        <%--<label class="control-label col-sm-4">Poli</label>--%>
+                                        <%--<div class="col-sm-4">--%>
+                                            <%--<s:action id="initComboPoli" namespace="/checkup"--%>
+                                                      <%--name="getComboPelayanan_checkup"/>--%>
+                                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                                      <%--list="#initComboPoli.listOfPelayanan" id="poli"--%>
+                                                      <%--listKey="idPelayanan"--%>
+                                                      <%--name="headerDetailCheckup.idPelayanan"--%>
+                                                      <%--listValue="namaPelayanan"--%>
+                                                      <%--headerKey="007" headerValue="IGD"--%>
+                                                      <%--cssClass="form-control select2" theme="simple" disabled="true"/>--%>
+                                        <%--</div>--%>
+                                        <%--<s:hidden name="headerDetailCheckup.idPelayanan"></s:hidden>--%>
+                                    <%--</div>--%>
+                                <%--</s:else>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">

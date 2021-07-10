@@ -833,7 +833,7 @@ function listSelectTindakan(idKategori) {
     var option = "<option value=''> - </option>";
     if (idKategori != '') {
         dwr.engine.setAsync(true);
-        CheckupDetailAction.getListComboTindakan(idKategori, idKelasRuangan, flagVaksin, {
+        CheckupDetailAction.getListComboTindakan(idKategori, idKelasRuangan, flagVaksin, idPoli, {
             callback:function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {
@@ -1269,7 +1269,8 @@ function saveTindakan(id) {
                     'qty': qty[i].value,
                     'jenis_pasien': idJenisPeriksa,
                     'id_pelayanan': idPelayanan[i].value,
-                    'id_ruangan': ''
+                    'id_ruangan': '',
+                    'is_pelayanan': 'Y'
                 });
             });
             $('#save_tindakan').hide();
@@ -1326,7 +1327,7 @@ function listTindakan() {
     var table2 = "";
     var data = [];
     var trfTtl = 0;
-    TindakanRawatAction.listTindakanRawat(idDetailCheckup, function (response) {
+    TindakanRawatAction.listTindakanRawat(idDetailCheckup, null, function (response) {
         data = response;
         if (data.length > 0) {
             $.each(data, function (i, item) {
@@ -1431,7 +1432,11 @@ function saveDiagnosa(id) {
                             hitungStatusBiaya();
                             $('#modal-diagnosa').modal('hide');
                             $('#info_dialog').dialog('open');
-                            $('#close_pos').val(3);
+                            if(response.msg = "reload"){
+                                $('#close_pos').val(12);
+                            }else{
+                                $('#close_pos').val(3);
+                            }
                         } else {
                             $('#warning_diagnosa').show().fadeOut(5000);
                             $('#msg_diagnosa').text(response.msg);
@@ -2552,6 +2557,7 @@ function listSelectObat(select) {
     var idx = select.selectedIndex;
     var idJenis = select.options[idx].value;
     var option = "<option value=''> - </option>";
+
     if (idJenis != '') {
         ObatAction.listObat(idJenis, function (response) {
             if (response.length > 0) {
@@ -3776,6 +3782,7 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
     } else {
         jenisRm = jenis;
     }
+
     CheckupAction.getListRekammedisPasien(tipePelayanan, jenisRm, id, function (res) {
         if (res.length > 0) {
             $.each(res, function (i, item) {
@@ -6160,7 +6167,7 @@ function showListRiwayatResep(){
                         "<tr/>"+
                         "</thead>"+
                         "</tbody>";
-                    
+
                     var strracik = "";
                     var arrIdRacik = [];
 
@@ -6283,7 +6290,7 @@ function copyResep() {
 
                         var warnaGenap = "#ffe4b5";
                         var warnaGanjil = "silver";
-                        
+
                         if (parseInt(i_racik) % 2 == 0){
                             warnaRacik = warnaGenap;
                         } else {
@@ -6348,11 +6355,11 @@ function copyResep() {
                             $("#body-detail-racik-obat-"+sisipkanStrip(detailracik.namaRacik)).append(detail);
                             arrListDetailRacik.push({ "idobat":detailracik.idObat, "namaobat":detailracik.namaObat, "racik":detailracik.namaRacik, "idracik":sisipkanStrip(detailracik.namaRacik)});
                         });
-                    
+
                     });
-                    
+
                 }
-            
+
             });
 
             // total harga

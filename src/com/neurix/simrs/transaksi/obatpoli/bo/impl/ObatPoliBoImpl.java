@@ -996,6 +996,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             try {
                 obatPoliDao.addAndSave(newObatPoli);
             } catch (HibernateException e) {
+                logger.error(e.getMessage());
                 logger.error("[ObatPoliBoImpl.updateAddStockPoli] ERROR when insert master obat poli. ", e);
                 throw new GeneralBOException("[ObatPoliBoImpl.updateAddStockPoli] ERROR when insert master obat poli. ", e);
             }
@@ -2723,9 +2724,9 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         if (bean.getIdBarang() != null && !"".equalsIgnoreCase(bean.getIdBarang())) {
             hsCriteria.put("id_barang", bean.getIdBarang());
         }
-        if (bean.getIdPabrik() != null && !"".equalsIgnoreCase(bean.getIdPabrik())) {
-            hsCriteria.put("id_pabrik", bean.getIdPabrik());
-        }
+//        if (bean.getIdPabrik() != null && !"".equalsIgnoreCase(bean.getIdPabrik())) {
+//            hsCriteria.put("id_pabrik", bean.getIdPabrik());
+//        }
         if (bean.getExp() != null && !"".equalsIgnoreCase(bean.getExp())) {
             hsCriteria.put("exp", bean.getExp());
         }

@@ -33,9 +33,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author gondok
@@ -78,6 +76,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
     private String jsonObatVerifikasi;
     private String jsonTransaksiObatDetail;
     private String jsonPermintaanObat;
+    private Map<String, Object> response = new HashMap<>();
 
     public String getIdParam() {
         return idParam;
@@ -281,24 +280,39 @@ public class PermintaanObatController implements ModelDriven<Object> {
 
     @Override
     public Object getModel() {
+        //SYAMS 30JUN21 => ganti response jadi map
         switch (action) {
             case "getPermintaan":
-                return listOfPermintaanObat;
+                response.put("data",listOfPermintaanObat);
+                return response;
             case "getRequestObat":
-                return listOfPermintaanObat;
+                response.put("data",listOfPermintaanObat);
+                return response;
             case "getListObatTelahDiterima":
                 return listOfTransaksiObatDetail;
             case "getListObat":
-                return listOfTransaksiObatDetail;
+                response.put("data",listOfTransaksiObatDetail);
+                return response;
             case "getEntityObat":
-                return listOfObat;
+                response.put("data",listOfObat);
+                return response;
+            case "saveVerifikasi":
+                return response;
+            case "updateDiterimaFlag":
+                return response;
+            case "saveApprove":
+                return response;
+            case "saveApproveDiterima":
+                return response;
             case "getComboParameterWaktu":
                 return listOfPermintaanObat;
             case "getComboParameterObat":
                 return listOfPermintaanObat;
             case "getComboKeteranganObat":
                 return listOfPermintaanObat;
-            default: return model;
+            default:
+                response.put("actionError","method tidak ditemukan");
+                return response;
         }
     }
 
@@ -412,6 +426,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
         try{
             result = obatPoliBoProxy.getSearchPermintaanObatPoli(bean, isPoli);
         } catch (GeneralBOException e){
+            response.put("actionError",e.toString());
             logger.error("[PermintaanObatController.create] Error, get search poli " + e.getMessage());
         }
 
@@ -464,6 +479,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
             try{
                 resultObat = obatPoliBoProxy.getListTransObatDetail(beanObat);
             }catch (GeneralBOException e){
+                response.put("actionError", e.toString());
                 logger.error("[PermintaanObatController.create] Error, get obat " + e.getMessage());
             }
 
@@ -503,9 +519,13 @@ public class PermintaanObatController implements ModelDriven<Object> {
             entityObat.setIdObat(idObat);
             entityObat.setNamaObat(namaObat);
 
+            //SYAMS 25JUN21 tambah branchid
+            entityObat.setBranchId(branchId);
+
             try {
                 resultEntityObat = obatBoProxy.getEntityObatByCriteria(entityObat);
             } catch (GeneralBOException e) {
+                response.put("actionError",e.toString());
                 logger.error("[PermintaanObatController.create] Error, get entity obat " + e.getMessage());
             }
 
@@ -559,6 +579,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
             try {
                 result = obatPoliBoProxy.getListObatDetailRequest(bean);
             } catch (GeneralBOException e){
+                response.put("actionError",e.toString());
                 logger.error("[PermintaanObatController.create] Error, get Request Obat " + e.getMessage());
             }
 
@@ -611,8 +632,9 @@ public class PermintaanObatController implements ModelDriven<Object> {
 
             try{
                 obatPoliBoProxy.updateDiterimaFlagBatch(batch);
-                model.setMessage("Success");
+                response.put("actionSuccess","Sukses");
             } catch (GeneralBOException e){
+                response.put("actionError",e.toString());
                 logger.error("[PermintaanObatController.create] Error, update flag " + e.getMessage());
 
             }
@@ -625,8 +647,9 @@ public class PermintaanObatController implements ModelDriven<Object> {
             if (jsonObat.size() > 0) {
                 try {
                     obatPoliBoProxy.saveVerifikasiObat(jsonObat);
-                    model.setMessage("Success");
+                    response.put("actionSuccess","Sukses");
                 } catch (GeneralBOException e){
+                    response.put("actionError",e.toString());
                     logger.error("[PermintaanObatController.create] Error, save verifikasi " + e.getMessage());
                 }
             }
@@ -639,7 +662,9 @@ public class PermintaanObatController implements ModelDriven<Object> {
 
             try{
                 result = obatPoliBoProxy.getSearchPermintaanObatPoli(bean, isPoli);
+                response.put("actionSuccess","Sukses");
             } catch (GeneralBOException e){
+                response.put("actionError",e.toString());
                 logger.error("[PermintaanObatController.create] Error, get search poli " + e.getMessage());
             }
 
@@ -660,12 +685,14 @@ public class PermintaanObatController implements ModelDriven<Object> {
                 result = obatPoliBoProxy.getSearchPermintaanObatPoli(bean, isPoli);
             } catch (GeneralBOException e){
                 logger.error("[PermintaanObatController.create] Error, get search poli " + e.getMessage());
+                response.put("actionError",e.toString());
             }
             try{
                 obatPoliBoProxy.saveApproveDiterima(result.get(0), jsonObatDetail);
-                model.setMessage("Success");
+                response.put("actionSuccess","sukses");
             } catch (GeneralBOException e){
                 logger.error("[PermintaanObatController.create] Error, update flag " + e.getMessage());
+                response.put("actionError",e.toString());
 
             }
         }

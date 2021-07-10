@@ -659,7 +659,7 @@ function listSelectTindakan(idKtg) {
     var option = "<option value=''>-</option>";
     if (idKtg != '') {
         dwr.engine.setAsync(true);
-        CheckupDetailAction.getListComboTindakan(idKtg, idKelasRuangan, null, {
+        CheckupDetailAction.getListComboTindakan(idKtg, idKelasRuangan, null, null, {
             callback:function (response) {
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
@@ -1268,7 +1268,7 @@ function listTindakan() {
     var table = "";
     var data = [];
     var trfTtl = 0;
-    TindakanRawatAction.listTindakanRawat(idDetailCheckup, function (response) {
+    TindakanRawatAction.listTindakanRawat(idDetailCheckup, null, function (response) {
         data = response;
         if (data.length > 0) {
             $.each(data, function (i, item) {

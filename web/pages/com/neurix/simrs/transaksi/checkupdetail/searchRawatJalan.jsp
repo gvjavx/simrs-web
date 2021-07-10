@@ -14,7 +14,6 @@
     <script type='text/javascript'>
         $( document ).ready(function() {
             $('#rawat_jalan').addClass('active');
-            console.log('<s:property value="headerDetailCheckup.idDokter"/>');
             listSelectDokter('<s:property value="headerDetailCheckup.idPelayanan"/>', '<s:property value="headerDetailCheckup.idDokter"/>');
         });
     </script>
@@ -65,7 +64,7 @@
                                 </div>
                                 <s:if test="isEnabledPoli()">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">Poli</label>
+                                    <label class="control-label col-sm-4">Pelayanan</label>
                                     <div class="col-sm-4">
                                         <s:action id="initComboPoli" namespace="/checkup"
                                                   name="getComboPelayananRJ_checkup"/>

@@ -41,7 +41,7 @@ public class AntrianOnlineBoImpl implements AntrianOnlineBo {
     public void setDokterDao(DokterDao dokterDao) {
         this.dokterDao = dokterDao;
     }
-
+    /** this will set from spring/AntrianTelemediBean automatically  */
     public void setAntrianOnlineDao(AntrianOnlineDao antrianOnlineDao) {
         this.antrianOnlineDao = antrianOnlineDao;
     }

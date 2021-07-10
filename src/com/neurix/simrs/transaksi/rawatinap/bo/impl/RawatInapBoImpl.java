@@ -1131,7 +1131,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                             logger.error("Error"+e.getMessage());
                         }
                         if(entityList.size() > 0){
-                            for (ItSimrsKontrolUlangEntity kontrolUlangEntity: bean.getKontrolUlangEntityList()){
+                            for (ItSimrsKontrolUlangEntity kontrolUlangEntity: entityList){
                                 try {
                                     kontrolUlangDao.deleteAndSave(kontrolUlangEntity);
                                 }catch (HibernateException e){

@@ -23,6 +23,16 @@
         .color-picker {
             margin: 1rem 1rem 0 1rem;
         }
+
+        .k-admin:hover{
+            cursor: pointer;
+        }
+        .k-farma:hover{
+            cursor: pointer;
+        }
+        .k-kritis:hover{
+            cursor: pointer;
+        }
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatPoliAction.js"/>'></script>
@@ -393,7 +403,7 @@
                             <tr bgcolor="#90ee90">
                                 <td>Nama Obat</td>
                                 <td>Signa Dokter</td>
-                                <td width="21%" align="center">Scan ID Obat</td>
+                                <td align="center">Scan ID Obat</td>
                                 <td align="center">Qty Request</td>
                                 <td align="center">Qty Approve</td>
                                 <td align="center">Satuan (Rp.)</td>
@@ -429,11 +439,17 @@
                                                     <div class="input-group-addon">
                                                         <img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">
                                                     </div>
+                                                    <div class="input-group-addon">
+                                                        <div id="btn_no_racik_<s:property value="idObat"/>"></div>
+                                                    </div>
                                                 </s:if>
                                                 <s:else>
                                                     <input type="text" id='input<s:property value="idObat"/>' class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>','N', '<s:property value="harga"/>')">
                                                     <div class="input-group-addon">
                                                         <span id='status<s:property value="idObat"/>'></span>
+                                                    </div>
+                                                    <div class="input-group-addon">
+                                                        <div id="btn_no_racik_<s:property value="idObat"/>"></div>
                                                     </div>
                                                 </s:else>
                                             </div>
@@ -454,7 +470,11 @@
                                         <input type="hidden" value="<s:property value="idObat"/>" id='id_obat_<s:property value="%{#count.index}"/>'>
                                         <input type="hidden" value="<s:property value="idRacik"/>" id='id_racik_<s:property value="%{#count.index}"/>'>
                                     </td>
-                                    <td align="center"><s:property value="qty"/> <s:property value="jenisSatuan"/></td>
+                                    <td align="center">
+                                        <input type="hidden" class="qty_obat_resep" value="<s:property value="qty"/>">
+                                        <input type="hidden" class="harga_obat_resep" value="<s:property value="harga"/>">
+                                        <s:property value="qty"/> <s:property value="jenisSatuan"/>
+                                    </td>
                                     <td align="center"><span id='qtyAppove<s:property value="idObat"/>'><s:property value="qtyApprove"/> <s:property value="jenisSatuan"/></span></td>
                                     <td align="right"><script>var val = <s:property value="harga"/>;
                                     if (val != null && val != '') {
@@ -695,11 +715,17 @@
                                                                             <div class="input-group-addon">
                                                                                 <img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">
                                                                             </div>
+                                                                            <div class="input-group-addon">
+                                                                                <div id="btn_racik_<s:property value="idObat"/>"></div>
+                                                                            </div>
                                                                         </s:if>
                                                                         <s:else>
                                                                             <input type="text" id='input_racik_<s:property value="idObat"/>' class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>','Y', '<s:property value="harga"/>')">
                                                                             <div class="input-group-addon">
                                                                                 <span id='status_racik_<s:property value="idObat"/>'></span>
+                                                                            </div>
+                                                                            <div class="input-group-addon">
+                                                                                <div id="btn_racik_<s:property value="idObat"/>"></div>
                                                                             </div>
                                                                         </s:else>
                                                                     </div>
@@ -746,25 +772,90 @@
                                     <thead style="font-weight: bold">
                                     <tr>
                                         <td>PENGKAJIAN RESEP</td>
-                                        <td>Ya</td>
-                                        <td>Tidak</td>
+                                        <td width="20%" align="center">Ya</td>
+                                        <td width="20%" align="center">Tidak</td>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>Aspek Administratif</td>
-                                        <td><input type="radio" name="k-admin" value="Y"/></td>
-                                        <td><input type="radio" name="k-admin" value="N"/></td>
+                                    <tr bgcolor="#ffe4b5">
+                                        <td><b><span class="span-k-admin">Aspek Administratif</span></b></td>
+                                        <td width="20%" align="center"><input onclick="setRadio('k-admin', this.value)" type="radio" class="k-admin" name="k-admin1" value="Y"/></td>
+                                        <td width="20%" align="center"><input onclick="setRadio('k-admin', this.value)" type="radio" class="k-admin" name="k-admin1" value="N"/></td>
                                     </tr>
                                     <tr>
-                                        <td>Aspek Farmasetis</td>
-                                        <td><input type="radio" name="k-farma" value="Y"/></td>
-                                        <td><input type="radio" name="k-farma" value="N"/></td>
+                                        <td><span style="margin-left: 10px" class="span-k-admin">Nama, Tanggal Lahir</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-admin" name="k-admin2" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-admin" name="k-admin2" value="N"/></td>
                                     </tr>
                                     <tr>
-                                        <td>Aspek Klinis</td>
-                                        <td><input type="radio" name="k-kritis" value="Y"/></td>
-                                        <td><input type="radio" name="k-kritis" value="N"/></td>
+                                        <td><span style="margin-left: 10px" class="span-k-admin">BB Pasien</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-admin" name="k-admin3" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-admin" name="k-admin3" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-admin">Nama, Paraf Dokter</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-admin" name="k-admin4" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-admin" name="k-admin4" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-admin">Tanggal Resep</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-admin" name="k-admin5" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-admin" name="k-admin5" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-admin">Ruangan/Unit asal Resep</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-admin" name="k-admin6" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-admin" name="k-admin6" value="N"/></td>
+                                    </tr>
+                                    <tr bgcolor="#ffe4b5">
+                                        <td><b><span class="span-k-farma">Aspek Farmasetis</span></b></td>
+                                        <td width="20%" align="center"><input onclick="setRadio('k-farma', this.value)" type="radio" class="k-farma" name="k-farma1" value="Y"/></td>
+                                        <td width="20%" align="center"><input onclick="setRadio('k-farma', this.value)" type="radio" class="k-farma" name="k-farma1" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-farma">Nama, Bentuk, Kekuatan Obat</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-farma" name="k-farma2" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-farma" name="k-farma2" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-farma">Dosis dan Jumlah Obat</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-farma" name="k-farma3" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-farma" name="k-farma3" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-farma">Aturan dan Cara Penggunaan</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-farma" name="k-farma4" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-farma" name="k-farma4" value="N"/></td>
+                                    </tr>
+                                    <tr bgcolor="#ffe4b5">
+                                        <td><b><span class="span-k-kritis">Aspek Klinis</span></b></td>
+                                        <td width="20%" align="center"><input onclick="setRadio('k-kritis', this.value)" type="radio" class="k-kritis" name="k-kritis1" value="Y"/></td>
+                                        <td width="20%" align="center"><input onclick="setRadio('k-kritis', this.value)" type="radio" class="k-kritis" name="k-kritis1" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-kritis">Ketepatan Indikasi</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-kritis" name="k-kritis2" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-kritis" name="k-kritis2" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-kritis">Duplikasi Pengobatan</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-kritis" name="k-kritis3" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-kritis" name="k-kritis3" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-kritis">Alergi dan ROTD</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-kritis" name="k-kritis4" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-kritis" name="k-kritis4" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-kritis">Kontraindikasi</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-kritis" name="k-kritis5" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-kritis" name="k-kritis5" value="N"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span style="margin-left: 10px" class="span-k-kritis">Interaksi Obat</span></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-kritis" name="k-kritis6" value="Y"/></td>
+                                        <td width="20%" align="center"><input type="radio" class="k-kritis" name="k-kritis6" value="N"/></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -781,7 +872,6 @@
                                 <select style="width: 100%" class="form-control select2 jenis_biaya" id="jenis_0" onchange="setTarif(this.value)">
                                     <option value="">[Select One]</option>
                                 </select>
-                                <%--<input class="form-control " placeholder="Jenis Biaya">--%>
                             </div>
                             <div class="col-md-3" style="margin-top: 7px">
                                 <div class="input-group">
@@ -812,7 +902,24 @@
                         </div>
                         <div id="temp_biaya"></div>
                         <div class="row" style="margin-top: 7px">
-                            <div class="col-md-offset-8 col-md-3">
+                            <div class="col-md-offset-5 col-md-3">
+                                <label class="pull-right" style="margin-top: 8px">Total Biaya Belum Approve</label>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        Rp.
+                                    </div>
+                                    <input class="form-control" id="belum_total_akhir_biaya" disabled="disabled" placeholder="Total Biaya Resep">
+                                    <input type="hidden" id="belum_h_total_akhir_biaya">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 7px">
+                            <div class="col-md-offset-5 col-md-3">
+                                <label class="pull-right" style="margin-top: 8px">Total Biaya Sudah Approve</label>
+                            </div>
+                            <div class="col-md-3">
                                 <div class="input-group">
                                     <div class="input-group-addon">
                                         Rp.
@@ -1116,18 +1223,22 @@
                             if(item.totalHarga != null){
                                 total = item.totalHarga;
                             }
+
+                            var editBtn = 'onclick="confirmObat(\''+item.idObat+'\', \''+item.idObat+'\', \''+item.namaObat+'\', \''+item.qty+'\', \''+item.jenisSatuan+'\', \''+item.idTransaksiObatDetail+'\', \''+item.flagRacik+'\', \''+item.harga+'\')"';
                             if("Y" == item.flagRacik){
                                 $('#input_racik_'+item.idObat).attr('disabled','true');
                                 $('#input_racik_'+item.idObat).val(item.idObat);
                                 $('#status_racik_'+item.idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
                                 $('#total_racik_'+item.idObat).text(formatRupiah(total));
                                 $('#hide_total_racik_'+item.idObat).val(total);
+                                $('#btn_racik_'+item.idObat).html('<img '+editBtn+' src="<s:url value="/pages/images/icons8-create-25.png"/>" style="height: 20px; width: 20px; cursor: pointer">');
                             }else{
                                 $('#input'+item.idObat).attr('disabled','true');
                                 $('#input'+item.idObat).val(item.idObat);
                                 $('#status'+item.idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
                                 $('#total_'+item.idObat).text(formatRupiah(total));
                                 $('#hide_total_'+item.idObat).val(total);
+                                $('#btn_no_racik_'+item.idObat).html('<img '+editBtn+' src="<s:url value="/pages/images/icons8-create-25.png"/>" style="height: 20px; width: 20px; cursor: pointer">');
                             }
                         }else {
                             $('#input'+item.idObat).removeAttr('disabled');
@@ -1185,7 +1296,6 @@
     function confirmObat(idObatVal, idObat, namaObat, qtyReq, jenisSatuan, idTransaksi, isRacik, hargaSatuan) {
         var jenisObat = '<s:property value="permintaanResep.idJenisPeriksa"/>';
         jenisObat = jenisObat.toLowerCase();
-
         $('#load_app').hide();
         $('#save_app').show();
         $('#body_approve').html('');
@@ -1203,7 +1313,6 @@
         if (idObatVal != "") {
             TransaksiObatAction.listObatPoliEntity(idObatVal, jenisObat, {
                 callback: function (response) {
-                    console.log(response);
                     if (response.length > 0 && idObat == idObatVal) {
                         $('#loading_data').show();
                         $('#modal-approve').modal({show: true, backdrop: 'static'});
@@ -1258,13 +1367,13 @@
                             var idBarang = idBar.replace(str, '*******');
 
                             var cekValid = '';
-                            if(isRacik == "N"){
+                            if(isRacik == "Y"){
+                                $('#hidde_for_racik').hide();
+                                $('#ket_racik').text("*Untuk Obat Racik");
+                            }else{
                                 $('#hidde_for_racik').show();
                                 $('#ket_racik').text("");
                                 cekValid = 'onchange="validasiInput(this.value,\''+qtyReq+'\', \''+qtyBox+'\',\''+qtyLembar+'\',\''+qtyBiji+'\',\''+item.lembarPerBox+'\',\''+item.bijiPerLembar+'\',\''+jenisSatuan+'\',\''+dateFormat+'\')"';
-                            }else{
-                                $('#hidde_for_racik').hide();
-                                $('#ket_racik').text("*Untuk Obat Racik");
                             }
 
                             table += '<tr bgcolor=' + warna + ' style="color: ' + color + '">' +
@@ -1291,7 +1400,7 @@
                             bijiPerLembar = item.bijiPerLembar;
                             $('#loading_data').hide();
                         });
-                        $('#save_app').attr('onclick', 'confirmSaveApprove(\'' + idObat + '\',\'' + qtyReq + '\',\'' + idTransaksi + '\',\'' + lembarPerBox + '\',\'' + bijiPerLembar + '\',\'' + jenisSatuan + '\', \''+isRacik+'\', \''+hargaSatuan+'\')');
+                        $('#save_app').attr('onclick', 'confirmSaveApprove(\'' + idObat + '\',\'' + qtyReq + '\',\'' + idTransaksi + '\',\'' + lembarPerBox + '\',\'' + bijiPerLembar + '\',\'' + jenisSatuan + '\', \''+isRacik+'\', \''+hargaSatuan+'\', \''+namaObat+'\')');
                         $('#body_approve').html(table);
                     } else {
                         $('#status' + idObat).html('<img src="<s:url value="/pages/images/icon_failure.ico"/>" style="height: 20px; width: 20px;">');
@@ -1370,7 +1479,7 @@
         }
     }
 
-    function confirmSaveApprove(idObat, qtyReq, idTransaksi, lembarPerBox, bijiPerLembar, jenisSatuan, isRacik, hargaSatuan){
+    function confirmSaveApprove(idObat, qtyReq, idTransaksi, lembarPerBox, bijiPerLembar, jenisSatuan, isRacik, hargaSatuan, namaObat){
         var data = $('#tabel_approve').tableToJSON();
         var result = [];
         var qtyApp = 0;
@@ -1416,7 +1525,7 @@
         if (qtyApp > 0) {
             if (parseInt(qtyApp) <= parseInt(stok) && parseInt(qtyApp) <= parseInt(qtyReq) || flagRacik == "Y") {
                 $('#modal-confirm-dialog').modal('show');
-                $('#save_con').attr('onclick','saveApprove(\'' + idObat + '\',\'' + idTransaksi + '\',\'' + stringData + '\',\'' + qtyApp + '\',\''+jenisSatuan+'\', \''+isRacik+'\', \''+hargaSatuan+'\')');
+                $('#save_con').attr('onclick','saveApprove(\'' + idObat + '\',\'' + idTransaksi + '\',\'' + stringData + '\',\'' + qtyApp + '\',\''+jenisSatuan+'\', \''+isRacik+'\', \''+hargaSatuan+'\', \''+namaObat+'\')');
             } else {
                 $('#warning_app').show().fadeOut(5000);
                 $('#msg_app').text("Qty Approve tidak boleh melebihi stok dan qty request..!");
@@ -1427,7 +1536,7 @@
         }
     }
 
-    function saveApprove(idObat, idTransaksi, stringData, qtyApp, jenisSatuan, isRacik, hargaSatuan){
+    function saveApprove(idObat, idTransaksi, stringData, qtyApp, jenisSatuan, isRacik, hargaSatuan, namaObat){
         $('#modal-confirm-dialog').modal('hide');
         $('#load_app').show();
         $('#save_app').hide();
@@ -1439,18 +1548,21 @@
                 $('#modal-approve').modal('hide');
                 $('#info_dialog').dialog('open');
                 var total = parseInt(qtyApp)+parseInt(hargaSatuan);
+                var editBtn = 'onclick="confirmObat(\''+idObat+'\', \''+idObat+'\', \''+namaObat+'\', \''+qtyApp+'\', \''+jenisSatuan+'\', \''+idTransaksi+'\', \''+isRacik+'\', \''+hargaSatuan+'\')"';
                 if("Y" == isRacik){
                     $('#qtyAppove_racik_'+idObat).text(qtyApp+' '+jenisSatuan);
                     $('#status_racik_'+idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
                     $('#input_racik_'+idObat).attr('disabled', true);
                     $('#total_racik_'+idObat).text(formatRupiah(total));
                     $('#hide_total_racik_'+idObat).val(total);
+                    $('#btn_racik_'+idObat).html('<img '+editBtn+' src="<s:url value="/pages/images/icons8-create-25.png"/>" style="height: 20px; width: 20px; cursor: pointer">');
                 }else{
                     $('#qtyAppove'+idObat).text(qtyApp+' '+jenisSatuan);
                     $('#status'+idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
                     $('#input'+idObat).attr('disabled', true);
                     $('#total_'+idObat).text(formatRupiah(total));
                     $('#hide_total_'+idObat).val(total);
+                    $('#btn_no_racik_'+idObat).html('<img '+editBtn+' src="<s:url value="/pages/images/icons8-create-25.png"/>" style="height: 20px; width: 20px; cursor: pointer">');
                 }
                 $('#top_top').scrollTop(0);
             } else {
@@ -1609,17 +1721,82 @@
             waktuCPO = JSON.stringify(dataWaktuResep);
         }
 
-        var k1 = $('[name=k-admin]:checked').val();
-        var k2 = $('[name=k-farma]:checked').val();
-        var k3 = $('[name=k-kritis]:checked').val();
+        var admin = $('.span-k-admin');
+        var farma = $('.span-k-farma');
+        var kritis = $('.span-k-kritis');
 
-        var objPengkajian = {
-            'admin': k1 != undefined ? k1 : "",
-            'farma': k2 != undefined ? k2 : "",
-            'kritis': k3 != undefined ? k3 : ""
-        }
+        var dataPengkajian = [];
+        $.each(admin, function (i, item) {
+            i = i+1;
+            var jawaban = $('[name=k-admin'+i+']:checked').val();
+            if(jawaban != undefined){
+                if(jawaban == "Y"){
+                    jawaban = "Ya";
+                }else{
+                    jawaban = "Tidak";
+                }
+            }
 
-        var stringPengkajian = JSON.stringify(objPengkajian);
+            var tipe = "";
+            if("Aspek Administratif" == item.innerHTML){
+                tipe = "head";
+            }
+            dataPengkajian.push({
+                'parameter': item.innerHTML,
+                'jawaban': jawaban != undefined ? jawaban : '',
+                'jenis': 'pengakjian_resep',
+                'keterangan': 'pengakjian_resep',
+                'tipe': tipe
+            })
+        });
+        $.each(farma, function (i, item) {
+            i = i+1;
+            var jawaban = $('[name=k-farma'+i+']:checked').val();
+            if(jawaban != undefined){
+                if(jawaban == "Y"){
+                    jawaban = "Ya";
+                }else{
+                    jawaban = "Tidak";
+                }
+            }
+
+            var tipe = "";
+            if("Aspek Farmasetis" == item.innerHTML){
+                tipe = "head";
+            }
+            dataPengkajian.push({
+                'parameter': item.innerHTML,
+                'jawaban': jawaban != undefined ? jawaban : '',
+                'jenis': 'pengakjian_resep',
+                'keterangan': 'pengakjian_resep',
+                'tipe': tipe
+            })
+        });
+        $.each(kritis, function (i, item) {
+            i = i+1;
+            var jawaban = $('[name=k-kritis'+i+']:checked').val();
+            if(jawaban != undefined){
+                if(jawaban == "Y"){
+                    jawaban = "Ya";
+                }else{
+                    jawaban = "Tidak";
+                }
+            }
+
+            var tipe = "";
+            if("Aspek Klinis" == item.innerHTML){
+                tipe = "head";
+            }
+            dataPengkajian.push({
+                'parameter': item.innerHTML,
+                'jawaban': jawaban != undefined ? jawaban : '',
+                'jenis': 'pengakjian_resep',
+                'keterangan': 'pengakjian_resep',
+                'tipe': tipe
+            })
+        });
+
+        var stringPengkajian = JSON.stringify(dataPengkajian);
 
         var obj = {
             'id_approve': id_approve,
@@ -1787,8 +1964,28 @@
             });
         }
 
+        var belumQtyBiaya   = $('.qty_obat_resep');
+        var belumTotalHarga = $('.harga_obat_resep');
+        var belumJumlah     = 0;
+        if(belumQtyBiaya.length > 0){
+            $.each(belumQtyBiaya, function (i, item) {
+                if(item.value != ''){
+                    if(belumJumlah != 0){
+                        belumJumlah = parseInt(belumJumlah) +(belumTotalHarga[i].value * item.value);
+                    }else{
+                        belumJumlah = (belumTotalHarga[i].value * item.value);
+                    }
+                }
+            });
+        }
+
         $('#total_akhir_biaya').val(formatRupiahAtas(jumlah));
         $('#h_total_akhir_biaya').val(jumlah);
+
+        $('#belum_total_akhir_biaya').val(formatRupiahAtas(belumJumlah));
+        $('#belum_h_total_akhir_biaya').val(belumJumlah);
+
+
     }
 
     function getTindakanApotek(idTindakan, id) {
@@ -1831,6 +2028,23 @@
             var iid = id - 1;
             $('#biaya_'+iid).val(total).trigger('input');
         }
+    }
+
+    function setRadio(tipe, value){
+        var radio = $('.'+tipe);
+        $.each(radio, function (i, item) {
+            var urut = i+1;
+            var ready = $('[name='+tipe+urut+']').length;
+            if(ready > 0){
+                if("Y" == value){
+                    $('[name='+tipe+urut+']').filter('[value=N]').prop('checked', false);
+                    $('[name='+tipe+urut+']').filter('[value='+value+']').prop('checked', true);
+                }else{
+                    $('[name='+tipe+urut+']').filter('[value=Y]').prop('checked', false);
+                    $('[name='+tipe+urut+']').filter('[value='+value+']').prop('checked', true);
+                }
+            }
+        });
     }
 
 </script>

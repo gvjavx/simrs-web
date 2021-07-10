@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.antriantelemedic.bo;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienSementaraEntity;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
@@ -58,4 +59,6 @@ public interface TelemedicBo {
     public List <ItSimrsVideoRmEntity> getVideoRm(String idDetailCheckup);
 
     public CrudResponse updateFlagCall(String idAntrianTelemedic, String flagCall) throws GeneralBOException;
+    public ImSimrsPasienSementaraEntity getPasienSementaraById(String idPasien) throws GeneralBOException;
+    public String createNoRmAndChangeToMasterPasien(String idPasienSementara, String branchId, String createWho);
 }

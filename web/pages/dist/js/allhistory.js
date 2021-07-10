@@ -25,16 +25,21 @@ function viewHistory() {
                         json = JSON.stringify(item.uploadHasil);
                     }
 
+                    var detailBTN = '';
+                    if (item.idDetailCheckup != null && item.idDetailCheckup != '') {
+                        detailBTN = 'onmouseover="delOnclick(\'row_' + item.idRiwayatTindakan + '\')" onmouseout="setOnclick(\'row_' + item.idRiwayatTindakan + '\', \''+item.idDetailCheckup+'\')"';
+                    }
+
                     if ("resep" == keteranganTindakan || "laboratorium" == keteranganTindakan || "radiologi" == keteranganTindakan) {
                         if ("laboratorium" == keteranganTindakan || "radiologi" == keteranganTindakan) {
                             if ("Y" == item.isPeriksaLuar) {
-                                btn = '<img onclick="showHasil(\'' + item.idRiwayatTindakan + '\', \'' + item.namaTindakan + '\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
+                                btn = '<img '+detailBTN+' onclick="showHasil(\'' + item.idRiwayatTindakan + '\', \'' + item.namaTindakan + '\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
                             } else {
-                                btn = '<img class="hvr-grow" id="btn_' + item.idRiwayatTindakan + '" \n' +
+                                btn = '<img '+detailBTN+' class="hvr-grow" id="btn_' + item.idRiwayatTindakan + '" \n' +
                                     'onclick="detailTindakan(\'' + item.idRiwayatTindakan + '\',\'' + item.idTindakan + '\',\'' + keteranganTindakan + '\')"\n' +
                                     'src="' + contextPath + '/pages/images/icons8-plus-25.png">';
                                 if(json != ''){
-                                    btn2 = '<img onclick="showHasil(\'' + item.idRiwayatTindakan + '\', \'' + item.namaTindakan + '\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
+                                    btn2 = '<img '+detailBTN+' onclick="showHasil(\'' + item.idRiwayatTindakan + '\', \'' + item.namaTindakan + '\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
                                 }
                             }
                         } else {

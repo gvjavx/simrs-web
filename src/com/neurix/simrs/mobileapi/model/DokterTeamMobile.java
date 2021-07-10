@@ -20,6 +20,16 @@ public class DokterTeamMobile {
 
     private String namaDokter;
     private String namaSpesialis;
+    //SYAMS 2JUL21 => tambah idPelayanan
+    private String idPelayanan;
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
 
     public String getIdTeamDokter() {
         return idTeamDokter;

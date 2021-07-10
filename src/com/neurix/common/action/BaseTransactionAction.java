@@ -77,7 +77,7 @@ public abstract class BaseTransactionAction extends ActionSupport {
 
     public void preDownload() throws SQLException {
         connection=dataSource.getConnection();
-        connection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+        connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
     }
 
     public abstract String search();

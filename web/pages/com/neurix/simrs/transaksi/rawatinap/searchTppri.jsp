@@ -217,7 +217,7 @@
                                 <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien TPPRI</h3>
                             </div>
                             <div class="box-body">
-                                <table id="myTable" class="table table-bordered table-striped" style="font-size: 13px">
+                                <table id="myTable" class="table table-bordered table-striped" style="font-size: 13px; width: 100%">
                                     <thead>
                                     <tr bgcolor="#30d196">
                                         <td>No Checkup</td>
@@ -1074,7 +1074,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Tanda Tangan</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Persetujuan Umum/General Consent</h4>
             </div>
             <div class="modal-body">
                 <div class="box-body">
@@ -1082,6 +1082,45 @@
                         <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                         <p id="msg_ttd_concent"></p>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>Pasien dan atau wali diminta membaca, memahami, dan mengerti format berikutnya Yang bertanda tangan di bawah ini:</p>
+                            <p>Nama : <span id="nama_gc"></span></p>
+                            <p>Tanggal Lahir : <span id="tanggal_gc"></span></p>
+                            <p>Nomor RM : <span id="rm_gc"></span></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ol>
+                                <ol type="I">
+                                    <li>Persetujuan Untuk Perawatan dan Pengobatan</li>
+                                    <ol type="a" style="margin-left: 17px">
+                                        <li>Saya mengetahui bahwa Saya memiliki kondisi yang membutuhkan perawatan medis, Saya memberi izin kepada dokter dan profesi kesehatan lainnya untuk melakukan prosedur diagnostik dan untuk memberi pengobatan medis seperti yang diperlukan untuk penilaian secara profesional. Prosedur diagnostik dan perawatan medis termasuk tetapi tidak terbatas pada ECG, X Ray, Tes Darah, terapi fisik dan pemberiaan obat.</li>
+                                        <li>Saya sadar bahwa praktek kedokteran dan ilmu bedah bukanlah ilmu pasti dan Saya mengakui bahwa tidak ada jaminan atas hal apapun, terhadap perawatan prosedur atau pemeriksaan apapun yang dilakukan kepada saya</li>
+                                        <li>Saya mengerti dan memahami bahwa:</li>
+                                        <ol type="b" style="margin-left: 17px">
+                                            <li>Saya memiliki hak untuk menanyakan tentang pengobatan yang diusulkan termasuk identitas setiap orang yang memberikan atau mengamati pengobatan setiap saat</li>
+                                            <li>Saya memiliki hak untuk persetujuan, atau menolak persetujuan untuk setiap prosedur atau terapi (injeksi, rawat luka, pemasangan gips, infus, pemeriksaan penunjang lain)</li>
+                                        </ol>
+                                        <li>Privasi: Saya memberi kuasa kepada " + branchName + " untuk menjaga privasi dan kerahasiaan penyakit saya selama dalam perawatan</li>
+                                        <li>Rahasia Kedokteran: Saya setuju kepada " + branchName + " wajib menjamin rahasia kedokteran Saya baik untuk kepentingan perawatan atau pengobatan, pendidikan maupun penelitian, kecuali saya mengucapkan sendiri atau orang lain yang saya beri kuasa sebagai penjamin, Saya setuju untuk membuka rahasia kedokteran terkait dengan kondisi kesehatan, asuhan dan pengobatan yang saya terima kepada</li>
+                                        <ol type="a" style="margin-left: 17px">
+                                            <li>Dokter atau tenaga kesehatan yang memberikan asuhan kesehatan kepada saya</li>
+                                            <li>Perusahaan asuransi kesehatan BPJS atau perusahaan lainnya atau pihak lain yang menjamin pembiayaan saya</li>
+                                            <li>Pihak lain yang saya kehendaki</li>
+                                        </ol>
+                                    </ol>
+                                    <li>Barang-Barang Milik Pasien</li>
+                                    <ol type="a" style="margin-left: 17px">
+                                        <li>Saya telah mengerti bahwa rumah sakit tidak bertanggung jawab atas semua kehilangan barang-barang milik saya, dan saya secara pribadi bertanggung jawab terhadap barang berharga yang saya miliki diantaranya uang, perhiasan, buku, cek, handphone, kartu kredit serta barang-barang berharga lainnya. dan apabila saya membutuhkan maka saya dapat menitipkan barang-barang saya kepada rumah sakit</li>
+                                    </ol>
+                                </ol>
+                            </ol>
+                        </div>
+                    </div>
+                    <hr>
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6 text-center">
@@ -1288,6 +1327,10 @@
                         $('#msg_dpjp').hide();
                         $('#modal-detail').modal({show: true, backdrop: 'static'});
                         namaPasien = res.nama;
+
+                        $('#nama_gc').text(namaPasien);
+                        $('#tanggal_gc').text(converterDate(new Date(res.tglLahir)));
+                        $('#rm_gc').text(idPsn);
                     }
                 }
             });
@@ -1614,8 +1657,17 @@
 
     function printPernyataan(kode, idRm, flag, namaRm) {
         if(kode == "CK01"){
-            $('#save_ttd_concent').attr('onclick', 'saveResume(\'' + kode + '\', \'' + idRm + '\')');
-            $('#modal-ttd_concent').modal('show');
+            KeperawatanRawatJalanAction.getListAsesmenRawat(noCheckup, "general_concent", function (res) {
+                if(res.length > 0){
+                    $('#tanya').text("Apakah anda yakin print ?");
+                    $('#print_form').text(namaRm);
+                    $('#save_con_rm').attr('onclick', 'printPernyataanRM(\'' + kode + '\', \'' + idRm + '\')');
+                    $('#modal-confirm-rm').modal('show');
+                }else{
+                    $('#save_ttd_concent').attr('onclick', 'saveResume(\'' + kode + '\', \'' + idRm + '\')');
+                    $('#modal-ttd_concent').modal('show');
+                }
+            });
         }else{
             $('#tanya').text("Apakah anda yakin print ?");
             $('#print_form').text(namaRm);
@@ -1647,14 +1699,16 @@
                 'jawaban': nama1,
                 'keterangan': 'general_concent',
                 'jenis': 'general_concent',
-                'id_detail_checkup': idDetailCheckup
+                'id_detail_checkup': idDetailCheckup,
+                'no_checkup': noCheckup
             });
             data.push({
                 'parameter': 'nama_dokter',
                 'jawaban': nama2,
                 'keterangan': 'general_concent',
                 'jenis': 'general_concent',
-                'id_detail_checkup': idDetailCheckup
+                'id_detail_checkup': idDetailCheckup,
+                'no_checkup': noCheckup
             });
             data.push({
                 'parameter': 'pasien',
@@ -1662,7 +1716,8 @@
                 'keterangan': 'general_concent',
                 'jenis': 'general_concent',
                 'tipe': 'ttd',
-                'id_detail_checkup': idDetailCheckup
+                'id_detail_checkup': idDetailCheckup,
+                'no_checkup': noCheckup
             });
             data.push({
                 'parameter': 'dokter',
@@ -1670,7 +1725,8 @@
                 'keterangan': 'general_concent',
                 'jenis': 'general_concent',
                 'tipe': 'ttd',
-                'id_detail_checkup': idDetailCheckup
+                'id_detail_checkup': idDetailCheckup,
+                'no_checkup': noCheckup
             });
             var result = JSON.stringify(data);
             $('#save_ttd_concent').hide();

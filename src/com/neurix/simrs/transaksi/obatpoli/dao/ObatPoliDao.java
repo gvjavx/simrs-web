@@ -420,10 +420,52 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
         return null;
     }
 
-    public HargaObatPerKonsumen getDataHargaPerKonsumen(String idObat, String branchId, String jenisKonsumen, String idRekanan){
+    /**
+     * 2021-07-01, Sigit
+     * Method untuk merubah ke default harga (umum / bpjs) pada masing - masing jenis konsumen jika belum diset
+     * pada harga obat per konsumen;
+     * @param idObat
+     * @param branchId
+     * @param jenisKonsumen
+     * @param idRekanan
+     * @return
+     */
+    private String changeToUmumOrBpjsIfNotAvailableYetInHargaObatPerkonsumen(String idObat, String branchId, String jenisKonsumen, String idRekanan){
 
         String sqlRekanan = "";
         if (idRekanan != null && !"".equalsIgnoreCase(idRekanan)){
+            sqlRekanan = "AND hopk.id_rekanan = '"+idRekanan+"' \n";
+        }
+
+        String SQL = "SELECT \n" +
+                "hopk.id_harga_obat \n" +
+                "FROM (SELECT * FROM mt_simrs_harga_obat_per_konsumen WHERE flag ='Y') hopk\n" +
+                "INNER JOIN mt_simrs_harga_terakhir ht ON ht.id = hopk.id_harga_obat \n" +
+                "WHERE ht.id_obat = '"+idObat+"'\n" +
+                "AND ht.branch_id = '"+branchId+"'\n" +
+                "AND hopk.jenis_konsumen = '"+jenisKonsumen+"'\n" + sqlRekanan;
+
+        List<Object> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+            return jenisKonsumen;
+        } else if (list.size() == 0 && "bpjs_rekanan".equalsIgnoreCase(jenisKonsumen)){
+            return "bpjs";
+        } else if (list.size() == 0 && "rekanan".equalsIgnoreCase(jenisKonsumen)){
+            return "umum";
+        } else {
+            return "umum";
+        }
+    }
+
+    public HargaObatPerKonsumen getDataHargaPerKonsumen(String idObat, String branchId, String jenisKonsumen, String idRekanan){
+
+        // 2021-07-01, Sigit
+        // set jenis konsumen ke default umum / bpjs jika tidak ditemukan jenis konsumen tersebut pada harga per konsumen
+        jenisKonsumen = changeToUmumOrBpjsIfNotAvailableYetInHargaObatPerkonsumen(idObat, branchId, jenisKonsumen, idRekanan);
+
+        String sqlRekanan = "";
+        if (idRekanan != null && !"".equalsIgnoreCase(idRekanan) && !"umum".equalsIgnoreCase(jenisKonsumen) && !"bpjs".equalsIgnoreCase(jenisKonsumen)){
             sqlRekanan = "AND hopk.id_rekanan = '"+idRekanan+"' \n";
         }
 
@@ -474,8 +516,9 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
     private BigDecimal objToBigDecimal(Object obj){
         if (obj == null)
             return new BigDecimal(0);
-        else
-            return new BigDecimal(obj.toString());
+        else {
+            return new BigDecimal(obj.toString()).setScale(BigDecimal.ROUND_UP);
+        }
     }
 
     private Boolean cekIsKhusus(String idDetailCheckup){
@@ -490,7 +533,7 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("id", idDetailCheckup)
                 .list();
-        if(results.size() > 0){
+        if(null!= results && results.size() > 0){
             res = true;
         }
         return res;

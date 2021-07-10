@@ -187,6 +187,11 @@ public class TindakanRawatAction extends BaseMasterAction {
                                     flagApprove = obj.getString("approve_flag");
                                 }
                             }
+                            if(obj.has("is_pelayanan")){
+                                if(obj.getString("is_pelayanan") != null && !"".equalsIgnoreCase(obj.getString("is_pelayanan"))){
+                                    tindakanRawat.setIsPelayanan(obj.getString("is_pelayanan"));
+                                }
+                            }
 
                             tindakanRawat.setIdDetailCheckup(idDetailCheckup);
                             tindakanRawat.setIdTindakan(idTindakan);
@@ -350,11 +355,12 @@ public class TindakanRawatAction extends BaseMasterAction {
         return detailRekananOps;
     }
 
-    public List<TindakanRawat> listTindakanRawat(String idDetailCheckup) {
+    public List<TindakanRawat> listTindakanRawat(String idDetailCheckup, String isPelayanan) {
         logger.info("[TindakanRawatAction.listTindakanRawat] start process >>>");
         List<TindakanRawat> tindakanRawatList = new ArrayList<>();
         TindakanRawat tindakanRawat = new TindakanRawat();
         tindakanRawat.setIdDetailCheckup(idDetailCheckup);
+        tindakanRawat.setIsPelayanan(isPelayanan);
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TindakanRawatBo tindakanRawatBo = (TindakanRawatBo) ctx.getBean("tindakanRawatBoProxy");
 

@@ -1,6 +1,8 @@
 package com.neurix.simrs.transaksi.transaksiobat.model;
 
 import com.neurix.common.model.BaseModel;
+import com.neurix.simrs.transaksi.asesmenrawatjalan.model.ItSimrsAsesmenKeperawatanRawatJalanEntity;
+import com.neurix.simrs.transaksi.asesmenrawatjalan.model.KeperawatanRawatJalan;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
 import com.neurix.simrs.transaksi.transketeranganobat.model.ItSimrsKeteranganResepEntity;
 
@@ -117,6 +119,26 @@ public class TransaksiObatDetail extends BaseModel {
     private String warna;
     private String tipePelayanan;
     private String isRacik;
+    private String idAsuransi;
+    private String dosis;
+
+    private List<ItSimrsAsesmenKeperawatanRawatJalanEntity> rawatJalanEntityList = new ArrayList<>();
+
+    public List<ItSimrsAsesmenKeperawatanRawatJalanEntity> getRawatJalanEntityList() {
+        return rawatJalanEntityList;
+    }
+
+    public void setRawatJalanEntityList(List<ItSimrsAsesmenKeperawatanRawatJalanEntity> rawatJalanEntityList) {
+        this.rawatJalanEntityList = rawatJalanEntityList;
+    }
+
+    public String getIdAsuransi() {
+        return idAsuransi;
+    }
+
+    public void setIdAsuransi(String idAsuransi) {
+        this.idAsuransi = idAsuransi;
+    }
 
     public String getIsRacik() {
         return isRacik;
@@ -850,5 +872,13 @@ public class TransaksiObatDetail extends BaseModel {
 
     public void setIdDetailCheckup(String idDetailCheckup) {
         this.idDetailCheckup = idDetailCheckup;
+    }
+
+    public String getDosis() {
+        return dosis;
+    }
+
+    public void setDosis(String dosis) {
+        this.dosis = dosis;
     }
 }

@@ -57,6 +57,15 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
             List<Object[]> results = new ArrayList<>();
             if ("rawat_jalan".equalsIgnoreCase(bean.getTipePelayanan())) {
                 if (bean.getJenis() != null) {
+                    String jenis = "poli_spesialis";
+                    if("spesialis_anak".equalsIgnoreCase(bean.getJenis()) ||
+                       "spesialis_mata".equalsIgnoreCase(bean.getJenis()) ||
+                       "rehab_medik".equalsIgnoreCase(bean.getJenis()) ||
+                       "spesialis_tht".equalsIgnoreCase(bean.getJenis()) ||
+                       "spesialis_obstetri".equalsIgnoreCase(bean.getJenis())){
+                        jenis = bean.getJenis();
+                    }
+
                     SQL = "SELECT \n" +
                             "a.*,  \n" +
                             "b.jumlah_kategori as terisi,\n" +
@@ -151,7 +160,7 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
 
                     results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                             .setParameter("tipePelayanan", bean.getTipePelayanan())
-                            .setParameter("jenis", bean.getJenis())
+                            .setParameter("jenis", jenis)
                             .list();
                 }
             } else if ("igd".equalsIgnoreCase(bean.getTipePelayanan())) {
@@ -294,7 +303,15 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
         String spesialis = "";
         if ("rawat_jalan".equalsIgnoreCase(tipePelayanan)) {
             if (jenis != null && !"".equalsIgnoreCase(jenis) && !"hemodialisa".equalsIgnoreCase(jenis) && !"fisioterapi".equalsIgnoreCase(jenis)) {
-                spesialis = "('" + jenis + "', 'keperawatan_rawat_jalan', 'ringkasan_rj')";
+                String tempJenis = "poli_spesialis";
+                if("spesialis_anak".equalsIgnoreCase(jenis) ||
+                        "spesialis_mata".equalsIgnoreCase(jenis) ||
+                        "rehab_medik".equalsIgnoreCase(jenis) ||
+                        "spesialis_tht".equalsIgnoreCase(jenis) ||
+                        "spesialis_obstetri".equalsIgnoreCase(jenis)){
+                    tempJenis = jenis;
+                }
+                spesialis = "('" + tempJenis + "', 'keperawatan_rawat_jalan', 'ringkasan_rj')";
             } else {
                 spesialis = "('keperawatan_rawat_jalan', 'ringkasan_rj')";
             }

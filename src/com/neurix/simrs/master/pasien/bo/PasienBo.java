@@ -53,4 +53,5 @@ public interface PasienBo extends GeneralBo {
     public PasienSementara saveAddPasienSementara(PasienSementara bean) throws GeneralBOException;
     public List<PasienSementara> getPasienSementaraByCriteria(PasienSementara bean) throws GeneralBOException;
     public void saveEditPasienSementara(PasienSementara bean) throws GeneralBOException;
+    public ImSimrsPasienSementaraEntity getPasienSementaraEntityById(String id) throws GeneralBOException;
 }

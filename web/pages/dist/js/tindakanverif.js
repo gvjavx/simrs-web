@@ -160,7 +160,7 @@ function listSelectTindakan(idKategori) {
     var option = "<option value=''>[Select One]</option>";
     if (idKategori != '') {
         dwr.engine.setAsync(true);
-        CheckupDetailAction.getListComboTindakan(idKategori, idKelasRuangan, flagVaksin, {
+        CheckupDetailAction.getListComboTindakan(idKategori, idKelasRuangan, flagVaksin, null, {
             callback: function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {

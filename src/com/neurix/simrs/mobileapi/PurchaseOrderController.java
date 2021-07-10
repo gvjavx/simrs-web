@@ -37,6 +37,7 @@ import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 import sun.misc.BASE64Decoder;
+import sun.rmi.runtime.Log;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -108,6 +109,8 @@ public class PurchaseOrderController implements ModelDriven<Object> {
 
     private String idObat;
     private String merk;
+
+    private Map<String,Object> response = new HashMap<>();
 
     public String getIdPabrikObat() {
         return idPabrikObat;
@@ -417,9 +420,11 @@ public class PurchaseOrderController implements ModelDriven<Object> {
     public Object getModel() {
         switch (action) {
             case "getPO":
-                return listOfPurchaseOrder;
+                response.put("data",listOfPurchaseOrder);
+                return response;
             case "getTransaksi":
-                return listOfTransaksiObat;
+                response.put("data",listOfTransaksiObat);
+                return response;
             case "getBatch":
                 return listOfBatchObat;
             case "getBatchSorted":
@@ -429,10 +434,15 @@ public class PurchaseOrderController implements ModelDriven<Object> {
             case "editBatch":
                 return listOfTransaksiObat;
             case "getPabrikObat":
-                return listOfPabrikObat;
+                response.put("data",listOfPabrikObat);
+                return response;
             case "cekNoProduksi":
+                //action error ada di dalam obat model
                 return obatModel;
+            case "saveTransaksi":
+                return response;
             default:
+                response.put("actionError","Method salah");
                 return model;
         }
 
@@ -445,6 +455,7 @@ public class PurchaseOrderController implements ModelDriven<Object> {
         List<TransaksiObatDetail> obatBaru = new ArrayList<>();
         PurchaseOrderMobile purchaseOrder = new PurchaseOrderMobile();
         JSONArray jsonArray;
+
 
         if(jsonPurchaseOrder!=null && !jsonPurchaseOrder.isEmpty()){
             Gson gson = new Gson();
@@ -583,44 +594,54 @@ public class PurchaseOrderController implements ModelDriven<Object> {
 
                 if (action.equalsIgnoreCase("getTransaksi")) {
                     resultTransaksi = result.get(0).getListOfTransaksiObatDetail();
-                    for (TransaksiObatDetail item : resultTransaksi) {
-                            TransaksiObatMobile transaksiObatMobile = new TransaksiObatMobile();
-                            transaksiObatMobile.setIdTransaksiObatDetail(item.getIdTransaksiObatDetail());
-                            transaksiObatMobile.setNamaObat(item.getNamaObat());
-                            transaksiObatMobile.setIdApprovalObat(item.getIdApprovalObat());
-                            transaksiObatMobile.setIdObat(item.getIdObat());
-                            transaksiObatMobile.setKeterangan(item.getKeterangan());
+                    if (resultTransaksi.size()>0){
+                        try {
+
+                            for (TransaksiObatDetail item : resultTransaksi) {
+                                TransaksiObatMobile transaksiObatMobile = new TransaksiObatMobile();
+                                transaksiObatMobile.setIdTransaksiObatDetail(item.getIdTransaksiObatDetail());
+                                transaksiObatMobile.setNamaObat(item.getNamaObat());
+                                transaksiObatMobile.setIdApprovalObat(item.getIdApprovalObat());
+                                transaksiObatMobile.setIdObat(item.getIdObat());
+                                transaksiObatMobile.setKeterangan(item.getKeterangan());
 //                        transaksiObatMobile.setQtyApprove(item.getQtyApprove().toString());
 //                        transaksiObatMobile.setQtyBox(item.getQtyBox().toString());
 //                        transaksiObatMobile.setQtyLembar(item.getQtyLembar().toString());
 //                        transaksiObatMobile.setQtyBiji(item.getQtyBiji().toString());
-                            transaksiObatMobile.setQty(item.getQty().toString() !=  null ? item.getQty().toString() : "0");
-                            transaksiObatMobile.setLembarPerBox(item.getLembarPerBox() != null ? item.getLembarPerBox().toString() : "0");
-                            transaksiObatMobile.setBijiPerLembar(item.getBijiPerLembar() != null ? item.getBijiPerLembar().toString() : "0");
+                                transaksiObatMobile.setQty(item.getQty().toString() !=  null ? item.getQty().toString() : "0");
+                                transaksiObatMobile.setLembarPerBox(item.getLembarPerBox() != null ? item.getLembarPerBox().toString() : "0");
+                                transaksiObatMobile.setBijiPerLembar(item.getBijiPerLembar() != null ? item.getBijiPerLembar().toString() : "0");
 //                            transaksiObatMobile.setAverageHargaBox(item.getAverageHargaBox().toString());
 //                        transaksiObatMobile.setAverageHargaLembar(item.getAverageHargaLembar().toString());
-                        transaksiObatMobile.setAverageHargaBiji(item.getAverageHargaBiji().toString());
-                            transaksiObatMobile.setFlagDiterima(item.getFlagDiterima());
-                            transaksiObatMobile.setJenisSatuan(item.getJenisSatuan());
-                            transaksiObatMobile.setIdPabrik(item.getIdPabrik());
-                            transaksiObatMobile.setMerek(item.getMerek());
-                            if (item.getSumQtyApprove() != null) {
-                                transaksiObatMobile.setSumQtyApprove(item.getSumQtyApprove().toString());
-                            } else transaksiObatMobile.setSumQtyApprove("0");
+//                            transaksiObatMobile.setAverageHargaBiji(item.getAverageHargaBiji().toString());
+                                transaksiObatMobile.setFlagDiterima(item.getFlagDiterima());
+                                transaksiObatMobile.setJenisSatuan(item.getJenisSatuan());
+                                transaksiObatMobile.setIdPabrik(item.getIdPabrik());
+                                transaksiObatMobile.setMerek(item.getMerek());
+                                if (item.getSumQtyApprove() != null) {
+                                    transaksiObatMobile.setSumQtyApprove(item.getSumQtyApprove().toString());
+                                } else transaksiObatMobile.setSumQtyApprove("0");
 
 
-                        if ("box".equalsIgnoreCase(item.getJenisSatuan())) {
-                                transaksiObatMobile.setHargaPo(item.getAverageHargaBox().toString());
-                            }
-                            if ("lembar".equalsIgnoreCase(item.getJenisSatuan())) {
-                                transaksiObatMobile.setHargaPo(item.getAverageHargaLembar().toString());
-                            }
-                            if ("biji".equalsIgnoreCase(item.getJenisSatuan())) {
-                                transaksiObatMobile.setHargaPo(item.getAverageHargaBiji().toString());
-                            }
+                                if ("box".equalsIgnoreCase(item.getJenisSatuan())) {
+                                    transaksiObatMobile.setHargaPo(item.getAverageHargaBox().toString());
+                                }
+                                if ("lembar".equalsIgnoreCase(item.getJenisSatuan())) {
+                                    transaksiObatMobile.setHargaPo(item.getAverageHargaLembar().toString());
+                                }
+                                if ("biji".equalsIgnoreCase(item.getJenisSatuan())) {
+                                    transaksiObatMobile.setHargaPo(item.getAverageHargaBiji().toString());
+                                }
 
-                            listOfTransaksiObat.add(transaksiObatMobile);
+                                listOfTransaksiObat.add(transaksiObatMobile);
+                            }
+                        } catch (Exception e){
+                            response.put("actionError",e.toString());
                         }
+                    } else {
+                        response.put("actionError","Result transaksi = 0");
+                        logger.error("Result transaksi = 0");
+                    }
 
 
                 }
@@ -652,7 +673,9 @@ public class PurchaseOrderController implements ModelDriven<Object> {
 
                     try {
                         permintaanVendorBoProxy.saveUpdateTransObatDetail(transaksiObatDetail);
+                        response.put("actionSuccess","Sukses");
                     } catch (GeneralBOException e) {
+                        response.put("actionError",e.toString());
                         logger.error("[PurchaseOrderController.create] ERROR saveTransaksi. ", e);
                     }
                 }
@@ -1083,9 +1106,13 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                        obat = permintaanVendorBoProxy.cekNoProduksi(noProduksi);
                     } catch (GeneralBOException e){
                         logger.error("[PermintaanVendorAction.saveApproveBatch] ERROR. ", e);
+                        //SYAMS 15JUN21 => TAMBAH setActionError
+                        obatModel = new ObatMobile();
+                        obatModel.setActionError(e.toString());
                     }
 
                     if (obat != null) {
+
                         obatModel = new ObatMobile();
                         obatModel.setIdObat(obat.getIdObat());
                         obatModel.setNamaObat(obat.getNamaObat());
@@ -1105,6 +1132,8 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                        pabrikObatList = permintaanVendorBoProxy.getListPabrikObatByIdObatForPo(idObat,"all");
                     } catch (GeneralBOException e){
                         logger.error("[PermintaanVendorAction.saveApproveBatch] ERROR. ", e);
+                        //SYAMS 15JUN21 => TAMBAH setActionError
+                        response.put("actionError",e.toString());
                     }
 
                     if (pabrikObatList != null) {

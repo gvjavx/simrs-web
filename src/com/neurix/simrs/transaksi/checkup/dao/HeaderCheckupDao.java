@@ -550,9 +550,19 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             pelayanan = "\n AND b.id_pelayanan IN (" + poli + ") \n";
         }
 
-        String SQL = "SELECT a.id_pasien, a.nama, a.desa_id, d.desa_name, b.id_pelayanan,\n" +
-                "c.nama_pelayanan, d.kecamatan_id, e.kecamatan_name, b.tgl_antrian, rc.flag_racik,\n" +
-                "pr.id_permintaan_resep, pr.status\n" +
+        String SQL = "SELECT \n" +
+                "a.id_pasien, \n" +
+                "a.nama, \n" +
+                "a.desa_id, \n" +
+                "d.desa_name, \n" +
+                "b.id_pelayanan,\n" +
+                "c.nama_pelayanan, \n" +
+                "d.kecamatan_id, \n" +
+                "e.kecamatan_name, \n" +
+                "b.tgl_antrian, \n" +
+                "rc.flag_racik,\n" +
+                "pr.id_permintaan_resep, \n" +
+                "pr.status\n" +
                 "FROM it_simrs_header_checkup a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                 "INNER JOIN im_hris_desa d ON CAST(a.desa_id AS character varying) = d.desa_id\n" +
@@ -567,8 +577,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "b.divisi_id,\n" +
                 "b.kode_vclaim\n" +
                 "FROM im_simrs_pelayanan a\n" +
-                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON c.id_pelayanan = pr.tujuan_pelayanan\n" +
-                "INNER JOIN im_simrs_pelayanan pl ON pl.id_pelayanan = b.id_pelayanan\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
+                ") c ON c.id_pelayanan = b.id_pelayanan\n" +
                 "LEFT JOIN \n" +
                 "(\n" +
                 "\tSELECT \n" +
@@ -591,7 +601,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "AND pr.status IS NOT NULL\n" +
                 "AND pr.flag = 'Y'\n" +
                 "AND a.branch_id LIKE :branchId \n" + pelayanan +
-                "AND pl.tipe_pelayanan IN ('rawat_jalan', 'igd')  \n" +
+                "AND c.tipe_pelayanan IN ('rawat_jalan', 'igd')  \n" +
                 "AND CAST(pr.created_date AS date) = current_date \n" +
                 "AND pr.status IN ('0', '1')\n" +
                 "ORDER BY c.nama_pelayanan, pr.tgl_antrian ASC";
@@ -1221,6 +1231,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup \n" +
                 "WHERE a.tipe = 'penyakit_dahulu'\n" +
                 "AND c.id_pasien = :id\n" +
+                "AND a.flag = 'Y'\n" +
                 "UNION ALL\n" +
                 "SELECT \n" +
                 "c.id_pasien,\n" +
@@ -1229,7 +1240,18 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup \n" +
                 "WHERE a.tipe = 'penyakit_dahulu'\n" +
-                "AND c.id_pasien = :id";
+                "AND c.id_pasien = :id\n" +
+                "AND a.flag = 'Y'\n" +
+                "UNION ALL\n" +
+                "SELECT \n" +
+                "c.id_pasien,\n" +
+                "a.jawaban\n" +
+                "FROM it_simrs_asesmen_poli_spesialis a\n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
+                "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup \n" +
+                "WHERE a.tipe = 'penyakit_dahulu'\n" +
+                "AND c.id_pasien = :id\n" +
+                "AND a.flag = 'Y'";
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("id", idPasien)

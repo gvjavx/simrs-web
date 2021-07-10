@@ -33,4 +33,6 @@ public interface BillingSystemBo {
     //RAKA-30APR2021==> mencoba membantu
     public void saveUpdateNoJuran(HeaderDetailCheckup bean) throws GeneralBOException;
     public CrudResponse testApproveVA(String idTrans) throws GeneralBOException;
+
+    public List<String> getListHeaderPemeriksaanPenunjangByIdDetailCheckup(String idDetailCheckup);
 }

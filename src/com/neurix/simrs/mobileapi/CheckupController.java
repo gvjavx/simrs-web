@@ -45,6 +45,7 @@ import com.neurix.simrs.transaksi.makananpendamping.model.DetailPendampingMakana
 import com.neurix.simrs.transaksi.makananpendamping.model.HeaderPendampingMakanan;
 import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
+import com.neurix.simrs.transaksi.obatracik.model.ObatRacik;
 import com.neurix.simrs.transaksi.ordergizi.bo.OrderGiziBo;
 import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
 import com.neurix.simrs.transaksi.paketperiksa.bo.PaketPeriksaBo;
@@ -846,6 +847,7 @@ public class CheckupController implements ModelDriven<Object> {
             bean.setLastUpdateWho(username);
             bean.setLastUpdate(now);
             bean.setJenisResep(jenisResep);
+
 //            bean.setTtdDokter(base64Ttd);
 
             List<TransaksiObatDetail> list = new ArrayList<>();
@@ -918,7 +920,12 @@ public class CheckupController implements ModelDriven<Object> {
             } catch (GeneralBOException e){
                 logger.error("CheckupController.create] Error when get obat poli group",e);
             }
-        } else if (action.equalsIgnoreCase("getPermintaanResep")){
+        }
+        else if (action.equalsIgnoreCase("saveAddResepRacik")){
+            // add resep for racik
+            doSaveAddResepRacik();
+        }
+        else if (action.equalsIgnoreCase("getPermintaanResep")){
             List<PermintaanResep> result = new ArrayList<>();
 
             PermintaanResep bean = new PermintaanResep();
@@ -947,7 +954,8 @@ public class CheckupController implements ModelDriven<Object> {
                     listOfPermintaanResep.add(permintaanResepMobile);
                 }
             }
-        } else if (action.equalsIgnoreCase("saveKeteranganRawatJalan")){
+        }
+        else if (action.equalsIgnoreCase("saveKeteranganRawatJalan")){
             CrudResponse response = new CrudResponse();
 
             HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
@@ -1321,6 +1329,99 @@ public class CheckupController implements ModelDriven<Object> {
 
         logger.info("[CheckupController.create] end process POST / <<<");
         return new DefaultHttpHeaders("create").disableCaching();
+    }
+
+    /** for add and save Resep for racik*/
+    private void doSaveAddResepRacik() {
+
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        PermintaanResep bean = new PermintaanResep();
+        bean.setIdPelayanan(idPelayanan);
+        bean.setBranchId(branchId);
+        bean.setTujuanPelayanan(tujuanPelayanan);
+        bean.setIdDetailCheckup(idDetailCheckup);
+        bean.setIdPasien(idPasien);
+        bean.setIdDokter(idDokter);
+        bean.setCreatedDate(now);
+        bean.setCreatedWho(username);
+        bean.setLastUpdateWho(username);
+        bean.setLastUpdate(now);
+        bean.setJenisResep(jenisResep);
+
+        List<TransaksiObatDetail> list = new ArrayList<>();
+        List<ObatRacik> listRacik = new ArrayList<>();
+
+        JSONArray jsonArray;
+        JSONArray jsonArrayDet;
+        TransaksiObatDetail transObatDet;
+        ObatRacik obatracik;
+
+        if (fileUploadTtd != null) {
+            if(fileUploadTtd.length() > 0 && fileUploadTtd.length() <= 15728640) {
+                String fileNamePhoto =  idDokter+"-"+idDetailCheckup+"-"+dateFormater("MM")+dateFormater("yy")+".png";
+
+                bean.setTtdDokter(fileNamePhoto);
+                File fileCreate = new File(CommonUtil.getPropertyParams("upload.folder")+CommonConstant.RESOURCE_PATH_TTD_DOKTER, fileNamePhoto);
+                try {
+                    FileUtils.copyFile(fileUploadTtd, fileCreate);
+                    bean.setTtdDokter(fileNamePhoto);
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        System.out.println("ASAP======="+jsonResep);
+        if (jsonResep != null && !jsonResep.equalsIgnoreCase("")){
+            try{
+                jsonArray = (net.sf.json.JSONArray) JSONSerializer.toJSON(jsonResep);
+
+                for (int i = 0; i < jsonArray.size(); i++){
+                    obatracik = new ObatRacik();
+                    obatracik.setNama(jsonArray.getJSONObject(i).getString("namaObat"));
+                    obatracik.setSigna(jsonArray.getJSONObject(i).getString("keteranganDetail"));
+                    obatracik.setQty(Integer.valueOf(jsonArray.getJSONObject(i).getString("qty")));
+                    obatracik.setKemasan(jsonArray.getJSONObject(i).getString("jenisSatuan"));
+                    obatracik.setCreatedDate(now);
+                    obatracik.setCreatedWho(username);
+                    obatracik.setLastUpdate(now);
+                    obatracik.setLastUpdateWho(username);
+
+                    listRacik.add(obatracik);
+
+                    if(null!=jsonArray.getJSONObject(i).get("detail") )
+                    {
+                        jsonArrayDet = (net.sf.json.JSONArray) JSONSerializer.toJSON(jsonArray.getJSONObject(i).getJSONArray("detail"));
+
+                        for (int j = 0; j < jsonArrayDet.size(); j++){
+
+                            transObatDet = new TransaksiObatDetail();
+                            transObatDet.setIdObat(jsonArrayDet.getJSONObject(j).getString("idObat"));
+                            transObatDet.setQty(BigInteger.valueOf(0));
+                            transObatDet.setQtyApprove(BigInteger.valueOf(0));
+                            transObatDet.setJenisSatuan("biji");
+                            transObatDet.setKeterangan(jsonArrayDet.getJSONObject(j).getString("dosis"));
+                            transObatDet.setFlagRacik("Y");
+
+                            list.add(transObatDet);
+                        }
+                    }
+                }
+
+                bean.setListNamaObatRacik(listRacik);
+
+            } catch (JSONException e) {
+                logger.error("[CheckupController.saveAddResepRacik] Error, get json resep " + e.getMessage());
+            }
+        }
+
+        try {
+            permintaanResepBoProxy.saveAdd(bean, list);
+            model.setMessage("Success");
+        } catch (GeneralBOException e){
+            logger.error("CheckupController.saveAddResepRacik] Error when get obat poli group",e);
+        }
     }
 
     private String dateFormater(String type) {

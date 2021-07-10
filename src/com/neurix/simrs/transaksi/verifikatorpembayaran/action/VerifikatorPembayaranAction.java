@@ -46,6 +46,7 @@ import com.neurix.simrs.master.kelasruangan.model.ImSimrsKelasRuanganEntity;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienSementaraEntity;
 import com.neurix.simrs.master.pasien.model.Pasien;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
@@ -646,19 +647,24 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
 
                     // mendapatkan data pasien;
                     ImSimrsPasienEntity pasienEntity = pasienBo.getPasienById(antrianTelemedicEntity.getIdPasien());
-                    if (pasienEntity != null){
 
-                        headerCheckup.setNama(pasienEntity.getNama());
-                        headerCheckup.setJenisKelamin(pasienEntity.getJenisKelamin());
-                        headerCheckup.setNoKtp(pasienEntity.getNoKtp());
-                        headerCheckup.setTempatLahir(pasienEntity.getTempatLahir());
-                        headerCheckup.setTglLahir(new Date(pasienEntity.getTglLahir().getTime()));
-                        headerCheckup.setDesaId(pasienEntity.getDesaId());
-                        headerCheckup.setJalan(pasienEntity.getJalan());
-                        headerCheckup.setSuku(pasienEntity.getSuku());
-                        headerCheckup.setAgama(pasienEntity.getAgama());
-                        headerCheckup.setProfesi(pasienEntity.getProfesi());
-                        headerCheckup.setNoTelp(pasienEntity.getNoTelp());
+                    ImSimrsPasienSementaraEntity pasienSementaraEntity = null;
+                    if (pasienEntity == null)
+                        pasienSementaraEntity = telemedicBo.getPasienSementaraById(antrianTelemedicEntity.getIdPasien());
+
+                    if (pasienEntity != null || pasienSementaraEntity != null){
+
+                        headerCheckup.setNama(pasienEntity == null ? pasienSementaraEntity.getNama() : pasienEntity.getNama());
+                        headerCheckup.setJenisKelamin(pasienEntity == null ? pasienSementaraEntity.getJenisKelamin() : pasienEntity.getJenisKelamin());
+                        headerCheckup.setNoKtp(pasienEntity == null ? pasienSementaraEntity.getNoKtp() : pasienEntity.getNoKtp());
+                        headerCheckup.setTempatLahir(pasienEntity == null ? pasienSementaraEntity.getTempatLahir() : pasienEntity.getTempatLahir());
+                        headerCheckup.setTglLahir(pasienEntity == null ? pasienSementaraEntity.getTglLahir() : new Date(pasienEntity.getTglLahir().getTime()));
+                        headerCheckup.setDesaId(pasienEntity == null ? new BigInteger(pasienSementaraEntity.getDesaId().toString()) : pasienEntity.getDesaId());
+                        headerCheckup.setJalan(pasienEntity == null ? pasienSementaraEntity.getJalan() : pasienEntity.getJalan());
+                        headerCheckup.setSuku(pasienEntity == null ? pasienSementaraEntity.getSuku() : pasienEntity.getSuku());
+                        headerCheckup.setAgama(pasienEntity == null ? pasienSementaraEntity.getAgama() : pasienEntity.getAgama());
+                        headerCheckup.setProfesi(pasienEntity == null ? pasienSementaraEntity.getProfesi() : pasienEntity.getProfesi());
+                        headerCheckup.setNoTelp(pasienEntity == null ? pasienSementaraEntity.getNoTelp() : pasienEntity.getNoTelp());
                         headerCheckup.setIdJenisPeriksaPasien(idJenisPeriksaPasien);
                         headerCheckup.setFlag("Y");
                         headerCheckup.setAction("C");
@@ -666,16 +672,17 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                         headerCheckup.setCreatedWho(userLogin);
                         headerCheckup.setLastUpdate(time);
                         headerCheckup.setLastUpdateWho(userLogin);
-                        headerCheckup.setJenisKunjungan("Lama");
+                        headerCheckup.setJenisKunjungan(pasienEntity != null ? "Lama" : "Baru");
                         headerCheckup.setIdPelayanan(antrianTelemedicEntity.getIdPelayanan());
                         headerCheckup.setStatusPeriksa("3");
-                        headerCheckup.setStTglLahir(pasienEntity.getTglLahir().toString());
+                        headerCheckup.setStTglLahir(pasienEntity == null ? pasienSementaraEntity.getTglLahir().toString() : pasienEntity.getTglLahir().toString());
                         headerCheckup.setMetodePembayaran("non_tunai");
                         headerCheckup.setIdAntrianOnline(antrianTelemedicEntity.getId());
                         headerCheckup.setIdTransaksiOnline(idTransaksi);
                         headerCheckup.setNoCheckup(noCheckup);
                         headerCheckup.setBranchId(branchId);
                         headerCheckup.setIdPasien(antrianTelemedicEntity.getIdPasien());
+                        headerCheckup.setIsPasienSementara(pasienEntity == null ? "Y" : "N");
 
                         if ("asuransi".equalsIgnoreCase(antrianTelemedicEntity.getIdJenisPeriksaPasien())){
                             headerCheckup.setIdAsuransi(antrianTelemedicEntity.getIdAsuransi());
@@ -764,19 +771,24 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
 
                     // mendapatkan data pasien;
                     ImSimrsPasienEntity pasienEntity = pasienBo.getPasienById(antrianTelemedicEntity.getIdPasien());
-                    if (pasienEntity != null){
 
-                        headerCheckup.setNama(pasienEntity.getNama());
-                        headerCheckup.setJenisKelamin(pasienEntity.getJenisKelamin());
-                        headerCheckup.setNoKtp(pasienEntity.getNoKtp());
-                        headerCheckup.setTempatLahir(pasienEntity.getTempatLahir());
-                        headerCheckup.setTglLahir(new Date(pasienEntity.getTglLahir().getTime()));
-                        headerCheckup.setDesaId(pasienEntity.getDesaId());
-                        headerCheckup.setJalan(pasienEntity.getJalan());
-                        headerCheckup.setSuku(pasienEntity.getSuku());
-                        headerCheckup.setAgama(pasienEntity.getAgama());
-                        headerCheckup.setProfesi(pasienEntity.getProfesi());
-                        headerCheckup.setNoTelp(pasienEntity.getNoTelp());
+                    ImSimrsPasienSementaraEntity pasienSementaraEntity = null;
+                    if (pasienEntity == null)
+                        pasienSementaraEntity = telemedicBo.getPasienSementaraById(antrianTelemedicEntity.getIdPasien());
+
+                    if (pasienEntity != null || pasienSementaraEntity != null){
+
+                        headerCheckup.setNama(pasienEntity == null ? pasienSementaraEntity.getNama() : pasienEntity.getNama());
+                        headerCheckup.setJenisKelamin(pasienEntity == null ? pasienSementaraEntity.getJenisKelamin() : pasienEntity.getJenisKelamin());
+                        headerCheckup.setNoKtp(pasienEntity == null ? pasienSementaraEntity.getNoKtp() : pasienEntity.getNoKtp());
+                        headerCheckup.setTempatLahir(pasienEntity == null ? pasienSementaraEntity.getTempatLahir() : pasienEntity.getTempatLahir());
+                        headerCheckup.setTglLahir(pasienEntity == null ? pasienSementaraEntity.getTglLahir() : new Date(pasienEntity.getTglLahir().getTime()));
+                        headerCheckup.setDesaId(pasienEntity == null ? new BigInteger(pasienSementaraEntity.getDesaId().toString()) : pasienEntity.getDesaId());
+                        headerCheckup.setJalan(pasienEntity == null ? pasienSementaraEntity.getJalan() : pasienEntity.getJalan());
+                        headerCheckup.setSuku(pasienEntity == null ? pasienSementaraEntity.getSuku() : pasienEntity.getSuku());
+                        headerCheckup.setAgama(pasienEntity == null ? pasienSementaraEntity.getAgama() : pasienEntity.getAgama());
+                        headerCheckup.setProfesi(pasienEntity == null ? pasienSementaraEntity.getProfesi() : pasienEntity.getProfesi());
+                        headerCheckup.setNoTelp(pasienEntity == null ? pasienSementaraEntity.getNoTelp() : pasienEntity.getNoTelp());
                         headerCheckup.setIdJenisPeriksaPasien(idJenisPeriksaPasien);
                         headerCheckup.setFlag("Y");
                         headerCheckup.setAction("C");
@@ -784,10 +796,10 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                         headerCheckup.setCreatedWho(userLogin);
                         headerCheckup.setLastUpdate(time);
                         headerCheckup.setLastUpdateWho(userLogin);
-                        headerCheckup.setJenisKunjungan("Lama");
+                        headerCheckup.setJenisKunjungan(pasienEntity != null ? "Lama" : "Baru");
                         headerCheckup.setIdPelayanan(antrianTelemedicEntity.getIdPelayanan());
                         headerCheckup.setStatusPeriksa("3");
-                        headerCheckup.setStTglLahir(pasienEntity.getTglLahir().toString());
+                        headerCheckup.setStTglLahir(pasienEntity == null ? pasienSementaraEntity.getTglLahir().toString() : pasienEntity.getTglLahir().toString());
                         headerCheckup.setMetodePembayaran("non_tunai");
                         headerCheckup.setIdAntrianOnline(antrianTelemedicEntity.getId());
                         headerCheckup.setIdTransaksiOnline(idTransaksi);
@@ -795,6 +807,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                         headerCheckup.setBranchId(branchId);
                         headerCheckup.setIdPasien(antrianTelemedicEntity.getIdPasien());
                         headerCheckup.setTglKeluar(time);
+                        headerCheckup.setIsPasienSementara(pasienEntity == null ? "Y" : "N");
 
                         if ("asuransi".equalsIgnoreCase(antrianTelemedicEntity.getIdJenisPeriksaPasien())){
                             headerCheckup.setIdAsuransi(antrianTelemedicEntity.getIdAsuransi());
@@ -815,6 +828,13 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                         tindakans.add(tindakan);
 
                         headerCheckup.setTindakanList(tindakans);
+                    }
+
+                    if (headerCheckup == null || headerCheckup.getIdJenisPeriksaPasien() == null){
+                        logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. tidak ditemukan jenis transaksi / data transaksi.");
+                        response.setStatus("error");
+                        response.setMessage("[VerifikatorPembayaranAction.approveTransaksi] ERROR. tidak ditemukan jenis transaksi / data transaksi.");
+                        return response;
                     }
 
                     try {
@@ -1390,8 +1410,14 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         String withResep = "N";
 
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
-        if (detailCheckupEntity != null){
-            idJenisPeriksaPasien = detailCheckupEntity.getIdJenisPeriksaPasien();
+        if (detailCheckupEntity != null && detailCheckupEntity.getIdJenisPeriksaPasien() != null){
+            idJenisPeriksaPasien = detailCheckupEntity.getIdJenisPeriksaPasien().toLowerCase();
+        } else {
+
+            logger.error("[VerifikatorPembayaranAction.closingJurnalNonTunaiTelemedic] Error tidak ditemukan jenis transaksi");
+            response.setStatus("error");
+            response.setMsg("[VerifikatorPembayaranAction.closingJurnalNonTunaiTelemedic]Error tidak ditemukan jenis transaksi");
+            return response;
         }
 
         ItSimrsHeaderChekupEntity checkupEntity = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup());

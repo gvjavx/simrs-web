@@ -141,7 +141,7 @@
                         }
 
                         if (tipe == "bpjs" || tipe == "bpjs_rekanan") {
-                            if (diagnosaBpjs != '') {
+                            // if (diagnosaBpjs != '') {
                                 if (statusBpjs != '') {
                                     if (statusBpjs == "aktif") {
                                         if(tipe == "bpjs_rekanan"){
@@ -197,16 +197,16 @@
                                 } else {
                                     $("html, body").animate({scrollTop: 0}, 600);
                                     $('#warning_pasien').show().fadeOut(10000);
-                                    $('#msg_pasien').text("Silahkan klik tombol check untuk melakukan validasi No BPJS dan No Rujukan...!");
+                                    $('#msg_pasien').text("Silahkan klik tombol check untuk melakukan validasi No BPJS...!");
                                 }
-                            } else {
-                                $("html, body").animate({scrollTop: 0}, 600);
-                                $('#warning_pasien').show().fadeOut(10000);
-                                $('#msg_pasien').text("Silahkan cek kembali data diagnosa awal dan data rujukan...!");
-                                if (diagnosaBpjs == '') {
-                                    $('#diagnosa_awal').css('border', 'solid 1px red');
-                                }
-                            }
+                            // } else {
+                            //     $("html, body").animate({scrollTop: 0}, 600);
+                            //     $('#warning_pasien').show().fadeOut(10000);
+                            //     $('#msg_pasien').text("Silahkan cek kembali data diagnosa awal dan data rujukan...!");
+                            //     if (diagnosaBpjs == '') {
+                            //         $('#diagnosa_awal').css('border', 'solid 1px red');
+                            //     }
+                            // }
                         }
 
                         if (tipe == "asuransi") {
@@ -1538,7 +1538,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="row">
-                                                <label class="col-md-5">Apakah Ada Uang Muka ?</label>
+                                                <label class="col-md-5">Apakah Ada Deposit ?</label>
                                                 <div class="col-md-7">
                                                     <div class="form-check">
                                                         <input onclick="isUangMuka(this.id)" type="checkbox" id="is_uang_muka" value="yes">
@@ -1592,14 +1592,14 @@
                             <div id="form-uang-muka" style="display: none">
                                 <div class="box-header with-border"></div>
                                 <div class="box-header with-border">
-                                    <h3 class="box-title"><i class="fa fa-money"></i> Uang Muka</h3>
+                                    <h3 class="box-title"><i class="fa fa-money"></i> Deposit</h3>
                                 </div>
                                 <div class="box-body">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="row">
                                                 <div class="form-group">
-                                                    <label class="col-md-4" style="margin-top: 10px">Uang Muka</label>
+                                                    <label class="col-md-4" style="margin-top: 10px">Deposit</label>
                                                     <div class="col-md-8">
                                                         <div class="input-group" style="margin-top: 7px">
                                                             <div class="input-group-addon">
@@ -3364,12 +3364,12 @@
                 }
                 $('#form_pg').hide();
                 $('#form-no-bpjs').show();
-                $('#form-rujukan').show();
+                $('#form-rujukan').hide();
                 $('#form-is-uang-muka').hide();
                 $('#form-paket-perusahaan').hide();
                 $('#form-paket').hide();
                 $('#form-asuransi').hide();
-                $('#form_diagnosa_bpjs').show();
+                $('#form_diagnosa_bpjs').hide();
                 $('#diagnosa_awal, #diagnosa_ket').val(null);
             } else if (jenis == "rekanan") {
                 listSelectRekanan("N", '<s:property value="headerCheckup.idAsuransi"/>', '<s:property value="headerCheckup.isRekananWithBpjs"/>', '<s:property value="headerCheckup.tipeRekanan"/>');
