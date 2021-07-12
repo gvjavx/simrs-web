@@ -676,7 +676,8 @@ public class RawatInapController implements ModelDriven<Object> {
     public Object getModel() {
         switch (action){
             case "getSearchRawatInap":
-                return listOfRawatInap;
+                response.put("data",listOfRawatInap);
+                return response;
             case "getTindakanRawat":
                 return listOfTindakanRawat;
             case "getDiagnosaRawat":
@@ -752,6 +753,8 @@ public class RawatInapController implements ModelDriven<Object> {
                 result = rawatInapBoProxy.getSearchRawatInap(rawatInap);
             } catch (GeneralBOException e){
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
+                //SYAMS 12JUL21 => tambah actionError
+                response.put("actionError",e.toString());
             }
 
             if (result.size() > 0){
