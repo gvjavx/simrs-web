@@ -703,7 +703,8 @@ public class RawatInapController implements ModelDriven<Object> {
             case "getListGraf":
                 return listOfMonVitalSign;
             case "getPlanKegiatanRawat":
-                return  listOfPlanKegiatanRawat;
+                response.put("data",listOfPlanKegiatanRawat);
+                return  response;
             case "deleteMon":
                 return response;
             default: return model;
@@ -1041,6 +1042,7 @@ public class RawatInapController implements ModelDriven<Object> {
                 result = planKegiatanRawatBoProxy.getSearchByCritria(planKegiatanRawat);
             } catch (GeneralBOException e){
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
+                response.put("acctionError",e.toString());
             }
 
             if (result.size() > 0) {
