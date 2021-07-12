@@ -859,12 +859,16 @@ public class TelemedicBoImpl implements TelemedicBo {
     /**
      * 2021-06-28, Sigit
      * Pindahkan data dari pasien sementara ke master pasien (No. RM)
+     * 2021-06-30, Update by fahmi
+     * Fitur untuk kirim email ke pasien, untuk mengkirimkan user id yang baru
      * @param idPasienSementara
      * @param branchId
      * @param createWho
      * @return
      */
-    private String createNoRmAndChangeToMasterPasien(String idPasienSementara, String branchId, String createWho){
+
+    @Override
+    public String createNoRmAndChangeToMasterPasien(String idPasienSementara, String branchId, String createWho){
         logger.info("[VerifikatorPembayaranBoImpl.createNoRmAndChangeToMasterPasien] Start >>>");
 
         ImSimrsPasienSementaraEntity pasienSementaraEntity = getPasienSementaraById(idPasienSementara);
@@ -944,7 +948,7 @@ public class TelemedicBoImpl implements TelemedicBo {
                     "=========================================\n" +
                     "<br> \n" +
                     "<br>\n");
-            CommonUtil.sendEmail(email);
+//            CommonUtil.sendEmail(email);
 
         }
 

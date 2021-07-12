@@ -19,6 +19,7 @@
           p:billingSystemBoProxy-ref="billingSystemBoProxy"
           p:permintaanResepBoProxy-ref="permintaanResepBoProxy"
           p:asuransiBoProxy-ref="asuransiBoProxy"
+          p:telemedicBoProxy-ref="telemedicBoProxy"
 
     />
 

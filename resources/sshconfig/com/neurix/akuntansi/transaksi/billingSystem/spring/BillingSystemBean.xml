@@ -37,6 +37,7 @@
           p:paymentGatewayInvoiceDao-ref="paymentGatewayInvoiceDao"
           p:verifikatorPembayaranDao-ref="verifikatorPembayaranDao"
           p:telemedicDao-ref="telemedicDao"
+          p:headerPemeriksaanDao-ref="headerPemeriksaanDao"
     />
 
     <bean id="billingSystemBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

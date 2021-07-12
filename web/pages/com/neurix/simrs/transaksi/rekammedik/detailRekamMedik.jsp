@@ -847,9 +847,8 @@
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <span style="font-weight: bold; color: #0F9E5E" class="text-center" id="id_loading"></span>
+                            <div style="font-weight: bold; color: #0F9E5E" class="text-center"><span id="id_loading"></span></div>
                             <div class="box box-solid">
-                                <!-- /.box-header -->
                                 <div class="box-body">
                                     <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                                         <ol class="carousel-indicators" id="button_ol">

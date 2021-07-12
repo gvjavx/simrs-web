@@ -1331,7 +1331,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
         BigDecimal selisih  = hargaTerakhir.multiply(margin.divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP, 2));
         hargaJual           = hargaTerakhir.add(selisih);
-        hargaJual           = hargaJual.setScale(0, BigDecimal.ROUND_HALF_UP);
+        hargaJual           = hargaJual.setScale(BigDecimal.ROUND_UP);
 
         logger.info("[PermintaanVendorBoImpl.hitungHargaJualDenganMargin] END <<<");
         return hargaJual;

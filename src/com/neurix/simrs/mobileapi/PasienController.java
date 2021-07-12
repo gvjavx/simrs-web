@@ -592,10 +592,8 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
             // jika list result lebih dari 0, maka sudah dipastikan ada email yang sudah terdaftar
             if (null!=listResult && listResult.size() > 0)
             {
-                listOfPasien = new ArrayList<>();
-                Pasien bn = new Pasien();
-                bn.setErrorMsg("Error: Email sudah terdaftar, mohon gunakan email lain, atau login dengan email tersebut.");
-                listOfPasien.add(bn);
+                model = new Pasien();
+                model.setErrorMsg("Error: Email sudah terdaftar, mohon gunakan email lain, atau login dengan email tersebut.");
                 logger.error("[PasienController.create] Error karena email sudah terdaftar <<<");
                 return new DefaultHttpHeaders("success")
                         .disableCaching();
@@ -616,10 +614,9 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
                 // jika list result lebih dari 0, maka sudah dipastikan ada email yang sudah terdaftar
                 if (null!=listPSBean && listPSBean.size() > 0)
                 {
-                    listOfPasien = new ArrayList<>();
-                    Pasien bn = new Pasien();
-                    bn.setErrorMsg("Error: Email sudah terdaftar, mohon gunakan email lain, atau login dengan email tersebut.");
-                    listOfPasien.add(bn);
+                    model = new Pasien();
+                    model.setErrorMsg("Error: Email sudah terdaftar, mohon gunakan email lain, atau login dengan email tersebut.");
+
                     logger.error("[PasienController.create] Error karena email sudah terdaftar <<<");
                     return new DefaultHttpHeaders("success")
                             .disableCaching();
@@ -651,7 +648,23 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
                     bean.setUrlKtp(urlKtp);
                 }catch (IOException e){
                     e.printStackTrace();
+                    // perlu update
+                    model = new Pasien();
+                    model.setErrorMsg("Error: Email Mohon untuk upload foto KTP.");
+
+                    logger.error("[PasienController.create] Foto tidak ada <<<");
+                    return new DefaultHttpHeaders("success")
+                            .disableCaching();
                 }
+            }
+            else
+            {
+                model = new Pasien();
+                model.setErrorMsg("Error: Email Mohon untuk upload foto KTP.");
+
+                logger.error("[PasienController.create] Foto tidak ada <<<");
+                return new DefaultHttpHeaders("success")
+                        .disableCaching();
             }
 
             bean.setFlag("Y");

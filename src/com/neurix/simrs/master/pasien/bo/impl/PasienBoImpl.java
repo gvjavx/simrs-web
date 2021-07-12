@@ -74,18 +74,6 @@ public class PasienBoImpl implements PasienBo {
             throw new GeneralBOException("[PasienBoImpl.getByCriteria] Error when search pasien by criteria " + e);
         }
 
-
-//        List<Pasien> pasiens = new ArrayList<>();
-//        if (bean != null) {
-//
-//            List<ImSimrsPasienEntity> imSimrsPasienEntities = getEntityByCriteria(bean);
-//
-//            if (!imSimrsPasienEntities.isEmpty()) {
-//                pasiens = setTemplatePasien(imSimrsPasienEntities);
-//            }
-//
-//        }
-
         logger.info("[PasienBoImpl.getByCriteria] End <<<<<<<");
         return pasienList;
     }
@@ -1074,6 +1062,7 @@ public class PasienBoImpl implements PasienBo {
                 //cek finger data
                 pasien.setDisabledFingerData(cekFingerData(pasien.getIdPasien()));
 
+                //set kontrol ulang
                 HeaderDetailCheckup detailCheckup = pasienDao.getLastCheckup(data.getIdPasien());
                 if (detailCheckup.getIdDetailCheckup() != null) {
                     if (detailCheckup.getTglCekup() != null) {
@@ -1163,7 +1152,7 @@ public class PasienBoImpl implements PasienBo {
                 "=========================================\n" +
                 "<br> \n" +
                 "<br>\n");
-        CommonUtil.sendEmail(email);
+//        CommonUtil.sendEmail(email);
 
         return bean;
     }
@@ -1253,6 +1242,11 @@ public class PasienBoImpl implements PasienBo {
         }
     }
 
+    @Override
+    public ImSimrsPasienSementaraEntity getPasienSementaraEntityById(String id) throws GeneralBOException {
+        logger.info("[PasienBoImpl.getPasienSementaraEntityById] >>>");
+        return pasienSementaraDao.getById("id", id);
+    }
 
     public void setPasienDao(PasienDao pasienDao) {
         this.pasienDao = pasienDao;

@@ -63,6 +63,9 @@ public class TindakanRawatDao extends GenericDao<ItSimrsTindakanRawatEntity, Str
             if (mapCriteria.get("approve_flag")!=null) {
                 criteria.add(Restrictions.eq("approveFlag", (String) mapCriteria.get("approve_flag")));
             }
+            if (mapCriteria.get("is_pelayanan")!=null) {
+                criteria.add(Restrictions.eq("isPelayanan", (String) mapCriteria.get("is_pelayanan")));
+            }
 
         }
 
@@ -70,7 +73,6 @@ public class TindakanRawatDao extends GenericDao<ItSimrsTindakanRawatEntity, Str
         criteria.addOrder(Order.desc("lastUpdate"));
 
         List<ItSimrsTindakanRawatEntity> results = criteria.list();
-
         return results;
     }
 

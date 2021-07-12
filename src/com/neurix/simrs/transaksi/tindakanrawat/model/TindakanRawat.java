@@ -37,6 +37,15 @@ public class TindakanRawat extends BaseModel {
     private String namaPelayanan;
     private String flagKonsulGizi;
     private String kategoriRuangan;
+    private String isPelayanan;
+
+    public String getIsPelayanan() {
+        return isPelayanan;
+    }
+
+    public void setIsPelayanan(String isPelayanan) {
+        this.isPelayanan = isPelayanan;
+    }
 
     public String getKategoriRuangan() {
         return kategoriRuangan;

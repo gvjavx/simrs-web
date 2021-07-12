@@ -53,6 +53,9 @@
             <basic name="sip">
                 <column name="sip"/>
             </basic>
+            <basic name="noCheckup">
+                <column name="no_checkup"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

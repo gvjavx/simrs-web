@@ -1269,7 +1269,8 @@ function saveTindakan(id) {
                     'qty': qty[i].value,
                     'jenis_pasien': idJenisPeriksa,
                     'id_pelayanan': idPelayanan[i].value,
-                    'id_ruangan': ''
+                    'id_ruangan': '',
+                    'is_pelayanan': 'Y'
                 });
             });
             $('#save_tindakan').hide();
@@ -1326,7 +1327,7 @@ function listTindakan() {
     var table2 = "";
     var data = [];
     var trfTtl = 0;
-    TindakanRawatAction.listTindakanRawat(idDetailCheckup, function (response) {
+    TindakanRawatAction.listTindakanRawat(idDetailCheckup, null, function (response) {
         data = response;
         if (data.length > 0) {
             $.each(data, function (i, item) {
@@ -1431,7 +1432,11 @@ function saveDiagnosa(id) {
                             hitungStatusBiaya();
                             $('#modal-diagnosa').modal('hide');
                             $('#info_dialog').dialog('open');
-                            $('#close_pos').val(3);
+                            if(response.msg = "reload"){
+                                $('#close_pos').val(12);
+                            }else{
+                                $('#close_pos').val(3);
+                            }
                         } else {
                             $('#warning_diagnosa').show().fadeOut(5000);
                             $('#msg_diagnosa').text(response.msg);

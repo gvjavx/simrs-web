@@ -830,6 +830,13 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                         headerCheckup.setTindakanList(tindakans);
                     }
 
+                    if (headerCheckup == null || headerCheckup.getIdJenisPeriksaPasien() == null){
+                        logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. tidak ditemukan jenis transaksi / data transaksi.");
+                        response.setStatus("error");
+                        response.setMessage("[VerifikatorPembayaranAction.approveTransaksi] ERROR. tidak ditemukan jenis transaksi / data transaksi.");
+                        return response;
+                    }
+
                     try {
                         idDetailCheckup = verifikatorPembayaranBo.approveTransaksi(headerCheckup);
                     } catch (GeneralBOException e){
@@ -1403,8 +1410,14 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         String withResep = "N";
 
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
-        if (detailCheckupEntity != null){
-            idJenisPeriksaPasien = detailCheckupEntity.getIdJenisPeriksaPasien();
+        if (detailCheckupEntity != null && detailCheckupEntity.getIdJenisPeriksaPasien() != null){
+            idJenisPeriksaPasien = detailCheckupEntity.getIdJenisPeriksaPasien().toLowerCase();
+        } else {
+
+            logger.error("[VerifikatorPembayaranAction.closingJurnalNonTunaiTelemedic] Error tidak ditemukan jenis transaksi");
+            response.setStatus("error");
+            response.setMsg("[VerifikatorPembayaranAction.closingJurnalNonTunaiTelemedic]Error tidak ditemukan jenis transaksi");
+            return response;
         }
 
         ItSimrsHeaderChekupEntity checkupEntity = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup());

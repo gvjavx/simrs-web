@@ -72,6 +72,7 @@
             var idPemeriksaan = $('#id_lab').val();
             var statusPerkawinan = $('#status_perkawinan').val();
             var pendidikan = $('#pendidikan').val();
+            var noCheckupOnline = $('#id_checkup_online').val();
 
             if(isDaftarPJ == "Y"){
                 dokter = "N";
@@ -103,8 +104,9 @@
                 && tglLahir != '' && agama != '' && poli != '' && dokter != '' && penjamin != ''
                 && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && tipe != '' && jalan != '' && statusPerkawinan != '' && pendidikan != '') {
 
+                //alert(noCheckupOnline);
                 PasienAction.getDataPasien(idPasien, function (res) {
-                    if(res.idPasien != '' && res.idPasien != null){
+                    if(res.idPasien != '' && res.idPasien != null || noCheckupOnline != null){
                         if (tipe == "umum") {
                             if(cekEksekutif == 'Y'){
                                 $('#confirm_dialog').dialog('open');

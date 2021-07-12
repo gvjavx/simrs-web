@@ -54,6 +54,29 @@ public class HeaderPemeriksaanDao extends GenericDao<ItSimrsHeaderPemeriksaanEnt
         return results;
     }
 
+    public List<String> getListIdHeaderPemeriksaanByIdDetailCheckup(String idDetailCheckup){
+
+        String SQL = "SELECT \n" +
+                "id_header_pemeriksaan \n" +
+                "FROM it_simrs_header_pemeriksaan \n" +
+                "WHERE id_detail_checkup = '"+idDetailCheckup+"'\n" +
+                "AND flag = 'Y'";
+
+        List<Object> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+
+            List<String> listIdHeader = new ArrayList<>();
+
+            for (Object obj : list){
+                listIdHeader.add(obj.toString());
+            }
+
+            return listIdHeader;
+        }
+        return null;
+    }
+
     public String getNextId() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_header_pemeriksaan')");
         Iterator<BigInteger> iter = query.list().iterator();

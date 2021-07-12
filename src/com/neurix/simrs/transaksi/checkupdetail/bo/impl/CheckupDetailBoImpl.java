@@ -662,6 +662,42 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
+    public List<HeaderDetailCheckup> getListKontrolUlang(HeaderDetailCheckup bean) throws GeneralBOException {
+        List<HeaderDetailCheckup> headerDetailCheckupList = new ArrayList<>();
+        try {
+            headerDetailCheckupList = kontrolUlangDao.getKontrolUlang(bean);
+        }catch (HibernateException e){
+            logger.error("found Error " + e.getMessage());
+        }
+        return headerDetailCheckupList;
+    }
+
+    @Override
+    public void updateSEP(HeaderDetailCheckup bean) throws GeneralBOException {
+        if (bean != null) {
+            ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
+            try {
+                entity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
+            } catch (HibernateException e) {
+                logger.error(e.getMessage());
+            }
+            if (entity != null) {
+                entity.setNoSep(bean.getNoSep());
+                entity.setTarifBpjs(bean.getTarifBpjs());
+                entity.setKodeCbg(bean.getKodeCbg());
+                entity.setAction("U");
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setLastUpdate(bean.getLastUpdate());
+                try {
+                    checkupDetailDao.updateAndSave(entity);
+                } catch (HibernateException e) {
+                    logger.error(e.getMessage());
+                }
+            }
+        }
+    }
+
+    @Override
     public HeaderDetailCheckup getTotalBiayaTindakanBpjs(String idDetailCheckup) throws GeneralBOException {
         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
         try {
@@ -897,7 +933,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                         logger.error("Error"+e.getMessage());
                     }
                     if(entityList.size() > 0){
-                        for (ItSimrsKontrolUlangEntity kontrolUlangEntity: bean.getKontrolUlangEntityList()){
+                        for (ItSimrsKontrolUlangEntity kontrolUlangEntity: entityList){
                             try {
                                 kontrolUlangDao.deleteAndSave(kontrolUlangEntity);
                             }catch (HibernateException e){
@@ -1525,6 +1561,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         }
         if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
             hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        }
+        if (bean.getIsPelayanan() != null && !"".equalsIgnoreCase(bean.getIsPelayanan())) {
+            hsCriteria.put("is_pelayanan", bean.getIsPelayanan());
         }
 
         hsCriteria.put("flag", "Y");
