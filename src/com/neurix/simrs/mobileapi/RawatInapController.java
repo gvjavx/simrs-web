@@ -703,7 +703,9 @@ public class RawatInapController implements ModelDriven<Object> {
             case "getMonVitalSign":
                 return listOfMonVitalSign;
             case "getListPemberianObat":
-                return listOfMonPemberianObat;
+                //SYAMS 13JUL21 => ganti return response
+                response.put("data",listOfMonPemberianObat);
+                return response;
             case "getListGraf":
                 return listOfMonVitalSign;
             case "getPlanKegiatanRawat":
@@ -1234,6 +1236,7 @@ public class RawatInapController implements ModelDriven<Object> {
             try {
                 result = rawatInapBoProxy.getListPemberianObat(monPemberianObat);
             } catch (GeneralBOException e){
+                response.put("actionError",e.toString());
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
 
