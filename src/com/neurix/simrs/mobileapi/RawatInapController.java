@@ -716,6 +716,12 @@ public class RawatInapController implements ModelDriven<Object> {
                 return  response;
             case "deleteMon":
                 return response;
+                //SYAMS 13JUL21 => tambah response
+            case "updateMonPemberianObat":
+                return response;
+            //SYAMS 13JUL21 => tambah response
+            case "saveMonPemberianObat":
+                return response;
             default: return model;
         }
     }
@@ -1363,6 +1369,7 @@ public class RawatInapController implements ModelDriven<Object> {
                 date = df.parse(addMonPemberianObat.getCreatedDate());
             } catch (ParseException e) {
                 e.printStackTrace();
+                response.put("actionError",e.toString());
             }
             long time = date.getTime();
 
@@ -1375,9 +1382,11 @@ public class RawatInapController implements ModelDriven<Object> {
             try {
                 crudResponse = rawatInapBoProxy.saveMonPemberianObat(itSimrsMonPemberianObatEntity);
                 if (crudResponse.getStatus().equalsIgnoreCase("success")){
-                    model.setMessage("Success");
-                } else model.setMessage(crudResponse.getMsg());
+                   response.put("actionSuccess","Sukses");
+                } else
+                    response.put("actionSuccess",crudResponse.getMsg());
             } catch (GeneralBOException e) {
+                response.put("actionSuccess",crudResponse.getMsg());
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
         }
@@ -1404,8 +1413,9 @@ public class RawatInapController implements ModelDriven<Object> {
 
             try {
                 rawatInapBoProxy.saveUpdateMonPemberianObat(itSimrsMonPemberianObatEntity);
-                model.setMessage("Success");
+                response.put("actionSuccess","Sukses");
             } catch (GeneralBOException e) {
+                response.put("actionError", e.toString());
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
         }
