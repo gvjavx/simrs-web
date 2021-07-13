@@ -81,6 +81,8 @@ public class RawatInapController implements ModelDriven<Object> {
     private Collection<MonVitalSignMobile> listOfMonVitalSign = new ArrayList<>();
     private Collection<MonPemberianObatMobile> listOfMonPemberianObat = new ArrayList<>();
     private Collection<PlanKegiatanRawatMobile> listOfPlanKegiatanRawat = new ArrayList<>();
+    //SYAMS 13JUL21
+    private MonCairanMobile monCairanMobile;
 
     private RawatInapMobile model = new RawatInapMobile();
     private CrudResponse crudResponse;
@@ -691,7 +693,9 @@ public class RawatInapController implements ModelDriven<Object> {
             case "getOrderGizi":
                 return listOfOrderGizi;
             case "getMonCairan":
-                return listOfMonCairanMobile;
+                //SYAMS 13JUL21 => return response
+                response.put("data",listOfMonCairanMobile);
+                return response;
             case "getListObatParenteral":
                 return listOfObatParenteral;
             case "getListObatNonParenteral":
@@ -1268,6 +1272,7 @@ public class RawatInapController implements ModelDriven<Object> {
             try {
                 result = rawatInapBoProxy.getListMonCairan(monCairan);
             } catch (GeneralBOException e){
+                response.put("actionError",e.toString());
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
 
