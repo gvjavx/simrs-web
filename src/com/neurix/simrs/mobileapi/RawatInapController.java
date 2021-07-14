@@ -703,7 +703,8 @@ public class RawatInapController implements ModelDriven<Object> {
                 response.put("data",listOfDokterTeam);
                 return response;
             case "getOrderGizi":
-                return listOfOrderGizi;
+                response.put("data",listOfOrderGizi);
+                return response;
             case "getMonCairan":
                 //SYAMS 13JUL21 => return response
                 response.put("data",listOfMonCairanMobile);
@@ -1122,6 +1123,7 @@ public class RawatInapController implements ModelDriven<Object> {
                 result = orderGiziBoProxy.getByCriteria(orderGizi);
             } catch (GeneralBOException e) {
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
+                response.put("actionError","Gagal mengambil data");
             }
 
             if (result.size() > 0){
