@@ -693,11 +693,13 @@ public class RawatInapController implements ModelDriven<Object> {
             case "getDiagnosaRawat":
                 return listOfDiagnosaRawat;
             case "getKategoriTindakan":
-                return listOfKategoriTindakan;
+                //SYAMS 14JUL21 => ganti response
+                response.put("data",listOfKategoriTindakan);
+                return response;
             case "getTindakan":
                 return listOfTindakan;
             case "getDokterTeam":
-                //SYAMS 14JUL21 =>ganti response
+                //SYAMS 14JUL21 => ganti response
                 response.put("data",listOfDokterTeam);
                 return response;
             case "getOrderGizi":
@@ -987,6 +989,7 @@ public class RawatInapController implements ModelDriven<Object> {
             try {
                 result = kategoriTindakanBoProxy.getListKategoriTindakan(idPelayanan, kategori, branchId);
             } catch (GeneralBOException e){
+                response.put("actionError",e.toString());
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
 
