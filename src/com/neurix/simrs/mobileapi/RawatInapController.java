@@ -150,6 +150,7 @@ public class RawatInapController implements ModelDriven<Object> {
     private File image;
 
     private Map<String, Object> response = new HashMap<>();
+    private String flagApprove;
 
     private String listTindakanRawatInap;
 
@@ -673,6 +674,14 @@ public class RawatInapController implements ModelDriven<Object> {
         this.listOfMonCairanMobile = listOfMonCairanMobile;
     }
 
+    public String getFlagApprove() {
+        return flagApprove;
+    }
+
+    public void setFlagApprove(String flagApprove) {
+        this.flagApprove = flagApprove;
+    }
+
     @Override
     public Object getModel() {
         switch (action){
@@ -688,7 +697,9 @@ public class RawatInapController implements ModelDriven<Object> {
             case "getTindakan":
                 return listOfTindakan;
             case "getDokterTeam":
-                return listOfDokterTeam;
+                //SYAMS 14JUL21 =>ganti response
+                response.put("data",listOfDokterTeam);
+                return response;
             case "getOrderGizi":
                 return listOfOrderGizi;
             case "getMonCairan":
@@ -1029,10 +1040,13 @@ public class RawatInapController implements ModelDriven<Object> {
 
             DokterTeam dokterTeam = new DokterTeam();
             dokterTeam.setIdDetailCheckup(idDetailCheckup);
+            //SYAMS 14JUL21 => tambah flagApprove
+            dokterTeam.setFlagApprove(flagApprove);
 
             try {
                 result = teamDokterBoProxy.getByCriteria(dokterTeam);
             } catch (GeneralBOException e){
+                response.put("actionError",e.toString());
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
 

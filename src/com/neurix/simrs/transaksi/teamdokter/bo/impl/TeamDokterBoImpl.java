@@ -285,6 +285,7 @@ public class TeamDokterBoImpl extends DokterBoImpl implements TeamDokterBo{
         List<ItSimrsDokterTeamEntity> entities = new ArrayList<>();
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        hsCriteria.put("flagApprove",bean.getFlagApprove());
         try {
             entities = dokterTeamDao.getByCriteria(hsCriteria);
         } catch (HibernateException e){
