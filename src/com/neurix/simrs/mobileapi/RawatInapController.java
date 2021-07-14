@@ -722,6 +722,12 @@ public class RawatInapController implements ModelDriven<Object> {
             //SYAMS 13JUL21 => tambah response
             case "saveMonPemberianObat":
                 return response;
+                //SYAMS 14JUL21 => tambah response
+            case "updateMonCairan":
+                return response;
+                //SYAMS 14JUL21 => tambah response
+            case "saveAddMonCairan":
+                return response;
             default: return model;
         }
     }
@@ -1427,6 +1433,7 @@ public class RawatInapController implements ModelDriven<Object> {
                 date = dateFormat.parse(addMonCairan.getCreatedDate());
             } catch (ParseException e) {
                 e.printStackTrace();
+                response.put("actionError",e.toString());
             }
             long time = date.getTime();
 
@@ -1456,9 +1463,10 @@ public class RawatInapController implements ModelDriven<Object> {
             try {
                 crudResponse = rawatInapBoProxy.saveMonCairan(itSimrsMonCairanEntity);
                 if (crudResponse.getStatus().equalsIgnoreCase("Success")){
-                    model.setMessage("Success");
-                } else model.setMessage(crudResponse.getMsg());
+                    response.put("actionSuccess","Sukses");
+                } else response.put("actionSuccess",crudResponse.getMsg());
             } catch (GeneralBOException e){
+                response.put("actionError",e.toString());
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
         }
@@ -1489,8 +1497,9 @@ public class RawatInapController implements ModelDriven<Object> {
 
             try {
                 rawatInapBoProxy.saveUpdateMonCairan(itSimrsMonCairanEntity);
-                model.setMessage("Success");
+                response.put("actionSuccess","Sukses");
             } catch (GeneralBOException e){
+                response.put("actionError",e.toString());
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
         }
