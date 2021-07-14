@@ -741,6 +741,8 @@ public class RawatInapController implements ModelDriven<Object> {
                 //SYAMS 14JUL21 => tambah response
             case "saveAddMonCairan":
                 return response;
+            case "saveEditTindakanRawat":
+                return response;
             default: return model;
         }
     }
@@ -1674,6 +1676,7 @@ public class RawatInapController implements ModelDriven<Object> {
             try {
                 result = tindakanBoProxy.getDataTindakan(bean);
             } catch (GeneralBOException e) {
+                response.put("actionError",e.toString());
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
 
@@ -1702,8 +1705,9 @@ public class RawatInapController implements ModelDriven<Object> {
 
             try {
                 tindakanRawatBoProxy.saveEdit(tindakanRawat);
-                model.setMessage("Success");
+                response.put("actionSuccess", "Sukses");
             } catch (GeneralBOException e){
+                response.put("actionError",e.toString());
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
         }
