@@ -746,6 +746,9 @@ public class RawatInapController implements ModelDriven<Object> {
                 return response;
             case "saveEditTindakanRawat":
                 return response;
+                //SYAMS 15JUL21 => tambah case
+            case "saveAddTindakanRawatList":
+                return response;
             default: return model;
         }
     }
@@ -1661,13 +1664,13 @@ public class RawatInapController implements ModelDriven<Object> {
                     }
                 }
             } catch (Exception e){
-                response.put("actionError",e.toString());
+                response.put("actionError","Gagal menambahkan tindakan");
             }
 
 
             try {
                 tindakanRawatBoProxy.saveAdd(tindakanRawatList);
-                model.setMessage("Success");
+                response.put("actionSuccess","Sukses");
             } catch (GeneralBOException e){
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
