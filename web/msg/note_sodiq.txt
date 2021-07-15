@@ -2929,6 +2929,11 @@ INSERT INTO im_func_roles VALUES
 ------------------------------------- 07 07 2021 ---------------------------------------------------------------
 /=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
 
+- Perbaikan Asesmen Poli Spesialis
+- Perbaikan Asesmen Rehab Medik
+- Perbaikan Asesmen Khusus Psikiatri
+- Penambahan Asesmen Pengkajian Resep
+- Penambahan Persetujuan Tindakan Medis / General Concent
 - Perbaikan Daftar Pasien BPJS IGD Tidak perlu memasukkan diagnosa di awal
 - Create SEP di pemeriksaan IGD untuk pasien BPJS
 
