@@ -701,7 +701,6 @@ public class RawatInapController implements ModelDriven<Object> {
             case "getTindakan":
                 return listOfTindakan;
             case "getDokterTeam":
-                //SYAMS 14JUL21 => ganti response
                 response.put("data",listOfDokterTeam);
                 return response;
             case "getOrderGizi":
@@ -712,11 +711,9 @@ public class RawatInapController implements ModelDriven<Object> {
                 response.put("data",listOfMonCairanMobile);
                 return response;
             case "getListObatParenteral":
-                //SYAMS 13JUL21 => ganti return response
                 response.put("data",listOfObatParenteral);
                 return response;
             case "getListObatNonParenteral":
-                //SYAMS 13JUL21 => ganti return response
                 response.put("data",listOfObatNonParenteral);
                 return  response;
             case "getMonVitalSign":
@@ -735,19 +732,19 @@ public class RawatInapController implements ModelDriven<Object> {
                 //SYAMS 13JUL21 => tambah response
             case "updateMonPemberianObat":
                 return response;
-            //SYAMS 13JUL21 => tambah response
             case "saveMonPemberianObat":
                 return response;
                 //SYAMS 14JUL21 => tambah response
             case "updateMonCairan":
                 return response;
-                //SYAMS 14JUL21 => tambah response
             case "saveAddMonCairan":
                 return response;
             case "saveEditTindakanRawat":
                 return response;
                 //SYAMS 15JUL21 => tambah case
             case "saveAddTindakanRawatList":
+                return response;
+            case "updateDiterimaFlagGizi":
                 return response;
             default: return model;
         }
@@ -1170,9 +1167,10 @@ public class RawatInapController implements ModelDriven<Object> {
             try {
                 checkResponse = orderGiziBoProxy.updateDiterimaFLag(orderGizi);
                 if (checkResponse.getStatus().equalsIgnoreCase("Success")){
-                    model.setMessage("Success");
+                    response.put("actionSuccess","Verifikasi berhasil");
                 }
             } catch (GeneralBOException e){
+                response.put("actionError","Gagal meverifikasi");
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
         }
