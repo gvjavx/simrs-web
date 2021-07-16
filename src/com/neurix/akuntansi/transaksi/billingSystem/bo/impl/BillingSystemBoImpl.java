@@ -4181,12 +4181,12 @@ public class BillingSystemBoImpl implements BillingSystemBo {
             }
 
             // tutup period dan generate saldo bulan lalu transaksi RS, sigit
-            try {
-                tutupPeriodBo.saveUpdateTutupPeriod(tutupPeriod);
-            } catch (GeneralBOException e){
-                logger.error("[TutupPeriodAction.saveTutupPeriod] ERROR when create tutup periode. ", e);
-                throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create tutup periode. "+e);
-            }
+//            try {
+//                tutupPeriodBo.saveUpdateTutupPeriod(tutupPeriod);
+//            } catch (GeneralBOException e){
+//                logger.error("[TutupPeriodAction.saveTutupPeriod] ERROR when create tutup periode. ", e);
+//                throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create tutup periode. "+e);
+//            }
         }
 
 
@@ -4227,61 +4227,61 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         }
 
         // create saldo bulan lalu pada transaksi stok;
-        Map hsCriteria = new HashMap();
-        hsCriteria.put("branch_id", tutupPeriod.getUnit());
-        hsCriteria.put("in_pelayanan_medic", "Y");
-        hsCriteria.put("flag", "Y");
-
-
-        Pelayanan ply = new Pelayanan();
-        ply.setBranchId(tutupPeriod.getUnit());
-        ply.setFlag("Y");
-        List<Pelayanan> pelayananEntities = pelayananDao.getListObjectPelayanan(ply);
-        if (pelayananEntities.size() > 0){
-            for (Pelayanan pelayananEntity : pelayananEntities){
-
-                // pelayanan selain gudang obat;
-                if (!"gudang_obat".equalsIgnoreCase(pelayananEntity.getTipePelayanan())){
-                    List<String> idObats = obatPoliDao.getIdObatGroup(pelayananEntity.getIdPelayanan(), tutupPeriod.getUnit());
-                    if (idObats.size() > 0){
-                        for (String idObat : idObats){
-
-                            // generate saldo bulan lalu (bulan ini) untuk bulan depan
-                            generateAndSaveCurrentSaldoPersediaanToNextMonth(
-                                    tutupPeriod.getUnit(),
-                                    idObat,
-                                    Integer.valueOf(tutupPeriod.getBulan()),
-                                    Integer.valueOf(tutupPeriod.getTahun()),
-                                    pelayananEntity.getIdPelayanan(),
-                                    tutupPeriod.getLastUpdateWho(),
-                                    tutupPeriod.getLastUpdate(),
-                                    ""
-                                    );
-                        }
-                    }
-                } else {
-
-                    // untuk pelayanan gudang obat;
-                    List<String> idObats = obatDao.getListIdObatGroupByBranchId(tutupPeriod.getUnit());
-                    if (idObats.size() > 0){
-                        for (String idObat : idObats){
-
-                            // generate saldo bulan lalu (bulan ini) untuk bulan depan
-                            generateAndSaveCurrentSaldoPersediaanToNextMonth(
-                                    tutupPeriod.getUnit(),
-                                    idObat,
-                                    Integer.valueOf(tutupPeriod.getBulan()),
-                                    Integer.valueOf(tutupPeriod.getTahun()),
-                                    pelayananEntity.getIdPelayanan(),
-                                    tutupPeriod.getLastUpdateWho(),
-                                    tutupPeriod.getLastUpdate(),
-                                    ""
-                            );
-                        }
-                    }
-                }
-            }
-        }
+//        Map hsCriteria = new HashMap();
+//        hsCriteria.put("branch_id", tutupPeriod.getUnit());
+//        hsCriteria.put("in_pelayanan_medic", "Y");
+//        hsCriteria.put("flag", "Y");
+//
+//
+//        Pelayanan ply = new Pelayanan();
+//        ply.setBranchId(tutupPeriod.getUnit());
+//        ply.setFlag("Y");
+//        List<Pelayanan> pelayananEntities = pelayananDao.getListObjectPelayanan(ply);
+//        if (pelayananEntities.size() > 0){
+//            for (Pelayanan pelayananEntity : pelayananEntities){
+//
+//                // pelayanan selain gudang obat;
+//                if (!"gudang_obat".equalsIgnoreCase(pelayananEntity.getTipePelayanan())){
+//                    List<String> idObats = obatPoliDao.getIdObatGroup(pelayananEntity.getIdPelayanan(), tutupPeriod.getUnit());
+//                    if (idObats.size() > 0){
+//                        for (String idObat : idObats){
+//
+//                            // generate saldo bulan lalu (bulan ini) untuk bulan depan
+//                            generateAndSaveCurrentSaldoPersediaanToNextMonth(
+//                                    tutupPeriod.getUnit(),
+//                                    idObat,
+//                                    Integer.valueOf(tutupPeriod.getBulan()),
+//                                    Integer.valueOf(tutupPeriod.getTahun()),
+//                                    pelayananEntity.getIdPelayanan(),
+//                                    tutupPeriod.getLastUpdateWho(),
+//                                    tutupPeriod.getLastUpdate(),
+//                                    ""
+//                                    );
+//                        }
+//                    }
+//                } else {
+//
+//                    // untuk pelayanan gudang obat;
+//                    List<String> idObats = obatDao.getListIdObatGroupByBranchId(tutupPeriod.getUnit());
+//                    if (idObats.size() > 0){
+//                        for (String idObat : idObats){
+//
+//                            // generate saldo bulan lalu (bulan ini) untuk bulan depan
+//                            generateAndSaveCurrentSaldoPersediaanToNextMonth(
+//                                    tutupPeriod.getUnit(),
+//                                    idObat,
+//                                    Integer.valueOf(tutupPeriod.getBulan()),
+//                                    Integer.valueOf(tutupPeriod.getTahun()),
+//                                    pelayananEntity.getIdPelayanan(),
+//                                    tutupPeriod.getLastUpdateWho(),
+//                                    tutupPeriod.getLastUpdate(),
+//                                    ""
+//                            );
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         logger.info("[BillingSystemBoImpl.saveTutupPeriod] END <<<");
     }
