@@ -3910,6 +3910,9 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                 mapPiutang.setMasterId(masterId);
             }
 
+            List<MappingDetail> listOfMapPiutang = new ArrayList<>();
+            listOfMapPiutang.add(mapPiutang);
+
             List<MappingDetail> listOfMapTindakan = new ArrayList<>();
             List<String> listOfKeteranganRiwayat = riwayatTindakanBo.getListKeteranganByIdDetailCheckup(bean.getIdDetailCheckup());
             if (listOfKeteranganRiwayat.size() > 0){
@@ -3939,7 +3942,8 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                     }
                 }
 
-                mapJurnal.put("piutang_transistoris_pasien_rawat_inap", mapPiutang);
+
+                mapJurnal.put("piutang_transistoris_pasien_rawat_inap", listOfMapPiutang);
                 mapJurnal.put("pendapatan_rawat_inap", listOfMapTindakan);
 
                 String catatan = "Transitoris Rawat Inap saat tutup periode "+jenisPasien;

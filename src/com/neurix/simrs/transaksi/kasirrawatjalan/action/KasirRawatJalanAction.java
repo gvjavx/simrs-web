@@ -1333,6 +1333,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     List<MappingDetail> listOfMapTindakanAsuransi = new ArrayList<>();
                     List<MappingDetail> listOfMapTindakanUmumRi = new ArrayList<>();
                     List<MappingDetail> listOfMapTindakanAsuransiRi = new ArrayList<>();
+                    List<MappingDetail> listOfMapTindakanTransirisRi = new ArrayList<>();
 
                     // for rawat inap
                     if ("JRI".equalsIgnoreCase(kode)) {
@@ -1519,7 +1520,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                         MappingDetail mappingDetail = new MappingDetail();
                         mappingDetail.setNilai(allTindakanTransUmum.add(allTindakanTransAsuransi));
                         mappingDetail.setBukti(detailCheckupEntity.getInvoiceTrans());
-                        mapJurnal.put("piutang_transistoris_pasien_rawat_inap", mapTransitoris);
+                        listOfMapTindakanTransirisRi.add(mappingDetail);
                         isTransitoris = true;
                     }
 
@@ -1578,6 +1579,9 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                             mapJurnal.put("pendapatan_rawat_inap_umum", listOfMapTindakanUmumRi);
 
                             if (isTransitoris) {
+
+                                mapJurnal.put("piutang_transistoris_pasien_rawat_inap", listOfMapTindakanTransirisRi);
+
                                 transId = "38";
                                 ketTerangan = "Closing Pasien Rawat Inap Umum Tunai Terhadap Transitoris. ";
                             } else {
