@@ -833,7 +833,7 @@ function listSelectTindakan(idKategori) {
     var option = "<option value=''> - </option>";
     if (idKategori != '') {
         dwr.engine.setAsync(true);
-        CheckupDetailAction.getListComboTindakan(idKategori, idKelasRuangan, flagVaksin, idPoli, {
+        CheckupDetailAction.getListComboTindakan(idKategori, null, flagVaksin, idPoli, null, {
             callback:function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {
@@ -1432,7 +1432,7 @@ function saveDiagnosa(id) {
                             hitungStatusBiaya();
                             $('#modal-diagnosa').modal('hide');
                             $('#info_dialog').dialog('open');
-                            if(response.msg = "reload"){
+                            if(response.msg == "reload"){
                                 $('#close_pos').val(12);
                             }else{
                                 $('#close_pos').val(3);

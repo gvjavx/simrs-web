@@ -323,7 +323,7 @@
                                 </tr>
                                 <tr>
                                     <td><b>Jenis Pasien</b></td>
-                                    <td><span id="det_jenis_pasien"></span></td>
+                                    <td><span class="span-success" id="det_jenis_pasien"></span></td>
                                 </tr>
                             </table>
                         </div>

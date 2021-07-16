@@ -227,6 +227,24 @@ public class HeaderCheckup {
     private String nyeri;
     private String resikoJatuh;
     private String isPasienSementara;
+    private String idKelasBpjs;
+    private String statusNaikKelas;
+
+    public String getStatusNaikKelas() {
+        return statusNaikKelas;
+    }
+
+    public void setStatusNaikKelas(String statusNaikKelas) {
+        this.statusNaikKelas = statusNaikKelas;
+    }
+
+    public String getIdKelasBpjs() {
+        return idKelasBpjs;
+    }
+
+    public void setIdKelasBpjs(String idKelasBpjs) {
+        this.idKelasBpjs = idKelasBpjs;
+    }
 
     public String getIsPasienSementara() {
         return isPasienSementara;

@@ -39,5 +39,8 @@
         <property name="kategori">
             <column name="kategori"/>
         </property>
+        <property name="idKelasBpjs">
+            <column name="id_kelas_bpjs"/>
+        </property>
     </class>
 </hibernate-mapping>

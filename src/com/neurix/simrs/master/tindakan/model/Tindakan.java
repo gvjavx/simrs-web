@@ -48,6 +48,15 @@ public class Tindakan {
     private String namaTindakan;
     private BigDecimal bTarifNormal;
     private BigDecimal bTarifBpjs;
+    private String jenisPasien;
+
+    public String getJenisPasien() {
+        return jenisPasien;
+    }
+
+    public void setJenisPasien(String jenisPasien) {
+        this.jenisPasien = jenisPasien;
+    }
 
     public String getFlagKonsulGizi() {
         return flagKonsulGizi;

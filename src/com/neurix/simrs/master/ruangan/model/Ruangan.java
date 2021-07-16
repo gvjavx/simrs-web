@@ -12,7 +12,6 @@ public class Ruangan extends BaseModel {
     private String idRuangan;
     private String namaRuangan;
     private String noRuangan;
-//    private String statusRuangan;
     private String statusRuanganName;
     private String idKelasRuangan;
     private String keterangan;
@@ -51,6 +50,15 @@ public class Ruangan extends BaseModel {
     private String idPasien;
 
     private String status;
+    private String idKelasBpjs;
+
+    public String getIdKelasBpjs() {
+        return idKelasBpjs;
+    }
+
+    public void setIdKelasBpjs(String idKelasBpjs) {
+        this.idKelasBpjs = idKelasBpjs;
+    }
 
     public String getStatus() {
         return status;

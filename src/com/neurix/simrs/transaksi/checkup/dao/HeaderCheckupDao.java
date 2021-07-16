@@ -951,8 +951,29 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setNadi(hdr.getNadi());
                     checkup.setPernafasan(hdr.getPernafasan());
                     checkup.setSpo2(hdr.getSpo2());
-                    checkup.setIdKelasRuangan(getDataRuangan(checkup.getIdRuangan()).getIdKelasRuangan());
-                    checkup.setKategoriRuangan(getDataRuangan(checkup.getIdRuangan()).getKategori());
+                    Ruangan ruangan = getDataRuangan(checkup.getIdRuangan());
+                    if(ruangan != null){
+                        checkup.setIdKelasRuangan(ruangan.getIdKelasRuangan());
+                        checkup.setKategoriRuangan(ruangan.getKategori());
+                        checkup.setIdKelasBpjs(ruangan.getIdKelasBpjs());
+                        if(checkup.getKelasPasien() != null && !"".equalsIgnoreCase(checkup.getKelasPasien()) &&
+                           checkup.getIdKelasBpjs() != null && !"".equalsIgnoreCase(checkup.getIdKelasBpjs())){
+                            Integer kelasPasien = Integer.valueOf(checkup.getKelasPasien());
+                            Integer idKelasBpjs = Integer.valueOf(checkup.getIdKelasBpjs());
+                            String statusNaik = "";
+                            if(idKelasBpjs < kelasPasien){
+                                statusNaik = "Naik Kelas";
+                            }else if(idKelasBpjs > kelasPasien){
+                                statusNaik = "Turun Kelas";
+                            }else if(kelasPasien == idKelasBpjs){
+                                statusNaik = "Sesuai Hak Kelas";
+                            }else{
+                                statusNaik = "Status Hak Kelas Tidak Ditemukan";
+                            }
+                            checkup.setStatusNaikKelas(statusNaik);
+                        }
+                    }
+
                     checkup.setPenyakitDahulu(getRiwayatPenyakit(checkup.getIdPasien()));
                 }
             }
@@ -968,7 +989,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "a.id_tempat_tidur,\n" +
                     "b.id_ruangan,\n" +
                     "b.id_kelas_ruangan,\n" +
-                    "c.kategori\n" +
+                    "c.kategori,\n" +
+                    "c.id_kelas_bpjs\n"+
                     "FROM mt_simrs_ruangan_tempat_tidur a\n" +
                     "INNER JOIN mt_simrs_ruangan b ON a.id_ruangan = b.id_ruangan\n" +
                     "INNER JOIN im_simrs_kelas_ruangan c ON b.id_kelas_ruangan = c.id_kelas_ruangan\n"+
@@ -985,6 +1007,9 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 }
                 if(obj[3] != null){
                     res.setKategori(obj[3].toString());
+                }
+                if(obj[4] != null){
+                    res.setIdKelasBpjs(obj[4].toString());
                 }
             }
         }

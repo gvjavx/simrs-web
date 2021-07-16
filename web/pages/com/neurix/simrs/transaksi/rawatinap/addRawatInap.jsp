@@ -237,6 +237,7 @@
                                     <s:hidden id="h_nama_ruangan_pasien" name="rawatInap.namaRangan"/>
                                     <s:hidden id="h_tgl_masuk" name="rawatInap.stTglFrom"/>
                                     <s:hidden id="nama_jenis_pasien" name="rawatInap.jenisPeriksaPasien"/>
+                                    <s:hidden id="h_id_kelas_bpjs" name="rawatInap.idKelasBpjs"/>
 
                                     <s:if test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "rekanan"'>
                                         <tr>
@@ -421,6 +422,25 @@
                                             </table>
                                         </td>
                                     </tr>
+                                    <s:if test='rawatInap.idJenisPeriksa == "bpjs"'>
+                                        <tr>
+                                            <td><b>Status Kelas</b></td>
+                                            <td>
+                                                <table>
+                                                    <s:if test='rawatInap.statusNaikKelas == "Sesuai Hak Kelas"'>
+                                                        <span class="span-success">
+                                                            <s:property value="rawatInap.statusNaikKelas"></s:property>
+                                                        </span>
+                                                    </s:if>
+                                                    <s:else>
+                                                         <span class="span-warning">
+                                                            <s:property value="rawatInap.statusNaikKelas"></s:property>
+                                                        </span>
+                                                    </s:else>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -4629,6 +4649,7 @@
     var isBpjsRekanan = "";
     var setNotif = "";
     var idKelasRuangan = $('#h_id_kelas_ruangan').val();
+    var idKelasBpjs = $('#h_id_kelas_bpjs').val();
     var namaRuanganPasien = $('#h_nama_ruangan_pasien').val();
     var tanggalMasuk = $('#h_tgl_masuk').val();
     var namaJenisPasien = $('#nama_jenis_pasien').val();
