@@ -426,7 +426,8 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                 response.put("data",listOfTransaksiObat);
                 return response;
             case "getBatch":
-                return listOfBatchObat;
+                response.put("data",listOfBatchObat);
+                return response;
             case "getBatchSorted":
                 return listOfTransaksiObat;
             case "addBatch":
@@ -436,9 +437,9 @@ public class PurchaseOrderController implements ModelDriven<Object> {
             case "getPabrikObat":
                 response.put("data",listOfPabrikObat);
                 return response;
+                //SYAMS 15JUL21 => ganti return
             case "cekNoProduksi":
-                //action error ada di dalam obat model
-                return obatModel;
+                return response;
             case "saveTransaksi":
                 return response;
             default:
@@ -561,6 +562,7 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                 result = permintaanVendorBoProxy.getByCriteria(bean);
             }
             catch (GeneralBOException e) {
+                response.put("actionError","Gagal mengambil data");
                 logger.error("[PurchaseOrderController.create] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when retieving list purchase order, please info to your admin..." + e.getMessage());
             }
@@ -636,7 +638,7 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                                 listOfTransaksiObat.add(transaksiObatMobile);
                             }
                         } catch (Exception e){
-                            response.put("actionError",e.toString());
+                            response.put("actionError","Gagal mengkonversi data");
                         }
                     } else {
                         response.put("actionError","Result transaksi = 0");
@@ -804,6 +806,7 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                     try{
                         resultBatch = permintaanVendorBoProxy.getListBatchObatByIdApproval(idApprovalObat);
                     } catch (GeneralBOException e){
+                        response.put("actionError","Gagal mengambil list batch");
                         logger.error("[PurchaseOrderController.create] ERROR getBatch. ", e);
                     }
 
@@ -1106,9 +1109,7 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                        obat = permintaanVendorBoProxy.cekNoProduksi(noProduksi);
                     } catch (GeneralBOException e){
                         logger.error("[PermintaanVendorAction.saveApproveBatch] ERROR. ", e);
-                        //SYAMS 15JUN21 => TAMBAH setActionError
-                        obatModel = new ObatMobile();
-                        obatModel.setActionError(e.toString());
+                        response.put("actionError","Gagal check no.produksi");
                     }
 
                     if (obat != null) {
@@ -1122,6 +1123,7 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                         obatModel.setIdPabrik(obat.getIdPabrik());
                         obatModel.setStatus(obat.getStatus());
                         obatModel.setMsg(obat.getMsg());
+                        response.put("data",obatModel);
                     }
                 }
 

@@ -150,6 +150,7 @@ public class RawatInapController implements ModelDriven<Object> {
     private File image;
 
     private Map<String, Object> response = new HashMap<>();
+    private String flagApprove;
 
     private String listTindakanRawatInap;
 
@@ -673,6 +674,14 @@ public class RawatInapController implements ModelDriven<Object> {
         this.listOfMonCairanMobile = listOfMonCairanMobile;
     }
 
+    public String getFlagApprove() {
+        return flagApprove;
+    }
+
+    public void setFlagApprove(String flagApprove) {
+        this.flagApprove = flagApprove;
+    }
+
     @Override
     public Object getModel() {
         switch (action){
@@ -680,27 +689,31 @@ public class RawatInapController implements ModelDriven<Object> {
                 response.put("data",listOfRawatInap);
                 return response;
             case "getTindakanRawat":
-                return listOfTindakanRawat;
+                //SYAMS 15JUL21 => ganti response
+                response.put("data",listOfTindakanRawat);
+                return response;
             case "getDiagnosaRawat":
                 return listOfDiagnosaRawat;
             case "getKategoriTindakan":
-                return listOfKategoriTindakan;
+                //SYAMS 14JUL21 => ganti response
+                response.put("data",listOfKategoriTindakan);
+                return response;
             case "getTindakan":
                 return listOfTindakan;
             case "getDokterTeam":
-                return listOfDokterTeam;
+                response.put("data",listOfDokterTeam);
+                return response;
             case "getOrderGizi":
-                return listOfOrderGizi;
+                response.put("data",listOfOrderGizi);
+                return response;
             case "getMonCairan":
                 //SYAMS 13JUL21 => return response
                 response.put("data",listOfMonCairanMobile);
                 return response;
             case "getListObatParenteral":
-                //SYAMS 13JUL21 => ganti return response
                 response.put("data",listOfObatParenteral);
                 return response;
             case "getListObatNonParenteral":
-                //SYAMS 13JUL21 => ganti return response
                 response.put("data",listOfObatNonParenteral);
                 return  response;
             case "getMonVitalSign":
@@ -719,8 +732,19 @@ public class RawatInapController implements ModelDriven<Object> {
                 //SYAMS 13JUL21 => tambah response
             case "updateMonPemberianObat":
                 return response;
-            //SYAMS 13JUL21 => tambah response
             case "saveMonPemberianObat":
+                return response;
+                //SYAMS 14JUL21 => tambah response
+            case "updateMonCairan":
+                return response;
+            case "saveAddMonCairan":
+                return response;
+            case "saveEditTindakanRawat":
+                return response;
+                //SYAMS 15JUL21 => tambah case
+            case "saveAddTindakanRawatList":
+                return response;
+            case "updateDiterimaFlagGizi":
                 return response;
             default: return model;
         }
@@ -885,6 +909,7 @@ public class RawatInapController implements ModelDriven<Object> {
             try {
                result = tindakanRawatBoProxy.getByCriteria(tindakanRawat);
             } catch (GeneralBOException e){
+                response.put("actionError","Gagal mengambil data");
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
 
@@ -970,6 +995,7 @@ public class RawatInapController implements ModelDriven<Object> {
             try {
                 result = kategoriTindakanBoProxy.getListKategoriTindakan(idPelayanan, kategori, branchId);
             } catch (GeneralBOException e){
+                response.put("actionError",e.toString());
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
 
@@ -1023,10 +1049,13 @@ public class RawatInapController implements ModelDriven<Object> {
 
             DokterTeam dokterTeam = new DokterTeam();
             dokterTeam.setIdDetailCheckup(idDetailCheckup);
+            //SYAMS 14JUL21 => tambah flagApprove
+            dokterTeam.setFlagApprove(flagApprove);
 
             try {
                 result = teamDokterBoProxy.getByCriteria(dokterTeam);
             } catch (GeneralBOException e){
+                response.put("actionError",e.toString());
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
 
@@ -1097,6 +1126,7 @@ public class RawatInapController implements ModelDriven<Object> {
                 result = orderGiziBoProxy.getByCriteria(orderGizi);
             } catch (GeneralBOException e) {
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
+                response.put("actionError","Gagal mengambil data");
             }
 
             if (result.size() > 0){
@@ -1137,9 +1167,10 @@ public class RawatInapController implements ModelDriven<Object> {
             try {
                 checkResponse = orderGiziBoProxy.updateDiterimaFLag(orderGizi);
                 if (checkResponse.getStatus().equalsIgnoreCase("Success")){
-                    model.setMessage("Success");
+                    response.put("actionSuccess","Verifikasi berhasil");
                 }
             } catch (GeneralBOException e){
+                response.put("actionError","Gagal meverifikasi");
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
         }
@@ -1427,6 +1458,7 @@ public class RawatInapController implements ModelDriven<Object> {
                 date = dateFormat.parse(addMonCairan.getCreatedDate());
             } catch (ParseException e) {
                 e.printStackTrace();
+                response.put("actionError",e.toString());
             }
             long time = date.getTime();
 
@@ -1456,9 +1488,10 @@ public class RawatInapController implements ModelDriven<Object> {
             try {
                 crudResponse = rawatInapBoProxy.saveMonCairan(itSimrsMonCairanEntity);
                 if (crudResponse.getStatus().equalsIgnoreCase("Success")){
-                    model.setMessage("Success");
-                } else model.setMessage(crudResponse.getMsg());
+                    response.put("actionSuccess","Sukses");
+                } else response.put("actionSuccess",crudResponse.getMsg());
             } catch (GeneralBOException e){
+                response.put("actionError",e.toString());
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
         }
@@ -1489,8 +1522,9 @@ public class RawatInapController implements ModelDriven<Object> {
 
             try {
                 rawatInapBoProxy.saveUpdateMonCairan(itSimrsMonCairanEntity);
-                model.setMessage("Success");
+                response.put("actionSuccess","Sukses");
             } catch (GeneralBOException e){
+                response.put("actionError",e.toString());
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
         }
@@ -1628,13 +1662,13 @@ public class RawatInapController implements ModelDriven<Object> {
                     }
                 }
             } catch (Exception e){
-                response.put("actionError",e.toString());
+                response.put("actionError","Gagal menambahkan tindakan");
             }
 
 
             try {
                 tindakanRawatBoProxy.saveAdd(tindakanRawatList);
-                model.setMessage("Success");
+                response.put("actionSuccess","Sukses");
             } catch (GeneralBOException e){
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
@@ -1648,6 +1682,7 @@ public class RawatInapController implements ModelDriven<Object> {
             try {
                 result = tindakanBoProxy.getDataTindakan(bean);
             } catch (GeneralBOException e) {
+                response.put("actionError",e.toString());
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
 
@@ -1676,8 +1711,9 @@ public class RawatInapController implements ModelDriven<Object> {
 
             try {
                 tindakanRawatBoProxy.saveEdit(tindakanRawat);
-                model.setMessage("Success");
+                response.put("actionSuccess", "Sukses");
             } catch (GeneralBOException e){
+                response.put("actionError",e.toString());
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
         }
