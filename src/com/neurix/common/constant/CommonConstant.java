@@ -2,6 +2,7 @@ package com.neurix.common.constant;
 
 import com.neurix.common.util.CommonUtil;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.web.context.ContextLoader;
 
 import java.math.BigDecimal;
 
@@ -441,6 +442,7 @@ public class CommonConstant {
     public final static String CODE_INVOICE_VA_TELE = CommonUtil.getPropertyParams("code.invoice.telemedic");
     public final static String JENIS_PEMBAYARAN_TRANSFER_TUNAI = CommonUtil.getPropertyParams("jenis.pembayaran.tt");
     public final static String JENIS_PEMBAYARAN_VA = CommonUtil.getPropertyParams("jenis.pembayaran.va");
+    public final static String PATH_REPORT_AKUNTANSI = ContextLoader.getCurrentWebApplicationContext().getApplicationName() + "/pages/report/neurix/com/akuntansi/";
 
 
 }

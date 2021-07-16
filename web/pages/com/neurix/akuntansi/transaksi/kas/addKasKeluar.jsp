@@ -1610,7 +1610,8 @@
             alert(msg);
         }else{
             //jika pengajuan biasa
-            KasAction.saveKasDetail(kodeVendor,namaVendor,noNota,jumlahPembayaran,rekeningId,'','','',tipePengajuanBiaya,pengajuanDetailId,'',function (result) {
+//            KasAction.saveKasDetail(kodeVendor,namaVendor,noNota,jumlahPembayaran,rekeningId,'','','',tipePengajuanBiaya,pengajuanDetailId,'',function (result) {
+            KasAction.saveKasDetail(kodeVendor,namaVendor,noNota,jumlahPembayaran,rekeningId,idDivisi,namaDivisi,'',tipePengajuanBiaya,pengajuanDetailId,'',function (result) {
                 if (result==""){
                     loadDetailPembayaran();
                     //dihitung totalbayarnya
