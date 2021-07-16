@@ -910,10 +910,13 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "a.tgl_masuk, \n" +
                     "a.tgl_keluar,\n" +
                     "CAST(DATE_PART('day', a.tgl_keluar - a.tgl_masuk) + 1 AS BIGINT) as hari, \n" +
-                    "b.tarif\n" +
+                    "b.tarif,\n" +
+                    "c.kategori,\n"+
+                    "c.id_kelas_bpjs\n"+
                     "FROM it_simrs_rawat_inap a\n" +
                     "INNER JOIN mt_simrs_ruangan_tempat_tidur tt ON a.id_ruangan = tt.id_tempat_tidur\n" +
                     "INNER JOIN mt_simrs_ruangan b ON tt.id_ruangan = b.id_ruangan\n" +
+                    "INNER JOIN im_simrs_kelas_ruangan c ON b.id_kelas_ruangan = c.id_kelas_ruangan\n"+
                     "WHERE a.status = '3'\n" +
                     "AND a.tgl_keluar IS NOT NULL\n" +
                     "AND a.id_detail_checkup = :id ";
@@ -934,12 +937,42 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     rawatInap.setTglKeluar(obj[6] == null ? null : (Timestamp) obj[6]);
                     rawatInap.setLamakamar(obj[7] == null ? null : (BigInteger) obj[7]);
                     rawatInap.setTarif(obj[8] == null ? null : (BigInteger) obj[8]);
+                    rawatInap.setKategoriRuangan(obj[9] == null ? null : (String) obj[9]);
+                    rawatInap.setIdKelasBpjs(obj[10] == null ? null : (String) obj[10]);
                     rawatInapList.add(rawatInap);
                 }
             }
         }
         return rawatInapList;
     }
+
+    public BigInteger getTarifByIdKelas(String idKelas, String branchId) {
+        BigInteger res = new BigInteger("0");
+        if (idKelas != null && !"".equalsIgnoreCase(idKelas)) {
+            String SQL = "SELECT \n" +
+                    "a.id_kelas_ruangan,\n" +
+                    "b.tarif\n" +
+                    "FROM im_simrs_kelas_ruangan a\n" +
+                    "INNER JOIN mt_simrs_ruangan b ON a.id_kelas_ruangan = b.id_kelas_ruangan\n" +
+                    "WHERE a.id_kelas_bpjs = :id\n" +
+                    "AND b.branch_id = :branch\n" +
+                    "LIMIT 1";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idKelas)
+                    .setParameter("branch", branchId)
+                    .list();
+            if (result.size() > 0) {
+                Object[] obj = result.get(0);
+                if(obj[1] != null){
+                    res = new BigInteger(obj[1].toString());
+                }
+            }
+        }
+        return res;
+    }
+
 
     public List<UangMuka> getAllListUangMuka(UangMuka bean) {
         List<UangMuka> uangMukaArrayList = new ArrayList<>();

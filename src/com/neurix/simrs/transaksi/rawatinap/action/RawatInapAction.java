@@ -430,6 +430,8 @@ public class RawatInapAction extends BaseMasterAction {
                 rawatInap.setAlamatLengkap(checkup.getNamaDesa() + ", " + checkup.getNamaKecamatan() + ", " + checkup.getNamaKota());
                 rawatInap.setIsStay(checkup.getIsStay());
                 rawatInap.setIdKelas(checkup.getKelasPasien());
+                rawatInap.setIdKelasBpjs(checkup.getIdKelasBpjs());
+                rawatInap.setStatusNaikKelas(checkup.getStatusNaikKelas());
                 rawatInap.setNoTelp(checkup.getNoTelp());
                 if (checkup.getCreatedDate() != null) {
                     String format = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getCreatedDate());
@@ -2220,6 +2222,7 @@ public class RawatInapAction extends BaseMasterAction {
                     rawatInap.setIdJenisPeriksa(jenisPasien);
                     rawatInap.setIsMeninggal(isMeninggal);
                     rawatInap.setIndikasi(indikasi);
+                    rawatInap.setBranchId(CommonUtil.userBranchLogin());
 
                     if("kontrol_ulang".equalsIgnoreCase(tindakLanjut)){
                         if(dataKontrol != null && !"".equalsIgnoreCase(dataKontrol)){

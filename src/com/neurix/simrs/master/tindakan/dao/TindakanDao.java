@@ -73,23 +73,43 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                     }
                 }
                 if (bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdKelasRuangan())) {
-                    union = "UNION ALL\n" +
-                            "SELECT\n" +
-                            "a.id_tindakan,\n" +
-                            "b.nama_tindakan,\n" +
-                            "a.tarif,\n" +
-                            "a.tarif_bpjs,\n" +
-                            "a.diskon,\n" +
-                            "a.is_elektif\n" +
-                            "FROM im_simrs_tindakan a\n" +
-                            "INNER JOIN im_simrs_header_tindakan b ON a.id_header_tindakan = b.id_header_tindakan\n" +
-                            "WHERE a.id_kategori_tindakan = :idKat AND a.branch_id = :branch \n" +
-                            "AND a.flag_kelas_ruangan = 'Y' \n" +
-                            "AND a.id_kelas_ruangan = '" + bean.getIdKelasRuangan() + "'\n" +
-                            "AND a.flag = 'Y'";
+                    if(bean.getJenisPasien() != null && "bpjs".equalsIgnoreCase(bean.getJenisPasien())){
+                        union = "UNION ALL\n" +
+                                "SELECT\n" +
+                                "a.id_tindakan,\n" +
+                                "b.nama_tindakan,\n" +
+                                "a.tarif,\n" +
+                                "a.tarif_bpjs,\n" +
+                                "a.diskon,\n" +
+                                "a.is_elektif\n" +
+                                "FROM im_simrs_tindakan a\n" +
+                                "INNER JOIN im_simrs_header_tindakan b ON a.id_header_tindakan = b.id_header_tindakan\n" +
+                                "INNER JOIN im_simrs_kelas_ruangan c ON a.id_kelas_ruangan = c.id_kelas_ruangan\n" +
+                                "WHERE a.id_kategori_tindakan = :idKat AND a.branch_id = :branch \n" +
+                                "AND a.flag_kelas_ruangan = 'Y' \n" +
+                                "AND c.id_kelas_bpjs = '" + bean.getIdKelasRuangan() + "'\n" +
+                                "AND a.flag = 'Y'";
+                    }else{
+                        union = "UNION ALL\n" +
+                                "SELECT\n" +
+                                "a.id_tindakan,\n" +
+                                "b.nama_tindakan,\n" +
+                                "a.tarif,\n" +
+                                "a.tarif_bpjs,\n" +
+                                "a.diskon,\n" +
+                                "a.is_elektif\n" +
+                                "FROM im_simrs_tindakan a\n" +
+                                "INNER JOIN im_simrs_header_tindakan b ON a.id_header_tindakan = b.id_header_tindakan\n" +
+                                "INNER JOIN im_simrs_kelas_ruangan c ON a.id_kelas_ruangan = c.id_kelas_ruangan\n" +
+                                "WHERE a.id_kategori_tindakan = :idKat AND a.branch_id = :branch \n" +
+                                "AND a.flag_kelas_ruangan = 'Y' \n" +
+                                "AND c.id_kelas_ruangan = '" + bean.getIdKelasRuangan() + "'\n" +
+                                "AND a.flag = 'Y'";
+                    }
+
                 }
 
-                String tipePelayanan = cekTipePelayanan(bean.getIdKategoriTindakan(), bean.getBranchId());
+                String tipePelayanan = cekTipePelayanan(bean.getIdPelayanan());
                 if(!"".equalsIgnoreCase(tipePelayanan) && !"rawat_jalan".equalsIgnoreCase(tipePelayanan)){
                     ambulance = "UNION ALL\n" +
                             "SELECT\n" +
@@ -183,23 +203,16 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
     }
 
 
-    private String cekTipePelayanan(String idKat, String branch){
+    private String cekTipePelayanan(String iPelayanan){
         String res = "";
         String SQL = "SELECT\n" +
                 "a.id_pelayanan,\n" +
                 "b.tipe_pelayanan\n" +
-                "FROM im_simrs_pelayanan a\n" +
+                "FROM im_simrs_pelayanan a \n" +
                 "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
-                "WHERE id_pelayanan = (\n" +
-                "SELECT\n" +
-                "id_pelayanan\n" +
-                "FROM im_simrs_tindakan\n" +
-                "WHERE id_kategori_tindakan = :idKat\n" +
-                "AND branch_id = :branch LIMIT 1\n" +
-                ")\n";
+                "WHERE id_pelayanan = :id";
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                .setParameter("idKat", idKat)
-                .setParameter("branch", branch)
+                .setParameter("id", iPelayanan)
                 .list();
         if(results.size() > 0){
             Object[] obj = results.get(0);

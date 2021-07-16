@@ -141,7 +141,7 @@ function hitungCoverBiaya() {
 
 function hitungStatusBiaya() {
     var jenis = $("#id_jenis_pasien").val();
-    CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RI", function (response) {
+    CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RWJ", function (response) {
         if (jenis == "bpjs" || jenis == "ptpn") {
             $('#status_bpjs').show();
             if (response.tarifBpjs != null && response.tarifTindakan != null) {
@@ -658,8 +658,12 @@ function saveKeterangan(idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_ce
 function listSelectTindakan(idKtg) {
     var option = "<option value=''>-</option>";
     if (idKtg != '') {
+        var idKelas = idKelasRuangan;
+        if("bpjs" == jenisPeriksaPasien){
+            idKelas = kelasPasienBpjs;
+        }
         dwr.engine.setAsync(true);
-        CheckupDetailAction.getListComboTindakan(idKtg, idKelasRuangan, null, null, {
+        CheckupDetailAction.getListComboTindakan(idKtg, idKelas, null, idPoli, jenisPeriksaPasien, {
             callback:function (response) {
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
@@ -2480,7 +2484,7 @@ function editTindakan(id, idTindakan, idKategori, idPerawat, qty, idDokter, idPe
     $('#tin_id_ketgori_tindakan').val(idKategori).trigger('change');
     setTimeout(function () {
         $('#tin_id_tindakan').val(idTindakan).trigger('change');
-    },500);
+    },1000);
     $('#tin_qty').val(qty);
     $('#save_tindakan').attr('onclick', 'saveTindakan(\'' + id + '\')').show();
     $('#modal-tindakan').modal({show: true, backdrop: 'static'});
