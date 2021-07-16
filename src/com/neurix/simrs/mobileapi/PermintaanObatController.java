@@ -350,6 +350,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
                     jsonObat.add(obat);
                 }
             } catch (JSONException e){
+                response.put("actionError", "Server gagal menerima data");
                 logger.error("[PermintaanObatController.create] Error, get json obat " + e.getMessage());
             }
         }
@@ -402,6 +403,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
                 }
 
             } catch (JSONException e) {
+                response.put("actionError", "Server gagal menerima data");
                 logger.error("[PurchaseOrderController.create] Error, parse json " + e.getMessage());
 
             }
@@ -479,7 +481,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
             try{
                 resultObat = obatPoliBoProxy.getListTransObatDetail(beanObat);
             }catch (GeneralBOException e){
-                response.put("actionError", e.toString());
+                response.put("actionError", "Gagal mengambil data");
                 logger.error("[PermintaanObatController.create] Error, get obat " + e.getMessage());
             }
 
@@ -525,7 +527,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
             try {
                 resultEntityObat = obatBoProxy.getEntityObatByCriteria(entityObat);
             } catch (GeneralBOException e) {
-                response.put("actionError",e.toString());
+                response.put("actionError","Gagal mengambil list obat");
                 logger.error("[PermintaanObatController.create] Error, get entity obat " + e.getMessage());
             }
 
@@ -579,7 +581,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
             try {
                 result = obatPoliBoProxy.getListObatDetailRequest(bean);
             } catch (GeneralBOException e){
-                response.put("actionError",e.toString());
+                response.put("actionError","Gagal mengambil permintaan obat");
                 logger.error("[PermintaanObatController.create] Error, get Request Obat " + e.getMessage());
             }
 
@@ -634,7 +636,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
                 obatPoliBoProxy.updateDiterimaFlagBatch(batch);
                 response.put("actionSuccess","Sukses");
             } catch (GeneralBOException e){
-                response.put("actionError",e.toString());
+                response.put("actionError","Gagal update status");
                 logger.error("[PermintaanObatController.create] Error, update flag " + e.getMessage());
 
             }
@@ -664,7 +666,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
                 result = obatPoliBoProxy.getSearchPermintaanObatPoli(bean, isPoli);
                 response.put("actionSuccess","Sukses");
             } catch (GeneralBOException e){
-                response.put("actionError",e.toString());
+                response.put("actionError","Gagal mengambil data obat");
                 logger.error("[PermintaanObatController.create] Error, get search poli " + e.getMessage());
             }
 
@@ -672,6 +674,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
                 obatPoliBoProxy.saveApproveRequest(result.get(0), jsonObatDetail, isPoli);
                 model.setMessage("Success");
             } catch (JSONException j){
+                response.put("actionError","Gagal verifikasi permintaan");
                 logger.error("[PermintaanObatController.create] Error, save verifikasi " + j.getMessage());
 
             }
@@ -692,7 +695,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
                 response.put("actionSuccess","sukses");
             } catch (GeneralBOException e){
                 logger.error("[PermintaanObatController.create] Error, update flag " + e.getMessage());
-                response.put("actionError",e.toString());
+                response.put("actionError","Gagal approve");
 
             }
         }
