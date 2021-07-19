@@ -639,6 +639,7 @@ public class CheckupAction extends BaseMasterAction {
 
                 checkup.setIsOnline("Y");
                 checkup.setTglAntian(antianOnline.getCreatedDate());
+                checkup.setStatusPeriksa(antianOnline.getStatusPeriksa());
             }
         }
         return checkup;
