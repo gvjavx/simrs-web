@@ -2311,7 +2311,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
     }
 
     @Override
-    public  void savePembayaranPengajuanDo(List<PengajuanBiayaRk> beanList) throws GeneralBOException {
+    public  void    savePembayaranPengajuanDo(List<PengajuanBiayaRk> beanList) throws GeneralBOException {
         logger.info("[PengajuanBiayaBoImpl.savePembayaranPengajuanDo] start process >>>");
         if (beanList!=null) {
             for (PengajuanBiayaRk bean : beanList){
