@@ -1876,7 +1876,7 @@ function detailAud(jenis) {
             var isKesimpulan = false;
             var list = "";
             var first = "";
-            AsesmenUgdAction.getListAsesmenUgd(idDetailCheckup, jenis, function (res) {
+            AsesmenUgdAction.getListAsesmenUgd(noCheckup, jenis, function (res) {
                 if (res.length > 0) {
                     $.each(res, function (i, item) {
                         if("diagnosis" == item.keterangan || "asuhan" == item.keterangan){

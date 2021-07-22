@@ -627,7 +627,7 @@ function detailRJ(jenis) {
             var cekData = false;
             var cekNyeri = false;
 
-            KeperawatanRawatJalanAction.getListAsesmenRawat(idDetailCheckup, jenis, function (res) {
+            KeperawatanRawatJalanAction.getListAsesmenRawat(noCheckup, jenis, function (res) {
                 if (res.length > 0) {
                     $.each(res, function (i, item) {
                         var jwb = "";
@@ -656,14 +656,14 @@ function detailRJ(jenis) {
                             }
                         }else if("resiko_jatuh" == jenis || "skrining_gizi" == jenis){
                             if("total" == item.tipe){
-                                body += '<tr align="center">' +
-                                    '<td width="40%" colspan="2">' + item.parameter + '</td>' +
-                                    '<td>' + cekItemIsNull(item.jawaban) + '</td>' +
+                                body += '<tr>' +
+                                    '<td colspan="2">' + item.parameter + '</td>' +
+                                    '<td align="center">' + cekItemIsNull(item.score) + '</td>' +
                                     '</tr>';
                             }else if("kesimpulan" == item.tipe){
-                                body += '<tr bgcolor="#ffebcd" style="font-weight: bold" align="center">' +
-                                    '<td width="40%" colspan="2">' + item.parameter + '</td>' +
-                                    '<td>' + jwb + '</td>' +
+                                body += '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
+                                    '<td colspan="2">' + item.parameter + '</td>' +
+                                    '<td align="center">' + jwb + '</td>' +
                                     '</tr>';
                             }else{
                                 body += '<tr>' +

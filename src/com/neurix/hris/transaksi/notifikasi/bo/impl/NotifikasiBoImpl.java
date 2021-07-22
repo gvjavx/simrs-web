@@ -3867,12 +3867,12 @@ public class NotifikasiBoImpl implements NotifikasiBo {
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
 
-        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
-            if(entity.getUserId().equals(nip)){
-                ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), addNotif.getNote(), entity.getOs());
-                break;
-            }
-        }
+//        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
+//            if(entity.getUserId().equals(nip)){
+//                ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), addNotif.getNote(), entity.getOs());
+//                break;
+//            }
+//        }
 
 //        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
 //            if(entity.getUserId().equals(nip)){

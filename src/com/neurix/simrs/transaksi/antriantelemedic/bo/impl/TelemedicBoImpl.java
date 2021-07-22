@@ -948,7 +948,7 @@ public class TelemedicBoImpl implements TelemedicBo {
                     "=========================================\n" +
                     "<br> \n" +
                     "<br>\n");
-            CommonUtil.sendEmail(email);
+//            CommonUtil.sendEmail(email);
 
         }
 

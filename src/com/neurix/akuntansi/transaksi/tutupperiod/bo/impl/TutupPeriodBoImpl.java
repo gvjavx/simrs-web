@@ -167,6 +167,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
                     KodeRekening kodeRekening = new KodeRekening();
                     kodeRekening.setLevel(level.longValue());
+                    //kodeRekening.setRekeningId("00008");
 
                     List<ImKodeRekeningEntity> kodeRekeningEntities = getListEntityKodeRekening(kodeRekening);
                     if (kodeRekeningEntities.size() > 0){
@@ -177,7 +178,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                             jurnalDetail.setBulan(bean.getBulan());
                             jurnalDetail.setTahun(bean.getTahun());
                             jurnalDetail.setUnit(bean.getUnit());
-//                            jurnalDetail.setRekeningId(kodeRekeningEntity.getRekeningId());
+                            //jurnalDetail.setRekeningId(kodeRekeningEntity.getRekeningId());
                             jurnalDetail.setKodeRekening(kodeRekeningEntity.getKodeRekening());
                             jurnalDetail.setParentId(kodeRekeningEntity.getParentId());
 
@@ -197,7 +198,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                             saldoAkhirEntity.setSaldoAkhirId(getNextSaldoAkhirId());
                             saldoAkhirEntity.setBranchId(jurnalDetail.getUnit());
                             saldoAkhirEntity.setPeriode(jurnalDetail.getBulan()+"-"+jurnalDetail.getTahun());
-                            saldoAkhirEntity.setRekeningId(jurnalDetail.getRekeningId());
+                            saldoAkhirEntity.setRekeningId(kodeRekeningEntity.getRekeningId());
                             saldoAkhirEntity.setJumlahDebit(jurnalDetail.getJumlahDebit());
                             saldoAkhirEntity.setJumlahKredit(jurnalDetail.getJumlahKredit());
                             saldoAkhirEntity.setFlag("Y");
@@ -230,7 +231,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                                         jurnalAkhirTahun.setBulan("12");
                                         jurnalAkhirTahun.setTahun(intTahunLalu.toString());
                                         jurnalAkhirTahun.setUnit(bean.getUnit());
-                                        jurnalAkhirTahun.setRekeningId(kodeRekeningEntity.getKodeRekening());
+                                        jurnalAkhirTahun.setRekeningId(kodeRekeningEntity.getRekeningId());
                                         jurnalAkhirTahun.setTipePeriode(tipePeriode[i]);
 
                                         TutupPeriod noJurnalAkhir = tutupPeriodDao.getNoJurnalJurnalAkhirTahun(jurnalAkhirTahun);
@@ -337,6 +338,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                                 saldoDetail.setCreatedWho(bean.getCreatedWho());
                                 saldoDetail.setLastUpdate(bean.getLastUpdate());
                                 saldoDetail.setLastUpdateWho(bean.getLastUpdateWho());
+                                saldoDetail.setKodeRekening(kodeRekeningEntity.getKodeRekening());
 
                                 // SAVE TO DETAIL
                                 saveSaldoAkhirDetail(saldoDetail, saldoAkhirEntity);
@@ -422,6 +424,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                             jurnalDetail.setUnit(bean.getUnit());
                             jurnalDetail.setRekeningId(kodeRekeningEntity.getRekeningId());
                             jurnalDetail.setParentId(kodeRekeningEntity.getParentId());
+                            jurnalDetail.setKodeRekening(kodeRekeningEntity.getKodeRekening());
 
                             List<TutupPeriod> jurnalDatas = tutupPeriodDao.getListDetailJurnalByCriteria(jurnalDetail);
                             if (jurnalDatas.size() > 0){
@@ -499,6 +502,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                                 saldoDetail.setCreatedWho(bean.getCreatedWho());
                                 saldoDetail.setLastUpdate(bean.getLastUpdate());
                                 saldoDetail.setLastUpdateWho(bean.getLastUpdateWho());
+                                saldoDetail.setKodeRekening(kodeRekeningEntity.getKodeRekening());
 
                                 // SAVE TO DETAIL
                                 saveSaldoAkhirDetailTutupTahun(saldoDetail, saldoAkhirEntity);
@@ -1674,7 +1678,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
         ImKodeRekeningEntity kodeRekeningEntity = new ImKodeRekeningEntity();
 
         try {
-            kodeRekeningEntity = kodeRekeningDao.getById("kodeRekening", id);
+            kodeRekeningEntity = kodeRekeningDao.getById("rekeningId", id);
         } catch (HibernateException e){
             logger.error("[TutupPeriodBoImpl.getKodeRekeningById] ERROR. ", e);
             throw new GeneralBOException("[TutupPeriodBoImpl.getKodeRekeningById] ERROR. "+ e);

@@ -1543,6 +1543,7 @@ public class KasAction extends BaseMasterAction {
         reportParams.put("kasId", data.getKasId());
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT + branch.getLogoName());
         reportParams.put("areaId", CommonUtil.userAreaName());
+        reportParams.put("subreport_dir", CommonUtil.getUploadFolderValue() + CommonConstant.PATH_REPORT_AKUNTANSI);
         try {
             preDownload();
         } catch (SQLException e) {

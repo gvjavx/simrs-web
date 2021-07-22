@@ -126,6 +126,9 @@ public class AntrianOnlineBoImpl implements AntrianOnlineBo {
                         antrianItem.setNamaDokter(dokterEntity.getNamaDokter());
                     }
 
+                    //sodiq, 19.07.2021[10.57 WIB], cek status periksa pasien online
+                    antrianItem.setStatusPeriksa(antrianOnlineDao.cekPasienOnlineDaftar(item.getNoCheckupOnline()));
+
                     listOfResult.add(antrianItem);
                 }
             }

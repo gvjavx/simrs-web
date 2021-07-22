@@ -13,8 +13,8 @@
 
     <script type='text/javascript'>
         $( document ).ready(function() {
-            $('#rawat_jalan').addClass('active');
-            listSelectDokter('<s:property value="headerDetailCheckup.idPelayanan"/>', '<s:property value="headerDetailCheckup.idDokter"/>');
+            $('#pendaftaran_active, #kontrol_ulang').addClass('active');
+            $('#pendaftaran_open').addClass('menu-open');
         });
     </script>
 </head>
@@ -30,7 +30,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Rawat Jalan Pasien
+            Pasien Kontrol Ulang
         </h1>
     </section>
 
@@ -41,11 +41,11 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Rawat Jalan Pasien</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Pasien Kontrol Ulang</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="checkupDetailForm" method="post" theme="simple" cssClass="form-horizontal" name="checkupdetail" action="search_checkupdetail.action">
+                            <s:form id="kontrolulangForm" method="post" theme="simple" cssClass="form-horizontal" name="kontrolulang" action="searchKontrolUlang_kontrolulang.action">
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">No RM</label>
                                     <div class="col-sm-4">
@@ -62,7 +62,6 @@
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
-                                <s:if test="isEnabledPoli()">
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Pelayanan</label>
                                     <div class="col-sm-4">
@@ -77,74 +76,15 @@
                                                   cssClass="form-control select2" theme="simple"/>
                                     </div>
                                 </div>
-                                </s:if>
-                                <s:else>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-4">Poli</label>
-                                        <div class="col-sm-4">
-                                            <s:action id="initComboPoli" namespace="/checkup"
-                                                      name="getComboPelayananRJ_checkup"/>
-                                            <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                      list="#initComboPoli.listOfPelayananRJ"
-                                                      listKey="idPelayanan"
-                                                      name="headerDetailCheckup.idPelayanan"
-                                                      listValue="namaPelayanan"
-                                                      headerKey="" headerValue="[Select one]"
-                                                      cssClass="form-control select2" theme="simple" disabled="true"/>
-                                        </div>
-                                        <s:hidden name="headerDetailCheckup.idPelayanan"></s:hidden>
-                                    </div>
-                                </s:else>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Dokter</label>
-                                    <div class="col-sm-4">
-                                        <select name="headerDetailCheckup.idDokter" class="form-control select2" id="nama_dokter"></select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Status</label>
-                                    <div class="col-sm-4">
-                                        <s:select list="#{'1':'Periksa','2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px"
-                                                  id="status" name="headerDetailCheckup.statusPeriksa"
-                                                  headerKey="0" headerValue="Antrian"
-                                                  cssClass="form-control select2"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Tanggal Masuk</label>
-                                    <div class="col-sm-2">
-                                        <div class="input-group date" style="margin-top: 7px">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <s:textfield id="tgl_from" name="headerDetailCheckup.stDateFrom" cssClass="form-control"
-                                                         required="false"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <div class="input-group date" style="margin-top: 7px">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <s:textfield id="tgl_to" name="headerDetailCheckup.stDateTo" cssClass="form-control"
-                                                         required="false"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-6" style="margin-top: 7px">
-                                        <sj:submit type="button" cssClass="btn btn-success" formIds="checkupDetailForm" id="search" name="search"
+                                        <sj:submit type="button" cssClass="btn btn-success" formIds="kontrolulangForm" id="search" name="search"
                                                    onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading">
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <s:if test="isEnabledAddPasien()">
-                                        <a type="button" class="btn btn-primary" href="addRawatJalan_checkupdetail.action"><i
-                                                class="fa fa-plus"></i> Tambah Rawat Pasien</a>
-                                        </s:if>
-                                        <a type="button" class="btn btn-danger" href="initForm_checkupdetail.action">
+                                        <a type="button" class="btn btn-danger" href="initForm_kontrolulang.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                     </div>
@@ -199,74 +139,60 @@
                     </div>
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Rawat Jalan Pasien</h3>
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien Kontrol Ulang</h3>
                     </div>
                     <div class="box-body">
                         <table id="myTable" class="table table-bordered table-striped" style="font-size: 13px">
                             <thead >
                             <tr bgcolor="#90ee90">
-                                <td>ID Detail Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
                                 <td>Umur</td>
-                                <td>Tanggal Masuk</td>
+                                <td>Tanggal Kontrol</td>
+                                <td>Pelayanan</td>
+                                <td>Dokter</td>
                                 <td>Desa</td>
-                                <td>Status</td>
-                                <td align="center">Jenis Pasien</td>
-                                <td align="center">Action</td>
+                                <td>No HP</td>
                             </tr>
                             </thead>
                             <tbody>
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
-                                    <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="umur"/></td>
-                                    <td><s:property value="formatTglMasuk"/></td>
-                                    <td><s:property value="desa"/></td>
-                                    <td><s:property value="statusPeriksaName"/></td>
-                                    <td align="center">
+                                    <td>
+                                        <s:if test='#row.umur != null && #row.umur != ""'>
+                                            <s:property value="umur"/> Tahun
+                                        </s:if>
+                                    </td>
+                                    <td>
                                         <script>
-                                            document.write(changeJenisPasien('<s:property value="idJenisPeriksaPasien"/>', '<s:property value="jenisPeriksaPasien"/>'));
+                                            var tgl = '<s:property value="tglCekup"/>';
+                                            if(tgl != ''){
+                                                document.write(converterDate(tgl));
+                                            }
                                         </script>
                                     </td>
-                                    <td align="center" style="vertical-align: middle">
-                                        <s:if test='#row.statusPeriksa != "3"'>
-                                            <s:if test='#row.idJenisPeriksaPasien == "umum"'>
-                                                <s:if test='#row.isBayar == "Y"'>
-                                                    <s:url var="add_rawat_jalan" namespace="/checkupdetail" action="add_checkupdetail" escapeAmp="false">
-                                                        <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                                    </s:url>
-                                                    <s:a href="%{add_rawat_jalan}">
-                                                        <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
-                                                    </s:a>
-                                                </s:if>
-                                                <s:else>
-                                                    <span class="span-warning">Uang muka belum bayar</span>
-                                                </s:else>
-                                            </s:if>
-                                            <s:else>
-                                                <s:url var="add_rawat_jalan" namespace="/checkupdetail" action="add_checkupdetail" escapeAmp="false">
-                                                    <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                                </s:url>
-                                                <s:a href="%{add_rawat_jalan}">
-                                                    <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
-                                                </s:a>
-                                            </s:else>
-                                        </s:if>
-
-                                        <s:if test='#row.tindakLanjut == "kontrol_ulang"'>
-                                            <a target="_blank" href="printSuratKeterangan_checkupdetail.action?id=<s:property value="idDetailCheckup"/>&tipe=KU">
-                                                <img src="<s:url value="/pages/images/icons8-print-25.png"/>">
-                                            </a>
-                                        </s:if>
-
-                                        <s:if test='#row.tindakLanjut == "rujuk_rs_lain"'>
-                                            <a target="_blank" href="printSuratKeterangan_checkupdetail.action?id=<s:property value="idDetailCheckup"/>&tipe=RSL">
-                                                <img src="<s:url value="/pages/images/icons8-print-25.png"/>">
-                                            </a>
-                                        </s:if>
+                                    <td><s:property value="namaPelayanan"/></td>
+                                    <td><s:property value="namaDokter"/></td>
+                                    <td><s:property value="desa"/></td>
+                                    <td>
+                                        <script>
+                                            var noHp = '<s:property value="noTelp"/>';
+                                            var temp = "";
+                                            if(noHp != '' && noHp.length > 0){
+                                                for (var i = 0; i < noHp.length; i++) {
+                                                    if(i == 3){
+                                                        temp = temp+noHp[i]+'-';
+                                                    }else if(i == 7){
+                                                        temp = temp+noHp[i]+'-';
+                                                    }else{
+                                                        temp = temp+noHp[i];
+                                                    }
+                                                }
+                                            }
+                                            document.write(temp);
+                                        </script>
                                     </td>
                                 </tr>
                             </s:iterator>

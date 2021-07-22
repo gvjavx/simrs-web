@@ -114,7 +114,7 @@ public class PengajuanBiayaRkDao extends GenericDao<ItAkunPengajuanBiayaRkEntity
                 "        from \n" +
                 "          it_akun_jurnal_detail \n" +
                 "        where \n" +
-                "          rekening_id = '"+ CommonConstant.REKENING_ID_DO +"'\n" +
+                "          nomor_rekening = '"+ CommonConstant.REKENING_ID_DO +"'\n" +
                 "      ) b on a.no_jurnal = b.no_jurnal \n" +
                 "      and b.no_nota != '' \n" +
                 "    where \n" +
@@ -151,7 +151,7 @@ public class PengajuanBiayaRkDao extends GenericDao<ItAkunPengajuanBiayaRkEntity
                 "where \n" +
                 "  jurnal.debit < 0 \n" +
                 tipeWhere +
-                "  and no_do IS NOT NULL\n";
+                "  --and no_do IS NOT NULL\n";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();

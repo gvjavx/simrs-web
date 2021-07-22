@@ -2,6 +2,7 @@ package com.neurix.common.constant;
 
 import com.neurix.common.util.CommonUtil;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.web.context.ContextLoader;
 
 import java.math.BigDecimal;
 
@@ -224,9 +225,9 @@ public class CommonConstant {
     public final static String JUNK_MASTER_PIUTANG_PPN = "JNK";
     public final static String KODE_REKENING_LABA_RUGI = "3.3.00.00.02";
 
-    public final static String KODERING_FARMASI_RJ = "05.00.00";
-    public final static String KODERING_FARMASI_RI = "05.00.01";
-    public final static String KODERING_INSTALASI_RI = "06.01.01";
+    public final static String KODERING_FARMASI_RJ = "02.01.01";
+    public final static String KODERING_FARMASI_RI = "02.02.01";
+//    public final static String KODERING_INSTALASI_RI = "06.01.01";
 
     public final static String CUTI_ID_DILUAR_TANGGUNJAWAB = CommonUtil.getPropertyParams("cuti.id.diluar.tanggungjawab");
 
@@ -285,9 +286,12 @@ public class CommonConstant {
 
     public final static String REKENING_ID_PPN_MASUKAN = CommonUtil.getPropertyParams("rekening.id.ppn.masukan");
     public final static String REKENING_ID_PPN_KELUARAN = CommonUtil.getPropertyParams("rekening.id.ppn.keluaran");
-    public final static String REKENING_PPH21 = "00187";
-    public final static String REKENING_ID_PENDAPATAN_RI ="00304";
-    public final static String REKENING_ID_PENDAPATAN_RJ ="00303";
+//    public final static String REKENING_PPH21 = "00187";
+//    public final static String REKENING_ID_PENDAPATAN_RI ="00304";
+//    public final static String REKENING_ID_PENDAPATAN_RJ ="00303";
+    public final static String REKENING_PPH21 = CommonUtil.getPropertyParams("rekening.id.pph.21");
+    public final static String REKENING_ID_PENDAPATAN_RI = CommonUtil.getPropertyParams("rekening.id.pendapatan.ri");
+    public final static String REKENING_ID_PENDAPATAN_RJ = CommonUtil.getPropertyParams("rekening.id.pendapatan.rj");
     public final static String REKENING_ID_DO =CommonUtil.getPropertyParams("rekening.id.do");
 
     //CONSTANT HCM
@@ -441,6 +445,7 @@ public class CommonConstant {
     public final static String CODE_INVOICE_VA_TELE = CommonUtil.getPropertyParams("code.invoice.telemedic");
     public final static String JENIS_PEMBAYARAN_TRANSFER_TUNAI = CommonUtil.getPropertyParams("jenis.pembayaran.tt");
     public final static String JENIS_PEMBAYARAN_VA = CommonUtil.getPropertyParams("jenis.pembayaran.va");
+    public final static String PATH_REPORT_AKUNTANSI = ContextLoader.getCurrentWebApplicationContext().getApplicationName() + "/pages/report/neurix/com/akuntansi/";
 
 
 }

@@ -1888,3 +1888,17 @@ ADD COLUMN parent_id VARCHAR(30);
     ADD COLUMN no_rm VARCHAR(50);
 
 --
+
+-- 2021-07-21
+
+    ALTER TABLE it_akun_perhitungan_ppn_kd ADD COLUMN bukti_piutang_pajak_keluaran VARCHAR(100);
+    ALTER TABLE it_akun_perhitungan_ppn_kd ADD COLUMN keterangan TEXT;
+    ALTER TABLE it_akun_perhitungan_ppn_kd ADD COLUMN piutang_pajak_keluaran NUMERIC;
+    CREATE SEQUENCE seq_pengajuan_biaya_rk;
+
+    UPDATE im_akun_trans
+    SET is_otomatis = 'Y' WHERE trans_id IN ('70','71','72');
+
+    ALTER TABLE it_akun_nilai_parameter_budgeting
+    ADD COLUMN position_id VARCHAR(50);
+--

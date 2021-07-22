@@ -37,11 +37,11 @@ public class AsesmenUgdAction {
         AsesmenUgdBo asesmenUgdBo = (AsesmenUgdBo) ctx.getBean("asesmenUgdBoProxy");
         try {
             JSONArray json = new JSONArray(data);
-            JSONObject dtaObj = new JSONObject(dataPasien);
+            JSONObject pasienObj = new JSONObject(dataPasien);
             List<AsesmenUgd> ugdList = new ArrayList<>();
             String noCheckup = null;
-            if (dtaObj.has("no_checkup")) {
-                noCheckup = dtaObj.getString("no_checkup");
+            if (pasienObj.has("no_checkup")) {
+                noCheckup = pasienObj.getString("no_checkup");
             }
 
             for (int i = 0; i < json.length(); i++) {
@@ -115,13 +115,12 @@ public class AsesmenUgdAction {
                 response = asesmenUgdBo.saveAdd(ugdList);
                 if ("success".equalsIgnoreCase(response.getStatus())) {
                     RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
-                    JSONObject obj = new JSONObject(dataPasien);
-                    if (obj != null) {
+                    if (pasienObj != null) {
                         StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
-                        status.setNoCheckup(obj.getString("no_checkup"));
-                        status.setIdDetailCheckup(obj.getString("id_detail_checkup"));
-                        status.setIdPasien(obj.getString("id_pasien"));
-                        status.setIdRekamMedisPasien(obj.getString("id_rm"));
+                        status.setNoCheckup(pasienObj.getString("no_checkup"));
+                        status.setIdDetailCheckup(pasienObj.getString("id_detail_checkup"));
+                        status.setIdPasien(pasienObj.getString("id_pasien"));
+                        status.setIdRekamMedisPasien(pasienObj.getString("id_rm"));
                         status.setIsPengisian("Y");
                         status.setAction("C");
                         status.setFlag("Y");
@@ -144,14 +143,14 @@ public class AsesmenUgdAction {
         return response;
     }
 
-    public List<AsesmenUgd> getListAsesmenUgd(String idDetailCheckup, String keterangan) {
+    public List<AsesmenUgd> getListAsesmenUgd(String noCheckup, String keterangan) {
         List<AsesmenUgd> list = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AsesmenUgdBo asesmenUgdBo = (AsesmenUgdBo) ctx.getBean("asesmenUgdBoProxy");
-        if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(keterangan)) {
+        if (!"".equalsIgnoreCase(noCheckup) && !"".equalsIgnoreCase(keterangan)) {
             try {
                 AsesmenUgd asesmenUgd = new AsesmenUgd();
-                asesmenUgd.setIdDetailCheckup(idDetailCheckup);
+                asesmenUgd.setNoCheckup(noCheckup);
                 asesmenUgd.setKeterangan(keterangan);
                 list = asesmenUgdBo.getByCriteria(asesmenUgd);
             } catch (GeneralBOException e) {

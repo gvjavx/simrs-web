@@ -74,4 +74,6 @@ public interface CheckupDetailBo {
     public HeaderDetailCheckup getEntityById(String id) throws GeneralBOException;
     public void sendToTppti(HeaderDetailCheckup bean) throws GeneralBOException;
     public void updateStatusPeriksa(HeaderDetailCheckup bean) throws GeneralBOException;
+    public List<HeaderDetailCheckup> getListKontrolUlang(HeaderDetailCheckup bean) throws GeneralBOException;
+    public void updateSEP(HeaderDetailCheckup bean) throws GeneralBOException;
 }

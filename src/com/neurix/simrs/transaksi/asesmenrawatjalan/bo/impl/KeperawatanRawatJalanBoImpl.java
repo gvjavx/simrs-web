@@ -35,6 +35,9 @@ public class KeperawatanRawatJalanBoImpl implements KeperawatanRawatJalanBo {
             if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
+            if (bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup())) {
+                hsCriteria.put("no_checkup", bean.getNoCheckup());
+            }
             if (bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())) {
                 hsCriteria.put("keterangan", bean.getKeterangan());
             }
@@ -75,6 +78,7 @@ public class KeperawatanRawatJalanBoImpl implements KeperawatanRawatJalanBo {
                     keperawatanRawatJalan.setTipe(entity.getTipe());
                     keperawatanRawatJalan.setNamaTerang(entity.getNamaTerang());
                     keperawatanRawatJalan.setSip(entity.getSip());
+                    keperawatanRawatJalan.setNoCheckup(entity.getNoCheckup());
                     list.add(keperawatanRawatJalan);
                 }
             }
@@ -111,6 +115,7 @@ public class KeperawatanRawatJalanBoImpl implements KeperawatanRawatJalanBo {
                     keperawatanRawatJalanEntity.setTipe(bean.getTipe());
                     keperawatanRawatJalanEntity.setNamaTerang(bean.getNamaTerang());
                     keperawatanRawatJalanEntity.setSip(bean.getSip());
+                    keperawatanRawatJalanEntity.setNoCheckup(bean.getNoCheckup());
 
                     try {
                         keperawatanRawatJalanDao.addAndSave(keperawatanRawatJalanEntity);
@@ -145,6 +150,7 @@ public class KeperawatanRawatJalanBoImpl implements KeperawatanRawatJalanBo {
                         keperawatanRawatJalanEntity.setTipe(bean.getTipe());
                         keperawatanRawatJalanEntity.setNamaTerang(bean.getNamaTerang());
                         keperawatanRawatJalanEntity.setSip(bean.getSip());
+                        keperawatanRawatJalanEntity.setNoCheckup(bean.getNoCheckup());
 
                         if("nyeri".equalsIgnoreCase(bean.getKeterangan())){
                             if("Intensitas".equalsIgnoreCase(bean.getParameter())){

@@ -328,5 +328,8 @@
 <div style="background-color: #fbec88; color: black; position: absolute; bottom: 10px ;float: right !important;padding: 5px; border-radius: 5px">
     <a style="color: black" target="_blank" href="<%= request.getContextPath() %>/pages/antrian/choseeAntrian.jsp">Antrian</a>
 </div>
+<div>
+    <span style="color: black;position: absolute; bottom: 10px ; right: 10px;"> last build : 2021.07.09</span>
+</div>
 </body>
 </html>

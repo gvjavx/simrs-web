@@ -28,9 +28,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author gondok
@@ -78,6 +76,8 @@ public class TransaksiApotekController implements ModelDriven<Object> {
     private String action;
 
     private String jenisPasien;
+
+    private Map<String,Object> response = new HashMap<>();
 
     public String getJenisPasien() {
         return jenisPasien;
@@ -301,13 +301,19 @@ public class TransaksiApotekController implements ModelDriven<Object> {
     public Object getModel() {
         switch (action){
             case "getListResep" :
-                return listOfPermintaanResep;
+                response.put("data",listOfPermintaanResep);
+                return response;
+                //SYAMS 6JUL21 => ganti return ke map
             case "getSearchTransaksiByCriteria" :
-                return listOfTransaksiObat;
+                response.put("data",listOfTransaksiObat);
+                return response;
             case "getObatPoliByCriteria" :
-                return listOfObat;
+                response.put("data",listOfObat);
+                return response;
             case "getListObatPoliGroup":
                 return listOfObat;
+            case "saveVerifikasiObat":
+                return response;
             default:
                 return model;
         }
@@ -409,6 +415,8 @@ public class TransaksiApotekController implements ModelDriven<Object> {
         bean.setNoCheckup(noCheckupDetail);
         bean.setStatus(status);
         bean.setIsUmum(isUmum);
+        //SYAMS 1JUL21 => tambah filter idpelayanan
+        bean.setTujuanPelayanan(idPelayanan);
 
 
         if (action.equalsIgnoreCase("getListResep")){
@@ -418,6 +426,7 @@ public class TransaksiApotekController implements ModelDriven<Object> {
             try {
                result = transaksiObatBoProxy.getListResepPasien(bean);
             } catch (GeneralBOException e) {
+                response.put("actionError",e.toString());
                 logger.error("[TransaksiApotekController.create] Error, get List Resep " + e.getMessage());
             }
 
@@ -453,6 +462,7 @@ public class TransaksiApotekController implements ModelDriven<Object> {
                 dataPasien = transaksiObatBoProxy.getDataTransByIdApprovalResep(idApprovalObat);
             } catch (GeneralBOException e){
                 logger.error("[TransaksiApotekController.create] Error, get search transaksi " + e.getMessage());
+                response.put("actionError",e.toString());
             }
 
             beanTransaksi.setIdDetailCheckup(dataPasien.getIdDetailCheckup());
@@ -463,6 +473,7 @@ public class TransaksiApotekController implements ModelDriven<Object> {
                 resultTransaksi = transaksiObatBoProxy.getSearchObatTransaksiByCriteria(beanTransaksi);
             } catch (GeneralBOException e){
                 logger.error("[TransaksiApotekController.create] Error, get search transaksi " + e.getMessage());
+                response.put("actionError",e.toString());
             }
 
             for (TransaksiObatDetail item : resultTransaksi){
@@ -505,6 +516,7 @@ public class TransaksiApotekController implements ModelDriven<Object> {
                result = obatPoliBoProxy.getObatPoliByCriteria(beanObatPoli);
             } catch (GeneralBOException e) {
                 logger.error("[TransaksiApotekController.create] Error, get search transaksi " + e.getMessage());
+                response.put("actionError",e.toString());
             }
 
             for (ObatPoli item : result){
@@ -595,11 +607,13 @@ public class TransaksiApotekController implements ModelDriven<Object> {
                 }
             }
 
+            //SYAMS 6JUL21 => tambah actionError dan actionSuccess
             try {
                 transaksiObatBoProxy.saveVerifikasiObat(batchEntities, qtyApprove);
-                model.setMessage("Success");
+                response.put("actionSuccess","Sukses");
             } catch (GeneralBOException e){
                 logger.error("[TransaksiApotekController.create] Error, save verifikasi obat " + e.getMessage());
+                response.put("actionError",e.toString());
             }
         }
 

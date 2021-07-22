@@ -517,12 +517,7 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
         if (obj == null)
             return new BigDecimal(0);
         else {
-            String[] splitHargaObat = obj.toString().split("\\.");
-            if (splitHargaObat.length > 0){
-                BigDecimal hargaObat = new BigDecimal(splitHargaObat[0]);
-                return hargaObat;
-            } 
-            return new BigDecimal(obj.toString());
+            return new BigDecimal(obj.toString()).setScale(BigDecimal.ROUND_UP);
         }
     }
 

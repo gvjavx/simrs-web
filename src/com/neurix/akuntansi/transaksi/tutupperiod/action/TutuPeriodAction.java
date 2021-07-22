@@ -236,7 +236,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
                 for (HeaderDetailCheckup detailCheckup : detailCheckups){
 
                     // save all tindakan existing, Sigit
-                    CrudResponse responseRiwayat =  saveAddToRiwayatTindakan(detailCheckup.getIdDetailCheckup(), detailCheckup.getIdJenisPeriksaPasien());
+                    CrudResponse responseRiwayat =  saveAddToRiwayatTindakanExisting(detailCheckup.getIdDetailCheckup(), detailCheckup.getIdJenisPeriksaPasien());
                     if ("error".equalsIgnoreCase(responseRiwayat.getStatus())){
                         response.setStatus("error");
                         response.setMsg(responseRiwayat.getMsg());
@@ -263,7 +263,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
         } catch (GeneralBOException e){
             logger.error("[TutupPeriodAction.saveTutupPeriod] ERROR. ", e);
             response.setStatus("error");
-            response.setMsg("[TutupPeriodAction.saveTutupPeriod] ERROR. "+e);
+            response.setMsg("[TutupPeriodAction.saveTutupPeriod] ERROR. " +e.getCause());
             return response;
         }
 
@@ -647,7 +647,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
         return response;
     }
 
-    public CrudResponse saveAddToRiwayatTindakan(String idDetail, String jenisPasien) {
+    public CrudResponse saveAddToRiwayatTindakanExisting(String idDetail, String jenisPasien) {
         logger.info("[CheckupDetailAction.saveAddToRiwayatTindakan] START process >>>");
 
         CrudResponse response = new CrudResponse();
@@ -670,7 +670,8 @@ public class TutuPeriodAction extends BaseTransactionAction {
             List<TindakanRawat> listTindakan = new ArrayList<>();
             TindakanRawat tindakanRawat = new TindakanRawat();
             tindakanRawat.setIdDetailCheckup(idDetail);
-            tindakanRawat.setApproveFlag("Y");
+//            tindakanRawat.setApproveFlag("Y");
+            tindakanRawat.setStatusApprove("before_approve");
 
             try {
                 listTindakan = tindakanRawatBo.getByCriteria(tindakanRawat);
@@ -680,6 +681,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
                 response.setMsg("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search tindakan :" + e.getMessage());
                 return response;
             }
+
 
             if (listTindakan.size() > 0) {
                 for (TindakanRawat entity : listTindakan) {
@@ -715,6 +717,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
                         riwayatTindakan.setLastUpdate(updateTime);
                         riwayatTindakan.setLastUpdateWho(user);
                         riwayatTindakan.setTanggalTindakan(entity.getCreatedDate());
+                        riwayatTindakan.setIdRuangan(entity.getIdRuangan());
 
                         try {
                             riwayatTindakanBo.saveAdd(riwayatTindakan);

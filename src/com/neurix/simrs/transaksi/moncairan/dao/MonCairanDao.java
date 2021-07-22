@@ -4,6 +4,7 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.moncairan.model.ItSimrsMonCairanEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
@@ -31,6 +32,8 @@ public class MonCairanDao extends GenericDao<ItSimrsMonCairanEntity, String> {
             criteria.add(Restrictions.eq("idDetailCheckup", mapCriteria.get("id_detail_checkup").toString()));
 
         criteria.add(Restrictions.eq("flag", "Y"));
+        //SYAMS 14JUL21 => order tgl terbaru
+        criteria.addOrder(Order.desc("lastUpdate"));
         List<ItSimrsMonCairanEntity> results = criteria.list();
         return results;
     }

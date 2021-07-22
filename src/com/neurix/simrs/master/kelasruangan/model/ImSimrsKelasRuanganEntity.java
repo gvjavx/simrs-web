@@ -16,6 +16,15 @@ public class ImSimrsKelasRuanganEntity implements Serializable {
     private String kodering;
     private String divisiId;
     private String kategori;
+    private String idKelasBpjs;
+
+    public String getIdKelasBpjs() {
+        return idKelasBpjs;
+    }
+
+    public void setIdKelasBpjs(String idKelasBpjs) {
+        this.idKelasBpjs = idKelasBpjs;
+    }
 
     public String getKategori() {
         return kategori;

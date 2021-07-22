@@ -574,6 +574,13 @@ public class CheckupAction extends BaseMasterAction {
                         checkup.setNoBpjs(pasien.getNoBpjs());
                         checkup.setImgKtp(pasien.getImgKtp());
                     }
+                } else {
+
+                    ImSimrsPasienSementaraEntity pasienSementaraEntity = pasienBo.getPasienSementaraEntityById(online.getIdPasien());
+                    if (pasienSementaraEntity != null){
+
+                        checkup.setUrlKtp(pasienSementaraEntity.getUrlKtp());
+                    }
                 }
 
                 checkup.setIdPelayanan(antianOnline.getIdPelayanan());
@@ -632,6 +639,7 @@ public class CheckupAction extends BaseMasterAction {
 
                 checkup.setIsOnline("Y");
                 checkup.setTglAntian(antianOnline.getCreatedDate());
+                checkup.setStatusPeriksa(antianOnline.getStatusPeriksa());
             }
         }
         return checkup;

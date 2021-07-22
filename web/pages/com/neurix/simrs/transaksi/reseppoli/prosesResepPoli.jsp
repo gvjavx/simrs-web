@@ -448,6 +448,9 @@
                                                     <div class="input-group-addon">
                                                         <span id='status<s:property value="idObat"/>'></span>
                                                     </div>
+                                                    <div class="input-group-addon">
+                                                        <div id="btn_no_racik_<s:property value="idObat"/>"></div>
+                                                    </div>
                                                 </s:else>
                                             </div>
                                         </td>
@@ -720,6 +723,9 @@
                                                                             <input type="text" id='input_racik_<s:property value="idObat"/>' class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>','Y', '<s:property value="harga"/>')">
                                                                             <div class="input-group-addon">
                                                                                 <span id='status_racik_<s:property value="idObat"/>'></span>
+                                                                            </div>
+                                                                            <div class="input-group-addon">
+                                                                                <div id="btn_racik_<s:property value="idObat"/>"></div>
                                                                             </div>
                                                                         </s:else>
                                                                     </div>

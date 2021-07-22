@@ -68,13 +68,16 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
         }
         if (bean.getBulan() != null && !"".equalsIgnoreCase(bean.getBulan())){
             bulan = bean.getBulan();
+            if (bulan.length() > 1 && Integer.valueOf(bulan) < 10){
+                bulan = Integer.valueOf(bulan).toString();
+            }
         }
         if (bean.getKodeRekening() != null && !"".equalsIgnoreCase(bean.getKodeRekening())){
             kodeRekening = bean.getKodeRekening();
         }
 
         String SQL = "SELECT \n" +
-                "dt.rekening_id,\n" +
+                "kd.rekening_id,\n" +
                 "kd.parent_id,\n" +
                 "kd.kode_rekening,\n" +
                 "kd.nama_kode_rekening,\n" +
@@ -82,7 +85,7 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
                 "SUM(dt.jumlah_kredit) as jumlah_kredit\n" +
                 "FROM it_akun_jurnal h\n" +
                 "INNER JOIN it_akun_jurnal_detail dt ON dt.no_jurnal = h.no_jurnal\n" +
-                "INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = dt.rekening_id\n" +
+                "INNER JOIN im_akun_kode_rekening kd ON kd.kode_rekening = dt.nomor_rekening\n" +
                 "WHERE registered_flag = 'Y'\n" +
                 "AND CAST(EXTRACT(MONTH FROM h.tanggal_jurnal) AS VARCHAR) LIKE :bulan \n" +
                 "AND CAST(EXTRACT(YEAR FROM h.tanggal_jurnal) AS VARCHAR) LIKE :tahun  \n" +
@@ -92,7 +95,7 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
                 "AND h.no_jurnal LIKE :nojurnal \n" +
                 "GROUP\n" +
                 "BY \n" +
-                "dt.rekening_id,\n" +
+                "kd.rekening_id,\n" +
                 "kd.parent_id,\n" +
                 "kd.kode_rekening,\n" +
                 "kd.nama_kode_rekening\n" +
@@ -246,12 +249,18 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
         BigDecimal dcBulan = new BigDecimal(bean.getBulan());
         BigDecimal dcTahun = new BigDecimal(bean.getTahun());
         String rekenigId = "%";
+        String kodeRekening = "%";
         if (bean.getRekeningId() != null && !"".equalsIgnoreCase(bean.getRekeningId())){
             rekenigId = bean.getRekeningId();
         }
 
+        if (bean.getKodeRekening() != null && !"".equalsIgnoreCase(bean.getKodeRekening())){
+            kodeRekening = bean.getKodeRekening();
+        }
+
+
         String SQL = "SELECT\n" +
-                "  dt.rekening_id,\n" +
+                "  kd.rekening_id,\n" +
                 "  kd.parent_id,\n" +
                 "  kd.kode_rekening,\n" +
                 "  kd.nama_kode_rekening,\n" +
@@ -263,15 +272,15 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
                 "  dt.kd_barang\n" +
                 "FROM it_akun_jurnal h\n" +
                 "  INNER JOIN it_akun_jurnal_detail dt ON dt.no_jurnal = h.no_jurnal\n" +
-                "  INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = dt.rekening_id\n" +
+                "  INNER JOIN im_akun_kode_rekening kd ON kd.kode_rekening = dt.nomor_rekening\n" +
                 "WHERE registered_flag = 'Y'\n" +
                 "      AND EXTRACT(MONTH FROM h.tanggal_jurnal) = :bulan \n" +
                 "      AND EXTRACT(YEAR FROM h.tanggal_jurnal) = :tahun \n" +
                 "      AND h.branch_id = :unit \n" +
-                "      AND dt.rekening_id LIKE :rekening \n" +
+                "      AND dt.nomor_rekening LIKE :rekening \n" +
                 "GROUP\n" +
                 "BY\n" +
-                "  dt.rekening_id,\n" +
+                "  kd.rekening_id,\n" +
                 "  kd.parent_id,\n" +
                 "  kd.kode_rekening,\n" +
                 "  kd.nama_kode_rekening,\n" +
@@ -285,7 +294,7 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
                 .setParameter("unit", bean.getUnit())
                 .setParameter("bulan", dcBulan)
                 .setParameter("tahun", dcTahun)
-                .setParameter("rekening", rekenigId)
+                .setParameter("rekening", kodeRekening)
                 .list();
 
         List<TutupPeriod> tutupPeriods = new ArrayList<>();

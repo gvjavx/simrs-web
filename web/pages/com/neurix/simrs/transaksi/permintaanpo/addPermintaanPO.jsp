@@ -9,6 +9,52 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <style>
+        .form-check {
+            display: inline-block;
+            padding-left: 2px;
+        }
+
+        .form-check input {
+            padding: 0;
+            height: initial;
+            width: initial;
+            margin-bottom: 0;
+            display: none;
+            cursor: pointer;
+        }
+
+        .form-check label {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .form-check label:before {
+            content: '';
+            -webkit-appearance: none;
+            background-color: transparent;
+            border: 2px solid #0079bf;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+            padding: 10px;
+            display: inline-block;
+            position: relative;
+            vertical-align: middle;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .form-check input:checked + label:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 2px;
+            left: 9px;
+            width: 6px;
+            height: 14px;
+            border: solid #0079bf;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
     </style>
     <script type='text/javascript'>
 
@@ -119,7 +165,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-plus-square"></i> Data Input PO</h3>
                     </div>
-                    <div class="box-body">
+                    <div class="box-body" id="back_top">
                         <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_po">
                             <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                             <p id="msg_po"></p>
@@ -212,6 +258,23 @@
                                                    resizable="false"
                                                    height="250" width="600" autoOpen="false"
                                                    title="Saving ...">
+                                            Please don't close this window, server is processing your request ...
+                                            <br>
+                                            <center>
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0"
+                                                     style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
+                                            </center>
+                                        </sj:dialog>
+                                        <sj:dialog id="waiting_dialog_2"
+                                                   resizable="false" modal="true"
+                                                   height="250" width="600" autoOpen="false"
+                                                   title="Search ...">
                                             Please don't close this window, server is processing your request ...
                                             <br>
                                             <center>
@@ -420,9 +483,18 @@
                             <%--</div>--%>
                         </div>
                     </div>
-                    <div class="box-header with-border"></div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-file-text-o"></i> Daftar PO <span id="title_tipe_obat"></span></h3>
+                    </div>
+                    <div class="box-header with-border">
+                        <select class="form-control pull-left" style="width: 80px" onchange="pagingTable(this.value)">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="75">75</option>
+                            <option value="100">100</option>
+                        </select>
+                        <input id="val_search" class="form-control pull-right" style="width: 20%" placeholder="Search" oninput="searchIntable(this.value)">
                     </div>
                     <div class="box-body">
                         <table class="table table-bordered table-striped" style="font-size: 13px" id="tabel_po">
@@ -446,8 +518,8 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div id="paging_po" style="float:right">
-
+                        <div class="pull-left" id="show_info" style="margin-top: 7px;"></div>
+                        <div class="pull-right" id="paging_po" style="margin-top: 7px">
                         </div>
                         <br>
                     </div>
@@ -539,18 +611,12 @@
                 $('#cor_po_biji_perlembar').show().fadeOut(3000);
                 $('#war_po_biji_perlembar').hide()
             }
-            // if(selectedObj.isBpjs == "Y"){
-            //     $('#tipe_obat').val('bpjs').trigger('change').attr('disabled', true);
-            // }else{
-            //     $('#tipe_obat').val('umum').trigger('change').attr('disabled', true);
-            // }
             $('#lembar_perbox, #lb_bx').val(selectedObj.lb);
             $('#biji_perlembar, #bj_lb').val(selectedObj.bj);
             $('#jumlah, #harga').val('');
             $('#warning_fisik').html('');
             $('#id_obat').val(selectedObj.id);
             $('#id_pabrik').val(selectedObj.idPabrik);
-            // showComboPabrikObat(selectedObj.id);
             return selectedObj.nama;
         }
     });
@@ -560,26 +626,24 @@
     }
 
     function confirm() {
-//        var data = $('#tabel_po').tableToJSON();
-//        var stringData = JSON.stringify(data);
-
         var vendor = $('#nama_vendor').val();
+        var tanggal = $('#tgl_cair').val();
         var ditemukan = false;
         $.each(arrListRequest, function(i, item){
             if (item.qty == '' || parseInt(item.qty) == 0){
-                detemukan = true;
+                ditemukan = true;
             }
 
             if (item.hargaitem == '' || parseInt(item.hargaitem) == 0){
-                detemukan = true;
+                ditemukan = true;
             }
         });
-
-        if (!ditemukan && vendor != '') {
+        if (!ditemukan && vendor && tanggal != '' && arrListRequest.length > 0) {
             $('#confirm_dialog').dialog('open');
         } else {
             $('#warning_po').show().fadeOut(5000);
             $('#msg_po').text('Silahkan cek kembali data inputan...!');
+            $('body').scrollTop(0);
         }
     }
 
@@ -755,7 +819,6 @@
         $('#confirm_dialog').dialog('close');
         var result = [];
 
-        //var tipe = $("#h_tipe_obat").val();
         var tipe = $("#tipe_obat option:selected").val();
         var tipeObat = "";
         if (tipe == "bpjs"){
@@ -765,40 +828,7 @@
         }
 
         var list_aktif = [];
-//        $.each(status_n, function (i, item) {
-//
-//            var statusobj = status_n[i];
-//            if (statusobj.status != "delete"){
-//
-//                var hargaRaw = $("#harga-"+i).val();
-//                var harga = replaceTitik(hargaRaw);
-//                var totalHarga = replaceTitik($("#harga-total-"+i).val());
-//                var idObat = $("#id-obat-"+i).val();
-//                var namaObat = $("#nama-obat-"+i).val();
-//                var qty = $("#jumlah-"+i).val();
-//                var jenis = $("#jenis-"+i).val();
-//                var lembarPerBox = $("#lembar-per-box-"+i).val();
-//                var bijiPerLembar = $("#biji-per-lembar-"+i).val();
-//                var idPabrikObat = $("#id-pabrik-"+i).val();
-//                var kodeProduksi = $('#kode-produksi-'+i).val();
-//
-//                result.push({
-//                    'id_obat':idObat,
-//                    'nama_obat':namaObat,
-//                    'qty':qty,
-//                    'jenis_satuan':jenis,
-//                    'lembar_per_box':lembarPerBox,
-//                    'biji_per_lembar':bijiPerLembar,
-//                    'harga':harga,
-//                    'tipe_obat':tipeObat,
-//                    'id_pabrik_obat':idPabrikObat,
-//                    'nomor_produksi':kodeProduksi
-//                });
-//            }
-//        });
-
         $.each(arrListRequest, function (i, item) {
-
             if (item.pilih == "Y"){
                 result.push({
                     "id_obat":item.idobat,
@@ -825,6 +855,7 @@
                     $('#info_dialog').dialog('open');
                     $('body').scrollTop(0);
                 } else {
+                    $('#waiting_dialog').dialog('close');
                     $('#error_dialog').dialog('open');
                     $('#errorMessage').text(response.message);
                 }
@@ -956,17 +987,17 @@
     }
     // END
 
+    var tempObatGlobal = [];
     var arrObat = [];
     var arrPaging = [];
     var arrListRequest = [];
+    var paging = 10;
 
     function showListObat(){
         $("#body_po").html("");
         $("#paging_po").html("");
         arrListRequest = [];
         generateListObat();
-        selectPage(1);
-        generatePaging(1, 'normal');
     }
 
     function generateListObat() {
@@ -975,39 +1006,55 @@
         arrPaging = [];
 
         var idVendor = $("#nama_vendor option:selected").val();
-        var step = 10;
-
-        PermintaanVendorAction.getListObatByVendor(branchLogin, idVendor, function(res){
-
-            if (res.length > 0){
-
-                var fromnum         = 0;
-                var tonum           = 0;
-                $.each(res, function(i, item){
-
-                    if (arrObat.length == 0){
-                        fromnum = i;
-                    }
-
-                    arrObat.push({"ind":i, "idobat": item.idObat, "nama":item.namaObat, "idvendor":item.idVendor});
-                    var x = arrObat.length;
-                    var z = x % step;
-
-                    if (z == 0){
-                        tonum = i;
-                        arrPaging.push({"nomor":parseInt(arrPaging.length) + 1, "fromnum":fromnum, "tonum":tonum});
-                        fromnum = parseInt(i) + 1;
-                    }
-                });
-
-                var x = res.length;
-                var z = x % step;
-
-                if (z > 0){
-                    arrPaging.push({"nomor":parseInt(arrPaging.length) + 1, "fromnum":x - z, "tonum":x - 1});
-                }
-            };
+        $('#waiting_dialog_2').dialog('open');
+        dwr.engine.setAsync(true);
+        PermintaanVendorAction.getListObatByVendor(branchLogin, idVendor, {
+            callback: function(res){
+                $('#waiting_dialog_2').dialog('close');
+                setAppend(res, 'init');
+            }
         });
+    }
+
+    function setAppend(res, type){
+
+        arrObat = [];
+        arrPaging = [];
+        var fromnum         = 0;
+        var tonum           = 0;
+        if(res.length > 0){
+            $.each(res, function(i, item){
+
+                if (arrObat.length == 0){
+                    fromnum = i;
+                }
+
+                if('init' == type){
+                    arrObat.push({"ind":i, "idobat": item.idObat, "nama":item.namaObat, "idvendor":item.idVendor});
+                }else{
+                    arrObat.push({"ind":i, "idobat": item.idobat, "nama":item.nama, "idvendor":item.idvendor});
+                }
+
+                var x = arrObat.length;
+                var z = x % paging;
+
+                if (z == 0){
+                    tonum = i;
+                    arrPaging.push({"nomor":parseInt(arrPaging.length) + 1, "fromnum":fromnum, "tonum":tonum});
+                    fromnum = parseInt(i) + 1;
+                }
+            });
+
+            var x = res.length;
+            var z = x % paging;
+
+            if (z > 0){
+                arrPaging.push({"nomor":parseInt(arrPaging.length) + 1, "fromnum":x - z, "tonum":x - 1});
+            }
+        }
+
+        selectPage(1);
+        generatePaging(1, 'normal');
     }
 
     function generatePaging(nomor, jenis) {
@@ -1086,7 +1133,13 @@
 
                     if (parseInt(obat.ind) >= parseInt(page.fromnum) && parseInt(obat.ind) <= parseInt(page.tonum)){
                         var str = "<tr>" +
-                            "<td align='center'><input type='checkbox' id='pilih-"+obat.idobat+"' value='Y' onclick=\"addToListRequest(\'"+obat.idobat+"\')\"/></td>" +
+                            "<td align='center'>" +
+                            '<div class="form-check">\n' +
+                            '<input type="checkbox" name="hasil" id="pilih-' + obat.idobat + '" value="Y" onclick="addToListRequest(\''+obat.idobat+'\')">\n' +
+                            '<label for="pilih-' + obat.idobat + '"></label> \n'+
+                            '</div>' +
+                            // "<input type='checkbox' id='pilih-"+obat.idobat+"' value='Y' onclick=\"addToListRequest(\'"+obat.idobat+"\')\"/>" +
+                            "</td>" +
                             "<td>"+obat.idobat+"</td>" +
                             "<td>"+obat.nama+"</td>" +
                             "<td>Satuan Terkecil (Per Item)</td>" +
@@ -1099,6 +1152,9 @@
                         getValueFromArrRequest(obat.idobat);
                     }
                 });
+                var from = page.fromnum+1;
+                var to = page.tonum+1;
+                $('#show_info').text("Showing "+from+" to "+to+" of "+arrObat.length+" entries");
             }
         });
     }
@@ -1132,27 +1188,24 @@
 
         } else {
 
-            var qty         = $("#qty-"+idobat).val();
-            var hargaitem   = $("#harga-item-"+idobat).val();
-            var hargatotal  = $("#harga-total-"+idobat).val();
+            var qty         = $("#qty-"+idobat).val('');
+            var hargaitem   = $("#harga-item-"+idobat).val('');
+            var hargatotal  = $("#harga-total-"+idobat).val('');
 
-            $.each(arrListRequest, function (i, item) {
-                if (item.idobat == idobat){
-                    item.pilih      = "N";
-                    item.qty        = qty;
-                    item.hargaitem  = hargaitem;
-                    item.hargatotal = hargatotal;
-                }
+            var filter = arrListRequest.filter(res => {
+                return res.idobat != idobat;
             });
+
+            arrListRequest = filter;
         }
 
+        hitungTotal();
         getValueFromArrRequest(idobat);
     }
 
     function getValueFromArrRequest(idobat){
 
         var listFoundByIdObat = arrListRequest.filter(p => p.idobat == idobat);
-
         if (listFoundByIdObat.length > 0){
             $.each(listFoundByIdObat, function(i,item){
                 $("#qty-"+idobat).val(item.qty);
@@ -1228,10 +1281,48 @@
 
     function hitungTotal(){
         var total = 0;
-        $.each(arrListRequest, function(i, item){
-            total = parseInt(total) + parseInt(item.hargatotal);
-        });
+        if(arrListRequest.length > 0){
+            $.each(arrListRequest, function(i, item){
+                if(item.hargatotal != ''){
+                    total = parseInt(total) + parseInt(item.hargatotal);
+                }
+            });
+        }
         $("#total-request").html(formatRupiah(total));
+    }
+
+    function searchIntable(val){
+
+        if(tempObatGlobal.length == 0){
+            tempObatGlobal = arrObat;
+        }
+
+        if(val != ''){
+            var filter = tempObatGlobal.filter(res => {
+                return res.nama.toLowerCase().includes(val.toLowerCase()) || res.idobat.toLowerCase().includes(val.toLowerCase());
+            });
+            setAppend(filter, 'search');
+        }else{
+            setAppend(tempObatGlobal, 'search');
+        }
+    }
+
+    function pagingTable(val){
+        var valSearch = $('#val_search').val();
+        var arrgh = [];
+        paging = val;
+        arrgh = arrObat;
+        if(tempObatGlobal.length > 0){
+            arrgh = tempObatGlobal;
+            if(valSearch != ''){
+                var filter = tempObatGlobal.filter(res => {
+                    return res.nama.toLowerCase().includes(valSearch.toLowerCase()) || res.idobat.toLowerCase().includes(valSearch.toLowerCase());
+                });
+                arrgh = filter;
+            }
+        }
+        setAppend(arrgh, 'search');
+
     }
 
 </script>

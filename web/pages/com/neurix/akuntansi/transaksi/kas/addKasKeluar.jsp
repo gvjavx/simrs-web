@@ -230,6 +230,7 @@
                                                             $('.modal_add').val('');
                                                             $('#modal-add').modal('show');
                                                         }
+                                                        $("#table-body-nota").html("");
                                                     })
                                                 </script>
                                                 <button type="button" class="btn btn-warning" id="btnLampiran"><i
@@ -923,10 +924,58 @@
                                     <s:textfield id="mod_jumlah_pembayaran_add" readonly="true" cssClass="form-control modal_add" cssStyle="margin-top: 7px;margin-bottom: 14px" onkeyup="formatRupiah2(this)" />
                                 </div>
                             </div>
+                            <%--<div class="form-group">--%>
+                                <%--&lt;%&ndash;<label class="col-md-4" style="margin-top: 7px">Jumlah Pembayaran (RP)</label>&ndash;%&gt;--%>
+                                <%--&lt;%&ndash;<div class="col-md-8">&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;<s:textfield id="mod_jumlah_pembayaran_add" readonly="true" cssClass="form-control modal_add" cssStyle="margin-top: 7px;margin-bottom: 14px" onkeyup="formatRupiah2(this)" />&ndash;%&gt;--%>
+                                <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+                                    <%--<div class="col-md-12" style="text-align: center;padding-top:10px;">--%>
+                                        <%--&lt;%&ndash;<a href="javascript:void(0)">&ndash;%&gt;--%>
+                                            <%--&lt;%&ndash;<img  style="margin-top: 10px;display: none;" id="modBtnSearchNotaAdd" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">&ndash;%&gt;--%>
+                                        <%--&lt;%&ndash;</a>&ndash;%&gt;--%>
+                                        <%--&lt;%&ndash;<img  style="margin-top: 10px;display: none;" id="modBtnSearchNotaAdd" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">&ndash;%&gt;--%>
+                                        <%--<button class="btn btn-sm btn-primary" id="modBtnSearchNotaAdd"><i class="fa fa-search"></i> Choose</button>--%>
+                                    <%--</div>--%>
+
+                            <%--</div>--%>
                             <br>
                             <br>
+
+                            <%--<s:hidden id="mod_rekening_id_add"/>--%>
+
+
                         </div>
                     </div>
+                    <%--<hr>--%>
+                    <%--<div class="row">--%>
+                        <%--<div class="col-md-12">--%>
+                            <%--<label><i class="fa fa-list"></i> List Nota : </label>--%>
+                            <%--<table class="table table-bordered table-striped" id="table-nota" style="font-size: 13px;">--%>
+                                <%--<thead>--%>
+                                <%--<tr>--%>
+                                    <%--<td align="center">No.</td>--%>
+                                    <%--<td align="center">Kode Vendor</td>--%>
+                                    <%--<td>Rekening ID</td>--%>
+                                    <%--<td align="center">No. Nota</td>--%>
+                                    <%--<td align="right">Debit</td>--%>
+                                    <%--<td align="center">Select</td>--%>
+                                <%--</tr>--%>
+                                <%--</thead>--%>
+                                <%--<tbody id="table-body-nota">--%>
+
+                                <%--</tbody>--%>
+                            <%--</table>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<hr>--%>
+                    <%--<div class="row">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-md-4" style="margin-top: 7px">Jumlah Pembayaran (RP)</label>--%>
+                            <%--<div class="col-md-8">--%>
+                                <%--<s:textfield id="mod_jumlah_pembayaran_add" readonly="true" cssClass="form-control modal_add" cssStyle="margin-top: 7px;margin-bottom: 14px" onkeyup="formatRupiah2(this)" />--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -1557,10 +1606,12 @@
                         "<a href='javascript:;' class ='item-add-data' data ='" + item.noNota + "' bayar ='" + item.stJumlahPembayaran + "' rekeningId ='" + item.rekeningId + "'>" +
                         "<img border='0' src='<s:url value='/pages/images/add_task1.png'/>' name='icon_add'>" +
                         '</a>' +
+//                        '<input type="checkbox" id="input-check-'+item.noNota+'" onclick="saveToListNota(\''+item.noNota+'\')"/>' +
                         '</td>' +
                         "</tr>";
                 });
                 $('#tabelDaftarNota').append(tmp_table);
+//                $('#table-body-nota').html(tmp_table);
             });
             $("#modal-search-nota").modal('show');
         } else{
@@ -1577,6 +1628,50 @@
             alert(msg);
         }
     });
+
+    var listNotaChecked = [];
+    function saveToListNota(id){
+        var notachecked = $('#input-check-'+id).is(':checked');
+        var isNullList = listNotaChecked.length == 0;
+
+        if(notachecked){
+
+            // ketika dicentang
+
+            if (isNullList){
+                listNotaChecked.push({"nota":id, "pilih": "Y"});
+            } else {
+                var found = listNotaChecked.filter(p => p.nota == id).length > 0;
+
+                console.log(found);
+
+                if (!found){
+                    console.log("tidak ditemukan");
+                    listNotaChecked.push({"nota":id, "pilih": "Y"});
+                } else {
+                    $.each(listNotaChecked, function(i,item){
+                        if (item.nota == id){
+                            item.pilih = "Y"
+                        }
+                    });
+                }
+            }
+        } else {
+
+            // ketika tidak dicentang
+            console.log("klik tidak dicentang");
+
+            if (!isNullList){
+                $.each(listNotaChecked, function(i,item){
+                    if (item.nota == id){
+                        item.pilih = "N"
+                    }
+                });
+            }
+        }
+
+        console.log(listNotaChecked);
+    }
 
     $('#mod_btnSaveDetailAdd').click(function () {
         var pengajuanDetailId = $('#mod_pengajuan_detail_id').val();
@@ -1610,7 +1705,8 @@
             alert(msg);
         }else{
             //jika pengajuan biasa
-            KasAction.saveKasDetail(kodeVendor,namaVendor,noNota,jumlahPembayaran,rekeningId,'','','',tipePengajuanBiaya,pengajuanDetailId,'',function (result) {
+//            KasAction.saveKasDetail(kodeVendor,namaVendor,noNota,jumlahPembayaran,rekeningId,'','','',tipePengajuanBiaya,pengajuanDetailId,'',function (result) {
+            KasAction.saveKasDetail(kodeVendor,namaVendor,noNota,jumlahPembayaran,rekeningId,idDivisi,namaDivisi,'',tipePengajuanBiaya,pengajuanDetailId,'',function (result) {
                 if (result==""){
                     loadDetailPembayaran();
                     //dihitung totalbayarnya

@@ -55,16 +55,6 @@ public class ObatMobile implements Serializable {
     private String status;
     private String msg;
 
-    //SYAMS 15JUN21 => TAMBAH setActionError
-    private String actionError;
-
-    public String getActionError() {
-        return actionError;
-    }
-
-    public void setActionError(String actionError) {
-        this.actionError = actionError;
-    }
 
     public String getStatus() {
         return status;

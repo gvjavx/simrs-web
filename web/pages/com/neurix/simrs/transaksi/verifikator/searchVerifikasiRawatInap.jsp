@@ -14,6 +14,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/VerifikatorAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/DiagnosaRawatAction.js"/>'></script>
     <script type='text/javascript'>
 
         $( document ).ready(function() {
@@ -247,7 +248,7 @@
                             <table class="table table-striped">
                                 <tr style="display: none" id="form_no_sep">
                                     <td><b>No SEP</b></td>
-                                    <td style="vertical-align: middle"><span style="background-color: #00a65a; color: white; border-radius: 5px; border: 1px solid black; padding: 5px" id="det_no_sep"></span></td>
+                                    <td><span class="span-success" id="det_no_sep"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>No RM</b></td>
@@ -291,8 +292,13 @@
                                 </tr>
                                 <tr>
                                     <td><b>Jenis Pasien</b></td>
-                                    <td><span style="background-color: #286090; color: white; border-radius: 5px; border: 1px solid black; padding: 5px" id="det_jenis_pasien"></span></td>
+                                    <td><span class="span-success" id="det_jenis_pasien"></span></td>
                                 </tr>
+                                <tr>
+                                    <td><b>Status Kelas</b></td>
+                                    <td><span id="det_status_kelas"></span></td>
+                                </tr>
+
                             </table>
                         </div>
 
@@ -557,6 +563,7 @@
 
     var idDetailCheckup = '';
     var jenisPeriksaPasien = '';
+    var totalTindakanBpjs = 0;
 
     function formatRupiah(angka) {
         if(angka != "" && angka > 0){
@@ -568,53 +575,6 @@
             return 0;
         }
 
-    }
-
-    function hitungStatusBiaya(idDetailCheckup) {
-        dwr.engine.setAsync(true);
-        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RI", {callback: function (response) {
-                if (response.tarifBpjs != null && response.tarifTindakan != null) {
-                    var coverBiaya = response.tarifBpjs;
-                    var biayaTindakan = response.tarifTindakan;
-
-                    var persen = "";
-                    if (coverBiaya != '' && biayaTindakan) {
-                        persen = ((parseInt(biayaTindakan) / parseInt(coverBiaya)) * 100).toFixed(2);
-                    } else {
-                        persen = 0;
-                    }
-
-                    var barClass = "";
-                    var barLabel = "";
-
-                    if (parseInt(persen) > 70) {
-                        barClass = 'progress-bar-danger';
-                    } else if (parseInt(persen) > 50) {
-                        barClass = 'progress-bar-warning';
-                    } else {
-                        barClass = 'progress-bar-success';
-                    }
-
-                    var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">' + "100.00%" + '</div>';
-
-                    var barTindakan = '<div class="progress-bar ' + barClass + '" style="width: ' + persen + '%" role="progressbar" aria-valuenow="' + persen + '" aria-valuemin="0" aria-valuemax="100">' + persen + "%" + '</div>';
-
-                    if (coverBiaya != '') {
-                        $('#sts_cover_biaya').html(barBpjs);
-                        $('#b_bpjs').html(formatRupiah(coverBiaya) + " (100%)");
-                        $('#fin_sts_cover_biaya').html(barBpjs);
-                        $('#fin_b_bpjs').html(formatRupiah(coverBiaya) + " (100%)");
-                    }
-
-                    if (biayaTindakan != '') {
-                        $('#sts_biaya_tindakan').html(barTindakan);
-                        $('#b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
-                        $('#fin_sts_biaya_tindakan').html(barTindakan);
-                        $('#fin_b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
-                    }
-                }
-            }
-        });
     }
 
     function detailTindakan(idCheckup, iddetail) {
@@ -647,7 +607,6 @@
                             $('#form_no_sep').show();
                             $('#form_kategori').show();
                             $('#form_status').show();
-                            hitungStatusBiaya(idDetailCheckup);
                         }else{
                             $('#form_no_sep').hide();
                             $('#form_kategori').hide();
@@ -670,11 +629,17 @@
                         $('#tin_id_detail_checkup').val(idDetailCheckup);
                         $('#det_no_rm').html(response.idPasien);
                         $('#det_nama_poli').html(response.namaPelayanan);
-                        setLabelJenisPasien('det_jenis_pasien', response.idJenisPeriksaPasien);
+                        // setLabelJenisPasien('det_jenis_pasien', response.idJenisPeriksaPasien);
                         $('#det_jenis_pasien').html(response.statusPeriksaName);
                         $('#h_no_checkup').val(response.noCheckup);
                         $('#h_jenis_pasien').val(response.idJenisPeriksaPasien);
                         $('#h_id_pasien').val(response.idPasien);
+                        if(response.statusNaikKelas == "Sesuai Hak Kelas"){
+                            $('#det_status_kelas').html('<span class="span-success">'+response.statusNaikKelas+'</span>');
+                        }else{
+                            $('#det_status_kelas').html('<span class="span-warning">'+response.statusNaikKelas+'</span>');
+                        }
+
                         jenisPeriksaPasien = response.idJenisPeriksaPasien;
                         listTindakan(idCheckup, idDetailCheckup, response.idJenisPeriksaPasien, response.idPasien, response.noSep);
                         $('#modal-detail-pasien').modal({show: true, backdrop: 'static'});
@@ -689,6 +654,7 @@
         if(!cekSession()){
             var table = "";
             var total = 0;
+            var totalBpjs = 0;
             var cekPending = false;
             var cekTindakan = false;
             startLoad();
@@ -761,6 +727,9 @@
                                 if (item.totalTarif != null) {
                                     tarif = item.totalTarif;
                                     total = (parseInt(total) + parseInt(tarif));
+                                    if(item.jenisPasien == "bpjs"){
+                                        totalBpjs = (parseInt(totalBpjs) + parseInt(tarif));
+                                    }
                                 }
 
                                 if (jenisPasien == "bpjs_rekanan") {
@@ -816,7 +785,9 @@
                                 }
                             });
                             table = table + '<tr><td colspan="2">Total Semua Tindakan</td><td align="right">' + formatRupiah(total) + '</td><td></td><td></td></tr>';
+                            totalTindakanBpjs = totalBpjs;
                             $('#body_tindakan').html(table);
+                            hitungStatusBiaya(idDetailCheckup);
                         }
                         if(cekPending){
                             $('#save_verif').hide();
@@ -840,6 +811,53 @@
                     }
                 });
         }
+    }
+
+    function hitungStatusBiaya(idDetailCheckup) {
+        dwr.engine.setAsync(true);
+        CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RI", {callback: function (response) {
+                if (response.tarifBpjs != null && totalTindakanBpjs != null) {
+                    var coverBiaya = response.tarifBpjs;
+                    var biayaTindakan = totalTindakanBpjs;
+
+                    var persen = "";
+                    if (coverBiaya != '' && biayaTindakan) {
+                        persen = ((parseInt(biayaTindakan) / parseInt(coverBiaya)) * 100).toFixed(2);
+                    } else {
+                        persen = 0;
+                    }
+
+                    var barClass = "";
+                    var barLabel = "";
+
+                    if (parseInt(persen) > 70) {
+                        barClass = 'progress-bar-danger';
+                    } else if (parseInt(persen) > 50) {
+                        barClass = 'progress-bar-warning';
+                    } else {
+                        barClass = 'progress-bar-success';
+                    }
+
+                    var barBpjs = '<div class="progress-bar progress-bar-primary" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">' + "100.00%" + '</div>';
+
+                    var barTindakan = '<div class="progress-bar ' + barClass + '" style="width: ' + persen + '%" role="progressbar" aria-valuenow="' + persen + '" aria-valuemin="0" aria-valuemax="100">' + persen + "%" + '</div>';
+
+                    if (coverBiaya != '') {
+                        $('#sts_cover_biaya').html(barBpjs);
+                        $('#b_bpjs').html(formatRupiah(coverBiaya) + " (100%)");
+                        $('#fin_sts_cover_biaya').html(barBpjs);
+                        $('#fin_b_bpjs').html(formatRupiah(coverBiaya) + " (100%)");
+                    }
+
+                    if (biayaTindakan != '') {
+                        $('#sts_biaya_tindakan').html(barTindakan);
+                        $('#b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
+                        $('#fin_sts_biaya_tindakan').html(barTindakan);
+                        $('#fin_b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
+                    }
+                }
+            }
+        });
     }
 
     function updateApproveFlag(idTindakan, i, idDetailCheckup, jenisPasien){
@@ -1089,7 +1107,6 @@
                     dwr.engine.setAsync(true);
                     DiagnosaRawatAction.editDiagnosa(id, idDiag, jenisDiagnosa, ketDiagnosa, jenisPeriksaPasien, idDetailCheckup, {
                         callback: function (response) {
-                            console.log(response);
                             if (response.status == "success") {
                                 dwr.engine.setAsync(false);
                                 listDiagnosa(idDetailCheckup);
@@ -1107,7 +1124,6 @@
                     dwr.engine.setAsync(true);
                     DiagnosaRawatAction.saveDiagnosa(idDetailCheckup, idDiag, jenisDiagnosa, ketDiagnosa, jenisPeriksaPasien, {
                         callback: function (response) {
-                            console.log(response.list);
                             if (response.status == "success") {
                                 dwr.engine.setAsync(false);
                                 listDiagnosa(idDetailCheckup);

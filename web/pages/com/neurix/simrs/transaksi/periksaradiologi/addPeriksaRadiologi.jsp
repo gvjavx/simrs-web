@@ -1692,6 +1692,7 @@
                     $('.nip_petugas').val(res.status);
 
                     $('.nama_dokter').val(res.msg);
+                    $('.sip_dokter').val(res.status);
                 }
             }
         });
@@ -1857,7 +1858,7 @@
                         'jenis_pasien': jenisPeriksaPasien,
                         'id_pelayanan': idPelayanan[i].value,
                         'id_ruangan': idRuangan,
-                        'approve_flag': 'Y'
+                        'is_pelayanan': 'N'
                     });
                 });
                 $('#save_tindakan').hide();
@@ -1955,7 +1956,7 @@
         var option = "<option value=''> - </option>";
         if (idKategori != '') {
             dwr.engine.setAsync(true);
-            CheckupDetailAction.getListComboTindakan(idKategori, "", "N", null, {
+            CheckupDetailAction.getListComboTindakan(idKategori, null, "N", null, null, {
                 callback:function (response) {
                     if (response != null) {
                         $.each(response, function (i, item) {
@@ -2060,13 +2061,11 @@
     }
 
     function listTindakan() {
-
         var table = "";
         var table2 = "";
         var data = [];
         var trfTtl = 0;
-        TindakanRawatAction.listTindakanRawat(idDetailCheckup, function (response) {
-            console.log(response);
+        TindakanRawatAction.listTindakanRawat(idDetailCheckup, "N", function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     var tanggal = item.createdDate;

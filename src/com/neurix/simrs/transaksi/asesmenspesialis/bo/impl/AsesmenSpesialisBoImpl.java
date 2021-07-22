@@ -31,6 +31,9 @@ public class AsesmenSpesialisBoImpl implements AsesmenSpesialisBo {
             if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
+            if (bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup())) {
+                hsCriteria.put("no_checkup", bean.getNoCheckup());
+            }
             if (bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())) {
                 hsCriteria.put("keterangan", bean.getKeterangan());
             }
@@ -74,6 +77,7 @@ public class AsesmenSpesialisBoImpl implements AsesmenSpesialisBo {
                     asesmenSpesialis.setLastUpdateWho(entity.getLastUpdateWho());
                     asesmenSpesialis.setNamaTerang(entity.getNamaTerang());
                     asesmenSpesialis.setSip(entity.getSip());
+                    asesmenSpesialis.setNoCheckup(entity.getNoCheckup());
                     list.add(asesmenSpesialis);
                 }
             }
@@ -111,6 +115,7 @@ public class AsesmenSpesialisBoImpl implements AsesmenSpesialisBo {
                     spesialisEntity.setLastUpdateWho(bean.getLastUpdateWho());
                     spesialisEntity.setNamaTerang(bean.getNamaTerang());
                     spesialisEntity.setSip(bean.getSip());
+                    spesialisEntity.setNoCheckup(bean.getNoCheckup());
 
                     try {
                         asesmenSpesialisDao.addAndSave(spesialisEntity);

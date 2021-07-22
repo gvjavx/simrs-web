@@ -550,9 +550,19 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             pelayanan = "\n AND b.id_pelayanan IN (" + poli + ") \n";
         }
 
-        String SQL = "SELECT a.id_pasien, a.nama, a.desa_id, d.desa_name, b.id_pelayanan,\n" +
-                "c.nama_pelayanan, d.kecamatan_id, e.kecamatan_name, b.tgl_antrian, rc.flag_racik,\n" +
-                "pr.id_permintaan_resep, pr.status\n" +
+        String SQL = "SELECT \n" +
+                "a.id_pasien, \n" +
+                "a.nama, \n" +
+                "a.desa_id, \n" +
+                "d.desa_name, \n" +
+                "b.id_pelayanan,\n" +
+                "c.nama_pelayanan, \n" +
+                "d.kecamatan_id, \n" +
+                "e.kecamatan_name, \n" +
+                "b.tgl_antrian, \n" +
+                "rc.flag_racik,\n" +
+                "pr.id_permintaan_resep, \n" +
+                "pr.status\n" +
                 "FROM it_simrs_header_checkup a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                 "INNER JOIN im_hris_desa d ON CAST(a.desa_id AS character varying) = d.desa_id\n" +
@@ -567,8 +577,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "b.divisi_id,\n" +
                 "b.kode_vclaim\n" +
                 "FROM im_simrs_pelayanan a\n" +
-                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON c.id_pelayanan = pr.tujuan_pelayanan\n" +
-                "INNER JOIN im_simrs_pelayanan pl ON pl.id_pelayanan = b.id_pelayanan\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
+                ") c ON c.id_pelayanan = b.id_pelayanan\n" +
                 "LEFT JOIN \n" +
                 "(\n" +
                 "\tSELECT \n" +
@@ -591,7 +601,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "AND pr.status IS NOT NULL\n" +
                 "AND pr.flag = 'Y'\n" +
                 "AND a.branch_id LIKE :branchId \n" + pelayanan +
-                "AND pl.tipe_pelayanan IN ('rawat_jalan', 'igd')  \n" +
+                "AND c.tipe_pelayanan IN ('rawat_jalan', 'igd')  \n" +
                 "AND CAST(pr.created_date AS date) = current_date \n" +
                 "AND pr.status IN ('0', '1')\n" +
                 "ORDER BY c.nama_pelayanan, pr.tgl_antrian ASC";
@@ -941,8 +951,29 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setNadi(hdr.getNadi());
                     checkup.setPernafasan(hdr.getPernafasan());
                     checkup.setSpo2(hdr.getSpo2());
-                    checkup.setIdKelasRuangan(getDataRuangan(checkup.getIdRuangan()).getIdKelasRuangan());
-                    checkup.setKategoriRuangan(getDataRuangan(checkup.getIdRuangan()).getKategori());
+                    Ruangan ruangan = getDataRuangan(checkup.getIdRuangan());
+                    if(ruangan != null){
+                        checkup.setIdKelasRuangan(ruangan.getIdKelasRuangan());
+                        checkup.setKategoriRuangan(ruangan.getKategori());
+                        checkup.setIdKelasBpjs(ruangan.getIdKelasBpjs());
+                        if(checkup.getKelasPasien() != null && !"".equalsIgnoreCase(checkup.getKelasPasien()) &&
+                           checkup.getIdKelasBpjs() != null && !"".equalsIgnoreCase(checkup.getIdKelasBpjs())){
+                            Integer kelasPasien = Integer.valueOf(checkup.getKelasPasien());
+                            Integer idKelasBpjs = Integer.valueOf(checkup.getIdKelasBpjs());
+                            String statusNaik = "";
+                            if(idKelasBpjs < kelasPasien){
+                                statusNaik = "Naik Kelas";
+                            }else if(idKelasBpjs > kelasPasien){
+                                statusNaik = "Turun Kelas";
+                            }else if(kelasPasien == idKelasBpjs){
+                                statusNaik = "Sesuai Hak Kelas";
+                            }else{
+                                statusNaik = "Status Hak Kelas Tidak Ditemukan";
+                            }
+                            checkup.setStatusNaikKelas(statusNaik);
+                        }
+                    }
+
                     checkup.setPenyakitDahulu(getRiwayatPenyakit(checkup.getIdPasien()));
                 }
             }
@@ -958,7 +989,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "a.id_tempat_tidur,\n" +
                     "b.id_ruangan,\n" +
                     "b.id_kelas_ruangan,\n" +
-                    "c.kategori\n" +
+                    "c.kategori,\n" +
+                    "c.id_kelas_bpjs\n"+
                     "FROM mt_simrs_ruangan_tempat_tidur a\n" +
                     "INNER JOIN mt_simrs_ruangan b ON a.id_ruangan = b.id_ruangan\n" +
                     "INNER JOIN im_simrs_kelas_ruangan c ON b.id_kelas_ruangan = c.id_kelas_ruangan\n"+
@@ -975,6 +1007,9 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 }
                 if(obj[3] != null){
                     res.setKategori(obj[3].toString());
+                }
+                if(obj[4] != null){
+                    res.setIdKelasBpjs(obj[4].toString());
                 }
             }
         }
