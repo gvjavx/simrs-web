@@ -26,6 +26,7 @@ import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import com.neurix.hris.transaksi.refreshLembur.bo.RefreshLemburBo;
 import com.neurix.hris.transaksi.refreshLembur.dao.RefreshLemburDao;
 import com.neurix.hris.transaksi.refreshLembur.model.ItHrisRefreshLemburEntity;
+import com.neurix.hris.transaksi.refreshLembur.model.RefreshLembur;
 import org.hibernate.HibernateException;
 
 import org.apache.log4j.Logger;
@@ -97,8 +98,122 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
         this.payrollDao = payrollDao;
     }
 
+    @Override
+    public void saveDelete(RefreshLembur bean) throws GeneralBOException {
+
+    }
+
+    @Override
+    public void saveEdit(RefreshLembur bean) throws GeneralBOException {
+
+    }
+
+    @Override
+    public RefreshLembur saveAdd(RefreshLembur bean) throws GeneralBOException {
+        return null;
+    }
+
+    @Override
+    public List<RefreshLembur> getByCriteria(RefreshLembur searchBean) throws GeneralBOException {
+        logger.info("[RefreshLemburBoImpl.getByCriteria] start process >>>");
+
+        // Mapping with collection and put
+        List<RefreshLembur> listOfResult = new ArrayList();
+
+        if (searchBean != null) {
+            Map hsCriteria = new HashMap();
+
+            if (searchBean.getGroupRefreshId() != null && !"".equalsIgnoreCase(searchBean.getGroupRefreshId())) {
+                hsCriteria.put("group_id", searchBean.getLemburId());
+            }
+
+            if (searchBean.getStTglAwalLembur() != null && !"".equalsIgnoreCase(String.valueOf(searchBean.getStTglAwalLembur()))) {
+                Date tanggalDari = CommonUtil.convertToDate(searchBean.getStTglAwalLembur());
+                hsCriteria.put("tanggal_dari", tanggalDari);
+            }
+            if (searchBean.getStTglAkhirLembur() != null && !"".equalsIgnoreCase(String.valueOf(searchBean.getStTglAkhirLembur()))) {
+                Date tanggalSelesai = CommonUtil.convertToDate(searchBean.getStTglAkhirLembur());
+                hsCriteria.put("tanggal_selesai", tanggalSelesai);
+            }
+            if (searchBean.getFlagApprove() !=null&& !"".equalsIgnoreCase(String.valueOf(searchBean.getFlagApprove()))) {
+                if (searchBean.getFlagApprove().equalsIgnoreCase("0")){
+                    searchBean.setFlagApprove("0");
+                }
+                hsCriteria.put("approval_flag", searchBean.getFlagApprove());
+            }
+            hsCriteria.put("flag", "Y");
+
+
+            List<ItHrisRefreshLemburEntity> refreshLemburEntityList = null;
+            try {
+                refreshLemburEntityList = refreshLemburDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e) {
+                logger.error("[RefreshLemburBoImpl.getByCriteria] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+            }
+            if(refreshLemburEntityList != null){
+                RefreshLembur returnRefreshLembur;
+                // Looping from dao to object and save in collection
+                for(ItHrisRefreshLemburEntity refreshLemburEntity : refreshLemburEntityList){
+                    returnRefreshLembur = new RefreshLembur();
+
+                    returnRefreshLembur.setRefreshLemburId(refreshLemburEntity.getRefreshLemburId());
+                    returnRefreshLembur.setGroupRefreshId(refreshLemburEntity.getGroupRefreshId());
+                    returnRefreshLembur.setAbsensiPegawaiId(refreshLemburEntity.getAbsensiPegawaiId());
+                    returnRefreshLembur.setTanggal(refreshLemburEntity.getTanggal());
+                    returnRefreshLembur.setStTanggal(CommonUtil.convertDateToString(returnRefreshLembur.getTanggal()));
+                    returnRefreshLembur.setNama(refreshLemburEntity.getNama());
+                    returnRefreshLembur.setJamMasuk(refreshLemburEntity.getJamMasuk());
+                    returnRefreshLembur.setJamKeluar(refreshLemburEntity.getJamKeluar());
+                    returnRefreshLembur.setJenisLembur(refreshLemburEntity.getJenisLembur());
+                    returnRefreshLembur.setLamaLembur(refreshLemburEntity.getLamaLembur());
+                    returnRefreshLembur.setStLamaLembur(Double.toString(returnRefreshLembur.getLamaLembur()));
+                    returnRefreshLembur.setJamLembur(refreshLemburEntity.getJamLembur());
+                    returnRefreshLembur.setStJamLembur(Double.toString(returnRefreshLembur.getJamLembur()));
+                    returnRefreshLembur.setBiayaLembur(returnRefreshLembur.getBiayaLembur());
+                    returnRefreshLembur.setStBiayaLembur(Double.toString(returnRefreshLembur.getBiayaLembur()));
+                    returnRefreshLembur.setTipeHari(refreshLemburEntity.getTipeHari());
+                    returnRefreshLembur.setRealisasiLembur(refreshLemburEntity.getRealisasiLembur());
+                    returnRefreshLembur.setStRealisasiLembur(Double.toString(returnRefreshLembur.getRealisasiLembur()));
+                    returnRefreshLembur.setBranchId(refreshLemburEntity.getBranchId());
+                    
+                    returnRefreshLembur.setLemburId(refreshLemburEntity.getLemburId());
+                    returnRefreshLembur.setTglAwalLembur(refreshLemburEntity.getTglAwalLembur());
+                    returnRefreshLembur.setStTglAwalLembur(CommonUtil.convertDateToString(returnRefreshLembur.getTglAwalLembur()));
+                    returnRefreshLembur.setTglAkhirLembur(refreshLemburEntity.getTglAkhirLembur());
+                    returnRefreshLembur.setStTglAkhirLembur(CommonUtil.convertDateToString(returnRefreshLembur.getTglAkhirLembur()));
+                    returnRefreshLembur.setJamAwalLembur(refreshLemburEntity.getJamAwalLembur());
+                    returnRefreshLembur.setJamAkhirLembur(refreshLemburEntity.getJamAkhirLembur());
+                    returnRefreshLembur.setFlag(refreshLemburEntity.getFlagApprove());
+                    returnRefreshLembur.setApprovalwho(refreshLemburEntity.getApprovalwho());
+                    
+                    returnRefreshLembur.setFlag(refreshLemburEntity.getFlag());
+                    returnRefreshLembur.setAction(refreshLemburEntity.getAction());
+                    returnRefreshLembur.setLastUpdate(refreshLemburEntity.getLastUpdate());
+                    returnRefreshLembur.setCreatedDate(refreshLemburEntity.getCreatedDate());
+                    returnRefreshLembur.setCreatedWho(refreshLemburEntity.getCreatedWho());
+                    returnRefreshLembur.setLastUpdateWho(refreshLemburEntity.getLastUpdateWho());
+                    
+                    listOfResult.add(returnRefreshLembur);
+                }
+            }
+        }
+        logger.info("[RefreshLemburBoImpl.getByCriteria] end process <<<");
+        return listOfResult;    
+    }
+
+    @Override
+    public List<RefreshLembur> getAll() throws GeneralBOException {
+        return null;
+    }
+
+    @Override
+    public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
+        return null;
+    }
+
     public void refreshAbsensiLembur(List<Lembur> lemburList, Date tanggal, Boolean chance) throws GeneralBOException{
-        logger.info("[AbsensiBoImpl.refreshLembur] START >>>>>>");
+        logger.info("[RefreshLemburBoImpl.refreshLembur] START >>>>>>");
 
         String groupId = "";
 
@@ -125,7 +240,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
                     String refreshLemburId = refreshLemburDao.getNextRefreshLemburId();
                     refreshLembur.setRefreshLemburId(refreshLemburId);
                 }catch (HibernateException e){
-                    logger.error("[AbsensiBoImpl.refreshAbsensiLembur] Error, " + e.getMessage());
+                    logger.error("[RefreshLemburBoImpl.refreshAbsensiLembur] Error, " + e.getMessage());
                     throw new GeneralBOException(e.getMessage());
                 }
 
@@ -160,7 +275,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
                 refreshLembur.setLastUpdate(updateTime);
                 refreshLembur.setCreatedWho(userLogin);
                 refreshLembur.setLastUpdateWho(userLogin);
-                refreshLembur.setFlagApprove("N");
+                refreshLembur.setFlagApprove("0");
 
                 if(chance){
                     refreshLembur.setFlagApprove("Y");
@@ -188,7 +303,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
                 }
             }
         }
-        logger.info("[AbsensiBoImpl.refreshLembur] END >>>>>>>>");
+        logger.info("[RefreshLemburBoImpl.refreshLembur] END >>>>>>>>");
     }
 
     private Lembur calcBiayaLembur(Lembur lembur, AbsensiPegawaiEntity absensiPegawai) throws GeneralBOException{
@@ -204,7 +319,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
             ImCompany company = companyDao.getCompanyInfo("Y");
             tahunGaji = company.getPeriodeGaji();
         }catch (HibernateException e) {
-            logger.error("[AbsensiBoImpl.cronInquiry] Error " + e.getMessage());
+            logger.error("[RefreshLemburBoImpl.cronInquiry] Error " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
 
@@ -215,7 +330,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
         try {
             pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
         } catch (HibernateException e) {
-            logger.error("[AbsensiBoImpl.cronInquiry] Error " + e.getMessage());
+            logger.error("[RefreshLemburBoImpl.cronInquiry] Error " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
 
@@ -235,7 +350,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
             try{
                 payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(lembur.getGolonganId(), tahunGaji);
             }catch (HibernateException e){
-                logger.error("[AbsensiBoImpl.getDetailLembur] Error, " + e.getMessage());
+                logger.error("[RefreshLemburBoImpl.getDetailLembur] Error, " + e.getMessage());
                 throw new GeneralBOException("Problem when retrieving Skala Gaji, " + e.getMessage());
             }
             for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
@@ -246,7 +361,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
             try{
                 payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(lembur.getGolonganId(), tahunGaji);
             }catch (HibernateException e){
-                logger.error("[AbsensiBoImpl.getDetailLembur] Error, " + e.getMessage());
+                logger.error("[RefreshLemburBoImpl.getDetailLembur] Error, " + e.getMessage());
                 throw new GeneralBOException("Problem when retrieving Skala Gaji PKWT, " + e.getMessage());
             }
             for (ImPayrollSkalaGajiPkwtEntity skalaGajiLoop : payrollSkalaGajiPkwtEntityList) {
@@ -271,7 +386,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
             jamAwalLembur = dateFormat.parse(lembur.getJamAwal());
             jamAkhirLembur = dateFormat.parse(lembur.getJamAkhir());
         }catch (ParseException e){
-            logger.error("[AbsensiBoImpl.cronInquiry] Error " + e.getMessage());
+            logger.error("[RefreshLemburBoImpl.cronInquiry] Error " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
 
@@ -321,7 +436,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
                     try {
                         jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
                     } catch (HibernateException e) {
-                        logger.error("[AbsensiBoImpl.getWaktuLembur] Error, " + e.getMessage());
+                        logger.error("[RefreshLemburBoImpl.getWaktuLembur] Error, " + e.getMessage());
                         throw new GeneralBOException("Found problem when retrieving Jam Lembur by criteria, " + e.getMessage());
                     }
                     for (JamLemburEntity jamLemburEntity : jamLemburEntityList) {
@@ -340,7 +455,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
         try {
             personPosition = personilPositionDao.getJenisPegawaiByNip(absensiPegawai.getNip());
         } catch (HibernateException e) {
-            logger.error("[AbsensiBoImpl.cronInquiry] Error " + e.getMessage());
+            logger.error("[RefreshLemburBoImpl.cronInquiry] Error " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
 
@@ -348,7 +463,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
         try {
             prosentase = jenisPegawaiDao.getPersenGaji(personPosition);
         } catch (HibernateException e) {
-            logger.error("[AbsensiBoImpl.cronInquiry] Error " + e.getMessage());
+            logger.error("[RefreshLemburBoImpl.cronInquiry] Error " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
         //RAKA-end
@@ -394,7 +509,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
         try {
             itPayrollEntityList = payrollDao.getTunjanganPeralihanForAbsensi(nip, tahun);
         } catch (HibernateException e) {
-            logger.error("[AbsensiBoImpl.getPeralihanGapok] Error, " + e.getMessage());
+            logger.error("[RefreshLemburBoImpl.getPeralihanGapok] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when retrieving Tunjangan Peralihan For Absensi, " + e.getMessage());
         }
         for (ItHrisPayrollEntity itPayrollEntity : itPayrollEntityList) {

@@ -12,7 +12,7 @@
           p:refreshLemburDao-ref="refreshLemburDao"
           />
 
-    <bean id="absensiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+    <bean id="refreshLemburBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="refreshLemburBo">
         <property name="interceptorNames">
             <list>
@@ -21,5 +21,8 @@
             </list>
         </property>
     </bean>
+
+    <bean id="refreshLemburDao" class="com.neurix.hris.transaksi.refreshLembur.dao.RefreshLemburDao"
+          p:sessionFactory-ref="sessionFactory"/>
 
 </beans>

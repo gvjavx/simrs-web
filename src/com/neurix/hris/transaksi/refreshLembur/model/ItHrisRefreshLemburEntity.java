@@ -11,6 +11,7 @@ import java.util.Objects;
 public class ItHrisRefreshLemburEntity {
     private String refreshLemburId;
     private String groupRefreshId;
+
     private String absensiPegawaiId;
     private Date tanggal;
     private String nama;
@@ -23,6 +24,7 @@ public class ItHrisRefreshLemburEntity {
     private String tipeHari;
     private Double realisasiLembur;
     private String branchId;
+
     private String lemburId;
     private Date tglAwalLembur;
     private Date tglAkhirLembur;

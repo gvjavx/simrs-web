@@ -29,29 +29,31 @@ public class RefreshLemburDao extends GenericDao<ItHrisRefreshLemburEntity, Stri
 
         // Get Collection and sorting
         if (mapCriteria != null) {
-            if (mapCriteria.get("lembur_id") != null) {
-                criteria.add(Restrictions.ilike("lemburId", "%" + (String) mapCriteria.get("lembur_id") + "%"));
-            }
-            if (mapCriteria.get("nip") != null) {
-                criteria.add(Restrictions.ilike("nip", "%" + (String) mapCriteria.get("nip") + "%"));
+            if (mapCriteria.get("group_id") != null) {
+                criteria.add(Restrictions.ilike("groupRefreshId", "%" + (String) mapCriteria.get("group_id") + "%"));
             }
 
             if (mapCriteria.get("tanggal_dari") != null && mapCriteria.get("tanggal_selesai") != null) {
-                criteria.add(Restrictions.between("tanggalAwal", mapCriteria.get("tanggal_dari"), mapCriteria.get("tanggal_selesai")));
-                criteria.add(Restrictions.between("tanggalAkhir", mapCriteria.get("tanggal_dari"), mapCriteria.get("tanggal_selesai")));
+                criteria.add(Restrictions.between("tanggal", mapCriteria.get("tanggal_dari"), mapCriteria.get("tanggal_selesai")));
+                criteria.add(Restrictions.between("tanggal", mapCriteria.get("tanggal_dari"), mapCriteria.get("tanggal_selesai")));
             } else {
                 if (mapCriteria.get("tanggal_dari") != null) {
-                    criteria.add(Restrictions.ge("tanggalAwal", mapCriteria.get("tanggal_dari")));
+                    criteria.add(Restrictions.ge("tanggal", mapCriteria.get("tanggal_dari")));
                 }
                 if (mapCriteria.get("tanggal_selesai") != null) {
-                    criteria.add(Restrictions.le("tanggalAkhir", mapCriteria.get("tanggal_selesai")));
+                    criteria.add(Restrictions.le("tanggal", mapCriteria.get("tanggal_selesai")));
                 }
             }
+
+            if (mapCriteria.get("approval_flag") != null) {
+                criteria.add(Restrictions.ilike("flagApprove", "%" + (String) mapCriteria.get("approval_flag") + "%"));
+            }
+
         }
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
-        criteria.addOrder(Order.desc("lemburId"));
+        criteria.addOrder(Order.desc("tanggal"));
 
         List<ItHrisRefreshLemburEntity> results = criteria.list();
 
