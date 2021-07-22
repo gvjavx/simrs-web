@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.hris.transaksi.refreshLembur.model.ItHrisRefreshLemburEntity" table="it_hris_refresh_lembur" schema="public">
+        <id name="refreshLemburId">
+            <column name="refresh_lembur_id" sql-type="varchar"/>
+        </id>
+        <property name="groupRefreshId">
+            <column name="group_refresh_id" sql-type="varchar"/>
+        </property>
+        <property name="absensiPegawaiId">
+            <column name="absensi_pegawai_id" sql-type="varchar"/>
+        </property>
+        <property name="tanggal">
+            <column name="tanggal" sql-type="date"/>
+        </property>
+        <property name="nama">
+            <column name="nama" sql-type="varchar"/>
+        </property>
+        <property name="jamMasuk">
+            <column name="jam_masuk" sql-type="varchar"/>
+        </property>
+        <property name="jamKeluar">
+            <column name="jam_keluar" sql-type="varchar"/>
+        </property>
+        <property name="jenisLembur">
+            <column name="jenis_lembur" sql-type="varchar"/>
+        </property>
+        <property name="lamaLembur">
+            <column name="lama_lembur" sql-type="numeric"/>
+        </property>
+        <property name="jamLembur">
+            <column name="jam_lembur" sql-type="numeric"/>
+        </property>
+        <property name="biayaLembur">
+            <column name="biaya_lembur" sql-type="numeric"/>
+        </property>
+        <property name="tipeHari">
+            <column name="tipe_hari" sql-type="varchar"/>
+        </property>
+        <property name="realisasiLembur">
+            <column name="realisasi_lembur" sql-type="numeric"/>
+        </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar"/>
+        </property>
+        <property name="lemburId">
+            <column name="lembur_id" sql-type="varchar"/>
+        </property>
+        <property name="tglAwalLembur">
+            <column name="tgl_awal_lembur" sql-type="date"/>
+        </property>
+        <property name="tglAkhirLembur">
+            <column name="tgl_akhir_lembur" sql-type="date"/>
+        </property>
+        <property name="jamAwalLembur">
+            <column name="jam_awal_lembur" sql-type="varchar"/>
+        </property>
+        <property name="jamAkhirLembur">
+            <column name="jam_akhir_lembur" sql-type="varchar"/>
+        </property>
+        <property name="flagApprove">
+            <column name="flag_approve" sql-type="varchar"/>
+        </property>
+        <property name="approvalwho">
+            <column name="approval_who" sql-type="varchar"/>
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+    </class>
+</hibernate-mapping>

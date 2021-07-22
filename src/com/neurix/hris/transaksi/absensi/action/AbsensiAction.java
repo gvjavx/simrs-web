@@ -35,6 +35,7 @@ import com.neurix.hris.transaksi.indisipliner.model.Indisipliner;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerja;
 import com.neurix.hris.transaksi.lembur.bo.LemburBo;
 import com.neurix.hris.transaksi.lembur.model.Lembur;
+import com.neurix.hris.transaksi.lembur.model.LemburEntity;
 import com.neurix.hris.transaksi.payroll.bo.PayrollBo;
 import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import com.neurix.hris.transaksi.sppd.bo.SppdBo;
@@ -84,6 +85,16 @@ public class AbsensiAction extends BaseMasterAction {
     private String divisiId;
     private String bagian;
     private String nip;
+
+    private LemburBo lemburBoProxy;
+
+    public LemburBo getLemburBoProxy() {
+        return lemburBoProxy;
+    }
+
+    public void setLemburBoProxy(LemburBo lemburBoProxy) {
+        this.lemburBoProxy = lemburBoProxy;
+    }
 
     public Lembur getLembur() {
         return lembur;
@@ -4029,4 +4040,6 @@ public class AbsensiAction extends BaseMasterAction {
         List<AbsensiOnCall> absensiOnCallList = absensiBo.getAbsensiOnCall(absensiOnCall);
         session.setAttribute("listOfResultAbsensiOnCall", absensiOnCallList);
     }
+
+
 }

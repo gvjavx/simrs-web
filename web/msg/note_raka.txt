@@ -1,3 +1,61 @@
+------ 2021-07-21 ===> refresh lembur
+-- create table
+    CREATE TABLE public.it_hris_refresh_lembur
+    (
+    	refresh_lembur_id character varying(10) NOT NULL,
+        group_refresh_id character varying(10) NOT NULL,
+        absensi_pegawai_id character varying(15) NOT NULL,
+        tanggal date,
+        nama character varying(100),
+        jam_masuk character varying(8),
+        jam_keluar character varying(8),
+        jenis_lembur character varying(20),
+        lama_lembur numeric(5, 2),
+        jam_lembur numeric(5, 2),
+        biaya_lembur numeric(15, 2),
+    	tipe_hari character varying(20),
+    	realisasi_lembur numeric(5, 2),
+    	branch_id character varying(5),
+    	lembur_id character varying(10),
+    	tgl_awal_lembur date,
+    	tgl_akhir_lembur date,
+    	jam_awal_lembur character varying(8),
+    	jam_akhir_lembur character varying(8),
+    	flag_approve character varying(1),
+    	approval_who character varying(100),
+    	flag character varying(1),
+    	action character varying(1),
+        created_date timestamp without time zone,
+        last_update timestamp without time zone,
+        created_who character varying(100),
+        last_update_who character varying(100),
+        PRIMARY KEY (refresh_lembur_id)
+    )
+    WITH (
+        OIDS = FALSE
+    );
+    ALTER TABLE public.it_hris_refresh_lembur
+        OWNER to postgres;
+
+
+    CREATE SEQUENCE public.seq_refresh_lembur
+        INCREMENT 1
+        START 1
+        MINVALUE 1
+        MAXVALUE 987654321
+        CACHE 1;
+    ALTER SEQUENCE public.seq_refresh_lembur
+        OWNER TO postgres;
+
+    CREATE SEQUENCE public.seq_group_lembur
+        INCREMENT 1
+        START 1
+        MINVALUE 1
+        MAXVALUE 987654321
+        CACHE 1;
+    ALTER SEQUENCE public.seq_group_lembur
+        OWNER TO postgres;
+
 ------ 2021-06-17 ===> ptkp keluarga
     alter table im_hris_keluarga
     add column tanggungan_ptkp varchar(5);

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="refreshLemburAction" class="com.neurix.hris.transaksi.refreshLembur.action.RefreshLemburAction"
+          p:refreshLemburBoProxy-ref="refreshLemburBoProxy"/>
+
+    <bean id="refreshLemburBo" class="com.neurix.hris.transaksi.refreshLembur.bo.impl.RefreshLemburBoImpl"
+          p:refreshLemburDao-ref="refreshLemburDao"
+          />
+
+    <bean id="absensiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="refreshLemburBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionUserInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+</beans>
