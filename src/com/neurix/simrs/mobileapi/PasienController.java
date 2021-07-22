@@ -230,6 +230,7 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
                             if (!"Y".equalsIgnoreCase(pasien.getFlagLogin())) {
                                 isFound = true;
                             }
+                            // Todo kasih error message untuk yang sudah login
                         }
                     }
 
