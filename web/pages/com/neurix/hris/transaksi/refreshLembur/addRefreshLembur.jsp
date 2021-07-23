@@ -106,9 +106,7 @@
                                 <s:textfield  id="jmlChance" name="refreshLembur.jmlChance" required="true" readonly="true" cssStyle="display: none" cssClass="form-control"/>
                                 <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                 <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="refreshLembur.branchId" readonly="true"
-                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                <s:textfield  id="branchId33" name="refreshLembur.branchId" required="true" readonly="true" cssStyle="display: none" cssClass="form-control"/>
-                            </table>
+                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/></table>
                         </td>
                     </tr>
 
