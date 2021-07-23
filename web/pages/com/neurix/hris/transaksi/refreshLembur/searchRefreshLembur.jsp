@@ -35,9 +35,9 @@
     <script type='text/javascript'>
 
         function link(){
-            window.location.href="<s:url action='initForm_lembur'/>";
+            window.location.href="<s:url action='initForm_refreshLembur'/>";
         }
-        var unit = '<s:property value="Lembur.unitId"/>'
+        var unit = '<s:property value="RefreshLembur.branchId"/>'
     </script>
 </head>
 
@@ -195,7 +195,7 @@
                                                         </sj:dialog>
 
                                                         <sj:dialog id="dialog_menu_refresh_lembur" openTopics="showDialogMenu" modal="true"
-                                                                   height="670" width="900" autoOpen="false"
+                                                                   height="400" width="500" autoOpen="false"
                                                                    title="Refresh Lembur">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
@@ -205,7 +205,7 @@
                                                         </sj:dialog>
                                                         <s:set name="listOfRefreshLembur" value="#session.listOfResultRefreshLembur" scope="request" />
                                                         <display:table name="listOfRefreshLembur" class="tableLembur table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_refresh_lembur.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                                                       requestURI="paging_displaytag_refreshLembur.action" export="true" id="row" pagesize="14" style="font-size:10">
                                                             <display:column media="html" title="View">
                                                                 <s:url var="urlView" namespace="/refreshLembur" action="view_refreshLembur" escapeAmp="false">
                                                                     <s:param name="id"><s:property value="#attr.row.groupRefreshId"/></s:param>

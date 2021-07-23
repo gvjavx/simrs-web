@@ -1,6 +1,7 @@
 package com.neurix.hris.transaksi.refreshLembur.action;
 
 import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -87,6 +88,15 @@ public class RefreshLemburAction extends BaseMasterAction {
         } else {
             data.setBranchId("");
         }
+
+        Branch branch = new Branch();
+        try{
+            branch = branchBoProxy.getBranchById(branchId,"Y");
+        }catch (GeneralBOException e){
+            logger.error("[RefreshLemburAction.add] Error, ");
+            throw new GeneralBOException(e.getMessage());
+        }
+        data.setJmlChance(branch.getChanceRefreshLembur());
 
         setRefreshLembur(data);
         setAddOrEdit(true);
@@ -224,7 +234,7 @@ public class RefreshLemburAction extends BaseMasterAction {
         if(lemburList.size() > 0) {
             String resultRefresh = "";
             try {
-                resultRefresh = refreshLemburBoProxy.refreshAbsensiLembur(lemburList,refreshLembur.getTanggal(), chance);
+                resultRefresh = refreshLemburBoProxy.refreshAbsensiLembur(lemburList,date, chance);
             } catch (GeneralBOException e) {
                 logger.error("[RefreshLemburAction.saveAdd] Error, " + e.getMessage());
                 throw new GeneralBOException(e.getMessage());

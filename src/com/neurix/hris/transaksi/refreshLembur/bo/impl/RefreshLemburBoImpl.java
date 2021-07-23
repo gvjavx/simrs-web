@@ -215,7 +215,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
     public String refreshAbsensiLembur(List<Lembur> lemburList, Date tanggal, Boolean chance) throws GeneralBOException{
         logger.info("[RefreshLemburBoImpl.refreshLembur] START >>>>>>");
 
-        String msgResult = "";
+        String msgResult = "noNeed";
         /*  msgResult :
                 "success"     --> (kesempatan refresh masih ada) ada data lembur yang perlu diRefresh, langsung diUpdate.
                 "needApprove" --> (kesempatan refresh habis) ada data lembur yang perlu diRefresh, Update menunggu approve Kantor pusat (perlu kirim notif ke VP Finance (SDM) Kantor Pusat.
@@ -237,81 +237,91 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
         hsCriteria.put("nip","");
         for(Lembur lembur : lemburList){
             hsCriteria.replace("nip", lembur.getNip());
-            List<AbsensiPegawaiEntity> absensiPegawaiList = absensiPegawaiDao.getByCriteria(hsCriteria);
+            List<AbsensiPegawaiEntity> absensiPegawaiList = new ArrayList<>();
+            try{
+                absensiPegawaiList = absensiPegawaiDao.getByCriteria(hsCriteria);
+            }catch (HibernateException e){
+                logger.error("[RefreshLemburBoImpl.refreshAbsensiLembur] Error, " + e.getMessage());
+                throw new GeneralBOException(e.getMessage());
+            }
 
-            if(absensiPegawaiList.size() > 0){
-                ItHrisRefreshLemburEntity refreshLembur = new ItHrisRefreshLemburEntity();
+            if(absensiPegawaiList.size() > 0) {
+                if (absensiPegawaiList.get(0).getJamMasuk() != null && absensiPegawaiList.get(0).getJamKeluar() != null) {
+                    if (chance) {
+                        msgResult = "success";
+                    } else {
+                        msgResult = "needApprove";
+                    }
+                    ItHrisRefreshLemburEntity refreshLembur = new ItHrisRefreshLemburEntity();
 
-                try{
-                    String refreshLemburId = refreshLemburDao.getNextRefreshLemburId();
-                    refreshLembur.setRefreshLemburId(refreshLemburId);
-                }catch (HibernateException e){
-                    logger.error("[RefreshLemburBoImpl.refreshAbsensiLembur] Error, " + e.getMessage());
-                    throw new GeneralBOException(e.getMessage());
-                }
+                    try {
+                        String refreshLemburId = refreshLemburDao.getNextRefreshLemburId();
+                        refreshLembur.setRefreshLemburId(refreshLemburId);
+                    } catch (HibernateException e) {
+                        logger.error("[RefreshLemburBoImpl.refreshAbsensiLembur] Error, " + e.getMessage());
+                        throw new GeneralBOException(e.getMessage());
+                    }
 
-                refreshLembur.setGroupRefreshId(groupId);
-                refreshLembur.setTanggal(absensiPegawaiList.get(0).getTanggal());
-                refreshLembur.setJamMasuk(absensiPegawaiList.get(0).getJamMasuk());
-                refreshLembur.setJamKeluar(absensiPegawaiList.get(0).getJamKeluar());
-                refreshLembur.setTipeHari(absensiPegawaiList.get(0).getTipeHari());
-                refreshLembur.setBranchId(absensiPegawaiList.get(0).getBranchId());
+                    refreshLembur.setGroupRefreshId(groupId);
+                    refreshLembur.setAbsensiPegawaiId(absensiPegawaiList.get(0).getAbsensiPegawaiId());
+                    refreshLembur.setTanggal(absensiPegawaiList.get(0).getTanggal());
+                    refreshLembur.setJamMasuk(absensiPegawaiList.get(0).getJamMasuk());
+                    refreshLembur.setJamKeluar(absensiPegawaiList.get(0).getJamKeluar());
+                    refreshLembur.setTipeHari(absensiPegawaiList.get(0).getTipeHari());
+                    refreshLembur.setBranchId(absensiPegawaiList.get(0).getBranchId());
 
-                refreshLembur.setLemburId(lembur.getLemburId());
-                refreshLembur.setNama(lembur.getPegawaiName());
-                refreshLembur.setTglAwalLembur(lembur.getTanggalAwal());
-                refreshLembur.setTglAkhirLembur(lembur.getTanggalAkhir());
-                refreshLembur.setJamAwalLembur(lembur.getJamAwal());
-                refreshLembur.setJamAkhirLembur(lembur.getJamAkhir());
-                refreshLembur.setJenisLembur(lembur.getTipeLembur());
+                    refreshLembur.setLemburId(lembur.getLemburId());
+                    refreshLembur.setNama(lembur.getPegawaiName());
+                    refreshLembur.setTglAwalLembur(lembur.getTanggalAwal());
+                    refreshLembur.setTglAkhirLembur(lembur.getTanggalAkhir());
+                    refreshLembur.setJamAwalLembur(lembur.getJamAwal());
+                    refreshLembur.setJamAkhirLembur(lembur.getJamAkhir());
+                    refreshLembur.setJenisLembur(lembur.getTipeLembur());
 
-                Lembur calcLembur = calcBiayaLembur(lembur, absensiPegawaiList.get(0));
+                    Lembur calcLembur = calcBiayaLembur(lembur, absensiPegawaiList.get(0));
 
-                refreshLembur.setLamaLembur(calcLembur.getLamaJam());
-                refreshLembur.setJamLembur(calcLembur.getLamaHitungan());
-                refreshLembur.setRealisasiLembur(calcLembur.getJamRealisasi());
-                refreshLembur.setBiayaLembur(calcLembur.getUpahLembur());
+                    refreshLembur.setLamaLembur(calcLembur.getLamaJam());
+                    refreshLembur.setJamLembur(calcLembur.getLamaHitungan());
+                    refreshLembur.setRealisasiLembur(calcLembur.getJamRealisasi());
+                    refreshLembur.setBiayaLembur(calcLembur.getUpahLembur());
 
-                String userLogin = CommonUtil.userLogin();
-                Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+                    String userLogin = CommonUtil.userLogin();
+                    Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-                refreshLembur.setAction("Y");
-                refreshLembur.setAction("C");
-                refreshLembur.setCreatedDate(updateTime);
-                refreshLembur.setLastUpdate(updateTime);
-                refreshLembur.setCreatedWho(userLogin);
-                refreshLembur.setLastUpdateWho(userLogin);
-                refreshLembur.setFlagApprove("0");
+                    refreshLembur.setAction("Y");
+                    refreshLembur.setAction("C");
+                    refreshLembur.setCreatedDate(updateTime);
+                    refreshLembur.setLastUpdate(updateTime);
+                    refreshLembur.setCreatedWho(userLogin);
+                    refreshLembur.setLastUpdateWho(userLogin);
+                    refreshLembur.setFlagApprove("0");
 
-                msgResult = "needApprove";
-                if(chance){
+                    if (chance) {
 
-                    msgResult = "success";
-                    refreshLembur.setFlagApprove("Y");
-                    refreshLembur.setApprovalwho(userLogin);
+                        refreshLembur.setFlagApprove("Y");
+                        refreshLembur.setApprovalwho(userLogin);
 
-                    absensiPegawaiList.get(0).setLembur("Y");
-                    absensiPegawaiList.get(0).setJenisLemburName(refreshLembur.getJenisLembur());
-                    absensiPegawaiList.get(0).setLamaLembur(refreshLembur.getLamaLembur());
-                    absensiPegawaiList.get(0).setJamLembur(refreshLembur.getJamLembur());
-                    absensiPegawaiList.get(0).setBiayaLembur(refreshLembur.getBiayaLembur());
-                    absensiPegawaiList.get(0).setRealisasiJamLembur(refreshLembur.getRealisasiLembur());
-                    try{
-                        absensiPegawaiDao.addAndSave(absensiPegawaiList.get(0));
-                    }catch (HibernateException e){
+                        absensiPegawaiList.get(0).setLembur("Y");
+                        absensiPegawaiList.get(0).setJenisLembur(refreshLembur.getJenisLembur());
+                        absensiPegawaiList.get(0).setLamaLembur(refreshLembur.getLamaLembur());
+                        absensiPegawaiList.get(0).setJamLembur(refreshLembur.getJamLembur());
+                        absensiPegawaiList.get(0).setBiayaLembur(refreshLembur.getBiayaLembur());
+                        absensiPegawaiList.get(0).setRealisasiJamLembur(refreshLembur.getRealisasiLembur());
+                        try {
+                            absensiPegawaiDao.addAndSave(absensiPegawaiList.get(0));
+                        } catch (HibernateException e) {
+                            logger.error("[RefreshLemburBoImpl.refreshAbsensiLembur] Error, " + e.getMessage());
+                            throw new GeneralBOException(e.getMessage());
+                        }
+                    }
+
+                    try {
+                        refreshLemburDao.addAndSave(refreshLembur);
+                    } catch (HibernateException e) {
                         logger.error("[RefreshLemburBoImpl.refreshAbsensiLembur] Error, " + e.getMessage());
                         throw new GeneralBOException(e.getMessage());
                     }
                 }
-
-                try{
-                    refreshLemburDao.addAndSave(refreshLembur);
-                }catch (HibernateException e){
-                    logger.error("[RefreshLemburBoImpl.refreshAbsensiLembur] Error, " + e.getMessage());
-                    throw new GeneralBOException(e.getMessage());
-                }
-            } else {
-                msgResult = "noNeed";
             }
         }
         logger.info("[RefreshLemburBoImpl.refreshLembur] END >>>>>>>>");
@@ -418,7 +428,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
             realJamAkhir = jamAkhirLembur;
         }
 
-        double realisasiLembur = realJamAkhir.getTime() - realJamAwal.getTime();
+        double realisasiLembur = (realJamAkhir.getTime() - realJamAwal.getTime())/(60*60*1000); // Dijadikan perJam
 
         if (lamaLembur < realisasiLembur) {
             finalLamaLembur = lamaLembur;

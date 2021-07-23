@@ -103,6 +103,7 @@
                         </td>
                         <td>
                             <table>
+                                <s:textfield  id="jmlChance" name="refreshLembur.jmlChance" required="true" readonly="true" cssStyle="display: none" cssClass="form-control"/>
                                 <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                 <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="refreshLembur.branchId" readonly="true"
                                           listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
@@ -132,8 +133,8 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addFormRefreshLembur" id="save" name="save"
-                                   onBeforeTopics="beforeProcessSaveRefreshLembur" onCompleteTopics="closeDialog,successDialogLembur"
-                                   onSuccessTopics="successDialogRefreshLembur" onErrorTopics="errorDialogLembur" >
+                                   onBeforeTopics="beforeProcessSaveRefreshLembur" onCompleteTopics="closeDialog,successDialogRefreshLembur"
+                                   onSuccessTopics="successDialogRefreshLembur" onErrorTopics="errorDialogRefreshLembur" >
                             <i class="fa fa-check"></i>
                             Process
                         </sj:submit>
