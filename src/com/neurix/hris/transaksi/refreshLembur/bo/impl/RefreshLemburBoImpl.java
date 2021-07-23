@@ -123,8 +123,12 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
         if (searchBean != null) {
             Map hsCriteria = new HashMap();
 
+            if (searchBean.getRefreshLemburId() != null && !"".equalsIgnoreCase(searchBean.getRefreshLemburId())) {
+                hsCriteria.put("refresh_id", searchBean.getRefreshLemburId());
+            }
+
             if (searchBean.getGroupRefreshId() != null && !"".equalsIgnoreCase(searchBean.getGroupRefreshId())) {
-                hsCriteria.put("group_id", searchBean.getLemburId());
+                hsCriteria.put("group_id", searchBean.getGroupRefreshId());
             }
 
             if (searchBean.getStTglAwalLembur() != null && !"".equalsIgnoreCase(String.valueOf(searchBean.getStTglAwalLembur()))) {

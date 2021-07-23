@@ -122,7 +122,7 @@ public class RefreshLemburAction extends BaseMasterAction {
     public String view() {
         List<RefreshLembur> refreshLemburList = new ArrayList<>();
         RefreshLembur searchRefreshlembur = new RefreshLembur();
-        searchRefreshlembur.setAbsensiPegawaiId(getId());
+        searchRefreshlembur.setRefreshLemburId(getId());
         searchRefreshlembur.setFlag(getFlag());
         try {
             refreshLemburList = refreshLemburBoProxy.getByCriteria(searchRefreshlembur);

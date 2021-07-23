@@ -29,6 +29,10 @@ public class RefreshLemburDao extends GenericDao<ItHrisRefreshLemburEntity, Stri
 
         // Get Collection and sorting
         if (mapCriteria != null) {
+            if (mapCriteria.get("refresh_id") != null) {
+                criteria.add(Restrictions.ilike("refreshLemburId", "%" + (String) mapCriteria.get("refresh_id") + "%"));
+            }
+
             if (mapCriteria.get("group_id") != null) {
                 criteria.add(Restrictions.ilike("groupRefreshId", "%" + (String) mapCriteria.get("group_id") + "%"));
             }
