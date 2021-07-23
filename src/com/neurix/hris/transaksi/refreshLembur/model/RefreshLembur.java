@@ -13,6 +13,7 @@ public class RefreshLembur {
     private String absensiPegawaiId;
     private Date tanggal;
     private String stTanggal;
+    private String nip;
     private String nama;
     private String jamMasuk;
     private String jamKeluar;
@@ -47,6 +48,14 @@ public class RefreshLembur {
 
     private int jmlChance;
     private String stJmlChance;
+
+    public String getNip() {
+        return nip;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
+    }
 
     public int getJmlChance() {
         return jmlChance;

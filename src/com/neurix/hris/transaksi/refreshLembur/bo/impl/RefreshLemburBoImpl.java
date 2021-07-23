@@ -162,6 +162,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
                     returnRefreshLembur.setAbsensiPegawaiId(refreshLemburEntity.getAbsensiPegawaiId());
                     returnRefreshLembur.setTanggal(refreshLemburEntity.getTanggal());
                     returnRefreshLembur.setStTanggal(CommonUtil.convertDateToString(returnRefreshLembur.getTanggal()));
+                    returnRefreshLembur.setNip(refreshLemburEntity.getNip());
                     returnRefreshLembur.setNama(refreshLemburEntity.getNama());
                     returnRefreshLembur.setJamMasuk(refreshLemburEntity.getJamMasuk());
                     returnRefreshLembur.setJamKeluar(refreshLemburEntity.getJamKeluar());
@@ -170,7 +171,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
                     returnRefreshLembur.setStLamaLembur(Double.toString(returnRefreshLembur.getLamaLembur()));
                     returnRefreshLembur.setJamLembur(refreshLemburEntity.getJamLembur());
                     returnRefreshLembur.setStJamLembur(Double.toString(returnRefreshLembur.getJamLembur()));
-                    returnRefreshLembur.setBiayaLembur(returnRefreshLembur.getBiayaLembur());
+                    returnRefreshLembur.setBiayaLembur(refreshLemburEntity.getBiayaLembur());
                     returnRefreshLembur.setStBiayaLembur(Double.toString(returnRefreshLembur.getBiayaLembur()));
                     returnRefreshLembur.setTipeHari(refreshLemburEntity.getTipeHari());
                     returnRefreshLembur.setRealisasiLembur(refreshLemburEntity.getRealisasiLembur());
@@ -184,7 +185,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
                     returnRefreshLembur.setStTglAkhirLembur(CommonUtil.convertDateToString(returnRefreshLembur.getTglAkhirLembur()));
                     returnRefreshLembur.setJamAwalLembur(refreshLemburEntity.getJamAwalLembur());
                     returnRefreshLembur.setJamAkhirLembur(refreshLemburEntity.getJamAkhirLembur());
-                    returnRefreshLembur.setFlag(refreshLemburEntity.getFlagApprove());
+                    returnRefreshLembur.setFlagApprove(refreshLemburEntity.getFlagApprove());
                     returnRefreshLembur.setApprovalwho(refreshLemburEntity.getApprovalwho());
                     
                     returnRefreshLembur.setFlag(refreshLemburEntity.getFlag());
@@ -271,6 +272,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
                     refreshLembur.setBranchId(absensiPegawaiList.get(0).getBranchId());
 
                     refreshLembur.setLemburId(lembur.getLemburId());
+                    refreshLembur.setNip(lembur.getNip());
                     refreshLembur.setNama(lembur.getPegawaiName());
                     refreshLembur.setTglAwalLembur(lembur.getTanggalAwal());
                     refreshLembur.setTglAkhirLembur(lembur.getTanggalAkhir());
@@ -288,7 +290,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
                     String userLogin = CommonUtil.userLogin();
                     Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-                    refreshLembur.setAction("Y");
+                    refreshLembur.setFlag("Y");
                     refreshLembur.setAction("C");
                     refreshLembur.setCreatedDate(updateTime);
                     refreshLembur.setLastUpdate(updateTime);

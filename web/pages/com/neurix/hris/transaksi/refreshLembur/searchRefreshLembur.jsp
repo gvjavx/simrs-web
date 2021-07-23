@@ -236,10 +236,10 @@
                                                             <display:column property="stLamaLembur" sortable="true" title="Lama Lembur (Jam)"  />
                                                             <display:column property="stJamLembur" sortable="true" title="Faktor Lembur"  />
                                                             <display:column media="html" title="Approve Atasan">
-                                                                <s:if test="#attr.row.flagApprove == 'Y'">
+                                                                <s:if test='#attr.row.flagApprove == "Y"'>
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
                                                                 </s:if>
-                                                                <s:elseif test="#attr.row.flagApprove == 'N'">
+                                                                <s:elseif test='#attr.row.flagApprove == "N"'>
                                                                     <img border="0" src="<s:url value="/pages/images/icon_failure.ico"/>" name="icon_edit">
                                                                 </s:elseif>
                                                             </display:column>

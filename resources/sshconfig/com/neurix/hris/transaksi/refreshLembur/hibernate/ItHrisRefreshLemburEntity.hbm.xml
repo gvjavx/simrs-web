@@ -18,6 +18,9 @@
         <property name="tanggal">
             <column name="tanggal" sql-type="date"/>
         </property>
+        <property name="nip">
+            <column name="nip" sql-type="varchar"/>
+        </property>
         <property name="nama">
             <column name="nama" sql-type="varchar"/>
         </property>

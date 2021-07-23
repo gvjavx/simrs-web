@@ -14,6 +14,7 @@ public class ItHrisRefreshLemburEntity {
 
     private String absensiPegawaiId;
     private Date tanggal;
+    private String nip;
     private String nama;
     private String jamMasuk;
     private String jamKeluar;
@@ -39,6 +40,14 @@ public class ItHrisRefreshLemburEntity {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getNip() {
+        return nip;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
+    }
 
     public String getFlagApprove() {
         return flagApprove;

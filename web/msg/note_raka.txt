@@ -6,6 +6,7 @@
         group_refresh_id character varying(10) NOT NULL,
         absensi_pegawai_id character varying(15) NOT NULL,
         tanggal date,
+        nip character varying(20)
         nama character varying(100),
         jam_masuk character varying(8),
         jam_keluar character varying(8),
