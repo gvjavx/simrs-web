@@ -56,15 +56,21 @@
     ALTER SEQUENCE public.seq_group_lembur
         OWNER TO postgres;
 
------- 2021-06-17 ===> ptkp keluarga
-    alter table im_hris_keluarga
-    add column tanggungan_ptkp varchar(5);
+-- add chance refresh lembur
+    alter table im_branches
+        add column chance_refresh_lembur integer;
+    update im_branches
+        set chance_refresh_lembur = 3;
 
 -----------------------------------
 -------- SAMPAI INI SAJA  ---------
 -----------------------------------
 
 
+
+------ 2021-06-17 ===> ptkp keluarga
+    alter table im_hris_keluarga
+    add column tanggungan_ptkp varchar(5);
 
 ------ 2021-05-22 ===> pelengkapan payroll
 -- untuk pengajuan payroll

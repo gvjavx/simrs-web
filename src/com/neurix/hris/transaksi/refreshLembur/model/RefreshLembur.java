@@ -45,6 +45,24 @@ public class RefreshLembur {
     private String createdWho;
     private String lastUpdateWho;
 
+    private int jmlChance;
+    private String stJmlChance;
+
+    public int getJmlChance() {
+        return jmlChance;
+    }
+
+    public void setJmlChance(int jmlChance) {
+        this.jmlChance = jmlChance;
+    }
+
+    public String getStJmlChance() {
+        return stJmlChance;
+    }
+
+    public void setStJmlChance(String stJmlChance) {
+        this.stJmlChance = stJmlChance;
+    }
 
     public String getRefreshLemburId() {
         return refreshLemburId;

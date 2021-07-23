@@ -212,9 +212,15 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
         return null;
     }
 
-    public void refreshAbsensiLembur(List<Lembur> lemburList, Date tanggal, Boolean chance) throws GeneralBOException{
+    public String refreshAbsensiLembur(List<Lembur> lemburList, Date tanggal, Boolean chance) throws GeneralBOException{
         logger.info("[RefreshLemburBoImpl.refreshLembur] START >>>>>>");
 
+        String msgResult = "";
+        /*  msgResult :
+                "success"     --> (kesempatan refresh masih ada) ada data lembur yang perlu diRefresh, langsung diUpdate.
+                "needApprove" --> (kesempatan refresh habis) ada data lembur yang perlu diRefresh, Update menunggu approve Kantor pusat (perlu kirim notif ke VP Finance (SDM) Kantor Pusat.
+                "noNeed"      --> tidak ada data lembur yang perlu direfresh.
+         */
         String groupId = "";
 
         try{
@@ -277,7 +283,10 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
                 refreshLembur.setLastUpdateWho(userLogin);
                 refreshLembur.setFlagApprove("0");
 
+                msgResult = "needApprove";
                 if(chance){
+
+                    msgResult = "success";
                     refreshLembur.setFlagApprove("Y");
                     refreshLembur.setApprovalwho(userLogin);
 
@@ -301,9 +310,13 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
                     logger.error("[RefreshLemburBoImpl.refreshAbsensiLembur] Error, " + e.getMessage());
                     throw new GeneralBOException(e.getMessage());
                 }
+            } else {
+                msgResult = "noNeed";
             }
         }
         logger.info("[RefreshLemburBoImpl.refreshLembur] END >>>>>>>>");
+
+        return msgResult;
     }
 
     private Lembur calcBiayaLembur(Lembur lembur, AbsensiPegawaiEntity absensiPegawai) throws GeneralBOException{

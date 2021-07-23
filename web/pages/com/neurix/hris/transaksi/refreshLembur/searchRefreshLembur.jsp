@@ -159,7 +159,7 @@
                                                         </s:url>
                                                         <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
-                                                            Add Lembur
+                                                            Process Refresh Lembur
                                                         </sj:a>
                                                     </td>
                                                     <td>

@@ -12,6 +12,6 @@ import java.util.List;
  * Created by Aji Noor on 22/07/2021
  */
 public interface RefreshLemburBo extends BaseMasterBo<RefreshLembur> {
-    public void refreshAbsensiLembur(List<Lembur> lemburList, Date tanggal, Boolean chance) throws GeneralBOException;
+    public String refreshAbsensiLembur(List<Lembur> lemburList, Date tanggal, Boolean chance) throws GeneralBOException;
 
 }

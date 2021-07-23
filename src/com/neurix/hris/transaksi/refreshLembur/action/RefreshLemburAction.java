@@ -4,14 +4,20 @@ import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.transaksi.lembur.bo.LemburBo;
+import com.neurix.hris.transaksi.lembur.model.Lembur;
+import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
+import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.neurix.hris.transaksi.refreshLembur.bo.RefreshLemburBo;
 import com.neurix.hris.transaksi.refreshLembur.model.RefreshLembur;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.*;
 
 
 /**
@@ -23,6 +29,7 @@ public class RefreshLemburAction extends BaseMasterAction {
     private RefreshLembur refreshLembur;
     private RefreshLemburBo refreshLemburBoProxy;
     private BranchBo branchBoProxy;
+    private LemburBo lemburBoProxy;
     private boolean admin = false;
 
     public boolean isAdmin() {
@@ -61,6 +68,14 @@ public class RefreshLemburAction extends BaseMasterAction {
         this.branchBoProxy = branchBoProxy;
     }
 
+    public LemburBo getLemburBoProxy() {
+        return lemburBoProxy;
+    }
+
+    public void setLemburBoProxy(LemburBo lemburBoProxy) {
+        this.lemburBoProxy = lemburBoProxy;
+    }
+
     @Override
     public String add() {
         logger.info("[RefreshLemburAction.add] start process >>>");
@@ -80,7 +95,8 @@ public class RefreshLemburAction extends BaseMasterAction {
         session.removeAttribute("listOfResultRefreshLembur");
 
         logger.info("[RefreshLemburAction.add] stop process >>>");
-        return "init_add";    }
+        return "init_add";
+    }
 
     @Override
     public String edit() {
@@ -171,5 +187,81 @@ public class RefreshLemburAction extends BaseMasterAction {
     @Override
     public String downloadXls() {
         return null;
+    }
+
+    public String saveAdd(){
+        logger.info("[RefreshLemburAction.saveAdd] start process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
+
+        RefreshLembur refreshLembur = getRefreshLembur();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        java.sql.Date date = CommonUtil.convertToDate(refreshLembur.getStTanggal());
+
+        Boolean chance = false;
+        if(refreshLembur.getJmlChance() > 0){
+            chance = true;
+        }
+
+        List<Lembur> lemburList = new ArrayList<>();
+        Lembur lemburCriteria = new Lembur();
+
+        lemburCriteria.setBranchId(refreshLembur.getBranchId());
+        lemburCriteria.setStTanggalAwal(refreshLembur.getStTanggal());
+        lemburCriteria.setStTanggalAkhir(refreshLembur.getStTanggal());
+        lemburCriteria.setApprovalFlag("Y");
+        lemburCriteria.setFlag("Y");
+
+        try {
+            lemburList = lemburBoProxy.getByCriteria(lemburCriteria);
+        }catch (GeneralBOException e){
+            logger.error("[RefreshLemburAction.saveAdd] Error, " + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
+        }
+
+        if(lemburList.size() > 0) {
+            String resultRefresh = "";
+            try {
+                resultRefresh = refreshLemburBoProxy.refreshAbsensiLembur(lemburList,refreshLembur.getTanggal(), chance);
+            } catch (GeneralBOException e) {
+                logger.error("[RefreshLemburAction.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException(e.getMessage());
+            }
+
+            if("success".equalsIgnoreCase(resultRefresh)){
+                try{
+                    branchBoProxy.setChanceRefreshLembur(refreshLembur.getBranchId(),refreshLembur.getJmlChance()-1);
+                }catch (GeneralBOException e) {
+                    logger.error("[RefreshLemburAction.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException(e.getMessage());
+                }
+            }else if("needApprove".equalsIgnoreCase(resultRefresh)){
+//                try {
+//                    List<Notifikasi> notifRefreshLembur = refreshLembur.saveAddLembur(lembur);
+//                    for (Notifikasi notifikasi : notifRefreshLembur) {
+//                        notifikasiBo.sendNotif(notifikasi);
+//                    }
+//                } catch (GeneralBOException e) {
+//                    logger.error("[RefreshLemburAction.saveAdd] Error, " + e.getMessage());
+//                    throw new GeneralBOException(e.getMessage());
+//                }
+            }else {
+                logger.error("[RefreshLemburAction.saveAdd] Tidak ada absensi lembur yang perlu diRefresh pada tanggal tersebut.");
+                throw new GeneralBOException("Tidak ditemukan data absensi lembur yang perlu diRefresh pada tanggal tersebut.");
+            }
+
+
+        }else {
+            logger.error("[RefreshLemburAction.saveAdd] Tidak ada pengajuan lembur terapprove pada tanggal tersebut.");
+            throw new GeneralBOException("Tidak ditemukan data lembur terApprove pada tanggal tersebut.");
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResultRefreshLembur");
+
+        logger.info("[RefreshLemburAction.saveAdd] end process >>>");
+        return "success_save_add";
     }
 }
