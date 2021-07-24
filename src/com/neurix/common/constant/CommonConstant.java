@@ -305,6 +305,8 @@ public class CommonConstant {
     public final static String PEGAWAI_TETAP = "TP03";
     public final static String PEGAWAI_PKWT = "TP04";
 
+    public final static String POS_VP_HC_GA = "PS512";
+
     //constant PAYROLL
     public final static String CODE_PAYROLL = "PY";
     public final static String CODE_THR = "TH";

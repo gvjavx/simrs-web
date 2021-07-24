@@ -13,5 +13,7 @@ import java.util.List;
  */
 public interface RefreshLemburBo extends BaseMasterBo<RefreshLembur> {
     public String refreshAbsensiLembur(List<Lembur> lemburList, Date tanggal, Boolean chance) throws GeneralBOException;
-
-}
+    public List<RefreshLembur> getPerGroupLembur(RefreshLembur searchBean) throws GeneralBOException;
+    public List<RefreshLembur> getByCriteriaByGroup(RefreshLembur searchBean) throws GeneralBOException;
+    public void approveRefresh(RefreshLembur bean) throws GeneralBOException;
+    }

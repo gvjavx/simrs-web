@@ -1,7 +1,9 @@
 package com.neurix.hris.transaksi.refreshLembur.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.transaksi.refreshLembur.model.ItHrisRefreshLemburEntity;
+import com.neurix.hris.transaksi.refreshLembur.model.RefreshLembur;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -9,6 +11,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -30,11 +34,20 @@ public class RefreshLemburDao extends GenericDao<ItHrisRefreshLemburEntity, Stri
         // Get Collection and sorting
         if (mapCriteria != null) {
             if (mapCriteria.get("refresh_id") != null) {
-                criteria.add(Restrictions.ilike("refreshLemburId", "%" + (String) mapCriteria.get("refresh_id") + "%"));
+                criteria.add(Restrictions.ilike("refreshLemburId", (String) mapCriteria.get("refresh_id")));
             }
 
             if (mapCriteria.get("group_id") != null) {
-                criteria.add(Restrictions.ilike("groupRefreshId", "%" + (String) mapCriteria.get("group_id") + "%"));
+                criteria.add(Restrictions.ilike("groupRefreshId", (String) mapCriteria.get("group_id")));
+            }
+            if (mapCriteria.get("nama") != null) {
+                criteria.add(Restrictions.ilike("nama", "%" + (String) mapCriteria.get("nama") + "%"));
+            }
+            if (mapCriteria.get("nip") != null) {
+                criteria.add(Restrictions.ilike("nip", "%" + (String) mapCriteria.get("nip") + "%"));
+            }
+            if (mapCriteria.get("lembur_id") != null) {
+                criteria.add(Restrictions.ilike("lembur_id", "%" + (String) mapCriteria.get("lembur_id") + "%"));
             }
 
             if (mapCriteria.get("tanggal_dari") != null && mapCriteria.get("tanggal_selesai") != null) {
@@ -82,6 +95,54 @@ public class RefreshLemburDao extends GenericDao<ItHrisRefreshLemburEntity, Stri
         return "GL" + sId;
     }
 
+    public List<RefreshLembur> getPerGroupLembur(Map mapCriteria) {
+        List<RefreshLembur> listOfResult = new ArrayList<RefreshLembur>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        String groupId = "";
+        String tanggalAwal = "";
+        String tanggalAkhir = "";
 
+        // Get Collection and sorting
+        if (mapCriteria != null) {
+            if (mapCriteria.get("group_id") != null) {
+                groupId = " AND group_refresh_id = '" + mapCriteria.get("group_id") + "'\n";
+            }
+            if (mapCriteria.get("tanggal_dari") != null) {
+                tanggalAwal = " AND tanggal >= '" + mapCriteria.get("tanggal_dari") + "'\n";
+            }
+            if (mapCriteria.get("tanggal_selesai") != null) {
+                tanggalAkhir = " AND tanggal <= '" + mapCriteria.get("tanggal_selesai") + "'\n";
+            }
+
+
+            String query = "SELECT group_refresh_id, tanggal, tipe_hari, branch_id, COUNT(group_refresh_id)\n" +
+                    "FROM it_hris_refresh_lembur\n" +
+                    "WHERE flag = 'Y' \n" + groupId + tanggalAwal + tanggalAkhir +
+                    "GROUP BY group_refresh_id, tanggal, tipe_hari, branch_id;";
+            results = this.sessionFactory.getCurrentSession()
+                    .createSQLQuery(query)
+                    .list();
+
+            for (Object[] row : results) {
+                RefreshLembur refreshLembur = new RefreshLembur();
+
+                refreshLembur.setGroupRefreshId((String) row[0]);
+                refreshLembur.setTanggal((Date) row[1]);
+                refreshLembur.setStTanggal(CommonUtil.convertDateToString(refreshLembur.getTanggal()));
+
+                refreshLembur.setTipeHari((String) row[2]);
+                refreshLembur.setBranchId((String) row[3]);
+
+                refreshLembur.setFlagApprove((String) row[4]);
+                refreshLembur.setApprovalwho((String) row[5]);
+
+                refreshLembur.setJmlPegawai((String) row[6]);
+
+                listOfResult.add(refreshLembur);
+
+            }
+        }
+        return listOfResult;
+    }
 
 }

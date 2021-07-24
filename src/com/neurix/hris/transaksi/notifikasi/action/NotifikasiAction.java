@@ -15,6 +15,7 @@ import com.neurix.hris.transaksi.indisipliner.model.Indisipliner;
 import com.neurix.hris.transaksi.lembur.model.Lembur;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
+import com.neurix.hris.transaksi.refreshLembur.model.RefreshLembur;
 import com.neurix.hris.transaksi.rekruitmenPabrik.model.RekruitmenPabrikDetail;
 import com.neurix.hris.transaksi.sppd.bo.SppdBo;
 import com.neurix.hris.transaksi.sppd.model.Sppd;
@@ -48,11 +49,20 @@ public class NotifikasiAction extends BaseMasterAction{
     private Indisipliner indisipliner;
     private AbsensiPegawai absensiPegawai;
     private PengajuanBiaya pengajuanBiaya;
+    private RefreshLembur refreshLembur;
 
     private String id;
     private String request;
     private String tipeNotif;
     private String notif;
+
+    public RefreshLembur getRefreshLembur() {
+        return refreshLembur;
+    }
+
+    public void setRefreshLembur(RefreshLembur refreshLembur) {
+        this.refreshLembur = refreshLembur;
+    }
 
     public PengajuanBiaya getPengajuanBiaya() {
         return pengajuanBiaya;
@@ -979,6 +989,9 @@ public class NotifikasiAction extends BaseMasterAction{
         List<PengajuanBiaya> listOfResultPBRK = new ArrayList<PengajuanBiaya>();
         List<Notifikasi> listOfResultAll = new ArrayList<Notifikasi>();
         SppdPerson sppdPerson ;
+        RefreshLembur refreshLembur = getRefreshLembur();
+        List<RefreshLembur> listOfResultRL = new ArrayList<>();
+
 
         List<SppdPerson> sppdPersons = new ArrayList<SppdPerson>();
 
@@ -1058,6 +1071,15 @@ public class NotifikasiAction extends BaseMasterAction{
 
             rekruitmenPabrikDetail = new RekruitmenPabrikDetail();
             rekruitmenPabrikDetail.setRekruitmenPabrikId(rekruitmenPabrikId);
+        }
+        if ("TN70".equalsIgnoreCase(tipe)){
+            String GroupRefreshId = getRequest();
+            RefreshLembur search = getRefreshLembur();
+            if (search!=null){
+                GroupRefreshId = search.getGroupRefreshId();
+            }
+            refreshLembur = new RefreshLembur();
+            refreshLembur.setNip(GroupRefreshId);
         }
         if ("TI".equalsIgnoreCase(tipe)){
             String personId = getId();
@@ -1174,6 +1196,24 @@ public class NotifikasiAction extends BaseMasterAction{
                 setLembur(lembur);
                 listOfResultLB = notifikasiBoProxy.searchLemburPerson(lembur);
                 function = "lembur";
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = notifikasiBoProxy.saveErrorMessage(e.getMessage(), "PersonalBO.getByCriteria");
+                } catch (GeneralBOException e1) {
+                    logger.error("[NotifikasiAction.search] Error when saving error,", e1);
+                    return ERROR;
+                }
+                logger.error("[NotifikasiAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+                return ERROR;
+            }
+        }
+        if (refreshLembur != null) {
+            try {
+                setRefreshLembur(refreshLembur);
+                listOfResultRL = notifikasiBoProxy.searchRefreshLembur(refreshLembur);
+                function = "refreshLembur";
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {
@@ -1431,6 +1471,12 @@ public class NotifikasiAction extends BaseMasterAction{
             session.removeAttribute("listOfResultLembur");
             session.setAttribute("listOfResultLembur", listOfResultLB);
             return "approval_atasan_lembur";
+        }
+        else if ("refreshLembur".equalsIgnoreCase(function)){
+            HttpSession session = ServletActionContext.getRequest().getSession();
+            session.removeAttribute("listOfResultRefreshLembur");
+            session.setAttribute("listOfResultRefreshLembur", listOfResultRL);
+            return "approval_refresh_lembur";
         }
         else if ("indisipliner".equalsIgnoreCase(function)){
             HttpSession session = ServletActionContext.getRequest().getSession();

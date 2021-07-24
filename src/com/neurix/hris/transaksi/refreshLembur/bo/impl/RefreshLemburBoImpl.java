@@ -130,6 +130,15 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
             if (searchBean.getGroupRefreshId() != null && !"".equalsIgnoreCase(searchBean.getGroupRefreshId())) {
                 hsCriteria.put("group_id", searchBean.getGroupRefreshId());
             }
+            if (searchBean.getNama() != null && !"".equalsIgnoreCase(searchBean.getNama())) {
+                hsCriteria.put("nama", searchBean.getNama());
+            }
+            if (searchBean.getNip() != null && !"".equalsIgnoreCase(searchBean.getNip())) {
+                hsCriteria.put("nip", searchBean.getNip());
+            }
+            if (searchBean.getLemburId() != null && !"".equalsIgnoreCase(searchBean.getLemburId())) {
+                hsCriteria.put("lembur_id", searchBean.getLemburId());
+            }
 
             if (searchBean.getStTglAwalLembur() != null && !"".equalsIgnoreCase(String.valueOf(searchBean.getStTglAwalLembur()))) {
                 Date tanggalDari = CommonUtil.convertToDate(searchBean.getStTglAwalLembur());
@@ -205,6 +214,155 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
         }
         logger.info("[RefreshLemburBoImpl.getByCriteria] end process <<<");
         return listOfResult;    
+    }
+
+    public List<RefreshLembur> getByCriteriaByGroup(RefreshLembur searchBean) throws GeneralBOException {
+        logger.info("[RefreshLemburBoImpl.getByCriteria] start process >>>");
+
+        // Mapping with collection and put
+        List<RefreshLembur> listOfResult = new ArrayList();
+
+        if (searchBean != null) {
+            Map hsCriteria = new HashMap();
+
+            if (searchBean.getRefreshLemburId() != null && !"".equalsIgnoreCase(searchBean.getRefreshLemburId())) {
+                hsCriteria.put("refresh_id", searchBean.getRefreshLemburId());
+            }
+
+            if (searchBean.getGroupRefreshId() != null && !"".equalsIgnoreCase(searchBean.getGroupRefreshId())) {
+                hsCriteria.put("group_id", searchBean.getGroupRefreshId());
+            }
+            if (searchBean.getNama() != null && !"".equalsIgnoreCase(searchBean.getNama())) {
+                hsCriteria.put("nama", searchBean.getNama());
+            }
+            if (searchBean.getNip() != null && !"".equalsIgnoreCase(searchBean.getNip())) {
+                hsCriteria.put("nip", searchBean.getNip());
+            }
+            if (searchBean.getLemburId() != null && !"".equalsIgnoreCase(searchBean.getLemburId())) {
+                hsCriteria.put("lembur_id", searchBean.getLemburId());
+            }
+
+            if (searchBean.getStTglAwalLembur() != null && !"".equalsIgnoreCase(String.valueOf(searchBean.getStTglAwalLembur()))) {
+                Date tanggalDari = CommonUtil.convertToDate(searchBean.getStTglAwalLembur());
+                hsCriteria.put("tanggal_dari", tanggalDari);
+            }
+            if (searchBean.getStTglAkhirLembur() != null && !"".equalsIgnoreCase(String.valueOf(searchBean.getStTglAkhirLembur()))) {
+                Date tanggalSelesai = CommonUtil.convertToDate(searchBean.getStTglAkhirLembur());
+                hsCriteria.put("tanggal_selesai", tanggalSelesai);
+            }
+            if (searchBean.getFlagApprove() !=null&& !"".equalsIgnoreCase(String.valueOf(searchBean.getFlagApprove()))) {
+                if (searchBean.getFlagApprove().equalsIgnoreCase("0")){
+                    searchBean.setFlagApprove("0");
+                }
+                hsCriteria.put("approval_flag", searchBean.getFlagApprove());
+            }
+            hsCriteria.put("flag", "Y");
+
+
+            List<ItHrisRefreshLemburEntity> refreshLemburEntityList = null;
+            try {
+                refreshLemburEntityList = refreshLemburDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e) {
+                logger.error("[RefreshLemburBoImpl.getByCriteria] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+            }
+            if(refreshLemburEntityList != null){
+                RefreshLembur returnRefreshLembur;
+                String groupId = "";
+                // Looping from dao to object and save in collection
+                for(ItHrisRefreshLemburEntity refreshLemburEntity : refreshLemburEntityList){
+                    returnRefreshLembur = new RefreshLembur();
+
+                    returnRefreshLembur.setRefreshLemburId(refreshLemburEntity.getRefreshLemburId());
+                    if(!groupId.equalsIgnoreCase(refreshLemburEntity.getGroupRefreshId())) {
+                        returnRefreshLembur.setGroupRefreshId(refreshLemburEntity.getGroupRefreshId());
+                        groupId = refreshLemburEntity.getGroupRefreshId();
+                    }else{
+                        returnRefreshLembur.setGroupRefreshId("");
+                    }
+                    returnRefreshLembur.setAbsensiPegawaiId(refreshLemburEntity.getAbsensiPegawaiId());
+                    returnRefreshLembur.setTanggal(refreshLemburEntity.getTanggal());
+                    returnRefreshLembur.setStTanggal(CommonUtil.convertDateToString(returnRefreshLembur.getTanggal()));
+                    returnRefreshLembur.setNip(refreshLemburEntity.getNip());
+                    returnRefreshLembur.setNama(refreshLemburEntity.getNama());
+                    returnRefreshLembur.setJamMasuk(refreshLemburEntity.getJamMasuk());
+                    returnRefreshLembur.setJamKeluar(refreshLemburEntity.getJamKeluar());
+                    returnRefreshLembur.setJenisLembur(refreshLemburEntity.getJenisLembur());
+                    returnRefreshLembur.setLamaLembur(refreshLemburEntity.getLamaLembur());
+                    returnRefreshLembur.setStLamaLembur(Double.toString(returnRefreshLembur.getLamaLembur()));
+                    returnRefreshLembur.setJamLembur(refreshLemburEntity.getJamLembur());
+                    returnRefreshLembur.setStJamLembur(Double.toString(returnRefreshLembur.getJamLembur()));
+                    returnRefreshLembur.setBiayaLembur(refreshLemburEntity.getBiayaLembur());
+                    returnRefreshLembur.setStBiayaLembur(Double.toString(returnRefreshLembur.getBiayaLembur()));
+                    returnRefreshLembur.setTipeHari(refreshLemburEntity.getTipeHari());
+                    returnRefreshLembur.setRealisasiLembur(refreshLemburEntity.getRealisasiLembur());
+                    returnRefreshLembur.setStRealisasiLembur(Double.toString(returnRefreshLembur.getRealisasiLembur()));
+                    returnRefreshLembur.setBranchId(refreshLemburEntity.getBranchId());
+
+                    returnRefreshLembur.setLemburId(refreshLemburEntity.getLemburId());
+                    returnRefreshLembur.setTglAwalLembur(refreshLemburEntity.getTglAwalLembur());
+                    returnRefreshLembur.setStTglAwalLembur(CommonUtil.convertDateToString(returnRefreshLembur.getTglAwalLembur()));
+                    returnRefreshLembur.setTglAkhirLembur(refreshLemburEntity.getTglAkhirLembur());
+                    returnRefreshLembur.setStTglAkhirLembur(CommonUtil.convertDateToString(returnRefreshLembur.getTglAkhirLembur()));
+                    returnRefreshLembur.setJamAwalLembur(refreshLemburEntity.getJamAwalLembur());
+                    returnRefreshLembur.setJamAkhirLembur(refreshLemburEntity.getJamAkhirLembur());
+                    returnRefreshLembur.setFlagApprove(refreshLemburEntity.getFlagApprove());
+                    returnRefreshLembur.setApprovalwho(refreshLemburEntity.getApprovalwho());
+
+                    returnRefreshLembur.setFlag(refreshLemburEntity.getFlag());
+                    returnRefreshLembur.setAction(refreshLemburEntity.getAction());
+                    returnRefreshLembur.setLastUpdate(refreshLemburEntity.getLastUpdate());
+                    returnRefreshLembur.setCreatedDate(refreshLemburEntity.getCreatedDate());
+                    returnRefreshLembur.setCreatedWho(refreshLemburEntity.getCreatedWho());
+                    returnRefreshLembur.setLastUpdateWho(refreshLemburEntity.getLastUpdateWho());
+
+                    listOfResult.add(returnRefreshLembur);
+                }
+            }
+        }
+        logger.info("[RefreshLemburBoImpl.getByCriteria] end process <<<");
+        return listOfResult;
+    }
+
+    @Override
+    public List<RefreshLembur> getPerGroupLembur(RefreshLembur searchBean) throws GeneralBOException {
+        logger.info("[RefreshLemburBoImpl.getPerGroupLembur] start process >>>");
+
+        // Mapping with collection and put
+        List<RefreshLembur> listOfResult = new ArrayList();
+
+        if (searchBean != null) {
+            Map hsCriteria = new HashMap();
+
+            if (searchBean.getGroupRefreshId() != null && !"".equalsIgnoreCase(searchBean.getGroupRefreshId())) {
+                hsCriteria.put("group_id", searchBean.getGroupRefreshId());
+            }
+
+            if (searchBean.getStTglAwalLembur() != null && !"".equalsIgnoreCase(String.valueOf(searchBean.getStTglAwalLembur()))) {
+                Date tanggalDari = CommonUtil.convertToDate(searchBean.getStTglAwalLembur());
+                hsCriteria.put("tanggal_dari", CommonUtil.yyyyMMddFormat(tanggalDari));
+            }
+            if (searchBean.getStTglAkhirLembur() != null && !"".equalsIgnoreCase(String.valueOf(searchBean.getStTglAkhirLembur()))) {
+                Date tanggalSelesai = CommonUtil.convertToDate(searchBean.getStTglAkhirLembur());
+                hsCriteria.put("tanggal_selesai", CommonUtil.yyyyMMddFormat(tanggalSelesai));
+            }
+            if (searchBean.getFlagApprove() !=null&& !"".equalsIgnoreCase(String.valueOf(searchBean.getFlagApprove()))) {
+                if (searchBean.getFlagApprove().equalsIgnoreCase("0")){
+                    searchBean.setFlagApprove("0");
+                }
+                hsCriteria.put("approval_flag", searchBean.getFlagApprove());
+            }
+            hsCriteria.put("flag", "Y");
+
+            try {
+                listOfResult = refreshLemburDao.getPerGroupLembur(hsCriteria);
+            } catch (HibernateException e) {
+                logger.error("[RefreshLemburBoImpl.getByCriteria] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+            }
+        }
+        logger.info("[RefreshLemburBoImpl.getPerGroupLembur] end process <<<");
+        return listOfResult;
     }
 
     @Override
@@ -546,5 +704,52 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
             break;
         }
         return hasil;
+    }
+
+    public void approveRefresh(RefreshLembur bean) throws GeneralBOException{
+        logger.info("[RefreshLemburBoImpl.getPeralihanGapok] START >>>");
+        List<ItHrisRefreshLemburEntity> refreshLemburEntityList = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("group_id", bean.getGroupRefreshId());
+        hsCriteria.put("flag", "Y");
+        try{
+            refreshLemburEntityList = refreshLemburDao.getByCriteria(hsCriteria);
+        }catch (HibernateException e){
+            logger.error("[RefreshLemburBoImpl.getPeralihanGapok] Error, " + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
+        }
+
+        for (ItHrisRefreshLemburEntity refreshLembur : refreshLemburEntityList){
+            refreshLembur.setFlagApprove(bean.getFlagApprove());
+            refreshLembur.setApprovalwho(bean.getApprovalwho());
+            refreshLembur.setAction("U");
+            refreshLembur.setLastUpdate(bean.getLastUpdate());
+
+            if("Y".equalsIgnoreCase(refreshLembur.getFlagApprove())){
+                AbsensiPegawaiEntity absensiPegawai = new AbsensiPegawaiEntity();
+                try{
+                    absensiPegawai = absensiPegawaiDao.getById("absensiPegawaiId",refreshLembur.getAbsensiPegawaiId());
+                }catch (HibernateException e){
+                    logger.error("[RefreshLemburBoImpl.refreshAbsensiLembur] Error, " + e.getMessage());
+                    throw new GeneralBOException(e.getMessage());
+                }
+
+                absensiPegawai.setLembur("Y");
+                absensiPegawai.setJenisLembur(refreshLembur.getJenisLembur());
+                absensiPegawai.setLamaLembur(refreshLembur.getLamaLembur());
+                absensiPegawai.setJamLembur(refreshLembur.getJamLembur());
+                absensiPegawai.setBiayaLembur(refreshLembur.getBiayaLembur());
+                absensiPegawai.setRealisasiJamLembur(refreshLembur.getRealisasiLembur());
+                try {
+                    absensiPegawaiDao.addAndSave(absensiPegawai);
+                } catch (HibernateException e) {
+                    logger.error("[RefreshLemburBoImpl.refreshAbsensiLembur] Error, " + e.getMessage());
+                    throw new GeneralBOException(e.getMessage());
+                }
+            }
+        }
+
+        logger.info("[RefreshLemburBoImpl.getPeralihanGapok] END >>>>>");
     }
 }

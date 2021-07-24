@@ -48,6 +48,15 @@ public class RefreshLembur {
 
     private int jmlChance;
     private String stJmlChance;
+    private String jmlPegawai;
+
+    public String getJmlPegawai() {
+        return jmlPegawai;
+    }
+
+    public void setJmlPegawai(String jmlPegawai) {
+        this.jmlPegawai = jmlPegawai;
+    }
 
     public String getNip() {
         return nip;

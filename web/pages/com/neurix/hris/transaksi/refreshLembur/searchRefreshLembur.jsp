@@ -155,12 +155,13 @@
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <s:url var="urlAdd" namespace="/refreshLembur" action="add_refreshLembur" escapeAmp="false">
+                                                        <s:if test="isAdmin"><s:url var="urlAdd" namespace="/refreshLembur" action="add_refreshLembur" escapeAmp="false">
                                                         </s:url>
-                                                        <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
-                                                            <i class="fa fa-plus"></i>
-                                                            Process Refresh Lembur
-                                                        </sj:a>
+                                                            <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
+                                                                <i class="fa fa-plus"></i>
+                                                                Process Refresh Lembur
+                                                            </sj:a>
+                                                        </s:if>
                                                     </td>
                                                     <td>
                                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_refreshLembur"/>'">
@@ -206,6 +207,21 @@
                                                         <s:set name="listOfRefreshLembur" value="#session.listOfResultRefreshLembur" scope="request" />
                                                         <display:table name="listOfRefreshLembur" class="tableLembur table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_refreshLembur.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                                            <s:if test="isVp()">
+                                                                <display:column media="html" title="Approval">
+                                                                    <s:if test='#attr.row.groupRefreshId != ""'>
+                                                                        <s:url var="urlApprove" namespace="/refreshLembur" action="approveRefresh_refreshLembur" escapeAmp="false">
+                                                                            <s:param name="id"><s:property value="#attr.row.groupRefreshId"/></s:param>
+                                                                            <s:param name="approve"><s:property value="Y"/></s:param>
+                                                                            <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                        </s:url>
+                                                                        <sj:a onClickTopics="showDialogMenu" href="%{urlApprove}">
+                                                                            <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
+                                                                        </sj:a>
+                                                                    </s:if>
+                                                                </display:column>
+                                                            </s:if>
+
                                                             <display:column media="html" title="View">
                                                                 <s:url var="urlView" namespace="/refreshLembur" action="view_refreshLembur" escapeAmp="false">
                                                                     <%--<s:param name="id"><s:property value="#attr.row.groupRefreshId"/></s:param>--%>
@@ -216,17 +232,6 @@
                                                                     <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
                                                                 </sj:a>
                                                             </display:column>
-                                                            <%--<display:column media="html" title="Edit">--%>
-                                                                    <%--<s:if test="#attr.row.flagApprove == 'N'">--%>
-                                                                        <%--<s:url var="urlEdit" namespace="/refreshLembur" action="edit_refreshLembur" escapeAmp="false">--%>
-                                                                            <%--<s:param name="id"><s:property value="#attr.row.groupRefreshId"/></s:param>--%>
-                                                                            <%--<s:param name="flag"><s:property value="#attr.row.flag"/></s:param>--%>
-                                                                        <%--</s:url>--%>
-                                                                        <%--<sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">--%>
-                                                                            <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">--%>
-                                                                        <%--</sj:a>--%>
-                                                                    <%--</s:if>--%>
-                                                            <%--</display:column>--%>
                                                             <display:column property="groupRefreshId" sortable="true" title="Group Refresh Id" />
                                                             <display:column property="stTanggal" sortable="true" title="Tanggal" />
                                                             <display:column property="nip" sortable="true" title="NIP"  />
@@ -235,7 +240,7 @@
                                                             <display:column property="jamAkhirLembur" sortable="true" title="Jam Akhir"  />
                                                             <display:column property="stLamaLembur" sortable="true" title="Lama Lembur (Jam)"  />
                                                             <display:column property="stJamLembur" sortable="true" title="Faktor Lembur"  />
-                                                            <display:column media="html" title="Approve Atasan">
+                                                            <display:column media="html" title="Approved">
                                                                 <s:if test='#attr.row.flagApprove == "Y"'>
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
                                                                 </s:if>

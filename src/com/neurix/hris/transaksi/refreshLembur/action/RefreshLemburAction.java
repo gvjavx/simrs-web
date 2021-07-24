@@ -3,6 +3,7 @@ package com.neurix.hris.transaksi.refreshLembur.action;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.transaksi.lembur.bo.LemburBo;
@@ -32,6 +33,25 @@ public class RefreshLemburAction extends BaseMasterAction {
     private BranchBo branchBoProxy;
     private LemburBo lemburBoProxy;
     private boolean admin = false;
+    private boolean vp = false;
+
+    private String approve;
+
+    public String getApprove() {
+        return approve;
+    }
+
+    public void setApprove(String approve) {
+        this.approve = approve;
+    }
+
+    public boolean isVp() {
+        return vp;
+    }
+
+    public void setVp(boolean vp) {
+        this.vp = vp;
+    }
 
     public boolean isAdmin() {
         return admin;
@@ -150,12 +170,29 @@ public class RefreshLemburAction extends BaseMasterAction {
         searchRefreshLembur.setBranchId(branchId);
         String role = CommonUtil.roleAsLogin();
 
-        if ("ADMIN".equalsIgnoreCase(role)){
+        String userPosition = "";
+        String userBranch = "";
+
+        try{
+            userPosition = CommonUtil.userPosisiId();
+            userBranch = CommonUtil.userBranchLogin();
+        } catch (Exception e) {
+            userPosition = "";
+            userBranch = "";
+        }
+
+        if("ADMIN".equalsIgnoreCase(role) || "Admin Bagian".equalsIgnoreCase(role)){
             setAdmin(true);
         }
 
+        if (CommonConstant.BRANCH_KP.equalsIgnoreCase(userBranch) && CommonConstant.POS_VP_HC_GA.equalsIgnoreCase(userPosition)){
+            setVp(true);
+        }
+
+
+
         try {
-            listOfSearchRefreshlembur = refreshLemburBoProxy.getByCriteria(searchRefreshLembur);
+            listOfSearchRefreshlembur = refreshLemburBoProxy.getByCriteriaByGroup(searchRefreshLembur);
         } catch (GeneralBOException e) {
             logger.error("[RefreshLemburAction.search] Error, " + e.getMessage());
             throw new GeneralBOException(e.getMessage());
@@ -273,5 +310,29 @@ public class RefreshLemburAction extends BaseMasterAction {
 
         logger.info("[RefreshLemburAction.saveAdd] end process >>>");
         return "success_save_add";
+    }
+
+    public String approveRefresh() {
+        RefreshLembur searchRefreshlembur = new RefreshLembur();
+
+        searchRefreshlembur.setGroupRefreshId(getId());
+        searchRefreshlembur.setFlag(getFlag());
+        searchRefreshlembur.setFlagApprove(getApprove);
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+        searchRefreshlembur.setApprovalwho(userLogin);
+        searchRefreshlembur.setAction("U");
+        searchRefreshlembur.setLastUpdate(updateTime);
+
+        try {
+            refreshLemburBoProxy.approveRefresh(searchRefreshlembur);
+        }catch (GeneralBOException e) {
+            logger.error("[RefreshLemburAction.view] Error, " + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
+        }
+
+        return "init_view";
     }
 }
