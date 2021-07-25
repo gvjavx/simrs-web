@@ -10,6 +10,8 @@ import com.neurix.hris.transaksi.lembur.bo.LemburBo;
 import com.neurix.hris.transaksi.lembur.model.Lembur;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
+import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
+import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import com.neurix.hris.transaksi.refreshLembur.bo.RefreshLemburBo;
 import com.neurix.hris.transaksi.refreshLembur.model.RefreshLembur;
 import org.apache.log4j.Logger;
@@ -190,7 +192,6 @@ public class RefreshLemburAction extends BaseMasterAction {
         }
 
 
-
         try {
             listOfSearchRefreshlembur = refreshLemburBoProxy.getByCriteriaByGroup(searchRefreshLembur);
         } catch (GeneralBOException e) {
@@ -213,6 +214,27 @@ public class RefreshLemburAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         String branchId = CommonUtil.userBranchLogin();
         RefreshLembur data = new RefreshLembur();
+
+        String role = CommonUtil.roleAsLogin();
+        String userPosition = "";
+        String userBranch = "";
+
+        try{
+            userPosition = CommonUtil.userPosisiId();
+            userBranch = CommonUtil.userBranchLogin();
+        } catch (Exception e) {
+            userPosition = "";
+            userBranch = "";
+        }
+
+        if("ADMIN".equalsIgnoreCase(role) || "Admin Bagian".equalsIgnoreCase(role)){
+            setAdmin(true);
+        }
+
+        if (CommonConstant.BRANCH_KP.equalsIgnoreCase(userBranch) && CommonConstant.POS_VP_HC_GA.equalsIgnoreCase(userPosition)){
+            setVp(true);
+        }
+
         if (branchId != null) {
             data.setBranchId(branchId);
         } else {
@@ -244,8 +266,22 @@ public class RefreshLemburAction extends BaseMasterAction {
 
         RefreshLembur refreshLembur = getRefreshLembur();
         String userLogin = CommonUtil.userLogin();
+        String userBranchName = CommonUtil.userBranchNameLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         java.sql.Date date = CommonUtil.convertToDate(refreshLembur.getStTanggal());
+
+        List<RefreshLembur> cekData = new ArrayList<>();
+        try {
+            cekData = refreshLemburBoProxy.getByCriteria(refreshLembur);
+        }catch (GeneralBOException e){
+            logger.error("[RefreshLemburAction.saveAdd] Error, " + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
+        }
+
+        if(cekData.size() > 0){
+            logger.error("[RefreshLemburAction.saveAdd] Data Refresh Lembur sudah dibuat.");
+            throw new GeneralBOException("Data Refresh Lembur sudah dibuat (tersedia).");
+        }
 
         Boolean chance = false;
         if(refreshLembur.getJmlChance() > 0){
@@ -277,23 +313,48 @@ public class RefreshLemburAction extends BaseMasterAction {
                 throw new GeneralBOException(e.getMessage());
             }
 
-            if("success".equalsIgnoreCase(resultRefresh)){
+
+            String[] splitResult = resultRefresh.split(",");
+            String statusRefresh = splitResult[0];
+            String groupRefresh = splitResult[1];
+
+            if("success".equalsIgnoreCase(statusRefresh)){
                 try{
                     branchBoProxy.setChanceRefreshLembur(refreshLembur.getBranchId(),refreshLembur.getJmlChance()-1);
                 }catch (GeneralBOException e) {
                     logger.error("[RefreshLemburAction.saveAdd] Error, " + e.getMessage());
                     throw new GeneralBOException(e.getMessage());
                 }
-            }else if("needApprove".equalsIgnoreCase(resultRefresh)){
-//                try {
-//                    List<Notifikasi> notifRefreshLembur = refreshLembur.saveAddLembur(lembur);
-//                    for (Notifikasi notifikasi : notifRefreshLembur) {
-//                        notifikasiBo.sendNotif(notifikasi);
-//                    }
-//                } catch (GeneralBOException e) {
-//                    logger.error("[RefreshLemburAction.saveAdd] Error, " + e.getMessage());
-//                    throw new GeneralBOException(e.getMessage());
-//                }
+            }else if("needApprove".equalsIgnoreCase(statusRefresh)){
+                Notifikasi notif = new Notifikasi();
+
+                List<PersonilPosition> personilPosition = new ArrayList<>();
+                try{
+                    personilPosition = refreshLemburBoProxy.getPersonOnPosition(CommonConstant.POS_VP_HC_GA,CommonConstant.BRANCH_KP);
+                }catch (GeneralBOException e){
+                    logger.error("[RefreshLemburAction.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException(e.getMessage());
+                }
+
+                if(personilPosition.size() > 0){
+                    notif.setNip(personilPosition.get(0).getNip());
+                }else {
+                    notif.setNip("adminhcm");
+                }
+                //Send notif ke VP
+                notif.setNoRequest(groupRefresh);
+                notif.setTipeNotifId("TN70");
+                notif.setTipeNotifName(("RefreshLembur"));
+                notif.setNote(userBranchName + " mengajukan Refresh Lembur. Menunggu diApprove.");
+                notif.setCreatedWho(userLogin);
+                notif.setTo("ditentukan");
+
+                try {
+                    notifikasiBo.sendNotif(notif);
+                } catch (GeneralBOException e) {
+                    logger.error("[RefreshLemburAction.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException(e.getMessage());
+                }
             }else {
                 logger.error("[RefreshLemburAction.saveAdd] Tidak ada absensi lembur yang perlu diRefresh pada tanggal tersebut.");
                 throw new GeneralBOException("Tidak ditemukan data absensi lembur yang perlu diRefresh pada tanggal tersebut.");
@@ -317,7 +378,7 @@ public class RefreshLemburAction extends BaseMasterAction {
 
         searchRefreshlembur.setGroupRefreshId(getId());
         searchRefreshlembur.setFlag(getFlag());
-        searchRefreshlembur.setFlagApprove(getApprove);
+        searchRefreshlembur.setFlagApprove(getApprove());
 
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());

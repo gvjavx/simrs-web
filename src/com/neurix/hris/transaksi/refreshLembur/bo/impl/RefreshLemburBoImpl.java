@@ -22,6 +22,7 @@ import com.neurix.hris.transaksi.lembur.model.PengaliFaktorLemburEntity;
 import com.neurix.hris.transaksi.payroll.dao.PayrollDao;
 import com.neurix.hris.transaksi.payroll.model.ItHrisPayrollEntity;
 import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
+import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
 import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import com.neurix.hris.transaksi.refreshLembur.bo.RefreshLemburBo;
 import com.neurix.hris.transaksi.refreshLembur.dao.RefreshLemburDao;
@@ -490,7 +491,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
         }
         logger.info("[RefreshLemburBoImpl.refreshLembur] END >>>>>>>>");
 
-        return msgResult;
+        return msgResult+","+groupId;
     }
 
     private Lembur calcBiayaLembur(Lembur lembur, AbsensiPegawaiEntity absensiPegawai) throws GeneralBOException{
@@ -751,5 +752,42 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
         }
 
         logger.info("[RefreshLemburBoImpl.getPeralihanGapok] END >>>>>");
+    }
+
+    public List<PersonilPosition> getPersonOnPosition (String positionId, String branchId) throws GeneralBOException {
+        logger.info("[RefreshLemburBoImpl.getPersonOnPosition] START >>>");
+        List<PersonilPosition> resultList = new ArrayList<>();
+
+        List<ItPersonilPositionEntity> personilPositionEntityList = new ArrayList<>();
+        try{
+            personilPositionEntityList = personilPositionDao.getListPersonilPosition(branchId, "",positionId);
+        }catch (HibernateException e) {
+            logger.error("[RefreshLemburBoImpl.getPersonOnPosition] Error, " + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
+        }
+
+        for(ItPersonilPositionEntity personil : personilPositionEntityList){
+            PersonilPosition addPersonil = new PersonilPosition();
+
+            addPersonil.setPersonilPositionId(personil.getPersonilPositionId());
+            addPersonil.setNip(personil.getNip());
+            addPersonil.setPersonName(personil.getPersonilName());
+            addPersonil.setBranchId(personil.getBranchId());
+            addPersonil.setBranchName(personil.getBranchName());
+            addPersonil.setDivisiId(personil.getDivisiId());
+            addPersonil.setDivisiName(personil.getDivisiName());
+            addPersonil.setPositionId(personil.getPositionId());
+            addPersonil.setPositionName(personil.getPositionName());
+//            addPersonil.setTanggalAktif(CommonUtil.convertTimestampToString(personil.getTanggalAktif()));
+            addPersonil.setProfesiId(personil.getProfesiId());
+            addPersonil.setJenisPegawai(personil.getJenisPegawai());
+            addPersonil.setJenisPegawaiName(personil.getJenisPegawai());
+
+            resultList.add(addPersonil);
+        }
+        logger.info("[RefreshLemburBoImpl.getPersonOnPosition] END >>>>>");
+
+        return resultList;
+
     }
 }

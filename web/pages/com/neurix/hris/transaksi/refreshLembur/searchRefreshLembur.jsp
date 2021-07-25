@@ -96,7 +96,7 @@
                                                 <td>
                                                     <table>
                                                         <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                                        <s:if test="isAdmin()">
+                                                        <s:if test="isVp()">
                                                             <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid" name="refreshLembur.branchId" required="true"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
                                                         </s:if>
@@ -155,8 +155,9 @@
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <s:if test="isAdmin"><s:url var="urlAdd" namespace="/refreshLembur" action="add_refreshLembur" escapeAmp="false">
-                                                        </s:url>
+                                                        <s:if test="isAdmin()">
+                                                            <s:url var="urlAdd" namespace="/refreshLembur" action="add_refreshLembur" escapeAmp="false">
+                                                            </s:url>
                                                             <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                                 <i class="fa fa-plus"></i>
                                                                 Process Refresh Lembur

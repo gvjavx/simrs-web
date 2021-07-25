@@ -34,6 +34,21 @@
         </property>
     </bean>
 
+    <bean id="transactionDetailCheckupInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+                <prop key="getByCriteriaByGroup">readOnly</prop>
+                <prop key="getPerGroupLembur">readOnly</prop>
+                <prop key="getPersonOnPosition">readOnly</prop>
+                <prop key="approveRefresh">PROPAGATION_REQUIRED</prop>
+                <prop key="refreshAbsensiLembur">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
     <bean id="refreshLemburDao" class="com.neurix.hris.transaksi.refreshLembur.dao.RefreshLemburDao"
           p:sessionFactory-ref="sessionFactory"/>
 

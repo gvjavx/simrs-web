@@ -1282,7 +1282,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
             addNotif.setRead("Y");
             addNotif.setFlag("Y");
             addNotif.setAction("C");
-            addNotif.setNip("0001");
+            addNotif.setNip("adminhcm");
             addNotif.setFromPerson(nip);
             addNotif.setNoRequest(id);
             addNotif.setCreatedDate(updateTime);
@@ -3955,19 +3955,19 @@ public class NotifikasiBoImpl implements NotifikasiBo {
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
 
-        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
-            if(entity.getUserId().equals(nip)){
-                ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), addNotif.getNote(), entity.getOs());
-                break;
-            }
-        }
-
 //        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
 //            if(entity.getUserId().equals(nip)){
-//                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), addNotif.getNote(), CLICK_IJIN);
+//                ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), addNotif.getNote(), entity.getOs());
 //                break;
 //            }
 //        }
+
+        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
+            if(entity.getUserId().equals(nip)){
+                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), addNotif.getNote(), action, entity.getOs(), null);
+                break;
+            }
+        }
     }
 
     @Override
