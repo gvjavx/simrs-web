@@ -1079,7 +1079,7 @@ public class NotifikasiAction extends BaseMasterAction{
                 GroupRefreshId = search.getGroupRefreshId();
             }
             refreshLembur = new RefreshLembur();
-            refreshLembur.setNip(GroupRefreshId);
+            refreshLembur.setGroupRefreshId(GroupRefreshId);
         }
         if ("TI".equalsIgnoreCase(tipe)){
             String personId = getId();
