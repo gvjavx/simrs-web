@@ -72,7 +72,7 @@
                                             </tr>
                                         </table>
 
-                                        <table width="500px">
+                                        <table width="600px">
                                             <tr>
                                                 <td>
                                                     <label class="control-label">

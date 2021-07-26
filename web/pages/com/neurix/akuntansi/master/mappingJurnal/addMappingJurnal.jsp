@@ -132,9 +132,9 @@
                                             </tr>
                                         </table>
 
-                                        <table>
+                                        <table width="60%">
                                             <tr>
-                                                <td>
+                                                <td width="25%">
                                                     <label class="control-label">
                                                         <small>Id Transaksi :</small>
                                                     </label>
@@ -615,7 +615,30 @@
             var keterangan = $('#modKeterangan').val();
             var editBiaya = $('#modEditBiaya').val();
             var tipeJurnalId = $('#tipeJurnalId').val();
+            var isExist = false;
             dwr.engine.setAsync(false);
+
+            // Fahmi 2021/Jul/23 penambahan pengecheckkan untuk kode rekening yang sama.
+            MappingJurnalAction.searchKodeRekeningSession(function(listOfsearch)
+            {
+               if (null!=listOfsearch)
+               {
+                  for(var i=0;i<listOfsearch.length;i++)
+                  {
+                     if (kodeRekening == listOfsearch[i].kodeRekening)
+                     {
+                        alert(" Kode rekening sudah ditambahkan. ");
+                        isExist = true;
+                        return;
+                     }
+                  }
+               }
+            });
+
+           // Fahmi 2021/Jul/23 penambahan pengecheckkan untuk kode rekening yang sama.
+            if(isExist)
+            { return; }
+
             if (kodeRekening != '' && posisi != '' && master != '' && bukti != '' && kodeBarang != '' && listKirim != '' && keterangan != '' && kodeRekeningname != '' && divisiId != '') {
                 MappingJurnalAction.saveKodeRekeningSession(tipeJurnalId, kodeRekening, posisi, master, bukti, kodeBarang, listKirim, keterangan, kodeRekeningname, divisiId, editBiaya, function () {
                     listResult();

@@ -11,14 +11,12 @@ import com.neurix.common.util.CommonUtil;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
+import org.springframework.util.comparator.ComparableComparator;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Ferdi on 05/02/2015.
@@ -780,7 +778,7 @@ public class MappingJurnalAction extends BaseMasterAction {
                     save = false;
                 }
                 /*if (parameter.equalsIgnoreCase(mappingJurnal.getKeterangan())) {
-                    save=false;
+                    save=false;saveKodeRekeningSession
                 }*/
             }
         }
@@ -798,6 +796,9 @@ public class MappingJurnalAction extends BaseMasterAction {
             result.setEditBiaya(editBiaya);
             listOfResult.add(result);
         }
+
+        // Fahmi 2021-07-25, sortir untuk penampilan list kode rekening
+        listOfResult.sort(CommonUtil.comparatorMappingJurnal());
 
         session.setAttribute("listOfResultMapping",listOfResult);
         logger.info("[MappingJurnalAction.savePegawaiShift] end process <<<");
