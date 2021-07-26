@@ -91,7 +91,7 @@ public class NotifikasiDao extends GenericDao<ImNotifikasiEntity, String> {
                 "    when data.tipe_notif_id = 'TN44' AND data.indisipliner is null then 'P' \n" +
                 "    when data.tipe_notif_id = 'TN01' AND data.pengajuanRk is null then 'PBRK' \n" +
                 "    when data.tipe_notif_id = 'TN04' AND data.pengajuan is null then 'PB' \n" +
-                "    when data.tipe_notif_id = 'TN70' AND data.refreshLembur is null then 'RL' \n" +
+                "    when data.tipe_notif_id = 'TN70' AND data.refreshLembur = '0' then 'RL' \n" +
                 "  end as hasil \n" +
                 "from \n" +
                 "  (\n" +
@@ -194,10 +194,10 @@ public class NotifikasiDao extends GenericDao<ImNotifikasiEntity, String> {
                 "      ) pengajuanRk on pengajuanRk.pengajuan_biaya_id = notif.no_request\n" +
                 "      left join (\n" +
                 "        SELECT\n" +
-                "          *\n" +
+                "          group_refresh_id, flag_approve\n" +
                 "        FROM\n" +
                 "          it_hris_refresh_lembur\n" +
-                "        LIMIT 1\n" +
+                "        GROUP BY group_refresh_id,flag_approve\n" +
                 "      ) refreshLembur on refreshLembur.group_refresh_id = notif.no_request \n" +
                 "  ) as data \n" +
                 "WHERE \n" +

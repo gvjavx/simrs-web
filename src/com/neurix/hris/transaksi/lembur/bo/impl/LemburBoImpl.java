@@ -345,7 +345,7 @@ public class LemburBoImpl implements LemburBo {
             }
             if (searchBean.getStTanggalAkhir() != null && !"".equalsIgnoreCase(String.valueOf(searchBean.getStTanggalAkhir()))) {
                 Timestamp tanggalSelesai = CommonUtil.convertToTimestamp(searchBean.getStTanggalAkhir());
-                tanggalSelesai.setTime(tanggalSelesai.getTime() + (1 * 24 * 60 * 60 * 1000)); //ditambah satu hari
+                tanggalSelesai.setTime(tanggalSelesai.getTime()); // + (1 * 24 * 60 * 60 * 1000)); //ditambah satu hari
                 hsCriteria.put("tanggal_selesai", tanggalSelesai);
             }
             if (searchBean.getApprovalFlag() !=null&& !"".equalsIgnoreCase(String.valueOf(searchBean.getApprovalFlag()))) {

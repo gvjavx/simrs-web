@@ -418,6 +418,7 @@ public class RefreshLemburAction extends BaseMasterAction {
         searchRefreshlembur.setApprovalwho(userLogin);
         searchRefreshlembur.setAction("U");
         searchRefreshlembur.setLastUpdate(updateTime);
+        searchRefreshlembur.setLastUpdateWho(userLogin);
 
         try {
             refreshLemburBoProxy.approveRefresh(searchRefreshlembur);

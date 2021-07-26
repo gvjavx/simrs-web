@@ -22,6 +22,7 @@
           p:personilPositionDao-ref="personilPositionDao"
           p:jenisPegawaiDao-ref="jenisPegawaiDao"
           p:payrollDao-ref="payrollDao"
+          p:notifikasiDao-ref="notifikasiDao"
           />
 
     <bean id="refreshLemburBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

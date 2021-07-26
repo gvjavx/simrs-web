@@ -6,7 +6,7 @@
         group_refresh_id character varying(10) NOT NULL,
         absensi_pegawai_id character varying(15) NOT NULL,
         tanggal date,
-        nip character varying(20)
+        nip character varying(20),
         nama character varying(100),
         jam_masuk character varying(8),
         jam_keluar character varying(8),
@@ -62,6 +62,24 @@
         add column chance_refresh_lembur integer;
     update im_branches
         set chance_refresh_lembur = 3;
+
+---- 2021-07-26 ===> insert functions
+-- insert function
+    INSERT INTO public.im_functions (func_id, func_name, url, parent, func_level, created_date, created_who, last_update, last_update_who, flag, action, menu)
+    VALUES  (6200, 'Refresh Lembur', '/refreshLembur/initForm_refreshLembur.action', 2, 2, '2021-07-23 13:04:09.921000', 'MOH.IMRON,DRS,APT', '2021-07-23 13:04:09.921000', 'MOH.IMRON,DRS,APT', 'Y', 'C', 6200),
+            (6201, 'InitForm Refresh Lembur', '/refreshLembur/initForm_refreshLembur.action', 6200, null, '2021-07-23 13:09:47.311000', 'MOH.IMRON,DRS,APT', '2021-07-23 13:09:47.311000', 'MOH.IMRON,DRS,APT', 'Y', 'C', null),
+            (6202, 'Search Refresh Lembur', '/refreshLembur/search_refreshLembur.action', 6200, null, '2021-07-23 13:18:59.069000', 'MOH.IMRON,DRS,APT', '2021-07-23 13:18:59.069000', 'MOH.IMRON,DRS,APT', 'Y', 'C', null),
+            (6203, 'Add Refresh Lembur', '/refreshLembur/add_refreshLembur.action', 6200, null, '2021-07-23 13:19:52.985000', 'MOH.IMRON,DRS,APT', '2021-07-23 13:19:52.985000', 'MOH.IMRON,DRS,APT', 'Y', 'C', null),
+            (6204, 'Save Add Refresh Lembur', '/refreshLembur/saveAdd_refreshLembur.action', 6200, null, '2021-07-23 13:20:41.114000', 'MOH.IMRON,DRS,APT', '2021-07-23 13:20:41.114000', 'MOH.IMRON,DRS,APT', 'Y', 'C', null),
+            (6205, 'View Refresh Lembur', '/refreshLembur/view_refreshLembur.action', 6200, null, '2021-07-23 13:21:20.202000', 'MOH.IMRON,DRS,APT', '2021-07-23 13:21:20.202000', 'MOH.IMRON,DRS,APT', 'Y', 'C', null),
+            (6206, 'Display Tag Refresh Lembur', '/refreshLembur/paging_displaytag_refreshLembur.action', 6200, null, '2021-07-23 13:24:44.038000', 'MOH.IMRON,DRS,APT', '2021-07-23 13:24:44.038000', 'MOH.IMRON,DRS,APT', 'Y', 'C', null),
+            (6208, 'Approve Refresh Lembur', '/refreshLembur/approveRefresh_refreshLembur.action', 6200, null, '2021-07-26 03:29:45.199000', 'MOH.IMRON,DRS,APT', '2021-07-26 03:32:12.212000', 'MOH.IMRON,DRS,APT', 'Y', 'U', null),
+            (6209, 'Init Approve Refresh Lembur', '/refreshLembur/initApprove_refreshLembur.action', 6200, null, '2021-07-26 09:53:57.561000', 'MOH.IMRON,DRS,APT', '2021-07-26 09:53:57.561000', 'MOH.IMRON,DRS,APT', 'Y', 'C', null),
+            (6210, 'searchNotif Refresh Lembur', '/refreshLembur/searchNotif_refreshLembur.action', 6200, null, '2021-07-26 10:42:32.761000', 'MOH.IMRON,DRS,APT', '2021-07-26 10:42:32.761000', 'MOH.IMRON,DRS,APT', 'Y', 'C', null);
+-- memperbaiki function viewNotifikasi
+    UPDATE im_im_functions
+    SET parent_id = 1453
+    WHERE func_id = 784;
 
 -----------------------------------
 -------- SAMPAI INI SAJA  ---------

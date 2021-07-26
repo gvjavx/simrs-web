@@ -19,6 +19,8 @@ import com.neurix.hris.transaksi.lembur.model.JamLemburEntity;
 import com.neurix.hris.transaksi.lembur.model.Lembur;
 import com.neurix.hris.transaksi.lembur.model.PengaliFaktorLembur;
 import com.neurix.hris.transaksi.lembur.model.PengaliFaktorLemburEntity;
+import com.neurix.hris.transaksi.notifikasi.dao.NotifikasiDao;
+import com.neurix.hris.transaksi.notifikasi.model.ImNotifikasiEntity;
 import com.neurix.hris.transaksi.payroll.dao.PayrollDao;
 import com.neurix.hris.transaksi.payroll.model.ItHrisPayrollEntity;
 import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
@@ -54,9 +56,14 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
     private PersonilPositionDao personilPositionDao;
     private JenisPegawaiDao jenisPegawaiDao;
     private PayrollDao payrollDao;
+    private NotifikasiDao notifikasiDao;
 
     public static Logger getLogger() {
         return logger;
+    }
+
+    public void setNotifikasiDao(NotifikasiDao notifikasiDao) {
+        this.notifikasiDao = notifikasiDao;
     }
 
     public void setAbsensiPegawaiDao(AbsensiPegawaiDao absensiPegawaiDao) {
@@ -708,7 +715,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
     }
 
     public void approveRefresh(RefreshLembur bean) throws GeneralBOException{
-        logger.info("[RefreshLemburBoImpl.getPeralihanGapok] START >>>");
+        logger.info("[RefreshLemburBoImpl.approveRefresh] START >>>");
         List<ItHrisRefreshLemburEntity> refreshLemburEntityList = new ArrayList<>();
 
         Map hsCriteria = new HashMap();
@@ -717,7 +724,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
         try{
             refreshLemburEntityList = refreshLemburDao.getByCriteria(hsCriteria);
         }catch (HibernateException e){
-            logger.error("[RefreshLemburBoImpl.getPeralihanGapok] Error, " + e.getMessage());
+            logger.error("[RefreshLemburBoImpl.approveRefresh] Error, " + e.getMessage());
             throw new GeneralBOException(e.getMessage());
         }
 
@@ -732,7 +739,7 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
                 try{
                     absensiPegawai = absensiPegawaiDao.getById("absensiPegawaiId",refreshLembur.getAbsensiPegawaiId());
                 }catch (HibernateException e){
-                    logger.error("[RefreshLemburBoImpl.refreshAbsensiLembur] Error, " + e.getMessage());
+                    logger.error("[RefreshLemburBoImpl.approveRefresh] Error, " + e.getMessage());
                     throw new GeneralBOException(e.getMessage());
                 }
 
@@ -745,13 +752,36 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
                 try {
                     absensiPegawaiDao.addAndSave(absensiPegawai);
                 } catch (HibernateException e) {
-                    logger.error("[RefreshLemburBoImpl.refreshAbsensiLembur] Error, " + e.getMessage());
+                    logger.error("[RefreshLemburBoImpl.approveRefresh] Error, " + e.getMessage());
                     throw new GeneralBOException(e.getMessage());
                 }
             }
         }
 
-        logger.info("[RefreshLemburBoImpl.getPeralihanGapok] END >>>>>");
+        //Update Notifikasi
+        List<ImNotifikasiEntity> notifikasiEntityList = new ArrayList<>();
+        try{
+            notifikasiEntityList = notifikasiDao.getDataByNoRequest(bean.getGroupRefreshId());
+        }catch (HibernateException e){
+            logger.error("[RefreshLemburBoImpl.approveRefresh] Error, " + e.getMessage());
+            throw new GeneralBOException("Error when retrieving notifikasi by no request, " + e.getMessage());
+        }
+
+        for(ImNotifikasiEntity notif:notifikasiEntityList){
+            notif.setRead("N");
+            notif.setAction("U");
+            notif.setLastUpdateWho(bean.getLastUpdateWho());
+            notif.setLastUpdate(bean.getLastUpdate());
+
+            try{
+                notifikasiDao.updateAndSave(notif);
+            }catch (HibernateException e){
+                logger.error("[RefreshLemburBoImpl.approveRefresh] Error, " + e.getMessage());
+                throw new GeneralBOException("Error when update notifikasi, " + e.getMessage());
+            }
+        }
+
+        logger.info("[RefreshLemburBoImpl.approveRefresh] END >>>>>");
     }
 
     public List<PersonilPosition> getPersonOnPosition (String positionId, String branchId) throws GeneralBOException {
