@@ -1021,7 +1021,10 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                     List<ImPosition> positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_MADYA);
 
                     for (ImPosition imPosition : positionList) {//perlu dicek
-                        userList=userDao.getUserPegawaiByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),imPosition.getPositionId());
+                        //userList=userDao.getUserPegawaiByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),imPosition.getPositionId());
+
+                        // 2021-07-22, Sigit. Perbahan = yg berarti diisi terakhir saja. ke addAll menambahkan list;
+                        userList.addAll(userDao.getUserPegawaiByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),imPosition.getPositionId()));
                     }
 
                     //jika pejabat madya kosong maka langsung ke pejabat utama
@@ -1033,7 +1036,12 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                         positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_UTAMA);
 
                         for (ImPosition imPosition : positionList) {//perlu dicek
-                            userList=userDao.getUserPegawaiByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),imPosition.getPositionId());
+                            //userList=userDao.getUserPegawaiByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),imPosition.getPositionId());
+
+                            // 2021-07-22, Sigit. Perbahan = yg berarti diisi terakhir saja. ke addAll menambahkan list;
+                            userList.addAll(userDao.getUserPegawaiByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),imPosition.getPositionId()));
+
+
                         }
 
                         //jika pejabat utama kosong maka langsung lempar error
@@ -1062,7 +1070,10 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                     positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_UTAMA);
 
                     for (ImPosition imPosition : positionList ){
-                        userList=userDao.getUserByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),imPosition.getPositionId(),CommonConstant.ROLE_ID_KARYAWAN);
+                        //userList=userDao.getUserByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),imPosition.getPositionId(),CommonConstant.ROLE_ID_KARYAWAN);
+
+                        // 2021-07-22, Sigit. Perbahan = yg berarti diisi terakhir saja. ke addAll menambahkan list;
+                        userList.addAll(userDao.getUserByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),imPosition.getPositionId(),CommonConstant.ROLE_ID_KARYAWAN));
                     }
 
                     if (pengajuanBiayaDetailEntity.getJumlah().compareTo(maxPengajuanBiaya)<0){

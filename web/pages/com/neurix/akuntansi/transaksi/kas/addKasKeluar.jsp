@@ -761,6 +761,10 @@
                         var npwpLawan = $('#mod_npwp_lawan_transaksi').val();
                         var npwpPerusahaan = $('#mod_npwp_perusahaan').val();
                         var tanggalFaktur = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+
+                        console.log(npwpPerusahaan);
+                        console.log(currentDate);
+
                         if (statusFaktur!=""){
                             if (tanggalFaktur < currentDate){
                                 alert("Tanggal Faktur sudah tidak valid , silahkan membuat faktur baru");
