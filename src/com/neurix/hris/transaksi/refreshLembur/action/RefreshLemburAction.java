@@ -272,7 +272,10 @@ public class RefreshLemburAction extends BaseMasterAction {
 
         List<RefreshLembur> cekData = new ArrayList<>();
         try {
-            cekData = refreshLemburBoProxy.getByCriteria(refreshLembur);
+            RefreshLembur forCheck = refreshLembur;
+            forCheck.setStTglAwalLembur(refreshLembur.getStTanggal());
+            forCheck.setStTglAkhirLembur(refreshLembur.getStTanggal());
+            cekData = refreshLemburBoProxy.getByCriteria(forCheck);
         }catch (GeneralBOException e){
             logger.error("[RefreshLemburAction.saveAdd] Error, " + e.getMessage());
             throw new GeneralBOException(e.getMessage());
@@ -373,11 +376,40 @@ public class RefreshLemburAction extends BaseMasterAction {
         return "success_save_add";
     }
 
-    public String approveRefresh() {
+    public String initApprove() {
         RefreshLembur searchRefreshlembur = new RefreshLembur();
 
+        List<RefreshLembur> listRefresh = new ArrayList<>();
         searchRefreshlembur.setGroupRefreshId(getId());
         searchRefreshlembur.setFlag(getFlag());
+//        searchRefreshlembur.setFlagApprove(getApprove());
+
+//        String userLogin = CommonUtil.userLogin();
+//        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+//        searchRefreshlembur.setApprovalwho(userLogin);
+//        searchRefreshlembur.setAction("U");
+//        searchRefreshlembur.setLastUpdate(updateTime);
+
+        try {
+            listRefresh = refreshLemburBoProxy.getByCriteria(searchRefreshlembur);
+        }catch (GeneralBOException e) {
+            logger.error("[RefreshLemburAction.view] Error, " + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
+        }
+
+        setRefreshLembur(listRefresh.get(0));
+
+        return "init_approve";
+    }
+
+    public String approveRefresh() {
+        RefreshLembur searchRefreshlembur = getRefreshLembur();
+
+//        searchRefreshlembur.setGroupRefreshId(getId());
+//        searchRefreshlembur.setFlag(getFlag());
+
+
         searchRefreshlembur.setFlagApprove(getApprove());
 
         String userLogin = CommonUtil.userLogin();
@@ -394,6 +426,6 @@ public class RefreshLemburAction extends BaseMasterAction {
             throw new GeneralBOException(e.getMessage());
         }
 
-        return "init_view";
+        return "success_save_add";
     }
 }

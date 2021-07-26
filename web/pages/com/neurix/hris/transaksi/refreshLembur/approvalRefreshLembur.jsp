@@ -208,22 +208,22 @@
                                                         <s:set name="listOfRefreshLembur" value="#session.listOfResultRefreshLembur" scope="request" />
                                                         <display:table name="listOfRefreshLembur" class="tableLembur table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_refreshLembur.action" export="true" id="row" pagesize="14" style="font-size:10">
-                                                            <s:if test="isVp()">
+                                                            <%--<s:if test="isVp()">--%>
                                                                 <display:column media="html" title="Approval">
                                                                     <s:if test='#attr.row.groupRefreshId != ""'>
                                                                         <s:if test='#attr.row.flagApprove == "0"'>
-                                                                            <s:url var="urlApprove" namespace="/refreshLembur" action="initApprove_refreshLembur" escapeAmp="false">
+                                                                            <s:url var="urlApprove" namespace="/refreshLembur" action="approveRefresh_refreshLembur" escapeAmp="false">
                                                                                 <s:param name="id"><s:property value="#attr.row.groupRefreshId"/></s:param>
                                                                                 <s:param name="approve"><s:property value="Y"/></s:param>
                                                                                 <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                                             </s:url>
-                                                                            <sj:a onClickTopics="showDialogMenu" href="%{urlApprove}">
+                                                                            <sj:a href="%{urlApprove}">
                                                                                 <img border="0" src="<s:url value="/pages/images/icon_approval_sdm.png"/>" name="approve_ico">
                                                                             </sj:a>
                                                                         </s:if>
                                                                     </s:if>
                                                                 </display:column>
-                                                            </s:if>
+                                                            <%--</s:if>--%>
 
                                                             <display:column media="html" title="View">
                                                                 <s:url var="urlView" namespace="/refreshLembur" action="view_refreshLembur" escapeAmp="false">
