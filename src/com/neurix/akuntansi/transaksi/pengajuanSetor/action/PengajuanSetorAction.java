@@ -1590,7 +1590,7 @@ public class PengajuanSetorAction extends BaseMasterAction {
                     // buktiJurnal6=jurnalRkPpnKeluaran.getSumber(); //kenapa mengambil sumber dari erk ppn keluaran ?
                     // END
 
-                    buktiJurnal6 = jurnalPpnMasukanRk.getSumber();
+                    buktiJurnal6 = jurnalRkPpnMasukan.getSumber();
                 }
 
                 // Sebelum :
@@ -1599,7 +1599,7 @@ public class PengajuanSetorAction extends BaseMasterAction {
                 // END
 
                 // 2021-07-26 Sigit, Perubahan Pengambilan Total;
-                List<MappingDetail> dataMasukan = (List<MappingDetail>) dataRkPpnKeluaran.get("ppn_masukan");
+                List<MappingDetail> dataMasukan = (List<MappingDetail>) dataRkPpnMasukan.get("ppn_masukan");
                 for (MappingDetail mapDataMasukan : dataMasukan){
                     totalMasukanJurnal6 = totalMasukanJurnal6.add(mapDataMasukan.getNilai());
                 }

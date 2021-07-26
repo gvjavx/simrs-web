@@ -92,7 +92,7 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
                 "\tLEFT JOIN it_akun_pengajuan_setor_detail ps ON ps.transaksi_id = jd.no_nota\n" +
                 "\tLEFT JOIN it_akun_pengajuan_setor s ON ps.pengajuan_setor_id = s.pengajuan_setor_id\n" +
                 "WHERE\n" +
-                "\tj.keterangan ilike 'Pembayaran gaji%'\n" +
+                "\tj.keterangan ilike 'Pembayaran payrol%'\n" +
                 "\tAND j.branch_id='"+search.getBranchId()+"'\n" +
                 "\tAND j.tanggal_jurnal >='"+search.getStTanggalDari()+"'\n" +
                 "\tAND j.tanggal_jurnal <'"+search.getStTanggalSelesai()+"'\n" +
@@ -188,7 +188,7 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
                 "\tLEFT JOIN it_akun_pengajuan_setor s ON ps.pengajuan_setor_id = s.pengajuan_setor_id\n" +
                 "WHERE\n" +
                 "\tj.keterangan NOT ILIKE 'Pendapatan dokter%'\n" +
-                "\tAND j.keterangan NOT ILIKE 'Pembayaran gaji%'\n" +
+                "\tAND j.keterangan NOT ILIKE 'Pembayaran payrol%'\n" +
                 "\tAND j.branch_id='"+search.getBranchId()+"'\n" +
                 "\tAND j.tanggal_jurnal >='"+search.getStTanggalDari()+"'\n" +
                 "\tAND j.tanggal_jurnal <'"+search.getStTanggalSelesai()+"'\n" +
