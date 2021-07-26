@@ -94,14 +94,30 @@
                     </tr>
                 </table>
                 <table>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Group ID :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <div class="input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <s:textfield  id="appGroupId" name="refreshLembur.groupRefreshId" required="true" readonly="true" cssClass="form-control"/>
+                                </div>
+                            </table>
+                        </td>
+                    </tr>
+
                     <tr>
                         <td>
                             <label class="control-label"><small>Unit :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="appGroupId" name="refreshLembur.groupRefreshId" required="true" readonly="true" cssStyle="display: none" cssClass="form-control"/>
-                                <s:textfield  id="jmlChance" name="refreshLembur.jmlChance" required="true" readonly="true" cssStyle="display: none" cssClass="form-control"/>
+                                <s:textfield  id="flagApproval" name="refreshLembur.flagApprove" required="true" readonly="true" cssStyle="display: none" cssClass="form-control"/>
                                 <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                 <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="refreshLembur.branchId" readonly="true"
                                           listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/></table>
@@ -118,7 +134,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <s:textfield id="tanggal" name="refreshLembur.stTanggal" cssClass="form-control pull-right"
+                                    <s:textfield id="tanggal" name="refreshLembur.stTanggal" cssClass="form-control pull-right" readonly="true"
                                                  required="false" cssStyle="" size="12"/>
                                 </div>
                             </table>
@@ -128,11 +144,17 @@
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addFormRefreshLembur" id="save" name="save"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addFormRefreshLembur" id="saveApprove" onclick="approve()" name="save"
                                    onBeforeTopics="beforeProcessSaveRefreshLembur" onCompleteTopics="closeDialog,successDialogRefreshLembur"
                                    onSuccessTopics="successDialogRefreshLembur" onErrorTopics="errorDialogRefreshLembur" >
                             <i class="fa fa-check"></i>
                             Approve
+                        </sj:submit>
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-danger" formIds="addFormRefreshLembur" id="saveNotApprove" onclick="notApprove()" name="save"
+                                   onBeforeTopics="beforeProcessSaveRefreshLembur" onCompleteTopics="closeDialog,successDialogRefreshLembur"
+                                   onSuccessTopics="successDialogRefreshLembur" onErrorTopics="errorDialogRefreshLembur" >
+                            <i class="fa fa-check"></i>
+                            Not Approve
                         </sj:submit>
                         <button type="button" id="cancel" class="btn btn-default" style="font-family: Arial, Helvetica, sans-serif;font-size: 12px;font-weight: bold;" onclick="cancelBtn();">
                             <i class="fa fa-refresh"/> Cancel
@@ -223,4 +245,13 @@
             dateFormat: 'dd/mm/yy'
         });
     });
+
+    function notApprove() {
+        $('#flagApproval').val('N');
+    };
+
+    function approve() {
+        $('#flagApproval').val('Y');
+
+    }
 </script>

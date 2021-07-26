@@ -136,7 +136,7 @@
                 }
                 else if (item.tipeNotifId == "TN70"){
                     tmp_data_approve += "<li>"+
-                        "<a href='<s:property value="appname" />notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                        "<a href='<s:property value="appname" />refreshLembur/searchNotif_refreshLembur.action?id="+item.noRequest + "' onclick='readNotif("+item.notifId+");'>"+
                         "<span class='label label-success'>Refresh Lembur</span> "+item.note+""+
                         "</a>"+
                         "</li>";

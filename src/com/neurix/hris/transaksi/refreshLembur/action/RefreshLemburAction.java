@@ -410,7 +410,7 @@ public class RefreshLemburAction extends BaseMasterAction {
 //        searchRefreshlembur.setFlag(getFlag());
 
 
-        searchRefreshlembur.setFlagApprove(getApprove());
+//        searchRefreshlembur.setFlagApprove("Y");
 
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -428,4 +428,52 @@ public class RefreshLemburAction extends BaseMasterAction {
 
         return "success_save_add";
     }
+
+    public String searchNotif() {
+        logger.info("[RefreshLemburAction.search] start process >>>");
+        RefreshLembur searchRefreshLembur = new RefreshLembur();
+        List<RefreshLembur> listOfSearchRefreshlembur = new ArrayList();
+        searchRefreshLembur.setGroupRefreshId(getId());
+        String branchId = CommonUtil.userBranchLogin();
+        searchRefreshLembur.setBranchId(branchId);
+        String role = CommonUtil.roleAsLogin();
+
+        String userPosition = "";
+        String userBranch = "";
+
+        try{
+            userPosition = CommonUtil.userPosisiId();
+            userBranch = CommonUtil.userBranchLogin();
+        } catch (Exception e) {
+            userPosition = "";
+            userBranch = "";
+        }
+
+        if("ADMIN".equalsIgnoreCase(role) || "Admin Bagian".equalsIgnoreCase(role)){
+            setAdmin(true);
+        }
+
+        if (CommonConstant.BRANCH_KP.equalsIgnoreCase(userBranch) && CommonConstant.POS_VP_HC_GA.equalsIgnoreCase(userPosition)){
+            setVp(true);
+        }
+
+
+        try {
+            listOfSearchRefreshlembur = refreshLemburBoProxy.getByCriteriaByGroup(searchRefreshLembur);
+        } catch (GeneralBOException e) {
+            logger.error("[RefreshLemburAction.search] Error, " + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
+        }
+
+        setRefreshLembur(searchRefreshLembur);
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResultRefreshLembur");
+        session.setAttribute("listOfResultRefreshLembur", listOfSearchRefreshlembur);
+
+        logger.info("[RefreshLemburAction.search] end process <<<");
+
+        return SUCCESS;
+    }
+
 }
