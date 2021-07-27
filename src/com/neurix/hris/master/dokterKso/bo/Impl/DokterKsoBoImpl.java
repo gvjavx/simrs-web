@@ -563,8 +563,13 @@ public class DokterKsoBoImpl implements DokterKsoBo {
                         dokter.setIdDokter(entity.getNip());
                         dokter.setFlag("Y");
                         List<Dokter> dokters = dokterBo.getByCriteria(dokter);
-                        String dokterName = dokters.get(0).getNamaDokter();
-                        dokterKso.setNamaDokter(dokterName);
+                        // Fahmi 2021-07-27, Tambah pengecheckkan untuk data yang kosong.
+                        if(null!=dokters && dokters.size() > 0)
+                        {
+                            String dokterName = dokters.get(0).getNamaDokter();
+                            dokterKso.setNamaDokter(dokterName);
+                        }
+
                     }
 //                    if (entity.getDokterKsoId() != null){
 //                        DokterKsoTindakan dokterKsoTindakan = new DokterKsoTindakan();

@@ -156,6 +156,10 @@ public class DokterKsoAction extends BaseMasterAction {
 //        HttpSession session = ServletActionContext.getRequest().getSession();
 //        session.removeAttribute("listOfResult");
 
+        // Fahmi 2021-07-27, Saat mau nambah baru, session detail perlu dibersihkan
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResultDokterKsoTindakan");
+
         logger.info("[DokterKSOAction.add] stop process >>>");
         return "init_add";
     }

@@ -37,6 +37,11 @@
             }
         });
 
+        $.subscribe('errorDialog', function (event, data) {
+           document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
+           $.publish('showErrorDialog');
+        });
+
         $(document).ready(function () {
             window.close = function () {
                 //$('#waiting_dialog').dialog('close');
@@ -257,8 +262,7 @@
                                                                    formIds="mappingJurnalForm" id="save" name="save"
                                                                    onBeforeTopics="beforeProcessSave"
                                                                    onCompleteTopics="closeDialog,successDialog"
-                                                                   onSuccessTopics="successDialog"
-                                                                   onErrorTopics="errorDialog">
+                                                                   onSuccessTopics="successDialog" onErrorTopics="errorDialog">
                                                             <i class="fa fa-check"></i>
                                                             Save
                                                         </sj:submit>

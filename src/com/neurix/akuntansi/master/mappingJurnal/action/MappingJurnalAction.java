@@ -10,6 +10,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.engine.Mapping;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.comparator.ComparableComparator;
 import org.springframework.web.context.ContextLoader;
@@ -611,6 +612,61 @@ public class MappingJurnalAction extends BaseMasterAction {
             mappingJurnal.setFlag("Y");
             detail.add(mappingJurnal);
         }
+
+        // Fahmi 2021-07-26, penambahan pengecheckkan jika ada detail no rekening sama persis dengan yang akan ditambahkan.
+        if(detail.size() > 0)
+        {
+            int dataSama;
+            List<MappingJurnal> oldData ;
+            List<MappingJurnal> listDetail ;
+            MappingJurnal mappingJurnal = new MappingJurnal();
+
+            // ambil semua data berdasarkan tipe jurnal, posisi dan kode rekening.
+            mappingJurnal.setTipeJurnalId(detail.get(0).getTipeJurnalId());
+            mappingJurnal.setKodeRekening(detail.get(0).getKodeRekening());
+            mappingJurnal.setPosisi(detail.get(0).getPosisi());
+            oldData = mappingJurnalBoProxy.getByCriteria(mappingJurnal);
+
+            // kalau ada data yang sama, lakukan pengecheckkan lagi.
+            if(null!=oldData && oldData.size() > 0)
+            {
+                // Ambil 1 1 berdasarkan trans_id untuk mencari yang benar2 sama detail kode rekeningnya dengan
+                // yang akan di save
+                for (MappingJurnal oldDatum : oldData) {
+                    mappingJurnal = new MappingJurnal();
+                    mappingJurnal.setTransId(oldDatum.getTransId());
+                    listDetail = mappingJurnalBoProxy.getByCriteria(mappingJurnal);
+                    dataSama = 0;
+
+                    // Check jika jumlah data tidak sama, lanjut ke data berikutnya
+                    if (listDetail.size() != detail.size()) continue;
+
+                    // Check data apakah sama persis.
+                    for (MappingJurnal mapping : listDetail) {
+                        for (MappingJurnal newData : detail) {
+                            if (mapping.getKodeRekening().equalsIgnoreCase(newData.getKodeRekening()) &&
+                                    mapping.getTipeJurnalId().equalsIgnoreCase(newData.getTipeJurnalId()) &&
+                                    mapping.getPosisi().equalsIgnoreCase(newData.getPosisi())) {
+                                dataSama++;
+                            }
+                        }
+                    }
+
+                    // jika jumlah dataSama sana dengan detail yang akan di save,
+                    // maka data tersebut sudah pernah dimasukkan
+                    if (dataSama == detail.size()) {
+                        logger.error("[mappingJurnalAction.saveAddMappingJurnalTransaction] Error data sudah pernah dimasukkan. ");
+                        addActionError("Error, " + " data sudah pernah dimasukkan.\n");
+                        resultBack = ERROR;
+                        throw new GeneralBOException("Error, data sudah pernah dimasukkan.");
+                    }
+
+                }
+            }
+            // jika tidak ada data yang sama, maka aman untuk di save.
+
+        }
+
         try {
             MappingJurnal status = mappingJurnalBoProxy.saveMappingJurnalTransaction(data, detail);
             if (status.getTransId() != null) {
