@@ -1902,3 +1902,42 @@ ADD COLUMN parent_id VARCHAR(30);
     ALTER TABLE it_akun_nilai_parameter_budgeting
     ADD COLUMN position_id VARCHAR(50);
 --
+
+-- 2021-07-22
+
+    INSERT INTO im_func_roles VALUES
+    ('39', '782', 'Y', now(), now(), 'mig', 'mig'),
+    ('39', '784', 'Y', now(), now(), 'mig', 'mig')
+
+--
+
+-- 2021-07-26
+
+    CREATE TABLE it_akun_perhitungan_kembali_unit
+    (
+        perhitungan_kembali_unit_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+        perhitungan_ppn_kd_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+        branch_id character varying(4) COLLATE pg_catalog."default" NOT NULL,
+        pajak_masukan numeric(25,2) NOT NULL,
+        perhitungan_kembali_1 numeric(25,2) NOT NULL,
+        perhitungan_kembali_2 numeric(25,2) NOT NULL,
+        perhitungan_pm_sudah_dibuku numeric(25,2) NOT NULL,
+        perhitungan_pm_ymh_dibuku numeric(25,2) NOT NULL,
+        bulan character varying(2) COLLATE pg_catalog."default" NOT NULL,
+        tahun character varying(4) COLLATE pg_catalog."default" NOT NULL,
+        flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+        action character varying(1) COLLATE pg_catalog."default" NOT NULL,
+        created_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+        last_update_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+        created_date timestamp without time zone NOT NULL,
+        last_update timestamp without time zone NOT NULL,
+        CONSTRAINT it_akun_perhitungan_kembali_unit_pkey PRIMARY KEY (perhitungan_kembali_unit_id)
+    );
+
+    CREATE SEQUENCE IF NOT EXISTS seq_perhitungan_kembali_unit INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+
+    CREATE SEQUENCE IF NOT EXISTS seq_perhitungan_kembali INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+
+    UPDATE im_akun_trans SET is_otomatis = 'Y' WHERE trans_id IN ('76','77','78','79','80','81','82','83','84','85');
+
+--

@@ -498,6 +498,9 @@ public class KasAction extends BaseMasterAction {
                 MappingDetail mapPph = new MappingDetail();
                 MappingDetail mapPpn = new MappingDetail();
 
+                List<MappingDetail> lisMapPPH = new ArrayList<>();
+                List<MappingDetail> lisMapPPN = new ArrayList<>();
+
                 for (KasDetail kasDetail : kasDetailList) {
                     String rekeningId = kodeRekeningBoProxy.getRekeningIdByKodeRekening(kasDetail.getRekeningId());
                     BigDecimal jumlahPembayaran = new BigDecimal(kasDetail.getStJumlahPembayaran().replace(".", ""));
@@ -518,9 +521,14 @@ public class KasAction extends BaseMasterAction {
 
                     mapPph.setMasterId(kasDetail.getMasterId());
                     mapPph.setNilai(pph);
+                    mapPph.setCoa(CommonConstant.REKENING_PPH21);
 
                     mapPpn.setMasterId(kasDetail.getMasterId());
                     mapPpn.setNilai(ppn);
+                    mapPpn.setCoa(CommonConstant.REKENING_ID_PPN_MASUKAN);
+
+                    lisMapPPH.add(mapPph);
+                    lisMapPPN.add(mapPpn);
                 }
 
                 MappingDetail kasMap = new MappingDetail();
@@ -528,11 +536,14 @@ public class KasAction extends BaseMasterAction {
                 //kasMap.put("rekening_id", rekeningIdBayar);
                 kasMap.setCoa(kas.getCoaKas());
 
+                List<MappingDetail> listMapKas = new ArrayList<>();
+                listMapKas.add(kasMap);
+
                 Map data = new HashMap();
                 data.put(parameter, dataMap);
-                data.put("pph", mapPph);
-                data.put("ppn", mapPpn);
-                data.put("metode_bayar", kasMap);
+                data.put("pph", lisMapPPH);
+                data.put("ppn", lisMapPPN);
+                data.put("metode_bayar", listMapKas);
                 data.put("currency_id", kas.getCurrencyId());
 
                 if ("Y".equalsIgnoreCase(kas.getTipePengajuanBiaya())) {
