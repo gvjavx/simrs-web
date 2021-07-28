@@ -51,12 +51,13 @@
                 var branchId = document.getElementById("branchId3").value;
                 var masterId = document.getElementById("masterId3").value;
                 var jenisKso = document.getElementById("jenisKso3").value;
-                var positionId = document.getElementById("positionId3").value;
+                // Fahmi 2021-07-28, posisi/divisi sudah otomatis dari personil position.
+                //var positionId = document.getElementById("positionId3").value;
                 var persenKso = document.getElementById("persenKso3").value;
                 var persenKs = document.getElementById("persenKs3").value;
 
                 if (dokterKsoId != '' && nip != ''&& branchId != '' && masterId != '' && jenisKso != ''
-                        && persenKso != '' && persenKs != '' && positionId != '') {
+                        && persenKso != '' && persenKs != '') {
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -81,9 +82,6 @@
                     }
                     if (jenisKso == '') {
                         msg += 'Field <strong>Jenis KSO </strong> is required.' + '<br/>';
-                    }
-                    if (positionId == '') {
-                        msg += 'Field <strong>Position ID </strong> is required.' + '<br/>';
                     }
                     if (persenKso == '') {
                         msg += 'Field <strong>Persen KSO </strong> is required.' + '<br/>';
@@ -253,8 +251,8 @@
                                                     </table>
                                                 </td>
                                             </tr>
-
-                                            <tr>
+                                            <%-- Fahmi 2021-07-28, posisi/divisi sudah otomatis dari personil position.--%>
+                                            <tr style="display: none">
                                                 <td>
                                                     <label class="control-label"><small>Divisi :</small></label>
                                                 </td>
@@ -267,6 +265,7 @@
                                                     </table>
                                                 </td>
                                             </tr>
+                                            <%-- End Fahmi --%>
 
                                             <tr>
                                                 <td>

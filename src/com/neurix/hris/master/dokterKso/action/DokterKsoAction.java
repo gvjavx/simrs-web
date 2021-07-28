@@ -615,8 +615,14 @@ public class DokterKsoAction extends BaseMasterAction {
                         status = "Belum ada data dokter kso tindakan, silahkan ditambahkan";
                 }
             } else {
-                if (listOfsearch == null)
-                    status = "Belum ada data dokter kso tindakan, silahkan ditambahkan";
+
+                // Fahmi 2021-07-27, Selain Jenis KSO tindakan tidak perlu cek tindakan.
+                if("tindakan".equalsIgnoreCase(search.getJenisKso()))
+                {
+                    if (listOfsearch == null)
+                        status = "Belum ada data dokter kso tindakan, silahkan ditambahkan";
+                }
+
             }
         } else {
             status = "Data Dokter KSO dengan NIP tersebut sudah ada";

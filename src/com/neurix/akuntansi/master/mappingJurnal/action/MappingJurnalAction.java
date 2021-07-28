@@ -666,6 +666,7 @@ public class MappingJurnalAction extends BaseMasterAction {
             // jika tidak ada data yang sama, maka aman untuk di save.
 
         }
+        // end Fahmi.
 
         try {
             MappingJurnal status = mappingJurnalBoProxy.saveMappingJurnalTransaction(data, detail);

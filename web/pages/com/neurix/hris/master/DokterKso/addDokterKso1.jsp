@@ -259,7 +259,7 @@
                                                     </table>
                                                 </td>
                                             </tr>
-                                            <%--RAKA-31MAR2021--%>
+                                            <%--RAKA-31MAR2021 Divisi di sembunyikan karena, bisa ambil divisi dari biodata dokter. --%>
                                             <tr style="display: none">
                                                 <td>
                                                     <label class="control-label"><small>Divisi :</small></label>
