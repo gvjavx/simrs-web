@@ -2441,10 +2441,6 @@
                             <span style="color: green; margin-top: 12px; display: none;"
                                   id="cor_rep_apotek"><i class="fa fa-check"></i> correct</span>
                         </div>
-                        <span style="color: red; margin-top: 12px; display: none;"
-                              id="war_rep_apotek"><i class="fa fa-times"></i> required</span>
-                        <span style="color: green; margin-top: 12px; display: none;"
-                              id="cor_rep_apotek"><i class="fa fa-check"></i> correct</span>
                     </div>
                 </div>
                 <div class="row" id="form-nama-racik" style="display: none">
@@ -2453,14 +2449,6 @@
                         <input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"
                                class="form-control" type="text"
                                id="nama_racik" style="margin-top: 7px;">
-                        <%--<div class="input-group" style="margin-top: 7px;">--%>
-                            <%--<input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"--%>
-                                   <%--class="form-control" type="text"--%>
-                                   <%--id="nama_racik">--%>
-                            <%--<div class="input-group-addon">--%>
-                                <%--<input type="color" id="color_racik" style="height: 20px;" value="#a4dfab">--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
                         <span style="color: red; margin-top: 12px; display: none;"
                               id="war_nama_racik"><i class="fa fa-times"></i> required</span>
                         <span style="color: green; margin-top: 12px; display: none;"
@@ -2622,7 +2610,7 @@
                     <table class="table table-striped table-bordered" id="tabel_rese_detail" style="font-size: 13px;">
                         <thead>
                         <td>Nama Obat</td>
-                        <td align="center">Qty</td>
+                        <td align="center" width="15%">Qty (biji)</td>
                         <td>Keterangan / Signa</td>
                         <td align="center">Harga (Rp.)</td>
                         <td align="center" width="5%">Action</td>

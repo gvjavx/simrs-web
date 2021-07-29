@@ -288,6 +288,15 @@ public class KeperawatanRawatJalanBoImpl implements KeperawatanRawatJalanBo {
                         if ("nama_dokter".equalsIgnoreCase(entity.getParameter())) {
                             checkup.setNamaDokter(entity.getJawaban());
                         }
+                        if("nama_pemberi".equalsIgnoreCase(entity.getParameter())){
+                            checkup.setNamaPetugas(entity.getJawaban());
+                        }
+                        if("nama_ruangan".equalsIgnoreCase(entity.getParameter())){
+                            checkup.setNamaRuangan(entity.getJawaban());
+                        }
+                        if("pemberi".equalsIgnoreCase(entity.getParameter())){
+                            checkup.setTtdPemberi(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getJawaban());
+                        }
                     }
                 }
             }

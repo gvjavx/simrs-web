@@ -930,7 +930,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setVideoRm(obj[46] == null ? null : obj[46].toString());
                     checkup.setNamaDiagnosa(obj[47] == null ? "" : obj[47].toString());
                     checkup.setDiagnosa(obj[48] == null ? "" : obj[48].toString());
-                    checkup.setAlergi(getAlergiPasien(obj[0].toString()));
+                    checkup.setAlergi(getAlergiPasien(obj[1].toString()));
                     checkup.setAutoanamnesis(header.getAutoanamnesis());
                     checkup.setHeteroanamnesis(header.getHeteroanamnesis());
                     checkup.setKategoriPelayanan(obj[50] == null ? "" : obj[50].toString());
@@ -1043,20 +1043,20 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return checkup;
     }
 
-    public String getAlergiPasien(String noCheckup){
+    public String getAlergiPasien(String idPasien){
         String alergi = "";
-        if(noCheckup != null && !"".equalsIgnoreCase(noCheckup)){
+        if(idPasien != null && !"".equalsIgnoreCase(idPasien)){
             String SQL = "SELECT \n" +
                     "id_alergi, \n" +
                     "no_checkup, \n" +
                     "alergi, \n" +
                     "jenis \n" +
                     "FROM it_simrs_checkup_alergi \n" +
-                    "WHERE no_checkup = :id";
+                    "WHERE id_pasien = :id";
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                    .setParameter("id", noCheckup)
+                    .setParameter("id", idPasien)
                     .list();
 
             String makanan = "";
@@ -1119,7 +1119,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         String SQL = "SELECT \n" +
                 "a.id_header_pemeriksaan,\n" +
                 "b.nama_pemeriksaan,\n" +
-                "c.kategori\n" +
+                "c.kategori,\n" +
+                "b.id_periksa_lab\n"+
                 "FROM it_simrs_header_pemeriksaan a\n" +
                 "INNER JOIN it_simrs_periksa_lab b ON a.id_header_pemeriksaan = b.id_header_pemeriksaan\n" +
                 "INNER JOIN im_simrs_kategori_lab c ON a.id_kategori_lab = c.id_kategori_lab\n" +
@@ -1133,18 +1134,31 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
 
         if (result.size() > 0){
             for (Object[] obj: result){
+
+                String tempDetail = "";
+                List<String> stringList = detailPemeriksaan(obj[3].toString());
+                if(stringList.size() > 0){
+                    for (String isi: stringList){
+                        if("".equalsIgnoreCase(tempDetail)){
+                            tempDetail = isi;
+                        }else{
+                            tempDetail = tempDetail+", "+isi;
+                        }
+                    }
+                }
+
                 if("lab".equalsIgnoreCase(obj[2].toString())){
                     if("".equalsIgnoreCase(res)){
-                        lab = obj[1].toString();
+                        lab = obj[1].toString()+" :"+tempDetail;
                     }else{
-                        lab = lab +", "+obj[1].toString();
+                        lab = lab +", "+obj[1].toString()+" :"+tempDetail;;
                     }
                 }
                 if("radiologi".equalsIgnoreCase(obj[2].toString())){
                     if("".equalsIgnoreCase(res)){
-                        radiologi = obj[1].toString();
+                        radiologi = obj[1].toString()+" :"+tempDetail;;
                     }else{
-                        radiologi = radiologi +", "+obj[1].toString();
+                        radiologi = radiologi +", "+obj[1].toString()+" :"+tempDetail;;
                     }
                 }
             }
@@ -1164,6 +1178,25 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             }
         }
         return res;
+    }
+
+    private List<String> detailPemeriksaan(String id){
+        List<String> stringList = new ArrayList<>();
+        String SQL = "SELECT \n" +
+                "a.id_header_pemeriksaan,\n" +
+                "c.nama_detail_periksa\n" +
+                "FROM it_simrs_header_pemeriksaan a\n" +
+                "INNER JOIN it_simrs_periksa_lab b ON a.id_header_pemeriksaan = b.id_header_pemeriksaan\n" +
+                "INNER JOIN it_simrs_periksa_lab_detail c ON b.id_periksa_lab = c.id_periksa_lab\n" +
+                "WHERE b.id_periksa_lab = '"+id+"'";
+        List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .list();
+        if(result.size() > 0){
+            for (Object[] obj: result){
+                stringList.add(obj[1].toString());
+            }
+        }
+        return stringList;
     }
 
     public String getTindakanRawat(String idDetailCheckup){
@@ -2532,7 +2565,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return response;
     }
 
-    public List<HeaderCheckup> listAntrianOnline(String branchId, String idPelayanan){
+    public List<HeaderCheckup> listAntrianOnline(String branchId, String idPelayanan, String tanggal){
         List<HeaderCheckup> res = new ArrayList<>();
         if(branchId != null && !"".equalsIgnoreCase(branchId) && idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
             String SQL = "SELECT \n" +
@@ -2553,7 +2586,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "b.kode_vclaim\n" +
                     "FROM im_simrs_pelayanan a\n" +
                     "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) b ON a.id_pelayanan = b.id_pelayanan\n" +
-                    "WHERE tgl_checkup = CURRENT_DATE\n" +
+                    "WHERE tgl_checkup = "+tanggal+"\n" +
                     "AND a.branch_id = :branch\n" +
                     "AND a.id_pelayanan = :pelayanan\n" +
                     "ORDER BY a.created_date ASC";
@@ -2574,7 +2607,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return res;
     }
 
-    public HeaderCheckup lastAntrian(String branchId, String idPelayanan, String idDokter){
+    public HeaderCheckup lastAntrian(String branchId, String idPelayanan, String idDokter, String tanggal){
         HeaderCheckup res = new HeaderCheckup();
         if(branchId != null && !"".equalsIgnoreCase(branchId) && idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
             String SQL = "SELECT\n" +
@@ -2593,7 +2626,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "FROM im_simrs_pelayanan a\n" +
                     "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON a.id_pelayanan = c.id_pelayanan\n" +
                     "INNER JOIN it_simrs_dokter_team d ON a.id_detail_checkup = d.id_detail_checkup\n" +
-                    "WHERE CAST(a.created_date AS DATE) = CURRENT_DATE\n" +
+                    "WHERE CAST(a.created_date AS DATE) = "+tanggal+"\n" +
                     "AND c.tipe_pelayanan = 'rawat_jalan'\n" +
                     "AND a.no_antrian IS NOT NULL\n" +
                     "AND b.branch_id = :branch \n" +

@@ -127,6 +127,11 @@
             countBiaya();
             getTindakanApotek('', 'jenis_0');
 
+            var tipe = ['k-admin', 'k-farma', 'k-kritis'];
+            tipe.forEach(function (res) {
+                setRadio(res, 'Y');
+            });
+
             const paintCanvas1 = document.querySelector("#ttd_pasien");
             const paintCanvas2 = document.querySelector("#ttd_apoteker");
             const context1 = paintCanvas1.getContext("2d");
@@ -532,21 +537,28 @@
                                                 <div class="col-md-12">
                                                     <span class="cek_waktu">Waktu</span>
                                                     <div class="form-check jarak">
-                                                        <input type="checkbox" name="cek_waktu_name_<s:property value="idObat"/>" id="cek_waktu_1_<s:property value="idObat"/>" value="Pagi">
+                                                        <input onclick="showKet('<s:property value="idObat"/>', this.id)" type="checkbox" name="cek_waktu_name_<s:property value="idObat"/>" id="cek_waktu_1_<s:property value="idObat"/>" value="Pagi">
                                                         <label for="cek_waktu_1_<s:property value="idObat"/>"></label> Pagi
                                                     </div>
-                                                    <div class="form-check jarak">
-                                                        <input type="checkbox" name="cek_waktu_name_<s:property value="idObat"/>" id="cek_waktu_2_<s:property value="idObat"/>" value="Siang">
+                                                    <input class="form-control" name="ket_waktu_name" id="ket_cek_waktu_1_<s:property value="idObat"/>" style="display: none" placeholder="Keterangan Pagi" oninput="$('#cek_waktu_1_<s:property value="idObat"/>').val(''); $('#cek_waktu_1_<s:property value="idObat"/>').val('Pagi: '+this.value);">
+
+                                                    <div class="form-check jarak" style="margin-top: 5px">
+                                                        <input onclick="showKet('<s:property value="idObat"/>', this.id)" type="checkbox" name="cek_waktu_name_<s:property value="idObat"/>" id="cek_waktu_2_<s:property value="idObat"/>" value="Siang">
                                                         <label for="cek_waktu_2_<s:property value="idObat"/>"></label> Siang
                                                     </div>
-                                                    <div class="form-check jarak">
-                                                        <input type="checkbox" name="cek_waktu_name_<s:property value="idObat"/>" id="cek_waktu_3_<s:property value="idObat"/>" value="Sore">
+                                                    <input class="form-control" name="ket_waktu_name" id="ket_cek_waktu_2_<s:property value="idObat"/>" style="display: none" placeholder="Keterangan Siang" oninput="$('#cek_waktu_2_<s:property value="idObat"/>').val(''); $('#cek_waktu_2_<s:property value="idObat"/>').val('Siang: '+this.value);">
+
+                                                    <div class="form-check jarak" style="margin-top: 5px">
+                                                        <input onclick="showKet('<s:property value="idObat"/>', this.id)" type="checkbox" name="cek_waktu_name_<s:property value="idObat"/>" id="cek_waktu_3_<s:property value="idObat"/>" value="Sore">
                                                         <label for="cek_waktu_3_<s:property value="idObat"/>"></label> Sore
                                                     </div>
-                                                    <div class="form-check jarak">
-                                                        <input type="checkbox" name="cek_waktu_name_<s:property value="idObat"/>" id="cek_waktu_4_<s:property value="idObat"/>" value="Malam">
+                                                    <input class="form-control" name="ket_waktu_name" id="ket_cek_waktu_3_<s:property value="idObat"/>" style="display: none" placeholder="Keterangan Sore" oninput="$('#cek_waktu_3_<s:property value="idObat"/>').val(''); $('#cek_waktu_3_<s:property value="idObat"/>').val('Sore: '+this.value);">
+
+                                                    <div class="form-check jarak" style="margin-top: 5px">
+                                                        <input onclick="showKet('<s:property value="idObat"/>', this.id)" type="checkbox" name="cek_waktu_name_<s:property value="idObat"/>" id="cek_waktu_4_<s:property value="idObat"/>" value="Malam">
                                                         <label for="cek_waktu_4_<s:property value="idObat"/>"></label> Malam
                                                     </div>
+                                                    <input class="form-control" name="ket_waktu_name" id="ket_cek_waktu_4_<s:property value="idObat"/>" style="display: none" placeholder="Keterangan Malam" oninput="$('#cek_waktu_4_<s:property value="idObat"/>').val(''); $('#cek_waktu_4_<s:property value="idObat"/>').val('Malam: '+this.value);">
                                                 </div>
                                             </div>
                                             <hr>
@@ -638,21 +650,28 @@
                                                         <div class="col-md-12">
                                                             <span class="cek_waktu">Waktu</span>
                                                             <div class="form-check jarak">
-                                                                <input type="checkbox" name="cek_waktu_name_<s:property value="id"/>" id="cek_waktu_1_<s:property value="id"/>" value="Pagi">
+                                                                <input onclick="showKet('<s:property value="id"/>', this.id)" type="checkbox" name="cek_waktu_name_<s:property value="id"/>" id="cek_waktu_1_<s:property value="id"/>" value="Pagi">
                                                                 <label for="cek_waktu_1_<s:property value="id"/>"></label> Pagi
                                                             </div>
+                                                            <input class="form-control" name="ket_waktu_name" id="ket_cek_waktu_1_<s:property value="id"/>" style="display: none" placeholder="Keterangan Pagi" oninput="$('#cek_waktu_1_<s:property value="id"/>').val(''); $('#cek_waktu_1_<s:property value="id"/>').val('Pagi: '+this.value);">
+
                                                             <div class="form-check jarak">
-                                                                <input type="checkbox" name="cek_waktu_name_<s:property value="id"/>" id="cek_waktu_2_<s:property value="id"/>" value="Siang">
+                                                                <input onclick="showKet('<s:property value="idObat"/>', this.id)" type="checkbox" name="cek_waktu_name_<s:property value="id"/>" id="cek_waktu_2_<s:property value="id"/>" value="Siang">
                                                                 <label for="cek_waktu_2_<s:property value="id"/>"></label> Siang
                                                             </div>
+                                                            <input class="form-control" name="ket_waktu_name" id="ket_cek_waktu_2_<s:property value="id"/>" style="display: none" placeholder="Keterangan Pagi" oninput="$('#cek_waktu_2_<s:property value="id"/>').val(''); $('#cek_waktu_2_<s:property value="id"/>').val('Siang: '+this.value);">
+
                                                             <div class="form-check jarak">
-                                                                <input type="checkbox" name="cek_waktu_name_<s:property value="id"/>" id="cek_waktu_3_<s:property value="id"/>" value="Sore">
+                                                                <input onclick="showKet('<s:property value="idObat"/>', this.id)" type="checkbox" name="cek_waktu_name_<s:property value="id"/>" id="cek_waktu_3_<s:property value="id"/>" value="Sore">
                                                                 <label for="cek_waktu_3_<s:property value="id"/>"></label> Sore
                                                             </div>
+                                                            <input class="form-control" name="ket_waktu_name" id="ket_cek_waktu_3_<s:property value="id"/>" style="display: none" placeholder="Keterangan Pagi" oninput="$('#cek_waktu_3_<s:property value="id"/>').val(''); $('#cek_waktu_3_<s:property value="id"/>').val('Sore: '+this.value);">
+
                                                             <div class="form-check jarak">
-                                                                <input type="checkbox" name="cek_waktu_name_<s:property value="id"/>" id="cek_waktu_4_<s:property value="id"/>" value="Malam">
+                                                                <input onclick="showKet('<s:property value="idObat"/>', this.id)" type="checkbox" name="cek_waktu_name_<s:property value="id"/>" id="cek_waktu_4_<s:property value="id"/>" value="Malam">
                                                                 <label for="cek_waktu_4_<s:property value="id"/>"></label> Malam
                                                             </div>
+                                                            <input class="form-control" name="ket_waktu_name" id="ket_cek_waktu_4_<s:property value="id"/>" style="display: none" placeholder="Keterangan Pagi" oninput="$('#cek_waktu_4_<s:property value="id"/>').val(''); $('#cek_waktu_4_<s:property value="id"/>').val('Malam: '+this.value);">
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -2045,6 +2064,14 @@
                 }
             }
         });
+    }
+
+    function showKet(val, id){
+        if($('#'+id).is(':checked')){
+            $('#ket_'+id).show();
+        }else{
+            $('#ket_'+id).hide();
+        }
     }
 
 </script>

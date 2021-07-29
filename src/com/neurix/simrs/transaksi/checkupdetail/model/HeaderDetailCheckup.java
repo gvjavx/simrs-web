@@ -292,6 +292,16 @@ public class HeaderDetailCheckup extends BaseModel{
     private String isMeninggal;
     private Date tanggalLahir;
 
+    private String tglKontrol;
+
+    public String getTglKontrol() {
+        return tglKontrol;
+    }
+
+    public void setTglKontrol(String tglKontrol) {
+        this.tglKontrol = tglKontrol;
+    }
+
     public Date getTanggalLahir() {
         return tanggalLahir;
     }

@@ -91,21 +91,21 @@
                                     </div>
                                 </div>
                                 <div class="form-group" style="display: none" id="form_tipe_pelayanan">
-                                    <label class="control-label col-sm-4">Tipe Pelayanan</label>
+                                    <label class="control-label col-sm-4"><span id="text_tipe">Farmasi</span></label>
                                     <div class="col-sm-4">
                                         <select style="width: 100%" class="form-control select2" id="tipe_pelayanan"
                                                 name="laporanOps.tipePelayanan">
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group" style="display: none" id="form_detail_penunjang">
-                                    <label class="control-label col-sm-4"><span id="text_tipe">Farmasi</span></label>
-                                    <div class="col-sm-4">
-                                        <select style="width: 100%" class="form-control select2" id="detail_penunjang"
-                                                name="laporanOps.tipePelayanan" multiple>
-                                        </select>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group" style="display: none" id="form_detail_penunjang">--%>
+                                    <%--<label class="control-label col-sm-4"><span id="text_tipe">Farmasi</span></label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<select style="width: 100%" class="form-control select2" id="detail_penunjang"--%>
+                                                <%--name="laporanOps.tipePelayanan" multiple>--%>
+                                        <%--</select>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group" style="display: none" id="form_bulan">
                                     <label class="control-label col-sm-4">Bulan</label>
                                     <div class="col-sm-4">
@@ -297,7 +297,6 @@
     function getLaporan() {
         var option = '<option value="">[Select One]</option>';
         LaporanOpsAction.getListLaporanOps(function (res) {
-            console.log(res);
             if (res.length > 0) {
                 $.each(res, function (i, item) {
                     option += '<option value="' + item.idLaporanOps + '">' + item.namaLaporan + '</option>';
@@ -481,6 +480,7 @@
                 $('#form_detail_penunjang, #form_tipe_penunjang').hide();
 
                 $('#text_tipe').text("Tipe Pelayanan");
+                $("#tipe_pelayanan").removeAttr('multiple');
                 var option = '<option value="rawat_jalan">Rawat Jalan</option>\n' +
                     '<option value="rawat_inap">Rawat Inap</option>';
                 $('#tipe_pelayanan').html(option);
@@ -554,12 +554,16 @@
     function setDetailPenunjang(tipe) {
         if (tipe == "farmasi") {
             $("#text_tipe").text("Farmasi");
+            $("#tipe_pelayanan").removeAttr('multiple');
         } else if (tipe == "kamar") {
             $("#text_tipe").text("Kamar");
+            $("#tipe_pelayanan").attr('multiple', 'multiple');
         } else if (tipe == "radiologi") {
             $("#text_tipe").text("Radiologi");
+            $("#tipe_pelayanan").attr('multiple', 'multiple');
         } else if (tipe == "lab") {
             $("#text_tipe").text("Laboratorium");
+            $("#tipe_pelayanan").attr('multiple', 'multiple');
         } else {
             $("#text_tipe").text("Tidak sesuai");
         }

@@ -2589,7 +2589,6 @@ function addObatToList() {
         obat = $('#resep_nama_obat').val();
     }
     var apotek = $('#resep_apotek').val();
-    // alert(apotek);
     var qty = tipeTrans == "racik" ? 0 : $('#resep_qty').val();
     var jenisSatuan = $('#resep_jenis_satuan').val();
     var jenisObat = $('#resep_jenis_obat').val();
@@ -2642,7 +2641,6 @@ function addObatToList() {
         ulWak = '<ul style="margin-left: 20px">'+liWak+'</ul>';
     }
 
-    //if ($('#racik_racik').is(':checked')) {
     if (tipeTrans == "racik") {
         if (namaRacik != '') {
             isRacik = true;
@@ -2727,7 +2725,6 @@ function addObatToList() {
                 var flagCicik = "";
                 var nameRacik = "";
                 var idRacik = "";
-                //if ($('#racik_racik').is(':checked')) {
                 if (tipeTrans == "racik") {
                     flagCicik = "Y";
                     nameRacik = namaRacik;
@@ -2756,10 +2753,12 @@ function addObatToList() {
                     namaObat = namaCicik + nama + cicik + kronis;
                 }
 
+                var idQty = 'qty_'+count;
+
                 var row = '<tr id=' + id + '>' +
-                    '<td>' + namaObat +
+                    '<td style="vertical-align: middle">' + namaObat +
                     '<input type="hidden" value="' + id + '" id="id_obat_' + count + '">' +
-                    '<input type="hidden" value="' + qty + '" id="qty_' + count + '">' +
+                    '<input type="hidden" value="' + qty + '" id="'+idQty+'">' +
                     '<input type="hidden" value="' + jenisSatuan + '" id="jenis_satuan_' + count + '">' +
                     '<input type="hidden" value="' + jenisResep + '" id="jenis_resep_' + count + '">' +
                     '<input type="hidden" value="' + hariKronis + '" id="hari_kronis_' + count + '">' +
@@ -2772,20 +2771,18 @@ function addObatToList() {
                     '</td>';
 
                 if (tipeTrans != "racik"){
-                    row += '<td align="center">' + qty + ' ' + jenisSatuan + '</td>'+
-                        '<td>' + ulWak+ '<br>'+
-                        '<div id="body_ket_'+ count +'"><textarea class="form-control" rows="2" cols="4" id="signa-normal-'+count+'"></textarea></div><br>' +
-                        '</td>' +
-                        '<td align="right">' + formatRupiah(totalHarga) + '</td>';
+                    row += '<td align="center" style="vertical-align: middle"><input min="1" type="number" class="form-control" value="'+qty+'" oninput="changeQty(\''+idQty+'\', this.value)"></td>'+
+                        '<td>' + '<textarea class="form-control" rows="2" cols="4" id="signa-normal-'+count+'"></textarea>'+'</td>' +
+                        '<td align="right" style="vertical-align: middle">' + formatRupiah(totalHarga) + '</td>';
                 } else {
-                    row += '<td>' +
+                    row += '<td style="vertical-align: middle">' +
                         '<div id="body_ket_'+ count +'">' +
                         '<textarea id="keterangan_detail_racik_'+ count +'" rows="3" class="form-control"></textarea> '+
                         '</div>' +
                         '</td>';
                 }
 
-                row += '<td align="center"><img border="0" onclick="delRowObat(\'' + id + '\',\'' + totalHarga + '\')" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                row += '<td align="center" style="vertical-align: middle"><img border="0" onclick="delRowObat(\'' + id + '\',\'' + totalHarga + '\')" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
                     '</tr>';
 
                 if (tipeTrans == "racik")
@@ -2800,7 +2797,6 @@ function addObatToList() {
                 }
                 var jumlah = parseInt(totalHarga) + parseInt(tot);
                 $('#total_harga_obat').val(formatRupiah(jumlah));
-                //if (!$('#racik_racik').is(':checked')) {
                 if (tipeTrans == "racik") {
                     $('#body_keterangan').html('');
                 }
@@ -2834,6 +2830,12 @@ function addObatToList() {
         $('#warning_resep_head').show().fadeOut(5000);
         $('#msg_resep').text('Silahkan cek kembali data inputan!');
         $('#modal-resep-head').scrollTop(0);
+    }
+}
+
+function changeQty(id, val){
+    if(val != ''){
+        $('#'+id).val(val);
     }
 }
 
@@ -6137,7 +6139,6 @@ function showListRiwayatResep(){
                         "</thead>"+
                         "</tbody>";
                     var strnonracik = "";
-                    //console.log(item.listDetailObatNonRacikk);
                     $.each(item.listDetailObatNonRacikk, function(i, nonracik){
                         strnonracik += "<tr>"+
                             "<td>"+nonracik.namaObat+"</td>"+
@@ -6236,16 +6237,15 @@ function copyResep() {
                     var count = 0;
                     var strnonracik = "";
 
-                    //console.log(item.listDetailObatNonRacikk);
-
                     $.each(item.listDetailObatNonRacikk, function(i, nonracik){
 
                         var harga = parseInt(nonracik.qtyApprove) * parseInt(nonracik.harga);
+                        var idQty = 'qty_'+count;
 
                         strnonracik += "<tr id='"+item.idObat+"'>"+
-                            '<td>' + nonracik.namaObat +
+                            '<td style="vertical-align: middle;">' + nonracik.namaObat +
                             '<input type="hidden" value="' + nonracik.idObat + '" id="id_obat_' + count + '">' +
-                            '<input type="hidden" value="' + nonracik.qtyApprove + '" id="qty_' + count + '">' +
+                            '<input type="hidden" value="' + nonracik.qtyApprove + '" id="' + idQty + '">' +
                             '<input type="hidden" value="' + "biji" + '" id="jenis_satuan_' + count + '">' +
                             '<input type="hidden" value="' + "umum" + '" id="jenis_resep_' + count + '">' +
                             '<input type="hidden" value="' + "" + '" id="hari_kronis_' + count + '">' +
@@ -6258,16 +6258,14 @@ function copyResep() {
                             '</td>';
 
                         strnonracik +=
-                            '<td align="center">' + nonracik.qtyApprove + ' ' + "biji" + '</td>'+
-                            '<td>' +
-                            '<div id="body_ket_'+ count +'">' +
+                            '<td align="center" style="vertical-align: middle;">' + '<input class="form-control" min="1" type="number" value="'+nonracik.qtyApprove+'" oninput="changeQty(\''+idQty+'\', this.value)">' + '</td>'+
+                            '<td style="vertical-align: middle;">' +
                             '<textarea id="signa-normal-'+ count +'" rows="2" cols="4" class="form-control">'+nonracik.keterangan+'</textarea> '+
-                            '</div>' +
                             '</td>'+
-                            '<td align="right">' + formatRupiah(harga) + '</td>';
+                            '<td align="right" style="vertical-align: middle;">' + formatRupiah(harga) + '</td>';
 
                         strnonracik +=
-                            '<td align="center"><img border="0" onclick="delRowObat(\'' + nonracik.idObat + '\',\'' + harga + '\')" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                            '<td align="center" style="vertical-align: middle;"><img border="0" onclick="delRowObat(\'' + nonracik.idObat + '\',\'' + harga + '\')" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
                             '</tr>';
 
                         count ++;

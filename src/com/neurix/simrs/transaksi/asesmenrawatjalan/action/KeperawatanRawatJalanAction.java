@@ -278,7 +278,6 @@ public class KeperawatanRawatJalanAction {
         return response;
     }
 
-
     public static Logger getLogger() {
         return logger;
     }

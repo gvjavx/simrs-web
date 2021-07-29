@@ -229,6 +229,42 @@ public class HeaderCheckup {
     private String isPasienSementara;
     private String idKelasBpjs;
     private String statusNaikKelas;
+    private String isKontrolUlang;
+    private String tglKontrolUlang;
+    private String namaPetugas;
+    private String ttdPemberi;
+
+    public String getTtdPemberi() {
+        return ttdPemberi;
+    }
+
+    public void setTtdPemberi(String ttdPemberi) {
+        this.ttdPemberi = ttdPemberi;
+    }
+
+    public String getNamaPetugas() {
+        return namaPetugas;
+    }
+
+    public void setNamaPetugas(String namaPetugas) {
+        this.namaPetugas = namaPetugas;
+    }
+
+    public String getTglKontrolUlang() {
+        return tglKontrolUlang;
+    }
+
+    public void setTglKontrolUlang(String tglKontrolUlang) {
+        this.tglKontrolUlang = tglKontrolUlang;
+    }
+
+    public String getIsKontrolUlang() {
+        return isKontrolUlang;
+    }
+
+    public void setIsKontrolUlang(String isKontrolUlang) {
+        this.isKontrolUlang = isKontrolUlang;
+    }
 
     public String getStatusNaikKelas() {
         return statusNaikKelas;

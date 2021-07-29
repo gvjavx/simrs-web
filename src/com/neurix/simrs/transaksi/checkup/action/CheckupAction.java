@@ -1250,6 +1250,11 @@ public class CheckupAction extends BaseMasterAction {
                         throw new GeneralBOException("Tanggal Lahir Tidak sesuai format, Cek Kembali Tanggal Lahir Pasien " + e.getMessage());
                     }
 
+                    if("Y".equalsIgnoreCase(checkup.getIsKontrolUlang())){
+                        String tglKontrol = checkup.getTglKontrolUlang()+" 00:00:00.0";
+                        updateTime = Timestamp.valueOf(tglKontrol);
+                    }
+
                     checkup.setNoCheckup(noCheckup);
                     checkup.setBranchId(userArea);
                     checkup.setCreatedWho(userLogin);
@@ -3776,6 +3781,9 @@ public class CheckupAction extends BaseMasterAction {
                 if(detailCheckup != null){
                     response = detailCheckup.getIndikasi();
                 }
+            }
+            if("branch_name".equalsIgnoreCase(key)){
+                response = CommonUtil.userBranchNameLogin();
             }
         }
         return response;
