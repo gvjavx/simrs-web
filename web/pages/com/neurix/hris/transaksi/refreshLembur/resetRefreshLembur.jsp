@@ -71,7 +71,7 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="addFormRefreshLembur" method="post" theme="simple" namespace="/refreshLembur" action="resetChance_refreshLembur" cssClass="well form-horizontal">
+            <s:form id="formRefreshLembur" method="post" theme="simple" namespace="/refreshLembur" action="resetChance_refreshLembur" cssClass="well form-horizontal">
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
                 <legend align="left">Reset Kesempatan Refresh Lembur</legend>
@@ -90,10 +90,7 @@
                         </td>
                         <td>
                             <table>
-                                <div class="input-group date">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
-                                    </div>
+                                <div class="input-group">
                                     <s:textfield type="number" id="jmlChance" name="refreshLembur.stJmlChance" required="true" cssClass="form-control"/>
                                 </div>
                             </table>
@@ -103,7 +100,7 @@
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addFormRefreshLembur" id="saveApprove" onclick="approve()" name="save"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="formRefreshLembur" id="saveApprove" name="save"
                                    onBeforeTopics="beforeProcessResetRefreshLembur" onCompleteTopics="closeDialog,successDialogRefreshLembur"
                                    onSuccessTopics="successDialogRefreshLembur" onErrorTopics="errorDialogRefreshLembur" >
                             <i class="fa fa-check"></i>

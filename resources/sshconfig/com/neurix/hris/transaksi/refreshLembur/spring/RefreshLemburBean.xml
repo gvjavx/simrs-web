@@ -23,6 +23,7 @@
           p:jenisPegawaiDao-ref="jenisPegawaiDao"
           p:payrollDao-ref="payrollDao"
           p:notifikasiDao-ref="notifikasiDao"
+          p:branchDao-ref="branchDao"
           />
 
     <bean id="refreshLemburBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

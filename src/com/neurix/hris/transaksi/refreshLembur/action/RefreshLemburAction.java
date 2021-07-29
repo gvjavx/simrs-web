@@ -439,7 +439,7 @@ public class RefreshLemburAction extends BaseMasterAction {
             throw new GeneralBOException(e.getMessage());
         }
 
-        return SUCCESS;
+        return "success_save_add";
     }
 
     public String searchNotif() {

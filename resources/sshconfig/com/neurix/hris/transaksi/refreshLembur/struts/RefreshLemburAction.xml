@@ -82,7 +82,7 @@
             <result name="success_save_edit">/pages/com/neurix/hris/transaksi/refreshLembur/editRefreshLembur.jsp</result>
             <result name="failure">/pages/com/neurix/hris/transaksi/refreshLembur/searchRefreshLembur.jsp</result>
             <result name="init_approve">/pages/com/neurix/hris/transaksi/refreshLembur/approveRefreshLembur.jsp</result>
-            <result name="init_reset_chance">pages/com/neurix/hris/transaksi/refreshLembur/resetRefreshLembur.jsp</result>
+            <result name="init_reset_chance">/pages/com/neurix/hris/transaksi/refreshLembur/resetRefreshLembur.jsp</result>
         </action>
         <action name="paging_displaytag_refreshLembur"
                 class="com.neurix.hris.transaksi.refreshLembur.action.RefreshLemburAction" method="paging">

@@ -166,11 +166,11 @@
                                                     </td>
                                                     <td>
                                                         <s:if test="isVp()">
-                                                            <s:url var="urlAdd" namespace="/refreshLembur" action="resetChance_refreshLembur" escapeAmp="false">
+                                                            <s:url var="urlReset" namespace="/refreshLembur" action="initResetChance_refreshLembur" escapeAmp="false">
                                                             </s:url>
-                                                            <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
+                                                            <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlReset}">
                                                                 <i class="fa fa-plus"></i>
-                                                                Reset Kesempatan Lembur
+                                                                Reset Kesempatan
                                                             </sj:a>
                                                         </s:if>
                                                     </td>
