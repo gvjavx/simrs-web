@@ -18,10 +18,6 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/ProfesiAction.js"/>'></script>
     <script type='text/javascript' src="<s:url value="/pages/plugins/daterangepicker/moment.js"/>"></script>
     <style type="text/css">
-        #tglAwal{z-index: 2000!important}
-        #tglAkhir{z-index: 2000!important}
-        #jamAwal{z-index: 2000!important}
-        #jamAkhir{z-index: 2000!important}
     </style>
     <script type="text/javascript">
         function callSearch2() {
@@ -30,18 +26,11 @@
             $('#info_dialog').dialog('close');
             window.location.reload(true);
         }
-        $.subscribe('beforeProcessSaveRefreshLembur', function (event, data) {
+        $.subscribe('beforeProcessResetRefreshLembur', function (event, data) {
             var chance = document.getElementById("jmlChance").value;
-            var branchId = document.getElementById("branchId").value;
-            var tanggal = document.getElementById("tanggal").value;
 
-            var msgChance="";
-
-            if (branchId != '' && tanggal !='') {
-                if(chance == 0){
-                    msgChance = "Your chance has run out. Data will be updated after obtaining approval from the head office. ";
-                }
-                if (confirm( msgChance + 'Do you want to save this record?')) {
+            if (chance != '') {
+                if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
                 } else {
@@ -54,11 +43,8 @@
 
                 var msg = "";
 
-                if (branchId === '') {
-                    msg += 'Field <strong>Unit </strong>kosong.' + '<br/>';
-                }
-                if (tanggal === '') {
-                    msg += 'Field <strong>Tanggal </strong>kosong.' + '<br/>';
+                if (chance === '') {
+                    msg += '<strong>Jumlah Kesempatan </strong>tidak boleh kosong.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -85,10 +71,10 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="addFormRefreshLembur" method="post" theme="simple" namespace="/refreshLembur" action="saveAdd_refreshLembur" cssClass="well form-horizontal">
+            <s:form id="addFormRefreshLembur" method="post" theme="simple" namespace="/refreshLembur" action="resetChance_refreshLembur" cssClass="well form-horizontal">
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
-                <legend align="left">Process Refresh Lembur</legend>
+                <legend align="left">Reset Kesempatan Refresh Lembur</legend>
                 <table>
                     <tr>
                         <td width="10%" align="center">
@@ -97,31 +83,10 @@
                     </tr>
                 </table>
                 <table>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Kesempatan Refresh :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield  id="jmlChance" name="refreshLembur.jmlChance" required="true" readonly="true" cssClass="form-control"/>
-                        </td>
-                    </tr>
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Unit :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="refreshLembur.branchId" readonly="true"
-                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/></table>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Tanggal :</small></label>
+                            <label class="control-label"><small>Jumlah Kesempatan :</small></label>
                         </td>
                         <td>
                             <table>
@@ -129,8 +94,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <s:textfield id="tanggal" name="refreshLembur.stTanggal" cssClass="form-control pull-right"
-                                                 required="false" cssStyle="" size="12"/>
+                                    <s:textfield type="number" id="jmlChance" name="refreshLembur.stJmlChance" required="true" cssClass="form-control"/>
                                 </div>
                             </table>
                         </td>
@@ -139,11 +103,11 @@
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addFormRefreshLembur" id="save" name="save"
-                                   onBeforeTopics="beforeProcessSaveRefreshLembur" onCompleteTopics="closeDialog,successDialogRefreshLembur"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addFormRefreshLembur" id="saveApprove" onclick="approve()" name="save"
+                                   onBeforeTopics="beforeProcessResetRefreshLembur" onCompleteTopics="closeDialog,successDialogRefreshLembur"
                                    onSuccessTopics="successDialogRefreshLembur" onErrorTopics="errorDialogRefreshLembur" >
                             <i class="fa fa-check"></i>
-                            Process
+                            Reset Kesempatan
                         </sj:submit>
                         <button type="button" id="cancel" class="btn btn-default" style="font-family: Arial, Helvetica, sans-serif;font-size: 12px;font-weight: bold;" onclick="cancelBtn();">
                             <i class="fa fa-refresh"/> Cancel
@@ -230,8 +194,6 @@
 
 <script>
     $(document).ready(function(){
-        $('#tanggal').datepicker({
-            dateFormat: 'dd/mm/yy'
-        });
+
     });
 </script>

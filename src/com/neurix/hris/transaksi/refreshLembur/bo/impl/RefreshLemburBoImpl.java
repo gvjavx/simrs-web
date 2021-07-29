@@ -1,6 +1,8 @@
 package com.neurix.hris.transaksi.refreshLembur.bo.impl;
 
+import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.dao.CompanyDao;
+import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.authorization.company.model.ImCompany;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -57,9 +59,14 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
     private JenisPegawaiDao jenisPegawaiDao;
     private PayrollDao payrollDao;
     private NotifikasiDao notifikasiDao;
+    private BranchDao branchDao;
 
     public static Logger getLogger() {
         return logger;
+    }
+
+    public void setBranchDao(BranchDao branchDao) {
+        this.branchDao = branchDao;
     }
 
     public void setNotifikasiDao(NotifikasiDao notifikasiDao) {
@@ -818,6 +825,31 @@ public class RefreshLemburBoImpl implements RefreshLemburBo {
         logger.info("[RefreshLemburBoImpl.getPersonOnPosition] END >>>>>");
 
         return resultList;
+    }
+
+    public void resetChance(RefreshLembur bean) throws GeneralBOException{
+        logger.info("[RefreshLemburBoImpl.resetChance] Start >>>>>");
+
+        List<ImBranches> listBranch = new ArrayList<>();
+
+        try{
+            listBranch = branchDao.getAllBranch();
+        }catch (HibernateException e){
+            logger.error("[RefreshLemburBoImpl.resetChance] Error, " + e.getMessage());
+            throw new GeneralBOException("Error when retrieving Branches, " + e.getMessage());
+        }
+
+        for(ImBranches branch : listBranch){
+            branch.setChanceRefreshLembur(bean.getJmlChance());
+            try{
+                branchDao.updateAndSave(branch);
+            }catch (HibernateException e){
+                logger.error("[RefreshLemburBoImpl.resetChance] Error, " + e.getMessage());
+                throw new GeneralBOException("Error when retrieving Branches, " + e.getMessage());
+            }
+        }
+
+        logger.info("[RefreshLemburBoImpl.resetChance] END >>>>>");
 
     }
 }

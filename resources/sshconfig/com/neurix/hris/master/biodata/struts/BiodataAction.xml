@@ -76,7 +76,7 @@
         <action name="*_biodata"
                 class="com.neurix.hris.master.biodata.action.BiodataAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
-            <result name="input">/pages/com/neurix/hris/master/Biodata/SearchBiodsata.jsp</result>
+            <result name="input">/pages/com/neurix/hris/master/Biodata/SearchBiodata.jsp</result>
             <result name="success">/pages/com/neurix/hris/master/Biodata/SearchBiodata.jsp</result>
             <result name="bidataDanBatih">/pages/com/neurix/hris/master/Biodata/SearchBiodataBatih.jsp</result>
 

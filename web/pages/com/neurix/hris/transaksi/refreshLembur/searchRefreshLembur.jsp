@@ -165,6 +165,16 @@
                                                         </s:if>
                                                     </td>
                                                     <td>
+                                                        <s:if test="isVp()">
+                                                            <s:url var="urlAdd" namespace="/refreshLembur" action="resetChance_refreshLembur" escapeAmp="false">
+                                                            </s:url>
+                                                            <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
+                                                                <i class="fa fa-plus"></i>
+                                                                Reset Kesempatan Lembur
+                                                            </sj:a>
+                                                        </s:if>
+                                                    </td>
+                                                    <td>
                                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_refreshLembur"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>

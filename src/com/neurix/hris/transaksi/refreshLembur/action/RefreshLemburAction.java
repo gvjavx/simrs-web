@@ -382,14 +382,6 @@ public class RefreshLemburAction extends BaseMasterAction {
         List<RefreshLembur> listRefresh = new ArrayList<>();
         searchRefreshlembur.setGroupRefreshId(getId());
         searchRefreshlembur.setFlag(getFlag());
-//        searchRefreshlembur.setFlagApprove(getApprove());
-
-//        String userLogin = CommonUtil.userLogin();
-//        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
-//        searchRefreshlembur.setApprovalwho(userLogin);
-//        searchRefreshlembur.setAction("U");
-//        searchRefreshlembur.setLastUpdate(updateTime);
 
         try {
             listRefresh = refreshLemburBoProxy.getByCriteria(searchRefreshlembur);
@@ -405,12 +397,6 @@ public class RefreshLemburAction extends BaseMasterAction {
 
     public String approveRefresh() {
         RefreshLembur searchRefreshlembur = getRefreshLembur();
-
-//        searchRefreshlembur.setGroupRefreshId(getId());
-//        searchRefreshlembur.setFlag(getFlag());
-
-
-//        searchRefreshlembur.setFlagApprove("Y");
 
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -428,6 +414,32 @@ public class RefreshLemburAction extends BaseMasterAction {
         }
 
         return "success_save_add";
+    }
+
+    public String initResetChance() {
+        return "init_reset_chance";
+    }
+
+    public String resetChance() {
+        RefreshLembur searchRefreshlembur = getRefreshLembur();
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+        searchRefreshlembur.setJmlChance(Integer.valueOf(searchRefreshlembur.getStJmlChance()));
+        searchRefreshlembur.setApprovalwho(userLogin);
+        searchRefreshlembur.setAction("U");
+        searchRefreshlembur.setLastUpdate(updateTime);
+        searchRefreshlembur.setLastUpdateWho(userLogin);
+
+        try {
+            refreshLemburBoProxy.resetChance(searchRefreshlembur);
+        }catch (GeneralBOException e) {
+            logger.error("[RefreshLemburAction.view] Error, " + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
+        }
+
+        return SUCCESS;
     }
 
     public String searchNotif() {

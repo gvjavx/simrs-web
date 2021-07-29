@@ -77,8 +77,8 @@
             (6209, 'Init Approve Refresh Lembur', '/refreshLembur/initApprove_refreshLembur.action', 6200, null, '2021-07-26 09:53:57.561000', 'MOH.IMRON,DRS,APT', '2021-07-26 09:53:57.561000', 'MOH.IMRON,DRS,APT', 'Y', 'C', null),
             (6210, 'searchNotif Refresh Lembur', '/refreshLembur/searchNotif_refreshLembur.action', 6200, null, '2021-07-26 10:42:32.761000', 'MOH.IMRON,DRS,APT', '2021-07-26 10:42:32.761000', 'MOH.IMRON,DRS,APT', 'Y', 'C', null);
 -- memperbaiki function viewNotifikasi
-    UPDATE im_im_functions
-    SET parent_id = 1453
+    UPDATE im_functions
+    SET parent = 1453
     WHERE func_id = 784;
 
 -----------------------------------

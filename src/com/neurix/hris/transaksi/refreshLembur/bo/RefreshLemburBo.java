@@ -18,5 +18,6 @@ public interface RefreshLemburBo extends BaseMasterBo<RefreshLembur> {
     public List<RefreshLembur> getByCriteriaByGroup(RefreshLembur searchBean) throws GeneralBOException;
     public void approveRefresh(RefreshLembur bean) throws GeneralBOException;
     public List<PersonilPosition> getPersonOnPosition (String positionId, String branchId) throws GeneralBOException;
+    public void resetChance(RefreshLembur bean) throws GeneralBOException;
 
     }
