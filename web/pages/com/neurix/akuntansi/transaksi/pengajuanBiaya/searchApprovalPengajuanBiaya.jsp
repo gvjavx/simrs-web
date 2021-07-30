@@ -981,8 +981,8 @@
                 namaApproveKadiv +
                 namaApproveKaRs +
                 "<th style='text-align: center; background-color:  #90ee90'>App. Keu.</th>"+
-                namaApproveKeuKp+
-                "<th style='text-align: center; background-color:  #90ee90'>View</th>"+
+                namaApproveKeuKp +
+//                "<th style='text-align: center; background-color:  #90ee90'>View</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Tanggal</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Tipe Budget</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>No. Budget</th>"+
@@ -1118,9 +1118,9 @@
                     approvalGM +
                     approvalKE +
                     approvalKEKP +
-                    '<td align="center"><a href="javascript:;" fileName="'+item.fileName+'" data="'+item.pengajuanBiayaDetailId+'" tanggal="'+item.stTanggal+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" tipe="'+item.transaksi+'" keperluan="'+item.keperluanName+'" noKontrak="'+item.noKontrak+'" class="view-detail-pengajuan" >\n' +
-                    '<img border="0" src="<s:url value="/pages/images/icon_search.png"/>" name="icon_edit">\n' +
-                    '</a></td>'+
+                    <%--'<td align="center"><a href="javascript:;" fileName="'+item.fileName+'" data="'+item.pengajuanBiayaDetailId+'" tanggal="'+item.stTanggal+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" tipe="'+item.transaksi+'" keperluan="'+item.keperluanName+'" noKontrak="'+item.noKontrak+'" class="view-detail-pengajuan" >\n' +--%>
+                    <%--'<img border="0" src="<s:url value="/pages/images/icon_search.png"/>" name="icon_edit">\n' +--%>
+                    <%--'</a></td>'+--%>
                     '<td align="center">' + item.stTanggal+ '</td>' +
                     '<td align="center">' + transaksi+ '</td>' +
                     '<td align="center">' + item.noBudgeting+ '</td>' +

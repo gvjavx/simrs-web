@@ -1946,3 +1946,11 @@ ADD COLUMN parent_id VARCHAR(30);
 
     UPDATE im_akun_trans SET is_otomatis = 'Y' WHERE trans_id IN ('67','66','75');
 --
+
+-- 2021-07-30
+   UPDATE im_functions SET menu = null WHERE func_id = '8003';
+   UPDATE im_functions SET flag = 'Y' WHERE func_id = '8003';
+
+   ALTER TABLE it_hris_payroll
+   ADD COLUMN nota_pph_21 VARCHAR(50);
+--

@@ -1516,7 +1516,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                         allTindakanTransUmum = checkupDetailBo.getSumJumlajTindakanTransitorisByJenis(detailCheckupEntity.getIdDetailCheckup(), "umum", "");
                         allTindakanTransAsuransi = checkupDetailBo.getSumJumlajTindakanTransitorisByJenis(detailCheckupEntity.getIdDetailCheckup(), "asuransi", "");
 
-                        Map mapTransitoris = new HashMap();
                         MappingDetail mappingDetail = new MappingDetail();
                         mappingDetail.setNilai(allTindakanTransUmum.add(allTindakanTransAsuransi));
                         mappingDetail.setBukti(detailCheckupEntity.getInvoiceTrans());
@@ -1570,11 +1569,11 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                         }
                         if ("JRI".equalsIgnoreCase(type)) {
 
-                            mapPajakObat.setNilai(ppnObat);
-                            mapPajakObat.setMasterId(CommonConstant.MASTER_PAJAK_OBAT);
-                            listMapPajakObat.add(mapPajakObat);
+//                            mapPajakObat.setNilai(ppnObat);
+//                            mapPajakObat.setMasterId(CommonConstant.MASTER_PAJAK_OBAT);
+//                            listMapPajakObat.add(mapPajakObat);
 
-                            mapJurnal.put("ppn_keluaran", listMapPajakObat);
+                            //mapJurnal.put("ppn_keluaran", listMapPajakObat);
 
                             mapJurnal.put("pendapatan_rawat_inap_umum", listOfMapTindakanUmumRi);
 
