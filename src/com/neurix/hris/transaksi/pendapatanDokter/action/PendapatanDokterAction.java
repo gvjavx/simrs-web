@@ -111,7 +111,7 @@ public class PendapatanDokterAction extends BaseMasterAction {
         pendapatanDokter.setAction("C");
         pendapatanDokter.setFlag("Y");
 
-        List<PendapatanDokter> savePendapatan ;
+        List<PendapatanDokter> savePendapatan = new ArrayList<>();
         try{
             savePendapatan = pendapatanDokterBoProxy.saveAddPendapatanDokter(pendapatanDokter);
 
