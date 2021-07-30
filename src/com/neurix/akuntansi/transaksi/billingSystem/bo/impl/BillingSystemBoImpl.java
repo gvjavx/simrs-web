@@ -506,6 +506,11 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
                                 List<MappingDetail> listOfMappingDetail = (List<MappingDetail>) dataMappingJurnal.get(parameterCoa);
 
+                                // Fahmi 2021-07-30, Check jika list of mapping detail is null.
+                                if (null==listOfMappingDetail)
+                                { continue; }
+                                // End fahmi
+
                                 for (MappingDetail itemMappingDetail : listOfMappingDetail) {
 
                                     BigDecimal nilai = new BigDecimal(0);

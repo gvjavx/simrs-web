@@ -100,6 +100,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
     @Override
     public void saveEdit(Dokter bean) throws GeneralBOException {
         logger.info("[DokterBoImpl.saveEdit] start process >>>");
+
         if (bean!=null) {
             String historyId = "";
             String kodering, seqKodering;
@@ -762,6 +763,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
     public void saveEditDokter(Dokter bean) throws GeneralBOException {
         if(bean != null){
             ImSimrsDokterEntity dokterEntity = new ImSimrsDokterEntity();
+            String kodering, seqKodering;
             try {
                 dokterEntity = dokterDao.getById("idDokter", bean.getIdDokter());
                 if(dokterEntity != null){
@@ -792,10 +794,44 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
                     if(bean.getFlagTele() != null){
                         dokterEntity.setFlagTele(bean.getFlagTele());
                     }
+
+                    // Fahmi 2021-07-30, Saat Edit harusnya mengisi ulang kodering.
+                    String kode = dokterEntity.getKodering();
+                    if (kode != null){
+                        String[] arrOfStr = kode.split("\\.");
+//                        seqKodering = arrOfStr[4];
+                        int lastIndex = arrOfStr.length - 1;
+                        seqKodering = String.valueOf(lastIndex);
+
+                        Map map = new HashMap<>();
+                        map.put("position_id", bean.getPositionId());
+                        String koderingPosition = positionDao.getKodringPosition(map);
+
+                        String branchId = CommonUtil.userBranchLogin();
+                        Map map1 = new HashMap<>();
+                        map1.put("branch_id", branchId);
+                        String koderingBranch = branchDao.getKodringBranches(map1);
+
+                        kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
+                    }else {
+                        seqKodering = dokterDao.getNextKodering();
+                        Map map = new HashMap<>();
+                        map.put("position_id", bean.getPositionId());
+                        String koderingPosition = positionDao.getKodringPosition(map);
+
+                        String branchId = CommonUtil.userBranchLogin();
+                        Map map1 = new HashMap<>();
+                        map1.put("branch_id", branchId);
+                        String koderingBranch = branchDao.getKodringBranches(map1);
+                        kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
+                    }
+                    // End Fahmi
+
                     dokterEntity.setFlag(bean.getFlag());
                     dokterEntity.setAction(bean.getAction());
                     dokterEntity.setLastUpdateWho(bean.getLastUpdateWho());
                     dokterEntity.setLastUpdate(bean.getLastUpdate());
+                    dokterEntity.setKodering(kodering);
 
                     try {
                         dokterDao.updateAndSave(dokterEntity);
