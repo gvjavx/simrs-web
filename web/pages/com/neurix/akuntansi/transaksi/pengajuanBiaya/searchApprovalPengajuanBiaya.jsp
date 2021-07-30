@@ -162,6 +162,11 @@
                                                     </a>
                                                     </s:else>
                                                 </display:column>
+                                                <%--<display:column media="html" title="View">--%>
+                                                    <%--<a href="javascript:;"  data="<s:property value="%{#attr.row.pengajuanBiayaId}"/>" branchId="<s:property value="%{#attr.row.branchId}"/>" totalBiaya="<s:property value="%{#attr.row.stTotalBiaya}"/>" href="javascript:;" class="item-view" cssClass="item-view">--%>
+                                                        <%--<img border="0" src="<s:url value="/pages/images/view_detail_project.png.ico"/>" name="icon_edit">--%>
+                                                    <%--</a>--%>
+                                                <%--</display:column>--%>
                                                 <display:column property="pengajuanBiayaId" sortable="true" title="Pengajuan Biaya ID" />
                                                 <display:column property="branchName" sortable="true" title="Unit" />
                                                 <display:column property="divisiName" sortable="true" title="Bidang/Divisi" />
@@ -260,7 +265,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Approve Pengajuan Biaya</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o" id="label-modal-detail"></i> Approve Pengajuan Biaya</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="formApprovalAtasan">
@@ -941,7 +946,10 @@
         $('#modal-edit').find('.modal-title').text('Approve Pengajuan Biaya');
         $('#modal-edit').modal('show');
         $('#myForm').attr('action', 'atasan');
+//        $('#btnApproveKeuangan').show();
+//        $('#btnNotApproveKeuangan').show();
     });
+
 
     window.loadPengajuan =  function(pengajuanId,branchId){
         $('.pengajuanBiayaTabel').find('tbody').remove();
@@ -974,6 +982,7 @@
                 namaApproveKaRs +
                 "<th style='text-align: center; background-color:  #90ee90'>App. Keu.</th>"+
                 namaApproveKeuKp+
+                "<th style='text-align: center; background-color:  #90ee90'>View</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Tanggal</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Tipe Budget</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>No. Budget</th>"+
@@ -1109,6 +1118,9 @@
                     approvalGM +
                     approvalKE +
                     approvalKEKP +
+                    '<td align="center"><a href="javascript:;" fileName="'+item.fileName+'" data="'+item.pengajuanBiayaDetailId+'" tanggal="'+item.stTanggal+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" tipe="'+item.transaksi+'" keperluan="'+item.keperluanName+'" noKontrak="'+item.noKontrak+'" class="view-detail-pengajuan" >\n' +
+                    '<img border="0" src="<s:url value="/pages/images/icon_search.png"/>" name="icon_edit">\n' +
+                    '</a></td>'+
                     '<td align="center">' + item.stTanggal+ '</td>' +
                     '<td align="center">' + transaksi+ '</td>' +
                     '<td align="center">' + item.noBudgeting+ '</td>' +
@@ -1196,6 +1208,71 @@
             $('#view_no_kontrak_atasan').hide();
         }
 
+        $('#modal-approve-atasan').modal('show');
+
+    });
+
+    $('.pengajuanBiayaTabel').on('click', '.view-detail-pengajuan', function() {
+        var jumlah = $(this).attr('jumlah');
+        jumlah = jumlah.replace(",",".");
+        var tipe= $(this).attr('tipe');
+
+        var tipeName ="";
+        if (tipe=="I"){
+            tipeName="Investasi";
+        } else{
+            tipeName="Rutin";
+        }
+
+        $('#mod_jumlah_atasan').val(jumlah);
+        $('#status_upload').val("N");
+        $('#modPengajuanBiayaDetailIdAtasan').val($(this).attr('data'));
+        $('#mod_status_approve_atasan').val($(this).attr('status'));
+        $('#mod_branch_id_atasan').val($(this).attr('unit'));
+        $('#mod_divisi_id_atasan').val($(this).attr('divisi'));
+        $('#mod_keterangan_atasan').val($(this).attr('keterangan'));
+        $('#mod_tanggal_atasan').val($(this).attr('tanggal'));
+        $('#mod_no_budgetting_atasan').val($(this).attr('noBudgetting'));
+        $('#mod_budget_atasan').val($(this).attr('budget'));
+        $('#mod_budget_sd_atasan').val($(this).attr('budgetsd'));
+        $('#mod_budget_terpakai_atasan').val($(this).attr('budgetterpakai'));
+        $('#mod_budget_terpakai_sd_atasan').val($(this).attr('budgetterpakaisd'));
+        $('#mod_sisa_budget_atasan').val($(this).attr('sisabudget'));
+        $('#mod_sisa_budget_sd_atasan').val($(this).attr('sisabudgetsd'));
+        $('#mod_keperluan_atasan').val($(this).attr('keperluan'));
+        $('#mod_no_kontrak_atasan').val($(this).attr('noKontrak'));
+        $('#namaFileUpload').val($(this).attr('fileName'));
+        $('#mod_tipe_atasan').val(tipeName);
+
+        if ($(this).attr('fileName')==''){
+            $('.upload-ipa').show();
+            $('.view-ipa').hide();
+        }else{
+            $('.upload-ipa').hide();
+            $('.view-ipa').show();
+            $('#img_faktur_canvas2').hide();
+        };
+
+        if (tipe=="I"){
+            $('#txt_budget_atasan').text("Nilai Kontrak (RP) :");
+            $('#txt_budget_terpakai_atasan').text("Nilai Kontrak Realisasi (RP) :");
+            $('#txt_sisa_budget_atasan').text("Sisa Nilai Kontrak (RP) :");
+            $('#view_budget_sd_atasan').hide();
+            $('.btnViewStok').hide();
+            $('#view_budget_terpakai_sd_atasan').hide();
+            $('#view_sisa_budget_sd_atasan').hide();
+            $('#view_no_kontrak_atasan').show();
+        } else{
+            $('#txt_budget_atasan').text("Budgeting Bulan Ini (RP) : ");
+            $('#txt_budget_terpakai_atasan').text("Budgeting terpakai Bulan Ini (RP) : ");
+            $('#txt_sisa_budget_atasan').text("Sisa Budget Bulan Ini (RP) : ");
+            $('#view_budget_sd_atasan').show();
+            $('.btnViewStok').show();
+            $('#view_budget_terpakai_sd_atasan').show();
+            $('#view_sisa_budget_sd_atasan').show();
+            $('#view_no_kontrak_atasan').hide();
+        }
+        $('#label-modal-detail').text("view detail pengajuan");
         $('#modal-approve-atasan').modal('show');
 
     });

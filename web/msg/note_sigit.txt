@@ -1941,3 +1941,8 @@ ADD COLUMN parent_id VARCHAR(30);
     UPDATE im_akun_trans SET is_otomatis = 'Y' WHERE trans_id IN ('76','77','78','79','80','81','82','83','84','85');
 
 --
+
+-- 2021-07-26
+
+    UPDATE im_akun_trans SET is_otomatis = 'Y' WHERE trans_id IN ('67','66','75');
+--

@@ -1091,7 +1091,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         logger.info("[PengajuanSetorBoImpl.getBillingForPosting] start process <<<");
         Map dataBilling = new HashMap();
 
-        List<Map> dataDetailList = new ArrayList<>();
+        List<MappingDetail> dataDetailList = new ArrayList<>();
 
         BigDecimal total = BigDecimal.ZERO;
 
@@ -1099,21 +1099,24 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
 
         List<ItPengajuanSetorDetailEntity> pengajuanSetorDetailEntityList = pengajuanSetorDetailDao.getByPengajuanSetorId(pengajuanSetorId);
         for (ItPengajuanSetorDetailEntity data : pengajuanSetorDetailEntityList){
-            Map dataDetail = new HashMap();
-            dataDetail.put("master_id",data.getPersonId());
-            dataDetail.put("bukti",data.getTransaksiId());
-            dataDetail.put("nilai",data.getJumlah());
+            MappingDetail dataDetail = new MappingDetail();
+            dataDetail.setMasterId(data.getPersonId());
+            dataDetail.setBukti(data.getTransaksiId());
+            dataDetail.setNilai(data.getJumlah());
             total = total.add(data.getJumlah());
             dataDetailList.add(dataDetail);
         }
 
-        Map kas = new HashMap();
-        kas.put("metode_bayar","transfer");
-        kas.put("bank", pengajuanSetorEntity.getKas());
-        kas.put("nilai",total);
+        MappingDetail kas = new MappingDetail();
+        kas.setMetodeBayar("transfer");
+        kas.setCoa(pengajuanSetorEntity.getKas());
+        kas.setNilai(total);
+
+        List<MappingDetail> mappingDetailsKas = new ArrayList<>();
+        mappingDetailsKas.add(kas);
 
         dataBilling.put("hutang_pph_21",dataDetailList);
-        dataBilling.put("kas",kas);
+        dataBilling.put("kas",mappingDetailsKas);
 
         logger.info("[PengajuanSetorBoImpl.getBillingForPosting] stop process >>>");
         return dataBilling;
