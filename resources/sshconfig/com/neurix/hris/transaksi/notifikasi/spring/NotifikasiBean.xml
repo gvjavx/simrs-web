@@ -40,6 +40,7 @@
           p:tipeNotifDao-ref="tipeNotifDao"
           p:pengajuanBiayaDao-ref="pengajuanBiayaDao"
           p:pengajuanBiayaDetailDao-ref="pengajuanBiayaDetailDao"
+          p:refreshLemburDao-ref="refreshLemburDao"
 
 
     />

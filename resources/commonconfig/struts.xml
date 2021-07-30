@@ -325,4 +325,6 @@
 
     <include file="sshconfig/com/neurix/simrs/transaksi/checkupdetail/struts/KontrolUlangAction.xml"/>
 
+    <include file="sshconfig/com/neurix/hris/transaksi/refreshLembur/struts/RefreshLemburAction.xml"/>
+
 </struts>

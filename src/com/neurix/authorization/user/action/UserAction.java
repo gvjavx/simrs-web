@@ -290,6 +290,7 @@ public class UserAction extends BaseMasterAction {
 
         Position position = new Position();
         position.setFlag("Y");
+        position.setFlagCostUnit("N");
 
         List<Position> listOfPosition = new ArrayList<Position>();
         try {

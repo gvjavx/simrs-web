@@ -160,6 +160,10 @@
         <property name="masterId">
             <column name="master_id" sql-type="varchar" length="10"/>
         </property>
+        
+        <property name="chanceRefreshLembur">
+            <column name="chance_refresh_lembur" sql-type="integer"/>
+        </property>
 
 
         <set name="imAreasBranchesUsers" inverse="true" lazy="true" where="flag='Y'">

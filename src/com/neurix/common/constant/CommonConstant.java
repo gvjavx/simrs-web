@@ -100,7 +100,7 @@ public class CommonConstant {
 //    public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayroll3.jrxml";
     public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollPeg_update.jrxml";
     public final static String REPORT_PAYROLL_THR = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollThrBranch3.jrxml";
-    public final static String REPORT_PAYROLL_JASPROD = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollJasoprBranch3jrxml";
+    public final static String REPORT_PAYROLL_JASPROD = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollJasoprBranch3.jrxml";
     public final static String REPORT_PAYROLL_PENSIUN = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollPensiun3.jrxml";
     public final static String REPORT_PAYROLL_PMP = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollJubileum3.jrxml";
     public final static String REPORT_PAYROLL_INSENTIF = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollInsentifBranch3.jrxml";
@@ -308,6 +308,8 @@ public class CommonConstant {
 
     public final static String PEGAWAI_TETAP = "TP03";
     public final static String PEGAWAI_PKWT = "TP04";
+
+    public final static String POS_VP_HC_GA = "PS512";
 
     //constant PAYROLL
     public final static String CODE_PAYROLL = "PY";
