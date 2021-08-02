@@ -150,6 +150,13 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="pull-right" style="color: red">
+                                            <i class="fa fa-square"></i> Diagnosis Terakhir (B20, A16.2, A18, A19, B16.9)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-sm-5"></label>
                                     <div class="col-sm-5" style="display: none">
 
@@ -202,12 +209,12 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Rawat Jalan Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped" style="font-size: 13px">
+                        <table id="myTable" class="table table-bordered" style="font-size: 13px">
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>ID Detail Checkup</td>
                                 <td>No RM</td>
-                                <td>Nama</td>
+                                <td width="20%">Nama</td>
                                 <td>Umur</td>
                                 <td>Tanggal Masuk</td>
                                 <td>Desa</td>
@@ -218,7 +225,12 @@
                             </thead>
                             <tbody>
                             <s:iterator value="#session.listOfResult" var="row">
-                                <tr>
+                                <s:if test='#row.diagnosa == "B20" || #row.diagnosa == "A16.2" || #row.diagnosa == "A18" || #row.diagnosa == "A19" || #row.diagnosa == "B16.9"'>
+                                    <tr style="color: white" bgcolor="red">
+                                </s:if>
+                                <s:else>
+                                    <tr>
+                                </s:else>
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
@@ -226,7 +238,7 @@
                                     <td><s:property value="formatTglMasuk"/></td>
                                     <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
-                                    <td align="center">
+                                    <td align="center" style="vertical-align: middle">
                                         <script>
                                             document.write(changeJenisPasien('<s:property value="idJenisPeriksaPasien"/>', '<s:property value="jenisPeriksaPasien"/>'));
                                         </script>

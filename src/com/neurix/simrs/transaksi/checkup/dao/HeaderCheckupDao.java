@@ -1149,16 +1149,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
 
                 if("lab".equalsIgnoreCase(obj[2].toString())){
                     if("".equalsIgnoreCase(res)){
-                        lab = obj[1].toString()+" :"+tempDetail;
+                        lab = obj[1].toString()+" ("+tempDetail+")";
                     }else{
-                        lab = lab +", "+obj[1].toString()+" :"+tempDetail;;
+                        lab = lab +", "+obj[1].toString()+" ("+tempDetail+")";
                     }
                 }
                 if("radiologi".equalsIgnoreCase(obj[2].toString())){
                     if("".equalsIgnoreCase(res)){
-                        radiologi = obj[1].toString()+" :"+tempDetail;;
+                        radiologi = obj[1].toString()+" ("+tempDetail+")";
                     }else{
-                        radiologi = radiologi +", "+obj[1].toString()+" :"+tempDetail;;
+                        radiologi = radiologi +", "+obj[1].toString()+" ("+tempDetail+")";
                     }
                 }
             }

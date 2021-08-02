@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.checkupdetail.dao;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.asesmenugd.model.ItSimrsAsesmenUgdEntity;
+import com.neurix.simrs.transaksi.checkup.model.AlertPasien;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.KlaimFpkDTO;
@@ -396,9 +397,17 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                             }
                         }
                     }
+
                     headerDetailCheckup.setAlamat(jalan);
                     headerDetailCheckup.setIsTindakan(isTindakanRawat(obj[0].toString()));
                     headerDetailCheckup.setTriase(triase(obj[0].toString()));
+
+                    HeaderDetailCheckup asuransi = diagnosa(obj[2].toString(), branchId);
+                    if(asuransi != null){
+                        headerDetailCheckup.setNamaDiagnosa(asuransi.getNamaDiagnosa());
+                        headerDetailCheckup.setDiagnosa(asuransi.getDiagnosa());
+                    }
+
                     checkupList.add(headerDetailCheckup);
                 }
             }
@@ -406,7 +415,51 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return checkupList;
     }
 
-    public String isTindakanRawat(String id){
+    private HeaderDetailCheckup diagnosa(String idPasien, String branchId) {
+        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+        if (branchId == null || "".equalsIgnoreCase(branchId)) {
+            branchId = "%";
+        }
+
+        String SQL = "SELECT " +
+                "ps.nama, " +
+                "diag.keterangan_diagnosa, \n" +
+                "ck.last_update, \n" +
+                "ck.no_checkup, \n" +
+                "diag.id_diagnosa \n" +
+                "FROM it_simrs_header_checkup ck\n" +
+                "INNER JOIN im_simrs_pasien ps ON ps.id_pasien = ck.id_pasien\n" +
+                "INNER JOIN (SELECT * FROM it_simrs_header_detail_checkup WHERE status_periksa = '3') hdc ON hdc.no_checkup = ck.no_checkup\n" +
+                "INNER JOIN (\n" +
+                "\tSELECT a.* FROM it_simrs_diagnosa_rawat a\n" +
+                "\tINNER JOIN (\n" +
+                "\tSELECT id_detail_checkup, \n" +
+                "\tMAX(created_date) as created_date \n" +
+                "\tFROM it_simrs_diagnosa_rawat\n" +
+                "\tGROUP BY id_detail_checkup\n" +
+                "\t) b ON b.id_detail_checkup = a.id_detail_checkup AND b.created_date = a.created_date\n" +
+                ") diag ON diag.id_detail_checkup = hdc.id_detail_checkup\n" +
+                "WHERE ck.id_pasien = :idPasien \n" +
+                "AND ck.branch_id LIKE :branchId \n" +
+                "ORDER BY hdc.last_update DESC\n" +
+                "LIMIT 1";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("branchId", branchId)
+                .setParameter("idPasien", idPasien)
+                .list();
+
+        for (Object[] obj : results) {
+            detailCheckup.setNamaPasien(obj[0] == null ? "" : obj[0].toString());
+            detailCheckup.setNamaDiagnosa(obj[1] == null ? "" : obj[1].toString());
+            detailCheckup.setNoCheckup(obj[3] == null ? "" : obj[3].toString());
+            detailCheckup.setDiagnosa(obj[4] == null ? "" : obj[4].toString());
+        }
+
+        return detailCheckup;
+    }
+
+    private String isTindakanRawat(String id){
         String res = "N";
         if(id != null && !"".equalsIgnoreCase(id)){
             Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsTindakanRawatEntity.class);
@@ -420,7 +473,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return res;
     }
 
-    public String triase(String id){
+    private String triase(String id){
         String res = "";
         if(id != null && !"".equalsIgnoreCase(id)){
             Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsAsesmenUgdEntity.class);

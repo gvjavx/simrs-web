@@ -82,38 +82,6 @@
                                                   cssClass="form-control select2" theme="simple"/>
                                     </div>
                                 </div>
-                                <%--<s:if test="isEnabledPoli()">--%>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">Poli</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:action id="initComboPoli" namespace="/checkup"--%>
-                                                  <%--name="getComboPelayanan_checkup"/>--%>
-                                        <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                  <%--list="#initComboPoli.listOfPelayanan"--%>
-                                                  <%--name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"--%>
-                                                  <%--listValue="namaPelayanan"--%>
-                                                  <%--headerKey="" headerValue="[Select one]"--%>
-                                                  <%--cssClass="form-control select2" theme="simple"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <%--</s:if>--%>
-                                <%--<s:else>--%>
-                                    <%--<div class="form-group">--%>
-                                        <%--<label class="control-label col-sm-4">Poli</label>--%>
-                                        <%--<div class="col-sm-4">--%>
-                                            <%--<s:action id="initComboPoli" namespace="/checkup"--%>
-                                                      <%--name="getComboPelayanan_checkup"/>--%>
-                                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                      <%--list="#initComboPoli.listOfPelayanan" id="poli"--%>
-                                                      <%--listKey="idPelayanan"--%>
-                                                      <%--name="headerDetailCheckup.idPelayanan"--%>
-                                                      <%--listValue="namaPelayanan"--%>
-                                                      <%--headerKey="007" headerValue="IGD"--%>
-                                                      <%--cssClass="form-control select2" theme="simple" disabled="true"/>--%>
-                                        <%--</div>--%>
-                                        <%--<s:hidden name="headerDetailCheckup.idPelayanan"></s:hidden>--%>
-                                    <%--</div>--%>
-                                <%--</s:else>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
@@ -189,6 +157,13 @@
                                         </sj:dialog>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="pull-right" style="color: red">
+                                            <i class="fa fa-square"></i> Diagnosis Terakhir (B20, A16.2, A18, A19, B16.9)
+                                        </div>
+                                    </div>
+                                </div>
                             </s:form>
                         </div>
                     </div>
@@ -203,7 +178,7 @@
                                 <td align="center">Triase</td>
                                 <td>ID Detail Checkup</td>
                                 <td>No RM</td>
-                                <td>Nama</td>
+                                <td width="20%">Nama</td>
                                 <td>Umur</td>
                                 <td>Tanggal Masuk</td>
                                 <td>Desa</td>
@@ -231,7 +206,7 @@
                                     <td><s:property value="formatTglMasuk"/></td>
                                     <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
-                                    <td align="center">
+                                    <td align="center" style="vertical-align: middle">
                                         <script>
                                             document.write(changeJenisPasien('<s:property value="idJenisPeriksaPasien"/>', '<s:property value="jenisPeriksaPasien"/>'));
                                         </script>

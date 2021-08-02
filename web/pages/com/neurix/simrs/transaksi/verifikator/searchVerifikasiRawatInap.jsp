@@ -1070,7 +1070,7 @@
                     }
 
                     var blink = "";
-                    if("B20" == id){
+                    if("B20" == id || "A16.2" == id || "A18" == id || "A19" == id || "B16.9" == id){
                         blink = 'class="blink_me_atas" style="color: red"';
                     }
 

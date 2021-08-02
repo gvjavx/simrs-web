@@ -129,6 +129,13 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="pull-right" style="color: red">
+                                            <i class="fa fa-square"></i> Diagnosis Terakhir (B20, A16.2, A18, A19, B16.9)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-sm-5"></label>
                                     <div class="col-sm-5" style="display: none">
 
@@ -169,7 +176,7 @@
                             <tr bgcolor="#90ee90">
                                 <td>ID Detail Checkup</td>
                                 <td>No RM</td>
-                                <td>Nama</td>
+                                <td width="20%">Nama</td>
                                 <td>Umur</td>
                                 <td>Tanggal Masuk</td>
                                 <td>Ruangan</td>
@@ -197,7 +204,7 @@
                                     </td>
                                     <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
-                                    <td align="center">
+                                    <td align="center" style="vertical-align: middle">
                                         <script>
                                             document.write(changeJenisPasien('<s:property value="idJenisPeriksa"/>', '<s:property value="jenisPeriksaPasien"/>'));
                                         </script>
