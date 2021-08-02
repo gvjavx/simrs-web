@@ -254,6 +254,8 @@ public class DokterKsoBoImpl implements DokterKsoBo {
             }
 
             String kodering = koderingBranch + "." + koderingPosition + "." + seqKodering;
+            // Fahmi 2021-08-02, Jika jenis kso selain tindakan, maka ambil dari UI.
+            BigDecimal persenKso = !bean.getJenisKso().equalsIgnoreCase("tindakan")?bean.getPersenKso():new BigDecimal(0);
 
             if (imSimrsDokterKso != null) {
                 imSimrsDokterKso.setDokterKsoId(bean.getDokterKsoId());
@@ -261,7 +263,7 @@ public class DokterKsoBoImpl implements DokterKsoBo {
                 imSimrsDokterKso.setJenisKso(bean.getJenisKso());
                 imSimrsDokterKso.setMasterId(bean.getMasterId());
                 imSimrsDokterKso.setTarifIna(bean.getTarifIna());
-                imSimrsDokterKso.setPersenKso(bean.getPersenKso());
+                imSimrsDokterKso.setPersenKso(persenKso);
                 imSimrsDokterKso.setPersenKs(bean.getPersenKs());
                 imSimrsDokterKso.setBranchId(bean.getBranchId());
                 imSimrsDokterKso.setPositionId(bean.getPositionId());
@@ -443,6 +445,8 @@ public class DokterKsoBoImpl implements DokterKsoBo {
                 }
 
                 String kodering = koderingBranch + "." + koderingPosition + "." + seqKodering;
+                // Fahmi 2021-07-30, Jika jenis kso selain tindakan, maka ambil dari UI.
+                BigDecimal persenKso = !bean.getJenisKso().equalsIgnoreCase("tindakan")?bean.getPersenKso():new BigDecimal(0);
 
                 // creating object entity serializable
                 ImSimrsDokterKso entity = new ImSimrsDokterKso();
@@ -451,7 +455,7 @@ public class DokterKsoBoImpl implements DokterKsoBo {
                 entity.setJenisKso(bean.getJenisKso());
                 entity.setMasterId(bean.getMasterId());
                 entity.setTarifIna(bean.getTarifIna());
-                entity.setPersenKso(bean.getPersenKso());
+                entity.setPersenKso(persenKso);
                 entity.setPersenKs(bean.getPersenKs());
                 entity.setBranchId(bean.getBranchId());
                 entity.setPositionId(bean.getPositionId());
@@ -696,6 +700,7 @@ public class DokterKsoBoImpl implements DokterKsoBo {
         List<Tindakan> tindakanList = new ArrayList<>();
 
         ItPersonilPositionEntity personil;
+        Tindakan tindakan = new Tindakan();
 
         try {
             personil = personilPositionDao.getById("nip", idDokter);
@@ -705,7 +710,12 @@ public class DokterKsoBoImpl implements DokterKsoBo {
         }
 
         try {
-            tindakanList = tindakanDao.getTindakanPelayanan(idPelayanan, personil.getBranchId());
+            // Fahmi 2021-08-02, Ubah cara mendapatkan list tindakan, karena yang sebelumnya tidak akurat.
+            tindakan.setIdPelayanan(idPelayanan);
+            tindakan.setBranchId(personil.getBranchId());
+            //tindakanList = tindakanDao.getTindakanPelayanan(idPelayanan, personil.getBranchId());
+            tindakanList = tindakanDao.getListDataTindakan(tindakan);
+            // End Fahmi
         } catch (HibernateException e) {
             logger.error("[DokterKsoBoImpl.getTindakanPelayanan] Error, " + e.getMessage());
             throw new GeneralBOException("Problem when retrieving Tindakan by Pelayanan ID, " + e.getMessage());

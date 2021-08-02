@@ -155,14 +155,13 @@ public class PendapatanDokterAction extends BaseMasterAction {
         }
 
         String branchId = CommonUtil.userBranchLogin();
-        PendapatanDokter data = new PendapatanDokter();
         if (branchId != null){
-            data.setBranchUser(branchId);
+            searchPendapatanDokter.setBranchUser(branchId);
         }else {
-            data.setBranchUser("");
+            searchPendapatanDokter.setBranchUser("");
         }
 
-        pendapatanDokter = data;
+        pendapatanDokter = searchPendapatanDokter;
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultPendapatanDokter");
