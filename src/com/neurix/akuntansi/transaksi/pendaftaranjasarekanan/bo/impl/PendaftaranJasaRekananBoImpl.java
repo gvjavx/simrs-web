@@ -1,5 +1,7 @@
 package com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.bo.impl;
 
+import com.neurix.akuntansi.master.master.dao.MasterDao;
+import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.bo.PendaftatanJasaRekananBo;
 import com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.dao.PendaftaranJasaRekananDao;
 import com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.model.ItAkunPendaftaranJasaEntity;
@@ -18,6 +20,12 @@ public class PendaftaranJasaRekananBoImpl implements PendaftatanJasaRekananBo {
     public static transient Logger logger = Logger.getLogger(PendaftaranJasaRekananBoImpl.class);
 
     private PendaftaranJasaRekananDao pendaftaranJasaRekananDao;
+    private MasterDao masterDao;
+
+
+    public void setMasterDao(MasterDao masterDao) {
+        this.masterDao = masterDao;
+    }
 
     public void setPendaftaranJasaRekananDao(PendaftaranJasaRekananDao pendaftaranJasaRekananDao) {
         this.pendaftaranJasaRekananDao = pendaftaranJasaRekananDao;
@@ -32,6 +40,10 @@ public class PendaftaranJasaRekananBoImpl implements PendaftatanJasaRekananBo {
         List<PendaftaranJasa> listOfResult = new ArrayList<>();
         if (listEntity != null && listEntity.size() > 0){
             BeanUtils.copyProperties(listEntity, listOfResult);
+
+            for (PendaftaranJasa pendaftaranJasa : listOfResult){
+
+            }
         }
 
         logger.info("[PendaftaranJasaRekananBoImpl.getSearchByCriteria] End <<<");
@@ -86,6 +98,18 @@ public class PendaftaranJasaRekananBoImpl implements PendaftatanJasaRekananBo {
         }
 
         logger.info("[PendaftaranJasaRekananBoImpl.getSearchByCriteria] Start >>>");
+        return null;
+    }
+
+    public ImMasterEntity getMasterById(String id) throws GeneralBOException{
+        logger.info("[PendaftaranJasaRekananBoImpl.getSearchByCriteria] Start >>>");
+
+        if (id != null && !"".equalsIgnoreCase(id)){
+            ImMasterEntity masterEntity = masterDao.getById("no_master", id);
+            return masterEntity;
+        }
+
+        logger.info("[PendaftaranJasaRekananBoImpl.getSearchByCriteria] End <<<");
         return null;
     }
 }
