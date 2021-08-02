@@ -1954,3 +1954,27 @@ ADD COLUMN parent_id VARCHAR(30);
    ALTER TABLE it_hris_payroll
    ADD COLUMN nota_pph_21 VARCHAR(50);
 --
+
+-- 2021-08-02
+    CREATE TABLE it_akun_pendaftaran_jasa(
+    	id varchar(50) not null primary key,
+    	nama_jasa text,
+    	id_vendor varchar(50),
+    	branch_id varchar(5),
+    	biaya numeric,
+    	status varchar(1),
+    	url_doc text,
+    	approve_keu varchar(1),
+    	approve_kasub_keu varchar(1),
+    	approve_ka_keu varchar(1),
+    	flag varchar(1),
+    	action varchar(1),
+    	alasan_batal text,
+    	created_date timestamp without time zone,
+    	created_who varchar(100),
+    	last_update timestamp without time zone,
+    	last_update_who varchar(100)
+    );
+
+    CREATE SEQUENCE pendaftaran_jasa_rekanan;
+--

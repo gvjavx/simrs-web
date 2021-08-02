@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.model.ItAkunPendaftaranJasaEntity">
+        <table name="it_akun_pendaftaran_jasa" schema="public"/>
+        <attributes>
+            <id name="id">
+                <column name="id"/>
+            </id>
+            <basic name="namaJasa">
+                <column name="nama_jasa"/>
+            </basic>
+            <basic name="idVendor">
+                <column name="id_vendor"/>
+            </basic>
+            <basic name="branchId">
+                <column name="branch_id"/>
+            </basic>
+            <basic name="biaya">
+                <column name="biaya"/>
+            </basic>
+            <basic name="status">
+                <column name="status"/>
+            </basic>
+            <basic name="urlDoc">
+                <column name="url_doc"/>
+            </basic>
+            <basic name="approveKeu">
+                <column name="approve_keu"/>
+            </basic>
+            <basic name="approveKasubKeu">
+                <column name="approve_kasub_keu"/>
+            </basic>
+            <basic name="approveKaKeu">
+                <column name="approve_ka_keu"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="alasanBatal">
+                <column name="alasan_batal"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>
