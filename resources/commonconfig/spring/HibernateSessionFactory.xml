@@ -644,6 +644,7 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/checkupdetail/hibernate/ItSimrsKontrolUlangEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/akunMataUang/hibernate/ImAkunMataUangEntity.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/sewaLahan/hibernate/ItAkunSewaLahanEntity.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/pendaftaranjasarekanan/hibernate/ItAkunPendaftaranJasaEntity.xml</value>
             </list>
 
         </property>

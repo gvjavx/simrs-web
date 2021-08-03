@@ -1044,12 +1044,24 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
 
                         }
 
-                        //jika pejabat utama kosong maka langsung lempar error
-                        if (positionList.size()==0||userList.size()==0){
-                            String status = "ERROR : Pejabat utama tidak ditemukan";
-                            logger.error("[PengajuanBiayaBoImpl.saveApproveAtasanPengajuan] Error, " +status);
-                            throw new GeneralBOException(status);
+                        // 2021-08-03, Sigit jika Tidak ditemukan pejabat Utama Maka Langsung ke Ka RS;
+                        if (!pengajuanBiayaDetailEntity.getBranchId().equalsIgnoreCase(CommonConstant.BRANCH_KP) && userList.size() == 0){
+                            userList.addAll(userDao.getUserPegawaiByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),CommonConstant.posisiGmUnit));
+                        } else {
+                            //jika pejabat utama kosong maka langsung lempar error
+                            if (positionList.size()==0||userList.size()==0){
+                                String status = "ERROR : Pejabat utama tidak ditemukan";
+                                logger.error("[PengajuanBiayaBoImpl.saveApproveAtasanPengajuan] Error, " +status);
+                                throw new GeneralBOException(status);
+                            }
                         }
+
+//                        //jika pejabat utama kosong maka langsung lempar error
+//                        if (positionList.size()==0||userList.size()==0){
+//                            String status = "ERROR : Pejabat utama tidak ditemukan";
+//                            logger.error("[PengajuanBiayaBoImpl.saveApproveAtasanPengajuan] Error, " +status);
+//                            throw new GeneralBOException(status);
+//                        }
                     }
 
                     break;

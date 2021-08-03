@@ -587,7 +587,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Metode Pembiayaan : </label>
                         <div class="col-sm-6">
-                            <s:select list="#{'A':'Unit','01':'Kantor Pusat'}" onchange="changeKas(this.value)"
+                            <s:select list="#{'A':'Unit','KP':'Kantor Pusat'}" onchange="changeKas(this.value)"
                                       id="mod_status_keuangan" headerKey="" headerValue="[Select One]" cssClass="form-control" />
                         </div>
                     </div>

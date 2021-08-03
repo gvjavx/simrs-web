@@ -276,7 +276,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'A':'Unit', '01' : 'Kantor Pusat'}"
+                                                        <s:select list="#{'A':'Unit', 'KP' : 'Kantor Pusat'}"
                                                                   id="statusKeuangan" name="pengajuanBiayaDetail.statusKeuangan"
                                                                   headerKey="" headerValue="" cssClass="form-control" />
                                                     </table>
@@ -372,7 +372,7 @@
                                                     <s:iterator value="#session.listOfResult" var="row">
                                                             <s:if test='pengajuanBiayaDetail.branchIdUser == "01"'>
                                                             <td align="center">
-                                                                <s:if test='#row.pengajuanBiayaDetailId == ""||#row.statusKeuangan != "01"||#row.rkId!= null'>
+                                                                <s:if test='#row.pengajuanBiayaDetailId == ""||#row.statusKeuangan != "KP"||#row.rkId!= null'>
                                                                 </s:if>
                                                                 <s:else>
                                                                     <div class="form-check">

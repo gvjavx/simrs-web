@@ -1953,6 +1953,8 @@ ADD COLUMN parent_id VARCHAR(30);
 
    ALTER TABLE it_hris_payroll
    ADD COLUMN nota_pph_21 VARCHAR(50);
+
+   UPDATE im_func_roles SET flag = 'Y' WHERE (role_id, func_id) = ('39','8003');
 --
 
 -- 2021-08-02
