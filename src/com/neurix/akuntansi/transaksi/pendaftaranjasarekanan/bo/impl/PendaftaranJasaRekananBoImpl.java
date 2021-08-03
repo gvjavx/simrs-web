@@ -2,7 +2,7 @@ package com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.bo.impl;
 
 import com.neurix.akuntansi.master.master.dao.MasterDao;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
-import com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.bo.PendaftatanJasaRekananBo;
+import com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.bo.PendaftaranJasaRekananBo;
 import com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.dao.PendaftaranJasaRekananDao;
 import com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.model.ItAkunPendaftaranJasaEntity;
 import com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.model.PendaftaranJasa;
@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PendaftaranJasaRekananBoImpl implements PendaftatanJasaRekananBo {
+public class PendaftaranJasaRekananBoImpl implements PendaftaranJasaRekananBo {
     public static transient Logger logger = Logger.getLogger(PendaftaranJasaRekananBoImpl.class);
 
     private PendaftaranJasaRekananDao pendaftaranJasaRekananDao;
@@ -39,10 +39,30 @@ public class PendaftaranJasaRekananBoImpl implements PendaftatanJasaRekananBo {
 
         List<PendaftaranJasa> listOfResult = new ArrayList<>();
         if (listEntity != null && listEntity.size() > 0){
+
             BeanUtils.copyProperties(listEntity, listOfResult);
 
             for (PendaftaranJasa pendaftaranJasa : listOfResult){
+                if (pendaftaranJasa.getIdVendor() != null && !"".equalsIgnoreCase(pendaftaranJasa.getIdVendor())){
+                    ImMasterEntity masterEntity = masterDao.getById("primaryKey.nomorMaster", pendaftaranJasa.getIdVendor());
+                    if (masterEntity != null){
+                        pendaftaranJasa.setNamaVendor(masterEntity.getNama());
+                    }
 
+                    if ("1".equalsIgnoreCase(pendaftaranJasa.getStatus())){
+                        pendaftaranJasa.setKeteranganStatus("Menunggu Approval Unit");
+                    } else if ("2".equalsIgnoreCase(pendaftaranJasa.getStatus())){
+                        pendaftaranJasa.setKeteranganStatus("Sudah Terapprove Oleh Unit Menunggu Approval Keuangan");
+                    } else if ("Y".equalsIgnoreCase(pendaftaranJasa.getApproveKeu())){
+                        pendaftaranJasa.setKeteranganStatus("Sudah Terapprove Oleh Keuangan Menunggu Approval Kasub Keuangan");
+                    } else if ("Y".equalsIgnoreCase(pendaftaranJasa.getApproveKeu())){
+                        pendaftaranJasa.setKeteranganStatus("Sudah Terapprove Oleh Kasub Keuangan Menunggu Approval Kepala Keuangan");
+                    } else if ("Y".equalsIgnoreCase(pendaftaranJasa.getApproveKeu())){
+                        pendaftaranJasa.setKeteranganStatus("Selesai");
+                    } else {
+                        pendaftaranJasa.setKeteranganStatus("Dibatalkan dengan alasan : "+ pendaftaranJasa.getAlasanBatal());
+                    }
+                }
             }
         }
 
@@ -52,12 +72,95 @@ public class PendaftaranJasaRekananBoImpl implements PendaftatanJasaRekananBo {
 
     @Override
     public void saveAdd(PendaftaranJasa bean) throws GeneralBOException {
+        logger.info("[PendaftaranJasaRekananBoImpl.saveAdd] Start >>>");
 
+        ItAkunPendaftaranJasaEntity pendaftaranJasaEntity = new ItAkunPendaftaranJasaEntity();
+
+        BeanUtils.copyProperties(bean, pendaftaranJasaEntity);
+
+        if (pendaftaranJasaEntity == null){
+            logger.error("[PendaftaranRekananBoImpl.saveAdd] ERROR. Entity Data Is NULL");
+            throw new GeneralBOException("[PendaftaranRekananBoImpl.saveAdd] ERROR. Entity Data Is NULL");
+        }
+
+        try {
+            pendaftaranJasaEntity.setId(pendaftaranJasaRekananDao.getNextId());
+            pendaftaranJasaRekananDao.addAndSave(pendaftaranJasaEntity);
+        } catch (HibernateException e){
+            logger.error("[PendaftaranRekananBoImpl.saveAdd] ERROR. ", e);
+            throw new GeneralBOException("[PendaftaranRekananBoImpl.saveAdd] ERROR. "+ e.getCause());
+        }
+
+        logger.info("[PendaftaranJasaRekananBoImpl.saveAdd] End <<<");
     }
 
     @Override
     public void saveEdit(PendaftaranJasa bean) throws GeneralBOException {
+        logger.info("[PendaftaranJasaRekananBoImpl.saveEdit] Start >>>");
 
+        ItAkunPendaftaranJasaEntity entity = pendaftaranJasaRekananDao.getById("id", bean.getId());
+
+        if (entity != null){
+
+            entity.setNamaJasa(bean.getNamaJasa());
+            entity.setBiaya(bean.getBiaya());
+            entity.setStatus(bean.getStatus());
+            entity.setUrlDoc(bean.getUrlDoc() != null ? bean.getUrlDoc() : entity.getUrlDoc());
+            entity.setLastUpdate(bean.getLastUpdate());
+            entity.setLastUpdateWho(bean.getLastUpdateWho());
+            entity.setFlag(bean.getFlag());
+            if ("N".equalsIgnoreCase(bean.getFlag())){
+                entity.setAlasanBatal(bean.getAlasanBatal());
+            }
+            entity.setFlag(bean.getFlag());
+            entity.setAction("U");
+
+            try {
+                pendaftaranJasaRekananDao.updateAndSave(entity);
+            } catch (HibernateException e){
+                logger.error("[PendaftaranRekananBoImpl.saveEdit] ERROR. ", e);
+                throw new GeneralBOException("[PendaftaranRekananBoImpl.saveEdit] ERROR. "+ e.getCause());
+            }
+        }
+
+        logger.info("[PendaftaranJasaRekananBoImpl.saveEdit] End <<<");
+    }
+
+    @Override
+    public void saveApprove(PendaftaranJasa bean) throws GeneralBOException {
+        logger.info("[PendaftaranJasaRekananBoImpl.saveApprove] Start >>>");
+
+        ItAkunPendaftaranJasaEntity entity = pendaftaranJasaRekananDao.getById("id", bean.getId());
+
+        if (entity != null){
+
+            if ("N".equalsIgnoreCase(bean.getFlagApprove())){
+                entity.setAlasanBatal(bean.getAlasanBatal());
+                entity.setFlag("N");
+            }
+
+            if ("keu".equalsIgnoreCase(bean.getJenisJabatan())){
+                entity.setApproveKeu(bean.getFlagApprove());
+            } else if ("kasubkeu".equalsIgnoreCase(bean.getJenisJabatan())){
+                entity.setApproveKasubKeu(bean.getFlagApprove());
+            } else {
+                entity.setApproveKaKeu(bean.getFlagApprove());
+                entity.setFlag("N");
+            }
+
+            entity.setLastUpdateWho(bean.getLastUpdateWho());
+            entity.setLastUpdate(bean.getLastUpdate());
+            entity.setAction("U");
+
+            try {
+                pendaftaranJasaRekananDao.updateAndSave(entity);
+            } catch (HibernateException e){
+                logger.error("[PendaftaranRekananBoImpl.saveApprove] ERROR. ", e);
+                throw new GeneralBOException("[PendaftaranRekananBoImpl.saveApprove] ERROR. "+ e.getCause());
+            }
+        }
+
+        logger.info("[PendaftaranJasaRekananBoImpl.saveApprove] End <<<");
     }
 
     private List<ItAkunPendaftaranJasaEntity> getPendaftaranJasaEntity(PendaftaranJasa bean) throws GeneralBOException{
@@ -98,18 +201,6 @@ public class PendaftaranJasaRekananBoImpl implements PendaftatanJasaRekananBo {
         }
 
         logger.info("[PendaftaranJasaRekananBoImpl.getSearchByCriteria] Start >>>");
-        return null;
-    }
-
-    public ImMasterEntity getMasterById(String id) throws GeneralBOException{
-        logger.info("[PendaftaranJasaRekananBoImpl.getSearchByCriteria] Start >>>");
-
-        if (id != null && !"".equalsIgnoreCase(id)){
-            ImMasterEntity masterEntity = masterDao.getById("no_master", id);
-            return masterEntity;
-        }
-
-        logger.info("[PendaftaranJasaRekananBoImpl.getSearchByCriteria] End <<<");
         return null;
     }
 }

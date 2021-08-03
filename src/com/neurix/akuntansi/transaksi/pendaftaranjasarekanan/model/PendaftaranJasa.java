@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.model;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
@@ -8,7 +9,7 @@ public class PendaftaranJasa {
     private String namaJasa;
     private String idVendor;
     private String branchId;
-    private BigInteger biaya;
+    private BigDecimal biaya;
     private String status;
     private String urlDoc;
     private String approveKeu;
@@ -21,6 +22,43 @@ public class PendaftaranJasa {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+
+    private String namaVendor;
+    private String flagApprove;
+    private String jenisJabatan;
+    private String keteranganStatus;
+
+    public String getKeteranganStatus() {
+        return keteranganStatus;
+    }
+
+    public void setKeteranganStatus(String keteranganStatus) {
+        this.keteranganStatus = keteranganStatus;
+    }
+
+    public String getJenisJabatan() {
+        return jenisJabatan;
+    }
+
+    public void setJenisJabatan(String jenisJabatan) {
+        this.jenisJabatan = jenisJabatan;
+    }
+
+    public String getFlagApprove() {
+        return flagApprove;
+    }
+
+    public void setFlagApprove(String flagApprove) {
+        this.flagApprove = flagApprove;
+    }
+
+    public String getNamaVendor() {
+        return namaVendor;
+    }
+
+    public void setNamaVendor(String namaVendor) {
+        this.namaVendor = namaVendor;
+    }
 
     public String getId() {
         return id;
@@ -54,11 +92,11 @@ public class PendaftaranJasa {
         this.branchId = branchId;
     }
 
-    public BigInteger getBiaya() {
+    public BigDecimal getBiaya() {
         return biaya;
     }
 
-    public void setBiaya(BigInteger biaya) {
+    public void setBiaya(BigDecimal biaya) {
         this.biaya = biaya;
     }
 

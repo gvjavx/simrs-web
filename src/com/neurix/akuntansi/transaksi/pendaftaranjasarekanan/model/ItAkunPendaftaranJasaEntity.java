@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.model;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
@@ -8,7 +9,7 @@ public class ItAkunPendaftaranJasaEntity {
     private String namaJasa;
     private String idVendor;
     private String branchId;
-    private BigInteger biaya;
+    private BigDecimal biaya;
     private String status;
     private String urlDoc;
     private String approveKeu;
@@ -54,11 +55,11 @@ public class ItAkunPendaftaranJasaEntity {
         this.branchId = branchId;
     }
 
-    public BigInteger getBiaya() {
+    public BigDecimal getBiaya() {
         return biaya;
     }
 
-    public void setBiaya(BigInteger biaya) {
+    public void setBiaya(BigDecimal biaya) {
         this.biaya = biaya;
     }
 

@@ -5,8 +5,9 @@ import com.neurix.common.exception.GeneralBOException;
 
 import java.util.List;
 
-public interface PendaftatanJasaRekananBo {
+public interface PendaftaranJasaRekananBo {
     public List<PendaftaranJasa> getSearchByCriteria(PendaftaranJasa bean) throws GeneralBOException;
     public void saveAdd(PendaftaranJasa bean) throws GeneralBOException;
     public void saveEdit(PendaftaranJasa bean) throws GeneralBOException;
+    public void saveApprove(PendaftaranJasa bean) throws GeneralBOException;
 }
