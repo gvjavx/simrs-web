@@ -445,7 +445,8 @@ public class CommonConstant {
     public final static String CODE_INVOICE_VA_TELE = CommonUtil.getPropertyParams("code.invoice.telemedic");
     public final static String JENIS_PEMBAYARAN_TRANSFER_TUNAI = CommonUtil.getPropertyParams("jenis.pembayaran.tt");
     public final static String JENIS_PEMBAYARAN_VA = CommonUtil.getPropertyParams("jenis.pembayaran.va");
-    public final static String PATH_REPORT_AKUNTANSI = ContextLoader.getCurrentWebApplicationContext().getApplicationName() + "/pages/report/neurix/com/akuntansi/";
+    public final static String PATH_REPORT_AKUNTANSI = ContextLoader.getCurrentWebApplicationContext().getApplicationName() + "/pages/report/com/neurix/akuntansi/";
+    public final static String REALPATH_REPORT_AKUNTANSI = CommonUtil.getPropertyParams("base.dir") + "pages/report/com/neurix/akuntansi/";
 
 
 }

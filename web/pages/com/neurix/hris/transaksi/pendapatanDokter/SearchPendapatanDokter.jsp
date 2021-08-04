@@ -372,10 +372,10 @@
                                 <td align="right"><span id="nama_unit"></span></td>
                             </tr>
                             <tr>
-                                <td><b>Bulan</b></td>
+                                <td><b>Periode</b></td>
                                 <td align="right"><span id="bulan"></span></td>
                             </tr>
-                            <tr>
+                            <tr style="display:none;">
                                 <td><b>Tahun</b></td>
                                 <td align="right"><span id="tahun"></span></td>
                             </tr>
@@ -526,6 +526,49 @@
     function detailPendapatan(pphLebih, kodeJabatan, bulan, tahun, pendapatanDokterId,namaDokter,branchName,bruto, pendapatanRs,hrBruto,dppPph21,dppPphKomulatif,pajak,potPajak,hrAktifitas,potKs,gajiBersih){
         console.log(namaDokter);
         console.log("tes "+pphLebih);
+
+        // Fahmi 2021-08-02, Mempercantik tampilan field bulan
+        switch (bulan)
+        {
+            case "01":
+              bulan = "Jan";
+              break;
+            case "02":
+              bulan = "Feb";
+              break;
+            case "03":
+              bulan = "Mar";
+              break;
+           case "04":
+              bulan = "Apr";
+              break;
+           case "05":
+              bulan = "Mei";
+              break;
+           case "06":
+              bulan = "Jun";
+              break;
+           case "07":
+              bulan = "Jul";
+              break;
+           case "08":
+              bulan = "Aug";
+              break;
+           case "09":
+              bulan = "Sep";
+              break;
+           case "10":
+              bulan = "Oct";
+              break;
+           case "11":
+              bulan = "Nov";
+              break;
+           case "12":
+              bulan = "Des";
+              break;
+        }
+        // End Fahmi
+
         if (pphLebih == '0.00' || pphLebih == ''){
             $('#btn').closest("td").hide();
 
@@ -543,8 +586,8 @@
             $('#pot_ks').text(potKs);
             $('#hr_netto').text(gajiBersih);
             $('#kode_dokter').text(kodeJabatan);
-            $('#bulan').text(bulan);
-            $('#tahun').text(tahun);
+            $('#bulan').text(bulan+" / "+tahun);
+            //$('#tahun').text(tahun);
             $('#body_detail').html('');
         }else {
             $('#btn').closest("td").show();
@@ -563,8 +606,8 @@
             $('#pot_ks').text(potKs);
             $('#hr_netto').text(gajiBersih);
             $('#kode_dokter').text(kodeJabatan);
-            $('#bulan').text(bulan);
-            $('#tahun').text(tahun);
+            $('#bulan').text(bulan+" / "+tahun);
+            //$('#tahun').text();
             $('#body_detail').html('');
         }
 
