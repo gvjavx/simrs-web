@@ -107,30 +107,59 @@
                                                     </table>
                                                 </td>
                                             </tr>
+
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tanggal :</small></label>
+                                                    <label class="control-label"><small>Bulan :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <div class="input-group date">
-                                                            <div class="input-group-addon">
-                                                                <i class="fa fa-calendar"></i>
-                                                            </div>
-                                                            <s:textfield id="loginTimestampFrom" name="refreshLembur.stTglAwalLembur" size="7" cssClass="form-control pull-right"
-                                                                         required="false" cssStyle=""/>
-                                                            <div class="input-group-addon">
-                                                                s/d
-                                                            </div>
-                                                            <div class="input-group-addon">
-                                                                <i class="fa fa-calendar"></i>
-                                                            </div>
-                                                            <s:textfield id="loginTimestampTo" name="refreshLembur.stTglAkhirLembur" size="7" cssClass="form-control pull-right"
-                                                                         required="false" cssStyle=""/>
-                                                        </div>
+                                                        <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
+                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
+                                                                  id="bulanRefresh" name="refreshLembur.bulan"
+                                                                  headerKey="" headerValue="Bulan" cssClass="form-control" />
                                                     </table>
                                                 </td>
+                                                <td>
+                                                    <table>
+                                                        <s:action id="comboPeriode" namespace="/payroll" name="initComboPeriodeTahunKurang10_payroll"/>
+                                                        <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahunRefresh"
+                                                                  name="refreshLembur.tahun" required="true" headerKey=""
+                                                                  headerValue="Tahun"/>
+                                                    </table>
+                                                </td>
+                                                <script>
+                                                    var dt = new Date();
+                                                    $('#bulanRefresh').val(("0" + (dt.getMonth() + 1)).slice(-2));
+                                                    $('#tahunRefresh').val(dt.getFullYear());
+                                                </script>
                                             </tr>
+
+
+                                            <%--<tr>--%>
+                                                <%--<td>--%>
+                                                    <%--<label class="control-label"><small>Tanggal :</small></label>--%>
+                                                <%--</td>--%>
+                                                <%--<td>--%>
+                                                    <%--<table>--%>
+                                                        <%--<div class="input-group date">--%>
+                                                            <%--<div class="input-group-addon">--%>
+                                                                <%--<i class="fa fa-calendar"></i>--%>
+                                                            <%--</div>--%>
+                                                            <%--<s:textfield id="loginTimestampFrom" name="refreshLembur.stTglAwalLembur" size="7" cssClass="form-control pull-right"--%>
+                                                                         <%--required="false" cssStyle=""/>--%>
+                                                            <%--<div class="input-group-addon">--%>
+                                                                <%--s/d--%>
+                                                            <%--</div>--%>
+                                                            <%--<div class="input-group-addon">--%>
+                                                                <%--<i class="fa fa-calendar"></i>--%>
+                                                            <%--</div>--%>
+                                                            <%--<s:textfield id="loginTimestampTo" name="refreshLembur.stTglAkhirLembur" size="7" cssClass="form-control pull-right"--%>
+                                                                         <%--required="false" cssStyle=""/>--%>
+                                                        <%--</div>--%>
+                                                    <%--</table>--%>
+                                                <%--</td>--%>
+                                            <%--</tr>--%>
                                             <tr>
                                                 <td>
                                                     <label class="control-label"><small>Status Approval :</small></label>
@@ -304,12 +333,12 @@
 
 <script>
     $(document).ready(function() {
-        $('#loginTimestampTo').datepicker({
-            dateFormat: 'dd-mm-yy'
-        });
-        $('#loginTimestampFrom').datepicker({
-            dateFormat: 'dd-mm-yy'
-        });
+        // $('#loginTimestampTo').datepicker({
+        //     dateFormat: 'dd-mm-yy'
+        // });
+        // $('#loginTimestampFrom').datepicker({
+        //     dateFormat: 'dd-mm-yy'
+        // });
     });
 </script>
 

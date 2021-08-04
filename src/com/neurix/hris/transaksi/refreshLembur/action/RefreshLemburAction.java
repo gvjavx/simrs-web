@@ -167,6 +167,26 @@ public class RefreshLemburAction extends BaseMasterAction {
     public String search() {
         logger.info("[RefreshLemburAction.search] start process >>>");
         RefreshLembur searchRefreshLembur = getRefreshLembur();
+
+        if(!"".equalsIgnoreCase(searchRefreshLembur.getBulan()) && !"".equalsIgnoreCase(searchRefreshLembur.getTahun())){
+            searchRefreshLembur.setStTglAwalLembur("01-"+searchRefreshLembur.getBulan()+"-"+searchRefreshLembur.getTahun());
+
+            int iBulan = Integer.valueOf(searchRefreshLembur.getBulan()) + 1;
+            String stBulan;
+            String stTahun = searchRefreshLembur.getTahun();
+            if(iBulan > 12){
+                int iTahun = Integer.valueOf(searchRefreshLembur.getTahun()) + 1;
+                stTahun = String.valueOf(iTahun);
+                stBulan = "01";
+            } else if(iBulan > 9 ){
+                stBulan = String.valueOf(iBulan);
+            }else{
+                stBulan = "0" + String.valueOf(iBulan);
+            }
+
+            searchRefreshLembur.setStTglAkhirLembur("01-"+stBulan+"-"+stTahun);
+        }
+
         List<RefreshLembur> listOfSearchRefreshlembur = new ArrayList();
         String branchId = CommonUtil.userBranchLogin();
         searchRefreshLembur.setBranchId(branchId);
@@ -198,6 +218,8 @@ public class RefreshLemburAction extends BaseMasterAction {
             logger.error("[RefreshLemburAction.search] Error, " + e.getMessage());
             throw new GeneralBOException(e.getMessage());
         }
+
+        setRefreshLembur(searchRefreshLembur);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultRefreshLembur");
