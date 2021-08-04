@@ -1081,5 +1081,10 @@
             <param name="class" value="com.neurix.common.util.CommonUtil"/>
         </create>
 
+        <create creator="new">
+            <param name="class" value="com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.action.PendaftaranJasaRekananAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.model.PendaftaranJasa"/>
+
     </allow>
 </dwr>

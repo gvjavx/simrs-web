@@ -16,7 +16,7 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/KasAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PendaftaranJasaRekananAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
     <style>
         .modal-backdrop {
@@ -53,6 +53,15 @@
             window.location.href="<s:url action='initForm_kas'/>";
         }
 
+        function formatRupiah(angka) {
+            if(angka != ''){
+                var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = ribuan.join('.').split('').reverse().join('');
+                return ribuan;
+            }
+        }
+
     </script>
 </head>
 
@@ -80,81 +89,56 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="kasForm" method="post"  theme="simple" namespace="/kas" action="search_kas.action" cssClass="form-horizontal">
+                            <s:form id="jasarekananForm" method="post"  theme="simple" namespace="/jasarekanan" action="search_jasarekanan.action" cssClass="form-horizontal">
                                 <s:hidden name="kas.tipeKas" value="KK" />
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Unit </label>
                                     <div class="col-sm-4">
-                                        <s:if test='kas.branchIdUser == "01"'>
-                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="kas.branchId"
-                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
-                                        </s:if>
-                                        <s:else>
-                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="kas.branchId" disabled="true"
-                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
-                                            <s:hidden id="branchId" name="kas.branchId" />
-                                        </s:else>
+                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="kas.branchId" disabled="true"
+                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
+                                        <s:hidden id="branchId" name="pendaftaranJasa.branchId" />
+                                        <%--<s:if test='pendaftaranJasa.branchId == "01"'>--%>
+                                            <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
+                                            <%--<s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendaftaranJasa.branchId"--%>
+                                                      <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>--%>
+                                        <%--</s:if>--%>
+                                        <%--<s:else>--%>
+                                            <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
+                                            <%--<s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="kas.branchId" disabled="true"--%>
+                                                      <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>--%>
+                                            <%--<s:hidden id="branchId" name="pendaftaranJasa.branchId" />--%>
+                                        <%--</s:else>--%>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">ID</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="idJasa" name="pendaftaranJasa.id" cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                    </div>
+                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">No. Jurnal</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:textfield id="noJurnal" name="kas.noJurnal" cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
 
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">pengeluaran Kas/Bank ID</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="kasId" name="kas.kasId" cssClass="form-control" cssStyle="margin-top: 7px"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">No. Jurnal</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="noJurnal" name="kas.noJurnal" cssClass="form-control" cssStyle="margin-top: 7px"/>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Tipe Transaksi</label>
-                                    <div class="col-sm-4">
-                                        <s:action id="comboTrans" namespace="/trans" name="initComboTransaksi_trans">
-                                            <s:param name="tipe">KK</s:param>
-                                        </s:action>
-                                        <s:select list="#comboTrans.listOfComboTrans" id="tipe_transaksi" name="kas.tipeTransaksi" cssStyle="margin-top: 7px"
-                                                  listKey="transId" listValue="transName" headerKey="" headerValue="[ Select One ]" cssClass="form-control select2" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Tanggal</label>
-                                    <div class="col-sm-4">
-                                        <div class="input-group date"  style="margin-top: 7px">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <s:textfield id="tgl1" name="kas.stTanggalDari" cssClass="form-control pull-right"
-                                            />
-                                            <div class="input-group-addon">
-                                                s/d
-                                            </div>
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <s:textfield id="tgl2" name="kas.stTanggalSelesai" cssClass="form-control pull-right"
-                                            />
-                                        </div>
-                                        <script>
-                                            $('#tgl1').datepicker({
-                                                dateFormat: 'dd-mm-yy'
-                                            });
-                                            $('#tgl2').datepicker({
-                                                dateFormat: 'dd-mm-yy'
-                                            });
-                                        </script>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Tipe Transaksi</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:action id="comboTrans" namespace="/trans" name="initComboTransaksi_trans">--%>
+                                            <%--<s:param name="tipe">KK</s:param>--%>
+                                        <%--</s:action>--%>
+                                        <%--<s:select list="#comboTrans.listOfComboTrans" id="tipe_transaksi" name="kas.tipeTransaksi" cssStyle="margin-top: 7px"--%>
+                                                  <%--listKey="transId" listValue="transName" headerKey="" headerValue="[ Select One ]" cssClass="form-control select2" />--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-6" style="margin-top: 7px">
-                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="kasForm"
+                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="jasarekananForm"
                                                    id="search" name="search"
                                                    onClickTopics="showDialogLoading"
                                                    onCompleteTopics="closeDialogLoading">
@@ -162,9 +146,9 @@
                                             Search
                                         </sj:submit>
 
-                                        <a href="add_kas.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Pengeluaran Kas/Bank</a>
+                                        <a href="add_kas.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Jasa</a>
 
-                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_kas"/>'">
+                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_jasarekanan"/>'">
                                             <i class="fa fa-refresh"></i> Reset
                                         </button>
                                     </div>
@@ -222,19 +206,19 @@
                     <div style="text-align: left !important;">
                         <div class="box-header with-border"></div>
                         <div class="box-header with-border">
-                            <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pengeluaran Kas/Bank</h3>
+                            <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Jasa</h3>
                         </div>
                         <div class="box-body">
                             <table id="tableKas" class="tableKas table table-bordered table-striped" style="font-size: 11px">
                                 <thead >
                                 <tr bgcolor="#90ee90" style="text-align: center">
                                     <td>ID</td>
-                                    <td>Unit</td>
-                                    <td>No. Jurnal</td>
-                                    <td>Transaksi</td>
-                                    <td>Tanggal</td>
-                                    <td>Total Bayar (RP) </td>
-                                    <td align="center">View</td>
+                                    <td>Nama Jasa</td>
+                                    <td>Divisi</td>
+                                    <td>Vendor</td>
+                                    <td>Status</td>
+                                    <td align="right">Biaya</td>
+                                    <td align="center">Edit</td>
                                     <td align="center">Approval Keu.</td>
                                     <td align="center">Approval Kasub.</td>
                                     <td align="center">Posting</td>
@@ -244,25 +228,28 @@
                                 <tbody>
                                 <s:iterator value="#session.listOfResult" var="row">
                                     <tr>
-                                        <td style="text-align: center"><s:property value="kasId"/></td>
-                                        <td><s:property value="branchName"/></td>
-                                        <td style="text-align: center"><s:property value="noJurnal"/></td>
-                                        <td><s:property value="stTipeTransaksi"/></td>
-                                        <td><s:property value="stTanggal"/></td>
-                                        <td style="text-align: right"><s:property value="stBayar"/></td>
+                                        <td style="text-align: center"><s:property value="id"/></td>
+                                        <td style="text-align: center"><s:property value="namaJasa"/></td>
+                                        <td style="text-align: center"><s:property value="namaDivisi"/></td>
+                                        <td style="text-align: center"><s:property value="namaVendor"/></td>
+                                        <td><s:property value="keteranganStatus"/></td>
+                                        <td align="right"><script>document.write(formatRupiah('<s:property value="biaya"/>'))</script></td>
+                                        <td ><s:property value="stBayar"/></td>
                                         <td align="center">
                                             <a href="javascript:;" data="<s:property value="%{#attr.row.kasId}"/>" class="item-view">
                                                 <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" >
                                             </a>
-                                            <s:if test='#row.approvalKeuanganFlag != "Y" && #row.stBilling != "Billing" '>
-                                                <s:url var="urlEdit" namespace="/kas" action="edit_kas"
-                                                       escapeAmp="false">
-                                                    <s:param name="kasId"><s:property value="#attr.row.kasId"/></s:param>
-                                                </s:url>
-                                                <s:a href="%{urlEdit}">
-                                                    <img border="0"
-                                                         src="<s:url value="/pages/images/icons8-edit-25.png"/>" name="icon_edit">
-                                                </s:a>
+                                            <s:if test='#row.status == "1"'>
+                                                <img border="0" src="<s:url value="/pages/images/icons8-edit-25.png"/>" name="icon_edit" id="btn_edit">
+
+                                                <%--<s:url var="urlEdit" namespace="/kas" action="edit_kas"--%>
+                                                       <%--escapeAmp="false">--%>
+                                                    <%--<s:param name="kasId"><s:property value="#attr.row.kasId"/></s:param>--%>
+                                                <%--</s:url>--%>
+                                                <%--<s:a href="%{urlEdit}">--%>
+                                                    <%--<img border="0"--%>
+                                                         <%--src="<s:url value="/pages/images/icons8-edit-25.png"/>" name="icon_edit">--%>
+                                                <%--</s:a>--%>
                                             </s:if>
                                         </td>
                                         <td align="center">

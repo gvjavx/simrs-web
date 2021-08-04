@@ -1,6 +1,9 @@
 package com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.dao;
 
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.model.ItAkunPendaftaranJasaEntity;
+import com.neurix.authorization.position.model.Position;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
 import org.hibernate.Criteria;
@@ -45,6 +48,80 @@ public class PendaftaranJasaRekananDao extends GenericDao<ItAkunPendaftaranJasaE
         }
 
         return result;
+    }
+
+    public KodeRekening getKodeRekeningPropsByKodeRekening(String id){
+
+        String SQL = "SELECT kode_rekening, nama_kode_rekening FROM im_akun_kode_rekening WHERE kode_rekening = '"+id+"'";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                KodeRekening kodeRekening = new KodeRekening();
+                kodeRekening.setKodeRekening(obj[0].toString());
+                kodeRekening.setNamaKodeRekening(obj[1].toString());
+                return kodeRekening;
+            }
+        }
+
+        return null;
+    }
+
+    public Position getPositionPropsByKodering(String kodering){
+
+        String SQL = "SELECT kodering, position_name FROM im_position WHERE kodering = '"+kodering+"' AND flag_cost_unit = 'Y' AND flag = 'Y'";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (results.size() > 0){
+            for (Object[] obj : results){
+               Position position = new Position();
+               position.setKodering(obj[0].toString());
+               position.setPositionName(obj[1].toString());
+               return position;
+            }
+        }
+
+        return null;
+    }
+
+    public List<KodeRekening> getListKodeRekeningBebanJasaProfesional(){
+
+        String SQL = "SELECT kode_rekening, nama_kode_rekening FROM im_akun_kode_rekening WHERE kode_rekening ILIKE '"+ CommonConstant.COA_BEBAN_JASA_PREFESIONAL+"%'";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<KodeRekening> kodeRekenings = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                KodeRekening kodeRekening = new KodeRekening();
+                kodeRekening.setKodeRekening(obj[0].toString());
+                kodeRekening.setNamaKodeRekening(obj[1].toString());
+                kodeRekenings.add(kodeRekening);
+            }
+        }
+
+        return kodeRekenings;
+    }
+
+    public List<Position> getListPosition(){
+
+        String SQL = "SELECT kodering, position_name FROM im_position WHERE flag_cost_unit = 'Y' AND flag = 'Y'";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<Position> positionList = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                Position position = new Position();
+                position.setKodering(obj[0].toString());
+                position.setPositionName(obj[1].toString());
+                positionList.add(position);
+            }
+        }
+
+        return positionList;
     }
 
     public String getNextId(){

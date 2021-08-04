@@ -1980,3 +1980,33 @@ ADD COLUMN parent_id VARCHAR(30);
 
     CREATE SEQUENCE pendaftaran_jasa_rekanan;
 --
+
+-- 2021-08-04
+
+    ALTER TABLE it_akun_pendaftaran_jasa
+    ADD COLUMN kode_rekening_jasa VARCHAR(50),
+    ADD COLUMN kodering_divisi VARCHAR(20);
+
+    INSERT INTO im_akun_trans(trans_id, trans_name, flag, action, tipe_jurnal_id, is_otomatis)
+    VALUES ('95', 'Closing Jurnal Pembayaran Jasa', 'Y', 'C', 'JKK', 'Y');
+    UPDATE im_akun_trans SET created_who = 'migrasi_admin', last_update_who = 'migrasi_admin',
+    last_update = now(), created_date = now() WHERE created_date is null;
+
+    INSERT INTO im_akun_mapping_jurnal
+    (mapping_jurnal_id, kode_rekening, posisi, master_id, bukti, trans_id, kirim_list, divisi_id, edit_biaya, parameter_coa)
+    VALUES
+    ('MPJ019N','5.0.00.19','D','N','N','95','Y','Y','N','beban_jasa'),
+    ('MPJ020N','2.1.03.00.02','K','Y','Y','95','Y','N','N','pph_21'),
+    ('MPJ021N','1.1.01','K','N','N','95','Y','N','N','kas');
+
+    UPDATE im_akun_mapping_jurnal SET created_who = 'migrasi_admin', last_update_who = 'migrasi_admin',
+    last_update = now(), created_date = now(), flag = 'Y', action = 'C' WHERE created_date is null;
+
+    UPDATE im_akun_mapping_jurnal a SET keterangan = b.parameter_coa FROM im_akun_mapping_jurnal b
+    WHERE a.mapping_jurnal_id = b.mapping_jurnal_id
+    AND a.trans_id = '95';
+
+    ALTER TABLE it_akun_pendaftaran_jasa
+    ADD COLUMN no_jurnal VARCHAR(50);
+
+--

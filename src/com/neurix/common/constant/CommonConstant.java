@@ -448,6 +448,8 @@ public class CommonConstant {
     public final static String JENIS_PEMBAYARAN_TRANSFER_TUNAI = CommonUtil.getPropertyParams("jenis.pembayaran.tt");
     public final static String JENIS_PEMBAYARAN_VA = CommonUtil.getPropertyParams("jenis.pembayaran.va");
     public final static String PATH_REPORT_AKUNTANSI = ContextLoader.getCurrentWebApplicationContext().getApplicationName() + "/pages/report/neurix/com/akuntansi/";
+    public final static String COA_BEBAN_JASA_PREFESIONAL = CommonUtil.getPropertyParams("coa.beban.jasa.profesional");
+    public final static String TRANS_ID_PEMBAYARAN_JASA = CommonUtil.getPropertyParams("transaksi.id.pembayaran.jasa");
 
 
 }

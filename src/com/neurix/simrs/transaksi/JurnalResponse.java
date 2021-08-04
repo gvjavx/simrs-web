@@ -40,4 +40,16 @@ public class JurnalResponse {
     public void setInvoice(String invoice) {
         this.invoice = invoice;
     }
+
+    public void hasSuccess(String noJurnal, String invoice){
+        this.setStatus("success");
+        this.setMsg("Success Created Jurnal With No. Jurnal : "+noJurnal);
+        this.setInvoice(invoice);
+        this.setNoJurnal(noJurnal);
+    }
+
+    public void hasError(String errorMsg){
+        this.setStatus("error");
+        this.setMsg(errorMsg);
+    }
 }

@@ -1,11 +1,13 @@
 package com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.bo.impl;
 
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.master.dao.MasterDao;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.bo.PendaftaranJasaRekananBo;
 import com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.dao.PendaftaranJasaRekananDao;
 import com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.model.ItAkunPendaftaranJasaEntity;
 import com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.model.PendaftaranJasa;
+import com.neurix.authorization.position.model.Position;
 import com.neurix.common.exception.GeneralBOException;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -47,6 +49,11 @@ public class PendaftaranJasaRekananBoImpl implements PendaftaranJasaRekananBo {
                     ImMasterEntity masterEntity = masterDao.getById("primaryKey.nomorMaster", pendaftaranJasa.getIdVendor());
                     if (masterEntity != null){
                         pendaftaranJasa.setNamaVendor(masterEntity.getNama());
+                    }
+
+                    Position position = pendaftaranJasaRekananDao.getPositionPropsByKodering(pendaftaranJasa.getKoderingDivisi());
+                    if (position != null){
+                        pendaftaranJasa.setNamaDivisi(position.getPositionName());
                     }
 
                     if ("1".equalsIgnoreCase(pendaftaranJasa.getStatus())){
@@ -144,6 +151,9 @@ public class PendaftaranJasaRekananBoImpl implements PendaftaranJasaRekananBo {
             } else if ("kasubkeu".equalsIgnoreCase(bean.getJenisJabatan())){
                 entity.setApproveKasubKeu(bean.getFlagApprove());
             } else {
+
+                // kakeu :
+                entity.setNoJurnal(bean.getNoJurnal());
                 entity.setApproveKaKeu(bean.getFlagApprove());
                 entity.setFlag("N");
             }
@@ -161,6 +171,30 @@ public class PendaftaranJasaRekananBoImpl implements PendaftaranJasaRekananBo {
         }
 
         logger.info("[PendaftaranJasaRekananBoImpl.saveApprove] End <<<");
+    }
+
+    @Override
+    public KodeRekening getKodeRekeningPropsByKodeRekening(String kodering) throws GeneralBOException {
+        logger.info("[PendaftaranJasaRekananBoImpl.getKodeRekeningPropsByKodeRekening] Start >>>");
+        return pendaftaranJasaRekananDao.getKodeRekeningPropsByKodeRekening(kodering);
+    }
+
+    @Override
+    public Position getPositionPropsByKodering(String kodering) throws GeneralBOException {
+        logger.info("[PendaftaranJasaRekananBoImpl.getPositionPropsByKodering] Start >>>");
+        return pendaftaranJasaRekananDao.getPositionPropsByKodering(kodering);
+    }
+
+    @Override
+    public List<KodeRekening> getListKodeRekeningBebanJasa() throws GeneralBOException {
+        logger.info("[PendaftaranJasaRekananBoImpl.getListKodeRekeningBebanJasa] Start >>>");
+        return pendaftaranJasaRekananDao.getListKodeRekeningBebanJasaProfesional();
+    }
+
+    @Override
+    public List<Position> getListPosition() throws GeneralBOException {
+        logger.info("[PendaftaranJasaRekananBoImpl.getListKodeRekeningBebanJasa] Start >>>");
+        return pendaftaranJasaRekananDao.getListPosition();
     }
 
     private List<ItAkunPendaftaranJasaEntity> getPendaftaranJasaEntity(PendaftaranJasa bean) throws GeneralBOException{

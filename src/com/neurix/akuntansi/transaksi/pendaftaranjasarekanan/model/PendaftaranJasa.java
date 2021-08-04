@@ -22,11 +22,74 @@ public class PendaftaranJasa {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String kodeRekeningJasa;
+    private String koderingDivisi;
+    private String noJurnal;
 
     private String namaVendor;
     private String flagApprove;
     private String jenisJabatan;
     private String keteranganStatus;
+    private String jenisBayar;
+    private String noBank;
+    private String coaKas;
+    private String namaDivisi;
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
+
+    public String getNamaDivisi() {
+        return namaDivisi;
+    }
+
+    public void setNamaDivisi(String namaDivisi) {
+        this.namaDivisi = namaDivisi;
+    }
+
+    public String getKoderingDivisi() {
+        return koderingDivisi;
+    }
+
+    public void setKoderingDivisi(String koderingDivisi) {
+        this.koderingDivisi = koderingDivisi;
+    }
+
+    public String getJenisBayar() {
+        return jenisBayar;
+    }
+
+    public void setJenisBayar(String jenisBayar) {
+        this.jenisBayar = jenisBayar;
+    }
+
+    public String getNoBank() {
+        return noBank;
+    }
+
+    public void setNoBank(String noBank) {
+        this.noBank = noBank;
+    }
+
+    public String getCoaKas() {
+        return coaKas;
+    }
+
+    public void setCoaKas(String coaKas) {
+        this.coaKas = coaKas;
+    }
+
+    public String getKodeRekeningJasa() {
+        return kodeRekeningJasa;
+    }
+
+    public void setKodeRekeningJasa(String kodeRekeningJasa) {
+        this.kodeRekeningJasa = kodeRekeningJasa;
+    }
 
     public String getKeteranganStatus() {
         return keteranganStatus;

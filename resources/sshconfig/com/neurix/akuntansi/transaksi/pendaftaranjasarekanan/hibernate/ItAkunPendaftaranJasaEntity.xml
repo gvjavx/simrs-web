@@ -56,6 +56,12 @@
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
             </basic>
+            <basic name="kodeRekeningJasa">
+                <column name="kode_rekening_jasa"/>
+            </basic>
+            <basic name="koderingDivisi">
+                <column name="kodering_divisi"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>
