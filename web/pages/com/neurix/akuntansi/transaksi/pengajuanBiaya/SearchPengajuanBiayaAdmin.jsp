@@ -369,42 +369,78 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
+
                                                     <s:iterator value="#session.listOfResult" var="row">
-                                                            <s:if test='pengajuanBiayaDetail.branchIdUser == "01"'>
-                                                            <td align="center">
-                                                                <s:if test='#row.pengajuanBiayaDetailId == ""||#row.statusKeuangan != "KP"||#row.rkId!= null'>
+                                                        <s:if test='#row.tipe == "header"'>
+                                                            <tr style="background-color: lightgrey;font-weight: bold">
+                                                                <s:if test='pengajuanBiayaDetail.branchIdUser == "01"'>
+                                                                    <td align="center">
+                                                                        <s:if test='#row.pengajuanBiayaId == ""||#row.statusKeuangan != "KP"||#row.rkId!= null'>
+                                                                        </s:if>
+                                                                        <s:else>
+                                                                            <div class="form-check">
+                                                                                <input type="checkbox" class="selectedHeaderId" name="selectedHeaderId" id="check_<s:property value="pengajuanBiayaId"/>">
+                                                                                <label for="check_<s:property value="pengajuanBiayaId"/>"></label>
+                                                                            </div>
+                                                                        </s:else>
+                                                                    </td>
                                                                 </s:if>
-                                                                <s:else>
-                                                                    <div class="form-check">
-                                                                        <input type="checkbox" class="selectedId" name="selectedId" id="check_<s:property value="pengajuanBiayaDetailId"/>">
-                                                                        <label for="check_<s:property value="pengajuanBiayaDetailId"/>"></label>
-                                                                    </div>
-                                                                </s:else>
-                                                            </td>
-                                                            </s:if>
-                                                            <td><s:property value="pengajuanBiayaDetailId"/></td>
-                                                            <td><s:property value="branchName"/></td>
-                                                            <td><s:property value="divisiName"/></td>
-                                                            <td><s:property value="stTanggal"/></td>
-                                                            <td><s:property value="stTanggalRealisasi"/></td>
-                                                            <td style="text-align: right"><s:property value="stJumlah"/></td>
-                                                            <td><s:property value="keperluan"/></td>
-                                                            <td><s:property value="rkId"/></td>
-                                                            <td><s:property value="statusKeuanganName"/></td>
-                                                            <td><s:property value="statusSaatIni"/></td>
-                                                            <td align="center">
-                                                                <s:if test='#row.canView'>
-                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaDetailId}"/>" class="item-view">
-                                                                    <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
-                                                                </a>
+                                                                <td><s:property value="pengajuanBiayaId"/></td>
+                                                                <td><s:property value="branchName"/></td>
+                                                                <td><s:property value="divisiName"/></td>
+                                                                <td><s:property value="stTanggal"/></td>
+                                                                <td><s:property value="stTanggalRealisasi"/></td>
+                                                                <td style="text-align: right"></td>
+                                                                <td><s:property value="headerName"/></td>
+                                                                <td></td>
+                                                                <td><s:property value="statusKeuanganName"/></td>
+                                                                <td></td>
+                                                                <td align="center">
+                                                                </td>
+                                                                <td align="center">
+                                                                </td>
+                                                            </tr>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <tr>
+                                                                <s:if test='pengajuanBiayaDetail.branchIdUser == "01"'>
+                                                                    <td align="center">
+                                                                        <s:if test='#row.pengajuanBiayaDetailId == ""||#row.statusKeuangan != "KP"||#row.rkId!= null'>
+                                                                        </s:if>
+                                                                        <s:else>
+                                                                            <div class="form-check">
+                                                                                <input type="checkbox" class="selectedId <s:property value="pengajuanBiayaId"/>" name="selectedId" id="check_<s:property value="pengajuanBiayaDetailId"/>">
+                                                                                <label for="check_<s:property value="pengajuanBiayaDetailId"/>"></label>
+                                                                            </div>
+                                                                        </s:else>
+                                                                    </td>
                                                                 </s:if>
-                                                            </td>
-                                                            <td align="center">
-                                                                <s:if test='#row.sudahDibayar'>
+                                                                <td><s:property value="pengajuanBiayaDetailId"/></td>
+                                                                <td><s:property value="branchName"/></td>
+                                                                <td><s:property value="divisiName"/></td>
+                                                                <td><s:property value="stTanggal"/></td>
+                                                                <td><s:property value="stTanggalRealisasi"/></td>
+                                                                <td style="text-align: right"><s:property value="stJumlah"/></td>
+                                                                <td><s:property value="keperluan"/></td>
+                                                                <td><s:property value="rkId"/></td>
+                                                                <td><s:property value="statusKeuanganName"/></td>
+                                                                <td><s:property value="statusSaatIni"/></td>
+                                                                <td align="center">
+                                                                    <s:if test='#row.canView'>
+                                                                        <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaDetailId}"/>" class="item-view">
+                                                                            <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
+                                                                        </a>
+                                                                    </s:if>
+                                                                </td>
+                                                                <td align="center">
+                                                                    <s:if test='#row.sudahDibayar'>
                                                                         <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_dibayar">
-                                                                </s:if>
-                                                            </td>
-                                                        </tr>
+                                                                    </s:if>
+                                                                </td>
+                                                            </tr>
+                                                        </s:else>
+
+
                                                     </s:iterator>
                                                     </tbody>
                                                 </table>
@@ -683,11 +719,12 @@
         });
 
         $('#tablePengajuanBiaya').DataTable({
-            "order": [[1, "desc"]],
-            "pageLength": 100,
-            "columnDefs": [
-                { "orderable": false, "targets": 0 }
-            ]
+            "ordering": false
+//            "order": [[1, "desc"]],
+//            "pageLength": 100,
+//            "columnDefs": [
+//                { "orderable": false, "targets": 0 }
+//            ]
         });
 
         $('#selectall').click(function () {
@@ -713,8 +750,11 @@
             var checkbox = document.getElementsByName('selectedId');
             var fpk = $('#no_fpk_search').val();
 
+            console.log(checkbox);
+            
             var ln = 0;
             for(var i=0; i< checkbox.length; i++) {
+                console.log(checkbox[i]);
                 if(checkbox[i].checked)
                     ln++
             }
@@ -724,15 +764,48 @@
                 $('#btn_create').hide();
             }
         });
+
+        $('.selectedHeaderId').change(function () {
+            var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
+            $('#selectall').prop("checked", check);
+
+            var checkbox = document.getElementsByName('selectedHeaderId');
+            console.log(checkbox);
+
+            var ln = 0;
+            for(var i=0; i< checkbox.length; i++) {
+                if(checkbox[i].checked){
+                    var splitArr = $(checkbox[i]).attr('id').split("_");
+
+                    var checkboxChild = document.getElementsByClassName(splitArr[1]);
+                         for(var n=0; n< checkboxChild.length; n++) {
+                             $(checkboxChild[n]).prop('checked', this.checked);
+                             ln ++;
+                         }
+                     }
+
+            }
+            if(ln > 0){
+                $('#btn_create').show();
+            }else{
+                $('#btn_create').hide();
+            }
+        });
     });
+
+
     function createRk() {
         var data = $('#tablePengajuanBiaya').tableToJSON();
         var result = [];
         $.each(data, function (i, item) {
             var idPengajuanBiaya = data[i]["ID"];
-            if ($('#check_' + idPengajuanBiaya).prop("checked") == true) {
-                result.push({'id': idPengajuanBiaya});
+            var jumlah = data[i]["Jumlah (RP)"];
+            if (jumlah != ""){
+                 if ($('#check_' + idPengajuanBiaya).prop("checked") == true) {
+                    result.push({'id': idPengajuanBiaya});
+                }
             }
+           
         });
         var jsonString = JSON.stringify(result);
         $('#data_pengajuan').val(jsonString);

@@ -1402,7 +1402,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
 
         MappingDetail giro = new MappingDetail();
         giro.setNilai(jumlah);
-        giro.setCoa(kodeRekeningBo.getRekeningIdByKodeRekening(coaKas));
+        giro.setCoa(coaKas);
 
         List<MappingDetail> listGiro = new ArrayList<>();
         listGiro.add(giro);
