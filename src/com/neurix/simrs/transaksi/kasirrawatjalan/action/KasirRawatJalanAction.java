@@ -440,11 +440,26 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                 BigDecimal tarifJasa = hitungTotalJasa(riwayatTindakanList);
                 BigInteger tarifUangMuka = hitungTotalUangMuka(mukaList);
-                BigDecimal ppnObat = ppnObat = new BigDecimal(totalResepObat).multiply(new BigDecimal(0.1)).setScale(2, RoundingMode.HALF_UP);
+                BigDecimal ppnObat = new BigDecimal(totalResepObat).multiply(new BigDecimal(0.1)).setScale(2, RoundingMode.HALF_UP);
 
                 BigDecimal totalJasa = new BigDecimal(String.valueOf(0));
-                totalJasa = (tarifJasa.subtract(new BigDecimal(tarifUangMuka))).add(ppnObat);
-                String terbilang = angkaToTerbilang(totalJasa.longValue());
+                String textKembalian = "";
+                BigDecimal kembalian = new BigDecimal(String.valueOf(0));
+
+                if(tarifJasa.add(ppnObat).intValue() > tarifUangMuka.intValue()){
+                    totalJasa = (tarifJasa.subtract(new BigDecimal(tarifUangMuka))).add(ppnObat);
+                }else{
+                    textKembalian = "Kelebihan Uang Muka";
+                    kembalian = new BigDecimal(Math.abs((tarifJasa.subtract(new BigDecimal(tarifUangMuka))).add(ppnObat).intValue()));
+
+                }
+                String terbilang = "0";
+                if(tarifJasa.add(ppnObat).intValue() > 0){
+                    angkaToTerbilang(totalJasa.longValue());
+                }
+
+                reportParams.put("kembalian", textKembalian);
+                reportParams.put("jmlKembalian", kembalian);
 
                 reportParams.put("invoice", checkup.getInvoice());
                 reportParams.put("idPasien", checkup.getIdPasien());

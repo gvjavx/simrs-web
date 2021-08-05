@@ -411,21 +411,23 @@
                                             <table><s:label name="headerDetailCheckup.provinsi"></s:label></table>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td><b>Diagnosa Terakhir</b></td>
-                                        <td>
-                                            <table>
-                                                <s:if test='headerDetailCheckup.diagnosa == "B20" || headerDetailCheckup.diagnosa == "A16.2" || headerDetailCheckup.diagnosa == "A18" || headerDetailCheckup.diagnosa == "A19" || headerDetailCheckup.diagnosa == "B16.9"'>
-                                                    <div style="color: red">
+                                    <s:if test='headerDetailCheckup.diagnosa != null'>
+                                        <tr>
+                                            <td><b>Diagnosa Terakhir</b></td>
+                                            <td>
+                                                <table>
+                                                    <s:if test='headerDetailCheckup.diagnosa == "B20" || headerDetailCheckup.diagnosa == "A16.2" || headerDetailCheckup.diagnosa == "A18" || headerDetailCheckup.diagnosa == "A19" || headerDetailCheckup.diagnosa == "B16.9"'>
+                                                        <div style="color: red">
+                                                            [<s:property value="headerDetailCheckup.diagnosa"/>] - <s:property value="headerDetailCheckup.namaDiagnosa"/>
+                                                        </div>
+                                                    </s:if>
+                                                    <s:else>
                                                         [<s:property value="headerDetailCheckup.diagnosa"/>] - <s:property value="headerDetailCheckup.namaDiagnosa"/>
-                                                    </div>
-                                                </s:if>
-                                                <s:else>
-                                                    [<s:property value="headerDetailCheckup.diagnosa"/>] - <s:property value="headerDetailCheckup.namaDiagnosa"/>
-                                                </s:else>
-                                            </table>
-                                        </td>
-                                    </tr>
+                                                    </s:else>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
                                 </table>
                             </div>
 
