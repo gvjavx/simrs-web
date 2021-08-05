@@ -1735,6 +1735,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                         mapKas.setNilai(sisaKasDariUM);
 
+                        mapKas.setCoa(CommonConstant.KAS_TUNAI);
+
                         ketTerangan = "Closing Lebih Uang Muka Pasien ";
                         if ("JRJ".equalsIgnoreCase(type) && !"Y".equalsIgnoreCase(withObat)){
                             transId = CommonConstant.TRANS_ID_RJ_LEBIH_UM;
@@ -1754,10 +1756,11 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                         BigDecimal sisaKasDikurangiUM = nilaiKas.subtract(uangMuka);
 
                         mapKas.setNilai(sisaKasDikurangiUM);
+
+                        mapKas.setCoa(kodeBank);
                     }
 
                     mapKas.setMetodeBayar(metodeBayar);
-                    mapKas.setCoa(kodeBank);
                     listMapKas.add(mapKas);
                     // END
 
