@@ -6,6 +6,9 @@ import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.biodata.dao.BiodataDao;
+import com.neurix.hris.master.biodata.model.Biodata;
+import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.dokterKso.bo.DokterKsoBo;
 import com.neurix.hris.master.dokterKso.dao.DokterKsoDao;
 import com.neurix.hris.master.dokterKso.model.DokterKso;
@@ -210,7 +213,23 @@ public class DokterKsoBoImpl implements DokterKsoBo {
 
             String kode = imSimrsDokterKso.getKodering();
             String[] arrOfStr = kode.split("\\.");
-            String seqKodering = arrOfStr[4];
+            String seqKodering = arrOfStr[(arrOfStr.length-1)];
+
+            // Fahmi 2021-07-28, Pengambilan Biodata untuk pengisian kodering.
+            Map searchPersonilPos = new HashMap();
+            searchPersonilPos.put("nip",bean.getNip());
+            List<ItPersonilPositionEntity> resultPersonilPos = null;
+
+            try {
+                resultPersonilPos = personilPositionDao.getByCriteria(searchPersonilPos);
+            } catch (HibernateException e) {
+                logger.error("[DokterKsoBoImpl.BoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Problem when getting biodata, " + e.getMessage());
+            }
+
+            if(null!=resultPersonilPos)
+            { bean.setPositionId(resultPersonilPos.get(0).getPositionId()); }
+            // End Fahmi
 
             Map map = new HashMap<>();
             map.put("position_id", bean.getPositionId());
@@ -383,6 +402,23 @@ public class DokterKsoBoImpl implements DokterKsoBo {
                     logger.error("[DokterKsoBoImpl.BoImpl.saveAdd] Error, " + e.getMessage());
                     throw new GeneralBOException("Problem when retrieving Next Kodering, " + e.getMessage());
                 }
+
+                // Fahmi 2021-07-28, Pengambilan Biodata untuk pengisian kodering.
+                Map searchPersonilPos = new HashMap();
+                searchPersonilPos.put("nip",bean.getNip());
+                List<ItPersonilPositionEntity> resultPersonilPos = null;
+
+                try {
+                    resultPersonilPos = personilPositionDao.getByCriteria(searchPersonilPos);
+                } catch (HibernateException e) {
+                    logger.error("[DokterKsoBoImpl.BoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Problem when getting biodata, " + e.getMessage());
+                }
+
+                if(null!=resultPersonilPos)
+                { bean.setPositionId(resultPersonilPos.get(0).getPositionId()); }
+                // End Fahmi
+
 
                 Map map = new HashMap<>();
                 map.put("position_id", bean.getPositionId());
@@ -563,8 +599,13 @@ public class DokterKsoBoImpl implements DokterKsoBo {
                         dokter.setIdDokter(entity.getNip());
                         dokter.setFlag("Y");
                         List<Dokter> dokters = dokterBo.getByCriteria(dokter);
-                        String dokterName = dokters.get(0).getNamaDokter();
-                        dokterKso.setNamaDokter(dokterName);
+                        // Fahmi 2021-07-27, Tambah pengecheckkan untuk data yang kosong.
+                        if(null!=dokters && dokters.size() > 0)
+                        {
+                            String dokterName = dokters.get(0).getNamaDokter();
+                            dokterKso.setNamaDokter(dokterName);
+                        }
+
                     }
 //                    if (entity.getDokterKsoId() != null){
 //                        DokterKsoTindakan dokterKsoTindakan = new DokterKsoTindakan();

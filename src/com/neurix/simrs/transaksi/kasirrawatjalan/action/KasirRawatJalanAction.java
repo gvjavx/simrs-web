@@ -1450,7 +1450,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                                                 MappingDetail mapTindakanAsuransi = new MappingDetail();
                                                 mapTindakanAsuransi.setMasterId(getMasterIdByTipe(idDetail, "asuransi"));
-                                                mapTindakanAsuransi.setDivisiId( getDivisiId(idDetail, "asuransi", keterangan, ""));
+                                                mapTindakanAsuransi.setDivisiId(getDivisiId(idDetail, "asuransi", keterangan, ""));
                                                 mapTindakanAsuransi.setNilai(getJumlahNilaiBiayaByKeterangan(idDetail, "asuransi", keterangan, "", ""));
                                                 mapTindakanAsuransi.setListOfActivity(getListAcitivity(idDetail, "asuransi", keterangan, kode, ""));
                                                 listOfMapTindakanAsuransi.add(mapTindakanAsuransi);
@@ -1516,7 +1516,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                         allTindakanTransUmum = checkupDetailBo.getSumJumlajTindakanTransitorisByJenis(detailCheckupEntity.getIdDetailCheckup(), "umum", "");
                         allTindakanTransAsuransi = checkupDetailBo.getSumJumlajTindakanTransitorisByJenis(detailCheckupEntity.getIdDetailCheckup(), "asuransi", "");
 
-                        Map mapTransitoris = new HashMap();
                         MappingDetail mappingDetail = new MappingDetail();
                         mappingDetail.setNilai(allTindakanTransUmum.add(allTindakanTransAsuransi));
                         mappingDetail.setBukti(detailCheckupEntity.getInvoiceTrans());
@@ -1570,11 +1569,11 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                         }
                         if ("JRI".equalsIgnoreCase(type)) {
 
-                            mapPajakObat.setNilai(ppnObat);
-                            mapPajakObat.setMasterId(CommonConstant.MASTER_PAJAK_OBAT);
-                            listMapPajakObat.add(mapPajakObat);
+//                            mapPajakObat.setNilai(ppnObat);
+//                            mapPajakObat.setMasterId(CommonConstant.MASTER_PAJAK_OBAT);
+//                            listMapPajakObat.add(mapPajakObat);
 
-                            mapJurnal.put("ppn_keluaran", listMapPajakObat);
+                            //mapJurnal.put("ppn_keluaran", listMapPajakObat);
 
                             mapJurnal.put("pendapatan_rawat_inap_umum", listOfMapTindakanUmumRi);
 
@@ -1718,20 +1717,57 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                     // MAPPING KAS
                     List<MappingDetail> listMapKas = new ArrayList<>();
-                    MappingDetail mapKas = new MappingDetail();
-                    if ("paket_individu".equalsIgnoreCase(jenis)) {
-                        mapKas.setNilai(getJumlahNilaiBiayaByKeterangan("", "paket_individu", "", "", noCheckup).add(ppnObat).add(allTindakanTransUmum).subtract(uangMuka));
-                    } else {
-                        mapKas.setNilai(getJumlahNilaiBiayaByKeterangan("", "umum", "", "", noCheckup).add(ppnObat).add(allTindakanTransUmum).subtract(uangMuka));
-                    }
-                    mapKas.setMetodeBayar(metodeBayar);
-                    mapKas.setCoa(kodeBank);
-                    listMapKas.add(mapKas);
 
-                    // kas
+                    MappingDetail mapKas = new MappingDetail();
+
+                    BigDecimal nilaiKas = new BigDecimal(0);
+                    if ("paket_individu".equalsIgnoreCase(jenis)) {
+                        nilaiKas = getJumlahNilaiBiayaByKeterangan("", "paket_individu", "", "", noCheckup).add(ppnObat).add(allTindakanTransUmum);
+                    } else {
+                        nilaiKas = getJumlahNilaiBiayaByKeterangan("", "umum", "", "", noCheckup).add(ppnObat).add(allTindakanTransUmum);
+                    }
+
+                    boolean isLebihUangMuka = uangMuka.compareTo(nilaiKas) == 1;
+
+                    if (isLebihUangMuka){
+
+                        BigDecimal sisaKasDariUM = uangMuka.subtract(nilaiKas);
+
+                        mapKas.setNilai(sisaKasDariUM);
+
+                        mapKas.setCoa(CommonConstant.KAS_TUNAI);
+
+                        ketTerangan = "Closing Lebih Uang Muka Pasien ";
+                        if ("JRJ".equalsIgnoreCase(type) && !"Y".equalsIgnoreCase(withObat)){
+                            transId = CommonConstant.TRANS_ID_RJ_LEBIH_UM;
+                            ketTerangan = ketTerangan + "Rawat Jalan tanpa Obat";
+                        } else if ("JRJ".equalsIgnoreCase(type) && "Y".equalsIgnoreCase(withObat)){
+                            transId = CommonConstant.TRANS_ID_RJ_LEBIH_UM_OBAT;
+                            ketTerangan = ketTerangan + "Rawat Jalan dengan Obat";
+                        } else if ("JRI".equalsIgnoreCase(type) && !isTransitoris){
+                            transId = CommonConstant.TRANS_ID_RI_LEBIH_UM;
+                            ketTerangan = ketTerangan + "Rawat Inap ";
+                        } else if ("JRI".equalsIgnoreCase(type) && isTransitoris){
+                            transId = CommonConstant.TRANS_ID_RI_LEBIH_UM_TRANSITORIS;
+                            ketTerangan = ketTerangan + "Rawat Inap Terhadap Transitoris ";
+                        }
+                    } else {
+
+                        BigDecimal sisaKasDikurangiUM = nilaiKas.subtract(uangMuka);
+
+                        mapKas.setNilai(sisaKasDikurangiUM);
+
+                        mapKas.setCoa(kodeBank);
+                    }
+
+                    mapKas.setMetodeBayar(metodeBayar);
+                    listMapKas.add(mapKas);
+                    // END
+
                     mapJurnal.put("kas", listMapKas);
                     mapJurnal.put("user_id", CommonUtil.userIdLogin());
                     mapJurnal.put("user_who", CommonUtil.userLogin());
+
 
                     if (!"".equalsIgnoreCase(transId)) {
                         try {

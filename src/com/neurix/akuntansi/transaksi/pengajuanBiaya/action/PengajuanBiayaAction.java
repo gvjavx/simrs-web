@@ -5,6 +5,7 @@ import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
 import com.neurix.akuntansi.master.mappingJurnal.bo.MappingJurnalBo;
 import com.neurix.akuntansi.master.tipeJurnal.bo.TipeJurnalBo;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.billingSystem.model.MappingDetail;
 import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi;
@@ -28,6 +29,7 @@ import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.transaksi.riwayatbarang.model.TransaksiStok;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.engine.Mapping;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -1335,15 +1337,22 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         Map dataRk = new HashMap();
         //mencari coa RK
         Branch branch = branchBo.getBranchById(branchId,"Y");
-        Map rkUnit = new HashMap();
-        rkUnit.put("nilai",jumlah);
-        rkUnit.put("rekening_id",kodeRekeningBo.getRekeningIdByKodeRekening(branch.getCoaRk()));
-        dataRk.put("rk_kd_unit",rkUnit);
+        MappingDetail rkUnit = new MappingDetail();
+        rkUnit.setNilai(jumlah);
+        rkUnit.setCoa(branch.getCoaRk());
 
-        Map giro = new HashMap();
-        giro.put("nilai",jumlah);
-        giro.put("rekening_id",kodeRekeningBo.getRekeningIdByKodeRekening(coaKas));
-        dataRk.put("metode_bayar",giro);
+        List<MappingDetail> mappingDetailListRkUnit = new ArrayList<>();
+        mappingDetailListRkUnit.add(rkUnit);
+        dataRk.put("rk_kd_unit", mappingDetailListRkUnit);
+
+        MappingDetail giro = new MappingDetail();
+        giro.setNilai(jumlah);
+        giro.setCoa(coaKas);
+
+        List<MappingDetail> mappingDetailListGiro = new ArrayList<>();
+        mappingDetailListGiro.add(giro);
+
+        dataRk.put("metode_bayar", mappingDetailListGiro);
 
         if ("K".equalsIgnoreCase(status)){
             //membuat jurnal RK dari kantor pusat
@@ -1383,15 +1392,21 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         Map dataRk = new HashMap();
         //mencari coa RK
         Branch branch = branchBo.getBranchById(branchId,"Y");
-        Map rkUnit = new HashMap();
-        rkUnit.put("nilai",jumlah);
-        rkUnit.put("rekening_id",kodeRekeningBo.getRekeningIdByKodeRekening(branch.getCoaRk()));
-        dataRk.put("rk_kd_unit",rkUnit);
+        MappingDetail rkUnit = new MappingDetail();
+        rkUnit.setNilai(jumlah);
+        rkUnit.setCoa(branch.getCoaRk());
 
-        Map giro = new HashMap();
-        giro.put("nilai",jumlah);
-        giro.put("rekening_id",kodeRekeningBo.getRekeningIdByKodeRekening(coaKas));
-        dataRk.put("metode_bayar",giro);
+        List<MappingDetail> lisRkUnit = new ArrayList<>();
+        lisRkUnit.add(rkUnit);
+        dataRk.put("rk_kd_unit",lisRkUnit);
+
+        MappingDetail giro = new MappingDetail();
+        giro.setNilai(jumlah);
+        giro.setCoa(coaKas);
+
+        List<MappingDetail> listGiro = new ArrayList<>();
+        listGiro.add(giro);
+        dataRk.put("metode_bayar",listGiro);
 
         // membuat jurnal rk dan jurnal biaya jika data sudah diterima unit
         billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_TERIMA_RK,dataRk,branchId,getKeteranganPembuatanRk(idPengajuan,status,coaKas,branchId).getKeterangan(),"Y");
@@ -1815,7 +1830,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         BigDecimal jumlah = BigDecimal.ZERO;
         List<PengajuanBiayaRk> pengajuanBiayaRkList = (List<PengajuanBiayaRk>) session.getAttribute("listOfResult");
         List<PengajuanBiayaRk> finalPengajuanBiayaRkList = new ArrayList<>();
-        List<Map> pembayaranDo = new ArrayList<>();
+        List<MappingDetail> pembayaranDo = new ArrayList<>();
 
         try {
             JSONArray json = new JSONArray(data);
@@ -1826,10 +1841,10 @@ public class PengajuanBiayaAction extends BaseMasterAction {
                 dataRk.setMasterId(obj.getString("masterId"));
                 dataRk.setJumlah(BigDecimal.valueOf(Double.valueOf(obj.getString("jumlah").replace(",",""))));
 
-                Map dataDo = new HashMap();
-                dataDo.put("master_id",dataRk.getMasterId());
-                dataDo.put("bukti",dataRk.getNoTransaksi());
-                dataDo.put("nilai",dataRk.getJumlah());
+                MappingDetail dataDo = new MappingDetail();
+                dataDo.setMasterId(dataRk.getMasterId());
+                dataDo.setBukti(dataRk.getNoTransaksi());
+                dataDo.setNilai(dataRk.getJumlah());
                 pembayaranDo.add(dataDo);
 
                 jumlah = jumlah.add(dataRk.getJumlah());
@@ -1854,20 +1869,24 @@ public class PengajuanBiayaAction extends BaseMasterAction {
             Map dataRk = new HashMap();
             //mencari coa RK
             Branch branch = branchBo.getBranchById(branchIdUser,"Y");
-            Map rkUnit = new HashMap();
-            rkUnit.put("nilai",jumlah);
-            rkUnit.put("rekening_id",kodeRekeningBo.getRekeningIdByKodeRekening(branch.getCoaRk()));
+            MappingDetail rkUnit = new MappingDetail();
+            rkUnit.setNilai(jumlah);
+            rkUnit.setCoa(branch.getCoaRk());
 
-            dataRk.put("rk_kd_unit",rkUnit);
+            List<MappingDetail>  listRkUnit = new ArrayList<>();
+            listRkUnit.add(rkUnit);
+
+            dataRk.put("rk_kd_unit",listRkUnit);
             dataRk.put("data_do",pembayaranDo);
 
             String keterangan ="Pengajuan pembayaran DO Ke Kantor Pusat dari Unit :"+branch.getBranchName()+" pada tanggal "+CommonUtil.convertDateToString(new java.util.Date());
 
-            //disimpan
-            pengajuanBiayaBo.savePembayaranPengajuanDo(finalPengajuanBiayaRkList);
 
             //membuat jurnal RK dari kantor pusat
             billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_KIRIM_PENGAJUAN_PEMBAYARAN_DO,dataRk,branchIdUser,keterangan,"Y");
+
+            //disimpan
+            pengajuanBiayaBo.savePembayaranPengajuanDo(finalPengajuanBiayaRkList);
         }catch (Exception e){
             logger.error("[PengajuanBiayaAction.kirimPengajuanPembayaranDoRk] Error ," + "[" + e.getMessage() + "] ", e);
             throw new GeneralBOException(e);
@@ -1887,7 +1906,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         BigDecimal jumlah = BigDecimal.ZERO;
         List<PengajuanBiayaRk> pengajuanBiayaRkList = (List<PengajuanBiayaRk>) session.getAttribute("listOfResult");
         List<PengajuanBiayaRk> finalPengajuanBiayaRkList = new ArrayList<>();
-        List<Map> pembayaranDo = new ArrayList<>();
+        List<MappingDetail> pembayaranDo = new ArrayList<>();
 
         try {
             JSONArray json = new JSONArray(data);
@@ -1898,10 +1917,10 @@ public class PengajuanBiayaAction extends BaseMasterAction {
                 dataRk.setMasterId(obj.getString("masterId"));
                 dataRk.setJumlah(BigDecimal.valueOf(Double.valueOf(obj.getString("jumlah").replace(",",""))));
 
-                Map dataDo = new HashMap();
-                dataDo.put("master_id",dataRk.getMasterId());
-                dataDo.put("nilai",dataRk.getJumlah());
-                dataDo.put("bukti",dataRk.getNoTransaksi());
+                MappingDetail dataDo = new MappingDetail();
+                dataDo.setMasterId(dataRk.getMasterId());
+                dataDo.setNilai(dataRk.getJumlah());
+                dataDo.setBukti(dataRk.getNoTransaksi());
                 pembayaranDo.add(dataDo);
 
                 jumlah = jumlah.add(dataRk.getJumlah());
@@ -1926,21 +1945,26 @@ public class PengajuanBiayaAction extends BaseMasterAction {
             Map dataRk = new HashMap();
             //mencari coa RK
             Branch branch = branchBo.getBranchById(branchId,"Y");
-            Map rkUnit = new HashMap();
-            rkUnit.put("nilai",jumlah);
-            rkUnit.put("rekening_id",kodeRekeningBo.getRekeningIdByKodeRekening(branch.getCoaRk()));
+            MappingDetail rkUnit = new MappingDetail();
+            rkUnit.setNilai(jumlah);
+            rkUnit.setCoa(branch.getCoaRk());
 
-            dataRk.put("rk_kd_unit",rkUnit);
+            List<MappingDetail> listRkUnit = new ArrayList<>();
+            listRkUnit.add(rkUnit);
+
+            dataRk.put("rk_kd_unit",listRkUnit);
             dataRk.put("data_do",pembayaranDo);
 
             String keterangan ="Penerimaan pembayaran DO dari Unit :"+branch.getBranchName()+" ke Kantor Pusat pada tanggal "+CommonUtil.convertDateToString(new java.util.Date());
 
-            //disimpan
-            pengajuanBiayaBo.approvePengajuanBiayaRk(finalPengajuanBiayaRkList);
+
             //membuat jurnal RK dari kantor pusat
             billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_TERIMA_PENGAJUAN_PEMBAYARAN_DO,dataRk,branchIdUser,keterangan,"Y");
+
+            //disimpan
+            pengajuanBiayaBo.approvePengajuanBiayaRk(finalPengajuanBiayaRkList);
         }catch (Exception e){
-            logger.error("[PengajuanBiayaAction.kirimPengajuanPembayaranDoRk] Error ," + "[" + e.getMessage() + "] ", e);
+            logger.error("[PengajuanBiayaAction.terimaPengajuanPembayaranDoRk] Error ," + "[" + e.getMessage() + "] ", e);
             throw new GeneralBOException(e);
         }
         logger.info("[PengajuanBiayaAction.terimaPengajuanPembayaranDoRk] end process <<<");
@@ -1958,7 +1982,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         BigDecimal jumlah = BigDecimal.ZERO;
         List<PengajuanBiayaRk> pengajuanBiayaRkList = (List<PengajuanBiayaRk>) session.getAttribute("listOfResult");
         List<PengajuanBiayaRk> finalPengajuanBiayaRkList = new ArrayList<>();
-        List<Map> pembayaranDo = new ArrayList<>();
+        List<MappingDetail> pembayaranDo = new ArrayList<>();
 
         try {
             JSONArray json = new JSONArray(data);
@@ -1969,10 +1993,10 @@ public class PengajuanBiayaAction extends BaseMasterAction {
                 dataRk.setMasterId(obj.getString("masterId"));
                 dataRk.setJumlah(BigDecimal.valueOf(Double.valueOf(obj.getString("jumlah").replace(",",""))));
 
-                Map dataDo = new HashMap();
-                dataDo.put("master_id",dataRk.getMasterId());
-                dataDo.put("bukti",dataRk.getNoTransaksi());
-                dataDo.put("nilai",dataRk.getJumlah());
+                MappingDetail dataDo = new MappingDetail();
+                dataDo.setMasterId(dataRk.getMasterId());
+                dataDo.setBukti(dataRk.getNoTransaksi());
+                dataDo.setNilai(dataRk.getJumlah());
                 pembayaranDo.add(dataDo);
 
                 jumlah = jumlah.add(dataRk.getJumlah());
@@ -1993,11 +2017,14 @@ public class PengajuanBiayaAction extends BaseMasterAction {
             //membuat RK pengiriman modal
             Map dataRk = new HashMap();
 
-            Map giro = new HashMap();
-            giro.put("nilai",jumlah);
-            giro.put("rekening_id",kodeRekeningBo.getRekeningIdByKodeRekening(metodeBayar));
-            dataRk.put("metode_bayar",giro);
+            MappingDetail giro = new MappingDetail();
+            giro.setNilai(jumlah);
+            giro.setCoa(metodeBayar);
 
+            List<MappingDetail> listGiro = new ArrayList<>();
+            listGiro.add(giro);
+
+            dataRk.put("metode_bayar",listGiro);
             dataRk.put("data_do",pembayaranDo);
 
             String keterangan ="Pembayaran DO Kantor Pusat pada tanggal "+CommonUtil.convertDateToString(new java.util.Date());

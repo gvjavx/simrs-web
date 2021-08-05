@@ -49,6 +49,9 @@ import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
 import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
 import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
+import com.neurix.hris.transaksi.refreshLembur.dao.RefreshLemburDao;
+import com.neurix.hris.transaksi.refreshLembur.model.ItHrisRefreshLemburEntity;
+import com.neurix.hris.transaksi.refreshLembur.model.RefreshLembur;
 import com.neurix.hris.transaksi.rekruitmenPabrik.dao.RekruitmenPabrikDetailDao;
 import com.neurix.hris.transaksi.rekruitmenPabrik.model.ItRekruitmenPabrikDetailEntity;
 import com.neurix.hris.transaksi.rekruitmenPabrik.model.RekruitmenPabrikDetail;
@@ -95,6 +98,11 @@ public class NotifikasiBoImpl implements NotifikasiBo {
     private TipeNotifDao tipeNotifDao;
     private PengajuanBiayaDao pengajuanBiayaDao;
     private PengajuanBiayaDetailDao pengajuanBiayaDetailDao;
+    private RefreshLemburDao refreshLemburDao;
+
+    public void setRefreshLemburDao(RefreshLemburDao refreshLemburDao) {
+        this.refreshLemburDao = refreshLemburDao;
+    }
 
     public PengajuanBiayaDetailDao getPengajuanBiayaDetailDao() {
         return pengajuanBiayaDetailDao;
@@ -1274,7 +1282,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
             addNotif.setRead("Y");
             addNotif.setFlag("Y");
             addNotif.setAction("C");
-            addNotif.setNip("0001");
+            addNotif.setNip("adminhcm");
             addNotif.setFromPerson(nip);
             addNotif.setNoRequest(id);
             addNotif.setCreatedDate(updateTime);
@@ -1828,6 +1836,86 @@ public class NotifikasiBoImpl implements NotifikasiBo {
         }
         return result;
     }
+
+    @Override
+    public List<RefreshLembur> searchRefreshLembur(RefreshLembur bean) throws GeneralBOException {
+        List<RefreshLembur> result = new ArrayList<>();
+        List<ItHrisRefreshLemburEntity> refreshLemburList;
+
+        if (bean != null){
+            Map hsCriteria = new HashMap();
+
+            if (bean.getRefreshLemburId() != null && !"".equalsIgnoreCase(bean.getRefreshLemburId())) {
+                hsCriteria.put("refresh_id", bean.getRefreshLemburId());
+            }
+            if (bean.getGroupRefreshId() != null && !"".equalsIgnoreCase(bean.getGroupRefreshId())) {
+                hsCriteria.put("group_id", bean.getGroupRefreshId());
+            }
+            if (bean.getNama() != null && !"".equalsIgnoreCase(bean.getNama())) {
+                hsCriteria.put("nama", bean.getNama());
+            }
+            if (bean.getNip() != null && !"".equalsIgnoreCase(bean.getNip())) {
+                hsCriteria.put("nip", bean.getNip());
+            }
+            if (bean.getLemburId() != null && !"".equalsIgnoreCase(bean.getLemburId())) {
+                hsCriteria.put("lembur_id", bean.getLemburId());
+            }
+            hsCriteria.put("flag","Y");
+            try {
+                refreshLemburList = refreshLemburDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e) {
+                logger.error("[UserBoImpl.searchTrainingPerson] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+            }
+            if (refreshLemburList != null){
+                RefreshLembur addData;
+                for (ItHrisRefreshLemburEntity listData : refreshLemburList){
+                    addData = new RefreshLembur();
+                    addData.setRefreshLemburId(listData.getRefreshLemburId());
+                    addData.setGroupRefreshId(listData.getGroupRefreshId());
+                    addData.setAbsensiPegawaiId(listData.getAbsensiPegawaiId());
+                    addData.setTanggal(listData.getTanggal());
+                    addData.setStTanggal(CommonUtil.convertDateToString(listData.getTanggal()));
+                    addData.setNip(listData.getNip());
+                    addData.setNama(listData.getNama());
+                    addData.setJamMasuk(listData.getJamMasuk());
+                    addData.setJamKeluar(listData.getJamKeluar());
+                    addData.setJenisLembur(listData.getJenisLembur());
+                    addData.setLamaLembur(listData.getLamaLembur());
+                    addData.setStLamaLembur(Double.toString(listData.getLamaLembur()));
+                    addData.setJamLembur(listData.getJamLembur());
+                    addData.setStJamLembur(Double.toString(listData.getJamLembur()));
+                    addData.setBiayaLembur(listData.getBiayaLembur());
+                    addData.setStBiayaLembur(Double.toString(listData.getBiayaLembur()));
+                    addData.setTipeHari(listData.getTipeHari());
+                    addData.setRealisasiLembur(listData.getRealisasiLembur());
+                    addData.setStRealisasiLembur(Double.toString(listData.getRealisasiLembur()));
+                    addData.setBranchId(listData.getBranchId());
+
+                    addData.setLemburId(listData.getLemburId());
+                    addData.setTglAwalLembur(listData.getTglAwalLembur());
+                    addData.setStTglAwalLembur(CommonUtil.convertDateToString(listData.getTglAwalLembur()));
+                    addData.setTglAkhirLembur(listData.getTglAkhirLembur());
+                    addData.setStTglAkhirLembur(CommonUtil.convertDateToString(listData.getTglAkhirLembur()));
+                    addData.setJamAwalLembur(listData.getJamAwalLembur());
+                    addData.setJamAkhirLembur(listData.getJamAkhirLembur());
+                    addData.setFlagApprove(listData.getFlagApprove());
+                    addData.setApprovalwho(listData.getApprovalwho());
+
+                    addData.setFlag(listData.getFlag());
+                    addData.setAction(listData.getAction());
+                    addData.setLastUpdate(listData.getLastUpdate());
+                    addData.setCreatedDate(listData.getCreatedDate());
+                    addData.setCreatedWho(listData.getCreatedWho());
+                    addData.setLastUpdateWho(listData.getLastUpdateWho());
+
+                    result.add(addData);
+                }
+            }
+        }
+        return result;
+    }
+
     @Override
     public List<Indisipliner> searchIndisiplinerPerson(Indisipliner bean) throws GeneralBOException {
         List<Indisipliner> result = new ArrayList<Indisipliner>();
@@ -3867,19 +3955,19 @@ public class NotifikasiBoImpl implements NotifikasiBo {
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
 
-        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
-            if(entity.getUserId().equals(nip)){
-                ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), addNotif.getNote(), entity.getOs());
-                break;
-            }
-        }
-
 //        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
 //            if(entity.getUserId().equals(nip)){
-//                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), addNotif.getNote(), CLICK_IJIN);
+//                ExpoPushNotif.sendNotificationExpo(entity.getTokenExpo(), addNotif.getTipeNotifName(), addNotif.getNote(), entity.getOs());
 //                break;
 //            }
 //        }
+
+        for (ItNotifikasiFcmEntity entity : notifikasiFcm){
+            if(entity.getUserId().equals(nip)){
+                FirebasePushNotif.sendNotificationFirebase(entity.getTokenFcm(), addNotif.getTipeNotifName(), addNotif.getNote(), action, entity.getOs(), null);
+                break;
+            }
+        }
     }
 
     @Override

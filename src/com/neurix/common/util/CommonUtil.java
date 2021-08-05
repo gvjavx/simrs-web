@@ -1,5 +1,6 @@
 package com.neurix.common.util;
 
+import com.neurix.akuntansi.master.mappingJurnal.model.MappingJurnal;
 import com.neurix.akuntansi.transaksi.kas.model.ItAkunLampiranEntity;
 import com.neurix.akuntansi.transaksi.kas.model.Lampiran;
 import com.neurix.authorization.role.model.Roles;
@@ -1822,4 +1823,15 @@ public class  CommonUtil {
         return result;
     }
 
+
+    // Untuk mengurutkan Mapping Jurnal
+    public static Comparator<? super MappingJurnal> comparatorMappingJurnal() {
+        Comparator<MappingJurnal> result = new Comparator<MappingJurnal>() {
+            @Override
+            public int compare(MappingJurnal v1, MappingJurnal v2) {
+                return v1.getPosisi().compareTo(v2.getPosisi());
+            }
+        };
+        return result;
+    }
 }

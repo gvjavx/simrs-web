@@ -57,7 +57,17 @@ public class Branch extends BaseModel implements Serializable, Comparable<Branch
     private String isDisabled;
     private String roleName;
 
+    private int chanceRefreshLembur;
+
     private BigDecimal tunjPemondokan;
+
+    public int getChanceRefreshLembur() {
+        return chanceRefreshLembur;
+    }
+
+    public void setChanceRefreshLembur(int chanceRefreshLembur) {
+        this.chanceRefreshLembur = chanceRefreshLembur;
+    }
 
     public BigDecimal getTunjPemondokan() {
         return tunjPemondokan;

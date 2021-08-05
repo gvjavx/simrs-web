@@ -1225,30 +1225,25 @@
     }
 
     function enableDisable() {
-        if ((flagDivisi == "N" || flagDivisi == null || flagDivisi == "") && (flagMaster == "N" || flagMaster == null || flagMaster == "") && tipeCoa == "04"){
+//        console.log(tipeCoa);
+        if (tipeCoa == "04"){
             $("#form-divisi").hide();
             $("#form-master").hide();
             $("#form-periode").hide();
             $("#btn-save-add").html("<i class='fa fa-plus'></i> Add Investasi");
             $(".list-label-divisi-id").text("Investasi Id");
             $(".list-label-divisi-name").text("Nama Investasi");
+        } else if (tipeCoa == "03") {
+            $("#form-master").hide();
+        } else if (tipeCoa == null || tipeCoa == ""){
+            $("#alert-error").show();
+            $("#error-msg").text(" Tidak Bisa Edit Data Budgeting. Lengkapi Data Kode Rekening Terlebih Dahulu.");
+            $("#btn-save-add").hide();
+            $("#form-divisi").hide();
+            $("#form-master").hide();
+            $("#form-periode").hide();
+            $("#btn-save-all").text("Back");
         } else {
-            if ((flagDivisi == "N" || flagDivisi == "" || flagDivisi == null) && (flagMaster == "N" || flagMaster == "" || flagMaster == null)){
-                $("#alert-error").show();
-                $("#error-msg").text(" Tidak Bisa Edit Data Budgeting. Lengkapi Data Kode Rekening Terlebih Dahulu.");
-                $("#btn-save-add").hide();
-                $("#form-divisi").hide();
-                $("#form-master").hide();
-                $("#form-periode").hide();
-                $("#btn-save-all").text("Back");
-            } else {
-                if (flagDivisi == "N"){
-                    $("#form-divisi").hide();
-                }
-                if (flagMaster == "N"){
-                    $("#form-master").hide();
-                }
-            }
 
         }
 

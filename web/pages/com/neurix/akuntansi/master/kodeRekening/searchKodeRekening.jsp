@@ -47,17 +47,271 @@
         .treegrid-expander-collapsed{background-image: url(expand.png);}*/
 
     </style>
-    <script type='text/javascript'>
-        function link(){
-            window.location.href="<s:url action='initForm_kodeRekening'/>";
-        }
-    </script>
+
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.bootstrap3.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/jquery.treegrid.js"/>"></script>
     <script src="<s:url value="/pages/plugins/tree/lodash.js"/>"></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
+    <script type='text/javascript'>
+
+       $(document).ready(function () {
+          //btn Save
+          $('#btnEdit').click(function(){
+             var id                  = $('#rekeningIdEdit').val();
+             var kodeRekeningName    = $('#kodeRekeningNameEdit').val();
+             var kodeRekening        = $('#kodeRekeningEdit').val();
+             var result              = '';
+             var flagMaster          = $("#flag-master-edit").val();
+             var flagDivisi          = $("#flag-divisi-edit").val();
+             var tipeCoa        = $("#tipeRekeningIdEdit").val();
+
+             if(id != ''&&kodeRekeningName != ''&&kodeRekening != ''){
+                if (confirm('Are you sure you want to save this Record?')) {
+                   KodeRekeningAction.saveEdit(id, kodeRekeningName, kodeRekening,"edit", tipeCoa, flagMaster, flagDivisi, function(result) {
+                      if (result==""){
+                         alert('Record has been saved successfully.');
+                         $('.tree').html('');
+                         f1();
+                         $('#modal-edit').modal("hide");
+                      } else{
+                         alert(result);
+                      }
+                   });
+                }
+             }else{
+                if (id==""){
+                   result+="ID kode rekening tidak terdeteksi \n";
+                }
+                if (kodeRekeningName==""){
+                   result+="Nama Kode Rekening masih kosong \n";
+                }
+                if (kodeRekening==""){
+                   result+="COA masih Kosong \n";
+                }
+                alert(result);
+             }
+          });
+
+          $('#btnDelete').click(function(){
+             var id      = $('#rekeningIdDelete').val();
+             var result = '';
+             if(id != ''){
+                if (confirm('Are you sure you want to save this Record?')) {
+                   KodeRekeningAction.saveEdit(id, "", "","delete",function(listdata) {
+                      if (listdata==""){
+                         alert('Record has been delete successfully.');
+                         location.reload();
+                      } else{
+                         alert(listdata);
+                      }
+                   });
+                }
+             }else{
+                if (id==""){
+                   result+="ID kode rekening tidak terdeteksi \n";
+                }
+                alert(result);
+             }
+          });
+
+          $('.tree').treegrid({
+             expanderExpandedClass: 'glyphicon glyphicon-minus',
+             expanderCollapsedClass: 'glyphicon glyphicon-plus'
+          });
+
+          $('.tree').on('click', '.item-edit', function(){
+             var id = $(this).attr('data');
+             // var option = "<option value=''>[Select One]</option>";
+             KodeRekeningAction.initKodeRekeningSearch(id,"","",function(listdata) {
+                $.each(listdata, function(i,item){
+                   $('#rekeningIdEdit').val(item.rekeningId);
+                   $('#kodeRekeningNameEdit').val(item.namaKodeRekening);
+                   $('#kodeRekeningEdit').val(item.kodeRekening);
+
+                   /*option = "<option value='" + item.tipeRekeningId + "'>" + item.tipeCoa + "</option>";
+                   $('#tipeRekeningIdEdit').html(option);*/
+
+                   $('#tipeRekeningIdEdit').val(item.tipeRekeningId );
+                   $('#flag-master-edit').val(item.flagMaster);
+                   $('#flag-divisi-edit').val(item.flagDivisi);
+                });
+             });
+             $('#modal-edit').modal('show');
+          });
+
+          $('.tree').on('click', '.item-delete', function(){
+             var id = $(this).attr('data');
+             KodeRekeningAction.initKodeRekeningSearch(id,"","",function(listdata) {
+                $.each(listdata, function(i,item){
+                   $('#rekeningIdDelete').val(item.rekeningId);
+                   $('#kodeRekeningNameDelete').val(item.namaKodeRekening);
+                   $('#kodeRekeningDelete').val(item.kodeRekening);
+                   $('#tipeRekeningIdDelete').val(item.tipeCoa);
+                });
+             });
+             $('#modal-delete').modal('show');
+          });
+       });
+
+
+       function searchBack(){
+          document.kodeRekeningForm.action = "search_kodeRekening.action";
+          document.kodeRekeningForm.submit();
+       }
+
+       function searchFunc(){
+          $('.tree').find('tbody').remove();
+          $('.tree').find('thead').remove();
+          f1();
+
+       }
+
+       function f1() {
+          $('#waiting_dialog').dialog('open');
+          var rekeningId = document.getElementById("rekeningId").value;
+          var namaRekening = document.getElementById("kodeRekeningName").value;
+          var kodeRekening = document.getElementById("kodeRekening").value;
+          var tipeRekening = document.getElementById("tipeRekeningId").value;
+          var tmp_table = "";
+          var data = [];
+          var data2 = [];
+          dwr.engine.setAsync(true);
+          KodeRekeningAction.initKodeRekeningSearch(rekeningId, namaRekening, kodeRekening, tipeRekening, {callback: function(listdata){
+                data = listdata;
+                data2 = new Array();
+                data2_hasil = new Array();
+                data2Tmp= new Array();
+
+                $.each(data, function(i,item){
+                   data2.push({_id : item.rekeningId, level : item.level,  nama : item.namaKodeRekening, parent : item.parentId, coa : item.kodeRekening,
+                      tipeRekening : item.tipeRekeningId, status : item.flag,tipeCoa: item.tipeCoa});
+                });
+                function hierarhySort(hashArr, key, result) {
+                   if (hashArr[key] == undefined){
+                      //level--;
+                      return;
+                   }else{
+                      var arr = [] ;
+                      arr  = hashArr[key];
+                   }
+                   for (var i=0; i<arr.length; i++) {
+                      result.push(arr[i]);
+                      hierarhySort(hashArr, arr[i]._id, result);
+                   }
+                   return result;
+                }
+                var hashArr = {};
+                for (var i=0; i<data2.length; i++) {
+                   if (hashArr[data2[i].parent] == undefined) {
+                      hashArr[data2[i].parent] = [];
+                   }
+                   hashArr[data2[i].parent].push(data2[i]);
+                   tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
+                       "<th style='text-align: center; background-color:  #30d196'>COA ( Chart of Account )</th>"+
+                       "<th style='text-align: center; background-color:  #30d196''>Nama Kode Rekening</th>"+
+                       "<th style='text-align: center; background-color:  #30d196''>Tipe Rekening </th>"+
+                       "<th style='text-align: center; background-color:  #30d196''>Level</th>"+
+                       "<th style='text-align: center; background-color:  #30d196'>Edit</th>"+
+                       "<th style='text-align: center; background-color:  #30d196'>Delete</th>"+
+                       "</tr></thead>";
+                }
+                for(i = 0 ; i < data2.length ; i++){
+                   //console.log(data2[i]);
+                   if(data2[i].parent == "-"){
+                      tmp_table += '<tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
+                          '<td >' + data2[i].coa + '</td>' +
+                          '<td >' + data2[i].nama + '</td>' +
+                          '<td align="center" class="ceknull">' + data2[i].tipeCoa + '</td>' +
+                          '<td align="center" class="ceknull">' + data2[i].level+ '</td>' +
+                          '<td align="center">' +
+                          "<a href='javascript:;' class ='item-edit' data ='"+data2[i]._id+"' >" +
+                          "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>"+
+                          '</a>' +
+                          '</td>' +
+                          '<td align="center">' +
+                          "<a href='javascript:;' class ='item-delete' data ='"+data2[i]._id+"' >" +
+                          "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>"+
+                          '</a>' +
+                          '</td>' +
+                          "</tr>";
+                   } else {
+                      // Fahmi 2021-07-25 Untuk pengecheckkan data yang tidak ada parentnya.
+                      console.log("====1>>"+tmp_table);
+                      console.log("====2>>"+'treegrid-'+data2[i].parent);
+                      console.log("====3>>"+(tmp_table.includes('treegrid-'+data2[i].parent)));
+                      if (tmp_table.includes('treegrid-'+data2[i].parent))
+                      {
+                         tmp_table += '<tr style="font-size: 12px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' ;
+                      }
+                      else
+                      {
+                         tmp_table += '<tr style="font-size: 12px" class=" treegrid-' + data2[i]._id + '">';
+                      }
+
+                      tmp_table += +
+                          + '<td style="border: 2px solid black;">' +
+                          '<td >' + data2[i].coa + '</td>' +
+                          '<td >' + data2[i].nama + '</td>' +
+                          '<td align="center" class="ceknull">' + data2[i].tipeCoa + '</td>' +
+                          '<td align="center" class="ceknull">' + data2[i].level + '</td>' +
+                          '<td align="center">' +
+                          "<a href='javascript:;' class ='item-edit' data ='"+data2[i]._id+"' >" +
+                          "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>"+
+                          '</a>' +
+                          '</td>' +
+                          '<td align="center">' +
+                          "<a href='javascript:;' class ='item-delete' data ='"+data2[i]._id+"' >" +
+                          "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>"+
+                          '</a>' +
+                          '</td>' +
+                          "</tr>";
+                   }
+                }
+                $('.tree').append(tmp_table);
+                $(".tree .ceknull:contains('null')").html("-");
+                $('#waiting_dialog').dialog('close');
+
+                $('.tree').treegrid({
+                   expanderExpandedClass: 'glyphicon glyphicon-minus',
+                   expanderCollapsedClass: 'glyphicon glyphicon-plus'
+                });
+             }});
+       }
+       function cekAvailableCoaEdit(nilai){
+          var coa = nilai.value;
+          var length = nilai.length;
+          if (length!=0){
+             dwr.engine.setAsync(false);
+             KodeRekeningAction.cekAvailableCoa(coa, function(listdata) {
+                if (listdata.length!=0){
+                   alert("COA sudah ada");
+                   $('#kodeRekeningEdit').val("");
+                }
+             });
+          }
+       }
+       function cekAvailableParentEdit(nilai){
+          var coa = nilai.value;
+          var length = nilai.length;
+          if (length!=0){
+             dwr.engine.setAsync(false);
+             KodeRekeningAction.cekAvailableParent(coa, function(adaParent) {
+                if (!adaParent){
+                   alert("COA induk tidak ada");
+                   $('#kodeRekeningEdit').val("");
+                }
+             });
+          }
+       }
+
+        function link(){
+            window.location.href="<s:url action='initForm_kodeRekening'/>";
+        }
+
+
+    </script>
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini" >
 <%@ include file="/pages/common/headerNav.jsp" %>
@@ -138,14 +392,14 @@
                                         </script>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">
+                                <div class="form-group">
                                     <label class="control-label col-sm-4">Tipe Rekening</label>
                                     <div class="col-sm-4">
                                         <s:action id="initComboTipeRekening" namespace="/tipeRekening" name="initComboTipeRekening_tipeRekening"/>
                                         <s:select list="#initComboTipeRekening.listOfComboTipeRekening" id="tipeRekeningId" name="kodeRekening.tipeRekeningId"
                                                   listKey="tipeRekeningId" listValue="tipeRekeningName"  headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
-                                </div>--%>
+                                </div>
                                 <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
@@ -309,239 +563,4 @@
 <script>
 
 
-    $(document).ready(function () {
-
-        //btn Save
-        $('#btnEdit').click(function(){
-            var id                  = $('#rekeningIdEdit').val();
-            var kodeRekeningName    = $('#kodeRekeningNameEdit').val();
-            var kodeRekening        = $('#kodeRekeningEdit').val();
-            var result              = '';
-            var flagMaster          = $("#flag-master-edit").val();
-            var flagDivisi          = $("#flag-divisi-edit").val();
-            var tipeCoa        = $("#tipeRekeningIdEdit").val();
-
-            if(id != ''&&kodeRekeningName != ''&&kodeRekening != ''){
-                if (confirm('Are you sure you want to save this Record?')) {
-                    KodeRekeningAction.saveEdit(id, kodeRekeningName, kodeRekening,"edit", tipeCoa, flagMaster, flagDivisi, function(result) {
-                        if (result==""){
-                            alert('Record has been saved successfully.');
-                            $('.tree').html('');
-                            f1();
-                            $('#modal-edit').modal("hide");
-                        } else{
-                            alert(result);
-                        }
-                    });
-                }
-            }else{
-                if (id==""){
-                    result+="ID kode rekening tidak terdeteksi \n";
-                }
-                if (kodeRekeningName==""){
-                    result+="Nama Kode Rekening masih kosong \n";
-                }
-                if (kodeRekening==""){
-                    result+="COA masih Kosong \n";
-                }
-                alert(result);
-            }
-        });
-
-        $('#btnDelete').click(function(){
-            var id      = $('#rekeningIdDelete').val();
-            var result = '';
-            if(id != ''){
-                if (confirm('Are you sure you want to save this Record?')) {
-                    KodeRekeningAction.saveEdit(id, "", "","delete",function(listdata) {
-                        if (listdata==""){
-                            alert('Record has been delete successfully.');
-                            location.reload();
-                        } else{
-                            alert(listdata);
-                        }
-                    });
-                }
-            }else{
-                if (id==""){
-                    result+="ID kode rekening tidak terdeteksi \n";
-                }
-                alert(result);
-            }
-        });
-
-        $('.tree').treegrid({
-            expanderExpandedClass: 'glyphicon glyphicon-minus',
-            expanderCollapsedClass: 'glyphicon glyphicon-plus'
-        });
-
-        $('.tree').on('click', '.item-edit', function(){
-            var id = $(this).attr('data');
-            // var option = "<option value=''>[Select One]</option>";
-            KodeRekeningAction.initKodeRekeningSearch(id,"","",function(listdata) {
-                $.each(listdata, function(i,item){
-                    $('#rekeningIdEdit').val(item.rekeningId);
-                    $('#kodeRekeningNameEdit').val(item.namaKodeRekening);
-                    $('#kodeRekeningEdit').val(item.kodeRekening);
-
-                    /*option = "<option value='" + item.tipeRekeningId + "'>" + item.tipeCoa + "</option>";
-                    $('#tipeRekeningIdEdit').html(option);*/
-
-                    $('#tipeRekeningIdEdit').val(item.tipeRekeningId );
-                    $('#flag-master-edit').val(item.flagMaster);
-                    $('#flag-divisi-edit').val(item.flagDivisi);
-                });
-            });
-            $('#modal-edit').modal('show');
-        });
-
-        $('.tree').on('click', '.item-delete', function(){
-            var id = $(this).attr('data');
-            KodeRekeningAction.initKodeRekeningSearch(id,"","",function(listdata) {
-                $.each(listdata, function(i,item){
-                    $('#rekeningIdDelete').val(item.rekeningId);
-                    $('#kodeRekeningNameDelete').val(item.namaKodeRekening);
-                    $('#kodeRekeningDelete').val(item.kodeRekening);
-                    $('#tipeRekeningIdDelete').val(item.tipeCoa);
-                });
-            });
-            $('#modal-delete').modal('show');
-        });
-    });
-
-
-    function searchBack(){
-        document.kodeRekeningForm.action = "search_kodeRekening.action";
-        document.kodeRekeningForm.submit();
-    }
-
-    function searchFunc(){
-        $('.tree').find('tbody').remove();
-        $('.tree').find('thead').remove();
-        f1();
-        $('.tree').treegrid({
-            expanderExpandedClass: 'glyphicon glyphicon-minus',
-            expanderCollapsedClass: 'glyphicon glyphicon-plus'
-        });
-
-
-    }
-
-    function f1() {
-        $('#waiting_dialog').dialog('open');
-        var rekeningId = document.getElementById("rekeningId").value;
-        var namaRekening = document.getElementById("kodeRekeningName").value;
-        var kodeRekening = document.getElementById("kodeRekening").value;
-        var tmp_table = "";
-        var data = [];
-        var data2 = [];
-        dwr.engine.setAsync(true);
-        KodeRekeningAction.initKodeRekeningSearch(rekeningId, namaRekening, kodeRekening, {callback: function(listdata){
-            data = listdata;
-            data2 = new Array();
-            data2_hasil = new Array();
-            data2Tmp= new Array();
-            $.each(data, function(i,item){
-                data2.push({_id : item.rekeningId, level : item.level,  nama : item.namaKodeRekening, parent : item.parentId, coa : item.kodeRekening,
-                    tipeRekening : item.tipeRekeningId, status : item.flag,tipeCoa: item.tipeCoa});
-            });
-            function hierarhySort(hashArr, key, result) {
-                if (hashArr[key] == undefined){
-                    //level--;
-                    return;
-                }else{
-                    var arr = [] ;
-                    arr  = hashArr[key];
-                }
-                for (var i=0; i<arr.length; i++) {
-                    result.push(arr[i]);
-                    hierarhySort(hashArr, arr[i]._id, result);
-                }
-                return result;
-            }
-            var hashArr = {};
-            for (var i=0; i<data2.length; i++) {
-                if (hashArr[data2[i].parent] == undefined) {
-                    hashArr[data2[i].parent] = [];
-                }
-                hashArr[data2[i].parent].push(data2[i]);
-                tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
-                    "<th style='text-align: center; background-color:  #30d196'>COA ( Chart of Account )</th>"+
-                    "<th style='text-align: center; background-color:  #30d196''>Nama Kode Rekening</th>"+
-                    "<th style='text-align: center; background-color:  #30d196''>Tipe Rekening </th>"+
-                    "<th style='text-align: center; background-color:  #30d196''>Level</th>"+
-                    "<th style='text-align: center; background-color:  #30d196'>Edit</th>"+
-                    "<th style='text-align: center; background-color:  #30d196'>Delete</th>"+
-                    "</tr></thead>";
-            }
-            for(i = 0 ; i < data2.length ; i++){
-                console.log(data2[i]);
-                if(data2[i].parent == "-"){
-                    tmp_table += '<tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
-                        '<td >' + data2[i].coa + '</td>' +
-                        '<td >' + data2[i].nama + '</td>' +
-                        '<td align="center" class="ceknull">' + data2[i].tipeCoa + '</td>' +
-                        '<td align="center" class="ceknull">' + data2[i].level+ '</td>' +
-                        '<td align="center">' +
-                        "<a href='javascript:;' class ='item-edit' data ='"+data2[i]._id+"' >" +
-                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>"+
-                        '</a>' +
-                        '</td>' +
-                        '<td align="center">' +
-                        "<a href='javascript:;' class ='item-delete' data ='"+data2[i]._id+"' >" +
-                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>"+
-                        '</a>' +
-                        '</td>' +
-                        "</tr>";
-                } else {
-                    tmp_table += '<tr style="font-size: 12px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
-                        + '<td style="border: 2px solid black;">' +
-                        '<td >' + data2[i].coa + '</td>' +
-                        '<td >' + data2[i].nama + '</td>' +
-                        '<td align="center" class="ceknull">' + data2[i].tipeCoa + '</td>' +
-                        '<td align="center" class="ceknull">' + data2[i].level + '</td>' +
-                        '<td align="center">' +
-                        "<a href='javascript:;' class ='item-edit' data ='"+data2[i]._id+"' >" +
-                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>"+
-                        '</a>' +
-                        '</td>' +
-                        '<td align="center">' +
-                        "<a href='javascript:;' class ='item-delete' data ='"+data2[i]._id+"' >" +
-                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>"+
-                        '</a>' +
-                        '</td>' +
-                        "</tr>";
-                }
-            }
-            $('.tree').append(tmp_table);
-            $(".tree .ceknull:contains('null')").html("-");
-            $('#waiting_dialog').dialog('close');
-            }});
-    }
-    function cekAvailableCoaEdit(nilai){
-        var coa = nilai.value;
-        var length = nilai.length;
-        if (length!=0){
-            dwr.engine.setAsync(false);
-            KodeRekeningAction.cekAvailableCoa(coa, function(listdata) {
-                if (listdata.length!=0){
-                    alert("COA sudah ada");
-                    $('#kodeRekeningEdit').val("");
-                }
-            });
-        }
-    }
-    function cekAvailableParentEdit(nilai){
-        var coa = nilai.value;
-        var length = nilai.length;
-        if (length!=0){
-            dwr.engine.setAsync(false);
-            KodeRekeningAction.cekAvailableParent(coa, function(adaParent) {
-                if (!adaParent){
-                    alert("COA induk tidak ada");
-                    $('#kodeRekeningEdit').val("");
-                }
-            });
-        }
-    }
 </script>

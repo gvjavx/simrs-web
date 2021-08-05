@@ -100,7 +100,7 @@ public class CommonConstant {
 //    public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayroll3.jrxml";
     public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollPeg_update.jrxml";
     public final static String REPORT_PAYROLL_THR = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollThrBranch3.jrxml";
-    public final static String REPORT_PAYROLL_JASPROD = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollJasoprBranch3jrxml";
+    public final static String REPORT_PAYROLL_JASPROD = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollJasoprBranch3.jrxml";
     public final static String REPORT_PAYROLL_PENSIUN = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollPensiun3.jrxml";
     public final static String REPORT_PAYROLL_PMP = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollJubileum3.jrxml";
     public final static String REPORT_PAYROLL_INSENTIF = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollInsentifBranch3.jrxml";
@@ -225,9 +225,9 @@ public class CommonConstant {
     public final static String JUNK_MASTER_PIUTANG_PPN = "JNK";
     public final static String KODE_REKENING_LABA_RUGI = "3.3.00.00.02";
 
-    public final static String KODERING_FARMASI_RJ = "05.00.00";
-    public final static String KODERING_FARMASI_RI = "05.00.01";
-    public final static String KODERING_INSTALASI_RI = "06.01.01";
+    public final static String KODERING_FARMASI_RJ = "02.01.01";
+    public final static String KODERING_FARMASI_RI = "02.02.01";
+//    public final static String KODERING_INSTALASI_RI = "06.01.01";
 
     public final static String CUTI_ID_DILUAR_TANGGUNJAWAB = CommonUtil.getPropertyParams("cuti.id.diluar.tanggungjawab");
 
@@ -286,9 +286,12 @@ public class CommonConstant {
 
     public final static String REKENING_ID_PPN_MASUKAN = CommonUtil.getPropertyParams("rekening.id.ppn.masukan");
     public final static String REKENING_ID_PPN_KELUARAN = CommonUtil.getPropertyParams("rekening.id.ppn.keluaran");
-    public final static String REKENING_PPH21 = "00187";
-    public final static String REKENING_ID_PENDAPATAN_RI ="00304";
-    public final static String REKENING_ID_PENDAPATAN_RJ ="00303";
+//    public final static String REKENING_PPH21 = "00187";
+//    public final static String REKENING_ID_PENDAPATAN_RI ="00304";
+//    public final static String REKENING_ID_PENDAPATAN_RJ ="00303";
+    public final static String REKENING_PPH21 = CommonUtil.getPropertyParams("rekening.id.pph.21");
+    public final static String REKENING_ID_PENDAPATAN_RI = CommonUtil.getPropertyParams("rekening.id.pendapatan.ri");
+    public final static String REKENING_ID_PENDAPATAN_RJ = CommonUtil.getPropertyParams("rekening.id.pendapatan.rj");
     public final static String REKENING_ID_DO =CommonUtil.getPropertyParams("rekening.id.do");
 
     //CONSTANT HCM
@@ -305,6 +308,8 @@ public class CommonConstant {
 
     public final static String PEGAWAI_TETAP = "TP03";
     public final static String PEGAWAI_PKWT = "TP04";
+
+    public final static String POS_VP_HC_GA = "PS512";
 
     //constant PAYROLL
     public final static String CODE_PAYROLL = "PY";
@@ -443,6 +448,13 @@ public class CommonConstant {
     public final static String JENIS_PEMBAYARAN_TRANSFER_TUNAI = CommonUtil.getPropertyParams("jenis.pembayaran.tt");
     public final static String JENIS_PEMBAYARAN_VA = CommonUtil.getPropertyParams("jenis.pembayaran.va");
     public final static String PATH_REPORT_AKUNTANSI = ContextLoader.getCurrentWebApplicationContext().getApplicationName() + "/pages/report/neurix/com/akuntansi/";
+    public final static String COA_BEBAN_JASA_PREFESIONAL = CommonUtil.getPropertyParams("coa.beban.jasa.profesional");
+    public final static String TRANS_ID_PEMBAYARAN_JASA = CommonUtil.getPropertyParams("transaksi.id.pembayaran.jasa");
+    public final static String TRANS_ID_RJ_LEBIH_UM             = CommonUtil.getPropertyParams("transaksi.id.lebih.um.rj");
+    public final static String TRANS_ID_RJ_LEBIH_UM_OBAT        = CommonUtil.getPropertyParams("transaksi.id.lebih.um.rj.obat");
+    public final static String TRANS_ID_RI_LEBIH_UM             = CommonUtil.getPropertyParams("transaksi.id.lebih.um.ri");
+    public final static String TRANS_ID_RI_LEBIH_UM_TRANSITORIS = CommonUtil.getPropertyParams("transaksi.id.lebih.um.ri.transitoris");
+
 
 
 }

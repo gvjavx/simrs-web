@@ -40,6 +40,27 @@ function formatKodeRekening(field) {
     // }
 }
 
+function formatBintangKodeRekening(kodeRekening)
+{
+    var result=kodeRekening;
+    var splitKode =kodeRekening.split(".");
+
+    if(splitKode.length < 5 ) {
+        result="";
+        for (var i = 0; i <= 4; i++) {
+            if (i <= splitKode.length - 1) {
+                result += splitKode[i];
+            } else {
+                result += "*";
+            }
+            if (i < 4) {
+                result += ".";
+            }
+        }
+    }
+    return result;
+}
+
 function formatRupiah2(field) {
     var kode = field.value;
     var number_string = kode.replace(/[^,\d]/g, '').toString(),

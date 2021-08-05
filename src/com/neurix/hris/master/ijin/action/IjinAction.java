@@ -227,16 +227,18 @@ public class IjinAction extends BaseMasterAction {
 
             ijinBoProxy.saveEdit(editIjin);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = ijinBoProxy.saveErrorMessage(e.getMessage(), "IjinBO.saveEdit");
-            } catch (GeneralBOException e1) {
-                logger.error("[IjinAction.saveEdit] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[IjinAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            logger.error("[IjinAction.saveEdit] Error when saving error," + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
+//            Long logId = null;
+//            try {
+//                logId = ijinBoProxy.saveErrorMessage(e.getMessage(), "IjinBO.saveEdit");
+//            } catch (GeneralBOException e1) {
+//                logger.error("[IjinAction.saveEdit] Error when saving error,", e1);
+//                return ERROR;
+//            }
+//            logger.error("[IjinAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+//            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+//            return ERROR;
         }
 
         logger.info("[IjinAction.saveEdit] end process <<<");

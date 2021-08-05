@@ -8,10 +8,10 @@
     <bean id="lemburController" class="com.neurix.hris.mobileapi.LemburController"
           p:lemburBoProxy-ref="lemburBoProxy"
           p:userBoProxy-ref="userBoProxy"
-    p:biodataBoProxy-ref="biodataBoProxy"
-    p:jamKerjaBoProxy-ref="jamKerjaBoProxy"
-    p:liburBoProxy-ref="liburBoProxy"
-    p:notifikasiBoProxy-ref="notifikasiBoProxy"
+          p:biodataBoProxy-ref="biodataBoProxy"
+          p:jamKerjaBoProxy-ref="jamKerjaBoProxy"
+          p:liburBoProxy-ref="liburBoProxy"
+          p:notifikasiBoProxy-ref="notifikasiBoProxy"
     />
 
     <bean id="lemburAction" class="com.neurix.hris.transaksi.lembur.action.LemburAction"

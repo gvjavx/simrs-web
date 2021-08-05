@@ -2,10 +2,7 @@ package com.neurix.authorization.company.bo.impl;
 
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.dao.BranchDao;
-import com.neurix.authorization.company.model.Branch;
-import com.neurix.authorization.company.model.ImBranches;
-import com.neurix.authorization.company.model.ImBranchesHistory;
-import com.neurix.authorization.company.model.ImBranchesPK;
+import com.neurix.authorization.company.model.*;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.exception.GenerateBoLog;
 import com.neurix.common.util.CommonUtil;
@@ -255,6 +252,7 @@ public class BranchBoImpl implements BranchBo {
                     resultBranch.setLat(imBranches.getLat());
                     resultBranch.setLon(imBranches.getLon());
                     resultBranch.setWarna(imBranches.getWarna());
+                    resultBranch.setChanceRefreshLembur(imBranches.getChanceRefreshLembur());
 
                     if(searchBranch.getRoleName() != null){
                         if(!"ADMIN KP".equalsIgnoreCase(searchBranch.getRoleName())){
@@ -571,6 +569,8 @@ public class BranchBoImpl implements BranchBo {
             resultBranch.setCoderNik(imBranches.getCoderNik());
             resultBranch.setAreaId(imBranches.getAreaId());
             resultBranch.setCoaRk(imBranches.getCoaRk());
+
+            resultBranch.setChanceRefreshLembur(imBranches.getChanceRefreshLembur());
         }
 
         logger.info("[BranchBoImpl.getBranchById] end process <<<");
@@ -632,6 +632,57 @@ public class BranchBoImpl implements BranchBo {
 
         logger.info("[BranchBoImpl.findAllBranch] end process <<<");
         return branchers;
+    }
+
+    public void resetChanceRefreshLembur() throws GeneralBOException{
+        logger.info("[BranchBoImpl.resetChanceRefreshLembur] start process >>>");
+        List<ImBranches> branchesList = new ArrayList<>();
+
+        try{
+            branchesList = branchDao.getAll();
+        }catch (HibernateException e){
+            logger.error("[BranchBoImpl.resetChanceRefreshLembur] Error, " + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
+        }
+
+        for(ImBranches branches : branchesList){
+            branches.setChanceRefreshLembur(3);
+
+            try{
+                branchDao.updateAndSave(branches);
+            }catch (HibernateException e){
+                logger.error("[BranchBoImpl.resetChanceRefreshLembur] Error, " + e.getMessage());
+                throw new GeneralBOException(e.getMessage());
+            }
+        }
+        logger.info("[BranchBoImpl.resetChanceRefreshLembur] end process <<<<<");
+    }
+
+    public void setChanceRefreshLembur(String branchId, int chance) throws GeneralBOException{
+        logger.info("[BranchBoImpl.setChanceRefreshLembur] start process >>>");
+
+        ImBranches imBranches = null;
+        ImBranchesPK primaryKey = new ImBranchesPK();
+        primaryKey.setId(branchId);
+
+        try {
+            imBranches = branchDao.getById(primaryKey,"Y");
+        }catch (HibernateException e){
+            logger.error("[BranchBoImpl.setChanceRefreshLembur] Error, " + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
+        }
+
+        if(imBranches != null){
+            imBranches.setChanceRefreshLembur(chance);
+
+            try{
+                branchDao.updateAndSave(imBranches);
+            }catch (HibernateException e){
+                logger.error("[BranchBoImpl.setChanceRefreshLembur] Error, " + e.getMessage());
+                throw new GeneralBOException(e.getMessage());
+            }
+        }
+        logger.info("[BranchBoImpl.setChanceRefreshLembur] end process <<<<<");
     }
 
 }

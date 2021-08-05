@@ -3,6 +3,7 @@ package com.neurix.akuntansi.transaksi.sewaLahan.action;
 //import com.neurix.authorization.company.bo.AreaBo;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.billingSystem.model.MappingDetail;
 import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.akuntansi.transaksi.kas.bo.KasBo;
 import com.neurix.akuntansi.transaksi.kas.model.Kas;
@@ -17,6 +18,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.engine.Mapping;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 import sun.misc.BASE64Decoder;
@@ -414,25 +416,60 @@ public class SewaLahanAction extends BaseMasterAction {
             ItAkunSewaLahanEntity itAkunSewaLahanEntity = sewaLahanBo.getPenyewaanLahanById(sewaLahanId);
 
             Map dataPostingJurnal = new HashMap();
-            Map kas = new HashMap();
-            kas.put("metode_bayar",itAkunSewaLahanEntity.getBank() == null || itAkunSewaLahanEntity.getBank().isEmpty() ? "tunai" : "transfer");
-            kas.put("bank", itAkunSewaLahanEntity.getBank());
-            kas.put("nilai",itAkunSewaLahanEntity.getNilai());
 
-            Map mapPpn = new HashMap();
-            mapPpn.put("nilai",itAkunSewaLahanEntity.getNilaiPpn());
+           // mapping kas, start
+            MappingDetail kas = new MappingDetail();
+            kas.setMetodeBayar(itAkunSewaLahanEntity.getBank() == null || itAkunSewaLahanEntity.getBank().isEmpty() ? "tunai" : "transfer");
 
-            Map mapPph = new HashMap();
-            mapPph.put("master_id",itAkunSewaLahanEntity.getNamaPenyewa());
-            mapPph.put("nilai",itAkunSewaLahanEntity.getNilaiPph());
+//            2021-07-26 Sigit
+            if (itAkunSewaLahanEntity.getBank() == null) {
+                kas.setCoa(CommonConstant.KAS_TUNAI);
+            }
 
-            Map pendapatanPenyewaan = new HashMap();
-            pendapatanPenyewaan.put("nilai",itAkunSewaLahanEntity.getNilaiNetto());
+//            kas.put("bank", itAkunSewaLahanEntity.getBank());
+            // END
 
-            dataPostingJurnal.put("kas",kas);
-            dataPostingJurnal.put("ppn",mapPpn);
-            dataPostingJurnal.put("pph",mapPph);
-            dataPostingJurnal.put("pendapatan_sewa_lahan",pendapatanPenyewaan);
+            kas.setNilai(itAkunSewaLahanEntity.getNilai());
+
+            List<MappingDetail> listKas = new ArrayList<>();
+            listKas.add(kas);
+
+            // mapping kas, end
+
+            // mapping PPN, Start
+            MappingDetail mapPpn = new MappingDetail();
+            mapPpn.setNilai(itAkunSewaLahanEntity.getNilaiPpn());
+
+            List<MappingDetail> listMappingPPN = new ArrayList<>();
+            listMappingPPN.add(mapPpn);
+
+            // mapping PPN, End
+
+
+            // mapping PPH, Start
+            MappingDetail mapPph = new MappingDetail();
+            mapPph.setMasterId(itAkunSewaLahanEntity.getNamaPenyewa());
+            mapPph.setNilai(itAkunSewaLahanEntity.getNilaiPph());
+
+            List<MappingDetail> listMappingPPH = new ArrayList<>();
+            listMappingPPN.add(mapPph);
+
+            // mapping PPH, End
+
+
+            // mapping pendapatan sewa, start
+            MappingDetail pendapatanPenyewaan = new MappingDetail();
+            pendapatanPenyewaan.setNilai(itAkunSewaLahanEntity.getNilaiNetto());
+
+            List<MappingDetail> listPendapatan = new ArrayList<>();
+            listPendapatan.add(pendapatanPenyewaan);
+            // mapping pendapatan sewa, end
+
+
+            dataPostingJurnal.put("kas",listKas);
+            dataPostingJurnal.put("ppn",listMappingPPN);
+            dataPostingJurnal.put("pph",listMappingPPH);
+            dataPostingJurnal.put("pendapatan_sewa_lahan",listPendapatan);
 
             //disini untuk posting jurnal untuk mendapat nojurnal
             Jurnal jurnal = billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_PENYEWAAN_LAHAN,dataPostingJurnal,itAkunSewaLahanEntity.getBranchId(),itAkunSewaLahanEntity.getKeterangan(),"Y");

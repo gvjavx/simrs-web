@@ -259,7 +259,7 @@
                                                     </table>
                                                 </td>
                                             </tr>
-                                            <%--RAKA-31MAR2021--%>
+                                            <%--RAKA-31MAR2021 Divisi di sembunyikan karena, bisa ambil divisi dari biodata dokter. --%>
                                             <tr style="display: none">
                                                 <td>
                                                     <label class="control-label"><small>Divisi :</small></label>
@@ -353,6 +353,11 @@
                                                     <td>
                                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="add_dokterkso.action"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_dokterkso.action"/>'">
+                                                            <i class="fa fa-arrow-left"></i> Back
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -559,6 +564,29 @@
             var tindakanId = $('#modTindakan').val();
             var tindakanName = $('#modTindakan :selected').text();
             var persenKsoTindakan = $('#modPersenKsoTindakan').val();
+           var isExist = false;
+
+            // Fahmi 2021-07-27 penambahan pengecheckkan untuk tindakan yang sama
+            DokterKsoAction.searchTindakanDetailSession(function(listOfsearch)
+            {
+               if (null!=listOfsearch)
+               {
+                  for(var i=0;i<listOfsearch.length;i++)
+                  {
+                     //console.log("===========listOfSearch===="+JSON.stringify(listOfsearch[i]));
+                     if (tindakanId == listOfsearch[i].tindakanId)
+                     {
+                        alert(" Kode rekening sudah ditambahkan. ");
+                        isExist = true;
+                        return;
+                     }
+                  }
+               }
+            })
+
+           // Fahmi 2021-07-27 penambahan pengecheckkan untuk tindakan yang sama
+           if(isExist)
+           { return; }
 
             dwr.engine.setAsync(false);
             if(tindakanId!='' && persenKsoTindakan!='' && pelayanan!=''){

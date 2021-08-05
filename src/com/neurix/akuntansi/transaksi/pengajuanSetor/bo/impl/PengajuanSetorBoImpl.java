@@ -4,6 +4,7 @@ import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.masterVendor.dao.MasterVendorDao;
 import com.neurix.akuntansi.master.masterVendor.model.ImMasterVendorEntity;
+import com.neurix.akuntansi.transaksi.billingSystem.model.MappingDetail;
 import com.neurix.akuntansi.transaksi.pengajuanSetor.bo.PengajuanSetorBo;
 import com.neurix.akuntansi.transaksi.pengajuanSetor.dao.*;
 import com.neurix.akuntansi.transaksi.pengajuanSetor.model.*;
@@ -1090,7 +1091,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         logger.info("[PengajuanSetorBoImpl.getBillingForPosting] start process <<<");
         Map dataBilling = new HashMap();
 
-        List<Map> dataDetailList = new ArrayList<>();
+        List<MappingDetail> dataDetailList = new ArrayList<>();
 
         BigDecimal total = BigDecimal.ZERO;
 
@@ -1098,21 +1099,24 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
 
         List<ItPengajuanSetorDetailEntity> pengajuanSetorDetailEntityList = pengajuanSetorDetailDao.getByPengajuanSetorId(pengajuanSetorId);
         for (ItPengajuanSetorDetailEntity data : pengajuanSetorDetailEntityList){
-            Map dataDetail = new HashMap();
-            dataDetail.put("master_id",data.getPersonId());
-            dataDetail.put("bukti",data.getTransaksiId());
-            dataDetail.put("nilai",data.getJumlah());
+            MappingDetail dataDetail = new MappingDetail();
+            dataDetail.setMasterId(data.getPersonId());
+            dataDetail.setBukti(data.getTransaksiId());
+            dataDetail.setNilai(data.getJumlah());
             total = total.add(data.getJumlah());
             dataDetailList.add(dataDetail);
         }
 
-        Map kas = new HashMap();
-        kas.put("metode_bayar","transfer");
-        kas.put("bank", pengajuanSetorEntity.getKas());
-        kas.put("nilai",total);
+        MappingDetail kas = new MappingDetail();
+        kas.setMetodeBayar("transfer");
+        kas.setCoa(pengajuanSetorEntity.getKas());
+        kas.setNilai(total);
+
+        List<MappingDetail> mappingDetailsKas = new ArrayList<>();
+        mappingDetailsKas.add(kas);
 
         dataBilling.put("hutang_pph_21",dataDetailList);
-        dataBilling.put("kas",kas);
+        dataBilling.put("kas",mappingDetailsKas);
 
         logger.info("[PengajuanSetorBoImpl.getBillingForPosting] stop process >>>");
         return dataBilling;
@@ -2134,7 +2138,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
     public Map getBillingForPostingPengelompokanPpnKeluaran(String bulan,String tahun,String branchId){
         logger.info("[PengajuanSetorBoImpl.getBillingForPostingPengelompokanPpnKeluaran] start process <<<");
         Map dataBilling = new HashMap();
-        List<Map> ppnKeluaranList = new ArrayList<>();
+        List<MappingDetail> ppnKeluaranList = new ArrayList<>();
 
         BigDecimal totalPpnKeluaran = BigDecimal.ZERO;
 
@@ -2145,22 +2149,25 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
 
             //Map Untuk Keluaran
             for (ItPengajuanSetorDetailEntity pengajuanSetorDetailEntity : pengajuanSetorDetailEntityListKeluaran){
-                Map mapKeluaran = new HashMap();
-                mapKeluaran.put("master_id",pengajuanSetorDetailEntity.getPersonId());
-                mapKeluaran.put("bukti",pengajuanSetorDetailEntity.getTransaksiId());
-                mapKeluaran.put("nilai",pengajuanSetorDetailEntity.getJumlah());
+                MappingDetail mapKeluaran = new MappingDetail();
+                mapKeluaran.setMasterId(pengajuanSetorDetailEntity.getPersonId());
+                mapKeluaran.setBukti(pengajuanSetorDetailEntity.getTransaksiId());
+                mapKeluaran.setNilai(pengajuanSetorDetailEntity.getJumlah());
 
                 totalPpnKeluaran=totalPpnKeluaran.add(pengajuanSetorDetailEntity.getJumlah());
                 ppnKeluaranList.add(mapKeluaran);
             }
         }
 
-        Map mapTotalPpnKeluaran = new HashMap();
-        mapTotalPpnKeluaran.put("master_id",CommonConstant.JUNK_MASTER_PIUTANG_PPN_KELUARAN); ///////////////////////////////////////////////////////
-        mapTotalPpnKeluaran.put("nilai",totalPpnKeluaran);
+        MappingDetail mapTotalPpnKeluaran = new MappingDetail();
+        mapTotalPpnKeluaran.setMasterId(CommonConstant.JUNK_MASTER_PIUTANG_PPN_KELUARAN); ///////////////////////////////////////////////////////
+        mapTotalPpnKeluaran.setNilai(totalPpnKeluaran);
+
+        List<MappingDetail> listMapTotal = new ArrayList<>();
+        listMapTotal.add(mapTotalPpnKeluaran);
 
         dataBilling.put("ppn_keluaran",ppnKeluaranList);
-        dataBilling.put("total_ppn_keluaran",mapTotalPpnKeluaran);
+        dataBilling.put("total_ppn_keluaran",listMapTotal);
 
         logger.info("[PengajuanSetorBoImpl.getBillingForPostingPengelompokanPpnKeluaran] stop process >>>");
         return dataBilling;
@@ -2170,7 +2177,7 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
     public Map getBillingForPostingPengelompokanPpnMasukan(String bulan, String tahun, String branchId){
         logger.info("[PengajuanSetorBoImpl.getBillingForPostingPengelompokanPpnMasukan] start process <<<");
         Map dataBilling = new HashMap();
-        List<Map> ppnMasukanList = new ArrayList<>();
+        List<MappingDetail> ppnMasukanList = new ArrayList<>();
 
         BigDecimal totalPpnMasukan = BigDecimal.ZERO;
 
@@ -2180,22 +2187,25 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
             List<ItPengajuanSetorDetailEntity> pengajuanSetorDetailEntityListMasukan = pengajuanSetorDetailDao.getByPengajuanSetorIdAndTipe(pengajuanSetorEntity.getPengajuanSetorId(),"PPN Masukan B2");
 
             for (ItPengajuanSetorDetailEntity pengajuanSetorDetailEntity : pengajuanSetorDetailEntityListMasukan){
-                Map mapMasukan = new HashMap();
-                mapMasukan.put("master_id",pengajuanSetorDetailEntity.getPersonId());
-                mapMasukan.put("bukti",pengajuanSetorDetailEntity.getTransaksiId());
-                mapMasukan.put("nilai",pengajuanSetorDetailEntity.getJumlah());
+                MappingDetail mapMasukan = new MappingDetail();
+                mapMasukan.setMasterId(pengajuanSetorDetailEntity.getPersonId());
+                mapMasukan.setBukti(pengajuanSetorDetailEntity.getTransaksiId());
+                mapMasukan.setNilai(pengajuanSetorDetailEntity.getJumlah());
 
                 totalPpnMasukan=totalPpnMasukan.add(pengajuanSetorDetailEntity.getJumlah());
                 ppnMasukanList.add(mapMasukan);
             }
         }
 
-        Map mapTotalPpnMasukan = new HashMap();
-        mapTotalPpnMasukan.put("master_id",CommonConstant.JUNK_MASTER_PIUTANG_PPN_MASUKAN); ///////////////////////////////////////////////////////
-        mapTotalPpnMasukan.put("nilai",totalPpnMasukan);
+        MappingDetail mapTotalPpnMasukan = new MappingDetail();
+        mapTotalPpnMasukan.setMasterId(CommonConstant.JUNK_MASTER_PIUTANG_PPN_MASUKAN); ///////////////////////////////////////////////////////
+        mapTotalPpnMasukan.setNilai(totalPpnMasukan);
+
+        List<MappingDetail> listTotal = new ArrayList<>();
+        listTotal.add(mapTotalPpnMasukan);
 
         dataBilling.put("ppn_masukan",ppnMasukanList);
-        dataBilling.put("total_ppn_masukan",mapTotalPpnMasukan);
+        dataBilling.put("total_ppn_masukan",listTotal);
 
         logger.info("[PengajuanSetorBoImpl.getBillingForPostingPengelompokanPpnMasukan] stop process >>>");
         return dataBilling;
@@ -2205,18 +2215,26 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
     public Map getBillingForPostingPpnKeluaranRk(String branchId,Map data){
         logger.info("[PengajuanSetorBoImpl.getBillingForPostingPpnKeluaranRk] start process <<<");
         Map dataBilling = new HashMap();
-        Map mapPpnKeluaran = (Map) data.get("total_ppn_keluaran");
+
+        //2021-07-26 Sigit, Perubahan dari MAP ke MAPDETAIL
+        //Map mapPpnKeluaran = (Map) data.get("total_ppn_keluaran");
+        List<MappingDetail> listMapTotalPpnKeluaran = (List<MappingDetail>) data.get("total_ppn_keluaran");
+        MappingDetail mapTotalPPNKeluaran = listMapTotalPpnKeluaran.get(0);
+
 
         ImBranchesPK imBranchesPK = new ImBranchesPK();
         imBranchesPK.setId(branchId);
         ImBranches branches = branchDao.getById("primaryKey",imBranchesPK);
 
-        Map rkUnit = new HashMap();
-        rkUnit.put("nilai",mapPpnKeluaran.get("nilai"));
-        rkUnit.put("rekening_id",kodeRekeningDao.getRekeningIdByCoa(branches.getCoaRk()));
+        MappingDetail rkUnit = new MappingDetail();
+        rkUnit.setNilai(mapTotalPPNKeluaran.getNilai());
+        rkUnit.setCoa(branches.getCoaRk());
 
-        dataBilling.put("ppn_keluaran",mapPpnKeluaran);
-        dataBilling.put("rk_kd_unit",rkUnit);
+        List<MappingDetail> listRkUnit = new ArrayList<>();
+        listRkUnit.add(rkUnit);
+
+        dataBilling.put("ppn_keluaran",listMapTotalPpnKeluaran);
+        dataBilling.put("rk_kd_unit",listRkUnit);
 
         logger.info("[PengajuanSetorBoImpl.getBillingForPostingPpnKeluaranRk] stop process >>>");
         return dataBilling;
@@ -2226,18 +2244,26 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
     public Map getBillingForPostingPpnMasukanRk(String branchId, Map data){
         logger.info("[PengajuanSetorBoImpl.getBillingForPostingPpnMasukanRk] start process <<<");
         Map dataBilling = new HashMap();
-        Map mapPpnMasukan = (Map) data.get("total_ppn_masukan");
+
+        //2021-07-26 Sigit, Perubahan dari MAP ke MAPDETAIL
+        //Map mapPpnMasukan = (Map) data.get("total_ppn_masukan");
+        List<MappingDetail> listMapTotalPpnMasukan = (List<MappingDetail>) data.get("total_ppn_masukan");
+        MappingDetail mapTotalPPNMasukan = listMapTotalPpnMasukan.get(0);
+
 
         ImBranchesPK imBranchesPK = new ImBranchesPK();
         imBranchesPK.setId(branchId);
         ImBranches branches = branchDao.getById("primaryKey",imBranchesPK);
 
-        Map rkUnit = new HashMap();
-        rkUnit.put("nilai",mapPpnMasukan.get("nilai"));
-        rkUnit.put("rekening_id",kodeRekeningDao.getRekeningIdByCoa(branches.getCoaRk()));
+        MappingDetail rkUnit = new MappingDetail();
+        rkUnit.setNilai(mapTotalPPNMasukan.getNilai());
+        rkUnit.setCoa(branches.getCoaRk());
 
-        dataBilling.put("ppn_masukan",mapPpnMasukan);
-        dataBilling.put("rk_kd_unit",rkUnit);
+        List<MappingDetail> listRkUnit = new ArrayList<>();
+        listRkUnit.add(rkUnit);
+
+        dataBilling.put("ppn_masukan",listMapTotalPpnMasukan);
+        dataBilling.put("rk_kd_unit",listRkUnit);
 
         logger.info("[PengajuanSetorBoImpl.getBillingForPostingPpnMasukanRk] stop process >>>");
         return dataBilling;
@@ -2247,21 +2273,52 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
     public Map getBillingForPostingRkPpnKeluaran(String branchId, Map data,String buktiJurnal5) {
         logger.info("[PengajuanSetorBoImpl.getBillingForPostingRkPpnKeluaran] start process <<<");
         Map dataBilling = new HashMap();
-        Map mapPpnKeluaran = (Map) data.get("ppn_keluaran");
+        // Sebelum :
+        //Map mapPpnKeluaran = (Map) data.get("ppn_keluaran");
+        //if (!"".equalsIgnoreCase(buktiJurnal5)&&buktiJurnal5!=null){
+            //mapPpnKeluaran.put("bukti",buktiJurnal5);
+        //}
+        //END
+
+        // 2021-07-26 Sigit, Perubahan Ke List Mapping Detail;
+        BigDecimal nilai = new BigDecimal(0);
+        List<MappingDetail> listMapPPNKeluaran = (List<MappingDetail>) data.get("ppn_keluaran");
+
         if (!"".equalsIgnoreCase(buktiJurnal5)&&buktiJurnal5!=null){
-            mapPpnKeluaran.put("bukti",buktiJurnal5);
+            for (MappingDetail mapPpnKeluaran : listMapPPNKeluaran){
+                mapPpnKeluaran.setBukti(buktiJurnal5);
+                nilai = nilai.add(mapPpnKeluaran.getNilai());
+            }
         }
+        // END
 
         ImBranchesPK imBranchesPK = new ImBranchesPK();
         imBranchesPK.setId(branchId);
         ImBranches branches = branchDao.getById("primaryKey",imBranchesPK);
 
-        Map rkUnit = new HashMap();
-        rkUnit.put("nilai",mapPpnKeluaran.get("nilai"));
-        rkUnit.put("rekening_id",kodeRekeningDao.getRekeningIdByCoa(branches.getCoaRk()));
+        // Sebelum :
+//        Map rkUnit = new HashMap();
+//        rkUnit.put("nilai",mapPpnKeluaran.get("nilai"));
+//        rkUnit.put("rekening_id",kodeRekeningDao.getRekeningIdByCoa(branches.getCoaRk()));
+        // END
 
-        dataBilling.put("ppn_keluaran",mapPpnKeluaran);
-        dataBilling.put("rk_kd_unit",rkUnit);
+        // 2021-07-26 Sigit
+        MappingDetail rkUnit = new MappingDetail();
+        rkUnit.setNilai(nilai);
+        rkUnit.setCoa(branches.getCoaRk());
+
+        List<MappingDetail> listMapRk = new ArrayList<>();
+        listMapRk.add(rkUnit);
+
+        //END
+
+        // Sebelum
+//        dataBilling.put("ppn_keluaran",listMapPPNKeluaran);
+//        dataBilling.put("rk_kd_unit",rkUnit);
+//        END
+
+        dataBilling.put("ppn_keluaran",listMapPPNKeluaran);
+        dataBilling.put("rk_kd_unit",listMapRk);
 
         logger.info("[PengajuanSetorBoImpl.getBillingForPostingRkPpnKeluaran] stop process >>>");
         return dataBilling;
@@ -2271,20 +2328,49 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
     public Map getBillingForPostingRkPpnMasukan(String branchId, Map data,String buktiJurnal5) {
         logger.info("[PengajuanSetorBoImpl.getBillingForPostingRkPpnMasukan] start process <<<");
         Map dataBilling = new HashMap();
-        Map mapPpnMasukan = (Map) data.get("ppn_masukan");
+        // Sebelum :
+//        Map mapPpnMasukan = (Map) data.get("ppn_masukan");
+//        if (!"".equalsIgnoreCase(buktiJurnal5)&&buktiJurnal5!=null){
+//            mapPpnMasukan.put("bukti",buktiJurnal5);
+//        }
+//        ImBranchesPK imBranchesPK = new ImBranchesPK();
+//        imBranchesPK.setId(branchId);
+//        ImBranches branches = branchDao.getById("primaryKey",imBranchesPK);
+//
+//        Map rkUnit = new HashMap();
+//        rkUnit.put("nilai",mapPpnMasukan.get("nilai"));
+//        rkUnit.put("rekening_id",kodeRekeningDao.getRekeningIdByCoa(branches.getCoaRk()));
+//
+//        dataBilling.put("ppn_masukan",mapPpnMasukan);
+//        dataBilling.put("rk_kd_unit",rkUnit);
+        // END
+
+        // 2021-07-26 Sigit, Perubahan Mapping
+        List<MappingDetail> listMapPpnMasukan = (List<MappingDetail>) data.get("ppn_masukan");
+        BigDecimal nilai = new BigDecimal(0);
+
         if (!"".equalsIgnoreCase(buktiJurnal5)&&buktiJurnal5!=null){
-            mapPpnMasukan.put("bukti",buktiJurnal5);
+            for (MappingDetail mapPPNMasukan : listMapPpnMasukan){
+                mapPPNMasukan.setBukti(buktiJurnal5);
+                nilai = nilai.add(mapPPNMasukan.getNilai());
+            }
+
         }
+
         ImBranchesPK imBranchesPK = new ImBranchesPK();
         imBranchesPK.setId(branchId);
         ImBranches branches = branchDao.getById("primaryKey",imBranchesPK);
 
-        Map rkUnit = new HashMap();
-        rkUnit.put("nilai",mapPpnMasukan.get("nilai"));
-        rkUnit.put("rekening_id",kodeRekeningDao.getRekeningIdByCoa(branches.getCoaRk()));
+        MappingDetail rkUnit = new MappingDetail();
+        rkUnit.setNilai(nilai);
+        rkUnit.setCoa(branches.getCoaRk());
 
-        dataBilling.put("ppn_masukan",mapPpnMasukan);
-        dataBilling.put("rk_kd_unit",rkUnit);
+        List<MappingDetail> listRkUnit = new ArrayList<>();
+        listRkUnit.add(rkUnit);
+
+        dataBilling.put("ppn_masukan",listMapPpnMasukan);
+        dataBilling.put("rk_kd_unit",listRkUnit);
+        //END
 
         logger.info("[PengajuanSetorBoImpl.getBillingForPostingRkPpnMasukan] stop process >>>");
         return dataBilling;
@@ -2310,27 +2396,65 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
             piutangPajakKeluaran = totalMasukanJurnal6.subtract(biayaObatRj).subtract(ppnKeluaran);
         }
 
-        Map mapBiayaObatRj = new HashMap();
-        mapBiayaObatRj.put("nilai",biayaObatRj);
+        // Sebelum :
+//        Map mapBiayaObatRj = new HashMap();
+//        mapBiayaObatRj.put("nilai",biayaObatRj);
+//
+//        Map mapPpnKeluaran = new HashMap();
+//        mapPpnKeluaran.put("bukti",buktiJurnal5);
+//        mapPpnKeluaran.put("nilai",ppnKeluaran);
+//        mapPpnKeluaran.put("master_id",CommonConstant.JUNK_MASTER_PIUTANG_PPN_KELUARAN);
+//
+//        Map mapPiutangPpnKeluaran = new HashMap();
+//        mapPiutangPpnKeluaran.put("nilai",piutangPajakKeluaran);
+//        mapPiutangPpnKeluaran.put("master_id",CommonConstant.JUNK_MASTER_PIUTANG_PPN_KELUARAN);
+//
+//        Map mapPpnMasukan = new HashMap();
+//        mapPpnMasukan.put("bukti",buktiJurnal6);
+//        mapPpnMasukan.put("nilai",totalMasukanJurnal6);
+//        mapPpnMasukan.put("master_id",CommonConstant.JUNK_MASTER_PIUTANG_PPN_MASUKAN);
+//
+//        dataBilling.put("biaya_obat_rj",mapBiayaObatRj);
+//        dataBilling.put("ppn_keluaran",mapPpnKeluaran);
+//        dataBilling.put("piutang_ppn_keluaran",mapPiutangPpnKeluaran);
+//        dataBilling.put("ppn_masukan",mapPpnMasukan);
+        //END
 
-        Map mapPpnKeluaran = new HashMap();
-        mapPpnKeluaran.put("bukti",buktiJurnal5);
-        mapPpnKeluaran.put("nilai",ppnKeluaran);
-        mapPpnKeluaran.put("master_id",CommonConstant.JUNK_MASTER_PIUTANG_PPN_KELUARAN);
+        // 2021-07-26 Sigit, Perubahan Mapping
+        MappingDetail mapBiayaObatRj = new MappingDetail();
+        mapBiayaObatRj.setNilai(biayaObatRj);
 
-        Map mapPiutangPpnKeluaran = new HashMap();
-        mapPiutangPpnKeluaran.put("nilai",piutangPajakKeluaran);
-        mapPiutangPpnKeluaran.put("master_id",CommonConstant.JUNK_MASTER_PIUTANG_PPN_KELUARAN);
+        List<MappingDetail> listMapBiayaObatRj = new ArrayList<>();
+        listMapBiayaObatRj.add(mapBiayaObatRj);
 
-        Map mapPpnMasukan = new HashMap();
-        mapPpnMasukan.put("bukti",buktiJurnal6);
-        mapPpnMasukan.put("nilai",totalMasukanJurnal6);
-        mapPpnMasukan.put("master_id",CommonConstant.JUNK_MASTER_PIUTANG_PPN_MASUKAN);
+        MappingDetail mapPpnKeluaran = new MappingDetail();
+        mapPpnKeluaran.setBukti(buktiJurnal5);
+        mapPpnKeluaran.setNilai(ppnKeluaran);
+        mapPpnKeluaran.setMasterId(CommonConstant.JUNK_MASTER_PIUTANG_PPN_KELUARAN);
 
-        dataBilling.put("biaya_obat_rj",mapBiayaObatRj);
-        dataBilling.put("ppn_keluaran",mapPpnKeluaran);
-        dataBilling.put("piutang_ppn_keluaran",mapPiutangPpnKeluaran);
-        dataBilling.put("ppn_masukan",mapPpnMasukan);
+        List<MappingDetail> mapPpnKeluarans = new ArrayList<>();
+        mapPpnKeluarans.add(mapPpnKeluaran);
+
+        MappingDetail mapPiutangPpnKeluaran = new MappingDetail();
+        mapPiutangPpnKeluaran.setNilai(piutangPajakKeluaran);
+        mapPiutangPpnKeluaran.setMasterId(CommonConstant.JUNK_MASTER_PIUTANG_PPN_KELUARAN);
+
+        List<MappingDetail> mapPiutangPpnKeluarans = new ArrayList<>();
+        mapPiutangPpnKeluarans.add(mapPiutangPpnKeluaran);
+
+        MappingDetail mapPpnMasukan = new MappingDetail();
+        mapPpnMasukan.setBukti(buktiJurnal6);
+        mapPpnMasukan.setNilai(totalMasukanJurnal6);
+        mapPpnMasukan.setMasterId(CommonConstant.JUNK_MASTER_PIUTANG_PPN_MASUKAN);
+
+        List<MappingDetail> mapPpnMasukans = new ArrayList<>();
+        mapPpnMasukans.add(mapPpnMasukan);
+
+        dataBilling.put("biaya_obat_rj",listMapBiayaObatRj);
+        dataBilling.put("ppn_keluaran",mapPpnKeluarans);
+        dataBilling.put("piutang_ppn_keluaran",mapPiutangPpnKeluarans);
+        dataBilling.put("ppn_masukan",mapPpnMasukans);
+        //END
 
         logger.info("[PengajuanSetorBoImpl.getBillingForPostingPengurangPpnKeluaran] stop process >>>");
         return dataBilling;
@@ -2343,24 +2467,58 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         BigDecimal piutangPajakKeluaran = perhitunganPpnKdDao.getLastNilaiPiutangPajakKeluaran(bulan,tahun);
         String buktiPiutangKeluaran =perhitunganPpnKdDao.getLastBuktiPiutangPajakKeluaran(bulan,tahun);
 
-        Map mapPpnKeluaran = new HashMap();
-        mapPpnKeluaran.put("bukti",buktiJurnal5);
-        mapPpnKeluaran.put("nilai",sisaPpnKeluaran);
-        mapPpnKeluaran.put("master_id",CommonConstant.JUNK_MASTER_PIUTANG_PPN_KELUARAN);
+//        Sebelum :
 
-        Map mapPiutangPpnKeluaran = new HashMap();
-        mapPiutangPpnKeluaran.put("nilai",piutangPajakKeluaran);
-        mapPiutangPpnKeluaran.put("bukti",buktiPiutangKeluaran);
-        mapPiutangPpnKeluaran.put("master_id",CommonConstant.JUNK_MASTER_PIUTANG_PPN_KELUARAN);
+//        Map mapPpnKeluaran = new HashMap();
+//        mapPpnKeluaran.put("bukti",buktiJurnal5);
+//        mapPpnKeluaran.put("nilai",sisaPpnKeluaran);
+//        mapPpnKeluaran.put("master_id",CommonConstant.JUNK_MASTER_PIUTANG_PPN_KELUARAN);
+//
+//        Map mapPiutangPpnKeluaran = new HashMap();
+//        mapPiutangPpnKeluaran.put("nilai",piutangPajakKeluaran);
+//        mapPiutangPpnKeluaran.put("bukti",buktiPiutangKeluaran);
+//        mapPiutangPpnKeluaran.put("master_id",CommonConstant.JUNK_MASTER_PIUTANG_PPN_KELUARAN);
+//
+//        Map kas = new HashMap();
+//        kas.put("metode_bayar","transfer");
+//        kas.put("bank", coaBank);
+//        kas.put("nilai",sisaPpnKeluaran.subtract(piutangPajakKeluaran));
+//
+//        dataBilling.put("ppn_keluaran",mapPpnKeluaran);
+//        dataBilling.put("piutang_ppn_keluaran",mapPiutangPpnKeluaran);
+//        dataBilling.put("kas",kas);
 
-        Map kas = new HashMap();
-        kas.put("metode_bayar","transfer");
-        kas.put("bank", coaBank);
-        kas.put("nilai",sisaPpnKeluaran.subtract(piutangPajakKeluaran));
+//        END
 
-        dataBilling.put("ppn_keluaran",mapPpnKeluaran);
-        dataBilling.put("piutang_ppn_keluaran",mapPiutangPpnKeluaran);
-        dataBilling.put("kas",kas);
+        // 2021-07-26 Sigit, Perubahan Mapping
+        MappingDetail mapPpnKeluaran = new MappingDetail();
+        mapPpnKeluaran.setBukti(buktiJurnal5);
+        mapPpnKeluaran.setNilai(sisaPpnKeluaran);
+        mapPpnKeluaran.setMasterId(CommonConstant.JUNK_MASTER_PIUTANG_PPN_KELUARAN);
+
+        List<MappingDetail> mapPpnKeluaranList = new ArrayList<>();
+        mapPpnKeluaranList.add(mapPpnKeluaran);
+
+        MappingDetail mapPiutangPpnKeluaran = new MappingDetail();
+        mapPiutangPpnKeluaran.setNilai(piutangPajakKeluaran);
+        mapPiutangPpnKeluaran.setBukti(buktiPiutangKeluaran);
+        mapPiutangPpnKeluaran.setMasterId(CommonConstant.JUNK_MASTER_PIUTANG_PPN_KELUARAN);
+
+        List<MappingDetail> mapPiutangPpnKeluaranList = new ArrayList<>();
+        mapPiutangPpnKeluaranList.add(mapPiutangPpnKeluaran);
+
+        MappingDetail kas = new MappingDetail();
+        kas.setMetodeBayar("transfer");
+        kas.setCoa(coaBank);
+        kas.setNilai(sisaPpnKeluaran.subtract(piutangPajakKeluaran));
+
+        List<MappingDetail> kasList = new ArrayList<>();
+        kasList.add(kas);
+
+        dataBilling.put("ppn_keluaran",mapPpnKeluaranList);
+        dataBilling.put("piutang_ppn_keluaran",mapPiutangPpnKeluaranList);
+        dataBilling.put("kas",kasList);
+        //END
 
         logger.info("[PengajuanSetorBoImpl.getBillingForPostingPembayaranPpnKeluaran] stop process >>>");
         return dataBilling;
@@ -2384,16 +2542,39 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
             nilaiPerhitungan=data.getPerhitunganPmYmhDibuku();
         }
 
-        Map rkUnit = new HashMap();
-        rkUnit.put("nilai",nilaiPerhitungan);
-        rkUnit.put("rekening_id",kodeRekeningDao.getRekeningIdByCoa(branches.getCoaRk()));
+//        Sebelum :
+//
+//        Map rkUnit = new HashMap();
+//        rkUnit.put("nilai",nilaiPerhitungan);
+//        rkUnit.put("rekening_id",kodeRekeningDao.getRekeningIdByCoa(branches.getCoaRk()));
+//
+//        Map biayaObatRj = new HashMap();
+//        biayaObatRj.put("bukti",sumberBiayaObat);
+//        biayaObatRj.put("nilai",nilaiPerhitungan);
+//
+//        dataBilling.put("rk_kd_unit",rkUnit);
+//        dataBilling.put("biaya_obat_rj",biayaObatRj);
+//
+//        END
 
-        Map biayaObatRj = new HashMap();
-        biayaObatRj.put("bukti",sumberBiayaObat);
-        biayaObatRj.put("nilai",nilaiPerhitungan);
+        // 2021-07-26 Sigit, Perubahan Mapping
+        MappingDetail rkUnit = new MappingDetail();
+        rkUnit.setNilai(nilaiPerhitungan);
+        rkUnit.setCoa(branches.getCoaRk());
 
-        dataBilling.put("rk_kd_unit",rkUnit);
-        dataBilling.put("biaya_obat_rj",biayaObatRj);
+        List<MappingDetail> rkUnitList = new ArrayList<>();
+        rkUnitList.add(rkUnit);
+
+        MappingDetail biayaObatRj = new MappingDetail();
+        biayaObatRj.setBukti(sumberBiayaObat);
+        biayaObatRj.setNilai(nilaiPerhitungan);
+
+        List<MappingDetail> biayaObatRjList = new ArrayList<>();
+        biayaObatRjList.add(biayaObatRj);
+
+        dataBilling.put("rk_kd_unit",rkUnitList);
+        dataBilling.put("biaya_obat_rj",biayaObatRjList);
+        // END
 
         logger.info("[PengajuanSetorBoImpl.getBillingForPostingPembagianRkUntukUnit] stop process >>>");
         return dataBilling;
@@ -2417,15 +2598,37 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
             nilaiPerhitungan=data.getPerhitunganPmYmhDibuku();
         }
 
-        Map rkUnit = new HashMap();
-        rkUnit.put("nilai",nilaiPerhitungan);
-        rkUnit.put("rekening_id",kodeRekeningDao.getRekeningIdByCoa(branches.getCoaRk()));
+//        Sebelum :
+//
+//        Map rkUnit = new HashMap();
+//        rkUnit.put("nilai",nilaiPerhitungan);
+//        rkUnit.put("rekening_id",kodeRekeningDao.getRekeningIdByCoa(branches.getCoaRk()));
+//
+//        Map biayaObatRj = new HashMap();
+//        biayaObatRj.put("nilai",nilaiPerhitungan);
+//
+//        dataBilling.put("rk_kd_unit",rkUnit);
+//        dataBilling.put("biaya_obat_rj",biayaObatRj);
+//
+//        END
 
-        Map biayaObatRj = new HashMap();
-        biayaObatRj.put("nilai",nilaiPerhitungan);
+        // 2021-07-26 Sigit, Perubahan Mapping
+        MappingDetail rkUnit = new MappingDetail();
+        rkUnit.setNilai(nilaiPerhitungan);
+        rkUnit.setCoa(branches.getCoaRk());
 
-        dataBilling.put("rk_kd_unit",rkUnit);
-        dataBilling.put("biaya_obat_rj",biayaObatRj);
+        List<MappingDetail> rkUnitList = new ArrayList<>();
+        rkUnitList.add(rkUnit);
+
+        MappingDetail biayaObatRj = new MappingDetail();
+        biayaObatRj.setNilai(nilaiPerhitungan);
+
+        List<MappingDetail> biayaObatRjList = new ArrayList<>();
+        biayaObatRjList.add(biayaObatRj);
+
+        dataBilling.put("rk_kd_unit",rkUnitList);
+        dataBilling.put("biaya_obat_rj",biayaObatRjList);
+        //END
 
         logger.info("[PengajuanSetorBoImpl.getBillingForPostingPenerimaanRkUntukUnit] stop process >>>");
         return dataBilling;

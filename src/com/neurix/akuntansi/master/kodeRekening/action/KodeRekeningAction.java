@@ -272,7 +272,9 @@ public class KodeRekeningAction extends BaseMasterAction {
         return kodeRekeningList;
     }
 
-    public List<KodeRekening> initKodeRekeningSearch(String rekeningId, String namaRekening, String coa) {
+    /** Fahmi 2021-07-25 penambahan filter untuk tipe coa / tipe rekening.
+     * */
+    public List<KodeRekening> initKodeRekeningSearch(String rekeningId, String namaRekening, String coa, String tipeRekening) {
         logger.info("[KodeRekeningAction.initKodeRekeningSearch] start process >>>");
 
         List<KodeRekening> listOfsearchKodeRekening = new ArrayList();
@@ -284,6 +286,8 @@ public class KodeRekeningAction extends BaseMasterAction {
         search.setKodeRekening(coa);
         search.setRekeningId(rekeningId);
         search.setNamaKodeRekening(namaRekening);
+        // Fahmi 2021-07-25 penambahan filter untuk tipe coa.
+        search.setTipeCoa(tipeRekening);
         search.setFlag("Y");
 
         try {
