@@ -2009,4 +2009,74 @@ ADD COLUMN parent_id VARCHAR(30);
     ALTER TABLE it_akun_pendaftaran_jasa
     ADD COLUMN no_jurnal VARCHAR(50);
 
+    -- insert func pembayaran jasa
+    INSERT INTO im_functions
+    (func_id, func_name, url, parent, func_level,flag,action,menu)
+    VALUES
+    ('8004', 'Pembayaran Jasa', '/jasarekanan/initForm_jasarekanan.action', '16', '2','Y','C','8004'),
+    ('8005', 'Init Form Jasa Rekanan', '/jasarekanan/initForm_jasarekanan.action', '8004', null,'Y','C',null),
+    ('8006', 'Search Jasa Rekanan', '/jasarekanan/search_jasarekanan.action', '8004', null,'Y','C',null);
+
+    UPDATE im_functions SET created_who = 'migrasi_admin', last_update_who = 'migrasi_admin',
+    last_update = now(), created_date = now(), flag = 'Y', action = 'C' WHERE func_id IN ('8004','8005','8006');
+
+    -- insert into func_roles
+    -- untuk admin keu, kasub keu, ka keu
+    INSERT INTO im_func_roles
+    (func_id, role_id, flag)
+    VALUES
+    ('8004','39','Y'),
+    ('8005','39','Y'),
+    ('8006','39','Y'),
+    ('8004','54','Y'),
+    ('8005','54','Y'),
+    ('8006','54','Y'),
+    ('8004','55','Y'),
+    ('8005','55','Y'),
+    ('8006','55','Y');
+
+    UPDATE im_func_roles SET created_who = 'migrasi_admin', last_update_who = 'migrasi_admin',
+    last_update = now(), created_date = now() WHERE func_id IN ('8004','8005','8006');
+
+    ALTER TABLE im_akun_trans
+    ALTER COLUMN trans_id TYPE VARCHAR(3);
+
+    ALTER TABLE im_akun_mapping_jurnal
+    ALTER COLUMN trans_id TYPE VARCHAR(3);
+
+    INSERT INTO im_akun_trans
+    (trans_id, trans_name, flag, action, tipe_jurnal_id, is_otomatis)
+    VALUES
+    ('100', 'Close Pendaptan Rawat Jalan Tanpa Obat Lebih Bayar Uang Muka', 'Y', 'C', 'JRJ', 'Y'),
+    ('101', 'Close Pendapatan Rawat Jalan Dengan Obat Lebih Bayar Uang Muka', 'Y', 'C', 'JRJ', 'Y'),
+    ('102', 'Close Pendapatan Rawat Inap Lebih Bayar Uang Muka', 'Y', 'C', 'JRI', 'Y'),
+    ('103', 'Close Pendapatan Rawat Inap Terhadap Transitoris Lebih Bayar Uang Muka', 'Y', 'C', 'JRI', 'Y');
+
+    UPDATE im_akun_trans SET created_who = 'migrasi_admin', last_update_who = 'migrasi_admin',
+    last_update = now(), created_date = now() WHERE created_date is null;
+
+    INSERT INTO im_akun_mapping_jurnal
+    (mapping_jurnal_id, kode_rekening, posisi, master_id, bukti, trans_id, kirim_list, divisi_id, edit_biaya, parameter_coa)
+    VALUES
+    ('MPJ022N','2.1.04.00.01','D','Y','Y','100','Y','N','N','uang_muka'),
+    ('MPJ023N','4.0.00.00.01','K','Y','N','100','Y','Y','N','pendapatan_rawat_jalan_umum'),
+    ('MPJ024N','1.1.01','K','N','N','100','Y','N','N','kas'),
+
+    ('MPJ025N','2.1.04.00.01','D','Y','Y','101','Y','N','N','uang_muka'),
+    ('MPJ026N','4.0.00.00.01','K','Y','N','101','Y','Y','N','pendapatan_rawat_jalan_umum'),
+    ('MPJ027N','2.1.03.00.14','K','Y','Y','101','Y','N','N','ppn_keluaran'),
+    ('MPJ028N','1.1.01','K','N','N','101','Y','N','N','kas'),
+
+
+    ('MPJ029N','2.1.04.00.01','D','Y','Y','102','Y','N','N','uang_muka'),
+    ('MPJ030N','4.0.00.00.02','K','Y','N','102','Y','Y','N','pendapatan_rawat_inap_umum'),
+    ('MPJ031N','1.1.01','K','N','N','102','Y','N','N','kas'),
+
+    ('MPJ032N','2.1.04.00.01','D','Y','Y','103','Y','N','N','uang_muka'),
+    ('MPJ033N','2.1.04.00.01','K','Y','Y','103','Y','N','N','piutang_transistoris_pasien_rawat_inap'),
+    ('MPJ034N','4.0.00.00.02','K','Y','N','103','Y','Y','N','pendapatan_rawat_inap_umum'),
+    ('MPJ035N','1.1.01','K','N','N','103','Y','N','N','kas');
+
+    UPDATE im_akun_mapping_jurnal SET created_who = 'migrasi_admin', last_update_who = 'migrasi_admin',
+    last_update = now(), created_date = now(), flag = 'Y', action = 'C' WHERE created_date is null;
 --
