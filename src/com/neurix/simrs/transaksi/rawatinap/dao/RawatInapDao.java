@@ -4,6 +4,7 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
@@ -167,7 +168,8 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "f.kategori, \n" +
                     "jenis.keterangan as jenis_pasien,\n" +
                     "a.tgl_lahir,\n"+
-                    "b.tindak_lanjut \n"+
+                    "b.tindak_lanjut, \n"+
+                    "a.branch_id \n"+
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_jenis_periksa_pasien jenis ON b.id_jenis_periksa_pasien = jenis.id_jenis_periksa_pasien\n" +
@@ -352,11 +354,60 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                         }
                     }
                     rawatInap.setAlamat(jalan);
+                    HeaderDetailCheckup detailCheckup = diagnosa(obj[2].toString(), obj[27].toString());
+                    if(detailCheckup != null){
+                        rawatInap.setIdDiagnosa(detailCheckup.getDiagnosa());
+                        rawatInap.setNamaDiagnosa(detailCheckup.getNamaDiagnosa());
+                    }
                     rawatInapList.add(rawatInap);
                 }
             }
         }
         return rawatInapList;
+    }
+
+    private HeaderDetailCheckup diagnosa(String idPasien, String branchId) {
+        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+        if (branchId == null || "".equalsIgnoreCase(branchId)) {
+            branchId = "%";
+        }
+
+        String SQL = "SELECT " +
+                "ps.nama, " +
+                "diag.keterangan_diagnosa, \n" +
+                "ck.last_update, \n" +
+                "ck.no_checkup, \n" +
+                "diag.id_diagnosa \n" +
+                "FROM it_simrs_header_checkup ck\n" +
+                "INNER JOIN im_simrs_pasien ps ON ps.id_pasien = ck.id_pasien\n" +
+                "INNER JOIN (SELECT * FROM it_simrs_header_detail_checkup WHERE status_periksa = '3') hdc ON hdc.no_checkup = ck.no_checkup\n" +
+                "INNER JOIN (\n" +
+                "\tSELECT a.* FROM it_simrs_diagnosa_rawat a\n" +
+                "\tINNER JOIN (\n" +
+                "\tSELECT id_detail_checkup, \n" +
+                "\tMAX(created_date) as created_date \n" +
+                "\tFROM it_simrs_diagnosa_rawat\n" +
+                "\tGROUP BY id_detail_checkup\n" +
+                "\t) b ON b.id_detail_checkup = a.id_detail_checkup AND b.created_date = a.created_date\n" +
+                ") diag ON diag.id_detail_checkup = hdc.id_detail_checkup\n" +
+                "WHERE ck.id_pasien = :idPasien \n" +
+                "AND ck.branch_id LIKE :branchId \n" +
+                "ORDER BY hdc.last_update DESC\n" +
+                "LIMIT 1";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("branchId", branchId)
+                .setParameter("idPasien", idPasien)
+                .list();
+
+        for (Object[] obj : results) {
+            detailCheckup.setNamaPasien(obj[0] == null ? "" : obj[0].toString());
+            detailCheckup.setNamaDiagnosa(obj[1] == null ? "" : obj[1].toString());
+            detailCheckup.setNoCheckup(obj[3] == null ? "" : obj[3].toString());
+            detailCheckup.setDiagnosa(obj[4] == null ? "" : obj[4].toString());
+        }
+
+        return detailCheckup;
     }
 
     public List<RawatInap> getSearchVerifikasiRawatInap(RawatInap bean, String type) {

@@ -830,7 +830,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "b.is_vaksin, \n"+
                     "i.no_ruangan, \n"+
                     "a.catatan_klinis,\n" +
-                    "b.indikasi\n" +
+                    "b.indikasi,\n" +
+                    "a.branch_id\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN (SELECT\n" +
@@ -975,6 +976,11 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     }
 
                     checkup.setPenyakitDahulu(getRiwayatPenyakit(checkup.getIdPasien()));
+                    AlertPasien alertPasien = getAlertPasien(obj[1].toString(), obj[62].toString());
+                    if(alertPasien != null){
+                        checkup.setIdDignosaLast(alertPasien.getIdDiagnosa());
+                        checkup.setNamaDiagnosaLast(alertPasien.getDiagnosa());
+                    }
                 }
             }
         }

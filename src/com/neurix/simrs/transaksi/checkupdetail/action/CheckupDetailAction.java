@@ -620,6 +620,8 @@ public class CheckupDetailAction extends BaseMasterAction {
             detailCheckup.setIsVaksin(checkup.getIsVaksin());
             detailCheckup.setCatatanKlinis(checkup.getCatatanKlinis());
             detailCheckup.setSpo2(checkup.getSpo2());
+            detailCheckup.setDiagnosa(checkup.getIdDignosaLast());
+            detailCheckup.setNamaDiagnosa(checkup.getNamaDiagnosa());
 
             if ("rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
                 RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");

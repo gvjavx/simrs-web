@@ -152,7 +152,7 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <div class="pull-right" style="color: red">
-                                            <i class="fa fa-square"></i> Diagnosis Terakhir (B20, A16.2, A18, A19, B16.9)
+                                            <i class="fa fa-square"></i> Teridentikasi diagnosa yang di waspadahi
                                         </div>
                                     </div>
                                 </div>
@@ -227,11 +227,15 @@
                             <s:iterator value="#session.listOfResult" var="row">
                                 <s:if test='#row.diagnosa == "B20" || #row.diagnosa == "A16.2" || #row.diagnosa == "A18" || #row.diagnosa == "A19" || #row.diagnosa == "B16.9"'>
                                     <tr style="color: white" bgcolor="red">
+                                    <td>
+                                        <s:property value="idDetailCheckup"/>
+                                        <p>[<s:property value="diagnosa"/>] - <s:property value="namaDiagnosa"/></p>
+                                    </td>
                                 </s:if>
                                 <s:else>
                                     <tr>
-                                </s:else>
                                     <td><s:property value="idDetailCheckup"/></td>
+                                </s:else>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="umur"/></td>

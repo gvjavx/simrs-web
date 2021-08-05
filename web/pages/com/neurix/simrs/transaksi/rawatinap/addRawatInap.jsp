@@ -441,6 +441,21 @@
                                             </td>
                                         </tr>
                                     </s:if>
+                                    <tr>
+                                        <td><b>Diagnosa Terakhir</b></td>
+                                        <td>
+                                            <table>
+                                                <s:if test='rawatInap.idDiagnosa == "B20" || rawatInap.idDiagnosa == "A16.2" || rawatInap.idDiagnosa == "A18" || rawatInap.idDiagnosa == "A19" || rawatInap.idDiagnosa == "B16.9"'>
+                                                    <div style="color: red">
+                                                        [<s:property value="rawatInap.idDiagnosa"/>] - <s:property value="rawatInap.namaDiagnosa"/>
+                                                    </div>
+                                                </s:if>
+                                                <s:else>
+                                                    [<s:property value="rawatInap.idDiagnosa"/>] - <s:property value="rawatInap.namaDiagnosa"/>
+                                                </s:else>
+                                            </table>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
                             <!-- /.col -->

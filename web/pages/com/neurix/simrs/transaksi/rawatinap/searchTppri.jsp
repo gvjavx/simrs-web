@@ -222,7 +222,7 @@
                                     <tr bgcolor="#30d196">
                                         <td>No Checkup</td>
                                         <td>No RM</td>
-                                        <td>Nama</td>
+                                        <td width="20%">Nama</td>
                                         <td>Tanggal Masuk</td>
                                         <td align="center">Jenis Pasien</td>
                                         <td>Tindak Lanjut</td>

@@ -234,6 +234,25 @@ public class HeaderCheckup {
     private String namaPetugas;
     private String ttdPemberi;
 
+    private String idDignosaLast;
+    private String namaDiagnosaLast;
+
+    public String getIdDignosaLast() {
+        return idDignosaLast;
+    }
+
+    public void setIdDignosaLast(String idDignosaLast) {
+        this.idDignosaLast = idDignosaLast;
+    }
+
+    public String getNamaDiagnosaLast() {
+        return namaDiagnosaLast;
+    }
+
+    public void setNamaDiagnosaLast(String namaDiagnosaLast) {
+        this.namaDiagnosaLast = namaDiagnosaLast;
+    }
+
     public String getTtdPemberi() {
         return ttdPemberi;
     }

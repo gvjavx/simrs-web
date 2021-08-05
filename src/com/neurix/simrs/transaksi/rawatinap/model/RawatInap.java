@@ -144,6 +144,16 @@ public class RawatInap {
     private String idKelasBpjs;
     private String statusNaikKelas;
 
+    private String idDiagnosa;
+
+    public String getIdDiagnosa() {
+        return idDiagnosa;
+    }
+
+    public void setIdDiagnosa(String idDiagnosa) {
+        this.idDiagnosa = idDiagnosa;
+    }
+
     public String getIdKelasBpjs() {
         return idKelasBpjs;
     }

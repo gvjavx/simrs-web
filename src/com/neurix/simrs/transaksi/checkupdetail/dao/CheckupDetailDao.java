@@ -402,10 +402,10 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     headerDetailCheckup.setIsTindakan(isTindakanRawat(obj[0].toString()));
                     headerDetailCheckup.setTriase(triase(obj[0].toString()));
 
-                    HeaderDetailCheckup asuransi = diagnosa(obj[2].toString(), branchId);
-                    if(asuransi != null){
-                        headerDetailCheckup.setNamaDiagnosa(asuransi.getNamaDiagnosa());
-                        headerDetailCheckup.setDiagnosa(asuransi.getDiagnosa());
+                    HeaderDetailCheckup detailDiagnosa = diagnosa(obj[2].toString(), branchId);
+                    if(detailDiagnosa != null){
+                        headerDetailCheckup.setNamaDiagnosa(detailDiagnosa.getNamaDiagnosa());
+                        headerDetailCheckup.setDiagnosa(detailDiagnosa.getDiagnosa());
                     }
 
                     checkupList.add(headerDetailCheckup);
