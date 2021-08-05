@@ -32,7 +32,7 @@ import java.util.Map;
 public class PendaftaranJasaRekananAction extends BaseTransactionAction{
     public static transient Logger logger = Logger.getLogger(PendaftaranJasaRekananAction.class);
 
-    private PendaftaranJasaRekananBo pendaftatanJasaRekananBoProxy;
+    private PendaftaranJasaRekananBo pendaftaranJasaRekananBoProxy;
     private PendaftaranJasa pendaftaranJasa;
     private CrudResponse crudResponse;
     private String jenisJabatan;
@@ -53,8 +53,8 @@ public class PendaftaranJasaRekananAction extends BaseTransactionAction{
         this.pendaftaranJasa = pendaftaranJasa;
     }
 
-    public void setPendaftatanJasaRekananBoProxy(PendaftaranJasaRekananBo pendaftatanJasaRekananBoProxy) {
-        this.pendaftatanJasaRekananBoProxy = pendaftatanJasaRekananBoProxy;
+    public void setPendaftaranJasaRekananBoProxy(PendaftaranJasaRekananBo pendaftaranJasaRekananBoProxy) {
+        this.pendaftaranJasaRekananBoProxy = pendaftaranJasaRekananBoProxy;
     }
 
     public void PendaftaranJasaRekananAction(){
@@ -71,7 +71,7 @@ public class PendaftaranJasaRekananAction extends BaseTransactionAction{
 
         List<PendaftaranJasa> pendaftaranJasaList = new ArrayList<>();
         try {
-            pendaftaranJasaList = pendaftatanJasaRekananBoProxy.getSearchByCriteria(dataPendaftaranJasa);
+            pendaftaranJasaList = pendaftaranJasaRekananBoProxy.getSearchByCriteria(dataPendaftaranJasa);
         } catch (GeneralBOException e){
             logger.error("[PendaftaranJasaRekananAction.initForm] Error ", e);
             addActionError("[PendaftaranJasaRekananAction.initForm] Error "+ e.getCause());
@@ -102,8 +102,12 @@ public class PendaftaranJasaRekananAction extends BaseTransactionAction{
     public String initForm() {
         logger.info("[PendaftaranJasaRekananAction.initForm] Start >>>");
 
-        setPendaftaranJasa(new PendaftaranJasa());
+        PendaftaranJasa pendaftaranJasa = new PendaftaranJasa();
+        pendaftaranJasa.setBranchId(CommonUtil.userBranchLogin());
+
+        setPendaftaranJasa(pendaftaranJasa);
         setJenisJabatan(tentukanJenisJabatanbyRole(CommonUtil.roleIdAsLogin()));
+
 
         logger.info("[PendaftaranJasaRekananAction.initForm] End <<<");
         return "success";

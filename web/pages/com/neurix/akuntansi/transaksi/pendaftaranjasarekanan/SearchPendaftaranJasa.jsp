@@ -95,7 +95,7 @@
                                     <label class="control-label col-sm-4">Unit </label>
                                     <div class="col-sm-4">
                                         <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="kas.branchId" disabled="true"
+                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="pendaftaranJasa.branchId" disabled="true"
                                                   listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
                                         <s:hidden id="branchId" name="pendaftaranJasa.branchId" />
                                         <%--<s:if test='pendaftaranJasa.branchId == "01"'>--%>

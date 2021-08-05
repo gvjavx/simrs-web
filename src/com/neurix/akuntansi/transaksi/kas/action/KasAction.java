@@ -1063,6 +1063,22 @@ public class KasAction extends BaseMasterAction {
             return "input_pemasukan";
         }
 
+        // Fahmi 2021-08-04, Memasukkan jabatan dalam search Kas
+        String roleId = CommonUtil.roleIdAsLogin();
+        String jabatan;
+        if (CommonConstant.ROLE_ID_KASUB_KEU.equalsIgnoreCase(roleId)){
+            jabatan="admin_kasub";
+        }else if (CommonConstant.ROLE_ID_KA_KEU.equalsIgnoreCase(roleId)){
+            jabatan="admin_keu";
+        }else{
+            jabatan="";
+        }
+
+        for (Kas a : listOfsearchKas)
+        { a.setJabatan(jabatan); }
+
+        // End Fahmi
+
         HttpSession session = ServletActionContext.getRequest().getSession();
 
         session.removeAttribute("listOfResult");
@@ -1544,6 +1560,7 @@ public class KasAction extends BaseMasterAction {
 
         reportParams.put("reportTitle", reportName);
         reportParams.put("reportName", reportName);
+        reportParams.put("pathChild",  CommonConstant.REALPATH_REPORT_AKUNTANSI);
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT + branch.getLogoName());
         reportParams.put("branchId", data.getBranchId());
         java.util.Date now = new java.util.Date();

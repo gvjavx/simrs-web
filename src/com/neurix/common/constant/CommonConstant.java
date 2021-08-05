@@ -447,6 +447,7 @@ public class CommonConstant {
     public final static String CODE_INVOICE_VA_TELE = CommonUtil.getPropertyParams("code.invoice.telemedic");
     public final static String JENIS_PEMBAYARAN_TRANSFER_TUNAI = CommonUtil.getPropertyParams("jenis.pembayaran.tt");
     public final static String JENIS_PEMBAYARAN_VA = CommonUtil.getPropertyParams("jenis.pembayaran.va");
+
     public final static String PATH_REPORT_AKUNTANSI = ContextLoader.getCurrentWebApplicationContext().getApplicationName() + "/pages/report/neurix/com/akuntansi/";
     public final static String COA_BEBAN_JASA_PREFESIONAL = CommonUtil.getPropertyParams("coa.beban.jasa.profesional");
     public final static String TRANS_ID_PEMBAYARAN_JASA = CommonUtil.getPropertyParams("transaksi.id.pembayaran.jasa");
@@ -455,6 +456,8 @@ public class CommonConstant {
     public final static String TRANS_ID_RI_LEBIH_UM             = CommonUtil.getPropertyParams("transaksi.id.lebih.um.ri");
     public final static String TRANS_ID_RI_LEBIH_UM_TRANSITORIS = CommonUtil.getPropertyParams("transaksi.id.lebih.um.ri.transitoris");
 
+//    public final static String PATH_REPORT_AKUNTANSI = ContextLoader.getCurrentWebApplicationContext().getApplicationName() + "/pages/report/com/neurix/akuntansi/";
+    public final static String REALPATH_REPORT_AKUNTANSI = CommonUtil.getPropertyParams("base.dir") + "pages/report/com/neurix/akuntansi/";
 
 
 }

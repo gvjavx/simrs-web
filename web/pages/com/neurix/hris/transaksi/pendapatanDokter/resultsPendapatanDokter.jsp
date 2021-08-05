@@ -496,30 +496,56 @@
                         <table class="table table-striped">
                             <tr>
                                 <td><b>Dokter Id</b></td>
-                                <td><span id="id_dokter"></span></td>
-                            </tr>
-                            <tr>
-                                <td><b>Nama</b></td>
-                                <td><span id="nama_dokter"></span></td>
-                            </tr>
-                            <tr>
-                                <td><b>Unit</b></td>
-                                <td><span id="nama_unit"></span></td>
+                                <td align="right"><span id="id_dokter"></span></td>
                             </tr>
                             <tr>
                                 <td><b>Kode Dokter</b></td>
-                                <td><span id="kode_jabatan"></span></td>
+                                <td align="right"><span id="kode_jabatan"></span></td>
                             </tr>
                             <tr>
-                                <td><b>Bulan</b></td>
-                                <td><span id="bulan"></span></td>
+                                <td><b>Nama</b></td>
+                                <td align="right"><span id="nama_dokter"></span></td>
                             </tr>
                             <tr>
+                                <td><b>Unit</b></td>
+                                <td align="right"><span id="nama_unit"></span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Periode</b></td>
+                                <td align="right"><span id="bulan"></span></td>
+                            </tr>
+                            <tr style="display:none;">
                                 <td><b>Tahun</b></td>
-                                <td><span id="tahun"></span></td>
+                                <td align="right"><span id="tahun"></span></td>
                             </tr>
-                            <tr style="display: none">
-                                <td><b>Bruto</b></td>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" style="max-height: 160px;overflow-y: scroll;">
+                        <table class="table table-bordered">
+                            <thead>
+                            <td>Tanggal</td>
+                            <td>Nama Pasien</td>
+                            <td>Jenis Rawat</td>
+                            <td>Nama Poli</td>
+                            <td>Tindakan</td>
+                            <td>Biaya</td>
+                            <td>KSO</td>
+                            <td>Pajak</td>
+                            <td>Potongan</td>
+                            <td>Total</td>
+                            </thead>
+                            <tbody id="body_detail">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-striped">
+                            <tr style="">
+                                <td><b>Total Biaya</b></td>
                                 <td align="right"><span id="bruto"></span></td>
                             </tr>
                             <tr>
@@ -527,7 +553,7 @@
                                 <td align="right"><span id="pendapatan_rs"></span></td>
                             </tr>
                             <tr>
-                                <td><b>Hr Bruto</b></td>
+                                <td><b>Total Biaya setelah Pendapatan Rs</b></td>
                                 <td align="right"><span id="hr_bruto"></span></td>
                             </tr>
                             <tr>
@@ -548,36 +574,24 @@
                                 <td align="right"><span id="pajak"></span></td>
                             </tr>
                             <tr>
-                                <td><b>Pot. Pajak</b></td>
+                                <td><b>Potongan Pajak</b></td>
                                 <td align="right"><span id="pot_pajak"></span></td>
                             </tr>
                             <tr>
-                                <td><b>Hr Aktifitas Netto</b></td>
+                                <td><b>Total Biaya setelah Pajak</b></td>
                                 <td align="right"><span id="hr_aktifitas_netto"></span></td>
                             </tr>
                             <tr>
-                                <td><b>Pot. Ks</b></td>
+                                <td><b>Potongan Ks</b></td>
                                 <td align="right"><span id="pot_ks"></span></td>
                             </tr>
                             <tr>
-                                <td><b>Hr Netto</b></td>
+                                <td><b>Grand total</b></td>
                                 <td align="right"><span id="hr_netto"></span></td>
                             </tr>
                         </table>
                     </div>
                 </div>
-                <table class="table table-bordered">
-                    <thead>
-                    <td>Nama Pasien</td>
-                    <td>Tanggal</td>
-                    <td>Master Id</td>
-                    <td>Nama Poli</td>
-                    <td>Nama Activity Id</td>
-                    <td>Biaya</td>
-                    </thead>
-                    <tbody id="body_detail">
-                    </tbody>
-                </table>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -664,8 +678,8 @@
                         "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Id Dokter</th>"+
                         "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Dokter</th>"+
                         "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Kode Dokter</th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Bulan</th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc''>Tahun</th>"+
+                        // "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Bulan</th>"+
+                        // "<th style='text-align: center; color: #fff; background-color:  #3c8dbc''>Tahun</th>"+
                         "<th style='text-align: center; color: #fff; background-color:  #3c8dbc''>Bruto</th>"+
                         "<th style='text-align: center; color: #fff; background-color:  #3c8dbc''>Pph Dipungut</th>"+
                         "<th style='text-align: center; color: #fff; background-color:  #3c8dbc''>Pot. Ks</th>"+
@@ -687,8 +701,8 @@
                             '<td style="text-align: center">' + item.dokterId + '</td>' +
                             '<td style="text-align: center">' + item.dokterName + '</td>' +
                             '<td style="text-align: center">' + item.kodeJabatan + '</td>' +
-                            '<td style="text-align: center">' + item.bulan + '</td>' +
-                            '<td align="center" class="ceknull">' + item.tahun + '</td>' +
+                            // '<td style="text-align: center">' + item.bulan + '</td>' +
+                            // '<td align="center" class="ceknull">' + item.tahun + '</td>' +
                             '<td align="right" class="ceknull">' + item.stTotalHrBruto + '</td>' +
                             '<td align="right" class="ceknull">' + item.stTotalPphDipungut + '</td>' +
                             '<td align="right" class="ceknull">' + item.stTotalPotKs + '</td>' +
@@ -736,16 +750,59 @@
 
     $('.pendapatanTable').on('click', '.item-view-pendapatan', function () {
 //        var branchId = $(this).attr('data');
-//        var bulan = $(this).attr('bulan');
+        var bulan = $(this).attr('bulan');
 //        var tahun = $(this).attr('tahun');
+
+        // Fahmi 2021-08-02, Mempercantik tampilan field bulan
+        switch (bulan)
+        {
+          case "01":
+             bulan = "Jan";
+             break;
+          case "02":
+             bulan = "Feb";
+             break;
+          case "03":
+             bulan = "Mar";
+             break;
+          case "04":
+             bulan = "Apr";
+             break;
+          case "05":
+             bulan = "Mei";
+             break;
+          case "06":
+             bulan = "Jun";
+             break;
+          case "07":
+             bulan = "Jul";
+             break;
+          case "08":
+             bulan = "Aug";
+             break;
+          case "09":
+             bulan = "Sep";
+             break;
+          case "10":
+             bulan = "Oct";
+             break;
+          case "11":
+             bulan = "Nov";
+             break;
+          case "12":
+             bulan = "Des";
+             break;
+        }
+        // End Fahmi
+
         var dokterId = $(this).attr('dokter');
         var pphLebih = $(this).attr('pphLebih');
         if (pphLebih == '0' || pphLebih == ''){
-            $('#btn').hide();
+            $('#btn').closest("td").hide();
         }else {
-            $('#btn').show();
+            $('#btn').closest("td").show();
         }
-        $('#bulan').text($(this).attr('bulan'));
+        $('#bulan').text(bulan +" / "+$(this).attr('tahun'));
         $('#tahun').text($(this).attr('tahun'));
         $('#id_dokter').text($(this).attr('dokter'));
         $('#nama_dokter').text($(this).attr('nama'));
@@ -782,12 +839,16 @@
             if(response.length > 0){
                 $.each(response, function (i, item) {
                     tmp_table += '<tr>' +
-                            '<td>'+item.namaPasien+'</td>'+
                             '<td>'+formaterDate(item.tanggal)+'</td>'+
+                            '<td>'+item.namaPasien+'</td>'+
                             '<td>'+item.masterId+'</td>'+
                             '<td>'+item.poliName+'</td>'+
                             '<td>'+item.activityName+'</td>'+
                             '<td align="right">'+item.bruto+'</td>'+
+                            '<td align="right">'+item.pendapatanRs+'</td>'+
+                            '<td align="right">'+item.pphDipungut+'</td>'+
+                            '<td align="right">'+item.potKs+'</td>'+
+                            '<td align="right">'+item.gajiBersih+'</td>'+
                             '</tr>'
                 });
 

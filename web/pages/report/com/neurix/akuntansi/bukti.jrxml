@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.1269722013523669"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="359"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -14,7 +14,7 @@
 	<parameter name="terbilang" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="uraian" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="kurs" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+	<parameter name="reportParams.pathChild" class="java.lang.String">
 		<defaultValueExpression><![CDATA["C:\\tomcat\\webapps\\go-medsys\\pages\\report\\com\\neurix\\akuntansi\\"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="pembayaranId" class="java.lang.String"/>
@@ -121,7 +121,7 @@ where
 					<subreportParameterExpression><![CDATA[$P{pembayaranId}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subReportDebetJurnal.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{reportParams.pathChild} + "subReportDebetJurnal.jasper"]]></subreportExpression>
 			</subreport>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-13" x="2" y="44" width="208" height="18" uuid="65e2166f-ad97-4974-90b3-7e6a89f12967"/>

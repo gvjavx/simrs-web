@@ -281,7 +281,7 @@
                                             <s:elseif test='#row.approvalKeuanganFlag == "N"'>
                                                 <img border="0" src="<s:url value="/pages/images/icon_failure.ico"/>">
                                             </s:elseif>
-                                            <s:elseif test='#row.jabatan == "keu"'>
+                                            <s:elseif test='#row.jabatan == "keu" || #row.jabatan == "admin_keu"'>
                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.kasId}"/>" class="item-approve-keu">
                                                     <img border="0" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>">
                                                 </a>
@@ -300,7 +300,7 @@
                                             <s:elseif test='#row.approvalKasubKeuanganFlag == "N"'>
                                                 <img border="0" src="<s:url value="/pages/images/icon_failure.ico"/>">
                                             </s:elseif>
-                                            <s:elseif test='#row.jabatan == "kasub" && #row.approvalKeuanganFlag == "Y"'>
+                                            <s:elseif test='(#row.jabatan == "kasub" || #row.jabatan == "admin_kasub") && #row.approvalKeuanganFlag == "Y"'>
                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.kasId}"/>" class="item-approve-kasub-keu">
                                                     <img border="0" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>">
                                                 </a>
@@ -313,7 +313,7 @@
                                                     <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" >
                                                 </a>
                                             </s:if>
-                                            <s:elseif test='#row.jabatan == "ka" && #row.approvalKasubKeuanganFlag == "Y"'>
+                                            <s:elseif test='(#row.jabatan == "ka" || #row.jabatan == "admin_keu") && #row.approvalKasubKeuanganFlag == "Y"'>
                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.kasId}"/>" class="item-posting">
                                                     <img border="0" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>">
                                                 </a>

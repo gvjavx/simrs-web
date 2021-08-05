@@ -210,8 +210,11 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                                 pendapatanDokter.setMasterId(masterId);
 
                                 bruto = (BigDecimal) obj[12];
-
-                                if ("tindakan".equalsIgnoreCase(jenisKso) && "bpjs".equalsIgnoreCase(masterId)){
+                                // Fahmi 2021-08-02, Berdasarkan informasi dari Pak Ferdi, untuk jenisKso tindakan
+                                // ambil prosentasenya dari persen kso tindakan.
+                                // dan tidak menyinggung bpjs atau tidak.
+                                //if ("tindakan".equalsIgnoreCase(jenisKso) && "bpjs".equalsIgnoreCase(masterId)){
+                                if (!"tindakan".equalsIgnoreCase(jenisKso)){
                                     ksoPersen = (BigDecimal) obj[15];
                                     int kso = 100 - ksoPersen.intValue();
                                     pndptnRs = bruto.doubleValue() * ksoPersen.intValue() / 100;
@@ -690,7 +693,11 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                             String masterId = String.valueOf(obj[2]);
                             bruto = (BigDecimal) obj[0];
 
-                            if ("tindakan".equalsIgnoreCase(jenisKso) && "bpjs".equalsIgnoreCase(masterId)){
+                            // Fahmi 2021-08-02, Berdasarkan informasi dari Pak Ferdi, untuk jenisKso tindakan
+                            // ambil prosentasenya dari persen kso tindakan.
+                            // dan tidak menyinggung bpjs atau tidak.
+                            //if ("tindakan".equalsIgnoreCase(jenisKso) && "bpjs".equalsIgnoreCase(masterId)){
+                            if (!"tindakan".equalsIgnoreCase(jenisKso)){
                                 ksoPersen = (BigDecimal) obj[3];
                                 int kso = 100 - ksoPersen.intValue();
                                 pndptnRs = bruto.doubleValue() * ksoPersen.intValue() / 100;
