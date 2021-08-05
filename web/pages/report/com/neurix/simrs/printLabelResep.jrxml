@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="noAntrian" language="groovy" pageWidth="242" pageHeight="230" orientation="Landscape" columnWidth="226" leftMargin="8" rightMargin="8" topMargin="8" bottomMargin="8" uuid="c8b1d6ef-d35b-49bd-aeda-6dc40c738ef5">
 	<property name="ireport.zoom" value="1.5000000000000027"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="23"/>
+	<property name="ireport.y" value="0"/>
 	<property name="ireport.callouts" value="##Tue Mar 03 19:41:31 ICT 2020"/>
 	<style name="label">
 		<conditionalStyle>
