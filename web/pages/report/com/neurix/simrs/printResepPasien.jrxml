@@ -51,7 +51,7 @@ INNER JOIN (
 ) b ON a.id_approval_obat = b.id_approval_obat
 INNER JOIN im_simrs_pasien c ON a.id_pasien = c.id_pasien
 INNER JOIN im_simrs_header_obat d ON b.id_obat = d.id_obat
-INNER JOIN (
+LEFT JOIN (
 	SELECT
 	id_transaksi_obat_detail,
 	expired_date
