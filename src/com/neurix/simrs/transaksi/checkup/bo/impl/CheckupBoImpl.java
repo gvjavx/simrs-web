@@ -2848,72 +2848,156 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     @Override
     public String getDiagnosaPasien(String idDetailCheckup) throws GeneralBOException {
-        return headerCheckupDao.getDiagnosa(idDetailCheckup);
+        String res = "";
+        try {
+            res = headerCheckupDao.getDiagnosa(idDetailCheckup);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return res;
     }
 
     @Override
     public String getTindakanRawat(String idDetailCheckup) throws GeneralBOException {
-        return headerCheckupDao.getTindakanRawat(idDetailCheckup);
+        String res = "";
+        try {
+            res = headerCheckupDao.getTindakanRawat(idDetailCheckup);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return res;
     }
 
     @Override
     public String getTindakanRawatICD9(String idDetailCheckup) throws GeneralBOException {
-        return headerCheckupDao.getTindakanRawatIC9(idDetailCheckup);
+        String res = "";
+        try {
+            res = headerCheckupDao.getTindakanRawatIC9(idDetailCheckup);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return res;
     }
 
     @Override
     public String getDiagnosaPrimer(String idDetailCheckup) throws GeneralBOException {
-        return headerCheckupDao.getDiagnosaPrimer(idDetailCheckup);
+        String res = "";
+        try {
+            res = headerCheckupDao.getDiagnosaPrimer(idDetailCheckup);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return res;
     }
 
     @Override
     public String getDiagnosaMasuk(String idDetailCheckup) throws GeneralBOException {
-        return headerCheckupDao.getDiagnosaMasuk(idDetailCheckup);
+        String res = "";
+        try {
+            res = headerCheckupDao.getDiagnosaMasuk(idDetailCheckup);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return res;
     }
 
     @Override
     public String getDiagnosaSekunder(String idDetailCheckup) throws GeneralBOException {
-        return headerCheckupDao.getDiagnosaSekunder(idDetailCheckup);
+        String res = "";
+        try {
+            res = headerCheckupDao.getDiagnosaSekunder(idDetailCheckup);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return res;
     }
 
     @Override
     public String getPenunjangMedis(String idDetailCheckup, String tipe) throws GeneralBOException {
-        return headerCheckupDao.getPenunjangMendis(idDetailCheckup, tipe);
+        String res = "";
+        try {
+            res = headerCheckupDao.getPenunjangMendis(idDetailCheckup, tipe);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return res;
     }
 
     @Override
     public String getResepPasien(String idDetailCheckup) throws GeneralBOException {
-        return headerCheckupDao.getResepPasien(idDetailCheckup);
+        String res = "";
+        try {
+            res = headerCheckupDao.getResepPasien(idDetailCheckup);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return res;
     }
 
     @Override
     public String getAlergi(String idPasien) throws GeneralBOException {
-        return headerCheckupDao.getAlergiPasien(idPasien);
+        String res = "";
+        try {
+            res = headerCheckupDao.getAlergiPasien(idPasien);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return res;
     }
 
     @Override
     public String getTujuanRuangan(String noCheckup) throws GeneralBOException {
-        return headerCheckupDao.getTujuanRuangan(noCheckup);
+        String res = "";
+        try {
+            res = headerCheckupDao.getTujuanRuangan(noCheckup);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return res;
     }
 
     @Override
     public HeaderCheckup getDataPemeriksaanFisik(String noCheckup) throws GeneralBOException {
-        return headerCheckupDao.getPemeriksaanFisik(noCheckup);
+        HeaderCheckup res = new HeaderCheckup();
+        try {
+            res = headerCheckupDao.getPemeriksaanFisik(noCheckup);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return res;
     }
 
     @Override
     public List<HeaderCheckup> getRiwayatPemeriksaan(String idPasien) throws GeneralBOException {
-        return headerCheckupDao.getRiwayatPemeriksaan(idPasien);
+        List<HeaderCheckup> res = new ArrayList<>();
+        try {
+            res = headerCheckupDao.getRiwayatPemeriksaan(idPasien);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return res;
     }
 
     @Override
     public Dokter getNamaSipDokter(String id, String tipe) throws GeneralBOException {
-        return headerCheckupDao.getNamaSipDokter(id, tipe);
+        Dokter res = new Dokter();
+        try {
+            res = headerCheckupDao.getNamaSipDokter(id, tipe);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return res;
     }
 
     @Override
     public List<PelayananPaket> getListPelayananPaket(String noCheckup) throws GeneralBOException {
-        return pelayananPaketDao.getListPelayananPaket(noCheckup);
+        List<PelayananPaket> res = new ArrayList<>();
+        try {
+            res = pelayananPaketDao.getListPelayananPaket(noCheckup);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return res;
     }
 
     @Override
@@ -3027,17 +3111,12 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                             kategoriLab = paketPeriksa.getIdKategoriItem();
                             String id = getNextPeriksaLabId();
                             entityPeriksaLab.setIdPeriksaLab("PRL" + id);
-//                            entityPeriksaLab.setIdLab(paketPeriksa.getIdKategoriItem());
-//                            entityPeriksaLab.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-//                            entityPeriksaLab.setIdDokterPengirim(bean.getIdDokter());
-//                            entityPeriksaLab.setStatusPeriksa("0");
                             entityPeriksaLab.setFlag("Y");
                             entityPeriksaLab.setAction("C");
                             entityPeriksaLab.setCreatedDate(bean.getCreatedDate());
                             entityPeriksaLab.setCreatedWho(bean.getCreatedWho());
                             entityPeriksaLab.setLastUpdate(bean.getLastUpdate());
                             entityPeriksaLab.setLastUpdateWho(bean.getLastUpdateWho());
-//                            entityPeriksaLab.setIdKategoriLab(idKategoriLab);
 
                             try {
                                 periksaLabDao.addAndSave(entityPeriksaLab);
@@ -3832,6 +3911,17 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 }
             }
         }
+    }
+
+    @Override
+    public List<String> getDetailPemeriksaan(String id) throws GeneralBOException {
+        List<String> stringList = new ArrayList<>();
+        try{
+            stringList = headerCheckupDao.detailPemeriksaan(id);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return stringList;
     }
 
     private CrudResponse saveRawatInap(RawatInap bean) {

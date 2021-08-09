@@ -1190,7 +1190,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return res;
     }
 
-    private List<String> detailPemeriksaan(String id){
+    public List<String> detailPemeriksaan(String id){
         List<String> stringList = new ArrayList<>();
         String SQL = "SELECT \n" +
                 "a.id_header_pemeriksaan,\n" +

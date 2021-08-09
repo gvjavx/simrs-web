@@ -125,5 +125,6 @@ public interface CheckupBo {
     public void updateVitalSign(HeaderCheckup bean) throws GeneralBOException;
     public HeaderCheckup getDataPendaftaranPasien(String idDetailCheckup) throws GeneralBOException;
     public void updateDataPendaftaran(HeaderCheckup bean) throws GeneralBOException;
+    public List<String> getDetailPemeriksaan(String id) throws GeneralBOException;
 
 }
