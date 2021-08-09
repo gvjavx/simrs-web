@@ -42,6 +42,9 @@ public class PendapatanDokterDao extends GenericDao<ItHrisPendapatanDokterEntity
             if (mapCriteria.get("tahun") != null){
                 criteria.add(Restrictions.eq("tahun", (String) mapCriteria.get("tahun")));
             }
+            if (mapCriteria.get("no_nota") != null){
+                criteria.add(Restrictions.eq("noNota", (String) mapCriteria.get("no_nota")));
+            }
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));

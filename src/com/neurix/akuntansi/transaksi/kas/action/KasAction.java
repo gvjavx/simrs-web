@@ -1560,7 +1560,9 @@ public class KasAction extends BaseMasterAction {
 
         reportParams.put("reportTitle", reportName);
         reportParams.put("reportName", reportName);
+        // Fahmi 2021-08-04, Ubah hardcode di jasper, ke parameter
         reportParams.put("pathChild",  CommonConstant.REALPATH_REPORT_AKUNTANSI);
+        // End Fahmi
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT + branch.getLogoName());
         reportParams.put("branchId", data.getBranchId());
         java.util.Date now = new java.util.Date();

@@ -815,7 +815,7 @@
         if ($(this).attr('komulatifLebih') == 'null'){
             $('#dpp_pph_21').text($(this).attr('pph21'));
             $('#dpp_pph_komulatif').text($(this).attr('komulatif'));
-            $('#pajak').text($(this).attr('pajak'));
+            $('#pajak').text($(this).attr('pajak')+"%");
             $('#pot_pajak').text($(this).attr('potPjk'));
             $('#hr_aktifitas_netto').text($(this).attr('hrAktifitas'));
             $('#pot_ks').text($(this).attr('potKs'));

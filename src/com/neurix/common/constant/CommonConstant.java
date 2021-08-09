@@ -203,6 +203,12 @@ public class CommonConstant {
     public final static String ROLE_ID_ADMIN_DIVISI = CommonUtil.getPropertyParams("role.id.admin.divisi");
     public final static String ROLE_ID_ADMIN = CommonUtil.getPropertyParams("role.id.admin");
     public final static String ROLE_ID_ADMIN_SDM = CommonUtil.getPropertyParams("role.id.admin.sdm");
+
+    // Fahmi 2021-08-07, Kelompok Pendapatan Dokter KSO
+    public final static String COA_REDUKSI_PENDAPATAN_RI = CommonUtil.getPropertyParams("rekening.id.reduksi.ri");
+    public final static String COA_REDUKSI_PENDAPATAN_RJ = CommonUtil.getPropertyParams("rekening.id.reduksi.rj");
+    public final static String COA_UTANGDOKTER = CommonUtil.getPropertyParams("rekening.id.utangdokter");
+    // End Fahmi
 //    public final static String ID_KANPUS = "KP";
     public final static String MASTER_PAJAK_OBAT = "03.00";
 

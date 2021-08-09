@@ -254,8 +254,18 @@
                                                                    title="Pendapatan Dokter">
                                                         </sj:dialog>
                                                         <s:set name="listOfSearchPendapatanDokter" value="#session.listOfResultPendapatanDokter" scope="request" />
-                                                        <display:table name="listOfSearchPendapatanDokter" class="table table-condensed table-striped table-hover"
+                                                        <display:table name="listOfSearchPendapatanDokter" class="table table-bordered table-striped table-hover"
                                                                        requestURI="paging_displaytag_pendapatanDokter.action" export="true" id="row" pagesize="30" style="font-size:10">
+                                                            <display:column media="html" title="Cetak" style="text-align:center;font-size:9">
+                                                                <%--<s:url var="urlView" namespace="/pendapatanDokter" action="view_pendapatanDokter" escapeAmp="false">--%>
+                                                                <%--<s:param name="id"><s:property value="#attr.row.absensiPegawaiId" /></s:param>--%>
+                                                                <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                                <%--</s:url>--%>
+                                                                <%--<sj:a onClickTopics="showDialogMenuView" href="%{urlView}">--%>
+                                                                <%--<img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_trash">--%>
+                                                                <%--</sj:a>--%>
+                                                                <img onclick="cetakBuktiPendKSO('<s:property value="#attr.row.noNota"/>','<s:property value="#attr.row.dokterId"/>')" border="0" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
+                                                            </display:column>
                                                             <display:column media="html" title="View" style="text-align:center;font-size:9">
                                                                 <%--<s:url var="urlView" namespace="/pendapatanDokter" action="view_pendapatanDokter" escapeAmp="false">--%>
                                                                     <%--<s:param name="id"><s:property value="#attr.row.absensiPegawaiId" /></s:param>--%>
@@ -522,6 +532,14 @@
         }
         return today;
     }
+
+    // Fahmi 2021-08-05, Tambah fitur cetak bukti pendapatan dokter kso
+    function cetakBuktiPendKSO(noNota, dokterId)
+    {
+       var url = "printReportBuktiPendDokterKSO_pendapatanDokter.action?pendapatanDokter.noNota="+noNota+"&pendapatanDokter.dokterId="+dokterId;
+       window.open(url,'_blank');
+    }
+    // End Fahmi
 
     function detailPendapatan(pphLebih, kodeJabatan, bulan, tahun, pendapatanDokterId,namaDokter,branchName,bruto, pendapatanRs,hrBruto,dppPph21,dppPphKomulatif,pajak,potPajak,hrAktifitas,potKs,gajiBersih){
         console.log(namaDokter);
