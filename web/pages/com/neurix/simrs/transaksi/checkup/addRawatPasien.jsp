@@ -2796,7 +2796,7 @@
                 $('#date-periksa').val(converterDate(response.stTglKeluar));
                 $("#nama-pasien").html(namapasien);
                 $("#alergi").html(alergi);
-                if("B20" == response.idDiagnosa || "A16.2" == response.idDiagnosa || "A18" == response.idDiagnosa || "A19" == response.idDiagnosa || "B16.9" == response.idDiagnosa){
+                if("Y" == response.isWarning){
                     $("#diagnosa").html('<span class="blink_me_atas" style="color: red; font-weight: bold">'+'['+response.idDiagnosa+']'+response.diagnosa+'<span>');
                 }else{
                     $("#diagnosa").html('['+response.idDiagnosa+']-'+response.diagnosa);

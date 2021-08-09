@@ -189,7 +189,7 @@
                             </thead>
                             <tbody>
                             <s:iterator value="#session.listOfResult" var="row">
-                                <s:if test='#row.diagnosa == "B20" || #row.diagnosa == "A16.2" || #row.diagnosa == "A18" || #row.diagnosa == "A19" || #row.diagnosa == "B16.9"'>
+                                <s:if test='#row.isWarning == "Y"'>
                                     <tr style="color: white" bgcolor="red">
                                     <td align="center">
                                         <script>

@@ -1409,7 +1409,7 @@ function listDiagnosa() {
                 }
 
                 var blink = "";
-                if("B20" == id || "A16.2" == id || "A18" == id || "A19" == id || "B16.9" == id){
+                if(item.isWarning == "Y"){
                     blink = 'class="blink_me_atas" style="color: red"';
                 }
 
@@ -2486,7 +2486,7 @@ function editTindakan(id, idTindakan, idKategori, idPerawat, qty, idDokter, idPe
         $('#tin_id_ketgori_tindakan').val(idKategori).trigger('change');
         setTimeout(function () {
             $('#tin_id_tindakan').val(idTindakan).trigger('change');
-        },500);
+        },1000);
     },500);
     $('#tin_qty').val(qty);
     $('#save_tindakan').attr('onclick', 'saveTindakan(\'' + id + '\')').show();

@@ -173,6 +173,15 @@ public class HeaderDetailCheckup extends BaseModel{
     private List<ItSimrsKontrolUlangEntity> kontrolUlangEntityList = new ArrayList<>();
     private String idKontrolUlang;
     private String namaDokter;
+    private String isWarning;
+
+    public String getIsWarning() {
+        return isWarning;
+    }
+
+    public void setIsWarning(String isWarning) {
+        this.isWarning = isWarning;
+    }
 
     public String getNamaDokter() {
         return namaDokter;

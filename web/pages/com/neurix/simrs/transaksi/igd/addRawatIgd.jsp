@@ -402,7 +402,7 @@
                                             <td><b>Diagnosa Terakhir</b></td>
                                             <td>
                                                 <table>
-                                                    <s:if test='headerDetailCheckup.diagnosa == "B20" || headerDetailCheckup.diagnosa == "A16.2" || headerDetailCheckup.diagnosa == "A18" || headerDetailCheckup.diagnosa == "A19" || headerDetailCheckup.diagnosa == "B16.9"'>
+                                                    <s:if test='headerDetailCheckup.isWarning == "Y"'>
                                                         <div style="color: red">
                                                             [<s:property value="headerDetailCheckup.diagnosa"/>] - <s:property value="headerDetailCheckup.namaDiagnosa"/>
                                                         </div>

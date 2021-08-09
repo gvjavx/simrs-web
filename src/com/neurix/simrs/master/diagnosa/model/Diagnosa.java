@@ -14,6 +14,15 @@ public class Diagnosa {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String isWarning;
+
+    public String getIsWarning() {
+        return isWarning;
+    }
+
+    public void setIsWarning(String isWarning) {
+        this.isWarning = isWarning;
+    }
 
     public String getIdDiagnosa() {
         return idDiagnosa;

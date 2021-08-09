@@ -446,7 +446,7 @@
                                             <td><b>Diagnosa Terakhir</b></td>
                                             <td>
                                                 <table>
-                                                    <s:if test='rawatInap.idDiagnosa == "B20" || rawatInap.idDiagnosa == "A16.2" || rawatInap.idDiagnosa == "A18" || rawatInap.idDiagnosa == "A19" || rawatInap.idDiagnosa == "B16.9"'>
+                                                    <s:if test='rawatInap.isWarning == "Y"'>
                                                         <div style="color: red">
                                                             [<s:property value="rawatInap.idDiagnosa"/>] - <s:property value="rawatInap.namaDiagnosa"/>
                                                         </div>

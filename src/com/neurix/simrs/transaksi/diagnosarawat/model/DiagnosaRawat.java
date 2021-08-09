@@ -21,6 +21,15 @@ public class DiagnosaRawat extends BaseModel{
     private String orderLastUpdate;
     private String orderCreated;
     private String orderJenisDiagnosa;
+    private String isWarning;
+
+    public String getIsWarning() {
+        return isWarning;
+    }
+
+    public void setIsWarning(String isWarning) {
+        this.isWarning = isWarning;
+    }
 
     public String getOrderJenisDiagnosa() {
         return orderJenisDiagnosa;

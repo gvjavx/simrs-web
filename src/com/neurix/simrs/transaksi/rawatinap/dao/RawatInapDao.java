@@ -358,6 +358,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     if(detailCheckup != null){
                         rawatInap.setIdDiagnosa(detailCheckup.getDiagnosa());
                         rawatInap.setNamaDiagnosa(detailCheckup.getNamaDiagnosa());
+                        rawatInap.setIsWarning(detailCheckup.getIsWarning());
                     }
                     rawatInapList.add(rawatInap);
                 }
@@ -372,12 +373,13 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
             branchId = "%";
         }
 
-        String SQL = "SELECT " +
-                "ps.nama, " +
+        String SQL = "SELECT \n" +
+                "ps.nama, \n" +
                 "diag.keterangan_diagnosa, \n" +
                 "ck.last_update, \n" +
                 "ck.no_checkup, \n" +
-                "diag.id_diagnosa \n" +
+                "diag.id_diagnosa,\n" +
+                "md.is_warning\n" +
                 "FROM it_simrs_header_checkup ck\n" +
                 "INNER JOIN im_simrs_pasien ps ON ps.id_pasien = ck.id_pasien\n" +
                 "INNER JOIN (SELECT * FROM it_simrs_header_detail_checkup WHERE status_periksa = '3') hdc ON hdc.no_checkup = ck.no_checkup\n" +
@@ -390,6 +392,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                 "\tGROUP BY id_detail_checkup\n" +
                 "\t) b ON b.id_detail_checkup = a.id_detail_checkup AND b.created_date = a.created_date\n" +
                 ") diag ON diag.id_detail_checkup = hdc.id_detail_checkup\n" +
+                "INNER JOIN im_simrs_diagnosa md ON diag.id_diagnosa = md.id_diagnosa\n" +
                 "WHERE ck.id_pasien = :idPasien \n" +
                 "AND ck.branch_id LIKE :branchId \n" +
                 "ORDER BY hdc.last_update DESC\n" +
@@ -405,6 +408,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
             detailCheckup.setNamaDiagnosa(obj[1] == null ? "" : obj[1].toString());
             detailCheckup.setNoCheckup(obj[3] == null ? "" : obj[3].toString());
             detailCheckup.setDiagnosa(obj[4] == null ? "" : obj[4].toString());
+            detailCheckup.setIsWarning(obj[5] == null ? "" : obj[5].toString());
         }
 
         return detailCheckup;
