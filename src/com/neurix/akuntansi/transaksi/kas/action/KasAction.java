@@ -617,7 +617,10 @@ public class KasAction extends BaseMasterAction {
 
                 Map data = new HashMap();
                 data.put(parameter, dataMap);
-                data.put("metode_bayar", listMapKas);
+                // Fahmi 2021-08-09, Mengubah key Map metode_bayar -> kas, karena metode_bayar tidak sesuai mapping.
+                //data.put("metode_bayar", listMapKas);
+                data.put("kas", listMapKas);
+                // End Fahmi
                 data.put("currency_id", kas.getCurrencyId());
                 data.put("pengajuan_id", pengajuanBiayaDetailId); //sementara karena di BoImpl diparsing cara ini
 
