@@ -300,7 +300,7 @@ public class PendaftaranJasaRekananAction extends BaseTransactionAction{
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PendaftaranJasaRekananBo pendaftaranJasaRekananBo = (PendaftaranJasaRekananBo) ctx.getBean("pendaftaranJasaRekananBoProxy");
 
-        if ("Y".equalsIgnoreCase(pendaftaranJasa.getFlagApprove())){
+        if ("Y".equalsIgnoreCase(pendaftaranJasa.getFlagApprove()) && "kakeu".equalsIgnoreCase(pendaftaranJasa.getJenisJabatan())){
             JurnalResponse jurnalResponse = createJurnalPendaftaranJasa(pendaftaranJasa);
             // jika gagal membuat jurnal
 
