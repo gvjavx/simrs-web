@@ -2079,4 +2079,8 @@ ADD COLUMN parent_id VARCHAR(30);
 
     UPDATE im_akun_mapping_jurnal SET created_who = 'migrasi_admin', last_update_who = 'migrasi_admin',
     last_update = now(), created_date = now(), flag = 'Y', action = 'C' WHERE created_date is null;
+
+    ALTER TABLE it_akun_pendaftaran_jasa
+    ADD COLUMN coa_kas VARCHAR(50);
+
 --

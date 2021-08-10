@@ -1,6 +1,7 @@
 package com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.dao;
 
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
+import com.neurix.akuntansi.master.master.model.Master;
 import com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.model.ItAkunPendaftaranJasaEntity;
 import com.neurix.authorization.position.model.Position;
 import com.neurix.common.constant.CommonConstant;
@@ -88,7 +89,28 @@ public class PendaftaranJasaRekananDao extends GenericDao<ItAkunPendaftaranJasaE
 
     public List<KodeRekening> getListKodeRekeningBebanJasaProfesional(){
 
-        String SQL = "SELECT kode_rekening, nama_kode_rekening FROM im_akun_kode_rekening WHERE kode_rekening ILIKE '"+ CommonConstant.COA_BEBAN_JASA_PREFESIONAL+"%'";
+        String SQL = "SELECT kode_rekening, nama_kode_rekening FROM im_akun_kode_rekening WHERE kode_rekening ILIKE '"+ CommonConstant.COA_BEBAN_JASA_PREFESIONAL+"%' \n" +
+                "AND level = '5'";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<KodeRekening> kodeRekenings = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                KodeRekening kodeRekening = new KodeRekening();
+                kodeRekening.setKodeRekening(obj[0].toString());
+                kodeRekening.setNamaKodeRekening(obj[1].toString());
+                kodeRekenings.add(kodeRekening);
+            }
+        }
+
+        return kodeRekenings;
+    }
+
+    public List<KodeRekening> getListKodeRekeningSetaraKas(){
+
+        String SQL = "SELECT kode_rekening, nama_kode_rekening FROM im_akun_kode_rekening WHERE kode_rekening ILIKE '"+ CommonConstant.COA_SETARA_KAS +"%' \n" +
+                "AND level = '5'";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
 
@@ -122,6 +144,25 @@ public class PendaftaranJasaRekananDao extends GenericDao<ItAkunPendaftaranJasaE
         }
 
         return positionList;
+    }
+
+    public List<Master> getListMaster(){
+
+        String SQL = "SELECT nomor_master, nama FROM im_akun_master WHERE flag = 'Y'";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<Master> masterList = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                Master master = new Master();
+                master.setNoMaster(obj[0].toString());
+                master.setNama(obj[1].toString());
+                masterList.add(master);
+            }
+        }
+
+        return masterList;
     }
 
     public String getNextId(){

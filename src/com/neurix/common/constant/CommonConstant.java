@@ -458,6 +458,8 @@ public class CommonConstant {
 
 //    public final static String PATH_REPORT_AKUNTANSI = ContextLoader.getCurrentWebApplicationContext().getApplicationName() + "/pages/report/com/neurix/akuntansi/";
     public final static String REALPATH_REPORT_AKUNTANSI = CommonUtil.getPropertyParams("base.dir") + "pages/report/com/neurix/akuntansi/";
+    public final static String COA_SETARA_KAS = CommonUtil.getPropertyParams("coa.setara.kas");
+
 
 
 }

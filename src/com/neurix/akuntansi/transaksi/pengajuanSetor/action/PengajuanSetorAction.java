@@ -369,6 +369,7 @@ public class PengajuanSetorAction extends BaseMasterAction {
         List<PengajuanSetorDetail> pengajuanSetorDetailPayrollList = pengajuanSetorBoProxy.listPPhPayroll(addPengajuanSetor);
         List<PengajuanSetorDetail> pengajuanSetorDetailKsoList = pengajuanSetorBoProxy.listPPh21KsoDokter(addPengajuanSetor);
         List<PengajuanSetorDetail> pengajuanSetorDetailPengajuanList = pengajuanSetorBoProxy.listPPh21Pengajuan(addPengajuanSetor);
+//        List<PengajuanSetorDetail> pengajuanSetorJasaList = pengajuanSetorBoProxy.listPPh21Jasa(addPengajuanSetor);
 
         //melakukan total payroll
         for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorDetailPayrollList){
@@ -384,6 +385,11 @@ public class PengajuanSetorAction extends BaseMasterAction {
         for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorDetailPengajuanList){
             resultPengajuanSetor.setJumlahPph21Pengajuan(resultPengajuanSetor.getJumlahPph21Pengajuan().add(pengajuanSetorDetail.getJumlah()));
         }
+
+//        //melakukan total pengajuan jasa
+//        for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorJasaList){
+//            resultPengajuanSetor.setJumlahPph21Pengajuan(resultPengajuanSetor.getJumlahPph21Pengajuan().add(pengajuanSetorDetail.getJumlah()));
+//        }
 
         resultPengajuanSetor.setJumlahSeluruhnya(resultPengajuanSetor.getJumlahPph21Payroll().add(resultPengajuanSetor.getJumlahPph21Kso()).add(resultPengajuanSetor.getJumlahPph21Pengajuan()));
 

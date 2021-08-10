@@ -25,6 +25,15 @@ public class ItAkunPendaftaranJasaEntity {
     private String kodeRekeningJasa;
     private String koderingDivisi;
     private String noJurnal;
+    private String coaKas;
+
+    public String getCoaKas() {
+        return coaKas;
+    }
+
+    public void setCoaKas(String coaKas) {
+        this.coaKas = coaKas;
+    }
 
     public String getNoJurnal() {
         return noJurnal;

@@ -1,11 +1,13 @@
 package com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.action;
 
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
+import com.neurix.akuntansi.master.master.model.Master;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.billingSystem.model.MappingDetail;
 import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.bo.PendaftaranJasaRekananBo;
 import com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.model.PendaftaranJasa;
+import com.neurix.authorization.position.model.Position;
 import com.neurix.common.action.BaseTransactionAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class PendaftaranJasaRekananAction extends BaseTransactionAction{
     public static transient Logger logger = Logger.getLogger(PendaftaranJasaRekananAction.class);
@@ -67,7 +70,7 @@ public class PendaftaranJasaRekananAction extends BaseTransactionAction{
 
         PendaftaranJasa dataPendaftaranJasa = getPendaftaranJasa();
 
-        setJenisJabatan(tentukanJenisJabatanbyRole(CommonUtil.roleIdAsLogin()));
+//        setJenisJabatan(tentukanJenisJabatanbyRole(CommonUtil.roleIdAsLogin()));
 
         List<PendaftaranJasa> pendaftaranJasaList = new ArrayList<>();
         try {
@@ -77,6 +80,9 @@ public class PendaftaranJasaRekananAction extends BaseTransactionAction{
             addActionError("[PendaftaranJasaRekananAction.initForm] Error "+ e.getCause());
             return "success";
         }
+
+        dataPendaftaranJasa.setJenisJabatan(tentukanJenisJabatanbyRole(CommonUtil.roleIdAsLogin()));
+        setPendaftaranJasa(dataPendaftaranJasa);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
@@ -105,9 +111,9 @@ public class PendaftaranJasaRekananAction extends BaseTransactionAction{
         PendaftaranJasa pendaftaranJasa = new PendaftaranJasa();
         pendaftaranJasa.setBranchId(CommonUtil.userBranchLogin());
 
+        pendaftaranJasa.setJenisJabatan(tentukanJenisJabatanbyRole(CommonUtil.roleIdAsLogin()));
         setPendaftaranJasa(pendaftaranJasa);
-        setJenisJabatan(tentukanJenisJabatanbyRole(CommonUtil.roleIdAsLogin()));
-
+//        setJenisJabatan(tentukanJenisJabatanbyRole(CommonUtil.roleIdAsLogin()));
 
         logger.info("[PendaftaranJasaRekananAction.initForm] End <<<");
         return "success";
@@ -138,7 +144,10 @@ public class PendaftaranJasaRekananAction extends BaseTransactionAction{
             pendaftaranJasa.setKodeRekeningJasa(obj.getString("koderingjasa"));
 
         if (obj.has("koderingdivisi") == true)
-            pendaftaranJasa.setKodeRekeningJasa(obj.getString("koderingdivisi"));
+            pendaftaranJasa.setKoderingDivisi(obj.getString("koderingdivisi"));
+
+        if (obj.has("biaya") == true)
+            pendaftaranJasa.setBiaya(new BigDecimal(obj.getString("biaya")));
 
         pendaftaranJasa.setStatus("1");
         pendaftaranJasa.setFlag("Y");
@@ -150,13 +159,15 @@ public class PendaftaranJasaRekananAction extends BaseTransactionAction{
         pendaftaranJasa.setCreatedDate(time);
         pendaftaranJasa.setLastUpdate(time);
         pendaftaranJasa.setCreatedWho(userLogin);
-        pendaftaranJasa.setCreatedWho(userLogin);
+        pendaftaranJasa.setLastUpdateWho(userLogin);
+        pendaftaranJasa.setBranchId(CommonUtil.userBranchLogin());
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PendaftaranJasaRekananBo pendaftaranJasaRekananBo = (PendaftaranJasaRekananBo) ctx.getBean("pendaftaranJasaRekananBoProxy");
 
         try {
             pendaftaranJasaRekananBo.saveAdd(pendaftaranJasa);
+            response.hasSuccess("Berhasil Insert Data Jasa");
         } catch (GeneralBOException e){
             logger.error("[PendaftaranJasaRekananAction.saveAdd] Error ", e);
             response.hasError(e.getCause().toString());
@@ -208,6 +219,7 @@ public class PendaftaranJasaRekananAction extends BaseTransactionAction{
 
         try {
             pendaftaranJasaRekananBo.saveEdit(pendaftaranJasa);
+            response.hasSuccess("Berhasil Edit Data Jasa");
         } catch (GeneralBOException e){
             logger.error("[PendaftaranJasaRekananAction.saveEdit] Error ", e);
             response.hasError(e.getCause().toString());
@@ -245,36 +257,35 @@ public class PendaftaranJasaRekananAction extends BaseTransactionAction{
         if (obj.has("alasanbatal") == true)
             pendaftaranJasa.setAlasanBatal(obj.getString("alasanbatal"));
 
-        if (obj.has("jenisjabatan") == true){
+        if (obj.has("jenisjabatan") == true)
             pendaftaranJasa.setJenisJabatan(obj.getString("jenisjabatan"));
 
-            // jika kepala keuangan maka postin jurnal pembayaran jasa;
-            if ("kakeu".equalsIgnoreCase(pendaftaranJasa.getJenisJabatan())){
+        if (obj.has("coakas") == false || "".equalsIgnoreCase(obj.getString("coakas"))){
+            logger.error("[PendaftaranJasaRekananAction.saveApprove] Missing Property of Account");
+            response.hasError("Missing Property of Account");
+            return response;
+        } else {
+            pendaftaranJasa.setCoaKas(obj.getString("coakas"));
+        }
 
-                if (obj.has("jenisbayar") == false){
-                    logger.error("[PendaftaranJasaRekananAction.saveApprove] Jenis Bayar is NULL");
-                    response.hasError("Jenis Bayar is NULL\"");
+        // jika kepala keuangan maka postin jurnal pembayaran jasa;
+        if ("kakeu".equalsIgnoreCase(pendaftaranJasa.getJenisJabatan())){
+
+            if (obj.has("jenisbayar") == false){
+                logger.error("[PendaftaranJasaRekananAction.saveApprove] Jenis Bayar is NULL");
+                response.hasError("Jenis Bayar is NULL\"");
+                return response;
+            }
+
+            // jika bank validasi nomor bank
+            if (!"kas".equalsIgnoreCase(obj.getString("jenisbayar"))){
+                if (obj.has("nomorbank") == false || "".equalsIgnoreCase(obj.getString("nomorbank"))){
+                    logger.error("[PendaftaranJasaRekananAction.saveApprove] Missing Property Bank Number");
+                    response.hasError("Missing Property Bank Number");
                     return response;
                 }
 
-                if (obj.has("coakas") == false || "".equalsIgnoreCase(obj.getString("coakas"))){
-                    logger.error("[PendaftaranJasaRekananAction.saveApprove] Missing Property of Account");
-                    response.hasError("Missing Property of Account");
-                    return response;
-                }
-
-                // jika bank validasi nomor bank
-                if (!"kas".equalsIgnoreCase(obj.getString("jenisbayar"))){
-                    if (obj.has("nomorbank") == false || "".equalsIgnoreCase(obj.getString("nomorbank"))){
-                        logger.error("[PendaftaranJasaRekananAction.saveApprove] Missing Property Bank Number");
-                        response.hasError("Missing Property Bank Number");
-                        return response;
-                    }
-
-                    pendaftaranJasa.setNoBank(obj.getString("nomorbank"));
-                }
-
-                pendaftaranJasa.setCoaKas(obj.getString("coakas"));
+                pendaftaranJasa.setNoBank(obj.getString("nomorbank"));
             }
 
         }
@@ -289,18 +300,31 @@ public class PendaftaranJasaRekananAction extends BaseTransactionAction{
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PendaftaranJasaRekananBo pendaftaranJasaRekananBo = (PendaftaranJasaRekananBo) ctx.getBean("pendaftaranJasaRekananBoProxy");
 
-        JurnalResponse jurnalResponse = createJurnalPendaftaranJasa(pendaftaranJasa);
-        // jika gagal membuat jurnal
+        if ("Y".equalsIgnoreCase(pendaftaranJasa.getFlagApprove())){
+            JurnalResponse jurnalResponse = createJurnalPendaftaranJasa(pendaftaranJasa);
+            // jika gagal membuat jurnal
 
-        if ("error".equalsIgnoreCase(jurnalResponse.getStatus())){
-            response.hasError(jurnalResponse.getMsg());
-            return response;
+            if ("error".equalsIgnoreCase(jurnalResponse.getStatus())){
+                response.hasError(jurnalResponse.getMsg());
+                return response;
+            }
+
+            pendaftaranJasa.setNoJurnal(jurnalResponse.getNoJurnal());
         }
 
-        pendaftaranJasa.setNoJurnal(jurnalResponse.getNoJurnal());
 
         try {
             pendaftaranJasaRekananBo.saveApprove(pendaftaranJasa);
+
+            if ("N".equalsIgnoreCase(pendaftaranJasa.getFlagApprove())){
+                response.hasSuccess("Berhasil Dibatalkan");
+            } else {
+                if ("kakeu".equalsIgnoreCase(pendaftaranJasa.getJenisJabatan())){
+                    response.hasSuccess("Berhasil Diposting");
+                } else {
+                    response.hasSuccess("Berhasil Diapprove");
+                }
+            }
         } catch (GeneralBOException e){
             logger.error("[PendaftaranJasaRekananAction.saveApprove] Error ", e);
             response.hasError(e.getCause().toString());
@@ -360,9 +384,9 @@ public class PendaftaranJasaRekananAction extends BaseTransactionAction{
 
         String keterangan = "";
         if (bean.getNoBank() != null){
-            keterangan = "Pembayaran JASA "+ dataJasa.getNamaJasa() + "dari Vendor "+ dataJasa.getNamaVendor() + " Dengan " + namaCoaKas + " Nomor : " + bean.getNoBank();
+            keterangan = "Pembayaran JASA "+ dataJasa.getNamaJasa() + " ke Vendor "+ dataJasa.getNamaVendor() + " Dengan " + namaCoaKas + " Nomor : " + bean.getNoBank();
         } else {
-            keterangan = "Pembayaran JASA "+ dataJasa.getNamaJasa() + "dari Vendor "+ dataJasa.getNamaVendor() + " Dengan " + namaCoaKas;
+            keterangan = "Pembayaran JASA "+ dataJasa.getNamaJasa() + " ke Vendor "+ dataJasa.getNamaVendor() + " Dengan " + namaCoaKas;
         }
 
         Map mapJurnal = new HashMap();
@@ -381,5 +405,57 @@ public class PendaftaranJasaRekananAction extends BaseTransactionAction{
 
         logger.info("[PendaftaranJasaRekananAction.createJurnalPendaftaranJasa] End <<<");
         return response;
+    }
+
+    public List<KodeRekening> getListKodeRekeningSetaraKas(){
+        logger.info("[PendaftaranJasaRekananAction.getListKodeRekeningSetaraKas] Start >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PendaftaranJasaRekananBo pendaftaranJasaRekananBo = (PendaftaranJasaRekananBo) ctx.getBean("pendaftaranJasaRekananBoProxy");
+
+        logger.info("[PendaftaranJasaRekananAction.getListKodeRekeningSetaraKas] End <<<");
+        return pendaftaranJasaRekananBo.getListKodeRekeningSetaraKas();
+    }
+
+    public List<KodeRekening> getListKodeRekeningBebanJasa(){
+        logger.info("[PendaftaranJasaRekananAction.getListKodeRekeningBebanJasa] Start >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PendaftaranJasaRekananBo pendaftaranJasaRekananBo = (PendaftaranJasaRekananBo) ctx.getBean("pendaftaranJasaRekananBoProxy");
+
+        logger.info("[PendaftaranJasaRekananAction.getListKodeRekeningBebanJasa] End <<<");
+        return pendaftaranJasaRekananBo.getListKodeRekeningBebanJasa();
+    }
+
+    public List<Position> getListPosition(){
+        logger.info("[PendaftaranJasaRekananAction.getListPosition] Start >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PendaftaranJasaRekananBo pendaftaranJasaRekananBo = (PendaftaranJasaRekananBo) ctx.getBean("pendaftaranJasaRekananBoProxy");
+
+        logger.info("[PendaftaranJasaRekananAction.getListPosition] End <<<");
+        return pendaftaranJasaRekananBo.getListPosition();
+    }
+
+    public List<Master> getListMaster(){
+        logger.info("[PendaftaranJasaRekananAction.getListMaster] Start >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PendaftaranJasaRekananBo pendaftaranJasaRekananBo = (PendaftaranJasaRekananBo) ctx.getBean("pendaftaranJasaRekananBoProxy");
+
+        logger.info("[PendaftaranJasaRekananAction.getListMaster] End <<<");
+        return pendaftaranJasaRekananBo.getListMaster();
+    }
+
+    public PendaftaranJasa getPendaftaranJasaFromSession(String id){
+        logger.info("[PendaftaranJasaRekananAction.getListMaster] Start >>>");
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<PendaftaranJasa> listPendaftaran = (List<PendaftaranJasa>) session.getAttribute("listOfResult");
+
+        List<PendaftaranJasa> filtered = listPendaftaran.stream().filter(p->p.getId().equalsIgnoreCase(id)).collect(Collectors.toList());
+
+        logger.info("[PendaftaranJasaRekananAction.getListMaster] End <<<");
+        return filtered.get(0);
     }
 }
