@@ -134,6 +134,9 @@ public class KasDao extends GenericDao<ItAkunKasEntity, String> {
                 "where uang.flag ilike :flag " +
                 "and jurnal.branch_id ilike :branchId " +
                 "and jurnal.no_jurnal ilike :noJurnal " +
+                // Fahmi 2021-08-09, Filter kurang Kas ID
+                "and uang.id ilike :kasId " +
+                // End Fahmi
                 "and uang.last_update between TO_TIMESTAMP(:tanggal1,'yyyy-MM-dd')  and TO_TIMESTAMP(:tanggal2,'yyyy-MM-dd') " +
 
                 "union\n" +
