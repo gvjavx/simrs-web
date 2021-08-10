@@ -924,7 +924,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         logger.info("[CheckupDetailAction.listOfDokter] start process >>>");
         List<Tindakan> tindakanList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");123123
+        TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
 
         Tindakan tindakan = new Tindakan();
         tindakan.setIdKategoriTindakan(idKategoriTindakan);
