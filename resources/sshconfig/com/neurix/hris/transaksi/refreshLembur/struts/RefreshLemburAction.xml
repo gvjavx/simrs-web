@@ -87,7 +87,7 @@
         <action name="paging_displaytag_refreshLembur"
                 class="com.neurix.hris.transaksi.refreshLembur.action.RefreshLemburAction" method="paging">
             <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/hris/transaksi/refreshLembur/SearchLembur.jsp</result>
+            <result name="success">/pages/com/neurix/hris/transaksi/refreshLembur/searchRefreshLembur.jsp</result>
         </action>
     </package>
 </struts>
