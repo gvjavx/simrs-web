@@ -361,25 +361,26 @@
                                                         <td>Realisasi</td>
                                                         <td>Jumlah (RP)</td>
                                                         <td>Keperluan</td>
-                                                        <td>ID RK</td>
-                                                        <td>Metode Bayar</td>
-                                                        <td>Status Saat Ini</td>
+                                                        <%--<td>ID RK</td>--%>
+                                                        <%--<td>Metode Bayar</td>--%>
+                                                        <%--<td>Status Saat Ini</td>--%>
                                                         <td align="center">View</td>
                                                         <td align="center">Dibayar</td>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
 
-                                                    <s:iterator value="#session.listOfResult" var="row">
+                                                    <s:iterator value="#session.listOfResultHeader" var="row">
                                                         <s:if test='#row.tipe == "header"'>
-                                                            <tr style="background-color: lightgrey;font-weight: bold">
+                                                            <tr>
                                                                 <s:if test='pengajuanBiayaDetail.branchIdUser == "01"'>
                                                                     <td align="center">
-                                                                        <s:if test='#row.pengajuanBiayaId == ""||#row.statusKeuangan != "KP"||#row.rkId!= null'>
+                                                                        <s:if test='#row.pengajuanBiayaId == ""||#row.statusKeuangan != "KP"||#row.rkId!= null || #row.flagSelesaiRk == "Y"'>
                                                                         </s:if>
                                                                         <s:else>
                                                                             <div class="form-check">
-                                                                                <input type="checkbox" class="selectedHeaderId" name="selectedHeaderId" id="check_<s:property value="pengajuanBiayaId"/>">
+                                                                                <%--<input type="checkbox" class="selectedHeaderId" name="selectedHeaderId" id="check_<s:property value="pengajuanBiayaId"/>">--%>
+                                                                                <input type="checkbox" class="selectedId" name="selectedId" id="check_<s:property value="pengajuanBiayaId"/>">
                                                                                 <label for="check_<s:property value="pengajuanBiayaId"/>"></label>
                                                                             </div>
                                                                         </s:else>
@@ -390,44 +391,14 @@
                                                                 <td><s:property value="divisiName"/></td>
                                                                 <td><s:property value="stTanggal"/></td>
                                                                 <td><s:property value="stTanggalRealisasi"/></td>
-                                                                <td style="text-align: right"></td>
-                                                                <td><s:property value="headerName"/></td>
-                                                                <td></td>
-                                                                <td><s:property value="statusKeuanganName"/></td>
-                                                                <td></td>
-                                                                <td align="center">
-                                                                </td>
-                                                                <td align="center">
-                                                                </td>
-                                                            </tr>
-                                                        </s:if>
-                                                        <s:else>
-                                                            <tr>
-                                                                <s:if test='pengajuanBiayaDetail.branchIdUser == "01"'>
-                                                                    <td align="center">
-                                                                        <s:if test='#row.pengajuanBiayaDetailId == ""||#row.statusKeuangan != "KP"||#row.rkId!= null'>
-                                                                        </s:if>
-                                                                        <s:else>
-                                                                            <div class="form-check">
-                                                                                <input type="checkbox" class="selectedId <s:property value="pengajuanBiayaId"/>" name="selectedId" id="check_<s:property value="pengajuanBiayaDetailId"/>">
-                                                                                <label for="check_<s:property value="pengajuanBiayaDetailId"/>"></label>
-                                                                            </div>
-                                                                        </s:else>
-                                                                    </td>
-                                                                </s:if>
-                                                                <td><s:property value="pengajuanBiayaDetailId"/></td>
-                                                                <td><s:property value="branchName"/></td>
-                                                                <td><s:property value="divisiName"/></td>
-                                                                <td><s:property value="stTanggal"/></td>
-                                                                <td><s:property value="stTanggalRealisasi"/></td>
                                                                 <td style="text-align: right"><s:property value="stJumlah"/></td>
-                                                                <td><s:property value="keperluan"/></td>
-                                                                <td><s:property value="rkId"/></td>
-                                                                <td><s:property value="statusKeuanganName"/></td>
-                                                                <td><s:property value="statusSaatIni"/></td>
+                                                                <td><s:property value="headerName"/></td>
+                                                                <%--<td></td>--%>
+                                                                <%--<td><s:property value="statusKeuanganName"/></td>--%>
+                                                                <%--<td></td>--%>
                                                                 <td align="center">
                                                                     <s:if test='#row.canView'>
-                                                                        <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaDetailId}"/>" class="item-view">
+                                                                        <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaDetailId}"/>" class="item-view-detail" onclick="viewDetail('<s:property value="pengajuanBiayaId"/>')">
                                                                             <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
                                                                         </a>
                                                                     </s:if>
@@ -438,7 +409,46 @@
                                                                     </s:if>
                                                                 </td>
                                                             </tr>
-                                                        </s:else>
+                                                        </s:if>
+
+                                                        <%--<s:else>--%>
+                                                            <%--<tr>--%>
+                                                                <%--<s:if test='pengajuanBiayaDetail.branchIdUser == "01"'>--%>
+                                                                    <%--<td align="center">--%>
+                                                                        <%--<s:if test='#row.pengajuanBiayaDetailId == ""||#row.statusKeuangan != "KP"||#row.rkId!= null'>--%>
+                                                                        <%--</s:if>--%>
+                                                                        <%--<s:else>--%>
+                                                                            <%--<div class="form-check">--%>
+                                                                                <%--<input type="checkbox" class="selectedId <s:property value="pengajuanBiayaId"/>" name="selectedId" id="check_<s:property value="pengajuanBiayaDetailId"/>">--%>
+                                                                                <%--<label for="check_<s:property value="pengajuanBiayaDetailId"/>"></label>--%>
+                                                                            <%--</div>--%>
+                                                                        <%--</s:else>--%>
+                                                                    <%--</td>--%>
+                                                                <%--</s:if>--%>
+                                                                <%--<td><s:property value="pengajuanBiayaDetailId"/></td>--%>
+                                                                <%--<td><s:property value="branchName"/></td>--%>
+                                                                <%--<td><s:property value="divisiName"/></td>--%>
+                                                                <%--<td><s:property value="stTanggal"/></td>--%>
+                                                                <%--<td><s:property value="stTanggalRealisasi"/></td>--%>
+                                                                <%--<td style="text-align: right"><s:property value="stJumlah"/></td>--%>
+                                                                <%--<td><s:property value="keperluan"/></td>--%>
+                                                                <%--<td><s:property value="rkId"/></td>--%>
+                                                                <%--<td><s:property value="statusKeuanganName"/></td>--%>
+                                                                <%--<td><s:property value="statusSaatIni"/></td>--%>
+                                                                <%--<td align="center">--%>
+                                                                    <%--<s:if test='#row.canView'>--%>
+                                                                        <%--<a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaDetailId}"/>" class="item-view">--%>
+                                                                            <%--<img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">--%>
+                                                                        <%--</a>--%>
+                                                                    <%--</s:if>--%>
+                                                                <%--</td>--%>
+                                                                <%--<td align="center">--%>
+                                                                    <%--<s:if test='#row.sudahDibayar'>--%>
+                                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_dibayar">--%>
+                                                                    <%--</s:if>--%>
+                                                                <%--</td>--%>
+                                                            <%--</tr>--%>
+                                                        <%--</s:else>--%>
 
 
                                                     </s:iterator>
@@ -462,6 +472,48 @@
 <%@ include file="/pages/common/lastScript.jsp" %>
 </body>
 </html>
+
+<div class="modal fade" id="modal-view-detail">
+    <div class="modal-dialog modal-flat modal-lg" style="width: 1300px">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> View Detail Per Item</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 10px">
+                    <table id="table-detail" class="tablePengajuanBiaya table table-bordered table-striped" style="font-size: 11px;">
+                        <thead>
+                        <tr bgcolor="#90ee90">
+                            <td>ID</td>
+                            <td>Unit</td>
+                            <td>Divisi</td>
+                            <td>Pengajuan</td>
+                            <td>Realisasi</td>
+                            <td>Jumlah (RP)</td>
+                            <td>Keperluan</td>
+                            <td>ID RK</td>
+                            <td>Metode Bayar</td>
+                            <td>Status Saat Ini</td>
+                            <td align="center">View</td>
+                            <td align="center">Dibayar</td>
+                        </tr>
+                        </thead>
+                        <tbody id="body-view-detail">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="modal-detail" class="modal fade" role="dialog">
     <div class="modal-dialog modal-flat modal-lg">
         <!-- Modal content-->
@@ -652,6 +704,7 @@
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -796,6 +849,7 @@
 
     function createRk() {
         var data = $('#tablePengajuanBiaya').tableToJSON();
+//        console.log(data);
         var result = [];
         $.each(data, function (i, item) {
             var idPengajuanBiaya = data[i]["ID"];
@@ -810,12 +864,13 @@
         var jsonString = JSON.stringify(result);
         $('#data_pengajuan').val(jsonString);
         $('#modal-create-pengajuan').modal('show');
-        console.log(result);
+//        console.log(result);
     }
 
     function confirmsSaveRk(){
         var data = $('#data_pengajuan').val();
         var metodeBayar = $('#mod_metode_bayar').val();
+        console.log(data);
         if (data != '[]' && metodeBayar != '') {
             $('#modal-confirm-dialog').modal('show');
         }else{
@@ -831,5 +886,43 @@
             alert(result);
             window.location.reload();
         });
-    })
+    });
+
+    function viewDetail(id){
+        //alert(id);
+        $("#modal-view-detail").modal('show');
+        PengajuanBiayaAction.getListDetailFromSessionById(id, function(res){
+            var str = "";
+            $.each(res, function(i, item) {
+                str += "<tr>" +
+                "<td>"+item.pengajuanBiayaDetailId+"</td>" +
+                "<td>"+item.branchName+"</td>" +
+                "<td>"+item.divisiName+"</td>" +
+                "<td>"+item.stTanggal+"</td>" +
+                "<td>"+item.stTanggalRealisasi+"</td>" +
+                "<td align='right'>"+item.stJumlah+"</td>" +
+                "<td>"+item.keperluan+"</td>" +
+                "<td>"+item.rkId+"</td>" +
+                "<td>"+item.statusKeuanganName+"</td>" +
+                "<td>"+item.statusSaatIni+"</td>" +
+                "<td align='center'>";
+
+                if (item.canView == true){
+                    str += "<a href=\"javascript:;\" data=\""+item.pengajuanBiayaDetailId+"\" class=\"item-view\">\n" +
+                        "<img border=\"0\" src=\"<s:url value="/pages/images/icons8-search-25.png"/>\" name=\"icon_view\">\n" +
+                        "</a>";
+                }
+
+                str += "</td><td align='center'>";
+
+                if (item.sudahDibayar == true){
+                    str += "<img border=\"0\" src=\"<s:url value="/pages/images/icon_success.ico"/>\" name=\"icon_dibayar\">";
+                }
+
+                str += "</td></tr>";
+            });
+
+            $("#body-view-detail").html(str);
+        });
+    }
 </script>

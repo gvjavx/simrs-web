@@ -286,9 +286,9 @@ public class CommonConstant {
     public final static String TRANSAKSI_ID_KOREKSI_PENGAJUAN_BIAYA = CommonUtil.getPropertyParams("transaksi.id.koreksi.pengajuan.biaya");
 
     //untuk sewa lahan - aji noor
-    public final static String REKENING_KODE_PPN_KELUARAN = CommonUtil.getPropertyParams("rekening.kode.ppn.keluaran");
-    public final static String REKENING_KODE_PPH_PASAL4_AYAT2 = CommonUtil.getPropertyParams("rekening.kode.pph.pasal4.ayat2");
-    public final static String REKENING_KODE_PENDAPATAN_DILUAR_USAHA = CommonUtil.getPropertyParams("rekening.kode.pendapatan.diluar.usaha");
+    public final static String REKENING_KODE_PPN_KELUARAN = CommonUtil.getPropertyParams("rekening.id.ppn.keluaran");
+    public final static String REKENING_KODE_PPH_PASAL4_AYAT2 = CommonUtil.getPropertyParams("rekening.id.pph.pasal4.ayat2");
+    public final static String REKENING_KODE_PENDAPATAN_DILUAR_USAHA = CommonUtil.getPropertyParams("rekening.id.pendapatan.luar.usaha");
 
     public final static String REKENING_ID_PPN_MASUKAN = CommonUtil.getPropertyParams("rekening.id.ppn.masukan");
     public final static String REKENING_ID_PPN_KELUARAN = CommonUtil.getPropertyParams("rekening.id.ppn.keluaran");

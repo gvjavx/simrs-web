@@ -555,6 +555,11 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
                                         } else { //selain kas
 
+                                            if ("metode_bayar".equalsIgnoreCase(parameterCoa)){
+                                                coa         = itemMappingDetail.getCoa();
+                                                metodeBayar = itemMappingDetail.getMetodeBayar();
+                                            }
+
                                             itemJurnalDetailEntity.setNoJurnal(noJurnal);
                                             itemJurnalDetailEntity.setJurnalDetailId(jurnalDetailId);
                                             itemJurnalDetailEntity.setNomorRekening(coa);

@@ -241,4 +241,36 @@ public class PengajuanBiayaDao extends GenericDao<ImPengajuanBiayaEntity, String
 
         return results.toString();
     }
+
+    public String flagSudahSelesaiRk(String idPengajuan){
+
+        String sql1 = "SELECT COUNT(rk_dikirim)\n" +
+                "FROM it_akun_pengajuan_biaya_detail \n" +
+                "WHERE pengajuan_biaya_id = '"+idPengajuan+"'\n" +
+                "AND flag = 'Y'";
+
+        List<Object> result1 = this.sessionFactory.getCurrentSession().createSQLQuery(sql1).list();
+
+
+        String sql2 = "SELECT COUNT(rk_dikirim)\n" +
+                "FROM it_akun_pengajuan_biaya_detail \n" +
+                "WHERE pengajuan_biaya_id = '"+idPengajuan+"'\n" +
+                "AND rk_dikirim = 'Y' \n"+
+                "AND flag = 'Y'";
+
+        List<Object> result2 = this.sessionFactory.getCurrentSession().createSQLQuery(sql2).list();
+
+        Object obj1 = result1.get(0);
+        Object obj2 = result2.get(0);
+
+        Integer jumlahSeluruh = new Integer(obj1.toString());
+        Integer jumlahDikirim = new Integer(obj2.toString());
+
+        if (jumlahSeluruh.compareTo(jumlahDikirim) == 0){
+            return "Y";
+        } else {
+            return "N";
+        }
+
+    }
 }
