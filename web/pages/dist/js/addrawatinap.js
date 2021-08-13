@@ -5249,6 +5249,7 @@ function setRekamMedisPindah(tipePelayanan, id) {
 function setRekamMedisHasilPindah(tipePelayanan, id) {
     var temp = "";
     var show = false;
+    $('#' + id).html("");
     dwr.engine.setAsync(true);
     CheckupAction.getListRekammedisPasienByNoCheckup(tipePelayanan, null, noCheckup, {
         callback: function (res) {

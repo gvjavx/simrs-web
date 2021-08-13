@@ -921,7 +921,7 @@ public class CheckupDetailAction extends BaseMasterAction {
     }
 
     public List<Tindakan> getListComboTindakan(String idKategoriTindakan, String idKelasRuangan, String vaksin, String idPelayanan, String jenisPasien) {
-        logger.info("[CheckupDetailAction.listOfDokter] start process >>>");
+        logger.info("[CheckupDetailAction.getListComboTindakan] start process >>>");
         List<Tindakan> tindakanList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
@@ -937,14 +937,14 @@ public class CheckupDetailAction extends BaseMasterAction {
         try {
             tindakanList = tindakanBo.getComboBoxTindakan(tindakan);
         } catch (GeneralBOException e) {
-            logger.error("[CheckupDetailAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
+            logger.error("[CheckupDetailAction.getListComboTindakan] Error when searching data, Found problem when searching data, please inform to your admin.", e);
         }
-        logger.info("[CheckupDetailAction.listOfDokter] end process >>>");
+        logger.info("[CheckupDetailAction.getListComboTindakan] end process >>>");
         return tindakanList;
     }
 
     public List<KategoriTindakan> getListComboTindakanKategori(String idPelayanan, String kategori) {
-        logger.info("[CheckupDetailAction.listOfDokter] start process >>>");
+        logger.info("[CheckupDetailAction.getListComboTindakanKategori] start process >>>");
         List<KategoriTindakan> kategoriTindakans = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         KategoriTindakanBo kategoriTindakanBo = (KategoriTindakanBo) ctx.getBean("kategoriTindakanBoProxy");
@@ -953,11 +953,11 @@ public class CheckupDetailAction extends BaseMasterAction {
             try {
                 kategoriTindakans = kategoriTindakanBo.getListKategoriTindakan(idPelayanan, kategori, CommonUtil.userBranchLogin());
             } catch (GeneralBOException e) {
-                logger.error("[CheckupDetailAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
+                logger.error("[CheckupDetailAction.getListComboTindakanKategori] Error when searching data, Found problem when searching data, please inform to your admin.", e);
             }
         }
 
-        logger.info("[CheckupDetailAction.listOfDokter] end process >>>");
+        logger.info("[CheckupDetailAction.getListComboTindakanKategori] end process >>>");
         return kategoriTindakans;
     }
 

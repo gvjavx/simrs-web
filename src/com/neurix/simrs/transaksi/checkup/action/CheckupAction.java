@@ -3892,7 +3892,7 @@ public class CheckupAction extends BaseMasterAction {
     }
 
     public List<RekamMedisPasien> geRekamMedisLama(String id) {
-        logger.info("[CheckupAction.getListRekammedisPasien] START process >>>");
+        logger.info("[CheckupAction.geRekamMedisLama] START process >>>");
         List<RekamMedisPasien> listRM = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RekamMedisPasienBo rekamMedisPasienBo = (RekamMedisPasienBo) ctx.getBean("rekamMedisPasienBoProxy");
@@ -3905,7 +3905,7 @@ public class CheckupAction extends BaseMasterAction {
             }
         }
 
-        logger.info("[CheckupAction.getListRekammedisPasien] END process >>>");
+        logger.info("[CheckupAction.geRekamMedisLama] END process >>>");
         return listRM;
     }
 
