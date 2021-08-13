@@ -205,7 +205,7 @@ function setDataPasien() {
         }
         if (alr > 0) {
             dwr.engine.setAsync(true);
-            CheckupAction.getDataByKey(noCheckup, "alergi", {
+            CheckupAction.getDataByKey(idPasien, "alergi", {
                 callback: function (res) {
                     if (res != '') {
                         $('.alergi-pasien').val(res);

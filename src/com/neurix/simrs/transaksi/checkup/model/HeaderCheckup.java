@@ -229,6 +229,70 @@ public class HeaderCheckup {
     private String isPasienSementara;
     private String idKelasBpjs;
     private String statusNaikKelas;
+    private String isKontrolUlang;
+    private String tglKontrolUlang;
+    private String namaPetugas;
+    private String ttdPemberi;
+
+    private String idDignosaLast;
+    private String namaDiagnosaLast;
+    private String isWarning;
+
+    public String getIsWarning() {
+        return isWarning;
+    }
+
+    public void setIsWarning(String isWarning) {
+        this.isWarning = isWarning;
+    }
+
+    public String getIdDignosaLast() {
+        return idDignosaLast;
+    }
+
+    public void setIdDignosaLast(String idDignosaLast) {
+        this.idDignosaLast = idDignosaLast;
+    }
+
+    public String getNamaDiagnosaLast() {
+        return namaDiagnosaLast;
+    }
+
+    public void setNamaDiagnosaLast(String namaDiagnosaLast) {
+        this.namaDiagnosaLast = namaDiagnosaLast;
+    }
+
+    public String getTtdPemberi() {
+        return ttdPemberi;
+    }
+
+    public void setTtdPemberi(String ttdPemberi) {
+        this.ttdPemberi = ttdPemberi;
+    }
+
+    public String getNamaPetugas() {
+        return namaPetugas;
+    }
+
+    public void setNamaPetugas(String namaPetugas) {
+        this.namaPetugas = namaPetugas;
+    }
+
+    public String getTglKontrolUlang() {
+        return tglKontrolUlang;
+    }
+
+    public void setTglKontrolUlang(String tglKontrolUlang) {
+        this.tglKontrolUlang = tglKontrolUlang;
+    }
+
+    public String getIsKontrolUlang() {
+        return isKontrolUlang;
+    }
+
+    public void setIsKontrolUlang(String isKontrolUlang) {
+        this.isKontrolUlang = isKontrolUlang;
+    }
 
     public String getStatusNaikKelas() {
         return statusNaikKelas;

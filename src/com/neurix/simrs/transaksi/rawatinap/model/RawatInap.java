@@ -144,6 +144,25 @@ public class RawatInap {
     private String idKelasBpjs;
     private String statusNaikKelas;
 
+    private String idDiagnosa;
+    private String isWarning;
+
+    public String getIsWarning() {
+        return isWarning;
+    }
+
+    public void setIsWarning(String isWarning) {
+        this.isWarning = isWarning;
+    }
+
+    public String getIdDiagnosa() {
+        return idDiagnosa;
+    }
+
+    public void setIdDiagnosa(String idDiagnosa) {
+        this.idDiagnosa = idDiagnosa;
+    }
+
     public String getIdKelasBpjs() {
         return idKelasBpjs;
     }

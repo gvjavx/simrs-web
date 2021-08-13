@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printInvoiceRawatJalan" language="groovy" pageWidth="421" pageHeight="595" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.4641000000000066"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.zoom" value="4.594972986357241"/>
+	<property name="ireport.x" value="489"/>
+	<property name="ireport.y" value="1376"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -103,6 +103,8 @@
 	<parameter name="reportParams.idPasien" class="java.lang.String"/>
 	<parameter name="reportParams.petugas" class="java.lang.String"/>
 	<parameter name="ppnObat" class="java.lang.Integer"/>
+	<parameter name="kembalian" class="java.lang.String"/>
+	<parameter name="jmlKembalian" class="java.math.BigDecimal"/>
 	<queryString>
 		<![CDATA[SELECT * FROM im_simrs_pasien LIMIT 1]]>
 	</queryString>
@@ -718,6 +720,28 @@
 					<font size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA["PPN Obat (Rp.)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="45" width="134" height="15" uuid="2974ef64-382d-494d-8ef4-4a0b60a1cd76"/>
+				<box leftPadding="0" rightPadding="10">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{kembalian} == null ? "" : $P{kembalian}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="134" y="45" width="247" height="15" uuid="051648d2-1faa-4a0a-9baf-9e3ee273ae4c"/>
+				<box leftPadding="0" rightPadding="10">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{jmlKembalian} == 0 ? "" : $P{jmlKembalian}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

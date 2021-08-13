@@ -620,6 +620,9 @@ public class CheckupDetailAction extends BaseMasterAction {
             detailCheckup.setIsVaksin(checkup.getIsVaksin());
             detailCheckup.setCatatanKlinis(checkup.getCatatanKlinis());
             detailCheckup.setSpo2(checkup.getSpo2());
+            detailCheckup.setDiagnosa(checkup.getIdDignosaLast());
+            detailCheckup.setNamaDiagnosa(checkup.getNamaDiagnosaLast());
+            detailCheckup.setIsWarning(checkup.getIsWarning());
 
             if ("rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
                 RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
@@ -4073,17 +4076,26 @@ public class CheckupDetailAction extends BaseMasterAction {
                 }
             }
 
-            if("CK04".equalsIgnoreCase(tipe) || "CK01".equalsIgnoreCase(tipe)){
+            if("CK04".equalsIgnoreCase(tipe) || "CK01".equalsIgnoreCase(tipe) || "CK02".equalsIgnoreCase(tipe)){
                 KeperawatanRawatJalanBo keperawatanRawatJalanBo = (KeperawatanRawatJalanBo) ctx.getBean("keperawatanRawatJalanBoProxy");
                 KeperawatanRawatJalan keperawatanRawatJalan = new KeperawatanRawatJalan();
                 keperawatanRawatJalan.setIdDetailCheckup(checkup.getIdDetailCheckup());
-                keperawatanRawatJalan.setJenis("general_concent");
+                if("CK02".equalsIgnoreCase(tipe)){
+                    keperawatanRawatJalan.setJenis("pelepasan_informasi");
+                }else{
+                    keperawatanRawatJalan.setJenis("general_concent");
+                }
+
                 HeaderCheckup headerCheckup = keperawatanRawatJalanBo.getDataResumeMedis(keperawatanRawatJalan);
                 if(headerCheckup != null){
                     reportParams.put("namaPasien", headerCheckup.getNama());
                     reportParams.put("namaPemberi", headerCheckup.getNamaDokter());
                     reportParams.put("pasien", headerCheckup.getTtdPasien());
                     reportParams.put("petugas", headerCheckup.getTtdDokter());
+                    reportParams.put("ttdPetugas", headerCheckup.getTtdPemberi());
+                    reportParams.put("ttdPasien", headerCheckup.getTtdPasien());
+                    reportParams.put("namaRuang", headerCheckup.getNamaRuangan());
+                    reportParams.put("namaPetugas", headerCheckup.getNamaPetugas());
                 }
             }
         }

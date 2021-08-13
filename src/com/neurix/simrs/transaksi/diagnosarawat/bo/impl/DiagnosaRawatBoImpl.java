@@ -2,6 +2,9 @@ package com.neurix.simrs.transaksi.diagnosarawat.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
 
+import com.neurix.simrs.master.diagnosa.dao.DiagnosaDao;
+import com.neurix.simrs.master.diagnosa.model.Diagnosa;
+import com.neurix.simrs.master.diagnosa.model.ImSimrsDiagnosaEntity;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
@@ -25,6 +28,7 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
     private static transient Logger logger = Logger.getLogger(DiagnosaRawatBoImpl.class);
     private DiagnosaRawatDao diagnosaRawatDao;
     private CheckupDetailDao checkupDetailDao;
+    private DiagnosaDao diagnosaDao;
 
     @Override
     public List<DiagnosaRawat> getByCriteria(DiagnosaRawat bean) throws GeneralBOException {
@@ -48,6 +52,12 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
                     diagnosaRawat.setCreatedWho(entity.getCreatedWho());
                     diagnosaRawat.setLastUpdate(entity.getLastUpdate());
                     diagnosaRawat.setLastUpdateWho(entity.getLastUpdateWho());
+
+                    ImSimrsDiagnosaEntity diagnosa = diagnosaDao.getById("idDiagnosa", entity.getIdDiagnosa());
+                    if(diagnosa != null){
+                        diagnosaRawat.setIsWarning(diagnosa.getIsWarning());
+                    }
+
                     diagnosaRawatList.add(diagnosaRawat);
                 }
             }
@@ -251,6 +261,10 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
     public void setDiagnosaRawatDao(DiagnosaRawatDao diagnosaRawatDao) {
         this.diagnosaRawatDao = diagnosaRawatDao;
 
+    }
+
+    public void setDiagnosaDao(DiagnosaDao diagnosaDao) {
+        this.diagnosaDao = diagnosaDao;
     }
 
     public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {

@@ -2748,7 +2748,11 @@
                 $('#date-periksa').val(converterDate(response.stTglKeluar));
                 $("#nama-pasien").html(namapasien);
                 $("#alergi").html(alergi);
-                $("#diagnosa").html(diagnosa);
+                if("Y" == response.isWarning){
+                    $("#diagnosa").html('<span class="blink_me_atas" style="color: red; font-weight: bold">'+'['+response.idDiagnosa+']'+response.diagnosa+'<span>');
+                }else{
+                    $("#diagnosa").html('['+response.idDiagnosa+']-'+response.diagnosa);
+                }
                 $("#alert-pasien").removeAttr("style");
                 $("#btn-rm").removeAttr("style");
             } else {

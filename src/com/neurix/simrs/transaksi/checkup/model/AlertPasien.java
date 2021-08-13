@@ -15,6 +15,17 @@ public class AlertPasien
     private String idDiagnosa;
     private List<String> listOfAlergi;
 
+    //sodiq, is warning diagnosa, 09-08-2021 10:35
+    private String isWarning;
+
+    public String getIsWarning() {
+        return isWarning;
+    }
+
+    public void setIsWarning(String isWarning) {
+        this.isWarning = isWarning;
+    }
+
     public String getIdDiagnosa() {
         return idDiagnosa;
     }

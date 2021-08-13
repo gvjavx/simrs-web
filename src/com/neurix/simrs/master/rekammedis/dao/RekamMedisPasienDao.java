@@ -62,7 +62,9 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
                        "spesialis_mata".equalsIgnoreCase(bean.getJenis()) ||
                        "rehab_medik".equalsIgnoreCase(bean.getJenis()) ||
                        "spesialis_tht".equalsIgnoreCase(bean.getJenis()) ||
-                       "spesialis_obstetri".equalsIgnoreCase(bean.getJenis())){
+                       "spesialis_obstetri".equalsIgnoreCase(bean.getJenis()) ||
+                       "hemodialisa".equalsIgnoreCase(bean.getJenis()) ||
+                       "fisioterapi".equalsIgnoreCase(bean.getJenis())){
                         jenis = bean.getJenis();
                     }
 

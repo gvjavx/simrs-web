@@ -4,8 +4,6 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
-import com.neurix.simrs.transaksi.asesmenrawatinap.bo.AsesmenRawatInapBo;
-import com.neurix.simrs.transaksi.asesmenrawatinap.model.AsesmenRawatInap;
 import com.neurix.simrs.transaksi.asesmenrawatjalan.bo.KeperawatanRawatJalanBo;
 import com.neurix.simrs.transaksi.asesmenrawatjalan.model.KeperawatanRawatJalan;
 import com.neurix.simrs.transaksi.rekammedik.bo.RekamMedikBo;
@@ -277,7 +275,6 @@ public class KeperawatanRawatJalanAction {
         }
         return response;
     }
-
 
     public static Logger getLogger() {
         return logger;
