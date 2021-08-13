@@ -1534,6 +1534,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                         MappingDetail mappingDetail = new MappingDetail();
                         mappingDetail.setNilai(allTindakanTransUmum.add(allTindakanTransAsuransi));
                         mappingDetail.setBukti(detailCheckupEntity.getInvoiceTrans());
+                        mappingDetail.setMasterId(getMasterIdByTipe(detailCheckupEntity.getIdDetailCheckup(), detailCheckupEntity.getIdJenisPeriksaPasien()));
                         listOfMapTindakanTransirisRi.add(mappingDetail);
                         isTransitoris = true;
                     }
