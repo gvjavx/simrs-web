@@ -10,6 +10,7 @@ import com.neurix.hris.transaksi.indisipliner.model.Indisipliner;
 import com.neurix.hris.transaksi.lembur.model.Lembur;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
+import com.neurix.hris.transaksi.refreshLembur.model.RefreshLembur;
 import com.neurix.hris.transaksi.rekruitmenPabrik.model.RekruitmenPabrikDetail;
 import com.neurix.hris.transaksi.training.model.TrainingPerson;
 
@@ -96,4 +97,6 @@ public interface NotifikasiBo extends BaseMasterBo<Notifikasi>{
     List<PengajuanBiaya> searchPengajuanBiaya(PengajuanBiaya bean) throws GeneralBOException;
 
     List<PengajuanBiaya> searchPengajuanBiayaRk(PengajuanBiaya bean) throws GeneralBOException;
-}
+    public List<RefreshLembur> searchRefreshLembur(RefreshLembur bean) throws GeneralBOException;
+
+    }

@@ -233,4 +233,12 @@ public class PengajuanBiayaDao extends GenericDao<ImPengajuanBiayaEntity, String
 
         return results.toString();
     }
+
+    public String getNamaHeader(String pengajuanId){
+        String query="SELECT keterangan FROM it_akun_pengajuan_biaya WHERE pengajuan_biaya_id = '"+pengajuanId+"' LIMIT 1";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+
+        return results.toString();
+    }
 }

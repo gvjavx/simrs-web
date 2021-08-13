@@ -79,19 +79,20 @@ public class NotifikasiDao extends GenericDao<ImNotifikasiEntity, String> {
         List<Object[]> resultQuery= new ArrayList<Object[]>();
         String query = "SELECT \n" +
                 "  DISTINCT data.*, \n" +
-                "  case when data.tipe_notif_id = 'TN77' \n" +
-                "  AND data.lembur is null then 'L' when data.tipe_notif_id = 'TN66' \n" +
-                "  AND data.cuti is null then 'C' when data.tipe_notif_id = 'TN88' \n" +
-                "  AND data.ijin_keluar is null then 'I' when data.tipe_notif_id = 'TN55' \n" +
-                "  AND data.dispensasi is null then 'D' when data.tipe_notif_id = 'TI' \n" +
-                "  AND data.sppd is null then 'S' when data.tipe_notif_id = 'TN33' \n" +
-                "  AND data.absensi is null then 'A' when data.tipe_notif_id = 'TN99' \n" +
-                "  AND data.rekruitmen is null then 'R' when data.tipe_notif_id = 'TN23' \n" +
-                "  AND data.training is null then 'T' when data.tipe_notif_id = 'TN23' \n" +
-                "  AND data.trainingbos is null then 'B' when data.tipe_notif_id = 'TN44' \n" +
-                "  AND data.indisipliner is null then 'P' when data.tipe_notif_id = 'TN01' \n" +
-                "  AND data.pengajuanRk is null then 'PBRK' when data.tipe_notif_id = 'TN04' \n" +
-                "  AND data.pengajuan is null then 'PB' end as hasil \n" +
+                "  case when data.tipe_notif_id = 'TN77' AND data.lembur is null then 'L' \n" +
+                "    when data.tipe_notif_id = 'TN66' AND data.cuti is null then 'C' \n" +
+                "    when data.tipe_notif_id = 'TN88' AND data.ijin_keluar is null then 'I' \n" +
+                "    when data.tipe_notif_id = 'TN55' AND data.dispensasi is null then 'D' \n" +
+                "    when data.tipe_notif_id = 'TI'   AND data.sppd is null then 'S' \n" +
+                "    when data.tipe_notif_id = 'TN33' AND data.absensi is null then 'A' \n" +
+                "    when data.tipe_notif_id = 'TN99' AND data.rekruitmen is null then 'R' \n" +
+                "    when data.tipe_notif_id = 'TN23' AND data.training is null then 'T' \n" +
+                "    when data.tipe_notif_id = 'TN23' AND data.trainingbos is null then 'B' \n" +
+                "    when data.tipe_notif_id = 'TN44' AND data.indisipliner is null then 'P' \n" +
+                "    when data.tipe_notif_id = 'TN01' AND data.pengajuanRk is null then 'PBRK' \n" +
+                "    when data.tipe_notif_id = 'TN04' AND data.pengajuan is null then 'PB' \n" +
+                "    when data.tipe_notif_id = 'TN70' AND data.refreshLembur = '0' then 'RL' \n" +
+                "  end as hasil \n" +
                 "from \n" +
                 "  (\n" +
                 "    select \n" +
@@ -106,8 +107,9 @@ public class NotifikasiDao extends GenericDao<ImNotifikasiEntity, String> {
                 "      training.approval_flag as training, \n" +
                 "      training.approval_bos_flag as trainingBos, \n" +
                 "      indisipliner.approval_flag as indisipliner, \n" +
-                "\t  pengajuan.aproval_flag as pengajuan,\n" +
-                "      pengajuanRk.aproval_flag as pengajuanRk\n" +
+                "      pengajuan.aproval_flag as pengajuan,\n" +
+                "      pengajuanRk.aproval_flag as pengajuanRk,\n" +
+                "      refreshLembur.flag_approve as refreshLembur\n" +
                 "    from \n" +
                 "      (\n" +
                 "        SELECT \n" +
@@ -184,12 +186,19 @@ public class NotifikasiDao extends GenericDao<ImNotifikasiEntity, String> {
                 "        FROM \n" +
                 "          it_akun_pengajuan_biaya\n" +
                 "      ) pengajuan on pengajuan.pengajuan_biaya_id = notif.no_request\n" +
-                "\t  left join (\n" +
+                "      left join (\n" +
                 "        SELECT \n" +
                 "          * \n" +
                 "        FROM \n" +
                 "          it_akun_pengajuan_biaya\n" +
                 "      ) pengajuanRk on pengajuanRk.pengajuan_biaya_id = notif.no_request\n" +
+                "      left join (\n" +
+                "        SELECT\n" +
+                "          group_refresh_id, flag_approve\n" +
+                "        FROM\n" +
+                "          it_hris_refresh_lembur\n" +
+                "        GROUP BY group_refresh_id,flag_approve\n" +
+                "      ) refreshLembur on refreshLembur.group_refresh_id = notif.no_request \n" +
                 "  ) as data \n" +
                 "WHERE \n" +
                 "  nip = '"+nip+"' \n" +
@@ -201,7 +210,7 @@ public class NotifikasiDao extends GenericDao<ImNotifikasiEntity, String> {
         String notifId="";
         for (Object[] row : resultQuery) {
             ImNotifikasiEntity result  = new ImNotifikasiEntity();
-            if (row[26]!=null){
+            if (row[27]!=null){
                 result.setNotifId(row[0].toString());
                 result.setTipeNotifId(row[1].toString());
                 result.setNip(row[2].toString());

@@ -2047,7 +2047,6 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
     }
 
     //updated by ferdi, 01-12-2020, rebuild to get data payroll bulanan (pendapatan rutin)
-    //RAKA-05MEI2021==> Update. mengali tunj. Struktural & tunj. Jabatan dengan persen gaji jenis pegawai
     public List<PegawaiPayroll> getInitialDataPayrollBulanan(String branchId,
                                                              String periodePayroll,
                                                              String tahunPayroll,

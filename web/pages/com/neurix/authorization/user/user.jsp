@@ -135,7 +135,7 @@
                                         <s:action id="comboDivisi" namespace="/department"
                                                   name="searchDepartment_department"/>
                                         <s:select list="#comboDivisi.listComboDepartment" id="users.divisiId"
-                                                  name="users.divisiId"
+                                                  name="users.departmentId"
                                                   listKey="departmentId" listValue="departmentName" headerKey=""
                                                   headerValue=" - "
                                                   cssClass="form-control select2" cssStyle="width: 100%"/>

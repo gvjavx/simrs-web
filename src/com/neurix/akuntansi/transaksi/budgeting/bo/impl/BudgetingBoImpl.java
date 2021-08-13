@@ -140,7 +140,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                     budgeting.setLevel(kodeRekeningEntity.getLevel());
                     budgeting.setStLevel(kodeRekeningEntity.getLevel() == null ? "" : kodeRekeningEntity.getLevel().toString());
                     budgeting.setParentId(kodeRekeningEntity.getParentId());
-                    budgeting.setTipeCoa(kodeRekeningEntity.getTipeRekeningId());
+                    budgeting.setTipeCoa(kodeRekeningEntity.getTipeCoa());
                     budgeting.setFlagDivisi(kodeRekeningEntity.getFlagDivisi());
                     budgeting.setFlagMaster(kodeRekeningEntity.getFlagMaster());
                     budgeting.setTipeBudgeting(kodeRekeningEntity.getTipeBudgeting());
@@ -464,6 +464,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                         budgetingNew.setOktober( new BigDecimal(0));
                         budgetingNew.setNovember( new BigDecimal(0));
                         budgetingNew.setDesember( new BigDecimal(0));
+                        budgetingNew.setApproveFlag("Y");
 
                         List<Budgeting> budgetings = budgetingList.stream().filter( p -> p.getRekeningId().equalsIgnoreCase(kodeRekeningEntity.getRekeningId())).collect(Collectors.toList());
                         if (budgetings.size() > 0){
@@ -525,6 +526,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                         budgetingNew.setCreatedWho(bean.getCreatedWho());
                         budgetingNew.setLastUpdate(bean.getLastUpdate());
                         budgetingNew.setLastUpdateWho(bean.getLastUpdateWho());
+                        budgetingEntity.setApproveFlag("Y");
 
                         try {
                             budgetingDao.addAndSave(budgetingEntity);

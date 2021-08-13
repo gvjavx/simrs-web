@@ -82,6 +82,11 @@
         <convert converter="bean" match="com.neurix.hris.master.provinsi.model.Desa"/>
 
         <create creator="new">
+            <param name="class" value="com.neurix.hris.transaksi.refreshLembur.action.RefreshLemburAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.hris.transaksi.refreshLembur.model.RefreshLembur"/>
+
+        <create creator="new">
             <param name="class" value="com.neurix.hris.master.notif.action.NotifAction"/>
         </create>
         <convert converter="bean" match="com.neurix.hris.master.notif.model.Notif"/>
@@ -1075,6 +1080,11 @@
         <create creator="new">
             <param name="class" value="com.neurix.common.util.CommonUtil"/>
         </create>
+
+        <create creator="new">
+            <param name="class" value="com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.action.PendaftaranJasaRekananAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.model.PendaftaranJasa"/>
 
     </allow>
 </dwr>

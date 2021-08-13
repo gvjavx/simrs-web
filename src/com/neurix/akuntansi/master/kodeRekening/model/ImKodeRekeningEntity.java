@@ -17,7 +17,6 @@ public class ImKodeRekeningEntity implements Serializable {
     private String kodeRekening;
     private String namaKodeRekening;
     private String parentId;
-    private String tipeRekeningId;
     private Long level;
 
     private String flag;
@@ -70,14 +69,6 @@ public class ImKodeRekeningEntity implements Serializable {
 
     public void setParentId(String parentId) {
         this.parentId = parentId;
-    }
-
-    public String getTipeRekeningId() {
-        return tipeRekeningId;
-    }
-
-    public void setTipeRekeningId(String tipeRekeningId) {
-        this.tipeRekeningId = tipeRekeningId;
     }
 
     public String getFlag() {
