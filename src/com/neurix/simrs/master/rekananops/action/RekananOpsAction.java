@@ -295,9 +295,8 @@ public class RekananOpsAction extends BaseMasterAction {
 
     public String saveAdd(){
         logger.info("[DetailRekananOpsAction.saveAdd] start process >>>");
-
+        RekananOps rekananOps = getRekananOps();
         try {
-            RekananOps rekananOps = getRekananOps();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
@@ -308,14 +307,14 @@ public class RekananOpsAction extends BaseMasterAction {
             rekananOps.setAction("C");
             rekananOps.setFlag("Y");
 
-            rekananOpsBoProxy.saveAdd(rekananOps);
+            rekananOps = rekananOpsBoProxy.saveAdd(rekananOps);
         }catch (GeneralBOException e) {
             logger.error("ini error, "+e.getMessage());
             throw new GeneralBOException("ini error, "+e.getMessage());
         }
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultRekananOps");
-
+        setRekananOps(rekananOps);
         logger.info("[rekananOpsAction.saveAdd] end process >>>");
         return "success_save_add";
     }
@@ -337,7 +336,7 @@ public class RekananOpsAction extends BaseMasterAction {
 
         session.removeAttribute("listOfResultRekananOps");
         session.setAttribute("listOfResultRekananOps", listOfsearchRekananOps);
-
+        setRekananOps(searchRekananOps);
         logger.info("[DetailRekananOpsAction.search] end process <<<");
 
         return SUCCESS;

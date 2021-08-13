@@ -103,7 +103,8 @@ public class RekananOpsBoImpl implements RekananOpsBo {
     }
 
     @Override
-    public CrudResponse saveAdd(RekananOps bean) throws GeneralBOException{
+    public RekananOps saveAdd(RekananOps bean) throws GeneralBOException{
+        RekananOps rekananOps = new RekananOps();
         if (bean!=null) {
             List<ImSimrsRekananOpsEntity> cekList = new ArrayList<>();
             try {
@@ -148,6 +149,7 @@ public class RekananOpsBoImpl implements RekananOpsBo {
                 try {
                     // insert into database
                     rekananOpsDao.addAndSave(imSimrsRekananOpsEntity);
+                    rekananOps.setIdRekananOps(imSimrsRekananOpsEntity.getIdRekananOps());
                 } catch (HibernateException e) {
                     logger.error("[AsuransiiBoImpl.saveAdd] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving new data Asuransi, please info to your admin..." + e.getMessage());
@@ -155,7 +157,7 @@ public class RekananOpsBoImpl implements RekananOpsBo {
             }
 
         }
-        return null;
+        return rekananOps;
     }
 
     @Override
