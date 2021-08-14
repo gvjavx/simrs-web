@@ -12518,6 +12518,7 @@ public class PayrollAction extends BaseTransactionAction {
         listOfColumn.add("no.sk. gaji");
         listOfColumn.add("no.sk. gaji");
         listOfColumn.add("no.id. bio");
+        listOfColumn.add("NIP Lama");
         //RAKA-17MEI2021 ===> tidak perlu ditampilkan
 //        listOfColumn.add("pr.dapen.p");
 //        listOfColumn.add("pr.dapen.g");
@@ -12969,6 +12970,13 @@ public class PayrollAction extends BaseTransactionAction {
             cellDetail = new CellDetail();
             cellDetail.setCellID(62);
             cellDetail.setValueCell(data.getNoidbio());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // niplama
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(63);
+            cellDetail.setValueCell(data.getNipLama());
             cellDetail.setAlignmentCell(3);
             listOfCell.add(cellDetail);
 

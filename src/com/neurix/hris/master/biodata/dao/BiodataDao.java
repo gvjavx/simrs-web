@@ -71,7 +71,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
-        criteria.addOrder(Order.asc("nip"));
+//        criteria.addOrder(Order.asc("nip"));
 
         List<ImBiodataEntity> results = criteria.list();
 
