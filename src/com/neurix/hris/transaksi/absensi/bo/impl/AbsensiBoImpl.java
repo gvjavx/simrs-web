@@ -1081,7 +1081,9 @@ public class AbsensiBoImpl implements AbsensiBo {
 //                        for (ItPayrollEntity itPayrollEntity : payrollEntityList){
 //                            peralihan=itPayrollEntity.getTunjanganPeralihan().doubleValue();
 //                        }
-                        upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+                        //RAKA-16AGU2021 ==> tanpa sankhus
+//                        upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+                        upahLembur = (gapok + peralihan) * faktor * jamLembur;
                         upahLembur = Math.floor(upahLembur);
 
                         absensiPegawaiEntity.setLembur("Y");
@@ -1310,7 +1312,9 @@ public class AbsensiBoImpl implements AbsensiBo {
                         }
                         Double peralihan = 0d;
                         peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(), bean.getTanggal()).doubleValue();
-                        upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+                        //RAKA-16AGU2021 ==> tanpa sankhus
+//                        upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+                        upahLembur = (gapok + peralihan) * faktor * jamLembur;
                         upahLembur = Math.floor(upahLembur);
 
                         absensiPegawaiEntity.setLembur("Y");
@@ -1407,7 +1411,9 @@ public class AbsensiBoImpl implements AbsensiBo {
                         Double peralihan = 0d;
                         peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(), bean.getTanggal()).doubleValue();
 
-                        upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+                        //RAKA-16AGU2021 ==> tanpa sankhus
+//                        upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+                        upahLembur = (gapok + peralihan) * faktor * jamLembur;
                         upahLembur = Math.floor(upahLembur);
 
                         absensiPegawaiEntity.setLembur("Y");
@@ -3908,7 +3914,9 @@ public class AbsensiBoImpl implements AbsensiBo {
                     double peralihan = 0d;
                     peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(), tanggal).doubleValue();
 
-                    upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+                    //RAKA-16AGU2021 ==> tanpa sankhus
+//                        upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+                    upahLembur = (gapok + peralihan) * faktor * jamLembur;
 
                     absensiPegawaiEntity.setLembur("Y");
                     absensiPegawaiEntity.setJamLembur(jamLembur);
@@ -7043,8 +7051,9 @@ public class AbsensiBoImpl implements AbsensiBo {
             }
             Double peralihan = 0d;
             peralihan = getTunjPeralihan(biodata.getNip(), tanggalInquiry).doubleValue();
-            upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
-//            upahLembur = (gapok + peralihan) * faktor * jamLembur;
+            //RAKA-16AGU2021 ==> tanpa sankhus
+//                        upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+            upahLembur = (gapok + peralihan) * faktor * jamLembur;
             upahLembur = Math.floor(upahLembur);
 
             String stUpahLembur = "";
@@ -7182,8 +7191,9 @@ public class AbsensiBoImpl implements AbsensiBo {
             }
             Double peralihan = 0d;
             peralihan = getTunjPeralihan(biodata.getNip(), tanggalInquiry).doubleValue();
-            upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
-//            upahLembur = (gapok + peralihan) * faktor * jamLembur;
+            //RAKA-16AGU2021 ==> tanpa sankhus
+//                        upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+            upahLembur = (gapok + peralihan) * faktor * jamLembur;
             upahLembur = Math.floor(upahLembur);
 
             String stUpahLembur = "";
