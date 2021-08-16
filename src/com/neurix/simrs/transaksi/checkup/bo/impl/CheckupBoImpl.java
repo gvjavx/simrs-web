@@ -1049,7 +1049,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     tin.setIdTindakan(paketPeriksa.getIdItem());
 
                     try {
+                        // TODO: Perlu ganti engine, untuk ambil berdasarkan paket.
                         tindakanEntity = tindakanDao.getListDataTindakan(tin);
+                        tindakanEntity = itemPaketDao.getListPaketTIndakan(tin, idPaket);
                     } catch (HibernateException e) {
                         logger.error("[CheckupBoImpl.insertItemPaketToPeriksa] ERROR", e);
                         throw new GeneralBOException("[CheckupBoImpl.insertItemPaketToPeriksa] ERROR", e);

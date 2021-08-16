@@ -211,9 +211,11 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                 "FROM im_simrs_pelayanan a \n" +
                 "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
                 "WHERE id_pelayanan = :id";
+
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("id", iPelayanan)
                 .list();
+
         if(results.size() > 0){
             Object[] obj = results.get(0);
             res = obj[1].toString();
