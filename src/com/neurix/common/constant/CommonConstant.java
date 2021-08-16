@@ -286,9 +286,9 @@ public class CommonConstant {
     public final static String TRANSAKSI_ID_KOREKSI_PENGAJUAN_BIAYA = CommonUtil.getPropertyParams("transaksi.id.koreksi.pengajuan.biaya");
 
     //untuk sewa lahan - aji noor
-    public final static String REKENING_KODE_PPN_KELUARAN = CommonUtil.getPropertyParams("rekening.kode.ppn.keluaran");
-    public final static String REKENING_KODE_PPH_PASAL4_AYAT2 = CommonUtil.getPropertyParams("rekening.kode.pph.pasal4.ayat2");
-    public final static String REKENING_KODE_PENDAPATAN_DILUAR_USAHA = CommonUtil.getPropertyParams("rekening.kode.pendapatan.diluar.usaha");
+    public final static String REKENING_KODE_PPN_KELUARAN = CommonUtil.getPropertyParams("rekening.id.ppn.keluaran");
+    public final static String REKENING_KODE_PPH_PASAL4_AYAT2 = CommonUtil.getPropertyParams("rekening.id.pph.pasal4.ayat2");
+    public final static String REKENING_KODE_PENDAPATAN_DILUAR_USAHA = CommonUtil.getPropertyParams("rekening.id.pendapatan.luar.usaha");
 
     public final static String REKENING_ID_PPN_MASUKAN = CommonUtil.getPropertyParams("rekening.id.ppn.masukan");
     public final static String REKENING_ID_PPN_KELUARAN = CommonUtil.getPropertyParams("rekening.id.ppn.keluaran");
@@ -456,6 +456,7 @@ public class CommonConstant {
 
     public final static String PATH_REPORT_AKUNTANSI = ContextLoader.getCurrentWebApplicationContext().getApplicationName() + "/pages/report/neurix/com/akuntansi/";
     public final static String REALPATH_REPORT_AKUNTANSI = CommonUtil.getPropertyParams("base.dir") + "pages/report/com/neurix/akuntansi/";
+    public final static String COA_SETARA_KAS = CommonUtil.getPropertyParams("coa.setara.kas");
     public final static String COA_BEBAN_JASA_PREFESIONAL = CommonUtil.getPropertyParams("coa.beban.jasa.profesional");
     public final static String TRANS_ID_PEMBAYARAN_JASA = CommonUtil.getPropertyParams("transaksi.id.pembayaran.jasa");
     public final static String TRANS_ID_RJ_LEBIH_UM             = CommonUtil.getPropertyParams("transaksi.id.lebih.um.rj");

@@ -648,7 +648,7 @@
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Tanggal Faktur</label>
                             <div class="col-md-8">
-                                <s:textfield id="mod_tgl_faktur" onkeypress="$(this).css('border','')" readonly="true"
+                                <s:textfield id="mod_tgl_faktur" onkeypress="$(this).css('border','')"
                                              cssClass="form-control mod_scan_faktur" cssStyle="margin-top: 7px" />
                             </div>
                         </div>
@@ -725,7 +725,7 @@
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">NPWP Lawan</label>
                             <div class="col-md-8">
-                                <s:textfield id="mod_npwp_lawan_transaksi" onkeypress="$(this).css('border','')" readonly="true"
+                                <s:textfield id="mod_npwp_lawan_transaksi" onkeypress="$(this).css('border','')"
                                              cssClass="form-control mod_scan_faktur" cssStyle="margin-top: 7px" />
                             </div>
                         </div>

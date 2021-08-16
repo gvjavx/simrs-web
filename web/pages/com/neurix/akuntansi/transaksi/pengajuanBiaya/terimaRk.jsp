@@ -178,24 +178,44 @@
                                                     </thead>
                                                     <tbody>
                                                     <s:iterator value="#session.listOfResult" var="row">
-                                                            <td><s:property value="pengajuanBiayaDetailId"/></td>
-                                                            <td><s:property value="branchName"/></td>
-                                                            <td><s:property value="divisiName"/></td>
-                                                            <td><s:property value="stTanggal"/></td>
-                                                            <td><s:property value="stTanggalRealisasi"/></td>
-                                                            <td style="text-align: right"><s:property value="stJumlah"/></td>
-                                                            <td><s:property value="keperluan"/></td>
-                                                            <td><s:property value="rkId"/></td>
-                                                            <td><s:property value="statusKeuanganName"/></td>
-                                                            <td><s:property value="statusSaatIni"/></td>
-                                                            <td align="center">
-                                                                <s:if test='#row.canView'>
-                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaDetailId}"/>" class="item-view">
-                                                                    <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
-                                                                </a>
-                                                                </s:if>
-                                                            </td>
-                                                        </tr>
+                                                        <s:if test='#row.tipe == "header"'>
+                                                            <tr style="background-color: lightgrey;font-weight: bold">
+                                                                <td><s:property value="pengajuanBiayaDetailId"/></td>
+                                                                <td><s:property value="branchName"/></td>
+                                                                <td><s:property value="divisiName"/></td>
+                                                                <td><s:property value="stTanggal"/></td>
+                                                                <td><s:property value="stTanggalRealisasi"/></td>
+                                                                <td style="text-align: right"><s:property value="stJumlah"/></td>
+                                                                <td><s:property value="headerName"/></td>
+                                                                <td><s:property value="rkId"/></td>
+                                                                <td><s:property value="statusKeuanganName"/></td>
+                                                                <td><s:property value="statusSaatIni"/></td>
+                                                                <td align="center">
+
+                                                                </td>
+                                                            </tr>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <tr>
+                                                                <td><s:property value="pengajuanBiayaDetailId"/></td>
+                                                                <td><s:property value="branchName"/></td>
+                                                                <td><s:property value="divisiName"/></td>
+                                                                <td><s:property value="stTanggal"/></td>
+                                                                <td><s:property value="stTanggalRealisasi"/></td>
+                                                                <td style="text-align: right"><s:property value="stJumlah"/></td>
+                                                                <td><s:property value="keperluan"/></td>
+                                                                <td><s:property value="rkId"/></td>
+                                                                <td><s:property value="statusKeuanganName"/></td>
+                                                                <td><s:property value="statusSaatIni"/></td>
+                                                                <td align="center">
+                                                                    <s:if test='#row.canView'>
+                                                                        <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaDetailId}"/>" class="item-view">
+                                                                            <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
+                                                                        </a>
+                                                                    </s:if>
+                                                                </td>
+                                                            </tr>
+                                                        </s:else>
                                                     </s:iterator>
                                                     </tbody>
                                                 </table>

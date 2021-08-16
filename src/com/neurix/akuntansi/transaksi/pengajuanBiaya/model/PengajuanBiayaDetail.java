@@ -120,6 +120,15 @@ public class PengajuanBiayaDetail extends BaseModel {
     private String statusKeuanganName;
     private String headerName;
     private String tipe;
+    private String flagSelesaiRk;
+
+    public String getFlagSelesaiRk() {
+        return flagSelesaiRk;
+    }
+
+    public void setFlagSelesaiRk(String flagSelesaiRk) {
+        this.flagSelesaiRk = flagSelesaiRk;
+    }
 
     public String getTipe() {
         return tipe;

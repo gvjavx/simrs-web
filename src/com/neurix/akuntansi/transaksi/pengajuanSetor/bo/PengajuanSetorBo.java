@@ -23,6 +23,8 @@ public interface PengajuanSetorBo extends BaseMasterBo<PengajuanSetor> {
 
     List<PengajuanSetorDetail> listPPh21Pengajuan(PengajuanSetor search);
 
+    List<PengajuanSetorDetail> listPPh21Jasa(PengajuanSetor search);
+
     void saveAddPengajuanSetorPph21(PengajuanSetor bean, List<PengajuanSetorDetail> pengajuanSetorDetailListPayroll, List<PengajuanSetorDetail> pengajuanSetorDetailListKso, List<PengajuanSetorDetail> pengajuanSetorDetailListPengajuan);
 
     void saveAddPengajuanSetorPpn(PengajuanSetor bean, List<PengajuanSetorDetail> pengajuanSetorDetailListPayroll, List<PengajuanSetorDetail> pengajuanSetorDetailListKso, List<PengajuanSetorDetail> pengajuanSetorDetailListPengajuan);

@@ -1120,6 +1120,13 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                     break;
             }
 
+
+            // Sigit 2021-08-12, Untuk menhandel bungkus karna tidak mengedit jumlah
+            if (bean.getJumlah() == null){
+                bean.setJumlah(pengajuanBiayaDetailEntity.getJumlah());
+            }
+            // END
+
             pengajuanBiayaDetailEntity.setJumlah(bean.getJumlah());
             pengajuanBiayaDetailEntity.setAction(bean.getAction());
             pengajuanBiayaDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -1197,6 +1204,16 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
         }
         try {
         if (pengajuanBiayaDetailEntity != null) {
+
+            // Sigit 2021-08-12, Untuk menhandel bungkus karna tidak mengedit jumlah
+            if (bean.getJumlah() == null){
+                bean.setJumlah(pengajuanBiayaDetailEntity.getJumlah());
+            }
+            if (bean.getStatusKeuangan() != null){
+                bean.setStatusKeuangan(pengajuanBiayaDetailEntity.getStatusKeuangan());
+            }
+            // END
+
             //Approve
             switch (bean.getStatusApproval()){
                 case "KE":
@@ -2015,7 +2032,6 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
 
             if(itPengajuanBiayaDetailEntityList != null){
 
-                List<PengajuanBiayaDetail> listOfDivisi = new ArrayList<>();
                 List<PengajuanBiayaDetail> listOfHeader = new ArrayList<>();
                 List<PengajuanBiayaDetail> listOfChild = new ArrayList<>();
 
@@ -2036,27 +2052,6 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                     if (returnData.getTanggalRealisasi()!=null&&!returnData.isSudahDibayar()){
                         total = total.add(pengajuanBiayaDetailEntity.getJumlah());
                     }
-
-
-
-                    // mapping divisi
-//                    if (listOfDivisi.size() == 0){
-//                        if (returnData.getDivisiId() != null && !"".equalsIgnoreCase(returnData.getDivisiId())){
-//
-//                            PengajuanBiayaDetail pengajuanDivisi = returnData;
-//                            pengajuanDivisi.setTipe("divisi");
-//
-//                            listOfDivisi.add(pengajuanDivisi);
-//                        }
-//                    } else {
-//                        List<PengajuanBiayaDetail> filter = listOfDivisi.stream().filter(p->p.getDivisiId().equalsIgnoreCase(returnData.getDivisiId())).collect(Collectors.toList());
-//                        if (filter.size() == 0){
-//                            PengajuanBiayaDetail pengajuanDivisi = returnData;
-//                            pengajuanDivisi.setTipe("divisi");
-//
-//                            listOfDivisi.add(pengajuanDivisi);
-//                        }
-//                    }
 
                     // mapping header
                     boolean emptyHeader = listOfHeader.size() == 0;
@@ -2087,17 +2082,26 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
 
                 // set to listOfResult After Mapping;
                 for (PengajuanBiayaDetail header : listOfHeader){
-                    // set header -> listOfResult
-                    listOfResult.add(header);
 
                     // set child after header -> listOfResult
                     List<PengajuanBiayaDetail> filterChild = listOfChild.stream().filter(p->p.getPengajuanBiayaId().equalsIgnoreCase(header.getPengajuanBiayaId())).collect(Collectors.toList());
 
+                    BigDecimal jumlahHeader = new BigDecimal(0);
                     if (filterChild.size() > 0){
                         for (PengajuanBiayaDetail child : filterChild){
+
+                            if (child.getTanggalRealisasi()!=null&&!child.isSudahDibayar()){
+                                jumlahHeader = jumlahHeader.add(child.getJumlah());
+                            }
                             listOfResult.add(child);
                         }
                     }
+
+                    // set header -> listOfResult
+                    header.setJumlah(jumlahHeader);
+                    header.setStJumlah(CommonUtil.numbericFormat(jumlahHeader,"###,###"));
+                    header.setFlagSelesaiRk(pengajuanBiayaDao.flagSudahSelesaiRk(header.getPengajuanBiayaId()));
+                    listOfResult.add(header);
                 }
 
 
@@ -2499,5 +2503,34 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             }
         }
         logger.info("[PengajuanBiayaBoImpl.savePembayaranPengajuanDoFinal] end process <<<");
+    }
+
+    @Override
+    public List<PengajuanBiayaDetail> getDetailByIdHeader(String id) {
+        logger.info("[PengajuanBiayaBoImpl.getDetailByIdHeader] start process >>>");
+
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("pengajuan_biaya_id", id);
+        hsCriteria.put("flag", "Y");
+
+        List<ItPengajuanBiayaDetailEntity> itPengajuanBiayaDetailEntityList = null;
+        try {
+            itPengajuanBiayaDetailEntityList = pengajuanBiayaDetailDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e) {
+            logger.error("[PengajuanBiayaBoImpl.getDetailByIdHeader] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        List<PengajuanBiayaDetail> listPengajuanBiaya = new ArrayList<>();
+        if (itPengajuanBiayaDetailEntityList.size() > 0){
+            for (ItPengajuanBiayaDetailEntity detailEntity : itPengajuanBiayaDetailEntityList){
+                listPengajuanBiaya.add(convertPengajuanBiayaDetail(detailEntity));
+            }
+        }
+
+
+        logger.info("[PengajuanBiayaBoImpl.getDetailByIdHeader] end process <<<");
+        return listPengajuanBiaya;
     }
 }
