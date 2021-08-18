@@ -6504,6 +6504,10 @@ function setTindakLanjut(){
                     }
                 });
             }
+        }else{
+            $('#keterangan').val('').trigger('change');
+            $('#keterangan').attr('disabled', false);
+            $('#set_kontrol_close').html('');
         }
     });
 }

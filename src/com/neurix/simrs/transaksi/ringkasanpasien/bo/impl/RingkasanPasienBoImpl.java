@@ -220,12 +220,12 @@ public class RingkasanPasienBoImpl implements RingkasanPasienBo {
                                 int i = 0;
                                 if(tindak.length > 0){
                                     for (String lanjut: tindak){
-                                        if("Kontrol Ulang".equalsIgnoreCase(lanjut)){
+                                        if("Kontrol Ulang".equalsIgnoreCase(lanjut) || "Kembali ke FKTP".equalsIgnoreCase(lanjut)){
                                             if(i == 0){
                                                 tindakLanjut += "<li>"+lanjut+"</li>";
                                             }
                                         }else{
-                                            tindakLanjut += "<li>"+ i +"."+lanjut+"</li>";
+                                            tindakLanjut += "<li>"+ i +". "+lanjut+"</li>";
                                         }
                                         i++;
                                     }
