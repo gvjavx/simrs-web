@@ -3786,7 +3786,7 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
             jenisRm = 'ugd_anak';
         } else if (parseInt(umur) >= 17 && parseInt(umur) <= 55) {
             jenisRm = 'ugd_dewasa';
-        } else if (parseInt(umur) > 56) {
+        } else if (parseInt(umur) >= 56) {
             jenisRm = 'ugd_geriatri';
         }
     } else {

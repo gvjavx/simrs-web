@@ -348,7 +348,7 @@ function saveSPS(jenis, ket) {
             }
         }
 
-        if (temp && isiEdukasi != '' && !cekTtd1 && !cekTtd2) {
+        if (temp && isiEdukasi != '' && !cekTtd1 && !cekTtd2 && nama2 && nama1 != '') {
             var canv1 = ttd1.toDataURL("image/png"),
                 canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
 

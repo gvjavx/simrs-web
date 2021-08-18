@@ -130,7 +130,7 @@ public class RingkasanPasienAction {
                 response.setMsg("Found Error " + e.getMessage());
                 return response;
             }
-        }catch (JSONException e){
+        }catch (Exception e){
             response.setStatus("Error");
             response.setMsg("Found Error " + e.getMessage());
         }

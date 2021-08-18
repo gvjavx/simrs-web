@@ -166,7 +166,7 @@
                                 <td>Status</td>
                                 <td>Desa</td>
                                 <td>No HP</td>
-                                <td align="center">Action</td>
+                                <%--<td align="center">Action</td>--%>
                             </tr>
                             </thead>
                             <tbody>
@@ -216,11 +216,11 @@
                                             document.write(temp);
                                         </script>
                                     </td>
-                                    <td align="center">
-                                        <a href="<%= request.getContextPath() %>/checkup/add_checkup.action?tipe=KU&id=<s:property value="idPasien"/>&idp=<s:property value="idPelayanan"/>&&idd=<s:property value="idDokter"/>&jp=<s:property value="idJenisPeriksaPasien"/>&idx=<s:property value="idDetailCheckup"/>&tgl=<s:property value="tglKontrol"/>">
-                                            <img class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
-                                        </a>
-                                    </td>
+                                    <%--<td align="center">--%>
+                                        <%--<a href="<%= request.getContextPath() %>/checkup/add_checkup.action?tipe=KU&id=<s:property value="idPasien"/>&idp=<s:property value="idPelayanan"/>&&idd=<s:property value="idDokter"/>&jp=<s:property value="idJenisPeriksaPasien"/>&idx=<s:property value="idDetailCheckup"/>&tgl=<s:property value="tglKontrol"/>">--%>
+                                            <%--<img class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">--%>
+                                        <%--</a>--%>
+                                    <%--</td>--%>
                                 </tr>
                             </s:iterator>
                             </tbody>
