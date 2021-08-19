@@ -460,8 +460,8 @@ function setDataPasien() {
             callback: function (res) {
                 if (res != '') {
                     if (res.berat != '' && res.tinggi != '') {
-                        var tom = (parseInt(tinggi) * 0.01);
-                        var bmi = (parseInt(berat) / (tom * tom)).toFixed(2);
+                        var tom = (parseInt(res.tinggi) * 0.01);
+                        var bmi = (parseInt(res.berat) / (tom * tom)).toFixed(2);
                         var keterangan = "";
                         if (parseInt(bmi) < 18.5) {
                             keterangan = 'Kurang';

@@ -19,7 +19,7 @@ function viewAllRekamMedis() {
         var temp = "";
         startLoad();
         dwr.engine.setAsync(true);
-        CheckupAction.getRiwayatListRekammedisPasien(idDetailCheckup, tipePelayanan, kategoriPelayanan, {
+        CheckupAction.getRiwayatListRekammedisPasien(noCheckup, tipePelayanan, kategoriPelayanan, {
             callback: function (res) {
                 if (res.length > 0) {
                     stopLoad();

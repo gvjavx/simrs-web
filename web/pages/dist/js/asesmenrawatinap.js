@@ -69,6 +69,7 @@ function showModalAsesmenRawatInap(jenis, idRM, isSetIdRM, flagHide, flagCheck) 
                 $('#btn_ina_catatan_integrasi_pasien_ina').attr('onclick', 'detailCPPT(\'catatan_integrasi_pasien_ina\', \'catatan_terintegrasi_ina\', \'ina\', \'gizi\')');
                 $('#cppt5_tensi, #cppt5_suhu, #cppt5_nadi, #cppt5_rr').attr('disabled', true);
                 $('#form_ttd_dpjp').hide();
+                changePPA('Ahli Gizi');
             }else{
                 option = '<option value="">[Select One]</option>\n' +
                     '<option value="Dokter">Dokter</option>\n' +

@@ -32,6 +32,9 @@ public class RingkasanPasienBoImpl implements RingkasanPasienBo {
             if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
+            if(bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup())){
+                hsCriteria.put("no_checkup", bean.getNoCheckup());
+            }
             if(bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())){
                 hsCriteria.put("keterangan", bean.getKeterangan());
             }
@@ -113,6 +116,7 @@ public class RingkasanPasienBoImpl implements RingkasanPasienBo {
                     ringkasanPasienEntity.setNamaTerang(bean.getNamaTerang());
                     ringkasanPasienEntity.setSip(bean.getSip());
                     ringkasanPasienEntity.setTipe(bean.getTipe());
+                    ringkasanPasienEntity.setNoCheckup(bean.getNoCheckup());
 
                     try {
                         ringkasanPasienDao.addAndSave(ringkasanPasienEntity);
