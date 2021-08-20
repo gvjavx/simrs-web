@@ -95,6 +95,13 @@
             <result name="success_report_lembur">/pages/com/neurix/hris/transaksi/lembur/SearchReportLembur.jsp</result>
             <result name="report_absensi">/pages/com/neurix/hris/transaksi/absensi/searchReportAbsensi.jsp</result>
 
+            <result name="print_pendapatandokter" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/PendapatanDokter.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
         </action>
 
         <action name="paging_displaytag_pendapatanDokter"

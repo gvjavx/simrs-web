@@ -43,6 +43,7 @@ public class PendapatanDokter extends BaseModel {
     String kdjnspas;
     String namaPasien;
     Timestamp tanggal;
+    String stTanggal;
     String keterangan;
     String tarifInacbg;
     BigDecimal bgTarifInacbg;
@@ -542,6 +543,14 @@ public class PendapatanDokter extends BaseModel {
 
     public void setTanggal(Timestamp tanggal) {
         this.tanggal = tanggal;
+    }
+
+    public String getStTanggal() {
+        return stTanggal;
+    }
+
+    public void setStTanggal(String val) {
+        this.stTanggal = val;
     }
 
     public String getTarifInacbg() {

@@ -62,6 +62,12 @@
             <basic name="koderingDivisi">
                 <column name="kodering_divisi"/>
             </basic>
+            <basic name="noJurnal">
+                <column name="no_jurnal"/>
+            </basic>
+            <basic name="coaKas">
+                <column name="coa_kas"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

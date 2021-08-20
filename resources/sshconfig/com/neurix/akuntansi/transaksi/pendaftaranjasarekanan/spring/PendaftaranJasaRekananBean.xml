@@ -5,8 +5,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-    <bean id="laporanAkuntansiAction" class="com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.action.PendaftaranJasaRekananAction"
-          p:pendaftatanJasaRekananBoProxy-ref="pendaftaranJasaRekananBo"
+    <bean id="pendaftaranJasaRekananAction" class="com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.action.PendaftaranJasaRekananAction"
+          p:pendaftaranJasaRekananBoProxy-ref="pendaftaranJasaRekananBoProxy"
     />
 
     <bean id="pendaftaranJasaRekananBo" class="com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.bo.impl.PendaftaranJasaRekananBoImpl"

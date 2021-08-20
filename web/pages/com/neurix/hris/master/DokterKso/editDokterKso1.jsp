@@ -56,8 +56,9 @@
                 var persenKso = document.getElementById("persenKso2").value;
                 var persenKs = document.getElementById("persenKs2").value;
 
+               // Fahmi 2021-07-30, Jika jeniskso adalah 'tindakan', tidak perlu cek persenKso.
                 if (dokterKsoId != '' && nip != ''&& branchId != '' && masterId != '' && jenisKso != ''
-                        && persenKso != '' && persenKs != '' ) {
+                        && persenKs != '' && (jenisKso!='tindakan'?persenKso != '':true) ) {
                     var status ="";
                     dwr.engine.setAsync(false);
                     DokterKsoAction.cekBeforeSave(nip,"edit",function (listData) {
@@ -549,7 +550,7 @@
                     //console.log("===========listOfSearch===="+JSON.stringify(listOfsearch[i]));
                     if (tindakanId == listOfsearch[i].tindakanId)
                     {
-                       alert(" Kode rekening sudah ditambahkan. ");
+                       alert(" Tindakan sudah ditambahkan. ");
                        isExist = true;
                        return;
                     }
@@ -604,9 +605,13 @@
         var jenis = $('#jenisKso2').val();
 
         if(jenis != 'tindakan'){
+            $('#persenKso2').prop('disabled',false);
+            $('#persenKso2').prop('readonly',false);
             $('#addTindakan').hide();
             $('#showdata').hide();
         } else{
+            $('#persenKso2').prop('disabled',true);
+            $('#persenKso2').prop('readonly',true);
             $('#addTindakan').show();
             $('#showdata').show();
         }

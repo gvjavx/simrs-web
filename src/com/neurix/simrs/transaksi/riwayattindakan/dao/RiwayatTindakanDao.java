@@ -115,7 +115,7 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
             }
 
             if(bean.getJenisPasien() != null && !"".equalsIgnoreCase(bean.getJenisPasien())){
-                jenis = "AND c.jenis_pasien = 'umum'";
+                jenis = "AND c.jenis_pasien = '"+bean.getJenisPasien()+"'";
             }
 
             String SQL = "SELECT\n" +

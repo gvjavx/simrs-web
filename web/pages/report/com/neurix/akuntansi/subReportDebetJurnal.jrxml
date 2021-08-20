@@ -20,7 +20,7 @@
 	c.nama
 from
 	it_akun_jurnal_detail a LEFT JOIN
-	im_akun_kode_rekening b ON a.rekening_id=b.rekening_id LEFT JOIN
+	im_akun_kode_rekening b ON a.nomor_rekening=b.kode_rekening LEFT JOIN
 	( select DISTINCT nomor_master,nama from im_akun_master) c ON c.nomor_master=a.master_id
 where
 	no_jurnal=$P{noJurnal}

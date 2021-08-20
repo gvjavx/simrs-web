@@ -3,6 +3,7 @@ package com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.bo.impl;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.master.dao.MasterDao;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
+import com.neurix.akuntansi.master.master.model.Master;
 import com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.bo.PendaftaranJasaRekananBo;
 import com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.dao.PendaftaranJasaRekananDao;
 import com.neurix.akuntansi.transaksi.pendaftaranjasarekanan.model.ItAkunPendaftaranJasaEntity;
@@ -42,34 +43,61 @@ public class PendaftaranJasaRekananBoImpl implements PendaftaranJasaRekananBo {
         List<PendaftaranJasa> listOfResult = new ArrayList<>();
         if (listEntity != null && listEntity.size() > 0){
 
-            BeanUtils.copyProperties(listEntity, listOfResult);
+//            BeanUtils.copyProperties(listEntity, listOfResult);
 
-            for (PendaftaranJasa pendaftaranJasa : listOfResult){
+            for (ItAkunPendaftaranJasaEntity jasaEntity : listEntity){
+
+                PendaftaranJasa pendaftaranJasa = new PendaftaranJasa();
+                pendaftaranJasa.setBranchId(jasaEntity.getBranchId());
+                pendaftaranJasa.setNamaJasa(jasaEntity.getNamaJasa());
+                pendaftaranJasa.setId(jasaEntity.getId());
+                pendaftaranJasa.setStatus(jasaEntity.getStatus());
+                pendaftaranJasa.setApproveKeu(jasaEntity.getApproveKeu());
+                pendaftaranJasa.setApproveKasubKeu(jasaEntity.getApproveKasubKeu());
+                pendaftaranJasa.setApproveKaKeu(jasaEntity.getApproveKaKeu());
+                pendaftaranJasa.setLastUpdate(jasaEntity.getLastUpdate());
+                pendaftaranJasa.setLastUpdateWho(jasaEntity.getLastUpdateWho());
+                pendaftaranJasa.setCreatedDate(jasaEntity.getCreatedDate());
+                pendaftaranJasa.setCreatedWho(jasaEntity.getCreatedWho());
+                pendaftaranJasa.setFlag(jasaEntity.getFlag());
+                pendaftaranJasa.setAction(jasaEntity.getAction());
+                pendaftaranJasa.setNoJurnal(jasaEntity.getNoJurnal());
+                pendaftaranJasa.setAlasanBatal(jasaEntity.getAlasanBatal());
+                pendaftaranJasa.setKodeRekeningJasa(jasaEntity.getKodeRekeningJasa());
+                pendaftaranJasa.setIdVendor(jasaEntity.getIdVendor());
+                pendaftaranJasa.setKoderingDivisi(jasaEntity.getKoderingDivisi());
+                pendaftaranJasa.setBiaya(jasaEntity.getBiaya());
+                pendaftaranJasa.setCoaKas(jasaEntity.getCoaKas());
+
+                if (pendaftaranJasa.getKoderingDivisi() != null && !"".equalsIgnoreCase(pendaftaranJasa.getKoderingDivisi())){
+                    Position position = pendaftaranJasaRekananDao.getPositionPropsByKodering(pendaftaranJasa.getKoderingDivisi());
+                    if (position != null){
+                        pendaftaranJasa.setNamaDivisi(position.getPositionName());
+                    }
+                }
+
                 if (pendaftaranJasa.getIdVendor() != null && !"".equalsIgnoreCase(pendaftaranJasa.getIdVendor())){
                     ImMasterEntity masterEntity = masterDao.getById("primaryKey.nomorMaster", pendaftaranJasa.getIdVendor());
                     if (masterEntity != null){
                         pendaftaranJasa.setNamaVendor(masterEntity.getNama());
                     }
-
-                    Position position = pendaftaranJasaRekananDao.getPositionPropsByKodering(pendaftaranJasa.getKoderingDivisi());
-                    if (position != null){
-                        pendaftaranJasa.setNamaDivisi(position.getPositionName());
-                    }
-
-                    if ("1".equalsIgnoreCase(pendaftaranJasa.getStatus())){
-                        pendaftaranJasa.setKeteranganStatus("Menunggu Approval Unit");
-                    } else if ("2".equalsIgnoreCase(pendaftaranJasa.getStatus())){
-                        pendaftaranJasa.setKeteranganStatus("Sudah Terapprove Oleh Unit Menunggu Approval Keuangan");
-                    } else if ("Y".equalsIgnoreCase(pendaftaranJasa.getApproveKeu())){
-                        pendaftaranJasa.setKeteranganStatus("Sudah Terapprove Oleh Keuangan Menunggu Approval Kasub Keuangan");
-                    } else if ("Y".equalsIgnoreCase(pendaftaranJasa.getApproveKeu())){
-                        pendaftaranJasa.setKeteranganStatus("Sudah Terapprove Oleh Kasub Keuangan Menunggu Approval Kepala Keuangan");
-                    } else if ("Y".equalsIgnoreCase(pendaftaranJasa.getApproveKeu())){
-                        pendaftaranJasa.setKeteranganStatus("Selesai");
-                    } else {
-                        pendaftaranJasa.setKeteranganStatus("Dibatalkan dengan alasan : "+ pendaftaranJasa.getAlasanBatal());
-                    }
                 }
+
+                if ("1".equalsIgnoreCase(pendaftaranJasa.getStatus())){
+                    pendaftaranJasa.setKeteranganStatus("Menunggu Approval Unit");
+                } else if ("2".equalsIgnoreCase(pendaftaranJasa.getStatus())){
+                    pendaftaranJasa.setKeteranganStatus("Sudah Terapprove Oleh Unit Menunggu Approval Keuangan");
+                } else if ("Y".equalsIgnoreCase(pendaftaranJasa.getApproveKeu())){
+                    pendaftaranJasa.setKeteranganStatus("Sudah Terapprove Oleh Keuangan Menunggu Approval Kasub Keuangan");
+                } else if ("Y".equalsIgnoreCase(pendaftaranJasa.getApproveKeu())){
+                    pendaftaranJasa.setKeteranganStatus("Sudah Terapprove Oleh Kasub Keuangan Menunggu Approval Kepala Keuangan");
+                } else if ("Y".equalsIgnoreCase(pendaftaranJasa.getApproveKeu())){
+                    pendaftaranJasa.setKeteranganStatus("Selesai");
+                } else {
+                    pendaftaranJasa.setKeteranganStatus("Dibatalkan dengan alasan : "+ pendaftaranJasa.getAlasanBatal());
+                }
+
+                listOfResult.add(pendaftaranJasa);
             }
         }
 
@@ -141,6 +169,8 @@ public class PendaftaranJasaRekananBoImpl implements PendaftaranJasaRekananBo {
 
         if (entity != null){
 
+            entity.setCoaKas(bean.getCoaKas());
+
             if ("N".equalsIgnoreCase(bean.getFlagApprove())){
                 entity.setAlasanBatal(bean.getAlasanBatal());
                 entity.setFlag("N");
@@ -192,9 +222,21 @@ public class PendaftaranJasaRekananBoImpl implements PendaftaranJasaRekananBo {
     }
 
     @Override
+    public List<KodeRekening> getListKodeRekeningSetaraKas() throws GeneralBOException {
+        logger.info("[PendaftaranJasaRekananBoImpl.getListKodeRekeningSetaraKas] Start >>>");
+        return pendaftaranJasaRekananDao.getListKodeRekeningSetaraKas();
+    }
+
+    @Override
     public List<Position> getListPosition() throws GeneralBOException {
-        logger.info("[PendaftaranJasaRekananBoImpl.getListKodeRekeningBebanJasa] Start >>>");
+        logger.info("[PendaftaranJasaRekananBoImpl.getListPosition] Start >>>");
         return pendaftaranJasaRekananDao.getListPosition();
+    }
+
+    @Override
+    public List<Master> getListMaster() throws GeneralBOException {
+        logger.info("[PendaftaranJasaRekananBoImpl.getListMaster] Start >>>");
+        return pendaftaranJasaRekananDao.getListMaster();
     }
 
     private List<ItAkunPendaftaranJasaEntity> getPendaftaranJasaEntity(PendaftaranJasa bean) throws GeneralBOException{

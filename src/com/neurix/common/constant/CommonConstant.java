@@ -203,6 +203,12 @@ public class CommonConstant {
     public final static String ROLE_ID_ADMIN_DIVISI = CommonUtil.getPropertyParams("role.id.admin.divisi");
     public final static String ROLE_ID_ADMIN = CommonUtil.getPropertyParams("role.id.admin");
     public final static String ROLE_ID_ADMIN_SDM = CommonUtil.getPropertyParams("role.id.admin.sdm");
+
+    // Fahmi 2021-08-07, Kelompok Pendapatan Dokter KSO
+    public final static String COA_REDUKSI_PENDAPATAN_RI = CommonUtil.getPropertyParams("rekening.id.reduksi.ri");
+    public final static String COA_REDUKSI_PENDAPATAN_RJ = CommonUtil.getPropertyParams("rekening.id.reduksi.rj");
+    public final static String COA_UTANGDOKTER = CommonUtil.getPropertyParams("rekening.id.utangdokter");
+    // End Fahmi
 //    public final static String ID_KANPUS = "KP";
     public final static String MASTER_PAJAK_OBAT = "03.00";
 
@@ -280,9 +286,9 @@ public class CommonConstant {
     public final static String TRANSAKSI_ID_KOREKSI_PENGAJUAN_BIAYA = CommonUtil.getPropertyParams("transaksi.id.koreksi.pengajuan.biaya");
 
     //untuk sewa lahan - aji noor
-    public final static String REKENING_KODE_PPN_KELUARAN = CommonUtil.getPropertyParams("rekening.kode.ppn.keluaran");
-    public final static String REKENING_KODE_PPH_PASAL4_AYAT2 = CommonUtil.getPropertyParams("rekening.kode.pph.pasal4.ayat2");
-    public final static String REKENING_KODE_PENDAPATAN_DILUAR_USAHA = CommonUtil.getPropertyParams("rekening.kode.pendapatan.diluar.usaha");
+    public final static String REKENING_KODE_PPN_KELUARAN = CommonUtil.getPropertyParams("rekening.id.ppn.keluaran");
+    public final static String REKENING_KODE_PPH_PASAL4_AYAT2 = CommonUtil.getPropertyParams("rekening.id.pph.pasal4.ayat2");
+    public final static String REKENING_KODE_PENDAPATAN_DILUAR_USAHA = CommonUtil.getPropertyParams("rekening.id.pendapatan.luar.usaha");
 
     public final static String REKENING_ID_PPN_MASUKAN = CommonUtil.getPropertyParams("rekening.id.ppn.masukan");
     public final static String REKENING_ID_PPN_KELUARAN = CommonUtil.getPropertyParams("rekening.id.ppn.keluaran");
@@ -447,7 +453,10 @@ public class CommonConstant {
     public final static String CODE_INVOICE_VA_TELE = CommonUtil.getPropertyParams("code.invoice.telemedic");
     public final static String JENIS_PEMBAYARAN_TRANSFER_TUNAI = CommonUtil.getPropertyParams("jenis.pembayaran.tt");
     public final static String JENIS_PEMBAYARAN_VA = CommonUtil.getPropertyParams("jenis.pembayaran.va");
+
     public final static String PATH_REPORT_AKUNTANSI = ContextLoader.getCurrentWebApplicationContext().getApplicationName() + "/pages/report/neurix/com/akuntansi/";
+    public final static String REALPATH_REPORT_AKUNTANSI = CommonUtil.getPropertyParams("base.dir") + "pages/report/com/neurix/akuntansi/";
+    public final static String COA_SETARA_KAS = CommonUtil.getPropertyParams("coa.setara.kas");
     public final static String COA_BEBAN_JASA_PREFESIONAL = CommonUtil.getPropertyParams("coa.beban.jasa.profesional");
     public final static String TRANS_ID_PEMBAYARAN_JASA = CommonUtil.getPropertyParams("transaksi.id.pembayaran.jasa");
     public final static String TRANS_ID_RJ_LEBIH_UM             = CommonUtil.getPropertyParams("transaksi.id.lebih.um.rj");

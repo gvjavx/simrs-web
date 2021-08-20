@@ -617,7 +617,10 @@ public class KasAction extends BaseMasterAction {
 
                 Map data = new HashMap();
                 data.put(parameter, dataMap);
-                data.put("metode_bayar", listMapKas);
+                // Fahmi 2021-08-09, Mengubah key Map metode_bayar -> kas, karena metode_bayar tidak sesuai mapping.
+                //data.put("metode_bayar", listMapKas);
+                data.put("kas", listMapKas);
+                // End Fahmi
                 data.put("currency_id", kas.getCurrencyId());
                 data.put("pengajuan_id", pengajuanBiayaDetailId); //sementara karena di BoImpl diparsing cara ini
 
@@ -1062,6 +1065,22 @@ public class KasAction extends BaseMasterAction {
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
             return "input_pemasukan";
         }
+
+        // Fahmi 2021-08-04, Memasukkan jabatan dalam search Kas
+//        String roleId = CommonUtil.roleIdAsLogin();
+//        String jabatan;
+//        if (CommonConstant.ROLE_ID_KASUB_KEU.equalsIgnoreCase(roleId)){
+//            jabatan="admin_kasub";
+//        }else if (CommonConstant.ROLE_ID_KA_KEU.equalsIgnoreCase(roleId)){
+//            jabatan="admin_keu";
+//        }else{
+//            jabatan="";
+//        }
+//
+//        for (Kas a : listOfsearchKas)
+//        { a.setJabatan(jabatan); }
+
+        // End Fahmi
 
         HttpSession session = ServletActionContext.getRequest().getSession();
 
@@ -1544,6 +1563,9 @@ public class KasAction extends BaseMasterAction {
 
         reportParams.put("reportTitle", reportName);
         reportParams.put("reportName", reportName);
+        // Fahmi 2021-08-04, Ubah hardcode di jasper, ke parameter
+        reportParams.put("pathChild",  CommonConstant.REALPATH_REPORT_AKUNTANSI);
+        // End Fahmi
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT + branch.getLogoName());
         reportParams.put("branchId", data.getBranchId());
         java.util.Date now = new java.util.Date();

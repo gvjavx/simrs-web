@@ -422,7 +422,7 @@ public class SewaLahanAction extends BaseMasterAction {
             kas.setMetodeBayar(itAkunSewaLahanEntity.getBank() == null || itAkunSewaLahanEntity.getBank().isEmpty() ? "tunai" : "transfer");
 
 //            2021-07-26 Sigit
-            if (itAkunSewaLahanEntity.getBank() == null) {
+            if ("tunai".equalsIgnoreCase(kas.getMetodeBayar())) {
                 kas.setCoa(CommonConstant.KAS_TUNAI);
             }
 
@@ -452,7 +452,7 @@ public class SewaLahanAction extends BaseMasterAction {
             mapPph.setNilai(itAkunSewaLahanEntity.getNilaiPph());
 
             List<MappingDetail> listMappingPPH = new ArrayList<>();
-            listMappingPPN.add(mapPph);
+            listMappingPPH.add(mapPph);
 
             // mapping PPH, End
 

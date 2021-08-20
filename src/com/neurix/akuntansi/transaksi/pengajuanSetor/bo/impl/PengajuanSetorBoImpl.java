@@ -401,6 +401,33 @@ public class PengajuanSetorBoImpl implements PengajuanSetorBo {
         return finalPengajuanSetorList;
     }
 
+    @Override
+    public List<PengajuanSetorDetail> listPPh21Jasa(PengajuanSetor search){
+        logger.info("[PengajuanSetorBoImpl.listPPh21Jasa] start process >>>");
+        List<PengajuanSetorDetail> pengajuanSetorDetailList = new ArrayList<>();
+        List<PengajuanSetorDetail> finalPengajuanSetorList = new ArrayList<>();
+        try {
+            // Get data from database by ID
+            pengajuanSetorDetailList = pengajuanSetorDao.listPengajuanJasa(search);
+            for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorDetailList){
+                pengajuanSetorDetail.setDibayar("Y");
+                convertPph21Pengajuan(pengajuanSetorDetail);
+                //cek apakah sudah pernah dibayarkan di ppn
+                List<PengajuanSetorDetail> pengajuanSetorDetailEntityList = pengajuanSetorDetailDao.cekApakahSudahDibayarkan(pengajuanSetorDetail.getTransaksiId(),"PPH21");
+                if (pengajuanSetorDetailEntityList.size()==0){
+                    finalPengajuanSetorList.add(pengajuanSetorDetail);
+                }
+
+            }
+        } catch (HibernateException e) {
+            logger.error("[PengajuanSetorBoImpl.listPPh21Jasa] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
+        }
+
+        logger.info("[PengajuanSetorBoImpl.listPPh21Jasa] stop process >>>");
+        return finalPengajuanSetorList;
+    }
+
     private PengajuanSetorDetail convertPph21Payroll( PengajuanSetorDetail data){
         if (data.getJumlah()!=null){
             data.setStJumlah(CommonUtil.numbericFormat(data.getJumlah(),"###,###"));

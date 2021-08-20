@@ -1,22 +1,24 @@
 package com.neurix.hris.transaksi.pendapatanDokter.action;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.transaksi.pendapatanDokter.bo.PendapatanDokterBo;
-import com.neurix.hris.transaksi.pendapatanDokter.model.ItHrisPendapatanDokterEntity;
 import com.neurix.hris.transaksi.pendapatanDokter.model.PendapatanDokter;
-import org.apache.batik.css.parser.Scanner;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
-import org.springframework.security.access.method.P;
+
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
-import java.security.Timestamp;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -155,14 +157,13 @@ public class PendapatanDokterAction extends BaseMasterAction {
         }
 
         String branchId = CommonUtil.userBranchLogin();
-        PendapatanDokter data = new PendapatanDokter();
         if (branchId != null){
-            data.setBranchUser(branchId);
+            searchPendapatanDokter.setBranchUser(branchId);
         }else {
-            data.setBranchUser("");
+            searchPendapatanDokter.setBranchUser("");
         }
 
-        pendapatanDokter = data;
+        pendapatanDokter = searchPendapatanDokter;
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultPendapatanDokter");
@@ -192,6 +193,99 @@ public class PendapatanDokterAction extends BaseMasterAction {
         logger.info("[PendapatanDokterAction.initForm] end process >>>");
         return INPUT;
     }
+
+    // Fahmi 2021-08-05, Tambah fitur print bukti pendapatan dokter kso.
+    public String printReportBuktiPendDokterKSO() {
+        logger.info("[PendapatanDokterAction.printReportBuktiPendDokterKSO] start process >>>");
+        // getting data from UI
+        PendapatanDokter pendapatanDokter = getPendapatanDokter();
+        // getting processor from session
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PendapatanDokterBo pendapatanDokterBo = (PendapatanDokterBo) ctx.getBean("pendapatanDokterBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+
+        // get list pendapatan dokter kso
+        List<PendapatanDokter> list = null;
+        List<PendapatanDokter> detList = null;
+        try {
+            list = pendapatanDokterBo.getByCriteria(pendapatanDokter);
+            if(null!=list && list.size() > 0)
+            { detList = pendapatanDokterBo.getDetailPendapatan(list.get(0)); }
+
+        }catch (GeneralBOException e){
+            Long logId = null;
+            try {
+                logId = pendapatanDokterBo.saveErrorMessage(e.getMessage(), "printReportBuktiPendDokterKSO");
+            } catch (GeneralBOException e1) {
+                logger.error("[PendapatanDokterAction.printReportBuktiPendDokterKSO] Error when getting data ,", e1);
+            }
+            logger.error("[PendapatanDokter.printReportBuktiPendDokterKSO] Error when print report ," + "[" + logId + "] Found problem when getting data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when getting data, please inform to your admin.");
+        }
+
+        if(null!=list && list.size() > 0)
+        {
+            String periode, bulan;
+            bulan = CommonUtil.getMonthName(list.get(0).getBulan());
+            periode = bulan +" / "+ list.get(0).getTahun();
+            String branch = list.get(0).getBranchId();
+            String unit = list.get(0).getBranchName();
+            String area = CommonUtil.userAreaName();
+            String logo = "";
+
+            Branch branches = new Branch();
+            try {
+                branches = branchBo.getBranchById(branch, "Y");
+            } catch (GeneralBOException e) {
+                logger.error("Found Error when searhc branch logo");
+            }
+
+            if (branches != null) {
+                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+            }
+
+            JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(detList);
+
+            reportParams.put("title", "Pendapatan Dokter KSO");
+            reportParams.put("unit", unit);
+            reportParams.put("area", area);
+            reportParams.put("logo", logo);
+            reportParams.put("petugas", CommonUtil.userLogin());
+
+            reportParams.put("no_nota", list.get(0).getNoNota());
+            reportParams.put("no_penddokterid", list.get(0).getPendapatanDokterId());
+            reportParams.put("dokterid", list.get(0).getDokterId());
+            reportParams.put("doktername", list.get(0).getDokterName());
+            reportParams.put("periode", periode);
+            reportParams.put("listPendapatan", itemData);
+            reportParams.put("bruto", list.get(0).getBruto());
+            reportParams.put("pendapatanKSO", list.get(0).getPendapatanRs());
+            reportParams.put("hrbruto", list.get(0).getHrBruto());
+            reportParams.put("pph21", list.get(0).getDppPph21());
+            reportParams.put("pphkomulatif", list.get(0).getDppPph21());
+            reportParams.put("pajak", list.get(0).getStTarif());
+            reportParams.put("pajakdipungut", list.get(0).getPphDipungut());
+            reportParams.put("hraktifitasnetto", list.get(0).getHrAktifitasNetto());
+            reportParams.put("potks", list.get(0).getPotKs());
+            reportParams.put("netto", list.get(0).getGajiBersih());
+
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+                return "search";
+            }
+
+            logger.info("[PendapatanDokterAction.printReportBuktiPendDokterKSO] end process >>>");
+            return "print_pendapatandokter";
+        }
+
+        logger.info("[PendapatanDokterAction.printReportBuktiPendDokterKSO] end process >>>");
+        throw new GeneralBOException(" Pendapatan Dokter tidak ditemukan");
+
+    }
+    // End Fahmi
 
     @Override
     public String downloadPdf() {
@@ -380,7 +474,7 @@ public class PendapatanDokterAction extends BaseMasterAction {
             try {
                 logId = pendapatanDokterBo.saveErrorMessage(e.getMessage(), "pendapatanDokterBO.getByCriteria");
             } catch (GeneralBOException e1) {
-                logger.error("[PendapatanDokterAction.search] Error when saving error,", e1);;
+                logger.error("[PendapatanDokterAction.search] Error when saving error,", e1);
             }
             logger.error("[PendapatanDokterAction.search] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );

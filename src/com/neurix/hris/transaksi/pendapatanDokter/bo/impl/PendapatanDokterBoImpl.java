@@ -9,6 +9,7 @@ import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.company.model.ImBranches;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.dokterKso.dao.DokterKsoDao;
@@ -37,6 +38,7 @@ import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -210,8 +212,11 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                                 pendapatanDokter.setMasterId(masterId);
 
                                 bruto = (BigDecimal) obj[12];
-
-                                if ("tindakan".equalsIgnoreCase(jenisKso) && "bpjs".equalsIgnoreCase(masterId)){
+                                // Fahmi 2021-08-02, Berdasarkan informasi dari Pak Ferdi, untuk jenisKso tindakan
+                                // ambil prosentasenya dari persen kso tindakan.
+                                // dan tidak menyinggung bpjs atau tidak.
+                                //if ("tindakan".equalsIgnoreCase(jenisKso) && "bpjs".equalsIgnoreCase(masterId)){
+                                if (!"tindakan".equalsIgnoreCase(jenisKso)){
                                     ksoPersen = (BigDecimal) obj[15];
                                     int kso = 100 - ksoPersen.intValue();
                                     pndptnRs = bruto.doubleValue() * ksoPersen.intValue() / 100;
@@ -690,7 +695,11 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                             String masterId = String.valueOf(obj[2]);
                             bruto = (BigDecimal) obj[0];
 
-                            if ("tindakan".equalsIgnoreCase(jenisKso) && "bpjs".equalsIgnoreCase(masterId)){
+                            // Fahmi 2021-08-02, Berdasarkan informasi dari Pak Ferdi, untuk jenisKso tindakan
+                            // ambil prosentasenya dari persen kso tindakan.
+                            // dan tidak menyinggung bpjs atau tidak.
+                            //if ("tindakan".equalsIgnoreCase(jenisKso) && "bpjs".equalsIgnoreCase(masterId)){
+                            if (!"tindakan".equalsIgnoreCase(jenisKso)){
                                 ksoPersen = (BigDecimal) obj[3];
                                 int kso = 100 - ksoPersen.intValue();
                                 pndptnRs = bruto.doubleValue() * ksoPersen.intValue() / 100;
@@ -1570,6 +1579,7 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                     pendapatanDokter.setKdjnspas(entity.getKdjnspas());
                     pendapatanDokter.setNamaPasien(entity.getNamaPasien());
                     pendapatanDokter.setTanggal(entity.getTanggal());
+                    pendapatanDokter.setStTanggal(new SimpleDateFormat("dd-MM-yyyy HH:mm").format(entity.getTanggal()));
                     pendapatanDokter.setKeterangan(entity.getKeterangan());
                     if (entity.getTarifInacbg() != null)
                         pendapatanDokter.setTarifInacbg(CommonUtil.numbericFormat(entity.getTarifInacbg(), "###,###"));
@@ -1833,6 +1843,7 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                                 reduksiPendapatanRj.setNilai(billingPendapatanDokter.getNilai());
                                 reduksiPendapatanRj.setDivisiId(billingPendapatanDokter.getDivisiId());
                                 reduksiPendapatanRj.setMasterId(billingPendapatanDokter.getMasterId());
+                                reduksiPendapatanRj.setCoa(CommonConstant.COA_REDUKSI_PENDAPATAN_RJ);
                                 // End Fahmi
 
                                 reduksiPendapatanRjList.add(reduksiPendapatanRj);
@@ -1847,6 +1858,7 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                                 reduksiPendapatanRi.setNilai(billingPendapatanDokter.getNilai());
                                 reduksiPendapatanRi.setDivisiId(billingPendapatanDokter.getDivisiId());
                                 reduksiPendapatanRi.setMasterId(billingPendapatanDokter.getMasterId());
+                                reduksiPendapatanRi.setCoa(CommonConstant.COA_REDUKSI_PENDAPATAN_RI);
                                 // End Fahmi
 
                                 reduksiPendapatanRiList.add(reduksiPendapatanRi);
@@ -1899,6 +1911,7 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                         hutangDokter.setNilai(pendapatanDokter.getTotalGajiBersih());
                         hutangDokter.setBukti(noNota);
                         hutangDokter.setMasterId(koderingDokter);
+                        hutangDokter.setCoa(CommonConstant.COA_UTANGDOKTER);
                         hutangDokterList.add(hutangDokter);
 
 
@@ -1975,6 +1988,9 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
             if (searchBean.getBranchId() != null && !"".equalsIgnoreCase(searchBean.getBranchId())){
                 hsCriteria.put("branch_id", searchBean.getBranchId());
             }
+            if (searchBean.getNoNota() != null && !"".equalsIgnoreCase(searchBean.getNoNota())){
+                hsCriteria.put("no_nota", searchBean.getNoNota());
+            }
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBean.getFlag())) {
                     hsCriteria.put("flag", "N");
@@ -2000,7 +2016,7 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                     pendapatanDokter.setPendapatanDokterId(entity.getPendapatanDokterId());
                     pendapatanDokter.setDokterId(entity.getDokterId());
                     pendapatanDokter.setDokterName(entity.getDokterName());
-//                    pendapatanDokter.setBranchId(entity.getBranchId());
+                    pendapatanDokter.setBranchId(entity.getBranchId());
                     pendapatanDokter.setBulan(entity.getBulan());
                     pendapatanDokter.setTahun(entity.getTahun());
                     pendapatanDokter.setBruto(CommonUtil.numbericFormat(entity.getBruto(), "###,###"));
