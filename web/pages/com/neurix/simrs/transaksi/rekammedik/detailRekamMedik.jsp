@@ -980,6 +980,7 @@
     var flagVaksin = "";
     var tanggalMasuk = new Date();
     var namaPelayanan = '<s:property value="detailCheckup.namaPelayanan"/>';
+    var urlPage;
 
     function loadModalRM(jenis, method, parameter, idRM, flag) {
         var context = contextPath + '/pages/modal/modal-default.jsp';
