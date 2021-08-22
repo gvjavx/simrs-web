@@ -894,7 +894,7 @@
                                         <div class="row" style="display: none" id="form_profesi">
                                             <div class="form-group">
                                                 <div class="col-md-offset-4 col-md-8">
-                                                    <s:textfield placeholder="Keterangan Profesi"
+                                                    <s:textfield placeholder="Keterangan Profesi" id="ket_profesi_text"
                                                                  cssClass="form-control" cssStyle="margin-top: 7px"
                                                                  oninput="$('#ket_profesi').val(this.value);"></s:textfield>
                                                 </div>
@@ -2004,7 +2004,7 @@
                             <div class="form-group" style="display: none" id="form_add_profesi">
                                 <s:textfield placeholder="Keterangan Profesi" cssClass="form-control"
                                              cssStyle="margin-top: 7px"
-                                             oninput="$('#add_profesi').val(this.value);"></s:textfield>
+                                             oninput="$('#add_profesi').val(''); $('#add_profesi').val('Lainnya|'+this.value);"></s:textfield>
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Suku</label>
@@ -3206,7 +3206,19 @@
                             $('#tempat_lahir').val(res.tempatLahir);
                             $('#tgl_lahir').val(res.tglLahir);
                             $('#agama').val(res.agama);
-                            $('#profesi').val(res.profesi).trigger('change');
+
+                            if(res.profesi != null){
+                                var isi = res.profesi.split("|")[0];
+                                if(isi == "Lainnya"){
+                                    $('#profesi').val(isi).trigger('change');
+                                    $('#ket_profesi_text').val(res.profesi.split("|")[1]);
+                                    $('#form_profesi').show();
+                                }else{
+                                    $('#profesi').val(res.profesi).trigger('change');
+                                    $('#form_profesi').hide();
+                                }
+                            }
+
                             $('#jalan').val(res.jalan);
                             $('#suku').val(res.suku).trigger('change');
                             $('#img_ktp').val(res.imgKtp);
@@ -3350,7 +3362,17 @@
                                 $('#tempat_lahir').val(res.tempatLahir);
                                 $('#tgl_lahir').val(res.tglLahir);
                                 $('#agama').val(res.agama);
-                                $('#profesi').val(res.profesi).trigger('change');
+                                if(res.profesi != null){
+                                    var isi = res.profesi.split("|")[0];
+                                    if(isi == "Lainnya"){
+                                        $('#profesi').val(isi).trigger('change');
+                                        $('#ket_profesi_text').val(res.profesi.split("|")[1]);
+                                        $('#form_profesi').show();
+                                    }else{
+                                        $('#profesi').val(res.profesi).trigger('change');
+                                        $('#form_profesi').hide();
+                                    }
+                                }
                                 $('#jalan').val(res.jalan);
                                 $('#suku').val(res.suku).trigger('change');
                                 $('#img_ktp').val(res.imgKtp);
@@ -3806,7 +3828,19 @@
                         $('#tempat_lahir').val(response.tempatLahir);
                         $('#tgl_lahir').val(response.tglLahir);
                         $('#agama').val(response.agama);
-                        $('#profesi').val(response.profesi).trigger('change');
+
+                        if(response.profesi != null){
+                            var isi = response.profesi.split("|")[0];
+                            if(isi == "Lainnya"){
+                                $('#profesi').val(isi).trigger('change');
+                                $('#ket_profesi_text').val(response.profesi.split("|")[1]);
+                                $('#form_profesi').show();
+                            }else{
+                                $('#profesi').val(response.profesi).trigger('change');
+                                $('#form_profesi').hide();
+                            }
+                        }
+
                         $('#jalan').val(response.jalan);
                         $('#suku').val(response.suku).trigger('change');
                         $('#img_ktp').val(response.imgKtp);
