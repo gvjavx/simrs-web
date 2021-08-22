@@ -2713,7 +2713,7 @@
                         $('#form-lab').show();
                         $('#form_dokter_poli').hide();
                         $('#is_daftar_pj').val("Y");
-                        $('#text_centang').text(" Apakah ada uang muka?");
+                        $('#text_centang').text(" Deposit?");
                         $('#form-nominal_uang_muka').hide();
                         $('#form_eksekutif').hide();
                         $('#cek_cek').show();

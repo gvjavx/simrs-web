@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.kasirrawatinap.action;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.action.BaseTransactionAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -37,7 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KasirRawatInapAction extends BaseMasterAction {
+public class KasirRawatInapAction extends BaseTransactionAction {
 
     protected static transient Logger logger = Logger.getLogger(KasirRawatInapAction.class);
     private RawatInap rawatInap;
@@ -73,12 +74,10 @@ public class KasirRawatInapAction extends BaseMasterAction {
         this.branchBoProxy = branchBoProxy;
     }
 
-    @Override
     public String getId() {
         return id;
     }
 
-    @Override
     public void setId(String id) {
         this.id = id;
     }
@@ -124,35 +123,8 @@ public class KasirRawatInapAction extends BaseMasterAction {
     }
 
     @Override
-    public String add() {
-        return null;
-    }
-
-    @Override
-    public String edit() {
-        return null;
-    }
-
-    @Override
-    public String delete() {
-        return null;
-    }
-
-    @Override
-    public String view() {
-        return null;
-    }
-
-    @Override
-    public String save() {
-        return null;
-    }
-
-    @Override
     public String search() {
-
         logger.info("[KasirRawatInapAction.search] start process >>>");
-
         RawatInap rawatInap = getRawatInap();
         rawatInap.setBranchId(CommonUtil.userBranchLogin());
         List<RawatInap> listOfRawatInap = new ArrayList();
@@ -161,17 +133,12 @@ public class KasirRawatInapAction extends BaseMasterAction {
         try {
             listOfRawatInap = kasirRawatInapBoProxy.getListRawatInap(rawatInap);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[KasirRawatInapAction.save] Error when searching rawat inap by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
-            return ERROR;
+            logger.error("[KasirRawatInapAction.save] Error when searching rawat inap by criteria," + "Found problem when searching data by criteria, please inform to your admin.", e);
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
-
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfRawatInap);
-
         logger.info("[KasirRawatInapAction.search] end process <<<");
 
         return "search";
@@ -375,9 +342,9 @@ public class KasirRawatInapAction extends BaseMasterAction {
                     kembalian = new BigDecimal(Math.abs((tarifJasa.subtract(new BigDecimal(tarifUangMuka))).add(ppnObat).intValue()));
 
                 }
-                String terbilang = "0";
+                String terbilang = "";
                 if(tarifJasa.add(ppnObat).intValue() > 0){
-                    angkaToTerbilang(totalJasa.longValue());
+                    terbilang = angkaToTerbilang(totalJasa.longValue());
                 }
 
                 reportParams.put("kembalian", textKembalian);
@@ -506,17 +473,6 @@ public class KasirRawatInapAction extends BaseMasterAction {
         return total;
     }
 
-    private BigInteger hitungTotalObat(List<TransaksiObatDetail> transaksiObatDetailList) {
-
-        BigInteger total = new BigInteger(String.valueOf("0"));
-        if (transaksiObatDetailList != null && transaksiObatDetailList.size() > 0) {
-            for (TransaksiObatDetail trans : transaksiObatDetailList) {
-                total = total.add(trans.getTotalHarga());
-            }
-        }
-        return total;
-    }
-
     public String angkaToTerbilang(Long angka) {
 
         String[] huruf = {"", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"};
@@ -561,17 +517,6 @@ public class KasirRawatInapAction extends BaseMasterAction {
         }
 
         return "";
-    }
-
-
-    @Override
-    public String downloadPdf() {
-        return null;
-    }
-
-    @Override
-    public String downloadXls() {
-        return null;
     }
 
 }

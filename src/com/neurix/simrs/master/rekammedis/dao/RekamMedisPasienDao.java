@@ -303,37 +303,24 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
     public List<RekamMedisPasien> getRiwayatRekamMedis(String id, String tipePelayanan, String jenis) {
         List<RekamMedisPasien> rekamMedisPasienList = new ArrayList<>();
         String spesialis = "";
-        if ("rawat_jalan".equalsIgnoreCase(tipePelayanan)) {
-            if (jenis != null && !"".equalsIgnoreCase(jenis) && !"hemodialisa".equalsIgnoreCase(jenis) && !"fisioterapi".equalsIgnoreCase(jenis)) {
-                String tempJenis = "poli_spesialis";
-                if("spesialis_anak".equalsIgnoreCase(jenis) ||
-                        "spesialis_mata".equalsIgnoreCase(jenis) ||
-                        "rehab_medik".equalsIgnoreCase(jenis) ||
-                        "spesialis_tht".equalsIgnoreCase(jenis) ||
-                        "spesialis_obstetri".equalsIgnoreCase(jenis)){
-                    tempJenis = jenis;
-                }
-                spesialis = "('"+tempJenis+"','keperawatan_rawat_jalan', 'ringkasan_rj')";
-            } else {
-                spesialis = "('keperawatan_rawat_jalan', 'ringkasan_rj')";
-            }
-        } else {
-            if("rawat_inap".equalsIgnoreCase(tipePelayanan)){
-                String jenisPelayananRJ = jenisPelayananRJ(id);
-                if (jenisPelayananRJ != null && !"".equalsIgnoreCase(jenisPelayananRJ) && !"hemodialisa".equalsIgnoreCase(jenisPelayananRJ) && !"fisioterapi".equalsIgnoreCase(jenisPelayananRJ)) {
-                    String tempJenis = "poli_spesialis";
-                    if("spesialis_anak".equalsIgnoreCase(jenisPelayananRJ) ||
-                            "spesialis_mata".equalsIgnoreCase(jenisPelayananRJ) ||
-                            "rehab_medik".equalsIgnoreCase(jenisPelayananRJ) ||
-                            "spesialis_tht".equalsIgnoreCase(jenisPelayananRJ) ||
-                            "spesialis_obstetri".equalsIgnoreCase(jenisPelayananRJ)){
-                        tempJenis = jenisPelayananRJ;
-                    }
-                    spesialis = "('"+tempJenis+"','keperawatan_rawat_jalan', 'ringkasan_rj')";
-                }
+        String tempJenis = "";
+
+        if("rawat_inap".equalsIgnoreCase(tipePelayanan)){
+            jenis = jenisPelayananRJ(id);
+        }
+
+        if (jenis != null && !"".equalsIgnoreCase(jenis) && !"hemodialisa".equalsIgnoreCase(jenis) && !"fisioterapi".equalsIgnoreCase(jenis) && "rawat_jalan".equalsIgnoreCase(tipePelayanan)) {
+            if("spesialis_anak".equalsIgnoreCase(jenis) || "spesialis_mata".equalsIgnoreCase(jenis) || "rehab_medik".equalsIgnoreCase(jenis) || "spesialis_tht".equalsIgnoreCase(jenis) || "spesialis_obstetri".equalsIgnoreCase(jenis)){
+                tempJenis = jenis;
             }else{
-                spesialis = "('keperawatan_rawat_jalan', 'ringkasan_rj')";
+                tempJenis = "poli_spesialis";
             }
+        }
+
+        if(!"".equalsIgnoreCase(tempJenis)){
+            spesialis = "('"+tempJenis+"','keperawatan_rawat_jalan', 'ringkasan_rj')";
+        }else{
+            spesialis = "('keperawatan_rawat_jalan', 'ringkasan_rj')";
         }
 
         String SQL = "SELECT * FROM (SELECT \n" +
@@ -525,6 +512,26 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
                 "\tON a.id_rekam_medis_pasien = b.id_rekam_medis_pasien \n" +
                 "\tWHERE b.tipe_pelayanan = 'ruang_bersalin'\n" +
                 "\tAND a.keterangan NOT LIKE 'surat'\n" +
+                "\tUNION ALL\n" +
+                "\tSELECT\n" +
+                "\t10 as urut,\n" +
+                "\tCAST('gizi' AS VARCHAR) as tipe,\n" +
+                "\ta.id_rekam_medis_pasien, \n" +
+                "\ta.kode_rm, \n" +
+                "\ta.jenis, \n" +
+                "\ta.keterangan,\n" +
+                "\ta.nama_rm, \n" +
+                "\tb.urutan, \n" +
+                "\tb.tipe_pelayanan, \n" +
+                "\ta.function,\n" +
+                "\ta.jumlah_kategori,\n" +
+                "\ta.parameter, \n" +
+                "\tb.flag\n" +
+                "\tFROM im_simrs_rekam_medis_pasien a \n" +
+                "\tINNER JOIN im_simrs_rekam_medis_pelayanan b \n" +
+                "\tON a.id_rekam_medis_pasien = b.id_rekam_medis_pasien \n" +
+                "\tWHERE b.tipe_pelayanan = 'gizi'\n" +
+                "\tAND a.keterangan NOT LIKE 'surat'\n"+
                 ")a \n" +
                 "LEFT JOIN (\n" +
                 "SELECT * FROM (\n" +

@@ -768,6 +768,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                             periksaLab.setLastUpdate(bean.getLastUpdate());
                             periksaLab.setIdKategoriLab(headerCheckupDao.getIdKategoriLab(idPemeriksaan));
                             periksaLab.setIsJustLab("Y");
+                            periksaLab.setIdJenisPeriksa(bean.getIdJenisPeriksaPasien());
                             periksaLabList.add(periksaLab);
                         }
                     }
@@ -890,6 +891,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             pemeriksaanEntity.setIsJustLab(periksaLab.getIsJustLab());
             pemeriksaanEntity.setIsPending("N");
             pemeriksaanEntity.setIsPeriksaLuar("N");
+            pemeriksaanEntity.setJenisPasien(periksaLab.getIdJenisPeriksa());
             pemeriksaanEntity.setIdKategoriLab(periksaLab.getIdKategoriLab());
 
             try {

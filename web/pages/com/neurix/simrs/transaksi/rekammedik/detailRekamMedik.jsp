@@ -617,6 +617,10 @@
                                 <ul class="fa-ul" id="asesmen_tppri">
                                 </ul>
                             </div>
+                            <div class="row">
+                                <ul class="fa-ul" id="asesmen_gizi">
+                                </ul>
+                            </div>
                         </div>
                         <div class="col-md-4">
                             <div class="row">
@@ -912,6 +916,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/KandunganAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/KeperawatanRawatJalanAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenGiziAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/fisioterapi.js"/>'></script>
@@ -938,6 +943,7 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/cppt.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/rencana_asuahan.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/tindakan_medis.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/gizi.js"/>'></script>
 
 <script type='text/javascript'>
 
