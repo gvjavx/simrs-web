@@ -259,7 +259,7 @@ public class TindakanRawatAction extends BaseMasterAction {
                                 tindakanRawat.setTarif(tarifBpjs);
                             } else if ("rekanan".equalsIgnoreCase(jenisTransaksi)) {
 
-                                if (detailRekananOps != null){
+                                if (detailRekananOps != null && detailRekananOps.getTarif() != null){
                                     tindakanRawat.setTarif(new BigInteger(detailRekananOps.getTarif().toString()));
                                 } else {
                                     if (ops.getDiskon() != null && ops.getDiskon().intValue() != 0) {
@@ -271,7 +271,7 @@ public class TindakanRawatAction extends BaseMasterAction {
                                 }
                             } else if ("bpjs_rekanan".equalsIgnoreCase(jenisTransaksi)) {
 
-                                if (detailRekananOps != null){
+                                if (detailRekananOps != null && detailRekananOps.getTarifBpjs() != null){
                                     tindakanRawat.setTarif(new BigInteger(detailRekananOps.getTarifBpjs().toString()));
                                 } else {
                                     if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {

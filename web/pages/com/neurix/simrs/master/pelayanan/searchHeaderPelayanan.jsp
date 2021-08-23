@@ -125,7 +125,9 @@
                                                    buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
-                                                                                         window.location.reload(true);
+                                                                                         $('#nama_tindakan').val($('#set_nama_pelayanan').val());
+                                                                                         document.headerForm.action = 'search_headerpelayanan.action';
+                                                                                         document.headerForm.submit();
                                                                                      }
                                                                             }"
                                         >

@@ -11,6 +11,7 @@ import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.position.bo.PositionBo;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.action.BaseTransactionAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -86,7 +87,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class KasirRawatJalanAction extends BaseMasterAction {
+public class KasirRawatJalanAction extends BaseTransactionAction {
 
     protected static transient Logger logger = Logger.getLogger(KasirRawatJalanAction.class);
     private HeaderDetailCheckup headerDetailCheckup;
@@ -162,12 +163,10 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         this.riwayatTindakanBoProxy = riwayatTindakanBoProxy;
     }
 
-    @Override
     public String getId() {
         return id;
     }
 
-    @Override
     public void setId(String id) {
         this.id = id;
     }
@@ -205,55 +204,22 @@ public class KasirRawatJalanAction extends BaseMasterAction {
     }
 
     @Override
-    public String add() {
-        return null;
-    }
-
-    @Override
-    public String edit() {
-        return null;
-    }
-
-    @Override
-    public String delete() {
-        return null;
-    }
-
-    @Override
-    public String view() {
-        return null;
-    }
-
-    @Override
-    public String save() {
-        return null;
-    }
-
-    @Override
     public String search() {
         logger.info("[KasirRawatJalanAction.search] start process >>>");
-
         HeaderDetailCheckup headerDetailCheckup = getHeaderDetailCheckup();
         List<HeaderDetailCheckup> listOfsearchHeaderDetailCheckup = new ArrayList();
-
         headerDetailCheckup.setBranchId(CommonUtil.userBranchLogin());
         headerDetailCheckup.setTypeTransaction("kasir");
-//        headerDetailCheckup.setNotLike("bpjs");
 
         try {
             listOfsearchHeaderDetailCheckup = checkupDetailBoProxy.getSearchRawatJalan(headerDetailCheckup);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[KasirRawatJalanAction.save] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
-            return ERROR;
+            logger.error("[KasirRawatJalanAction.save] Error when searching pasien by criteria," + "Found problem when searching data by criteria, please inform to your admin.", e);
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
-
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfsearchHeaderDetailCheckup);
-
         logger.info("[KasirRawatJalanAction.search] end process <<<");
         return "search";
     }
@@ -440,11 +406,26 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
                 BigDecimal tarifJasa = hitungTotalJasa(riwayatTindakanList);
                 BigInteger tarifUangMuka = hitungTotalUangMuka(mukaList);
-                BigDecimal ppnObat = ppnObat = new BigDecimal(totalResepObat).multiply(new BigDecimal(0.1)).setScale(2, RoundingMode.HALF_UP);
+                BigDecimal ppnObat = new BigDecimal(totalResepObat).multiply(new BigDecimal(0.1)).setScale(2, RoundingMode.HALF_UP);
 
                 BigDecimal totalJasa = new BigDecimal(String.valueOf(0));
-                totalJasa = (tarifJasa.subtract(new BigDecimal(tarifUangMuka))).add(ppnObat);
-                String terbilang = angkaToTerbilang(totalJasa.longValue());
+                String textKembalian = "";
+                BigDecimal kembalian = new BigDecimal(String.valueOf(0));
+
+                if(tarifJasa.add(ppnObat).intValue() > tarifUangMuka.intValue()){
+                    totalJasa = (tarifJasa.subtract(new BigDecimal(tarifUangMuka))).add(ppnObat);
+                }else{
+                    textKembalian = "Kelebihan Uang Muka";
+                    kembalian = new BigDecimal(Math.abs((tarifJasa.subtract(new BigDecimal(tarifUangMuka))).add(ppnObat).intValue()));
+
+                }
+                String terbilang = "";
+                if(tarifJasa.add(ppnObat).intValue() > 0){
+                    terbilang = angkaToTerbilang(totalJasa.longValue());
+                }
+
+                reportParams.put("kembalian", textKembalian);
+                reportParams.put("jmlKembalian", kembalian);
 
                 reportParams.put("invoice", checkup.getInvoice());
                 reportParams.put("idPasien", checkup.getIdPasien());
@@ -2303,16 +2284,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             nama = pembayaranEntity.getPembayaranName();
         }
         return nama;
-    }
-
-    @Override
-    public String downloadPdf() {
-        return null;
-    }
-
-    @Override
-    public String downloadXls() {
-        return null;
     }
 
     public void setBillingSystemBoProxy(BillingSystemBo billingSystemBoProxy) {

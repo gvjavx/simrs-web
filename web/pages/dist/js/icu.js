@@ -2903,7 +2903,13 @@ function listInputan(jenis) {
                         '<td>'+itemx.nilai+'</td>'+
                         '<td align="center"><i id="delete_' + itemx.id + '" onclick="conICU(\''+jenis+'\', \'asesmen_icu\', \''+itemx.id+'\')" class="fa fa-trash hvr-grow" style="color: red"></i></td>'+
                         '</tr>';
-                    jumlah = jumlah + parseInt(itemx.nilai);
+
+                    var nilai = itemx.nilai;
+                    if(itemx.nilai == '' || itemx.nilai == null){
+                         nilai = 0;
+                    }
+                    jumlah = jumlah + parseInt(nilai);
+
                 });
                 if(parseInt(jumlah) > 0){
                     total4 = total4 + parseInt(jumlah);

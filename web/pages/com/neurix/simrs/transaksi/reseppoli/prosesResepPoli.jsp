@@ -127,6 +127,11 @@
             countBiaya();
             getTindakanApotek('', 'jenis_0');
 
+            var tipe = ['k-admin', 'k-farma', 'k-kritis'];
+            tipe.forEach(function (res) {
+                setRadio(res, 'Y');
+            });
+
             const paintCanvas1 = document.querySelector("#ttd_pasien");
             const paintCanvas2 = document.querySelector("#ttd_apoteker");
             const context1 = paintCanvas1.getContext("2d");
@@ -417,7 +422,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResultResep" var="row" status="count">
+                            <s:iterator value="#session.listOfResultResep" var="row_non_racik" status="count">
                                 <tr>
                                     <td>
                                         <s:property value="namaObat"/>
@@ -434,7 +439,7 @@
                                         </td>
                                         <td>
                                             <div class="input-group">
-                                                <s:if test='#row.flagVerifikasi == "Y"'>
+                                                <s:if test='#row_non_racik.flagVerifikasi == "Y"'>
                                                     <input type="text" value="<s:property value="idObat"/>" disabled class="form-control">
                                                     <div class="input-group-addon">
                                                         <img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">
@@ -532,21 +537,28 @@
                                                 <div class="col-md-12">
                                                     <span class="cek_waktu">Waktu</span>
                                                     <div class="form-check jarak">
-                                                        <input type="checkbox" name="cek_waktu_name_<s:property value="idObat"/>" id="cek_waktu_1_<s:property value="idObat"/>" value="Pagi">
+                                                        <input onclick="showKet('<s:property value="idObat"/>', this.id)" type="checkbox" name="cek_waktu_name_<s:property value="idObat"/>" id="cek_waktu_1_<s:property value="idObat"/>" value="Pagi">
                                                         <label for="cek_waktu_1_<s:property value="idObat"/>"></label> Pagi
                                                     </div>
-                                                    <div class="form-check jarak">
-                                                        <input type="checkbox" name="cek_waktu_name_<s:property value="idObat"/>" id="cek_waktu_2_<s:property value="idObat"/>" value="Siang">
+                                                    <input class="form-control" name="ket_waktu_name" id="ket_cek_waktu_1_<s:property value="idObat"/>" style="display: none" placeholder="Keterangan Pagi" oninput="$('#cek_waktu_1_<s:property value="idObat"/>').val(''); $('#cek_waktu_1_<s:property value="idObat"/>').val('Pagi: '+this.value);">
+
+                                                    <div class="form-check jarak" style="margin-top: 5px">
+                                                        <input onclick="showKet('<s:property value="idObat"/>', this.id)" type="checkbox" name="cek_waktu_name_<s:property value="idObat"/>" id="cek_waktu_2_<s:property value="idObat"/>" value="Siang">
                                                         <label for="cek_waktu_2_<s:property value="idObat"/>"></label> Siang
                                                     </div>
-                                                    <div class="form-check jarak">
-                                                        <input type="checkbox" name="cek_waktu_name_<s:property value="idObat"/>" id="cek_waktu_3_<s:property value="idObat"/>" value="Sore">
+                                                    <input class="form-control" name="ket_waktu_name" id="ket_cek_waktu_2_<s:property value="idObat"/>" style="display: none" placeholder="Keterangan Siang" oninput="$('#cek_waktu_2_<s:property value="idObat"/>').val(''); $('#cek_waktu_2_<s:property value="idObat"/>').val('Siang: '+this.value);">
+
+                                                    <div class="form-check jarak" style="margin-top: 5px">
+                                                        <input onclick="showKet('<s:property value="idObat"/>', this.id)" type="checkbox" name="cek_waktu_name_<s:property value="idObat"/>" id="cek_waktu_3_<s:property value="idObat"/>" value="Sore">
                                                         <label for="cek_waktu_3_<s:property value="idObat"/>"></label> Sore
                                                     </div>
-                                                    <div class="form-check jarak">
-                                                        <input type="checkbox" name="cek_waktu_name_<s:property value="idObat"/>" id="cek_waktu_4_<s:property value="idObat"/>" value="Malam">
+                                                    <input class="form-control" name="ket_waktu_name" id="ket_cek_waktu_3_<s:property value="idObat"/>" style="display: none" placeholder="Keterangan Sore" oninput="$('#cek_waktu_3_<s:property value="idObat"/>').val(''); $('#cek_waktu_3_<s:property value="idObat"/>').val('Sore: '+this.value);">
+
+                                                    <div class="form-check jarak" style="margin-top: 5px">
+                                                        <input onclick="showKet('<s:property value="idObat"/>', this.id)" type="checkbox" name="cek_waktu_name_<s:property value="idObat"/>" id="cek_waktu_4_<s:property value="idObat"/>" value="Malam">
                                                         <label for="cek_waktu_4_<s:property value="idObat"/>"></label> Malam
                                                     </div>
+                                                    <input class="form-control" name="ket_waktu_name" id="ket_cek_waktu_4_<s:property value="idObat"/>" style="display: none" placeholder="Keterangan Malam" oninput="$('#cek_waktu_4_<s:property value="idObat"/>').val(''); $('#cek_waktu_4_<s:property value="idObat"/>').val('Malam: '+this.value);">
                                                 </div>
                                             </div>
                                             <hr>
@@ -586,7 +598,7 @@
                                         </s:else>
                                     </tr>
                                     </thead>
-                                    <s:iterator value="#session.listOfResultNamaRacik" var="racik" status="count">
+                                    <s:iterator value="#session.listOfResultNamaRacik" var="row_racik" status="count">
                                         <s:if test="#count.index % 2 == 0">
                                             <tr style="font-weight: bold" bgcolor="#ffe4b5">
                                         </s:if>
@@ -638,21 +650,28 @@
                                                         <div class="col-md-12">
                                                             <span class="cek_waktu">Waktu</span>
                                                             <div class="form-check jarak">
-                                                                <input type="checkbox" name="cek_waktu_name_<s:property value="id"/>" id="cek_waktu_1_<s:property value="id"/>" value="Pagi">
+                                                                <input onclick="showKet('<s:property value="id"/>', this.id)" type="checkbox" name="cek_waktu_name_<s:property value="id"/>" id="cek_waktu_1_<s:property value="id"/>" value="Pagi">
                                                                 <label for="cek_waktu_1_<s:property value="id"/>"></label> Pagi
                                                             </div>
+                                                            <input class="form-control" name="ket_waktu_name" id="ket_cek_waktu_1_<s:property value="id"/>" style="display: none" placeholder="Keterangan Pagi" oninput="$('#cek_waktu_1_<s:property value="id"/>').val(''); $('#cek_waktu_1_<s:property value="id"/>').val('Pagi: '+this.value);">
+
                                                             <div class="form-check jarak">
-                                                                <input type="checkbox" name="cek_waktu_name_<s:property value="id"/>" id="cek_waktu_2_<s:property value="id"/>" value="Siang">
+                                                                <input onclick="showKet('<s:property value="idObat"/>', this.id)" type="checkbox" name="cek_waktu_name_<s:property value="id"/>" id="cek_waktu_2_<s:property value="id"/>" value="Siang">
                                                                 <label for="cek_waktu_2_<s:property value="id"/>"></label> Siang
                                                             </div>
+                                                            <input class="form-control" name="ket_waktu_name" id="ket_cek_waktu_2_<s:property value="id"/>" style="display: none" placeholder="Keterangan Pagi" oninput="$('#cek_waktu_2_<s:property value="id"/>').val(''); $('#cek_waktu_2_<s:property value="id"/>').val('Siang: '+this.value);">
+
                                                             <div class="form-check jarak">
-                                                                <input type="checkbox" name="cek_waktu_name_<s:property value="id"/>" id="cek_waktu_3_<s:property value="id"/>" value="Sore">
+                                                                <input onclick="showKet('<s:property value="idObat"/>', this.id)" type="checkbox" name="cek_waktu_name_<s:property value="id"/>" id="cek_waktu_3_<s:property value="id"/>" value="Sore">
                                                                 <label for="cek_waktu_3_<s:property value="id"/>"></label> Sore
                                                             </div>
+                                                            <input class="form-control" name="ket_waktu_name" id="ket_cek_waktu_3_<s:property value="id"/>" style="display: none" placeholder="Keterangan Pagi" oninput="$('#cek_waktu_3_<s:property value="id"/>').val(''); $('#cek_waktu_3_<s:property value="id"/>').val('Sore: '+this.value);">
+
                                                             <div class="form-check jarak">
-                                                                <input type="checkbox" name="cek_waktu_name_<s:property value="id"/>" id="cek_waktu_4_<s:property value="id"/>" value="Malam">
+                                                                <input onclick="showKet('<s:property value="idObat"/>', this.id)" type="checkbox" name="cek_waktu_name_<s:property value="id"/>" id="cek_waktu_4_<s:property value="id"/>" value="Malam">
                                                                 <label for="cek_waktu_4_<s:property value="id"/>"></label> Malam
                                                             </div>
+                                                            <input class="form-control" name="ket_waktu_name" id="ket_cek_waktu_4_<s:property value="id"/>" style="display: none" placeholder="Keterangan Pagi" oninput="$('#cek_waktu_4_<s:property value="id"/>').val(''); $('#cek_waktu_4_<s:property value="id"/>').val('Malam: '+this.value);">
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -686,7 +705,7 @@
                                                     <tbody>
                                                     <s:iterator value="#session.listOfResultDetailRacik" var="detail" status="count">
                                                         <tr>
-                                                            <s:if test='#racik.id == #detail.idRacik'>
+                                                            <s:if test='#row_racik.id == #detail.idRacik'>
                                                                 <td>
                                                                     <s:property value="namaObat"/>
                                                                     <script>
@@ -710,27 +729,27 @@
                                                                 </td>
                                                                 <td>
                                                                     <div class="input-group">
-                                                                        <s:if test='#row.flagVerifikasi == "Y"'>
+                                                                        <s:if test='#detail.flagVerifikasi == "Y"'>
                                                                             <input type="text" value="<s:property value="idObat"/>" disabled class="form-control">
                                                                             <div class="input-group-addon">
                                                                                 <img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">
                                                                             </div>
                                                                             <div class="input-group-addon">
-                                                                                <div id="btn_racik_<s:property value="idObat"/>"></div>
+                                                                                <div id="btn_racik_<s:property value="id"/>_<s:property value="idObat"/>"></div>
                                                                             </div>
                                                                         </s:if>
                                                                         <s:else>
-                                                                            <input type="text" id='input_racik_<s:property value="idObat"/>' class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>','Y', '<s:property value="harga"/>')">
+                                                                            <input type="text" id='input_racik_<s:property value="id"/>_<s:property value="idObat"/>' class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>','Y', '<s:property value="harga"/>')">
                                                                             <div class="input-group-addon">
-                                                                                <span id='status_racik_<s:property value="idObat"/>'></span>
+                                                                                <span id='status_racik_<s:property value="id"/>_<s:property value="idObat"/>'></span>
                                                                             </div>
                                                                             <div class="input-group-addon">
-                                                                                <div id="btn_racik_<s:property value="idObat"/>"></div>
+                                                                                <div id="btn_racik_<s:property value="id"/>_<s:property value="idObat"/>"></div>
                                                                             </div>
                                                                         </s:else>
                                                                     </div>
                                                                 </td>
-                                                                <td align="center"><span id='qtyAppove_racik_<s:property value="idObat"/>'><s:property value="qtyApprove"/> <s:property value="jenisSatuan"/></span></td>
+                                                                <td align="center"><span id='qtyAppove_racik_<s:property value="id"/>_<s:property value="idObat"/>'><s:property value="qtyApprove"/> <s:property value="jenisSatuan"/></span></td>
                                                                 <td align="right">
                                                                     <script>
                                                                         var val = <s:property value="harga"/>;
@@ -743,12 +762,12 @@
                                                                     <script>
                                                                         var val = <s:property value="totalHarga"/>;
                                                                         if (val != null && val != '') {
-                                                                            document.write('<span id="total_racik_<s:property value="idObat"/>">'+formatRupiah(val)+'</span>');
+                                                                            document.write('<span id="total_racik_<s:property value="id"/>_<s:property value="idObat"/>">'+formatRupiah(val)+'</span>');
                                                                         }else{
-                                                                            document.write('<span id="total_racik_<s:property value="idObat"/>"></span>');
+                                                                            document.write('<span id="total_racik_<s:property value="id"/>_<s:property value="idObat"/>"></span>');
                                                                         }
                                                                     </script>
-                                                                    <input id="hide_total_racik_<s:property value="idObat"/>" type="hidden" class="total_resep" value="<s:property value="totalHarga"/>">
+                                                                    <input id="hide_total_racik_<s:property value="id"/>_<s:property value="idObat"/>" type="hidden" class="total_resep" value="<s:property value="totalHarga"/>">
                                                                 </td>
                                                             </s:if>
                                                         </tr>
@@ -1226,12 +1245,12 @@
 
                             var editBtn = 'onclick="confirmObat(\''+item.idObat+'\', \''+item.idObat+'\', \''+item.namaObat+'\', \''+item.qty+'\', \''+item.jenisSatuan+'\', \''+item.idTransaksiObatDetail+'\', \''+item.flagRacik+'\', \''+item.harga+'\')"';
                             if("Y" == item.flagRacik){
-                                $('#input_racik_'+item.idObat).attr('disabled','true');
-                                $('#input_racik_'+item.idObat).val(item.idObat);
-                                $('#status_racik_'+item.idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
-                                $('#total_racik_'+item.idObat).text(formatRupiah(total));
-                                $('#hide_total_racik_'+item.idObat).val(total);
-                                $('#btn_racik_'+item.idObat).html('<img '+editBtn+' src="<s:url value="/pages/images/icons8-create-25.png"/>" style="height: 20px; width: 20px; cursor: pointer">');
+                                $('#input_racik_'+item.idRacik+'_'+item.idObat).attr('disabled','true');
+                                $('#input_racik_'+item.idRacik+'_'+item.idObat).val(item.idObat);
+                                $('#status_racik_'+item.idRacik+'_'+item.idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
+                                $('#total_racik_'+item.idRacik+'_'+item.idObat).text(formatRupiah(total));
+                                $('#hide_total_racik_'+item.idRacik+'_'+item.idObat).val(total);
+                                $('#btn_racik_'+item.idRacik+'_'+item.idObat).html('<img '+editBtn+' src="<s:url value="/pages/images/icons8-create-25.png"/>" style="height: 20px; width: 20px; cursor: pointer">');
                             }else{
                                 $('#input'+item.idObat).attr('disabled','true');
                                 $('#input'+item.idObat).val(item.idObat);
@@ -1241,8 +1260,13 @@
                                 $('#btn_no_racik_'+item.idObat).html('<img '+editBtn+' src="<s:url value="/pages/images/icons8-create-25.png"/>" style="height: 20px; width: 20px; cursor: pointer">');
                             }
                         }else {
-                            $('#input'+item.idObat).removeAttr('disabled');
-                            $('#status'+item.idObat).html('<span id="status'+item.idObat+'"></span>');
+                            if("Y" == item.flagRacik){
+                                $('#input_racik_'+item.idRacik+'_'+item.idObat).removeAttr('disabled');
+                                $('#status_racik_'+item.idRacik+'_'+item.idObat).html('<span id="status'+item.idObat+'"></span>');
+                            }else{
+                                $('#input'+item.idObat).removeAttr('disabled');
+                                $('#status'+item.idObat).html('<span id="status'+item.idObat+'"></span>');
+                            }
                         }
                     });
                     countBiaya();
@@ -2045,6 +2069,14 @@
                 }
             }
         });
+    }
+
+    function showKet(val, id){
+        if($('#'+id).is(':checked')){
+            $('#ket_'+id).show();
+        }else{
+            $('#ket_'+id).hide();
+        }
     }
 
 </script>

@@ -1127,7 +1127,7 @@
                     }
 
                     var blink = "";
-                    if("B20" == id){
+                    if(item.isWarning == "Y"){
                         blink = 'class="blink_me_atas" style="color: red"';
                     }
 

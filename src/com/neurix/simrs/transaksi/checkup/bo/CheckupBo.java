@@ -105,7 +105,7 @@ public interface CheckupBo {
     public String getDiagnosaSekunder(String idDetailCheckup) throws GeneralBOException;
     public String getPenunjangMedis(String idDetailCheckup, String tipe) throws GeneralBOException;
     public String getResepPasien(String idDetailCheckup) throws GeneralBOException;
-    public String getAlergi(String noCheckup) throws GeneralBOException;
+    public String getAlergi(String idPasien) throws GeneralBOException;
     public String getTujuanRuangan(String noCheckup) throws GeneralBOException;
 
     public HeaderCheckup getDataPemeriksaanFisik(String noCheckup) throws GeneralBOException;
@@ -125,5 +125,6 @@ public interface CheckupBo {
     public void updateVitalSign(HeaderCheckup bean) throws GeneralBOException;
     public HeaderCheckup getDataPendaftaranPasien(String idDetailCheckup) throws GeneralBOException;
     public void updateDataPendaftaran(HeaderCheckup bean) throws GeneralBOException;
+    public List<String> getDetailPemeriksaan(String id) throws GeneralBOException;
 
 }

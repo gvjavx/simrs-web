@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printResepPasien" language="groovy" pageWidth="297" pageHeight="421" columnWidth="257" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="2.143588810000021"/>
+	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="384"/>
+	<property name="ireport.y" value="286"/>
 	<parameter name="reportParams.resepId" class="java.lang.String"/>
 	<parameter name="reportParams.logo" class="java.lang.String"/>
 	<parameter name="reportParams.nik" class="java.lang.String"/>
@@ -26,44 +26,105 @@
 	<parameter name="idDokter" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
-a.id_permintaan_resep,
-a.id_pasien,
-a.id_detail_checkup,
-b.id_obat,
-b.jenis_satuan,
-c.nama_obat,
-b.qty,
-b.keterangan,
-b.id_racik,
-d.nama as nama_racik,
-d.qty as qty_racik,
-d.kemasan as kemasan_racik,
-d.signa as signa_racik
+d.nama_obat,
+CASE WHEN h.tipe_pelayanan = 'rawat_inap' THEN
+    REPLACE(f.frekuensi,'|', ', ')
+ELSE
+    CONCAT(f.keterangan, ' ',REPLACE(split_part(f.frekuensi,'#', 2), '|', ', '), '. ', split_part(f.frekuensi,'#', 1))
+END as frekuensi,
+CASE WHEN h.tipe_pelayanan = 'rawat_inap' THEN
+    ''
+ELSE
+    split_part(f.frekuensi,'#', 3)
+END as keterangan_obat,
+CONCAT(f.qty_approve, ' ', f.jenis_satuan) as qty
 FROM mt_simrs_permintaan_resep a
-INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat
-INNER JOIN (SELECT id_obat, nama_obat FROM im_simrs_obat GROUP BY id_obat, nama_obat) c ON b.id_obat = c.id_obat
-LEFT JOIN it_simrs_obat_racik d ON d.id = b.id_racik
-WHERE a.id_permintaan_resep LIKE 'RSP00000418'
-ORDER BY b.id_racik ILIKE $P{reportParams.resepId}]]>
+INNER JOIN (
+	SELECT
+	id_transaksi_obat_detail,
+	id_approval_obat,
+	id_obat,
+	id_racik,
+	nama_racik
+	FROM mt_simrs_transaksi_obat_detail
+	WHERE id_racik IS NULL
+) b ON a.id_approval_obat = b.id_approval_obat
+INNER JOIN im_simrs_pasien c ON a.id_pasien = c.id_pasien
+INNER JOIN im_simrs_header_obat d ON b.id_obat = d.id_obat
+LEFT JOIN (
+	SELECT
+	id_transaksi_obat_detail,
+	expired_date
+	FROM mt_simrs_transaksi_obat_detail_batch
+	GROUP BY id_transaksi_obat_detail, expired_date
+) e ON b.id_transaksi_obat_detail = e.id_transaksi_obat_detail
+INNER JOIN mt_simrs_transaksi_obat_detail f ON d.id_obat = f.id_obat AND f.id_approval_obat = a.id_approval_obat AND f.id_racik IS NULL
+INNER JOIN it_simrs_header_detail_checkup g ON a.id_detail_checkup = g.id_detail_checkup
+INNER JOIN (
+  SELECT
+  a.id_pelayanan,
+  b.tipe_pelayanan
+  FROM im_simrs_pelayanan a
+  INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan
+) h ON g.id_pelayanan = h.id_pelayanan
+LEFT JOIN (
+	SELECT
+	a.keterangan,
+	a.warna_label,
+	a.warna_background,
+	b.id_obat,
+	b.keterangan_lain
+	FROM im_simrs_keterangan_obat a
+	INNER JOIN it_simrs_keterangan_resep b ON a.id = b.id_keterangan_obat
+	WHERE b.id_permintaan_resep = $P{reportParams.resepId}
+) i ON b.id_obat = i.id_obat
+LEFT JOIN im_simrs_bentuk_barang j ON d.id_bentuk = j.id_bentuk
+WHERE a.id_permintaan_resep = $P{reportParams.resepId}
+UNION ALL
+SELECT
+d.nama,
+CASE WHEN h.tipe_pelayanan = 'rawat_inap' THEN
+    REPLACE(d.frekuensi,'|', ', ')
+ELSE
+    CONCAT(d.signa, ' ',REPLACE(split_part(d.frekuensi,'#', 2), '|', ', '), '. ', split_part(d.frekuensi,'#', 1))
+END as frekuensi,
+CASE WHEN h.tipe_pelayanan = 'rawat_inap' THEN
+    ''
+ELSE
+    split_part(d.frekuensi,'#', 3)
+END as keterangan_obat,
+CONCAT(d.qty, ' ', d.kemasan) as qty
+FROM mt_simrs_permintaan_resep a
+INNER JOIN (
+	SELECT
+	id_approval_obat,
+	id_racik
+	FROM mt_simrs_transaksi_obat_detail
+	WHERE id_racik IS NOT NULL
+	GROUP BY id_approval_obat,
+	id_racik
+) b ON a.id_approval_obat = b.id_approval_obat
+INNER JOIN im_simrs_pasien c ON a.id_pasien = c.id_pasien
+INNER JOIN it_simrs_obat_racik d ON b.id_racik = d.id
+INNER JOIN it_simrs_header_detail_checkup g ON a.id_detail_checkup = g.id_detail_checkup
+INNER JOIN (
+  SELECT
+  a.id_pelayanan,
+  b.tipe_pelayanan
+  FROM im_simrs_pelayanan a
+  INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan
+) h ON g.id_pelayanan = h.id_pelayanan
+WHERE a.id_permintaan_resep = $P{reportParams.resepId}]]>
 	</queryString>
-	<field name="id_permintaan_resep" class="java.lang.String"/>
-	<field name="id_pasien" class="java.lang.String"/>
-	<field name="id_detail_checkup" class="java.lang.String"/>
-	<field name="id_obat" class="java.lang.String"/>
-	<field name="jenis_satuan" class="java.lang.String"/>
 	<field name="nama_obat" class="java.lang.String"/>
-	<field name="qty" class="java.lang.Long"/>
-	<field name="keterangan" class="java.lang.String"/>
-	<field name="id_racik" class="java.lang.String"/>
-	<field name="nama_racik" class="java.lang.String"/>
-	<field name="qty_racik" class="java.lang.Integer"/>
-	<field name="kemasan_racik" class="java.lang.String"/>
-	<field name="signa_racik" class="java.lang.String"/>
+	<field name="frekuensi" class="java.lang.String"/>
+	<field name="keterangan_obat" class="java.lang.String"/>
+	<field name="qty" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="194" splitType="Stretch">
+		<band height="184" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="98" width="90" height="15" uuid="6c44ef7d-db93-4127-8056-c6e5dc48fb34"/>
 				<textElement verticalAlignment="Middle">
@@ -221,7 +282,7 @@ ORDER BY b.id_racik ILIKE $P{reportParams.resepId}]]>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="94" y="158" width="163" height="35" uuid="9286e946-ed3e-4a4f-8652-dcbabdd63657"/>
+				<reportElement x="94" y="158" width="163" height="25" uuid="9286e946-ed3e-4a4f-8652-dcbabdd63657"/>
 				<box topPadding="1" leftPadding="1"/>
 				<textElement verticalAlignment="Top">
 					<font size="8"/>
@@ -269,32 +330,35 @@ ORDER BY b.id_racik ILIKE $P{reportParams.resepId}]]>
 				<text><![CDATA[Resep Pasien]]></text>
 			</staticText>
 			<line>
-				<reportElement x="1" y="193" width="256" height="1" uuid="9912a6b9-a3b8-4d26-8c3e-1338b6ca9521"/>
+				<reportElement x="1" y="183" width="256" height="1" uuid="9912a6b9-a3b8-4d26-8c3e-1338b6ca9521"/>
 			</line>
 		</band>
 	</title>
 	<detail>
 		<band height="40" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="15" y="0" width="94" height="20" isPrintWhenDetailOverflows="true" uuid="4a9896a4-6154-4c19-9e1a-80072f937aa7"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="15" y="0" width="147" height="20" isPrintWhenDetailOverflows="true" uuid="4a9896a4-6154-4c19-9e1a-80072f937aa7"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nama_obat}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="109" y="0" width="34" height="20" uuid="f425dc40-25fe-424a-a718-b7ff620b90d0"/>
+				<reportElement x="162" y="0" width="94" height="20" uuid="f425dc40-25fe-424a-a718-b7ff620b90d0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="44" y="20" width="212" height="20" isPrintWhenDetailOverflows="true" uuid="ff5d77ce-10c8-421a-a6f7-b586b68ccc3c"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="20" width="256" height="20" isPrintWhenDetailOverflows="true" uuid="ff5d77ce-10c8-421a-a6f7-b586b68ccc3c"/>
+				<box leftPadding="50">
+					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+				</box>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{keterangan} == null ? "" : $F{keterangan}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{frekuensi} == null ? "" : $F{frekuensi}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="0" width="15" height="20" uuid="7f35ab7e-c5a1-4b4c-85d3-056dd84aee49"/>

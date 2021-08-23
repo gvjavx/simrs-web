@@ -111,6 +111,13 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="pull-right" style="color: red">
+                                            <i class="fa fa-square"></i> Teridentikasi diagnosa yang di waspadahi
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-sm-5"></label>
                                     <div class="col-sm-5" style="display: none">
 
@@ -146,12 +153,12 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Rawat Hemodialisa Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped" style="font-size: 13px">
+                        <table id="myTable" class="table table-bordered" style="font-size: 13px">
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>ID Detail Checkup</td>
                                 <td>No RM</td>
-                                <td>Nama</td>
+                                <td width="20%">Nama</td>
                                 <td>Umur</td>
                                 <td>Tanggal Masuk</td>
                                 <td>Status</td>
@@ -161,8 +168,17 @@
                             </thead>
                             <tbody>
                             <s:iterator value="#session.listOfResult" var="row">
-                                <tr>
+                                <s:if test='#row.isWarning == "Y"'>
+                                    <tr style="color: white" bgcolor="red">
+                                    <td>
+                                        <s:property value="idDetailCheckup"/>
+                                        <p>[<s:property value="idDiagnosa"/>] - <s:property value="namaDiagnosa"/></p>
+                                    </td>
+                                </s:if>
+                                <s:else>
+                                    <tr>
                                     <td><s:property value="idDetailCheckup"/></td>
+                                </s:else>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="umur"/></td>

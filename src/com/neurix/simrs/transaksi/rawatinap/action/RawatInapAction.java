@@ -433,6 +433,10 @@ public class RawatInapAction extends BaseMasterAction {
                 rawatInap.setIdKelasBpjs(checkup.getIdKelasBpjs());
                 rawatInap.setStatusNaikKelas(checkup.getStatusNaikKelas());
                 rawatInap.setNoTelp(checkup.getNoTelp());
+                rawatInap.setIdDiagnosa(checkup.getIdDignosaLast());
+                rawatInap.setNamaDiagnosa(checkup.getNamaDiagnosaLast());
+                rawatInap.setIsWarning(checkup.getIsWarning());
+
                 if (checkup.getCreatedDate() != null) {
                     String format = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getCreatedDate());
                     rawatInap.setStTglFrom(format);

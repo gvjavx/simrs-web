@@ -4,8 +4,6 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
-import com.neurix.simrs.transaksi.asesmenrawatinap.bo.AsesmenRawatInapBo;
-import com.neurix.simrs.transaksi.asesmenrawatinap.model.AsesmenRawatInap;
 import com.neurix.simrs.transaksi.asesmenrawatjalan.bo.KeperawatanRawatJalanBo;
 import com.neurix.simrs.transaksi.asesmenrawatjalan.model.KeperawatanRawatJalan;
 import com.neurix.simrs.transaksi.rekammedik.bo.RekamMedikBo;
@@ -218,7 +216,9 @@ public class KeperawatanRawatJalanAction {
                 keperawatanRawatJalan.setParameter(obj.getString("parameter"));
                 keperawatanRawatJalan.setIdDetailCheckup(obj.getString("id_detail_checkup"));
                 keperawatanRawatJalan.setKeterangan(obj.getString("keterangan"));
-                keperawatanRawatJalan.setNoCheckup(obj.getString("no_checkup"));
+                if(obj.has("no_checkup")){
+                    keperawatanRawatJalan.setNoCheckup(obj.getString("no_checkup"));
+                }
                 if(obj.has("jawaban")){
                     if(obj.has("tipe")){
                         if("ttd".equalsIgnoreCase(obj.getString("tipe"))){
@@ -277,7 +277,6 @@ public class KeperawatanRawatJalanAction {
         }
         return response;
     }
-
 
     public static Logger getLogger() {
         return logger;
