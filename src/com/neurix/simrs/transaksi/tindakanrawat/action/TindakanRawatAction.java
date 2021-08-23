@@ -262,7 +262,7 @@ public class TindakanRawatAction extends BaseMasterAction {
                                 if (detailRekananOps != null){
                                     tindakanRawat.setTarif(new BigInteger(detailRekananOps.getTarif().toString()));
                                 } else {
-                                    if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
+                                    if (ops.getDiskon() != null && ops.getDiskon().intValue() != 0) {
                                         BigDecimal hasil = new BigDecimal(tarifNormal).multiply(ops.getDiskon());
                                         tindakanRawat.setTarif(hasil.toBigInteger());
                                     } else {
