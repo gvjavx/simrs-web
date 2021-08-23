@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="refreshLemburAction" class="com.neurix.hris.transaksi.refreshLembur.action.RefreshLemburAction"
+          p:refreshLemburBoProxy-ref="refreshLemburBoProxy"
+          p:lemburBoProxy-ref="lemburBoProxy"
+          p:branchBoProxy-ref="branchBoProxy"
+    />
+
+    <bean id="refreshLemburBo" class="com.neurix.hris.transaksi.refreshLembur.bo.impl.RefreshLemburBoImpl"
+          p:refreshLemburDao-ref="refreshLemburDao"
+          p:absensiPegawaiDao-ref="absensiPegawaiDao"
+          p:pengaliFaktorLemburDao-ref="pengaliFaktorLemburDao"
+          p:payrollSkalaGajiDao-ref="payrollSkalaGajiDao"
+          p:payrollSkalaGajiPkwtDao-ref="payrollSkalaGajiPkwtDao"
+          p:companyDao-ref="companyDao"
+          p:jamLemburDao-ref="jamLemburDao"
+          p:personilPositionDao-ref="personilPositionDao"
+          p:jenisPegawaiDao-ref="jenisPegawaiDao"
+          p:payrollDao-ref="payrollDao"
+          p:notifikasiDao-ref="notifikasiDao"
+          p:branchDao-ref="branchDao"
+          />
+
+    <bean id="refreshLemburBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="refreshLemburBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionUserInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionDetailCheckupInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+                <prop key="getByCriteriaByGroup">readOnly</prop>
+                <prop key="getPerGroupLembur">readOnly</prop>
+                <prop key="getPersonOnPosition">readOnly</prop>
+                <prop key="approveRefresh">PROPAGATION_REQUIRED</prop>
+                <prop key="refreshAbsensiLembur">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="refreshLemburDao" class="com.neurix.hris.transaksi.refreshLembur.dao.RefreshLemburDao"
+          p:sessionFactory-ref="sessionFactory"/>
+
+</beans>

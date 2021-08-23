@@ -1,0 +1,863 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PendapatanDokter" language="groovy" pageWidth="739" pageHeight="421" orientation="Landscape" columnWidth="699" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="115"/>
+	<property name="ireport.y" value="154"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="reportParams.unit" class="java.lang.String"/>
+	<parameter name="reportParams.logo" class="java.lang.String"/>
+	<parameter name="reportParams.dokterid" class="java.lang.String"/>
+	<parameter name="reportParams.doktername" class="java.lang.String"/>
+	<parameter name="reportParams.periode" class="java.lang.String"/>
+	<parameter name="reportParams.no_nota" class="java.lang.String"/>
+	<parameter name="reportParams.jenisPasien" class="java.lang.String"/>
+	<parameter name="reportParams.no_penddokterid" class="java.lang.String"/>
+	<parameter name="reportParams.pendapatanKSO" class="java.lang.String"/>
+	<parameter name="reportParams.hrbruto" class="java.lang.String"/>
+	<parameter name="reportParams.bruto" class="java.lang.String"/>
+	<parameter name="reportParams.pph21" class="java.lang.String"/>
+	<parameter name="reportParams.pphkomulatif" class="java.lang.String"/>
+	<parameter name="reportParams.pajak" class="java.lang.String"/>
+	<parameter name="reportParams.pajakdipungut" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="reportParams.hraktifitasnetto" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="reportParams.area" class="java.lang.String"/>
+	<parameter name="reportParams.potks" class="java.lang.String"/>
+	<parameter name="reportParams.netto" class="java.lang.String"/>
+	<parameter name="reportParams.idDetailCheckup" class="java.lang.String"/>
+	<parameter name="reportParams.title" class="java.lang.String"/>
+	<parameter name="reportParams.idPasien" class="java.lang.String"/>
+	<parameter name="reportParams.petugas" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT it_hris_pendapatan_dokter_detail.*, CONCAT(TO_CHAR(it_hris_pendapatan_dokter_detail.tanggal, 'DD/mm/YYYY'), it_hris_pendapatan_dokter_detail.nama_pasien ) AS groupheader FROM it_hris_pendapatan_dokter_detail WHERE pendapatan_dokter_id = $P{reportParams.no_penddokterid}]]>
+	</queryString>
+	<field name="pendapatan_dokter_detail_id" class="java.lang.String"/>
+	<field name="pendapatan_dokter_id" class="java.lang.String"/>
+	<field name="activity_id" class="java.lang.String"/>
+	<field name="activity_name" class="java.lang.String"/>
+	<field name="poli_id" class="java.lang.String"/>
+	<field name="poli_name" class="java.lang.String"/>
+	<field name="biaya" class="java.math.BigDecimal"/>
+	<field name="flag" class="java.lang.String"/>
+	<field name="action" class="java.lang.String"/>
+	<field name="created_date" class="java.sql.Timestamp"/>
+	<field name="last_update" class="java.sql.Timestamp"/>
+	<field name="created_who" class="java.lang.String"/>
+	<field name="last_update_who" class="java.lang.String"/>
+	<field name="no_trans" class="java.lang.String"/>
+	<field name="jenis_rawat" class="java.lang.String"/>
+	<field name="kdjnspas" class="java.lang.String"/>
+	<field name="nama_pasien" class="java.lang.String"/>
+	<field name="tanggal" class="java.sql.Timestamp"/>
+	<field name="keterangan" class="java.lang.String"/>
+	<field name="tarif_inacbg" class="java.math.BigDecimal"/>
+	<field name="bruto" class="java.math.BigDecimal"/>
+	<field name="pendapatan_rs" class="java.math.BigDecimal"/>
+	<field name="hr_bruto" class="java.math.BigDecimal"/>
+	<field name="dpp_pph_21" class="java.math.BigDecimal"/>
+	<field name="dpp_pph_21_komulatif" class="java.math.BigDecimal"/>
+	<field name="pajak" class="java.math.BigDecimal"/>
+	<field name="potongan_pajak" class="java.math.BigDecimal"/>
+	<field name="hr_aktifitas_netto" class="java.math.BigDecimal"/>
+	<field name="potongan_ks" class="java.math.BigDecimal"/>
+	<field name="hr_netto" class="java.math.BigDecimal"/>
+	<field name="master_id" class="java.lang.String"/>
+	<field name="groupheader" class="java.lang.String"/>
+	<group name="basicInfo">
+		<groupExpression><![CDATA[$F{pendapatan_dokter_detail_id}]]></groupExpression>
+		<groupHeader>
+			<band height="16" splitType="Stretch">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement key="textField" stretchType="RelativeToTallestObject" x="0" y="1" width="75" height="15" printWhenGroupChanges="basicInfo" uuid="46bdfbd9-dad8-4816-8297-9c1f8c86ceae"/>
+					<box topPadding="0" leftPadding="2" bottomPadding="7" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tanggal}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement key="textField" stretchType="RelativeToTallestObject" x="77" y="0" width="120" height="15" printWhenGroupChanges="basicInfo" uuid="3cabc431-706f-4485-912d-589ee18e632e"/>
+					<box leftPadding="2" bottomPadding="9" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nama_pasien}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement key="textField" stretchType="RelativeToTallestObject" x="199" y="0" width="50" height="15" printWhenGroupChanges="basicInfo" uuid="063b42a1-0b5b-4b0b-9d45-0d54431aef9c"/>
+					<box leftPadding="2" bottomPadding="9" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{kdjnspas}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement key="textField" stretchType="RelativeToTallestObject" x="251" y="0" width="60" height="15" printWhenGroupChanges="basicInfo" uuid="2ec92b45-b9aa-496f-9351-3e218bdf2f88"/>
+					<box leftPadding="2" bottomPadding="9" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{poli_name}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement key="textField" positionType="Float" stretchType="RelativeToTallestObject" x="313" y="0" width="158" height="15" printWhenGroupChanges="tindakan" uuid="bfe71b09-d2bc-4945-8d34-e205e5b8283f"/>
+					<box leftPadding="2" bottomPadding="9" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{activity_name}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0" isBlankWhenNull="true">
+					<reportElement key="textField" positionType="Float" stretchType="RelativeToTallestObject" x="473" y="0" width="50" height="15" printWhenGroupChanges="nominal" uuid="c6d3a004-5813-48f9-a158-cde32c829624"/>
+					<box leftPadding="2" bottomPadding="9" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{bruto}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0" isBlankWhenNull="true">
+					<reportElement key="textField" positionType="Float" stretchType="RelativeToTallestObject" x="525" y="0" width="40" height="15" printWhenGroupChanges="nominal" uuid="b7ae2424-dacc-4cf6-9bcc-ced273d925a8"/>
+					<box leftPadding="2" bottomPadding="9" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{pendapatan_rs}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0" isBlankWhenNull="true">
+					<reportElement key="textField" positionType="Float" stretchType="RelativeToTallestObject" x="566" y="0" width="40" height="15" printWhenGroupChanges="nominal" uuid="60727d28-9868-4f3c-be76-bf7726436c3e"/>
+					<box leftPadding="2" bottomPadding="9" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{potongan_pajak}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0" isBlankWhenNull="true">
+					<reportElement key="textField" positionType="Float" stretchType="RelativeToTallestObject" x="608" y="0" width="40" height="15" printWhenGroupChanges="nominal" uuid="b9220fd9-f53a-47c7-ad88-a8147e9caf0f"/>
+					<box leftPadding="2" bottomPadding="9" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{potongan_ks}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0" isBlankWhenNull="true">
+					<reportElement key="textField" positionType="Float" stretchType="RelativeToTallestObject" x="649" y="0" width="50" height="15" printWhenGroupChanges="nominal" uuid="e0ab64f9-d6c7-41a1-b6b0-fc5fa8558a82"/>
+					<box leftPadding="2" bottomPadding="9" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{hr_netto}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-2" x="0" y="15" width="698" height="1" uuid="c47b3b3e-457b-4285-b107-5dd31d010b7a"/>
+					<graphicElement>
+						<pen lineWidth="0.5" lineStyle="Solid" lineColor="#999999"/>
+					</graphicElement>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="tindakan">
+		<groupExpression><![CDATA[$F{pendapatan_dokter_detail_id}]]></groupExpression>
+	</group>
+	<group name="nominal">
+		<groupExpression><![CDATA[$F{pendapatan_dokter_detail_id}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="120" splitType="Stretch">
+			<staticText>
+				<reportElement x="566" y="39" width="59" height="19" uuid="f1001fbb-6e3b-4ec3-920b-036db1549a87"/>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[Printed date : ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="624" y="39" width="75" height="19" uuid="ebe6dc6c-3839-45b7-81d1-f7cab1e78acc"/>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="0" width="94" height="39" uuid="7919286e-e855-436b-98b4-eaeedb81ef26"/>
+				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="89" width="90" height="15" uuid="3ec64ed1-e2b1-43c7-990e-b5ef6bdabd53"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[NIK]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="91" y="89" width="5" height="15" uuid="27bb378b-d5ad-4e5d-84d1-73a09bac82ed"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="96" y="89" width="98" height="15" uuid="ba387fca-a220-41d7-86a0-f7bdbc0958e7"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.dokterid} == null ? "" : $P{reportParams.dokterid}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="536" y="89" width="60" height="15" uuid="6c44ef7d-db93-4127-8056-c6e5dc48fb34"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="596" y="89" width="5" height="15" uuid="c68a50c7-f5e0-4775-aaff-1bfefa19e52d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="601" y="89" width="98" height="15" uuid="85597b11-0127-46c5-9839-b72b43d88ddd"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.doktername} == null ? "" : $P{reportParams.doktername}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="104" width="90" height="15" uuid="a5b9a80e-195a-4a19-a403-96703a2a8764"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Periode]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="91" y="104" width="5" height="15" uuid="3f134a74-d8ce-4e88-8153-5afc04245054"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="96" y="104" width="98" height="15" uuid="6ea987d3-b994-439c-849a-28abc91b7a06"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.periode} == null ? "" : $P{reportParams.periode}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="603" y="7" width="96" height="32" uuid="a0654d59-6f2a-4bb1-afab-1849040b7343"/>
+				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
+					<jr:codeExpression><![CDATA[$P{reportParams.no_nota}]]></jr:codeExpression>
+				</jr:Code128>
+			</componentElement>
+			<textField>
+				<reportElement x="0" y="35" width="173" height="20" uuid="d2b3e75b-9224-4fbb-bff7-77fb9d422379"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.area} == null ? "" : $P{reportParams.area}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="52" width="173" height="15" uuid="c4b0b4f6-54f6-4c3e-8cc3-fafff2503a26"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Top">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="601" y="74" width="98" height="15" uuid="82e85134-9b7e-4742-a76e-1e742cb18676"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.no_nota} == null ? "" : $P{reportParams.no_nota}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="596" y="74" width="5" height="15" uuid="34a3a4fa-b227-4cf6-9f36-5c8682746ad7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="536" y="74" width="60" height="15" uuid="6dd2b8ef-6ede-4428-a003-bf62a697d1e5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[No Nota]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="67" width="698" height="1" uuid="af26c429-ff38-40f1-a6c4-670eabb9991f"/>
+			</line>
+			<textField>
+				<reportElement x="265" y="15" width="173" height="20" uuid="3366000b-e86c-432a-9869-ceab3070b699"/>
+				<box leftPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.title} == null ? "" : $P{reportParams.title}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="91" y="74" width="5" height="15" uuid="b5bd61fc-ffef-4579-b96c-a4e92f6e45fe"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="74" width="90" height="15" uuid="6216c7fc-3e1d-4b26-b475-e420933965d4"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Pendapatan Dokter ID]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="96" y="74" width="98" height="15" uuid="c4b1c756-4111-40d7-82ee-1364c8fcd0fe"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.no_penddokterid} == null ? "" : $P{reportParams.no_penddokterid}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="16">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="0" y="0" width="75" height="15" uuid="a1d53a84-3e18-4669-803f-352f87e74474"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Tanggal"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="77" y="0" width="120" height="15" uuid="a2364e00-400f-4e49-b655-3897437d9888"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Nama Pasien"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="199" y="0" width="50" height="15" uuid="c9d1626c-622a-48a2-b54e-e0cf17291b51"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Jenis Rawat"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="251" y="0" width="60" height="15" uuid="03daaf8f-efb1-4a9d-b19c-9da84cabe15b"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Nama Poli"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="313" y="0" width="158" height="15" uuid="884e461e-1c6f-4c16-9f03-c8ecd2f9ba37"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Tindakan"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="473" y="0" width="50" height="15" uuid="13752401-881d-4657-8af5-6e990a73c4d3"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Biaya"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="525" y="1" width="40" height="15" uuid="9f8ada95-4c16-4185-8330-f9e1a763d559"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["KSO"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="566" y="1" width="40" height="15" uuid="f3df5624-6290-407f-b0ee-43ce093c5d17"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pajak"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="608" y="1" width="40" height="15" uuid="dafa07fa-535f-400a-a083-fcc9ec90a6de"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Potongan"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="649" y="1" width="50" height="15" uuid="547a3201-5b07-4be6-b090-9b9c1c2e3349"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-2" x="0" y="0" width="698" height="1" uuid="49648c0c-5f6c-4954-b06d-aa49bfa6c4e4"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-2" x="0" y="15" width="698" height="1" uuid="e3b02716-b7e6-4d66-acca-0a01ce59bfad"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-2" x="76" y="3" width="1" height="10" uuid="2da36830-99be-40da-8de9-25ef04ee71ba"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-2" x="194" y="3" width="1" height="10" uuid="b773f3a1-edf4-40cf-933e-61f4ff653908"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-2" x="250" y="3" width="1" height="10" uuid="a0370bfc-c85f-4d3e-951d-9f4b4114cda6"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-2" x="648" y="3" width="1" height="10" uuid="5d970ead-8f8e-44e2-b0c1-3c330d0978bb"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-2" x="607" y="3" width="1" height="10" uuid="4883ed02-763e-478f-b0e1-3113afdfd525"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-2" x="565" y="3" width="1" height="10" uuid="3f7c940a-45ca-45f4-8fd5-e8ac9d16aca6"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-2" x="524" y="3" width="1" height="10" uuid="e95fd381-0135-45e0-a2ac-620efb706682"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-2" x="472" y="3" width="1" height="10" uuid="9dde900d-7ff4-4646-9fdd-3711753415e7"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-2" x="312" y="3" width="1" height="10" uuid="bbafaa88-579f-4f74-8039-64488a475966"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageHeader>
+	<summary>
+		<band height="250">
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="0" y="15" width="134" height="15" uuid="bbaa984a-6455-4d0f-8df0-814bb9deb332"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pendapatan Rs"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement isPrintRepeatedValues="false" x="134" y="15" width="565" height="15" uuid="0bc806d1-92e1-4247-8640-1419c24f2e4a"/>
+				<box leftPadding="0" rightPadding="10">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.pendapatanKSO} == null ? "" : $P{reportParams.pendapatanKSO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="0" y="30" width="134" height="15" uuid="a0367b61-dbdd-4c59-8688-d7ea5b55b75d"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total biaya setelah pendapatan Rs"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" x="134" y="30" width="565" height="15" uuid="c58b1ff0-b8fc-4280-9a3c-7e2115b1956b"/>
+				<box leftPadding="0" rightPadding="10">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.hrbruto} == null ? "" : $P{reportParams.hrbruto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="546" y="227" width="118" height="15" uuid="7db82d53-1371-4ef7-b050-81cbd731e87c"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.doktername} == null ? "" : $P{reportParams.doktername}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="134" height="15" uuid="5800fdd9-f299-4850-806e-a73986bd0bad"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total BIaya"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="0" y="45" width="134" height="15" uuid="9a841714-c5d7-4b85-9d44-0365df698111"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Dpp Pph 21"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="134" y="45" width="565" height="15" uuid="aef19bd7-7e2d-4aa5-954a-24ad6524901e"/>
+				<box leftPadding="0" rightPadding="10">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.pph21} == null ? "" : $P{reportParams.pph21}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="0" y="60" width="134" height="15" uuid="ec54343c-7df4-4507-b908-33f666e38aeb"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Dpp Pph Komulatif"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="133" y="60" width="565" height="15" uuid="58a714ee-150c-40fc-b058-0de204cdfdff"/>
+				<box leftPadding="0" rightPadding="10">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.pphkomulatif} == null ? "" : $P{reportParams.pphkomulatif}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="0" y="75" width="134" height="15" uuid="1a282cdd-b0c9-4ee7-8b74-9d9d617ba810"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pajak"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="134" y="75" width="565" height="15" uuid="588bcb33-b268-489a-9ccf-9f8d1666322e"/>
+				<box leftPadding="0" rightPadding="10">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.pajak} == null ? "" : $P{reportParams.pajak}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="0" y="89" width="134" height="15" uuid="95466c8b-654f-4d32-ac68-db5a2aa9f978"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Potongan Pajak"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="134" y="89" width="565" height="15" uuid="32734c44-ee72-43bc-8c06-52f8350e7b39"/>
+				<box leftPadding="0" rightPadding="10">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.pajakdipungut} == null ? "" : $P{reportParams.pajakdipungut}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="0" y="104" width="134" height="15" uuid="7c566132-ba47-4f64-9ad0-3e3f2ba8d352"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total Biaya setelah Pajak"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="134" y="104" width="565" height="15" uuid="3192c7a9-c74e-41f4-98c5-b2b9c8c16554"/>
+				<box leftPadding="0" rightPadding="10">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.hraktifitasnetto} == null ? "" : $P{reportParams.hraktifitasnetto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="0" y="119" width="134" height="15" uuid="df5f268d-34c1-4f4a-bd6c-d9a3dbc24836"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Potongan Ks"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="134" y="119" width="565" height="15" uuid="19caaf4c-2e49-4c6b-b80c-7a9ad9d674cf"/>
+				<box leftPadding="0" rightPadding="10">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.potks} == null ? "" : $P{reportParams.potks}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="0" y="134" width="134" height="15" uuid="865e718b-998b-440f-9fe1-d24c1de97db7"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Grand Total"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="134" y="134" width="565" height="15" uuid="4138110d-ebeb-4f50-b4d2-d552548d4baa"/>
+				<box leftPadding="0" rightPadding="10">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.netto} == null ? "" : $P{reportParams.netto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement isPrintRepeatedValues="false" x="546" y="175" width="118" height="11" uuid="96a42260-0447-4825-8339-533d957f4363"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA["Akuntansi"]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement isPrintRepeatedValues="false" x="134" y="0" width="564" height="15" uuid="1bb58dde-278d-4cd9-b5df-3233a9ffddbc"/>
+				<box leftPadding="0" rightPadding="10">
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.bruto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

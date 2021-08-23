@@ -639,6 +639,7 @@ public class CheckupAction extends BaseMasterAction {
 
                 checkup.setIsOnline("Y");
                 checkup.setTglAntian(antianOnline.getCreatedDate());
+                checkup.setStatusPeriksa(antianOnline.getStatusPeriksa());
             }
         }
         return checkup;
@@ -1247,6 +1248,11 @@ public class CheckupAction extends BaseMasterAction {
                     }catch (Exception e){
                         logger.error("[CheckupAction.parse tanggal lahir] error, " + e.getMessage());
                         throw new GeneralBOException("Tanggal Lahir Tidak sesuai format, Cek Kembali Tanggal Lahir Pasien " + e.getMessage());
+                    }
+
+                    if("Y".equalsIgnoreCase(checkup.getIsKontrolUlang())){
+                        String tglKontrol = checkup.getTglKontrolUlang()+" 00:00:00.0";
+                        updateTime = Timestamp.valueOf(tglKontrol);
                     }
 
                     checkup.setNoCheckup(noCheckup);
@@ -3776,6 +3782,9 @@ public class CheckupAction extends BaseMasterAction {
                     response = detailCheckup.getIndikasi();
                 }
             }
+            if("branch_name".equalsIgnoreCase(key)){
+                response = CommonUtil.userBranchNameLogin();
+            }
         }
         return response;
     }
@@ -3883,7 +3892,7 @@ public class CheckupAction extends BaseMasterAction {
     }
 
     public List<RekamMedisPasien> geRekamMedisLama(String id) {
-        logger.info("[CheckupAction.getListRekammedisPasien] START process >>>");
+        logger.info("[CheckupAction.geRekamMedisLama] START process >>>");
         List<RekamMedisPasien> listRM = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RekamMedisPasienBo rekamMedisPasienBo = (RekamMedisPasienBo) ctx.getBean("rekamMedisPasienBoProxy");
@@ -3896,7 +3905,7 @@ public class CheckupAction extends BaseMasterAction {
             }
         }
 
-        logger.info("[CheckupAction.getListRekammedisPasien] END process >>>");
+        logger.info("[CheckupAction.geRekamMedisLama] END process >>>");
         return listRM;
     }
 

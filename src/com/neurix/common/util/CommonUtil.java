@@ -1,5 +1,6 @@
 package com.neurix.common.util;
 
+import com.neurix.akuntansi.master.mappingJurnal.model.MappingJurnal;
 import com.neurix.akuntansi.transaksi.kas.model.ItAkunLampiranEntity;
 import com.neurix.akuntansi.transaksi.kas.model.Lampiran;
 import com.neurix.authorization.role.model.Roles;
@@ -1822,4 +1823,64 @@ public class  CommonUtil {
         return result;
     }
 
+
+    // Untuk mengurutkan Mapping Jurnal
+    public static Comparator<? super MappingJurnal> comparatorMappingJurnal() {
+        Comparator<MappingJurnal> result = new Comparator<MappingJurnal>() {
+            @Override
+            public int compare(MappingJurnal v1, MappingJurnal v2) {
+                return v1.getPosisi().compareTo(v2.getPosisi());
+            }
+        };
+        return result;
+    }
+
+    /** Fahmi 2021-08-05, Untuk mengambil nama bulan,
+     * @param bulan contoh 01 = Jan, 02 = Feb...*/
+    public static String getMonthName(String bulan)
+    {
+        String result = "";
+
+        switch (bulan)
+        {
+            case "01":
+                result = "Jan";
+                break;
+            case "02":
+                result = "Feb";
+                break;
+            case "03":
+                result = "Mar";
+                break;
+            case "04":
+                result = "Apr";
+                break;
+            case "05":
+                result = "Mei";
+                break;
+            case "06":
+                result = "Jun";
+                break;
+            case "07":
+                result = "Jul";
+                break;
+            case "08":
+                result = "Aug";
+                break;
+            case "09":
+                result = "Sep";
+                break;
+            case "10":
+                result = "Oct";
+                break;
+            case "11":
+                result = "Nov";
+                break;
+            case "12":
+                result = "Des";
+                break;
+        }
+
+        return result;
+    }
 }

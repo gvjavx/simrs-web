@@ -90,7 +90,7 @@ public class PerhitunganPpnKdDao extends GenericDao<ItAkunPerhitunganPpnKdEntity
                 "\tit_akun_jurnal_detail jd\n" +
                 "\tLEFT JOIN it_akun_jurnal j ON jd.no_jurnal = j.no_jurnal\n" +
                 "WHERE\t\n" +
-                "\trekening_id='"+ CommonConstant.REKENING_ID_PENDAPATAN_RJ +"'\n" +
+                "\tnomor_rekening='"+ CommonConstant.REKENING_ID_PENDAPATAN_RJ +"'\n" +
                 "\tAND divisi_id='"+CommonConstant.KODERING_FARMASI_RJ+"'\n" +
                 "\tAND registered_flag='Y'\n" +
                 "\tAND tanggal_jurnal >='"+tahunSebelumnya+"-12-01'\n" +
@@ -114,7 +114,7 @@ public class PerhitunganPpnKdDao extends GenericDao<ItAkunPerhitunganPpnKdEntity
                 "\tit_akun_jurnal_detail jd\n" +
                 "\tLEFT JOIN it_akun_jurnal j ON jd.no_jurnal = j.no_jurnal\n" +
                 "WHERE\t\n" +
-                "\trekening_id='"+ CommonConstant.REKENING_ID_PENDAPATAN_RJ +"'\n" +
+                "\tnomor_rekening='"+ CommonConstant.REKENING_ID_PENDAPATAN_RJ +"'\n" +
                 "\tAND divisi_id='"+CommonConstant.KODERING_FARMASI_RJ+"'\n" +
                 "\tAND registered_flag='Y'\n" +
                 "\tAND tanggal_jurnal >='"+tahunSebelumnya+"-12-01'\n" +
@@ -138,8 +138,8 @@ public class PerhitunganPpnKdDao extends GenericDao<ItAkunPerhitunganPpnKdEntity
                 "\tit_akun_jurnal_detail jd\n" +
                 "\tLEFT JOIN it_akun_jurnal j ON jd.no_jurnal = j.no_jurnal\n" +
                 "WHERE\t\n" +
-                "\trekening_id='"+ CommonConstant.REKENING_ID_PENDAPATAN_RI +"'\n" +
-                "\tAND divisi_id='"+CommonConstant.KODERING_FARMASI_RI+"'\n" +
+                "\t nomor_rekening ='"+ CommonConstant.REKENING_ID_PENDAPATAN_RI +"'\n" +
+                "\tAND divisi_id = '"+CommonConstant.KODERING_FARMASI_RI+"'\n" +
                 "\tAND registered_flag='Y'\n" +
                 "\tAND tanggal_jurnal >='"+tahunSebelumnya+"-12-01'\n" +
                 "\tAND tanggal_jurnal < '"+search.getTahun()+"-"+search.getBulan()+"-01'";
@@ -162,7 +162,7 @@ public class PerhitunganPpnKdDao extends GenericDao<ItAkunPerhitunganPpnKdEntity
                 "\tit_akun_jurnal_detail jd\n" +
                 "\tLEFT JOIN it_akun_jurnal j ON jd.no_jurnal = j.no_jurnal\n" +
                 "WHERE\t\n" +
-                "\trekening_id='"+ CommonConstant.REKENING_ID_PENDAPATAN_RI +"'\n" +
+                "\tnomor_rekening='"+ CommonConstant.REKENING_ID_PENDAPATAN_RI +"'\n" +
                 "\tAND divisi_id='"+CommonConstant.KODERING_FARMASI_RI+"'\n" +
                 "\tAND registered_flag='Y'\n" +
                 "\tAND branch_id='"+search.getBranchId()+"'\n" +
@@ -273,17 +273,39 @@ public class PerhitunganPpnKdDao extends GenericDao<ItAkunPerhitunganPpnKdEntity
     public BigDecimal getJasaRs(PengajuanSetor search){
         BigDecimal total = new BigDecimal(0);
         String periodeSebelumnya = CommonUtil.periodeBulanSebelumnya(search.getBulan(),search.getTahun());
-        String query="SELECT\n" +
+//        String query="SELECT\n" +
+//                "\tsum(jumlah_kredit) as jasa_rs \n" +
+//                "FROM\n" +
+//                "\tit_akun_jurnal_detail jd\n" +
+//                "\tLEFT JOIN it_akun_jurnal j ON jd.no_jurnal = j.no_jurnal\n" +
+//                "WHERE\t\n" +
+//                "\tnomor_rekening='"+ CommonConstant.REKENING_ID_PENDAPATAN_RI +"'\n" +
+//                "\tAND divisi_id='"+CommonConstant. KODERING_INSTALASI_RI+"'\n" +
+//                "\tAND registered_flag='Y'\n" +
+//                "\tAND tanggal_jurnal >='"+periodeSebelumnya+"-01'\n" +
+//                "\tAND tanggal_jurnal < '"+search.getTahun()+"-"+search.getBulan()+"-01'";
+
+
+
+                String query="SELECT\n" +
                 "\tsum(jumlah_kredit) as jasa_rs \n" +
                 "FROM\n" +
                 "\tit_akun_jurnal_detail jd\n" +
                 "\tLEFT JOIN it_akun_jurnal j ON jd.no_jurnal = j.no_jurnal\n" +
+                "\tINNER JOIN (SELECT * FROM im_position WHERE flag_cost_unit = 'Y') p ON p.kodering = jd.divisi_id\n" +
                 "WHERE\t\n" +
-                "\trekening_id='"+ CommonConstant.REKENING_ID_PENDAPATAN_RI +"'\n" +
-                "\tAND divisi_id='"+CommonConstant.KODERING_INSTALASI_RI+"'\n" +
+                "\tnomor_rekening='"+ CommonConstant.REKENING_ID_PENDAPATAN_RI +"'\n" +
+                "\tAND jd.divisi_id IN (SELECT p.kodering \n" +
+                        "FROM im_position p\n" +
+                        "WHERE p.position_id IN (\n" +
+                        "\tSELECT position_id FROM mt_simrs_ruangan \n" +
+                        "\tWHERE position_id is not null AND position_id != ''\n" +
+                        "\tGROUP BY position_id\n" +
+                        ")) \n" +
                 "\tAND registered_flag='Y'\n" +
                 "\tAND tanggal_jurnal >='"+periodeSebelumnya+"-01'\n" +
                 "\tAND tanggal_jurnal < '"+search.getTahun()+"-"+search.getBulan()+"-01'";
+
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
         if (results!=null){
@@ -302,7 +324,7 @@ public class PerhitunganPpnKdDao extends GenericDao<ItAkunPerhitunganPpnKdEntity
                 "\tit_akun_jurnal_detail jd\n" +
                 "\tLEFT JOIN it_akun_jurnal j ON jd.no_jurnal = j.no_jurnal\n" +
                 "WHERE\t\n" +
-                "\trekening_id='"+ CommonConstant.REKENING_ID_PENDAPATAN_RI +"'\n" +
+                "\tnomor_rekening='"+ CommonConstant.REKENING_ID_PENDAPATAN_RI +"'\n" +
                 "\tAND divisi_id='"+CommonConstant.KODERING_FARMASI_RI+"'\n" +
                 "\tAND registered_flag='Y'\n" +
                 "\tAND tanggal_jurnal >='"+periodeSebelumnya+"-01'\n" +

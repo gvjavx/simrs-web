@@ -8,6 +8,7 @@
 <html>
 <head>
     <%@ include file="/pages/common/header.jsp" %>
+    <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/addrawatpasien.css"/>">
     <script type='text/javascript' src='<s:url value="/dwr/interface/MappingJurnalAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
@@ -133,9 +134,9 @@
                                             </tr>
                                         </table>
 
-                                        <table >
+                                        <table width="60%">
                                             <tr>
-                                                <td>
+                                                <td width="25%">
                                                     <label class="control-label">
                                                         <small>Id Transaksi :</small>
                                                     </label>

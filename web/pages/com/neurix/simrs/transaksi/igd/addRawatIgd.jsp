@@ -397,6 +397,23 @@
                                             <table><s:label name="headerDetailCheckup.provinsi"></s:label></table>
                                         </td>
                                     </tr>
+                                    <s:if test='headerDetailCheckup.diagnosa != null'>
+                                        <tr>
+                                            <td><b>Diagnosa Terakhir</b></td>
+                                            <td>
+                                                <table>
+                                                    <s:if test='headerDetailCheckup.isWarning == "Y"'>
+                                                        <div style="color: red">
+                                                            [<s:property value="headerDetailCheckup.diagnosa"/>] - <s:property value="headerDetailCheckup.namaDiagnosa"/>
+                                                        </div>
+                                                    </s:if>
+                                                    <s:else>
+                                                        [<s:property value="headerDetailCheckup.diagnosa"/>] - <s:property value="headerDetailCheckup.namaDiagnosa"/>
+                                                    </s:else>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
                                 </table>
                             </div>
 

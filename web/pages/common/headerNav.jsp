@@ -134,6 +134,13 @@
                         "</a>"+
                         "</li>";
                 }
+                else if (item.tipeNotifId == "TN70"){
+                    tmp_data_approve += "<li>"+
+                        "<a href='<s:property value="appname" />refreshLembur/searchNotif_refreshLembur.action?id="+item.noRequest + "' onclick='readNotif("+item.notifId+");'>"+
+                        "<span class='label label-success'>Refresh Lembur</span> "+item.note+""+
+                        "</a>"+
+                        "</li>";
+                }
                 else {
                     tmp_data_pemberitahuan += "<li class='pemberitahuan' data-id='"+item.notifId+"~"+item.note+"'>"+
                             "<a>"+

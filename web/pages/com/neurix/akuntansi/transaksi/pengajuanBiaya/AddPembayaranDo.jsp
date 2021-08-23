@@ -625,42 +625,42 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="modal-loading-dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-info"></i> Saving ...
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div id="waiting-content" style="text-align: center">
-                    <h4>Please don't close this window, server is processing your request ...</h4>
-                    <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
-                         src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
-                         name="image_indicator_write">
-                    <br>
-                    <img class="spin" border="0"
-                         style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
-                         src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
-                         name="image_indicator_write">
-                </div>
+<%--<div class="modal fade" id="modal-loading-dialog">--%>
+    <%--<div class="modal-dialog">--%>
+        <%--<div class="modal-content">--%>
+            <%--<div class="modal-header" style="background-color: #00a65a">--%>
+                <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
+                    <%--<span aria-hidden="true">&times;</span></button>--%>
+                <%--<h4 class="modal-title"><i class="fa fa-info"></i> Saving ...--%>
+                <%--</h4>--%>
+            <%--</div>--%>
+            <%--<div class="modal-body">--%>
+                <%--<div id="waiting-content" style="text-align: center">--%>
+                    <%--<h4>Please don't close this window, server is processing your request ...</h4>--%>
+                    <%--<img border="0" style="width: 130px; height: 120px; margin-top: 20px"--%>
+                         <%--src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"--%>
+                         <%--name="image_indicator_write">--%>
+                    <%--<br>--%>
+                    <%--<img class="spin" border="0"--%>
+                         <%--style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"--%>
+                         <%--src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"--%>
+                         <%--name="image_indicator_write">--%>
+                <%--</div>--%>
 
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin_waiting">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_fin_error_waiting"></p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
-                <%--</button>--%>
-                <%--<button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes--%>
-                <%--</button>--%>
-            </div>
-        </div>
-    </div>
-</div>
+                <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin_waiting">--%>
+                    <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
+                    <%--<p id="msg_fin_error_waiting"></p>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="modal-footer">--%>
+                <%--&lt;%&ndash;<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No&ndash;%&gt;--%>
+                <%--&lt;%&ndash;</button>&ndash;%&gt;--%>
+                <%--&lt;%&ndash;<button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes&ndash;%&gt;--%>
+                <%--&lt;%&ndash;</button>&ndash;%&gt;--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+<%--</div>--%>
 
 <div class="modal fade" id="modal-success-dialog">
     <div class="modal-dialog modal-sm">
@@ -702,7 +702,8 @@
 
     $(document).ready(function () {
         $('#ok_con').click(function () {
-            window.location.reload();
+//            window.location.reload()
+            $("#pengajuanBiayaRkForm").submit();
         });
 
         $('.tablePengajuanBiaya').on('click', '.item-view', function() {
@@ -883,6 +884,7 @@
         dwr.engine.setAsync(true);
         PengajuanBiayaAction.kirimPengajuanPembayaranDoRk(data,branchId,branchIdUser,function() {
             dwr.engine.setAsync(false);
+            $("#modal-create-pengajuan-pembayaran-rk").modal('hide');
             showDialog("success");
         });
     });
@@ -894,6 +896,8 @@
         dwr.engine.setAsync(true);
         PengajuanBiayaAction.terimaPengajuanPembayaranDoRk(data,branchId,branchIdUSer,function() {
             dwr.engine.setAsync(false);
+            $("#modal-create-pengajuan").modal('hide');
+            $("#modal-confirm-dialog").modal('hide');
             showDialog("success");
         });
     });
@@ -911,6 +915,9 @@
         var metodeBayar = $('#mod_metode_bayar').val();
         var branchIdUser = $('#branchIdUser').val();
         PengajuanBiayaAction.pembayaranDo(data,metodeBayar,branchIdUser,function(result) {
+            $("#modal-create-pengajuan").modal('hide');
+            $("#modal-create-pengajuan-pembayaran-do").modal('hide');
+            $("#modal-confirm-dialog").modal('hide');
             showDialog("success");
         });
     });

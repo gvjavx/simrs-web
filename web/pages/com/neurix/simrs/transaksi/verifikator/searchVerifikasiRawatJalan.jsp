@@ -323,7 +323,7 @@
                                 </tr>
                                 <tr>
                                     <td><b>Jenis Pasien</b></td>
-                                    <td><span id="det_jenis_pasien"></span></td>
+                                    <td><span class="span-success" id="det_jenis_pasien"></span></td>
                                 </tr>
                             </table>
                         </div>
@@ -1127,7 +1127,7 @@
                     }
 
                     var blink = "";
-                    if("B20" == id){
+                    if(item.isWarning == "Y"){
                         blink = 'class="blink_me_atas" style="color: red"';
                     }
 

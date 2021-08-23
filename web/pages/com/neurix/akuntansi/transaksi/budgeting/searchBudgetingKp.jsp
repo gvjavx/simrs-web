@@ -42,7 +42,7 @@
         $( document ).ready(function() {
             $('#bayar_rawat_jalan, #pembayaran_active').addClass('active');
             $('#pembayaran_open').addClass('menu-open');
-            changeAction('');
+//            changeAction('');
             getSelectTahun('sel-tahun');
         });
 

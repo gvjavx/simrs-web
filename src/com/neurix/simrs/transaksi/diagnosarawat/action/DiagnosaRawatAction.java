@@ -325,6 +325,8 @@ public class DiagnosaRawatAction extends BaseMasterAction {
                 response = diagnosaRawatBo.saveEdit(diagnosaRawat);
             }
 
+            insertProfilRJ(idDetailCheckup, idDiagnosa+"-"+ketDiagnosa);
+
         } catch (GeneralBOException e) {
             response.setStatus("error");
             response.setMsg("Error when "+e.getMessage());
@@ -971,6 +973,7 @@ public class DiagnosaRawatAction extends BaseMasterAction {
                 rekamMedisRawatJalanList = rekamMedisRawatJalanBo.getByCriteria(rekamMedisRawatJalan);
                 if (rekamMedisRawatJalanList.size() > 0) {
                     RekamMedisRawatJalan rawatJalan = new RekamMedisRawatJalan();
+                    rawatJalan.setIdDetailCheckup(idDetailCheckup);
                     rawatJalan.setWaktu(new Timestamp(System.currentTimeMillis()));
                     rawatJalan.setDiagnosa(diagnosa);
                     rawatJalan.setLastUpdate(new Timestamp(System.currentTimeMillis()));

@@ -157,9 +157,9 @@
                                             </tr>
                                         </table>
 
-                                        <table>
+                                        <table width="60%">
                                             <tr>
-                                                <td>
+                                                <td width="25%">
                                                     <label class="control-label">
                                                         <small>Id Transaksi :</small>
                                                     </label>
@@ -599,7 +599,7 @@
                         '<td align="center">' + item.keterangan + '</td>' +
                         '<td align="center">' + item.editBiaya + '</td>' +
                         '<td align="center">' +
-                        "<a href='javascript:;' class ='item-delete-data' data ='" + item.kodeRekening + "'>" +
+                        "<a href='javascript:;' class='item-delete-data' data='" + item.kodeRekening + ","+ item.posisi +"'>" +
                         "<img border='0' src='<s:url value='/pages/images/delete_task.png'/>' name='icon_delete'>" +
                         '</a>' +
                         '</td>' +

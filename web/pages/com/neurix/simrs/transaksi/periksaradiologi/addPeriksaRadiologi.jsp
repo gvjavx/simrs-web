@@ -1956,7 +1956,7 @@
         var option = "<option value=''> - </option>";
         if (idKategori != '') {
             dwr.engine.setAsync(true);
-            CheckupDetailAction.getListComboTindakan(idKategori, "", "N", null, {
+            CheckupDetailAction.getListComboTindakan(idKategori, null, "N", null, null, {
                 callback:function (response) {
                     if (response != null) {
                         $.each(response, function (i, item) {

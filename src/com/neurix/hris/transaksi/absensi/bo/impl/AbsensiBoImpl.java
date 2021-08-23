@@ -57,6 +57,8 @@ import com.neurix.hris.transaksi.payroll.dao.PayrollDao;
 import com.neurix.hris.transaksi.payroll.model.ItHrisPayrollEntity;
 import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
 import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
+import com.neurix.hris.transaksi.refreshLembur.model.ItHrisRefreshLemburEntity;
+import com.neurix.hris.transaksi.refreshLembur.model.RefreshLembur;
 import com.neurix.hris.transaksi.sppd.dao.SppdDao;
 import com.neurix.hris.transaksi.sppd.model.SppdPerson;
 import com.neurix.hris.transaksi.training.dao.TrainingDao;
@@ -7206,4 +7208,5 @@ public class AbsensiBoImpl implements AbsensiBo {
         }
         return returnLembur;
     }
+
 }

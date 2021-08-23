@@ -1313,6 +1313,7 @@ public class RawatInapBoImpl implements RawatInapBo {
         logger.info("[RawatInapBoImpl.saveAdd] Start <<<<<<<<");
         CrudResponse response = new CrudResponse();
         List<RawatInap> rawatInapList = new ArrayList<>();
+        ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
         try {
             rawatInapList = rawatInapDao.getRuanganRawatInap(bean.getIdDetailCheckup());
             if (rawatInapList.size() > 0) {
@@ -1332,7 +1333,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                         entity.setIdRiwayatTindakan("RWT" + riwayatTindakanDao.getNextSeq());
                         entity.setIdDetailCheckup(bean.getIdDetailCheckup());
                         entity.setIdTindakan(rawatInap.getIdRawatInap());
-                        entity.setNamaTindakan("Kamar " + rawatInap.getNamaRangan() + " (" + rawatInap.getLamakamar() + " hari @Rp." + rawatInap.getTarif() + ")");
+                        entity.setNamaTindakan("Kamar " + rawatInap.getNamaRangan() + " (" + rawatInap.getLamakamar() + " hari @Rp. " + CommonUtil.numbericFormatIndo(new BigDecimal(rawatInap.getTarif())) + ")");
                         entity.setKeterangan("kamar");
 
                         try {
@@ -1356,7 +1357,26 @@ public class RawatInapBoImpl implements RawatInapBo {
                                 entity.setTotalTarif(new BigDecimal(rawatInap.getTarif().multiply(rawatInap.getLamakamar())));
                             }
                         } else {
-                            entity.setTotalTarif(new BigDecimal(rawatInap.getTarif().multiply(rawatInap.getLamakamar())));
+
+                            //set sisa tarif kamar karena kenaikan kelas BPJS, sodiq 15,07,2021, malam jumat 17.48
+                            BigInteger tariff = rawatInap.getTarif();
+                            if("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksa())){
+                                if("rawat_inap".equalsIgnoreCase(rawatInap.getKategoriRuangan())){
+                                    if(detailCheckupEntity != null){
+                                        if(Integer.valueOf(detailCheckupEntity.getKelasPasien()) > Integer.valueOf(rawatInap.getIdKelasBpjs())){
+                                            BigInteger tarifNormal = rawatInapDao.getTarifByIdKelas(detailCheckupEntity.getKelasPasien(), bean.getBranchId());
+                                            if(rawatInap.getTarif().intValue() > tarifNormal.intValue()){
+                                                BigInteger sisa = rawatInap.getTarif().subtract(tarifNormal);
+                                                tariff = sisa;
+                                                entity.setNamaTindakan("Selisiah Kamar " + rawatInap.getNamaRangan() + " (" + rawatInap.getLamakamar() + " hari @Rp. " + CommonUtil.numbericFormatIndo(new BigDecimal(sisa)) + ")");
+                                                entity.setJenisPasien("umum");
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            entity.setTotalTarif(new BigDecimal(tariff.multiply(rawatInap.getLamakamar())));
                         }
 
                         entity.setAction(bean.getAction());

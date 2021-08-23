@@ -569,10 +569,23 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
 
             if(periksaLabs.size() > 0){
                 for (PeriksaLab pb: periksaLabs){
+
+                    String tempDetail = "";
+                    List<String> stringList = checkupBoProxy.getDetailPemeriksaan(pb.getIdPeriksaLab());
+                    if(stringList.size() > 0){
+                        for (String isi: stringList){
+                            if("".equalsIgnoreCase(tempDetail)){
+                                tempDetail = isi;
+                            }else{
+                                tempDetail = tempDetail+", "+isi;
+                            }
+                        }
+                    }
+
                     if("".equalsIgnoreCase(namaLab)){
-                        namaLab = pb.getNamaPemeriksaan();
+                        namaLab = pb.getNamaPemeriksaan() +" ("+tempDetail+")";
                     }else{
-                        namaLab = namaLab+", "+pb.getNamaPemeriksaan();
+                        namaLab = namaLab+", "+pb.getNamaPemeriksaan() +" ("+tempDetail+")";;
                     }
                 }
             }

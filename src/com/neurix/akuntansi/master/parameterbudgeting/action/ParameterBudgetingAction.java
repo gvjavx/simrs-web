@@ -253,6 +253,7 @@ public class ParameterBudgetingAction {
 
         Position position = new Position();
         position.setFlag("Y");
+        position.setFlagCostUnit("Y");
 
         List<Position> positions = new ArrayList<>();
         try {

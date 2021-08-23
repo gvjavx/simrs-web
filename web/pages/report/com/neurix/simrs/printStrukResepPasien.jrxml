@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printStrukResepPasien" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.464100000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="251"/>
+	<property name="ireport.y" value="160"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -295,62 +295,10 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						</datasetParameter>
 						<dataSourceExpression><![CDATA[$P{reportParams.itemDataSource}]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="80" uuid="d20c28c2-e6f2-4af1-9c22-01a22b349d1b">
+					<jr:column width="168" uuid="7dd4e4d4-4c1b-4a54-bb00-644eaf32bd14">
 						<jr:columnHeader height="20" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="80" height="20" uuid="f562078a-216e-499a-866d-0accb093e108"/>
-								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-								</box>
-								<textElement verticalAlignment="Middle">
-									<font size="8"/>
-								</textElement>
-								<text><![CDATA[ID Obat]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:columnFooter height="41" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="80" height="20" uuid="7a4f53b5-3d24-4b46-b0b6-5aa43a1009bb"/>
-								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-								</box>
-								<textElement verticalAlignment="Middle">
-									<font size="8"/>
-								</textElement>
-								<text><![CDATA[PPN Obat]]></text>
-							</staticText>
-							<staticText>
-								<reportElement x="0" y="20" width="80" height="20" uuid="c008b2bd-ee6b-40d1-a5bc-f6a545168b5b"/>
-								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-								</box>
-								<textElement verticalAlignment="Middle">
-									<font size="8"/>
-								</textElement>
-								<text><![CDATA[Total Harga Obat]]></text>
-							</staticText>
-						</jr:columnFooter>
-						<jr:detailCell height="20" rowSpan="1">
-							<textField>
-								<reportElement x="0" y="0" width="80" height="20" uuid="9444d633-19c0-40fe-88e9-c501bc4ccc51"/>
-								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-								</box>
-								<textElement verticalAlignment="Middle">
-									<font size="8"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$F{idObat}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="90" uuid="7dd4e4d4-4c1b-4a54-bb00-644eaf32bd14">
-						<jr:columnHeader height="20" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="90" height="20" uuid="7e5adf00-4092-4a6c-ada2-ea0f1d2a29fa"/>
+								<reportElement x="0" y="0" width="168" height="20" uuid="7e5adf00-4092-4a6c-ada2-ea0f1d2a29fa"/>
 								<box>
 									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -363,27 +311,37 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						</jr:columnHeader>
 						<jr:columnFooter height="41" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="90" height="20" uuid="c4794ecb-e203-470b-80d6-6ed23def93c6"/>
+								<reportElement x="0" y="0" width="168" height="20" uuid="75c6977f-53c8-4948-9fc6-21a759d110c4"/>
 								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<pen lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<topPen lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed" lineColor="#CCCCCC"/>
 								</box>
-								<textElement verticalAlignment="Middle"/>
-								<text><![CDATA[]]></text>
+								<textElement verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<text><![CDATA[PPN Obat]]></text>
 							</staticText>
 							<staticText>
-								<reportElement x="0" y="20" width="90" height="20" uuid="e0db61e2-8e02-4ec3-ad3e-93d6d00963af"/>
+								<reportElement x="0" y="20" width="168" height="20" uuid="82154fe9-68f7-428d-9bef-bcfd5b49b7c1"/>
 								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<pen lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<topPen lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<leftPen lineStyle="Dashed" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+									<rightPen lineStyle="Dashed" lineColor="#CCCCCC"/>
 								</box>
-								<textElement verticalAlignment="Middle"/>
-								<text><![CDATA[]]></text>
+								<textElement verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<text><![CDATA[Total Harga Obat]]></text>
 							</staticText>
 						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="90" height="20" uuid="86b766ba-e26b-4a48-8f7d-c337f45e3d3d"/>
+								<reportElement x="0" y="0" width="168" height="20" uuid="86b766ba-e26b-4a48-8f7d-c337f45e3d3d"/>
 								<box>
 									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -395,10 +353,10 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="24" uuid="2d310cf0-cc62-4a0b-9e5c-21dc722284e9">
+					<jr:column width="32" uuid="2d310cf0-cc62-4a0b-9e5c-21dc722284e9">
 						<jr:columnHeader height="20" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="24" height="20" uuid="47c4f1c3-bb40-4b8f-b928-3a63dd6b257e"/>
+								<reportElement x="0" y="0" width="32" height="20" uuid="47c4f1c3-bb40-4b8f-b928-3a63dd6b257e"/>
 								<box>
 									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -411,7 +369,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						</jr:columnHeader>
 						<jr:columnFooter height="41" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="24" height="20" uuid="01017537-10d2-42de-b9d2-4e2375c4db07"/>
+								<reportElement x="0" y="0" width="32" height="20" uuid="01017537-10d2-42de-b9d2-4e2375c4db07"/>
 								<box>
 									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -422,7 +380,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 								<text><![CDATA[]]></text>
 							</staticText>
 							<staticText>
-								<reportElement x="0" y="20" width="24" height="20" uuid="311f86eb-989a-4fff-88c8-a8095f3528fa"/>
+								<reportElement x="0" y="20" width="32" height="20" uuid="311f86eb-989a-4fff-88c8-a8095f3528fa"/>
 								<box>
 									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -435,7 +393,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="24" height="20" uuid="c457a28f-46b1-4ef8-a9e1-2a8642c761cf"/>
+								<reportElement x="0" y="0" width="32" height="20" uuid="c457a28f-46b1-4ef8-a9e1-2a8642c761cf"/>
 								<box>
 									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -499,62 +457,10 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="65" uuid="b267189f-cef1-4e1e-bfac-a23deac650b1">
+					<jr:column width="128" uuid="3044768e-3a56-49ca-9780-f32be885e648">
 						<jr:columnHeader height="20" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="65" height="20" uuid="a4735079-a905-48a5-9e21-49d9ca8442eb"/>
-								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-								</box>
-								<textElement textAlignment="Right" verticalAlignment="Middle">
-									<font size="8"/>
-								</textElement>
-								<text><![CDATA[Harga Satuan (Rp.)]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:columnFooter height="41" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="65" height="20" uuid="e762c31e-1e5f-44c8-b2c7-d1a7f79617b0"/>
-								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-								</box>
-								<textElement verticalAlignment="Middle">
-									<font size="8"/>
-								</textElement>
-								<text><![CDATA[]]></text>
-							</staticText>
-							<staticText>
-								<reportElement x="0" y="20" width="65" height="20" uuid="7a0b9e01-a521-40e2-a554-68f0247f8035"/>
-								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-								</box>
-								<textElement verticalAlignment="Middle">
-									<font size="8"/>
-								</textElement>
-								<text><![CDATA[]]></text>
-							</staticText>
-						</jr:columnFooter>
-						<jr:detailCell height="20" rowSpan="1">
-							<textField pattern="#,##0">
-								<reportElement x="0" y="0" width="65" height="20" uuid="87fe4ee0-ad10-464f-88bd-3112e77d3405"/>
-								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-								</box>
-								<textElement textAlignment="Right" verticalAlignment="Middle">
-									<font size="8"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$F{harga}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="73" uuid="3044768e-3a56-49ca-9780-f32be885e648">
-						<jr:columnHeader height="20" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="73" height="20" uuid="7188a2ca-1f37-44ae-9142-7dabfe33b123"/>
+								<reportElement x="0" y="0" width="128" height="20" uuid="7188a2ca-1f37-44ae-9142-7dabfe33b123"/>
 								<box>
 									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -567,7 +473,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						</jr:columnHeader>
 						<jr:columnFooter height="41" rowSpan="1">
 							<textField pattern="#,##0">
-								<reportElement x="0" y="0" width="73" height="20" uuid="db108e95-fcc2-405c-9b02-d7a58e302d8a"/>
+								<reportElement x="0" y="0" width="128" height="20" uuid="db108e95-fcc2-405c-9b02-d7a58e302d8a"/>
 								<box>
 									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -578,7 +484,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 								<textFieldExpression><![CDATA[$P{tipePelayanan} == "rawat_jalan" || $P{tipePelayanan} == "igd" ? $V{ppnObat} : "0"]]></textFieldExpression>
 							</textField>
 							<textField pattern="#,##0">
-								<reportElement x="0" y="20" width="73" height="20" uuid="0c6da306-bacb-4f54-8ad3-257010e0a02a"/>
+								<reportElement x="0" y="20" width="128" height="20" uuid="0c6da306-bacb-4f54-8ad3-257010e0a02a"/>
 								<box>
 									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -591,7 +497,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">
 							<textField pattern="#,##0">
-								<reportElement x="0" y="0" width="73" height="20" uuid="b9a664cc-882b-4c7d-b6cd-50dc523fbebc"/>
+								<reportElement x="0" y="0" width="128" height="20" uuid="b9a664cc-882b-4c7d-b6cd-50dc523fbebc"/>
 								<box>
 									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>

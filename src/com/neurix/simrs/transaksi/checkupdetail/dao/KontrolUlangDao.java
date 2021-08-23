@@ -35,6 +35,9 @@ public class KontrolUlangDao extends GenericDao<ItSimrsKontrolUlangEntity, Strin
             if (mapCriteria.get("id_detail_checkup") != null) {
                 criteria.add(Restrictions.eq("idDetailCheckup", (String) mapCriteria.get("id_detail_checkup")));
             }
+            if (mapCriteria.get("id_pelayanan") != null) {
+                criteria.add(Restrictions.eq("idPelayanan", (String) mapCriteria.get("id_pelayanan")));
+            }
             if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
             }else{
@@ -48,18 +51,19 @@ public class KontrolUlangDao extends GenericDao<ItSimrsKontrolUlangEntity, Strin
     public List<HeaderDetailCheckup> getKontrolUlang(HeaderDetailCheckup bean) {
         List<HeaderDetailCheckup> headerDetailCheckupList = new ArrayList<>();
         if(bean != null){
-            String idPasien = "%";
-            String namaPasien = "%";
-            String idPelayanan = "%";
+            String condition = "";
 
             if(bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())){
-                idPasien = bean.getIdPasien();
+                condition += "AND a.id_pasien ILIKE '"+bean.getIdPasien()+"' \n";
             }
             if(bean.getNamaPasien() != null && !"".equalsIgnoreCase(bean.getNamaPasien())){
-                namaPasien = bean.getNamaPasien();
+                condition += "AND a.nama ILIKE '"+bean.getNamaPasien()+"' \n";
             }
             if(bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
-                idPelayanan = bean.getIdPelayanan();
+                condition += "AND c.id_pelayanan = '"+bean.getIdPelayanan()+"' \n";
+            }
+            if(bean.getTglKontrol() != null && !"".equalsIgnoreCase(bean.getTglKontrol())){
+                condition += "AND b.tgl_kontrol = to_date('"+bean.getTglKontrol()+"', 'dd-MM-yyyy') \n";
             }
 
             String SQL = "SELECT\n" +
@@ -73,7 +77,10 @@ public class KontrolUlangDao extends GenericDao<ItSimrsKontrolUlangEntity, Strin
                     "d.nama_dokter,\n" +
                     "e.desa_name, \n"+
                     "a.no_telp, \n"+
-                    "CAST(EXTRACT(YEAR FROM (AGE(a.tgl_lahir))) AS VARCHAR) as umur\n"+
+                    "CAST(EXTRACT(YEAR FROM (AGE(a.tgl_lahir))) AS VARCHAR) as umur,\n"+
+                    "b.status_kontrol,\n"+
+                    "f.id_jenis_periksa_pasien,\n"+
+                    "to_char(b.tgl_kontrol, 'yyyy-MM-dd') as tgl\n"+
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_kontrol_ulang b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN (\n" +
@@ -86,15 +93,10 @@ public class KontrolUlangDao extends GenericDao<ItSimrsKontrolUlangEntity, Strin
                     ") c ON b.id_pelayanan = c.id_pelayanan\n" +
                     "INNER JOIN im_simrs_dokter d ON b.id_dokter = d.id_dokter\n" +
                     "INNER JOIN im_hris_desa e ON CAST(a.desa_id AS VARCHAR) = e.desa_id\n" +
-                    "WHERE b.flag = 'Y'\n" +
-                    "AND a.id_pasien ILIKE :idPasien \n" +
-                    "AND a.nama ILIKE :namaPasien \n" +
-                    "AND c.id_pelayanan ILIKE :idPelayanan ";
+                    "INNER JOIN it_simrs_header_detail_checkup f ON a.no_checkup = f.no_checkup \n"+
+                    "WHERE b.flag = 'Y'\n" +condition;
 
             List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                    .setParameter("idPasien", idPasien)
-                    .setParameter("namaPasien", namaPasien)
-                    .setParameter("idPelayanan", idPelayanan)
                     .list();
 
             if (result.size() > 0) {
@@ -111,6 +113,9 @@ public class KontrolUlangDao extends GenericDao<ItSimrsKontrolUlangEntity, Strin
                     detailCheckup.setDesa(obj[8] != null ? obj[8].toString() : null);
                     detailCheckup.setNoTelp(obj[9] != null ? obj[9].toString() : null);
                     detailCheckup.setUmur(obj[10] != null ? obj[10].toString() : null);
+                    detailCheckup.setStatus(obj[11] != null ? obj[11].toString() : null);
+                    detailCheckup.setIdJenisPeriksaPasien(obj[12] != null ? obj[12].toString() : null);
+                    detailCheckup.setTglKontrol(obj[13] != null ? obj[13].toString() : null);
                     headerDetailCheckupList.add(detailCheckup);
                 }
             }

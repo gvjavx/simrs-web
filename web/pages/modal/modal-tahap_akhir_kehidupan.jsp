@@ -696,8 +696,8 @@
                         </div>
                         <div class="col-md-7">
                             <div class="form-check">
-                                <input onclick="checkSelect(this.id, 'pk62', this.value)" type="checkbox" name="pk6" id="pk61" value="Tetap dirawat dirumah sakit Gatoel">
-                                <label for="pk61"></label> Tetap dirawat dirumah sakit Gatoel
+                                <input onclick="checkSelect(this.id, 'pk62', this.value)" type="checkbox" name="pk6" id="pk61" value="Tetap dirawat dirumah sakit">
+                                <label for="pk61"></label> Tetap dirawat dirumah sakit
                             </div>
                         </div>
                     </div>

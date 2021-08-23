@@ -652,8 +652,9 @@
 
     function listSelectTindakan(value) {
         var option = '<option value="">[Select One]</option>';
+        var idPelayanan = $("#poli").val();
         if (value != '') {
-            CheckupDetailAction.getListComboTindakan(value, null, null, null, function (response) {
+            CheckupDetailAction.getListComboTindakan(value, null, null, idPelayanan, function (response) {
                 if (response.length > 0) {
                     option = option + '<option value="all">Select All</option>';
                     $.each(response, function (i, item) {

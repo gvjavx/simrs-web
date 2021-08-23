@@ -69,7 +69,7 @@
                                                 <td>
                                                     <label class="control-label"><small>Dokter Tamu ID :</small></label>
                                                 </td>
-                                                <td>
+                                                <td style="width: 75%">
                                                     <table>
                                                         <s:textfield id="dokterKsoId" name="dokterKso.dokterKsoId" required="true" disabled="false" cssClass="form-control"/>
                                                     </table>

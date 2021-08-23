@@ -15,11 +15,12 @@ function viewAllRekamMedis() {
         var ko = '<li><span class="fa-li"><i class="fa fa-list-ul"></i></span><b>Kamar Operasi</b></li>';
         var rb = '<li><span class="fa-li"><i class="fa fa-list-ul"></i></span><b>Ruang Bersalin</b></li>';
         var tp = '<li><span class="fa-li"><i class="fa fa-list-ul"></i></span><b>TPPRI</b></li>';
+        var gizi = '<li><span class="fa-li"><i class="fa fa-list-ul"></i></span><b>GIZI</b></li>';
         var su = '<li><span class="fa-li"><i class="fa fa-list-ul"></i></span><b>Surat Pernyataan dan Keterangan</b></li>';
         var temp = "";
         startLoad();
         dwr.engine.setAsync(true);
-        CheckupAction.getRiwayatListRekammedisPasien(idDetailCheckup, tipePelayanan, kategoriPelayanan, {
+        CheckupAction.getRiwayatListRekammedisPasien(noCheckup, tipePelayanan, kategoriPelayanan, {
             callback: function (res) {
                 if (res.length > 0) {
                     stopLoad();
@@ -92,6 +93,9 @@ function viewAllRekamMedis() {
                         if ("surat" == item.tipeRM) {
                             su += '<li ' + tol + ' onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'N\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + ' ' + labelPrint + tolText + '</span></li>'+enter;
                         }
+                        if ("gizi" == item.tipeRM) {
+                            gizi += '<li ' + tol + ' style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>'+enter;
+                        }
 
                     });
                     $('#asesmen_sps').html(sps);
@@ -104,6 +108,7 @@ function viewAllRekamMedis() {
                     $('#asesmen_ko').html(ko);
                     $('#asesmen_rb').html(rb);
                     $('#asesmen_surat').html(su);
+                    $('#asesmen_gizi').html(gizi);
                 }
             }
         });

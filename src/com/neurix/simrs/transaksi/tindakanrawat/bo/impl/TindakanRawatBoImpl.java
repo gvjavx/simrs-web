@@ -323,6 +323,10 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
             hsCriteria.put("is_pelayanan", bean.getIsPelayanan());
         }
 
+        if (bean.getStatusApprove() != null && !"".equalsIgnoreCase(bean.getStatusApprove())){
+            hsCriteria.put("before_approve","");
+        }
+
         hsCriteria.put("flag","Y");
         try {
             results = tindakanRawatDao.getByCriteria(hsCriteria);

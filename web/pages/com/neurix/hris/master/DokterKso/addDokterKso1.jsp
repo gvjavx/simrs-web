@@ -62,8 +62,9 @@
                 console.log(persenKso);
                 console.log(persenKs);
 
+                // Fahmi 2021-07-30, Jika jeniskso adalah 'tindakan', tidak perlu cek persenKso.
                 if (nip != ''&& branchId != '' && masterId != '' && jenisKso != ''
-                        && persenKso != '' && persenKs != '') {
+                        && persenKs != '' && (jenisKso!='tindakan'?persenKso != '':true)) {
                     var status ="";
                     dwr.engine.setAsync(false);
                     DokterKsoAction.cekBeforeSave(nip, jenisKso, masterId,"add",function (listData) {
@@ -97,9 +98,9 @@
                     if (jenisKso == '') {
                         msg += 'Field <strong>Jenis KSO </strong> is required.' + '<br/>';
                     }
-                    if (positionId == '') {
-                        msg += 'Field <strong>Position ID </strong> is required.' + '<br/>';
-                    }
+                    // if (positionId == '') {
+                    //     msg += 'Field <strong>Position ID </strong> is required.' + '<br/>';
+                    // }
                     if (persenKso == '') {
                         msg += 'Field <strong>Persen KSO </strong> is required.' + '<br/>';
                     }
@@ -169,7 +170,7 @@
                                                 <td>
                                                     <label class="control-label"><small>ID Dokter :</small></label>
                                                 </td>
-                                                <td>
+                                                <td style="width: 75%">
                                                     <table>
                                                         <s:textfield id="nip1" name="dokterKso.nip" cssClass="form-control"
                                                                      maxlength="12"
@@ -259,7 +260,7 @@
                                                     </table>
                                                 </td>
                                             </tr>
-                                            <%--RAKA-31MAR2021--%>
+                                            <%--RAKA-31MAR2021 Divisi di sembunyikan karena, bisa ambil divisi dari biodata dokter. --%>
                                             <tr style="display: none">
                                                 <td>
                                                     <label class="control-label"><small>Divisi :</small></label>
@@ -279,7 +280,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'tindakan':'Tindakan', 'resep' : 'Resep', 'kamar' : 'Ruangan'}"
+                                                        <s:select list="#{'tindakan':'Tindakan', 'obat' : 'Obat', 'kamar' : 'Kamar'}"
                                                                   id="jenisKso1" name="dokterKso.jenisKso"
                                                                   headerKey="" headerValue="[Select one]" cssClass="form-control" onchange="jenisKso()"/>
                                                     </table>
@@ -353,6 +354,11 @@
                                                     <td>
                                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="add_dokterkso.action"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_dokterkso.action"/>'">
+                                                            <i class="fa fa-arrow-left"></i> Back
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -559,6 +565,29 @@
             var tindakanId = $('#modTindakan').val();
             var tindakanName = $('#modTindakan :selected').text();
             var persenKsoTindakan = $('#modPersenKsoTindakan').val();
+           var isExist = false;
+
+            // Fahmi 2021-07-27 penambahan pengecheckkan untuk tindakan yang sama
+            DokterKsoAction.searchTindakanDetailSession(function(listOfsearch)
+            {
+               if (null!=listOfsearch)
+               {
+                  for(var i=0;i<listOfsearch.length;i++)
+                  {
+                     //console.log("===========listOfSearch===="+JSON.stringify(listOfsearch[i]));
+                     if (tindakanId == listOfsearch[i].tindakanId)
+                     {
+                        alert(" Tindakan sudah ditambahkan. ");
+                        isExist = true;
+                        return;
+                     }
+                  }
+               }
+            })
+
+           // Fahmi 2021-07-27 penambahan pengecheckkan untuk tindakan yang sama
+           if(isExist)
+           { return; }
 
             dwr.engine.setAsync(false);
             if(tindakanId!='' && persenKsoTindakan!='' && pelayanan!=''){
@@ -603,9 +632,13 @@
         var jenis = $('#jenisKso1').val();
 
         if(jenis != 'tindakan'){
-            $('#addTindakan').hide();
+           $('#persenKso1').prop('disabled',false);
+           $('#persenKso1').prop('readonly',false);
+           $('#addTindakan').hide();
             $('#showdata').hide();
         } else{
+            $('#persenKso1').prop('disabled',true);
+            $('#persenKso1').prop('readonly',true);
             $('#addTindakan').show();
             $('#showdata').show();
         }

@@ -1163,7 +1163,7 @@ function actionView(var1, var2) {
     }
 
     function initForm() {
-        var host = firstpath()+"/bgeksploitasi/initForm_bgeksploitasi.action";
+        var host = firstpath()+"/bgapproveraft/initForm_bgapproveraft.action";
         post(host);
     }
 

@@ -1101,7 +1101,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                         idDokter = bean.getDokterTeamList().get(0).getIdDokter();
                     }
                     try {
-                        lastAntrian = headerCheckupDao.lastAntrian(bean.getBranchId(), bean.getIdPelayanan(), idDokter);
+                        lastAntrian = headerCheckupDao.lastAntrian(bean.getBranchId(), bean.getIdPelayanan(), idDokter, "CURRENT_DATE");
                     } catch (HibernateException e) {
                         logger.error("[CheckupBoImpl.saveAdd] Error When search no antrian" + e.getMessage());
                         throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When search no antrian");

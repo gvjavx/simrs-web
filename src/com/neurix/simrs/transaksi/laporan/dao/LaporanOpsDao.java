@@ -389,7 +389,7 @@ public class LaporanOpsDao extends GenericDao<ImSimrsLaporanOpsEntity, String> {
             if ("farmasi".equalsIgnoreCase(bean.getTipePelayanan())) {
                 SQL = "SELECT\n" +
                         "b.id_pelayanan,\n" +
-                        "b.nama_pelayanan\n" +
+                        "a.nama_pelayanan\n" +
                         "FROM im_simrs_header_pelayanan a\n" +
                         "INNER JOIN im_simrs_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
                         "WHERE a.tipe_pelayanan IN ('apotek','apotek_ri')\n" +

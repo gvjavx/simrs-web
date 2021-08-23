@@ -51,12 +51,14 @@
                 var branchId = document.getElementById("branchId2").value;
                 var masterId = document.getElementById("masterId2").value;
                 var jenisKso = document.getElementById("jenisKso2").value;
-                var positionId = document.getElementById("positionId2").value;
+                //Fahmi 2021-07-28, posisi/divisi sudah otomatis dari personil position
+                //var positionId = document.getElementById("positionId2").value;
                 var persenKso = document.getElementById("persenKso2").value;
                 var persenKs = document.getElementById("persenKs2").value;
 
+               // Fahmi 2021-07-30, Jika jeniskso adalah 'tindakan', tidak perlu cek persenKso.
                 if (dokterKsoId != '' && nip != ''&& branchId != '' && masterId != '' && jenisKso != ''
-                        && persenKso != '' && persenKs != '' && positionId != '') {
+                        && persenKs != '' && (jenisKso!='tindakan'?persenKso != '':true) ) {
                     var status ="";
                     dwr.engine.setAsync(false);
                     DokterKsoAction.cekBeforeSave(nip,"edit",function (listData) {
@@ -92,9 +94,6 @@
                     }
                     if (jenisKso == '') {
                         msg += 'Field <strong>Jenis KSO </strong> is required.' + '<br/>';
-                    }
-                    if (positionId == '') {
-                        msg += 'Field <strong>Position ID </strong> is required.' + '<br/>';
                     }
                     if (persenKso == '') {
                         msg += 'Field <strong>Persen KSO </strong> is required.' + '<br/>';
@@ -265,8 +264,8 @@
                                                     </table>
                                                 </td>
                                             </tr>
-
-                                            <tr>
+                                            <%-- Fahmi 2021-07-28, posisi/divisi sudah otomatis dari personil position.--%>
+                                            <tr style="display: none">
                                                 <td>
                                                     <label class="control-label"><small>Divisi :</small></label>
                                                 </td>
@@ -278,6 +277,7 @@
                                                     </table>
                                                 </td>
                                             </tr>
+                                                <%-- End Fahmi --%>
 
                                             <tr>
                                                 <td>
@@ -538,6 +538,29 @@
             var tindakanId = $('#modTindakan').val();
             var tindakanName = $('#modTindakan :selected').text();
             var persenKsoTindakan = $('#modPersenKsoTindakan').val();
+            var isExist = false;
+
+           // Fahmi 2021-07-28 penambahan pengecheckkan untuk tindakan yang sama
+           DokterKsoAction.searchTindakanDetailSession(function(listOfsearch)
+           {
+              if (null!=listOfsearch)
+              {
+                 for(var i=0;i<listOfsearch.length;i++)
+                 {
+                    //console.log("===========listOfSearch===="+JSON.stringify(listOfsearch[i]));
+                    if (tindakanId == listOfsearch[i].tindakanId)
+                    {
+                       alert(" Tindakan sudah ditambahkan. ");
+                       isExist = true;
+                       return;
+                    }
+                 }
+              }
+           })
+
+           // Fahmi 2021-07-28 penambahan pengecheckkan untuk tindakan yang sama
+           if(isExist)
+           { return; }
 
             dwr.engine.setAsync(false);
             if(tindakanId!='' && persenKsoTindakan!='' && pelayanan!=''){
@@ -582,9 +605,13 @@
         var jenis = $('#jenisKso2').val();
 
         if(jenis != 'tindakan'){
+            $('#persenKso2').prop('disabled',false);
+            $('#persenKso2').prop('readonly',false);
             $('#addTindakan').hide();
             $('#showdata').hide();
         } else{
+            $('#persenKso2').prop('disabled',true);
+            $('#persenKso2').prop('readonly',true);
             $('#addTindakan').show();
             $('#showdata').show();
         }

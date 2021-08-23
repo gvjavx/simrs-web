@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="noAntrian" language="groovy" pageWidth="242" pageHeight="153" orientation="Landscape" columnWidth="226" leftMargin="8" rightMargin="8" topMargin="8" bottomMargin="8" uuid="c8b1d6ef-d35b-49bd-aeda-6dc40c738ef5">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="noAntrian" language="groovy" pageWidth="242" pageHeight="230" orientation="Landscape" columnWidth="226" leftMargin="8" rightMargin="8" topMargin="8" bottomMargin="8" uuid="c8b1d6ef-d35b-49bd-aeda-6dc40c738ef5">
 	<property name="ireport.zoom" value="1.5000000000000027"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -43,8 +43,13 @@ h.tipe_pelayanan,
 CASE WHEN h.tipe_pelayanan = 'rawat_inap' THEN
     REPLACE(f.frekuensi,'|', ', ')
 ELSE
-    CONCAT(split_part(f.frekuensi,'#', 1),'. ', REPLACE(split_part(f.frekuensi,'#', 2), '|', ', '), '. ', split_part(f.frekuensi,'#', 3))
+    CONCAT(REPLACE(split_part(f.frekuensi,'#', 2), '|', ', '), '. ', split_part(f.frekuensi,'#', 1))
 END as frekuensi,
+CASE WHEN h.tipe_pelayanan = 'rawat_inap' THEN
+    ''
+ELSE
+    split_part(f.frekuensi,'#', 3)
+END as keterangan_obat,
 i.warna_label,
 i.warna_background,
 i.keterangan,
@@ -106,8 +111,13 @@ h.tipe_pelayanan,
 CASE WHEN h.tipe_pelayanan = 'rawat_inap' THEN
     REPLACE(d.frekuensi,'|', ', ')
 ELSE
-    CONCAT(split_part(d.frekuensi,'#', 1),'. ', REPLACE(split_part(d.frekuensi,'#', 2), '|', ', '), '. ', split_part(d.frekuensi,'#', 3))
+    CONCAT(REPLACE(split_part(d.frekuensi,'#', 2), '|', ', '), '. ', split_part(d.frekuensi,'#', 1))
 END as frekuensi,
+CASE WHEN h.tipe_pelayanan = 'rawat_inap' THEN
+    ''
+ELSE
+    split_part(d.frekuensi,'#', 3)
+END as keterangan_obat,
 CAST('' AS VARCHAR) as warna_label,
 CAST('' AS VARCHAR) as  warna_background,
 CAST('Racik' AS VARCHAR) as  keterangan,
@@ -145,6 +155,7 @@ WHERE a.id_permintaan_resep = $P{reportParams.id}]]>
 	<field name="is_racik" class="java.lang.String"/>
 	<field name="tipe_pelayanan" class="java.lang.String"/>
 	<field name="frekuensi" class="java.lang.String"/>
+	<field name="keterangan_obat" class="java.lang.String"/>
 	<field name="warna_label" class="java.lang.String"/>
 	<field name="warna_background" class="java.lang.String"/>
 	<field name="keterangan" class="java.lang.String"/>
@@ -153,9 +164,9 @@ WHERE a.id_permintaan_resep = $P{reportParams.id}]]>
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="137">
+		<band height="214">
 			<frame>
-				<reportElement style="body" mode="Opaque" x="0" y="0" width="226" height="137" uuid="d0f2cf55-9108-42f5-9262-7ede16348828"/>
+				<reportElement style="body" mode="Opaque" x="0" y="0" width="226" height="214" uuid="d0f2cf55-9108-42f5-9262-7ede16348828"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -217,7 +228,7 @@ WHERE a.id_permintaan_resep = $P{reportParams.id}]]>
 					<text><![CDATA[:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="72" y="101" width="5" height="12" uuid="c497b854-ec60-45d9-8160-b979287fd09f"/>
+					<reportElement x="71" y="201" width="5" height="12" uuid="c497b854-ec60-45d9-8160-b979287fd09f"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
@@ -282,7 +293,7 @@ WHERE a.id_permintaan_resep = $P{reportParams.id}]]>
 					<textFieldExpression><![CDATA[$F{nama} == null ? "" : $F{nama}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="2" y="101" width="70" height="12" uuid="6274cc86-e992-4023-9880-b38593c7b1ca"/>
+					<reportElement x="2" y="201" width="70" height="12" uuid="6274cc86-e992-4023-9880-b38593c7b1ca"/>
 					<box leftPadding="5"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
@@ -290,7 +301,7 @@ WHERE a.id_permintaan_resep = $P{reportParams.id}]]>
 					<text><![CDATA[Expired Date]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="77" y="101" width="148" height="12" uuid="956c925f-d144-4202-85c3-53622966d383"/>
+					<reportElement x="77" y="201" width="149" height="12" uuid="956c925f-d144-4202-85c3-53622966d383"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8" isBold="false"/>
 					</textElement>
@@ -330,7 +341,7 @@ WHERE a.id_permintaan_resep = $P{reportParams.id}]]>
 					<textFieldExpression><![CDATA[""]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="0" y="88" width="226" height="49" uuid="d88b970e-06a1-434b-b1ef-299dc9cb2a26"/>
+					<reportElement x="1" y="89" width="225" height="124" uuid="d88b970e-06a1-434b-b1ef-299dc9cb2a26"/>
 					<box>
 						<topPen lineWidth="0.0"/>
 						<leftPen lineWidth="0.0"/>
@@ -339,29 +350,51 @@ WHERE a.id_permintaan_resep = $P{reportParams.id}]]>
 					</box>
 					<textFieldExpression><![CDATA[""]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement x="78" y="113" width="148" height="24" uuid="44017646-0d65-4f79-8591-7823bc2858cd"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="78" y="101" width="148" height="63" isPrintWhenDetailOverflows="true" uuid="44017646-0d65-4f79-8591-7823bc2858cd"/>
 					<textElement verticalAlignment="Top">
 						<font size="8" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{frekuensi} == null ? "" : $F{frekuensi}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="71" y="113" width="6" height="12" uuid="765e5085-7bf0-4ffb-a56d-d309d4858d17"/>
+					<reportElement x="71" y="101" width="6" height="12" uuid="765e5085-7bf0-4ffb-a56d-d309d4858d17"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 					<text><![CDATA[:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="2" y="113" width="70" height="12" uuid="dc2d76dd-10f3-4142-96c9-8ad953f96294"/>
+					<reportElement x="2" y="101" width="70" height="12" uuid="dc2d76dd-10f3-4142-96c9-8ad953f96294"/>
 					<box leftPadding="5"/>
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<text><![CDATA[Aturan Minum]]></text>
+					<text><![CDATA[Aturan Pakai]]></text>
 				</staticText>
 			</frame>
+			<staticText>
+				<reportElement x="2" y="164" width="70" height="12" uuid="f9d6cd2d-93f2-4e8b-8692-59b783579ee0"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Keterangan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="72" y="164" width="4" height="12" uuid="adc2826a-f992-4006-942b-34fd4ec76b01"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="77" y="164" width="149" height="37" isPrintWhenDetailOverflows="true" uuid="3a83f9b3-2ec9-4293-9279-2602d7a4f2c3"/>
+				<textElement verticalAlignment="Top">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{keterangan_obat} == null ? "" : $F{keterangan_obat}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 </jasperReport>
