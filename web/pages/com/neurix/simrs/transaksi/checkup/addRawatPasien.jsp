@@ -3370,6 +3370,7 @@
                                 $('#tempat_lahir').val(res.tempatLahir);
                                 $('#tgl_lahir').val(res.tglLahir);
                                 $('#agama').val(res.agama);
+
                                 if(res.profesi != null){
                                     var isi = res.profesi.split("|")[0];
                                     if(isi == "Lainnya"){
