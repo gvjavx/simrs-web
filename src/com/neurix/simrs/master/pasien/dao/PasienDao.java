@@ -363,7 +363,7 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                 "\tINNER JOIN (SELECT kecamatan_id, kecamatan_name, kota_id FROM im_hris_kecamatan WHERE flag = 'Y') kc ON kc.kecamatan_id = ds.kecamatan_id\n" +
                 "\tINNER JOIN (SELECT kota_id, kota_name, provinsi_id FROM im_hris_kota WHERE flag = 'Y') kt ON kt.kota_id = kc.kota_id\n" +
                 "\tINNER JOIN (SELECT provinsi_id, provinsi_name FROM im_hris_provinsi WHERE flag = 'Y') pv ON pv.provinsi_id = kt.provinsi_id\n" +
-                "\tLEFT JOIN (SELECT id_finger_data, id_pasien FROM im_simrs_finger_data WHERE flag = 'Y') fd ON fd.id_pasien = ps.id_pasien\n" +
+                "\tLEFT JOIN (SELECT id_finger_data, id_pasien FROM im_simrs_finger_data WHERE flag = 'Y' ORDER BY created_date DESC LIMIT 1) fd ON fd.id_pasien = ps.id_pasien\n" +
                 ") pss ON pss.id_pasien = ps.id_pasien \n" +
                 "WHERE ps.flag = 'Y'\n" + where;
 

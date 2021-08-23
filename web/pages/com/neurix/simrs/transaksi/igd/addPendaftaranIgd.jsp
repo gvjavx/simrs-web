@@ -2156,7 +2156,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-user-plus"></i> Tambah Pasien Dengan Finger</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user-plus"></i> Daftar Pasien Dengan Finger</h4>
             </div>
             <div class="modal-body">
                 <s:form id="formFinger" theme="simple" cssClass="form-horizontal">
@@ -2182,7 +2182,7 @@
 
                                             var data = [];
                                             dwr.engine.setAsync(false);
-                                            PasienAction.listPasienWithId(query,function (listdata) {
+                                            PasienAction.getListComboPasien(query,function (listdata) {
                                                 data = listdata;
                                             });
 
