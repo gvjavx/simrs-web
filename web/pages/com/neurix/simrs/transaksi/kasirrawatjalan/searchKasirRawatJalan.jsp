@@ -227,7 +227,7 @@
                                         <s:if test='#row.statusBayar == "Y"'>
                                             <s:url var="print_invo" namespace="/kasirjalan" action="printInvoice_kasirjalan" escapeAmp="false">
                                                 <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                                <s:param name="jenis"><s:property value="idJenisPeriksaPasien"/></s:param>
+                                                <s:param name="jenis"><%--<s:property value="idJenisPeriksaPasien"/>--%>umum</s:param>
                                             </s:url>
                                             <s:a href="%{print_invo}" target="_blank">
                                             <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
@@ -239,7 +239,7 @@
                                         <s:if test='#row.idJenisPeriksaPasien == "bpjs"'>
                                             <s:url var="print_invo" namespace="/kasirjalan" action="printInvoice_kasirjalan" escapeAmp="false">
                                                 <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                                <s:param name="jenis"><s:property value="idJenisPeriksaPasien"/></s:param>
+                                                <s:param name="jenis"><%--<s:property value="idJenisPeriksaPasien"/>--%>umum</s:param>
                                             </s:url>
                                             <s:a href="%{print_invo}" target="_blank">
                                                 <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
@@ -585,6 +585,7 @@
 
                 KasirRawatJalanAction.getListTindakanRawat(idCheckup, idJenisPasien, function (response) {
                     dataTindakan = response;
+                    console.log("===1=?>"+JSON.stringify(response));
                     if (dataTindakan != null) {
                         var total = 0;
                         var totalObat = 0;
@@ -604,6 +605,10 @@
                             var btn = "";
                             var tgl = "";
 
+                            // Fahmi 2021-08-24, Tidak memunculkan tindakan yang sudah ditanggung.
+                           if(item.jenisPasien != "umum")
+                           { return; }
+                           // end Fahmi
 
                             if (item.namaTindakan != null && item.namaTindakan != '') {
                                 tindakan = item.namaTindakan;
@@ -926,6 +931,13 @@
     }
 
     function printInvoice(id, jenis){
+
+       // Fahmi 2021-08-24. Kalau jenis pasien rekanan, ubah ke umum,
+       // karna jenis pasien rekanan sudah dihandle di saat vertifikasi
+       if(jenis == "rekanan")
+       { jenis = "umum"; }
+       // end Fahmi
+
         window.open('printInvoice_kasirjalan?id='+id+'&jenis='+jenis,'_blank');
     }
 

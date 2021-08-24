@@ -1165,7 +1165,12 @@ public class VerifikatorAction extends BaseTransactionAction {
                     mapTindakan.setDivisiId(getDivisiId(idDetailCheckup, "bpjs", keterangan, ""));
                     mapTindakan.setNilai(getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "bpjs", keterangan, "", ""));
                     mapTindakan.setListOfActivity(getListAcitivity(idDetailCheckup, "bpjs", keterangan, kode, ""));
-                    listOfMapTindakanBpjs.add(mapTindakan);
+
+                    // Fahmi 2021-08-24, Case saat jenis pasien asuransi, dan terdapat obat yang tidak tercover.
+                    // Saat keterangan resep, divisiID gagal didapat, solusi sementara saya buat seperti ini.
+                    if(!mapTindakan.getDivisiId().equalsIgnoreCase("") && !mapTindakan.getMasterId().equalsIgnoreCase(""))
+                    {  listOfMapTindakanBpjs.add(mapTindakan); }
+
                 }
                 for (String keterangan : listOfKeteranganRiwayat) {
                     MappingDetail mapTindakan = new MappingDetail();
