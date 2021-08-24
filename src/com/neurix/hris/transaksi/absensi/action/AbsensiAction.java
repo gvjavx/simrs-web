@@ -1155,6 +1155,153 @@ public class AbsensiAction extends BaseMasterAction {
         return INPUT;
     }
 
+    //RAKA-23AGU2021 ==>excel
+    public String printReportAbsensiExcel(){
+        logger.info("[AbsensiAction.printReportAbsensiExcel] START >>>>>");
+
+        final String tglFrom = getTglFrom();
+        final String tglTo = getTglTo();
+        final String branchId = getBranchId();
+        final String bagian = getBagian();
+        final String nip = getNip();
+
+        final ApplicationContext ctx = (ApplicationContext)ContextLoader.getCurrentWebApplicationContext();
+        final AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
+        final BranchBo branchBo = (BranchBo)ctx.getBean("branchBoProxy");
+        Branch branch = new Branch();
+        branch = branchBo.getBranchById(branchId, "Y");
+
+        String periode = " Periode " + tglFrom + " - " + tglTo;
+
+        String titleReport = "Absensi Pegawai " + branch.getBranchName() + periode;
+        String filename = "Absensi " + branch.getBranchName();
+
+        List<AbsensiPegawai> listData = new ArrayList();
+        List listOfData = new ArrayList();
+        List listOfColumn = new ArrayList();
+
+        try{
+            listData = absensiBo.searchReportAbsensi(tglFrom,tglTo,branchId,bagian,nip);
+        }catch (GeneralBOException e) {
+            logger.error("[AbsensiAction.printReportAbsensiExcel] Error, " + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
+        }
+
+        listOfColumn.add("tanggal");
+        listOfColumn.add("nip");
+        listOfColumn.add("nama pegawai");
+        listOfColumn.add("jam masuk");
+        listOfColumn.add("jam pulang");
+        listOfColumn.add("status absensi");
+        listOfColumn.add("lembur");
+        listOfColumn.add("lama lembur");
+        listOfColumn.add("realisasi lembur");
+        listOfColumn.add("jam fak. lembur");
+        listOfColumn.add("upah lembur");          //10
+
+        for(AbsensiPegawai data : listData){
+            RowData rowData = new RowData();
+            List listOfCell = new ArrayList();
+            CellDetail cellDetail = new CellDetail();
+
+            //tanggal
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(0);
+            cellDetail.setValueCell(data.getStTanggal());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //nip
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(1);
+            cellDetail.setValueCell(data.getNip());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //nama pegawai
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(2);
+            cellDetail.setValueCell(data.getNama());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //jam masuk
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(3);
+            cellDetail.setValueCell(data.getJamMasuk());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //jam pulang
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(4);
+            cellDetail.setValueCell(data.getJamKeluar());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //status absensi
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(5);
+            cellDetail.setValueCell(data.getStatusAbsensi());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //lembur
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(6);
+            cellDetail.setValueCell(data.getLembur());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //lama lembur
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(7);
+            cellDetail.setValueCell(data.getLamaLembur());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //realisasi lembur
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(8);
+            cellDetail.setValueCell(data.getRealisasiJamLembur());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //jam fak. lembur
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(9);
+            cellDetail.setValueCell(data.getJamLembur());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //upah
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(10);
+            cellDetail.setValueCell(data.getBiayaLembur());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            rowData.setListOfCell(listOfCell);
+            listOfData.add(rowData);
+
+        }
+
+        HSSFWorkbook wb = DownloadUtil.generateExcelOutput(titleReport, periode, listOfColumn, listOfData, null);
+        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+        try {
+            wb.write(baos);
+        }
+        catch (IOException e) {
+            logger.error("[AbsensiAction.printReportAbsensiExcel] Error, " + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
+        }
+        setExcelStream((InputStream)new ByteArrayInputStream(baos.toByteArray()));
+        setContentDisposition("filename=\"" + filename + ".${documentFormat}\"");
+
+        logger.info("[AbsensiAction.printReportAbsensiExcel] START <<<<<");
+        return "downloadXlsAbsensi";
+    }
+
     public String printReportAbsensi() {
         logger.info("[ReportAction.printReportAbsensi] start process >>>");
         String unit = "-";

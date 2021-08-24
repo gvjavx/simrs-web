@@ -354,20 +354,20 @@ public class PegawaiPayroll extends BasePayroll {
 
         if (getNoBpjsTk()!=null && !"".equalsIgnoreCase(getNoBpjsTk())) {
             //RAKA-20MEI2021 ===> hanya JPK yg kena min/max
-//            iuranBpjsTkKaryNilai = (perhitunganDasarBpjsTk.multiply(persenBpjsTkIuranKaryNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
-//            jpkBpjsTkKaryNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJpkKaryNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
-//            jkkBpjsTkPershNilai = (perhitunganDasarBpjsTk.multiply(persenBpjsTkJkkPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
-//            jhtBpjsTkPershNilai = (perhitunganDasarBpjsTk.multiply(persenBpjsTkJhtPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
-//            jkmBpjsTkPershNilai = (perhitunganDasarBpjsTk.multiply(persenBpjsTkJkmPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
-//            jpkBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJpkPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+            iuranBpjsTkKaryNilai = (perhitunganDasarBpjsTk.multiply(persenBpjsTkIuranKaryNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+            jpkBpjsTkKaryNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJpkKaryNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+            jkkBpjsTkPershNilai = (perhitunganDasarBpjsTk.multiply(persenBpjsTkJkkPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+            jhtBpjsTkPershNilai = (perhitunganDasarBpjsTk.multiply(persenBpjsTkJhtPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+            jkmBpjsTkPershNilai = (perhitunganDasarBpjsTk.multiply(persenBpjsTkJkmPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+            jpkBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJpkPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
             //RAKA-end
 
-            iuranBpjsTkKaryNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkIuranKaryNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
-            jpkBpjsTkKaryNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJpkKaryNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
-            jkkBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJkkPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
-            jhtBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJhtPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
-            jkmBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJkmPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
-            jpkBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJpkPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+//            iuranBpjsTkKaryNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkIuranKaryNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+//            jpkBpjsTkKaryNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJpkKaryNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+//            jkkBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJkkPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+//            jhtBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJhtPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+//            jkmBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJkmPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
+//            jpkBpjsTkPershNilai = (dasarPerhitunganBpjsTkNilai.multiply(persenBpjsTkJpkPershNilai).divide(new BigDecimal(100))).setScale(0, BigDecimal.ROUND_HALF_UP);;
 
         } else {
 
