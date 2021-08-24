@@ -24,10 +24,12 @@
         function searchPasien() {
             var url_string = window.location.href;
             var url = new URL(url_string);
-            var idPasien = url.searchParams.get("id_pasien");
+            var idPasien = url.searchParams.get("idPasien");
             if (idPasien != null) {
-                $('#modal-success-pasien').modal('show');
-                $('#val_id_pasien').val(idPasien);
+                setTimeout(function(){
+                    $.publish('showInfoDialogFinger');
+                    window.history.replaceState(null, null, contextPathHeader+'/pasien/search_pasien.action');
+                },100);
             }
         }
 
@@ -173,6 +175,20 @@
                                                                             }"
                                         >
                                             <s:hidden id="close_pos"></s:hidden>
+                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                                                 name="icon_success">
+                                            Record has been saved successfully.
+                                        </sj:dialog>
+                                        <sj:dialog id="info_dialog_finger" openTopics="showInfoDialogFinger" modal="true"
+                                                   resizable="false"
+                                                   closeOnEscape="false"
+                                                   height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                   buttons="{
+                                                                                'OK':function() {
+                                                                                         $('#info_dialog_finger').dialog('close');
+                                                                                     }
+                                                                            }"
+                                        >
                                             <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
                                                  name="icon_success">
                                             Record has been saved successfully.
@@ -803,10 +819,7 @@
     } );
 
     function pasienSuccess() {
-        var idPasien = $('#val_id_pasien').val();
-        $('#id_pasien').val(idPasien);
-        document.pasienForm.action = 'search_pasien.action';
-        document.pasienForm.submit();
+        window.history.replaceState(null, null, contextPathHeader+'/pasien/search_pasien.action');
     }
 
     function detail(pasiendId) {

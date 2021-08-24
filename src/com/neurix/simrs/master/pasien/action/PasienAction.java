@@ -56,6 +56,16 @@ public class PasienAction extends BaseMasterAction {
     private String fileUploadFileName;
     private String fileUploadContentType;
 
+    private String idPasien;
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
+
     public File getFileUpload() {
         return fileUpload;
     }
@@ -319,22 +329,29 @@ public class PasienAction extends BaseMasterAction {
     @Override
     public String search() {
         logger.info("[PasienAction.search] start process");
-
-        Pasien searchPesien = getPasien();
         List<Pasien> listOfPasien = new ArrayList<>();
+        Pasien searchPesien = getPasien();
+
+        if(searchPesien == null){
+            searchPesien = new Pasien();
+        }
+
+        if(getIdPasien() != null && !"".equalsIgnoreCase(getIdPasien())){
+            searchPesien.setIdPasien(getIdPasien());
+        }
 
         try {
             listOfPasien = pasienBoProxy.getSearchForMaster(searchPesien);
         } catch (GeneralBOException e) {
             logger.error("[PasienAction.getByCriteria] Error when get by criteria pasien, please inform to your admin.", e);
         }
-        HttpSession session = ServletActionContext.getRequest().getSession();
 
+        HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfPasien);
+        setPasien(searchPesien);
 
         logger.info("[BelajarAction.search] end process <<<");
-
         return "search";
     }
 
