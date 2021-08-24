@@ -395,7 +395,7 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_paket", id);
         hsCriteria.put("id_pasien", idpasien);
-        hsCriteria.put("flag_selesai_null", "Y");
+        hsCriteria.put("flag_selesai", "Y");
 
         List<ItSimrsPaketPasienEntity> paketPasienEntities = paketPasienDao.getByCriteria(hsCriteria);
         if (paketPasienEntities.size() > 0){

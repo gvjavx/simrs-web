@@ -3027,13 +3027,18 @@ public class VerifikatorAction extends BaseTransactionAction {
                                     List<String> listRiwayatTindakan = riwayatTindakanBo.getListKeteranganByIdDetailCheckup(idDetail);
                                     if (listRiwayatTindakan.size() > 0){
 
-                                        for (String keterangan : listRiwayatTindakan){
+                                        for (String Keterangan : listRiwayatTindakan){
                                             MappingDetail mapTindakan = new MappingDetail();
                                             mapTindakan.setMasterId(masterId);
-                                            mapTindakan.setDivisiId(getDivisiId(idDetail, detailCheckupEntity.getIdJenisPeriksaPasien(), keterangan, ""));
-                                            mapTindakan.setNilai(getJumlahNilaiBiayaByKeterangan(idDetail, detailCheckupEntity.getIdJenisPeriksaPasien(), keterangan,"", ""));
-                                            mapTindakan.setListOfActivity(getListAcitivity(idDetail, detailCheckupEntity.getIdJenisPeriksaPasien(), keterangan, kode, ""));
-                                            listOfTindakan.add(mapTindakan);
+                                            mapTindakan.setDivisiId(getDivisiId(idDetail, detailCheckupEntity.getIdJenisPeriksaPasien(), Keterangan, ""));
+                                            mapTindakan.setNilai(getJumlahNilaiBiayaByKeterangan(idDetail, detailCheckupEntity.getIdJenisPeriksaPasien(), Keterangan,"", ""));
+                                            mapTindakan.setListOfActivity(getListAcitivity(idDetail, detailCheckupEntity.getIdJenisPeriksaPasien(), Keterangan, kode, ""));
+
+                                            // Fahmi 2021-08-23, Case saat jenis pasien asuransi, dan terdapat obat yang tidak tercover.
+                                            // Saat keterangan resep, divisiID gagal didapat, solusi sementara saya buat seperti ini.
+                                            if(!mapTindakan.getDivisiId().equalsIgnoreCase("") && !mapTindakan.getMasterId().equalsIgnoreCase(""))
+                                            {  listOfTindakan.add(mapTindakan); }
+
 
                                         }
                                     }
@@ -3063,11 +3068,14 @@ public class VerifikatorAction extends BaseTransactionAction {
 
                         if ("asuransi".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())) {
 
+                            // Fahmi 2021-08-23, harusnya jika jumlah tindakan sama dengan biayacover, dimasukkan jurnal
+                            // dan jika ada sebagian yang dicover juga sebagian dimasukkan jurnal.
                             // dengan pembayaran tunai di luar cover asuransi
-                            if (jumlahTindakan.compareTo(biayaCover) == 1) {
-                                response.setStatus("success");
-                                return response;
-                            }
+                            //if (jumlahTindakan.compareTo(biayaCover) == 1) {
+                            //    response.setStatus("success");
+                            //    return response;
+                            //}
+                            // End Fahmi
 
                             // kredit jumlah tindakan asuransi
                             hsCriteria.put("pendapatan_rawat_jalan_asuransi", listOfTindakan);
@@ -3187,11 +3195,12 @@ public class VerifikatorAction extends BaseTransactionAction {
 
                             //**** ASURANSI ***//
 
+                            // Fahmi 2021-08-23, sementara disamakan dengan rawat jalan asuransi
                             // dengan pembayaran tunai di luar cover asuransi
-                            if (jumlahTindakan.compareTo(biayaCover) == 1) {
-                                response.setStatus("success");
-                                return response;
-                            }
+                            //if (jumlahTindakan.compareTo(biayaCover) == 1) {
+                            //    response.setStatus("success");
+                            //    return response;
+                            //}
 
                             // kredit jumlah tindakan asuransis
                             hsCriteria.put("pendapatan_rawat_inap_asuransi", listOfTindakan);

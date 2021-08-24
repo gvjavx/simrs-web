@@ -875,7 +875,7 @@
                                         <div class="row" style="display: none" id="form_profesi">
                                             <div class="form-group">
                                                 <div class="col-md-offset-4 col-md-8">
-                                                    <s:textfield placeholder="Keterangan Profesi"
+                                                    <s:textfield placeholder="Keterangan Profesi" id="ket_profesi_text"
                                                                  cssClass="form-control" cssStyle="margin-top: 7px"
                                                                  oninput="$('#ket_profesi').val(this.value);"></s:textfield>
                                                 </div>
@@ -891,9 +891,6 @@
                                                               headerKey="" headerValue="[Select One]"
                                                               cssStyle="width: 100%" cssClass="form-control select2"/>
                                                     <s:hidden name="headerCheckup.suku" id="ket_suku"></s:hidden>
-                                                        <%--<s:textfield id="suku" name="headerCheckup.suku"--%>
-                                                        <%--onkeypress="$(this).css('border','')"--%>
-                                                        <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
                                                 </div>
                                             </div>
                                         </div>
@@ -901,7 +898,7 @@
                                             <div class="form-group">
                                                 <div class="col-md-offset-4 col-md-8">
                                                     <s:textfield placeholder="Keterangan Suku" cssClass="form-control"
-                                                                 cssStyle="margin-top: 7px"
+                                                                 cssStyle="margin-top: 7px" id="ket_suku_text"
                                                                  oninput="$('#ket_suku').val(this.value);"></s:textfield>
                                                 </div>
                                             </div>
@@ -2003,7 +2000,7 @@
                             <div class="form-group" style="display: none" id="form_add_profesi">
                                 <s:textfield placeholder="Keterangan Profesi" cssClass="form-control"
                                              cssStyle="margin-top: 7px"
-                                             oninput="$('#add_profesi').val(this.value);"></s:textfield>
+                                             oninput="$('#add_profesi').val(''); $('#add_profesi').val('Lainnya|'+this.value);"></s:textfield>
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Suku</label>
@@ -2017,7 +2014,7 @@
                             <div class="form-group" style="display: none" id="form_add_suku">
                                 <s:textfield placeholder="Keterangan Suku" cssClass="form-control"
                                              cssStyle="margin-top: 7px"
-                                             oninput="$('#add_suku').val(this.value);"></s:textfield>
+                                             oninput="$('#add_suku').val(''); $('#add_suku').val('Lainnya|'+this.value);"></s:textfield>
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Alamat</label>
@@ -3126,9 +3123,32 @@
                         $('#tempat_lahir').val(res.tempatLahir);
                         $('#tgl_lahir').val(res.tglLahir);
                         $('#agama').val(res.agama);
-                        $('#profesi').val(res.profesi).trigger('change');
+
+                        if(res.profesi != null){
+                            var isi = res.profesi.split("|")[0];
+                            if(isi == "Lainnya"){
+                                $('#profesi').val(isi).trigger('change');
+                                $('#ket_profesi_text').val(res.profesi.split("|")[1]).trigger('input');
+                                $('#form_profesi').show();
+                            }else{
+                                $('#profesi').val(res.profesi).trigger('change');
+                                $('#form_profesi').hide();
+                            }
+                        }
+
+                        if(res.suku != null){
+                            var isi = res.suku.split("|")[0];
+                            if(isi == "Lainnya"){
+                                $('#suku').val(isi).trigger('change');
+                                $('#ket_suku_text').val(res.suku.split("|")[1]).trigger('input');
+                                $('#form_jawa').show();
+                            }else{
+                                $('#suku').val(res.suku).trigger('change');
+                                $('#form_jawa').hide();
+                            }
+                        }
+
                         $('#jalan').val(res.jalan);
-                        $('#suku').val(res.suku).trigger('change');
                         $('#img_ktp').val(res.imgKtp);
                         if(res.urlKtp != null && res.urlKtp != ''){
                             var cek = cekImages(res.urlKtp);
@@ -3170,16 +3190,10 @@
                             $('#cover_biaya_paket').val(selectedObj.tarif);
                         }
 
-                        // if (res.isDaftar == "Y") {
-                        //     $('#btn-save').hide();
-                        //     $('#warning_pasien').show();
-                        //     $('#msg_pasien').text("Pasien Sudah melakukan pendafataran...!");
-                        // } else {
                             $('#btn-save').show();
                             $('#warning_pasien').hide();
                             $('#msg_pasien').text("");
                             alertObatKronis(selectedObj.idPasien);
-                        // }
                     }
                 });
                 $('#id_pasien').attr('readonly', true);
@@ -3246,9 +3260,32 @@
                             $('#tempat_lahir').val(res.tempatLahir);
                             $('#tgl_lahir').val(res.tglLahir);
                             $('#agama').val(res.agama);
-                            $('#profesi').val(res.profesi).trigger('change');
+
+                            if(res.profesi != null){
+                                var isi = res.profesi.split("|")[0];
+                                if(isi == "Lainnya"){
+                                    $('#profesi').val(isi).trigger('change');
+                                    $('#ket_profesi_text').val(res.profesi.split("|")[1]).trigger('input');
+                                    $('#form_profesi').show();
+                                }else{
+                                    $('#profesi').val(res.profesi).trigger('change');
+                                    $('#form_profesi').hide();
+                                }
+                            }
+
+                            if(res.suku != null){
+                                var isi = res.suku.split("|")[0];
+                                if(isi == "Lainnya"){
+                                    $('#suku').val(isi).trigger('change');
+                                    $('#ket_suku_text').val(res.suku.split("|")[1]).trigger('input');
+                                    $('#form_jawa').show();
+                                }else{
+                                    $('#suku').val(res.suku).trigger('change');
+                                    $('#form_jawa').hide();
+                                }
+                            }
+
                             $('#jalan').val(res.jalan);
-                            $('#suku').val(res.suku).trigger('change');
                             $('#img_ktp').val(res.imgKtp);
                             if(res.urlKtp != null && res.urlKtp != ''){
                                 var cek = cekImages(res.urlKtp);
@@ -3649,11 +3686,43 @@
                         $('#tempat_lahir').val(response.tempatLahir);
                         $('#tgl_lahir').val(response.tglLahir);
                         $('#agama').val(response.agama);
-                        $('#profesi').val(response.profesi).trigger('change');
+
+                        if(response.profesi != null){
+                            var isi = response.profesi.split("|")[0];
+                            if(isi == "Lainnya"){
+                                $('#profesi').val(isi).trigger('change');
+                                $('#ket_profesi_text').val(response.profesi.split("|")[1]).trigger('input');
+                                $('#form_profesi').show();
+                            }else{
+                                $('#profesi').val(response.profesi).trigger('change');
+                                $('#form_profesi').hide();
+                            }
+                        }
+
+                        if(response.suku != null){
+                            var isi = response.suku.split("|")[0];
+                            if(isi == "Lainnya"){
+                                $('#suku').val(isi).trigger('change');
+                                $('#ket_suku_text').val(response.suku.split("|")[1]).trigger('input');
+                                $('#form_jawa').show();
+                            }else{
+                                $('#suku').val(response.suku).trigger('change');
+                                $('#form_jawa').hide();
+                            }
+                        }
+
                         $('#jalan').val(response.jalan);
-                        $('#suku').val(response.suku).trigger('change');
                         $('#img_ktp').val(response.imgKtp);
-                        $('#img-upload').attr('src', response.urlKtp);
+                        if(response.urlKtp != null && response.urlKtp != ''){
+                            var cek = cekImages(response.urlKtp);
+                            if(cek){
+                                $('#img-upload').attr('src', response.urlKtp);
+                            }else{
+                                $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                            }
+                        }else{
+                            $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                        }
                         $('#provinsi').val(response.provinsi);
                         $('#kabupaten').val(response.kota);
                         $('#kecamatan').val(response.kecamatan);

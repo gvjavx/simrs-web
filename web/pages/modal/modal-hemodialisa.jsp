@@ -2730,7 +2730,7 @@
                         <thead>
                         <tr>
                             <td rowspan="2" style="vertical-align: middle" align="center">Waktu Pemantauan</td>
-                            <td colspan="4" style="vertical-align: middle" align="center">Tanda-Tanda Vita</td>
+                            <td colspan="4" style="vertical-align: middle" align="center">Tanda-Tanda Vital</td>
                             <td rowspan="2" style="vertical-align: middle" align="center">Tidak Ada Reaksi</td>
                             <td style="vertical-align: middle" align="center">Reaksi Ringan</td>
                             <td colspan="6" style="vertical-align: middle" align="center">Reaksi Sedang Berat</td>

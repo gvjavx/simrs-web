@@ -178,7 +178,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             String statusBayar = "";
 
             String tipePelayanan = "";
-            String idDokter = "%";
+            String idDokter = "";
 
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
                 idPasien = bean.getIdPasien();
@@ -213,7 +213,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             }
 
             if (bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter())) {
-                idDokter = bean.getIdDokter();
+                idDokter = "AND team.id_dokter = '"+bean.getIdDokter()+"'\n";
             }
 
             if ("kasir".equalsIgnoreCase(bean.getTypeTransaction())) {
@@ -275,7 +275,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "b.kode_vclaim\n" +
                     "FROM im_simrs_pelayanan a\n" +
                     "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) ply ON dt.id_pelayanan = ply.id_pelayanan \n" +
-                    "INNER JOIN (SELECT\n" +
+                    "LEFT JOIN (SELECT\n" +
                     "a.id_detail_checkup, \n" +
                     "b.id_dokter,\n" +
                     "b.nama_dokter\n" +
@@ -291,9 +291,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "AND dt.id_jenis_periksa_pasien LIKE :jenisPasien \n" +
                     "AND dt.is_kronis IS NULL \n" +
                     "AND dt.id_transaksi_online IS NULL \n" +
-                    "AND dt.status_periksa LIKE :status \n" +
-                    "AND team.id_dokter LIKE :idDokter \n" +
-                    statusBayar + forRekanan + tipePelayanan;
+                    "AND dt.status_periksa LIKE :status \n" +idDokter+ statusBayar + forRekanan + tipePelayanan;
 
             String order = "\n ORDER BY dt.tgl_antrian ASC";
             if ("kasir".equalsIgnoreCase(bean.getTypeTransaction())) {
@@ -314,7 +312,6 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                         .setParameter("dateTo", dateTo)
                         .setParameter("branchId", branchId)
                         .setParameter("jenisPasien", jenisPasien)
-                        .setParameter("idDokter", idDokter)
                         .list();
 
             } else {
@@ -326,7 +323,6 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                         .setParameter("jenisPasien", jenisPasien)
                         .setParameter("branchId", branchId)
                         .setParameter("status", statusPeriksa)
-                        .setParameter("idDokter", idDokter)
                         .list();
             }
 

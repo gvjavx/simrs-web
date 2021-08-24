@@ -2984,3 +2984,6 @@ ADD COLUMN is_warning VARCHAR(1);
 UPDATE im_simrs_diagnosa
 SET is_warning = 'Y'
 WHERE id_diagnosa IN ('B20','A16.2','A18','A19','B16.9');
+
+ALTER TABLE it_simrs_ringkasan_pasien
+ADD COLUMN no_checkup VARCHAR(50);

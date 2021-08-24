@@ -954,7 +954,7 @@ function detailRingkasanPasien(jenis) {
             var tgl = "";
             var cekData = false;
 
-            RingkasanPasienAction.getListDetail(idDetailCheckup, jenis, function (res) {
+            RingkasanPasienAction.getListDetail(noCheckup, jenis, function (res) {
                 if (res.length > 0) {
                     $.each(res, function (i, item) {
                         var jwb = "";

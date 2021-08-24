@@ -768,6 +768,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                             periksaLab.setLastUpdate(bean.getLastUpdate());
                             periksaLab.setIdKategoriLab(headerCheckupDao.getIdKategoriLab(idPemeriksaan));
                             periksaLab.setIsJustLab("Y");
+                            periksaLab.setIdJenisPeriksa(bean.getIdJenisPeriksaPasien());
                             periksaLabList.add(periksaLab);
                         }
                     }
@@ -890,6 +891,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             pemeriksaanEntity.setIsJustLab(periksaLab.getIsJustLab());
             pemeriksaanEntity.setIsPending("N");
             pemeriksaanEntity.setIsPeriksaLuar("N");
+            pemeriksaanEntity.setJenisPasien(periksaLab.getIdJenisPeriksa());
             pemeriksaanEntity.setIdKategoriLab(periksaLab.getIdKategoriLab());
 
             try {
@@ -1086,7 +1088,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     tin.setIdTindakan(paketPeriksa.getIdItem());
 
                     try {
+                        // TODO: Perlu ganti engine, untuk ambil berdasarkan paket.
                         tindakanEntity = tindakanDao.getListDataTindakan(tin);
+                        tindakanEntity = itemPaketDao.getListPaketTIndakan(tin, idPaket);
                     } catch (HibernateException e) {
                         logger.error("[CheckupBoImpl.insertItemPaketToPeriksa] ERROR", e);
                         throw new GeneralBOException("[CheckupBoImpl.insertItemPaketToPeriksa] ERROR", e);

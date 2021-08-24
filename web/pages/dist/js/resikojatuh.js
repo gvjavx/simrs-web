@@ -117,7 +117,7 @@ function setResikoJatuh(id, tahun) {
 
     if(parseInt(tahun) >= 0 && parseInt(tahun) <= 18){
         jenis = "humpty_dumpty";
-    }else if(parseInt(tahun) >= 18 && parseInt(tahun) <= 65){
+    }else if(parseInt(tahun) > 18 && parseInt(tahun) <= 65){
         jenis = "skala_morse";
     }else if(parseInt(tahun) > 65){
         jenis = "geriatri";

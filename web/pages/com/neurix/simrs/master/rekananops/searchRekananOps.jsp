@@ -74,7 +74,7 @@
                                                 <td width="70%">
                                                     <table>
                                                         <s:action id="initComboRekanan" namespace="/rekananops" name="initComboRekanan_rekananops"/>
-                                                        <s:select list="#initComboRekanan.listOfComboRekananOps" id="positionId1" name="rekananOps.idRekananOps"
+                                                        <s:select list="#initComboRekanan.listOfComboRekananOps" id="rekananSearch" name="rekananOps.idRekananOps"
                                                         listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue="[Select one]"
                                                         cssClass="form-control select2" cssStyle="width: 100%"/>
                                                     </table>

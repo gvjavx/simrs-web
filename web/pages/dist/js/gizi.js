@@ -689,10 +689,6 @@ function detailGizi(jenis) {
                                 '<td>' + cekItemIsNull(item.intervensi) + '</td>' +
                                 '<td>' + cekItemIsNull(item.lainLain) + '</td>' +
                                 '<td>' +
-                                '<p class="text-center">TTD Pasien</p>' +
-                                '<img class="text-center" src="' + item.ttdPasien + '" style="height: 80px">' +
-                                '<p class="text-center" style="margin-top: -3px">' + cekItemIsNull(item.namaPasien) + '</p>' +
-                                '<br>' +
                                 '<p class="text-center">TTD Ahli Gizi</p>' +
                                 '<img class="text-center" src="' + item.ttdDokter + '" style="height: 80px">' +
                                 '<p class="text-center" style="margin-top: -3px">' + cekItemIsNull(item.namaDokter) + '</p>' +
@@ -769,10 +765,6 @@ function detailGizi(jenis) {
                                 '<td><ul style="margin-left: 10px">' + tempReb + '</ul></td>' +
                                 '<td><ul style="margin-left: 10px">' + tempEdu + '</ul></td>' +
                                 '<td>' +
-                                '<p class="text-center">TTD Pasien</p>' +
-                                '<img class="text-center" src="' + item.ttdPasien + '" style="height: 80px">' +
-                                '<p class="text-center" style="margin-top: -3px">' + cekItemIsNull(item.namaPasien) + '</p>' +
-                                '<br>' +
                                 '<p class="text-center">TTD Ahli Gizi</p>' +
                                 '<img class="text-center" src="' + item.ttdDokter + '" style="height: 80px">' +
                                 '<p class="text-center" style="margin-top: -3px">' + cekItemIsNull(item.namaDokter) + '</p>' +
@@ -1390,8 +1382,8 @@ function setPengkajianGizi(umur) {
         callback: function (res) {
             if (res != '') {
                 if (res.berat != '' && res.tinggi != '') {
-                    var tom = (parseInt(tinggi) * 0.01);
-                    var bmi = (parseInt(berat) / (tom * tom)).toFixed(2);
+                    var tom = (parseInt(res.tinggi) * 0.01);
+                    var bmi = (parseInt(res.berat) / (tom * tom)).toFixed(2);
                     var keterangan = "";
                     if (parseInt(bmi) < 18.5) {
                         keterangan = 'Kurang';
