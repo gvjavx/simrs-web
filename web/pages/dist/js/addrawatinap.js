@@ -4825,7 +4825,7 @@ function setDiskonHarga(id) {
                 var after  = persen/100;
                 var total  = after*tarif;
                 $('#h_harga').val(formatRupiahAtas(tarif));
-                $('#h_harga_after').val(formatRupiahAtas(total));
+                $('#h_harga_after').val(formatRupiahAtas(Math.round(total)));
                 $('#h_diskon').val(disk);
 
                 if ("Y" == res.isElektif) {
