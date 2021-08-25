@@ -3398,7 +3398,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                             // jika bukan paket maka pakai tarif asli
                             if ("rekanan".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
-                                if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
+                                if (ops.getDiskon() != null && ops.getDiskon().compareTo(new BigDecimal(0)) > 0) {
                                     riwayatTindakan.setTotalTarif(totaltarif.multiply(ops.getDiskon()));
                                 } else {
                                     riwayatTindakan.setTotalTarif(totaltarif);
@@ -3474,7 +3474,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                             riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
                             riwayatTindakan.setNamaTindakan("Tarif Resep dengan No. Resep " + entity.getIdPermintaanResep());
                             if ("rekanan".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
-                                if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
+                                if (ops.getDiskon() != null && ops.getDiskon().compareTo(new BigDecimal(0)) > 0) {
                                     riwayatTindakan.setTotalTarif(new BigDecimal(obatDetailList.getTotalHarga()).multiply(ops.getDiskon()));
                                 } else {
                                     riwayatTindakan.setTotalTarif(new BigDecimal(obatDetailList.getTotalHarga()));
@@ -3550,7 +3550,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 riwayatTindakan.setIdDetailCheckup(rawatInap.getIdDetailCheckup());
                                 riwayatTindakan.setNamaTindakan("Tarif Gizi dengan No. Gizi " + gizi.getIdOrderGizi());
                                 if ("rekanan".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
-                                    if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
+                                    if (ops.getDiskon() != null && ops.getDiskon().compareTo(new BigDecimal(0)) > 0) {
                                         riwayatTindakan.setTotalTarif(gizi.getTarifTotal().multiply(ops.getDiskon()));
                                     } else {
                                         riwayatTindakan.setTotalTarif(gizi.getTarifTotal());
@@ -3610,7 +3610,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                             riwayatTindakan.setIdDetailCheckup(rawatInap.getIdDetailCheckup());
                             riwayatTindakan.setNamaTindakan("Tarif Gizi dengan No. Gizi " + gizi.getIdOrderGizi());
                             if ("rekanan".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
-                                if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
+                                if (ops.getDiskon() != null && ops.getDiskon().compareTo(new BigDecimal(0)) > 0) {
                                     riwayatTindakan.setTotalTarif(gizi.getTarifTotal().multiply(ops.getDiskon()));
                                 } else {
                                     riwayatTindakan.setTotalTarif(gizi.getTarifTotal());
