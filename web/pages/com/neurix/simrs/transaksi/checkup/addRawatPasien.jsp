@@ -2514,7 +2514,7 @@
         });
     }
 
-    function listSelectRekanan(isBpjs, idRekanan, isBpjs, tipe) {
+    function listSelectRekanan(isBpjs, idRekanan, tipe) {
         var option = "<option value=''>[Select One]</option>";
         CheckupAction.getListRekananOps(isBpjs, function (response) {
             if (response.length > 0) {

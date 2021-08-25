@@ -2978,6 +2978,9 @@ ADD COLUMN id_kelas_bpjs VARCHAR(10);
 ------------------------------------- 09 08 2021 ---------------------------------------------------------------
 /=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
 
+ALTER TABLE im_simrs_kelas_ruangan
+ADD COLUMN id_kelas_bpjs VARCHAR(10);
+
 ALTER TABLE im_simrs_diagnosa
 ADD COLUMN is_warning VARCHAR(1);
 
@@ -2987,3 +2990,25 @@ WHERE id_diagnosa IN ('B20','A16.2','A18','A19','B16.9');
 
 ALTER TABLE it_simrs_ringkasan_pasien
 ADD COLUMN no_checkup VARCHAR(50);
+
+UPDATE im_simrs_kelas_ruangan a
+SET id_kelas_bpjs = (
+	SELECT
+	b.kelas
+	FROM
+	(SELECT
+	CAST('KELAS 1' AS VARCHAR) as nama_kelas,
+	CAST('1' AS VARCHAR) as kelas
+	UNION ALL
+	SELECT
+	CAST('KELAS 2' AS VARCHAR) as nama_kelas,
+	CAST('2' AS VARCHAR) as kelas
+	UNION ALL
+	SELECT
+	CAST('KELAS 3' AS VARCHAR) as nama_kelas,
+	CAST('3' AS VARCHAR) as kelas) b
+	WHERE b.nama_kelas = a.nama_kelas_ruangan
+)
+WHERE a.kategori = 'rawat_inap'
+AND a.nama_kelas_ruangan ILIKE 'KELAS%';
+
