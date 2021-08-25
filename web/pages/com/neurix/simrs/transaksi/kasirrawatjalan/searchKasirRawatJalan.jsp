@@ -606,7 +606,7 @@
                             var tgl = "";
 
                             // Fahmi 2021-08-24, Tidak memunculkan tindakan yang sudah ditanggung.
-                           if(item.jenisPasien != "umum")
+                           if(item.jenisPasien == "rekanan")
                            { return; }
                            // end Fahmi
 

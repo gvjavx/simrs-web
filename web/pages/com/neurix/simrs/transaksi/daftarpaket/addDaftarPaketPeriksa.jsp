@@ -159,7 +159,10 @@
                                 <label class="col-md-2" style="margin-top: 7px">NIK</label>
                                 <div class="col-md-4">
                                     <input type="number" class="form-control" id="nik"
+                                           onkeyup="cekNik('nik','war_nik_pasien')"
                                            oninput="var warn =$('#war_nik').is(':visible'); if (warn){$('#cor_nik').show().fadeOut(3000);$('#war_nik').hide()}">
+                                    <span style="color: red; display: none;" id="war_nik_pasien"><i
+                                            class="fa fa-times"></i> jika tidak ada nik masukkan angka (0) 6 digit</span>
                                 </div>
                                 <div class="col-md-2">
                                     <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -574,6 +577,30 @@
             //     $('#war_nama').show();
             // }
         }
+    }
+
+    function cekNik(id, warning){
+       var noKtp = $('#'+id).val();
+       noKtp = replaceUnderLine(noKtp);
+       if(noKtp.length == 6){
+          var cek = true;
+          for (var i = 0; i < noKtp.length; i++) {
+             if(noKtp.charAt(i) != "0"){
+                cek = false;
+             }
+          }
+          if(!cek){
+             $('#'+warning).show();
+          }else{
+             $('#'+warning).hide();
+          }
+       }else{
+          if(noKtp.length == 16){
+             $('#'+warning).hide();
+          }else{
+             $('#'+warning).show();
+          }
+       }
     }
 
     function delRow(id) {
