@@ -2535,11 +2535,11 @@
             var isBpjs = rekanan[1];
             var tipeRekanan = rekanan[2];
 
-            if (isBpjs == 'Y') {
-                $('#form-no-bpjs, #form-rujukan').show();
-            } else {
-                $('#form-no-bpjs, #form-rujukan').hide();
-            }
+            // if (isBpjs == 'Y') {
+            //     $('#form-no-bpjs, #form-rujukan').show();
+            // } else {
+            //     $('#form-no-bpjs, #form-rujukan').hide();
+            // }
 
             if (tipeRekanan == 'ptpn') {
                 $('#form_pg').show();

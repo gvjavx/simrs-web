@@ -164,7 +164,7 @@ function listSelectTindakan(idKategori) {
     var option = "<option value=''>[Select One]</option>";
     if (idKategori != '') {
         dwr.engine.setAsync(true);
-        CheckupDetailAction.getListComboTindakan(idKategori, idKelasRuangan, flagVaksin, idPelayanan, jenisPeriksaPasien, {
+        CheckupDetailAction.getListComboTindakan(idKategori, idKelasRuangan, flagVaksin, idPelayananHeader, jenisPeriksaPasien, {
             callback: function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {
