@@ -4441,39 +4441,41 @@ function savePemeriksaanPasien() {
                     'indikasi': keteranganRW
                 }
                 cek = true;
+                console.log(this);
             }
         }
     }
 
-    if (cek) {
-        if(!cekSession()){
-            var result = JSON.stringify(data);
-            $('#waiting_dialog').dialog('open');
-            dwr.engine.setAsync(true);
-            RawatInapAction.saveTindakLanjutRawatInap(result, {
-                callback: function (res) {
-                    if (res.status == "success") {
-                        $('#waiting_dialog').dialog('close');
-                        $('#info_dialog').dialog('open');
-                        $('#close_pos').val(8);
-                        if('kontrol_ulang' == tindakLanjut){
-                            window.open('printSuratKeterangan_rawatinap.action?id='+idDetailCheckup+'&tipe=KU', '_blank');
-                        }
-                        if('rujuk_rs_lain' == tindakLanjut){
-                            window.open('printSuratKeterangan_rawatinap.action?id='+idDetailCheckup+'&tipe=RSL', '_blank');
-                        }
-                    } else {
-                        $('#waiting_dialog').dialog('close');
-                        $('#error_dialog').dialog('open');
-                        $('#errorMessage').text(res.msg);
-                    }
-                }
-            });
-        }
-    } else {
-        $('#warning_ket').show().fadeOut(5000);
-        $('#warning_msg').text("Silahkan cek kembali data inputan anda..!");
-    }
+
+    // if (cek) {
+    //     if(!cekSession()){
+    //         var result = JSON.stringify(data);
+    //         $('#waiting_dialog').dialog('open');
+    //         dwr.engine.setAsync(true);
+    //         RawatInapAction.saveTindakLanjutRawatInap(result, {
+    //             callback: function (res) {
+    //                 if (res.status == "success") {
+    //                     $('#waiting_dialog').dialog('close');
+    //                     $('#info_dialog').dialog('open');
+    //                     $('#close_pos').val(8);
+    //                     if('kontrol_ulang' == tindakLanjut){
+    //                         window.open('printSuratKeterangan_rawatinap.action?id='+idDetailCheckup+'&tipe=KU', '_blank');
+    //                     }
+    //                     if('rujuk_rs_lain' == tindakLanjut){
+    //                         window.open('printSuratKeterangan_rawatinap.action?id='+idDetailCheckup+'&tipe=RSL', '_blank');
+    //                     }
+    //                 } else {
+    //                     $('#waiting_dialog').dialog('close');
+    //                     $('#error_dialog').dialog('open');
+    //                     $('#errorMessage').text(res.msg);
+    //                 }
+    //             }
+    //         });
+    //     }
+    // } else {
+    //     $('#warning_ket').show().fadeOut(5000);
+    //     $('#warning_msg').text("Silahkan cek kembali data inputan anda..!");
+    // }
 }
 
 function resetComboObat() {
