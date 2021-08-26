@@ -666,7 +666,8 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                     transaksiObatDetail.setMerek(merk);
 
                     if (noBatch.isEmpty()){
-                        transaksiObatDetail.setNoBatch(0);
+                        //SYAMS 26AGUS21 => GANTI 1
+                        transaksiObatDetail.setNoBatch(1);
                     } else transaksiObatDetail.setNoBatch(new Integer(noBatch));
 
                     transaksiObatDetail.setExpDate(CommonUtil.convertStringToDate(expDate));
