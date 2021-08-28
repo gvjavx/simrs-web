@@ -2084,3 +2084,16 @@ ADD COLUMN parent_id VARCHAR(30);
     ADD COLUMN coa_kas VARCHAR(50);
 
 --
+
+-- 2021-08-26
+
+    ALTER TABLE it_simrs_rawat_inap
+    ADD COLUMN id_kelas_ruangan VARCHAR(20);
+
+    ALTER TABLE it_simrs_rawat_inap
+    ADD COLUMN id_pelayanan VARCHAR(20);
+
+    UPDATE im_simrs_kelas_ruangan SET
+    kategori = 'rawat_isolasi_covid' WHERE id_kelas_ruangan = 'KR00014';
+
+--

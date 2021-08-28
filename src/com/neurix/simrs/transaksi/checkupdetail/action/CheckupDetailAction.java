@@ -920,7 +920,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public List<Tindakan> getListComboTindakan(String idKategoriTindakan, String idKelasRuangan, String vaksin, String idPelayanan, String jenisPasien) {
+    public List<Tindakan> getListComboTindakan(String idKategoriTindakan, String idKelasRuangan, String vaksin, String idPelayanan, String jenisPasien, String kategoriRuangan, String idRawatInap) {
         logger.info("[CheckupDetailAction.getListComboTindakan] start process >>>");
         List<Tindakan> tindakanList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -933,6 +933,8 @@ public class CheckupDetailAction extends BaseMasterAction {
         tindakan.setBranchId(CommonUtil.userBranchLogin());
         tindakan.setIdPelayanan(idPelayanan);
         tindakan.setJenisPasien(jenisPasien);
+        tindakan.setKategoriRuangan(kategoriRuangan);
+        tindakan.setIdRawatInap(idRawatInap);
 
         try {
             tindakanList = tindakanBo.getComboBoxTindakan(tindakan);

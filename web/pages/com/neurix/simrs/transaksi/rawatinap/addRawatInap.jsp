@@ -896,18 +896,21 @@
                                                     onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this.value)">
                                                 <option value="">-</option>
                                                 <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
-                                                    <option value="selesai">Selesai</option>
-                                                    <option value="rawat_intensif">Rawat Intensif</option>
-                                                    <option value="rawat_isolasi">Rawat Isolasi</option>
-                                                    <option value="kamar_operasi">Kamar Operasi</option>
-                                                    <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
-                                                        <option value="ruang_bersalin">Ruang Bersalin</option>
-                                                    </s:if>
-                                                    <option value="hemodialisa">Hemodialisa</option>
-                                                    <option value="rujuk_rs_lain">Dirujuk</option>
-                                                    <option value="kontrol_ulang">Kontrol Ulang</option>
-                                                    <s:if test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "asuransi"'>
-                                                        <option value="lanjut_biaya">Lanjut Biaya</option>
+                                                    <s:if test='rawatInap.isStay != "Y"'>
+                                                        <option value="selesai">Selesai</option>
+                                                        <option value="rawat_intensif">Rawat Intensif</option>
+                                                        <option value="rawat_isolasi">Rawat Isolasi</option>
+                                                        <option value="rawat_isolasi_covid">Rawat Isolasi Covid</option>
+                                                        <option value="kamar_operasi">Kamar Operasi</option>
+                                                        <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
+                                                            <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                        </s:if>
+                                                        <option value="hemodialisa">Hemodialisa</option>
+                                                        <option value="rujuk_rs_lain">Dirujuk</option>
+                                                        <option value="kontrol_ulang">Kontrol Ulang</option>
+                                                        <s:if test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "asuransi"'>
+                                                            <option value="lanjut_biaya">Lanjut Biaya</option>
+                                                        </s:if>
                                                     </s:if>
                                                 </s:if>
                                                 <s:elseif test='rawatInap.kategoriRuangan == "rawat_intensif"'>
@@ -919,6 +922,7 @@
                                                         <option value="rawat_inap">Rawat Inap</option>
                                                     </s:else>
                                                     <option value="rawat_isolasi">Rawat Isolasi</option>
+                                                    <option value="rawat_isolasi_covid">Rawat Isolasi Covid</option>
                                                     <option value="kamar_operasi">Kamar Operasi</option>
                                                     <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
                                                         <option value="ruang_bersalin">Ruang Bersalin</option>
@@ -940,6 +944,22 @@
                                                     </s:if>
                                                     <option value="hemodialisa">Hemodialisa</option>
                                                 </s:elseif>
+                                                <s:elseif test='rawatInap.kategoriRuangan == "rawat_isolasi_covid"'>
+                                                    <s:if test='rawatInap.isStay == "Y"'>
+                                                        <option value="kembali_ke_inap">Kembali Ke Inap</option>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <option value="selesai">Selesai</option>
+                                                        <option value="rawat_inap">Rawat Inap</option>
+                                                    </s:else>
+                                                    <option value="rawat_intensif">Rawat Intensif</option>                                                    <option value="rawat_isolasi">Rawat Isolasi</option>
+                                                    <option value="rawat_isolasi">Rawat Isolasi</option>
+                                                    <option value="kamar_operasi">Kamar Operasi</option>
+                                                    <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
+                                                        <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                    </s:if>
+                                                    <option value="hemodialisa">Hemodialisa</option>
+                                                </s:elseif>
                                                 <s:elseif test='rawatInap.kategoriRuangan == "kamar_operasi"'>
                                                     <s:if test='rawatInap.isStay == "Y"'>
                                                         <option value="kembali_ke_inap">Kembali Ke Inap</option>
@@ -950,6 +970,7 @@
                                                     </s:else>
                                                     <option value="rawat_intensif">Rawat Intensif</option>
                                                     <option value="rawat_isolasi">Rawat Isolasi</option>
+                                                    <option value="rawat_isolasi_covid">Rawat Isolasi Covid</option>
                                                     <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
                                                         <option value="ruang_bersalin">Ruang Bersalin</option>
                                                     </s:if>
@@ -966,6 +987,7 @@
                                                     </s:else>
                                                     <option value="rawat_intensif">Rawat Intensif</option>
                                                     <option value="rawat_isolasi">Rawat Isolasi</option>
+                                                    <option value="rawat_isolasi_covid">Rawat Isolasi Covid</option>
                                                     <option value="kamar_operasi">Kamar Operasi</option>
                                                     <option value="hemodialisa">Hemodialisa</option>
                                                 </s:elseif>
@@ -979,6 +1001,7 @@
                                                     </s:else>
                                                     <option value="rawat_intensif">Rawat Intensif</option>
                                                     <option value="rawat_isolasi">Rawat Isolasi</option>
+                                                    <option value="rawat_isolasi_covid">Rawat Isolasi Covid</option>
                                                     <option value="kamar_operasi">Kamar Operasi</option>
                                                     <option value="hemodialisa">Hemodialisa</option>
                                                 </s:elseif>
@@ -991,6 +1014,7 @@
                                                     </s:else>
                                                     <option value="rawat_intensif">Rawat Intensif</option>
                                                     <option value="rawat_isolasi">Rawat Isolasi</option>
+                                                    <option value="rawat_isolasi_covid">Rawat Isolasi Covid</option>
                                                     <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
                                                         <option value="ruang_bersalin">Ruang Bersalin</option>
                                                     </s:if>

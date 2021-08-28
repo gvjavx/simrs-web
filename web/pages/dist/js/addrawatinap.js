@@ -663,7 +663,7 @@ function listSelectTindakan(idKtg) {
             idKelas = kelasPasienBpjs;
         }
         dwr.engine.setAsync(true);
-        CheckupDetailAction.getListComboTindakan(idKtg, idKelas, null, idPoli, jenisPeriksaPasien, {
+        CheckupDetailAction.getListComboTindakan(idKtg, idKelas, null, idPoli, jenisPeriksaPasien, kategoriRuangan, idRawatInap, {
             callback:function (response) {
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
@@ -4441,41 +4441,39 @@ function savePemeriksaanPasien() {
                     'indikasi': keteranganRW
                 }
                 cek = true;
-                console.log(this);
             }
         }
     }
 
-
-    // if (cek) {
-    //     if(!cekSession()){
-    //         var result = JSON.stringify(data);
-    //         $('#waiting_dialog').dialog('open');
-    //         dwr.engine.setAsync(true);
-    //         RawatInapAction.saveTindakLanjutRawatInap(result, {
-    //             callback: function (res) {
-    //                 if (res.status == "success") {
-    //                     $('#waiting_dialog').dialog('close');
-    //                     $('#info_dialog').dialog('open');
-    //                     $('#close_pos').val(8);
-    //                     if('kontrol_ulang' == tindakLanjut){
-    //                         window.open('printSuratKeterangan_rawatinap.action?id='+idDetailCheckup+'&tipe=KU', '_blank');
-    //                     }
-    //                     if('rujuk_rs_lain' == tindakLanjut){
-    //                         window.open('printSuratKeterangan_rawatinap.action?id='+idDetailCheckup+'&tipe=RSL', '_blank');
-    //                     }
-    //                 } else {
-    //                     $('#waiting_dialog').dialog('close');
-    //                     $('#error_dialog').dialog('open');
-    //                     $('#errorMessage').text(res.msg);
-    //                 }
-    //             }
-    //         });
-    //     }
-    // } else {
-    //     $('#warning_ket').show().fadeOut(5000);
-    //     $('#warning_msg').text("Silahkan cek kembali data inputan anda..!");
-    // }
+    if (cek) {
+        if(!cekSession()){
+            var result = JSON.stringify(data);
+            $('#waiting_dialog').dialog('open');
+            dwr.engine.setAsync(true);
+            RawatInapAction.saveTindakLanjutRawatInap(result, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#waiting_dialog').dialog('close');
+                        $('#info_dialog').dialog('open');
+                        $('#close_pos').val(8);
+                        if('kontrol_ulang' == tindakLanjut){
+                            window.open('printSuratKeterangan_rawatinap.action?id='+idDetailCheckup+'&tipe=KU', '_blank');
+                        }
+                        if('rujuk_rs_lain' == tindakLanjut){
+                            window.open('printSuratKeterangan_rawatinap.action?id='+idDetailCheckup+'&tipe=RSL', '_blank');
+                        }
+                    } else {
+                        $('#waiting_dialog').dialog('close');
+                        $('#error_dialog').dialog('open');
+                        $('#errorMessage').text(res.msg);
+                    }
+                }
+            });
+        }
+    } else {
+        $('#warning_ket').show().fadeOut(5000);
+        $('#warning_msg').text("Silahkan cek kembali data inputan anda..!");
+    }
 }
 
 function resetComboObat() {
@@ -6000,7 +5998,7 @@ function addToListTindakan(id) {
                 '</td>' +
                 '<td>'+namaTindakan+'</td>' +
                 '<td align="center">'+qty+'</td>' +
-                '<td align="right">'+tarif+'</td>' +
+                '<td align="right">'+total+'</td>' +
                 '<td align="right">'+formatRupiahAtas((parseInt(replaceTitik(total))*qty))+'</td>' +
                 '<td align="center">'+'<img onclick="delListTindakan(\'rowTindakan_'+count+'\')" style="cursor: pointer" src="'+contextPath+'/pages/images/cancel-flat-new.png" class="hvr-row">'+'</td>' +
                 '</tr>';
