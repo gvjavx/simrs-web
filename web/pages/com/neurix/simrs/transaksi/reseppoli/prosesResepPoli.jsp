@@ -739,7 +739,7 @@
                                                                             </div>
                                                                         </s:if>
                                                                         <s:else>
-                                                                            <input type="text" id='input_racik_<s:property value="id"/>_<s:property value="idObat"/>' class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>','Y', '<s:property value="harga"/>')">
+                                                                            <input type="text" id='input_racik_<s:property value="id"/>_<s:property value="idObat"/>' class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>','Y', '<s:property value="harga"/>','<s:property value="id"/>')">
                                                                             <div class="input-group-addon">
                                                                                 <span id='status_racik_<s:property value="id"/>_<s:property value="idObat"/>'></span>
                                                                             </div>
@@ -1247,7 +1247,7 @@
                                 total = item.totalHarga;
                             }
 
-                            var editBtn = 'onclick="confirmObat(\''+item.idObat+'\', \''+item.idObat+'\', \''+item.namaObat+'\', \''+item.qty+'\', \''+item.jenisSatuan+'\', \''+item.idTransaksiObatDetail+'\', \''+item.flagRacik+'\', \''+item.harga+'\')"';
+                            var editBtn = 'onclick="confirmObat(\''+item.idObat+'\', \''+item.idObat+'\', \''+item.namaObat+'\', \''+item.qty+'\', \''+item.jenisSatuan+'\', \''+item.idTransaksiObatDetail+'\', \''+item.flagRacik+'\', \''+item.harga+'\', \''+item.idRacik+'\')"';
                             if("Y" == item.flagRacik){
                                 $('#input_racik_'+item.idRacik+'_'+item.idObat).attr('disabled','true');
                                 $('#input_racik_'+item.idRacik+'_'+item.idObat).val(item.idObat);
@@ -1321,7 +1321,7 @@
         return today;
     }
 
-    function confirmObat(idObatVal, idObat, namaObat, qtyReq, jenisSatuan, idTransaksi, isRacik, hargaSatuan) {
+    function confirmObat(idObatVal, idObat, namaObat, qtyReq, jenisSatuan, idTransaksi, isRacik, hargaSatuan, idRacik) {
         var jenisObat = '<s:property value="permintaanResep.idJenisPeriksa"/>';
         jenisObat = jenisObat.toLowerCase();
         $('#load_app').hide();
@@ -1428,7 +1428,7 @@
                             bijiPerLembar = item.bijiPerLembar;
                             $('#loading_data').hide();
                         });
-                        $('#save_app').attr('onclick', 'confirmSaveApprove(\'' + idObat + '\',\'' + qtyReq + '\',\'' + idTransaksi + '\',\'' + lembarPerBox + '\',\'' + bijiPerLembar + '\',\'' + jenisSatuan + '\', \''+isRacik+'\', \''+hargaSatuan+'\', \''+namaObat+'\')');
+                        $('#save_app').attr('onclick', 'confirmSaveApprove(\'' + idObat + '\',\'' + qtyReq + '\',\'' + idTransaksi + '\',\'' + lembarPerBox + '\',\'' + bijiPerLembar + '\',\'' + jenisSatuan + '\', \''+isRacik+'\', \''+hargaSatuan+'\', \''+namaObat+'\', \''+idRacik+'\')');
                         $('#body_approve').html(table);
                     } else {
                         $('#status' + idObat).html('<img src="<s:url value="/pages/images/icon_failure.ico"/>" style="height: 20px; width: 20px;">');
@@ -1507,7 +1507,7 @@
         }
     }
 
-    function confirmSaveApprove(idObat, qtyReq, idTransaksi, lembarPerBox, bijiPerLembar, jenisSatuan, isRacik, hargaSatuan, namaObat){
+    function confirmSaveApprove(idObat, qtyReq, idTransaksi, lembarPerBox, bijiPerLembar, jenisSatuan, isRacik, hargaSatuan, namaObat, idRacik){
         var data = $('#tabel_approve').tableToJSON();
         var result = [];
         var qtyApp = 0;
@@ -1553,7 +1553,7 @@
         if (qtyApp > 0) {
             if (parseInt(qtyApp) <= parseInt(stok) && parseInt(qtyApp) <= parseInt(qtyReq) || flagRacik == "Y") {
                 $('#modal-confirm-dialog').modal('show');
-                $('#save_con').attr('onclick','saveApprove(\'' + idObat + '\',\'' + idTransaksi + '\',\'' + stringData + '\',\'' + qtyApp + '\',\''+jenisSatuan+'\', \''+isRacik+'\', \''+hargaSatuan+'\', \''+namaObat+'\')');
+                $('#save_con').attr('onclick','saveApprove(\'' + idObat + '\',\'' + idTransaksi + '\',\'' + stringData + '\',\'' + qtyApp + '\',\''+jenisSatuan+'\', \''+isRacik+'\', \''+hargaSatuan+'\', \''+namaObat+'\', \''+idRacik+'\')');
             } else {
                 $('#warning_app').show().fadeOut(5000);
                 $('#msg_app').text("Qty Approve tidak boleh melebihi stok dan qty request..!");
@@ -1564,10 +1564,11 @@
         }
     }
 
-    function saveApprove(idObat, idTransaksi, stringData, qtyApp, jenisSatuan, isRacik, hargaSatuan, namaObat){
+    function saveApprove(idObat, idTransaksi, stringData, qtyApp, jenisSatuan, isRacik, hargaSatuan, namaObat, idRacik){
         $('#modal-confirm-dialog').modal('hide');
         $('#load_app').show();
         $('#save_app').hide();
+
         dwr.engine.setAsync(true);
         TransaksiObatAction.saveVerifikasiResep(idTransaksi, stringData, {callback: function (response) {
             if (response.status == "success") {
@@ -1576,14 +1577,14 @@
                 $('#modal-approve').modal('hide');
                 $('#info_dialog').dialog('open');
                 var total = parseInt(qtyApp)+parseInt(hargaSatuan);
-                var editBtn = 'onclick="confirmObat(\''+idObat+'\', \''+idObat+'\', \''+namaObat+'\', \''+qtyApp+'\', \''+jenisSatuan+'\', \''+idTransaksi+'\', \''+isRacik+'\', \''+hargaSatuan+'\')"';
+                var editBtn = 'onclick="confirmObat(\''+idObat+'\', \''+idObat+'\', \''+namaObat+'\', \''+qtyApp+'\', \''+jenisSatuan+'\', \''+idTransaksi+'\', \''+isRacik+'\', \''+hargaSatuan+'\', \''+idRacik+'\')"';
                 if("Y" == isRacik){
-                    $('#qtyAppove_racik_'+idObat).text(qtyApp+' '+jenisSatuan);
-                    $('#status_racik_'+idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
-                    $('#input_racik_'+idObat).attr('disabled', true);
-                    $('#total_racik_'+idObat).text(formatRupiah(total));
-                    $('#hide_total_racik_'+idObat).val(total);
-                    $('#btn_racik_'+idObat).html('<img '+editBtn+' src="<s:url value="/pages/images/icons8-create-25.png"/>" style="height: 20px; width: 20px; cursor: pointer">');
+                    $('#qtyAppove_racik_'+idRacik+'_'+idObat).text(qtyApp+' '+jenisSatuan);
+                    $('#status_racik_'+idRacik+'_'+idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
+                    $('#input_racik_'+idRacik+'_'+idObat).attr('disabled', true);
+                    $('#total_racik_'+idRacik+'_'+idObat).text(formatRupiah(total));
+                    $('#hide_total_racik_'+idRacik+'_'+idObat).val(total);
+                    $('#btn_racik_'+idRacik+'_'+idObat).html('<img '+editBtn+' src="<s:url value="/pages/images/icons8-create-25.png"/>" style="height: 20px; width: 20px; cursor: pointer">');
                 }else{
                     $('#qtyAppove'+idObat).text(qtyApp+' '+jenisSatuan);
                     $('#status'+idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
