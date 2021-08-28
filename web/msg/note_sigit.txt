@@ -1889,6 +1889,10 @@ ADD COLUMN parent_id VARCHAR(30);
 
 --
 
+-- //////////////////////////////////////////// --
+-- /// BELUM DI PROD HINGGA 2021-08-09 //////// --
+-- //////////////////////////////////////////// --
+
 -- 2021-07-21
 
     ALTER TABLE it_akun_perhitungan_ppn_kd ADD COLUMN bukti_piutang_pajak_keluaran VARCHAR(100);
@@ -1907,7 +1911,7 @@ ADD COLUMN parent_id VARCHAR(30);
 
     INSERT INTO im_func_roles VALUES
     ('39', '782', 'Y', now(), now(), 'mig', 'mig'),
-    ('39', '784', 'Y', now(), now(), 'mig', 'mig')
+    ('39', '784', 'Y', now(), now(), 'mig', 'mig');
 
 --
 
@@ -2095,5 +2099,34 @@ ADD COLUMN parent_id VARCHAR(30);
 
     UPDATE im_simrs_kelas_ruangan SET
     kategori = 'rawat_isolasi_covid' WHERE id_kelas_ruangan = 'KR00014';
+
+--
+
+-- 2021-08-28
+
+    CREATE TABLE public.it_akun_nilai_parameter_budgeting
+        (
+            id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+            id_parameter character varying(30) COLLATE pg_catalog."default",
+            nilai_total numeric,
+            master_id character varying(50) COLLATE pg_catalog."default",
+            divisi_id character varying(50) COLLATE pg_catalog."default",
+            branch_id character varying(10) COLLATE pg_catalog."default",
+            tahun character varying(5) COLLATE pg_catalog."default",
+            flag character varying(1) COLLATE pg_catalog."default",
+            action character varying(1) COLLATE pg_catalog."default",
+            created_date timestamp without time zone,
+            created_who character varying(100) COLLATE pg_catalog."default",
+            last_update timestamp without time zone,
+            last_update_who character varying(100) COLLATE pg_catalog."default",
+            CONSTRAINT it_akun_nilai_parameter_budgeting_pkey PRIMARY KEY (id)
+        )
+        WITH (
+            OIDS = FALSE
+        )
+        TABLESPACE pg_default;
+
+        ALTER TABLE public.it_akun_nilai_parameter_budgeting
+            OWNER to postgres;
 
 --
