@@ -342,13 +342,13 @@
                     <div class="row jarak">
                         <label class="col-md-6">Pendidikan</label>
                         <div class="col-md-6">
-                            <input class="form-control" id="ps5">
+                            <input class="form-control pendidikan" id="ps5">
                         </div>
                     </div>
                     <div class="row jarak">
                         <label class="col-md-6">Pekerjaan</label>
                         <div class="col-md-6">
-                            <input class="form-control" id="ps6">
+                            <input class="form-control profesi" id="ps6">
                         </div>
                     </div>
                 </div>

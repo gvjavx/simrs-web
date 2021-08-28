@@ -61,30 +61,30 @@
 
     <script type='text/javascript'>
 
-        $.subscribe('successDialog', function (event, data) {
-            if (event.originalEvent.request.status == 200) {
-                jQuery(".ui-dialog-titlebar-close").hide();
-                $.publish('showInfoDialog');
+       $.subscribe('successDialog', function (event, data) {
+          if (event.originalEvent.request.status == 200) {
+             jQuery(".ui-dialog-titlebar-close").hide();
+             $.publish('showInfoDialog');
 
-            }
-        });
+          }
+       });
 
-        $.subscribe('errorDialog', function (event, data) {
-            document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
-            $.publish('showErrorDialog');
-        });
+       $.subscribe('errorDialog', function (event, data) {
+          document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
+          $.publish('showErrorDialog');
+       });
 
-        function convertSentenceCase(myString){
-            if(myString != null && myString != ''){
-                var rg = /(^\w{1}|\ \s*\w{1})/gi;
-                myString = myString.replace(rg, function(toReplace) {
-                    return toReplace.toUpperCase();
-                });
-                return myString;
-            }else{
-                return "";
-            }
-        }
+       function convertSentenceCase(myString){
+          if(myString != null && myString != ''){
+             var rg = /(^\w{1}|\ \s*\w{1})/gi;
+             myString = myString.replace(rg, function(toReplace) {
+                return toReplace.toUpperCase();
+             });
+             return myString;
+          }else{
+             return "";
+          }
+       }
 
 
     </script>
@@ -223,6 +223,8 @@
                                     <s:hidden id="h_tinggi_badan" name="rawatInap.tinggi"/>
                                     <s:hidden id="h_diagnosa" name="rawatInap.namaDiagnosa"/>
                                     <s:hidden id="h_umur" name="rawatInap.umur"/>
+                                    <s:hidden id="h_pendidikan_pasien" name="rawatInap.pendidikan"/>
+                                    <s:hidden id="h_profesi_pasien" name="rawatInap.profesi"/>
                                     <s:hidden id="h_alamat_lengkap" name="rawatInap.alamatLengkap"/>
                                     <s:hidden id="h_no_bpjs" name="rawatInap.noBpjs"/>
                                     <s:hidden id="h_jenis_kelamin" name="rawatInap.jenisKelamin"/>
@@ -238,6 +240,11 @@
                                     <s:hidden id="h_tgl_masuk" name="rawatInap.stTglFrom"/>
                                     <s:hidden id="nama_jenis_pasien" name="rawatInap.jenisPeriksaPasien"/>
                                     <s:hidden id="h_id_kelas_bpjs" name="rawatInap.idKelasBpjs"/>
+
+                                    <s:hidden id="h_tarif" name="rawatInap.tarif" />
+                                    <s:hidden id="h_id_tindakan" name="rawatInap.idTindakan" />
+                                    <s:hidden id="h_nama_tindakan" name="rawatInap.namaTindakan" />
+                                    <s:hidden id="h_dokter_dpjp" name="rawatInap.dokter_dpjp" />
 
                                     <s:if test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "rekanan"'>
                                         <tr>
@@ -300,9 +307,9 @@
                                         <td>
                                             <table>
                                                 <script>
-                                                    var umur = '<s:property value="rawatInap.umur"/>';
-                                                    var umurLengkap = umur+' Tahun';
-                                                    document.write(umurLengkap);
+                                                   var umur = '<s:property value="rawatInap.umur"/>';
+                                                   var umurLengkap = umur+' Tahun';
+                                                   document.write(umurLengkap);
                                                 </script>
                                             </table>
                                         </td>
@@ -312,20 +319,20 @@
                                         <td>
                                             <table>
                                                 <script>
-                                                    var noHp = '<s:property value="rawatInap.noTelp"/>';
-                                                    var temp = "";
-                                                    if(noHp != '' && noHp.length > 0){
-                                                        for (var i = 0; i < noHp.length; i++) {
-                                                            if(i == 3){
-                                                                temp = temp+noHp[i]+'-';
-                                                            }else if(i == 7){
-                                                                temp = temp+noHp[i]+'-';
-                                                            }else{
-                                                                temp = temp+noHp[i];
-                                                            }
-                                                        }
-                                                    }
-                                                    document.write(temp);
+                                                   var noHp = '<s:property value="rawatInap.noTelp"/>';
+                                                   var temp = "";
+                                                   if(noHp != '' && noHp.length > 0){
+                                                      for (var i = 0; i < noHp.length; i++) {
+                                                         if(i == 3){
+                                                            temp = temp+noHp[i]+'-';
+                                                         }else if(i == 7){
+                                                            temp = temp+noHp[i]+'-';
+                                                         }else{
+                                                            temp = temp+noHp[i];
+                                                         }
+                                                      }
+                                                   }
+                                                   document.write(temp);
                                                 </script>
                                             </table>
                                         </td>
@@ -342,7 +349,7 @@
                             <!-- /.col -->
                             <div class="col-md-6">
                                 <script>
-                                    document.write(imagesDefault('<s:property value="rawatInap.urlKtp"/>'));
+                                   document.write(imagesDefault('<s:property value="rawatInap.urlKtp"/>'));
                                 </script>
                                 <table class="table table-striped">
                                     <tr>
@@ -350,7 +357,7 @@
                                         <td>
                                             <table>
                                                 <script>
-                                                    document.write(changeJenisPasien('<s:property value="rawatInap.idJenisPeriksa"/>', '<s:property value="rawatInap.jenisPeriksaPasien"/>'));
+                                                   document.write(changeJenisPasien('<s:property value="rawatInap.idJenisPeriksa"/>', '<s:property value="rawatInap.jenisPeriksaPasien"/>'));
                                                 </script>
                                             </table>
                                         </td>
@@ -361,10 +368,10 @@
                                             <td>
                                                 <table>
                                                     <script>
-                                                        var tar = '<s:property value="rawatInap.coverBiaya"/>';
-                                                        if(tar != null){
-                                                            document.write("Rp. "+formatRupiah(tar));
-                                                        }
+                                                       var tar = '<s:property value="rawatInap.coverBiaya"/>';
+                                                       if(tar != null){
+                                                          document.write("Rp. "+formatRupiah(tar));
+                                                       }
                                                     </script>
                                                 </table>
                                             </td>
@@ -530,59 +537,59 @@
                         </div>
                     </div>
                     <div class="box-body">
-                       <div class="row">
-                           <div class="col-md-6">
-                               <button class="btn btn-primary" onclick="showModalPlan('<s:property value="rawatInap.idDetailCheckup"/>','','suster')">
-                                   <i class="fa fa-calendar"></i> Schedule Rawat
-                               </button>
-                               <div class="btn-group dropdown">
-                                   <button type="button" class="btn btn-info"><i class="fa fa-edit"></i> Observasi dan Pemberian
-                                   </button>
-                                   <button type="button" class="btn btn-info dropdown-toggle"
-                                           data-toggle="dropdown" style="height: 34px">
-                                       <span class="caret"></span>
-                                       <span class="sr-only">Toggle Dropdown</span>
-                                   </button>
-                                   <ul class="dropdown-menu" role="menu">
-                                       <li><a onclick="showModalCairan('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
-                                               class="fa fa-file-o"></i> Observasi Cairan</a></li>
-                                       <li><a onclick="showModalMonVitalSign('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
-                                               class="fa fa-file-o"></i> Chart Vital Sign</a></li>
-                                       <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','parenteral')" style="cursor: pointer"><i
-                                               class="fa fa-file-o"></i> Pemberian Obat Parenteral</a></li>
-                                       <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','nonparenteral')" style="cursor: pointer"><i
-                                               class="fa fa-file-o"></i> Pemberian Obat Non Parenteral</a></li>
-                                   </ul>
-                               </div>
-                           </div>
-                           <div class="col-md-6">
-                               <div class="btn-group dropdown">
-                                   <button onclick="setRekamMedis()" type="button" class="btn btn-primary hvr-icon-down"><i class="fa fa-edit"></i> Asesmen
-                                   </button>
-                                   <button onclick="setRekamMedis()" type="button" class="btn btn-primary dropdown-toggle"
-                                           data-toggle="dropdown" style="height: 34px">
-                                       <span class="caret hvr-icon"></span>
-                                       <span class="sr-only">Toggle Dropdown</span>
-                                   </button>
-                                   <ul class="dropdown-menu" role="menu" id="asesmen_ri">
-                                   </ul>
-                               </div>
-                               <div class="btn-group dropdown" style="display: none" id="form_pindahan">
-                                   <button type="button" class="btn btn-info hvr-icon-down"><i class="fa fa-edit"></i> Asesmen Sebelumnya
-                                   </button>
-                                   <button id="btn_hasil_pindah" type="button" class="btn btn-info dropdown-toggle"
-                                           data-toggle="dropdown" style="height: 34px">
-                                       <span class="caret hvr-icon"></span>
-                                       <span class="sr-only">Toggle Dropdown</span>
-                                   </button>
-                                   <ul class="dropdown-menu" role="menu" id="asesmen_hasil_pindah">
-                                   </ul>
-                               </div>
-                               <button type="button" onclick="viewHistory()" class="btn btn-info hvr-icon-spin"><i class="fa fa-history hvr-icon"></i> All History
-                               </button>
-                               <button class="btn btn-info" onclick="uploadPemeriksaan()"><i class="fa fa-line-chart"></i> Upload Pemeriksaan</button>
-                           </div>
-                       </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button class="btn btn-primary" onclick="showModalPlan('<s:property value="rawatInap.idDetailCheckup"/>','','suster')">
+                                    <i class="fa fa-calendar"></i> Schedule Rawat
+                                </button>
+                                <div class="btn-group dropdown">
+                                    <button type="button" class="btn btn-info"><i class="fa fa-edit"></i> Observasi dan Pemberian
+                                    </button>
+                                    <button type="button" class="btn btn-info dropdown-toggle"
+                                            data-toggle="dropdown" style="height: 34px">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a onclick="showModalCairan('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
+                                                class="fa fa-file-o"></i> Observasi Cairan</a></li>
+                                        <li><a onclick="showModalMonVitalSign('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
+                                                class="fa fa-file-o"></i> Chart Vital Sign</a></li>
+                                        <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','parenteral')" style="cursor: pointer"><i
+                                                class="fa fa-file-o"></i> Pemberian Obat Parenteral</a></li>
+                                        <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','nonparenteral')" style="cursor: pointer"><i
+                                                class="fa fa-file-o"></i> Pemberian Obat Non Parenteral</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="btn-group dropdown">
+                                    <button onclick="setRekamMedis()" type="button" class="btn btn-primary hvr-icon-down"><i class="fa fa-edit"></i> Asesmen
+                                    </button>
+                                    <button onclick="setRekamMedis()" type="button" class="btn btn-primary dropdown-toggle"
+                                            data-toggle="dropdown" style="height: 34px">
+                                        <span class="caret hvr-icon"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu" id="asesmen_ri">
+                                    </ul>
+                                </div>
+                                <div class="btn-group dropdown" style="display: none" id="form_pindahan">
+                                    <button type="button" class="btn btn-info hvr-icon-down"><i class="fa fa-edit"></i> Asesmen Sebelumnya
+                                    </button>
+                                    <button id="btn_hasil_pindah" type="button" class="btn btn-info dropdown-toggle"
+                                            data-toggle="dropdown" style="height: 34px">
+                                        <span class="caret hvr-icon"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu" id="asesmen_hasil_pindah">
+                                    </ul>
+                                </div>
+                                <button type="button" onclick="viewHistory()" class="btn btn-info hvr-icon-spin"><i class="fa fa-history hvr-icon"></i> All History
+                                </button>
+                                <button class="btn btn-info" onclick="uploadPemeriksaan()"><i class="fa fa-line-chart"></i> Upload Pemeriksaan</button>
+                            </div>
+                        </div>
                     </div>
                     <div class="box-header with-border" id="pos_dok">
                     </div>
@@ -591,7 +598,7 @@
                     </div>
                     <div class="box-body">
                         <a class="btn btn-success hvr-icon-spin" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(1)"><i class="fa fa-plus hvr-icon"></i> Request Dokter
+                           onclick="showModal(1)"><i class="fa fa-plus hvr-icon"></i> Request Dokter
                         </a>
                         <button class="btn btn-primary notification icon" style="margin-bottom: 10px; margin-left: 5px"
                                 onclick="refreshTable('dok_ref', 'dokter')"><i class="fa fa-refresh" id="dok_ref"></i> Refresh
@@ -820,32 +827,32 @@
                         </table>
                     </div>
                     <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
-                    <div class="box-header with-border" id="pos_ruangan">
-                    </div>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-hospital-o"></i> Ruangan</h3>
-                    </div>
-                    <div class="box-body">
-                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_update">
-                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                            <p id="msg_update"></p>
+                        <div class="box-header with-border" id="pos_ruangan">
                         </div>
-                        <table class="table table-bordered table-striped" id="tabel_ruangan">
-                            <thead>
-                            <tr bgcolor="#90ee90">
-                                <td>Tanggal Masuk</td>
-                                <td>Tanggal Keluar</td>
-                                <td>Ruangan</td>
-                                <td>Kelas</td>
-                                <td>Status</td>
-                                <td align="center">Action</td>
-                            </tr>
-                            </thead>
-                            <tbody id="body_ruangan">
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-hospital-o"></i> Ruangan</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_update">
+                                <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                                <p id="msg_update"></p>
+                            </div>
+                            <table class="table table-bordered table-striped" id="tabel_ruangan">
+                                <thead>
+                                <tr bgcolor="#90ee90">
+                                    <td>Tanggal Masuk</td>
+                                    <td>Tanggal Keluar</td>
+                                    <td>Ruangan</td>
+                                    <td>Kelas</td>
+                                    <td>Status</td>
+                                    <td align="center">Action</td>
+                                </tr>
+                                </thead>
+                                <tbody id="body_ruangan">
 
-                            </tbody>
-                        </table>
-                    </div>
+                                </tbody>
+                            </table>
+                        </div>
                     </s:if>
                     <div class="box-header with-border" id="pos_rssep">
                     </div>
@@ -1033,9 +1040,37 @@
                                             <s:select list="#initComboKet.listOfKeterangan" id="ket_selesai"
                                                       listKey="idKeterangan"
                                                       listValue="keterangan" cssStyle="width: 100%"
-                                                      onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()};"
+                                                      onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()};selectKet_Selesai(this.value);"
                                                       headerKey="" headerValue="-"
                                                       cssClass="form-control select2"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="form-ket-meninggal" style="display: none">
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Jenis Kendaraan</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control select2" id="kend_jenazah" style="width: 100%" onchange="setDiskonKend(this.value)">
+                                                <option value="">-</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="form-kend-tarif" style="display:none">
+                                    <div class="form-group" style="margin-top: 7px">
+                                        <div class="col-md-4">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" readonly placeholder="Tarif/km" id="val_tarif">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <%--<s:textfield cssClass="form-control" placeholder="Diskon" name="headerCheckup.diskon" id="val_diskon" readonly="true"></s:textfield>--%>
+                                            <input class="form-control" id="val_diskon" readonly placeholder="Discon" >
+                                            <input class="form-control" type="hidden" id="h_val_diskon" name="rawatInap.diskon">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <%--<s:textfield cssClass="form-control" placeholder="Jumlah Kilometer" name="headerCheckup.jumlah" type="number" id="jumlah_kilometer"></s:textfield>--%>
+                                            <input style="display:none" class="form-control" placeholder="Jumlah Kilometer" name="rawatInap.jumlah" type="number" id="jumlah_kilometer" >
                                         </div>
                                     </div>
                                 </div>
@@ -1318,7 +1353,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Spesialis</label>
                         <div class="col-md-7">
-                           <input class="form-control" id="pelayanan_dokter" style="margin-top: 7px" disabled>
+                            <input class="form-control" id="pelayanan_dokter" style="margin-top: 7px" disabled>
                         </div>
                     </div>
                 </div>
@@ -1514,30 +1549,30 @@
                 </div>
                 <div class="row">
                     <%--<s:if test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "rekanan"'>--%>
+                    <div class="form-group">
+                        <label class="col-md-3">Diagnosa</label>
+                        <div class="col-md-7">
+                            <s:textfield id="nosa_id_diagnosa" style="margin-top: 7px"
+                                         name="headerCheckup.diagnosa" autocomplete="off"
+                                         onkeypress="var warn =$('#war_diagnosa_bpjs').is(':visible'); if (warn){$('#cor_diagnosa_bpjs').show().fadeOut(3000);$('#war_diagnosa_bpjs').hide()}; searchDiagnosa(this.id)"
+                                         cssClass="form-control" required="false"/>
+                            <s:hidden name="headerCheckup.jenisTransaksi"/>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_diagnosa_bpjs"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_diagnosa_bpjs"><i class="fa fa-check"></i> correct</p>
+                        </div>
                         <div class="form-group">
-                            <label class="col-md-3">Diagnosa</label>
-                            <div class="col-md-7">
-                                <s:textfield id="nosa_id_diagnosa" style="margin-top: 7px"
-                                             name="headerCheckup.diagnosa" autocomplete="off"
-                                             onkeypress="var warn =$('#war_diagnosa_bpjs').is(':visible'); if (warn){$('#cor_diagnosa_bpjs').show().fadeOut(3000);$('#war_diagnosa_bpjs').hide()}; searchDiagnosa(this.id)"
-                                             cssClass="form-control" required="false"/>
-                                <s:hidden name="headerCheckup.jenisTransaksi"/>
-                            </div>
-                            <div class="col-md-2">
-                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                                   id="war_diagnosa_bpjs"><i class="fa fa-times"></i> required</p>
-                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                                   id="cor_diagnosa_bpjs"><i class="fa fa-check"></i> correct</p>
-                            </div>
-                            <div class="form-group">
                             <div class="col-md-offset-3 col-md-7">
                                 <s:textarea rows="4" id="nosa_ket_diagnosa"
                                             cssStyle="margin-top: 7px" readonly="true"
                                             name="headerCheckup.namaDiagnosa"
                                             cssClass="form-control"></s:textarea>
                             </div>
-                            </div>
                         </div>
+                    </div>
                     <div class="form-group">
                         <label class="col-md-3">Jenis Diagnosa</label>
                         <div class="col-md-7">
@@ -2368,18 +2403,18 @@
                         <label class="col-md-3" style="margin-top: 7px">Kelas Ruangan</label>
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%" id="ruangan_kelas"
-                                onchange="var warn =$('#war_ruangan_kelas').is(':visible'); if (warn){$('#cor_ruangan_kelas').show().fadeOut(3000);$('#war_ruangan_kelas').hide()}; listSelectRuangan(this.value)">
+                                    onchange="var warn =$('#war_ruangan_kelas').is(':visible'); if (warn){$('#cor_ruangan_kelas').show().fadeOut(3000);$('#war_ruangan_kelas').hide()}; listSelectRuangan(this.value)">
                                 <option value=""> - </option>
                             </select>
                             <%--<s:action id="initKelas" namespace="/checkupdetail"--%>
-                                      <%--name="getListComboKelasRuangan_checkupdetail"/>--%>
+                            <%--name="getListComboKelasRuangan_checkupdetail"/>--%>
                             <%--<s:select--%>
-                                    <%--onchange="var warn =$('#war_ruangan_kelas').is(':visible'); if (warn){$('#cor_ruangan_kelas').show().fadeOut(3000);$('#war_ruangan_kelas').hide()}; listSelectRuangan(this.value)"--%>
-                                    <%--list="#initKelas.listOfKelasRuangan" id="ruangan_kelas"--%>
-                                    <%--listKey="idKelasRuangan" cssStyle="width: 100%"--%>
-                                    <%--listValue="namaKelasRuangan"--%>
-                                    <%--headerKey="" headerValue=" - "--%>
-                                    <%--cssClass="form-control select2"/>--%>
+                            <%--onchange="var warn =$('#war_ruangan_kelas').is(':visible'); if (warn){$('#cor_ruangan_kelas').show().fadeOut(3000);$('#war_ruangan_kelas').hide()}; listSelectRuangan(this.value)"--%>
+                            <%--list="#initKelas.listOfKelasRuangan" id="ruangan_kelas"--%>
+                            <%--listKey="idKelasRuangan" cssStyle="width: 100%"--%>
+                            <%--listValue="namaKelasRuangan"--%>
+                            <%--headerKey="" headerValue=" - "--%>
+                            <%--cssClass="form-control select2"/>--%>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -3490,10 +3525,10 @@
             </div>
             <div class="modal-body">
                 <div class="box">
-                    <button type="button" class="btn btn-success" id="" onclick="addFormEdukasi('inap14')">
+                    <button type="button" class="btn btn-success"  onclick="addFormEdukasi('inap14')">
                         <i class="fa fa-plus"></i> Add Header Edukasi
                     </button>
-                    <button type="button" class="btn btn-success" id="" onclick="addFormEdukasi('inap15')">
+                    <button type="button" class="btn btn-success"  onclick="addFormEdukasi('inap15')">
                         <i class="fa fa-plus"></i> Add Parameter Edukasi
                     </button>
 
@@ -4628,214 +4663,264 @@
 
 <script type='text/javascript'>
 
-    var idDetailCheckup = $('#no_detail_checkup').val();
-    var idPoli          = $('#id_palayanan').val();
-    var idRawatInap     = $('#id_rawat_inap').val();
-    var idPasien        = $('#id_pasien').val();
-    var noCheckup       = $('#no_checkup').val();
-    var jenisPeriksaPasien = $('#id_jenis_pasien').val();
-    var today           = new Date();
-    var month           = ""+(today.getMonth()+1);
-    var day             = ""+today.getDate();
+   var idDetailCheckup = $('#no_detail_checkup').val();
+   var idPoli          = $('#id_palayanan').val();
+   var idRawatInap     = $('#id_rawat_inap').val();
+   var idPasien        = $('#id_pasien').val();
+   var noCheckup       = $('#no_checkup').val();
+   var jenisPeriksaPasien = $('#id_jenis_pasien').val();
+   var today           = new Date();
+   var month           = ""+(today.getMonth()+1);
+   var day             = ""+today.getDate();
 
-    var pathImages = '<%= request.getContextPath() %>';
-    var contextPath = '<%= request.getContextPath() %>';
-    var isReadRM = false;
-    var tglLhr = $('#h_tgl_lahir').val();
-    var tglLahir = tglLhr.split("-").reverse().join("-");
-    var namaPasien = $('#h_nama_pasien').val();
-    var anamnese = $('#h_anamnesa').val();
-    var penunjangMedis = $('#h_penunjang_medis').val();
-    var keluhanUtama = $('#h_keluhan_utama').val();
-    var suhu = $('#h_suhu').val();
-    var nadi = $('#h_nadi').val();
-    var tensi = $('#h_tensi').val();
-    var pernafasan = $('#h_pernafasan').val();
-    var alergi = $('#h_alergi').val();
-    var beratBadan = $('#h_berat_badan').val();
-    var tinggiBadan = $('#h_tinggi_badan').val();
-    var diagnosa = $('#h_diagnosa').val();
-    var umur = $('#h_umur').val();
-    var alamatLengkap = $('#h_alamat_lengkap').val();
-    var noBpjs = $('#h_no_bpjs').val();
-    var jenisKelamin = $('#h_jenis_kelamin').val();
-    var tempTensi = "";
-    var tempSuhu = "";
-    var tempNadi = "";
-    var tempRr = "";
-    var tempBerat = "";
-    var tempTinggi = "";
-    var tempAnmnesa = "";
-    var kategoriRuangan = $('#h_kategori_ruangan').val();
-    var kelasPasienBpjs = $('#h_kelas_pasien_bpjs').val();
-    var tempidRm = "";
-    var urlPage = "";
-    var idRuangan = $('#h_id_ruangan').val();
-    var namaRuangan = $('#h_nama_ruangan').val();
-    var stayRuangan = $('#h_stay_ruangan').val();
-    var NOSEP = $('#h_no_sep').val();
-    var IdAsuransi = $('#h_id_asuransi').val();
-    var isBpjsRekanan = "";
-    var setNotif = "";
-    var idKelasRuangan = $('#h_id_kelas_ruangan').val();
-    var idKelasBpjs = $('#h_id_kelas_bpjs').val();
-    var namaRuanganPasien = $('#h_nama_ruangan_pasien').val();
-    var tanggalMasuk = $('#h_tgl_masuk').val();
-    var namaJenisPasien = $('#nama_jenis_pasien').val();
-    var jenisCPO = "perawat";
-    var tempSpo2 = "";
-    var tempNyeri = "";
-    var tempJatuh = "";
+   var pathImages = '<%= request.getContextPath() %>';
+   var contextPath = '<%= request.getContextPath() %>';
+   var isReadRM = false;
+   var tglLhr = $('#h_tgl_lahir').val();
+   var tglLahir = tglLhr.split("-").reverse().join("-");
+   var namaPasien = $('#h_nama_pasien').val();
+   var anamnese = $('#h_anamnesa').val();
+   var penunjangMedis = $('#h_penunjang_medis').val();
+   var keluhanUtama = $('#h_keluhan_utama').val();
+   var suhu = $('#h_suhu').val();
+   var nadi = $('#h_nadi').val();
+   var tensi = $('#h_tensi').val();
+   var pernafasan = $('#h_pernafasan').val();
+   var alergi = $('#h_alergi').val();
+   var beratBadan = $('#h_berat_badan').val();
+   var tinggiBadan = $('#h_tinggi_badan').val();
+   var diagnosa = $('#h_diagnosa').val();
+   var umur = $('#h_umur').val();
+   var alamatLengkap = $('#h_alamat_lengkap').val();
+   var noBpjs = $('#h_no_bpjs').val();
+   var jenisKelamin = $('#h_jenis_kelamin').val();
+   var tempTensi = "";
+   var tempSuhu = "";
+   var tempNadi = "";
+   var tempRr = "";
+   var tempBerat = "";
+   var tempTinggi = "";
+   var tempAnmnesa = "";
+   var kategoriRuangan = $('#h_kategori_ruangan').val();
+   var kelasPasienBpjs = $('#h_kelas_pasien_bpjs').val();
+   var tempidRm = "";
+   var urlPage = "";
+   var idRuangan = $('#h_id_ruangan').val();
+   var namaRuangan = $('#h_nama_ruangan').val();
+   var stayRuangan = $('#h_stay_ruangan').val();
+   var NOSEP = $('#h_no_sep').val();
+   var IdAsuransi = $('#h_id_asuransi').val();
+   var isBpjsRekanan = "";
+   var setNotif = "";
+   var idKelasRuangan = $('#h_id_kelas_ruangan').val();
+   var idKelasBpjs = $('#h_id_kelas_bpjs').val();
+   var namaRuanganPasien = $('#h_nama_ruangan_pasien').val();
+   var tanggalMasuk = $('#h_tgl_masuk').val();
+   var namaJenisPasien = $('#nama_jenis_pasien').val();
+   var jenisCPO = "perawat";
+   var tempSpo2 = "";
+   var tempNyeri = "";
+   var tempJatuh = "";
 
-    if (month.length < 2) {
-        month = "0"+month;
-    }
-    if (day.length < 2) {
-        day = "0"+day;
-    }
-    var date = today.getFullYear()+"-"+month+"-"+day;
+   if (month.length < 2) {
+      month = "0"+month;
+   }
+   if (day.length < 2) {
+      day = "0"+day;
+   }
+   var date = today.getFullYear()+"-"+month+"-"+day;
 
-    function titleCase(string) {
-        var sentence = string.toLowerCase().split(" ");
-        for(var i = 0; i< sentence.length; i++){
-            sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
-        }
-        return sentence;
-    }
+   function titleCase(string) {
+      var sentence = string.toLowerCase().split(" ");
+      for(var i = 0; i< sentence.length; i++){
+         sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
+      }
+      return sentence;
+   }
 
-    $(document).ready(function () {
-        $("#mcr_mulai").timepicker();
-        $("#mcr_selesai").timepicker();
-        $("#mcr_buang").timepicker();
-        $(".date").val(date);
+   $(document).ready(function () {
+      $("#mcr_mulai").timepicker();
+      $("#mcr_selesai").timepicker();
+      $("#mcr_buang").timepicker();
+      $(".date").val(date);
 
-        if(kategoriRuangan == 'rawat_inap'){
-            $('#title-pages').text("Rawat Inap Pasien");
-            $('#rawat_inap').addClass('active');
-            urlPage = 'rawatinap';
-            $('#pel_ri_active, #bayar_rawat_inap').addClass('active');
-            $('#pel_ri_open').addClass('menu-open');
-            $('#btn_hasil_pindah').attr('onclick', 'setRekamMedisHasilPindah(\'pindah_ri\',\'asesmen_hasil_pindah\')');
-            setRekamMedisHasilPindah('pindah_ri','');
-        }
-        if(kategoriRuangan == 'rawat_intensif'){
-            $('#title-pages').text("Rawat Intensif Pasien");
-            $('#rawat_intensif').addClass('active');
-            urlPage = 'rawatintensif';
-            $('#pel_ri_active, #rawat_intensif').addClass('active');
-            $('#pel_ri_open').addClass('menu-open');
-            $('#btn_hasil_pindah').attr('onclick', 'setRekamMedisHasilPindah(\'pindah_ri\',\'asesmen_hasil_pindah\')');
-            setRekamMedisHasilPindah('pindah_ri','');
-        }
-        if(kategoriRuangan == 'rawat_isolasi'){
-            $('#title-pages').text("Rawat Isolasi Pasien");
-            $('#rawat_isolasi').addClass('active');
-            urlPage = 'rawatisolasi';
-            $('#pel_ri_active, #rawat_isolasi').addClass('active');
-            $('#pel_ri_open').addClass('menu-open');
-            $('#btn_hasil_pindah').attr('onclick', 'setRekamMedisHasilPindah(\'pindah_ri\',\'asesmen_hasil_pindah\')');
-            setRekamMedisHasilPindah('pindah_ri','');
-        }
-        if(kategoriRuangan == 'kamar_operasi'){
-            $('#title-pages').text("Rawat Operasi Pasien");
-            $('#rawat_operasi').addClass('active');
-            urlPage = 'rawatoperasi';
-            $('#pel_ri_active, #rawat_operasi').addClass('active');
-            $('#pel_ri_open').addClass('menu-open');
-            $('#btn_hasil_pindah').attr('onclick', 'setRekamMedisHasilPindah(\'pindah_ok\',\'asesmen_hasil_pindah\')');
-            setRekamMedisHasilPindah('pindah_ok','');
-        }
-        if(kategoriRuangan == 'ruang_bersalin'){
-            $('#title-pages').text("Rawat Bersalin Pasien");
-            $('#rawat_bersalin').addClass('active');
-            urlPage = 'rawatbersalin';
-            $('#pel_ri_active, #rawat_bersalin').addClass('active');
-            $('#pel_ri_open').addClass('menu-open');
-            $('#btn_hasil_pindah').attr('onclick', 'setRekamMedisHasilPindah(\'pindah_ri\',\'asesmen_hasil_pindah\')');
-            setRekamMedisHasilPindah('pindah_ri','');
-        }
-        if(kategoriRuangan == 'rr'){
-            $('#title-pages').text("Recovery Room");
-            $('#rr').addClass('active');
-            urlPage = 'recoveryroom';
-            $('#pel_ri_active, #rr').addClass('active');
-            $('#pel_ri_open').addClass('menu-open');
-        }
-        if(kategoriRuangan == 'hemodialisa'){
-            $('#title-pages').text("Hemodialisa");
-            $('#hemodialisa').addClass('active');
-            urlPage = 'hemodialisa';
-            $('#pel_ri_active, #hemodialisa').addClass('active');
-            $('#pel_ri_open').addClass('menu-open');
-        }
+      if(kategoriRuangan == 'rawat_inap'){
+         $('#title-pages').text("Rawat Inap Pasien");
+         $('#rawat_inap').addClass('active');
+         urlPage = 'rawatinap';
+         $('#pel_ri_active, #bayar_rawat_inap').addClass('active');
+         $('#pel_ri_open').addClass('menu-open');
+         $('#btn_hasil_pindah').attr('onclick', 'setRekamMedisHasilPindah(\'pindah_ri\',\'asesmen_hasil_pindah\')');
+         setRekamMedisHasilPindah('pindah_ri','');
+      }
+      if(kategoriRuangan == 'rawat_intensif'){
+         $('#title-pages').text("Rawat Intensif Pasien");
+         $('#rawat_intensif').addClass('active');
+         urlPage = 'rawatintensif';
+         $('#pel_ri_active, #rawat_intensif').addClass('active');
+         $('#pel_ri_open').addClass('menu-open');
+         $('#btn_hasil_pindah').attr('onclick', 'setRekamMedisHasilPindah(\'pindah_ri\',\'asesmen_hasil_pindah\')');
+         setRekamMedisHasilPindah('pindah_ri','');
+      }
+      if(kategoriRuangan == 'rawat_isolasi'){
+         $('#title-pages').text("Rawat Isolasi Pasien");
+         $('#rawat_isolasi').addClass('active');
+         urlPage = 'rawatisolasi';
+         $('#pel_ri_active, #rawat_isolasi').addClass('active');
+         $('#pel_ri_open').addClass('menu-open');
+         $('#btn_hasil_pindah').attr('onclick', 'setRekamMedisHasilPindah(\'pindah_ri\',\'asesmen_hasil_pindah\')');
+         setRekamMedisHasilPindah('pindah_ri','');
+      }
+      if(kategoriRuangan == 'kamar_operasi'){
+         $('#title-pages').text("Rawat Operasi Pasien");
+         $('#rawat_operasi').addClass('active');
+         urlPage = 'rawatoperasi';
+         $('#pel_ri_active, #rawat_operasi').addClass('active');
+         $('#pel_ri_open').addClass('menu-open');
+         $('#btn_hasil_pindah').attr('onclick', 'setRekamMedisHasilPindah(\'pindah_ok\',\'asesmen_hasil_pindah\')');
+         setRekamMedisHasilPindah('pindah_ok','');
+      }
+      if(kategoriRuangan == 'ruang_bersalin'){
+         $('#title-pages').text("Rawat Bersalin Pasien");
+         $('#rawat_bersalin').addClass('active');
+         urlPage = 'rawatbersalin';
+         $('#pel_ri_active, #rawat_bersalin').addClass('active');
+         $('#pel_ri_open').addClass('menu-open');
+         $('#btn_hasil_pindah').attr('onclick', 'setRekamMedisHasilPindah(\'pindah_ri\',\'asesmen_hasil_pindah\')');
+         setRekamMedisHasilPindah('pindah_ri','');
+      }
+      if(kategoriRuangan == 'rr'){
+         $('#title-pages').text("Recovery Room");
+         $('#rr').addClass('active');
+         urlPage = 'recoveryroom';
+         $('#pel_ri_active, #rr').addClass('active');
+         $('#pel_ri_open').addClass('menu-open');
+      }
+      if(kategoriRuangan == 'hemodialisa'){
+         $('#title-pages').text("Hemodialisa");
+         $('#hemodialisa').addClass('active');
+         urlPage = 'hemodialisa';
+         $('#pel_ri_active, #hemodialisa').addClass('active');
+         $('#pel_ri_open').addClass('menu-open');
+      }
 
-        listDokter();
-        listTindakan();
-        listDiagnosa();
-        listLab();
-        listObat();
-        listDiet();
-        listRuanganInap();
-        listResepPasien();
-        hitungStatusBiaya();
-        listICD9();
-        listMakananPendamping();
+      listDokter();
+      listTindakan();
+      listDiagnosa();
+      listLab();
+      listObat();
+      listDiet();
+      listRuanganInap();
+      listResepPasien();
+      hitungStatusBiaya();
+      listICD9();
+      listMakananPendamping();
 
-        $('#img_ktp').on('click', function(e){
-            e.preventDefault();
-            var src = $('#img_ktp').attr('src');
-            if(src != null && src != ""){
-                $('.mask').html('<div class="img-box"><img src="'+ src +'"><a class="close">&times;</a>');
+      $('#img_ktp').on('click', function(e){
+         e.preventDefault();
+         var src = $('#img_ktp').attr('src');
+         if(src != null && src != ""){
+            $('.mask').html('<div class="img-box"><img src="'+ src +'"><a class="close">&times;</a>');
 
-                $('.mask').addClass('is-visible fadein').on('animationend', function(){
-                    $(this).removeClass('fadein is-visible').addClass('is-visible');
-                });
-
-                $('.close').on('click', function(){
-                    $(this).parents('.mask').addClass('fadeout').on('animationend', function(){
-                        $(this).removeClass('fadeout is-visible')
-                    });
-                });
-            }
-        });
-
-        $('.carousel').carousel({
-            interval: false,
-            ride: false,
-            pause: false
-        });
-
-        var asalMasuk = $('.asal_masuk').length;
-        if(asalMasuk > 0){
-            CheckupAction.fistCheckup(noCheckup, {
-                callback: function (res) {
-                    if (res != '') {
-                        $('.asal_masuk').text(res);
-                    }
-                }
+            $('.mask').addClass('is-visible fadein').on('animationend', function(){
+               $(this).removeClass('fadein is-visible').addClass('is-visible');
             });
-        }
 
-        setTindakLanjut();
+            $('.close').on('click', function(){
+               $(this).parents('.mask').addClass('fadeout').on('animationend', function(){
+                  $(this).removeClass('fadeout is-visible')
+               });
+            });
+         }
+      });
 
-    });
+      $('.carousel').carousel({
+         interval: false,
+         ride: false,
+         pause: false
+      });
 
-    function loadModalRM(jenis, method, parameter, idRM, flag, flagHide, flagCheck) {
-        var context = contextPath + '/pages/modal/modal-default.jsp';
-        if (jenis != "") {
-            context = contextPath + '/pages/modal/modal-'+jenis+'.jsp';
-        }
-        $('#modal-temp').load(context, function (res, status, xhr) {
-            if(status == "success"){
-                var func = new Function(method+'(\''+parameter+'\', \''+idRM+'\', \''+flag+'\', \''+flagHide+'\', \''+flagCheck+'\')');
-                func();
+      var asalMasuk = $('.asal_masuk').length;
+      if(asalMasuk > 0){
+         CheckupAction.fistCheckup(noCheckup, {
+            callback: function (res) {
+               if (res != '') {
+                  $('.asal_masuk').text(res);
+               }
             }
-        });
-    }
+         });
+      }
 
-    function setRekamMedis() {
-        getListRekamMedis(kategoriRuangan, '', idDetailCheckup);
-    }
+      setTindakLanjut();
+
+   });
+
+
+   // Fahmi 2021-08-27, Tambah perhitungan discon kendaraan
+   function setDiskonKend(id) {
+      if (id != '') {
+         TindakanAction.initTindakan(id, function (res) {
+            if (res.idTindakan != '') {
+               var disk = 0;
+               var diskR = 0;
+               if (res.diskon != '' && res.diskon != null) {
+                  disk = res.diskon;
+               }
+               if (jenisPeriksaPasien == "bpjs") {
+                  diskR = res.tarifBpjs * disk / 100 ;
+                  $('#val_tarif').val("Rp. " + formatRupiahAtas(res.tarifBpjs));
+                  $('#h_tarif').val((res.tarifBpjs-diskR));
+
+               } else {
+                  diskR = res.tarif * disk / 100 ;
+                  $('#val_tarif').val("Rp. " + formatRupiahAtas(res.tarif));
+                  $('#h_tarif').val((res.tarif-diskR));
+
+               }
+
+               $('#val_diskon').val("Rp. " + formatRupiahAtas(diskR));
+               $('#h_val_diskon').val(diskR);
+
+               if(res.isElektif == 'Y')
+               {
+                  $("input[name='rawatInap.jumlah']").val("");
+                  $("input[name='rawatInap.jumlah']").show();
+               }
+               else
+               {
+                  $("input[name='rawatInap.jumlah']").val("1");
+                  $("input[name='rawatInap.jumlah']").hide();
+               }
+            }
+         });
+         var nama = $('#kend_jenazah option:selected').text();
+         $('#h_id_tindakan').val(id);
+         $('#h_nama_tindakan').val(nama);
+      }else{
+         $('#val_diskon').val('');
+         $('#val_tarif').val('');
+         $('#h_tarif').val('');
+         $('#h_id_tindakan').val('');
+         $('#h_nama_tindakan').val('');
+      }
+   }
+
+   function loadModalRM(jenis, method, parameter, idRM, flag, flagHide, flagCheck) {
+      var context = contextPath + '/pages/modal/modal-default.jsp';
+      if (jenis != "") {
+         context = contextPath + '/pages/modal/modal-'+jenis+'.jsp';
+      }
+      $('#modal-temp').load(context, function (res, status, xhr) {
+         if(status == "success"){
+            var func = new Function(method+'(\''+parameter+'\', \''+idRM+'\', \''+flag+'\', \''+flagHide+'\', \''+flagCheck+'\')');
+            func();
+         }
+      });
+   }
+
+   function setRekamMedis() {
+      getListRekamMedis(kategoriRuangan, '', idDetailCheckup);
+   }
 
 </script>
 

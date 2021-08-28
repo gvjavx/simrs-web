@@ -1380,6 +1380,7 @@
         dwr.engine.setAsync(true);
         CheckupAction.listDataPasien(idDCP, {
                 callback: function (res) {
+                   //console.log("=============1==>"+JSON.stringify(res));
                     if (res.idPasien != null) {
                         stopSpinner('t_', idDCP);
                         $('#kelas_kamar').html('');
@@ -1455,6 +1456,7 @@
                         $('#nik').html(res.noKtp);
                         $('#nama').html(res.nama);
                         $('#jenis_kelamin').html(jk);
+                        tglLahir = converterDate(new Date(res.tglLahir));
                         $('#tgl').html(res.tempatLahir + ", " + converterDate(new Date(res.tglLahir)));
                         $('#alamat').html(alamat);
                         $('#poli').html(res.namaPelayanan);

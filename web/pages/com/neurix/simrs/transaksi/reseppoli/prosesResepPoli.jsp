@@ -749,8 +749,12 @@
                                                                         </s:else>
                                                                     </div>
                                                                 </td>
-                                                                <td align="center"><span id='qtyAppove_racik_<s:property value="id"/>_<s:property value="idObat"/>'><s:property value="qtyApprove"/> <s:property value="jenisSatuan"/></span></td>
+                                                                <td align="center">
+                                                                    <input type="hidden" class="qty_obat_resep" value="<s:property value="qtyApprove"/>">
+                                                                    <span id='qtyAppove_racik_<s:property value="id"/>_<s:property value="idObat"/>'><s:property value="qtyApprove"/> <s:property value="jenisSatuan"/></span>
+                                                                </td>
                                                                 <td align="right">
+                                                                    <input type="hidden" class="harga_obat_resep" value="<s:property value="harga"/>">
                                                                     <script>
                                                                         var val = <s:property value="harga"/>;
                                                                         if (val != null && val != '') {
@@ -1643,7 +1647,7 @@
             })
         });
 
-        var jenisBiaya = $('.jenis_biaya');
+        var jenisBiaya = $('.h_jenis_biaya');
         var dataTambahan = [];
         if(jenisBiaya.length > 0){
             $.each(jenisBiaya, function (i, item) {
@@ -1857,29 +1861,37 @@
         });
     }
 
+    // Edited Fahmi 2021-08-26, Perubahan cara kerja.
     function addBiaya(){
         var id = $('.jenis_biaya').length;
+        var minus = 0;
         var label = 'biy_'+id;
         var inputId = 'biaya_'+id;
         var hInput = 'h_biaya_'+id;
         var total = 'total_biaya_'+id;
         var totalH = 'h_total_biaya_'+id;
         var idJumlah = 'jml_'+id;
-        var minus = id - 1;
+
+        if ($("#biaya_0").val() == "")
+        {
+           return false;
+        }
 
         var row = '<div class="row" id="'+label+'" style="margin-top: 7px">\n' +
             '<div class="col-md-3">\n' +
-            '<select style="width: 100%" class="form-control select2 jenis_biaya" id="jenis_'+id+'" onchange="setTarif(this.value)">\n' +
-            ' <option value="">[Select One]</option>\n' +
-            '</select>'+
+            '<input disabled class="form-control jenis_biaya" id="jenis_'+id+'" value="'+$('#jenis_'+minus).val().split("|")[5]+'" >\n' +
+            '<input type="hidden" class="h_jenis_biaya" value="'+$('#jenis_'+minus).val()+'" >\n' +
+            /*'<select style="width: 100%" class="form-control jenis_biaya" id="jenis_'+id+'" disabled="true" ">\n' +
+            ' <option value="">'+$('#jenis_'+minus+":selected").val()+'</option>\n' +
+            '</select>'+*/
             '</div>\n' +
             '<div class="col-md-3">\n' +
             '    <div class="input-group">\n' +
             '        <div class="input-group-addon">\n' +
             '            Rp.\n' +
             '        </div>\n' +
-            '        <input disabled class="form-control" id="'+inputId+'" oninput="convertRpResep(\''+inputId+'\', this.value, \''+hInput+'\'); setTotalBiaya(\''+inputId+'\', \''+totalH+'\', \''+total+'\', \''+idJumlah+'\')" placeholder="Biaya">\n' +
-            '        <input type="hidden" class="biaya" id="'+hInput+'">\n' +
+            '        <input disabled class="form-control" id="'+inputId+'" value="'+$("#biaya_0").val()+'" placeholder="Biaya">\n' +
+            '        <input type="hidden" class="biaya" id="'+hInput+'" value="'+$("#h_biaya_0").val()+'">\n' +
             '    </div>\n' +
             '</div>\n' +
             '<div class="col-md-2">\n' +
@@ -1892,31 +1904,35 @@
             '        <div class="input-group-addon">\n' +
             '            Rp.\n' +
             '        </div>\n' +
-            '        <input class="form-control total_biaya" id="'+total+'" disabled="disabled" placeholder="Total Biaya">\n' +
-            '        <input type="hidden" class="h_total_biaya" id="'+totalH+'">\n' +
+            '        <input class="form-control total_biaya" id="'+total+'" value="'+$("#biaya_0").val()+'" disabled="disabled" placeholder="Total Biaya">\n' +
+            '        <input type="hidden" class="h_total_biaya" id="'+totalH+'" value="'+$("#h_biaya_0").val()+'">\n' +
             '    </div>\n' +
             '</div>\n' +
             '<div class="col-md-1">\n' +
             '    <a onclick="delBiaya(\''+label+'\')" class="btn btn-danger" style="margin-left: -20px; margin-top: 1px"><i class="fa fa-trash"></i></a>\n' +
             '</div>\n' +
             '</div>';
-        var data = $('.jenis_biaya');
-        var temP = "";
+        var data = $('.h_jenis_biaya');
+        var temP = "'"+$('#jenis_'+minus).val().split("|")[0]+"'";
+
         if(data.length > 0){
             $.each(data, function (i, item) {
                 if(item.value != ''){
-                    if(temP != ''){
-                        temP = temP +", '"+item.value.split('|')[0]+"'";
-                    }else{
-                        temP = "'"+item.value.split('|')[0]+"'";
-                    }
+                   temP = temP +", '"+item.value.split('|')[0]+"'";
                 }
             });
         }
         $('#temp_biaya').append(row);
         $('.select2').select2();
-        $('#jenis_'+minus).attr('disabled', true);
-        getTindakanApotek(temP,'jenis_'+id);
+        // Clear Input
+        $("#biaya_0").val("");
+        $("#h_biaya_0").val("");
+        $("#total_biaya_0").val("");
+        $("#h_total_biaya_0").val("");
+
+       //$('#jenis_'+minus).attr('disabled', true);
+        getTindakanApotek(temP,'jenis_0');
+
     }
 
     function delBiaya(id){
@@ -1938,6 +1954,7 @@
         }
     }
 
+    // Edited Fahmi 2021-08-26, Perubahan cara kerja
     function setTotalBiaya(id, idTujuan, textTujuan, jumlah){
         var jml = $('#'+jumlah).val();
         $('#'+id).val(formatRupiahAtas2($('#'+id).val()));
@@ -2009,7 +2026,6 @@
         $('#belum_total_akhir_biaya').val(formatRupiahAtas(belumJumlah));
         $('#belum_h_total_akhir_biaya').val(belumJumlah);
 
-
     }
 
     function getTindakanApotek(idTindakan, id) {
@@ -2050,7 +2066,7 @@
                 total = tarifFix;
             }
             var iid = id - 1;
-            $('#biaya_'+iid).val(total).trigger('input');
+            $('#biaya_0').val(total).trigger('input');
         }
     }
 

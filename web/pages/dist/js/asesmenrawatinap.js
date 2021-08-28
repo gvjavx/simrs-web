@@ -4137,10 +4137,18 @@ function listCatatanPemberianObat() {
         var table = "";
         CatatanPemberianObatAction.getListCatatanPemberianObat(idDetailCheckup, jeniscpo, function (res) {
             if (res.length > 0) {
+                var grpdate = "";
                 var wawak = "";
                 $.each(res, function (i, item) {
                     var action = '';
                     var ttd = '';
+
+                    if(grpdate != converterDate(new Date(item.createdDate)))
+                    {
+                        grpdate = converterDate(new Date(item.createdDate));
+                        table += '<tr><td colspan="6"><b>' + converterDate(new Date(item.createdDate)) + '</b></td></tr>' ;
+                    }
+
                     if(wawak != item.waktu){
                         wawak = item.waktu;
                         action = '<i onclick="actionCPO(\''+item.idCatatanPemberianObat+'\', \''+item.waktu+'\')" class="fa fa-edit" style="font-size: 20px; cursor: pointer"></i>';

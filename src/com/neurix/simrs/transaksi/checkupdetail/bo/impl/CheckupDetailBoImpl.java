@@ -1551,6 +1551,41 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         return response;
     }
 
+    @Override
+    public CheckResponse saveSingleTindakan(HeaderCheckup bean) throws GeneralBOException {
+        logger.info("[CheckupDetailBoImpl.saveSingleTindakan] START <<<<<<<<");
+        CheckResponse response = new CheckResponse();
+
+        ItSimrsTindakanRawatEntity tindakanRawatEntity = new ItSimrsTindakanRawatEntity();
+        tindakanRawatEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+        tindakanRawatEntity.setIdTindakanRawat("TDR" + getNextTindakanRawatId());
+        tindakanRawatEntity.setIdTindakan(bean.getIdTindakan());
+        tindakanRawatEntity.setNamaTindakan(bean.getNamaTindakan());
+        tindakanRawatEntity.setIdDokter(bean.getIdDokter());
+        tindakanRawatEntity.setCreatedDate(bean.getCreatedDate());
+        tindakanRawatEntity.setCreatedWho(bean.getCreatedWho());
+        tindakanRawatEntity.setLastUpdate(bean.getLastUpdate());
+        tindakanRawatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+        tindakanRawatEntity.setFlag("Y");
+        tindakanRawatEntity.setAction("U");
+        tindakanRawatEntity.setApproveFlag("Y");
+        tindakanRawatEntity.setTarif(new BigInteger(bean.getTarif()));
+        tindakanRawatEntity.setQty(new BigInteger(bean.getQty()));
+        tindakanRawatEntity.setTarifTotal(tindakanRawatEntity.getTarif().multiply(tindakanRawatEntity.getQty()));
+        try {
+            tindakanRawatDao.addAndSave(tindakanRawatEntity);
+            response.setStatus("success");
+        }catch (Exception e){
+            response.setStatus("error");
+            response.setMessage("Error when update tindakan, Found Eror: " + e.getMessage());
+            logger.error("[TindakanRawatBoImpl.saveSingleTindakan] Error when add tindakan ", e);
+            throw new GeneralBOException("[TindakanRawatBoImpl.saveSingleTindakan] Error when add tindakan " + e.getMessage());
+        }
+
+        logger.info("[CheckupDetailBoImpl.saveSingleTindakan] END <<<<<<<<");
+        return response;
+    }
+
     protected List<ItSimrsTindakanRawatEntity> getListEntityTindakanRawat(TindakanRawat bean) throws GeneralBOException {
         logger.info("[TindakanRawatBoImpl.getListEntityTindakanRawat] Start >>>>>>>");
         List<ItSimrsTindakanRawatEntity> results = new ArrayList<>();
