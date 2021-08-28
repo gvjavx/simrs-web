@@ -47,6 +47,10 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
             if (mapCriteria.get("tipe_rekening_id")!=null) {
                 criteria.add(Restrictions.eq("tipeRekeningId", (String) mapCriteria.get("tipe_rekening_id")));
             }
+            // Fahmi 2021-07-25 penambahan filter untuk tipe coa.
+            if (mapCriteria.get("tipe_coa")!=null) {
+                criteria.add(Restrictions.eq("tipeCoa", (String) mapCriteria.get("tipe_coa")));
+            }
             if (mapCriteria.get("parent_id")!=null) {
                 criteria.add(Restrictions.eq("parentId", (String) mapCriteria.get("parent_id")));
             }

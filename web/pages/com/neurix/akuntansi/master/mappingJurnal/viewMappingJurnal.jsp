@@ -331,7 +331,7 @@
                 $.each(listdata, function (i, item) {
                     tmp_table += '<tr style="font-size: 12px;" ">' +
                         '<td align="center">' + (i + 1) + '</td>' +
-                        '<td align="left">' + formatBintangKodeRekening(item.kodeRekening)  + '</td>' +
+                        '<td align="left">' + formatBintangKodeRekening(item.kodeRekening) + '</td>' +
                         '<td align="center">' + item.kodeRekeningName + '</td>' +
                         '<td align="center">' + item.posisi + '</td>' +
                         '<td align="center">' + item.masterId+ '</td>' +

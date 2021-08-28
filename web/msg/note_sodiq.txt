@@ -2910,7 +2910,7 @@ ADD COLUMN is_pelayanan VARCHAR(1);
 - Penambahan Persetujuan Tindakan Medis / General Concent
 
 /=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
----------------------------------B E L U M - D I P R O D -------------------------------------------------------
+---------------------------------S U D A H - D I P R O D -------------------------------------------------------
 ------------------------------------- 06 07 2021 ---------------------------------------------------------------
 /=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
 
@@ -2929,7 +2929,96 @@ INSERT INTO im_func_roles VALUES
 ------------------------------------- 07 07 2021 ---------------------------------------------------------------
 /=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
 
+- Perbaikan Asesmen Poli Spesialis
+- Perbaikan Asesmen Rehab Medik
+- Perbaikan Asesmen Khusus Psikiatri
+- Penambahan Asesmen Pengkajian Resep
+- Penambahan Persetujuan Tindakan Medis / General Concent
 - Perbaikan Daftar Pasien BPJS IGD Tidak perlu memasukkan diagnosa di awal
 - Create SEP di pemeriksaan IGD untuk pasien BPJS
 
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+---------------------------------S U D A H - D I P R O D -------------------------------------------------------
+------------------------------------- 14 07 2021 ---------------------------------------------------------------
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
 
+ALTER TABLE im_simrs_kelas_ruangan
+ADD COLUMN id_kelas_bpjs VARCHAR(10);
+
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+--------------------------------- N O T E - P E R B A I K A N --------------------------------------------------
+------------------------------------- 15 07 2021 ---------------------------------------------------------------
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+
+- Perbaikan pindah kelas BPJS
+
+
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+--------------------------------- N O T E - P E R B A I K A N --------------------------------------------------
+------------------------------------- 19 07 2021 ---------------------------------------------------------------
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+
+- Perbaikan Validasi pendaftaran pasien online
+
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+--------------------------------- N O T E - P E R B A I K A N --------------------------------------------------
+------------------------------------- 30 07 2021 ---------------------------------------------------------------
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+
+- Perbaikan E-Tiket
+- Perbaikan Order Resep dan Copy Resep bisa edit Qty Obat
+- Perbaikan General Concent
+- Perbaikan Hak dan Kewajiaban Pasien
+- Perbaikan Pelepasan Informasi
+- Perbaikan Asesmen Awal Medis
+
+
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+---------------------------------B E L U M - D I P R O D -------------------------------------------------------
+------------------------------------- 09 08 2021 ---------------------------------------------------------------
+/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/=/=/=/=/=/=/=/=/=/=//=/=/=/=/
+
+ALTER TABLE im_simrs_kelas_ruangan
+ADD COLUMN id_kelas_bpjs VARCHAR(10);
+
+ALTER TABLE im_simrs_diagnosa
+ADD COLUMN is_warning VARCHAR(1);
+
+UPDATE im_simrs_diagnosa
+SET is_warning = 'Y'
+WHERE id_diagnosa IN ('B20','A16.2','A18','A19','B16.9');
+
+ALTER TABLE it_simrs_ringkasan_pasien
+ADD COLUMN no_checkup VARCHAR(50);
+
+<<<<<<< HEAD
+ALTER TABLE im_simrs_kelas_ruangan
+ADD COLUMN id_kelas_bpjs VARCHAR(10);
+
+
+=======
+>>>>>>> sodiq/editor
+UPDATE im_simrs_kelas_ruangan a
+SET id_kelas_bpjs = (
+	SELECT
+	b.kelas
+	FROM
+	(SELECT
+	CAST('KELAS 1' AS VARCHAR) as nama_kelas,
+	CAST('1' AS VARCHAR) as kelas
+	UNION ALL
+	SELECT
+	CAST('KELAS 2' AS VARCHAR) as nama_kelas,
+	CAST('2' AS VARCHAR) as kelas
+	UNION ALL
+	SELECT
+	CAST('KELAS 3' AS VARCHAR) as nama_kelas,
+	CAST('3' AS VARCHAR) as kelas) b
+	WHERE b.nama_kelas = a.nama_kelas_ruangan
+)
+WHERE a.kategori = 'rawat_inap'
+AND a.nama_kelas_ruangan ILIKE 'KELAS%';
+<<<<<<< HEAD
+=======
+
+>>>>>>> sodiq/editor

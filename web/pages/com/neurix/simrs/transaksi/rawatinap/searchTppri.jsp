@@ -222,7 +222,7 @@
                                     <tr bgcolor="#30d196">
                                         <td>No Checkup</td>
                                         <td>No RM</td>
-                                        <td>Nama</td>
+                                        <td width="20%">Nama</td>
                                         <td>Tanggal Masuk</td>
                                         <td align="center">Jenis Pasien</td>
                                         <td>Tindak Lanjut</td>
@@ -567,7 +567,7 @@
                         <div class="form-group" style="display: none" id="form-kamar">
                             <label class="col-md-3" style="margin-top: 10px"><span id="label_kamar"></span></label>
                             <div class="col-md-4">
-                                <select class="form-control select2" id="kamar" style="width: 100%">
+                                <select class="form-control select2" id="kamar" style="width: 100%" onchange="$('#ruang_pi').text($('#kamar option:selected').text())">
                                     <option value=''>[Select One]</option>
                                 </select>
                             </div>
@@ -1034,10 +1034,6 @@
                                     <td>Nama Pasien</td>
                                     <td><span id="det_nama_pasien"></span></td>
                                 </tr>
-                                <%--<tr>--%>
-                                    <%--<td>Ruangan</td>--%>
-                                    <%--<td><span id="det_ruangan"></span></td>--%>
-                                <%--</tr>--%>
                                 <tr>
                                     <td>Jenis Pasien</td>
                                     <td><span id="det_jenis_pasien"></span></td>
@@ -1085,9 +1081,20 @@
                     <div class="row">
                         <div class="col-md-12">
                             <p>Pasien dan atau wali diminta membaca, memahami, dan mengerti format berikutnya Yang bertanda tangan di bawah ini:</p>
-                            <p>Nama : <span id="nama_gc"></span></p>
-                            <p>Tanggal Lahir : <span id="tanggal_gc"></span></p>
-                            <p>Nomor RM : <span id="rm_gc"></span></p>
+                            <table class="table" style="font-size: 14px">
+                                <tr>
+                                    <td width="30%">Nama</td>
+                                    <td>: <span id="nama_gc"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Tanggal Lahir</td>
+                                    <td>: <span id="tanggal_gc"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Nomor RM</td>
+                                    <td>: <span id="rm_gc"></span></td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                     <hr>
@@ -1104,8 +1111,8 @@
                                             <li>Saya memiliki hak untuk menanyakan tentang pengobatan yang diusulkan termasuk identitas setiap orang yang memberikan atau mengamati pengobatan setiap saat</li>
                                             <li>Saya memiliki hak untuk persetujuan, atau menolak persetujuan untuk setiap prosedur atau terapi (injeksi, rawat luka, pemasangan gips, infus, pemeriksaan penunjang lain)</li>
                                         </ol>
-                                        <li>Privasi: Saya memberi kuasa kepada " + branchName + " untuk menjaga privasi dan kerahasiaan penyakit saya selama dalam perawatan</li>
-                                        <li>Rahasia Kedokteran: Saya setuju kepada " + branchName + " wajib menjamin rahasia kedokteran Saya baik untuk kepentingan perawatan atau pengobatan, pendidikan maupun penelitian, kecuali saya mengucapkan sendiri atau orang lain yang saya beri kuasa sebagai penjamin, Saya setuju untuk membuka rahasia kedokteran terkait dengan kondisi kesehatan, asuhan dan pengobatan yang saya terima kepada</li>
+                                        <li>Privasi: Saya memberi kuasa kepada <span class="branchName"></span> untuk menjaga privasi dan kerahasiaan penyakit saya selama dalam perawatan</li>
+                                        <li>Rahasia Kedokteran: Saya setuju kepada <span class="branchName"></span> wajib menjamin rahasia kedokteran Saya baik untuk kepentingan perawatan atau pengobatan, pendidikan maupun penelitian, kecuali saya mengucapkan sendiri atau orang lain yang saya beri kuasa sebagai penjamin, Saya setuju untuk membuka rahasia kedokteran terkait dengan kondisi kesehatan, asuhan dan pengobatan yang saya terima kepada</li>
                                         <ol type="a" style="margin-left: 17px">
                                             <li>Dokter atau tenaga kesehatan yang memberikan asuhan kesehatan kepada saya</li>
                                             <li>Perusahaan asuransi kesehatan BPJS atau perusahaan lainnya atau pihak lain yang menjamin pembiayaan saya</li>
@@ -1116,8 +1123,53 @@
                                     <ol type="a" style="margin-left: 17px">
                                         <li>Saya telah mengerti bahwa rumah sakit tidak bertanggung jawab atas semua kehilangan barang-barang milik saya, dan saya secara pribadi bertanggung jawab terhadap barang berharga yang saya miliki diantaranya uang, perhiasan, buku, cek, handphone, kartu kredit serta barang-barang berharga lainnya. dan apabila saya membutuhkan maka saya dapat menitipkan barang-barang saya kepada rumah sakit</li>
                                     </ol>
+                                    <li>Hak Pasien (Sesuai Permenkes No 4 Tahun 2018)</li>
+                                    <ol type="b" style="margin-left: 17px">
+                                        <li>Memperoleh informasi mengenai tata tertib dan peraturan yang berlaku di rumah sakit</li>
+                                        <li>Memperoleh informasi tentang hak dan kewajiban pasien</li>
+                                        <li>Memperoleh pelayanan yang manusiawi, adil, jujur, dan tanpa diskriminasi</li>
+                                        <li>Memperoleh layanan kesehatan yang bermutu sesuai dengan standar profesi dan prosedur operasional (SPO)</li>
+                                        <li>Memperoleh layanan yang efektif dan efisien sehingga pasien terhindar dari kerugian fisik</li>
+                                        <li>Mengajukan pengaduan atas kualitas pelayanan yang didapatkan</li>
+                                        <li>Memilih dokter dan kelas perawatan sesuai dengan keinginan dan peraturan yang berlaku di Rumah Sakit</li>
+                                        <li>Meminta konsultasi tentang penyakit yang dideritanya kepada dokter lain yang mempunyai surat izin praktek (SIP) baik didalam maupun diluar rumah sakit</li>
+                                        <li>Mendapatkan privasi dan kerahasiaan penyakit yang diderita termasuk data-data medisnya</li>
+                                        <li>Memberikan persetujuan atau menolak atas tindakan yang akan dilakukan oleh tenaga kesehatan terhadap penyakit yang dideritanya</li>
+                                        <li>Mendapatkan informasi yang meliputi diagnosis dan tata cara tindakan medis, tujuan tindakan medis,
+                                        alternatif tindakan, resiko dan komplikasi yang mungkin terjadi, dan prognosis terhadap tindakan yang
+                                        dilakukan serta perkiraan biaya pengobatan </li>
+                                        <li>Didampingi keluarga dalam keadaan kritis</li>
+                                        <li>Menjalankan ibadah sesuai agama atau kepercayaan yang dianutnya selama itu tidak mengganggu
+                                        pasien lainnya</li>
+                                        <li>Memperoleh keamanan dan keselamatan dirinya selama dalam perawatan di rumah sakit</li>
+                                        <li>Mengajukan usul, saran perbaikan atas perlakukan rumah sakit terhadap dirinya</li>
+                                        <li>Menolak bimbingan rohani yang tidak sesuai dengan agama dan kepercayaan yang dianutnya</li>
+                                        <li>Menggugat atau menuntut rumah sakit apabila rumah sakit diduga memberikan pelayanan yang tidak
+                                        sesuai dengan standart baik secara perdata maupun pidana</li>
+                                        <li>Mengeluhkan pelayanan rumah sakit yang tidak sesuai dengan stardar pelayanan melalui media</li>
+                                    </ol>
+                                    <li>Kewajiban Pasien dan Keluarga Pasien</li>
+                                    <ol type="b" style="margin-left: 17px">
+                                        <li>Mematuhi peraturan yang berlaku di <span class="branchName"></span></li>
+                                        <li>Menggunakan fasilitas <span class="branchName"></span> secara bertanggung jawab</li>
+                                        <li>Menghormati hask pasien lain, pengunjung dan hak tenaga kesehatan serta petugas lainnya yang
+                                        bekerja di rumah sakit</li>
+                                        <li>Memberikan informasi yang jujur, lengkap dan akurat sesuai dengan kemampuan tetang masalah
+                                        kesehatan</li>
+                                        <li>Memberikan informasi tentang kemampuan finansial dan jaminan kesehatan yang dimiliki</li>
+                                        <li>Mematuhi rencana terapi yang direkomendasikan oelh tenaga kesehatanan di rumah sakit dan di setujui
+                                        oleh pasien yang bersangkutan setelah mendapatkan penjelasan sesuai dengan ketentuan peraturan
+                                        perundang udangan</li>
+                                        <li>Menerima segala kesalahan atas keputusan pribadinya untuk menolak rencana terapi yang di
+                                        rekomendasikan oleh tenaga kesehatan dan/tidak mematuhi petunjuk yang diberikan oleh tenaga
+                                        kesehatan untuk penyembuhan penyakit atau masalah kesehatannya</li>
+                                        <li>Memberikan imbalan jasa atas pelayanan yang diterima</li>
+                                    </ol>
                                 </ol>
                             </ol>
+                            <p>Saya telah membaca dan sepenuhnya setuju dengan setiap pernyataan yang tersebut diatas dan
+                                menandatangani tanpa paksaan dan dengan kesadaran penuh
+                            </p>
                         </div>
                     </div>
                     <hr>
@@ -1153,6 +1205,101 @@
                 <button type="button" class="btn btn-success" id="save_ttd_concent"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_ttd_concent"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-pelepasan_info">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Pelepasan Informasi</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_pelepasan_info">
+                        <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                        <p id="msg_pelepasan_info"></p>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>Yang bertanda tangan di bawah ini:</p>
+                            <table class="table" style="font-size: 14px">
+                                <tr>
+                                    <td width="30%">Nama</td>
+                                    <td>: <span id="nama_pi"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Tanggal Lahir</td>
+                                    <td>: <span id="tanggal_pi"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Nomor RM</td>
+                                    <td>: <span id="rm_pi"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Ruang</td>
+                                    <td>: <span id="ruang_pi"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            Menginjinkan kepada yang namanya tersebut dibawah ini :
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 7px">
+                        <div class="col-md-6">
+                            <input class="form-control nama_pi" placeholder="Nama">
+                        </div>
+                        <div class="col-md-5">
+                            <input class="form-control hubungan_pi" placeholder="Hubungan Dengan Keluarga">
+                        </div>
+                        <div class="col-md-1">
+                           <button onclick="setPI()" class="btn btn-success" style="margin-left: -20px; margin-top: 1px"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div id="set_pi"></div>
+                    <hr>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-6 text-center">
+                                <label>Petugas</label>
+                                <canvas class="paint-canvas-ttd" id="ttd_pemberi_pi" width="220"
+                                        onmouseover="paintTtd('ttd_pemberi_pi')"></canvas>
+                                <input class="form-control" id="nama_pemberi_pi" placeholder="Petugas">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('ttd_pemberi_pi')"><i
+                                        class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <label>Yang menyatakan</label>
+                                <canvas class="paint-canvas-ttd" id="ttd_pasien_pi" width="220"
+                                        onmouseover="paintTtd('ttd_pasien_pi')"></canvas>
+                                <input class="form-control" id="nama_pasien_pi" placeholder="Yang menyatakan">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('ttd_pasien_pi')"><i
+                                        class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_pi"><i class="fa fa-check"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_pi"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -1328,9 +1475,9 @@
                         $('#modal-detail').modal({show: true, backdrop: 'static'});
                         namaPasien = res.nama;
 
-                        $('#nama_gc').text(namaPasien);
-                        $('#tanggal_gc').text(converterDate(new Date(res.tglLahir)));
-                        $('#rm_gc').text(idPsn);
+                        $('#nama_gc, #nama_pi').text(namaPasien);
+                        $('#tanggal_gc, #tanggal_pi').text(converterDate(new Date(res.tglLahir)));
+                        $('#rm_gc, #rm_pi').text(idPsn);
                     }
                 }
             });
@@ -1656,7 +1803,7 @@
     }
 
     function printPernyataan(kode, idRm, flag, namaRm) {
-        if(kode == "CK01"){
+        if("CK01" == kode){
             KeperawatanRawatJalanAction.getListAsesmenRawat(noCheckup, "general_concent", function (res) {
                 if(res.length > 0){
                     $('#tanya').text("Apakah anda yakin print ?");
@@ -1664,8 +1811,28 @@
                     $('#save_con_rm').attr('onclick', 'printPernyataanRM(\'' + kode + '\', \'' + idRm + '\')');
                     $('#modal-confirm-rm').modal('show');
                 }else{
+                    dwr.engine.setAsync(true);
+                    CheckupAction.getDataByKey(idDetailCheckup, "branch_name", {
+                        callback: function (res) {
+                            if (res != '') {
+                                $('.branchName').val(res);
+                            }
+                        }
+                    });
                     $('#save_ttd_concent').attr('onclick', 'saveResume(\'' + kode + '\', \'' + idRm + '\')');
                     $('#modal-ttd_concent').modal('show');
+                }
+            });
+        }else if("CK02" == kode){
+            KeperawatanRawatJalanAction.getListAsesmenRawat(noCheckup, "pelepasan_informasi", function (res) {
+                if (res.length > 0) {
+                    $('#tanya').text("Apakah anda yakin print ?");
+                    $('#print_form').text(namaRm);
+                    $('#save_con_rm').attr('onclick', 'printPernyataanRM(\'' + kode + '\', \'' + idRm + '\')');
+                    $('#modal-confirm-rm').modal('show');
+                }else{
+                    $('#save_pi').attr('onclick', 'savePI(\'' + kode + '\', \'' + idRm + '\')');
+                    $('#modal-pelepasan_info').modal('show');
                 }
             });
         }else{
@@ -1749,6 +1916,103 @@
             $('#modal-ttd_concent').scrollTop(0);
             $('#warning_ttd_concent').show().fadeOut(5000);
             $('#msg_ttd_concent').text("Silahkan cek kembali inputan dan TTD berikut...!");
+        }
+    }
+
+    function savePI(kode, idRm){
+        var data = [];
+        var ttd1 = document.getElementById('ttd_pasien_pi');
+        var ttd2 = document.getElementById('ttd_pemberi_pi');
+        var cek1 = isCanvasBlank(ttd1);
+        var cek2 = isCanvasBlank(ttd2);
+        var nama1 = $('#nama_pasien_pi').val();
+        var nama2 = $('#nama_pemberi_pi').val();
+
+        var namaKeluarga = $('.nama_pi');
+        var hubKeluarga = $('.hubungan_pi');
+
+        if(nama1 && nama2 != '' && !cek1 && !cek2){
+            var can1 = convertToDataURLAtas(ttd1);
+            var can2 = convertToDataURLAtas(ttd2);
+            $.each(namaKeluarga, function (i, item) {
+                if(item.value != '' && hubKeluarga[i].value != ''){
+                    data.push({
+                        'parameter': item.value,
+                        'jawaban': hubKeluarga[i].value,
+                        'keterangan': 'pelepasan_informasi',
+                        'jenis': 'pelepasan_informasi',
+                        'tipe': 'list_nama',
+                        'id_detail_checkup': idDetailCheckup,
+                        'no_checkup': noCheckup
+                    });
+                }
+            });
+            data.push({
+                'parameter': 'nama_ruangan',
+                'jawaban': $('#ruang_pi').text(),
+                'keterangan': 'pelepasan_informasi',
+                'jenis': 'pelepasan_informasi',
+                'id_detail_checkup': idDetailCheckup,
+                'no_checkup': noCheckup
+            });
+            data.push({
+                'parameter': 'nama_pasien',
+                'jawaban': nama1,
+                'keterangan': 'pelepasan_informasi',
+                'jenis': 'pelepasan_informasi',
+                'id_detail_checkup': idDetailCheckup,
+                'no_checkup': noCheckup
+            });
+            data.push({
+                'parameter': 'nama_pemberi',
+                'jawaban': nama2,
+                'keterangan': 'pelepasan_informasi',
+                'jenis': 'pelepasan_informasi',
+                'id_detail_checkup': idDetailCheckup,
+                'no_checkup': noCheckup
+            });
+            data.push({
+                'parameter': 'pasien',
+                'jawaban': can1,
+                'keterangan': 'pelepasan_informasi',
+                'jenis': 'pelepasan_informasi',
+                'tipe': 'ttd',
+                'id_detail_checkup': idDetailCheckup,
+                'no_checkup': noCheckup
+            });
+            data.push({
+                'parameter': 'pemberi',
+                'jawaban': can2,
+                'keterangan': 'pelepasan_informasi',
+                'jenis': 'pelepasan_informasi',
+                'tipe': 'ttd',
+                'id_detail_checkup': idDetailCheckup,
+                'no_checkup': noCheckup
+            });
+            var result = JSON.stringify(data);
+            $('#save_pi').hide();
+            $('#load_pi').show();
+            dwr.engine.setAsync(true);
+            KeperawatanRawatJalanAction.saveTtdResumenMeis(result, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#modal-pelepasan_info').modal('hide');
+                        $('#save_pi').show();
+                        $('#load_pi').hide();
+                        printPernyataanRM(kode, idRm);
+                    } else {
+                        $('#save_pi').show();
+                        $('#load_pi').hide();
+                        $('#modal-pelepasan_info').scrollTop(0);
+                        $('#warning_pelepasan_info').show().fadeOut(5000);
+                        $('#msg_pelepasan_info').text(res.msg);
+                    }
+                }
+            });
+        }else{
+            $('#modal-pelepasan_info').scrollTop(0);
+            $('#warning_pelepasan_info').show().fadeOut(5000);
+            $('#msg_pelepasan_info').text("Silahkan cek kembali inputan dan TTD berikut...!");
         }
     }
 
@@ -2206,7 +2470,6 @@
 
             }
         });
-
     }
 
     function cancelPeriksa(idDetailCHeckup, tipe){
@@ -2268,6 +2531,29 @@
             $('#warning_cancel').show().fadeOut(5000);
             $('#msg_cancel').text("Silahkan masukkan alasan pasien...!");
         }
+    }
+
+    function setPI(){
+        var count = $('.nama_pi').length;
+        var idRow = 'row_pi_'+count;
+
+        var set = '<div class="row" id="'+idRow+'" style="margin-top: 7px">\n' +
+            '<div class="col-md-6">\n' +
+            '    <input class="form-control nama_pi" placeholder="Nama">\n' +
+            '</div>\n' +
+            '<div class="col-md-5">\n' +
+            '    <input class="form-control hubungan_pi" placeholder="Hubungan Dengan Keluarga">\n' +
+            '</div>\n' +
+            '<div class="col-md-1">\n' +
+            '   <button onclick="delPI(\''+idRow+'\')" class="btn btn-danger" style="margin-left: -20px; margin-top: 1px"><i class="fa fa-plus"></i></button>\n' +
+            '</div>\n' +
+            '</div>';
+
+        $('#set_pi').append(set);
+    }
+
+    function delPI(id){
+        $('#'+id).remove();
     }
 
 </script>

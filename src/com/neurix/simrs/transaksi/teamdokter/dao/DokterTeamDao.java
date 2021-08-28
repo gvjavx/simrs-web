@@ -41,6 +41,9 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
             if (mapCriteria.get("kategori")!=null) {
                 criteria.add(Restrictions.eq("kategori", (String) mapCriteria.get("kategori")));
             }
+            if (mapCriteria.get("flagApprove")!=null){
+                criteria.add(Restrictions.eq("flagApprove",mapCriteria.get("flagApprove")));
+            }
         }
 
         criteria.add(Restrictions.eq("flag", "Y"));

@@ -802,8 +802,7 @@ public class PeriksaLabAction extends BaseTransactionAction {
                     if ("Y".equalsIgnoreCase(keterangan)) {
                         if ("success".equalsIgnoreCase(response.getStatus())) {
                             CheckupDetailAction detailAction = new CheckupDetailAction();
-                            CrudResponse res = new CrudResponse();
-                            res = detailAction.closeTraksaksiPasien(dataJustLab);
+                            CrudResponse res = detailAction.closeTraksaksiPasien(dataJustLab);
                             if ("success".equalsIgnoreCase(res.getStatus())) {
                                 response.setStatus("success");
                                 response.setMessage("Berhasil");

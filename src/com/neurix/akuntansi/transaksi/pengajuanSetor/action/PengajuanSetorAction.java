@@ -1,6 +1,7 @@
 package com.neurix.akuntansi.transaksi.pengajuanSetor.action;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.akuntansi.transaksi.billingSystem.model.MappingDetail;
 import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.akuntansi.transaksi.pengajuanSetor.bo.PengajuanSetorBo;
 import com.neurix.akuntansi.transaksi.pengajuanSetor.bo.impl.PengajuanSetorBoImpl;
@@ -18,6 +19,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import javax.swing.*;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -367,6 +369,7 @@ public class PengajuanSetorAction extends BaseMasterAction {
         List<PengajuanSetorDetail> pengajuanSetorDetailPayrollList = pengajuanSetorBoProxy.listPPhPayroll(addPengajuanSetor);
         List<PengajuanSetorDetail> pengajuanSetorDetailKsoList = pengajuanSetorBoProxy.listPPh21KsoDokter(addPengajuanSetor);
         List<PengajuanSetorDetail> pengajuanSetorDetailPengajuanList = pengajuanSetorBoProxy.listPPh21Pengajuan(addPengajuanSetor);
+//        List<PengajuanSetorDetail> pengajuanSetorJasaList = pengajuanSetorBoProxy.listPPh21Jasa(addPengajuanSetor);
 
         //melakukan total payroll
         for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorDetailPayrollList){
@@ -382,6 +385,11 @@ public class PengajuanSetorAction extends BaseMasterAction {
         for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorDetailPengajuanList){
             resultPengajuanSetor.setJumlahPph21Pengajuan(resultPengajuanSetor.getJumlahPph21Pengajuan().add(pengajuanSetorDetail.getJumlah()));
         }
+
+//        //melakukan total pengajuan jasa
+//        for (PengajuanSetorDetail pengajuanSetorDetail : pengajuanSetorJasaList){
+//            resultPengajuanSetor.setJumlahPph21Pengajuan(resultPengajuanSetor.getJumlahPph21Pengajuan().add(pengajuanSetorDetail.getJumlah()));
+//        }
 
         resultPengajuanSetor.setJumlahSeluruhnya(resultPengajuanSetor.getJumlahPph21Payroll().add(resultPengajuanSetor.getJumlahPph21Kso()).add(resultPengajuanSetor.getJumlahPph21Pengajuan()));
 
@@ -1518,16 +1526,16 @@ public class PengajuanSetorAction extends BaseMasterAction {
         List<Branch> branchesList = branchBo.getAll();
         List<Branch> branchNew = new ArrayList<>();
 
-        Branch datanew = new Branch();
-        datanew.setBranchName("RS Gatoel");
-        datanew.setBranchId("RS01");
-        branchNew.add(datanew);
+//        Branch datanew = new Branch();
+//        datanew.setBranchName("RS Gatoel");
+//        datanew.setBranchId("RS01");
+//        branchNew.add(datanew);
 
-//        for (Branch branch : branchesList ){
-//            if (!CommonConstant.BRANCH_KP.equalsIgnoreCase(branch.getBranchId())){
-//                branchNew.add(branch);
-//            }
-//        }
+        for (Branch branch : branchesList ){
+            if (!CommonConstant.BRANCH_KP.equalsIgnoreCase(branch.getBranchId())){
+                branchNew.add(branch);
+            }
+        }
 
         try {
             String buktiJurnal5 = "";
@@ -1565,18 +1573,43 @@ public class PengajuanSetorAction extends BaseMasterAction {
                 if ("".equalsIgnoreCase(buktiJurnal5)){
                     buktiJurnal5=jurnalRkPpnKeluaran.getSumber();
                 }
-                Map dataKeluaran = (Map) dataRkPpnKeluaran.get("ppn_keluaran");
-                totalKeluaranJurnal5 = totalKeluaranJurnal5.add((BigDecimal) dataKeluaran.get("nilai"));
+
+                // Sebelum :
+                //Map dataKeluaran = (Map) dataRkPpnKeluaran.get("ppn_keluaran");
+                //totalKeluaranJurnal5 = totalKeluaranJurnal5.add((BigDecimal) dataKeluaran.get("nilai"));
+                // END
+
+                // 2021-07-26 Sigit, Perubahan Pengambilan Total;
+                List<MappingDetail> dataKeluaran = (List<MappingDetail>) dataRkPpnKeluaran.get("ppn_keluaran");
+                for (MappingDetail mapDataKeluaran : dataKeluaran){
+                    totalKeluaranJurnal5 = totalKeluaranJurnal5.add(mapDataKeluaran.getNilai());
+                }
+                // END
 
                 // jurnal 6 > RK dijadikan ppn masukan
                 Map dataRkPpnMasukan = pengajuanSetorBo.getBillingForPostingRkPpnMasukan(branch.getBranchId(),dataPpnMasukanRk,buktiJurnal6);
                 String keteranganJurnal6 = "RK dijadikan ppn masukan pada periode bulan "+bulan+" tahun "+tahun+" unit : "+branch.getBranchName();
                 Jurnal jurnalRkPpnMasukan = billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_RK_DIJADIKAN_PPN_MASUKAN,dataRkPpnMasukan,CommonConstant.BRANCH_KP,keteranganJurnal6,"Y");
                 if ("".equalsIgnoreCase(buktiJurnal6)){
-                    buktiJurnal6=jurnalRkPpnKeluaran.getSumber();
+
+                    // Sebelum :
+                    // buktiJurnal6=jurnalRkPpnKeluaran.getSumber(); //kenapa mengambil sumber dari erk ppn keluaran ?
+                    // END
+
+                    buktiJurnal6 = jurnalRkPpnMasukan.getSumber();
                 }
-                Map dataMasukan = (Map) dataRkPpnMasukan.get("ppn_masukan");
-                totalMasukanJurnal6 = totalMasukanJurnal6.add((BigDecimal) dataMasukan.get("nilai"));
+
+                // Sebelum :
+                // Map dataMasukan = (Map) dataRkPpnMasukan.get("ppn_masukan");
+                // totalMasukanJurnal6 = totalMasukanJurnal6.add((BigDecimal) dataMasukan.get("nilai"));
+                // END
+
+                // 2021-07-26 Sigit, Perubahan Pengambilan Total;
+                List<MappingDetail> dataMasukan = (List<MappingDetail>) dataRkPpnMasukan.get("ppn_masukan");
+                for (MappingDetail mapDataMasukan : dataMasukan){
+                    totalMasukanJurnal6 = totalMasukanJurnal6.add(mapDataMasukan.getNilai());
+                }
+                // END
             }
 
             // jurnal 7 > pengurang ppn keluaran
@@ -1586,10 +1619,30 @@ public class PengajuanSetorAction extends BaseMasterAction {
 
             // jurnal 8 > pembayaran ppn keluaran
             String keteranganJurnal8 = "pembayaran ppn keluaran pada periode bulan "+bulan+" tahun "+tahun;
-            Map piutangPpnKeluaran = (Map) dataPengurangPpnKeluaran.get("piutang_ppn_keluaran");
-            BigDecimal piutangPajakKeluaran = (BigDecimal) piutangPpnKeluaran.get("nilai");
-            Map ppnKeluaranJurnal7 = (Map) dataPengurangPpnKeluaran.get("ppn_keluaran");
-            BigDecimal nilaiPpnKeluaranJurnal7 = (BigDecimal) ppnKeluaranJurnal7.get("nilai");
+
+            // Sebelum :
+//            Map piutangPpnKeluaran = (Map) dataPengurangPpnKeluaran.get("piutang_ppn_keluaran");
+//            BigDecimal piutangPajakKeluaran = (BigDecimal) piutangPpnKeluaran.get("nilai");
+//            Map ppnKeluaranJurnal7 = (Map) dataPengurangPpnKeluaran.get("ppn_keluaran");
+//            BigDecimal nilaiPpnKeluaranJurnal7 = (BigDecimal) ppnKeluaranJurnal7.get("nilai");
+            // END
+
+            // 2021-07-26 Sigit, Perubahan Pengambilan Total;
+            BigDecimal piutangPajakKeluaran = new BigDecimal(0);
+            BigDecimal nilaiPpnKeluaranJurnal7 = new BigDecimal(0);
+
+            List<MappingDetail> piutangPpnKeluaran = (List<MappingDetail>) dataPengurangPpnKeluaran.get("piutang_ppn_keluaran");
+            for (MappingDetail mapPiutang : piutangPpnKeluaran){
+                piutangPajakKeluaran = piutangPajakKeluaran.add(mapPiutang.getNilai());
+            }
+
+            List<MappingDetail> ppnKeluaranJurnal7 = (List<MappingDetail>) dataPengurangPpnKeluaran.get("ppn_keluaran");
+            for (MappingDetail mapPPN : ppnKeluaranJurnal7){
+                nilaiPpnKeluaranJurnal7 = nilaiPpnKeluaranJurnal7.add(mapPPN.getNilai());
+            }
+            // END
+
+
             BigDecimal sisaPpnKeluaran = totalKeluaranJurnal5.subtract(nilaiPpnKeluaranJurnal7);
             if (piutangPajakKeluaran.compareTo(BigDecimal.ZERO)==0){
                 Map dataPembayaranPpnKeluaran = pengajuanSetorBo.getBillingForPostingPembayaranPpnKeluaran(bulan,tahun,sisaPpnKeluaran,buktiJurnal5,kas);

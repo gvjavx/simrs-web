@@ -204,7 +204,7 @@
                             <tr bgcolor="#90ee90">
                                 <td>No Checkup</td>
                                 <td>NO RM</td>
-                                <td>Nama</td>
+                                <td width="20%">Nama</td>
                                 <td>Umur</td>
                                 <td>Penanggung Jawab</td>
                                 <td>Tanggal Masuk</td>

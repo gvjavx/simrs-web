@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface RekananOpsBo {
     public List<RekananOps> getByCriteria(RekananOps bean)throws GeneralBOException;
-    public CrudResponse saveAdd(RekananOps bean) throws GeneralBOException;
+    public RekananOps saveAdd(RekananOps bean) throws GeneralBOException;
     public CrudResponse saveEdit(RekananOps bean) throws GeneralBOException;
     public CrudResponse saveDelete(RekananOps bean) throws GeneralBOException;
     public RekananOps getDetailRekananOps(String id, String branchId) throws GeneralBOException;

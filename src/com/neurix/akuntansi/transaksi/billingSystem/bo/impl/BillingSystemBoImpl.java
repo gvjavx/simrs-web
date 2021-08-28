@@ -57,6 +57,7 @@ import com.neurix.simrs.master.obat.dao.ObatDao;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienSementaraEntity;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
@@ -553,6 +554,11 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                                             listOfJurnalDetail.add(itemJurnalDetailEntity);
 
                                         } else { //selain kas
+
+                                            if ("metode_bayar".equalsIgnoreCase(parameterCoa)){
+                                                coa         = itemMappingDetail.getCoa();
+                                                metodeBayar = itemMappingDetail.getMetodeBayar();
+                                            }
 
                                             itemJurnalDetailEntity.setNoJurnal(noJurnal);
                                             itemJurnalDetailEntity.setJurnalDetailId(jurnalDetailId);
@@ -1160,6 +1166,7 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
             String idJenisPeriksaPasien = "";
             String idDetailCheckup = "";
+            String idTransaksi = pembayaranEntity.getId();
 
             if (antrianTelemedicEntity != null){
 
@@ -1184,19 +1191,24 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
                     // mendapatkan data pasien;
                     ImSimrsPasienEntity pasienEntity = pasienBo.getPasienById(antrianTelemedicEntity.getIdPasien());
-                    if (pasienEntity != null){
 
-                        headerCheckup.setNama(pasienEntity.getNama());
-                        headerCheckup.setJenisKelamin(pasienEntity.getJenisKelamin());
-                        headerCheckup.setNoKtp(pasienEntity.getNoKtp());
-                        headerCheckup.setTempatLahir(pasienEntity.getTempatLahir());
-                        headerCheckup.setTglLahir(new java.sql.Date(pasienEntity.getTglLahir().getTime()));
-                        headerCheckup.setDesaId(pasienEntity.getDesaId());
-                        headerCheckup.setJalan(pasienEntity.getJalan());
-                        headerCheckup.setSuku(pasienEntity.getSuku());
-                        headerCheckup.setAgama(pasienEntity.getAgama());
-                        headerCheckup.setProfesi(pasienEntity.getProfesi());
-                        headerCheckup.setNoTelp(pasienEntity.getNoTelp());
+                    ImSimrsPasienSementaraEntity pasienSementaraEntity = null;
+                    if (pasienEntity == null)
+                        pasienSementaraEntity = telemedicBo.getPasienSementaraById(antrianTelemedicEntity.getIdPasien());
+
+                    if (pasienEntity != null || pasienSementaraEntity != null){
+
+                        headerCheckup.setNama(pasienEntity == null ? pasienSementaraEntity.getNama() : pasienEntity.getNama());
+                        headerCheckup.setJenisKelamin(pasienEntity == null ? pasienSementaraEntity.getJenisKelamin() : pasienEntity.getJenisKelamin());
+                        headerCheckup.setNoKtp(pasienEntity == null ? pasienSementaraEntity.getNoKtp() : pasienEntity.getNoKtp());
+                        headerCheckup.setTempatLahir(pasienEntity == null ? pasienSementaraEntity.getTempatLahir() : pasienEntity.getTempatLahir());
+                        headerCheckup.setTglLahir(pasienEntity == null ? pasienSementaraEntity.getTglLahir() : new java.sql.Date(pasienEntity.getTglLahir().getTime()));
+                        headerCheckup.setDesaId(pasienEntity == null ? new BigInteger(pasienSementaraEntity.getDesaId().toString()) : pasienEntity.getDesaId());
+                        headerCheckup.setJalan(pasienEntity == null ? pasienSementaraEntity.getJalan() : pasienEntity.getJalan());
+                        headerCheckup.setSuku(pasienEntity == null ? pasienSementaraEntity.getSuku() : pasienEntity.getSuku());
+                        headerCheckup.setAgama(pasienEntity == null ? pasienSementaraEntity.getAgama() : pasienEntity.getAgama());
+                        headerCheckup.setProfesi(pasienEntity == null ? pasienSementaraEntity.getProfesi() : pasienEntity.getProfesi());
+                        headerCheckup.setNoTelp(pasienEntity == null ? pasienSementaraEntity.getNoTelp() : pasienEntity.getNoTelp());
                         headerCheckup.setIdJenisPeriksaPasien(idJenisPeriksaPasien);
                         headerCheckup.setFlag("Y");
                         headerCheckup.setAction("C");
@@ -1204,16 +1216,17 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                         headerCheckup.setCreatedWho(userLogin);
                         headerCheckup.setLastUpdate(time);
                         headerCheckup.setLastUpdateWho(userLogin);
-                        headerCheckup.setJenisKunjungan("Lama");
+                        headerCheckup.setJenisKunjungan(pasienEntity != null ? "Lama" : "Baru");
                         headerCheckup.setIdPelayanan(antrianTelemedicEntity.getIdPelayanan());
                         headerCheckup.setStatusPeriksa("3");
-                        headerCheckup.setStTglLahir(pasienEntity.getTglLahir().toString());
+                        headerCheckup.setStTglLahir(pasienEntity == null ? pasienSementaraEntity.getTglLahir().toString() : pasienEntity.getTglLahir().toString());
                         headerCheckup.setMetodePembayaran("non_tunai");
                         headerCheckup.setIdAntrianOnline(antrianTelemedicEntity.getId());
-                        headerCheckup.setIdTransaksiOnline(pembayaranEntity.getId());
+                        headerCheckup.setIdTransaksiOnline(idTransaksi);
                         headerCheckup.setNoCheckup(noCheckup);
                         headerCheckup.setBranchId(branchId);
                         headerCheckup.setIdPasien(antrianTelemedicEntity.getIdPasien());
+                        headerCheckup.setIsPasienSementara(pasienEntity == null ? "Y" : "N");
 
                         if ("asuransi".equalsIgnoreCase(antrianTelemedicEntity.getIdJenisPeriksaPasien())){
                             headerCheckup.setIdAsuransi(antrianTelemedicEntity.getIdAsuransi());
@@ -1292,19 +1305,24 @@ public class BillingSystemBoImpl implements BillingSystemBo {
 
                     // mendapatkan data pasien;
                     ImSimrsPasienEntity pasienEntity = pasienBo.getPasienById(antrianTelemedicEntity.getIdPasien());
-                    if (pasienEntity != null){
 
-                        headerCheckup.setNama(pasienEntity.getNama());
-                        headerCheckup.setJenisKelamin(pasienEntity.getJenisKelamin());
-                        headerCheckup.setNoKtp(pasienEntity.getNoKtp());
-                        headerCheckup.setTempatLahir(pasienEntity.getTempatLahir());
-                        headerCheckup.setTglLahir(new java.sql.Date(pasienEntity.getTglLahir().getTime()));
-                        headerCheckup.setDesaId(pasienEntity.getDesaId());
-                        headerCheckup.setJalan(pasienEntity.getJalan());
-                        headerCheckup.setSuku(pasienEntity.getSuku());
-                        headerCheckup.setAgama(pasienEntity.getAgama());
-                        headerCheckup.setProfesi(pasienEntity.getProfesi());
-                        headerCheckup.setNoTelp(pasienEntity.getNoTelp());
+                    ImSimrsPasienSementaraEntity pasienSementaraEntity = null;
+                    if (pasienEntity == null)
+                        pasienSementaraEntity = telemedicBo.getPasienSementaraById(antrianTelemedicEntity.getIdPasien());
+
+                    if (pasienEntity != null || pasienSementaraEntity != null){
+
+                        headerCheckup.setNama(pasienEntity == null ? pasienSementaraEntity.getNama() : pasienEntity.getNama());
+                        headerCheckup.setJenisKelamin(pasienEntity == null ? pasienSementaraEntity.getJenisKelamin() : pasienEntity.getJenisKelamin());
+                        headerCheckup.setNoKtp(pasienEntity == null ? pasienSementaraEntity.getNoKtp() : pasienEntity.getNoKtp());
+                        headerCheckup.setTempatLahir(pasienEntity == null ? pasienSementaraEntity.getTempatLahir() : pasienEntity.getTempatLahir());
+                        headerCheckup.setTglLahir(pasienEntity == null ? pasienSementaraEntity.getTglLahir() : new java.sql.Date(pasienEntity.getTglLahir().getTime()));
+                        headerCheckup.setDesaId(pasienEntity == null ? new BigInteger(pasienSementaraEntity.getDesaId().toString()) : pasienEntity.getDesaId());
+                        headerCheckup.setJalan(pasienEntity == null ? pasienSementaraEntity.getJalan() : pasienEntity.getJalan());
+                        headerCheckup.setSuku(pasienEntity == null ? pasienSementaraEntity.getSuku() : pasienEntity.getSuku());
+                        headerCheckup.setAgama(pasienEntity == null ? pasienSementaraEntity.getAgama() : pasienEntity.getAgama());
+                        headerCheckup.setProfesi(pasienEntity == null ? pasienSementaraEntity.getProfesi() : pasienEntity.getProfesi());
+                        headerCheckup.setNoTelp(pasienEntity == null ? pasienSementaraEntity.getNoTelp() : pasienEntity.getNoTelp());
                         headerCheckup.setIdJenisPeriksaPasien(idJenisPeriksaPasien);
                         headerCheckup.setFlag("Y");
                         headerCheckup.setAction("C");
@@ -1312,17 +1330,18 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                         headerCheckup.setCreatedWho(userLogin);
                         headerCheckup.setLastUpdate(time);
                         headerCheckup.setLastUpdateWho(userLogin);
-                        headerCheckup.setJenisKunjungan("Lama");
+                        headerCheckup.setJenisKunjungan(pasienEntity != null ? "Lama" : "Baru");
                         headerCheckup.setIdPelayanan(antrianTelemedicEntity.getIdPelayanan());
                         headerCheckup.setStatusPeriksa("3");
-                        headerCheckup.setStTglLahir(pasienEntity.getTglLahir().toString());
+                        headerCheckup.setStTglLahir(pasienEntity == null ? pasienSementaraEntity.getTglLahir().toString() : pasienEntity.getTglLahir().toString());
                         headerCheckup.setMetodePembayaran("non_tunai");
                         headerCheckup.setIdAntrianOnline(antrianTelemedicEntity.getId());
-                        headerCheckup.setIdTransaksiOnline(pembayaranEntity.getId());
+                        headerCheckup.setIdTransaksiOnline(idTransaksi);
                         headerCheckup.setNoCheckup(noCheckup);
                         headerCheckup.setBranchId(branchId);
                         headerCheckup.setIdPasien(antrianTelemedicEntity.getIdPasien());
                         headerCheckup.setTglKeluar(time);
+                        headerCheckup.setIsPasienSementara(pasienEntity == null ? "Y" : "N");
 
                         if ("asuransi".equalsIgnoreCase(antrianTelemedicEntity.getIdJenisPeriksaPasien())){
                             headerCheckup.setIdAsuransi(antrianTelemedicEntity.getIdAsuransi());
@@ -1343,6 +1362,11 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                         tindakans.add(tindakan);
 
                         headerCheckup.setTindakanList(tindakans);
+                    }
+
+                    if (headerCheckup == null || headerCheckup.getIdJenisPeriksaPasien() == null){
+                        logger.error("[VerifikatorPembayaranAction.approveTransaksi] ERROR. tidak ditemukan jenis transaksi / data transaksi.");
+                        throw new GeneralBOException("[VerifikatorPembayaranAction.approveTransaksi] ERROR. tidak ditemukan jenis transaksi / data transaksi.");
                     }
 
                     try {
@@ -3891,6 +3915,9 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                 mapPiutang.setMasterId(masterId);
             }
 
+            List<MappingDetail> listOfMapPiutang = new ArrayList<>();
+            listOfMapPiutang.add(mapPiutang);
+
             List<MappingDetail> listOfMapTindakan = new ArrayList<>();
             List<String> listOfKeteranganRiwayat = riwayatTindakanBo.getListKeteranganByIdDetailCheckup(bean.getIdDetailCheckup());
             if (listOfKeteranganRiwayat.size() > 0){
@@ -3920,7 +3947,8 @@ public class BillingSystemBoImpl implements BillingSystemBo {
                     }
                 }
 
-                mapJurnal.put("piutang_transistoris_pasien_rawat_inap", mapPiutang);
+
+                mapJurnal.put("piutang_transistoris_pasien_rawat_inap", listOfMapPiutang);
                 mapJurnal.put("pendapatan_rawat_inap", listOfMapTindakan);
 
                 String catatan = "Transitoris Rawat Inap saat tutup periode "+jenisPasien;
@@ -4162,12 +4190,12 @@ public class BillingSystemBoImpl implements BillingSystemBo {
             }
 
             // tutup period dan generate saldo bulan lalu transaksi RS, sigit
-            try {
-                tutupPeriodBo.saveUpdateTutupPeriod(tutupPeriod);
-            } catch (GeneralBOException e){
-                logger.error("[TutupPeriodAction.saveTutupPeriod] ERROR when create tutup periode. ", e);
-                throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create tutup periode. "+e);
-            }
+//            try {
+//                tutupPeriodBo.saveUpdateTutupPeriod(tutupPeriod);
+//            } catch (GeneralBOException e){
+//                logger.error("[TutupPeriodAction.saveTutupPeriod] ERROR when create tutup periode. ", e);
+//                throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create tutup periode. "+e);
+//            }
         }
 
 
@@ -4208,61 +4236,61 @@ public class BillingSystemBoImpl implements BillingSystemBo {
         }
 
         // create saldo bulan lalu pada transaksi stok;
-        Map hsCriteria = new HashMap();
-        hsCriteria.put("branch_id", tutupPeriod.getUnit());
-        hsCriteria.put("in_pelayanan_medic", "Y");
-        hsCriteria.put("flag", "Y");
-
-
-        Pelayanan ply = new Pelayanan();
-        ply.setBranchId(tutupPeriod.getUnit());
-        ply.setFlag("Y");
-        List<Pelayanan> pelayananEntities = pelayananDao.getListObjectPelayanan(ply);
-        if (pelayananEntities.size() > 0){
-            for (Pelayanan pelayananEntity : pelayananEntities){
-
-                // pelayanan selain gudang obat;
-                if (!"gudang_obat".equalsIgnoreCase(pelayananEntity.getTipePelayanan())){
-                    List<String> idObats = obatPoliDao.getIdObatGroup(pelayananEntity.getIdPelayanan(), tutupPeriod.getUnit());
-                    if (idObats.size() > 0){
-                        for (String idObat : idObats){
-
-                            // generate saldo bulan lalu (bulan ini) untuk bulan depan
-                            generateAndSaveCurrentSaldoPersediaanToNextMonth(
-                                    tutupPeriod.getUnit(),
-                                    idObat,
-                                    Integer.valueOf(tutupPeriod.getBulan()),
-                                    Integer.valueOf(tutupPeriod.getTahun()),
-                                    pelayananEntity.getIdPelayanan(),
-                                    tutupPeriod.getLastUpdateWho(),
-                                    tutupPeriod.getLastUpdate(),
-                                    ""
-                                    );
-                        }
-                    }
-                } else {
-
-                    // untuk pelayanan gudang obat;
-                    List<String> idObats = obatDao.getListIdObatGroupByBranchId(tutupPeriod.getUnit());
-                    if (idObats.size() > 0){
-                        for (String idObat : idObats){
-
-                            // generate saldo bulan lalu (bulan ini) untuk bulan depan
-                            generateAndSaveCurrentSaldoPersediaanToNextMonth(
-                                    tutupPeriod.getUnit(),
-                                    idObat,
-                                    Integer.valueOf(tutupPeriod.getBulan()),
-                                    Integer.valueOf(tutupPeriod.getTahun()),
-                                    pelayananEntity.getIdPelayanan(),
-                                    tutupPeriod.getLastUpdateWho(),
-                                    tutupPeriod.getLastUpdate(),
-                                    ""
-                            );
-                        }
-                    }
-                }
-            }
-        }
+//        Map hsCriteria = new HashMap();
+//        hsCriteria.put("branch_id", tutupPeriod.getUnit());
+//        hsCriteria.put("in_pelayanan_medic", "Y");
+//        hsCriteria.put("flag", "Y");
+//
+//
+//        Pelayanan ply = new Pelayanan();
+//        ply.setBranchId(tutupPeriod.getUnit());
+//        ply.setFlag("Y");
+//        List<Pelayanan> pelayananEntities = pelayananDao.getListObjectPelayanan(ply);
+//        if (pelayananEntities.size() > 0){
+//            for (Pelayanan pelayananEntity : pelayananEntities){
+//
+//                // pelayanan selain gudang obat;
+//                if (!"gudang_obat".equalsIgnoreCase(pelayananEntity.getTipePelayanan())){
+//                    List<String> idObats = obatPoliDao.getIdObatGroup(pelayananEntity.getIdPelayanan(), tutupPeriod.getUnit());
+//                    if (idObats.size() > 0){
+//                        for (String idObat : idObats){
+//
+//                            // generate saldo bulan lalu (bulan ini) untuk bulan depan
+//                            generateAndSaveCurrentSaldoPersediaanToNextMonth(
+//                                    tutupPeriod.getUnit(),
+//                                    idObat,
+//                                    Integer.valueOf(tutupPeriod.getBulan()),
+//                                    Integer.valueOf(tutupPeriod.getTahun()),
+//                                    pelayananEntity.getIdPelayanan(),
+//                                    tutupPeriod.getLastUpdateWho(),
+//                                    tutupPeriod.getLastUpdate(),
+//                                    ""
+//                                    );
+//                        }
+//                    }
+//                } else {
+//
+//                    // untuk pelayanan gudang obat;
+//                    List<String> idObats = obatDao.getListIdObatGroupByBranchId(tutupPeriod.getUnit());
+//                    if (idObats.size() > 0){
+//                        for (String idObat : idObats){
+//
+//                            // generate saldo bulan lalu (bulan ini) untuk bulan depan
+//                            generateAndSaveCurrentSaldoPersediaanToNextMonth(
+//                                    tutupPeriod.getUnit(),
+//                                    idObat,
+//                                    Integer.valueOf(tutupPeriod.getBulan()),
+//                                    Integer.valueOf(tutupPeriod.getTahun()),
+//                                    pelayananEntity.getIdPelayanan(),
+//                                    tutupPeriod.getLastUpdateWho(),
+//                                    tutupPeriod.getLastUpdate(),
+//                                    ""
+//                            );
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         logger.info("[BillingSystemBoImpl.saveTutupPeriod] END <<<");
     }

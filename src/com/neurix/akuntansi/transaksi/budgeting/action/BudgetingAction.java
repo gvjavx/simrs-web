@@ -323,7 +323,7 @@ public class BudgetingAction {
         budgetingNew.setStLevel(kodeRekeningEntity.getLevel() == null ? "" : String.valueOf(kodeRekeningEntity.getLevel()));
         budgetingNew.setKodeRekening(kodeRekeningEntity.getKodeRekening());
         budgetingNew.setNamaKodeRekening(kodeRekeningEntity.getNamaKodeRekening());
-        budgetingNew.setTipeCoa(kodeRekeningEntity.getTipeRekeningId());
+        budgetingNew.setTipeCoa(kodeRekeningEntity.getTipeCoa());
         budgetingNew.setFlagMaster(kodeRekeningEntity.getFlagMaster());
         budgetingNew.setFlagDivisi(kodeRekeningEntity.getFlagDivisi());
 

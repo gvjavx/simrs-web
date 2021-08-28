@@ -988,7 +988,13 @@ public class PasienBoImpl implements PasienBo {
 
     @Override
     public List<Pasien> getComboRmLama(String rm) throws GeneralBOException {
-        return pasienDao.getComboRmLama(rm);
+        List<Pasien> pasienList = new ArrayList<>();
+        try {
+            pasienList = pasienDao.getComboRmLama(rm);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return pasienList;
     }
 
     @Override
@@ -1152,7 +1158,7 @@ public class PasienBoImpl implements PasienBo {
                 "=========================================\n" +
                 "<br> \n" +
                 "<br>\n");
-        CommonUtil.sendEmail(email);
+//        CommonUtil.sendEmail(email);
 
         return bean;
     }

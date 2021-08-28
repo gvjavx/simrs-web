@@ -77,6 +77,18 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="control-label col-sm-4">Tanggal Kontrol</label>
+                                    <div class="col-sm-4">
+                                        <div class="input-group date" style="margin-top: 7px">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <s:textfield name="headerDetailCheckup.tglKontrol" id="val_kontrol" cssClass="form-control datepicker2 datemask2"
+                                                         required="false"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-6" style="margin-top: 7px">
                                         <sj:submit type="button" cssClass="btn btn-success" formIds="kontrolulangForm" id="search" name="search"
@@ -151,8 +163,10 @@
                                 <td>Tanggal Kontrol</td>
                                 <td>Pelayanan</td>
                                 <td>Dokter</td>
+                                <td>Status</td>
                                 <td>Desa</td>
                                 <td>No HP</td>
+                                <%--<td align="center">Action</td>--%>
                             </tr>
                             </thead>
                             <tbody>
@@ -175,6 +189,14 @@
                                     </td>
                                     <td><s:property value="namaPelayanan"/></td>
                                     <td><s:property value="namaDokter"/></td>
+                                    <td>
+                                        <s:if test='#row.status == "N"'>
+                                            <span class="span-warning">Belum Kontrol</span>
+                                        </s:if>
+                                        <s:else>
+                                            <span class="span-success">Sudah Kontrol</span>
+                                        </s:else>
+                                    </td>
                                     <td><s:property value="desa"/></td>
                                     <td>
                                         <script>
@@ -194,6 +216,11 @@
                                             document.write(temp);
                                         </script>
                                     </td>
+                                    <%--<td align="center">--%>
+                                        <%--<a href="<%= request.getContextPath() %>/checkup/add_checkup.action?tipe=KU&id=<s:property value="idPasien"/>&idp=<s:property value="idPelayanan"/>&&idd=<s:property value="idDokter"/>&jp=<s:property value="idJenisPeriksaPasien"/>&idx=<s:property value="idDetailCheckup"/>&tgl=<s:property value="tglKontrol"/>">--%>
+                                            <%--<img class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">--%>
+                                        <%--</a>--%>
+                                    <%--</td>--%>
                                 </tr>
                             </s:iterator>
                             </tbody>

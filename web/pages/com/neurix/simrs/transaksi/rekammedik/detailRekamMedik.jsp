@@ -348,12 +348,6 @@
                                     <a class="btn btn-warning" href="initForm_rekammedis.action"><i class="fa fa-times"></i>
                                         Back</a>
                                 </s:else>
-                                <%--<a class="btn btn-danger"--%>
-                                   <%--href="detail_rekammedis.action?idPasien=<s:property value="detailCheckup.idPasien"/>"><i--%>
-                                        <%--class="fa fa-refresh"></i> Reset</a>--%>
-                                <%--<a class="btn btn-info" id="btn-vidio-rm2" onclick="viewTelemedic()"><i class="fa fa-film"></i>--%>
-                                    <%--Telemedic</a>--%>
-                                <%--<a class="btn btn-info" onclick="viewRiwayat()"><i class="fa fa-history"></i> Riwayat Pasien</a>--%>
                                 <a class="btn btn-info" onclick="viewHistory()"><i class="fa fa-history"></i> All History</a>
                                 <a class="btn bg-aqua" onclick="viewAllRekamMedis()"><i class="fa fa-book"></i> All Rekam Medis</a>
                                 <a class="btn btn-primary" onclick="viewAllRekamMedisLama()"><i class="fa fa-book"></i> Rekam Medis Lama</a>
@@ -369,135 +363,6 @@
                 </div>
             </div>
         </div>
-        <%--<div class="row">--%>
-            <%--<div class="col-md-12">--%>
-                <%--<div class="btn-group dropup" style="margin-top: -15px">--%>
-                    <%--<button type="button" class="btn btn-info"><i class="fa fa-book"></i> All Rekam Medis--%>
-                    <%--</button>--%>
-                    <%--<button onclick="loadModalRM('operasi')" type="button" class="btn btn-info dropdown-toggle"--%>
-                            <%--data-toggle="dropdown" style="height: 34px">--%>
-                        <%--<span class="caret"></span>--%>
-                        <%--<span class="sr-only">Toggle Dropdown</span>--%>
-                    <%--</button>--%>
-                    <%--<ul class="dropdown-menu multi-column columns-3 text-center" style="font-size: 12px">--%>
-                        <%--<div class="row">--%>
-                            <%--<div class="col-sm-4">--%>
-                                <%--<ul class="multi-column-dropdown">--%>
-                                    <%--<li style="margin-bottom: -6px"><a><b>Spesialis</b></a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onclick="showModalRj('ringkasan_rj')"><i class="fa fa-file-o"></i> Profil Rekam Medis Rawat Jalan</a></li>--%>
-                                    <%--<s:if test='detailCheckup.kategoriPelayanan != "" && detailCheckup.kategoriPelayanan != "ugd"'>--%>
-                                        <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('<s:property value="detailCheckup.kategoriPelayanan"/>')" onclick="showModalSPS('<s:property value="detailCheckup.kategoriPelayanan"/>')"><i class="fa fa-file-o"></i> <s:property value="detailCheckup.asesmenLabel"/></a></li>--%>
-                                    <%--</s:if>--%>
-                                    <%--<li class="divider"></li>--%>
-                                    <%--<li style="margin-bottom: -6px"><a><b>Hemodialisa (HD)</b></a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('hemodialisa')" onclick="showModalHD('monitoring_hd')"><i class="fa fa-file-o"></i> Monitoring HD</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('hemodialisa')" onclick="showModalHD('perencanaan_hemodialisa')"><i class="fa fa-file-o"></i> Perencanaan HD</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('hemodialisa')" onclick="showModalHD('asesmen_hd')"><i class="fa fa-file-o"></i> Asesmen Awal HD</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('hemodialisa')" onclick="showModalHD('tranfusi_hd')"><i class="fa fa-file-o"></i> Tindakan Medis Transfusi Darah</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('hemodialisa')" onclick="showModalHD('catatan_tranfusi_darah')"><i class="fa fa-file-o"></i> Catatan Pemantauan Tranfusi Darah</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('hemodialisa')" onclick="showModalHD('persetujuan_hd')"><i class="fa fa-file-o"></i> Persetujuan HD</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('hemodialisa')" onclick="showModalHD('travelling')"><i class="fa fa-file-o"></i> Travelling Dialysis</a></li>--%>
-                                    <%--<li class="divider"></li>--%>
-                                    <%--<li style="margin-bottom: -6px"><a><b>Fisioterapi</b></a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('fisioterapi')" onclick="pengkajianFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-file-o"></i> Pengkajian Pasien Fisioterapi</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('fisioterapi')" onclick="addMonitoringFisioterapi('<s:property value="headerDetailCheckup.idDetailCheckup"/>')"><i class="fa fa-file-o"></i> Kunjungan Fisioterapi</a></li>--%>
-                                    <%--<li class="divider"></li>--%>
-                                    <%--<li style="margin-bottom: -6px"><a><b>Unit Gawat Darurat (UGD)</b></a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('ugd_anak')" onclick="showAsesmenUgd('Asesmen Awal Gawat Darurat Anak')"><i class="fa fa-file-o"></i> Asesmen Awal Gawat Darurat Anak</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('ugd_dewasa')" onclick="showAsesmenUgd('Asesmen Awal Gawat Darurat Dewasa')"><i class="fa fa-file-o"></i> Asesmen Awal Gawat Darurat Dewasa</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('ugd_dewasa')" onclick="showAsesmenUgd('Asesmen Awal Gawat Darurat Geriatri')"><i class="fa fa-file-o"></i> Asesmen Awal Gawat Darurat Geriatri</a></li>--%>
-                                    <%--<li class="divider"></li>--%>
-                                    <%--<li style="margin-bottom: -6px"><a><b>Rawat Inap</b></a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('asesmen_rawat_inap')"--%>
-                                           <%--onclick="showModalAsesmenRawatInap('asesmen')"><i--%>
-                                            <%--class="fa fa-file-o"></i> Asesmen Awal Medis Rawat Inap</a></li>--%>
-
-                                <%--</ul>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-sm-4">--%>
-                                <%--<ul class="multi-column-dropdown">--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('catatan_integrasi')"--%>
-                                           <%--onclick="showModalAsesmenRawatInap('catatan_integrasi')"><i--%>
-                                            <%--class="fa fa-file-o"></i> Catatan Perkembangan Pasien Terintegrasi</a>--%>
-                                    <%--</li>--%>
-                                    <%--<li><a style="cursor: pointer"--%>
-                                           <%--onmouseover="loadModalRM('pengkajian_keperawatan')"--%>
-                                           <%--onclick="showModalPengkajianKep('pengkajian')"><i--%>
-                                            <%--class="fa fa-file-o"></i> Pengkajian Ulang Keperawatan dan Tindakan</a>--%>
-                                    <%--</li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('asuhan')"--%>
-                                           <%--onclick="showModalAsesmenRawatInap('asuhan')"><i--%>
-                                            <%--class="fa fa-file-o"></i> Rencana Asuhan Keperawatan</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('mpp')" onclick="showModalMpp('evaluasi_awal')"><i class="fa fa-file-o"></i> Form-A Evaluasi Awal</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('mpp')" onclick="showModalMpp('impementasi_mpp')"><i class="fa fa-file-o"></i> Form-B Catatan Implementasi</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('edukasi_pasien')" onclick="showModalAsesmenRawatInap('edukasi_pasien')"><i class="fa fa-file-o"></i> Edukasi Pasien dan Keluarga</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('edukasi_pasien_integrasi')" onclick="showModalAsesmenRawatInap('edukasi_pasien_terintegrasi')"><i class="fa fa-file-o"></i> Edukasi Pasien dan Keluarga Terintegrasi</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('discharge_planing')"--%>
-                                           <%--onclick="showModalAsesmenRawatInap('discharge_planing')"><i--%>
-                                            <%--class="fa fa-file-o"></i> Discharge Planing</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('transfer_pasien')"--%>
-                                           <%--onclick="showModalAsesmenRawatInap('transfer_pasien')"><i--%>
-                                            <%--class="fa fa-file-o"></i> Transfer Pasien Antar Ruangan</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('privasi')"--%>
-                                           <%--onclick="showModalAsesmenRawatInap('privasi')"><i--%>
-                                            <%--class="fa fa-file-o"></i> Privasi Pasien</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('early_warning')"--%>
-                                           <%--onclick="showModalAsesmenRawatInap('early_warning')"><i--%>
-                                            <%--class="fa fa-file-o"></i> Lembar Observasi Pediatric Early Warning--%>
-                                        <%--Score</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('pemberian_obat')"--%>
-                                           <%--onclick="showModalAsesmenRawatInap('catatan_pemberian')"><i--%>
-                                            <%--class="fa fa-file-o"></i> Catatan Pemberian Obat</a></li>--%>
-                                    <%--&lt;%&ndash;<li><a style="cursor: pointer" onclick="showModalAsesmenRawatInap('injeksi')"><i&ndash;%&gt;--%>
-                                    <%--&lt;%&ndash;class="fa fa-file-o"></i>Injeksi CPO / Jadwal Pemberian Terapi</a>&ndash;%&gt;--%>
-                                    <%--</li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('rekonsiliasi')"--%>
-                                           <%--onclick="showModalAsesmenRawatInap('rekonsiliasi')"><i--%>
-                                            <%--class="fa fa-file-o"></i> Rekonsiliasi Obat</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('tindakan_ri')" onclick="showModalAsesmenRawatInap('tindakan_ina')"><i--%>
-                                            <%--class="fa fa-file-o"></i> Persetujuan Tindakan Kedokteran</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('checklist_transfer_external')" onclick="showModalAsesmenRawatInap('checklist_transfer_external')"><i--%>
-                                            <%--class="fa fa-file-o"></i> Checklist Persiapan Transfer Pasien Ekternal</a></li>--%>
-                                    <%--<li class="divider"></li>--%>
-                                    <%--<li style="margin-bottom: -6px"><a><b>Operasi Kamar</b></a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onclick="showModalOperasi('ceklist_operasi')"><i class="fa fa-file-o"></i> Ceklist Serah Terima Pasien Pre Operasi</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onclick="showModalOperasi('penandaan_area')"><i class="fa fa-file-o"></i> Penandaan Area Operasi Pasien</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onclick="showModalOperasi('pra_anestesi')"><i class="fa fa-file-o"></i> Asesmen Pra Anestesi</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onclick="showModalOperasi('informasi_dan_persetujuan')"><i class="fa fa-file-o"></i> Pemberian Edukasi dan Persetujuan</a></li>--%>
-
-                                <%--</ul>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-sm-4">--%>
-                                <%--<ul class="multi-column-dropdown">--%>
-                                    <%--<li><a style="cursor: pointer" onclick="showModalOperasi('pindah_rr')"><i class="fa fa-file-o"></i> Kriteia Pindah dari RR</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onclick="showModalOperasi('laporan_operasi')"><i class="fa fa-file-o"></i> Laporan Operasi</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('catatan_anestesi')" onclick="showModalOperasi('catatan_anestesi')"><i class="fa fa-file-o"></i> Catatan Anestesi</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('checklist_keselamatan_pasien')" onclick="showModalOperasi('checklist_keselamatan_pasien')"><i class="fa fa-file-o"></i> Ceklist Keselamatan Pasien Operasi</a></li>--%>
-                                    <%--<li class="divider"></li>--%>
-                                    <%--<li style="margin-bottom: -6px"><a><b>Intensive Care Unit (ICU)</b></a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('icu')"  onclick="showModalICU('asesmen_icu')"><i class="fa fa-file-o"></i> Asesmen ICU</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('hemodinamika')"  onclick="showModalICU('hemodinamika')"><i class="fa fa-file-o"></i> Hemodinamika</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('respirasi')"  onclick="showModalICU('respirasi')"><i class="fa fa-file-o"></i> Respirasi</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('keseimbangan')"  onclick="showModalICU('keseimbangan')"><i class="fa fa-file-o"></i> Keseimbangan</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('obat-obatan')"  onclick="showModalICU('obat-obatan')"><i class="fa fa-file-o"></i> Obat Obatan/ Intakea/ Output</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('asuhan_keperawatan')"  onclick="showModalICU('asuhan_keperawatan')"><i class="fa fa-file-o"></i> Asuhan Keperawatan</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('tindakan_icu')"  onclick="showModalICU('tindakan_icu')"><i class="fa fa-file-o"></i> Persetujuan Tindakan Kedokteran</a></li>--%>
-                                    <%--<li class="divider"></li>--%>
-                                    <%--<li style="margin-bottom: -6px"><a><b>Ruang Bersalin (RB)</b></a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('identifikasi_bayi')"  onclick="showModalRB('identifikasi_bayi')"><i class="fa fa-file-o"></i> Identifikasi Bayi</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('asesmen_ponek')"  onclick="showModalRB('asesmen_ponek')"><i class="fa fa-file-o"></i> Asesmen Ponek</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('asesmen_awal_bayi')"  onclick="showModalRB('asesmen_awal_bayi')"><i class="fa fa-file-o"></i> Asesmen Awal Bayi</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('laporan_pembedahan')"  onclick="showModalRB('laporan_pembedahan')"><i class="fa fa-file-o"></i> Laporan Pembedahan</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('laporan_persalinan')"  onclick="showModalRB('laporan_persalinan')"><i class="fa fa-file-o"></i> Laporan Persalinan</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('tindakan_rb')"  onclick="showModalRB('tindakan_rb')"><i class="fa fa-file-o"></i> Persetujuan Tindakan Kedokteran</a></li>--%>
-                                    <%--<li><a style="cursor: pointer" onmouseover="loadModalRM('asuhan_keperawatan_rb')"  onclick="showModalRB('asuhan_keperawatan_rb')"><i class="fa fa-file-o"></i> Asuhan Kebidanan</a></li>--%>
-                                <%--</ul>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</ul>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</div>--%>
         <div class="row jarak">
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="dropup">
@@ -750,6 +615,10 @@
                             </div>
                             <div class="row">
                                 <ul class="fa-ul" id="asesmen_tppri">
+                                </ul>
+                            </div>
+                            <div class="row">
+                                <ul class="fa-ul" id="asesmen_gizi">
                                 </ul>
                             </div>
                         </div>
@@ -1047,6 +916,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/KandunganAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/KeperawatanRawatJalanAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenGiziAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/fisioterapi.js"/>'></script>
@@ -1073,6 +943,7 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/cppt.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/rencana_asuahan.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/tindakan_medis.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/gizi.js"/>'></script>
 
 <script type='text/javascript'>
 
@@ -1102,7 +973,7 @@
     var jenisKelamin = $('#h_jenis_kelamin').val();
     var noCheckup = $('#no_checkup').val();
     var tipePelayanan = $('#h_tipe_pelayanan').val();
-    var kategoriPelayanan =$('#h_kategori_pelayanan').val();;
+    var kategoriPelayanan =$('#h_kategori_pelayanan').val();
     var tempTensi = "";
     var tempSuhu = "";
     var tempNadi = "";
@@ -1115,6 +986,7 @@
     var flagVaksin = "";
     var tanggalMasuk = new Date();
     var namaPelayanan = '<s:property value="detailCheckup.namaPelayanan"/>';
+    var urlPage;
 
     function loadModalRM(jenis, method, parameter, idRM, flag) {
         var context = contextPath + '/pages/modal/modal-default.jsp';

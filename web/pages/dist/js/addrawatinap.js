@@ -141,7 +141,7 @@ function hitungCoverBiaya() {
 
 function hitungStatusBiaya() {
     var jenis = $("#id_jenis_pasien").val();
-    CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RI", function (response) {
+    CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RWJ", function (response) {
         if (jenis == "bpjs" || jenis == "ptpn") {
             $('#status_bpjs').show();
             if (response.tarifBpjs != null && response.tarifTindakan != null) {
@@ -658,8 +658,12 @@ function saveKeterangan(idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_ce
 function listSelectTindakan(idKtg) {
     var option = "<option value=''>-</option>";
     if (idKtg != '') {
+        var idKelas = idKelasRuangan;
+        if("bpjs" == jenisPeriksaPasien){
+            idKelas = kelasPasienBpjs;
+        }
         dwr.engine.setAsync(true);
-        CheckupDetailAction.getListComboTindakan(idKtg, idKelasRuangan, null, null, {
+        CheckupDetailAction.getListComboTindakan(idKtg, idKelas, null, idPoli, jenisPeriksaPasien, {
             callback:function (response) {
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
@@ -778,6 +782,7 @@ function showModal(select) {
         $('#modal-dokter').modal({show: true, backdrop: 'static'});
 
     } else if (select == 2) {
+        $('#h_harga_after').val('');
         $('#form-btn-add, #form-list').show();
         $('#h_harga, #h_diskon').val(null);
         $('#is_edit').val("N");
@@ -787,6 +792,7 @@ function showModal(select) {
         $('#tin_qty').val('1');
         $('#load_tindakan, #warning_tindakan, #war_kategori, #war_tindakan, #war_perawat').hide();
         $('#save_tindakan').attr('onclick', 'saveTindakan(\'' + id + '\')').show();
+        $('#body_temp_tindakan').html('');
         $('#modal-tindakan').modal({show: true, backdrop: 'static'});
 
     } else if (select == 3) {
@@ -1403,7 +1409,7 @@ function listDiagnosa() {
                 }
 
                 var blink = "";
-                if("B20" == id){
+                if(item.isWarning == "Y"){
                     blink = 'class="blink_me_atas" style="color: red"';
                 }
 
@@ -2474,12 +2480,13 @@ function editTindakan(id, idTindakan, idKategori, idPerawat, qty, idDokter, idPe
     $('#form-btn-add, #form-list').hide();
     $('#is_edit').val('Y');
     $('#form_elektif').hide();
-    getListNamaDokter('edit');
+    getListNamaDokter('edit', idDokter);
     $('#load_tindakan, #warning_tindakan, #war_kategori, #war_tindakan, #war_perawat').hide();
-    $('#tin_id_dokter_dpjp').val(idDokter + '|' + idPelayanan).trigger('change');
-    $('#tin_id_ketgori_tindakan').val(idKategori).trigger('change');
     setTimeout(function () {
-        $('#tin_id_tindakan').val(idTindakan).trigger('change');
+        $('#tin_id_ketgori_tindakan').val(idKategori).trigger('change');
+        setTimeout(function () {
+            $('#tin_id_tindakan').val(idTindakan).trigger('change');
+        },1000);
     },500);
     $('#tin_qty').val(qty);
     $('#save_tindakan').attr('onclick', 'saveTindakan(\'' + id + '\')').show();
@@ -3091,10 +3098,12 @@ function addObatToList() {
                     namaObat = namaCicik + nama + cicik + kronis;
                 }
 
+                var idQty = 'qty_'+count;
+
                 var row = '<tr id=' + id + '>' +
-                    '<td>' + namaObat +
+                    '<td style="vertical-align: middle">' + namaObat +
                     '<input type="hidden" value="' + id + '" id="id_obat_' + count + '">' +
-                    '<input type="hidden" value="' + qty + '" id="qty_' + count + '">' +
+                    '<input type="hidden" value="' + qty + '" id="'+idQty+'">' +
                     '<input type="hidden" value="' + jenisSatuan + '" id="jenis_satuan_' + count + '">' +
                     '<input type="hidden" value="' + jenisResep + '" id="jenis_resep_' + count + '">' +
                     '<input type="hidden" value="' + hariKronis + '" id="hari_kronis_' + count + '">' +
@@ -3107,10 +3116,8 @@ function addObatToList() {
                     '</td>';
 
                 if (tipeTrans != "racik"){
-                    row += '<td align="center">' + qty + ' ' + jenisSatuan + '</td>'+
-                        '<td>' + ulWak+ '<br>'+
-                        '<div id="body_ket_'+ count +'"><textarea class="form-control" rows="2" cols="4" id="signa-normal-'+count+'"></textarea></div><br>' +
-                        '</td>' +
+                    row += '<td align="center" style="vertical-align: middle"><input min="1" type="number" class="form-control" value="'+qty+'" oninput="changeQty(\''+idQty+'\', this.value)"></td>'+
+                        '<td style="vertical-align: middle"><textarea class="form-control" rows="2" cols="4" id="signa-normal-'+count+'"></textarea>' + '</td>' +
                         '<td align="right">' + formatRupiah(totalHarga) + '</td>';
                 } else {
                     row += '<td>' +
@@ -3120,7 +3127,7 @@ function addObatToList() {
                         '</td>';
                 }
 
-                row += '<td align="center"><img border="0" onclick="delRowObat(\'' + id + '\',\'' + totalHarga + '\')" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                row += '<td align="center" style="vertical-align: middle"><img border="0" onclick="delRowObat(\'' + id + '\',\'' + totalHarga + '\')" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
                     '</tr>';
 
                 if (tipeTrans == "racik")
@@ -3168,6 +3175,12 @@ function addObatToList() {
         $('#warning_resep_head').show().fadeOut(5000);
         $('#msg_resep').text('Silahkan cek kembali data inputan!');
         $('#modal-resep-head').scrollTop(0);
+    }
+}
+
+function changeQty(id, val){
+    if(val != ''){
+        $('#'+id).val(val);
     }
 }
 
@@ -4097,7 +4110,7 @@ function searchICD9(id) {
     });
 }
 
-function getListNamaDokter(tipe) {
+function getListNamaDokter(tipe, id) {
     var option = '<option value=""> - </option>';
     var def = '';
     CheckupAction.getListDokterByIdDetailCheckup(idDetailCheckup, "Y", function (res) {
@@ -4106,12 +4119,15 @@ function getListNamaDokter(tipe) {
                 if(i == 0){
                     def = item.idDokter+'|'+item.idPelayanan;
                 }
+                if(tipe == 'edit'){
+                    if(id == item.idDokter){
+                        def = item.idDokter + '|' + item.idPelayanan;
+                    }
+                }
                 option += '<option value="' + item.idDokter + '|' + item.idPelayanan + '">' + item.namaDokter + ' - ' + item.namaPelayanan + '</option>';
             });
             $('#tin_id_dokter_dpjp').html(option);
-            if(tipe != 'edit'){
-                $('#tin_id_dokter_dpjp').val(def).trigger('change');
-            }
+            $('#tin_id_dokter_dpjp').val(def).trigger('change');
         } else {
             $('#tin_id_dokter_dpjp').html(option);
         }
@@ -4809,7 +4825,7 @@ function setDiskonHarga(id) {
                 var after  = persen/100;
                 var total  = after*tarif;
                 $('#h_harga').val(formatRupiahAtas(tarif));
-                $('#h_harga_after').val(formatRupiahAtas(total));
+                $('#h_harga_after').val(formatRupiahAtas(Math.round(total)));
                 $('#h_diskon').val(disk);
 
                 if ("Y" == res.isElektif) {
@@ -5233,6 +5249,7 @@ function setRekamMedisPindah(tipePelayanan, id) {
 function setRekamMedisHasilPindah(tipePelayanan, id) {
     var temp = "";
     var show = false;
+    $('#' + id).html("");
     dwr.engine.setAsync(true);
     CheckupAction.getListRekammedisPasienByNoCheckup(tipePelayanan, null, noCheckup, {
         callback: function (res) {
@@ -6278,16 +6295,15 @@ function repeatOrderObat(idApprovalObat){
                     var count = 0;
                     var strnonracik = "";
 
-                    //console.log(item.listDetailObatNonRacikk);
-
                     $.each(item.listDetailObatNonRacikk, function(i, nonracik){
 
                         var harga = parseInt(nonracik.qtyApprove) * parseInt(nonracik.harga);
+                        var idQty = 'qty_'+count;
 
                         strnonracik += "<tr id='"+item.idObat+"'>"+
-                            '<td>' + nonracik.namaObat +
+                            '<td style="vertical-align: middle;">' + nonracik.namaObat +
                             '<input type="hidden" value="' + nonracik.idObat + '" id="id_obat_' + count + '">' +
-                            '<input type="hidden" value="' + nonracik.qtyApprove + '" id="qty_' + count + '">' +
+                            '<input type="hidden" value="' + nonracik.qtyApprove + '" id="'+idQty+'">' +
                             '<input type="hidden" value="' + "biji" + '" id="jenis_satuan_' + count + '">' +
                             '<input type="hidden" value="' + "umum" + '" id="jenis_resep_' + count + '">' +
                             '<input type="hidden" value="' + "" + '" id="hari_kronis_' + count + '">' +
@@ -6300,17 +6316,12 @@ function repeatOrderObat(idApprovalObat){
                             '</td>';
 
                         strnonracik +=
-                            '<td align="center">' + nonracik.qtyApprove + ' ' + "biji" + '</td>'+
-                            '<td>' +
-                            '<div id="body_ket_'+ count +'">' +
-                            '<textarea id="signa-normal-'+ count +'" rows="2" cols="4" class="form-control">'+nonracik.keterangan+'</textarea> '+
-                            '</div>' +
-                            '</td>'+
-                            '<td align="right">' + formatRupiah(harga) + '</td>';
-                            // '<td align="right">' + harga + '</td>';
+                            '<td align="center" style="vertical-align: middle;">' + '<input class="form-control" min="1" type="number" value="'+nonracik.qtyApprove+'" oninput="changeQty(\''+idQty+'\', this.value)">' + '</td>'+
+                            '<td style="vertical-align: middle;"><textarea id="signa-normal-'+ count +'" rows="2" cols="4" class="form-control">'+nonracik.keterangan+'</textarea></td>'+
+                            '<td align="right" style="vertical-align: middle;">' + formatRupiah(harga) + '</td>';
 
                         strnonracik +=
-                            '<td align="center"><img border="0" onclick="delRowObat(\'' + nonracik.idObat + '\',\'' + harga + '\')" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                            '<td align="center" style="vertical-align: middle;"><img border="0" onclick="delRowObat(\'' + nonracik.idObat + '\',\'' + harga + '\')" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
                             '</tr>';
 
                         count ++;
@@ -6493,6 +6504,10 @@ function setTindakLanjut(){
                     }
                 });
             }
+        }else{
+            $('#keterangan').val('').trigger('change');
+            $('#keterangan').attr('disabled', false);
+            $('#set_kontrol_close').html('');
         }
     });
 }

@@ -82,38 +82,6 @@
                                                   cssClass="form-control select2" theme="simple"/>
                                     </div>
                                 </div>
-                                <%--<s:if test="isEnabledPoli()">--%>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">Poli</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:action id="initComboPoli" namespace="/checkup"--%>
-                                                  <%--name="getComboPelayanan_checkup"/>--%>
-                                        <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                  <%--list="#initComboPoli.listOfPelayanan"--%>
-                                                  <%--name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"--%>
-                                                  <%--listValue="namaPelayanan"--%>
-                                                  <%--headerKey="" headerValue="[Select one]"--%>
-                                                  <%--cssClass="form-control select2" theme="simple"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <%--</s:if>--%>
-                                <%--<s:else>--%>
-                                    <%--<div class="form-group">--%>
-                                        <%--<label class="control-label col-sm-4">Poli</label>--%>
-                                        <%--<div class="col-sm-4">--%>
-                                            <%--<s:action id="initComboPoli" namespace="/checkup"--%>
-                                                      <%--name="getComboPelayanan_checkup"/>--%>
-                                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                      <%--list="#initComboPoli.listOfPelayanan" id="poli"--%>
-                                                      <%--listKey="idPelayanan"--%>
-                                                      <%--name="headerDetailCheckup.idPelayanan"--%>
-                                                      <%--listValue="namaPelayanan"--%>
-                                                      <%--headerKey="007" headerValue="IGD"--%>
-                                                      <%--cssClass="form-control select2" theme="simple" disabled="true"/>--%>
-                                        <%--</div>--%>
-                                        <%--<s:hidden name="headerDetailCheckup.idPelayanan"></s:hidden>--%>
-                                    <%--</div>--%>
-                                <%--</s:else>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
@@ -189,6 +157,13 @@
                                         </sj:dialog>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="pull-right" style="color: red">
+                                            <i class="fa fa-square"></i> Teridentikasi diagnosa yang di waspadahi
+                                        </div>
+                                    </div>
+                                </div>
                             </s:form>
                         </div>
                     </div>
@@ -197,13 +172,13 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Rawat IGD Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="igdTable" class="table table-bordered table-striped" style="font-size: 13px">
+                        <table id="igdTable" class="table table-bordered" style="font-size: 13px">
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td align="center">Triase</td>
                                 <td>ID Detail Checkup</td>
                                 <td>No RM</td>
-                                <td>Nama</td>
+                                <td width="20%">Nama</td>
                                 <td>Umur</td>
                                 <td>Tanggal Masuk</td>
                                 <td>Desa</td>
@@ -214,7 +189,24 @@
                             </thead>
                             <tbody>
                             <s:iterator value="#session.listOfResult" var="row">
-                                <tr>
+                                <s:if test='#row.isWarning == "Y"'>
+                                    <tr style="color: white" bgcolor="red">
+                                    <td align="center">
+                                        <script>
+                                            var warna = '<s:property value="triase"/>';
+                                            if(warna != ''){
+                                                warna = warna.split("|")[1];
+                                                document.write('<i class="fa fa-square fa-2x" style="color: '+warna+'"></i>');
+                                            }
+                                        </script>
+                                    </td>
+                                    <td>
+                                        <s:property value="idDetailCheckup"/>
+                                        <p>[<s:property value="diagnosa"/>] - <s:property value="namaDiagnosa"/></p>
+                                    </td>
+                                </s:if>
+                                <s:else>
+                                    <tr>
                                     <td align="center">
                                         <script>
                                             var warna = '<s:property value="triase"/>';
@@ -225,13 +217,14 @@
                                         </script>
                                     </td>
                                     <td><s:property value="idDetailCheckup"/></td>
+                                </s:else>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="umur"/></td>
                                     <td><s:property value="formatTglMasuk"/></td>
                                     <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
-                                    <td align="center">
+                                    <td align="center" style="vertical-align: middle">
                                         <script>
                                             document.write(changeJenisPasien('<s:property value="idJenisPeriksaPasien"/>', '<s:property value="jenisPeriksaPasien"/>'));
                                         </script>

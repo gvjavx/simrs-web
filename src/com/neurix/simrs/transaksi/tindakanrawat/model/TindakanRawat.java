@@ -38,6 +38,15 @@ public class TindakanRawat extends BaseModel {
     private String flagKonsulGizi;
     private String kategoriRuangan;
     private String isPelayanan;
+    private String statusApprove;
+
+    public String getStatusApprove() {
+        return statusApprove;
+    }
+
+    public void setStatusApprove(String statusApprove) {
+        this.statusApprove = statusApprove;
+    }
 
     public String getIsPelayanan() {
         return isPelayanan;

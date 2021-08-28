@@ -14,7 +14,7 @@
 	<parameter name="terbilang" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="uraian" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="kurs" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["C:\\tomcat\\webapps\\go-medsys\\pages\\report\\com\\neurix\\akuntansi\\"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="pembayaranId" class="java.lang.String"/>
@@ -39,6 +39,7 @@
 	<parameter name="reportParams.namaCoaKas" class="java.lang.String"/>
 	<parameter name="reportParams.noSlipBank" class="java.lang.String"/>
 	<parameter name="reportParams.areaId" class="java.lang.String"/>
+	<parameter name="reportParams.subreport_dir" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select
     *
@@ -123,7 +124,7 @@ where
 					<subreportParameterExpression><![CDATA[$P{pembayaranId}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subReportBuktiKasMasuk.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{reportParams.subreport_dir} + "subReportBuktiKasMasuk.jasper"]]></subreportExpression>
 			</subreport>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-13" x="2" y="44" width="208" height="18" uuid="65e2166f-ad97-4974-90b3-7e6a89f12967"/>

@@ -8,12 +8,14 @@
 <head>
     <%--<script type='text/javascript' src='<s:url value="/dwr/interface/PayrollSkalaGajiAction.js"/>'></script>--%>
     <script type="text/javascript">
-    function callSearch2() {
-        //$('#waiting_dialog').dialog('close');
+    function searchRekanan() {
         $('#view_dialog_menu').dialog('close');
         $('#info_dialog').dialog('close');
-        window.location.reload(true);
-    };
+        var idRekanan = '<s:property value="rekananOps.idRekananOps"/>';
+        var form = {"rekananOps.idRekananOps": idRekanan};
+        var host = contextPathHeader+'/rekananops/search_rekananops.action';
+        postAtas(host, form);
+    }
 
     $.subscribe('beforeProcessSaveAdd', function (event, data) {
         var namarekananadd = document.getElementById("namarekananadd").value;
@@ -149,7 +151,7 @@
                                                    buttons="{
                                                               'OK':function() {
                                                                     //$(this).dialog('close');
-                                                                      callSearch2();
+                                                                      searchRekanan();
                                                                    }
                                                             }"
                                         >

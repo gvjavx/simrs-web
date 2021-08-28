@@ -33,6 +33,15 @@ public class AntianOnline extends BaseModel implements Serializable {
     private String idDetailCheckup;
     private String flagCall;
     private String idPaket;
+    private String statusPeriksa;
+
+    public String getStatusPeriksa() {
+        return statusPeriksa;
+    }
+
+    public void setStatusPeriksa(String statusPeriksa) {
+        this.statusPeriksa = statusPeriksa;
+    }
 
     public String getIdPaket() {
         return idPaket;

@@ -156,6 +156,8 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                     }
 
                     // harga*qty
+                    transaksiObatDetail.setTotalHarga(new BigInteger("0"));
+
                     if(transaksiObatDetail.getQtyApprove() != null && transaksiObatDetail.getQtyApprove().intValue() > 0){
                         BigInteger total = transaksiObatDetail.getHarga().multiply(transaksiObatDetail.getQtyApprove());
                         transaksiObatDetail.setTotalHarga(total);

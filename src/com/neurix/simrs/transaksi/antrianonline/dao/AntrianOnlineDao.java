@@ -4,6 +4,7 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.antrianonline.model.AntianOnline;
 import com.neurix.simrs.transaksi.antrianonline.model.ItSimrsAntianOnlineEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -176,6 +177,19 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
             listOfResult.add(result);
         }
         return listOfResult;
+    }
+
+    public String cekPasienOnlineDaftar(String noCheckupOnine){
+        String status = "N";
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsHeaderDetailCheckupEntity.class);
+        criteria.add(Restrictions.eq("noCheckupOnline", noCheckupOnine));
+        criteria.add(Restrictions.eq("flag", "Y"));
+        List<ItSimrsHeaderDetailCheckupEntity> results = criteria.list();
+        if(results.size() > 0){
+            ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = results.get(0);
+            status = detailCheckupEntity.getStatusPeriksa();
+        }
+        return status;
     }
 
 

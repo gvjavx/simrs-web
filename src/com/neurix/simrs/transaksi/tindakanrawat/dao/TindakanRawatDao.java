@@ -66,11 +66,16 @@ public class TindakanRawatDao extends GenericDao<ItSimrsTindakanRawatEntity, Str
             if (mapCriteria.get("is_pelayanan")!=null) {
                 criteria.add(Restrictions.eq("isPelayanan", (String) mapCriteria.get("is_pelayanan")));
             }
+            if (mapCriteria.get("before_approve")!=null) {
+                //criteria.add(Restrictions.isNull("approveFlag"));
+//                criteria.add(Restrictions.ne("approveFlag","Y"));
+            }
 
         }
 
-        // Order by
-        criteria.addOrder(Order.asc("idTindakanRawat"));
+        //SYAMS 9JUL21 =>  Order by date
+        criteria.addOrder(Order.desc("lastUpdate"));
+
         List<ItSimrsTindakanRawatEntity> results = criteria.list();
         return results;
     }

@@ -141,6 +141,43 @@ public class RawatInap {
     private String flagBatal;
     private String idBentukGizi;
     private String indikasi;
+    private String idKelasBpjs;
+    private String statusNaikKelas;
+
+    private String idDiagnosa;
+    private String isWarning;
+
+    public String getIsWarning() {
+        return isWarning;
+    }
+
+    public void setIsWarning(String isWarning) {
+        this.isWarning = isWarning;
+    }
+
+    public String getIdDiagnosa() {
+        return idDiagnosa;
+    }
+
+    public void setIdDiagnosa(String idDiagnosa) {
+        this.idDiagnosa = idDiagnosa;
+    }
+
+    public String getIdKelasBpjs() {
+        return idKelasBpjs;
+    }
+
+    public void setIdKelasBpjs(String idKelasBpjs) {
+        this.idKelasBpjs = idKelasBpjs;
+    }
+
+    public String getStatusNaikKelas() {
+        return statusNaikKelas;
+    }
+
+    public void setStatusNaikKelas(String statusNaikKelas) {
+        this.statusNaikKelas = statusNaikKelas;
+    }
 
     private List<ItSimrsKontrolUlangEntity> kontrolUlangEntityList = new ArrayList<>();
 

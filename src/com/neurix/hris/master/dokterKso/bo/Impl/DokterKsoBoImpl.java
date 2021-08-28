@@ -6,6 +6,9 @@ import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.biodata.dao.BiodataDao;
+import com.neurix.hris.master.biodata.model.Biodata;
+import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.dokterKso.bo.DokterKsoBo;
 import com.neurix.hris.master.dokterKso.dao.DokterKsoDao;
 import com.neurix.hris.master.dokterKso.model.DokterKso;
@@ -210,7 +213,23 @@ public class DokterKsoBoImpl implements DokterKsoBo {
 
             String kode = imSimrsDokterKso.getKodering();
             String[] arrOfStr = kode.split("\\.");
-            String seqKodering = arrOfStr[4];
+            String seqKodering = arrOfStr[(arrOfStr.length-1)];
+
+            // Fahmi 2021-07-28, Pengambilan Biodata untuk pengisian kodering.
+            Map searchPersonilPos = new HashMap();
+            searchPersonilPos.put("nip",bean.getNip());
+            List<ItPersonilPositionEntity> resultPersonilPos = null;
+
+            try {
+                resultPersonilPos = personilPositionDao.getByCriteria(searchPersonilPos);
+            } catch (HibernateException e) {
+                logger.error("[DokterKsoBoImpl.BoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Problem when getting biodata, " + e.getMessage());
+            }
+
+            if(null!=resultPersonilPos)
+            { bean.setPositionId(resultPersonilPos.get(0).getPositionId()); }
+            // End Fahmi
 
             Map map = new HashMap<>();
             map.put("position_id", bean.getPositionId());
@@ -235,6 +254,8 @@ public class DokterKsoBoImpl implements DokterKsoBo {
             }
 
             String kodering = koderingBranch + "." + koderingPosition + "." + seqKodering;
+            // Fahmi 2021-08-02, Jika jenis kso selain tindakan, maka ambil dari UI.
+            BigDecimal persenKso = !bean.getJenisKso().equalsIgnoreCase("tindakan")?bean.getPersenKso():new BigDecimal(0);
 
             if (imSimrsDokterKso != null) {
                 imSimrsDokterKso.setDokterKsoId(bean.getDokterKsoId());
@@ -242,7 +263,7 @@ public class DokterKsoBoImpl implements DokterKsoBo {
                 imSimrsDokterKso.setJenisKso(bean.getJenisKso());
                 imSimrsDokterKso.setMasterId(bean.getMasterId());
                 imSimrsDokterKso.setTarifIna(bean.getTarifIna());
-                imSimrsDokterKso.setPersenKso(bean.getPersenKso());
+                imSimrsDokterKso.setPersenKso(persenKso);
                 imSimrsDokterKso.setPersenKs(bean.getPersenKs());
                 imSimrsDokterKso.setBranchId(bean.getBranchId());
                 imSimrsDokterKso.setPositionId(bean.getPositionId());
@@ -384,6 +405,23 @@ public class DokterKsoBoImpl implements DokterKsoBo {
                     throw new GeneralBOException("Problem when retrieving Next Kodering, " + e.getMessage());
                 }
 
+                // Fahmi 2021-07-28, Pengambilan Biodata untuk pengisian kodering.
+                Map searchPersonilPos = new HashMap();
+                searchPersonilPos.put("nip",bean.getNip());
+                List<ItPersonilPositionEntity> resultPersonilPos = null;
+
+                try {
+                    resultPersonilPos = personilPositionDao.getByCriteria(searchPersonilPos);
+                } catch (HibernateException e) {
+                    logger.error("[DokterKsoBoImpl.BoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Problem when getting biodata, " + e.getMessage());
+                }
+
+                if(null!=resultPersonilPos)
+                { bean.setPositionId(resultPersonilPos.get(0).getPositionId()); }
+                // End Fahmi
+
+
                 Map map = new HashMap<>();
                 map.put("position_id", bean.getPositionId());
                 String koderingPosition;
@@ -407,6 +445,8 @@ public class DokterKsoBoImpl implements DokterKsoBo {
                 }
 
                 String kodering = koderingBranch + "." + koderingPosition + "." + seqKodering;
+                // Fahmi 2021-07-30, Jika jenis kso selain tindakan, maka ambil dari UI.
+                BigDecimal persenKso = !bean.getJenisKso().equalsIgnoreCase("tindakan")?bean.getPersenKso():new BigDecimal(0);
 
                 // creating object entity serializable
                 ImSimrsDokterKso entity = new ImSimrsDokterKso();
@@ -415,7 +455,7 @@ public class DokterKsoBoImpl implements DokterKsoBo {
                 entity.setJenisKso(bean.getJenisKso());
                 entity.setMasterId(bean.getMasterId());
                 entity.setTarifIna(bean.getTarifIna());
-                entity.setPersenKso(bean.getPersenKso());
+                entity.setPersenKso(persenKso);
                 entity.setPersenKs(bean.getPersenKs());
                 entity.setBranchId(bean.getBranchId());
                 entity.setPositionId(bean.getPositionId());
@@ -563,8 +603,13 @@ public class DokterKsoBoImpl implements DokterKsoBo {
                         dokter.setIdDokter(entity.getNip());
                         dokter.setFlag("Y");
                         List<Dokter> dokters = dokterBo.getByCriteria(dokter);
-                        String dokterName = dokters.get(0).getNamaDokter();
-                        dokterKso.setNamaDokter(dokterName);
+                        // Fahmi 2021-07-27, Tambah pengecheckkan untuk data yang kosong.
+                        if(null!=dokters && dokters.size() > 0)
+                        {
+                            String dokterName = dokters.get(0).getNamaDokter();
+                            dokterKso.setNamaDokter(dokterName);
+                        }
+
                     }
 //                    if (entity.getDokterKsoId() != null){
 //                        DokterKsoTindakan dokterKsoTindakan = new DokterKsoTindakan();
@@ -655,6 +700,7 @@ public class DokterKsoBoImpl implements DokterKsoBo {
         List<Tindakan> tindakanList = new ArrayList<>();
 
         ItPersonilPositionEntity personil;
+        Tindakan tindakan = new Tindakan();
 
         try {
             personil = personilPositionDao.getById("nip", idDokter);
@@ -664,7 +710,12 @@ public class DokterKsoBoImpl implements DokterKsoBo {
         }
 
         try {
-            tindakanList = tindakanDao.getTindakanPelayanan(idPelayanan, personil.getBranchId());
+            // Fahmi 2021-08-02, Ubah cara mendapatkan list tindakan, karena yang sebelumnya tidak akurat.
+            tindakan.setIdPelayanan(idPelayanan);
+            tindakan.setBranchId(personil.getBranchId());
+            //tindakanList = tindakanDao.getTindakanPelayanan(idPelayanan, personil.getBranchId());
+            tindakanList = tindakanDao.getListDataTindakan(tindakan);
+            // End Fahmi
         } catch (HibernateException e) {
             logger.error("[DokterKsoBoImpl.getTindakanPelayanan] Error, " + e.getMessage());
             throw new GeneralBOException("Problem when retrieving Tindakan by Pelayanan ID, " + e.getMessage());

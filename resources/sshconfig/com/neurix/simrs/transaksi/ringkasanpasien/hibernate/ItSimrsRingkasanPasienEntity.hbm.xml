@@ -55,5 +55,9 @@
             <column name="tipe" />
         </property>
 
+        <property name="noCheckup">
+            <column name="no_checkup" />
+        </property>
+
     </class>
 </hibernate-mapping>

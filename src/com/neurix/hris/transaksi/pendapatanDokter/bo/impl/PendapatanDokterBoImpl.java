@@ -1,6 +1,7 @@
 package com.neurix.hris.transaksi.pendapatanDokter.bo.impl;
 
 import com.neurix.akuntansi.master.mappingJurnal.dao.MappingJurnalDao;
+import com.neurix.akuntansi.transaksi.billingSystem.model.MappingDetail;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailDao;
 import com.neurix.akuntansi.transaksi.jurnal.model.ItJurnalDetailEntity;
 import com.neurix.akuntansi.transaksi.jurnal.model.JurnalDetail;
@@ -8,6 +9,7 @@ import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.company.model.ImBranches;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.dokterKso.dao.DokterKsoDao;
@@ -36,6 +38,7 @@ import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -209,8 +212,11 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                                 pendapatanDokter.setMasterId(masterId);
 
                                 bruto = (BigDecimal) obj[12];
-
-                                if ("tindakan".equalsIgnoreCase(jenisKso) && "bpjs".equalsIgnoreCase(masterId)){
+                                // Fahmi 2021-08-02, Berdasarkan informasi dari Pak Ferdi, untuk jenisKso tindakan
+                                // ambil prosentasenya dari persen kso tindakan.
+                                // dan tidak menyinggung bpjs atau tidak.
+                                //if ("tindakan".equalsIgnoreCase(jenisKso) && "bpjs".equalsIgnoreCase(masterId)){
+                                if (!"tindakan".equalsIgnoreCase(jenisKso)){
                                     ksoPersen = (BigDecimal) obj[15];
                                     int kso = 100 - ksoPersen.intValue();
                                     pndptnRs = bruto.doubleValue() * ksoPersen.intValue() / 100;
@@ -689,7 +695,11 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                             String masterId = String.valueOf(obj[2]);
                             bruto = (BigDecimal) obj[0];
 
-                            if ("tindakan".equalsIgnoreCase(jenisKso) && "bpjs".equalsIgnoreCase(masterId)){
+                            // Fahmi 2021-08-02, Berdasarkan informasi dari Pak Ferdi, untuk jenisKso tindakan
+                            // ambil prosentasenya dari persen kso tindakan.
+                            // dan tidak menyinggung bpjs atau tidak.
+                            //if ("tindakan".equalsIgnoreCase(jenisKso) && "bpjs".equalsIgnoreCase(masterId)){
+                            if (!"tindakan".equalsIgnoreCase(jenisKso)){
                                 ksoPersen = (BigDecimal) obj[3];
                                 int kso = 100 - ksoPersen.intValue();
                                 pndptnRs = bruto.doubleValue() * ksoPersen.intValue() / 100;
@@ -1569,6 +1579,7 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                     pendapatanDokter.setKdjnspas(entity.getKdjnspas());
                     pendapatanDokter.setNamaPasien(entity.getNamaPasien());
                     pendapatanDokter.setTanggal(entity.getTanggal());
+                    pendapatanDokter.setStTanggal(new SimpleDateFormat("dd-MM-yyyy HH:mm").format(entity.getTanggal()));
                     pendapatanDokter.setKeterangan(entity.getKeterangan());
                     if (entity.getTarifInacbg() != null)
                         pendapatanDokter.setTarifInacbg(CommonUtil.numbericFormat(entity.getTarifInacbg(), "###,###"));
@@ -1770,8 +1781,12 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
 
                                 boolean ada = false;
                                 for (BillingPendapatanDokter billingPendapatanDokter : billingDokter){
-                                    if (pelayananEntity.getDivisiId().equalsIgnoreCase(billingPendapatanDokter.getDivisiId())&&masterId.equalsIgnoreCase(billingPendapatanDokter.getMasterId())){
-                                        billingPendapatanDokter.setNilai(billingPendapatanDokter.getNilai().add(pendapatanDokterdetail.getBgHrBruto()));
+                                    if (pelayananEntity.getDivisiId().equalsIgnoreCase(billingPendapatanDokter.getDivisiId()) &&
+                                            masterId.equalsIgnoreCase(billingPendapatanDokter.getMasterId())){
+                                        // Fahmi 2021-07-30, Kalau pake Hr Bruto tidak balance, karena bruto belum termasuk pajak.
+                                        //billingPendapatanDokter.setNilai(billingPendapatanDokter.getNilai().add(pendapatanDokterdetail.getBgHrBruto()));
+                                        billingPendapatanDokter.setNilai(billingPendapatanDokter.getNilai().add(pendapatanDokterdetail.getBgGajiBersih()));
+                                        // End Fahmi
                                         ada=true;
                                         break;
                                     }
@@ -1780,7 +1795,10 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                                     BillingPendapatanDokter billingPendapatanDokter1 = new BillingPendapatanDokter();
                                     billingPendapatanDokter1.setDivisiId(pelayananEntity.getDivisiId());
                                     billingPendapatanDokter1.setMasterId(masterId);
-                                    billingPendapatanDokter1.setNilai(pendapatanDokterdetail.getBgHrBruto());
+                                    // Fahmi 2021-07-30, Kalau pake Hr Bruto tidak balance, karena bruto belum termasuk pajak.
+                                    //billingPendapatanDokter1.setNilai(pendapatanDokterdetail.getBgHrBruto());
+                                    billingPendapatanDokter1.setNilai(pendapatanDokterdetail.getBgGajiBersih());
+                                    // End fahmi
                                     billingPendapatanDokter1.setJenisRawat(pendapatanDokterdetail.getJenisRawat());
                                     billingDokter.add(billingPendapatanDokter1);
                                 }
@@ -1806,61 +1824,126 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                         //membuat map ke billing
                         Map billing =  new HashMap();
 
-                        List<Map> reduksiPendapatanRjList = new ArrayList<>();
-                        List<Map> reduksiPendapatanRiList = new ArrayList<>();
+                        // Fahmi 2021-07-29, Menurut saya ada kesalah sistem, saat di billing system, membutuhkan List<MappingDetail>.
+                        //List<Map> reduksiPendapatanRjList = new ArrayList<>();
+                        //List<Map> reduksiPendapatanRiList = new ArrayList<>();
+
+                        List<MappingDetail> reduksiPendapatanRjList = new ArrayList<>();
+                        List<MappingDetail> reduksiPendapatanRiList = new ArrayList<>();
+                        // End Fahmi
 
                     for (BillingPendapatanDokter billingPendapatanDokter : billingDokter) {
                         if ("rawat_jalan".equalsIgnoreCase(billingPendapatanDokter.getJenisRawat())||"igd".equalsIgnoreCase(billingPendapatanDokter.getJenisRawat())){
-                            Map reduksiPendapatanRj = new HashMap();
-                                reduksiPendapatanRj.put("nilai",billingPendapatanDokter.getNilai());
-                                reduksiPendapatanRj.put("divisi_id",billingPendapatanDokter.getDivisiId());
-                                reduksiPendapatanRj.put("master_id",billingPendapatanDokter.getMasterId());
+                                // Fahmi 2021-07-29, Menurut saya ada kesalah sistem, saat di billing system, membutuhkan List<MappingDetail>.
+                                //Map reduksiPendapatanRj = new HashMap();
+                                //    reduksiPendapatanRj.put("nilai",billingPendapatanDokter.getNilai());
+                                //    reduksiPendapatanRj.put("divisi_id",billingPendapatanDokter.getDivisiId());
+                                //    reduksiPendapatanRj.put("master_id",billingPendapatanDokter.getMasterId());
+                                MappingDetail reduksiPendapatanRj = new MappingDetail();
+                                reduksiPendapatanRj.setNilai(billingPendapatanDokter.getNilai());
+                                reduksiPendapatanRj.setDivisiId(billingPendapatanDokter.getDivisiId());
+                                reduksiPendapatanRj.setMasterId(billingPendapatanDokter.getMasterId());
+                                reduksiPendapatanRj.setCoa(CommonConstant.COA_REDUKSI_PENDAPATAN_RJ);
+                                // End Fahmi
+
                                 reduksiPendapatanRjList.add(reduksiPendapatanRj);
                             }else{
-                                Map reduksiPendapatanRi = new HashMap();
+                                // Fahmi 2021-07-29, Menurut saya ada kesalah sistem, saat di billing system, membutuhkan List<MappingDetail>.
+                                // Map reduksiPendapatanRi = new HashMap();
 
-                                reduksiPendapatanRi.put("nilai",billingPendapatanDokter.getNilai());
-                                reduksiPendapatanRi.put("divisi_id",billingPendapatanDokter.getDivisiId());
-                                reduksiPendapatanRi.put("master_id",billingPendapatanDokter.getMasterId());
+                                //reduksiPendapatanRi.put("nilai",billingPendapatanDokter.getNilai());
+                                //reduksiPendapatanRi.put("divisi_id",billingPendapatanDokter.getDivisiId());
+                                //reduksiPendapatanRi.put("master_id",billingPendapatanDokter.getMasterId());
+                                MappingDetail reduksiPendapatanRi = new MappingDetail();
+                                reduksiPendapatanRi.setNilai(billingPendapatanDokter.getNilai());
+                                reduksiPendapatanRi.setDivisiId(billingPendapatanDokter.getDivisiId());
+                                reduksiPendapatanRi.setMasterId(billingPendapatanDokter.getMasterId());
+                                reduksiPendapatanRi.setCoa(CommonConstant.COA_REDUKSI_PENDAPATAN_RI);
+                                // End Fahmi
+
                                 reduksiPendapatanRiList.add(reduksiPendapatanRi);
                             }
                         }
 
                         if (reduksiPendapatanRiList.size()==0){
-                            Map reduksiPendapatanRi = new HashMap();
+                            // Fahmi 2021-07-29, Menurut saya ada kesalah sistem, saat di billing system, membutuhkan List<MappingDetail>.
+                            //Map reduksiPendapatanRi = new HashMap();
 
-                            reduksiPendapatanRi.put("nilai",BigDecimal.ZERO);
-                            reduksiPendapatanRi.put("divisi_id","");
-                            reduksiPendapatanRi.put("master_id","");
-                            reduksiPendapatanRiList.add(reduksiPendapatanRi);
+                            //reduksiPendapatanRi.put("nilai",BigDecimal.ZERO);
+                            //reduksiPendapatanRi.put("divisi_id","");
+                            //reduksiPendapatanRi.put("master_id","");
+
+                            //MappingDetail reduksiPendapatanRi = new MappingDetail();
+                            //reduksiPendapatanRi.setNilai(BigDecimal.ZERO);
+                            //reduksiPendapatanRi.setDivisiId("");
+                            //reduksiPendapatanRi.setMasterId("");
+
+                            // JIka tidak ada transaksi RI, di nullkan saja.
+                            reduksiPendapatanRiList = null;
+                            // End Fahmi
                         }
                         if (reduksiPendapatanRjList.size()==0){
-                            Map reduksiPendapatanRj = new HashMap();
+                            // Fahmi 2021-07-29, Menurut saya ada kesalah sistem, saat di billing system, membutuhkan List<MappingDetail>.
+                            //Map reduksiPendapatanRj = new HashMap();
 
-                            reduksiPendapatanRj.put("nilai",BigDecimal.ZERO);
-                            reduksiPendapatanRj.put("divisi_id","");
-                            reduksiPendapatanRj.put("master_id","");
-                            reduksiPendapatanRjList.add(reduksiPendapatanRj);
+                            //reduksiPendapatanRj.put("nilai",BigDecimal.ZERO);
+                            //reduksiPendapatanRj.put("divisi_id","");
+                            //reduksiPendapatanRj.put("master_id","");
+
+                            //MappingDetail reduksiPendapatanRj = new MappingDetail();
+                            //reduksiPendapatanRj.setNilai(BigDecimal.ZERO);
+                            //reduksiPendapatanRj.setDivisiId("");
+                            //reduksiPendapatanRj.setMasterId("");
+
+                            // JIka tidak ada transaksi RJ, di nullkan saja.
+                            reduksiPendapatanRjList = null;
+                            // End Fahmi
                         }
 
-                        Map hutangDokter = new HashMap();
-                        hutangDokter.put("nilai",pendapatanDokter.getTotalGajiBersih());
-                        hutangDokter.put("bukti",noNota);
-                        hutangDokter.put("master_id",koderingDokter);
+                        // Fahmi 2021-07-29, Menurut saya ada kesalah sistem, saat di billing system, membutuhkan List<MappingDetail>.
+                        //Map hutangDokter = new HashMap();
+                        //hutangDokter.put("nilai",pendapatanDokter.getTotalGajiBersih());
+                        //hutangDokter.put("bukti",noNota);
+                        //hutangDokter.put("master_id",koderingDokter);
+                        List<MappingDetail> hutangDokterList = new ArrayList<>();
+                        MappingDetail hutangDokter = new MappingDetail();
 
-                        Map pphDokter = new HashMap();
-                        pphDokter.put("nilai",pendapatanDokter.getTotalPphFinal());
-                        pphDokter.put("bukti",mappingJurnalDao.getNextInvoiceId("JKR",entity.getBranchId()));
-                        pphDokter.put("master_id",koderingDokter);
+                        hutangDokter.setNilai(pendapatanDokter.getTotalGajiBersih());
+                        hutangDokter.setBukti(noNota);
+                        hutangDokter.setMasterId(koderingDokter);
+                        hutangDokter.setCoa(CommonConstant.COA_UTANGDOKTER);
+                        hutangDokterList.add(hutangDokter);
 
-                        Map potKs = new HashMap();
-                        potKs.put("nilai",pendapatanDokter.getTotalPotKs());
-                        potKs.put("bukti",mappingJurnalDao.getNextInvoiceId("JKR",entity.getBranchId()));
-                        potKs.put("master_id",koderingDokter);
 
-                        billing.put("hutang_dokter",hutangDokter);
-                        billing.put("pot_ks",potKs);
-                        billing.put("pph_dokter",pphDokter);
+                        //Map pphDokter = new HashMap();
+                        //pphDokter.put("nilai",pendapatanDokter.getTotalPphFinal());
+                        //pphDokter.put("bukti",mappingJurnalDao.getNextInvoiceId("JKR",entity.getBranchId()));
+                        //pphDokter.put("master_id",koderingDokter);
+                        List<MappingDetail> pphDokterList = new ArrayList<>();
+                        MappingDetail pphDokter = new MappingDetail();
+
+                        pphDokter.setNilai(pendapatanDokter.getTotalPphFinal());
+                        pphDokter.setBukti(mappingJurnalDao.getNextInvoiceId("JKR",entity.getBranchId()));
+                        pphDokter.setMasterId(koderingDokter);
+                        pphDokterList.add(pphDokter);
+
+                        //Map potKs = new HashMap();
+                        //potKs.put("nilai",pendapatanDokter.getTotalPotKs());
+                        //potKs.put("bukti",mappingJurnalDao.getNextInvoiceId("JKR",entity.getBranchId()));
+                        //potKs.put("master_id",koderingDokter);
+                        List<MappingDetail> potKsList = new ArrayList<>();
+                        MappingDetail potKs = new MappingDetail();
+
+                        potKs.setNilai(pendapatanDokter.getTotalPotKs());
+                        potKs.setBukti(mappingJurnalDao.getNextInvoiceId("JKR",entity.getBranchId()));
+                        potKs.setMasterId(koderingDokter);
+                        potKsList.add(potKs);
+
+                        // End Fahmi
+
+                        billing.put("hutang_dokter",hutangDokterList);
+                        billing.put("pot_ks",potKsList);
+                        billing.put("pph_dokter",pphDokterList);
                         billing.put("reduksi_pendapatan_rawat_jalan",reduksiPendapatanRjList);
                         billing.put("reduksi_pendapatan_rawat_inap",reduksiPendapatanRiList);
 
@@ -1905,6 +1988,9 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
             if (searchBean.getBranchId() != null && !"".equalsIgnoreCase(searchBean.getBranchId())){
                 hsCriteria.put("branch_id", searchBean.getBranchId());
             }
+            if (searchBean.getNoNota() != null && !"".equalsIgnoreCase(searchBean.getNoNota())){
+                hsCriteria.put("no_nota", searchBean.getNoNota());
+            }
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBean.getFlag())) {
                     hsCriteria.put("flag", "N");
@@ -1930,7 +2016,7 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                     pendapatanDokter.setPendapatanDokterId(entity.getPendapatanDokterId());
                     pendapatanDokter.setDokterId(entity.getDokterId());
                     pendapatanDokter.setDokterName(entity.getDokterName());
-//                    pendapatanDokter.setBranchId(entity.getBranchId());
+                    pendapatanDokter.setBranchId(entity.getBranchId());
                     pendapatanDokter.setBulan(entity.getBulan());
                     pendapatanDokter.setTahun(entity.getTahun());
                     pendapatanDokter.setBruto(CommonUtil.numbericFormat(entity.getBruto(), "###,###"));

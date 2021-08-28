@@ -118,6 +118,33 @@ public class PengajuanBiayaDetail extends BaseModel {
     private String rkId;
     private String branchIdUser;
     private String statusKeuanganName;
+    private String headerName;
+    private String tipe;
+    private String flagSelesaiRk;
+
+    public String getFlagSelesaiRk() {
+        return flagSelesaiRk;
+    }
+
+    public void setFlagSelesaiRk(String flagSelesaiRk) {
+        this.flagSelesaiRk = flagSelesaiRk;
+    }
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
+
+    public String getHeaderName() {
+        return headerName;
+    }
+
+    public void setHeaderName(String headerName) {
+        this.headerName = headerName;
+    }
 
     public String getStatusKeuanganName() {
         return statusKeuanganName;

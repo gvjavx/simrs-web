@@ -4,6 +4,7 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
@@ -167,7 +168,8 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "f.kategori, \n" +
                     "jenis.keterangan as jenis_pasien,\n" +
                     "a.tgl_lahir,\n"+
-                    "b.tindak_lanjut \n"+
+                    "b.tindak_lanjut, \n"+
+                    "a.branch_id \n"+
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_jenis_periksa_pasien jenis ON b.id_jenis_periksa_pasien = jenis.id_jenis_periksa_pasien\n" +
@@ -352,11 +354,64 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                         }
                     }
                     rawatInap.setAlamat(jalan);
+                    HeaderDetailCheckup detailCheckup = diagnosa(obj[2].toString(), obj[27].toString());
+                    if(detailCheckup != null){
+                        rawatInap.setIdDiagnosa(detailCheckup.getDiagnosa());
+                        rawatInap.setNamaDiagnosa(detailCheckup.getNamaDiagnosa());
+                        rawatInap.setIsWarning(detailCheckup.getIsWarning());
+                    }
                     rawatInapList.add(rawatInap);
                 }
             }
         }
         return rawatInapList;
+    }
+
+    private HeaderDetailCheckup diagnosa(String idPasien, String branchId) {
+        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+        if (branchId == null || "".equalsIgnoreCase(branchId)) {
+            branchId = "%";
+        }
+
+        String SQL = "SELECT \n" +
+                "ps.nama, \n" +
+                "diag.keterangan_diagnosa, \n" +
+                "ck.last_update, \n" +
+                "ck.no_checkup, \n" +
+                "diag.id_diagnosa,\n" +
+                "md.is_warning\n" +
+                "FROM it_simrs_header_checkup ck\n" +
+                "INNER JOIN im_simrs_pasien ps ON ps.id_pasien = ck.id_pasien\n" +
+                "INNER JOIN (SELECT * FROM it_simrs_header_detail_checkup WHERE status_periksa = '3') hdc ON hdc.no_checkup = ck.no_checkup\n" +
+                "INNER JOIN (\n" +
+                "\tSELECT a.* FROM it_simrs_diagnosa_rawat a\n" +
+                "\tINNER JOIN (\n" +
+                "\tSELECT id_detail_checkup, \n" +
+                "\tMAX(created_date) as created_date \n" +
+                "\tFROM it_simrs_diagnosa_rawat\n" +
+                "\tGROUP BY id_detail_checkup\n" +
+                "\t) b ON b.id_detail_checkup = a.id_detail_checkup AND b.created_date = a.created_date\n" +
+                ") diag ON diag.id_detail_checkup = hdc.id_detail_checkup\n" +
+                "INNER JOIN im_simrs_diagnosa md ON diag.id_diagnosa = md.id_diagnosa\n" +
+                "WHERE ck.id_pasien = :idPasien \n" +
+                "AND ck.branch_id LIKE :branchId \n" +
+                "ORDER BY hdc.last_update DESC\n" +
+                "LIMIT 1";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("branchId", branchId)
+                .setParameter("idPasien", idPasien)
+                .list();
+
+        for (Object[] obj : results) {
+            detailCheckup.setNamaPasien(obj[0] == null ? "" : obj[0].toString());
+            detailCheckup.setNamaDiagnosa(obj[1] == null ? "" : obj[1].toString());
+            detailCheckup.setNoCheckup(obj[3] == null ? "" : obj[3].toString());
+            detailCheckup.setDiagnosa(obj[4] == null ? "" : obj[4].toString());
+            detailCheckup.setIsWarning(obj[5] == null ? "" : obj[5].toString());
+        }
+
+        return detailCheckup;
     }
 
     public List<RawatInap> getSearchVerifikasiRawatInap(RawatInap bean, String type) {
@@ -910,10 +965,13 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "a.tgl_masuk, \n" +
                     "a.tgl_keluar,\n" +
                     "CAST(DATE_PART('day', a.tgl_keluar - a.tgl_masuk) + 1 AS BIGINT) as hari, \n" +
-                    "b.tarif\n" +
+                    "b.tarif,\n" +
+                    "c.kategori,\n"+
+                    "c.id_kelas_bpjs\n"+
                     "FROM it_simrs_rawat_inap a\n" +
                     "INNER JOIN mt_simrs_ruangan_tempat_tidur tt ON a.id_ruangan = tt.id_tempat_tidur\n" +
                     "INNER JOIN mt_simrs_ruangan b ON tt.id_ruangan = b.id_ruangan\n" +
+                    "INNER JOIN im_simrs_kelas_ruangan c ON b.id_kelas_ruangan = c.id_kelas_ruangan\n"+
                     "WHERE a.status = '3'\n" +
                     "AND a.tgl_keluar IS NOT NULL\n" +
                     "AND a.id_detail_checkup = :id ";
@@ -934,12 +992,42 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     rawatInap.setTglKeluar(obj[6] == null ? null : (Timestamp) obj[6]);
                     rawatInap.setLamakamar(obj[7] == null ? null : (BigInteger) obj[7]);
                     rawatInap.setTarif(obj[8] == null ? null : (BigInteger) obj[8]);
+                    rawatInap.setKategoriRuangan(obj[9] == null ? null : (String) obj[9]);
+                    rawatInap.setIdKelasBpjs(obj[10] == null ? null : (String) obj[10]);
                     rawatInapList.add(rawatInap);
                 }
             }
         }
         return rawatInapList;
     }
+
+    public BigInteger getTarifByIdKelas(String idKelas, String branchId) {
+        BigInteger res = new BigInteger("0");
+        if (idKelas != null && !"".equalsIgnoreCase(idKelas)) {
+            String SQL = "SELECT \n" +
+                    "a.id_kelas_ruangan,\n" +
+                    "b.tarif\n" +
+                    "FROM im_simrs_kelas_ruangan a\n" +
+                    "INNER JOIN mt_simrs_ruangan b ON a.id_kelas_ruangan = b.id_kelas_ruangan\n" +
+                    "WHERE a.id_kelas_bpjs = :id\n" +
+                    "AND b.branch_id = :branch\n" +
+                    "LIMIT 1";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idKelas)
+                    .setParameter("branch", branchId)
+                    .list();
+            if (result.size() > 0) {
+                Object[] obj = result.get(0);
+                if(obj[1] != null){
+                    res = new BigInteger(obj[1].toString());
+                }
+            }
+        }
+        return res;
+    }
+
 
     public List<UangMuka> getAllListUangMuka(UangMuka bean) {
         List<UangMuka> uangMukaArrayList = new ArrayList<>();

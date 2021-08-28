@@ -92,12 +92,12 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
                 "\tLEFT JOIN it_akun_pengajuan_setor_detail ps ON ps.transaksi_id = jd.no_nota\n" +
                 "\tLEFT JOIN it_akun_pengajuan_setor s ON ps.pengajuan_setor_id = s.pengajuan_setor_id\n" +
                 "WHERE\n" +
-                "\tj.keterangan ilike 'Pembayaran gaji%'\n" +
+                "\tj.keterangan ilike 'Pembayaran payrol%'\n" +
                 "\tAND j.branch_id='"+search.getBranchId()+"'\n" +
                 "\tAND j.tanggal_jurnal >='"+search.getStTanggalDari()+"'\n" +
                 "\tAND j.tanggal_jurnal <'"+search.getStTanggalSelesai()+"'\n" +
                 "\tAND j.registered_flag='Y'\n" +
-                "\tAND jd.rekening_id='"+CommonConstant.REKENING_PPH21+"'\n" +
+                "\tAND jd.nomor_rekening ='"+CommonConstant.REKENING_PPH21+"'\n" +
                 "\tAND (s.cancel_flag='Y' OR ps.pengajuan_setor_detail_id IS NULL)";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -146,7 +146,7 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
                 "\tAND j.tanggal_jurnal <'"+search.getStTanggalSelesai()+"'\n" +
                 "\tAND j.registered_flag='Y'\n" +
                 "\tAND (s.cancel_flag='Y' OR ps.pengajuan_setor_detail_id IS NULL)"+
-                "\tAND jd.rekening_id='"+CommonConstant.REKENING_PPH21+"'";
+                "\tAND jd.nomor_rekening ='"+CommonConstant.REKENING_PPH21+"'";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
@@ -188,13 +188,65 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
                 "\tLEFT JOIN it_akun_pengajuan_setor s ON ps.pengajuan_setor_id = s.pengajuan_setor_id\n" +
                 "WHERE\n" +
                 "\tj.keterangan NOT ILIKE 'Pendapatan dokter%'\n" +
-                "\tAND j.keterangan NOT ILIKE 'Pembayaran gaji%'\n" +
+                "\tAND j.keterangan NOT ILIKE 'Pembayaran payrol%'\n" +
                 "\tAND j.branch_id='"+search.getBranchId()+"'\n" +
                 "\tAND j.tanggal_jurnal >='"+search.getStTanggalDari()+"'\n" +
                 "\tAND j.tanggal_jurnal <'"+search.getStTanggalSelesai()+"'\n" +
                 "\tAND j.registered_flag='Y'\n" +
                 "\tAND (s.cancel_flag='Y' OR ps.pengajuan_setor_detail_id IS NULL)"+
-                "\tAND jd.rekening_id='"+ CommonConstant.REKENING_PPH21 +"'";
+                "\tAND jd.nomor_rekening = '"+ CommonConstant.REKENING_PPH21 +"'";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            PengajuanSetorDetail data= new PengajuanSetorDetail();
+            data.setTipe("Pengajuan Biaya PPH21");
+            data.setNote(row[4].toString());
+            data.setPersonId(row[0].toString());
+            data.setNama(row[1].toString());
+
+            if (row[2]!=null){
+                data.setJumlah(BigDecimal.valueOf(Double.parseDouble(row[2].toString())));
+            }else{
+                data.setJumlah(BigDecimal.ZERO);
+            }
+            data.setTransaksiId(row[3].toString());
+
+            listOfResult.add(data);
+        }
+        return listOfResult;
+    }
+
+    public List<PengajuanSetorDetail> listPengajuanJasa (PengajuanSetor search){
+        List<PengajuanSetorDetail> listOfResult = new ArrayList<>();
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "SELECT \n" +
+                "\tjd.master_id,\n" +
+                "\tm.nama,\n" +
+                "\tjd.jumlah_kredit,\n" +
+                "\tjd.no_nota,\n" +
+                "\tj.keterangan\n" +
+                "FROM \n" +
+                "\tit_akun_jurnal j\n" +
+                "\tLEFT JOIN it_akun_jurnal_detail jd ON j.no_jurnal = jd.no_jurnal\n" +
+                "\tLEFT JOIN im_akun_master m ON m.nomor_master = jd.master_id\n" +
+                "\tLEFT JOIN it_akun_pengajuan_setor_detail ps ON ps.transaksi_id = jd.no_nota\n" +
+                "\tLEFT JOIN it_akun_pengajuan_setor s ON ps.pengajuan_setor_id = s.pengajuan_setor_id\n" +
+                "\tLEFT JOIN it_akun_pendaftaran_jasa js ON js.no_jurnal = j.no_jurnal\n" +
+                "WHERE j.branch_id='"+search.getBranchId()+"'\n" +
+                "\tAND j.tanggal_jurnal >='"+search.getStTanggalDari()+"'\n" +
+                "\tAND j.tanggal_jurnal <'"+search.getStTanggalSelesai()+"'\n" +
+                "\tAND j.registered_flag='Y'\n" +
+                "\tAND (s.cancel_flag='Y' OR ps.pengajuan_setor_detail_id IS NULL)\n"+
+                "\tAND jd.nomor_rekening = '"+ CommonConstant.REKENING_PPH21 +"'\n" +
+                "GROUP BY jd.master_id,\n" +
+                "\tm.nama,\n" +
+                "\tjd.jumlah_kredit,\n" +
+                "\tjd.no_nota,\n" +
+                "\tj.keterangan";
+
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
@@ -246,7 +298,7 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
                 "  AND j.registered_flag = 'Y' \n" +
                 "  AND j.tanggal_jurnal >= '"+search.getStTanggalDari()+"' \n" +
                 "  AND j.tanggal_jurnal < '"+search.getStTanggalSelesai()+"' \n" +
-                "  AND jd.rekening_id = '"+CommonConstant.REKENING_ID_PPN_KELUARAN+"' \n" +
+                "  AND jd.nomor_rekening = '"+CommonConstant.REKENING_ID_PPN_KELUARAN+"' \n" +
                 "  AND (\n" +
                 "    s.cancel_flag = 'Y' \n" +
                 "    OR sd.pengajuan_setor_detail_id IS NULL\n" +
@@ -293,7 +345,7 @@ public class PengajuanSetorDao extends GenericDao<ItPengajuanSetorEntity, String
                 "  AND j.registered_flag = 'Y' \n" +
                 "  AND j.tanggal_jurnal >= '"+search.getStTanggalDari()+"' \n" +
                 "  AND j.tanggal_jurnal < '"+search.getStTanggalSelesai()+"' \n" +
-                "  AND jd.rekening_id = '"+CommonConstant.REKENING_ID_PPN_MASUKAN+"' \n" +
+                "  AND jd.nomor_rekening = '"+CommonConstant.REKENING_ID_PPN_MASUKAN+"' \n" +
                 "  AND (\n" +
                 "    ( s.cancel_flag = 'Y' AND s.tipe_pengajuan_setor<>'PPH21' ) \n" +
                 "    OR sd.pengajuan_setor_detail_id IS NULL\n" +

@@ -123,7 +123,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Edit Dokter KSO
+            View Dokter KSO
         </h1>
     </section>
     <!-- Main content -->
@@ -132,7 +132,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-pencil"></i> Edit Dokter KSO</h3>
+                        <h3 class="box-title"><i class="fa fa-pencil"></i> View Dokter KSO</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
@@ -154,7 +154,7 @@
                                                 <td>
                                                     <label class="control-label"><small>Dokter KSO ID :</small></label>
                                                 </td>
-                                                <td>
+                                                <td style="width: 75%">
                                                     <table>
                                                         <s:textfield id="dokterKsoId3" name="dokterKso.dokterKsoId" required="true" disabled="false" readonly="true" cssClass="form-control"/>
                                                         <s:hidden id="dokterKsoTindakanId3" name="dokterKso.dokterKsoTindakanId" />
@@ -253,8 +253,8 @@
                                                     </table>
                                                 </td>
                                             </tr>
-
-                                            <tr>
+                                            <%-- Fahmi 2021-07-30, posisi/divisi sudah otomatis dari personil position.--%>
+                                            <tr style="display:none;">
                                                 <td>
                                                     <label class="control-label"><small>Divisi :</small></label>
                                                 </td>
@@ -267,6 +267,7 @@
                                                     </table>
                                                 </td>
                                             </tr>
+                                            <%-- End Fahmi --%>
 
                                             <tr>
                                                 <td>

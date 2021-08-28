@@ -38,10 +38,11 @@ public class RingkasanPasienAction {
         RingkasanPasienBo ringkasanPasienBo = (RingkasanPasienBo) ctx.getBean("ringkasanPasienBoProxy");
         try {
             JSONArray json = new JSONArray(data);
+            JSONObject objPasien = new JSONObject(dataPasien);
             List<RingkasanPasien> ringkasanPasienList = new ArrayList<>();
+            String noCheckup = objPasien.getString("no_checkup");
 
             for (int i = 0; i < json.length(); i++) {
-
                 JSONObject obj = json.getJSONObject(i);
                 RingkasanPasien ringkasanPasien = new RingkasanPasien();
                 ringkasanPasien.setParameter(obj.getString("parameter"));
@@ -100,6 +101,7 @@ public class RingkasanPasienAction {
                 ringkasanPasien.setCreatedDate(time);
                 ringkasanPasien.setLastUpdateWho(userLogin);
                 ringkasanPasien.setLastUpdate(time);
+                ringkasanPasien.setNoCheckup(noCheckup);
                 ringkasanPasienList.add(ringkasanPasien);
 
             }
@@ -108,13 +110,12 @@ public class RingkasanPasienAction {
                 response = ringkasanPasienBo.saveAdd(ringkasanPasienList);
                 if("success".equalsIgnoreCase(response.getStatus())){
                     RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
-                    JSONObject obj = new JSONObject(dataPasien);
-                    if(obj != null){
+                    if(objPasien != null){
                         StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
-                        status.setNoCheckup(obj.getString("no_checkup"));
-                        status.setIdDetailCheckup(obj.getString("id_detail_checkup"));
-                        status.setIdPasien(obj.getString("id_pasien"));
-                        status.setIdRekamMedisPasien(obj.getString("id_rm"));
+                        status.setNoCheckup(noCheckup);
+                        status.setIdDetailCheckup(objPasien.getString("id_detail_checkup"));
+                        status.setIdPasien(objPasien.getString("id_pasien"));
+                        status.setIdRekamMedisPasien(objPasien.getString("id_rm"));
                         status.setIsPengisian("Y");
                         status.setAction("C");
                         status.setFlag("Y");
@@ -130,21 +131,21 @@ public class RingkasanPasienAction {
                 response.setMsg("Found Error " + e.getMessage());
                 return response;
             }
-        }catch (JSONException e){
+        }catch (Exception e){
             response.setStatus("Error");
             response.setMsg("Found Error " + e.getMessage());
         }
         return response;
     }
 
-    public List<RingkasanPasien> getListDetail(String idDetailCheckup, String keterangan) {
+    public List<RingkasanPasien> getListDetail(String noCheckup, String keterangan) {
         List<RingkasanPasien> list = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RingkasanPasienBo ringkasanPasienBo = (RingkasanPasienBo) ctx.getBean("ringkasanPasienBoProxy");
-        if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(keterangan)) {
+        if (!"".equalsIgnoreCase(noCheckup) && !"".equalsIgnoreCase(keterangan)) {
             try {
                 RingkasanPasien ringkasanPasien = new RingkasanPasien();
-                ringkasanPasien.setIdDetailCheckup(idDetailCheckup);
+                ringkasanPasien.setNoCheckup(noCheckup);
                 ringkasanPasien.setKeterangan(keterangan);
                 list = ringkasanPasienBo.getByCriteria(ringkasanPasien);
             } catch (GeneralBOException e) {

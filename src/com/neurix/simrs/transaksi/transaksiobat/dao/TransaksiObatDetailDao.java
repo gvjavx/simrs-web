@@ -988,64 +988,103 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         if (idApprove != null && !"".equalsIgnoreCase(idApprove)){
 
             String SQL = "SELECT\n" +
+                    "g.nama_obat,\n" +
+                    "c.qty,\n" +
+                    "b.jenis_satuan,\n" +
+                    "CAST((d.harga_jual * c.qty) AS BIGINT) as harga\n" +
+                    "FROM mt_simrs_permintaan_resep a\n" +
+                    "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat AND id_racik IS NULL\n" +
+                    "INNER JOIN (\n" +
+                    "\tSELECT\n" +
+                    "\tid_transaksi_obat_detail, \n" +
+                    "\tSUM(qty_approve) as qty \n" +
+                    "\tFROM mt_simrs_transaksi_obat_detail_batch \n" +
+                    "\tWHERE approve_flag = 'Y'  \n" +
+                    "\tGROUP BY id_transaksi_obat_detail\n" +
+                    ") c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
+                    "INNER JOIN (\n" +
+                    "\tSELECT\n" +
+                    "\ta.id_obat,\n" +
+                    "\tb.harga_jual\n" +
+                    "\tFROM mt_simrs_harga_terakhir a\n" +
+                    "\tINNER JOIN mt_simrs_harga_obat_per_konsumen b ON a.id = b.id_harga_obat\n" +
+                    ") d ON b.id_obat = d.id_obat\n" +
+                    "LEFT JOIN it_simrs_header_detail_checkup e ON a.id_detail_checkup = e.id_detail_checkup\n" +
+                    "LEFT JOIN it_simrs_header_checkup f ON e.no_checkup = f.no_checkup\n" +
+                    "INNER JOIN (\n" +
+                    "\tSELECT id_obat, nama_obat \n" +
+                    "\tFROM im_simrs_obat \n" +
+                    "\tGROUP BY id_obat, nama_obat\n" +
+                    ") g ON b.id_obat = g.id_obat\n" +
+                    "WHERE a.id_approval_obat = :idApp\n" +
+                    "UNION ALL\n" +
+                    "SELECT\n" +
+                    "b.nama,\n" +
+                    "b.qty,\n" +
+                    "b.kemasan,\n" +
+                    "SUM(a.harga_total)\n" +
+                    "FROM(\n" +
+                    "\tSELECT\n" +
                     "a.id_permintaan_resep,\n" +
                     "a.id_detail_checkup,\n" +
                     "b.id_transaksi_obat_detail,\n" +
                     "b.id_obat,\n" +
-                    "g.nama_obat,\n" +
+                    "h.nama,\n" +
                     "b.jenis_satuan,\n" +
                     "c.qty,\n" +
-                    "d.harga_jual,\n" +
-                    "d.harga_jual_umum,\n" +
+                    "CAST(d.harga_jual AS BIGINT) as harga,\n" +
                     "e.id_pelayanan,\n" +
                     "f.no_checkup,\n" +
                     "f.id_pasien,\n" +
-                    "e.id_jenis_periksa_pasien\n" +
+                    "e.id_jenis_periksa_pasien,\n" +
+                    "CAST((d.harga_jual *  c.qty) AS BIGINT) as harga_total,\n" +
+                    "b.id_racik\n" +
                     "FROM mt_simrs_permintaan_resep a\n" +
-                    "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
-                    "INNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch WHERE approve_flag = 'Y'  GROUP BY id_transaksi_obat_detail)c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
-                    "INNER JOIN mt_simrs_harga_obat d ON b.id_obat = d.id_obat\n" +
+                    "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat AND id_racik IS NOT NULL\n" +
+                    "INNER JOIN (\n" +
+                    "\tSELECT\n" +
+                    "\tid_transaksi_obat_detail, \n" +
+                    "\tSUM(qty_approve) as qty \n" +
+                    "\tFROM mt_simrs_transaksi_obat_detail_batch \n" +
+                    "\tWHERE approve_flag = 'Y'  \n" +
+                    "\tGROUP BY id_transaksi_obat_detail\n" +
+                    ") c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
+                    "INNER JOIN (\n" +
+                    "\tSELECT\n" +
+                    "\ta.id_obat,\n" +
+                    "\tb.harga_jual\n" +
+                    "\tFROM mt_simrs_harga_terakhir a\n" +
+                    "\tINNER JOIN mt_simrs_harga_obat_per_konsumen b ON a.id = b.id_harga_obat\n" +
+                    ") d ON b.id_obat = d.id_obat\n" +
                     "LEFT JOIN it_simrs_header_detail_checkup e ON a.id_detail_checkup = e.id_detail_checkup\n" +
                     "LEFT JOIN it_simrs_header_checkup f ON e.no_checkup = f.no_checkup\n" +
-                    "INNER JOIN (SELECT id_obat, nama_obat FROM im_simrs_obat GROUP BY id_obat, nama_obat) g ON b.id_obat = g.id_obat\n" +
-                    "WHERE a.id_approval_obat = :idApp \n";
+                    "INNER JOIN (\n" +
+                    "\tSELECT id_obat, nama_obat \n" +
+                    "\tFROM im_simrs_obat \n" +
+                    "\tGROUP BY id_obat, nama_obat\n" +
+                    ") g ON b.id_obat = g.id_obat\n" +
+                    "INNER JOIN it_simrs_obat_racik h ON b.id_racik = h.id\n" +
+                    "WHERE a.id_approval_obat = :idApp\n" +
+                    ") a\n" +
+                    "INNER JOIN it_simrs_obat_racik b ON a.id_racik = b.id\n" +
+                    "GROUP BY a.id_racik, b.nama, b.qty, b.kemasan";
 
             List<Object[]> results = new ArrayList<>();
             results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("idApp", idApprove)
                     .list();
 
-            boolean cekKhusus = checkRekananKhusus(idApprove);
-
             if (results.size() > 0){
 
                 for (Object[] objects: results){
                     TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
-                    transaksiObatDetail.setIdPermintaanResep(objects[0] == null ? "" : objects[0].toString());
-                    transaksiObatDetail.setIdDetailCheckup(objects[1] == null ? "" : objects[1].toString());
-                    transaksiObatDetail.setIdTransaksiObatDetail(objects[2] == null ? "" : objects[2].toString());
-                    transaksiObatDetail.setIdObat(objects[3] == null ? "" : objects[3].toString());
-                    transaksiObatDetail.setNamaObat(objects[4] == null ? "" : objects[4].toString());
-                    transaksiObatDetail.setJenisSatuan(objects[5] == null ? "" : objects[5].toString());
-                    transaksiObatDetail.setQty(objects[6] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(objects[6].toString()));
-
-                    BigInteger harga = new BigInteger(String.valueOf("0"));
-                    if(cekKhusus){
-                        if(objects[7] != null){
-                            harga = new BigInteger(objects[7].toString());
-                        }
-                    }else{
-                        if(objects[8] != null){
-                            harga = new BigInteger(objects[8].toString());
-                        }
+                    transaksiObatDetail.setNamaObat(objects[0] == null ? "" : objects[0].toString());
+                    transaksiObatDetail.setQty(objects[1] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(objects[1].toString()));
+                    transaksiObatDetail.setJenisSatuan(objects[2] == null ? "" : objects[2].toString());
+                    transaksiObatDetail.setTotalHarga(new BigInteger("0"));
+                    if(objects[3] != null){
+                        transaksiObatDetail.setTotalHarga(new BigInteger(objects[3].toString()));
                     }
-                    transaksiObatDetail.setHarga(harga);
-                    transaksiObatDetail.setTotalHarga(harga.multiply(transaksiObatDetail.getQty()));
-
-                    transaksiObatDetail.setIdPelayanan(objects[9] == null ? "" : objects[9].toString());
-                    transaksiObatDetail.setNoCheckup(objects[10] == null ? "" : objects[10].toString());
-                    transaksiObatDetail.setIdPasien(objects[11] == null ? "" : objects[11].toString());
-                    transaksiObatDetail.setJenisPeriksaPasien(objects[12] == null ? "" : objects[12].toString());
                     transaksiObatDetailList.add(transaksiObatDetail);
                 }
 

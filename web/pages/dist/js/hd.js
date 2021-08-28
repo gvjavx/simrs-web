@@ -2271,9 +2271,9 @@ function getListMonTransfusiDarah() {
                         '<td align="center">' + set(item.gelisahSedang) + '</td>' +
                         '<td align="center">' + set(item.peningkatanDetakJantungSedang) + '</td>' +
                         '<td align="center">' + set(item.demamMengancam) + '</td>' +
-                        '<td align="center">' + set(item.menggigilSedang) + '</td>' +
-                        '<td align="center">' + set(item.gelisahSedang) + '</td>' +
-                        '<td align="center">' + set(item.peningkatanDetakJantungSedang) + '</td>' +
+                        '<td align="center">' + set(item.menggigilMengancam) + '</td>' +
+                        '<td align="center">' + set(item.gelisahMengancam) + '</td>' +
+                        '<td align="center">' + set(item.peningkatanDetakJantungMengancam) + '</td>' +
                         '<td align="center">' + set(item.nafasCepatMengancam) + '</td>' +
                         '<td align="center">' + set(item.urinMengancam) + '</td>' +
                         '<td align="center">' + set(item.pendarahanJantungMengancam) + '</td>' +
@@ -2570,6 +2570,7 @@ function showCheck(id){
 }
 
 function selectReaksi(val){
+    $('[name=ct7], [name=ct8], [name=ct9], [name=ct10], [name=ct11], [name=ct12], [name=ct13], [name=ct14], [name=ct15], [name=ct16], [name=ct17],[name=ct18],[name=ct19],[name=ct20], [name=ct21]').prop('checked', false);
     if(val == "Tidak Ada Reaksi"){
         $('#form_tidak_ada').show();
         $('#form_ringan').hide();

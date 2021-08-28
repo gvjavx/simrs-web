@@ -350,5 +350,6 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/asesmenicu/spring/KeseimbanganIcuBean.xml"/>
 
     <import resource="sshconfig/com/neurix/hris/transaksi/refreshLembur/spring/RefreshLemburBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/transaksi/pendaftaranjasarekanan/spring/PendaftaranJasaRekananBean.xml"/>
 
 </beans>

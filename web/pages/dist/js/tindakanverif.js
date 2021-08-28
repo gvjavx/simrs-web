@@ -10,7 +10,7 @@ function showTindakan(){
     $('#modal-tindakan').modal({show: true, backdrop: 'static'});
 }
 
-function getListNamaDokter(tipe) {
+function getListNamaDokter(tipe, id) {
     var option = '<option value="">[Select One]</option>';
     var def = '';
     CheckupAction.getListDokterByNoCheckup(noCheckupPasien, function (res) {
@@ -19,12 +19,13 @@ function getListNamaDokter(tipe) {
                 if (i == 0) {
                     def = item.idDokter + '|' + item.idPelayanan;
                 }
+                if(id == item.idDokter){
+                    def = item.idDokter + '|' + item.idPelayanan;
+                }
                 option += '<option value="' + item.idDokter + '|' + item.idPelayanan + '">' + item.namaDokter + '</option>';
             });
             $('#tin_id_dokter_dpjp').html(option);
-            if (tipe != 'edit') {
-                $('#tin_id_dokter_dpjp').val(def).trigger('change');
-            }
+            $('#tin_id_dokter_dpjp').val(def).trigger('change');
         } else {
             $('#tin_id_dokter_dpjp').html(option);
         }
@@ -115,11 +116,14 @@ function editTindakan(id, idTindakan, idKategori, katRuangan, qty, idDokter, idP
     kategoriRuangan = katRuangan;
     $('#is_edit').val('Y');
     $('#form_elektif').hide();
-    getListNamaDokter('edit');
+    getListNamaDokter('edit', idDokter);
     $('#load_tindakan, #warning_tindakan, #war_kategori, #war_tindakan, #war_perawat').hide();
-    $('#tin_id_dokter_dpjp').val(idDokter + '|' + idPelayanan).trigger('change');
-    $('#tin_id_ketgori_tindakan').val(idKategori).trigger('change');
-    $('#tin_id_tindakan').val(idTindakan).trigger('change');
+    setTimeout(function () {
+        $('#tin_id_ketgori_tindakan').val(idKategori).trigger('change');
+        setTimeout(function () {
+            $('#tin_id_tindakan').val(idTindakan).trigger('change');
+        },500);
+    },500);
     $('#tin_qty').val(qty);
     $('#save_tindakan').attr('onclick', 'saveTindakan(\'' + id + '\')').show();
     $('#modal-tindakan').modal({show: true, backdrop: 'static'});
@@ -160,7 +164,7 @@ function listSelectTindakan(idKategori) {
     var option = "<option value=''>[Select One]</option>";
     if (idKategori != '') {
         dwr.engine.setAsync(true);
-        CheckupDetailAction.getListComboTindakan(idKategori, idKelasRuangan, flagVaksin, null, {
+        CheckupDetailAction.getListComboTindakan(idKategori, idKelasRuangan, flagVaksin, idPelayananHeader, jenisPeriksaPasien, {
             callback: function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {

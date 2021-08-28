@@ -93,6 +93,7 @@
           p:headerPemeriksaanDao-ref="headerPemeriksaanDao"
           p:labDao-ref="labDao"
           p:asuransiDao-ref="asuransiDao"
+          p:kontrolUlangDao-ref="kontrolUlangDao"
     />
 
     <bean id="checkupBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

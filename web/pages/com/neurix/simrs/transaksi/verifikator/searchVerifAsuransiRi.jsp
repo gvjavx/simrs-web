@@ -485,6 +485,7 @@
     var idKelasRuangan = "";
     var flagVaksin = "";
     var kategoriRuangan = "";
+    var idPelayananHeader = "";
 
     function formatRupiah(angka) {
         if(angka != "" && angka > 0){
@@ -558,6 +559,7 @@
                         idKelasRuangan = res.idKelasRuangan;
                         flagVaksin = res.isVaksin;
                         kategoriRuangan = res.kategoriRuangan;
+                        idPelayananHeader = res.idPelayanan;
                     }
                 }
             });
