@@ -211,6 +211,7 @@
                                 <i class="fa fa-square" style="color: #d33724"></i> Belum Bayar Uang Muka &nbsp;&nbsp;&nbsp;
                                 <i class="fa fa-square" style="color: #4d4dff"></i> Antrian
                             </div>
+                            <div class="tes-text-to-speech">Nomer Antrian 1</div>
                         </div>
                     </div>
                 </div>
@@ -244,6 +245,11 @@
 <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="../plugins/landing/particles/particles.min.js"></script>
 <script src="../plugins/landing/particles/stats.min.js"></script>
+<script src="../plugins/landing/jquery/jquery.min.js"></script>
+<%--
+<script src="../plugins/landing/texttospeech/articulate.min.js"></script>
+<script src="../plugins/landing/texttospeech/jquery.webSpeaker.js"></script>
+--%>
 
 <!-- Template Main JS File -->
 <script src="../plugins/landing/js/main.js"></script>
@@ -261,6 +267,19 @@
         $('.wrap-box01').css('height', window.screen.height * window.devicePixelRatio-240);
         $('.wrap-box02').css('height', ((window.screen.height * window.devicePixelRatio)/2)-170);
         $('#particles-js').css('height', window.screen.height * window.devicePixelRatio);
+
+        // Sets the rate of the speaking voice
+        // default = 1.1; range = [0.1 - 10]
+        //$().articulate('rate', 1);
+
+        // Sets the pitch of the speaking voice;
+        // default = 1.0; range = [0 - 2]
+        //$().articulate('pitch', 0);
+
+        // Sets the volume of the speaking voice
+        // default = 1.0;
+        //$().articulate('volume', *number*);
+        //$('.tes-text-to-speech').articulate('speak');
     });
 
     $(function () {
