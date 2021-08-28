@@ -323,8 +323,8 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                 "b.kode_vclaim\n" +
                 "FROM im_simrs_pelayanan a\n" +
                 "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) d ON b.id_pelayanan = d.id_pelayanan\n" +
-                "INNER JOIN im_simrs_kategori_tindakan_ina e ON a.kategori_ina_bpjs = e.id\n" +
                 "INNER JOIN im_branches f ON b.branch_id = f.branch_id\n" +
+                "LEFT JOIN im_simrs_kategori_tindakan_ina e ON a.kategori_ina_bpjs = e.id\n" +
                 "WHERE b.flag = :flag\n " + condition;
 
         List<Object[]> result = new ArrayList<>();

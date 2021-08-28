@@ -611,6 +611,8 @@ public class CheckupDetailAction extends BaseMasterAction {
             detailCheckup.setNadi(checkup.getNadi());
             detailCheckup.setPernafasan(checkup.getPernafasan());
             detailCheckup.setNoTelp(checkup.getNoTelp());
+            detailCheckup.setPendidikan(checkup.getPendidikan());
+            detailCheckup.setProfesi(checkup.getProfesi());
 
             detailCheckup.setKategoriPelayanan(checkup.getKategoriPelayanan());
             String label = checkup.getNamaPelayanan().replace("Poli Spesialis", "");

@@ -215,6 +215,9 @@
                                     <s:hidden id="h_tinggi_badan" name="headerDetailCheckup.tinggi"/>
                                     <s:hidden id="h_diagnosa" name="headerDetailCheckup.namaDiagnosa"/>
                                     <s:hidden id="h_umur" name="headerDetailCheckup.umur"/>
+
+                                    <s:hidden id="h_pendidikan_pasien" name="headerDetailCheckup.pendidikan"/>
+                                    <s:hidden id="h_profesi_pasien" name="headerDetailCheckup.profesi"/>
                                     <s:hidden id="h_alamat_lengkap" name="headerDetailCheckup.alamatLengkap"/>
                                     <s:hidden id="h_no_bpjs" name="headerDetailCheckup.noBpjs"/>
                                     <s:hidden id="h_jenis_kelamin" name="headerDetailCheckup.jenisKelamin"/>
@@ -2967,6 +2970,9 @@
     var tinggiBadan = $('#h_tinggi_badan').val();
     var diagnosa = $('#h_diagnosa').val();
     var umur = $('#h_umur').val();
+    var pendidikanPasien = $('#h_pendidikan_pasien').val();
+    var profesiPasien = $('#h_profesi_pasien').val();
+
     var alamatLengkap = $('#h_alamat_lengkap').val();
     var noBpjs = $('#h_no_bpjs').val();
     var jenisKelamin = $('#h_jenis_kelamin').val();

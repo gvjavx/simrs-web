@@ -782,6 +782,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "a.desa_id,\n" +
                     "a.jalan,\n" +
                     "a.suku,\n" +
+                    "a.pendidikan,\n"+
                     "a.profesi,\n" +
                     "a.no_telp,\n" +
                     "a.agama,\n" +
@@ -889,66 +890,67 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     }
                     checkup.setJalan(obj[8] == null ? "" : obj[8].toString());
                     checkup.setSuku(obj[9] == null ? "" : obj[9].toString());
-                    checkup.setProfesi(obj[10] == null ? "" : obj[10].toString());
-                    checkup.setNoTelp(obj[11] == null ? "" : obj[11].toString());
-                    checkup.setAgama(obj[12] == null ? "" : obj[12].toString());
-                    checkup.setUrlKtp(obj[13] == null ? "" : CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_KTP_PASIEN + obj[13].toString());
-                    checkup.setIdJenisPeriksaPasien(obj[14] == null ? "" : obj[14].toString());
-                    checkup.setIdDetailCheckup(obj[15] == null ? "" : obj[15].toString());
-                    checkup.setIdPelayanan(obj[16] == null ? "" : obj[16].toString());
-                    checkup.setNoSep(obj[17] == null ? "" : obj[17].toString());
-                    if (obj[18] != null) {
-                        checkup.setTarifBpjs(new BigDecimal(obj[18].toString()));
+                    checkup.setPendidikan(obj[10] == null ? "" : obj[10].toString());
+                    checkup.setProfesi(obj[11] == null ? "" : obj[11].toString());
+                    checkup.setNoTelp(obj[12] == null ? "" : obj[12].toString());
+                    checkup.setAgama(obj[13] == null ? "" : obj[13].toString());
+                    checkup.setUrlKtp(obj[14] == null ? "" : CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_KTP_PASIEN + obj[14].toString());
+                    checkup.setIdJenisPeriksaPasien(obj[15] == null ? "" : obj[15].toString());
+                    checkup.setIdDetailCheckup(obj[16] == null ? "" : obj[16].toString());
+                    checkup.setIdPelayanan(obj[17] == null ? "" : obj[17].toString());
+                    checkup.setNoSep(obj[18] == null ? "" : obj[18].toString());
+                    if (obj[19] != null) {
+                        checkup.setTarifBpjs(new BigDecimal(obj[19].toString()));
                     }
-                    checkup.setNamaPelayanan(obj[19] == null ? "" : obj[19].toString());
-                    checkup.setStatusPeriksaName(obj[20] == null ? "" : obj[20].toString());
-                    checkup.setNamaDesa(obj[21] == null ? "" : obj[21].toString());
-                    checkup.setNamaKecamatan(obj[22] == null ? "" : obj[22].toString());
-                    checkup.setNamaKota(obj[23] == null ? "" : obj[23].toString());
-                    checkup.setNamaProvinsi(obj[24] == null ? "" : obj[24].toString());
-                    checkup.setIdRawatInap(obj[25] == null ? "" : obj[25].toString());
-                    checkup.setIdRuangan(obj[26] == null ? "" : obj[26].toString());
-                    checkup.setNamaRuangan(obj[27] == null ? "" : obj[27].toString());
-                    checkup.setMetodePembayaran(obj[28] == null ? "" : obj[28].toString());
-                    checkup.setInvoice(obj[29] == null ? "" : obj[29].toString());
-                    checkup.setUrlDocRujuk(obj[30] == null ? "" : CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN + obj[30].toString());
-                    checkup.setUrlTtd(obj[31] == null ? "" : obj[31].toString());
+                    checkup.setNamaPelayanan(obj[20] == null ? "" : obj[20].toString());
+                    checkup.setStatusPeriksaName(obj[21] == null ? "" : obj[21].toString());
+                    checkup.setNamaDesa(obj[22] == null ? "" : obj[22].toString());
+                    checkup.setNamaKecamatan(obj[23] == null ? "" : obj[23].toString());
+                    checkup.setNamaKota(obj[24] == null ? "" : obj[24].toString());
+                    checkup.setNamaProvinsi(obj[25] == null ? "" : obj[25].toString());
+                    checkup.setIdRawatInap(obj[26] == null ? "" : obj[26].toString());
+                    checkup.setIdRuangan(obj[27] == null ? "" : obj[27].toString());
+                    checkup.setNamaRuangan(obj[28] == null ? "" : obj[28].toString());
+                    checkup.setMetodePembayaran(obj[29] == null ? "" : obj[29].toString());
+                    checkup.setInvoice(obj[30] == null ? "" : obj[30].toString());
+                    checkup.setUrlDocRujuk(obj[31] == null ? "" : CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN + obj[31].toString());
+                    checkup.setUrlTtd(obj[32] == null ? "" : obj[32].toString());
 
                     HeaderCheckup header = getAnamneseTBBB(obj[0].toString());
 
                     checkup.setTinggi(header.getTinggi());
                     checkup.setBerat(header.getBerat());
 
-                    checkup.setNoBpjs(obj[34] == null ? "" : obj[34].toString());
-                    checkup.setNoRujukan(obj[35] == null ? "" : obj[35].toString());
-                    checkup.setTglRujukan(obj[36] == null ? "" : obj[36].toString());
-                    checkup.setIdAsuransi(obj[37] == null ? "" : obj[37].toString());
-                    checkup.setNamaAsuransi(obj[38] == null ? "" : obj[38].toString());
-                    checkup.setNoKartuAsuransi(obj[39] == null ? "" : obj[39].toString());
-                    checkup.setTglCheckup(obj[40] != null ? Date.valueOf(obj[40].toString()) : null);
-                    checkup.setKeterangan(obj[41] == null ? "" : obj[41].toString());
-                    checkup.setCoverBiaya(obj[42] == null ? new BigDecimal(String.valueOf("0")) : new BigDecimal(obj[42].toString()));
-                    checkup.setIsLaka(obj[43] == null ? "" : obj[43].toString());
-                    checkup.setFlagCall(obj[44] == null ? "" : obj[44].toString());
-                    checkup.setCreatedDate(obj[45] == null ? null : (Timestamp) obj[45]);
-                    checkup.setVideoRm(obj[46] == null ? null : obj[46].toString());
-                    checkup.setNamaDiagnosa(obj[47] == null ? "" : obj[47].toString());
-                    checkup.setDiagnosa(obj[48] == null ? "" : obj[48].toString());
+                    checkup.setNoBpjs(obj[35] == null ? "" : obj[35].toString());
+                    checkup.setNoRujukan(obj[36] == null ? "" : obj[36].toString());
+                    checkup.setTglRujukan(obj[37] == null ? "" : obj[37].toString());
+                    checkup.setIdAsuransi(obj[38] == null ? "" : obj[38].toString());
+                    checkup.setNamaAsuransi(obj[39] == null ? "" : obj[39].toString());
+                    checkup.setNoKartuAsuransi(obj[40] == null ? "" : obj[40].toString());
+                    checkup.setTglCheckup(obj[41] != null ? Date.valueOf(obj[41].toString()) : null);
+                    checkup.setKeterangan(obj[42] == null ? "" : obj[42].toString());
+                    checkup.setCoverBiaya(obj[43] == null ? new BigDecimal(String.valueOf("0")) : new BigDecimal(obj[43].toString()));
+                    checkup.setIsLaka(obj[44] == null ? "" : obj[44].toString());
+                    checkup.setFlagCall(obj[45] == null ? "" : obj[45].toString());
+                    checkup.setCreatedDate(obj[46] == null ? null : (Timestamp) obj[46]);
+                    checkup.setVideoRm(obj[47] == null ? null : obj[47].toString());
+                    checkup.setNamaDiagnosa(obj[48] == null ? "" : obj[48].toString());
+                    checkup.setDiagnosa(obj[49] == null ? "" : obj[49].toString());
                     checkup.setAlergi(getAlergiPasien(obj[1].toString()));
                     checkup.setAutoanamnesis(header.getAutoanamnesis());
                     checkup.setHeteroanamnesis(header.getHeteroanamnesis());
-                    checkup.setKategoriPelayanan(obj[50] == null ? "" : obj[50].toString());
-                    checkup.setTipePelayanan(obj[51] == null ? "" : obj[51].toString());
-                    checkup.setIsStay(obj[52] == null ? "" : obj[52].toString());
-                    checkup.setKelasPasien(obj[53] == null ? "" : obj[53].toString());
-                    checkup.setCatatan(obj[54] == null ? "" : obj[54].toString());
-                    checkup.setFlagCloseTransaksi(obj[55] == null ? null : obj[55].toString());
-                    checkup.setFlagCover(obj[56] == null ? null : obj[56].toString());
-                    checkup.setIsEksekutif(obj[57] == null ? null : obj[57].toString());
-                    checkup.setIsVaksin(obj[58] == null ? null : obj[58].toString());
-                    checkup.setNoRuangan(obj[59] == null ? null : obj[59].toString());
-                    checkup.setCatatanKlinis(obj[60] == null ? "" : obj[60].toString());
-                    checkup.setIndikasi(obj[61] == null ? "" : obj[61].toString());
+                    checkup.setKategoriPelayanan(obj[51] == null ? "" : obj[51].toString());
+                    checkup.setTipePelayanan(obj[52] == null ? "" : obj[52].toString());
+                    checkup.setIsStay(obj[53] == null ? "" : obj[53].toString());
+                    checkup.setKelasPasien(obj[54] == null ? "" : obj[54].toString());
+                    checkup.setCatatan(obj[55] == null ? "" : obj[55].toString());
+                    checkup.setFlagCloseTransaksi(obj[56] == null ? null : obj[56].toString());
+                    checkup.setFlagCover(obj[57] == null ? null : obj[57].toString());
+                    checkup.setIsEksekutif(obj[58] == null ? null : obj[58].toString());
+                    checkup.setIsVaksin(obj[59] == null ? null : obj[59].toString());
+                    checkup.setNoRuangan(obj[60] == null ? null : obj[60].toString());
+                    checkup.setCatatanKlinis(obj[61] == null ? "" : obj[61].toString());
+                    checkup.setIndikasi(obj[62] == null ? "" : obj[62].toString());
                     HeaderCheckup hdr = getPemeriksaanFisik(obj[0].toString());
                     checkup.setTensi(hdr.getTensi());
                     checkup.setSuhu(hdr.getSuhu());
@@ -979,7 +981,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     }
 
                     checkup.setPenyakitDahulu(getRiwayatPenyakit(checkup.getIdPasien()));
-                    AlertPasien alertPasien = getAlertPasien(obj[1].toString(), obj[62].toString());
+                    AlertPasien alertPasien = getAlertPasien(obj[1].toString(), obj[63].toString());
                     if(alertPasien != null){
                         checkup.setIdDignosaLast(alertPasien.getIdDiagnosa());
                         checkup.setNamaDiagnosaLast(alertPasien.getDiagnosa());
