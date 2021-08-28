@@ -817,6 +817,8 @@ public class RawatInapController implements ModelDriven<Object> {
                     rawatInapMobile.setNamaRangan(item.getNamaRangan());
                     rawatInapMobile.setNoSep(item.getNoSep());
                     rawatInapMobile.setIdJenisPeriksa(item.getIdJenisPeriksa());
+                    //SYAMS 16JU21 => Tambah tgl masuk
+                    rawatInapMobile.setTglMasuk(item.getFormatTglMasuk()==null?"":item.getFormatTglMasuk().toString());
 
                     listOfRawatInap.add(rawatInapMobile);
                 }
@@ -909,7 +911,7 @@ public class RawatInapController implements ModelDriven<Object> {
             try {
                result = tindakanRawatBoProxy.getByCriteria(tindakanRawat);
             } catch (GeneralBOException e){
-                response.put("actionError","Gagal mengambil data");
+                response.put("actionError","Gagal mengambil list tindakan");
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
 
@@ -995,7 +997,7 @@ public class RawatInapController implements ModelDriven<Object> {
             try {
                 result = kategoriTindakanBoProxy.getListKategoriTindakan(idPelayanan, kategori, branchId);
             } catch (GeneralBOException e){
-                response.put("actionError",e.toString());
+                response.put("actionError","Gagal mengambil kategori tindakan");
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
 
@@ -1055,7 +1057,7 @@ public class RawatInapController implements ModelDriven<Object> {
             try {
                 result = teamDokterBoProxy.getByCriteria(dokterTeam);
             } catch (GeneralBOException e){
-                response.put("actionError",e.toString());
+                response.put("actionError","Gagal mengambil list dokter");
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
 
@@ -1085,8 +1087,8 @@ public class RawatInapController implements ModelDriven<Object> {
             try {
                 result = planKegiatanRawatBoProxy.getSearchByCritria(planKegiatanRawat);
             } catch (GeneralBOException e){
+                response.put("actionError","Gagal mengambil list kegiatan rawat");
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
-                response.put("acctionError",e.toString());
             }
 
             if (result.size() > 0) {
@@ -1278,7 +1280,7 @@ public class RawatInapController implements ModelDriven<Object> {
             try {
                 result = rawatInapBoProxy.getListPemberianObat(monPemberianObat);
             } catch (GeneralBOException e){
-                response.put("actionError",e.toString());
+                response.put("actionError","Gagal mengambil detail pemberian obat");
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
 
@@ -1317,7 +1319,7 @@ public class RawatInapController implements ModelDriven<Object> {
             try {
                 result = rawatInapBoProxy.getListMonCairan(monCairan);
             } catch (GeneralBOException e){
-                response.put("actionError",e.toString());
+                response.put("actionError","Gagal mengambil detail cairan");
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
 
@@ -1446,7 +1448,7 @@ public class RawatInapController implements ModelDriven<Object> {
                 rawatInapBoProxy.saveUpdateMonPemberianObat(itSimrsMonPemberianObatEntity);
                 response.put("actionSuccess","Sukses");
             } catch (GeneralBOException e) {
-                response.put("actionError", e.toString());
+                response.put("actionError", "Gagal update pemberian obat");
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
         }
@@ -1524,7 +1526,7 @@ public class RawatInapController implements ModelDriven<Object> {
                 rawatInapBoProxy.saveUpdateMonCairan(itSimrsMonCairanEntity);
                 response.put("actionSuccess","Sukses");
             } catch (GeneralBOException e){
-                response.put("actionError",e.toString());
+                response.put("actionError","Gagal update cairan");
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
         }
@@ -1662,7 +1664,7 @@ public class RawatInapController implements ModelDriven<Object> {
                     }
                 }
             } catch (Exception e){
-                response.put("actionError","Gagal menambahkan tindakan");
+                response.put("actionError","Server gagal menerima data");
             }
 
 
@@ -1670,6 +1672,7 @@ public class RawatInapController implements ModelDriven<Object> {
                 tindakanRawatBoProxy.saveAdd(tindakanRawatList);
                 response.put("actionSuccess","Sukses");
             } catch (GeneralBOException e){
+                response.put("actionError","Gagal menambahkan tindakan");
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
         }
@@ -1682,7 +1685,7 @@ public class RawatInapController implements ModelDriven<Object> {
             try {
                 result = tindakanBoProxy.getDataTindakan(bean);
             } catch (GeneralBOException e) {
-                response.put("actionError",e.toString());
+                response.put("actionError","Gagal update tindakan");
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
 
