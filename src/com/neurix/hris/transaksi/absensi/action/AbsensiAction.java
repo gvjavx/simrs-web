@@ -1171,10 +1171,10 @@ public class AbsensiAction extends BaseMasterAction {
         Branch branch = new Branch();
         branch = branchBo.getBranchById(branchId, "Y");
 
-        String periode = " Periode " + tglFrom + " - " + tglTo;
+        String periode = " " + tglFrom + " - " + tglTo;
 
-        String titleReport = "Absensi Pegawai " + branch.getBranchName() + periode;
-        String filename = "Absensi " + branch.getBranchName();
+        String titleReport = "Absensi Pegawai " + branch.getBranchName();
+        String filename = "Absensi " + branch.getBranchName() + periode;
 
         List<AbsensiPegawai> listData = new ArrayList();
         List listOfData = new ArrayList();
