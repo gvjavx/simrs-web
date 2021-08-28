@@ -3868,6 +3868,7 @@ function getDokterDpjp() {
 
 function isPemeriksaan(id, idTujuan) {
     var cek = $('#' + id).is(':checked');
+    console.log(id + " - " + cek);
     if('pemeriksaan_lab' == id){
         if (cek) {
             $('#' + idTujuan).show();
