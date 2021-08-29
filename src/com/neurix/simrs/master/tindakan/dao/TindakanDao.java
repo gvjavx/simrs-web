@@ -205,6 +205,14 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
 
     private String cekTipePelayanan(String iPelayanan){
         String res = "";
+        String idPelayanan = "";
+        //SYAMS 29AGUS21 => Ganti "WHERE id_pelayanan = :id"; jadi "WHERE id_pelayanan like :id" dan tambah kondisi untuk null
+        if (iPelayanan==null||iPelayanan.equalsIgnoreCase("")){
+            idPelayanan ="%";
+        } else {
+            idPelayanan = iPelayanan;
+        }
+
         String SQL = "SELECT\n" +
                 "a.id_pelayanan,\n" +
                 "b.tipe_pelayanan\n" +
@@ -213,7 +221,7 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                 "WHERE id_pelayanan = :id";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                .setParameter("id", iPelayanan)
+                .setParameter("id", idPelayanan)
                 .list();
 
         if(results.size() > 0){
