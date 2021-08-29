@@ -195,7 +195,10 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
 
                 }
 
-                String tipePelayanan = cekTipePelayanan(bean.getIdPelayanan());
+                // 2021-08-09 Sigit, Penyesuaian untuk tindakan radiologi, yg smentara di set pada param idKelasRuangan pada addPeriksaRadiologi.jsp;
+                boolean isRadiologi = "radiologi".equalsIgnoreCase(bean.getIdKelasRuangan());
+                String tipePelayanan = isRadiologi ? "radiologi" : cekTipePelayanan(bean.getIdPelayanan());
+                // end
                 if(!"".equalsIgnoreCase(tipePelayanan) && !"rawat_jalan".equalsIgnoreCase(tipePelayanan)){
                     ambulance = "UNION ALL\n" +
                             "SELECT\n" +
@@ -214,7 +217,15 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                 }
 
                 String SQL = "";
-                if("rawat_jalan".equalsIgnoreCase(tipePelayanan)){
+                if("rawat_jalan".equalsIgnoreCase(tipePelayanan) || "radiologi".equalsIgnoreCase(tipePelayanan)){
+
+                    // 2021-08-29 Sigit, Jika Radiologi untuk mengambil tindakan dokter
+                    if ("radiologi".equalsIgnoreCase(tipePelayanan)){
+                        String idPelayananRadiologi = getIdPelayananByTypePelayanan(tipePelayanan, bean.getBranchId());
+                        bean.setIdPelayanan(idPelayananRadiologi);
+                    }
+                    // END
+
                     if(bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
                         SQL = "SELECT\n" +
                                 "a.id_tindakan,\n" +
@@ -291,6 +302,14 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
 
     private String cekTipePelayanan(String iPelayanan){
         String res = "";
+        String idPelayanan = "";
+        //SYAMS 29AGUS21 => Ganti "WHERE id_pelayanan = :id"; jadi "WHERE id_pelayanan like :id" dan tambah kondisi untuk null
+        if (iPelayanan==null||iPelayanan.equalsIgnoreCase("")){
+            idPelayanan ="%";
+        } else {
+            idPelayanan = iPelayanan;
+        }
+
         String SQL = "SELECT\n" +
                 "a.id_pelayanan,\n" +
                 "b.tipe_pelayanan\n" +
@@ -299,7 +318,7 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                 "WHERE id_pelayanan = :id";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                .setParameter("id", iPelayanan)
+                .setParameter("id", idPelayanan)
                 .list();
 
         if(results.size() > 0){
@@ -426,8 +445,19 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                 tindakan.setKategoriInaBpjs(obj[2] != null ? obj[2].toString() : null);
                 tindakan.setNamaKategoriTindakanIna(obj[3] != null ? obj[3].toString() : null);
                 tindakan.setIdTindakan(obj[4] != null ? obj[4].toString() : null);
+
                 tindakan.setTarif(obj[5] != null ? (BigInteger) obj[5] : null);
                 tindakan.setTarifBpjs(obj[6] != null ? (BigInteger) obj[6] : null);
+
+//                BigDecimal bTarif = obj[5] != null ? (BigDecimal) obj[5] : new BigDecimal(0);
+//                BigDecimal bTarifBpjs = obj[6] != null ? (BigDecimal) obj[6] : new BigDecimal(0);
+//
+//                bTarif = bTarif.setScale(BigDecimal.ROUND_UP);
+//                bTarifBpjs = bTarifBpjs.setScale(BigDecimal.ROUND_UP);
+//
+//                tindakan.setTarif(new BigInteger(bTarif.toString()));
+//                tindakan.setTarifBpjs(new BigInteger(bTarifBpjs.toString()));
+
                 tindakan.setDiskon(obj[7] != null ? (BigDecimal) obj[7] : null);
                 tindakan.setIdKategoriTindakan(obj[8] != null ? obj[8].toString() : null);
                 tindakan.setNamaKategoriTindakan(obj[9] != null ? obj[9].toString() : null);
