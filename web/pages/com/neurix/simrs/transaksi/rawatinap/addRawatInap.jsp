@@ -1060,17 +1060,22 @@
                                     <div class="form-group" style="margin-top: 7px">
                                         <div class="col-md-4">
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <input class="form-control" readonly placeholder="Tarif/km" id="val_tarif">
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <%--<s:textfield cssClass="form-control" placeholder="Diskon" name="headerCheckup.diskon" id="val_diskon" readonly="true"></s:textfield>--%>
                                             <input class="form-control" id="val_diskon" readonly placeholder="Discon" >
                                             <input class="form-control" type="hidden" id="h_val_diskon" name="rawatInap.diskon">
                                         </div>
-                                        <div class="col-md-2">
+                                    </div>
+                                </div>
+                                <div class="row" id="form-kend-tarif-jumlah" style="display:none">
+                                    <div class="form-group" style="margin-top: 7px">
+                                        <label class="col-md-4" style="margin-top: 10px">Jumlah Kilometer</label>
+                                        <div class="col-md-8">
                                             <%--<s:textfield cssClass="form-control" placeholder="Jumlah Kilometer" name="headerCheckup.jumlah" type="number" id="jumlah_kilometer"></s:textfield>--%>
-                                            <input style="display:none" class="form-control" placeholder="Jumlah Kilometer" name="rawatInap.jumlah" type="number" id="jumlah_kilometer" >
+                                            <input style="display:none" class="form-control" placeholder="" name="rawatInap.jumlah" type="number" id="jumlah_kilometer" >
                                         </div>
                                     </div>
                                 </div>

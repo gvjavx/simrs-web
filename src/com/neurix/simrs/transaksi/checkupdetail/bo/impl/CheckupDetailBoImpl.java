@@ -1569,7 +1569,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         tindakanRawatEntity.setFlag("Y");
         tindakanRawatEntity.setAction("U");
         tindakanRawatEntity.setApproveFlag("Y");
-        tindakanRawatEntity.setTarif(new BigInteger(bean.getTarif()));
+        tindakanRawatEntity.setTarif(new BigDecimal(bean.getTarif()).toBigInteger());
         tindakanRawatEntity.setQty(new BigInteger(bean.getQty()));
         tindakanRawatEntity.setTarifTotal(tindakanRawatEntity.getTarif().multiply(tindakanRawatEntity.getQty()));
         try {
