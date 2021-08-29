@@ -1902,9 +1902,6 @@ ADD COLUMN parent_id VARCHAR(30);
 
     UPDATE im_akun_trans
     SET is_otomatis = 'Y' WHERE trans_id IN ('70','71','72');
-
-    ALTER TABLE it_akun_nilai_parameter_budgeting
-    ADD COLUMN position_id VARCHAR(50);
 --
 
 -- 2021-07-22
@@ -2129,4 +2126,6 @@ ADD COLUMN parent_id VARCHAR(30);
         ALTER TABLE public.it_akun_nilai_parameter_budgeting
             OWNER to postgres;
 
+    ALTER TABLE it_akun_nilai_parameter_budgeting
+    ADD COLUMN position_id VARCHAR(50);
 --
