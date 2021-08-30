@@ -329,7 +329,7 @@
     <a style="color: black" target="_blank" href="<%= request.getContextPath() %>/pages/antrian/choseeAntrian.jsp">Antrian</a>
 </div>
 <div>
-    <span style="color: black;position: absolute; bottom: 10px ; right: 10px;"> last build : 2021.07.26</span>
+    <span style="color: black;position: absolute; bottom: 10px ; right: 10px;"> last build : 2021.08.29</span>
 </div>
 </body>
 </html>

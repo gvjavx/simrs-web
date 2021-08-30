@@ -338,7 +338,7 @@ public class UserLoginAction extends ActionSupport {
         return "success";
     }
     public String registerFinger(){
-        logger.info("[BpjsController.registerFinger] start process >>>");
+        logger.info("[UserLoginAction.registerFinger] start process >>>");
         String acsn= "";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         FingerPrintBo fingerPrintBo= (FingerPrintBo) ctx.getBean("fingerPrintBoProxy");
@@ -358,16 +358,17 @@ public class UserLoginAction extends ActionSupport {
         if (fingerPrint1.getAc()!=null&&fingerPrint1.getVc()!=null){
             acsn=fingerPrint1.getAc()+fingerPrint1.getSn();
         }
+
         String result= userId +";SecurityKey;"+ CommonConstant.timeLimitReg+";"+getHostname()+"/prosesRegisterFinger.action?hostname="+getHostname()+";"+acsn+";";
         finalResult.setDataResult(result);
 
         fingerPrint=finalResult;
-        logger.info("[BpjsController.registerFinger] end process <<<");
+        logger.info("[UserLoginAction.registerFinger] end process <<<");
         return "finger";
     }
     public String prosesRegisterFinger(){
-        logger.info("[BpjsController.registerFingerProses] start process >>>");
-        logger.info(RegTemp);
+        logger.info("[UserLoginAction.registerFingerProses] start process >>>");
+        logger.info("INI REGTEMP -->"+RegTemp);
         String[] data = RegTemp.split(";");
         String vStamp=data[0];
         String sn=data[1];
@@ -380,15 +381,15 @@ public class UserLoginAction extends ActionSupport {
 
         String result;
         FingerPrint finalResult = new FingerPrint();
-        result= getHostname()+"/pasien/search_pasien.action?id_pasien="+userId;
+        result= getHostname()+"/pasien/search_pasien.action?idPasien="+userId;
         finalResult.setDataResult(result);
         fingerPrint=finalResult;
-        logger.info("[BpjsController.prosesRegisterFinger] end process <<<");
+        logger.info("[UserLoginAction.prosesRegisterFinger] end process <<<");
         return "finger";
     }
 
     public String loginFinger(){
-        logger.info("[BpjsController.loginFinger] start process >>>");
+        logger.info("[UserLoginAction.loginFinger] start process >>>");
         String acsn= "";
         String fingerData="0";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -423,11 +424,11 @@ public class UserLoginAction extends ActionSupport {
         result= userId+";"+fingerData+";SecurityKey;"+CommonConstant.timeLimitVer+";"+getHostname()+"/prosesLoginFinger.action?hostname="+getHostname()+";"+acsn+";extraParams";
         finalResult.setDataResult(result);
         fingerPrint=finalResult;
-        logger.info("[BpjsController.loginFinger] end process <<<");
+        logger.info("[UserLoginAction.loginFinger] end process <<<");
         return "finger";
     }
     public String prosesLoginFinger(){
-        logger.info("[BpjsController.prosesLoginFinger] start process >>>");
+        logger.info("[UserLoginAction.prosesLoginFinger] start process >>>");
         logger.info(VerPas);
         String[] data = VerPas.split(";");
         String userId=data[0];
@@ -440,7 +441,7 @@ public class UserLoginAction extends ActionSupport {
         result= getHostname()+"/checkup/add_checkup.action?idPasien="+userId;
         finalResult.setDataResult(result);
         fingerPrint=finalResult;
-        logger.info("[BpjsController.prosesLoginFinger] end process <<<");
+        logger.info("[UserLoginAction.prosesLoginFinger] end process <<<");
         return "finger";
 
     }

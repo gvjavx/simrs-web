@@ -1026,6 +1026,31 @@ public class RawatInapBoImpl implements RawatInapBo {
                                 entity.setLastUpdateWho(bean.getCreatedWho());
                                 entity.setTglMasuk(bean.getCreatedDate());
                                 entity.setStatus("1");
+
+                                // jika selain tindak lanjut ke rawat inap
+                                if (!"rawat_inap".equalsIgnoreCase(bean.getTindakLanjut())){
+                                    String idPelayanan  = rawatInapDao.getIdPelayananByTypePelayanan(bean.getTindakLanjut(), bean.getBranchId());
+                                    if (idPelayanan != null){
+                                        entity.setIdPelayanan(idPelayanan);
+                                    }
+
+                                    // jika rawat intensif memakai kelas ruangan yg dipilih
+                                    // selain rawat intensif maka mengambil kelas dari id kelas ruangan terakhir
+                                    String idRuangan = bean.getIdRuangan();
+                                    if(!"rawat_intensif".equalsIgnoreCase(bean.getTindakLanjut()) &&
+                                            !"rawat_isolasi".equalsIgnoreCase(bean.getTindakLanjut()) &&
+                                            !"rawat_isolasi_covid".equalsIgnoreCase(bean.getTindakLanjut())){
+                                      idRuangan = bean.getIdRuangLama();
+                                    }
+                                    //end
+
+                                    String idKelas = rawatInapDao.getIdKelasKhususByRuangan(bean.getIdRawatInap(), idRuangan, bean.getTindakLanjut());
+                                    if (idKelas != null){
+                                        entity.setIdKelasRuangan(idKelas);
+                                    }
+                                }
+                                // end
+
                                 try {
                                     rawatInapDao.addAndSave(entity);
                                     if(!"hemodialisa".equalsIgnoreCase(bean.getTindakLanjut())){

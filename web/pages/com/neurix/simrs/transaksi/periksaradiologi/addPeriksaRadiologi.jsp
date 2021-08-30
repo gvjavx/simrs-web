@@ -1956,7 +1956,7 @@
         var option = "<option value=''> - </option>";
         if (idKategori != '') {
             dwr.engine.setAsync(true);
-            CheckupDetailAction.getListComboTindakan(idKategori, null, "N", null, null, {
+            CheckupDetailAction.getListComboTindakan(idKategori, "radiologi", "N", null, null, {
                 callback:function (response) {
                     if (response != null) {
                         $.each(response, function (i, item) {
@@ -2014,7 +2014,7 @@
                     var after  = persen/100;
                     var total  = after*tarif;
                     $('#h_harga').val(formatRupiahAtas(tarif));
-                    $('#h_harga_after').val(formatRupiahAtas(total));
+                    $('#h_harga_after').val(formatRupiahAtas(Math.round(total)));
                     $('#h_diskon').val(disk);
 
                     if ("Y" == res.isElektif) {

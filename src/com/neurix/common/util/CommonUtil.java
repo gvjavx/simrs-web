@@ -1637,10 +1637,12 @@ public class  CommonUtil {
 
             Properties props = System.getProperties();
             props.put("mail.smtp.starttls.enable", "true"); // added this line
-            props.put("mail.smtp.host", "smtp.gmail.com");
+            //props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.host", "webmail.nmu.co.id");
             props.put("mail.smtp.user", username);
             props.put("mail.smtp.password", password);
-            props.put("mail.smtp.port", "587");
+            //props.put("mail.smtp.port", "587");
+            props.put("mail.smtp.port", "465");
             props.put("mail.smtp.auth", "false");
             props.put("mail.debug", "false");
 

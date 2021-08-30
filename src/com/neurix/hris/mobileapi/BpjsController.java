@@ -511,7 +511,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
     public String registerFinger(String userId){
         logger.info("[BpjsController.registerFinger] start process >>>");
         String result;
-        result= userId +";SecurityKey;"+ CommonConstant.timeLimitReg+";"+"http://localhost:8080/simrs/mobileapi/bpjs?data=finger-register-proses"+";08PB-D59F-8682-C4AA-B348-BYXMK520J01750;";
+        result= userId +";SecurityKey;"+ CommonConstant.timeLimitReg+";"+"http://localhost:8080/go-medsys/mobileapi/bpjs?data=finger-register-proses"+";08PB-D59F-8682-C4AA-B348-BYXMK520J01750;";
         logger.info("[BpjsController.registerFinger] end process <<<");
         return result;
     }

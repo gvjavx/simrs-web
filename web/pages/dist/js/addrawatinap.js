@@ -743,7 +743,7 @@ function listSelectTindakan(idKtg) {
             idKelas = kelasPasienBpjs;
         }
         dwr.engine.setAsync(true);
-        CheckupDetailAction.getListComboTindakan(idKtg, idKelas, null, idPoli, jenisPeriksaPasien, {
+        CheckupDetailAction.getListComboTindakan(idKtg, idKelas, null, idPoli, jenisPeriksaPasien, kategoriRuangan, idRawatInap, {
             callback:function (response) {
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
@@ -4940,7 +4940,7 @@ function setDiskonHarga(id) {
                 var after  = persen/100;
                 var total  = after*tarif;
                 $('#h_harga').val(formatRupiahAtas(tarif));
-                $('#h_harga_after').val(formatRupiahAtas(total));
+                $('#h_harga_after').val(formatRupiahAtas(Math.round(total)));
                 $('#h_diskon').val(disk);
 
                 if ("Y" == res.isElektif) {
@@ -6113,7 +6113,7 @@ function addToListTindakan(id) {
                 '</td>' +
                 '<td>'+namaTindakan+'</td>' +
                 '<td align="center">'+qty+'</td>' +
-                '<td align="right">'+tarif+'</td>' +
+                '<td align="right">'+total+'</td>' +
                 '<td align="right">'+formatRupiahAtas((parseInt(replaceTitik(total))*qty))+'</td>' +
                 '<td align="center">'+'<img onclick="delListTindakan(\'rowTindakan_'+count+'\')" style="cursor: pointer" src="'+contextPath+'/pages/images/cancel-flat-new.png" class="hvr-row">'+'</td>' +
                 '</tr>';

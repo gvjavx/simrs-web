@@ -60,7 +60,85 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
         return result;
     }
 
+    public String getIdPelayananByTypePelayanan(String tipePelayanan, String branchId){
+
+        String SQL = "SELECT p.id_pelayanan FROM im_simrs_pelayanan p \n" +
+                "INNER JOIN im_simrs_header_pelayanan hp ON hp.id_header_pelayanan = p.id_header_pelayanan \n" +
+                "WHERE hp.tipe_pelayanan = '"+tipePelayanan+"' \n"+
+                "AND p.branch_id = '"+branchId+"' \n" +
+                "AND p.flag = 'Y'";
+
+        List<Object> res = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (res.size() > 0 && res.get(0) != null){
+            return res.get(0).toString();
+        }
+
+        return null;
+    }
+
+    // 2021-08-27 Sigit, Mencari jika pindah ke pelayanan khusus seperti : kamar ops, kebidananan, icu, dll
+    // untuk tetap mendapatkan kelas sesuai rawat inap, tanpa merubah status rawat inap nya;
+    public String getIdKelasKhususByRuangan(String idRanap, String idTempatTidur){
+
+        // jika terdapat id kelas ruangan. berarti transksi tersebut pindah dari pelayanan khusus ke pelayanan khusus lain
+        String SQL1 = "SELECT id_kelas_ruangan FROM it_simrs_rawat_inap WHERE id_rawat_inap = '"+ idRanap +"'";
+        List<Object> res1 = this.sessionFactory.getCurrentSession().createSQLQuery(SQL1).list();
+
+        if (res1.size() > 0 && res1.get(0) != null){
+            return res1.get(0).toString();
+        }
+
+        // jika tidak ada. maka mengambil kelas ruangan pada pelayanan RI asal nya. berarti dia berpindah ke dari RI ke pelayanan khusus
+        String SQL2 = "SELECT c.id_kelas_ruangan FROM mt_simrs_ruangan_tempat_tidur a \n" +
+                "INNER JOIN mt_simrs_ruangan b ON b.id_ruangan = a.id_ruangan\n" +
+                "INNER JOIN im_simrs_kelas_ruangan c ON c.id_kelas_ruangan = b.id_kelas_ruangan\n" +
+                "WHERE id_tempat_tidur = '"+idTempatTidur+"'\n";
+
+        List<Object> res2 = this.getSessionFactory().getCurrentSession().createSQLQuery(SQL2).list();
+
+        if (res2.size() > 0 && res2.get(0) != null){
+            return res2.get(0).toString();
+        }
+
+        return null;
+    }
+
     public List<Tindakan> getListComboBoxTindakan(Tindakan bean) {
+
+        // 2021-08-26 Sigit, Untuk pelayanan Khusus
+        boolean isExplicit = false;
+        if (bean.getKategoriRuangan() != null && !"".equalsIgnoreCase(bean.getKategoriRuangan())){
+            boolean explicit = !"rawat_inap".equalsIgnoreCase(bean.getKategoriRuangan());
+            isExplicit = explicit;
+        }
+
+        String idKelasRanap = "";
+        String tipePelayananRanap = "%";
+        if (isExplicit){
+
+            String SQL = "SELECT id_kelas_ruangan FROM it_simrs_rawat_inap WHERE id_rawat_inap = '"+bean.getIdRawatInap()+"'";
+            List<Object> res = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+            if (res.size() > 0 && res.get(0) != null){
+
+                if ("rawat_intensif".equalsIgnoreCase(bean.getKategoriRuangan()) ||
+                        "rawat_isolasi".equalsIgnoreCase(bean.getKategoriRuangan()) ||
+                        "rawat_isolasi_covid".equalsIgnoreCase(bean.getKategoriRuangan())){
+                    tipePelayananRanap = "rawat_inap";
+                } else {
+                    tipePelayananRanap = bean.getKategoriRuangan();
+                }
+                idKelasRanap = res.get(0).toString();
+            } else {
+                isExplicit = false;
+            }
+        }
+        if (!isExplicit){
+            idKelasRanap = bean.getIdKelasRuangan();
+        }
+        // Pelayanan Khusus END
+
         List<Tindakan> tindakanList = new ArrayList<>();
         if (bean != null) {
             if (bean.getIdKategoriTindakan() != null && !"".equalsIgnoreCase(bean.getIdKategoriTindakan())) {
@@ -85,9 +163,13 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                                 "FROM im_simrs_tindakan a\n" +
                                 "INNER JOIN im_simrs_header_tindakan b ON a.id_header_tindakan = b.id_header_tindakan\n" +
                                 "INNER JOIN im_simrs_kelas_ruangan c ON a.id_kelas_ruangan = c.id_kelas_ruangan\n" +
+                                "INNER JOIN im_simrs_pelayanan p ON p.id_pelayanan = a.id_pelayanan \n"+
+                                "INNER JOIN im_simrs_header_pelayanan hp ON hp.id_header_pelayanan = p.id_header_pelayanan \n"+
                                 "WHERE a.id_kategori_tindakan = :idKat AND a.branch_id = :branch \n" +
                                 "AND a.flag_kelas_ruangan = 'Y' \n" +
-                                "AND c.id_kelas_bpjs = '" + bean.getIdKelasRuangan() + "'\n" +
+                                //"AND c.id_kelas_bpjs = '" + bean.getIdKelasRuangan() + "'\n" +
+                                "AND c.id_kelas_bpjs = '" + idKelasRanap + "'\n" +
+                                "AND hp.tipe_pelayanan LIKE '"+tipePelayananRanap+"' \n"+
                                 "AND a.flag = 'Y'";
                     }else{
                         union = "UNION ALL\n" +
@@ -101,15 +183,22 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                                 "FROM im_simrs_tindakan a\n" +
                                 "INNER JOIN im_simrs_header_tindakan b ON a.id_header_tindakan = b.id_header_tindakan\n" +
                                 "INNER JOIN im_simrs_kelas_ruangan c ON a.id_kelas_ruangan = c.id_kelas_ruangan\n" +
+                                "INNER JOIN im_simrs_pelayanan p ON p.id_pelayanan = a.id_pelayanan \n"+
+                                "INNER JOIN im_simrs_header_pelayanan hp ON hp.id_header_pelayanan = p.id_header_pelayanan \n"+
                                 "WHERE a.id_kategori_tindakan = :idKat AND a.branch_id = :branch \n" +
                                 "AND a.flag_kelas_ruangan = 'Y' \n" +
-                                "AND c.id_kelas_ruangan = '" + bean.getIdKelasRuangan() + "'\n" +
+                                //"AND c.id_kelas_ruangan = '" + bean.getIdKelasRuangan() + "'\n" +
+                                "AND c.id_kelas_ruangan = '" + idKelasRanap + "'\n" +
+                                "AND hp.tipe_pelayanan LIKE '"+tipePelayananRanap+"' \n"+
                                 "AND a.flag = 'Y'";
                     }
 
                 }
 
-                String tipePelayanan = cekTipePelayanan(bean.getIdPelayanan());
+                // 2021-08-09 Sigit, Penyesuaian untuk tindakan radiologi, yg smentara di set pada param idKelasRuangan pada addPeriksaRadiologi.jsp;
+                boolean isRadiologi = "radiologi".equalsIgnoreCase(bean.getIdKelasRuangan());
+                String tipePelayanan = isRadiologi ? "radiologi" : cekTipePelayanan(bean.getIdPelayanan());
+                // end
                 if(!"".equalsIgnoreCase(tipePelayanan) && !"rawat_jalan".equalsIgnoreCase(tipePelayanan)){
                     ambulance = "UNION ALL\n" +
                             "SELECT\n" +
@@ -128,7 +217,15 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                 }
 
                 String SQL = "";
-                if("rawat_jalan".equalsIgnoreCase(tipePelayanan)){
+                if("rawat_jalan".equalsIgnoreCase(tipePelayanan) || "radiologi".equalsIgnoreCase(tipePelayanan)){
+
+                    // 2021-08-29 Sigit, Jika Radiologi untuk mengambil tindakan dokter
+                    if ("radiologi".equalsIgnoreCase(tipePelayanan)){
+                        String idPelayananRadiologi = getIdPelayananByTypePelayanan(tipePelayanan, bean.getBranchId());
+                        bean.setIdPelayanan(idPelayananRadiologi);
+                    }
+                    // END
+
                     if(bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
                         SQL = "SELECT\n" +
                                 "a.id_tindakan,\n" +
@@ -205,6 +302,14 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
 
     private String cekTipePelayanan(String iPelayanan){
         String res = "";
+        String idPelayanan = "";
+        //SYAMS 29AGUS21 => Ganti "WHERE id_pelayanan = :id"; jadi "WHERE id_pelayanan like :id" dan tambah kondisi untuk null
+        if (iPelayanan==null||iPelayanan.equalsIgnoreCase("")){
+            idPelayanan ="%";
+        } else {
+            idPelayanan = iPelayanan;
+        }
+
         String SQL = "SELECT\n" +
                 "a.id_pelayanan,\n" +
                 "b.tipe_pelayanan\n" +
@@ -213,7 +318,7 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                 "WHERE id_pelayanan = :id";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                .setParameter("id", iPelayanan)
+                .setParameter("id", idPelayanan)
                 .list();
 
         if(results.size() > 0){
@@ -323,8 +428,9 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                 "b.kode_vclaim\n" +
                 "FROM im_simrs_pelayanan a\n" +
                 "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) d ON b.id_pelayanan = d.id_pelayanan\n" +
-                "INNER JOIN im_branches f ON b.branch_id = f.branch_id\n" +
+//                "INNER JOIN im_simrs_kategori_tindakan_ina e ON a.kategori_ina_bpjs = e.id\n" +
                 "LEFT JOIN im_simrs_kategori_tindakan_ina e ON a.kategori_ina_bpjs = e.id\n" +
+                "INNER JOIN im_branches f ON b.branch_id = f.branch_id\n" +
                 "WHERE b.flag = :flag\n " + condition;
 
         List<Object[]> result = new ArrayList<>();
@@ -339,8 +445,19 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                 tindakan.setKategoriInaBpjs(obj[2] != null ? obj[2].toString() : null);
                 tindakan.setNamaKategoriTindakanIna(obj[3] != null ? obj[3].toString() : null);
                 tindakan.setIdTindakan(obj[4] != null ? obj[4].toString() : null);
+
                 tindakan.setTarif(obj[5] != null ? (BigInteger) obj[5] : null);
                 tindakan.setTarifBpjs(obj[6] != null ? (BigInteger) obj[6] : null);
+
+//                BigDecimal bTarif = obj[5] != null ? (BigDecimal) obj[5] : new BigDecimal(0);
+//                BigDecimal bTarifBpjs = obj[6] != null ? (BigDecimal) obj[6] : new BigDecimal(0);
+//
+//                bTarif = bTarif.setScale(BigDecimal.ROUND_UP);
+//                bTarifBpjs = bTarifBpjs.setScale(BigDecimal.ROUND_UP);
+//
+//                tindakan.setTarif(new BigInteger(bTarif.toString()));
+//                tindakan.setTarifBpjs(new BigInteger(bTarifBpjs.toString()));
+
                 tindakan.setDiskon(obj[7] != null ? (BigDecimal) obj[7] : null);
                 tindakan.setIdKategoriTindakan(obj[8] != null ? obj[8].toString() : null);
                 tindakan.setNamaKategoriTindakan(obj[9] != null ? obj[9].toString() : null);

@@ -1384,6 +1384,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                 response.setMessage("Data object tidak ada...!");
             }
         }catch (Exception e){
+            logger.error("[TransaksiObatAction.saveApproveResepObatPoli] ERROR when save list obat, ", e);
             response.setStatus(ERROR);
             response.setMessage(e.getMessage());
             return response;

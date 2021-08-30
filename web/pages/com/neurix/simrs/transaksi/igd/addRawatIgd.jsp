@@ -1015,7 +1015,7 @@
                                     <div class="form-group">
                                         <div class="col-md-offset-4 col-md-8">
                                             <div class="form-check jarak">
-                                                <input onclick="isPemeriksaan(this.id)" type="checkbox" name="pemeriksaan_lab" id="pemeriksaan_lab" value="yes">
+                                                <input onclick="isPemeriksaan(this.id,'form-pemeriksaan')" type="checkbox" name="pemeriksaan_lab" id="pemeriksaan_lab" value="yes">
                                                 <label for="pemeriksaan_lab"></label> Pemeriksaan Lab/Radiologi?
                                             </div>
                                         </div>
@@ -1034,23 +1034,41 @@
                                                       listValue="namaKategori"
                                                       headerKey="" headerValue="[Select one]"
                                                       cssClass="form-control select2"/>
+                                            <span style="color: red; display: none;" id="war_ckp_kategori"><i
+                                                    class="fa fa-times"></i> required</span>
+                                            <span style="color: green; display: none;" id="cor_ckp_kategori">
+                                                <i class="fa fa-check"></i> correct</span>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4" style="margin-top: 7px">Unit</label>
+                                        <label class="col-md-4" style="margin-top: 7px">Jenis Pemeriksaan</label>
                                         <div class="col-md-8">
                                             <select class="form-control select2" style="margin-top: 7px; width: 100%" id="ckp_unit"
-                                                    onchange="listSelectParameter(this.value);">
+                                                    onchange="listSelectParameter(this.value); inputWarning('war_ckp_unit', 'cor_ckp_unit');">
                                                 <option value=''>[Select One]</option>
                                             </select>
+                                            <span style="color: red; display: none;" id="war_ckp_unit"><i
+                                                    class="fa fa-times"></i> required</span>
+                                            <span style="color: green; display: none;" id="cor_ckp_unit">
+                                                <i class="fa fa-check"></i> correct</span>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4" style="margin-top: 7px">Parameter</label>
                                         <div class="col-md-8">
-                                            <select class="form-control select2" multiple style="margin-top: 7px; width: 100%" id="ckp_parameter">
+                                            <select class="form-control select2" onchange="inputWarning('war_ckp_parameter', 'cor_ckp_parameter')" multiple style="margin-top: 7px; width: 100%" id="ckp_parameter">
                                                 <option value=''>[Select One]</option>
                                             </select>
+                                            <span style="color: red; display: none;" id="war_ckp_parameter"><i
+                                                    class="fa fa-times"></i> required</span>
+                                            <span style="color: green; display: none;" id="cor_ckp_parameter">
+                                                <i class="fa fa-check"></i> correct</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-offset-4 col-md-8">
+                                            <button onclick="addOrderListPemeriksaan()" class="btn btn-success"><i class="fa fa-plus"></i> Tambah</button>
+                                            <button onclick="resetOrderPemeriksaan()" class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1078,6 +1096,24 @@
                                         <label class="col-md-4" style="margin-top: 10px">Catatan</label>
                                         <div class="col-md-8">
                                             <s:textarea cssClass="form-control jarak" id="pesan_dokter" rows="3" placeholder="Pesan untuk pasien"></s:textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top: 30px; display: none" id="form_order_pemeriksaan">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <span>Daftar Order Pemeriksaan</span>
+                                            <table class="table table-bordered" style="font-size: 13px" id="tabel_order_pemeriksaan">
+                                                <thead>
+                                                <tr>
+                                                    <td>Jenis Pemeriksaan</td>
+                                                    <td>Parameter</td>
+                                                    <td align="10%">Action</td>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="body_order_pemeriksaan">
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>

@@ -309,7 +309,7 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
             jenis = jenisPelayananRJ(id);
         }
 
-        if (jenis != null && !"".equalsIgnoreCase(jenis) && !"hemodialisa".equalsIgnoreCase(jenis) && !"fisioterapi".equalsIgnoreCase(jenis) && "rawat_jalan".equalsIgnoreCase(tipePelayanan)) {
+        if (jenis != null && !"".equalsIgnoreCase(jenis) && !"hemodialisa".equalsIgnoreCase(jenis) && !"fisioterapi".equalsIgnoreCase(jenis)) {
             if("spesialis_anak".equalsIgnoreCase(jenis) || "spesialis_mata".equalsIgnoreCase(jenis) || "rehab_medik".equalsIgnoreCase(jenis) || "spesialis_tht".equalsIgnoreCase(jenis) || "spesialis_obstetri".equalsIgnoreCase(jenis)){
                 tempJenis = jenis;
             }else{

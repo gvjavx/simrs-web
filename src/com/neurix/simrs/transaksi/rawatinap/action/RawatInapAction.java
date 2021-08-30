@@ -2104,6 +2104,7 @@ public class RawatInapAction extends BaseMasterAction {
             KategoriLabBo kategoriLabBo = (KategoriLabBo) ctx.getBean("kategoriLabBoProxy");
             Timestamp now = new Timestamp(System.currentTimeMillis());
             String user = CommonUtil.userLogin();
+            String branchId = CommonUtil.userBranchLogin();
 
             JSONObject object = new JSONObject(data);
             if (object != null) {
