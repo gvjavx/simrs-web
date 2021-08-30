@@ -800,7 +800,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     tindakanRawatEntity.setFlag("Y");
                     tindakanRawatEntity.setAction("U");
                     tindakanRawatEntity.setApproveFlag("Y");
-                    tindakanRawatEntity.setTarif(new BigInteger(bean.getTarif()));
+                    tindakanRawatEntity.setTarif(new BigDecimal(bean.getTarif()).toBigInteger());
                     tindakanRawatEntity.setQty(new BigInteger(bean.getJumlah()));
                     tindakanRawatEntity.setTarifTotal(tindakanRawatEntity.getTarif().multiply(tindakanRawatEntity.getQty()));
                     try {

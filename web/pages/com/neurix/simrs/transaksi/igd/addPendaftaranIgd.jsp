@@ -1540,7 +1540,7 @@
                             <s:hidden name="headerCheckup.namaTindakan" id="h_nama_tindakan"></s:hidden>
                             <s:hidden id="no_checkup" name="headerCheckup.noCheckup"></s:hidden>
                             <s:hidden name="headerCheckup.idDetailCheckup"></s:hidden>
-                            <s:hidden name="headerCheckup.idTeamDokter"></s:hidden>Dis
+                            <s:hidden name="headerCheckup.idTeamDokter"></s:hidden>
                             <s:hidden name="headerCheckup.idUangMuka"></s:hidden>
 
                             <div id="form-is-uang-muka" style="display: none">
@@ -1584,17 +1584,34 @@
                                         <div class="col-md-6">
                                             <div class="row">
                                                 <div class="form-group" style="margin-top: 7px">
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-3">
                                                         <input class="form-control" readonly placeholder="Tarif/km" id="val_tarif">
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-3">
+                                                        <input readonly class="form-control" id="disc_percent"
+                                                               placeholder="Disc">
+                                                    </div>
+                                                    <div class="col-md-3">
                                                         <%--<s:textfield cssClass="form-control" placeholder="Diskon" name="headerCheckup.diskon" id="val_diskon" readonly="true"></s:textfield>--%>
-                                                        <input class="form-control" id="val_diskon" readonly placeholder="Discon" >
+                                                        <input class="form-control" id="val_diskon" readonly placeholder="Setelah Diskon" >
                                                         <input class="form-control" type="hidden" id="h_val_diskon" name="headerCheckup.diskon">
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-3">
                                                         <%--<s:textfield cssClass="form-control" placeholder="Jumlah Kilometer" name="headerCheckup.jumlah" type="number" id="jumlah_kilometer"></s:textfield>--%>
-                                                        <input style="display:none" class="form-control" placeholder="Jumlah Kilometer" name="headerCheckup.jumlah" type="number" id="jumlah_kilometer" >
+                                                        <input style="display:none" class="form-control" placeholder="Jumlah Kilometer" name="headerCheckup.jumlah" type="number" id="jumlah_kilometer" oninput="setTotalTarif(this.value)">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top: 7px;">
+                                        <div class="col-md-6">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <div class="col-md-9">
+                                                        <input class="form-control" id="jumlah_tot_tarif" readonly placeholder="Total Tarif" >
                                                     </div>
                                                 </div>
                                             </div>
@@ -4119,31 +4136,37 @@
                     if (res.diskon != '' && res.diskon != null) {
                         disk = res.diskon;
                     }
+
                     if (jenisPeriksaPasien == "bpjs") {
-                       diskR = res.tarifBpjs * disk / 100 ;
+                       diskR = res.tarifBpjs * ((100 - disk) / 100) ;
                        $('#val_tarif').val("Rp. " + formatRupiahAtas(res.tarifBpjs));
-                       $('#h_tarif').val((res.tarifBpjs - diskR));
+                       $('#h_tarif').val(diskR);
+
 
                     } else {
-                       diskR = res.tarif * disk / 100 ;
+                       diskR = res.tarif * ((100 - disk) / 100)  ;
                        $('#val_tarif').val("Rp. " + formatRupiahAtas(res.tarif));
-                       $('#h_tarif').val((res.tarif-diskR));
+                       $('#h_tarif').val(diskR);
 
                     }
 
-                    $('#val_diskon').val("Rp. " + formatRupiahAtas(diskR));
+                    $('#disc_percent').val(disk + " %");
+                    $('#val_diskon').val("Rp. " + formatRupiahAtas(parseInt(diskR)));
                     $('#h_val_diskon').val(diskR);
+                   $('#jumlah_tot_tarif').val("Rp. " + formatRupiahAtas(parseInt(diskR)));
 
-                    if(res.isElektif == 'Y')
-                    {
-                       $("input[name='headerCheckup.jumlah']").val("");
-                       $("input[name='headerCheckup.jumlah']").show();
-                    }
-                    else
-                    {
-                       $("input[name='headerCheckup.jumlah']").val("1");
-                       $("input[name='headerCheckup.jumlah']").hide();
-                    }
+                   if(res.isElektif == 'Y')
+                   {
+                      $("#jumlah_kilometer").val("");
+                      $("#jumlah_kilometer").show();
+                      $('#jumlah_tot_tarif').val("");
+                   }
+                   else
+                   {
+                      $("#jumlah_kilometer").val("1");
+                      $("#jumlah_kilometer").hide();
+                   }
+
                 }
             });
             var nama = $('#ambulance option:selected').text();
@@ -4155,7 +4178,15 @@
             $('#h_tarif').val('');
             $('#h_id_tindakan').val('');
             $('#h_nama_tindakan').val('');
+           $('#jumlah_tot_tarif').val('');
         }
+    }
+
+    function setTotalTarif(jumlah)
+    {
+       var totTarifAfterDisc = $('#h_tarif').val();
+       totTarifAfterDisc = (parseInt(totTarifAfterDisc) * jumlah);
+       $('#jumlah_tot_tarif').val("Rp. " + formatRupiahAtas(totTarifAfterDisc));
     }
 
     function cekNik(id, warning){

@@ -1039,7 +1039,11 @@
                                         <div class="col-md-4">
                                             <input class="form-control" readonly placeholder="Tarif/km" id="val_tarif">
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-2">
+                                            <input readonly class="form-control" id="disc_percent"
+                                                   placeholder="Diskon">
+                                        </div>
+                                        <div class="col-md-2">
                                             <%--<s:textfield cssClass="form-control" placeholder="Diskon" name="headerCheckup.diskon" id="val_diskon" readonly="true"></s:textfield>--%>
                                             <input class="form-control" id="val_diskon" readonly placeholder="Discon" >
                                             <input class="form-control" type="hidden" id="h_val_diskon" name="rawatInap.diskon">
@@ -1051,7 +1055,16 @@
                                         <label class="col-md-4" style="margin-top: 10px">Jumlah Kilometer</label>
                                         <div class="col-md-8">
                                             <%--<s:textfield cssClass="form-control" placeholder="Jumlah Kilometer" name="headerCheckup.jumlah" type="number" id="jumlah_kilometer"></s:textfield>--%>
-                                            <input style="display:none" class="form-control" placeholder="" name="rawatInap.jumlah" type="number" id="jumlah_kilometer" >
+                                            <input class="form-control" placeholder="" name="rawatInap.jumlah" type="number" id="jumlah_kilometer" oninput="setTotalTarif(this.value)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="form-kend-total-tarif" style="display:none">
+                                    <div class="form-group" style="margin-top: 7px">
+                                        <label class="col-md-4" style="margin-top: 10px">Total Tarif</label>
+                                        <div class="col-md-8">
+                                            <%--<s:textfield cssClass="form-control" placeholder="Jumlah Kilometer" name="headerCheckup.jumlah" type="number" id="jumlah_kilometer"></s:textfield>--%>
+                                            <input class="form-control" placeholder="" readonly id="jumlah_tot_tarif" >
                                         </div>
                                     </div>
                                 </div>
@@ -4848,29 +4861,31 @@
                   disk = res.diskon;
                }
                if (jenisPeriksaPasien == "bpjs") {
-                  diskR = res.tarifBpjs * disk / 100 ;
+                  diskR = res.tarifBpjs * ((100 - disk) / 100) ;
                   $('#val_tarif').val("Rp. " + formatRupiahAtas(res.tarifBpjs));
-                  $('#h_tarif').val((res.tarifBpjs-diskR));
+                  $('#h_tarif').val(diskR);
 
                } else {
-                  diskR = res.tarif * disk / 100 ;
+                  diskR = res.tarif * ((100 - disk) / 100) ;
                   $('#val_tarif').val("Rp. " + formatRupiahAtas(res.tarif));
-                  $('#h_tarif').val((res.tarif-diskR));
-
+                  $('#h_tarif').val(diskR);
                }
 
+               $('#disc_percent').val(disk + " %");
                $('#val_diskon').val("Rp. " + formatRupiahAtas(diskR));
                $('#h_val_diskon').val(diskR);
+               $('#jumlah_tot_tarif').val("Rp. " + formatRupiahAtas(parseInt(diskR)));
 
                if(res.isElektif == 'Y')
                {
-                  $("input[name='rawatInap.jumlah']").val("");
-                  $("input[name='rawatInap.jumlah']").show();
+                  $("#jumlah_kilometer").val("");
+                  $("#form-kend-tarif-jumlah").show();
+                  $('#jumlah_tot_tarif').val("");
                }
                else
                {
-                  $("input[name='rawatInap.jumlah']").val("1");
-                  $("input[name='rawatInap.jumlah']").hide();
+                  $("#jumlah_kilometer").val("1");
+                  $("#form-kend-tarif-jumlah").hide();
                }
             }
          });
@@ -4883,7 +4898,15 @@
          $('#h_tarif').val('');
          $('#h_id_tindakan').val('');
          $('#h_nama_tindakan').val('');
+         $('#jumlah_tot_tarif').val('');
       }
+   }
+
+   function setTotalTarif(jumlah)
+   {
+      var totTarifAfterDisc = $('#h_tarif').val();
+      totTarifAfterDisc = (parseInt(totTarifAfterDisc) * jumlah);
+      $('#jumlah_tot_tarif').val("Rp. " + formatRupiahAtas(totTarifAfterDisc));
    }
 
    function loadModalRM(jenis, method, parameter, idRM, flag, flagHide, flagCheck) {

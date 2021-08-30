@@ -271,6 +271,47 @@ function listSelectDokter(idDokter) {
     });
 }
 
+// Fahmi 2021-08-27, Menambahkan opsi pilihan kend jenazah jika meninggal
+function selectKet_Selesai(idKtgSsi)
+{
+    // Sembuh
+    if(idKtgSsi == '01')
+    {
+        // Menyembunyikan form yang tidak diperlukan
+        $("#form-ket-meninggal").hide();
+        $("#form-kend-tarif").hide();
+        $("#form-kend-total-tarif").hide();
+    }
+    // Pulang Atas Permintaa Sendiri
+    else if(idKtgSsi == '02')
+    {
+        // Menyembunyikan form yang tidak diperlukan
+        $("#form-ket-meninggal").hide();
+        $("#form-kend-tarif").hide();
+        $("#form-kend-total-tarif").hide();
+    }
+    // Pulang Atas Persetujuan Dokter
+    else if(idKtgSsi == '03')
+    {
+        // Menyembunyikan form yang tidak diperlukan
+        $("#form-ket-meninggal").hide();
+        $("#form-kend-tarif").hide();
+        $("#form-kend-total-tarif").hide();
+    }
+    // Pulang karena meninggal
+    else if(idKtgSsi == '04')
+    {
+        // Munculkan form yang diperlukan.
+        $("#form-ket-meninggal").show();
+        $("#form-kend-tarif").show();
+        $("#form-kend-total-tarif").show();
+
+
+        // Ambil data dari db
+        getKendJenazah(idKtgSsi);
+    }
+}
+
 function selectKeterangan(idKtg) {
     var keteranganPindah = $('#keterangan option:selected').text();
     var jenisPasien = $('#jenis_pasien').val();
@@ -884,11 +925,13 @@ function listSelectTindakanKategori(val) {
 function getListNamaDokter(tipe, id) {
     var option = '<option value=""> - </option>';
     var def = '';
+    var defId = '';
     CheckupAction.getListDokterByIdDetailCheckup(idDetailCheckup, null, function (res) {
         if (res.length > 0) {
             $.each(res, function (i, item) {
                 if (i == 0) {
                     def = item.idDokter + '|' + item.idPelayanan;
+                    defId = item.idDokter;
                 }
 
                 if(tipe == 'edit'){
@@ -901,11 +944,26 @@ function getListNamaDokter(tipe, id) {
 
             $('#tin_id_dokter_dpjp').html(option);
             $('#tin_id_dokter_dpjp').val(def).trigger('change');
+            $('#h_dokter_dpjp').val(defId);
         } else {
             $('#tin_id_dokter_dpjp').html(option);
         }
     });
 }
+
+
+function getKendJenazah() {
+    var option = '<option value=""> - </option>';
+    TindakanAction.getComboAmbulance(function (res) {
+        if(res.length > 0){
+            $.each(res, function (i, item) {
+                option += '<option value="'+item.idTindakan+'">'+item.tindakan+'</option>';
+            });
+            $('#kend_jenazah').html(option);
+        }
+    });
+}
+
 
 function toContent() {
     var back = $('#close_pos').val();
@@ -4191,16 +4249,37 @@ function savePemeriksaanPasien() {
                 });
             }
 
+            // Fahmi 2021-08-27, Kend Jenazah
+            var idTindakan = "";
+            var namaTindakan = "";
+            var dokterId = "";
+            var tarif = "";
+            var qty = "";
+            if ("selesai" == tindakLanjut && "04" == idKeterangan) {
+                idTindakan = $("#h_id_tindakan").val();
+                namaTindakan = $("#h_nama_tindakan").val();
+                dokterId = $("#h_dokter_dpjp").val();
+                tarif = $("#h_tarif").val();
+                qty = $("#jumlah_kilometer").val();
+            }
+
             data = {
-                'no_checkup': noCheckup,
                 'id_detail_checkup': idDetailCheckup,
+                'no_checkup': noCheckup,
+                'id_rawat_inap': idRawatInap,
                 'tindak_lanjut': tindakLanjut,
                 'keterangan': ktr,
                 'catatan': catatan,
                 'jenis_pasien': jenisPeriksaPasien,
                 'is_meninggal': meninggal,
-                'indikasi': keteranganRW
+                'indikasi': keteranganRW,
+                'idTindakan': idTindakan,
+                'namaTindakan':namaTindakan,
+                'dokterId':dokterId,
+                'tarif':tarif,
+                'qty':qty
             }
+
             cek = true;
         }
     }
