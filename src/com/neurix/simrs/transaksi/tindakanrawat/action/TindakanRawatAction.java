@@ -253,6 +253,8 @@ public class TindakanRawatAction extends BaseMasterAction {
                                 BigDecimal diskonTarif = (new BigDecimal(100).subtract(tindakanResult.getDiskon())).divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
                                 BigDecimal hasilTarifBpjs = new BigDecimal(tindakanResult.getTarifBpjs()).multiply(diskonTarif);
                                 BigDecimal hasilTarifNormal = new BigDecimal(tindakanResult.getTarif()).multiply(diskonTarif);
+                                hasilTarifBpjs = hasilTarifBpjs.setScale(0,BigDecimal.ROUND_CEILING);
+                                hasilTarifNormal = hasilTarifNormal.setScale(0,BigDecimal.ROUND_CEILING);
                                 tarifBpjs = hasilTarifBpjs.toBigInteger();
                                 tarifNormal = hasilTarifNormal.toBigInteger();
                             }
