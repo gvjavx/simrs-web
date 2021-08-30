@@ -28,6 +28,8 @@ import org.springframework.web.context.ContextLoader;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -263,7 +265,7 @@ public class TindakanRawatAction extends BaseMasterAction {
                                     tindakanRawat.setTarif(new BigInteger(detailRekananOps.getTarif().toString()));
                                 } else {
                                     if (ops.getDiskon() != null && ops.getDiskon().compareTo(new BigDecimal(0)) == 1 ) {
-                                        BigDecimal hasil = new BigDecimal(tarifNormal).multiply(ops.getDiskon());
+                                        BigDecimal hasil = new BigDecimal(tarifNormal).multiply(ops.getDiskon()).round(new MathContext(0, RoundingMode.HALF_UP));
                                         tindakanRawat.setTarif(hasil.toBigInteger());
                                     } else {
                                         tindakanRawat.setTarif(tarifNormal);
@@ -275,7 +277,7 @@ public class TindakanRawatAction extends BaseMasterAction {
                                     tindakanRawat.setTarif(new BigInteger(detailRekananOps.getTarifBpjs().toString()));
                                 } else {
                                     if (ops.getDiskon() != null && ops.getDiskon().compareTo(new BigDecimal(0)) > 0) {
-                                        BigDecimal hasil = new BigDecimal(tarifBpjs).multiply(ops.getDiskon());
+                                        BigDecimal hasil = new BigDecimal(tarifBpjs).multiply(ops.getDiskon()).round(new MathContext(0, RoundingMode.HALF_UP));
                                         tindakanRawat.setTarif(hasil.toBigInteger());
                                     } else {
                                         tindakanRawat.setTarif(tarifBpjs);

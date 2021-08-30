@@ -78,6 +78,24 @@ public class KategoriTindakanDao extends GenericDao<ImSimrsKategoriTindakanEntit
                         "GROUP BY a.id_kategori_tindakan,\n" +
                         "a.kategori_tindakan";
             }else{
+
+                // 2021-08-26, Sigit
+                // perubahan mekanisme pencarian kategori untuk pelayanan khusus yg masih 1 grup RI
+                boolean isExplicit = !"rawat_inap".equalsIgnoreCase(kategori);
+                String tipePelayanan = "";
+
+                if ("rawat_intensif".equalsIgnoreCase(kategori) ||
+                        "rawat_isolasi".equalsIgnoreCase(kategori) ||
+                        "rawat_isolasi_covid".equalsIgnoreCase(kategori))
+                    kategori = "rawat_inap";
+
+                if (isExplicit)
+                    tipePelayanan = "WHERE c.tipe_pelayanan = '"+kategori+"'\n";
+                else
+                    tipePelayanan = "WHERE c.tipe_pelayanan IN ('"+kategori+"', 'rawat_jalan', 'igd')\n";
+                //END
+
+
                 SQL = "SELECT \n" +
                         "a.id_kategori_tindakan,\n" +
                         "a.kategori_tindakan\n" +
@@ -92,8 +110,9 @@ public class KategoriTindakanDao extends GenericDao<ImSimrsKategoriTindakanEntit
                         "b.divisi_id,\n" +
                         "b.kode_vclaim\n" +
                         "FROM im_simrs_pelayanan a\n" +
-                        "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON b.id_pelayanan = c.id_pelayanan\n" +
-                        "WHERE c.tipe_pelayanan IN ('"+kategori+"', 'rawat_jalan', 'igd')\n" +
+                        "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON b.id_pelayanan = c.id_pelayanan\n"+
+//                        "WHERE c.tipe_pelayanan IN ('"+kategori+"', 'rawat_jalan', 'igd')\n" +
+                        tipePelayanan +
                         "AND b.branch_id = '"+branchId+"'\n" +
                         "GROUP BY a.id_kategori_tindakan,\n" +
                         "a.kategori_tindakan";

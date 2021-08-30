@@ -431,9 +431,11 @@ public class PurchaseOrderController implements ModelDriven<Object> {
             case "getBatchSorted":
                 return listOfTransaksiObat;
             case "addBatch":
-                return listOfTransaksiObat;
+                response.put("data",listOfTransaksiObat);
+                return response;
             case "editBatch":
-                return listOfTransaksiObat;
+                response.put("data",listOfTransaksiObat);
+                return response;
             case "getPabrikObat":
                 response.put("data",listOfPabrikObat);
                 return response;
@@ -664,7 +666,8 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                     transaksiObatDetail.setMerek(merk);
 
                     if (noBatch.isEmpty()){
-                        transaksiObatDetail.setNoBatch(0);
+                        //SYAMS 26AGUS21 => GANTI 1
+                        transaksiObatDetail.setNoBatch(1);
                     } else transaksiObatDetail.setNoBatch(new Integer(noBatch));
 
                     transaksiObatDetail.setExpDate(CommonUtil.convertStringToDate(expDate));
@@ -692,6 +695,7 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                             noBatch = permintaanVendorBoProxy.getLastNoBatch(permintaanVendor.getIdApprovalObat());
                         } catch (GeneralBOException e) {
                             logger.error("[PurchaseOrderController.create] ERROR addBatch. ", e);
+                            response.put("actionError","Gagal mengambil no.Batch");
                         }
 
                         List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
@@ -703,6 +707,7 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                             transaksiObatDetails = permintaanVendorBoProxy.getListTransByBatchSorted(permintaanVendor.getListOfTransaksiObatDetail(), permintaanVendor.getNoBatch(), "N");
                         } catch (GeneralBOException e) {
                             logger.error("[PurchaseOrderController.create] ERROR addBatch. ", e);
+                            response.put("actionError","Gagal mengambil detail transaksi");
                         }
 
                         for(TransaksiObatDetail item : transaksiObatDetails){
@@ -722,8 +727,8 @@ public class PurchaseOrderController implements ModelDriven<Object> {
 //                            transaksiObatMobile.setExpDate(item.getExpDate().toString());
 //                            transaksiObatMobile.setQtyApprove(item.getQtyApprove().toString());
                             transaksiObatMobile.setQty(item.getQty().toString());
-                            transaksiObatMobile.setLembarPerBox(item.getLembarPerBox().toString());
-                            transaksiObatMobile.setBijiPerLembar(item.getBijiPerLembar().toString());
+                            transaksiObatMobile.setLembarPerBox(item.getLembarPerBox()==null?"":item.getLembarPerBox().toString());
+                            transaksiObatMobile.setBijiPerLembar(item.getBijiPerLembar()==null?"":item.getBijiPerLembar().toString());
 //                            transaksiObatMobile.setAverageHargaBox(item.getAverageHargaBox().toString());
 //                        transaksiObatMobile.setAverageHargaLembar(item.getAverageHargaLembar().toString());
                         transaksiObatMobile.setAverageHargaBiji(item.getAverageHargaBiji().toString());

@@ -271,6 +271,7 @@
                                 <td>Bentuk Diet</td>
                                 <td>Alergi</td>
                                 <td>Diagnosa</td>
+                                <%--<td>Tanggal</td>--%>
                                 <td>Waktu</td>
                                 <td width="15%">Status</td>
                                 <td align="center" width="9%">
@@ -302,6 +303,7 @@
                                         <input type="hidden" id="no_checkup_<s:property value="idOrderGizi"/>" value="<s:property value="noCheckup"/>">
                                     </td>
                                     <td><s:property value="namaDiagnosa"/></td>
+                                    <%--<td><s:property value="tglOrder"/></td>--%>
                                     <td>
                                         <script>
                                             var waktu = '<s:property value="waktu"/>';
@@ -1076,6 +1078,7 @@
             PeriksaLabAction.getListHistoryLabRadiologi(idPas, function (res) {
                 if (res.length > 0) {
                     $.each(res, function (i, item) {
+                       console.log("ALl History ======>>"+JSON.stringify(item));
                         var btn = "";
                         var icon = "";
                         var tele = "";

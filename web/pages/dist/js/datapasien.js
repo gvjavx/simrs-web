@@ -38,6 +38,9 @@ function setDataPasien() {
         var namaRuangan = $('.nama_ruangan').length;
         var masukRS = $('.tanggal_masuk_rs').length;
 
+        var pendidikan = $('.pendidikan').length;
+        var profesi = $('.profesi').length;
+
         var dokterAnestesi = $('.dokter_anestesi').length;
         var perawatAnestesi = $('.perawat_anestesi').length;
         var dokterBedah = $('.dokter_bedah').length;
@@ -180,6 +183,12 @@ function setDataPasien() {
         }
         if (nama > 0) {
             $('.nama-pasien').val(namaPasien);
+        }
+        if(pendidikan > 0){
+            $('.pendidikan').val(pendidikanPasien);
+        }
+        if(profesi > 0){
+            $('.profesi').val(profesiPasien);
         }
         if (alamat > 0) {
             $('.alamat-pasien').val(alamatLengkap);

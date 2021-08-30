@@ -78,6 +78,7 @@ import com.neurix.simrs.transaksi.teamdokter.bo.TeamDokterBo;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
+import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
@@ -2103,6 +2104,7 @@ public class RawatInapAction extends BaseMasterAction {
             KategoriLabBo kategoriLabBo = (KategoriLabBo) ctx.getBean("kategoriLabBoProxy");
             Timestamp now = new Timestamp(System.currentTimeMillis());
             String user = CommonUtil.userLogin();
+            String branchId = CommonUtil.userBranchLogin();
 
             JSONObject object = new JSONObject(data);
             if (object != null) {
@@ -2124,6 +2126,13 @@ public class RawatInapAction extends BaseMasterAction {
                 String isMeninggal = "";
                 String listPemeriksaan = null;
                 String indikasi = null;
+
+                // Fahmi 2021-08-27, Kend Jenazah
+                String idTindakan = null;
+                String namaTindakan = null;
+                String idDokter = null;
+                String tarif = null;
+                String qty = null;
 
                 if (object.has("id_ruangan")) {
                     idRuangan = object.getString("id_ruangan");
@@ -2154,6 +2163,21 @@ public class RawatInapAction extends BaseMasterAction {
                 }
                 if (object.has("indikasi")) {
                     indikasi = object.getString("indikasi");
+                }
+                if (object.has("idTindakan")) {
+                    idTindakan = object.getString("idTindakan");
+                }
+                if (object.has("namaTindakan")) {
+                    namaTindakan = object.getString("namaTindakan");
+                }
+                if (object.has("dokterId")) {
+                    idDokter = object.getString("dokterId");
+                }
+                if (object.has("tarif")) {
+                    tarif = object.getString("tarif");
+                }
+                if (object.has("qty")) {
+                    qty = object.getString("qty");
                 }
 
                 if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup) && idRawatInap != null && !"".equalsIgnoreCase(idRawatInap)) {
@@ -2253,8 +2277,25 @@ public class RawatInapAction extends BaseMasterAction {
                         }
                     }
 
+                    // Fahmi 2021-08-27, Kend Jenazah
+                    HeaderCheckup hc = null;
+                    if(idTindakan != null && !"".equalsIgnoreCase(idTindakan)){
+                        hc = new HeaderCheckup();
 
-                    saveApproveAllTindakan(idDetailCheckup, jenisPasien);
+                        hc.setIdDetailCheckup(idDetailCheckup);
+                        hc.setIdTindakan(idTindakan);
+                        hc.setNamaTindakan(namaTindakan);
+                        hc.setIdDokter(idDokter);
+                        hc.setCreatedDate(now);
+                        hc.setCreatedWho(user);
+                        hc.setLastUpdate(now);
+                        hc.setLastUpdateWho(user);
+                        hc.setTarif(tarif);
+                        hc.setQty(qty);
+                    }
+                    // end Fahmi
+
+                    saveApproveAllTindakan(idDetailCheckup, jenisPasien, hc);
                     response = rawatInapBo.saveAdd(rawatInap);
                     if ("success".equalsIgnoreCase(response.getStatus())) {
                         rawatInapBo.updateRiwayatKamar(rawatInap);
@@ -2950,7 +2991,12 @@ public class RawatInapAction extends BaseMasterAction {
         return "search";
     }
 
-    public CrudResponse saveApproveAllTindakan(String idDetailCheckup, String jenisPasien) {
+    // Fahmi 2021-08-27, helper class saja.
+    public CrudResponse saveApproveAllTindakan(String idDetailCheckup, String jenisPasien)
+    { return saveApproveAllTindakan(idDetailCheckup, jenisPasien, null); }
+
+    // Edited Fahmi 2021-08-27, Tambahan Tindakan untuk Kend Jenazah
+    public CrudResponse saveApproveAllTindakan(String idDetailCheckup, String jenisPasien, HeaderCheckup bean) {
 
         logger.info("[CheckupDetailAction.saveApproveAllTindakanRawatJalan] START process >>>");
         CrudResponse finalResponse = new CrudResponse();
@@ -2974,6 +3020,17 @@ public class RawatInapAction extends BaseMasterAction {
                 finalResponse.setStatus("errror");
                 finalResponse.setMsg(response.getMessage());
                 logger.error("[CheckupDetailAction.saveApproveAllTindakanRawatJalan] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+
+            if ("success".equalsIgnoreCase(response.getStatus()) && null != bean)
+            {
+                try {
+                    response = checkupDetailBo.saveSingleTindakan(bean);
+                } catch (GeneralBOException e){
+                    finalResponse.setStatus("errror");
+                    finalResponse.setMsg(response.getMessage());
+                    logger.error("[CheckupDetailAction.saveSingleTindakan] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+                }
             }
 
             if ("success".equalsIgnoreCase(response.getStatus())) {

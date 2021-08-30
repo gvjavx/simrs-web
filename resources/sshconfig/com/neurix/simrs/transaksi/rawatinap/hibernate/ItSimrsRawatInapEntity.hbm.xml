@@ -59,5 +59,12 @@
             <column name="status"/>
         </property>
 
+        <property name="idKelasRuangan">
+            <column name="id_kelas_ruangan"/>
+        </property>
+        <property name="idPelayanan">
+            <column name="id_pelayanan"/>
+        </property>
+
     </class>
 </hibernate-mapping>

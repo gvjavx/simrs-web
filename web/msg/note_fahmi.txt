@@ -48,3 +48,15 @@
 
 
 --
+
+-----------------------------------------Start----------------------------------------------
+-------------------------------------- 2021-08-28 ------------------------------------------
+-----------------------------------------Start----------------------------------------------
+
+UPDATE im_simrs_header_tindakan SET kategori ='mobil_jenazah' WHERE nama_tindakan ilike '%KEND JEN%';
+UPDATE im_simrs_header_tindakan SET kategori ='ambulance_datang' WHERE nama_tindakan ilike '%AMBULANCE%';
+UPDATE im_simrs_tindakan SET is_elektif = 'Y' WHERE id_header_tindakan IN (SELECT id_header_tindakan FROM im_simrs_header_tindakan WHERE nama_tindakan  ILIKE '%PER KM%');
+
+-----------------------------------------End----------------------------------------------
+-------------------------------------- 2021-08-28 ----------------------------------------
+-----------------------------------------ENd----------------------------------------------

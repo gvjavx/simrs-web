@@ -27,6 +27,7 @@ public interface CheckupDetailBo {
     public CrudResponse saveAdd(HeaderDetailCheckup bean) throws GeneralBOException;
     public BigInteger getSumOfTindakanByNoCheckup(String idDetailCheckup) throws GeneralBOException;
     public CheckResponse saveApproveAllTindakanRawatJalan(HeaderDetailCheckup bean) throws GeneralBOException;
+    public CheckResponse saveSingleTindakan(HeaderCheckup bean) throws GeneralBOException;
     public List<HeaderDetailCheckup> getListUangPendaftaran(HeaderDetailCheckup bean) throws GeneralBOException;
     public void updateFlagPeriksaAntrianOnline(String idDetailCheckup) throws GeneralBOException;
     public void updateStatusBayarDetailCheckup(List<HeaderDetailCheckup> list) throws GeneralBOException;

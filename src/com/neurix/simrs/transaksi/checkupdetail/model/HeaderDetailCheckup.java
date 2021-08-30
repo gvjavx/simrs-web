@@ -159,6 +159,8 @@ public class HeaderDetailCheckup extends BaseModel{
     private String pernafasan;
     private String alamatLengkap;
     private String umur;
+    private String pendidikan;
+    private String profesi;
 
     private String asesmenLabel;
     private String kategoriPelayanan;
@@ -618,6 +620,14 @@ public class HeaderDetailCheckup extends BaseModel{
     public void setAlamatLengkap(String alamatLengkap) {
         this.alamatLengkap = alamatLengkap;
     }
+
+    public String getPendidikan() { return pendidikan; }
+
+    public void setPendidikan(String pendidikan) { this.pendidikan = pendidikan; }
+
+    public String getProfesi() { return profesi; }
+
+    public void setProfesi(String profesi) { this.profesi = profesi; }
 
     public String getPenunjangMedis() {
         return penunjangMedis;

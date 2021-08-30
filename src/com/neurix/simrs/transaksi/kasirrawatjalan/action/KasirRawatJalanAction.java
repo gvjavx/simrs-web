@@ -1363,7 +1363,7 @@ public class KasirRawatJalanAction extends BaseTransactionAction {
                                                         mapTindakan.setMasterId(getMasterIdByTipe(idDetail, "umum"));
                                                         mapTindakan.setDivisiId(getDivisiId(idDetail, "umum", keterangan, ruangan));
                                                         mapTindakan.setNilai(getJumlahNilaiBiayaByKeterangan(idDetail, "umum", keterangan, ruangan, ""));
-                                                        mapTindakan.setListOfActivity(getListAcitivity(idDetail, "umum", keterangan, kode, ""));
+                                                        mapTindakan.setListOfActivity(getListAcitivity(idDetail, "umum", keterangan, kode, ruangan));
                                                         listOfMapTindakanUmumRi.add(mapTindakan);
 
                                                         if ("asuransi".equalsIgnoreCase(jenis) && !"bpjs".equalsIgnoreCase(jenis)) {

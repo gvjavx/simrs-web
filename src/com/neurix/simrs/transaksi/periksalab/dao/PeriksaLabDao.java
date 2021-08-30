@@ -520,6 +520,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 lab.setIdPeriksaLab(obj[5] == null ? "" : obj[5].toString());
                 lab.setKategoriLabName(obj[6] == null ? "" : obj[6].toString());
                 lab.setKeterangan(obj[7] == null ? "" : obj[7].toString());
+                lab.setCreatedDate(obj[8] == null ? null : (Timestamp) obj[8]);
                 lab.setIsPeriksaLuar(obj[9] == null ? "" : obj[9].toString());
                 if(lab.getIdPeriksaLab() != null){
                     lab.setUploadDalam(getListUploadHasilPemeriksaan(lab.getIdPeriksaLab()));

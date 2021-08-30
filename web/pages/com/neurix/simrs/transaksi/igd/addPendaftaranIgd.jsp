@@ -104,13 +104,15 @@
                             if($('#is_uang_muka').is(':checked')){
                                 if (pembayaran != '' && uangMuka != '' && parseInt(uangMuka) > 0) {
                                     if(ambulance != ''){
-                                        if(jumlahKm != '' && parseInt(jumlahKm) > 0){
+                                        $('#confirm_dialog').dialog('open');
+                                        // Fahmi 2021-08-27, Kilometer untuk ambulance bisa kosong.
+                                        /*if(jumlahKm != '' && parseInt(jumlahKm) > 0){
                                             $('#confirm_dialog').dialog('open');
                                         }else{
                                             $("html, body").animate({scrollTop: 0}, 600);
                                             $('#warning_pasien').show().fadeOut(10000);
                                             $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
-                                        }
+                                        }*/
                                     }else{
                                         $('#confirm_dialog').dialog('open');
                                     }
@@ -127,13 +129,15 @@
                                 }
                             }else{
                                 if(ambulance != ''){
-                                    if(jumlahKm != '' && parseInt(jumlahKm) > 0){
-                                        $('#confirm_dialog').dialog('open');
-                                    }else{
-                                        $("html, body").animate({scrollTop: 0}, 600);
-                                        $('#warning_pasien').show().fadeOut(10000);
-                                        $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
-                                    }
+                                   $('#confirm_dialog').dialog('open');
+                                   // Fahmi 2021-08-27, Kilometer untuk ambulance bisa kosong.
+                                   //  if(jumlahKm != '' && parseInt(jumlahKm) > 0){
+                                   //      $('#confirm_dialog').dialog('open');
+                                   //  }else{
+                                   //      $("html, body").animate({scrollTop: 0}, 600);
+                                   //      $('#warning_pasien').show().fadeOut(10000);
+                                   //      $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
+                                   //  }
                                 }else{
                                     $('#confirm_dialog').dialog('open');
                                 }
@@ -147,13 +151,15 @@
                                         if(tipe == "bpjs_rekanan"){
                                             if (noKartuPtpn != '' && unitPtpn != '') {
                                                 if(ambulance != ''){
-                                                    if(jumlahKm != '' && parseInt(jumlahKm) > 0){
-                                                        $('#confirm_dialog').dialog('open');
-                                                    }else{
-                                                        $("html, body").animate({scrollTop: 0}, 600);
-                                                        $('#warning_pasien').show().fadeOut(10000);
-                                                        $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
-                                                    }
+                                                   $('#confirm_dialog').dialog('open');
+                                                   // Fahmi 2021-08-27, Kilometer untuk ambulance bisa kosong.
+                                                    // if(jumlahKm != '' && parseInt(jumlahKm) > 0){
+                                                    //     $('#confirm_dialog').dialog('open');
+                                                    // }else{
+                                                    //     $("html, body").animate({scrollTop: 0}, 600);
+                                                    //     $('#warning_pasien').show().fadeOut(10000);
+                                                    //     $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
+                                                    // }
                                                 }else{
                                                     $('#confirm_dialog').dialog('open');
                                                 }
@@ -170,13 +176,15 @@
                                             }
                                         }else{
                                             if(ambulance != ''){
-                                                if(jumlahKm != '' && parseInt(jumlahKm) > 0){
-                                                    $('#confirm_dialog').dialog('open');
-                                                }else{
-                                                    $("html, body").animate({scrollTop: 0}, 600);
-                                                    $('#warning_pasien').show().fadeOut(10000);
-                                                    $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
-                                                }
+                                               $('#confirm_dialog').dialog('open');
+                                               // Fahmi 2021-08-27, Kilometer untuk ambulance bisa kosong.
+                                                // if(jumlahKm != '' && parseInt(jumlahKm) > 0){
+                                                //     $('#confirm_dialog').dialog('open');
+                                                // }else{
+                                                //     $("html, body").animate({scrollTop: 0}, 600);
+                                                //     $('#warning_pasien').show().fadeOut(10000);
+                                                //     $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
+                                                // }
                                             }else{
                                                 $('#confirm_dialog').dialog('open');
                                             }
@@ -213,26 +221,30 @@
                             if (asuransi != '') {
                                 if (isLaka == "Y") {
                                     if(ambulance != ''){
-                                        if(jumlahKm != '' && parseInt(jumlahKm) > 0){
-                                            $('#confirm_dialog').dialog('open');
-                                        }else{
-                                            $("html, body").animate({scrollTop: 0}, 600);
-                                            $('#warning_pasien').show().fadeOut(10000);
-                                            $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
-                                        }
+                                       $('#confirm_dialog').dialog('open');
+                                       // Fahmi 2021-08-27, Kilometer untuk ambulance bisa kosong.
+                                        // if(jumlahKm != '' && parseInt(jumlahKm) > 0){
+                                        //     $('#confirm_dialog').dialog('open');
+                                        // }else{
+                                        //     $("html, body").animate({scrollTop: 0}, 600);
+                                        //     $('#warning_pasien').show().fadeOut(10000);
+                                        //     $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
+                                        // }
                                     }else{
                                         $('#confirm_dialog').dialog('open');
                                     }
                                 } else {
                                     if (noKartu != '') {
                                         if(ambulance != ''){
-                                            if(jumlahKm != '' && parseInt(jumlahKm) > 0){
-                                                $('#confirm_dialog').dialog('open');
-                                            }else{
-                                                $("html, body").animate({scrollTop: 0}, 600);
-                                                $('#warning_pasien').show().fadeOut(10000);
-                                                $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
-                                            }
+                                           $('#confirm_dialog').dialog('open');
+                                           // Fahmi 2021-08-27, Kilometer untuk ambulance bisa kosong.
+                                            // if(jumlahKm != '' && parseInt(jumlahKm) > 0){
+                                            //     $('#confirm_dialog').dialog('open');
+                                            // }else{
+                                            //     $("html, body").animate({scrollTop: 0}, 600);
+                                            //     $('#warning_pasien').show().fadeOut(10000);
+                                            //     $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
+                                            // }
                                         }else{
                                             $('#confirm_dialog').dialog('open');
                                         }
@@ -264,13 +276,15 @@
                         if (tipe == "rekanan") {
                             if (noKartuPtpn != '' && unitPtpn != '') {
                                 if(ambulance != ''){
-                                    if(jumlahKm != '' && parseInt(jumlahKm) > 0){
-                                        $('#confirm_dialog').dialog('open');
-                                    }else{
-                                        $("html, body").animate({scrollTop: 0}, 600);
-                                        $('#warning_pasien').show().fadeOut(10000);
-                                        $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
-                                    }
+                                   $('#confirm_dialog').dialog('open');
+                                   // Fahmi 2021-08-27, Kilometer untuk ambulance bisa kosong.
+                                   // if(jumlahKm != '' && parseInt(jumlahKm) > 0){
+                                    //     $('#confirm_dialog').dialog('open');
+                                    // }else{
+                                    //     $("html, body").animate({scrollTop: 0}, 600);
+                                    //     $('#warning_pasien').show().fadeOut(10000);
+                                    //     $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
+                                    // }
                                 }else{
                                     $('#confirm_dialog').dialog('open');
                                 }
@@ -1526,7 +1540,7 @@
                             <s:hidden name="headerCheckup.namaTindakan" id="h_nama_tindakan"></s:hidden>
                             <s:hidden id="no_checkup" name="headerCheckup.noCheckup"></s:hidden>
                             <s:hidden name="headerCheckup.idDetailCheckup"></s:hidden>
-                            <s:hidden name="headerCheckup.idTeamDokter"></s:hidden>
+                            <s:hidden name="headerCheckup.idTeamDokter"></s:hidden>Dis
                             <s:hidden name="headerCheckup.idUangMuka"></s:hidden>
 
                             <div id="form-is-uang-muka" style="display: none">
@@ -1574,10 +1588,13 @@
                                                         <input class="form-control" readonly placeholder="Tarif/km" id="val_tarif">
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <s:textfield cssClass="form-control" placeholder="Diskon" name="headerCheckup.diskon" id="val_diskon" readonly="true"></s:textfield>
+                                                        <%--<s:textfield cssClass="form-control" placeholder="Diskon" name="headerCheckup.diskon" id="val_diskon" readonly="true"></s:textfield>--%>
+                                                        <input class="form-control" id="val_diskon" readonly placeholder="Discon" >
+                                                        <input class="form-control" type="hidden" id="h_val_diskon" name="headerCheckup.diskon">
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <s:textfield cssClass="form-control" placeholder="Jumlah Kilometer" name="headerCheckup.jumlah" type="number" id="jumlah_kilometer"></s:textfield>
+                                                        <%--<s:textfield cssClass="form-control" placeholder="Jumlah Kilometer" name="headerCheckup.jumlah" type="number" id="jumlah_kilometer"></s:textfield>--%>
+                                                        <input style="display:none" class="form-control" placeholder="Jumlah Kilometer" name="headerCheckup.jumlah" type="number" id="jumlah_kilometer" >
                                                     </div>
                                                 </div>
                                             </div>
@@ -4098,17 +4115,35 @@
             TindakanAction.initTindakan(id, function (res) {
                 if (res.idTindakan != '') {
                     var disk = 0;
+                    var diskR = 0;
                     if (res.diskon != '' && res.diskon != null) {
                         disk = res.diskon;
                     }
                     if (jenisPeriksaPasien == "bpjs") {
-                        $('#val_tarif').val("Rp. " + formatRupiahAtas(res.tarifBpjs));
-                        $('#h_tarif').val(res.tarifBpjs);
+                       diskR = res.tarifBpjs * disk / 100 ;
+                       $('#val_tarif').val("Rp. " + formatRupiahAtas(res.tarifBpjs));
+                       $('#h_tarif').val((res.tarifBpjs - diskR));
+
                     } else {
-                        $('#val_tarif').val("Rp. " + formatRupiahAtas(res.tarif));
-                        $('#h_tarif').val(res.tarif);
+                       diskR = res.tarif * disk / 100 ;
+                       $('#val_tarif').val("Rp. " + formatRupiahAtas(res.tarif));
+                       $('#h_tarif').val((res.tarif-diskR));
+
                     }
-                    $('#val_diskon').val(disk);
+
+                    $('#val_diskon').val("Rp. " + formatRupiahAtas(diskR));
+                    $('#h_val_diskon').val(diskR);
+
+                    if(res.isElektif == 'Y')
+                    {
+                       $("input[name='headerCheckup.jumlah']").val("");
+                       $("input[name='headerCheckup.jumlah']").show();
+                    }
+                    else
+                    {
+                       $("input[name='headerCheckup.jumlah']").val("1");
+                       $("input[name='headerCheckup.jumlah']").hide();
+                    }
                 }
             });
             var nama = $('#ambulance option:selected').text();

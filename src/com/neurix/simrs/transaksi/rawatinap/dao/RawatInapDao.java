@@ -1118,4 +1118,49 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
         }
         return headerCheckup;
     }
+
+
+    public String getIdPelayananByTypePelayanan(String tipePelayanan, String branchId){
+
+        String SQL = "SELECT p.id_pelayanan FROM im_simrs_pelayanan p \n" +
+                "INNER JOIN im_simrs_header_pelayanan hp ON hp.id_header_pelayanan = p.id_header_pelayanan \n" +
+                "WHERE hp.tipe_pelayanan = '"+tipePelayanan+"' \n"+
+                "AND p.branch_id = '"+branchId+"' \n" +
+                "AND p.flag = 'Y'";
+
+        List<Object> res = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (res.size() > 0 && res.get(0) != null){
+            return res.get(0).toString();
+        }
+
+        return null;
+    }
+
+    // 2021-08-27 Sigit, Mencari jika pindah ke pelayanan khusus seperti : kamar ops, kebidananan, icu, dll
+    // untuk tetap mendapatkan kelas sesuai rawat inap, tanpa merubah status rawat inap nya;
+    public String getIdKelasKhususByRuangan(String idRanap, String idTempatTidur, String kelasRuangan){
+
+        // jika terdapat id kelas ruangan. berarti transksi tersebut pindah dari pelayanan khusus ke pelayanan khusus lain
+        String SQL1 = "SELECT id_kelas_ruangan FROM it_simrs_rawat_inap WHERE id_rawat_inap = '"+ idRanap +"'";
+        List<Object> res1 = this.sessionFactory.getCurrentSession().createSQLQuery(SQL1).list();
+
+        if (res1.size() > 0 && res1.get(0) != null && !"rawat_intensif".equalsIgnoreCase(kelasRuangan)){
+            return res1.get(0).toString();
+        }
+
+        // jika tidak ada. maka mengambil kelas ruangan pada pelayanan RI asal nya. berarti dia berpindah ke dari RI ke pelayanan khusus
+        String SQL2 = "SELECT c.id_kelas_ruangan FROM mt_simrs_ruangan_tempat_tidur a \n" +
+                "INNER JOIN mt_simrs_ruangan b ON b.id_ruangan = a.id_ruangan\n" +
+                "INNER JOIN im_simrs_kelas_ruangan c ON c.id_kelas_ruangan = b.id_kelas_ruangan\n" +
+                "WHERE id_tempat_tidur = '"+idTempatTidur+"'\n";
+
+        List<Object> res2 = this.getSessionFactory().getCurrentSession().createSQLQuery(SQL2).list();
+
+        if (res2.size() > 0 && res2.get(0) != null){
+            return res2.get(0).toString();
+        }
+
+        return null;
+    }
 }

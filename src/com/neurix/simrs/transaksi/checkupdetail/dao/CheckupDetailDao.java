@@ -237,52 +237,77 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 tipePelayanan = "AND ply.tipe_pelayanan = 'rawat_jalan' \n";
             }
 
-            String SQL = "\n" +
-                    "SELECT \n" +
-                    "dt.id_detail_checkup,\n" +
-                    "hd.no_checkup,\n" +
-                    "hd.id_pasien,\n" +
-                    "hd.nama,\n" +
-                    "hd.jalan,\n" +
-                    "hd.created_date,\n" +
-                    "hd.desa_id,\n" +
-                    "dt.status_periksa,\n" +
-                    "st.keterangan,\n" +
-                    "dt.keterangan_selesai,\n" +
-                    "dt.klaim_bpjs_flag, \n" +
-                    "dt.status_bayar, \n" +
-                    "um.status_bayar AS status_bayar_uang_muka, \n" +
-                    "dt.id_jenis_periksa_pasien, \n" +
-                    "um.id, \n" +
-                    "um.id_detail_checkup, \n" +
-                    "dt.tgl_cekup, \n" +
-                    "jp.keterangan as jenis_pasien,\n" +
-                    "hd.tgl_lahir,\n"+
-                    "dt.tindak_lanjut,\n"+
-                    "team.id_dokter,\n"+
-                    "team.nama_dokter\n"+
+            String SQL = "SELECT\n" +
+                    "    dt.id_detail_checkup,\n" +
+                    "    hd.no_checkup,\n" +
+                    "    hd.id_pasien,\n" +
+                    "    hd.nama,\n" +
+                    "    hd.jalan,\n" +
+                    "    hd.created_date,\n" +
+                    "    hd.desa_id,\n" +
+                    "    dt.status_periksa,\n" +
+                    "    st.keterangan,\n" +
+                    "    dt.keterangan_selesai,\n" +
+                    "    dt.klaim_bpjs_flag,\n" +
+                    "    dt.status_bayar,\n" +
+                    "    um.status_bayar AS status_bayar_uang_muka,\n" +
+                    "    dt.id_jenis_periksa_pasien,\n" +
+                    "    um.id,\n" +
+                    "    um.id_detail_checkup,\n" +
+                    "    dt.tgl_cekup,\n" +
+                    "    jp.keterangan as jenis_pasien,\n" +
+                    "    hd.tgl_lahir,\n" +
+                    "    dt.tindak_lanjut,\n" +
+                    "    team.id_dokter,\n" +
+                    "    team.nama_dokter\n" +
                     "FROM it_simrs_header_checkup hd\n" +
-                    "INNER JOIN it_simrs_header_detail_checkup dt ON dt.no_checkup = hd.no_checkup\n" +
-                    "INNER JOIN im_simrs_status_pasien st ON st.id_status_pasien = dt.status_periksa\n" +
-                    "INNER JOIN im_simrs_jenis_periksa_pasien jp ON dt.id_jenis_periksa_pasien = jp.id_jenis_periksa_pasien \n" +
-                    "INNER JOIN (SELECT\n" +
-                    "a.id_pelayanan,\n" +
-                    "b.nama_pelayanan,\n" +
-                    "b.tipe_pelayanan,\n" +
-                    "b.kategori_pelayanan,\n" +
-                    "b.divisi_id,\n" +
-                    "a.branch_id," +
-                    "b.kode_vclaim\n" +
-                    "FROM im_simrs_pelayanan a\n" +
-                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) ply ON dt.id_pelayanan = ply.id_pelayanan \n" +
-                    "LEFT JOIN (SELECT\n" +
-                    "a.id_detail_checkup, \n" +
-                    "b.id_dokter,\n" +
-                    "b.nama_dokter\n" +
-                    "FROM it_simrs_dokter_team a\n" +
-                    "INNER JOIN im_simrs_dokter b ON a.id_dokter = b.id_dokter) team ON team.id_detail_checkup = dt.id_detail_checkup\n"+
-                    "LEFT JOIN it_simrs_rawat_inap ri ON ri.id_detail_checkup = dt.id_detail_checkup\n" +
-                    "LEFT JOIN it_simrs_uang_muka_pendaftaran um ON um.id_detail_checkup = dt.id_detail_checkup\n" +
+                    "         INNER JOIN (SELECT a.* FROM(\n" +
+                    "                                        SELECT\n" +
+                    "                                            a.no_checkup,\n" +
+                    "                                            a.id_detail_checkup,\n" +
+                    "                                            a.keterangan_selesai,\n" +
+                    "                                            a.status_periksa,\n" +
+                    "                                            a.tindak_lanjut,\n" +
+                    "                                            a.catatan,\n" +
+                    "                                            a.klaim_bpjs_flag,\n" +
+                    "                                            a.flag_close_traksaksi,\n" +
+                    "                                            a.metode_pembayaran,\n" +
+                    "                                            a.id_jenis_periksa_pasien,\n" +
+                    "                                            a.flag_cover,\n" +
+                    "                                            a.tgl_cekup,\n" +
+                    "                                            a.id_pelayanan,\n" +
+                    "                                            c.nama_pelayanan,\n" +
+                    "                                            a.created_date,\n" +
+                    "                                            a.is_kronis,\n" +
+                    "                                            a.id_transaksi_online,\n" +
+                    "                                            a.status_bayar,\n" +
+                    "                                            a.flag_sisa,\n" +
+                    "                                            a.last_update,\n" +
+                    "                                            a.tgl_antrian,\n" +
+                    "                                            rank() OVER (PARTITION BY a.no_checkup, a.id_jenis_periksa_pasien ORDER BY a.created_date DESC) as rank\n" +
+                    "                                        FROM it_simrs_header_detail_checkup a\n" +
+                    "                                                 INNER JOIN im_simrs_pelayanan b ON a.id_pelayanan = b.id_pelayanan\n" +
+                    "                                                 INNER JOIN im_simrs_header_pelayanan c ON b.id_header_pelayanan = c.id_header_pelayanan\n" +
+                    "                                    ) a WHERE a.rank = 1) dt ON hd.no_checkup = dt.no_checkup\n" +
+                    "         INNER JOIN im_simrs_status_pasien st ON st.id_status_pasien = dt.status_periksa\n" +
+                    "         INNER JOIN im_simrs_jenis_periksa_pasien jp ON dt.id_jenis_periksa_pasien = jp.id_jenis_periksa_pasien\n" +
+                    "         INNER JOIN (SELECT\n" +
+                    "                         a.id_pelayanan,\n" +
+                    "                         b.nama_pelayanan,\n" +
+                    "                         b.tipe_pelayanan,\n" +
+                    "                         b.kategori_pelayanan,\n" +
+                    "                         b.divisi_id,\n" +
+                    "                         a.branch_id,b.kode_vclaim\n" +
+                    "                     FROM im_simrs_pelayanan a\n" +
+                    "                              INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) ply ON dt.id_pelayanan = ply.id_pelayanan\n" +
+                    "         LEFT JOIN (SELECT\n" +
+                    "                        a.id_detail_checkup,\n" +
+                    "                        b.id_dokter,\n" +
+                    "                        b.nama_dokter\n" +
+                    "                    FROM it_simrs_dokter_team a\n" +
+                    "                             INNER JOIN im_simrs_dokter b ON a.id_dokter = b.id_dokter) team ON team.id_detail_checkup = dt.id_detail_checkup\n" +
+                    "         LEFT JOIN it_simrs_rawat_inap ri ON ri.id_detail_checkup = dt.id_detail_checkup\n" +
+                    "         LEFT JOIN it_simrs_uang_muka_pendaftaran um ON um.id_detail_checkup = dt.id_detail_checkup\n" +
                     "WHERE ri.id_detail_checkup is null\n" +
                     "AND hd.branch_id LIKE :branchId \n" +
                     "AND hd.id_pasien LIKE :idPasien \n" +

@@ -49,6 +49,24 @@ public class Tindakan {
     private BigDecimal bTarifNormal;
     private BigDecimal bTarifBpjs;
     private String jenisPasien;
+    private String kategoriRuangan;
+    private String idRawatInap;
+
+    public String getIdRawatInap() {
+        return idRawatInap;
+    }
+
+    public void setIdRawatInap(String idRawatInap) {
+        this.idRawatInap = idRawatInap;
+    }
+
+    public String getKategoriRuangan() {
+        return kategoriRuangan;
+    }
+
+    public void setKategoriRuangan(String kategoriRuangan) {
+        this.kategoriRuangan = kategoriRuangan;
+    }
 
     public String getJenisPasien() {
         return jenisPasien;

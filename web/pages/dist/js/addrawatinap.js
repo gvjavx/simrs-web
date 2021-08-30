@@ -228,6 +228,47 @@ function listSelectRuangan(id) {
     }
 }
 
+// Fahmi 2021-08-27, Menambahkan opsi pilihan kend jenazah jika meninggal
+function selectKet_Selesai(idKtgSsi)
+{
+    // Sembuh
+    if(idKtgSsi == '01')
+    {
+        // Menyembunyikan form yang tidak diperlukan
+        $("#form-ket-meninggal").hide();
+        $("#form-kend-tarif").hide();
+        $("#form-kend-tarif-jumlah").hide();
+    }
+    // Pulang Atas Permintaa Sendiri
+    else if(idKtgSsi == '02')
+    {
+        // Menyembunyikan form yang tidak diperlukan
+        $("#form-ket-meninggal").hide();
+        $("#form-kend-tarif").hide();
+        $("#form-kend-tarif-jumlah").hide();
+    }
+    // Pulang Atas Persetujuan Dokter
+    else if(idKtgSsi == '03')
+    {
+        // Menyembunyikan form yang tidak diperlukan
+        $("#form-ket-meninggal").hide();
+        $("#form-kend-tarif").hide();
+        $("#form-kend-tarif-jumlah").hide();
+    }
+    // Pulang karena meninggal
+    else if(idKtgSsi == '04')
+    {
+        // Munculkan form yang diperlukan.
+        $("#form-ket-meninggal").show();
+        $("#form-kend-tarif").show();
+        $("#form-kend-tarif-jumlah").show();
+
+
+        // Ambil data dari db
+        getKendJenazah(idKtgSsi);
+    }
+}
+
 function selectKeterangan(idKtg) {
     var keteranganPindah = $('#keterangan option:selected').text();
     var jenisPasien = $('#id_jenis_pasien').val();
@@ -247,6 +288,9 @@ function selectKeterangan(idKtg) {
             $('#form-asesmen').hide();
             $('#form_order_pemeriksaan').hide();
             $('#body_order_pemeriksaan').html('');
+            $("#form-ket-meninggal").hide();
+            $("#form-kend-tarif").hide();
+            $("#form-kend-tarif-jumlah").hide();
 
         } else if (idKtg == "rawat_inap") {
             $('#form-ket-rawat_inap').show();
@@ -274,6 +318,9 @@ function selectKeterangan(idKtg) {
             $('#form-asesmen').show();
             $('#form_order_pemeriksaan').hide();
             $('#body_order_pemeriksaan').html('');
+            $("#form-ket-meninggal").hide();
+            $("#form-kend-tarif").hide();
+            $("#form-kend-tarif-jumlah").hide();
 
         } else if (idKtg == "rujuk_rs_lain") {
             $('#form-rs-rujukan').show();
@@ -289,6 +336,9 @@ function selectKeterangan(idKtg) {
             $('#form-asesmen').hide();
             $('#form_order_pemeriksaan').hide();
             $('#body_order_pemeriksaan').html('');
+            $("#form-ket-meninggal").hide();
+            $("#form-kend-tarif").hide();
+            $("#form-kend-tarif-jumlah").hide();
 
         } else if (idKtg == "kontrol_ulang") {
             $('#form-tgl-kontrol').show();
@@ -311,6 +361,9 @@ function selectKeterangan(idKtg) {
                 $('.ptr-tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
                 $('[data-mask]').inputmask();
             });
+            $("#form-ket-meninggal").hide();
+            $("#form-kend-tarif").hide();
+            $("#form-kend-tarif-jumlah").hide();
 
 
         } else if (idKtg == "rawat_intensif") {
@@ -333,6 +386,9 @@ function selectKeterangan(idKtg) {
             $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ri\',\'asesmen_pindah\')');
             $('#form_order_pemeriksaan').hide();
             $('#body_order_pemeriksaan').html('');
+            $("#form-ket-meninggal").hide();
+            $("#form-kend-tarif").hide();
+            $("#form-kend-tarif-jumlah").hide();
 
         } else if (idKtg == "rawat_isolasi") {
             getKamar(null, 'rawat_isolasi');
@@ -354,6 +410,9 @@ function selectKeterangan(idKtg) {
             $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ri\',\'asesmen_pindah\')');
             $('#form_order_pemeriksaan').hide();
             $('#body_order_pemeriksaan').html('');
+            $("#form-ket-meninggal").hide();
+            $("#form-kend-tarif").hide();
+            $("#form-kend-tarif-jumlah").hide();
 
         } else if (idKtg == "kamar_operasi") {
             getKamar(null, 'kamar_operasi');
@@ -375,6 +434,9 @@ function selectKeterangan(idKtg) {
             $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ok\',\'asesmen_pindah\')');
             $('#form_order_pemeriksaan').hide();
             $('#body_order_pemeriksaan').html('');
+            $("#form-ket-meninggal").hide();
+            $("#form-kend-tarif").hide();
+            $("#form-kend-tarif-jumlah").hide();
 
         } else if (idKtg == "ruang_bersalin") {
             getKamar(null, 'ruang_bersalin');
@@ -396,6 +458,9 @@ function selectKeterangan(idKtg) {
             $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ri\',\'asesmen_pindah\')');
             $('#form_order_pemeriksaan').hide();
             $('#body_order_pemeriksaan').html('');
+            $("#form-ket-meninggal").hide();
+            $("#form-kend-tarif").hide();
+            $("#form-kend-tarif-jumlah").hide();
 
         }else if (idKtg == "hemodialisa") {
             getKamar(null, 'hemodialisa');
@@ -417,6 +482,9 @@ function selectKeterangan(idKtg) {
             $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ri\',\'asesmen_pindah\')');
             $('#form_order_pemeriksaan').hide();
             $('#body_order_pemeriksaan').html('');
+            $("#form-ket-meninggal").hide();
+            $("#form-kend-tarif").hide();
+            $("#form-kend-tarif-jumlah").hide();
 
         } else if (idKtg == "rr") {
             getKamar(null, 'rr');
@@ -436,6 +504,9 @@ function selectKeterangan(idKtg) {
             $('#form-asesmen').show();
             $('#form_order_pemeriksaan').hide();
             $('#body_order_pemeriksaan').html('');
+            $("#form-ket-meninggal").hide();
+            $("#form-kend-tarif").hide();
+            $("#form-kend-tarif-jumlah").hide();
 
         } else if (idKtg == "kembali_ke_inap") {
             $('#form-selesai').hide();
@@ -452,6 +523,9 @@ function selectKeterangan(idKtg) {
             $('#body_order_pemeriksaan').html('');
             $('#title_asesmen').html(keteranganPindah);
             $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ri\',\'asesmen_pindah\')');
+            $("#form-ket-meninggal").hide();
+            $("#form-kend-tarif").hide();
+            $("#form-kend-tarif-jumlah").hide();
 
         } else {
             $('#form-selesai').hide();
@@ -466,6 +540,9 @@ function selectKeterangan(idKtg) {
             $('#form-asesmen').hide();
             $('#form_order_pemeriksaan').hide();
             $('#body_order_pemeriksaan').html('');
+            $("#form-ket-meninggal").hide();
+            $("#form-kend-tarif").hide();
+            $("#form-kend-tarif-jumlah").hide();
         }
     } else {
         $('#form-selesai').hide();
@@ -480,6 +557,9 @@ function selectKeterangan(idKtg) {
         $('#form-asesmen').hide();
         $('#form_order_pemeriksaan').hide();
         $('#body_order_pemeriksaan').html('');
+        $("#form-ket-meninggal").hide();
+        $("#form-kend-tarif").hide();
+        $("#form-kend-tarif-jumlah").hide();
     }
 }
 
@@ -663,7 +743,7 @@ function listSelectTindakan(idKtg) {
             idKelas = kelasPasienBpjs;
         }
         dwr.engine.setAsync(true);
-        CheckupDetailAction.getListComboTindakan(idKtg, idKelas, null, idPoli, jenisPeriksaPasien, {
+        CheckupDetailAction.getListComboTindakan(idKtg, idKelas, null, idPoli, jenisPeriksaPasien, kategoriRuangan, idRawatInap, {
             callback:function (response) {
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
@@ -4113,11 +4193,13 @@ function searchICD9(id) {
 function getListNamaDokter(tipe, id) {
     var option = '<option value=""> - </option>';
     var def = '';
+    var defId = '';
     CheckupAction.getListDokterByIdDetailCheckup(idDetailCheckup, "Y", function (res) {
         if (res.length > 0) {
             $.each(res, function (i, item) {
                 if(i == 0){
                     def = item.idDokter+'|'+item.idPelayanan;
+                    defId = item.idDokter;
                 }
                 if(tipe == 'edit'){
                     if(id == item.idDokter){
@@ -4128,6 +4210,7 @@ function getListNamaDokter(tipe, id) {
             });
             $('#tin_id_dokter_dpjp').html(option);
             $('#tin_id_dokter_dpjp').val(def).trigger('change');
+            $('#h_dokter_dpjp').val(defId);
         } else {
             $('#tin_id_dokter_dpjp').html(option);
         }
@@ -4185,6 +4268,31 @@ function getKamar(idKelas, kategori) {
             }
         }
     });
+}
+
+function getKendJenazah() {
+    var option = '<option value=""> - </option>';
+    TindakanAction.getComboAmbulance(function (res) {
+        if(res.length > 0){
+            $.each(res, function (i, item) {
+                option += '<option value="'+item.idTindakan+'">'+item.tindakan+'</option>';
+            });
+            $('#kend_jenazah').html(option);
+        }
+    });
+
+    /*CheckupDetailAction.getListKelasKamar(kategori, function (res) {
+        if (res.length > 0) {
+            $.each(res, function (i, item) {
+                option += '<option value="' + item.idKelasRuangan + '">' + item.namaKelasRuangan + '</option>';
+            });
+            $('#kelas_kamar').html(option);
+            $('#ruangan_kelas').html(option);
+        } else {
+            $('#kelas_kamar').html(option);
+            $('#ruangan_kelas').html(option);
+        }
+    });*/
 }
 
 function getKelasKamar(kategori) {
@@ -4426,6 +4534,20 @@ function savePemeriksaanPasien() {
                     });
                 }
 
+                // Fahmi 2021-08-27, Kend Jenazah
+                var idTindakan = "";
+                var namaTindakan = "";
+                var dokterId = "";
+                var tarif = "";
+                var qty = "";
+                if ("selesai" == tindakLanjut && "04" == idKeterangan) {
+                    idTindakan = $("#h_id_tindakan").val();
+                    namaTindakan = $("#h_nama_tindakan").val();
+                    dokterId = $("#h_dokter_dpjp").val();
+                    tarif = $("#h_tarif").val();
+                    qty = $("#jumlah_kilometer").val();
+                }
+
                 data = {
                     'id_detail_checkup': idDetailCheckup,
                     'no_checkup': noCheckup,
@@ -4438,8 +4560,14 @@ function savePemeriksaanPasien() {
                     'jenis_pasien': jenisPeriksaPasien,
                     'id_ruangan_lama': idRuanganLama,
                     'is_meninggal': meninggal,
-                    'indikasi': keteranganRW
+                    'indikasi': keteranganRW,
+                    'idTindakan': idTindakan,
+                    'namaTindakan':namaTindakan,
+                    'dokterId':dokterId,
+                    'tarif':tarif,
+                    'qty':qty
                 }
+
                 cek = true;
             }
         }
@@ -5998,7 +6126,7 @@ function addToListTindakan(id) {
                 '</td>' +
                 '<td>'+namaTindakan+'</td>' +
                 '<td align="center">'+qty+'</td>' +
-                '<td align="right">'+tarif+'</td>' +
+                '<td align="right">'+total+'</td>' +
                 '<td align="right">'+formatRupiahAtas((parseInt(replaceTitik(total))*qty))+'</td>' +
                 '<td align="center">'+'<img onclick="delListTindakan(\'rowTindakan_'+count+'\')" style="cursor: pointer" src="'+contextPath+'/pages/images/cancel-flat-new.png" class="hvr-row">'+'</td>' +
                 '</tr>';
@@ -6344,7 +6472,7 @@ function repeatOrderObat(idApprovalObat){
 
                         var warnaGenap = "#ffe4b5";
                         var warnaGanjil = "silver";
-                        
+
                         if (parseInt(i_racik) % 2 == 0){
                             warnaRacik = warnaGenap;
                         } else {

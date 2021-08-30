@@ -360,6 +360,14 @@
                         </table>
                     </div>
                     <div class="box-header with-border"></div>
+                    <%--<div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-hospital-o"></i> Gizi</h3>
+                    </div>
+                    <div class="box-header with-border"></div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-hospital-o"></i> Makanan Pendamping</h3>
+                    </div>--%>
+                    <div class="box-header with-border"></div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-hospital-o"></i> Resep</h3>
                     </div>

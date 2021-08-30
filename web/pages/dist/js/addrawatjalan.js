@@ -3868,6 +3868,7 @@ function getDokterDpjp() {
 
 function isPemeriksaan(id, idTujuan) {
     var cek = $('#' + id).is(':checked');
+    console.log(id + " - " + cek);
     if('pemeriksaan_lab' == id){
         if (cek) {
             $('#' + idTujuan).show();
@@ -4211,6 +4212,7 @@ function savePemeriksaanPasien() {
             var tempAsuransi = JSON.stringify(dataAsuransi);
             $('#modal-laka').modal('hide');
             $('#waiting_dialog').dialog('open');
+
             dwr.engine.setAsync(true);
             CheckupDetailAction.savePeriksaPasien(result, tempAsuransi, {
                 callback: function (res) {
@@ -4221,19 +4223,30 @@ function savePemeriksaanPasien() {
                         if ('rujuk_internal' == tindakLanjut) {
                             window.open('printNoRujukan_checkupdetail.action?id=' + idDetailCheckup, '_blank');
                         }
-                        if ('pindah_poli' == tindakLanjut) {
+                        if ('pindah_poli' == tindakLanjut || 'kontrol_ulang' == tindakLanjut || 'rujuk_rs_lain' == tindakLanjut) {
                             PelayananAction.getDataPelayanan(poliLain, function (res) {
                                 if(res.tipePelayanan != "igd"){
                                     window.open('printNoAntrian_checkupdetail.action?id=' + idPasien + '&tipe=' + poliLain, '_blank');
                                 }
                             });
                         }
-                        if('kontrol_ulang' == tindakLanjut){
-                            window.open('printSuratKeterangan_checkupdetail.action?id='+idDetailCheckup+'&tipe=KU', '_blank');
+
+                        if('kontrol_ulang' == tindakLanjut)
+                        {
+                            if(tipePelayanan == 'ugd')
+                            { window.open('printSuratKeterangan_igd.action?id='+idDetailCheckup+'&tipe=KU', '_blank'); }
+                            else
+                            { window.open('printSuratKeterangan_checkupdetail.action?id='+idDetailCheckup+'&tipe=KU', '_blank'); }
                         }
-                        if('rujuk_rs_lain' == tindakLanjut){
-                            window.open('printSuratKeterangan_checkupdetail.action?id='+idDetailCheckup+'&tipe=RSL', '_blank');
+                        else if('rujuk_rs_lain' == tindakLanjut)
+                        {
+                            if(tipePelayanan == 'ugd')
+                            { window.open('printSuratKeterangan_igd.action?id='+idDetailCheckup+'&tipe=RSL', '_blank'); }
+                            else
+                            { window.open('printSuratKeterangan_checkupdetail.action?id='+idDetailCheckup+'&tipe=RSL', '_blank'); }
                         }
+
+
                     } else {
                         $('#waiting_dialog').dialog('close');
                         $('#error_dialog').dialog('open');
