@@ -1528,6 +1528,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             for (TindakanRawat rawat : tindakanRawatList) {
                 if (!"Y".equalsIgnoreCase(rawat.getApproveFlag())) {
                     cekTindakan = "N";
+                    break;
                 }
             }
         } else {
@@ -1550,6 +1551,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             for (PeriksaLab lab : periksaLabList) {
                 if (!"Y".equalsIgnoreCase(lab.getApproveFlag())) {
                     cekLab = "N";
+                    break;
                 }
             }
         }
@@ -1585,9 +1587,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                 }
 
                 if (giziList.size() > 0) {
+                    loopgizi:
                     for (OrderGizi gizi : giziList) {
-                        if (!"Y".equalsIgnoreCase(gizi.getDiterimaFlag())) {
+                        if ("P".equalsIgnoreCase(gizi.getDiterimaFlag())) {
                             cekGizi = "N";
+                            break;
                         }
                     }
                 }
@@ -1606,8 +1610,9 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                 if (giziList.size() > 0) {
                     for (OrderGizi gizi : giziList) {
-                        if (!"Y".equalsIgnoreCase(gizi.getDiterimaFlag())) {
+                        if ("P".equalsIgnoreCase(gizi.getDiterimaFlag())) {
                             cekGizi = "N";
+                            break;
                         }
                     }
                 }
@@ -1630,6 +1635,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             for (PermintaanResep resep : permintaanResepList) {
                 if (!"Y".equalsIgnoreCase(resep.getApproveFlag())) {
                     cekResep = "N";
+                    break;
                 }
             }
         }
