@@ -797,6 +797,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         if (CommonConstant.ROLE_ADMIN_IGD.equalsIgnoreCase(userRoleLogin)) {
             setEnabledAddPasien(true);
+            headerDetailCheckup.setTipePelayanan("igd");
         }
 
         if (CommonConstant.ROLE_ADMIN_POLI.equalsIgnoreCase(userRoleLogin)) {
@@ -1110,6 +1111,12 @@ public class CheckupDetailAction extends BaseMasterAction {
                 String isMeninggal = "";
                 String indikasi = null;
 
+                // Fahmi 2021-08-30, Kend Jenazah
+                String idTindakan = null;
+                String namaTindakan = null;
+                String tarif = null;
+                String qty = null;
+
                 if (object.has("rs_rujukan")) {
                     rsRujukan = object.getString("rs_rujukan");
                 }
@@ -1161,6 +1168,21 @@ public class CheckupDetailAction extends BaseMasterAction {
                 if (object.has("indikasi")) {
                     indikasi = object.getString("indikasi");
                 }
+                if (object.has("idTindakan")) {
+                    idTindakan = object.getString("idTindakan");
+                }
+                if (object.has("namaTindakan")) {
+                    namaTindakan = object.getString("namaTindakan");
+                }
+                if (object.has("tarif")) {
+                    tarif = object.getString("tarif");
+                }
+                if (object.has("qty")) {
+                    qty = object.getString("qty");
+                }
+                if (object.has("dokterId")) {
+                    idDokter = object.getString("dokterId");
+                }
 
                 if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(tindakLanjut)) {
                     HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
@@ -1177,7 +1199,25 @@ public class CheckupDetailAction extends BaseMasterAction {
                     headerDetailCheckup.setIsMeninggal(isMeninggal);
                     headerDetailCheckup.setIndikasi(indikasi);
 
-                    saveApproveAllTindakanRawatJalan(idDetailCheckup, jenisPasien);
+                    // Fahmi 2021-08-30, Kend Jenazah
+                    HeaderCheckup hc = null;
+                    if(idTindakan != null && !"".equalsIgnoreCase(idTindakan)){
+                        hc = new HeaderCheckup();
+
+                        hc.setIdDetailCheckup(idDetailCheckup);
+                        hc.setIdTindakan(idTindakan);
+                        hc.setNamaTindakan(namaTindakan);
+                        hc.setIdDokter(idDokter);
+                        hc.setCreatedDate(now);
+                        hc.setCreatedWho(user);
+                        hc.setLastUpdate(now);
+                        hc.setLastUpdateWho(user);
+                        hc.setTarif(tarif);
+                        hc.setQty(qty);
+                    }
+                    // end Fahmi
+
+                    saveApproveAllTindakanRawatJalan(idDetailCheckup, jenisPasien, hc);
 
                     if ("Y".equalsIgnoreCase(isOrderLab)) {
                         if (listPemeriksaan != null) {
@@ -1489,6 +1529,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             for (TindakanRawat rawat : tindakanRawatList) {
                 if (!"Y".equalsIgnoreCase(rawat.getApproveFlag())) {
                     cekTindakan = "N";
+                    break;
                 }
             }
         } else {
@@ -1511,6 +1552,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             for (PeriksaLab lab : periksaLabList) {
                 if (!"Y".equalsIgnoreCase(lab.getApproveFlag())) {
                     cekLab = "N";
+                    break;
                 }
             }
         }
@@ -1546,9 +1588,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                 }
 
                 if (giziList.size() > 0) {
+                    loopgizi:
                     for (OrderGizi gizi : giziList) {
-                        if (!"Y".equalsIgnoreCase(gizi.getDiterimaFlag())) {
+                        if ("P".equalsIgnoreCase(gizi.getDiterimaFlag())) {
                             cekGizi = "N";
+                            break;
                         }
                     }
                 }
@@ -1567,8 +1611,9 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                 if (giziList.size() > 0) {
                     for (OrderGizi gizi : giziList) {
-                        if (!"Y".equalsIgnoreCase(gizi.getDiterimaFlag())) {
+                        if ("P".equalsIgnoreCase(gizi.getDiterimaFlag())) {
                             cekGizi = "N";
+                            break;
                         }
                     }
                 }
@@ -1591,6 +1636,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             for (PermintaanResep resep : permintaanResepList) {
                 if (!"Y".equalsIgnoreCase(resep.getApproveFlag())) {
                     cekResep = "N";
+                    break;
                 }
             }
         }
@@ -3055,7 +3101,8 @@ public class CheckupDetailAction extends BaseMasterAction {
         return "print_gelang_pasien";
     }
 
-    public CheckResponse saveApproveAllTindakanRawatJalan(String idDetailCheckup, String jenisPasien) {
+    // Edited Fahmi 2021-08-30, Tambah fitur untuk simpan tindakan Kend Jenz
+    public CheckResponse saveApproveAllTindakanRawatJalan(String idDetailCheckup, String jenisPasien, HeaderCheckup bean) {
 
         logger.info("[CheckupDetailAction.saveApproveAllTindakanRawatJalan] START process >>>");
         CheckResponse response = new CheckResponse();
@@ -3075,6 +3122,16 @@ public class CheckupDetailAction extends BaseMasterAction {
                 response = checkupDetailBo.saveApproveAllTindakanRawatJalan(headerDetailCheckup);
             } catch (GeneralBOException e) {
                 logger.error("[CheckupDetailAction.saveApproveAllTindakanRawatJalan] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+
+            if ("success".equalsIgnoreCase(response.getStatus()) && null != bean)
+            {
+                try {
+                    response = checkupDetailBo.saveSingleTindakan(bean);
+                } catch (GeneralBOException e){
+                    response.setStatus("errror");
+                    logger.error("[CheckupDetailAction.saveSingleTindakan] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+                }
             }
 
             if ("success".equalsIgnoreCase(response.getStatus())) {

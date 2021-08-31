@@ -233,6 +233,11 @@
                                     <s:hidden id="h_is_eksekutif" name="headerDetailCheckup.isEksekutif"/>
                                     <s:hidden id="h_flag_vaksin" name="headerDetailCheckup.isVaksin"/>
 
+                                    <s:hidden id="h_tarif" name="headerDetailCheckup.tarif" />
+                                    <s:hidden id="h_id_tindakan" name="headerDetailCheckup.idTindakan" />
+                                    <s:hidden id="h_nama_tindakan" name="headerDetailCheckup.namaTindakan" />
+                                    <s:hidden id="h_dokter_dpjp" name="headerDetailCheckup.dokter_dpjp" />
+
                                     <s:if test='headerDetailCheckup.noSep != ""'>
                                         <tr>
                                             <td width="45%"><b>No SEP</b></td>
@@ -911,9 +916,55 @@
                                             <s:select list="#initComboKet.listOfKeterangan" id="ket_selesai"
                                                       listKey="idKeterangan"
                                                       listValue="keterangan" cssStyle="width: 100%"
-                                                      onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()}; showFormCekup(this.value);"
+                                                      onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()};selectKet_Selesai(this.value); showFormCekup(this.value);"
                                                       headerKey="" headerValue="[Select one]"
                                                       cssClass="form-control select2"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="form-ket-meninggal" style="display: none">
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Jenis Kendaraan</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control select2" id="kend_jenazah" style="width: 100%" onchange="setDiskonKend(this.value)">
+                                                <option value="">-</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="form-kend-tarif" style="display:none">
+                                    <div class="form-group" style="margin-top: 7px">
+                                        <div class="col-md-4">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input class="form-control" readonly placeholder="Tarif/km" id="val_tarif">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input readonly class="form-control" id="disc_percent"
+                                                   placeholder="Diskon">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <%--<s:textfield cssClass="form-control" placeholder="Diskon" name="headerCheckup.diskon" id="val_diskon" readonly="true"></s:textfield>--%>
+                                            <input class="form-control" id="val_diskon" readonly placeholder="Setelah Diskon" >
+                                            <input class="form-control" type="hidden" id="h_val_diskon" name="rawatInap.diskon">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="form-kend-tarif-jumlah" style="display:none">
+                                    <div class="form-group" style="margin-top: 7px">
+                                        <label class="col-md-4" style="margin-top: 10px">Jumlah Kilometer</label>
+                                        <div class="col-md-8">
+                                            <%--<s:textfield cssClass="form-control" placeholder="Jumlah Kilometer" name="headerCheckup.jumlah" type="number" id="jumlah_kilometer"></s:textfield>--%>
+                                            <input class="form-control" placeholder="" name="rawatInap.jumlah" type="number" id="jumlah_kilometer" oninput="setTotalTarif(this.value)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="form-kend-total-tarif" style="display:none">
+                                    <div class="form-group" style="margin-top: 7px">
+                                        <label class="col-md-4" style="margin-top: 10px">Total Tarif</label>
+                                        <div class="col-md-8">
+                                            <%--<s:textfield cssClass="form-control" placeholder="Jumlah Kilometer" name="headerCheckup.jumlah" type="number" id="jumlah_kilometer"></s:textfield>--%>
+                                            <input class="form-control" placeholder="" readonly id="jumlah_tot_tarif" >
                                         </div>
                                     </div>
                                 </div>
@@ -3094,6 +3145,65 @@
             pause: false
         });
     });
+
+    // Fahmi 2021-08-27, Tambah perhitungan discon kendaraan
+    function setDiskonKend(id) {
+       if (id != '') {
+          TindakanAction.initTindakan(id, function (res) {
+             if (res.idTindakan != '') {
+                var disk = 0;
+                var diskR = 0;
+                if (res.diskon != '' && res.diskon != null) {
+                   disk = res.diskon;
+                }
+                if (jenisPeriksaPasien == "bpjs") {
+                   diskR = res.tarifBpjs * ((100 - disk) / 100) ;
+                   $('#val_tarif').val("Rp. " + formatRupiahAtas(res.tarifBpjs));
+                   $('#h_tarif').val(diskR);
+
+                } else {
+                   diskR = res.tarif * ((100 - disk) / 100) ;
+                   $('#val_tarif').val("Rp. " + formatRupiahAtas(res.tarif));
+                   $('#h_tarif').val(diskR);
+                }
+
+                $('#disc_percent').val(disk + " %");
+                $('#val_diskon').val("Rp. " + formatRupiahAtas(diskR));
+                $('#h_val_diskon').val(diskR);
+                $('#jumlah_tot_tarif').val("Rp. " + formatRupiahAtas(parseInt(diskR)));
+
+                if(res.isElektif == 'Y')
+                {
+                   $("#jumlah_kilometer").val("");
+                   $("#form-kend-tarif-jumlah").show();
+                   $('#jumlah_tot_tarif').val("");
+                }
+                else
+                {
+                   $("#jumlah_kilometer").val("1");
+                   $("#form-kend-tarif-jumlah").hide();
+                }
+             }
+          });
+          var nama = $('#kend_jenazah option:selected').text();
+          $('#h_id_tindakan').val(id);
+          $('#h_nama_tindakan').val(nama);
+       }else{
+          $('#val_diskon').val('');
+          $('#val_tarif').val('');
+          $('#h_tarif').val('');
+          $('#h_id_tindakan').val('');
+          $('#h_nama_tindakan').val('');
+          $('#jumlah_tot_tarif').val('');
+       }
+    }
+
+    function setTotalTarif(jumlah)
+    {
+       var totTarifAfterDisc = $('#h_tarif').val();
+       totTarifAfterDisc = (parseInt(totTarifAfterDisc) * jumlah);
+       $('#jumlah_tot_tarif').val("Rp. " + formatRupiahAtas(totTarifAfterDisc));
+    }
 
     function loadModalRM(jenis, method, parameter, idRM, flag, flagHide, flagCheck) {
         var context = contextPath + '/pages/modal/modal-default.jsp';

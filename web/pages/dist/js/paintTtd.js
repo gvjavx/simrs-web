@@ -1,3 +1,5 @@
+let isAdded = true;
+
 function paintTtd(id, change){
     const paintCanvas = document.querySelector("#"+id);
     const context = paintCanvas.getContext("2d");
@@ -54,15 +56,21 @@ function paintTtd(id, change){
                 context.beginPath();
                 context.moveTo(x, y);
                 context.lineTo(newX, newY);
+                context.closePath();
                 context.stroke();
                 x = newX;
                 y = newY;
             }
         };
 
-        paintCanvas.addEventListener("touchstart", startDrawing);
-        paintCanvas.addEventListener("touchmove", drawLine);
-        paintCanvas.addEventListener("touchend", stopDrawing);
+        // Fahmi 2021-08-31 To Prevent multiple add event listener
+        if(isAdded)
+        {
+            paintCanvas.addEventListener("touchstart", startDrawing);
+            paintCanvas.addEventListener("touchmove", drawLine);
+            paintCanvas.addEventListener("touchend", stopDrawing);
+            isAdded = false;
+        }
 
     }else{
         const stopDrawing = function () {
@@ -81,16 +89,21 @@ function paintTtd(id, change){
                 context.beginPath();
                 context.moveTo(x, y);
                 context.lineTo(newX, newY);
+                context.closePath();
                 context.stroke();
                 x = newX;
                 y = newY;
             }
         };
 
-        paintCanvas.addEventListener("mousedown", startDrawing);
-        paintCanvas.addEventListener("mousemove", drawLine);
-        paintCanvas.addEventListener("mouseup", stopDrawing);
-        paintCanvas.addEventListener("mouseout", stopDrawing);
+        // Fahmi 2021-08-31 To Prevent multiple add event listener
+        if(isAdded) {
+            paintCanvas.addEventListener("mousedown", startDrawing);
+            paintCanvas.addEventListener("mousemove", drawLine);
+            paintCanvas.addEventListener("mouseup", stopDrawing);
+            paintCanvas.addEventListener("mouseout", stopDrawing);
+            isAdded = false;
+        }
     }
 }
 

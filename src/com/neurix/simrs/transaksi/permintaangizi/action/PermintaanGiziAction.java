@@ -180,6 +180,9 @@ public class PermintaanGiziAction extends BaseTransactionAction {
                             orderGizi.setKeterangan(obj.getString("keterangan"));
                         }
                         orderGizi.setApproveFlag(obj.getString("status"));
+                        if ("N".equalsIgnoreCase(orderGizi.getApproveFlag()))
+                        { orderGizi.setDiterimaFlag("R"); }
+
                         orderGizi.setLastUpdate(now);
                         orderGizi.setLastUpdateWho(userLogin);
                         orderGizi.setAction("U");

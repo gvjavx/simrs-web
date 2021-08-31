@@ -1691,8 +1691,8 @@
                     $('.nama_petugas').val(res.msg);
                     $('.nip_petugas').val(res.status);
 
-                    $('.nama_dokter').val(res.msg);
-                    $('.sip_dokter').val(res.status);
+                    $('.nama_dokter').val('<s:property value="periksaLab.namaDokterPengirim"/>');
+                    $('.sip_dokter').val('<s:property value="periksaLab.idDokterPengirim"/>');
                 }
             }
         });

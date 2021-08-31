@@ -2992,8 +2992,8 @@ public class RawatInapAction extends BaseMasterAction {
     }
 
     // Fahmi 2021-08-27, helper class saja.
-    public CrudResponse saveApproveAllTindakan(String idDetailCheckup, String jenisPasien)
-    { return saveApproveAllTindakan(idDetailCheckup, jenisPasien, null); }
+    //public CrudResponse saveApproveAllTindakan(String idDetailCheckup, String jenisPasien)
+    //{ return saveApproveAllTindakan(idDetailCheckup, jenisPasien, null); }
 
     // Edited Fahmi 2021-08-27, Tambahan Tindakan untuk Kend Jenazah
     public CrudResponse saveApproveAllTindakan(String idDetailCheckup, String jenisPasien, HeaderCheckup bean) {

@@ -428,7 +428,7 @@
     function hasilUploadPM(id){
         $('#item_hasil_lab').html('');
         $('#li_hasil_lab').html('');
-        $('#title_hasil_lab').html("Hasil Pemeriksaan Laboratorium");
+        $('#title_hasil_lab').html("Hasil Pemeriksaan Radiologi");
         PeriksaLabAction.getUploadHasilPemeriksaan(id, function (res) {
             if (res.length > 0) {
                 var set = '';

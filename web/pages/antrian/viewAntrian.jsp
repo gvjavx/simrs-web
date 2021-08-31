@@ -245,11 +245,13 @@
 <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="../plugins/landing/particles/particles.min.js"></script>
 <script src="../plugins/landing/particles/stats.min.js"></script>
-<script src="../plugins/landing/jquery/jquery.min.js"></script>
 <%--
+<script src="../plugins/landing/jquery/jquery.min.js"></script>
 <script src="../plugins/landing/texttospeech/articulate.min.js"></script>
 <script src="../plugins/landing/texttospeech/jquery.webSpeaker.js"></script>
 --%>
+<script src="../plugins/landing/texttospeech/articulate.min.js"></script>
+<script src="../plugins/landing/texttospeech/jquery.webSpeaker.js"></script>
 
 <!-- Template Main JS File -->
 <script src="../plugins/landing/js/main.js"></script>
@@ -280,6 +282,8 @@
         // default = 1.0;
         //$().articulate('volume', *number*);
         //$('.tes-text-to-speech').articulate('speak');
+
+       responsiveVoice.speak("Nomor Antrian 1");
     });
 
     $(function () {
