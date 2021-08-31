@@ -119,10 +119,11 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
     public String add() {
         logger.info("[JadwalShiftKerjaAction.add] start process >>>");
         JadwalShiftKerja addJadwalShiftKerja = new JadwalShiftKerja();
-        addJadwalShiftKerja.setBranchId(CommonUtil.userBranchLogin());
-        addJadwalShiftKerja.setBranchIdUser(CommonUtil.userBranchLogin());
+        String branchId = CommonUtil.userBranchLogin();
+        addJadwalShiftKerja.setBranchId(branchId);
+        addJadwalShiftKerja.setBranchIdUser(branchId);
         String roleId = CommonUtil.roleIdAsLogin();
-        if (roleId.equalsIgnoreCase(CommonConstant.ROLE_ID_ADMIN)){
+        if (roleId.equalsIgnoreCase(CommonConstant.ROLE_ID_ADMIN) && CommonConstant.BRANCH_KP.equalsIgnoreCase(branchId)){
             addJadwalShiftKerja.setAdminHcm(true);
         }
         setJadwalShiftKerja(addJadwalShiftKerja);
