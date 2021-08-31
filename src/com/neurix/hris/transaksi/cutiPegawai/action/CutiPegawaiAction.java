@@ -1842,6 +1842,18 @@ public class CutiPegawaiAction extends BaseMasterAction {
     public String reportCuti() {
         logger.info("[CutiPegawaiAction.reportCuti] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
+        String branchId = CommonUtil.userBranchLogin();
+
+        if (CommonConstant.ROLE_ID_ADMIN.equalsIgnoreCase(CommonUtil.roleIdAsLogin())||
+                CommonConstant.ROLE_ID_ADMIN_SUPER.equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
+            if(CommonConstant.BRANCH_KP.equalsIgnoreCase(branchId)){
+                setAdmin(true);
+            }
+        }
+
+        CutiPegawai cutiPegawai = new CutiPegawai();
+        cutiPegawai.setUnitId(branchId);
+        setCutiPegawai(cutiPegawai);
 
         session.removeAttribute("listOfResultCuti");
         logger.info("[CutiPegawaiAction.reportCuti] end process >>>");

@@ -85,6 +85,15 @@ public class AbsensiAction extends BaseMasterAction {
     private String divisiId;
     private String bagian;
     private String nip;
+    private boolean admin=false;
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
 
     private LemburBo lemburBoProxy;
 
@@ -3882,6 +3891,20 @@ public class AbsensiAction extends BaseMasterAction {
         logger.info("[AbsensiAction.report] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
 
+        String branchId = CommonUtil.userBranchLogin();
+
+        if (CommonConstant.ROLE_ID_ADMIN.equalsIgnoreCase(CommonUtil.roleIdAsLogin())||
+                CommonConstant.ROLE_ID_ADMIN_SUPER.equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
+            if(CommonConstant.BRANCH_KP.equalsIgnoreCase(branchId)){
+                setAdmin(true);
+            }
+        }
+
+        Lembur lembur = new Lembur();
+        lembur.setBranchId(branchId);
+        setLembur(lembur);
+
+
         session.removeAttribute("listOfResultLembur");
         logger.info("[AbsensiAction.report] end process >>>");
         return "report_lembur";
@@ -4053,6 +4076,19 @@ public class AbsensiAction extends BaseMasterAction {
     public String reportAbsensi() {
         logger.info("[CutiPegawaiAction.reportAbsensi] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
+        String branchId = CommonUtil.userBranchLogin();
+
+        if (CommonConstant.ROLE_ID_ADMIN.equalsIgnoreCase(CommonUtil.roleIdAsLogin())||
+                CommonConstant.ROLE_ID_ADMIN_SUPER.equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
+            if(CommonConstant.BRANCH_KP.equalsIgnoreCase(branchId)){
+                setAdmin(true);
+            }
+        }
+
+        AbsensiPegawai absensiPegawai = new AbsensiPegawai();
+        absensiPegawai.setBranchId(branchId);
+
+        setAbsensiPegawai(absensiPegawai);
 
         session.removeAttribute("listOfResultAbsensi");
         logger.info("[CutiPegawaiAction.reportAbsensi] end process >>>");
