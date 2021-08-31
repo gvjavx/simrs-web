@@ -54,6 +54,15 @@ public class CutiPegawaiAction extends BaseMasterAction {
     private String noSurat;
     private String tanggalSampai;
     private boolean admin=false;
+    private boolean adminUnit=false;
+
+    public boolean isAdminUnit() {
+        return adminUnit;
+    }
+
+    public void setAdminUnit(boolean adminUnit) {
+        this.adminUnit = adminUnit;
+    }
 
     public String getNoSurat() {
         return noSurat;
@@ -221,7 +230,13 @@ public class CutiPegawaiAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
 
         if (("ADMIN").equalsIgnoreCase(role)||("Admin Bagian").equalsIgnoreCase(role)){
-
+            String branchId = CommonUtil.userBranchLogin();
+            if(CommonConstant.BRANCH_KP.equalsIgnoreCase(branchId)){
+                setAdmin(true);
+            }else{
+                setAdminUnit(true);
+            }
+            addCutiPegawai.setUnitId(branchId);
         }else{
             Biodata searchBiodata = new Biodata();
             List<CutiPegawai> listOfsearchBiodata = new ArrayList();
@@ -246,10 +261,11 @@ public class CutiPegawaiAction extends BaseMasterAction {
                     break;
                 }
             } else {
-                setCutiPegawai(new CutiPegawai());
+                addCutiPegawai = new CutiPegawai();
             }
-            setCutiPegawai(addCutiPegawai);
         }
+        setCutiPegawai(addCutiPegawai);
+
         setAddOrEdit(true);
         setAdd(true);
 //        session.removeAttribute("listOfResultCutiPegawai");
@@ -668,18 +684,16 @@ public class CutiPegawaiAction extends BaseMasterAction {
     @Override
     public String search() {
         logger.info("[CutiPegawaiAction.search] start process >>>");
-        CutiPegawai searchAlat = getCutiPegawai();
+        CutiPegawai searchCutiPegawai = getCutiPegawai();
         List<CutiPegawai> listOfSearchCutiPegawai = new ArrayList();
         String role = CommonUtil.roleAsLogin();
-        searchAlat.setRoleId(CommonUtil.roleIdAsLogin());
+        searchCutiPegawai.setRoleId(CommonUtil.roleIdAsLogin());
         if (!"ADMIN".equalsIgnoreCase(role)&&!"Admin bagian".equalsIgnoreCase(role)) {
-            searchAlat.setNip(CommonUtil.userIdLogin());
-        }else{
-            setAdmin(true);
+            searchCutiPegawai.setNip(CommonUtil.userIdLogin());
         }
 
         if(!("Admin Bagian").equalsIgnoreCase(CommonUtil.roleAsLogin())){
-            listOfSearchCutiPegawai = cutiPegawaiBoProxy.getByCriteria(searchAlat);
+            listOfSearchCutiPegawai = cutiPegawaiBoProxy.getByCriteria(searchCutiPegawai);
         }else{
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
@@ -691,17 +705,17 @@ public class CutiPegawaiAction extends BaseMasterAction {
                 List<CutiPegawai> cutiPegawaiList ;
                 List<Biodata> biodataList = biodataBo.getBiodataByBagian(null,null,bagian.getBagianId(),null);
                 for (Biodata biodata : biodataList){
-                    if(!("").equalsIgnoreCase(searchAlat.getNip())){
-                        if (biodata.getNip().equalsIgnoreCase(searchAlat.getNip())){
-                            cutiPegawaiList = cutiPegawaiBoProxy.getByCriteria(searchAlat);
+                    if(!("").equalsIgnoreCase(searchCutiPegawai.getNip())){
+                        if (biodata.getNip().equalsIgnoreCase(searchCutiPegawai.getNip())){
+                            cutiPegawaiList = cutiPegawaiBoProxy.getByCriteria(searchCutiPegawai);
 
                             listOfSearchCutiPegawai.addAll(cutiPegawaiList);
                         }
                     }else{
-                        searchAlat.setNip(biodata.getNip());
-                        cutiPegawaiList = cutiPegawaiBoProxy.getByCriteria(searchAlat);
+                        searchCutiPegawai.setNip(biodata.getNip());
+                        cutiPegawaiList = cutiPegawaiBoProxy.getByCriteria(searchCutiPegawai);
                         listOfSearchCutiPegawai.addAll(cutiPegawaiList);
-                        searchAlat.setNip("");
+                        searchCutiPegawai.setNip("");
                     }
                 }
             }
@@ -723,7 +737,12 @@ public class CutiPegawaiAction extends BaseMasterAction {
         session.setAttribute("listOfResultCutiPegawai", listOfSearchCutiPegawai);
 
         if ((CommonConstant.ROLE_ID_ADMIN).equalsIgnoreCase(CommonUtil.roleIdAsLogin())||(CommonConstant.ROLE_ID_ADMIN_SUPER).equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
-            setAdmin(true);
+            String branchId = CommonUtil.userBranchLogin();
+            if(CommonConstant.BRANCH_KP.equalsIgnoreCase(branchId)){
+                setAdmin(true);
+            }else{
+                setAdminUnit(true);
+            }
         }
         logger.info("[CutiPegawaiAction.search] end process <<<");
 
@@ -736,7 +755,20 @@ public class CutiPegawaiAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultCutiPegawai");
         if ((CommonConstant.ROLE_ID_ADMIN).equalsIgnoreCase(CommonUtil.roleIdAsLogin())||(CommonConstant.ROLE_ID_ADMIN_SUPER).equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
-            setAdmin(true);
+            String branchId = CommonUtil.userBranchLogin();
+            if(CommonConstant.BRANCH_KP.equalsIgnoreCase(branchId)){
+                setAdmin(true);
+            }else {
+                setAdminUnit(true);
+            }
+
+            CutiPegawai data = new CutiPegawai();
+            if (branchId != null) {
+                data.setUnitId(branchId);
+            } else {
+                data.setUnitId("");
+            }
+            setCutiPegawai(data);
         }else{
             setNip(CommonUtil.userIdLogin());
         }

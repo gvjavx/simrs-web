@@ -49,10 +49,19 @@ public class IjinKeluarAction extends BaseMasterAction {
     private IjinKeluar ijinKeluar;
     private PositionBagianBo positionBagianBoProxy;
     private boolean admin = false;
+    private boolean adminUnit = false;
     private boolean dispenLahir = false;
     private File fileUpload;
     private String fileUploadContentType;
     private String fileUploadFileName;
+
+    public boolean isAdminUnit() {
+        return adminUnit;
+    }
+
+    public void setAdminUnit(boolean adminUnit) {
+        this.adminUnit = adminUnit;
+    }
 
     public String getFileUploadContentType() {
         return fileUploadContentType;
@@ -208,11 +217,18 @@ public class IjinKeluarAction extends BaseMasterAction {
         List<IjinKeluar> listOfsearchBiodata = new ArrayList();
         HttpSession session = ServletActionContext.getRequest().getSession();
 
-        if (("ADMIN").equalsIgnoreCase(role)||("Admin Bagian").equalsIgnoreCase(role)){
+        Biodata searchBiodata = new Biodata();
+        IjinKeluar addIjinKeluar = new IjinKeluar();
 
+        if (("ADMIN").equalsIgnoreCase(role)||("Admin Bagian").equalsIgnoreCase(role)){
+            String branchId = CommonUtil.userBranchLogin();
+            if(CommonConstant.BRANCH_KP.equalsIgnoreCase(branchId)){
+                setAdmin(true);
+            }else{
+                setAdminUnit(true);
+            }
+            addIjinKeluar.setUnitId(branchId);
         }else{
-            Biodata searchBiodata = new Biodata();
-            IjinKeluar addIjinKeluar = new IjinKeluar();
             String user = CommonUtil.userIdLogin();
             addIjinKeluar.setNip(user);
             searchBiodata.setNip(user);
@@ -233,10 +249,10 @@ public class IjinKeluarAction extends BaseMasterAction {
                     break;
                 }
             } else {
-                setIjinKeluar(new IjinKeluar());
+                addIjinKeluar = new IjinKeluar();
             }
-            setIjinKeluar(addIjinKeluar);
         }
+        setIjinKeluar(addIjinKeluar);
 
         setAddOrEdit(true);
         setAdd(true);
@@ -716,22 +732,33 @@ public class IjinKeluarAction extends BaseMasterAction {
     public String search() {
         logger.info("[IjinKeluar.search] start process >>>");
 
-        IjinKeluar searchAlat = getIjinKeluar();
+        IjinKeluar searchDispensasi = getIjinKeluar();
         List<IjinKeluar> listOfSearchIjinKeluar = new ArrayList();
         String role = CommonUtil.roleAsLogin();
-        searchAlat.setRoleId(CommonUtil.roleIdAsLogin());
-        searchAlat.setFrom("ijinKeluar");
+        searchDispensasi.setRoleId(CommonUtil.roleIdAsLogin());
+        searchDispensasi.setFrom("ijinKeluar");
+        String branchId = CommonUtil.userBranchLogin();
 
         if ("ADMIN".equalsIgnoreCase(role)){
-            setAdmin(true);
+            if(CommonConstant.BRANCH_KP.equalsIgnoreCase(branchId)){
+                setAdmin(true);
+            }else{
+                setAdminUnit(true);
+            }
         }else if ("Admin bagian".equalsIgnoreCase(role)){
             setAdmin(true);
         } else{
-            searchAlat.setNip(CommonUtil.userIdLogin());
+            searchDispensasi.setNip(CommonUtil.userIdLogin());
+        }
+
+        if (branchId != null) {
+            searchDispensasi.setUnitId(branchId);
+        } else {
+            searchDispensasi.setUnitId("");
         }
 
         if(!("Admin Bagian").equalsIgnoreCase(CommonUtil.roleAsLogin())){
-            listOfSearchIjinKeluar = ijinKeluarBoProxy.getByCriteria(searchAlat);
+            listOfSearchIjinKeluar = ijinKeluarBoProxy.getByCriteria(searchDispensasi);
         }else{
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
@@ -743,17 +770,17 @@ public class IjinKeluarAction extends BaseMasterAction {
                 List<IjinKeluar> ijinKeluarList ;
                 List<Biodata> biodataList = biodataBo.getBiodataByBagian(null,null,bagian.getBagianId(),null);
                 for (Biodata biodata : biodataList){
-                    if(!("").equalsIgnoreCase(searchAlat.getNip())){
-                        if (biodata.getNip().equalsIgnoreCase(searchAlat.getNip())){
-                            ijinKeluarList = ijinKeluarBoProxy.getByCriteria(searchAlat);
+                    if(!("").equalsIgnoreCase(searchDispensasi.getNip())){
+                        if (biodata.getNip().equalsIgnoreCase(searchDispensasi.getNip())){
+                            ijinKeluarList = ijinKeluarBoProxy.getByCriteria(searchDispensasi);
 
                             listOfSearchIjinKeluar.addAll(ijinKeluarList);
                         }
                     }else{
-                        searchAlat.setNip(biodata.getNip());
-                        ijinKeluarList = ijinKeluarBoProxy.getByCriteria(searchAlat);
+                        searchDispensasi.setNip(biodata.getNip());
+                        ijinKeluarList = ijinKeluarBoProxy.getByCriteria(searchDispensasi);
                         listOfSearchIjinKeluar.addAll(ijinKeluarList);
-                        searchAlat.setNip("");
+                        searchDispensasi.setNip("");
                     }
                 }
             }
@@ -845,7 +872,21 @@ public class IjinKeluarAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
 
         if (("ADMIN").equalsIgnoreCase(CommonUtil.roleAsLogin())){
-            setAdmin(true);
+            String branchId = CommonUtil.userBranchLogin();
+            if(CommonConstant.BRANCH_KP.equalsIgnoreCase(branchId)){
+                setAdmin(true);
+            }else {
+                setAdminUnit(true);
+            }
+
+            IjinKeluar data = new IjinKeluar();
+
+            if (branchId != null) {
+                data.setUnitId(branchId);
+            } else {
+                data.setUnitId("");
+            }
+            setIjinKeluar(data);
         }
 
         session.removeAttribute("listOfResultIjinKeluar");

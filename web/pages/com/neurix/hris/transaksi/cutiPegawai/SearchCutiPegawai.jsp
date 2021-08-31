@@ -262,6 +262,7 @@
                                                         <s:else>
                                                             <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid" name="cutiPegawai.unitId" required="true"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="" disabled="true"/>
+                                                            <s:hidden name="cutiPegawai.unitId"/>
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -272,7 +273,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test="isAdmin()">
+                                                        <s:if test="isAdmin() || isAdminUnit()">
                                                             <s:textfield id="nip32" name="cutiPegawai.nip" required="true" disabled="false" cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
@@ -415,7 +416,7 @@
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
-                                                    <s:if test="isAdmin()">
+                                                    <s:if test="isAdmin() || isAdminUnit()">
                                                         <td>
                                                             <div class="btn-group">
                                                                 <button class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
