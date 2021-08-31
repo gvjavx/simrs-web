@@ -797,6 +797,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         if (CommonConstant.ROLE_ADMIN_IGD.equalsIgnoreCase(userRoleLogin)) {
             setEnabledAddPasien(true);
+            headerDetailCheckup.setTipePelayanan("igd");
         }
 
         if (CommonConstant.ROLE_ADMIN_POLI.equalsIgnoreCase(userRoleLogin)) {

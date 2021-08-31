@@ -178,6 +178,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             String statusBayar = "";
 
             String tipePelayanan = "";
+            String filterPelayan = "";
             String idDokter = "";
 
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
@@ -235,6 +236,10 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
             if ("rawat_jalan".equalsIgnoreCase(bean.getTipePelayanan())) {
                 tipePelayanan = "AND ply.tipe_pelayanan = 'rawat_jalan' \n";
+                filterPelayan = "AND C.tipe_pelayanan = 'rawat_jalan' ";
+            }else if ("igd".equalsIgnoreCase(bean.getTipePelayanan())) {
+                tipePelayanan = "AND ply.tipe_pelayanan = 'igd' \n";
+                filterPelayan = "AND C.tipe_pelayanan = 'igd' ";
             }
 
             String SQL = "SELECT\n" +
@@ -287,7 +292,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "                                            rank() OVER (PARTITION BY a.no_checkup, a.id_jenis_periksa_pasien ORDER BY a.created_date DESC) as rank\n" +
                     "                                        FROM it_simrs_header_detail_checkup a\n" +
                     "                                                 INNER JOIN im_simrs_pelayanan b ON a.id_pelayanan = b.id_pelayanan\n" +
-                    "                                                 INNER JOIN im_simrs_header_pelayanan c ON b.id_header_pelayanan = c.id_header_pelayanan\n" +
+                    "                                                 INNER JOIN im_simrs_header_pelayanan c ON b.id_header_pelayanan = c.id_header_pelayanan "+filterPelayan+" \n" +
                     "                                    ) a WHERE a.rank = 1) dt ON hd.no_checkup = dt.no_checkup\n" +
                     "         INNER JOIN im_simrs_status_pasien st ON st.id_status_pasien = dt.status_periksa\n" +
                     "         INNER JOIN im_simrs_jenis_periksa_pasien jp ON dt.id_jenis_periksa_pasien = jp.id_jenis_periksa_pasien\n" +
