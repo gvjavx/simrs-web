@@ -11,6 +11,8 @@ public class CrudResponse {
     private String msg;
 
     private List list;
+    //RAKA-01SEP2021
+    private String data;
 
     public void addResponse(String status, String msg){
         this.setStatus(status);
@@ -25,6 +27,14 @@ public class CrudResponse {
     public void hasSuccess(String msg){
         this.setStatus("success");
         this.setMsg(msg);
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 
     public List getList() {

@@ -1129,6 +1129,33 @@ public class MutasiAction extends BaseMasterAction{
         return response;
     }
 
+    //RAKA-01SEP2021 ===> Mencari keberadaan & keadaan dalam session
+    public CrudResponse checkInSession(String nip){
+        logger.info("[MutasiAction.checkIsAvailInSession] start process >>>");
+
+        CrudResponse response   = new CrudResponse();
+        HttpSession session     = ServletActionContext.getRequest().getSession();
+        List<Mutasi> mutasiList = (List<Mutasi>) session.getAttribute("listOfMutasi");
+
+        if (mutasiList != null && mutasiList.size() > 0 && nip != null && !"".equalsIgnoreCase(nip)){
+            List<Mutasi> filteredMutasi = mutasiList.stream().filter(p->p.getNip().equalsIgnoreCase(nip)).collect(Collectors.toList());
+            if (filteredMutasi.size() > 0){
+                Mutasi mutasiData = filteredMutasi.get(0);
+                response.setStatus("available");
+                response.setMsg("Data Atas Nama : " + mutasiData.getNama() + " Sudah Terdapat Pada Daftar Mutasi.");
+            }
+        } else {
+            response.setStatus("empty");
+            response.setMsg("Data List Mutasi Masih Kosong.");
+        }
+
+        if (response.getStatus() == null || "".equalsIgnoreCase(response.getStatus()))
+            response.setStatus("none");
+
+        logger.info("[MutasiAction.checkIsAvailInSession] end process <<<");
+        return response;
+    }
+
     public List<Position> getListOtherPosition(String positionId, String nip){
         logger.info("[MutasiAction.getListOtherPosition] start process >>>");
 
