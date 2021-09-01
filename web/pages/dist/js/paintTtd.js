@@ -5,7 +5,17 @@ function paintTtd(id, change){
     const context = paintCanvas.getContext("2d");
 
     if(typeof(listTTD[id]) === 'undefined')
-    { listTTD[id] = true; }
+    {
+        listTTD[id] = true;
+
+    }
+
+    if($(".pttd-note").length == 0)
+    {
+        // Adding note
+        //$('#'+id).after("<label class='pttd-note'>(Jika tidak bisa tanda tanga, tekan tombol clear)</label>")
+        $("button[attr='removePaint*']").after("<label class='pttd-note'>(Jika tidak bisa tanda tanga, tekan tombol clear)</label>")
+    }
 
     context.lineCap = "round";
     context.lineWidth = "3";
@@ -115,7 +125,7 @@ function removePaint(id){
     if(typeof(listTTD[id]) === 'undefined')
     { listTTD[id] = true; }
     else
-    { listTTD[id] = true; }
+    { listTTD[id] = true;  }
 
 
     if ("area_canvas" == id) {
