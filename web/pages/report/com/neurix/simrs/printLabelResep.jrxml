@@ -43,7 +43,7 @@ h.tipe_pelayanan,
 CASE WHEN h.tipe_pelayanan = 'rawat_inap' THEN
     REPLACE(f.frekuensi,'|', ', ')
 ELSE
-    CONCAT(REPLACE(split_part(f.frekuensi,'#', 2), '|', ', '), '. ', split_part(f.frekuensi,'#', 1))
+    CONCAT(REPLACE(split_part(f.frekuensi,'#', 2), '|', ', '), '.')
 END as frekuensi,
 CASE WHEN h.tipe_pelayanan = 'rawat_inap' THEN
     ''
@@ -53,7 +53,8 @@ END as keterangan_obat,
 i.warna_label,
 i.warna_background,
 i.keterangan,
-j.bentuk
+j.bentuk,
+split_part(f.frekuensi,'#', 1) as ketPakai
 FROM mt_simrs_permintaan_resep a
 INNER JOIN (
 	SELECT
@@ -111,7 +112,7 @@ h.tipe_pelayanan,
 CASE WHEN h.tipe_pelayanan = 'rawat_inap' THEN
     REPLACE(d.frekuensi,'|', ', ')
 ELSE
-    CONCAT(REPLACE(split_part(d.frekuensi,'#', 2), '|', ', '), '. ', split_part(d.frekuensi,'#', 1))
+    CONCAT(REPLACE(split_part(d.frekuensi,'#', 2), '|', ', '), '.')
 END as frekuensi,
 CASE WHEN h.tipe_pelayanan = 'rawat_inap' THEN
     ''
@@ -121,7 +122,8 @@ END as keterangan_obat,
 CAST('' AS VARCHAR) as warna_label,
 CAST('' AS VARCHAR) as  warna_background,
 CAST('Racik' AS VARCHAR) as  keterangan,
-d.kemasan as  bentuk
+d.kemasan as  bentuk,
+split_part(d.frekuensi,'#', 1) as ketPakai
 FROM mt_simrs_permintaan_resep a
 INNER JOIN (
 	SELECT
@@ -160,6 +162,7 @@ WHERE a.id_permintaan_resep = $P{reportParams.id}]]>
 	<field name="warna_background" class="java.lang.String"/>
 	<field name="keterangan" class="java.lang.String"/>
 	<field name="bentuk" class="java.lang.String"/>
+	<field name="ketpakai" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -340,27 +343,34 @@ WHERE a.id_permintaan_resep = $P{reportParams.id}]]>
 					<textFieldExpression><![CDATA[""]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="78" y="130" width="225" height="34" isPrintWhenDetailOverflows="true" uuid="44017646-0d65-4f79-8591-7823bc2858cd"/>
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="78" y="128" width="225" height="15" isPrintWhenDetailOverflows="true" uuid="44017646-0d65-4f79-8591-7823bc2858cd"/>
 					<textElement verticalAlignment="Top">
 						<font size="11" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{frekuensi} == null ? "" : $F{frekuensi}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="71" y="130" width="6" height="15" uuid="765e5085-7bf0-4ffb-a56d-d309d4858d17"/>
+					<reportElement x="71" y="126" width="6" height="15" uuid="765e5085-7bf0-4ffb-a56d-d309d4858d17"/>
 					<textElement verticalAlignment="Middle">
 						<font size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="2" y="130" width="70" height="15" uuid="dc2d76dd-10f3-4142-96c9-8ad953f96294"/>
+					<reportElement x="2" y="126" width="70" height="15" uuid="dc2d76dd-10f3-4142-96c9-8ad953f96294"/>
 					<box leftPadding="5"/>
 					<textElement verticalAlignment="Middle">
 						<font size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Aturan Pakai]]></text>
 				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="78" y="144" width="225" height="15" isPrintWhenDetailOverflows="true" uuid="a3760393-d2f0-4ecb-a6c3-7bb6ca65ea46"/>
+					<textElement verticalAlignment="Top">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ketpakai} == null ? "" : $F{ketpakai}]]></textFieldExpression>
+				</textField>
 			</frame>
 			<staticText>
 				<reportElement x="-2" y="164" width="70" height="15" uuid="f9d6cd2d-93f2-4e8b-8692-59b783579ee0"/>

@@ -1,8 +1,11 @@
-let isAdded = true;
+let listTTD = [];
 
 function paintTtd(id, change){
     const paintCanvas = document.querySelector("#"+id);
     const context = paintCanvas.getContext("2d");
+
+    if(typeof(listTTD[id]) === 'undefined')
+    { listTTD[id] = true; }
 
     context.lineCap = "round";
     context.lineWidth = "3";
@@ -64,12 +67,12 @@ function paintTtd(id, change){
         };
 
         // Fahmi 2021-08-31 To Prevent multiple add event listener
-        if(isAdded)
+        if(listTTD[id])
         {
             paintCanvas.addEventListener("touchstart", startDrawing);
             paintCanvas.addEventListener("touchmove", drawLine);
             paintCanvas.addEventListener("touchend", stopDrawing);
-            isAdded = false;
+            listTTD[id] = false;
         }
 
     }else{
@@ -97,18 +100,24 @@ function paintTtd(id, change){
         };
 
         // Fahmi 2021-08-31 To Prevent multiple add event listener
-        if(isAdded) {
+        if(listTTD[id]) {
             paintCanvas.addEventListener("mousedown", startDrawing);
             paintCanvas.addEventListener("mousemove", drawLine);
             paintCanvas.addEventListener("mouseup", stopDrawing);
             paintCanvas.addEventListener("mouseout", stopDrawing);
-            isAdded = false;
+            listTTD[id] = false;
         }
     }
 }
 
 function removePaint(id){
     var canvas = document.getElementById(id);
+    if(typeof(listTTD[id]) === 'undefined')
+    { listTTD[id] = true; }
+    else
+    { listTTD[id] = true; }
+
+
     if ("area_canvas" == id) {
         const context = canvas.getContext('2d');
         context.clearRect(0, 0, canvas.width, canvas.height);
