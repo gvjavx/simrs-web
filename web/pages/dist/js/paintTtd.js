@@ -14,7 +14,7 @@ function paintTtd(id, change){
     {
         // Adding note
         //$('#'+id).after("<label class='pttd-note'>(Jika tidak bisa tanda tanga, tekan tombol clear)</label>")
-        $("button[attr='removePaint*']").after("<label class='pttd-note'>(Jika tidak bisa tanda tanga, tekan tombol clear)</label>")
+        $("button[onclick^='removePaint']").after("<label class='pttd-note' style='color: #d9534f'>*Tombol untuk menghapus Ttd.<br>juga untuk merefresh Ttd.</label>")
     }
 
     context.lineCap = "round";

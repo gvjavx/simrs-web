@@ -41,12 +41,15 @@ function saveTindakan(id) {
     var idDok = "";
     var idPelayanan = "";
 
+    console.log("--------------------->");
     if (idDetailCheckup != '' && idTindakan != '' && idTindakan != null && idDokter != '' && qty > 0 && idKategori != '' && idKategori != null) {
         if (!cekSession()) {
             $('#save_tindakan').hide();
             $('#load_tindakan').show();
             idDok = idDokter.split("|")[0];
             idPelayanan = idDokter.split("|")[1];
+            console.log("---------------------> 2");
+
             if (id != '') {
                 dwr.engine.setAsync(true);
                 TindakanRawatAction.editTindakanRawat(id, idDetailCheckup, idTindakan, idDok, "RJ", qty, idJenisPeriksa, idPelayanan, {
@@ -70,8 +73,23 @@ function saveTindakan(id) {
                     }
                 });
             } else {
+
+                console.log("---------------------> 3");
+
+                var data = [{
+                    "id_detail_checkup" : idDetailCheckup,
+                    "id_tindakan" : idTindakan,
+                    "id_dokter" : idDok,
+                    "qty" : qty,
+                    "jenis_pasien" : idJenisPeriksa,
+                    "id_pelayanan" : idPelayanan
+                }];
+
+                var sData = JSON.stringify(data);
+
                 dwr.engine.setAsync(true);
-                TindakanRawatAction.saveTindakanRawat(idDetailCheckup, idTindakan, idDok, "RJ", qty, idJenisPeriksa, idPelayanan, null, {
+                // TindakanRawatAction.saveTindakanRawat(idDetailCheckup, idTindakan, idDok, "RJ", qty, idJenisPeriksa, idPelayanan, null, {
+                TindakanRawatAction.saveTindakanRawat(sData, {
                     callback: function (response) {
                         if (response.status == "success") {
                             dwr.engine.setAsync(false);
@@ -186,29 +204,41 @@ function setDiskonHarga(id) {
         TindakanAction.initTindakan(id, function (res) {
             if (res.idTindakan != '') {
                 var disk = 0;
+                var tarif = 0;
                 if (res.diskon != '' && res.diskon != null) {
                     disk = res.diskon;
                 }
                 if (jenisPeriksaPasien == "bpjs") {
-                    $('#h_harga').val("Rp. " + formatRupiahAtas(res.tarifBpjs));
+                    // $('#h_harga').val("Rp. " + formatRupiahAtas(res.tarifBpjs));
+                    tarif = res.tarifBpjs;
                 } else if (jenisPeriksaPasien == "bpjs_rekanan" || jenisPeriksaPasien == "rekanan"){
 
                     TindakanRawatAction.getTarifDetailRekanaOps(idDetailCheckup, id, function (res2) {
 
                         if (jenisPeriksaPasien == "bpjs_rekanan"){
                             disk = res2.diskonBpjs;
-                            $('#h_harga').val("Rp. " + formatRupiahAtas(res2.tarifBpjs));
+                            tarif = res2.tarifBpjs;
+                            // $('#h_harga').val("Rp. " + formatRupiahAtas(res2.tarifBpjs));
                         }
 
                         if (jenisPeriksaPasien == "rekanan"){
                             disk = res2.diskonNonBpjs;
-                            $('#h_harga').val("Rp. " + formatRupiahAtas(res2.tarif));
+                            tarif = res2.tarif;
+                            // $('#h_harga').val("Rp. " + formatRupiahAtas(res2.tarif));
                         }
                     });
 
                 } else {
-                    $('#h_harga').val("Rp. " + formatRupiahAtas(res.tarif));
+                    // $('#h_harga').val("Rp. " + formatRupiahAtas(res.tarif));
+                    tarif = res.tarif;
                 }
+
+                var persen = (100 - disk);
+                var after  = persen/100;
+                var total  = after*tarif;
+                $('#h_harga').val("Rp. " + formatRupiahAtas(Math.round(total)));
+
+
                 $('#h_diskon').val(disk);
                 if ("Y" == res.isElektif) {
                     $('#form_elektif').show();

@@ -94,7 +94,7 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
     }
 
     public List<ImLicenseZebraEntity> getListEntityLicenseZebra(LicenseZebra bean) throws GeneralBOException {
-        logger.info("[LicenseZebraBoImpl.isKeyAvailable] Start >>>>>>>");
+        logger.info("[LicenseZebraBoImpl.getListEntityLicenseZebra] Start >>>>>>>");
         List<ImLicenseZebraEntity> imLicenseZebraEntities = new ArrayList<>();
 
         if (bean != null) {
@@ -113,10 +113,10 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             try {
                 imLicenseZebraEntities = licenseZebraDao.getByCriteria(hsCriteria);
             } catch (HibernateException e) {
-                logger.error("[LicenseZebraBoImpl.getByCriteria] error when get data lab detailt by get by criteria " + e.getMessage());
+                logger.error("[LicenseZebraBoImpl.getListEntityLicenseZebra] error when get data lab detailt by get by criteria " + e.getMessage());
             }
         }
-        logger.info("[LicenseZebraBoImpl.isKeyAvailable] End >>>>>>>");
+        logger.info("[LicenseZebraBoImpl.getListEntityLicenseZebra] End >>>>>>>");
         return imLicenseZebraEntities;
     }
 
@@ -149,7 +149,7 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
         try {
             imLicenseZebraEntityList = getListEntityLicenseZebra(bean);
         } catch (GeneralBOException e) {
-            logger.error("[LicenseZebraBoImpl.isKeyAvailable] error when get data entity by get by criteria " + e.getMessage());
+            logger.error("[LicenseZebraBoImpl.updateFlag] error when get data entity by get by criteria " + e.getMessage());
         }
 
         ImLicenseZebraEntity entity = imLicenseZebraEntityList.get(0);
@@ -161,7 +161,7 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
         try {
             licenseZebraDao.updateAndSave(entity);
         } catch (GeneralBOException e) {
-            logger.error("[LicenseZebraBoImpl.isKeyAvailable] error when get data entity by get by criteria " + e.getMessage());
+            logger.error("[LicenseZebraBoImpl.updateFlag] error when get data entity by get by criteria " + e.getMessage());
         }
 
         //saveAdd ke tabel log

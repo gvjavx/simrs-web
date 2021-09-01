@@ -1,6 +1,7 @@
 package com.neurix.hris.mobileapi;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.common.util.FirebasePushNotif;
@@ -10,6 +11,7 @@ import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.neurix.hris.transaksi.notifikasi.model.NotifikasiFcm;
 import com.neurix.simrs.master.kurir.bo.KurirBo;
 import com.neurix.simrs.master.kurir.model.Kurir;
+import com.neurix.simrs.master.license.model.Email;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.parameterketeranganobat.bo.ParameterKeteranganObatBo;
 import com.neurix.simrs.master.parameterketeranganobat.bo.impl.ParameterKeteranganObatBoImpl;
@@ -39,6 +41,7 @@ import org.springframework.web.context.ContextLoader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -271,6 +274,9 @@ public class TesTelemedicController implements ModelDriven<Object> {
                 break;
             case "tes-fcm":
                 sendNotifFcm();
+                break;
+            case "test-email":
+                testSendMail();
                 break;
             default:
                 logger.info("==========NO ONE CARE============");
@@ -726,5 +732,27 @@ public class TesTelemedicController implements ModelDriven<Object> {
         bean.setUserId("022020003408");
         notifikasiFcm = notifikasiFcmBo.getByCriteria(bean);
         FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Telemedic", note, "SL", notifikasiFcm.get(0).getOs(), null);
+    }
+
+    public void testSendMail(){
+
+        Email email = new Email();
+        email.setFrom(CommonConstant.EMAIL_USERNAME);
+        email.setPassword(CommonConstant.EMAIL_PASSWORD);
+        email.setTo(CommonConstant.LICENSE_EMAIL_TO);
+        email.setSubject("License Key Verification");
+        email.setMsg("<h2>License Key Verification</h2>\n" +
+                "=========================================\n" +
+                "<table width=\"100%\">\n" +
+                "<tr>\n" +
+                "<td width=\"20%\">EMAIL TEXT</td>\n" +
+                "</tr>\n" +
+                "</table>\n" +
+                "=========================================\n" +
+                "<br> \n" +
+                "<br>\n" +
+                "<span style=\"color: blue\">click this button for activation!</span>\n");
+        CommonUtil.sendEmail(email);
+
     }
 }
