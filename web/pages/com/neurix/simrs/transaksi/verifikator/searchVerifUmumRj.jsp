@@ -458,6 +458,7 @@
     var flagVaksin = "";
     var kategoriRuangan = "";
     var idPelayanan = "";
+    var idPelayananHeader = "";
 
     function formatRupiah(angka) {
         if(angka != "" && angka > 0){
