@@ -1039,7 +1039,7 @@ function showModal(select) {
         $('#save_tindakan').attr('onclick', 'saveTindakan(\'' + id + '\')').show();
         $('#body_temp_tindakan').html('');
         $('#modal-tindakan').modal({show: true, backdrop: 'static'});
-
+modal-diagnosa
     } else if (select == 3) {
         $('#t_diagnosa').text("Tambah Diagnosa");
         $('#nosa_id_diagnosa, #nosa_ket_diagnosa').val('');

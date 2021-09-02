@@ -18,6 +18,9 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaLabAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanResepAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/DiagnosaRawatAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatICD9Action.js"/>'></script>
+
 
     <script type='text/javascript' src='<s:url value="/pages/dist/js/tindakanverif.js"/>'></script>
 
@@ -304,13 +307,48 @@
                                     <td><b>Jenis Pasien</b></td>
                                     <td><span id="jenis_pasien"></span></td>
                                 </tr>
-                                <tr>
-                                    <td><b>Diagnosa</b></td>
-                                    <td><span id="diagnosa"></span></td>
-                                </tr>
                             </table>
                         </div>
                     </div>
+                </div>
+                <div class="box-header with-border"></div>
+                <div class="box-header with-border">
+                    <h3 class="box-title" ><i class="fa fa-stethoscope"></i> Diagnosa</h3>
+                    <button class="btn btn-success pull-right" onclick="showDiagnosa('rj')"><i class="fa fa-plus"></i> Tambah Diagnosa</button>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-striped" id="tabel_diagnosa" >
+                        <thead>
+                        <tr bgcolor="#90ee90">
+                            <td width="20%">Waktu</td>
+                            <td>Kode ICD 10</td>
+                            <td>Keterangan</td>
+                            <td>Jenis Diagnosa</td>
+                            <td align="center">Action</td>
+                        </tr>
+                        </thead>
+                        <tbody id="body_diagnosa">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-header with-border"></div>
+                <div class="box-header with-border">
+                    <h3 class="box-title" ><i class="fa fa-stethoscope"></i> ICD9</h3>
+                    <button class="btn btn-success pull-right" onclick="showICD9('')"><i class="fa fa-plus"></i> Tambah ICD9</button>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-striped" id="tabel_icd9" >
+                        <thead>
+                        <tr bgcolor="#90ee90">
+                            <td width="20%">Waktu</td>
+                            <td>Kode ICD9</td>
+                            <td>Keterangan</td>
+                            <td align="center">Action</td>
+                        </tr>
+                        </thead>
+                        <tbody id="body_icd9">
+                        </tbody>
+                    </table>
                 </div>
                 <div class="box-header with-border"></div>
                 <div class="box-header with-border">
@@ -483,6 +521,8 @@
                         stopSpinner('t_', idDetail);
                         dwr.engine.setAsync(false);
                         jenisKelamin = res.jenisKelamin;
+                        listDiagnosa(idDetail);
+                        listICD9(idDetail);
                         listTindakan(noCheckup, res.idJenisPeriksaPasien);
                         listResepPasien(noCheckup, res.idJenisPeriksaPasien);
                         listLab(noCheckup, res.idJenisPeriksaPasien);
@@ -504,7 +544,7 @@
                         $('#tgl').html(res.tempatLahir + ", " + converterDate(new Date(res.tglLahir)));
                         $('#alamat').html(alamat);
                         $('#poli').html(res.namaPelayanan);
-                        $('#diagnosa').html(diagnosa);
+                        /*$('#diagnosa').html(diagnosa);*/
                         $('#h_id_pasien').val(res.idPasien);
                         $('#h_id_detail_pasien').val(idDetail);
                         $('#h_id_pelayanan').val(res.idPelayanan);
@@ -531,6 +571,84 @@
             });
         }
     }
+
+    function listDiagnosa(idDetail) {
+       if(!cekSession()){
+          var table = "";
+          var data = [];
+
+          DiagnosaRawatAction.listDiagnosa(idDetail, function (response) {
+             data = response;
+             if (data.length > 0) {
+                $.each(data, function (i, item) {
+                   var id = "-";
+                   var ket = "-";
+                   var jen = "-";
+                   var tanggal = item.createdDate;
+                   var dateFormat = converterDateTime(new Date(tanggal));
+
+                   if (item.idDiagnosa != null) {
+                      id = item.idDiagnosa;
+                   }
+
+                   var blink = "";
+                   if(item.isWarning == "Y"){
+                      blink = 'class="blink_me_atas" style="color: red"';
+                   }
+
+                   if (item.keteranganDiagnosa != null) {
+                      ket = item.keteranganDiagnosa;
+                   }
+                   if (item.jenisDiagnosa != null) {
+                      jen = item.jenisDiagnosa.replace("_"," ");
+                      jen = convertSentenceCaseUp(jen);
+                   }
+                   table += '<tr '+blink+'>' +
+                       "<td>" + dateFormat + "</td>" +
+                       "<td>" + id + "</td>" +
+                       "<td>" + ket + "</td>" +
+                       "<td>" + jen + "</td>" +
+                       "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editDiagnosa(\'' + item.idDiagnosaRawat + '\',\'' + item.idDiagnosa + '\',\'' + item.jenisDiagnosa + '\', \'' + item.keteranganDiagnosa + '\')" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer;">' + "</td>" +
+                       "</tr>"
+                });
+             }
+             $('#body_diagnosa').html(table);
+          });
+       }
+    }
+
+    function listICD9(idDetail) {
+
+       var table = "";
+       var data = [];
+
+       TindakanRawatICD9Action.getListICD9(idDetail, function (response) {
+          data = response;
+          if (data != null) {
+             $.each(data, function (i, item) {
+                var id = "-";
+                var ket = "-";
+                var tanggal = item.createdDate;
+                var dateFormat = converterDateTime(new Date(tanggal));
+
+                if (item.idIcd9 != null) {
+                   id = item.idIcd9;
+                }
+                if (item.namaIcd9 != null) {
+                   ket = item.namaIcd9;
+                }
+                table += "<tr>" +
+                    "<td>" + dateFormat + "</td>" +
+                    "<td>" + id + "</td>" +
+                    "<td>" + ket + "</td>" +
+                    "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editICD9(\'' + item.idTindakanRawatIcd9 + '\',\'' + item.idIcd9 + '\',\'' + item.namaIcd9 + '\')" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer;">' + "</td>" +
+                    "</tr>"
+             });
+             $('#body_icd9').html(table);
+          }
+       });
+    }
+
 
     function listTindakan(noCheckup, jenis) {
         if(!cekSession()){
