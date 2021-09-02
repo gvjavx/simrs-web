@@ -71,7 +71,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
-        criteria.addOrder(Order.asc("nip"));
+//        criteria.addOrder(Order.asc("nip"));
 
         List<ImBiodataEntity> results = criteria.list();
 
@@ -2226,5 +2226,13 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             lamaKerja = (Integer) results.get(0)[2];
         }
         return lamaKerja;
+    }
+
+    //RAKA-31AGU2021 ===> Untuk handle pencarian berdasarkan branch tapi tidak ada column branch
+    public List<String> getNipByBranch(String branchId) throws HibernateException {
+        String query = "select nip from it_hris_pegawai_position where branch_id = '"+ branchId +"';\n";
+        List<String> queryResult = this.sessionFactory.getCurrentSession().createSQLQuery(query).list();
+
+        return queryResult;
     }
 }

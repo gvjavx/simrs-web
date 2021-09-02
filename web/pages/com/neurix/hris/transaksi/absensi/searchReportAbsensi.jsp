@@ -72,8 +72,16 @@
                                 <td>
                                     <table>
                                         <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchIdAbsensi" name="absensiPegawai.branchId"
-                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control" onchange="listBagian()"/>
+                                        <s:if test="isAdmin()">
+                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchIdAbsensi" name="absensiPegawai.branchId"
+                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control" onchange="listBagian()"/>
+                                        </s:if>
+                                        <s:else>
+                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchIdAbsensi" name="absensiPegawai.branchId"
+                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control" disabled="true"/>
+                                            <s:hidden name="absensiPegawai.branchId"/>
+                                        </s:else>
+
                                     </table>
                                 </td>
                             </tr>
@@ -192,12 +200,12 @@
                                         </button>
                                     </td>
                                     <td width="2%"></td>
-                                    <%--<td>
-                                        <button type="button" class="btn btn-success" id="btnPrintUangMakan">
-                                            <i class="fa fa-print"></i> Cetak Uang Makan
+                                    <td>
+                                        <button type="button" class="btn btn-success" id="btnPrintExcel">
+                                            <i class="fa fa-print"></i> Cetak Laporan Excel
                                         </button>
                                     </td>
-                                    <td width="2%"></td>--%>
+                                    <td width="2%"></td>
                                     <td>
                                         <button type="button" class="btn btn-success" id="btnPrintTriwulan">
                                             <i class="fa fa-print"></i> Cetak Evaluasi
@@ -286,19 +294,19 @@
                 alert("Unit dan Tanggal Harus Diisi !");
             }
         });
-        $('#btnPrintUangMakan').click(function(){
+        $('#btnPrintExcel').click(function(){
             var tglFrom = document.getElementById("tglFrom").value;
             var tglTo = document.getElementById("tglTo").value;
             var branchId = document.getElementById("branchIdAbsensi").value;
             var bagian = document.getElementById("bagian").value;
             var nip = document.getElementById("nip").value;
             if (tglFrom!=""&&tglTo!=""&&branchId!=""){
-                var msg='Apakah Anda ingin mencetak laporan uang makan tanggal '+tglFrom+' sampai tanggal '+tglTo+' ?';
+                var msg='Apakah Anda ingin mencetak laporan absensi tanggal '+tglFrom+' sampai tanggal '+tglTo+' ?';
                 if (bagian!=""){
-                    var msg='Apakah Anda ingin mencetak laporan uang makan tanggal '+tglFrom+' sampai tanggal '+tglTo+'  ?';
+                    var msg='Apakah Anda ingin mencetak laporan absensi tanggal '+tglFrom+' sampai tanggal '+tglTo+'  ?';
                 }
                 if (confirm(msg)) {
-                    window.location.href = "printReportUangMakan_absensi.action?tglFrom="+tglFrom+"&tglTo="+tglTo+"&branchId="+branchId+"&bagian="+bagian+"&nip="+nip+"&divisiId=''";
+                    window.location.href = "printReportAbsensiExcel_absensi.action?tglFrom="+tglFrom+"&tglTo="+tglTo+"&branchId="+branchId+"&bagian="+bagian+"&nip="+nip+"&divisiId=''";
                 }
             }else{
                 alert("Unit dan Tanggal Harus Diisi !");

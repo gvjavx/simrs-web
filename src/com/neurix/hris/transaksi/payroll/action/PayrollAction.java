@@ -12452,7 +12452,12 @@ public class PayrollAction extends BaseTransactionAction {
 
         titleReport = "Rekap Payroll " + branch.getBranchName() + periode;
         filename = "Rekap Payroll " + branch.getBranchName() + periode;
-        listData = payrollBo.searchReportPayroll(bulan, tahun, unit, idHeader);
+        try {
+            listData = payrollBo.searchReportPayroll(bulan, tahun, unit, idHeader);
+        }catch (GeneralBOException e){
+            logger.error("[PayrollAction.payrollRekapReportExcel] Error, " + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
+        }
 
         listOfColumn.add("nip");
         listOfColumn.add("nama pegawai");
@@ -12464,7 +12469,7 @@ public class PayrollAction extends BaseTransactionAction {
         listOfColumn.add("gaji");
         listOfColumn.add("sankhus");
         listOfColumn.add("tj. jab");
-        listOfColumn.add("tj. struk");
+        listOfColumn.add("tj. struk");          //10
         listOfColumn.add("tj. fung");
         listOfColumn.add("tj. prof");
         listOfColumn.add("tj.al. gapok");
@@ -12474,7 +12479,7 @@ public class PayrollAction extends BaseTransactionAction {
         listOfColumn.add("rpl. gaji");
         listOfColumn.add("rpl. sankhus");
         listOfColumn.add("rpl.tj. jab");
-        listOfColumn.add("rpl.tj. struk");
+        listOfColumn.add("rpl.tj. struk");      //20
         listOfColumn.add("rpl.tj. fung");
         listOfColumn.add("rpl.tj. prof");
         listOfColumn.add("rpl.tj. alih");
@@ -12484,7 +12489,7 @@ public class PayrollAction extends BaseTransactionAction {
         listOfColumn.add("tj. lokasi");
         listOfColumn.add("jam. lembur");
         listOfColumn.add("f.jam. lembur");
-        listOfColumn.add("by. lembur");
+        listOfColumn.add("by. lembur");         //30
         listOfColumn.add("upah lembur");
         listOfColumn.add("tj. rumah");
         listOfColumn.add("tj. listrik");
@@ -12494,7 +12499,7 @@ public class PayrollAction extends BaseTransactionAction {
         listOfColumn.add("rpl. rlab");
         listOfColumn.add("tj. siaga");
         listOfColumn.add("tj.pens. pers");
-        listOfColumn.add("tj.bpjstk. pers");
+        listOfColumn.add("tj.bpjstk. pers");    //40
         listOfColumn.add("tj.bpjsks. pers");
         listOfColumn.add("pd. rutin");
         listOfColumn.add("pd. tdk rutin");
@@ -12504,7 +12509,7 @@ public class PayrollAction extends BaseTransactionAction {
         listOfColumn.add("iur.pens. pers");
         listOfColumn.add("iur.bpjstk. peg");
         listOfColumn.add("iur.bpjstk. pers");
-        listOfColumn.add("iur.bpjsks. peg");
+        listOfColumn.add("iur.bpjsks. peg");    //50
         listOfColumn.add("iur.bpjsks. pers");
         listOfColumn.add("pot. lain");
         listOfColumn.add("perk. bayar");
@@ -12514,10 +12519,10 @@ public class PayrollAction extends BaseTransactionAction {
         listOfColumn.add("p.gol");
         listOfColumn.add("p.ruang");
         listOfColumn.add("p.masa");
-        listOfColumn.add("no.sk. dapen");
-        listOfColumn.add("no.sk. gaji");
+        listOfColumn.add("no.sk. dapen");   //60
         listOfColumn.add("no.sk. gaji");
         listOfColumn.add("no.id. bio");
+        listOfColumn.add("NIP Lama");
         //RAKA-17MEI2021 ===> tidak perlu ditampilkan
 //        listOfColumn.add("pr.dapen.p");
 //        listOfColumn.add("pr.dapen.g");
@@ -12969,6 +12974,13 @@ public class PayrollAction extends BaseTransactionAction {
             cellDetail = new CellDetail();
             cellDetail.setCellID(62);
             cellDetail.setValueCell(data.getNoidbio());
+            cellDetail.setAlignmentCell(3);
+            listOfCell.add(cellDetail);
+
+            // niplama
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(63);
+            cellDetail.setValueCell(data.getNipLama());
             cellDetail.setAlignmentCell(3);
             listOfCell.add(cellDetail);
 

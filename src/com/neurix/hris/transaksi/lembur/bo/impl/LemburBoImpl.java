@@ -333,9 +333,22 @@ public class LemburBoImpl implements LemburBo {
             if (searchBean.getLemburId() != null && !"".equalsIgnoreCase(searchBean.getLemburId())) {
                 hsCriteria.put("lembur_id", searchBean.getLemburId());
             }
+
             if (searchBean.getNip() != null && !"".equalsIgnoreCase(searchBean.getNip())) {
                 hsCriteria.put("nip", searchBean.getNip());
+            } else if (searchBean.getBranchId()!=null && !"".equalsIgnoreCase(searchBean.getBranchId())){
+                List<String> nipList = new ArrayList<>();
+                try {
+                    nipList = biodataDao.getNipByBranch(searchBean.getBranchId());
+                }catch (HibernateException e){
+                    logger.error("[LemburBoImpl.getByCriteria] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found Error when retrieving NIP List, " + e.getMessage());
+                }
+
+                hsCriteria.put("nip_list", nipList);
             }
+
+
             if (searchBean.getStatusGiling() != null && !"".equalsIgnoreCase(searchBean.getStatusGiling())) {
                 hsCriteria.put("status_giling", searchBean.getStatusGiling());
             }

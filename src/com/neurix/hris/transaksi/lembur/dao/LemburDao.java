@@ -47,6 +47,9 @@ public class LemburDao extends GenericDao<LemburEntity, String> {
             if (mapCriteria.get("status_giling") != null) {
                 criteria.add(Restrictions.eq("statusGiling", (String) mapCriteria.get("status_giling")));
             }
+            if (mapCriteria.get("nip_list") != null) {
+                criteria.add(Restrictions.in("nip", (List<String>) mapCriteria.get("nip_list")));
+            }
             if (mapCriteria.get("approval_flag") !=null) {
                 if (mapCriteria.get("approval_flag")=="0"){
                     criteria.add(Restrictions.isNull("approvalFlag"));

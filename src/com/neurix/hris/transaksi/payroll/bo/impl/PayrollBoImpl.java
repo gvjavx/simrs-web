@@ -35,6 +35,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27682,7 +27683,9 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         }
         for(ReportPayroll report : listOfResult){
             BigDecimal byLembur = new BigDecimal(0.0);
-            byLembur = getBiayaLembur(report.getNip(),tahun);
+            if(report.getTunjJab().compareTo(BigDecimal.ZERO)<=0) {
+                byLembur = getBiayaLemburReport(report);
+            }
 
             report.setByLembur(byLembur);
             listOfReport.add(report);
@@ -27691,12 +27694,12 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
         return listOfReport;
     }
 
-    private BigDecimal getBiayaLembur(String nip, String tahun){
+    private BigDecimal getBiayaLemburReport(ReportPayroll report){
         BigDecimal byLembur = new BigDecimal(0);
 
         String personPosition = "";
         try {
-            personPosition = personilPositionDao.getJenisPegawaiByNip(nip);
+            personPosition = personilPositionDao.getJenisPegawaiByNip(report.getNip());
             if(CommonConstant.JP_NORMAL.equalsIgnoreCase(personPosition)){
                 personPosition = "NORMAL";
             } else if(CommonConstant.JP_PJS.equalsIgnoreCase(personPosition)){
@@ -27721,27 +27724,14 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
 
-        List<ImBiodataEntity> listBiodata = new ArrayList<>();
-        ImBiodataEntity biodata = new ImBiodataEntity();
-        Map hsCriteria = new HashMap();
-        hsCriteria.put("nip", nip);
-        hsCriteria.put("flag", "Y");
-        try{
-            listBiodata = biodataDao.getByCriteria(hsCriteria);
-            biodata = listBiodata.get(0);
-        }catch(HibernateException e){
-            logger.error("[PayrollBoImpl.getBiayaLembur] Error, " + e.getMessage());
-            throw new GeneralBOException("Problem when retrieving Biopdata, " + e.getMessage());
-        }
-
         List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
         List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
         BigDecimal gapok = new BigDecimal(0.0);
         BigDecimal alihGapok = new BigDecimal(0);
         BigDecimal sankhus = new BigDecimal(0.0);
-        if (CommonConstant.TIPE_PEGAWAI_TETAP.equalsIgnoreCase(biodata.getTipePegawai())) {
+        if (CommonConstant.TIPE_PEGAWAI_TETAP.equalsIgnoreCase(report.getTipePegawai())) {
             try{
-                payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(), tahun);
+                payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(report.getGolonganId(), report.getTahunSkalaGaji());
             }catch (HibernateException e){
                 logger.error("[AbsensiBoImpl.getDetailLembur] Error, " + e.getMessage());
                 throw new GeneralBOException("Problem when retrieving Skala Gaji, " + e.getMessage());
@@ -27753,7 +27743,7 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
 
             List<ItHrisPayrollEntity> itPayrollEntityList = new ArrayList<>();
             try{
-                itPayrollEntityList = payrollDao.getTunjanganPeralihanForAbsensi(nip, tahun);
+                itPayrollEntityList = payrollDao.getTunjanganPeralihanForAbsensi(report.getNip(), report.getTahunSkalaGaji());
             }catch (HibernateException e){
                 logger.error("[PayrollBoImpl.getBiayaLembur] Error, " + e.getMessage());
                 throw new GeneralBOException("Problem when retrieving Tunjangan Peralihan For Absensi, " + e.getMessage());
@@ -27762,20 +27752,20 @@ public class PayrollBoImpl extends BillingSystemBoImpl implements PayrollBo {
                 alihGapok = alihGapok.add(itPayrollEntity.getPeralihanGapok());
                 break;
             }
-        } else if (CommonConstant.PEGAWAI_PKWT.equalsIgnoreCase(biodata.getTipePegawai())) {
+        } else if (CommonConstant.PEGAWAI_PKWT.equalsIgnoreCase(report.getTipePegawai())) {
             try{
-                payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodata.getGolongan(), tahun);
+                payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(report.getGolonganId(), report.getTahunSkalaGaji());
             }catch (HibernateException e){
                 logger.error("[AbsensiBoImpl.getDetailLembur] Error, " + e.getMessage());
                 throw new GeneralBOException("Problem when retrieving Skala Gaji PKWT, " + e.getMessage());
             }
             for (ImPayrollSkalaGajiPkwtEntity skalaGajiLoop : payrollSkalaGajiPkwtEntityList) {
                 gapok = BigDecimal.valueOf(skalaGajiLoop.getGajiPokok().doubleValue());
-                sankhus = BigDecimal.valueOf(skalaGajiLoop.getSantunanKhusus().doubleValue());
+//                sankhus = BigDecimal.valueOf(skalaGajiLoop.getSantunanKhusus().doubleValue());
             }
         }
 
-        byLembur = (gapok.add(alihGapok).add(sankhus)).multiply(prosentase);
+        byLembur = (gapok.add(alihGapok)).multiply(prosentase).divide(BigDecimal.valueOf(173),2, RoundingMode.HALF_UP).setScale(0,BigDecimal.ROUND_HALF_UP);
         return byLembur;
     }
 

@@ -58,7 +58,7 @@ public class RefreshLemburDao extends GenericDao<ItHrisRefreshLemburEntity, Stri
                     criteria.add(Restrictions.ge("tanggal", mapCriteria.get("tanggal_dari")));
                 }
                 if (mapCriteria.get("tanggal_selesai") != null) {
-                    criteria.add(Restrictions.le("tanggal", mapCriteria.get("tanggal_selesai")));
+                    criteria.add(Restrictions.lt("tanggal", mapCriteria.get("tanggal_selesai")));
                 }
             }
 

@@ -264,6 +264,12 @@
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
+                <s:if test="isAdminUnit()">
+                    <s:textfield  id="flagAdmin" value="Y" required="true" readonly="true" cssStyle="display: none" cssClass="form-control"/>
+                </s:if>
+                <s:else>
+                    <s:textfield  id="flagAdmin" value="N" required="true" readonly="true" cssStyle="display: none" cssClass="form-control"/>
+                </s:else>
 
                 <legend align="left">Add Cuti Pegawai</legend>
 
@@ -423,6 +429,8 @@
 
                                         });
                                         jeniscuti();
+                                    }else if($('#flagAdmin').val() == "Y"){
+                                        $('#unitId12').attr({ readonly:"true", disabled:"true" });
                                     }else{
                                         $('#unitId33').attr('disabled','true');
                                     }
@@ -654,6 +662,7 @@
 </html>
 <script>
     $(document).ready(function() {
+
         function jeniscuti(){
             namacuti= $('#cutiId').val();
             branchid =$('#unitId12').val();
@@ -692,6 +701,8 @@
 
             });
             jeniscuti();
+        }else if($('#flagAdmin').val() == "Y"){
+            $('#unitId12').attr({ readonly:"true", disabled:"true" });
         }else{
             $('#unitId33').attr('disabled','true');
         }

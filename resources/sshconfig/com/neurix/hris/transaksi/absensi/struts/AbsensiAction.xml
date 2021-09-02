@@ -136,6 +136,12 @@
                 <param name="contentDisposition">contentDisposition</param>
                 <param name="bufferSize">1024</param>
             </result>
+            <result name="downloadXlsAbsensi" type="stream">
+                <param name="contentType">${excelContentType}</param>
+                <param name="inputName">excelStream</param>
+                <param name="contentDisposition">contentDisposition</param>
+                <param name="bufferSize">1024</param>
+            </result>
         </action>
 
         <action name="paging_displaytag_absensi"

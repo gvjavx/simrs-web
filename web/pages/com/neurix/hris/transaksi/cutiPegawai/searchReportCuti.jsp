@@ -78,8 +78,15 @@
                                 <td>
                                     <table>
                                         <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchIdCuti" name="cutiPegawai.unitId"
-                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                        <s:if test="isAdmin()">
+                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchIdCuti" name="cutiPegawai.unitId"
+                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                        </s:if>
+                                        <s:else>
+                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchIdCuti" name="cutiPegawai.unitId"
+                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control" disabled="true"/>
+                                            <s:hidden name="cutiPegawai.unitId"/>
+                                        </s:else>
                                     </table>
                                 </td>
                             </tr>

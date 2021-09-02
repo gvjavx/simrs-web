@@ -1359,6 +1359,9 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 Timestamp tanggalSelesai = CommonUtil.convertToTimestamp(searchBean.getStTanggalSelesai());
                 hsCriteria.put("tanggal_selesai", tanggalSelesai);
             }
+            if (searchBean.getUnitId() != null && !"".equalsIgnoreCase(searchBean.getUnitId())){
+                hsCriteria.put("unit_id", searchBean.getUnitId());
+            }
 
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBean.getFlag())) {

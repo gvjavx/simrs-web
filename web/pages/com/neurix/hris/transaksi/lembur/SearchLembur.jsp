@@ -91,12 +91,13 @@
                                                     <table>
                                                         <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
                                                         <s:if test="isAdmin()">
-                                                            <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid" name="lembur.unitId" required="true"
+                                                            <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid" name="lembur.branchId" required="true"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
                                                         </s:if>
                                                         <s:else>
-                                                            <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid" name="lembur.unitId" required="true"
+                                                            <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid" name="lembur.branchId" required="true"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="" disabled="true"/>
+                                                            <s:hidden name="lembur.branchId"/>
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -107,7 +108,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test="isAdmin()">
+                                                        <s:if test="isAdmin() || isAdminUnit()">
                                                             <s:textfield id="nip" name="lembur.nip" required="true" disabled="false" cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>

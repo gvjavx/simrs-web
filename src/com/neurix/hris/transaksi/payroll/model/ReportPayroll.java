@@ -82,6 +82,11 @@ public class ReportPayroll {
     private Date tglAwalLbr;
     private Date tglAkhirLbr;
 
+    private String nipLama;
+    private String tipePegawai;
+    private String golonganId;
+    private String tahunSkalaGaji;
+
     public String getNip() {
         return nip;
     }
@@ -664,5 +669,37 @@ public class ReportPayroll {
 
     public void setTglAkhirLbr(Date tglAkhirLbr) {
         this.tglAkhirLbr = tglAkhirLbr;
+    }
+
+    public String getNipLama() {
+        return nipLama;
+    }
+
+    public void setNipLama(String nipLama) {
+        this.nipLama = nipLama;
+    }
+
+    public String getTipePegawai() {
+        return tipePegawai;
+    }
+
+    public void setTipePegawai(String tipePegawai) {
+        this.tipePegawai = tipePegawai;
+    }
+
+    public String getGolonganId() {
+        return golonganId;
+    }
+
+    public void setGolonganId(String golonganId) {
+        this.golonganId = golonganId;
+    }
+
+    public String getTahunSkalaGaji() {
+        return tahunSkalaGaji;
+    }
+
+    public void setTahunSkalaGaji(String tahunSkalaGaji) {
+        this.tahunSkalaGaji = tahunSkalaGaji;
     }
 }

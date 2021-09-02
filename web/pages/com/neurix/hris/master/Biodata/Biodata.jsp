@@ -78,8 +78,10 @@
             var tglMasuk            = document.getElementById("tanggalMasuk").value;
             var msKerjaGol          = document.getElementById("poinLebih").value;
 
-            if(tipePegawai != "TP04") { //sealin PEG. TETAP
+            if(tipePegawai == "TP03") { // PEG. TETAP
                 var level               = document.getElementById("golongan1").value;
+            } else if(tipePegawai =="TP01" || tipePegawai =="TP02"){
+                var level               = document.getElementById("golongan4").value;
             } else {
                 var level               = document.getElementById("golongan3").value;
             }
@@ -124,9 +126,6 @@
                 if (tipePegawai == '') {
                     msg += 'Field <strong>Tipe Pegawai</strong> is required.' + '<br/>';
                     $("#tipePegawai1").css("background","lightcoral");
-                }
-                if (level == '') {
-                    msg += 'Field <strong>Level</strong> is required.' + '<br/>';
                 }
                 if (branch == '') {
                     msg += 'Field <strong>Unit</strong> is required.' + '<br/>';
@@ -1123,6 +1122,27 @@
                                                     </table>
                                                 </td>
                                                 <td id="golongan2Group">
+                                                    <table>
+                                                        <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
+                                                        <s:if test="isDelete()">
+                                                            <s:select list="#{'KO1':'KO1', 'KO2':'KO2', 'KO3':'KO3', 'BO1':'BO1'}" disabled="true"
+                                                                      id="golongan4" name="biodata.golongan"
+                                                                      headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                        </s:if>
+                                                        <s:elseif test="isAdd()">
+                                                            <s:select list="#{'KO1': 'KO1', 'KO2':'KO2', 'KO3':'KO3', 'BO1':'BO1'}"
+                                                                      id="golongan4" name="biodata.golongan"
+                                                                      headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                        </s:elseif>
+                                                        <s:else>
+                                                            <s:select list="#{'KO1': 'KO1', 'KO2':'KO2', 'KO3':'KO3', 'BO1':'BO1'}"
+                                                                      id="golongan4" name="biodata.golongan"
+                                                                      headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                        </s:else>
+
+                                                    </table>
+                                                </td>
+                                                <td id="golongan3Group">
                                                     <table>
                                                         <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
                                                         <s:if test="isDelete()">
@@ -2519,6 +2539,12 @@
                             <s:select list="#initComboTipe.listComboGolonganPkwtHistory" id="golonganHistory3" name="biodata.golongan"
                                       listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                         </div>
+                        <div class="col-sm-8" id="golonganHistory3Group">
+                            <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwtHistory_golongan"/>
+                            <s:select list="#initComboTipe.listComboGolonganPkwtHistory" id="golonganHistory3" name="biodata.golongan"
+                                      listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                        </div>
+
                     </div>
                     <%--<div class="form-group">--%>
                     <%--<label class="control-label col-sm-4" >Pjs: </label>--%>
@@ -3504,17 +3530,30 @@
 
     window.changePegawai = function (id) {
         if (id != "TP04") {
-            $('#golongan1Group').show();
-            $('#golongan2Group').hide();
-            $('#golongan3').val("");
+            if(id == "TP03"){
+                $('#golongan1Group').show();
+                $('#golongan2Group').hide();
+                $('#golongan3Group').hide();
+                $('#golongan3').val("");
+                $('#golongan4').val("");
+            }else{
+                $('#golongan1Group').hide();
+                $('#golongan2Group').show();
+                $('#golongan3Group').hide();
+                $('#golongan1').val("");
+                $('#golongan3').val("");
+            }
+
             $('#tanggalAktif').removeAttr('disabled');
             $('#tanggalPraPensiun').removeAttr('disabled');
             $('tanggalAktifTmp').val($('#tanggalAktifHid').val());
             $('#tanggalAktifHid').val("");
         } else {
             $('#golongan1Group').hide();
-            $('#golongan2Group').show();
+            $('#golongan2Group').hide();
+            $('#golongan3Group').show();
             $('#golongan1').val("");
+            $('#golongan4').val("");
             $('#point').prop('disabled', 'true');
             $('#tanggalAktif').prop('disabled', 'true');
             $('#tanggalPraPensiun').prop('disabled', 'true');
@@ -3524,10 +3563,10 @@
     window.changePegawaiHistory = function (id) {
         if (id != "TP04") {
             $('#golonganHistory1Group').show();
-            $('#golonganHistory2Group').hide();
+            $('#golonganHistory3Group').hide();
         } else {
             $('#golonganHistory1Group').hide();
-            $('#golonganHistory2Group').show();
+            $('#golonganHistory3Group').show();
         }
     }
 
@@ -5647,7 +5686,7 @@
         $('#btnAddPengalamanKerja').click(function () {
             $('#myFormPengalaman')[0].reset();
             $('#pengalamanGolonganId1').show();
-            $('#golonganHistory2Group').hide();
+            $('#golonganHistory3Group').hide();
             cekPerusahaan();
             $('#modal-pengalamanKerja').modal('show');
             $('#myFormPengalaman').attr('action', 'addPengalamanKerja');
@@ -5758,12 +5797,12 @@
                 if(listdata.tipePegawaiId == "TP03"){
                     $('#pengalamanGolonganId1').val(listdata.golonganId).change();
                     $('#golonganHistory1Group').show();
-                    $('#golonganHistory2Group').hide();
+                    $('#golonganHistory3Group').hide();
                 }
                 if(listdata.tipePegawaiId == "TP04"){
                     $('#golonganHistory3').val(listdata.golonganId).change();
                     $('#golonganHistory1Group').hide();
-                    $('#golonganHistory2Group').show();
+                    $('#golonganHistory3Group').show();
                 }
 //                if(listdata.tanggalKeluar!=null){
 //                    if(listdata.tanggalKeluar!='-'){

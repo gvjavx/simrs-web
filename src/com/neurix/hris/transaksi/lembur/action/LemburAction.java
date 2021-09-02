@@ -41,7 +41,16 @@ public class LemburAction extends BaseMasterAction {
     private String nip;
     private String stTanggal;
     private boolean admin=false;
+    private boolean adminUnit=false;
     private boolean approve;
+
+    public boolean isAdminUnit() {
+        return adminUnit;
+    }
+
+    public void setAdminUnit(boolean adminUnit) {
+        this.adminUnit = adminUnit;
+    }
 
     public boolean isApprove() {
         return approve;
@@ -169,10 +178,19 @@ public class LemburAction extends BaseMasterAction {
                     break;
                 }
             } else {
-                setLembur(new Lembur());
+                addLembur = new Lembur();
             }
-            setLembur(addLembur);
+        }else{
+            String branchId = CommonUtil.userBranchLogin();
+            if(CommonConstant.BRANCH_KP.equalsIgnoreCase(branchId)){
+                setAdmin(true);
+            }else{
+                setAdminUnit(true);
+            }
+            addLembur.setBranchId(branchId);
         }
+        setLembur(addLembur);
+
         setAddOrEdit(true);
         setAdd(true);
         session.removeAttribute("listOfResultLembur");
@@ -300,10 +318,14 @@ public class LemburAction extends BaseMasterAction {
         List<Lembur> listOfSearchLemburBagian = new ArrayList();
         List<Lembur> listOfSearchLemburFinal = new ArrayList();
         String role = CommonUtil.roleAsLogin();
+        String branchId = CommonUtil.userBranchLogin();
         if ("ADMIN".equalsIgnoreCase(role)||"Admin bagian".equalsIgnoreCase(role)){
-            setAdmin(true);
-        }
-        else{
+            if(CommonConstant.BRANCH_KP.equalsIgnoreCase(branchId)){
+                setAdmin(true);
+            }else{
+                setAdminUnit(true);
+            }
+        }else{
             searchLembur.setNip(CommonUtil.userIdLogin());
         }
 
@@ -435,7 +457,21 @@ public class LemburAction extends BaseMasterAction {
         logger.info("[lemburAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         if ((CommonConstant.ROLE_ID_ADMIN).equalsIgnoreCase(CommonUtil.roleIdAsLogin())||(CommonConstant.ROLE_ID_ADMIN_SUPER).equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
-            setAdmin(true);
+            String branchId = CommonUtil.userBranchLogin();
+            if(CommonConstant.BRANCH_KP.equalsIgnoreCase(branchId)){
+                setAdmin(true);
+            }else {
+                setAdminUnit(true);
+            }
+
+            Lembur data = new Lembur();
+            if (branchId != null) {
+                data.setBranchId(branchId);
+            } else {
+                data.setBranchId("");
+            }
+            setLembur(data);
+
         }else{
             setNip(CommonUtil.userIdLogin());
         }

@@ -1,3 +1,13 @@
+------ 2021-08-23 ===> pilihan rumus lembur
+-- add column
+    alter table im_company
+    	add column rumus_lembur varchar(100);
+
+-----------------------------------
+-------- SAMPAI INI SAJA  ---------
+-----------------------------------
+
+
 ------ 2021-07-21 ===> refresh lembur
 -- create table
     CREATE TABLE public.it_hris_refresh_lembur
@@ -80,12 +90,6 @@
     UPDATE im_functions
     SET parent = 1453
     WHERE func_id = 784;
-
------------------------------------
--------- SAMPAI INI SAJA  ---------
------------------------------------
-
-
 
 ------ 2021-06-17 ===> ptkp keluarga
     alter table im_hris_keluarga

@@ -145,6 +145,7 @@
                                                         </s:if>
                                                         <s:else>
                                                             <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid" name="ijinKeluar.unitId" required="true" listKey="branchId" listValue="branchName" headerKey="" headerValue="" disabled="true"/>
+                                                            <s:hidden name="ijinKeluar.unitId"/>
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -155,7 +156,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test="isAdmin()">
+                                                        <s:if test="isAdmin() || isAdminUnit()">
                                                             <s:textfield id="nip" name="ijinKeluar.nip" required="true" disabled="false" cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
@@ -230,7 +231,7 @@
                                                 <td>
                                                     <table>
                                                         <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
-                                                        <s:if test="isAdmin()">
+                                                        <s:if test="isAdmin() || isAdminUnit()">
                                                              <s:select list="#comboDivisi.listComboDepartment" id="divisiId" name="ijinKeluar.divisiId"
                                                                   listKey="departmentId" listValue="departmentName" headerKey="" headerValue="" cssClass="form-control" />
                                                         </s:if>
