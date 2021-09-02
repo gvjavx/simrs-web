@@ -48,7 +48,7 @@
 
                 <!-- ====== LOCALHOST ======= -->
 
-                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/gomedsys_nmu_dev</prop>
+                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/gomedsys_nmu</prop>
                 <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
                 <prop key="hibernate.connection.username">postgres</prop>
                 <prop key="hibernate.connection.password">postgres</prop>

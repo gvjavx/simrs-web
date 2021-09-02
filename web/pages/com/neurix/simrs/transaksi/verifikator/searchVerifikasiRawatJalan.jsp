@@ -15,6 +15,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/VerifikatorAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/DiagnosaRawatAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatICD9Action.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -399,6 +400,27 @@
                 </div>
                 <div class="box-header with-border"></div>
                 <div class="box-header with-border">
+                    <h3 class="box-title" ><i class="fa fa-stethoscope"></i> ICD9</h3>
+                </div>
+                <div class="box-header with-border">
+                    <button class="btn btn-success btn-outline" onclick="showICD9('')"><i class="fa fa-plus"></i> Tambah ICD9</button>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-striped" id="tabel_icd9" >
+                        <thead>
+                        <tr bgcolor="#90ee90">
+                            <td width="20%">Waktu</td>
+                            <td>Kode ICD9</td>
+                            <td>Keterangan</td>
+                            <td align="center">Action</td>
+                        </tr>
+                        </thead>
+                        <tbody id="body_icd9">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-header with-border"></div>
+                <div class="box-header with-border">
                     <h3 class="box-title"><i class="fa fa-medkit"></i> Daftar Tindakan Rawat</h3>
                 </div>
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_pending">
@@ -482,7 +504,9 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-diagnosa">
+<%@ include file="/pages/modal/modal-general.jsp" %>
+
+<%--<div class="modal fade" id="modal-diagnosa">
     <div class="modal-dialog modal-flat">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
@@ -556,7 +580,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>--%>
 
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
@@ -618,6 +642,7 @@
 
     var idDetailCheckup = '';
     var jenisPeriksaPasien = '';
+    var contextPath = '<%= request.getContextPath() %>';
 
     function formatRupiah(angka) {
         if (angka != "" && angka > 0) {
@@ -755,6 +780,7 @@
                 }
             });
             listDiagnosa(idDetailCheckup);
+            listICD9(idDetailCheckup);
         }
     }
 
@@ -1110,6 +1136,23 @@
         $('#modal-diagnosa').modal({show: true, backdrop: 'static'});
     }
 
+    function showICD9(id){
+       $('#id_icd9, #ket_icd9').val('');
+       $('#load_icd9').hide();
+       $('#save_icd9').attr('onclick', 'saveICD9(\'' + id + '\')').show();
+       $('#modal-icd9').modal({show: true, backdrop: 'static'});
+    }
+
+    function editICD9(id, idIcd9, ketIcd9) {
+       $('#load_icd9, #warning_icd9, #war_id_icd9').hide();
+       $('#id_icd9').val(idIcd9);
+       $('#id_edit_icd9').val(idIcd9);
+       $('#ket_icd9').val(ketIcd9);
+       $('#save_icd9').attr('onclick', 'saveICD9(\'' + id + '\')').show();
+       $('#modal-icd9').modal({show: true, backdrop: 'static'});
+    }
+
+
     function listDiagnosa(idDetailCheckup) {
         var table = "";
         var data = [];
@@ -1149,6 +1192,38 @@
             }
             $('#body_diagnosa').html(table);
         });
+    }
+
+    function listICD9(idDetail) {
+
+       var table = "";
+       var data = [];
+
+       TindakanRawatICD9Action.getListICD9(idDetail, function (response) {
+          data = response;
+          if (data != null) {
+             $.each(data, function (i, item) {
+                var id = "-";
+                var ket = "-";
+                var tanggal = item.createdDate;
+                var dateFormat = converterDateTime(new Date(tanggal));
+
+                if (item.idIcd9 != null) {
+                   id = item.idIcd9;
+                }
+                if (item.namaIcd9 != null) {
+                   ket = item.namaIcd9;
+                }
+                table += "<tr>" +
+                    "<td>" + dateFormat + "</td>" +
+                    "<td>" + id + "</td>" +
+                    "<td>" + ket + "</td>" +
+                    "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editICD9(\'' + item.idTindakanRawatIcd9 + '\',\'' + item.idIcd9 + '\',\'' + item.namaIcd9 + '\')" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer;">' + "</td>" +
+                    "</tr>"
+             });
+             $('#body_icd9').html(table);
+          }
+       });
     }
 
     function saveDiagnosa(id) {
@@ -1210,6 +1285,78 @@
         }
     }
 
+    function saveICD9(id) {
+
+       var idIcd9 = $('#id_icd9').val();
+       var ketIcd9 = $('#ket_icd9').val();
+       var idIcd9Edit = $('#id_edit_icd9').val();
+       var jenisPasien = $('#h_jenis_pasien').val();
+       var data = "";
+
+       if (idDetailCheckup != '' && idIcd9 != '' && ketIcd9 != '') {
+          if (!cekSession()) {
+             data = {
+                'id_detail_checkup': idDetailCheckup,
+                'jenis_pasien': jenisPasien,
+                'id_icd9': idIcd9,
+                'nama_icd9': ketIcd9,
+                'id_tindakan_rawat_icd9': id,
+                'id_edit_icd9': idIcd9Edit
+             }
+
+             $('#save_icd9').hide();
+             $('#load_icd9').show();
+             var result = JSON.stringify(data);
+
+             if (id != '') {
+                dwr.engine.setAsync(true);
+                TindakanRawatICD9Action.edit(result, {
+                   callback: function (response) {
+                      if (response.status == "success") {
+                         dwr.engine.setAsync(false);
+                         listICD9(idDetailCheckup);
+                         hitungStatusBiaya();
+                         $('#modal-icd9').modal('hide');
+                         //$('#info_dialog').dialog('open');
+                         //$('#close_pos').val(11);
+                      } else {
+                         $('#save_icd9').show();
+                         $('#load_icd9').hide();
+                         $('#warning_icd9').show().fadeOut(5000);
+                         $('#msg_icd9').text(response.msg);
+                      }
+                   }
+                })
+             } else {
+                dwr.engine.setAsync(true);
+                TindakanRawatICD9Action.save(result, {
+                   callback: function (response) {
+                      if (response.status == "success") {
+                         dwr.engine.setAsync(false);
+                         listICD9(idDetailCheckup);
+                         hitungStatusBiaya();
+                         $('#modal-icd9').modal('hide');
+                         //$('#info_dialog').dialog('open');
+                         //$('#close_pos').val(11);
+                      } else {
+                         $('#save_icd9').show();
+                         $('#load_icd9').hide();
+                         $('#warning_icd9').show().fadeOut(5000);
+                         $('#msg_icd9').text(response.msg);
+                      }
+                   }
+                })
+             }
+          }
+       } else {
+          $('#warning_icd9').show().fadeOut(5000);
+          $('#msg_icd9').text("Silahkan cek kembali inputan anda...!");
+          if (id == '') {
+             $('#war_id_icd9').show();
+          }
+       }
+    }
+
     function searchDiagnosa(id) {
         var menus, mapped;
         $('#' + id).typeahead({
@@ -1243,6 +1390,41 @@
                 return selectedObj.id;
             }
         });
+    }
+
+
+    function searchICD9(id) {
+       var menus, mapped;
+       $('#' + id).typeahead({
+          minLength: 3,
+          source: function (query, process) {
+             menus = [];
+             mapped = {};
+
+             var data = [];
+             dwr.engine.setAsync(false);
+             CheckupAction.getICD9(query, function (listdata) {
+                data = listdata;
+             });
+
+             $.each(data, function (i, item) {
+                var labelItem = item.idIcd9 + '-' + item.namaIcd9;
+                mapped[labelItem] = {
+                   id: item.idIcd9,
+                   label: labelItem,
+                   name: item.namaIcd9
+                };
+                menus.push(labelItem);
+             });
+
+             process(menus);
+          },
+          updater: function (item) {
+             var selectedObj = mapped[item];
+             $("#ket_icd9").val(selectedObj.name);
+             return selectedObj.id;
+          }
+       });
     }
 
 </script>
