@@ -7,14 +7,13 @@ function paintTtd(id, change){
     if(typeof(listTTD[id]) === 'undefined')
     {
         listTTD[id] = true;
-
     }
 
-    if($(".pttd-note").length == 0)
+    if($(".pttd-note-"+id).length == 0)
     {
         // Adding note
         //$('#'+id).after("<label class='pttd-note'>(Jika tidak bisa tanda tanga, tekan tombol clear)</label>")
-        $("button[onclick^='removePaint']").after("<label class='pttd-note' style='color: #d9534f'>*Tombol untuk menghapus Ttd.<br>juga untuk merefresh Ttd.</label>")
+        $('button[onclick="removePaint(\''+id+'\')"]').after("<label class='pttd-note-"+id+"' style='color: #d9534f'>*Tombol untuk menghapus Ttd.<br>juga untuk merefresh Ttd jika tidak bisa.</label>")
     }
 
     context.lineCap = "round";
