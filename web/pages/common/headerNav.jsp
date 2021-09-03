@@ -372,14 +372,17 @@
     }
 
     function cekNotifLab(kategori){
+        console.log("=============================1===="+kategori);
         PeriksaLabAction.pushNotifLab(kategori, function (res) {
             var listLab = "";
             var cekCount = $('#count2').text();
+           console.log("=============================2===="+JSON.stringify(res));
             if(cekCount == ''){
                 cekCount = 0;
             }
             if(res.length > 0){
                 $.each(res, function (i, item) {
+                   console.log("=============================3===="+JSON.stringify(item));
                     var href = "";
                     if(item.kategori == "lab"){
                         href = '/periksalab/add_periksalab.action?id='+item.idDetailCheckup+'&lab='+item.idHeaderPemeriksaan+'&ket=';
@@ -448,6 +451,7 @@
 
     function cekRole(){
         TransaksiObatAction.cekRole(function (res) {
+           console.log("================1===="+res);
             if(res == "ADMIN APOTEK"){
                 pushNotifResep();
             }
@@ -459,10 +463,18 @@
             }
             if(res == "ADMIN LAB"){
                 pushNotifLab('lab');
+               pushNotifLab('radiologi');
             }
+
+            if(res == "ADMIN RS")
+            {
+               pushNotifLab('adminrs');
+            }
+
             if(res == "ADMIN RADIOLOGI"){
                 pushNotifLab('radiologi');
             }
+
             if(res == "ADMIN GIZI"){
                 cekNotifKonsultasiGizi();
             }
