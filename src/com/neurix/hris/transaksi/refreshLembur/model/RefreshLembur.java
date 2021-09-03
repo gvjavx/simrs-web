@@ -50,6 +50,25 @@ public class RefreshLembur {
     private String stJmlChance;
     private String jmlPegawai;
 
+    private String bulan;
+    private String tahun;
+
+    public String getBulan() {
+        return bulan;
+    }
+
+    public void setBulan(String bulan) {
+        this.bulan = bulan;
+    }
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
+
     public String getJmlPegawai() {
         return jmlPegawai;
     }

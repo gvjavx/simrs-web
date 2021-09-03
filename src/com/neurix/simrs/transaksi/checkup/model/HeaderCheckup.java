@@ -40,6 +40,7 @@ public class HeaderCheckup {
     private String lastUpdateWho;
     private String jenisKunjungan;
 
+    private String idHeaderPelayanan;
     private String idPelayanan;
     private String statusPeriksa;
     private String statusPeriksaName;
@@ -1720,6 +1721,14 @@ public class HeaderCheckup {
 
     public void setIdPelayanan(String idPelayanan) {
         this.idPelayanan = idPelayanan;
+    }
+
+    public String getIdHeaderPelayanan() {
+        return idHeaderPelayanan;
+    }
+
+    public void setIdHeaderPelayanan(String idHeaderPelayanan) {
+        this.idHeaderPelayanan = idHeaderPelayanan;
     }
 
     public String getNoCheckup() {

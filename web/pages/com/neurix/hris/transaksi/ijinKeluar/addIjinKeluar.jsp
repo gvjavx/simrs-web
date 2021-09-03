@@ -178,7 +178,12 @@
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
-
+                <s:if test="isAdminUnit()">
+                    <s:textfield  id="flagAdmin" value="Y" required="true" readonly="true" cssStyle="display: none" cssClass="form-control"/>
+                </s:if>
+                <s:else>
+                    <s:textfield  id="flagAdmin" value="N" required="true" readonly="true" cssStyle="display: none" cssClass="form-control"/>
+                </s:else>
 
                 <s:textfield  id="check" name="ijinKeluar.self" required="true" readonly="true" cssStyle="display: none" cssClass="form-control"/>
                 <legend align="left">Add Dispensasi</legend>
@@ -602,8 +607,10 @@
                     $('#ijinName1').val(item.ijinName);
                 });
             });
-        }
-        else {
+        }else if($('#flagAdmin').val() == "Y"){
+            $('#branchId').attr('readonly','true');
+            $('#branchId').attr('disabled','true');
+        }else {
             $('#branchId33').attr('disabled','true');
         }
 

@@ -83,4 +83,7 @@ public interface AbsensiBo extends BaseMasterBo<AbsensiPegawai> {
     List<MesinAbsensiDetailOnCall> getAbsensiOnCallByCriteria(MesinAbsensiDetailOnCall bean) throws GeneralBOException;
 
     List<AbsensiOnCall> getAbsensiOnCall(AbsensiOnCall search);
+
+    List<AbsensiPegawai> searchReportAbsensi(String tglFrom, String tglTo, String branchId, String bagian, String nip) throws GeneralBOException;
+
 }

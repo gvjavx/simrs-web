@@ -1081,7 +1081,9 @@ public class AbsensiBoImpl implements AbsensiBo {
 //                        for (ItPayrollEntity itPayrollEntity : payrollEntityList){
 //                            peralihan=itPayrollEntity.getTunjanganPeralihan().doubleValue();
 //                        }
-                        upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+                        //RAKA-16AGU2021 ==> tanpa sankhus
+//                        upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+                        upahLembur = (gapok + peralihan) * faktor * jamLembur;
                         upahLembur = Math.floor(upahLembur);
 
                         absensiPegawaiEntity.setLembur("Y");
@@ -1310,7 +1312,9 @@ public class AbsensiBoImpl implements AbsensiBo {
                         }
                         Double peralihan = 0d;
                         peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(), bean.getTanggal()).doubleValue();
-                        upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+                        //RAKA-16AGU2021 ==> tanpa sankhus
+//                        upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+                        upahLembur = (gapok + peralihan) * faktor * jamLembur;
                         upahLembur = Math.floor(upahLembur);
 
                         absensiPegawaiEntity.setLembur("Y");
@@ -1407,7 +1411,9 @@ public class AbsensiBoImpl implements AbsensiBo {
                         Double peralihan = 0d;
                         peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(), bean.getTanggal()).doubleValue();
 
-                        upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+                        //RAKA-16AGU2021 ==> tanpa sankhus
+//                        upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+                        upahLembur = (gapok + peralihan) * faktor * jamLembur;
                         upahLembur = Math.floor(upahLembur);
 
                         absensiPegawaiEntity.setLembur("Y");
@@ -1768,6 +1774,25 @@ public class AbsensiBoImpl implements AbsensiBo {
         logger.info("[AbsensiBoImpl.getByCriteria] end process <<<");
 
         return listOfResult;
+    }
+
+    //RAKA-23AGU2021 ==> report excel absensi
+    @Override
+    public List<AbsensiPegawai> searchReportAbsensi(String tglFrom, String tglTo, String branchId, String bagian, String nip) throws GeneralBOException{
+        List<AbsensiPegawai> listOfReport = new ArrayList<>();
+
+        String[] arrTgl = tglFrom.split("-");
+        tglFrom = arrTgl[2] + "-" + arrTgl[1] + "-" + arrTgl[0];
+        arrTgl = tglTo.split("-");
+        tglTo = arrTgl[2] + "-" + arrTgl[1] + "-" + arrTgl[0];
+
+        try{
+            listOfReport = absensiPegawaiDao.reportAbsensi(tglFrom, tglTo, branchId, bagian, nip);
+        }catch (HibernateException e){
+            logger.error("[AbsensiBoImpl.searchReportAbsensi] Error, " + e.getMessage());
+            throw new GeneralBOException("Found Error when retrieving data from absensi, " + e.getMessage());
+        }
+        return listOfReport;
     }
 
     @Override
@@ -3908,7 +3933,9 @@ public class AbsensiBoImpl implements AbsensiBo {
                     double peralihan = 0d;
                     peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(), tanggal).doubleValue();
 
-                    upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+                    //RAKA-16AGU2021 ==> tanpa sankhus
+//                        upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+                    upahLembur = (gapok + peralihan) * faktor * jamLembur;
 
                     absensiPegawaiEntity.setLembur("Y");
                     absensiPegawaiEntity.setJamLembur(jamLembur);
@@ -7043,8 +7070,9 @@ public class AbsensiBoImpl implements AbsensiBo {
             }
             Double peralihan = 0d;
             peralihan = getTunjPeralihan(biodata.getNip(), tanggalInquiry).doubleValue();
-            upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
-//            upahLembur = (gapok + peralihan) * faktor * jamLembur;
+            //RAKA-16AGU2021 ==> tanpa sankhus
+//                        upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+            upahLembur = (gapok + peralihan) * faktor * jamLembur;
             upahLembur = Math.floor(upahLembur);
 
             String stUpahLembur = "";
@@ -7182,8 +7210,9 @@ public class AbsensiBoImpl implements AbsensiBo {
             }
             Double peralihan = 0d;
             peralihan = getTunjPeralihan(biodata.getNip(), tanggalInquiry).doubleValue();
-            upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
-//            upahLembur = (gapok + peralihan) * faktor * jamLembur;
+            //RAKA-16AGU2021 ==> tanpa sankhus
+//                        upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+            upahLembur = (gapok + peralihan) * faktor * jamLembur;
             upahLembur = Math.floor(upahLembur);
 
             String stUpahLembur = "";

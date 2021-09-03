@@ -51,6 +51,9 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
             if (mapCriteria.get("cuti_id") != null) {
                 criteria.add(Restrictions.ilike("cutiId", "%" + (String) mapCriteria.get("cuti_id") + "%"));
             }
+            if (mapCriteria.get("unit_id") != null) {
+                criteria.add(Restrictions.eq("unitId", (String) mapCriteria.get("unit_id")));
+            }
             if (mapCriteria.get("nip") != null) {
                 criteria.add(Restrictions.eq("nip", (String) mapCriteria.get("nip")));
             }

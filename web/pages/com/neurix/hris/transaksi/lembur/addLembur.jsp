@@ -115,6 +115,12 @@
             <s:form id="addFormLembur" method="post" theme="simple" namespace="/lembur" action="saveAdd_lembur" cssClass="well form-horizontal">
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
+                <s:if test="isAdminUnit()">
+                    <s:textfield  id="flagAdmin" value="Y" required="true" readonly="true" cssStyle="display: none" cssClass="form-control"/>
+                </s:if>
+                <s:else>
+                    <s:textfield  id="flagAdmin" value="N" required="true" readonly="true" cssStyle="display: none" cssClass="form-control"/>
+                </s:else>
                 <legend align="left">Add Lembur</legend>
                 <table>
                     <tr>
@@ -575,6 +581,9 @@
                 $('#tipeLembur').attr('disabled','true');
                 $('#keterangan').attr('disabled','true');
             }
+        }else if($('#flagAdmin').val() == "Y"){
+            $('#branchId').attr('readonly','true');
+            $('#branchId').attr('disabled','true');
         }else{
             $('#branchId33').attr('disabled','true');
         }

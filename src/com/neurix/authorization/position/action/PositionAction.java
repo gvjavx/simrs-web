@@ -658,6 +658,8 @@ public class PositionAction extends BaseMasterAction {
             if (personilPosition != null){
                 response.setStatus("error");
                 response.setMsg("ditemukan pegawai aktif pada jabatan tersebut : "+personilPosition.getPersonName());
+
+                response.setData(personilPosition.getNip());
             } else {
                 response.setStatus("success");
             }

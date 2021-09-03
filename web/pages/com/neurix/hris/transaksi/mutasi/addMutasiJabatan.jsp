@@ -1200,8 +1200,20 @@
         PositionAction.checkAndGetPositionAktif(positionId, branch, nip, function (res) {
             var str = "";
             if (res.status == "error"){
-                str += "<div class='alert alert-danger'>"+res.msg+"</div>";
-                $("#flag-person-aktif").val("Y");
+                var nipSblm = res.data;
+                MutasiAction.checkInSession(nipSblm, function (resCek) {
+                    if(resCek.status == "none"){
+                        str += "<div class='alert alert-danger'>"+res.msg+"</div>";
+                        $("#flag-person-aktif").val("Y");
+                    } else if(resCek.status == "empty"){
+                        str += "<div class='alert alert-warning'>"+res.msg+". Pastikan melakukan mutasi / rotasi juga pada pegawai tersebut.</div>";
+                        $("#flag-person-aktif").val("N");
+                    } else {
+                        str += "<div class='alert alert-success'>Mutasi / Rotasi dapat dilakukan.</div>";
+                        $("#flag-person-aktif").val("N");
+                    }
+                })
+
                 setPanelAlert(str);
             } else if (positionId == null || positionId == ""){
                 str += "<div class='alert alert-danger' style='text-align: center'>Posisi Baru Belum Dipilih <i class='fa fa-times'></i></div>";

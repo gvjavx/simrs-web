@@ -10,6 +10,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.*;
 import java.sql.Date;
@@ -534,4 +535,71 @@ public class AbsensiPegawaiDao extends GenericDao<AbsensiPegawaiEntity, String> 
         return results;
     }
 
+    public List<AbsensiPegawai> reportAbsensi (String tglFrom, String tglTo, String branchId, String bagian, String nip) throws HibernateException{
+        List<AbsensiPegawai> listOfResult = new ArrayList<>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        String queryBagian = "";
+        String queryNip = "";
+
+        if(!"".equalsIgnoreCase(bagian)){
+            queryBagian = "   and pos.bagian_id = '" +bagian+ "'\n";
+        }
+        if(!"".equalsIgnoreCase(nip)){
+            queryNip = "   and absen.nip = '" +nip+ "'\n";
+        }
+        final String query =
+                "select\n" +
+                "   cast(absen.tanggal as varchar),\n" +
+                "   absen.nip,\n" +
+                "   bio.nama_pegawai,\n" +
+                "   absen.jam_masuk,\n" +
+                "   absen.jam_keluar,\n" +
+                "   case\n" +
+                "       when absen.status_absensi = '00' then 'Mangkir'\n" +
+                "       when absen.status_absensi = '01' then 'Sesuai'\n" +
+                "       when absen.status_absensi = '02' then 'Telat Masuk'\n" +
+                "       when absen.status_absensi = '03' then 'Pulang/Masuk Tidak Izin'\n" +
+                "       when absen.status_absensi = '04' then 'Sesuai Lebih'\n" +
+                "       when absen.status_absensi = '08' then 'Cuti'\n" +
+                "       when absen.status_absensi = '09' then 'Lembur'\n" +
+                "       when absen.status_absensi = '11' then 'Dispensasi'\n" +
+                "       when absen.status_absensi = '14' then 'Pulang Tidak Sesuai'\n" +
+                "       when absen.status_absensi = '15' then 'Masuk Saat Libur'\n" +
+                "       else absen.status_absensi\n" +
+                "   end  as status_absensi,\n" +
+                "   absen.lembur,\n" +
+                "   cast(absen.lama_lembur as double precision),\n" +
+                "   cast(absen.realisasi_jam_lembur as double precision),\n" +
+                "   cast(absen.jam_lembur as double precision) as jam_fak_lembur,\n" +
+                "   cast(absen.biaya_lembur as double precision) as upah_lembur\n" +
+                "from it_hris_absensi_pegawai absen\n" +
+                "   left join im_hris_pegawai bio on absen.nip = bio.nip\n" +
+                "   left join it_hris_pegawai_position pp on bio.nip = pp.nip\n" +
+                "   left join im_position pos on pos.position_id = pp.position_id\n" +
+                "where absen.tanggal between '" + tglFrom + "' and '" + tglTo + "' \n" +
+                "   and absen.branch_id = '" + branchId + "' \n" +
+                queryBagian + queryNip +
+                "order by absen.tanggal, bio.nama_pegawai;";
+
+        results = this.sessionFactory.getCurrentSession().createSQLQuery(query).list();
+        for(Object[] row : results){
+            AbsensiPegawai absen = new AbsensiPegawai();
+
+            absen.setStTanggal(row[0]!=null ? (String) row[0]:"-");
+            absen.setNip(row[1]!=null ? (String) row[1]:"-");
+            absen.setNama(row[2]!=null ? (String) row[2]:"-");
+            absen.setJamMasuk(row[3]!=null ? (String) row[3]:"-");
+            absen.setJamKeluar(row[4]!=null ? (String) row[4]:"-");
+            absen.setStatusAbsensi(row[5]!=null ? (String) row[5]:"-");
+            absen.setLembur(row[6]!=null ? (String) row[6]:"-");
+            absen.setLamaLembur(row[7]!=null ? (Double) row[7]:Double.valueOf(0.0));
+            absen.setRealisasiJamLembur(row[8]!=null ? (Double) row[8]:Double.valueOf(0.0));
+            absen.setJamLembur(row[9]!=null ? (Double) row[9]:Double.valueOf(0.0));
+            absen.setBiayaLembur(row[10]!=null ? (Double) row[10]:Double.valueOf(0.0));
+
+            listOfResult.add(absen);
+        }
+
+        return listOfResult;
+    }
 }

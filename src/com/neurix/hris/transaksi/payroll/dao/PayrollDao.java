@@ -8567,14 +8567,22 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "       0.0 as rpl_rlab,\n" +   // 72
                 "       py.tanggal_awal_lembur,\n" +    // 73
                 "       py.tanggal_akhir_lembur,\n" +   // 74
-                "       py.department_id,\n" +
-                "       py.department_name,\n" +
-                "       dept.kodering as dep_kodering,\n" +
-                "       py.sub_divisi,\n" +
-                "       py.sub_divisi_name,\n" +
-                "       bag.kodering as bag_kodering,\n" +
-                "       py.position_id,\n" +
-                "       py.position_name\n" +
+                "       py.department_id,\n" +      // 75
+                "       py.department_name,\n" +    // 76
+                "       dept.kodering as dep_kodering,\n" + // 77
+                "       py.sub_divisi,\n" +         // 78
+                "       py.sub_divisi_name,\n" +    // 79
+                "       bag.kodering as bag_kodering,\n" +  // 80
+                "       py.position_id,\n" +    // 81
+                "       py.position_name,\n" +  // 82
+                "       case \n" +
+                "           when peg.nip_lama is null then cast('-' as varchar)\n" +
+                "           when peg.nip_lama = '' then cast('-' as varchar)\n" +
+                "           else peg.nip_lama \n" +
+                "       end  as nip_lama, \n" + // 83
+                "       peg.tipe_pegawai, \n" + // 84
+                "       peg.golongan_id, \n" +  // 85
+                "       py.tahun_skala_gaji \n" +  // 86
                 "\n" +
                 "from it_hris_payroll_header head\n" +
                 "       left join it_hris_payroll py on py.payroll_header_id = head.payroll_header_id\n" +
@@ -8593,6 +8601,7 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
                 "           and pay.tahun = '"+ tahun +"'\n" +
                 "           group by ap.nip\n" +
                 "        ) absen on absen.nip = py.nip \n" +
+                "       left join im_hris_pegawai peg on peg.nip = py.nip \n" +
                 "where head.bulan = '"+ bulan +"'\n" +
                 "    and head.tahun = '"+ tahun +"'\n" +
                 "    and head.branch_id = '"+ unit +"'\n" +
@@ -8697,6 +8706,11 @@ public class PayrollDao extends GenericDao<ItHrisPayrollEntity, String> {
 
             result.setTglAwalLbr((Date) row[73]);
             result.setTglAkhirLbr((Date) row[74]);
+
+            result.setNipLama((String) row[83]);
+            result.setTipePegawai(row[84]!=null?(String) row[84]:"-");
+            result.setGolonganId(row[85]!=null?(String) row[85]:"-");
+            result.setTahunSkalaGaji((String) row[86]);
 
             listOfResult.add(result);
         }

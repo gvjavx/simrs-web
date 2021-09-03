@@ -1039,7 +1039,7 @@ function showModal(select) {
         $('#save_tindakan').attr('onclick', 'saveTindakan(\'' + id + '\')').show();
         $('#body_temp_tindakan').html('');
         $('#modal-tindakan').modal({show: true, backdrop: 'static'});
-
+modal-diagnosa
     } else if (select == 3) {
         $('#t_diagnosa').text("Tambah Diagnosa");
         $('#nosa_id_diagnosa, #nosa_ket_diagnosa').val('');
@@ -5908,23 +5908,26 @@ function addToListTindakan(id) {
 
     if (idDetailCheckup != '' && idTindakan != '' && idTindakan != null && idDokter != '' && qty > 0 && idKategori != '' && idKategori != null) {
         if (!cekSession()) {
-            var idDok = idDokter.split("|")[0];
-            var idPelayanan = idDokter.split("|")[1];
-            var temp = '<tr id="rowTindakan_'+count+'">' +
-                '<td>'+namaDokter+
-                '<input class="tindakan_dokter" type="hidden" value="'+idDok+'">'+
-                '<input class="tindakan_id_pelayanan" type="hidden" value="'+idPelayanan+'">'+
-                '<input class="tindakan_id_tindakan" type="hidden" value="'+idTindakan+'">'+
-                '<input class="tindakan_qty" type="hidden" value="'+qty+'">'+
-                '</td>' +
-                '<td>'+namaTindakan+'</td>' +
-                '<td align="center">'+qty+'</td>' +
-                '<td align="right">'+tarif+'</td>' +
-                '<td align="right">'+formatRupiahAtas((parseInt(replaceTitik(total))*qty))+'</td>' +
-                '<td align="center">'+'<img onclick="delListTindakan(\'rowTindakan_'+count+'\')" style="cursor: pointer" src="'+contextPath+'/pages/images/cancel-flat-new.png" class="hvr-row">'+'</td>' +
-                '</tr>';
-            if(temp != ''){
-                $('#body_temp_tindakan').append(temp);
+            if($(".tindakan_"+idTindakan).length == 0) {
+                var idDok = idDokter.split("|")[0];
+                var idPelayanan = idDokter.split("|")[1];
+                var temp = '<tr id="rowTindakan_' + count + '">' +
+                    '<td>' + namaDokter +
+                    '<input class="tindakan_dokter" type="hidden" value="' + idDok + '">' +
+                    '<input class="tindakan_id_pelayanan" type="hidden" value="' + idPelayanan + '">' +
+                    '<input class="tindakan_id_tindakan" type="hidden" value="' + idTindakan + '">' +
+                    '<input class="tindakan_qty" type="hidden" value="' + qty + '">' +
+                    '<div class="tindakan_' + idTindakan + '" />' +
+                    '</td>' +
+                    '<td>' + namaTindakan + '</td>' +
+                    '<td align="center">' + qty + '</td>' +
+                    '<td align="right">' + tarif + '</td>' +
+                    '<td align="right">' + formatRupiahAtas((parseInt(replaceTitik(total)) * qty)) + '</td>' +
+                    '<td align="center">' + '<img onclick="delListTindakan(\'rowTindakan_' + count + '\')" style="cursor: pointer" src="' + contextPath + '/pages/images/cancel-flat-new.png" class="hvr-row">' + '</td>' +
+                    '</tr>';
+                if (temp != '') {
+                    $('#body_temp_tindakan').append(temp);
+                }
             }
         }
     } else {
