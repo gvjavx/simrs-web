@@ -442,6 +442,7 @@
     </section>
 </div>
 <div class="mask"></div>
+<div class="prev-radio"></div>
 
 <div class="modal fade" id="modal-edit-parameter">
     <div class="modal-dialog modal-flat">
@@ -880,6 +881,25 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-img-prev">
+    <div class="modal-dialog" id="temp-img-prev" style="width: fit-content">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Preview
+                </h4>
+            </div>
+            <div class="modal-body">
+                <img src="" id="target_img_preview">
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -983,6 +1003,28 @@
         cekLogin();
         listTindakan();
     });
+
+    function imgPreview(obj){
+       var src = $(obj).attr('data-src');
+       setMaxWidth80("temp-img-prev");
+       if (src != null && src != "") {
+          setMaxWidth80("target_img_preview");
+          $("#target_img_preview").attr("src",src);
+          $('#modal-img-prev').modal({show: true, backdrop: 'static'});
+          /*$('.mask').html('<div class="img-box"><img src="' + src + ' "><a class="close">&times;</a>');
+
+          $('.mask').addClass('is-visible fadein').on('animationend', function () {
+             $(this).removeClass('fadein is-visible').addClass('is-visible');
+          });
+
+          $('.close').on('click', function () {
+             $(this).parents('.mask').addClass('fadeout').on('animationend', function () {
+                $(this).removeClass('fadeout is-visible')
+             });
+          });*/
+       }
+    };
+
 
     function showModal(select) {
         if (select == 1) {
@@ -1199,15 +1241,15 @@
                         '            <span class="input-group-btn">\n' +
                         '                <span class="btn btn-default btn-file">\n' +
                         '                     Browse… <input accept="image/*" id="hasil_lab_'+i+'" \n' +
-                        '        onchange="parseToByte(\'hasil_lab_' + i + '\', \'label_hasil_lab_' + i + '\', \'hasil_lab'+i+'\', \'' + item.idPeriksaLabDetail + '\', \''+item.namaDetailPemeriksaan+'\', \'dalam\')"\n' +
-                        '        type="file">\n' +
+                        '                     onchange="parseToByte(\'hasil_lab_' + i + '\', \'label_hasil_lab_' + i + '\', \'hasil_lab'+i+'\', \'' + item.idPeriksaLabDetail + '\', \''+item.namaDetailPemeriksaan+'\', \'dalam\')"\n' +
+                        '                     type="file">\n' +
                         '                </span>\n' +
                         '            </span>\n' +
-                        '                    <input style="margin-top: 7px" type="text" class="form-control" readonly id="label_hasil_lab_' + i + '">\n' +
+                        '                    <input style="margin-top: 7px;position: relative;z-index: 0;" type="text" class="form-control" readonly id="label_hasil_lab_' + i + '">\n' +
                         '                </div>\n' +
                         '            </div>\n' +
                         '            <div class="col-md-2">\n' +
-                        '                <button onclick="addUpload(\'hasil_lab' + i + '\', \'set_hasil' + i + '\', \''+item.idPeriksaLabDetail+'\', \''+item.namaDetailPemeriksaan+'\', \'dalam\')"\n' +
+                        '                <button id="btn-add-'+item.idPeriksaLabDetail+'" onclick="addUpload(\'hasil_lab' + i + '\', \'set_hasil' + i + '\', \''+item.idPeriksaLabDetail+'\', \''+item.namaDetailPemeriksaan+'\', \'dalam\')"\n' +
                         '                        class="btn btn-success" style="margin-left: -20px; margin-top: 9px">\n' +
                         '                    <i class="fa fa-plus"></i></button>\n' +
                         '            </div>\n' +
@@ -1392,7 +1434,7 @@
             '        <div class="input-group">\n' +
             '<span class="input-group-btn">\n' +
             '    <span class="btn btn-default btn-file">\n' +
-            '         Browse… <input class="'+jen+'" accept="image/*" id="'+jenis+'" onchange="parseToByte(\'' + jenis + '\', \'' + label + '\', \''+idRow+'\', \''+idDetail+'\', \''+namaDetail+'\', \''+tipe+'\')" type="file">\n' +
+            '         Browse… <input class="'+jen+'" accept="image/*" id="'+jenis+'" onchange="parseToByte(\'' + jenis + '\', \'' + label + '\', \''+idRow+'\', \''+idDetail+'\', \''+namaDetail+'\', \''+tipe+'\',\'Y\')" type="file">\n' +
             '    </span>\n' +
             '</span>\n' +
             '            <input style="margin-top: 7px" type="text" class="form-control" readonly id="' + label + '">\n' +
@@ -1511,7 +1553,7 @@
         }
     }
 
-    function parseToByte(id, label, idRow, idPerikDetail, namaDetail, tipe) {
+    function parseToByte(id, label, idRow, idPerikDetail, namaDetail, tipe, isAdded) {
         if(!cekSession()){
             if(tipe == "luar"){
                 namaDetail = label;
@@ -1543,7 +1585,31 @@
                                 if(res.status == "success"){
                                     $('#'+label).val(files[0].name);
                                     $('#'+label).css('border-bottom','solid 5px #5cb85c');
-                                    $('#del_'+idRow).attr('onclick', 'delUpload(\''+idRow+'\',\''+res.msg+'\')')
+                                    $('#del_'+idRow).attr('onclick', 'delUpload(\''+idRow+'\',\''+res.msg+'\')');
+                                    if(isAdded === 'Y')
+                                    {
+                                       if($("#btn-add-list-prev-"+idPerikDetail).length == 0)
+                                       {
+                                          $('button#'+idRow).after('<button id="btn-add-list-prev-'+idPerikDetail+'" class="btn btn-primary" onclick="imgPreview(this)" style="margin-left: 3px;" data-src="'+URL.createObjectURL(files[0])+'"><i class="fa fa-image" ></i></button>');
+                                       }
+                                       else
+                                       {
+                                          $("#btn-add-list-prev-"+idPerikDetail).attr("data-src",URL.createObjectURL(files[0]));
+                                       }
+                                    }
+                                    else
+                                    {
+                                       if($("#btn-add-prev-"+idPerikDetail).length == 0)
+                                       {
+                                          $('#btn-add-'+idPerikDetail).after('<button id="btn-add-prev-'+idPerikDetail+'" class="btn btn-primary" onclick="imgPreview(this)" style="margin-left: 3px;" data-src="'+URL.createObjectURL(files[0])+'"><i class="fa fa-image" ></i></button>');
+                                       }
+                                       else
+                                       {
+                                          $("#btn-add-prev-"+idPerikDetail).attr("data-src",URL.createObjectURL(files[0]));
+                                       }
+                                    }
+
+
                                 }else{
                                     $('#'+label).val(res.msg);
                                     $('#'+label).css('border-bottom','solid 5px #c9302c');
