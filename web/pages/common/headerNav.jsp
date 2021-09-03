@@ -451,7 +451,6 @@
 
     function cekRole(){
         TransaksiObatAction.cekRole(function (res) {
-           console.log("================1===="+res);
             if(res == "ADMIN APOTEK"){
                 pushNotifResep();
             }

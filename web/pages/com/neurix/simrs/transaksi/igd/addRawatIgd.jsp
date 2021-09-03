@@ -1905,7 +1905,7 @@
                     <div class="col-md-9">
                         <div id="body-apotek">
                             <s:action id="initApotek" namespace="/checkup"
-                                      name="getComboApotek_checkup"/>
+                                      name="getComboApotekRi_checkup"/>
                             <s:select cssStyle="margin-top: 7px; width: 100%"
                                       list="#initApotek.listOfApotek" id="resep_apotek"
                                       listKey="idPelayanan + '|' + namaPelayanan"
