@@ -463,7 +463,6 @@
             }
             if(res == "ADMIN LAB"){
                 pushNotifLab('lab');
-               pushNotifLab('radiologi');
             }
 
             if(res == "ADMIN RS")
