@@ -1103,7 +1103,11 @@ modal-diagnosa
     } else if (select == 7 || select == 10) {
         resetAll();
         cekRekakanops();
-        getApotekRawatJalan();
+        if(tipePelayanan == "ugd")
+        { getApotekRawatInap(); }
+        else
+        { getApotekRawatJalan(); }
+
         if (select == 7)
             $('#title-resep').html("Tambah Resep Pasien");
         $("#sec-jumlah-resep").show();
@@ -1169,6 +1173,21 @@ modal-diagnosa
 
 function getApotekRawatJalan() {
     CheckupAction.getComboApotekList(function (res) {
+        if (res.length == 1){
+            $("#body-apotek").html("");
+            var str = "";
+            $.each(res, function (i, item) {
+                str += "<input type='text' class='form-control' value='"+item.namaPelayanan+"' disabled/>" +
+                    "<input type='hidden' id='resep_apotek' value='"+item.idPelayanan+"' />";
+            });
+            $("#body-apotek").html(str);
+            setObatPoli();
+        };
+    })
+}
+
+function getApotekRawatInap() {
+    CheckupAction.getComboApotekRawatInapList(function (res) {
         if (res.length == 1){
             $("#body-apotek").html("");
             var str = "";
