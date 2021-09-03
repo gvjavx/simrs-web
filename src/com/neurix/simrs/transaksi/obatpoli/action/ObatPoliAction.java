@@ -994,6 +994,44 @@ public class ObatPoliAction extends BaseMasterAction {
         return response;
     }
 
+    public String printIDPabrik() {
+
+        logger.info("[ObatPoliAction.printIDPabrik] START process <<<");
+
+        reportParams.put("idObat", getId());
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[ObatPoliAction.printIDPabrik] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            return "search";
+        }
+
+        logger.info("[ObatPoliAction.printIDPabrik] END process <<<");
+        return "print_barcode_id_pabrik";
+    }
+
+    public String printBarcodeBarang() {
+
+        logger.info("[ObatPoliAction.printBarcodeBarang] START process <<<");
+
+        String idBarang = getId();
+
+        reportParams.put("idBarang", idBarang);
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[ObatPoliAction.printBarcodeBarang] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            return "search";
+        }
+
+        logger.info("[ObatPoliAction.printBarcodeBarang] END process <<<");
+        return "print_barcode_barang";
+    }
+
     public String initFormRequestUnit(){
         return "search";
     }

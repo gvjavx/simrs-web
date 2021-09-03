@@ -87,6 +87,8 @@ public class PermintaanGiziBoImpl implements PermintaanGiziBo {
                 }
                 if(entity != null){
                     entity.setApproveFlag(bean.getApproveFlag());
+                    if(null!=bean.getDiterimaFlag() && "N".equalsIgnoreCase(bean.getApproveFlag()))
+                    { entity.setDiterimaFlag(bean.getDiterimaFlag()); }
                     entity.setKeterangan(bean.getKeterangan());
                     entity.setAction(bean.getAction());
                     entity.setLastUpdate(bean.getLastUpdate());

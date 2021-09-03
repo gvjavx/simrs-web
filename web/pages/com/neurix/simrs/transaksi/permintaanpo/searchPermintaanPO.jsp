@@ -224,6 +224,15 @@
                                             <s:else>
                                                 <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>" onclick="showBatch('<s:property value="idPermintaanVendor"/>','<s:property value="flag"/>','<s:property value="idApprovalObat"/>')">
                                             </s:else>
+                                            <s:url var="verify_po" namespace="/permintaanpo" action="edit_permintaanpo" escapeAmp="false">
+                                                <s:param name="id"><s:property value="idPermintaanVendor"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{verify_po}">
+                                                <img class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                            </s:a>
+                                            <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>" onclick="printPo('<s:property value="idPermintaanVendor"/>','<s:property value="idApprovalObat"/>')">
+
+                                    </
                                         </s:if>
                                         <s:else>
                                             <s:url var="verify_po" namespace="/permintaanpo" action="edit_permintaanpo" escapeAmp="false">
