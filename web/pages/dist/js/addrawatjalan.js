@@ -897,10 +897,15 @@ function listSelectTindakanKategori(val) {
     var idPelayanan = "";
     var def = '';
     var isEdit = $('#is_edit').val();
+
+    console.log(dataDokter);
     if (val != null && val != '') {
         var dataDokter = val.split("|");
         idDokter = dataDokter[0];
-        idPelayanan = dataDokter[1];
+        // idPelayanan = dataDokter[1];
+
+        idPelayanan = idPoli;
+
         CheckupDetailAction.getListComboTindakanKategori(idPelayanan, null, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {

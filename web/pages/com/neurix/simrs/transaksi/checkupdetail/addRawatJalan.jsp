@@ -3004,6 +3004,8 @@
     var jenisPeriksa = $('#jenis_periksa').val();
     var jenisPeriksaPasien = $('#jenis_pasien').val();
 
+    console.log(idPoli);
+
     var isReadRM = false;
     var contextPath = '<%= request.getContextPath() %>';
     var tglLhr = $('#h_tgl_lahir').val();

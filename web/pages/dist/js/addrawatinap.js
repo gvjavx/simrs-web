@@ -770,6 +770,13 @@ function listSelectTindakanKategori(val) {
         var dataDokter = val.split("|");
         idDokter = dataDokter[0];
         idPelayanan = dataDokter[1];
+
+        if ( "kamar_operasi" == kategoriRuangan ) {
+            idPelayanan = dataDokter[1];
+        } else {
+            idPelayanan = idPoli;
+        }
+
         CheckupDetailAction.getListComboTindakanKategori(idPelayanan, kategoriRuangan, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
