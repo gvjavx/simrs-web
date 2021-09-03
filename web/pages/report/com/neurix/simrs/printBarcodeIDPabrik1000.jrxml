@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printBarcodeIDBarang" language="groovy" pageWidth="150" pageHeight="100" columnWidth="110" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a5ab152-c524-4ad6-b41f-7f1dddf50e80">
+	<property name="ireport.zoom" value="2.5937424601000036"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="reportParams.idObat" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select print.no,ho.id_obat, print.kdbarang, ho.nama_obat, print.nmbarang from im_simrs_header_obat ho
+inner join mig_baru mig on ho.id_obat = mig.id_obat
+inner join print_obat print on mig.kode_barang_umum = print.kdbarang
+where print.no < 1053
+ORDER BY print.no;]]>
+	</queryString>
+	<field name="no" class="java.lang.Long"/>
+	<field name="id_obat" class="java.lang.String"/>
+	<field name="kdbarang" class="java.lang.Long"/>
+	<field name="nama_obat" class="java.lang.String"/>
+	<field name="nmbarang" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="60" splitType="Stretch">
+			<componentElement>
+				<reportElement x="0" y="10" width="110" height="50" uuid="03ebd133-b4a8-4ece-93de-1d52b9b68681"/>
+				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" moduleWidth="1.0" textPosition="bottom">
+					<jr:codeExpression><![CDATA[$F{id_obat}]]></jr:codeExpression>
+				</jr:Code128>
+			</componentElement>
+			<textField>
+				<reportElement x="0" y="0" width="110" height="10" uuid="3d6e37b1-5d85-4c6b-8438-2d7f30d2cd4a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nama_obat} != null ? $F{nama_obat} : ""]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
