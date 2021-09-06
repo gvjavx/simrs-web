@@ -2129,3 +2129,15 @@ ADD COLUMN parent_id VARCHAR(30);
     ALTER TABLE it_akun_nilai_parameter_budgeting
     ADD COLUMN position_id VARCHAR(50);
 --
+
+-- 2021-08-03
+
+    INSERT INTO im_functions VALUES
+    ('6935','Print ID Obat', '/stokobat/printIDPabrik_stokobat.action','1510',null,now(),'202108_mig',now(),'202108_mig','Y','C'),
+    ('6936','Print ID Barang', '/stokobat/printBarcodeBarang_stokobat.action','1510',null,now(),'202108_mig',now(),'202108_mig','Y','C');
+
+    INSERT INTO im_func_roles VALUES
+    ('6935','36','Y',now(),now(),'202108_mig','202108_mig'),
+    ('6936','36','Y',now(),now(),'202108_mig','202108_mig');
+
+--

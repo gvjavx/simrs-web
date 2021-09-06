@@ -27,16 +27,16 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
     public List<ImSimrsPelayananEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsPelayananEntity.class);
         if (mapCriteria != null) {
-            if (mapCriteria.get("id_pelayanan") != null){
+            if (mapCriteria.get("id_pelayanan") != null) {
                 criteria.add(Restrictions.eq("idPelayanan", mapCriteria.get("id_pelayanan").toString()));
             }
-            if(mapCriteria.get("branch_id") != null){
-                criteria.add(Restrictions.eq("branchId",  mapCriteria.get("branch_id").toString()));
+            if (mapCriteria.get("branch_id") != null) {
+                criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
             }
-            if (mapCriteria.get("not_own_branch") != null){
+            if (mapCriteria.get("not_own_branch") != null) {
                 criteria.add(Restrictions.ne("branchId", mapCriteria.get("not_own_branch")));
             }
-            if (mapCriteria.get("not_null") != null){
+            if (mapCriteria.get("not_null") != null) {
                 criteria.add(Restrictions.isNotNull("idHeaderPelayanan"));
             }
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
@@ -46,7 +46,7 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         return result;
     }
 
-    public List<Pelayanan> getListApotek(String branch, String tipeApotek){
+    public List<Pelayanan> getListApotek(String branch, String tipeApotek) {
 
         String SQL = "SELECT\n" +
                 "a.id_pelayanan,\n" +
@@ -65,11 +65,9 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
 
         List<Pelayanan> pelayananList = new ArrayList<>();
 
-        if (results.size() > 0)
-        {
+        if (results.size() > 0) {
             Pelayanan pelayanan;
-            for (Object[] obj : results)
-            {
+            for (Object[] obj : results) {
                 pelayanan = new Pelayanan();
                 pelayanan.setIdPelayanan(obj[0].toString());
                 pelayanan.setNamaPelayanan(obj[1].toString());
@@ -80,7 +78,7 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         return pelayananList;
     }
 
-    public List<Pelayanan> getListPelayananPaket(String branch){
+    public List<Pelayanan> getListPelayananPaket(String branch) {
 
         String SQL = "SELECT\n" +
                 "a.id_pelayanan,\n" +
@@ -98,8 +96,7 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
 
         List<Pelayanan> pelayananList = new ArrayList<>();
 
-        if (results.size() > 0)
-        {
+        if (results.size() > 0) {
             Pelayanan pelayanan;
             for (Object[] obj : results) {
                 pelayanan = new Pelayanan();
@@ -122,13 +119,13 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         return results;
     }
 
-    public List<ImSimrsPelayananEntity> cekData(String idPelayanan) throws HibernateException{
+    public List<ImSimrsPelayananEntity> cekData(String idPelayanan) throws HibernateException {
         List<ImSimrsPelayananEntity> results = new ArrayList<>();
 
         String query = "SELECT a.id_pelayanan, b.id_detail_checkup\n" +
                 "FROM im_simrs_pelayanan a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON b.id_pelayanan = a.id_pelayanan\n" +
-                "WHERE a.id_pelayanan = '"+idPelayanan+"' LIMIT 1";
+                "WHERE a.id_pelayanan = '" + idPelayanan + "' LIMIT 1";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -137,7 +134,7 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         return results;
     }
 
-    public List<Pelayanan> getListPelayananFarmasi(String branchId){
+    public List<Pelayanan> getListPelayananFarmasi(String branchId) {
 
         String SQL = "SELECT\n" +
                 "a.id_pelayanan,\n" +
@@ -154,10 +151,10 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
                 .list();
 
         List<Pelayanan> pelayanans = new ArrayList<>();
-        if (results.size() > 0){
+        if (results.size() > 0) {
 
             Pelayanan pelayanan;
-            for (Object[] obj : results){
+            for (Object[] obj : results) {
                 pelayanan = new Pelayanan();
                 pelayanan.setIdPelayanan(obj[0].toString());
                 pelayanan.setNamaPelayanan(obj[1].toString());
@@ -169,17 +166,17 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
 
     public String getNextPelayananId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_pelayanan')");
-        Iterator<BigInteger> iter=query.list().iterator();
+        Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return "PYN" + sId;
     }
 
-    public List<Pelayanan> getListPelayananWithLab(String tipe){
+    public List<Pelayanan> getListPelayananWithLab(String tipe) {
         String ply = "('rawat_jalan')";
-        if("umum".equalsIgnoreCase(tipe)){
+        if ("umum".equalsIgnoreCase(tipe)) {
             ply = "('rawat_jalan', 'lab', 'radiologi')";
         }
-        if("igd".equalsIgnoreCase(tipe)){
+        if ("igd".equalsIgnoreCase(tipe)) {
             ply = "('igd','ugd')";
         }
         String SQL = "SELECT\n" +
@@ -190,7 +187,7 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
                 "FROM im_simrs_pelayanan a\n" +
                 "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
                 "WHERE a.flag = 'Y'\n" +
-                "AND b.tipe_pelayanan IN " + ply + "\n"+
+                "AND b.tipe_pelayanan IN " + ply + "\n" +
                 "AND a.branch_id = :branchId \n" +
                 "ORDER BY b.nama_pelayanan ASC";
 
@@ -241,18 +238,18 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         return getListPelayanan(branchId, null, like);
     }
 
-    public List<Pelayanan> getListPelayanan(String branchId, String notLike, String like){
+    public List<Pelayanan> getListPelayanan(String branchId, String notLike, String like) {
         String br = "%";
         String where = "";
         List<Pelayanan> pelayananList = new ArrayList<>();
-        if(branchId != null && !"".equalsIgnoreCase(branchId)){
+        if (branchId != null && !"".equalsIgnoreCase(branchId)) {
             br = branchId;
         }
-        if(notLike != null && !"".equalsIgnoreCase(notLike)){
-            where = "AND b.tipe_pelayanan NOT IN "+notLike+" \n";
+        if (notLike != null && !"".equalsIgnoreCase(notLike)) {
+            where = "AND b.tipe_pelayanan NOT IN " + notLike + " \n";
         }
-        if(like != null && !"".equalsIgnoreCase(like)){
-            where = "AND b.tipe_pelayanan IN "+like+" \n";
+        if (like != null && !"".equalsIgnoreCase(like)) {
+            where = "AND b.tipe_pelayanan IN " + like + " \n";
         }
         String SQL = "SELECT\n" +
                 "a.id_pelayanan,\n" +
@@ -286,24 +283,24 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         return pelayananList;
     }
 
-    public Pelayanan getObjectPelayanan(Pelayanan bean){
+    public Pelayanan getObjectPelayanan(Pelayanan bean) {
         Pelayanan pelayanan = new Pelayanan();
-        if(bean != null){
+        if (bean != null) {
             String condition = "";
-            if(bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
-                condition += "AND a.id_pelayanan = '"+bean.getIdPelayanan()+"' \n";
+            if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())) {
+                condition += "AND a.id_pelayanan = '" + bean.getIdPelayanan() + "' \n";
             }
-            if(bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
-                condition += "AND a.branch_id = '"+bean.getBranchId()+"' \n";
+            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
+                condition += "AND a.branch_id = '" + bean.getBranchId() + "' \n";
             }
-            if(bean.getTipePelayanan() != null && !"".equalsIgnoreCase(bean.getTipePelayanan())){
-                condition += "AND b.tipe_pelayanan = '"+bean.getTipePelayanan()+"' \n";
+            if (bean.getTipePelayanan() != null && !"".equalsIgnoreCase(bean.getTipePelayanan())) {
+                condition += "AND b.tipe_pelayanan = '" + bean.getTipePelayanan() + "' \n";
             }
-            if(bean.getKategoriPelayanan() != null && !"".equalsIgnoreCase(bean.getKategoriPelayanan())){
-                condition += "AND b.kategori_pelayanan = '"+bean.getKategoriPelayanan()+"' \n";
+            if (bean.getKategoriPelayanan() != null && !"".equalsIgnoreCase(bean.getKategoriPelayanan())) {
+                condition += "AND b.kategori_pelayanan = '" + bean.getKategoriPelayanan() + "' \n";
             }
-            if(bean.getKodePoliVclaim() != null && !"".equalsIgnoreCase(bean.getKodePoliVclaim())){
-                condition += "AND b.kode_vclaim = '"+bean.getKodePoliVclaim()+"' \n";
+            if (bean.getKodePoliVclaim() != null && !"".equalsIgnoreCase(bean.getKodePoliVclaim())) {
+                condition += "AND b.kode_vclaim = '" + bean.getKodePoliVclaim() + "' \n";
             }
             String SQL = "SELECT\n" +
                     "a.id_pelayanan,\n" +
@@ -335,27 +332,27 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         return pelayanan;
     }
 
-    public List<Pelayanan> getListObjectPelayanan(Pelayanan bean){
+    public List<Pelayanan> getListObjectPelayanan(Pelayanan bean) {
         List<Pelayanan> pelayananList = new ArrayList<>();
-        if(bean != null){
+        if (bean != null) {
             String condition = "";
             String flag = "Y";
-            if(bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
-                condition += "AND a.id_pelayanan = '"+bean.getIdPelayanan()+"' \n";
+            if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())) {
+                condition += "AND a.id_pelayanan = '" + bean.getIdPelayanan() + "' \n";
             }
-            if(bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
-                condition += "AND a.branch_id = '"+bean.getBranchId()+"' \n";
+            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
+                condition += "AND a.branch_id = '" + bean.getBranchId() + "' \n";
             }
-            if(bean.getTipePelayanan() != null && !"".equalsIgnoreCase(bean.getTipePelayanan())){
-                condition += "AND b.tipe_pelayanan = '"+bean.getTipePelayanan()+"' \n";
+            if (bean.getTipePelayanan() != null && !"".equalsIgnoreCase(bean.getTipePelayanan())) {
+                condition += "AND b.tipe_pelayanan = '" + bean.getTipePelayanan() + "' \n";
             }
-            if(bean.getKategoriPelayanan() != null && !"".equalsIgnoreCase(bean.getKategoriPelayanan())){
-                condition += "AND b.kategori_pelayanan = '"+bean.getKategoriPelayanan()+"' \n";
+            if (bean.getKategoriPelayanan() != null && !"".equalsIgnoreCase(bean.getKategoriPelayanan())) {
+                condition += "AND b.kategori_pelayanan = '" + bean.getKategoriPelayanan() + "' \n";
             }
-            if(bean.getNamaPelayanan() != null && !"".equalsIgnoreCase(bean.getNamaPelayanan())){
-                condition += "AND b.nama_pelayanan ILIKE '%"+bean.getNamaPelayanan()+"%' \n";
+            if (bean.getNamaPelayanan() != null && !"".equalsIgnoreCase(bean.getNamaPelayanan())) {
+                condition += "AND b.nama_pelayanan ILIKE '%" + bean.getNamaPelayanan() + "%' \n";
             }
-            if(bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+            if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 flag = bean.getFlag();
             }
             String SQL = "SELECT\n" +
@@ -381,7 +378,7 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
                     .list();
 
             if (results.size() > 0) {
-                for (Object[] obj: results){
+                for (Object[] obj : results) {
                     Pelayanan pelayanan = new Pelayanan();
                     pelayanan.setIdPelayanan(obj[0] != null ? obj[0].toString() : "");
                     pelayanan.setNamaPelayanan(obj[1] != null ? obj[1].toString() : "");
@@ -400,18 +397,18 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         return pelayananList;
     }
 
-    public Pelayanan getPelayananById(String column, String value){
+    public Pelayanan getPelayananById(String column, String value) {
         Pelayanan pelayanan = new Pelayanan();
-        if(column != null && value != null){
+        if (column != null && value != null) {
             String condition = "";
-            if("idPelayanan".equalsIgnoreCase(column)){
-                condition = "AND a.id_pelayanan = '"+value+"' \n";
+            if ("idPelayanan".equalsIgnoreCase(column)) {
+                condition = "AND a.id_pelayanan = '" + value + "' \n";
             }
-            if("tipePelayanan".equalsIgnoreCase(column)){
-                condition = "AND b.tipe_pelayanan = '"+value+"' \n";
+            if ("tipePelayanan".equalsIgnoreCase(column)) {
+                condition = "AND b.tipe_pelayanan = '" + value + "' \n";
             }
-            if("kategoriPelayanan".equalsIgnoreCase(column)){
-                condition = "AND b.kategori_pelayanan = '"+value+"' \n";
+            if ("kategoriPelayanan".equalsIgnoreCase(column)) {
+                condition = "AND b.kategori_pelayanan = '" + value + "' \n";
             }
             String SQL = "SELECT\n" +
                     "a.id_pelayanan,\n" +
@@ -441,7 +438,8 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         return pelayanan;
     }
 
-    public List <Pelayanan> getListPelayananTelemedic(String branchId) {
+    public List<Pelayanan> getListPelayananTelemedic(String branchId) {
+        //SYAMS 30AGUS21 =>Tambah 'group by' agar tidak ada duplicate value
         String sql = "SELECT ply.id_pelayanan, hply.nama_pelayanan \n" +
                 "FROM im_simrs_header_pelayanan hply\n" +
                 "INNER JOIN im_simrs_pelayanan ply ON ply.id_header_pelayanan = hply.id_header_pelayanan\n" +
@@ -450,6 +448,7 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
                 "WHERE htdk.flag_konsul_tele = 'Y'\n" +
                 "AND hply.flag = 'Y' \n" +
                 "AND ply.branch_id = :branchId\n" +
+                "GROUP BY ply.id_pelayanan, hply.nama_pelayanan\n" +
                 "ORDER BY nama_pelayanan DESC\n";
 
 
@@ -473,7 +472,7 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
 
     }
 
-    public List<Pelayanan> getListPelayananByTipe(String tipe, String branchId){
+    public List<Pelayanan> getListPelayananByTipe(String tipe, String branchId) {
 
         String SQL = "SELECT \n" +
                 "b.id_pelayanan,\n" +
@@ -484,14 +483,14 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
                 "im_simrs_header_pelayanan a\n" +
                 "INNER JOIN (SELECT id_pelayanan, id_header_pelayanan, branch_id FROM im_simrs_pelayanan WHERE flag = 'Y') b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
                 "WHERE \n" +
-                "b.branch_id = '"+branchId+"'\n" +
-                "AND a.tipe_pelayanan = '"+tipe+"'";
+                "b.branch_id = '" + branchId + "'\n" +
+                "AND a.tipe_pelayanan = '" + tipe + "'";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
 
         List<Pelayanan> listPelayanan = new ArrayList<>();
-        if (results.size() > 0){
-            for (Object[] obj : results){
+        if (results.size() > 0) {
+            for (Object[] obj : results) {
                 Pelayanan pelayanan = new Pelayanan();
                 pelayanan.setIdPelayanan(obj[0].toString());
                 pelayanan.setNamaPelayanan(obj[1].toString());
@@ -503,21 +502,21 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         return listPelayanan;
     }
 
-    public List<Pelayanan> getListPelayananByBranch(String branchId){
+    public List<Pelayanan> getListPelayananByBranch(String branchId) {
 
         String SQL = "SELECT \n" +
                 "p.id_pelayanan,\n" +
                 "hp.nama_pelayanan\n" +
                 "FROM (SELECT * FROM im_simrs_pelayanan WHERE flag = 'Y') p \n" +
                 "INNER JOIN im_simrs_header_pelayanan hp ON hp.id_header_pelayanan = p.id_header_pelayanan\n" +
-                "WHERE p.branch_id = '"+branchId+"'";
+                "WHERE p.branch_id = '" + branchId + "'";
 
         List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
 
         List<Pelayanan> pelayananList = new ArrayList<>();
-        if (list.size() > 0){
+        if (list.size() > 0) {
 
-            for (Object[] obj : list){
+            for (Object[] obj : list) {
                 Pelayanan pelayanan = new Pelayanan();
                 pelayanan.setIdPelayanan(obj[0].toString());
                 pelayanan.setNamaPelayanan(obj[1].toString());

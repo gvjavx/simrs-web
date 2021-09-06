@@ -39,6 +39,16 @@ public class MesinAbsensiDetail extends BaseModel {
     private String jam;
     private String branchId;
 
+    private String keterangan;
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
     public String getBranchId() {
         return branchId;
     }

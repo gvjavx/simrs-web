@@ -1,0 +1,4 @@
+-- 6 SEP 21 => Tambah column keterangan --
+
+ALTER TABLE it_hris_mesin_absensi_detail
+ADD keterangan varchar(100);

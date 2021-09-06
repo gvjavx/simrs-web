@@ -213,6 +213,7 @@
                                 <td align="center">Jml Lembar/Box</td>
                                 <td align="center">Jml Biji/Lembar</td>
                                 <td align="center">Stok Biji</td>
+                                <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody style="font-size: 13px">
@@ -244,6 +245,10 @@
                                     <td align="right"><script>document.write(formatRupiah(<s:property value="bijiPerLembar"/>))</script></td>
                                     <%--<td align="center"><s:property value="qtyBiji"/></td>--%>
                                     <td align="right"><script>document.write(formatRupiah(<s:property value="totalQty"/>))</script></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" onclick="printBarcodeIdObat('<s:property value="idObat"/>')" target="_blank"><i class="fa fa-print"></i> ID Obat</button>
+                                        <button class="btn btn-sm btn-primary" onclick="printBarcodeIdBarang('<s:property value="idBarang"/>')" target="_blank"><i class="fa fa-print"></i> ID Barang</button>
+                                    </td>
                                 </tr>
                             </s:iterator>
                             </tbody>
@@ -669,6 +674,20 @@
                 $('#war_req-2_qty').show();
             }
         }
+    }
+
+    function printBarcodeIdObat(id) {
+        window.open(firstpath()+"/stokobat/printIDPabrik_stokobat.action?id="+id);
+    }
+
+    function printBarcodeIdBarang(id) {
+        window.open(firstpath()+ "/stokobat/printBarcodeBarang_stokobat.action?id="+id);
+    }
+
+    function firstpath() {
+        var pathArray = window.location.pathname.split('/');
+        var first = pathArray[1];
+        return "/" + first;
     }
 
 </script>
