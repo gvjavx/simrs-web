@@ -5,12 +5,6 @@
        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
     <!-- ====== PROD ======= -->
-    <bean id="dataSource"
-        class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-        p:driverClassName="org.postgresql.Driver"
-        p:url="jdbc:postgresql://localhost:5432/gomed_dev"
-        p:username="postgres"
-        p:password="123456"/>
     <!--<bean id="dataSource"-->
         <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
         <!--p:driverClassName="org.postgresql.Driver"-->
@@ -38,9 +32,9 @@
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource"
           p:driverClassName="org.postgresql.Driver"
-          p:url="jdbc:postgresql://localhost:5432/gomedsys_nmu_prod_mig_20210828"
+          p:url="jdbc:postgresql://localhost:5432/gomed_dev"
           p:username="postgres"
-          p:password="postgres"/>
+          p:password="123456"/>
 
 </beans>
 
