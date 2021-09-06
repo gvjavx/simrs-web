@@ -1440,7 +1440,7 @@ public class MutasiBoImpl implements MutasiBo {
             if (keluargaEntities.size() > 0){
                 for (ImKeluargaEntity keluargaEntity : keluargaEntities){
 
-                    keluargaEntity.setFlag("Y");
+                    keluargaEntity.setFlag("N");
                     keluargaEntity.setAction("U");
                     keluargaEntity.setLastUpdate(mutasi.getLastUpdate());
                     keluargaEntity.setLastUpdateWho(mutasi.getLastUpdateWho());
