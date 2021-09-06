@@ -40,6 +40,7 @@ public class AbsensiOnlineController implements ModelDriven<Object> {
     String action;
     String username;
     String branchId;
+    String keterangan;
 
     public String getBranchId() {
         return branchId;
@@ -121,6 +122,14 @@ public class AbsensiOnlineController implements ModelDriven<Object> {
         this.mesinAbsensiDetailBoProxy = mesinAbsensiDetailBoProxy;
     }
 
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
     @Override
     public Object getModel() {
         switch (action) {
@@ -154,6 +163,9 @@ public class AbsensiOnlineController implements ModelDriven<Object> {
             bean.setCreatedWho(username);
             bean.setLastUpdateWho(username);
             bean.setBranchId(branchId);
+
+            //SYAMS 6SEP21 => Tambah keterangan
+            bean.setKeterangan(keterangan);
 
             try {
                 mesinAbsensiDetailBoProxy.saveAdd(bean);

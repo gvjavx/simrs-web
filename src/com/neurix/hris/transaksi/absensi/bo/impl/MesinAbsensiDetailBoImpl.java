@@ -203,6 +203,8 @@ public class MesinAbsensiDetailBoImpl implements MesinAbsensiDetailBo {
             itMesinAbsensiDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
             itMesinAbsensiDetailEntity.setCreatedDate(bean.getCreatedDate());
             itMesinAbsensiDetailEntity.setLastUpdate(bean.getLastUpdate());
+            //SYAMS 6SEP21 => Tambah keterangan
+            itMesinAbsensiDetailEntity.setKeterangan(bean.getKeterangan());
 
             try {
                 // insert into database
