@@ -309,7 +309,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\t\t\tON position.position_id = posisi.position_id \n" +
                 "\t\t\t\n" +
                 "\tWHERE pegawai.flag = 'Y'\n" +
-                "\t\tAND pegawai.pin IS NOT NULL\n" +
+//                "\t\tAND pegawai.pin IS NOT NULL\n" +
                 "\t\tAND posisi.flag = 'Y' \n" +
                 tipeWhere;
 
@@ -1310,7 +1310,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\t\t\tON jenis.jenis_pegawai_id = posisi.jenis_pegawai \n" +
                 "\t\t\t\n" +
                 "\tWHERE pegawai.flag = 'Y'\n" +
-                "\t\tAND pegawai.pin IS NOT NULL\n" +
+//                "\t\tAND pegawai.pin IS NOT NULL\n" +
                 "\t\tAND posisi.flag = 'Y' \n" +
                 tipeWhere +
                 "\tORDER BY jenis.persen_gaji DESC \n" ;
@@ -1363,7 +1363,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\t\t\tON position.position_id = posisi.position_id \n" +
                 "\t\t\t\n" +
                 "\tWHERE pegawai.flag = 'Y'\n" +
-                "\t\tAND pegawai.pin IS NOT NULL\n" +
+//                "\t\tAND pegawai.pin IS NOT NULL\n" +
                 "\t\tAND posisi.flag = 'Y' \n" +
                 "\t\tAND posisi.position_id = '24' \n" +
                 tipeWhere;
@@ -1403,7 +1403,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\t\t\tON position.position_id = posisi.position_id \n" +
                 "\t\t\t\n" +
                 "\tWHERE pegawai.flag = 'Y'\n" +
-                "\t\tAND pegawai.pin IS NOT NULL\n" +
+//                "\t\tAND pegawai.pin IS NOT NULL\n" +
                 "\t\tAND posisi.flag = 'Y' \n" +
                 "\t\tAND posisi.position_id = '1' \n" +
                 tipeWhere;
