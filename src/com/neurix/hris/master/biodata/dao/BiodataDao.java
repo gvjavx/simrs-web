@@ -1420,7 +1420,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         }
         return result;
     }
-    public List<Biodata> getBiodataByNip(String nip){
+    public List<Biodata> getBiodataWithPinByNip(String nip){
         List<Biodata> listOfResult = new ArrayList<Biodata>();
         List<Object[]> results = new ArrayList<Object[]>();
         String tipeWhere = "";
@@ -1448,6 +1448,56 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\t\t\t\n" +
                 "\tWHERE pegawai.flag = 'Y'\n" +
                 "\t\tAND pegawai.pin IS NOT NULL\n" +
+                "\t\tAND posisi.flag = 'Y' \n" +
+                tipeWhere;
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+
+        for (Object[] row : results) {
+            Biodata result  = new Biodata();
+            result.setNip((String) row[0]);
+            result.setNamaPegawai((String) row[1]);
+            result.setPositionName((String) row[2]);
+            result.setKelompokId((String) row[3]);
+            result.setTipePegawai((String) row[4]);
+            result.setTipePegawaiName((String) row[5]);
+
+            listOfResult.add(result);
+        }
+        return listOfResult;
+    }
+
+    public List<Biodata> getBiodataByNip(String nip){
+        List<Biodata> listOfResult = new ArrayList<Biodata>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        String tipeWhere = "";
+        if(!("").equalsIgnoreCase(nip)){
+            tipeWhere = "AND pegawai.nip = '"+nip+"' ";
+        }
+
+        String query = "SELECT \n" +
+                "\tpegawai.nip, \n" +
+                "\tpegawai.nama_pegawai, \n" +
+                "\tposition.position_name, \n" +
+                "\tposition.kelompok_id, \n" +
+                "\tpegawai.tipe_pegawai,\n" +
+                "\ttipe.tipe_pegawai_name\n" +
+                "\n" +
+                "\tFROM im_hris_pegawai pegawai\n" +
+                "\t\tLEFT JOIN it_hris_pegawai_position posisi \n" +
+                "\t\t\tON posisi.nip = pegawai.nip\n" +
+                "\t\tLEFT JOIN im_branches branch \n" +
+                "\t\t\tON branch.branch_id = posisi.branch_id \n" +
+                "\t\tLEFT JOIN im_position position \n" +
+                "\t\t\tON position.position_id = posisi.position_id \n" +
+                "\t\tLEFT JOIN im_hris_tipe_pegawai tipe \n" +
+                "\t\t\tON tipe.tipe_pegawai_name= pegawai.tipe_pegawai\n" +
+                "\t\t\t\n" +
+                "\tWHERE pegawai.flag = 'Y'\n" +
+//                "\t\tAND pegawai.pin IS NOT NULL\n" +
                 "\t\tAND posisi.flag = 'Y' \n" +
                 tipeWhere;
 

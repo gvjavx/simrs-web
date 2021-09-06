@@ -94,7 +94,7 @@
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="jamKerja.branchId" disabled="true"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                            <s:hidden id="branchId" name="pelayanan.branchId" />
+                                                            <s:hidden id="branchId" name="jamKerja.branchId" />
                                                         </s:else>
                                                     </table>
                                                 </td>

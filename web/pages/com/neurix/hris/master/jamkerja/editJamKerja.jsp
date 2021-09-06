@@ -144,9 +144,17 @@
     <div class="form-group">
         <label class="control-label col-sm-3">Unit:</label>
         <div class="col-sm-7">
-            <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-            <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="unitId2" name="jamKerja.branchId" required="true"
-                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" />
+            <s:if test='isAdminUnit()'>
+                <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="jamKerja.branchId"
+                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+            </s:if>
+            <s:else>
+                <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="jamKerja.branchId" disabled="true"
+                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                <s:hidden id="branchId" name="jamKerja.branchId" />
+            </s:else>
         </div>
     </div>
     <div class="form-group">

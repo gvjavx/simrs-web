@@ -1723,7 +1723,7 @@ public class AbsensiBoImpl implements AbsensiBo {
 
                     List<Biodata> biodataList = new ArrayList<>();
                     try{
-                        biodataList = biodataDao.getBiodataByNip(absensiPegawaiEntity.getNip());
+                        biodataList = biodataDao.getBiodataWithPinByNip(absensiPegawaiEntity.getNip()); //RAKA-06SEP2021==> perlukah pin?
                     }catch (HibernateException e){
                         logger.error("[AbsensiBoImpl.getByCriteria] Error, " + e.getMessage());
                         throw new GeneralBOException("Problem when retrieving Biodata using NIP, " + e.getMessage());

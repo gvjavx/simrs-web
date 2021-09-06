@@ -1,6 +1,7 @@
 package com.neurix.hris.master.jamkerja.action;
 
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.group.bo.GroupBo;
@@ -27,6 +28,16 @@ public class JamKerjaAction extends BaseMasterAction {
     private JamKerja jamKerja;
     private JamKerjaBo jamKerjaBoProxy;
     private TipePegawaiBo tipePegawaiBoProxy;
+
+    private Boolean adminUnit = false;
+
+    public Boolean getAdminUnit() {
+        return adminUnit;
+    }
+
+    public void setAdminUnit(Boolean adminUnit) {
+        this.adminUnit = adminUnit;
+    }
 
     private List<TipePegawai> listOfComboTipePegawai = new ArrayList<TipePegawai>();
 
@@ -95,12 +106,19 @@ public class JamKerjaAction extends BaseMasterAction {
     @Override
     public String add() {
         logger.info("[JamKerjaAction.add] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        String branchId = CommonUtil.userBranchLogin();
         JamKerja jamKerja = new JamKerja();
+        if (branchId != null){
+            jamKerja.setBranchId(branchId);
+        }else {
+            jamKerja.setBranchId("");
+        }
+
         setJamKerja(jamKerja);
         setAddOrEdit(true);
         setAdd(true);
 
-        HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
 
         logger.info("[JamKerjaAction.add] stop process >>>");
@@ -145,6 +163,13 @@ public class JamKerjaAction extends BaseMasterAction {
             setJamKerja(editJamKerja);
             addActionError("Error, Unable to edit again with flag = N.");
             return "failure";
+        }
+
+        String branchUser = CommonUtil.userBranchLogin();
+        if(CommonConstant.BRANCH_KP.equalsIgnoreCase(branchUser)){
+            setAdminUnit(true);
+        }else{
+            setAdminUnit(false);
         }
 
         setAddOrEdit(true);
