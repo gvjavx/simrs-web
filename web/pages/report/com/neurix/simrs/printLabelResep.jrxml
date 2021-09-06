@@ -28,6 +28,7 @@
 	<parameter name="reportParams.logo" class="java.lang.String"/>
 	<parameter name="reportParams.area" class="java.lang.String"/>
 	<parameter name="reportParams.unit" class="java.lang.String"/>
+	<parameter name="reportParams.logoihc" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
 a.id_approval_obat,
@@ -179,6 +180,10 @@ WHERE a.id_permintaan_resep = $P{reportParams.id}]]>
 				<image>
 					<reportElement x="6" y="1" width="71" height="29" uuid="68195eb0-795c-42cf-87f8-02415710d144"/>
 					<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="78" y="1" width="71" height="29" uuid="7f9a02ad-9fe0-4230-b1ce-b1bbc7c6da32"/>
+					<imageExpression><![CDATA[$P{reportParams.logoihc}]]></imageExpression>
 				</image>
 				<textField isBlankWhenNull="true">
 					<reportElement x="6" y="38" width="100" height="15" uuid="034397d3-0b28-4528-acd2-c11555c37921"/>

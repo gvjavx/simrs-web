@@ -3596,7 +3596,9 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         if (branches != null) {
             String logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+            String logoihc = CommonConstant.RESOURCE_PATH_IMG_ASSET + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + "logoihc.png";
             reportParams.put("logo", logo);
+            reportParams.put("logoihc", logoihc);
             reportParams.put("unit", CommonUtil.userBranchNameLogin());
             reportParams.put("area", CommonUtil.userAreaName());
             reportParams.put("id", idResep);

@@ -615,10 +615,19 @@ public class KasirRawatJalanAction extends BaseTransactionAction {
                 JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(uangMukaList);
 
                 reportParams.put("itemDataSource", itemData);
+                if(null!=uangMukaList && uangMukaList.size() > 0)
+                {
+                    reportParams.put("idUangMuka", uangMukaList.get(0).getId());
+                    reportParams.put("nominal", uangMukaList.get(0).getDibayar());
+                    reportParams.put("terbilang", angkaToTerbilang(uangMukaList.get(0).getDibayar().longValue()));
+                }
+
                 reportParams.put("petugas", CommonUtil.userLogin());
                 reportParams.put("idPasien", checkup.getIdPasien());
                 reportParams.put("unit", unit);
                 reportParams.put("area", area);
+                reportParams.put("alamatSurat", branches.getAlamatSurat());
+
                 reportParams.put("idDetailCheckup", checkup.getIdDetailCheckup());
                 reportParams.put("noCheckup", checkup.getNoCheckup());
                 reportParams.put("logo", logo);
