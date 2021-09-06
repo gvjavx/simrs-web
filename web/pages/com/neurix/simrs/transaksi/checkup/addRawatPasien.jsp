@@ -101,7 +101,7 @@
             }
 
             if (idPasien != '' && cekNik && namaPasien != '' && jenisKelamin != '' && tempatLahir != ''
-                && tglLahir != '' && agama != '' && poli != '' && dokter != '' && penjamin != ''
+                && tglLahir != '' && poli != '' && dokter != '' && penjamin != ''
                 && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && tipe != '' && jalan != '' && statusPerkawinan != '' && pendidikan != '') {
 
                 //alert(noCheckupOnline);
@@ -311,9 +311,9 @@
                 if (tglLahir == '') {
                     $('#st_tgl_lahir').css('border', 'red solid 1px');
                 }
-                if (agama == '') {
+                /*if (agama == '') {
                     $('#agama').css('border', 'red solid 1px');
-                }
+                }*/
                 if (poli == '') {
                     $('#war_poli').show();
                 }

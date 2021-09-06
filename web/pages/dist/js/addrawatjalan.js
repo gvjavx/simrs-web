@@ -2503,13 +2503,21 @@ function detailLab(id, kategoriName) {
     var tempDetail = "";
     var tempIdPemeriksa = "";
     var tempIdDetail = "";
+    var tempHasil = "";
+    var tempAcuan = "";
+    var tempKet = ""
+    let isDone = false;
     PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
         if (response.length > 0) {
+
             $.each(response, function (i, item) {
                 var namaPemeriksaan = "";
                 var idPemeriksaan = "";
                 var namaDetailPemeriksaan = "";
                 var idDetailPemeriksaan = "";
+                var hasil = "";
+                var acuan = "";
+                var keterangan = "";
 
                 if(item.namaPemeriksaan != null){
                     namaPemeriksaan = item.namaPemeriksaan;
@@ -2522,6 +2530,15 @@ function detailLab(id, kategoriName) {
                 }
                 if(item.idDetailPemeriksaan != null){
                     idDetailPemeriksaan = item.idDetailPemeriksaan;
+                }
+                if(item.hasil != null){
+                    hasil = item.hasil;
+                }
+                if(item.keteranganAcuanL != null){
+                    acuan = item.keteranganAcuanL;
+                }
+                if(item.keteranganHasil != null){
+                    keterangan = item.keteranganHasil;
                 }
 
                 if(namaPemeriksaan.toLowerCase() != tempPemeriksaan){
@@ -2538,13 +2555,22 @@ function detailLab(id, kategoriName) {
                 if(i == 0){
                     tempDetail = namaDetailPemeriksaan;
                     tempIdDetail = idDetailPemeriksaan;
+                    tempHasil = hasil;
+                    tempAcuan = acuan;
+                    tempKet = keterangan;
                 }else{
                     if(response[i - 1]["namaPemeriksaan"].toLowerCase() == tempPemeriksaan){
                         tempDetail = tempDetail+'#'+namaDetailPemeriksaan;
                         tempIdDetail = tempIdDetail+'#'+idDetailPemeriksaan;
+                        tempHasil = tempHasil +'#'+hasil;
+                        tempAcuan = tempAcuan +'#'+acuan;
+                        tempKet = tempKet +'#'+keterangan;
                     }else{
                         tempDetail = tempDetail+'='+namaDetailPemeriksaan;
                         tempIdDetail = tempIdDetail+'='+idDetailPemeriksaan;
+                        tempHasil = tempHasil +'='+hasil;
+                        tempAcuan = tempAcuan +'='+acuan;
+                        tempKet = tempKet +'='+keterangan;
                     }
                 }
             });
@@ -2554,12 +2580,34 @@ function detailLab(id, kategoriName) {
                 var temp2 = tempDetail.split("=");
                 var temp3 = tempIdPemeriksa.split("=");
                 var temp4 = tempIdDetail.split("=");
+                var temp5 = tempHasil.split("=");
+                var temp6 = tempAcuan.split("=");
+                var temp7 = tempKet.split("=");
                 var row = "";
                 $.each(templ, function (i, item) {
                     var tempParameter = temp2[i].split("#");
+                    var tempParamHasil = temp5[i].split("#");
+                    var tempParamAcuan = temp6[i].split("#");
+                    var tempParamKet = temp7[i].split("#");
                     var tempParameterLi = "";
+                    var tempParameterLi1 = "";
+                    var tempParameterLi2 = "";
+                    var tempParameterLi3 = "";
+
                     $.each(tempParameter, function (i, item) {
                         tempParameterLi += '<li>' + item + '</li>';
+                    });
+
+                    $.each(tempParamHasil, function (i, item) {
+                        tempParameterLi1 += '<li>' + item + '</li>';
+                    });
+
+                    $.each(tempParamAcuan, function (i, item) {
+                        tempParameterLi2 += '<li>' + item + '</li>';
+                    });
+
+                    $.each(tempParamKet, function (i, item) {
+                        tempParameterLi3 += '<li>' + item + '</li>';
                     });
 
                     var pj = "";
@@ -2569,11 +2617,23 @@ function detailLab(id, kategoriName) {
                     row += '<tr id="row_' + i + '">' +
                         '<td>' + pj + '</td>' +
                         '<td>' + item + '</td>' +
-                        '<td><ul style="margin-left: 20px">' + tempParameterLi + '</ul></td>' +
-                        '</tr>';
+                        '<td><ul style="margin-left: 20px">' + tempParameterLi + '</ul></td>';
+                    if(tempParameterLi1 != "" && tempParameterLi2 != "" && tempParameterLi3 != "")
+                    {
+                        row += '<td><ul style="margin-left: 20px">' + tempParameterLi1 + '</ul></td>' +
+                            '<td><ul style="margin-left: 20px">' + tempParameterLi2 + '</ul></td>' +
+                            '<td><ul style="margin-left: 20px">' + tempParameterLi3 + '</ul></td>';
+                        isDone = true;
+
+                    }
+                    row += '</tr>';
                 });
                 if (row != '') {
                     $('#body_detail_lab').html(row);
+                    if(isDone)
+                    {
+                        $(".afterLab").show();
+                    }
                 }
             }
 

@@ -14,6 +14,8 @@
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KasirRawatJalanAction.js"/>'></script>
+
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/header.js"/>'></script>
     <script type='text/javascript'>
 
         $( document ).ready(function() {
@@ -405,17 +407,39 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div style="display: none" id="pilih_bank">
-                        <div class="row">
-                            <div class="form-group">
-                                <label class="col-md-3" style="margin-top: 7px">Bank</label>
-                                <div class="col-md-8">
-                                    <select class="form-control select2" id="bank" style="width: 100%">
-                                        <option value="">[Select One]</option>
-                                    </select>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div style="display: none" id="pilih_tunai">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-md-3" style="margin-top: 7px">Bayar</label>
+                                    <div class="col-md-8">
+                                        <input id="nom_bayar" style="margin-top: 7px" class="form-control" oninput="convertRpAtas(this.id,this.value,'nom_h_bayar'); $('#nom_h_bayar').trigger('change')">
+                                        <input type="hidden" id="nom_h_bayar" style="margin-top: 7px" class="form-control" onchange="calculateKembalian(this);">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-md-3" style="margin-top: 7px">Kembalian</label>
+                                    <div class="col-md-8">
+                                        <input type="number" id="nom_kembalian" style="margin-top: 7px" class="form-control" readonly>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div style="display: none" id="pilih_bank">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-md-3" style="margin-top: 7px">Bank</label>
+                                    <div class="col-md-8">
+                                        <select class="form-control select2" id="bank" style="width: 100%">
+                                            <option value="">[Select One]</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="form-group">
                                     <label class="col-md-3" style="margin-top: 7px">No Kartu</label>
@@ -469,8 +493,10 @@
         if(val != ''){
             if(val == 'transfer'){
                 $('#pilih_bank').show();
+                $('#pilih_tunai').hide();
             }else{
                 $('#pilih_bank').hide();
+                $('#pilih_tunai').show();
             }
         }
     }
@@ -485,6 +511,15 @@
             return "0";
         }
 
+    }
+
+    /** Fahmi 2021-09-06, untuk menghitung kembalian*/
+    function calculateKembalian(obj)
+    {
+        let nomTunai = parseInt($(obj).val());
+        let nomBiaya = parseInt($("#totBiaya").val());
+        let kembalian = nomTunai - nomBiaya;
+        $("#nom_kembalian").val(formatRupiah(kembalian));
     }
 
     var mapBiaya = [];
@@ -585,7 +620,6 @@
 
                 KasirRawatJalanAction.getListTindakanRawat(idCheckup, idJenisPasien, function (response) {
                     dataTindakan = response;
-                    console.log("===1=?>"+JSON.stringify(response));
                     if (dataTindakan != null) {
                         var total = 0;
                         var totalObat = 0;
@@ -736,7 +770,7 @@
                         if (parseInt(uangMuka) > 0) {
                             table = table + '<tr><td colspan="3">Total Uang Muka</td><td align="right" style="padding-right: 20px">' + formatRupiah(uangMuka) + '</td>';
                         }
-                        table = table + '<tr><td colspan="3">Total Biaya yang Dibayar</td><td align="right" style="padding-right: 20px">' + formatRupiah(total - uangMuka + ppnObat) + '</td></tr>';
+                        table = table + '<tr><td colspan="3">Total Biaya yang Dibayar</td><td align="right" style="padding-right: 20px">' + formatRupiah(total - uangMuka + ppnObat) + '<input type="hidden" id="totBiaya" value="'+(total - uangMuka + ppnObat)+'" </td></tr>';
                         if(parseInt(uangMuka) > parseInt(total) + parseInt(ppnObat)){
                             $('#form_lebih_biaya').hide();
                             var lebih = uangMuka - (ppnObat+total);
