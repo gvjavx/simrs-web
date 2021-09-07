@@ -50,6 +50,16 @@ public class UserDetailsLogin implements UserDetails, Serializable {
     private String bagianName;
     private String shiftId;
     private String tipeRole;
+    //SYAMS 7SEP21 => TAMBAH ATTRIBUTE SHIFT
+    private String shift;
+
+    public String getShift() {
+        return shift;
+    }
+
+    public void setShift(String shift) {
+        this.shift = shift;
+    }
 
     public String getTipeRole() {
         return tipeRole;

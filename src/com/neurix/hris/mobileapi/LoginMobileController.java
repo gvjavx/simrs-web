@@ -151,6 +151,8 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
                         model.setIdDevice(userDetailsLogin.getIdDevice());
                         model.setFlagFingerMobile(userDetailsLogin.getFlagFingerMoblie());
                         model.setPin(userDetailsLogin.getPin());
+                        //SYAMS 7SEP21 => TAMBAH SHIFT
+                        model.setShift(userDetailsLogin.getShift());
 
                         String roleId="";
                         String roleName="";
