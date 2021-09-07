@@ -43,6 +43,23 @@
             return (iDateDiff + 1); // add 1 because dates are inclusive
         }
 
+        function calcDays(dDate1, dDate2) { // input given as Date objects
+            var iWeeks, iDateDiff, iAdjust = 0;
+            if (dDate2 < dDate1) return -1; // error code if dates transposed
+            var iWeekday1 = dDate1.getDay(); // day of week
+            var iWeekday2 = dDate2.getDay();
+            iWeekday1 = (iWeekday1 == 0) ? 7 : iWeekday1; // change Sunday from 0 to 7
+            iWeekday2 = (iWeekday2 == 0) ? 7 : iWeekday2;
+            // calculate differnece in weeks (1000mS * 60sec * 60min * 24hrs * 7 days = 604800000)
+            iWeeks = Math.floor((dDate2.getTime() - dDate1.getTime()) / 604800000);
+            if (iWeekday1 <= iWeekday2) {
+                iDateDiff = (iWeeks * 5) + (iWeekday2 - iWeekday1)
+            } else {
+                iDateDiff = ((iWeeks + 1) * 5) - (iWeekday1 - iWeekday2)
+            }
+            return (iDateDiff + 1); // add 1 because dates are inclusive
+        }
+
         function calcHolidays(dDate1, dDate2) { // input given as Date objects
             var iWeeks, iDateDiff, iAdjust = 0;
             if (dDate2 < dDate1) return -1; // error code if dates transposed
@@ -645,10 +662,11 @@
     $('#tgl3').on('change',function() {
         var strDate = $('#tgl3').datepicker('getDate');
         var strDay = strDate.getDay();
-        if (strDay == 0 || strDay == 6){
-            alert ("tanggal awal ijin harus di hari kerja");
-            $('#tgl3').val("");
-        }
+        //RAKA-07SEP2021==>Lepas Validasi Hari Kerja, Krn mengganggu pengajuan pegawai Shift
+        // if (strDay == 0 || strDay == 6){
+        //     alert ("tanggal awal ijin harus di hari kerja");
+        //     $('#tgl3').val("");
+        // }
     })
 
     $('#tgl2').on('change',function(){
@@ -657,14 +675,18 @@
         var tglakhir = document.getElementById("tgl2").value;
         var startdate =$('#tgl3').datepicker('getDate');
         var enddate =$('#tgl2').datepicker('getDate');
-        var days = calcBusinessDays(startdate,enddate);
         var ijinId = $('#ijinId1').val();
         var jmllibur;
-        dwr.engine.setAsync(false);
-        IjinKeluarAction.calculateLibur(tglawal,tglakhir, function (listdata) {
-            jmllibur = listdata;
-        });
-        $('#lamaId').val(days-jmllibur);
+        //RAKA-07SEP2021==>Lepas Validasi Hari Kerja, Krn mengganggu pengajuan pegawai Shift
+        // var days = calcBusinessDays(startdate,enddate);
+        // dwr.engine.setAsync(false);
+        // IjinKeluarAction.calculateLibur(tglawal,tglakhir, function (listdata) {
+        //     jmllibur = listdata;
+        // });
+        // $('#lamaId').val(days-jmllibur);
+        //PENGGANTI
+        var days = calcDays(startdate,enddate);
+        $('#lamaId').val(days);
 
         // UNTUK IJIN GANTI HARI, PADA PROJECT YANG LAMA
 //        if (ijinId=="IJ035"){
