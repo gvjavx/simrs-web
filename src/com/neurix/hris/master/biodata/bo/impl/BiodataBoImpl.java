@@ -1455,7 +1455,7 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataEntity.setTanggalPensiun(bean.getTanggalPensiun());
                         }
                         imBiodataEntity.setTanggalMasuk(bean.getTanggalMasuk());
-                        if (imBiodataEntity.getTanggalAktif() != null) {
+                        if (bean.getTanggalAktif() != null) {
                             imBiodataEntity.setTanggalAktif(bean.getTanggalAktif());
                         }
                         imBiodataEntity.setBranchId(bean.getBranch());

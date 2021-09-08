@@ -36,7 +36,7 @@ public class Biodata extends BaseModel {
     private Date tanggalMasuk;
     private Date tanggalAkhirKontrak;
     private String tempatLahir;
-    private Date TanggalAktif;
+//    private Date TanggalAktif;
     private String stTanggalAktif;
     private String stTanggalMasuk;
     private String stTanggalPensiun;
@@ -1216,11 +1216,11 @@ public class Biodata extends BaseModel {
     }
 
     public Date getTanggalAktif() {
-        return TanggalAktif;
+        return tanggalAktif;
     }
 
     public void setTanggalAktif(Date tanggalAktif) {
-        TanggalAktif = tanggalAktif;
+        this.tanggalAktif = tanggalAktif;
     }
 
     public String getStTanggalAktif() {
