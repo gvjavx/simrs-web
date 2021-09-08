@@ -72,8 +72,8 @@
             var d = new Date(enddate),
                 year1 = '' + (d.getFullYear());
 
-            if (cutiid == ""){
-                var sisaCutiMsg ='Silahkan memilih jenis cuti terlebih dahulu.';
+            if (startdate > enddate){
+                var sisaCutiMsg ='Tanggal akhir tidak boleh melebihi tanggal awal';
                 document.getElementById('errorMessageAddCuti').innerHTML = sisaCutiMsg;
                 $.publish('showErrorValidationDialog');
                 event.originalEvent.options.submit = false;
@@ -763,7 +763,7 @@
         var max =parseInt(document.getElementById("cutiMax").value);
         var days;
         var jmllibur;
-        if (startdate==null && startdate == ""){
+        if (startdate==null || startdate == ""){
             alert("Isikan Tanggal Awal Cuti");
             $('#tgl1').val("");
         }
