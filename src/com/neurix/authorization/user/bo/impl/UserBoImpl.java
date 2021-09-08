@@ -1645,11 +1645,14 @@ public class UserBoImpl implements UserBo {
             userDetailsLogin.setIdPleyanan(loginUser.getIdPelayanan());
             userDetailsLogin.setIdDevice(loginUser.getIdDevice());
 
+
             ImBiodataEntity biodata = biodataDao.getById("nip", userId, "Y");
 
             if (biodata != null) {
                 userDetailsLogin.setJenisKelamin(biodata.getGender());
                 userDetailsLogin.setFlagFingerMoblie(biodata.getFlagFingerMobile());
+                //SYAMS 7SEP21 => TAMBAH SHIFT
+                userDetailsLogin.setShift(biodata.getShift());
 
                 try {
                     userDetailsLogin.setPin(biodata.getPin());

@@ -835,7 +835,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "i.no_ruangan, \n"+
                     "a.catatan_klinis,\n" +
                     "b.indikasi,\n" +
-                    "a.branch_id\n" +
+                    "a.branch_id,\n" +
+                    "c.id_header_pelayanan\n"+
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN (SELECT\n" +
@@ -845,7 +846,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "b.tipe_pelayanan,\n" +
                     "b.kategori_pelayanan,\n" +
                     "b.divisi_id,\n" +
-                    "b.kode_vclaim\n" +
+                    "b.kode_vclaim,\n" +
+                    "b.id_header_pelayanan\n"+
                     "FROM im_simrs_pelayanan a\n" +
                     "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON b.id_pelayanan = c.id_pelayanan\n" +
                     "INNER JOIN im_simrs_jenis_periksa_pasien d ON b.id_jenis_periksa_pasien = d.id_jenis_periksa_pasien\n" +
@@ -951,6 +953,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setNoRuangan(obj[60] == null ? null : obj[60].toString());
                     checkup.setCatatanKlinis(obj[61] == null ? "" : obj[61].toString());
                     checkup.setIndikasi(obj[62] == null ? "" : obj[62].toString());
+                    checkup.setIdHeaderPelayanan(obj[63] == null ? "" : obj[63].toString());
                     HeaderCheckup hdr = getPemeriksaanFisik(obj[0].toString());
                     checkup.setTensi(hdr.getTensi());
                     checkup.setSuhu(hdr.getSuhu());

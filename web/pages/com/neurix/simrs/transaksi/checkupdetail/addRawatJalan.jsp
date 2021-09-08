@@ -2343,6 +2343,9 @@
                         <td>Jenis Penunjang</td>
                         <td>Jenis Pemeriksaan</td>
                         <td>Parameter</td>
+                        <td class="afterLab" style="display:none;">Hasil</td>
+                        <td class="afterLab" style="display:none;">Nilai Normal</td>
+                        <td class="afterLab" style="display:none;">Keterangan</td>
                         <tbody id="body_detail_lab">
                         </tbody>
                     </table>
@@ -3003,6 +3006,8 @@
     var noCheckup = $('#no_checkup').val();
     var jenisPeriksa = $('#jenis_periksa').val();
     var jenisPeriksaPasien = $('#jenis_pasien').val();
+
+    console.log(idPoli);
 
     var isReadRM = false;
     var contextPath = '<%= request.getContextPath() %>';

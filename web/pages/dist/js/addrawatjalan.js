@@ -897,10 +897,15 @@ function listSelectTindakanKategori(val) {
     var idPelayanan = "";
     var def = '';
     var isEdit = $('#is_edit').val();
+
+    console.log(dataDokter);
     if (val != null && val != '') {
         var dataDokter = val.split("|");
         idDokter = dataDokter[0];
-        idPelayanan = dataDokter[1];
+        // idPelayanan = dataDokter[1];
+
+        idPelayanan = idPoli;
+
         CheckupDetailAction.getListComboTindakanKategori(idPelayanan, null, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
@@ -1039,7 +1044,7 @@ function showModal(select) {
         $('#save_tindakan').attr('onclick', 'saveTindakan(\'' + id + '\')').show();
         $('#body_temp_tindakan').html('');
         $('#modal-tindakan').modal({show: true, backdrop: 'static'});
-
+modal-diagnosa
     } else if (select == 3) {
         $('#t_diagnosa').text("Tambah Diagnosa");
         $('#nosa_id_diagnosa, #nosa_ket_diagnosa').val('');
@@ -1098,7 +1103,11 @@ function showModal(select) {
     } else if (select == 7 || select == 10) {
         resetAll();
         cekRekakanops();
-        getApotekRawatJalan();
+        if(tipePelayanan == "ugd")
+        { getApotekRawatInap(); }
+        else
+        { getApotekRawatJalan(); }
+
         if (select == 7)
             $('#title-resep').html("Tambah Resep Pasien");
         $("#sec-jumlah-resep").show();
@@ -1164,6 +1173,21 @@ function showModal(select) {
 
 function getApotekRawatJalan() {
     CheckupAction.getComboApotekList(function (res) {
+        if (res.length == 1){
+            $("#body-apotek").html("");
+            var str = "";
+            $.each(res, function (i, item) {
+                str += "<input type='text' class='form-control' value='"+item.namaPelayanan+"' disabled/>" +
+                    "<input type='hidden' id='resep_apotek' value='"+item.idPelayanan+"' />";
+            });
+            $("#body-apotek").html(str);
+            setObatPoli();
+        };
+    })
+}
+
+function getApotekRawatInap() {
+    CheckupAction.getComboApotekRawatInapList(function (res) {
         if (res.length == 1){
             $("#body-apotek").html("");
             var str = "";
@@ -2484,13 +2508,21 @@ function detailLab(id, kategoriName) {
     var tempDetail = "";
     var tempIdPemeriksa = "";
     var tempIdDetail = "";
+    var tempHasil = "";
+    var tempAcuan = "";
+    var tempKet = ""
+    let isDone = false;
     PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
         if (response.length > 0) {
+
             $.each(response, function (i, item) {
                 var namaPemeriksaan = "";
                 var idPemeriksaan = "";
                 var namaDetailPemeriksaan = "";
                 var idDetailPemeriksaan = "";
+                var hasil = "";
+                var acuan = "";
+                var keterangan = "";
 
                 if(item.namaPemeriksaan != null){
                     namaPemeriksaan = item.namaPemeriksaan;
@@ -2503,6 +2535,15 @@ function detailLab(id, kategoriName) {
                 }
                 if(item.idDetailPemeriksaan != null){
                     idDetailPemeriksaan = item.idDetailPemeriksaan;
+                }
+                if(item.hasil != null){
+                    hasil = item.hasil;
+                }
+                if(item.keteranganAcuanL != null){
+                    acuan = item.keteranganAcuanL;
+                }
+                if(item.keteranganHasil != null){
+                    keterangan = item.keteranganHasil;
                 }
 
                 if(namaPemeriksaan.toLowerCase() != tempPemeriksaan){
@@ -2519,13 +2560,22 @@ function detailLab(id, kategoriName) {
                 if(i == 0){
                     tempDetail = namaDetailPemeriksaan;
                     tempIdDetail = idDetailPemeriksaan;
+                    tempHasil = hasil;
+                    tempAcuan = acuan;
+                    tempKet = keterangan;
                 }else{
                     if(response[i - 1]["namaPemeriksaan"].toLowerCase() == tempPemeriksaan){
                         tempDetail = tempDetail+'#'+namaDetailPemeriksaan;
                         tempIdDetail = tempIdDetail+'#'+idDetailPemeriksaan;
+                        tempHasil = tempHasil +'#'+hasil;
+                        tempAcuan = tempAcuan +'#'+acuan;
+                        tempKet = tempKet +'#'+keterangan;
                     }else{
                         tempDetail = tempDetail+'='+namaDetailPemeriksaan;
                         tempIdDetail = tempIdDetail+'='+idDetailPemeriksaan;
+                        tempHasil = tempHasil +'='+hasil;
+                        tempAcuan = tempAcuan +'='+acuan;
+                        tempKet = tempKet +'='+keterangan;
                     }
                 }
             });
@@ -2535,12 +2585,34 @@ function detailLab(id, kategoriName) {
                 var temp2 = tempDetail.split("=");
                 var temp3 = tempIdPemeriksa.split("=");
                 var temp4 = tempIdDetail.split("=");
+                var temp5 = tempHasil.split("=");
+                var temp6 = tempAcuan.split("=");
+                var temp7 = tempKet.split("=");
                 var row = "";
                 $.each(templ, function (i, item) {
                     var tempParameter = temp2[i].split("#");
+                    var tempParamHasil = temp5[i].split("#");
+                    var tempParamAcuan = temp6[i].split("#");
+                    var tempParamKet = temp7[i].split("#");
                     var tempParameterLi = "";
+                    var tempParameterLi1 = "";
+                    var tempParameterLi2 = "";
+                    var tempParameterLi3 = "";
+
                     $.each(tempParameter, function (i, item) {
                         tempParameterLi += '<li>' + item + '</li>';
+                    });
+
+                    $.each(tempParamHasil, function (i, item) {
+                        tempParameterLi1 += '<li>' + item + '</li>';
+                    });
+
+                    $.each(tempParamAcuan, function (i, item) {
+                        tempParameterLi2 += '<li>' + item + '</li>';
+                    });
+
+                    $.each(tempParamKet, function (i, item) {
+                        tempParameterLi3 += '<li>' + item + '</li>';
                     });
 
                     var pj = "";
@@ -2550,11 +2622,23 @@ function detailLab(id, kategoriName) {
                     row += '<tr id="row_' + i + '">' +
                         '<td>' + pj + '</td>' +
                         '<td>' + item + '</td>' +
-                        '<td><ul style="margin-left: 20px">' + tempParameterLi + '</ul></td>' +
-                        '</tr>';
+                        '<td><ul style="margin-left: 20px">' + tempParameterLi + '</ul></td>';
+                    if(tempParameterLi1 != "" && tempParameterLi2 != "" && tempParameterLi3 != "")
+                    {
+                        row += '<td><ul style="margin-left: 20px">' + tempParameterLi1 + '</ul></td>' +
+                            '<td><ul style="margin-left: 20px">' + tempParameterLi2 + '</ul></td>' +
+                            '<td><ul style="margin-left: 20px">' + tempParameterLi3 + '</ul></td>';
+                        isDone = true;
+
+                    }
+                    row += '</tr>';
                 });
                 if (row != '') {
                     $('#body_detail_lab').html(row);
+                    if(isDone)
+                    {
+                        $(".afterLab").show();
+                    }
                 }
             }
 
@@ -5908,23 +5992,26 @@ function addToListTindakan(id) {
 
     if (idDetailCheckup != '' && idTindakan != '' && idTindakan != null && idDokter != '' && qty > 0 && idKategori != '' && idKategori != null) {
         if (!cekSession()) {
-            var idDok = idDokter.split("|")[0];
-            var idPelayanan = idDokter.split("|")[1];
-            var temp = '<tr id="rowTindakan_'+count+'">' +
-                '<td>'+namaDokter+
-                '<input class="tindakan_dokter" type="hidden" value="'+idDok+'">'+
-                '<input class="tindakan_id_pelayanan" type="hidden" value="'+idPelayanan+'">'+
-                '<input class="tindakan_id_tindakan" type="hidden" value="'+idTindakan+'">'+
-                '<input class="tindakan_qty" type="hidden" value="'+qty+'">'+
-                '</td>' +
-                '<td>'+namaTindakan+'</td>' +
-                '<td align="center">'+qty+'</td>' +
-                '<td align="right">'+tarif+'</td>' +
-                '<td align="right">'+formatRupiahAtas((parseInt(replaceTitik(total))*qty))+'</td>' +
-                '<td align="center">'+'<img onclick="delListTindakan(\'rowTindakan_'+count+'\')" style="cursor: pointer" src="'+contextPath+'/pages/images/cancel-flat-new.png" class="hvr-row">'+'</td>' +
-                '</tr>';
-            if(temp != ''){
-                $('#body_temp_tindakan').append(temp);
+            if($(".tindakan_"+idTindakan).length == 0) {
+                var idDok = idDokter.split("|")[0];
+                var idPelayanan = idDokter.split("|")[1];
+                var temp = '<tr id="rowTindakan_' + count + '">' +
+                    '<td>' + namaDokter +
+                    '<input class="tindakan_dokter" type="hidden" value="' + idDok + '">' +
+                    '<input class="tindakan_id_pelayanan" type="hidden" value="' + idPelayanan + '">' +
+                    '<input class="tindakan_id_tindakan" type="hidden" value="' + idTindakan + '">' +
+                    '<input class="tindakan_qty" type="hidden" value="' + qty + '">' +
+                    '<div class="tindakan_' + idTindakan + '" />' +
+                    '</td>' +
+                    '<td>' + namaTindakan + '</td>' +
+                    '<td align="center">' + qty + '</td>' +
+                    '<td align="right">' + tarif + '</td>' +
+                    '<td align="right">' + formatRupiahAtas((parseInt(replaceTitik(total)) * qty)) + '</td>' +
+                    '<td align="center">' + '<img onclick="delListTindakan(\'rowTindakan_' + count + '\')" style="cursor: pointer" src="' + contextPath + '/pages/images/cancel-flat-new.png" class="hvr-row">' + '</td>' +
+                    '</tr>';
+                if (temp != '') {
+                    $('#body_temp_tindakan').append(temp);
+                }
             }
         }
     } else {

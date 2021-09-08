@@ -638,3 +638,18 @@ function getAge(dateString) {
     };
     return age.years+'|'+age.months+'|'+age.days;
 }
+
+function setMaxWidth80(obj)
+{
+    let pad = $("#"+obj).closest("div").css("padding");
+    let decWidth = 0;
+    if(pad != "")
+    {
+        pad = pad.replace("px","");
+        decWidth = parseInt(pad) * 2;
+        $("#"+obj).css('max-width',((window.innerWidth * 0.80)-decWidth)+"px");
+    }
+    else
+    { $("#"+obj).css('max-width',(window.innerWidth * 0.80)+"px"); }
+
+}

@@ -392,6 +392,13 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
 
     public List<PeriksaLab> pushNotifLab(String kategori, String branchId) {
         List<PeriksaLab> labList = new ArrayList<>();
+
+        // Fahmi 2021-09-03, Special case admin, ambil lab dan radiologi
+        if("adminrs".equalsIgnoreCase(kategori))
+        { kategori = "IN ('lab','radiologi')"; }
+        else
+        { kategori = "= '"+kategori+"'"; }
+
         String SQL = "SELECT \n" +
                 "a.no_checkup,\n" +
                 "b.id_detail_checkup,\n" +
@@ -406,14 +413,15 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 "WHERE a.branch_id = :branchId \n" +
                 "AND c.is_read IS NULL\n" +
                 "AND c.status_periksa = '0'\n" +
-                "AND d.kategori = :kategori \n" +
+                "AND d.kategori "+kategori+" \n" +
                 "AND CAST(c.created_date AS DATE) = CURRENT_DATE \n" +
                 "ORDER BY c.created_date ASC";
+
+
 
         List<Objects[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("branchId", branchId)
-                .setParameter("kategori", kategori)
                 .list();
         if (result.size() > 0) {
             for (Object[] obj : result) {

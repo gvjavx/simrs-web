@@ -211,7 +211,6 @@
                                 <i class="fa fa-square" style="color: #d33724"></i> Belum Bayar Uang Muka &nbsp;&nbsp;&nbsp;
                                 <i class="fa fa-square" style="color: #4d4dff"></i> Antrian
                             </div>
-                            <div class="tes-text-to-speech">Nomer Antrian 1</div>
                         </div>
                     </div>
                 </div>

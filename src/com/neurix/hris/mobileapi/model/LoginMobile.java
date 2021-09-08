@@ -23,6 +23,16 @@ public class LoginMobile implements Serializable {
     private String idDevice;
     private String pin;
     private String flagFingerMobile;
+    //SYAMS 7SEP21 => Tambah flag shift
+    private String shift;
+
+    public String getShift() {
+        return shift;
+    }
+
+    public void setShift(String shift) {
+        this.shift = shift;
+    }
 
     public String getFlagFingerMobile() {
         return flagFingerMobile;

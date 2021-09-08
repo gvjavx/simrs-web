@@ -483,9 +483,9 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                 "\tpv.provinsi_id\n" +//ini juga atuh
                 "\tFROM im_simrs_pasien ps\n" +
                 "\tLEFT JOIN (SELECT desa_id, desa_name, kecamatan_id FROM im_hris_desa WHERE flag = 'Y') ds ON ds.desa_id = CAST( ps.desa_id AS VARCHAR )\n" +
-                "\tINNER JOIN (SELECT kecamatan_id, kecamatan_name, kota_id FROM im_hris_kecamatan WHERE flag = 'Y') kc ON kc.kecamatan_id = ds.kecamatan_id\n" +
-                "\tINNER JOIN (SELECT kota_id, kota_name, provinsi_id FROM im_hris_kota WHERE flag = 'Y') kt ON kt.kota_id = kc.kota_id\n" +
-                "\tINNER JOIN (SELECT provinsi_id, provinsi_name FROM im_hris_provinsi WHERE flag = 'Y') pv ON pv.provinsi_id = kt.provinsi_id\n" +
+                "\tLEFT JOIN (SELECT kecamatan_id, kecamatan_name, kota_id FROM im_hris_kecamatan WHERE flag = 'Y') kc ON kc.kecamatan_id = ds.kecamatan_id\n" +
+                "\tLEFT JOIN (SELECT kota_id, kota_name, provinsi_id FROM im_hris_kota WHERE flag = 'Y') kt ON kt.kota_id = kc.kota_id\n" +
+                "\tLEFT JOIN (SELECT provinsi_id, provinsi_name FROM im_hris_provinsi WHERE flag = 'Y') pv ON pv.provinsi_id = kt.provinsi_id\n" +
                 "\tLEFT JOIN (SELECT id_finger_data, id_pasien FROM im_simrs_finger_data WHERE flag = 'Y') fd ON fd.id_pasien = ps.id_pasien\n" +
                 "\tLEFT JOIN (SELECT id_pasien FROM it_simrs_header_checkup WHERE flag = 'Y' GROUP BY id_pasien) hd ON hd.id_pasien = ps.id_pasien\n" +
                 "\tLEFT JOIN ( \n" +
@@ -562,9 +562,9 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                 pasien.setIdLastDetailCheckup(stNullEscape(32));
                 pasien.setIsOrderLab(stNullEscape(33));
                 pasien.setIsPasienLama(foundBoolean(obj[34]));
-                pasien.setKecamatanId(obj[35].toString());
-                pasien.setKotaId(obj[36].toString());
-                pasien.setProvinsiId(obj[37].toString());
+                pasien.setKecamatanId(stNullEscape(obj[35]));
+                pasien.setKotaId(stNullEscape(obj[36]));
+                pasien.setProvinsiId(stNullEscape(obj[37]));
                 pasienList.add(pasien);
             }
         }
