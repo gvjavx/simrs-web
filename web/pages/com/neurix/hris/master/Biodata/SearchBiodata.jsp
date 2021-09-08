@@ -613,7 +613,7 @@
                                     var functions, mapped;
                                     // var prov = document.getElementById("provinsi1").value;
                                     $('#biodataId').typeahead({
-                                        minLength: 1,
+                                        minLength: 3,
                                         source: function (query, process) {
                                             functions = [];
                                             mapped = {};

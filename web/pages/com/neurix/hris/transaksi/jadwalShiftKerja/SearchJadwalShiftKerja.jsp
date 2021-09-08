@@ -18,6 +18,8 @@
     <%@ include file="/pages/common/header.jsp" %>
     <script type='text/javascript' src='<s:url value="/dwr/interface/JadwalShiftKerjaAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CutiPegawaiAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PositionBagianAction.js"/>'></script>
+
     <style>
         .pagebanner{
             background-color: #ededed;
@@ -106,26 +108,74 @@
                                                     </table>
                                                 </td>
                                             </tr>
+                                            <%--<tr>--%>
+                                                <%--<td>--%>
+                                                    <%--<label class="control-label"><small>Sub Divisi :</small></label>--%>
+                                                <%--</td>--%>
+                                                <%--<td>--%>
+                                                    <%--<table>--%>
+                                                        <%--<s:if test='jadwalShiftKerja.adminHcm'>--%>
+                                                            <%--<s:action id="comboSubDiv" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>--%>
+                                                            <%--<s:select list="#comboSubDiv.comboListOfPositionBagian" id="profesiId" name="jadwalShiftKerja.groupId"--%>
+                                                                      <%--listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]" cssClass="form-control" />--%>
+                                                        <%--</s:if>--%>
+                                                        <%--<s:else>--%>
+                                                            <%--<s:action id="comboSubDiv" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>--%>
+                                                            <%--<s:select list="#comboSubDiv.comboListOfPositionBagian" id="profesiIdView" name="jadwalShiftKerja.groupId" disabled="true"--%>
+                                                                      <%--listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]" cssClass="form-control" />--%>
+                                                            <%--<s:hidden name="jadwalShiftKerja.groupId" id="profesiId" />--%>
+                                                        <%--</s:else>--%>
+                                                    <%--</table>--%>
+                                                <%--</td>--%>
+                                            <%--</tr>--%>
+
                                             <tr>
                                                 <td>
                                                     <label class="control-label"><small>Sub Divisi :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test='jadwalShiftKerja.adminHcm'>
-                                                            <s:action id="comboSubDiv" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>
-                                                            <s:select list="#comboSubDiv.comboListOfPositionBagian" id="profesiId" name="jadwalShiftKerja.groupId"
-                                                                      listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
-                                                        </s:if>
-                                                        <s:else>
-                                                            <s:action id="comboSubDiv" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>
-                                                            <s:select list="#comboSubDiv.comboListOfPositionBagian" id="profesiIdView" name="jadwalShiftKerja.groupId" disabled="true"
-                                                                      listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
-                                                            <s:hidden name="jadwalShiftKerja.groupId" id="profesiId" />
-                                                        </s:else>
+                                                        <s:textfield id="bagianCombo" required="false" cssClass="form-control"/>
+                                                        <s:hidden id="bagianId" name="jadwalShiftKerja.groupId" />
                                                     </table>
                                                 </td>
+                                                <script type='text/javascript'>
+                                                    var functions, mapped;
+
+                                                    $('#bagianCombo').typeahead({
+                                                        minLength: 1,
+                                                        source: function (query, process) {
+                                                            functions = [];
+                                                            mapped = {};
+
+                                                            console.log(query);
+                                                            var data = [];
+
+                                                            dwr.engine.setAsync(false);
+                                                            PositionBagianAction.initComboAllBagian(query, function (listdata) {
+                                                                data = listdata;
+                                                            });
+
+                                                            $.each(data, function (i, item) {
+                                                                var labelItem = item.bagianName;
+                                                                mapped[labelItem] = {id: item.bagianId,nama:item.bagianName};
+                                                                functions.push(labelItem);
+                                                            });
+
+                                                            process(functions);
+                                                        },
+
+                                                        updater: function (item) {
+//
+                                                            var selectedObj = mapped[item];
+                                                            var idMember = selectedObj.nama;
+                                                            document.getElementById("bagianId").value = selectedObj.id;
+                                                            return selectedObj.nama;
+                                                        }
+                                                    });
+                                                </script>
                                             </tr>
+
                                             <tr>
                                                 <td>
                                                     <label class="control-label"><small>NIP :</small></label>
@@ -139,7 +189,7 @@
                                             <script type='text/javascript'>
                                                 var functions, mapped;
                                                 $('#nip').typeahead({
-                                                    minLength: 1,
+                                                    minLength: 3,
                                                     source: function (query, process) {
                                                         functions = [];
                                                         mapped = {};

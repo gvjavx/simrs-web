@@ -741,4 +741,28 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         return null;
     }
 
+    public List<ImPositionBagianEntity> getAllComboBagian(String param){
+        List<ImPositionBagianEntity> listOfResult = new ArrayList<>();
+        List<Object[]> results = new ArrayList<>();
+        String query =
+                " SELECT\n" +
+                "   bagian_id,\n" +
+                "   nama_bagian\n" +
+                " FROM im_hris_position_bagian\n" +
+                " WHERE flag = 'Y' AND nama_bagian ILIKE '"+ param +"'\n";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).list();
+
+        for(Object[] row : results){
+            ImPositionBagianEntity bagian = new ImPositionBagianEntity();
+            bagian.setBagianId((String) row[0]);
+            bagian.setBagianName((String) row[1]);
+
+            listOfResult.add(bagian);
+        }
+
+        return listOfResult;
+    }
+
 }

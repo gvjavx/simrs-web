@@ -34,5 +34,7 @@ public interface PositionBagianBo extends BaseMasterBo<PositionBagian> {
     public List<Department> getHead(PositionBagian positionBagian) throws GeneralBOException;
 
     public PositionBagian getPositionBagianById(String id) throws GeneralBOException;
+
+    public List<PositionBagian> getAllListOfBagian(String query) throws GeneralBOException;
 }
 

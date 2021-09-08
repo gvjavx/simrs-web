@@ -607,6 +607,24 @@ public class PositionBagianAction extends BaseMasterAction{
         return crudResponse;
     }
 
+    public List initComboAllBagian(String query){
+        logger.info("[PositionBagianAction.initComboAllBagian] START >>>");
+
+        List<PositionBagian> listOfBagian = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
+
+        try{
+            listOfBagian = positionBagianBo.getAllListOfBagian(query);
+        }catch (GeneralBOException e){
+            logger.error("[PositionBagianAction.initComboAllBagian] Error, " + e.getMessage());
+            throw new GeneralBOException("Found error when retrieving Combo All Bagian, " + e.getMessage());
+        }
+        logger.info("[PositionBagianAction.initComboAllBagian] END >>>>>");
+
+        return listOfBagian;
+    }
 
 
     public String paging(){

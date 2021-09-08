@@ -478,4 +478,34 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         logger.info("[PositionBagianBoImpl.getPositionBagianById] END <<< ");
         return positionBagian;
     }
+
+    @Override
+    public List<PositionBagian> getAllListOfBagian(String query) throws GeneralBOException {
+        logger.info("[PositionBagianBoImpl.getAllListOfBagian] START >>>");
+
+        List<PositionBagian> listComboBagian = new ArrayList<>();
+        String criteria = "%"+query+"%";
+
+        List<ImPositionBagianEntity> listPositionBagian = new ArrayList<>();
+        try{
+            listPositionBagian = positionBagianDao.getAllComboBagian(criteria);
+        }catch (HibernateException e){
+            logger.error("[PositionBagianBoImpl.getAllListOfBagian] Error, " + e.getMessage());
+            throw new GeneralBOException("Error when retrieving List of Bagian, " + e.getMessage());
+        }
+
+        if(listPositionBagian.size() > 0){
+            for(ImPositionBagianEntity imBagian : listPositionBagian){
+                PositionBagian bagian = new PositionBagian();
+
+                bagian.setBagianId(imBagian.getBagianId());
+                bagian.setBagianName(imBagian.getBagianName());
+
+                listComboBagian.add(bagian);
+            }
+        }
+
+        logger.info("[PositionBagianBoImpl.getAllListOfBagian] END >>>>>");
+        return listComboBagian;
+    }
 }
