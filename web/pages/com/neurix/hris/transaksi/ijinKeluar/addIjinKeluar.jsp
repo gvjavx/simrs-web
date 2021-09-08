@@ -688,16 +688,6 @@
         var days = calcDays(startdate,enddate);
         $('#lamaId').val(days);
 
-        // UNTUK IJIN GANTI HARI, PADA PROJECT YANG LAMA
-//        if (ijinId=="IJ035"){
-//            IjinKeluarAction.calculateLiburWeekend(tglawal,tglakhir, function (listdata) {
-//                jmllibur += listdata;
-//            });
-//            $('#lamaId').val(jmllibur);
-//        } else{
-//            $('#lamaId').val(days-jmllibur);
-//        }
-
         var max =parseInt(document.getElementById("maxIjin").value);
         if (enddate<startdate){
             alert ('Tanggal yang dipilih salah');

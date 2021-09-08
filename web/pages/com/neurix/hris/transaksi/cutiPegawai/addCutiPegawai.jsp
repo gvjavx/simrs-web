@@ -72,7 +72,12 @@
             var d = new Date(enddate),
                 year1 = '' + (d.getFullYear());
 
-            if (intSisaCuti - intLamaCuti < 0){
+            if (cutiid == ""){
+                var sisaCutiMsg ='Silahkan memilih jenis cuti terlebih dahulu.';
+                document.getElementById('errorMessageAddCuti').innerHTML = sisaCutiMsg;
+                $.publish('showErrorValidationDialog');
+                event.originalEvent.options.submit = false;
+            }else if(intSisaCuti - intLamaCuti < 0){
                 var sisaCutiMsg ='Maaf, Sisa cuti yang anda ajukan sudah habis / pengajuan melebihi sisa cuti.';
                 document.getElementById('errorMessageAddCuti').innerHTML = sisaCutiMsg;
                 $.publish('showErrorValidationDialog');
@@ -742,10 +747,10 @@
     $('#tgl2').on('change', function(){
         var date = $('#tgl2').datepicker('getDate');
         var tgl = date.getDay();
-        if (tgl == 0 || tgl == 6){
-            alert ("tanggal awal cuti harus di hari kerja");
-            $('#tgl2').val("");
-        }
+        // if (tgl == 0 || tgl == 6){
+        //     alert ("tanggal awal cuti harus di hari kerja");
+        //     $('#tgl2').val("");
+        // }
     })
 
     $('#tgl1').on('change',function(){
@@ -769,24 +774,23 @@
                     jmllibur = listdata;
                 });
                 if (startdate <= enddate) {
-                    var kalender = "kerja";
-                    if (posisi == '130' || posisi == '161') {
-                        jmllibur = 0;
-                        kalender = "kalender";
-                    }
-                    if (kalender == "kalender") {
+                    // var kalender = "kerja";
+                    // if (posisi == '130' || posisi == '161') {
+                    //     jmllibur = 0;
+                    //     kalender = "kalender";
+                    // }
+                    // if (kalender == "kalender") {
                         days = (enddate - startdate) / 1000 / 60 / 60 / 24;
                         days = days + 1;
                         days = days - jmllibur;
-                    }
-                    else if (kalender == "kerja") {
-                        days = calcBusinessDays(startdate, enddate);
-                        days = days - jmllibur;
-                    }
-                    else {
-                        alert("Belum memilih Jenis Cuti");
-                        $('#tgl1').val("");
-                    }
+                    // }
+                    // else if (kalender == "kerja") {
+                    //     days = calcBusinessDays(startdate, enddate);
+                    //     days = days - jmllibur;
+                    // } else {
+                    //     alert("Belum memilih Jenis Cuti");
+                    //     $('#tgl1').val("");
+                    // }
                     $('#lamaCuti').val(days);
                 }
 
