@@ -43,9 +43,11 @@
           p:strukturJabatanDao-ref="strukturJabatanDao"
           p:positionBagianDao-ref="positionBagianDao"
           p:smkHistoryGolonganDao-ref="historyGolonganDao"
+          p:golonganDao-ref="golonganDao"
           p:pelatihanJabatanUserDao-ref="pelatihanJabatanUserDao"
           p:tunjLainPegawaiDao-ref="tunjLainPegawaiDao"
           p:golonganPkwtDao-ref="golonganPkwtDao"
+          p:golonganDapenDao-ref="golonganDapenDao"
           p:profesiDao-ref="profesiDao"
           p:mutasiDao-ref="mutasiDao"
           p:dokterDao-ref="dokterDao"
@@ -114,5 +116,9 @@
     <bean id="tunjLainPegawaiDao" class="com.neurix.hris.master.biodata.dao.TunjLainPegawaiDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="golonganPkwtDao" class="com.neurix.hris.master.golonganPkwt.dao.GolonganPkwtDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="golonganDapenDao" class="com.neurix.hris.master.golonganDapen.dao.GolonganDapenDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="golonganDao" class="com.neurix.hris.master.golongan.dao.GolonganDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

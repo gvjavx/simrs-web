@@ -804,6 +804,11 @@
                                         </div>
                                     </td>
                                     <td>
+                                        <button type="button" class="btn btn-success" id="btnPrintExcel">
+                                            <i class="fa fa-print"></i> Cetak Laporan Excel
+                                        </button>
+                                    </td>
+                                    <td>
                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_biodata"/>'">
                                             <i class="fa fa-refresh"></i> Reset
                                         </button>
@@ -1067,6 +1072,36 @@
                 });
                 $('.tableAbsensi').append(tmp_table);
             });
+        });
+
+        // NAUFAL_HILMI-start
+        $('#btnPrintExcel').click(function(){
+            var biodataId = $("#biodataId").val();
+            var biodataName = $("#biodataName").val();
+            var branchId = $("#branchId option:selected").val();
+            var golongan = $("#golongan option:selected").val();
+            var jmlAnak = $("#jmlAnak").val();
+            var tipePegawaiId = $("#tipePegawaiId option:selected").val();
+            var flag = $("#flag option:selected").val();
+
+            console.log(biodataId + ", " + biodataName + ", " + branchId + ", " + golongan + ", " + jmlAnak + ", " + tipePegawaiId + ", " + flag);
+
+            var msg = "Apakah anda ingin mencetak laporan ?";
+
+                if (confirm(msg)) {
+                    window.location.href = "printReportBiodataExcel_biodata.action?biodataId=" + biodataId + "&biodataName=" + biodataName + "&branchId=" + branchId + "&golongan=" + golongan + "&jmlAnak=" + jmlAnak + "&tipePegawaiId=" + tipePegawaiId + "&flag=" + flag;
+                }
+            // if (tglFrom!=""&&tglTo!=""&&branchId!=""){
+            //     var msg='Apakah Anda ingin mencetak laporan absensi tanggal '+tglFrom+' sampai tanggal '+tglTo+' ?';
+            //     if (bagian!=""){
+            //         var msg='Apakah Anda ingin mencetak laporan absensi tanggal '+tglFrom+' sampai tanggal '+tglTo+'  ?';
+            //     }
+            //     if (confirm(msg)) {
+            //         window.location.href = "printReportAbsensiExcel_absensi.action?tglFrom="+tglFrom+"&tglTo="+tglTo+"&branchId="+branchId+"&bagian="+bagian+"&nip="+nip+"&divisiId=''";
+            //     }
+            // }else{
+            //     alert("Unit dan Tanggal Harus Diisi !");
+            // }
         });
     });
 

@@ -107,6 +107,13 @@
                 <param name="reportParameters">reportParams</param>
             </result>
 
+            <result name="downloadXlsBiodata" type="stream">
+                <param name="contentType">${excelContentType}</param>
+                <param name="inputName">excelStream</param>
+                <param name="contentDisposition">contentDisposition</param>
+                <param name="bufferSize">1024</param>
+            </result>
+
             <!--<result name="error" type="httpheader">-->
             <!--<param name="status">504</param>-->
             <!--<param name="headers.message">${actionErrors}</param>-->
