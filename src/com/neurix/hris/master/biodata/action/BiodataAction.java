@@ -10,14 +10,25 @@ import com.neurix.authorization.user.bo.UserBo;
 import com.neurix.authorization.user.model.User;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
+import com.neurix.common.download.excel.CellDetail;
+import com.neurix.common.download.excel.DownloadUtil;
+import com.neurix.common.download.excel.RowData;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.master.biodata.dao.PelatihanJabatanUserDao;
 import com.neurix.hris.master.biodata.model.*;
+import com.neurix.hris.master.golongan.bo.GolonganBo;
+import com.neurix.hris.master.golongan.model.Golongan;
+import com.neurix.hris.master.golonganDapen.bo.GolonganDapenBo;
+import com.neurix.hris.master.golonganDapen.model.GolonganDapen;
+import com.neurix.hris.master.golonganPkwt.bo.GolonganPkwtBo;
+import com.neurix.hris.master.golonganPkwt.model.GolonganPkwt;
 import com.neurix.hris.master.ijin.model.Ijin;
 import com.neurix.hris.master.jenisPegawai.model.JenisPegawai;
 import com.neurix.hris.master.keluarga.model.Keluarga;
+import com.neurix.hris.master.payrollDanaPensiun.bo.PayrollDanaPensiunBo;
+import com.neurix.hris.master.payrollDanaPensiun.model.payrollDanaPensiun;
 import com.neurix.hris.master.profesi.bo.ProfesiBo;
 import com.neurix.hris.master.profesi.model.Profesi;
 import com.neurix.hris.master.reward.model.Reward;
@@ -52,7 +63,9 @@ import com.neurix.simrs.transaksi.CrudResponse;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.json.JSON;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 import org.apache.taglibs.standard.lang.jpath.example.Person;
 import org.hibernate.HibernateException;
@@ -69,7 +82,9 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -103,6 +118,71 @@ public class BiodataAction extends BaseMasterAction {
     private UserBo userBoProxy;
     private BranchBo branchBoProxy;
     private List<JenisPegawai> listOfComboJenisPegawai = new ArrayList<>();
+    private String biodataId;
+    private String biodataName;
+    private String branchId;
+    private String golongan;
+    private String jmlAnak;
+    private String tipePegawaiId;
+    private String flag;
+
+    public String getBiodataId() {
+        return biodataId;
+    }
+
+    public void setBiodataId(String biodataId) {
+        this.biodataId = biodataId;
+    }
+
+    public String getBiodataName() {
+        return biodataName;
+    }
+
+    public void setBiodataName(String biodataName) {
+        this.biodataName = biodataName;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getGolongan() {
+        return golongan;
+    }
+
+    public void setGolongan(String golongan) {
+        this.golongan = golongan;
+    }
+
+    public String getJmlAnak() {
+        return jmlAnak;
+    }
+
+    public void setJmlAnak(String jmlAnak) {
+        this.jmlAnak = jmlAnak;
+    }
+
+    public String getTipePegawaiId() {
+        return tipePegawaiId;
+    }
+
+    public void setTipePegawaiId(String tipePegawaiId) {
+        this.tipePegawaiId = tipePegawaiId;
+    }
+
+    @Override
+    public String getFlag() {
+        return flag;
+    }
+
+    @Override
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
 
     public UserBo getUserBoProxy() {
         return userBoProxy;
@@ -1164,14 +1244,15 @@ public class BiodataAction extends BaseMasterAction {
         }
 
         String branchId = CommonUtil.userBranchLogin();
-        Biodata data = new Biodata();
+//        Biodata data = new Biodata();
         if (branchId != null) {
-            data.setBranch(branchId);
-        } else {
-            data.setBranch("");
+            searchBiodata.setBranch(branchId);
         }
+//        else {
+//            searchBiodata.setBranch("");
+//        }
 
-        biodata = data;
+        biodata = searchBiodata;
 
         HttpSession session = ServletActionContext.getRequest().getSession();
 
@@ -4006,5 +4087,619 @@ public class BiodataAction extends BaseMasterAction {
     @Override
     public String downloadXls() {
         return null;
+    }
+
+//    NAUFALHIMI-09SEP2021 ===> excel
+    public String printReportBiodataExcel(){
+        logger.info("[BiodataAction.printReportBiodataExcel] start process >>>");
+
+        final String biodataId = getBiodataId();
+        final String biodataName = getBiodataName();
+        final String branchId = getBranchId();
+        final String golongan = getGolongan();
+
+        final String tipePegawaiId = getTipePegawaiId();
+        final String flag = getFlag();
+
+        final ApplicationContext ctx = (ApplicationContext)ContextLoader.getCurrentWebApplicationContext();
+        final BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
+        final GolonganDapenBo golonganDapenBo = (GolonganDapenBo) ctx.getBean("golonganDapenBoProxy");
+        final GolonganPkwtBo golonganPkwtBo = (GolonganPkwtBo) ctx.getBean("golonganPkwtBoProxy");
+        final PayrollDanaPensiunBo payrollDanaPensiunBo = (PayrollDanaPensiunBo) ctx.getBean("payrollDanaPensiunBoProxy");
+        final GolonganBo golonganBo = (GolonganBo) ctx.getBean("golonganBoProxy");
+
+        String filename = "Biodata Excel";
+
+        Biodata searchBiodata = new Biodata();
+        searchBiodata.setNip(biodataId);
+        searchBiodata.setNamaPegawai(biodataName);
+        searchBiodata.setBranch(branchId);
+        searchBiodata.setGolongan(golongan);
+        searchBiodata.setTipePegawai(tipePegawaiId);
+        searchBiodata.setFlag(flag);
+
+        if (!getJmlAnak().equalsIgnoreCase("") && getJmlAnak() != null){
+            final Integer jmlAnak = Integer.valueOf(getJmlAnak());
+            searchBiodata.setJumlahAnak(BigInteger.valueOf(jmlAnak));
+        }
+
+        List<Biodata> listData = new ArrayList();
+        List listOfData = new ArrayList();
+        List listOfColumn = new ArrayList();
+
+        try {
+            listData = biodataBo.getByCriteria(searchBiodata);
+        } catch (GeneralBOException e) {
+            logger.error("[BiodataBoImpl.printReportBiodataExcel] Error, " + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
+        }
+
+        listOfColumn.add("NIP");
+        listOfColumn.add("Nama Pegawai");
+        listOfColumn.add("Gelar Depan");
+        listOfColumn.add("Gelar Belakang");
+        listOfColumn.add("No KTP");
+        listOfColumn.add("No Telp");
+        listOfColumn.add("Gender");
+        listOfColumn.add("Agama");
+        listOfColumn.add("Status Keluarga");
+        listOfColumn.add("Jumlah Anak");
+        listOfColumn.add("Tempat Lahir");
+        listOfColumn.add("Tanggal Lahir");
+        listOfColumn.add("Alamat");
+        listOfColumn.add("Provinsi");
+        listOfColumn.add("Kabupaten");
+        listOfColumn.add("Kecamatan");
+        listOfColumn.add("Desa");
+        listOfColumn.add("RT / RW");
+        listOfColumn.add("NPWP");
+        listOfColumn.add("Unit");
+        listOfColumn.add("Bidang");
+        listOfColumn.add("Tipe Pegawai");
+        listOfColumn.add("Jabatan");
+        listOfColumn.add("Profesi");
+        listOfColumn.add("Status Pegawai");
+        listOfColumn.add("Level");
+        listOfColumn.add("Tanggal Kontrak / Masuk");
+        listOfColumn.add("Tanggal Aktif / Pengangkatan");
+        listOfColumn.add("Tgl Pra Kontrak Berakhir / MBT");
+        listOfColumn.add("Tgl Kontrak Berakhir / Pensiun");
+        listOfColumn.add("Dana Pensiun");
+        listOfColumn.add("Golongan Pensiun");
+        listOfColumn.add("Ms. Kerja Gol Pensiun");
+        listOfColumn.add("No. Anggota Dapen");
+        listOfColumn.add("No. BPJS Tenagakerjaan");
+        listOfColumn.add("No. BPJS (Pensiun)");
+        listOfColumn.add("No. BPJS Kesehatan");
+        listOfColumn.add("NIP Lama");
+        listOfColumn.add("PIN");
+        listOfColumn.add("Shift");
+        listOfColumn.add("Dokter Tamu");
+        listOfColumn.add("Bank");
+        listOfColumn.add("Cabang Bank");
+        listOfColumn.add("No. Rek Bank");
+        listOfColumn.add("Finger Mobile");
+        listOfColumn.add("Tunjangan Supervisi");
+        listOfColumn.add("Tunjangan Lokasi");
+        listOfColumn.add("Tunjangan Siaga");
+        listOfColumn.add("Tunjangan Profesional");
+        listOfColumn.add("Tunj. Peralihan Gapok");
+        listOfColumn.add("Tunj. Peralihan Sankhus");
+        listOfColumn.add("Tunj. Peralihan Tunjangan");
+        listOfColumn.add("Tunj. Pemondokan");
+        listOfColumn.add("Tunj. Rumah");
+        listOfColumn.add("Tunj. Air");
+        listOfColumn.add("Tunj. Listrik");
+        listOfColumn.add("Tunj. Bbm");
+
+        for (Biodata data : listData){
+            RowData rowData = new RowData();
+            List listOfCell = new ArrayList();
+            CellDetail cellDetail = new CellDetail();
+
+            //  NIP
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(0);
+            cellDetail.setValueCell(data.getNip());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Nama Pegawai
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(1);
+            cellDetail.setValueCell(data.getNamaPegawai());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Gelar Depan
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(2);
+            cellDetail.setValueCell(data.getGelarDepan());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Gelar Belakang
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(3);
+            cellDetail.setValueCell(data.getGelarBelakang());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  No KTP
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(4);
+            cellDetail.setValueCell(data.getNoKtp());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  No Telp
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(5);
+            cellDetail.setValueCell(data.getNoTelp());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Gender
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(6);
+            cellDetail.setValueCell(data.getGender());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Agama
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(7);
+            cellDetail.setValueCell(data.getAgama());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Status Keluarga
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(8);
+            if(data.getStatusKeluarga().equalsIgnoreCase("K")){
+                cellDetail.setValueCell("Keluarga");
+            }
+            else {
+                cellDetail.setValueCell("Belum");
+            }
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Jumlah Anak
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(9);
+            cellDetail.setValueCell(String.valueOf(data.getJumlahAnak()));
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Tempat Lahir
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(10);
+            cellDetail.setValueCell(data.getTempatLahir());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Tanggal Lahir
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(11);
+            cellDetail.setValueCell(data.getTanggalLahir());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Alamat
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(12);
+            cellDetail.setValueCell(data.getAlamat());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Provinsi
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(13);
+            cellDetail.setValueCell(data.getProvinsiName());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Kabupaten
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(14);
+            cellDetail.setValueCell(data.getKotaName());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Kecamatan
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(15);
+            cellDetail.setValueCell(data.getKecamatanName());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Desa
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(16);
+            cellDetail.setValueCell(data.getDesaName());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  RT / RW
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(17);
+            cellDetail.setValueCell(data.getRtRw());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  NPWP
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(18);
+            cellDetail.setValueCell(data.getNpwp());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Unit
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(19);
+            cellDetail.setValueCell(data.getBranchName());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Bidang
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(20);
+            cellDetail.setValueCell(data.getDivisiName());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Tipe Pegawai
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(21);
+            cellDetail.setValueCell(data.getTipePegawaiName());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Jabatan
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(22);
+            cellDetail.setValueCell(data.getPositionName());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Profesi
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(23);
+            cellDetail.setValueCell(data.getProfesiName());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Status Pegawai
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(24);
+            if(data.getStatusPegawai().equalsIgnoreCase("KS")){
+                cellDetail.setValueCell("Pimpinan");
+            }
+            else {
+                cellDetail.setValueCell("Pelaksana");
+            }
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Level
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(25);
+
+            try {
+                //search Level golongan
+                Golongan searchGolonganLevel = new Golongan();
+                searchGolonganLevel.setGolonganId(data.getGolongan());
+
+                List<Golongan> golonganLevelList = new ArrayList();
+
+                //search level golongan pkwt
+                GolonganPkwt searchPkwt = new GolonganPkwt();
+                searchPkwt.setGolonganPkwtId(data.getGolongan());
+
+                List<GolonganPkwt> golonganPkwtList = new ArrayList();
+
+                golonganLevelList = golonganBo.getByCriteria(searchGolonganLevel);
+
+                if (golonganLevelList.size() > 0){
+                    for (Golongan dataLevel : golonganLevelList) {
+                            cellDetail.setValueCell(dataLevel.getGolonganName());
+                    }
+                }
+                else {
+                    golonganPkwtList = golonganPkwtBo.getByCriteria(searchPkwt);
+
+                    for (GolonganPkwt dataPkwt : golonganPkwtList) {
+                        cellDetail.setValueCell(dataPkwt.getGolonganPkwtName());
+                    }
+                }
+
+            } catch (HibernateException e) {
+                logger.error("[BiodataBoImpl.printReportBiodataExcel] Error, " + e.getMessage());
+                throw new GeneralBOException(e.getMessage());
+            }
+
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Tanggal Kontrak / Masuk
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(26);
+            cellDetail.setValueCell(data.getStTanggalMasuk());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Tanggal Aktif / Pengangkatan
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(27);
+            cellDetail.setValueCell(data.getStTanggalAktif());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Tgl Pra Kontrak Berakhir / MBT
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(28);
+            cellDetail.setValueCell(data.getTanggalPraPensiun());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Tgl Kontrak Berakhir / Pensiun
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(29);
+            cellDetail.setValueCell(data.getStTanggalPensiun());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Dana Pensiun
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(30);
+
+            try {
+
+                //Search Dana Pensiun
+                payrollDanaPensiun searchDanaPensiun = new payrollDanaPensiun();
+                searchDanaPensiun.setDanaPensiunId(data.getDanaPensiun());
+
+                List<payrollDanaPensiun> payrollDanaPensiunNaufalList = new ArrayList();
+
+                payrollDanaPensiunNaufalList = payrollDanaPensiunBo.getByCriteria(searchDanaPensiun);
+
+                if (payrollDanaPensiunNaufalList.size() == 1) {
+                    for (payrollDanaPensiun dataDanapensiun : payrollDanaPensiunNaufalList) {
+                        cellDetail.setValueCell(dataDanapensiun.getDanaPensiun());
+                    }
+                }
+                else {
+                    cellDetail.setValueCell("");
+                }
+            } catch (HibernateException e) {
+                logger.error("[BiodataBoImpl.printReportBiodataExcel] Error, " + e.getMessage());
+                throw new GeneralBOException(e.getMessage());
+            }
+
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Golongan Pensiun
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(31);
+
+            try {
+                Golongan searchGolongan = new Golongan();
+                searchGolongan.setGolonganId(data.getGolonganDapenId());
+
+                List<Golongan> golonganList = new ArrayList();
+
+                golonganList = golonganBo.getByCriteria(searchGolongan);
+
+                if(golonganList.size() == 1){
+                    for (Golongan dataGolongan : golonganList) {
+                        cellDetail.setValueCell(dataGolongan.getGolPensiun());
+                    }
+                }
+                else {
+                    cellDetail.setValueCell("");
+                }
+            } catch (HibernateException e) {
+                logger.error("[BiodataBoImpl.printReportBiodataExcel] Error, " + e.getMessage());
+                throw new GeneralBOException(e.getMessage());
+            }
+
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Ms. Kerja Gol Pensiun
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(32);
+            cellDetail.setValueCell(data.getMasaKerjaGolongan());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  No Anggota Dapen
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(33);
+            cellDetail.setValueCell(data.getNoAnggotaDapen());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  No BPJS Tenagakerjaan
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(34);
+            cellDetail.setValueCell(data.getNoBpjsKetenagakerjaan());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  No BPJS (Pensiun)
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(35);
+            cellDetail.setValueCell(data.getNoBpjsKetenagakerjaanPensiun());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  No BPJS Kesehatan
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(36);
+            cellDetail.setValueCell(data.getNoBpjsKesehatan());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  NIP Lama
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(37);
+            cellDetail.setValueCell(data.getNipLama());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  PIN
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(38);
+            cellDetail.setValueCell(data.getPin());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Shift
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(39);
+            cellDetail.setValueCell(data.getShift());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Dokter Tamu
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(40);
+            cellDetail.setValueCell(data.getFlagDokterKso());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Bank
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(41);
+            cellDetail.setValueCell(data.getNamaBank());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Cabang Bank
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(42);
+            cellDetail.setValueCell(data.getCabangBank());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  No Rek Bank
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(43);
+            cellDetail.setValueCell(data.getNoRekBank());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Finger Mobile
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(44);
+            cellDetail.setValueCell(data.getFlagFingerMobile());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Tunjangan Supervisi
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(45);
+            cellDetail.setValueCell(data.getFlagTunjSupervisi());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Tunjangan Lokasi
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(46);
+            cellDetail.setValueCell(data.getFlagTunjLokasi());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Tunjangan Siaga
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(47);
+            cellDetail.setValueCell(data.getFlagTunjSiaga());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Tunjangan Profesional
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(48);
+            cellDetail.setValueCell(data.getFlagTunjProfesional());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Tunj Peralihan Gapok
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(49);
+            cellDetail.setValueCell(data.getFlagTunjPeralihanGapok());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Tunj Peralihan Sankhus
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(50);
+            cellDetail.setValueCell(data.getFlagTunjPeralihanSankhus());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Tunj Peralihan Tunjangan
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(51);
+            cellDetail.setValueCell(data.getFlagTunjPeralihanTunjangan());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Tunj Pemondokan
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(52);
+            cellDetail.setValueCell(data.getFlagTunjPemondokan());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Tunj Rumah
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(53);
+            cellDetail.setValueCell(data.getFlagTunjRumah());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Tunj Air
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(54);
+            cellDetail.setValueCell(data.getFlagTunjAir());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Tunj Listrik
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(55);
+            cellDetail.setValueCell(data.getFlagTunjListrik());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            //  Tunj BBM
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(56);
+            cellDetail.setValueCell(data.getFlagTunjBbm());
+            cellDetail.setAlignmentCell(1);
+            listOfCell.add(cellDetail);
+
+            rowData.setListOfCell(listOfCell);
+            listOfData.add(rowData);
+        }
+
+        HSSFWorkbook wb = DownloadUtil.generateExcelOutput(filename, periode, listOfColumn, listOfData, null);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            wb.write(baos);
+        }
+        catch (IOException e) {
+            logger.error("[AbsensiAction.printReportAbsensiExcel] Error, " + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
+        }
+        setExcelStream((InputStream)new ByteArrayInputStream(baos.toByteArray()));
+        setContentDisposition("filename=\"" + filename + ".${documentFormat}\"");
+
+        logger.info("[BiodataAction.printReportBiodataExcel] end process <<<");
+        return "downloadXlsBiodata";
     }
 }
